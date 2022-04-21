@@ -1,21 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Provider} from 'react-redux';
+import {store} from '@/store';
+import LoginScreen from '@/modules/auth/screens/LoginScreen';
 
-const App: () => Node = () => {
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>AOS Mobile</Text>
-    </View>
+    <Provider store={store}>
+      <LoginScreen />
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default App;
