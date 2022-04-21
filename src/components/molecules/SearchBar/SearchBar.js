@@ -3,9 +3,9 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SearchBar = ({placeholder, onSearchPress, onScanPress}) => {
+const SearchBar = ({style, placeholder, onSearchPress, onScanPress}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Input style={styles.input} placeholder={placeholder} />
       <View style={styles.actions}>
         <TouchableOpacity style={styles.action} onPress={onSearchPress}>

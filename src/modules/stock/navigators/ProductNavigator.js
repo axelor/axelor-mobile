@@ -10,7 +10,7 @@ const ProductNavigator = () => {
   return (
     <Navigator>
       <Screen
-        name="ProductList"
+        name="ProductListScreen"
         component={ProductListScreen}
         options={{
           headerLeft: props => <DrawerToggleButton {...props} />,
@@ -18,7 +18,7 @@ const ProductNavigator = () => {
         }}
       />
       <Screen
-        name="ProductStockDetails"
+        name="ProductStockDetailsScreen"
         component={ProductStockDetailsScreen}
         options={{
           headerTitle: 'Product',

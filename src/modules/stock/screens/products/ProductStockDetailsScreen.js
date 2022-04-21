@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Screen, Text} from '@/components/atoms';
 
-const ProductStockDetailsScreen = () => {
+const ProductStockDetailsScreen = ({route}) => {
+  useEffect(() => {
+    console.log(route.params);
+  }, [route.params]);
+
   return (
     <Screen>
       <Text>Product stock details</Text>

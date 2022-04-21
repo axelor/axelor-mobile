@@ -15,9 +15,9 @@ const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [url, setUrl] = useState('https://test.axelor.com/open-suite-wip/');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('@axadmin');
 
   return (
     <Screen style={styles.container}>

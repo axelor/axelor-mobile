@@ -14,15 +14,11 @@ export async function loginApi(
       if (token == null) {
         throw new Error('X-CSRF-Token is not exposed in remote header');
       }
-      configureAxiosHeader(url, token);
+      axios.interceptors.request.use(config => {
+        config.baseURL = url;
+        config.headers['x-csrf-token'] = token;
+        return config;
+      });
       return token;
     });
-}
-
-function configureAxiosHeader(url, token) {
-  axios.interceptors.request.use(config => {
-    config.baseURL = url;
-    config.headers['x-csrf-token'] = token;
-    return config;
-  });
 }
