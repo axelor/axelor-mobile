@@ -1,17 +1,21 @@
 import React from 'react';
-import {Button, Screen, Text} from '@/components/atoms';
+import {Screen} from '@/components/atoms';
+import {SearchBar} from '@/components/molecules';
+import {StyleSheet} from 'react-native';
 
-const ProductListScreen = ({navigation}) => {
-  const goToDetails = () => {
-    navigation.navigate('ProductStockDetails');
-  };
-
+const ProductListScreen = () => {
   return (
-    <Screen>
-      <Text>ProductListScreen</Text>
-      <Button title="Go to details" onPress={goToDetails} />
+    <Screen style={styles.container}>
+      <SearchBar placeholder="Product" />
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 6,
+    marginHorizontal: 12,
+  },
+});
 
 export default ProductListScreen;
