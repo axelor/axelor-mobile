@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ErrorText,
@@ -9,7 +9,7 @@ import {
   UsernameInput,
 } from '@/modules/auth/components/molecules';
 import {login} from '@/modules/auth/features/authSlice';
-import {Text} from '@/components/atoms';
+import {Screen, Text} from '@/components/atoms';
 
 const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
@@ -20,7 +20,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <UrlInput value={url} onChange={setUrl} readOnly={loading} />
       <UsernameInput
         value={username}
@@ -39,13 +39,12 @@ const LoginScreen = () => {
       {error && <ErrorText message={error.message} />}
       {loading && <ActivityIndicator size="large" />}
       {logged && <Text>Success login :)</Text>}
-    </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
   },
 });

@@ -1,18 +1,22 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Text} from '@/components/atoms';
+import {StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {Button, Screen, Text} from '@/components/atoms';
+import {logout} from '@/modules/auth/features/authSlice';
 
 const UserScreen = () => {
+  const dispatch = useDispatch();
+
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Text>UserScreen (User settings)</Text>
-    </View>
+      <Button title="logout" onPress={() => dispatch(logout())} />
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

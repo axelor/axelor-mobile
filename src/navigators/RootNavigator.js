@@ -2,23 +2,19 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '@/modules/auth/screens/LoginScreen';
-import UserScreen from '@/modules/auth/screens/UserScreen';
+import AppNavigator from '@/navigators/AppNavigator';
 
-const {Navigator, Screen, Group} = createNativeStackNavigator();
+const {Navigator, Screen} = createNativeStackNavigator();
 
 const RootNavigator = () => {
   const logged = useSelector(state => state.auth.logged);
 
   return (
-    <Navigator>
+    <Navigator screenOptions={{headerShown: false}}>
       {!logged ? (
-        <Group screenOptions={{headerShown: false}}>
-          <Screen name="LoginScreen" component={LoginScreen} />
-        </Group>
+        <Screen name="LoginScreen" component={LoginScreen} />
       ) : (
-        <Group>
-          <Screen name="UserScreen" component={UserScreen} />
-        </Group>
+        <Screen name="AppNavigator" component={AppNavigator} />
       )}
     </Navigator>
   );
