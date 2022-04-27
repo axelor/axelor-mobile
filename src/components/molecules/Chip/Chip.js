@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   },
   notSelected: {
     backgroundColor: '#FFFFFF',
-    color: 'grey',
+    color: '#2A2A2A',
   },
   selected: {
-    backgroundColor: '#3ECF8E',
-    color: '#FFFFFF',
+    backgroundColor: '#84DCB7',
+    color: '#2A2A2A',
   },
   chipTxt: {
     fontSize: 14,
