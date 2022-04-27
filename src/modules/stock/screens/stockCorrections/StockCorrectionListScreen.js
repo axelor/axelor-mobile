@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen, IconNew} from '@/components/atoms';
-import {SearchBar, Chip} from '@/components/molecules';
+import {Chip} from '@/components/molecules';
 import {ChipSelect, AutocompleteSearch} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/hooks/filter-list';
+import {fetchProducts} from '@/modules/stock/features/productSlice';
 
 const getStatus = option => {
   if (option === 1) {
@@ -26,11 +27,13 @@ const StockCorrectionListScreen = ({navigation}) => {
   const {loadingLocations, stockLocationList} = useSelector(
     state => state.stockLocation,
   );
+  const {loadingProducts, productList} = useSelector(state => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockCorrections());
     dispatch(fetchStockLocations());
+    dispatch(fetchProducts());
   }, [dispatch]);
 
   // Set status filter
@@ -61,19 +64,29 @@ const StockCorrectionListScreen = ({navigation}) => {
     setQueryLocation(locationId);
   };
 
-  const handleQueryProductChange = locationId => {
-    setQueryLocation(locationId);
+  const handleQueryProductChange = productId => {
+    setQueryProduct(productId);
   };
 
   // Filter list on search params
   useEffect(() => {
     setFilteredList(
       filterOnStatus(
-        filterList(stockCorrectionList, 'stockLocation', 'id', queryLocation),
+        filterList(
+          filterList(stockCorrectionList, 'stockLocation', 'id', queryLocation),
+          'product',
+          'id',
+          queryProduct,
+        ),
       ),
     );
-    //setFilteredList(filterList(filteredList, 'Product.id', queryProduct));
-  }, [draftStatus, validatedStatus, stockCorrectionList, queryLocation]);
+  }, [
+    draftStatus,
+    validatedStatus,
+    stockCorrectionList,
+    queryLocation,
+    queryProduct,
+  ]);
 
   const filterOnStatus = list => {
     if (draftStatus) {
@@ -97,7 +110,7 @@ const StockCorrectionListScreen = ({navigation}) => {
     }
   };
 
-  // Navigation between pages
+  // ----------  NAVIGATION -------------
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
       stockCorrectionId: stockCorrection.id,
@@ -124,10 +137,11 @@ const StockCorrectionListScreen = ({navigation}) => {
         searchParam="name"
         setValueSearch={handleQueryLocationChange}
       />
-      <SearchBar
-        style={styles.searchBar}
-        placeholder="Product"
-        onSearchPress={() => dispatch(fetchStockCorrections())}
+      <AutocompleteSearch
+        objectList={productList}
+        searchName="Product"
+        searchParam="name"
+        setValueSearch={handleQueryProductChange}
       />
       <ChipSelect style={styles.statusFilter}>
         <Chip
