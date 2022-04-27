@@ -3,9 +3,11 @@ import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen, IconNew} from '@/components/atoms';
 import {SearchBar, Chip} from '@/components/molecules';
-import {ChipSelect} from '@/components/organisms';
+import {ChipSelect, AutocompleteSearch} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
+import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
+import filterList from '@/modules/stock/hooks/filter-list';
 
 const getStatus = option => {
   if (option === 1) {
@@ -18,13 +20,17 @@ const getStatus = option => {
 };
 
 const StockCorrectionListScreen = ({navigation}) => {
-  const {loading, stockCorrectionList} = useSelector(
+  const {loadingCorrections, stockCorrectionList} = useSelector(
     state => state.stockCorrection,
+  );
+  const {loadingLocations, stockLocationList} = useSelector(
+    state => state.stockLocation,
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockCorrections());
+    dispatch(fetchStockLocations());
   }, [dispatch]);
 
   // Set status filter
@@ -46,35 +52,53 @@ const StockCorrectionListScreen = ({navigation}) => {
     setValidatedStatus(validatedStatus => !validatedStatus);
   };
 
-  // Filter list on status
+  // ----------  FILTERS -------------
   const [filteredList, setFilteredList] = useState(stockCorrectionList);
+  const [queryLocation, setQueryLocation] = useState('');
+  const [queryProduct, setQueryProduct] = useState('');
 
+  const handleQueryLocationChange = locationId => {
+    setQueryLocation(locationId);
+  };
+
+  const handleQueryProductChange = locationId => {
+    setQueryLocation(locationId);
+  };
+
+  // Filter list on search params
   useEffect(() => {
+    setFilteredList(
+      filterOnStatus(
+        filterList(stockCorrectionList, 'stockLocation', 'id', queryLocation),
+      ),
+    );
+    //setFilteredList(filterList(filteredList, 'Product.id', queryProduct));
+  }, [draftStatus, validatedStatus, stockCorrectionList, queryLocation]);
+
+  const filterOnStatus = list => {
     if (draftStatus) {
       draftStockCorrectionList = [];
-      stockCorrectionList.forEach(item => {
+      list.forEach(item => {
         if (item.statusSelect === 1) {
           draftStockCorrectionList.push(item);
         }
       });
-      setFilteredList(draftStockCorrectionList);
+      return draftStockCorrectionList;
     } else if (validatedStatus) {
       validatedStockCorrectionList = [];
-      stockCorrectionList.forEach(item => {
+      list.forEach(item => {
         if (item.statusSelect === 2) {
           validatedStockCorrectionList.push(item);
         }
       });
-      setFilteredList(validatedStockCorrectionList);
+      return validatedStockCorrectionList;
     } else {
-      setFilteredList(stockCorrectionList);
+      return list;
     }
-  }, [draftStatus, validatedStatus, stockCorrectionList]);
+  };
 
   // Navigation between pages
-
   const showStockCorrectionDetails = stockCorrection => {
-    console.log(draftStatus);
     navigation.navigate('StockCorrectionDetailsScreen', {
       stockCorrectionId: stockCorrection.id,
     });
@@ -94,10 +118,11 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   return (
     <Screen style={styles.container}>
-      <SearchBar
-        style={styles.searchBar}
-        placeholder="Stock Location"
-        onSearchPress={() => dispatch(fetchStockCorrections())}
+      <AutocompleteSearch
+        objectList={stockLocationList}
+        searchName="Stock Location"
+        searchParam="name"
+        setValueSearch={handleQueryLocationChange}
       />
       <SearchBar
         style={styles.searchBar}
@@ -116,7 +141,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           onPress={handleValidatedFilter}
         />
       </ChipSelect>
-      {loading ? (
+      {loadingCorrections ? (
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
