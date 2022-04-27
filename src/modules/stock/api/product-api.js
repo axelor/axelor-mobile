@@ -6,19 +6,29 @@ export async function searchProduct() {
       // Criteria from request /stock.root.products/list/1
       criteria: [
         {
-          fieldName: 'isModel',
-          operator: '=',
-          value: false,
-        },
-        {
-          fieldName: 'productTypeSelect',
-          operator: '=',
-          value: 'storable',
-        },
-        {
-          fieldName: 'dtype',
-          operator: '=',
-          value: 'Product',
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'isModel',
+              operator: '=',
+              value: false,
+            },
+            {
+              fieldName: 'productTypeSelect',
+              operator: '=',
+              value: 'storable',
+            },
+            {
+              fieldName: 'stockManaged',
+              operator: '=',
+              value: true,
+            },
+            {
+              fieldName: 'dtype',
+              operator: '=',
+              value: 'Product',
+            },
+          ],
         },
       ],
     },
