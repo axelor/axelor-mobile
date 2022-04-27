@@ -33,10 +33,15 @@ const AutocompleteSearch = ({
   };
 
   const handleSelect = item => {
-    console.log('Item pressed - name: ' + item.name + ' and id: ' + item.id);
     setToggleList(false);
     setQuery(item.name);
     setValueSearch(item.id);
+  };
+
+  const handleClear = () => {
+    setToggleList(false);
+    setQuery('');
+    setValueSearch('');
   };
 
   return (
@@ -46,6 +51,7 @@ const AutocompleteSearch = ({
         style={styles.searchBar}
         placeholder={searchName}
         onChangeTxt={updateQuery}
+        onClearPress={handleClear}
         onSelection={() => setToggleList(true)}
       />
       {toggleList ? (

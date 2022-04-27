@@ -7,6 +7,7 @@ const SearchBar = ({
   style,
   valueTxt,
   placeholder,
+  onClearPress,
   onSearchPress,
   onScanPress,
   onChangeTxt,
@@ -22,6 +23,14 @@ const SearchBar = ({
         onSelection={onSelection}
       />
       <View style={styles.actions}>
+        {valueTxt === '' ? (
+          <View style={styles.action}>{null}</View>
+        ) : (
+          <TouchableOpacity style={styles.action} onPress={onClearPress}>
+            <Icon name="remove" size={24} />
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity style={styles.action} onPress={onSearchPress}>
           <Icon name="search" size={24} />
         </TouchableOpacity>
@@ -44,14 +53,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   input: {
-    width: '80%',
+    width: '70%',
   },
   actions: {
-    width: '20%',
+    width: '30%',
     display: 'flex',
     flexDirection: 'row',
   },
   action: {
+    flex: 1,
     marginLeft: 12,
   },
 });
