@@ -122,7 +122,7 @@ const StockCorrectionListScreen = ({navigation}) => {
       headerRight: () => (
         <IconNew
           onNewPress={() => {
-            navigation.navigate('StockCorrectionNewLocationScreen');
+            navigation.navigate('StockCorrectionNewLocationScreen', {});
           }}
         />
       ),
