@@ -11,7 +11,11 @@ const UserNavigator = () => {
       <Screen
         name="UserScreen"
         component={UserScreen}
-        options={{headerLeft: props => <DrawerToggleButton {...props} />}}
+        options={{
+          headerLeft: props => (
+            <DrawerToggleButton {...props} tintColor={'#3ECF8E'} />
+          ),
+        }}
       />
     </Navigator>
   );
