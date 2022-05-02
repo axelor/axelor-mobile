@@ -7,7 +7,6 @@ TYPE_VIRTUAL = 3;
 export async function searchStockLocation() {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
     data: {
-      // Criteria from request /stock.root.products/list/1
       criteria: [
         {
           operator: 'and',
