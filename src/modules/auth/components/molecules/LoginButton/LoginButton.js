@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 15,
     backgroundColor: '#3ECF8E',
-    borderRadius: 20,
+    borderRadius: 50,
     width: '30%',
     elevation: 5,
   },
