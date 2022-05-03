@@ -2,13 +2,13 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from '@/components/atoms';
 
-const LoginButton = ({onPress}) => {
+const LogoutButton = ({onPress}) => {
   return (
     <View style={styles.container}>
       <Button
         style={styles.button}
         styleTxt={styles.title}
-        title="LOGIN"
+        title="LOGOUT"
         onPress={onPress}
       />
     </View>
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginButton;
+export default LogoutButton;

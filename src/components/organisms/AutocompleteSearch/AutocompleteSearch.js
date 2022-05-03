@@ -7,6 +7,7 @@ const AutocompleteSearch = ({
   searchName,
   searchParam,
   setValueSearch,
+  defaultQuery,
 }) => {
   const [toggleList, setToggleList] = useState(false);
   const [data, setData] = useState([]);
@@ -16,7 +17,12 @@ const AutocompleteSearch = ({
   useEffect(() => {
     setData(objectList);
     setFilteredList(objectList.slice());
-  }, [objectList]);
+    if (typeof defaultQuery === 'undefined' || defaultQuery === null) {
+      setQuery('');
+    } else {
+      setQuery(defaultQuery);
+    }
+  }, [objectList, defaultQuery]);
 
   const updateQuery = input => {
     setFilteredList(data.slice());
@@ -34,7 +40,7 @@ const AutocompleteSearch = ({
 
   const handleSelect = item => {
     setToggleList(false);
-    setQuery(item.name);
+    setQuery(item[searchParam]);
     setValueSearch(item.id);
   };
 

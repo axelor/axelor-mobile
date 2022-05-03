@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Text} from '@/components/atoms';
+import {Screen} from '@/components/atoms';
 import {SearchBar} from '@/components/molecules';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/molecules';

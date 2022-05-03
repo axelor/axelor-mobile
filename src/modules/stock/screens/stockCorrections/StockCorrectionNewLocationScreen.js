@@ -4,16 +4,34 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
+import getFromList from '@/modules/stock/utils/get-from-list';
 
-const StockCorrectionNewLocationScreen = () => {
-  const {loadingLocations, stockLocationList} = useSelector(
-    state => state.stockLocation,
-  );
+const StockCorrectionNewLocationScreen = ({navigation, route}) => {
+  const {stockLocationList} = useSelector(state => state.stockLocation);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockLocations());
-  }, [dispatch]);
+  }, [dispatch, route]);
+
+  const handleLocationSelection = locationId => {
+    if (locationId !== '') {
+      const location = getFromList(stockLocationList, 'id', locationId);
+      if (
+        typeof route.params !== 'undefined' &&
+        typeof route.params.product !== 'undefined'
+      ) {
+        navigation.navigate('StockCorrectionNewProductScreen', {
+          stockLocation: location,
+          product: route.params.product,
+        });
+      } else {
+        navigation.navigate('StockCorrectionNewProductScreen', {
+          stockLocation: location,
+        });
+      }
+    }
+  };
 
   return (
     <Screen style={styles.container}>
@@ -21,7 +39,7 @@ const StockCorrectionNewLocationScreen = () => {
         objectList={stockLocationList}
         searchName="Stock Location"
         searchParam="name"
-        setValueSearch={() => {}}
+        setValueSearch={handleLocationSelection}
       />
     </Screen>
   );
