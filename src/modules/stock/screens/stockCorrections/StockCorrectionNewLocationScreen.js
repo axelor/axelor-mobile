@@ -17,7 +17,10 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   const handleLocationSelection = locationId => {
     if (locationId !== '') {
       const location = getFromList(stockLocationList, 'id', locationId);
-      if (typeof route.params.product !== 'undefined') {
+      if (
+        typeof route.params !== 'undefined' &&
+        typeof route.params.product !== 'undefined'
+      ) {
         navigation.navigate('StockCorrectionNewProductScreen', {
           stockLocation: location,
           product: route.params.product,

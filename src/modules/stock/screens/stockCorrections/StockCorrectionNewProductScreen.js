@@ -33,11 +33,16 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
     }
   };
 
+  const handleClearLocation = () => {
+    navigation.navigate('StockCorrectionNewLocationScreen');
+  };
+
   return (
     <Screen style={styles.container}>
       <InfosCard
         style={styles.infosCard}
         valueTxt={route.params.stockLocation.name}
+        onClearPress={handleClearLocation}
       />
       <AutocompleteSearch
         objectList={productList}
