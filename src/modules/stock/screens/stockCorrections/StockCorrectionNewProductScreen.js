@@ -5,10 +5,10 @@ import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {InfosCard} from '@/components/molecules';
-import getFromList from '@/modules/stock/hooks/get-from-list';
+import getFromList from '@/modules/stock/utils/get-from-list';
 
 const StockCorrectionNewProductScreen = ({navigation, route}) => {
-  const {loadingProducts, productList} = useSelector(state => state.product);
+  const {productList} = useSelector(state => state.product);
 
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
   const handleProductSelection = productId => {
     if (productId !== '') {
       const product = getFromList(productList, 'id', productId);
-      if (product.trackingNumberConfiguration === null) {
+      if (product.trackingNumberConfiguration == null) {
         navigation.navigate('StockCorrectionNewDraftScreen', {
           stockLocation: route.params.stockLocation,
           stockProduct: product,

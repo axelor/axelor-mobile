@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-TYPE_INTERNAL = 1;
-TYPE_EXTERNAL = 2;
-TYPE_VIRTUAL = 3;
+const TYPE_INTERNAL = 1;
+const TYPE_EXTERNAL = 2;
+const TYPE_VIRTUAL = 3;
 
 export async function searchStockLocation() {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {

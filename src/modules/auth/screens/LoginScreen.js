@@ -22,7 +22,10 @@ const LoginScreen = () => {
   return (
     <Screen style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require('../Logo_Axelor.png')} style={styles.image} />
+        <Image
+          source={require('../assets/Logo_Axelor.png')}
+          style={styles.image}
+        />
       </View>
       <UrlInput
         style={[styles.inputContainer]}

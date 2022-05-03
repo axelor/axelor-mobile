@@ -7,7 +7,7 @@ import {ChipSelect, AutocompleteSearch} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
-import filterList from '@/modules/stock/hooks/filter-list';
+import filterList from '@/modules/stock/utils/filter-list';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 
 const getStatus = option => {
@@ -24,10 +24,8 @@ const StockCorrectionListScreen = ({navigation}) => {
   const {loadingCorrections, stockCorrectionList} = useSelector(
     state => state.stockCorrection,
   );
-  const {loadingLocations, stockLocationList} = useSelector(
-    state => state.stockLocation,
-  );
-  const {loadingProducts, productList} = useSelector(state => state.product);
+  const {stockLocationList} = useSelector(state => state.stockLocation);
+  const {productList} = useSelector(state => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,16 +41,16 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const handleDraftFilter = () => {
     if (!draftStatus && validatedStatus) {
-      setValidatedStatus(validatedStatus => !validatedStatus);
+      setValidatedStatus(!validatedStatus);
     }
-    setDraftStatus(draftStatus => !draftStatus);
+    setDraftStatus(!draftStatus);
   };
 
   const handleValidatedFilter = () => {
     if (!validatedStatus && draftStatus) {
-      setDraftStatus(draftStatus => !draftStatus);
+      setDraftStatus(!draftStatus);
     }
-    setValidatedStatus(validatedStatus => !validatedStatus);
+    setValidatedStatus(!validatedStatus);
   };
 
   // ----------  FILTERS -------------
@@ -90,7 +88,7 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const filterOnStatus = list => {
     if (draftStatus) {
-      draftStockCorrectionList = [];
+      const draftStockCorrectionList = [];
       list.forEach(item => {
         if (item.statusSelect === 1) {
           draftStockCorrectionList.push(item);
@@ -98,7 +96,7 @@ const StockCorrectionListScreen = ({navigation}) => {
       });
       return draftStockCorrectionList;
     } else if (validatedStatus) {
-      validatedStockCorrectionList = [];
+      const validatedStockCorrectionList = [];
       list.forEach(item => {
         if (item.statusSelect === 2) {
           validatedStockCorrectionList.push(item);

@@ -22,7 +22,7 @@ const AutocompleteSearch = ({
     } else {
       setQuery(defaultQuery);
     }
-  }, [objectList]);
+  }, [objectList, defaultQuery]);
 
   const updateQuery = input => {
     setFilteredList(data.slice());

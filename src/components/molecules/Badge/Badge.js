@@ -5,7 +5,7 @@ import {Text} from '@/components/atoms';
 const Badge = ({style, title}) => {
   return (
     <View style={style}>
-      <Text style={[styles.badgeTxt, style.slice(-1)]}>{title}</Text>
+      <Text style={styles.badgeTxt}>{title}</Text>
     </View>
   );
 };
@@ -13,6 +13,7 @@ const Badge = ({style, title}) => {
 const styles = StyleSheet.create({
   badgeTxt: {
     fontSize: 14,
+    color: '#2A2A2A',
   },
 });
 

@@ -13,7 +13,7 @@ const UserNavigator = () => {
         component={UserScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={'#3ECF8E'} />
+            <DrawerToggleButton {...props} tintColor="#3ECF8E" />
           ),
           headerTitle: 'User Profile',
         }}

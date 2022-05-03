@@ -12,9 +12,6 @@ const getBadgeColor = status => {
         backgroundColor: 'rgba(206, 206, 206, 0.6)',
         borderColor: 'rgba(206, 206, 206, 1)',
       },
-      {
-        color: '#2A2A2A',
-      },
     ];
   } else {
     return [
@@ -22,9 +19,6 @@ const getBadgeColor = status => {
       {
         backgroundColor: '#84DCB7',
         borderColor: 'rgba(62, 207, 142, 1)',
-      },
-      {
-        color: '#2A2A2A',
       },
     ];
   }

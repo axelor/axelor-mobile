@@ -4,19 +4,15 @@ import {Text} from '@/components/atoms';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AutocompleteItem = ({style, content, onPress}) => {
-  const getItem = () => {
-    if (content === null) {
-      return null;
-    } else {
-      return (
+  return (
+    <View>
+      {content == null ? null : (
         <TouchableOpacity onPress={onPress}>
           <Text style={style}>{content}</Text>
         </TouchableOpacity>
-      );
-    }
-  };
-
-  return <View>{getItem(content)}</View>;
+      )}
+    </View>
+  );
 };
 
 export default AutocompleteItem;

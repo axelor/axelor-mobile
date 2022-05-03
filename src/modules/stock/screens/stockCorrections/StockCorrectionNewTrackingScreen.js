@@ -5,18 +5,16 @@ import {fetchTrackingNumber} from '@/modules/stock/features/trackingNumberSlice'
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {InfosCard} from '@/components/molecules';
-import getFromList from '@/modules/stock/hooks/get-from-list';
+import getFromList from '@/modules/stock/utils/get-from-list';
 
 const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
-  const {loadingTrackingNumbers, trackingNumberList} = useSelector(
-    state => state.trackingNumber,
-  );
+  const {trackingNumberList} = useSelector(state => state.trackingNumber);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchTrackingNumber(route.params.product.id));
-  }, [dispatch]);
+  }, [dispatch, route.params.product.id]);
 
   const handleClearLocation = () => {
     navigation.navigate('StockCorrectionNewLocationScreen', {

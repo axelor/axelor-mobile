@@ -1,21 +1,19 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Screen} from '@/components/atoms';
-import {logout} from '@/modules/auth/features/authSlice';
-import {LogoutButton} from '../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Screen} from '@/components/atoms';
 import {Picker} from '@/components/molecules';
+import {LogoutButton} from '@/modules/auth/components/molecules';
+import {logout} from '@/modules/auth/features/authSlice';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
-import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
+import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 
 const UserScreen = () => {
-  const {loadingCompanies, companyList} = useSelector(state => state.company);
-  const {loadingLocations, stockLocationList} = useSelector(
-    state => state.stockLocation,
-  );
-  const {loadingLanguage, languageList} = useSelector(state => state.language);
+  const {companyList} = useSelector(state => state.company);
+  const {stockLocationList} = useSelector(state => state.stockLocation);
+  const {languageList} = useSelector(state => state.language);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,12 +24,12 @@ const UserScreen = () => {
 
   return (
     <Screen style={styles.container}>
-      <View style={{alignItems: 'center'}}>
+      <View style={styles.centerItems}>
         <View style={styles.imageContainer}>
           <Icon name="user" size={150} />
         </View>
         <Picker
-          title={'Company'}
+          title="Company"
           defaultValue={1}
           listItems={companyList}
           labelField="name"
@@ -39,7 +37,7 @@ const UserScreen = () => {
           onValueChange={() => {}}
         />
         <Picker
-          title={'Stock Location'}
+          title="Stock Location"
           defaultValue={1}
           listItems={stockLocationList}
           labelField="name"
@@ -47,7 +45,7 @@ const UserScreen = () => {
           onValueChange={() => {}}
         />
         <Picker
-          title={'Language'}
+          title="Language"
           defaultValue={2}
           listItems={languageList}
           labelField="name"
@@ -64,6 +62,9 @@ const UserScreen = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+  },
+  centerItems: {
+    alignItems: 'center',
   },
   imageContainer: {
     alignItems: 'center',

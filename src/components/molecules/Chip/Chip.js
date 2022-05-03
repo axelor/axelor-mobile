@@ -1,28 +1,18 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const setStyle = option => {
-  if (option === true) {
-    return styles.selected;
-  } else {
-    return styles.notSelected;
-  }
+  return option ? styles.selected : styles.notSelected;
 };
 
 const Chip = ({selected, title, onPress}) => {
-  const chipStyle = setStyle(selected);
-
-  useEffect(() => {
-    setStyle(selected);
-  }, [selected]);
-
   return (
-    <View style={[styles.container, chipStyle]}>
+    <View style={[styles.container, setStyle(selected)]}>
       <TouchableOpacity onPress={onPress}>
         <View>
-          <Text style={[styles.chipTxt, chipStyle]}>{title}</Text>
+          <Text style={[styles.chipTxt, setStyle(selected)]}>{title}</Text>
         </View>
       </TouchableOpacity>
     </View>

@@ -19,7 +19,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionListScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={'#3ECF8E'} />
+            <DrawerToggleButton {...props} tintColor="#3ECF8E" />
           ),
           headerTitle: 'Stock corrections',
           headerRight: props => <IconNew {...props} />,
