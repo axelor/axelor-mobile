@@ -1,43 +1,70 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 
-const SearchBar = ({style, title, onPress}) => {
+const Picker = ({
+  title,
+  onValueChange,
+  defaultValue,
+  listItems,
+  labelField,
+  valueField,
+}) => {
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
+
+  const handleValueChange = itemValue => {
+    setSelectedValue(itemValue);
+    onValueChange(itemValue);
+  };
+
   return (
-    <View style={[styles.container, style]}>
-      <Text style={styles.input}>{title}</Text>
-      <TouchableOpacity style={styles.action} onPress={onPress}>
-        <Icon name="chevron-down" size={24} />
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.input}>{title}</Text>
+      </View>
+      <View style={styles.pickerContainer}>
+        <ReactNativePicker
+          dropdownIconColor={'#CECECE'}
+          selectedValue={selectedValue}
+          onValueChange={handleValueChange}
+          mode="dropdown">
+          {listItems.map(item => {
+            return (
+              <ReactNativePicker.Item
+                key={item[valueField]}
+                label={item[labelField]}
+                value={item[valueField]}
+              />
+            );
+          })}
+        </ReactNativePicker>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    borderRadius: 13,
-    elevation: 3,
+    width: '95%',
+  },
+  titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 12,
     marginHorizontal: 12,
-    marginVertical: 6,
   },
   input: {
     width: '90%',
   },
-  actions: {
-    width: '10%',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  action: {
-    flex: 1,
-    marginLeft: 12,
+  pickerContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 13,
+    elevation: 3,
+    paddingHorizontal: 10,
+    marginHorizontal: 4,
+    marginVertical: 6,
   },
 });
 
-export default SearchBar;
+export default Picker;
