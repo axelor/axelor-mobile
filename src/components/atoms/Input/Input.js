@@ -8,6 +8,7 @@ const Input = ({
   placeholder,
   secureTextEntry = false,
   readOnly = false,
+  onSelection,
 }) => {
   return (
     <TextInput
@@ -18,6 +19,7 @@ const Input = ({
       secureTextEntry={secureTextEntry}
       autoCapitalize="none"
       editable={!readOnly}
+      onFocus={onSelection}
     />
   );
 };
