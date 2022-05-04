@@ -5,6 +5,7 @@ import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import getFromList from '@/modules/stock/utils/get-from-list';
+import useScanner, {castIntent} from '../../utils/use-scanner';
 
 const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -32,6 +33,13 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
       }
     }
   };
+
+  const handleScan = intent => {
+    console.log(intent);
+    console.log(castIntent(intent));
+  };
+
+  useScanner(handleScan);
 
   return (
     <Screen style={styles.container}>
