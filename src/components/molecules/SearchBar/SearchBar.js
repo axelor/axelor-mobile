@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Input} from '@/components/atoms';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Input } from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SearchBar = ({style, placeholder, onSearchPress, onScanPress}) => {
+const SearchBar = ({ style, placeholder, onSearchPress, onScanPress }) => {
   return (
     <View style={[styles.container, style]}>
       <Input style={styles.input} placeholder={placeholder} />
@@ -28,18 +28,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 13,
-    borderColor:'black',
-    borderWidth:1,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   input: {
     width: '80%',
-    padding:5
+    padding: 5
   },
   actions: {
     width: '20%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent:'flex-end'
+    justifyContent: 'flex-end'
   },
   action: {
     marginLeft: 12,

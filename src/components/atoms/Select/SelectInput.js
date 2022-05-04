@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const SelectInput = ({ style, text, onPress }) => {
 
   return (
-    <TouchableOpacity style={[styles.container]}>
+    <TouchableOpacity style={styles.container}>
       <Text style={[styles.selectInput, style]} onPress={onPress}>{text}</Text>
       <View style={styles.actions}>
         <TouchableOpacity >

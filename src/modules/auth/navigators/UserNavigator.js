@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import UserScreen from '@/modules/auth/screens/UserScreen';
 import {DrawerToggleButton} from '@react-navigation/drawer';
+import { useTranslation } from 'react-i18next';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const UserNavigator = () => {
+  const {t,i18n} = useTranslation();
+  useEffect(()=>{
+    i18n.changeLanguage('ar');
+  },[])
   return (
     <Navigator screenOptions={{headerTitle: ''}}>
       <Screen
@@ -15,7 +20,7 @@ const UserNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor="#3ECF8E" />
           ),
-          headerTitle: 'User Profile',
+          headerTitle:  t('WelcomText'), 
         }}
       />
     </Navigator>

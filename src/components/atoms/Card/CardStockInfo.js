@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     alignItems:'center',
     justifyContent:'space-between',
-    paddingVertical: 20,
+    paddingVertical: 13,
     paddingHorizontal:8,
     borderRadius: 14,
     elevation: 3,

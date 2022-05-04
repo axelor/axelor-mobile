@@ -26,7 +26,7 @@ const ProductStockDetailsScreen = ({ route }) => {
         <View style={styles.container}>
           <ProductCard code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
-          <SelectOptions style={[styles.item, { marginBottom: 18 }]} options={options} defaultValue="COMPANY" />
+          <SelectOptions style={styles.selection} options={options} defaultValue="COMPANY" />
           <SearchBar style={styles.searchBar} placeholder="Stock location" onSearchPress={() => dispatch(fetchProducts())} />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
@@ -57,11 +57,17 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     marginHorizontal: 12,
-    marginBottom: 18,
+    marginBottom: 7,
     backgroundColor: '#f3f7fc',
   },
   item: {
     marginHorizontal: 12,
+    borderRadius: 0,
+    elevation: 0,
+  },
+  selection: {
+    marginHorizontal: 12,
+    marginBottom: 7,
     borderRadius: 0,
     elevation: 0,
   },
@@ -70,11 +76,10 @@ const styles = StyleSheet.create({
     width: 280,
     borderColor: 'black',
     margin: 10,
-    marginBottom: 10
+    marginBottom: 7
   },
   row: {
     flex: 1,
-    marginVertical: 4,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'
