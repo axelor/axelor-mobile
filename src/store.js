@@ -6,10 +6,12 @@ import {stockLocationReducer} from '@/modules/stock/features/stockLocationSlice'
 import {trackingNumberReducer} from '@/modules/stock/features/trackingNumberSlice';
 import {companyReducer} from '@/modules/auth/features/companySlice';
 import {languageReducer} from '@/modules/auth/features/languageSlice';
+import {userReducer} from '@/modules/auth/features/userSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userReducer,
     company: companyReducer,
     language: languageReducer,
     product: productReducer,
