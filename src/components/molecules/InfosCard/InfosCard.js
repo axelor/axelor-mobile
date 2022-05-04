@@ -3,16 +3,18 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const InfosCard = ({style, valueTxt, onClearPress}) => {
+const InfosCard = ({style, valueTxt, onClearPress, editable}) => {
   return (
     <Card style={style}>
       <View style={styles.container}>
         <Text style={styles.text}>{valueTxt}</Text>
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.action} onPress={onClearPress}>
-            <Icon name="remove" size={24} />
-          </TouchableOpacity>
-        </View>
+        {editable ? (
+          <View style={styles.actions}>
+            <TouchableOpacity style={styles.action} onPress={onClearPress}>
+              <Icon name="remove" size={24} />
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
     </Card>
   );

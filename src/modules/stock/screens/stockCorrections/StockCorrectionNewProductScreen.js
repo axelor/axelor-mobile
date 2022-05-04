@@ -43,6 +43,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
         style={styles.infosCard}
         valueTxt={route.params.stockLocation.name}
         onClearPress={handleClearLocation}
+        editable={true}
       />
       <AutocompleteSearch
         objectList={productList}

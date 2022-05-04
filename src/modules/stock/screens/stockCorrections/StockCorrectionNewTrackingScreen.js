@@ -49,11 +49,13 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
         style={styles.infosCard}
         valueTxt={route.params.stockLocation.name}
         onClearPress={handleClearLocation}
+        editable={true}
       />
       <InfosCard
         style={styles.infosCard}
         valueTxt={route.params.product.name}
         onClearPress={handleClearProduct}
+        editable={true}
       />
       <AutocompleteSearch
         objectList={trackingNumberList}

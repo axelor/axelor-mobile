@@ -8,6 +8,8 @@ import StockCorrectionNewDraftScreen from '@/modules/stock/screens/stockCorrecti
 import StockCorrectionNewLocationScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewLocationScreen';
 import StockCorrectionNewProductScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewProductScreen';
 import StockCorrectionNewTrackingScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewTrackingScreen';
+import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
+
 import {IconNew} from '@/components/atoms';
 
 const {Navigator, Screen} = createStackNavigator();
@@ -70,6 +72,15 @@ const StockCorrectionNavigator = () => {
         options={{
           headerTintColor: ICON_COLOR,
           headerTitle: 'Stock correction',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="ProductStockDetailsScreen"
+        component={ProductStockDetailsScreen}
+        options={{
+          headerTintColor: ICON_COLOR,
+          headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}
       />

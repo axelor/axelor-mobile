@@ -4,6 +4,7 @@ import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 
 const Picker = ({
+  style,
   title,
   onValueChange,
   defaultValue,
@@ -21,7 +22,7 @@ const Picker = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.titleContainer}>
         <Text style={styles.input}>{title}</Text>
       </View>

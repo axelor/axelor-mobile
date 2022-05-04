@@ -1,12 +1,17 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {authReducer} from '@/modules/auth/features/authSlice';
-import {productReducer} from '@/modules/stock/features/productSlice';
-import {stockCorrectionReducer} from '@/modules/stock/features/stockCorrectionSlice';
-import {stockLocationReducer} from '@/modules/stock/features/stockLocationSlice';
-import {trackingNumberReducer} from '@/modules/stock/features/trackingNumberSlice';
-import {companyReducer} from '@/modules/auth/features/companySlice';
-import {languageReducer} from '@/modules/auth/features/languageSlice';
-import {userReducer} from '@/modules/auth/features/userSlice';
+import {
+  authReducer,
+  companyReducer,
+  languageReducer,
+  userReducer,
+} from '@/modules/auth/features';
+import {
+  productReducer,
+  stockCorrectionReducer,
+  stockCorrectionReasonReducer,
+  trackingNumberReducer,
+  stockLocationReducer,
+} from '@/modules/stock/features';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +21,7 @@ export const store = configureStore({
     language: languageReducer,
     product: productReducer,
     stockCorrection: stockCorrectionReducer,
+    stockCorrectionReason: stockCorrectionReasonReducer,
     stockLocation: stockLocationReducer,
     trackingNumber: trackingNumberReducer,
   },
