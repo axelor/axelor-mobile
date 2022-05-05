@@ -36,7 +36,11 @@ const UserScreen = () => {
           </View>
           <Picker
             title="Company"
-            defaultValue={userList[0].activeCompany.id}
+            defaultValue={
+              userList[0].activeCompany == null
+                ? null
+                : userList[0].activeCompany.id
+            }
             listItems={companyList}
             labelField="name"
             valueField="id"
