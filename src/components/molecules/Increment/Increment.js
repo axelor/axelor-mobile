@@ -7,15 +7,24 @@ const Increment = ({value, onValueChange}) => {
   const [valueQty, setValueQty] = useState(value);
 
   const handlePlus = () => {
-    setValueQty((parseFloat(valueQty) + 1).toString());
-    onValueChange(valueQty);
+    const newValue = (parseFloat(valueQty) + parseFloat('1')).toFixed(2);
+    setValueQty(newValue.toString());
+    onValueChange(newValue);
   };
 
   const handleMinus = () => {
-    const newValue = (parseFloat(valueQty) - 1).toString();
+    const newValue = (parseFloat(valueQty) - parseFloat('1')).toFixed(2);
     if (newValue >= 0) {
-      setValueQty(newValue);
-      onValueChange(valueQty);
+      setValueQty(newValue.toString());
+      onValueChange(newValue);
+    }
+  };
+
+  const handleInputChange = input => {
+    const newValue = parseFloat(input);
+    if (newValue >= 0) {
+      setValueQty(newValue.toString());
+      onValueChange(newValue);
     }
   };
 
@@ -26,7 +35,11 @@ const Increment = ({value, onValueChange}) => {
           <Icon name="minus" size={24} color="#3ECF8E" />
         </View>
       </TouchableOpacity>
-      <Input style={styles.input} value={valueQty} onChange={onValueChange} />
+      <Input
+        style={styles.input}
+        value={valueQty}
+        onChange={handleInputChange}
+      />
       <TouchableOpacity onPress={handlePlus}>
         <View style={styles.container_icon}>
           <Icon name="plus" size={24} color="#3ECF8E" />
@@ -55,6 +68,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginHorizontal: 15,
+    color: 'gray',
   },
 });
 
