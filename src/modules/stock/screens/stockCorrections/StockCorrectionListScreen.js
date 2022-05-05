@@ -110,8 +110,8 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   // ----------  NAVIGATION -------------
   const showStockCorrectionDetails = stockCorrection => {
-    navigation.navigate('StockCorrectionDetailsScreen', {
-      stockCorrectionId: stockCorrection.id,
+    navigation.navigate('StockCorrectionNewDraftScreen', {
+      stockCorrection: stockCorrection,
     });
   };
 

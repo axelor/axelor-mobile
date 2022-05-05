@@ -6,6 +6,12 @@ import {Badge, InfosCard, Picker} from '@/components/molecules';
 import {ProductCard} from '@/modules/stock/components/molecules';
 import {QuantityCard} from '@/modules/stock/components/organisms';
 import {fetchStockCorrectionReasons} from '@/modules/stock/features/stockCorrectionReasonSlice';
+import {fetchProductWithId} from '@/modules/stock/features/productSlice';
+import {
+  createCorrection,
+  updateCorrection,
+} from '@/modules/stock/features/stockCorrectionSlice';
+import getFromList from '@/modules/stock/utils/get-from-list';
 
 const STATUS_DRAFT = 1;
 const STATUS_VALIDATED = 2;
@@ -25,49 +31,196 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
   const {loadingReasons, stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
+  const {loadingProduct, productFromId} = useSelector(state => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockCorrectionReasons());
+    if (route.params.stockCorrection != null) {
+      dispatch(fetchProductWithId(route.params.stockCorrection.product.id));
+    }
   }, [dispatch]);
+
+  // ------------  VARIABLES --------------
+  const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
+  const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
+
+  const [status, setStatus] = useState();
+  const [stockLocation, setStockLocation] = useState();
+  const [stockProduct, setStockProduct] = useState();
+  const [trackingNumber, setTrackingNumber] = useState();
+  const [databaseQty, setDatabaseQty] = useState();
+  const [realQty, setRealQty] = useState();
+  const [reason, setReason] = useState();
 
   useEffect(() => {
     initVariables();
-  }, [route]);
-
-  // ------------  VARIABLES --------------
-  const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState();
-  const [stockLocation, setStockLocation] = useState();
-  const [product, setProduct] = useState();
+  }, [route, productFromId]);
 
   const initVariables = () => {
     if (route.params.stockCorrection == null) {
       setStatus(STATUS_DRAFT);
       setStockLocation(route.params.stockLocation);
-      setProduct(route.params.stockProduct);
+      setStockProduct(route.params.stockProduct);
+      setTrackingNumber(
+        route.params.trackingNumber == null
+          ? null
+          : route.params.trackingNumber,
+      );
+      setDatabaseQty(0); // get current qty of product with request
+      setRealQty(0);
+      setReason({name: '', id: 'empty'});
+
+      setSaveStatus(false);
     } else {
-      setStatus(route.params.stockCorrection.status);
+      setStatus(route.params.stockCorrection.statusSelect);
       setStockLocation(route.params.stockCorrection.stockLocation);
-      setProduct(route.params.stockCorrection.product);
+      setStockProduct(productFromId);
+      setTrackingNumber(route.params.stockCorrection.trackingNumber);
+      setDatabaseQty(route.params.stockCorrection.realQty);
+      setRealQty(route.params.stockCorrection.realQty);
+      setReason(route.params.stockCorrection.stockCorrectionReason);
+
+      setSaveStatus(true);
     }
     setLoading(false);
   };
 
+  // ------------  HANDLERS --------------
+
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: route.params.product,
+      product: stockProduct,
     });
   };
 
+  const handleQtyChange = value => {
+    setRealQty(value);
+    setSaveStatus(false);
+  };
+
+  const handleReasonChange = reasonId => {
+    if (reasonId == 'empty') {
+      setReason({name: '', id: 'empty'});
+    } else {
+      setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
+    }
+    setSaveStatus(false);
+  };
+
+  const {createResponse, updateResponse, error} = useSelector(
+    state => state.stockCorrection,
+  );
+
+  const handleSave = () => {
+    if (reason.id == 'empty') {
+      // Required field
+      return;
+    }
+
+    // Request AOS API
+    if (route.params.stockCorrection == null) {
+      // Stock correction doesn't exsist yet : creation
+      if (
+        stockProduct.trackingNumberConfiguration == null ||
+        trackingNumber == null
+      ) {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            stockLocationId: stockLocation.id,
+            reasonId: reason.id,
+            status: STATUS_DRAFT,
+            realQty: realQty,
+          }),
+        );
+      } else {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            stockLocationId: stockLocation.id,
+            reasonId: reason.id,
+            trackingNumberId: trackingNumber.id,
+            status: STATUS_DRAFT,
+            realQty: realQty,
+          }),
+        );
+      }
+    } else {
+      // Stock correction already exists : update qty or reason
+      dispatch(
+        updateCorrection({
+          stockCorrectionId: route.params.stockCorrection.id,
+          realQty: realQty,
+        }),
+      );
+    }
+  };
+
+  const handleValidate = () => {
+    if (reason.id == 'empty') {
+      // Required field
+      return;
+    }
+
+    // Request AOS API
+    if (route.params.stockCorrection == null) {
+      // Stock correction doesn't exsist yet : creation
+      if (
+        stockProduct.trackingNumberConfiguration == null ||
+        trackingNumber == null
+      ) {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            stockLocationId: stockLocation.id,
+            reasonId: reason.id,
+            status: STATUS_VALIDATED,
+            realQty: realQty,
+          }),
+        );
+      } else {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            stockLocationId: stockLocation.id,
+            reasonId: reason.id,
+            trackingNumberId: trackingNumber.id,
+            status: STATUS_VALIDATED,
+            realQty: realQty,
+          }),
+        );
+      }
+    } else {
+      // Stock correction already exists : update qty or reason
+      dispatch(
+        updateCorrection({
+          stockCorrectionId: route.params.stockCorrection.id,
+          realQty: saveStatus ? null : realQty,
+          status: STATUS_VALIDATED,
+        }),
+      );
+    }
+  };
+
+  // ------------  RENDER SCREEN --------------
+
   return (
     <Screen style={styles.container}>
-      {loading ? (
+      {loading || loadingProduct ? (
         <ActivityIndicator size="large" />
       ) : (
         <View>
           <View style={styles.badge_container}>
-            <Badge style={styles.badge} title={getStatus(status)} />
+            <Badge
+              style={[
+                styles.badge,
+                status == STATUS_DRAFT
+                  ? styles.badge_draft
+                  : styles.badge_validated,
+              ]}
+              title={getStatus(status)}
+            />
           </View>
           <InfosCard
             style={styles.infosCard}
@@ -76,46 +229,64 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
           />
           <ProductCard
             style={styles.productCard}
-            name={route.params.stockProduct.name}
-            code={route.params.stockProduct.code}
+            name={stockProduct.name}
+            code={stockProduct.code}
             onPress={handleShowProduct}
           />
-          {route.params.stockProduct.trackingNumberConfiguration ==
-          null ? null : (
+          {stockProduct.trackingNumberConfiguration == null ||
+          trackingNumber == null ? null : (
             <InfosCard
               style={styles.infosCard}
-              valueTxt={route.params.trackingNumber.trackingNumberSeq}
+              valueTxt={trackingNumber.trackingNumberSeq}
               editable={false}
             />
           )}
           <QuantityCard
             labelQty="Real quantity"
-            defaultValue="0"
-            onValueChange={() => {}}>
-            <Text style={styles.text}>{'Database quantity: ' + 0}</Text>
+            defaultValue={parseFloat(realQty).toFixed(2)}
+            onValueChange={handleQtyChange}
+            editable={status == STATUS_DRAFT}>
+            <Text style={styles.text}>
+              {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
+            </Text>
           </QuantityCard>
-          <Picker
-            style={styles.picker}
-            title="Reason"
-            onValueChange={() => {}}
-            defaultValue
-            listItems={stockCorrectionReasonList}
-            labelField="name"
-            valueField="id"
-          />
+          {status == STATUS_VALIDATED ? (
+            <InfosCard
+              style={styles.infosCard}
+              valueTxt={reason.name}
+              editable={false}
+            />
+          ) : (
+            <Picker
+              style={styles.picker}
+              styleTxt={reason.id == 'empty' ? styles.picker_empty : null}
+              title="Reason"
+              onValueChange={handleReasonChange}
+              defaultValue={reason.id}
+              listItems={stockCorrectionReasonList}
+              labelField="name"
+              valueField="id"
+            />
+          )}
         </View>
       )}
       <View style={styles.button_container}>
-        <Button
-          title="SAVE"
-          style={[styles.button, styles.button_secondary]}
-          styleTxt={styles.button_title}
-        />
-        <Button
-          title="VALIDATE"
-          style={[styles.button, styles.button_primary]}
-          styleTxt={styles.button_title}
-        />
+        {saveStatus ? null : (
+          <Button
+            title="SAVE"
+            style={[styles.button, styles.button_secondary]}
+            styleTxt={styles.button_title}
+            onPress={handleSave}
+          />
+        )}
+        {status == STATUS_VALIDATED ? null : (
+          <Button
+            title="VALIDATE"
+            style={[styles.button, styles.button_primary]}
+            styleTxt={styles.button_title}
+            onPress={handleValidate}
+          />
+        )}
       </View>
     </Screen>
   );
@@ -134,6 +305,14 @@ const styles = StyleSheet.create({
     height: 22,
     borderWidth: 1.5,
   },
+  badge_draft: {
+    backgroundColor: 'rgba(206, 206, 206, 0.6)',
+    borderColor: 'rgba(206, 206, 206, 1)',
+  },
+  badge_validated: {
+    backgroundColor: '#84DCB7',
+    borderColor: '#3ECF8E',
+  },
   badge_container: {
     marginHorizontal: '10%',
     marginBottom: 6,
@@ -150,6 +329,9 @@ const styles = StyleSheet.create({
   picker: {
     marginHorizontal: 12,
     marginBottom: 6,
+  },
+  picker_empty: {
+    color: 'red',
   },
   button_container: {
     alignItems: 'center',

@@ -1,5 +1,8 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {searchProduct} from '@/modules/stock/api/product-api';
+import {
+  searchProduct,
+  searchProductWithId,
+} from '@/modules/stock/api/product-api';
 
 export const fetchProducts = createAsyncThunk(
   'product/fetchProduct',
@@ -8,9 +11,19 @@ export const fetchProducts = createAsyncThunk(
   },
 );
 
+export const fetchProductWithId = createAsyncThunk(
+  'product/fetchProductWithId',
+  async function (productId) {
+    return searchProductWithId(productId).then(
+      response => response.data.data[0],
+    );
+  },
+);
+
 const initialState = {
-  loading: false,
+  loadingProduct: true,
   productList: [],
+  productFromId: '',
 };
 
 const productSlice = createSlice({
@@ -18,11 +31,18 @@ const productSlice = createSlice({
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchProducts.pending, state => {
-      state.loading = true;
+      state.loadingProduct = true;
     });
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingProduct = false;
       state.productList = action.payload;
+    });
+    builder.addCase(fetchProductWithId.pending, state => {
+      state.loadingProduct = true;
+    });
+    builder.addCase(fetchProductWithId.fulfilled, (state, action) => {
+      state.loadingProduct = false;
+      state.productFromId = action.payload;
     });
   },
 });
