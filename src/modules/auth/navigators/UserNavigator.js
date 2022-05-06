@@ -8,9 +8,7 @@ const {Navigator, Screen} = createStackNavigator();
 
 const UserNavigator = () => {
   const {t,i18n} = useTranslation();
-  useEffect(()=>{
-    i18n.changeLanguage('ar');
-  },[])
+
   return (
     <Navigator screenOptions={{headerTitle: ''}}>
       <Screen
@@ -20,7 +18,7 @@ const UserNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor="#3ECF8E" />
           ),
-          headerTitle:  t('WelcomText'), 
+          headerTitle:  t('UserProfile'), 
         }}
       />
     </Navigator>

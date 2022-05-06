@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import ProductListScreen from '@/modules/stock/screens/products/ProductListScreen';
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
+import ProductDetails from '../screens/products/ProductDetails';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -22,6 +23,13 @@ const ProductNavigator = () => {
         component={ProductStockDetailsScreen}
         options={{
           headerTitle: 'Product',
+        }}
+      />
+      <Screen
+        name="ProductDetails"
+        component={ProductDetails}
+        options={{
+          headerTitle: 'Product Details',
         }}
       />
     </Navigator>

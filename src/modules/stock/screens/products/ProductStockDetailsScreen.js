@@ -7,26 +7,31 @@ import { useSelector, useDispatch } from 'react-redux';
 import SelectOptions from '@/components/molecules/SelectOptions/SelectOptions';
 import { fetchProducts } from '@/modules/stock/features/productSlice';
 import CardStock from '@/components/molecules/Card/CardStock';
+import { Picker } from '@/components/molecules';
+import { fetchCompanies } from '@/modules/auth/features/companySlice';
 
-const ProductStockDetailsScreen = ({ route }) => {
+const ProductStockDetailsScreen = ({ route,navigation }) => {
 
   const { loading, productList } = useSelector(state => state.product);
   const dispatch = useDispatch();
   const options = ["axelor-maroc", "axelor-france"];
   const product = productList.filter(item => item.id === route.params.productId)[0];
-
+  const { companyList } = useSelector(state => state.company);
+  const showProductDetails = product => {
+    navigation.navigate('ProductDetails', { productId: product.id });
+  };
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchCompanies());
   }, [dispatch]);
-
 
   return (
     <Screen>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
-          <ProductCard code={product.code} name={product.name} style={styles.item} />
+          <ProductCard onPress={()=>showProductDetails(product)} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
-          <SelectOptions style={styles.selection} options={options} defaultValue="COMPANY" />
+          <Picker defaultValue={1} listItems={companyList} labelField="name" valueField="id" onValueChange={() => { }} />
           <SearchBar style={styles.searchBar} placeholder="Stock location" onSearchPress={() => dispatch(fetchProducts())} />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
@@ -76,7 +81,7 @@ const styles = StyleSheet.create({
     width: 280,
     borderColor: 'black',
     margin: 10,
-    marginBottom: 7
+    marginBottom: 1
   },
   row: {
     flex: 1,
@@ -87,3 +92,5 @@ const styles = StyleSheet.create({
 });
 
 export default ProductStockDetailsScreen;
+
+// <SelectOptions style={styles.selection} options={options} defaultValue="COMPANY" />

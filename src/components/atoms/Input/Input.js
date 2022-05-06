@@ -9,6 +9,8 @@ const Input = ({
   secureTextEntry = false,
   readOnly = false,
   onSelection,
+  multiline=false,
+  numberOfLines=1
 }) => {
   return (
     <TextInput
@@ -20,6 +22,8 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
+      multiline={multiline}
+      numberOfLines={numberOfLines}
     />
   );
 };
