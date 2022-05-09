@@ -32,7 +32,7 @@ const UserScreen = () => {
       ) : (
         <View style={styles.centerItems}>
           <View style={styles.imageContainer}>
-            <Icon name="user" size={150} />
+            <Icon name="user" size={150} color="#606060" />
           </View>
           <Picker
             title="Company"

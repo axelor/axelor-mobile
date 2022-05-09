@@ -17,7 +17,7 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
         readOnly={readOnly}
       />
       <TouchableOpacity onPress={() => setVisible(!visible)}>
-        <Icon name={visible ? 'eye-slash' : 'eye'} size={20} />
+        <Icon name={visible ? 'eye-slash' : 'eye'} size={20} color="#606060" />
       </TouchableOpacity>
     </View>
   );

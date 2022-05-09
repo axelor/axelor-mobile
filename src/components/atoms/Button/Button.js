@@ -5,7 +5,7 @@ const Button = ({style, styleTxt, title, onPress, disabled}) => {
   return (
     <TouchableOpacity style={style} onPress={onPress} disabled={disabled}>
       <View style={styles.container}>
-        <Text style={styleTxt}>{title}</Text>
+        <Text style={[styles.text, styleTxt]}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginVertical: 6,
     borderRadius: 13,
+  },
+  text: {
+    color: '#606060',
   },
 });
 

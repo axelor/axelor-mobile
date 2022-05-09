@@ -27,15 +27,15 @@ const SearchBar = ({
           <View style={styles.action}>{null}</View>
         ) : (
           <TouchableOpacity style={styles.action} onPress={onClearPress}>
-            <Icon name="remove" size={24} />
+            <Icon name="remove" size={24} color="#606060" />
           </TouchableOpacity>
         )}
 
         <TouchableOpacity style={styles.action} onPress={onSearchPress}>
-          <Icon name="search" size={24} />
+          <Icon name="search" size={24} color="#606060" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" size={24} />
+          <Icon name="qrcode" size={24} color="#606060" />
         </TouchableOpacity>
       </View>
     </View>

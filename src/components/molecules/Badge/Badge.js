@@ -13,7 +13,7 @@ const Badge = ({style, title}) => {
 const styles = StyleSheet.create({
   badgeTxt: {
     fontSize: 14,
-    color: '#2A2A2A',
+    color: '#606060',
   },
 });
 

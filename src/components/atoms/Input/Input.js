@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 
 const Input = ({
   style,
@@ -12,7 +12,7 @@ const Input = ({
 }) => {
   return (
     <TextInput
-      style={style}
+      style={[styles.text, style]}
       value={value}
       onChangeText={onChange}
       placeholder={placeholder}
@@ -20,8 +20,15 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
+      placeholderTextColor="#606060"
     />
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    color: '#606060',
+  },
+});
 
 export default Input;

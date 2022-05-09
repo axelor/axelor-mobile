@@ -14,7 +14,7 @@ const UrlInput = ({style, value, onChange, readOnly}) => {
         readOnly={readOnly}
       />
       <TouchableOpacity onPress={() => {}}>
-        <Icon name="qrcode" size={20} />
+        <Icon name="qrcode" size={20} color="#606060" />
       </TouchableOpacity>
     </View>
   );

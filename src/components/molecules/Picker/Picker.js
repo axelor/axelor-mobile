@@ -29,6 +29,7 @@ const Picker = ({
       </View>
       <View style={styles.pickerContainer}>
         <ReactNativePicker
+          style={styles.picker}
           dropdownIconColor={'#CECECE'}
           selectedValue={selectedValue}
           onValueChange={handleValueChange}
@@ -69,6 +70,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 4,
     marginVertical: 6,
+  },
+  picker: {
+    color: '#606060',
   },
 });
 
