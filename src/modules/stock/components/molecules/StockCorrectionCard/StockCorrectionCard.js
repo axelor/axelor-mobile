@@ -33,7 +33,7 @@ const StockCorrectionCard = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
           <View style={styles.textContainer}>
