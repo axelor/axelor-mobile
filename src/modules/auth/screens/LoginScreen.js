@@ -19,10 +19,15 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('@axadmin');
 
+  // const [url, setUrl] = useState('http://192.168.20.36:8080/axelor-api/');
+  // const [username, setUsername] = useState('admin');
+  // const [password, setPassword] = useState('admin');
+
   return (
     <Screen style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
+          resizeMode="contain"
           source={require('../assets/Logo_Axelor.png')}
           style={styles.image}
         />
@@ -71,8 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: '25%',
   },
   image: {
-    width: '80%',
-    height: '100%',
+    flex: 1,
   },
 });
 
