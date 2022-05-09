@@ -31,7 +31,7 @@ export async function searchProduct() {
         },
       ],
     },
-    fields: ['name', 'code', 'trackingNumberConfiguration'],
+    fields: ['name', 'code', 'trackingNumberConfiguration', 'serialNumber'],
     sortBy: ['code', 'name'],
     limit: 50,
     offset: 0,

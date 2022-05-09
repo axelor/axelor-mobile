@@ -35,7 +35,7 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
         'id',
         trackingNumberId,
       );
-      navigation.navigate('StockCorrectionNewDraftScreen', {
+      navigation.navigate('StockCorrectionDetailsScreen', {
         stockLocation: route.params.stockLocation,
         stockProduct: route.params.product,
         trackingNumber: trackingNumber,

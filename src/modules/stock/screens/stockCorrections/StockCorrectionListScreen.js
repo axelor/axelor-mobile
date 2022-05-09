@@ -110,7 +110,7 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   // ----------  NAVIGATION -------------
   const showStockCorrectionDetails = stockCorrection => {
-    navigation.navigate('StockCorrectionNewDraftScreen', {
+    navigation.navigate('StockCorrectionDetailsScreen', {
       stockCorrection: stockCorrection,
     });
   };

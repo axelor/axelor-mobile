@@ -3,7 +3,7 @@ function getFromList(list, objectParam, query) {
     return null;
   } else {
     for (let i = 0; i < list.length; i++) {
-      if (list[i][objectParam] === parseInt(query)) {
+      if (list[i][objectParam] === query) {
         return list[i];
       }
     }

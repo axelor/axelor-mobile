@@ -30,7 +30,7 @@ export async function searchStockLocation() {
         },
       ],
     },
-    fields: ['name', 'id'],
+    fields: ['name', 'id', 'serialNumber'],
     sortBy: ['id', 'name'],
     limit: 20,
     offset: 0,

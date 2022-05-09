@@ -6,6 +6,7 @@ import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {InfosCard} from '@/components/molecules';
 import getFromList from '@/modules/stock/utils/get-from-list';
+import useScanner, {castIntent} from '../../utils/use-scanner';
 
 const StockCorrectionNewProductScreen = ({navigation, route}) => {
   const {productList} = useSelector(state => state.product);
@@ -16,26 +17,44 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
     dispatch(fetchProducts());
   }, [dispatch, route]);
 
-  const handleProductSelection = productId => {
-    if (productId !== '') {
-      const product = getFromList(productList, 'id', productId);
-      if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('StockCorrectionNewDraftScreen', {
-          stockLocation: route.params.stockLocation,
-          stockProduct: product,
-        });
-      } else {
-        navigation.navigate('StockCorrectionNewTrackingScreen', {
-          stockLocation: route.params.stockLocation,
-          product: product,
-        });
-      }
+  const handleNavigate = product => {
+    if (product.trackingNumberConfiguration == null) {
+      navigation.navigate('StockCorrectionDetailsScreen', {
+        stockLocation: route.params.stockLocation,
+        stockProduct: product,
+      });
+    } else {
+      navigation.navigate('StockCorrectionNewTrackingScreen', {
+        stockLocation: route.params.stockLocation,
+        product: product,
+      });
     }
   };
 
   const handleClearLocation = () => {
     navigation.navigate('StockCorrectionNewLocationScreen');
   };
+
+  const handleProductSelection = productId => {
+    if (productId !== '') {
+      const product = getFromList(productList, 'id', productId);
+      handleNavigate(product);
+    }
+  };
+
+  const handleProductScan = intent => {
+    console.log('Yes');
+    const serialNumber = castIntent(intent).value;
+    console.log(serialNumber);
+    console.log(productList);
+    if (serialNumber !== '') {
+      const product = getFromList(productList, 'serialNumber', serialNumber);
+      console.log(product);
+      handleNavigate(product);
+    }
+  };
+
+  //useScanner(handleProductScan);
 
   return (
     <Screen style={styles.container}>

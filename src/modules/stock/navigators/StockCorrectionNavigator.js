@@ -4,12 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import StockCorrectionListScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionListScreen';
 import StockCorrectionDetailsScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionDetailsScreen';
-import StockCorrectionNewDraftScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewDraftScreen';
 import StockCorrectionNewLocationScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewLocationScreen';
 import StockCorrectionNewProductScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewProductScreen';
 import StockCorrectionNewTrackingScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewTrackingScreen';
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
-
 import {IconNew} from '@/components/atoms';
 
 const {Navigator, Screen} = createStackNavigator();
@@ -33,15 +31,6 @@ const StockCorrectionNavigator = () => {
       <Screen
         name="StockCorrectionDetailsScreen"
         component={StockCorrectionDetailsScreen}
-        options={{
-          headerTintColor: ICON_COLOR,
-          headerTitle: 'Stock correction',
-          headerTitleStyle: styles.headerTitle,
-        }}
-      />
-      <Screen
-        name="StockCorrectionNewDraftScreen"
-        component={StockCorrectionNewDraftScreen}
         options={{
           headerTintColor: ICON_COLOR,
           headerTitle: 'Stock correction',

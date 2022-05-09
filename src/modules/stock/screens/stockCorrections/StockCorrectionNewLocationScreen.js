@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
@@ -18,28 +18,41 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   const handleLocationSelection = locationId => {
     if (locationId !== '') {
       const location = getFromList(stockLocationList, 'id', locationId);
-      if (
-        typeof route.params !== 'undefined' &&
-        typeof route.params.product !== 'undefined'
-      ) {
-        navigation.navigate('StockCorrectionNewProductScreen', {
-          stockLocation: location,
-          product: route.params.product,
-        });
-      } else {
-        navigation.navigate('StockCorrectionNewProductScreen', {
-          stockLocation: location,
-        });
-      }
+      handleNavigate(location);
     }
   };
 
-  const handleScan = intent => {
-    console.log(intent);
-    console.log(castIntent(intent));
+  const handleLocationScan = intent => {
+    console.log('here');
+    const serialNumber = castIntent(intent).value;
+    if (serialNumber !== '') {
+      const location = getFromList(
+        stockLocationList,
+        'serialNumber',
+        serialNumber,
+      );
+      console.log(location);
+      handleNavigate(location);
+    }
   };
 
-  useScanner(handleScan);
+  const handleNavigate = location => {
+    if (
+      typeof route.params !== 'undefined' &&
+      typeof route.params.product !== 'undefined'
+    ) {
+      navigation.navigate('StockCorrectionNewProductScreen', {
+        stockLocation: location,
+        product: route.params.product,
+      });
+    } else {
+      navigation.navigate('StockCorrectionNewProductScreen', {
+        stockLocation: location,
+      });
+    }
+  };
+
+  useScanner(handleLocationScan);
 
   return (
     <Screen style={styles.container}>
