@@ -1,48 +1,43 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button, CardStockInfo, Input, Screen, Text } from '@/components/atoms';
 import { StyleSheet, ActivityIndicator, View } from 'react-native'
-import { ProductCard } from '../../components/molecules';
-import { EditableInput, SearchBar } from '@/components/molecules';
 import { useSelector, useDispatch } from 'react-redux';
-import SelectOptions from '@/components/molecules/SelectOptions/SelectOptions';
-import { fetchProducts } from '@/modules/stock/features/productSlice';
-import CardStock from '@/components/molecules/Card/CardStock';
-import { Picker } from '@/components/molecules';
-import { fetchCompanies } from '@/modules/auth/features/companySlice';
 import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
 import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
-import { TextInput } from 'react-native-gesture-handler';
 
 const ProductDetails = ({ route }) => {
 
     const { loading, productList } = useSelector(state => state.product);
-    const product = productList.filter(item => item.id === route.params.productId)[0];
+    const product = route.params.product;
+    useEffect(()=>{
+        console.log(product);
+    },[])
 
     return (
         <Screen>
             {loading ? (<ActivityIndicator size="large" />) : (
                 <View style={styles.container}>
-                    <ProductCardDetails code={product.code} name={product.name} style={styles.item} />
+                    <ProductCardDetails image={product.image} categorie={product.productCategory} prototype={product.isPrototype} unrenewed={product.isUnrenewed} procurMethode={product.procurementMethodSelect}  code={product.code} name={product.name} style={styles.item} />
                     <View style={styles.lineStyle} />
                     <View style={styles.stock}>
-                        <StockProprtiesCard style={styles.stockCard} title="STOCK" value="Unit" />
-                        <StockProprtiesCard style={styles.stockCard} title="SALE" value="Meter" />
-                        <StockProprtiesCard style={styles.stockCard} title="PURCHASE" value="Meter" />
+                        <StockProprtiesCard style={styles.stockCard} title="STOCK" value={product.unit?.name} />
+                        <StockProprtiesCard style={styles.stockCard} title="SALE" value={product.salesUnit?.name} />
+                        <StockProprtiesCard style={styles.stockCard} title="PURCHASE" value={product.purchasesUnit?.name} />
                     </View>
                     <View style={styles.containerPack}>
                         <Text style={styles.titles}>PACKING</Text>
                         <View style={styles.packing}>
-                            <StockProprtiesCard style={styles.packingCard} title="LENGHT" value="0.0 Unit" />
-                            <StockProprtiesCard style={styles.packingCard} title="WIDTH" value="0.0 Unit" />
-                            <StockProprtiesCard style={styles.packingCard} title="HEIGHT" value="0.0 Unit" />
-                            <StockProprtiesCard style={styles.packingCard} title="NET MASS" value="0.0 Unit" />
-                            <StockProprtiesCard style={styles.packingCard} title="GROSS MASS" value="0.0 Unit" />
+                            <StockProprtiesCard style={styles.packingCard} title="LENGHT" value={product.length} />
+                            <StockProprtiesCard style={styles.packingCard} title="WIDTH" value={product.width} />
+                            <StockProprtiesCard style={styles.packingCard} title="HEIGHT" value={product.height} />
+                            <StockProprtiesCard style={styles.packingCard} title="NET MASS" value={product.netMass} />
+                            <StockProprtiesCard style={styles.packingCard} title="GROSS MASS" value={product.grossMass} />
                         </View>
                     </View>
                     <View style={styles.description}>
                         <Text style={styles.titles}>DESCRIPTION</Text>
                         <View style={styles.submitArea}>
-                            <Input style={styles.textArea} multiline={true} numberOfLines={4} />
+                            <Text style={styles.textArea}>{product.description}</Text>
                             <Button style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
                         </View>
                     </View>
@@ -90,7 +85,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textArea: {
-        height: '70%',
+        minHeight: '70%',
         width: '90%',
         backgroundColor: '#f3f7fc',
         borderRadius: 10,
