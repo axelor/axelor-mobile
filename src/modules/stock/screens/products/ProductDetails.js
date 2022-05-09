@@ -85,11 +85,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textArea: {
-        minHeight: '70%',
+        minHeight: '65%',
         width: '90%',
         backgroundColor: '#f3f7fc',
         borderRadius: 10,
-        marginVertical:9
+        marginVertical:15,
+        padding :10
     },
     titles: {
         marginHorizontal: '5%',
