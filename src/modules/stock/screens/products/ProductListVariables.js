@@ -1,0 +1,62 @@
+import React, {useEffect} from 'react';
+import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {Screen, Text} from '@/components/atoms';
+import {SearchBar} from '@/components/molecules';
+import {fetchProducts} from '@/modules/stock/features/productSlice';
+import {ProductCard} from '@/modules/stock/components/molecules';
+import ProductCardVariable from '../../components/molecules/ProductCard/ProductCardVariable';
+
+const ProductListVariables = ({route}) => {
+
+  const {loading, productList} = useSelector(state => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const showProductDetails = product => {
+    navigation.navigate('ProductStockDetailsScreen', {product:product});
+  };
+  return (
+    <Screen style={styles.container}>
+      <SearchBar
+        style={styles.searchBar}
+        placeholder="Product"
+        onSearchPress={() => dispatch(fetchProducts())}
+      />
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <FlatList
+          data={productList}
+          renderItem={({item}) => (
+            <ProductCardVariable
+              style={styles.item}
+              name={item.name}
+              code={item.code}
+              onPress={() => showProductDetails(item)}
+            />
+          )}
+        />
+      )}
+    </Screen>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 6,
+  },
+  searchBar: {
+    marginHorizontal: 12,
+    marginBottom: 8,
+  },
+  item: {
+    marginHorizontal: 12,
+    marginVertical: 4,
+  },
+});
+
+export default ProductListVariables;

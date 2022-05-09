@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button, CardStockInfo, Input, Screen, Text } from '@/components/atoms';
-import { StyleSheet, ActivityIndicator, View } from 'react-native'
+import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
 import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
 
-const ProductDetails = ({ route }) => {
+const ProductDetails = ({ route,navigation }) => {
 
-    const { loading, productList } = useSelector(state => state.product);
+    const { loading} = useSelector(state => state.product);
     const product = route.params.product;
     useEffect(()=>{
         console.log(product);
-    },[])
+    },[]);
 
+    const showProductVariables = () => {
+        navigation.navigate('ProductVariables', { product:product });
+      };
+    
     return (
         <Screen>
             {loading ? (<ActivityIndicator size="large" />) : (
@@ -38,7 +42,7 @@ const ProductDetails = ({ route }) => {
                         <Text style={styles.titles}>DESCRIPTION</Text>
                         <View style={styles.submitArea}>
                             <Text style={styles.textArea}>{product.description}</Text>
-                            <Button style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
+                            <Button onPress={()=>showProductVariables()} style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
                         </View>
                     </View>
                 </View>
