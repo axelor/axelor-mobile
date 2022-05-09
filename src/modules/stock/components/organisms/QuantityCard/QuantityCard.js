@@ -14,7 +14,7 @@ const QuantityCard = ({
     <Card style={styles.container}>
       <View style={styles.container_up}>{children}</View>
       <View style={styles.container_down}>
-        <Text>{labelQty}</Text>
+        <Text style={styles.textField}>{labelQty}</Text>
         {editable ? (
           <Increment
             value={defaultValue.toString()}
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textField: {
+    fontSize: 16,
     paddingTop: 10,
-    color: 'gray',
   },
 });
 

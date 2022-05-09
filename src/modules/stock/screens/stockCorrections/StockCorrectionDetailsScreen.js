@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, View, StyleSheet} from 'react-native';
-import {Button, Screen, Text} from '@/components/atoms';
-import {Badge, InfosCard, Picker} from '@/components/molecules';
-import {PopUpOneButton, PopUpTwoButton} from '@/components/organisms';
-import {ProductCard} from '@/modules/stock/components/molecules';
+import {ActivityIndicator, View, StyleSheet, ScrollView} from 'react-native';
+import {Button, Card, Screen, Text} from '@/components/atoms';
+import {Picker, Badge} from '@/components/molecules';
+import {PopUpOneButton} from '@/components/organisms';
 import {QuantityCard} from '@/modules/stock/components/organisms';
 import {fetchStockCorrectionReasons} from '@/modules/stock/features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '@/modules/stock/features/productSlice';
@@ -13,6 +12,8 @@ import {
   updateCorrection,
 } from '@/modules/stock/features/stockCorrectionSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
+import getBadgeColor from '@/modules/stock/utils/get-badge-color';
+import {ProductCardCorrection} from '../../components/molecules';
 
 const STATUS_DRAFT = 1;
 const STATUS_VALIDATED = 2;
@@ -27,7 +28,7 @@ const getStatus = option => {
   }
 };
 
-const StockCorrectionNewDraftScreen = ({navigation, route}) => {
+const StockCorrectiondetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
   const {loadingReasons, stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
@@ -214,7 +215,7 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
       {loading || loadingProduct ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View>
+        <ScrollView>
           <PopUpOneButton
             visible={popUp}
             data="Error Message"
@@ -222,36 +223,34 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
             btnTitle="OK"
             onPress={() => setPopUp(!popUp)}
           />
-          <View style={styles.badge_container}>
-            <Badge
-              style={[
-                styles.badge,
-                status == STATUS_DRAFT
-                  ? styles.badge_draft
-                  : styles.badge_validated,
-              ]}
-              title={getStatus(status)}
-            />
+          <View>
+            <View style={styles.content}>
+              <View style={styles.textContainer}>
+                <Text style={styles.text_important}>{stockLocation.name}</Text>
+              </View>
+              <Badge
+                style={[styles.badge, getBadgeColor(getStatus(status))]}
+                title={getStatus(status)}
+              />
+            </View>
+            <View style={styles.contentProduct}>
+              <View style={styles.image} />
+              <ProductCardCorrection
+                style
+                name={stockProduct.name}
+                code={stockProduct.code}
+                onPress={handleShowProduct}>
+                <Text style={styles.text_important}>{stockProduct.name}</Text>
+                <Text style={styles.text_secondary}>{stockProduct.code}</Text>
+                {stockProduct.trackingNumberConfiguration == null ||
+                trackingNumber == null ? null : (
+                  <Text style={styles.text_secondary}>
+                    {trackingNumber.trackingNumberSeq}
+                  </Text>
+                )}
+              </ProductCardCorrection>
+            </View>
           </View>
-          <InfosCard
-            style={styles.infosCard}
-            valueTxt={stockLocation.name}
-            editable={false}
-          />
-          <ProductCard
-            style={styles.productCard}
-            name={stockProduct.name}
-            code={stockProduct.code}
-            onPress={handleShowProduct}
-          />
-          {stockProduct.trackingNumberConfiguration == null ||
-          trackingNumber == null ? null : (
-            <InfosCard
-              style={styles.infosCard}
-              valueTxt={trackingNumber.trackingNumberSeq}
-              editable={false}
-            />
-          )}
           <QuantityCard
             labelQty="Real quantity"
             defaultValue={parseFloat(realQty).toFixed(2)}
@@ -262,11 +261,9 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
             </Text>
           </QuantityCard>
           {status == STATUS_VALIDATED ? (
-            <InfosCard
-              style={styles.infosCard}
-              valueTxt={reason.name}
-              editable={false}
-            />
+            <Card style={styles.infosCard}>
+              <Text>{reason.name}</Text>
+            </Card>
           ) : (
             <Picker
               style={styles.picker}
@@ -279,7 +276,7 @@ const StockCorrectionNewDraftScreen = ({navigation, route}) => {
               valueField="id"
             />
           )}
-        </View>
+        </ScrollView>
       )}
       <View style={styles.button_container}>
         {saveStatus ? null : (
@@ -307,33 +304,49 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 6,
   },
-  badge: {
+  content: {
+    marginHorizontal: 32,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#84DCB7',
-    borderColor: '#3ECF8E',
-    borderRadius: 7,
-    width: 87,
+  },
+  contentProduct: {
+    width: '90%',
+    marginHorizontal: 32,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#efefef',
+    borderColor: '#cecece',
+    borderWidth: 0.7,
+  },
+  textContainer: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  text_important: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  text_secondary: {
+    fontSize: 14,
+  },
+  badge: {
+    flex: 1,
+    alignItems: 'center',
+    width: 55,
     height: 22,
+    borderRadius: 7,
     borderWidth: 1.5,
   },
-  badge_draft: {
-    backgroundColor: 'rgba(206, 206, 206, 0.6)',
-    borderColor: 'rgba(206, 206, 206, 1)',
-  },
-  badge_validated: {
-    backgroundColor: '#84DCB7',
-    borderColor: '#3ECF8E',
-  },
-  badge_container: {
-    marginHorizontal: '10%',
-    marginBottom: 6,
-    flexDirection: 'row-reverse',
-  },
   infosCard: {
-    marginHorizontal: 12,
-    marginBottom: 6,
-  },
-  productCard: {
     marginHorizontal: 12,
     marginBottom: 6,
   },
@@ -345,11 +358,13 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   button_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
+    width: '40%',
     borderRadius: 50,
-    width: '50%',
     marginHorizontal: 12,
     marginBottom: 6,
   },
@@ -363,8 +378,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 14,
+    fontSize: 16,
   },
 });
 
-export default StockCorrectionNewDraftScreen;
+export default StockCorrectiondetailsScreen;

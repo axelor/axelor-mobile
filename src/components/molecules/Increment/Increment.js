@@ -30,17 +30,20 @@ const Increment = ({value, onValueChange}) => {
 
   return (
     <View style={styles.container_increment}>
-      <TouchableOpacity onPress={handleMinus}>
+      <TouchableOpacity onPress={handleMinus} activeOpacity={0.7}>
         <View style={styles.container_icon}>
           <Icon name="minus" size={24} color="#3ECF8E" />
         </View>
       </TouchableOpacity>
-      <Input
-        style={styles.input}
-        value={valueQty}
-        onChange={handleInputChange}
-      />
-      <TouchableOpacity onPress={handlePlus}>
+      <View style={styles.inputLine}>
+        <Input
+          style={styles.input}
+          value={valueQty}
+          onChange={handleInputChange}
+          keyboardType="numeric"
+        />
+      </View>
+      <TouchableOpacity onPress={handlePlus} activeOpacity={0.7}>
         <View style={styles.container_icon}>
           <Icon name="plus" size={24} color="#3ECF8E" />
         </View>
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5,
+    marginHorizontal: 8,
     padding: 2,
     paddingHorizontal: 5,
     borderColor: 'gray',
@@ -67,8 +70,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   input: {
-    marginHorizontal: 15,
     color: 'gray',
+    fontSize: 23,
+    fontWeight: 'bold',
+    paddingBottom: 0,
+  },
+  inputLine: {
+    borderStyle: 'dashed',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 0.7,
+    marginBottom: 9,
   },
 });
 

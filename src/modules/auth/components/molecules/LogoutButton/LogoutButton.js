@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from '@/components/atoms';
 
-const LogoutButton = ({onPress}) => {
+const LogoutButton = ({style, onPress}) => {
   return (
-    <View style={styles.container}>
+    <View style={[style, styles.container]}>
       <Button
         style={styles.button}
         styleTxt={styles.title}

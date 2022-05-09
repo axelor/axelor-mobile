@@ -9,6 +9,7 @@ const Input = ({
   secureTextEntry = false,
   readOnly = false,
   onSelection,
+  keyboardType,
 }) => {
   return (
     <TextInput
@@ -21,6 +22,7 @@ const Input = ({
       editable={!readOnly}
       onFocus={onSelection}
       placeholderTextColor="#606060"
+      keyboardType={keyboardType}
     />
   );
 };

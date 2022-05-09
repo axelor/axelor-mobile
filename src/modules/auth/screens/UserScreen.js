@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Screen} from '@/components/atoms';
@@ -30,9 +36,9 @@ const UserScreen = () => {
       {loadingUser ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View style={styles.centerItems}>
+        <ScrollView contentContainerStyle={styles.centerItems}>
           <View style={styles.imageContainer}>
-            <Icon name="user" size={150} color="#606060" />
+            <Icon name="user" style={styles.icon} />
           </View>
           <Picker
             title="Company"
@@ -62,9 +68,9 @@ const UserScreen = () => {
             valueField="code"
             onValueChange={() => {}}
           />
-        </View>
+        </ScrollView>
       )}
-      <LogoutButton onPress={() => dispatch(logout())} />
+      <LogoutButton style={styles.button} onPress={() => dispatch(logout())} />
     </Screen>
   );
 };
@@ -77,12 +83,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderRadius: 160,
-    width: 160,
-    height: 160,
-    marginBottom: '15%',
+    borderRadius: Dimensions.get('window').width * 0.3,
+    width: Dimensions.get('window').width * 0.3,
+    height: Dimensions.get('window').width * 0.3,
+    marginVertical: '5%',
+  },
+  icon: {
+    fontSize: Dimensions.get('window').width * 0.25,
+    color: '#606060',
+  },
+  button: {
+    marginVertical: '5%',
   },
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -7,14 +7,14 @@ const UrlInput = ({style, value, onChange, readOnly}) => {
   return (
     <View style={styles.container}>
       <Input
-        style={style}
+        style={[styles.input, style]}
         value={value}
         onChange={onChange}
         placeholder="URL"
         readOnly={readOnly}
       />
-      <TouchableOpacity onPress={() => {}}>
-        <Icon name="qrcode" size={20} color="#606060" />
+      <TouchableOpacity style={styles.action} onPress={() => {}}>
+        <Icon name="qrcode" style={styles.icon} />
       </TouchableOpacity>
     </View>
   );
@@ -31,6 +31,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     marginVertical: 6,
+  },
+  input: {
+    width: '90%',
+  },
+  action: {
+    width: '10%',
+    marginLeft: 12,
+  },
+  icon: {
+    fontSize: Dimensions.get('window').width * 0.07,
+    color: '#606060',
   },
 });
 

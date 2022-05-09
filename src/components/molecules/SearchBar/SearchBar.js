@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -27,15 +27,15 @@ const SearchBar = ({
           <View style={styles.action}>{null}</View>
         ) : (
           <TouchableOpacity style={styles.action} onPress={onClearPress}>
-            <Icon name="remove" size={24} color="#606060" />
+            <Icon name="remove" style={styles.icon} />
           </TouchableOpacity>
         )}
 
         <TouchableOpacity style={styles.action} onPress={onSearchPress}>
-          <Icon name="search" size={24} color="#606060" />
+          <Icon name="search" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" size={24} color="#606060" />
+          <Icon name="qrcode" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>
@@ -63,6 +63,10 @@ const styles = StyleSheet.create({
   action: {
     flex: 1,
     marginLeft: 12,
+  },
+  icon: {
+    fontSize: Dimensions.get('window').width * 0.05,
+    color: '#606060',
   },
 });
 
