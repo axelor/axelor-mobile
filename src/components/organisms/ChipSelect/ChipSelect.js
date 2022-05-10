@@ -2,15 +2,15 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 const ChipSelect = ({style, children}) => {
-  return <View style={[styles.container, style]}>{children}</View>;
+  return <View style={[styles.chipContainer, style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
-  container: {
+  chipContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    marginBottom: 2,
   },
 });
 

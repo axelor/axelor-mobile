@@ -7,42 +7,36 @@ const setStyle = option => {
   return option ? styles.selected : styles.notSelected;
 };
 
-const Chip = ({selected, title, onPress}) => {
+const Chip = ({style, selected, title, onPress}) => {
   return (
-    <View style={[styles.container, setStyle(selected)]}>
-      <TouchableOpacity onPress={onPress}>
-        <View>
-          <Text style={[styles.chipTxt, setStyle(selected)]}>{title}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={style} onPress={onPress} activeOpacity={0.7}>
+      <View style={[styles.container, setStyle(selected)]}>
+        <Text style={styles.chipTxt}>{title}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    elevation: 3,
-    margin: 5,
-    height: '100%',
-    width: '100%',
+    alignContent: 'center',
+    paddingVertical: 5,
+    marginBottom: 2,
     borderRadius: 20,
-    marginHorizontal: 12,
-    marginBottom: 8,
+    elevation: 3,
   },
   notSelected: {
     backgroundColor: '#FFFFFF',
-    color: '#606060',
   },
   selected: {
     backgroundColor: '#84DCB7',
-    color: '#606060',
   },
   chipTxt: {
     fontSize: 14,
+    color: '#606060',
   },
 });
 
