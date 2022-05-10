@@ -31,7 +31,13 @@ export async function searchProduct() {
         },
       ],
     },
-    fields: ['name', 'code', 'trackingNumberConfiguration', 'serialNumber'],
+    fields: [
+      'name',
+      'code',
+      'trackingNumberConfiguration',
+      'serialNumber',
+      'picture',
+    ],
     sortBy: ['code', 'name'],
     limit: 50,
     offset: 0,
@@ -42,7 +48,13 @@ export async function searchProductWithId(productId) {
   return axios.post(
     `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
     {
-      fields: ['name', 'code', 'trackingNumberConfiguration'],
+      fields: [
+        'name',
+        'code',
+        'trackingNumberConfiguration',
+        'serialNumber',
+        'picture',
+      ],
     },
   );
 }
