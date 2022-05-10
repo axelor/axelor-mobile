@@ -19,7 +19,7 @@ const getBadgeColor = status => {
       styles.statusBadge,
       {
         backgroundColor: '#84DCB7',
-        borderColor: 'rgba(62, 207, 142, 1)',
+        borderColor: '#3ECF8E',
       },
     ];
   }

@@ -11,6 +11,7 @@ import {
   stockCorrectionReasonReducer,
   trackingNumberReducer,
   stockLocationReducer,
+  internalMoveReducer,
 } from '@/modules/stock/features';
 
 export const store = configureStore({
@@ -24,5 +25,6 @@ export const store = configureStore({
     stockCorrectionReason: stockCorrectionReasonReducer,
     stockLocation: stockLocationReducer,
     trackingNumber: trackingNumberReducer,
+    internalMove: internalMoveReducer,
   },
 });
