@@ -7,6 +7,8 @@ import InternalMoveListScreen from '@/modules/stock/screens/internalMoves/Intern
 import InternalMoveNewOriginalLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewOriginalLocationScreen';
 import InternalMoveDetailsScreen from '@/modules/stock/screens/internalMoves/InternalMoveDetailsScreen';
 import InternalMoveNewDestinationLocationScreen from '../screens/internalMoves/InternalMoveNewDestinationLocationScreen';
+import InternalMoveNewProductScreen from '../screens/internalMoves/InternalMoveNewProductScreen';
+import InternalMoveNewTrackingNumberScreen from '../screens/internalMoves/InternalMoveNewTrackingNumberScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -47,6 +49,24 @@ const InternalMoveNavigator = () => {
       <Screen
         name="InternalMoveNewDestinationLocationScreen"
         component={InternalMoveNewDestinationLocationScreen}
+        options={{
+          headerTintColor: ICON_COLOR,
+          headerTitle: 'Internal move',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="InternalMoveNewProductScreen"
+        component={InternalMoveNewProductScreen}
+        options={{
+          headerTintColor: ICON_COLOR,
+          headerTitle: 'Internal move',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="InternalMoveNewTrackingNumberScreen"
+        component={InternalMoveNewTrackingNumberScreen}
         options={{
           headerTintColor: ICON_COLOR,
           headerTitle: 'Internal move',

@@ -42,19 +42,10 @@ const InternalMoveNewDestinationLocationScreen = ({navigation, route}) => {
   };
 
   const handleNavigate = location => {
-    if (
-      typeof route.params !== 'undefined' &&
-      typeof route.params.product !== 'undefined'
-    ) {
-      navigation.navigate('StockCorrectionNewProductScreen', {
-        stockLocation: location,
-        product: route.params.product,
-      });
-    } else {
-      navigation.navigate('StockCorrectionNewProductScreen', {
-        stockLocation: location,
-      });
-    }
+    navigation.navigate('InternalMoveNewProductScreen', {
+      fromStockLocation: route.params.fromStockLocation,
+      toStockLocation: location,
+    });
   };
 
   useScanner(handleLocationScan);
@@ -63,7 +54,7 @@ const InternalMoveNewDestinationLocationScreen = ({navigation, route}) => {
     <Screen style={styles.container}>
       <ClearableCard
         style={styles.infosCard}
-        valueTxt={route.params.stockLocation.name}
+        valueTxt={route.params.fromStockLocation.name}
         onClearPress={handleClearLocation}
       />
       <AutocompleteSearch

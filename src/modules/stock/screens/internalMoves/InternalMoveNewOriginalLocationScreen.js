@@ -37,19 +37,9 @@ const InternalMoveNewOriginalLocationScreen = ({navigation, route}) => {
   };
 
   const handleNavigate = location => {
-    if (
-      typeof route.params !== 'undefined' &&
-      typeof route.params.product !== 'undefined'
-    ) {
-      navigation.navigate('InternalMoveNewDestinationLocationScreen', {
-        stockLocation: location,
-        product: route.params.product,
-      });
-    } else {
-      navigation.navigate('InternalMoveNewDestinationLocationScreen', {
-        stockLocation: location,
-      });
-    }
+    navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+      fromStockLocation: location,
+    });
   };
 
   useScanner(handleLocationScan);
