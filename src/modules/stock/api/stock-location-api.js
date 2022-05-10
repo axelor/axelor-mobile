@@ -17,11 +17,6 @@ export async function searchStockLocation() {
               value: TYPE_INTERNAL,
             },
             {
-              fieldName: 'isWorkshop',
-              operator: '=',
-              value: false,
-            },
-            {
               fieldName: 'company.id',
               operator: '=',
               value: 1,
