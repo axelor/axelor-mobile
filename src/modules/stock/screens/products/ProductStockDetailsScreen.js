@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { CardStockInfo, Screen, Text } from '@/components/atoms';
-import { StyleSheet, ActivityIndicator, View } from 'react-native'
+import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { ProductCard } from '../../components/molecules';
 import { EditableInput, SearchBar } from '@/components/molecules';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import CardStock from '@/components/molecules/Card/CardStock';
 import { Picker } from '@/components/molecules';
 import { fetchCompanies } from '@/modules/auth/features/companySlice';
 
-const ProductStockDetailsScreen = ({ route,navigation }) => {
+const ProductStockDetailsScreen = ({ route, navigation }) => {
 
   const { loading } = useSelector(state => state.product);
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const ProductStockDetailsScreen = ({ route,navigation }) => {
   const product = route.params.product;
   const { companyList } = useSelector(state => state.company);
   const showProductDetails = product => {
-    navigation.navigate('ProductDetails', { product:product });
+    navigation.navigate('ProductDetails', { product: product });
   };
   useEffect(() => {
     dispatch(fetchCompanies());
@@ -28,7 +28,7 @@ const ProductStockDetailsScreen = ({ route,navigation }) => {
     <Screen>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
-          <ProductCard onPress={()=>showProductDetails(product)} image={product.picture} code={product.code} name={product.name} style={styles.item} />
+          <ProductCard onPress={() => showProductDetails(product)} image={product.picture} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
           <Picker defaultValue={1} listItems={companyList} labelField="name" valueField="id" onValueChange={() => { }} />
           <SearchBar style={styles.searchBar} placeholder="Stock location" onSearchPress={() => dispatch(fetchProducts())} />

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Chip, Text} from '@/components/atoms';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Card, Chip, Text } from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCardDetails = ({style, onPress,...product}) => {
-    useEffect(()=>{
-        console.log(product);
-    },[])
+const ProductCardDetails = ({ style, onPress, ...product }) => {
+  useEffect(() => {
+
+  }, [])
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -17,10 +17,10 @@ const ProductCardDetails = ({style, onPress,...product}) => {
             <Text style={styles.name}>{product.name}</Text>
             <Text style={styles.code}>{product.code}</Text>
             <View style={styles.states}>
-            {product.categorie && <Chip  color="#88DFB8">{product.categorie.name}</Chip> }
-            {product.procurMethode && <Chip color="#D0C4E9">{product.procurMethode}</Chip> }
-            {product.prototype && <Chip color="#84CBEA">Prototype</Chip> }
-            {product.prototype && <Chip color="#F5BE8B">Unrenewed</Chip> }
+              {product.categorie && <Chip color="#88DFB8">{product.categorie.name}</Chip>}
+              {product.procurMethode && <Chip color="#D0C4E9">{product.procurMethode}</Chip>}
+              {product.prototype && <Chip color="#84CBEA">Prototype</Chip>}
+              {product.prototype && <Chip color="#F5BE8B">Unrenewed</Chip>}
             </View>
           </View>
         </View>
@@ -34,15 +34,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
- 
+
 
   content: {
     flexDirection: 'row',
   },
-  states:{
-    flexWrap:'wrap',
-    flexDirection:'row',
-    justifyContent:'flex-start',
+  states: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   image: {
     width: 120,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent:'space-evenly'
+    justifyContent: 'space-evenly'
   },
   name: {
     fontSize: 18,

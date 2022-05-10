@@ -3,7 +3,6 @@ import {Screen, Text} from '@/components/atoms';
 
 const StockCorrectionDetailsScreen = ({route}) => {
   useEffect(() => {
-    console.log(route.params);
   }, [route.params]);
 
   return (

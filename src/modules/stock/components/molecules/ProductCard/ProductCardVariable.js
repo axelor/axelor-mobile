@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Text} from '@/components/atoms';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Card, Text } from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCardVariable = ({style, name, code, onPress}) => {
+const ProductCardVariable = ({ style, name, code, attribut, value, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Card style={[styles.container, style]}>
@@ -15,11 +15,11 @@ const ProductCardVariable = ({style, name, code, onPress}) => {
           </View>
         </View>
         <View style={styles.attrView}>
-        <View style={styles.textContainer}>
-          <Text style={styles.attribute}>ATTRIBUT</Text>
-          <Text style={styles.attribute}>AVAILLABLE STOCK</Text>
-        </View>
-        <Icon size={24} name="chevron-right" color="#e6e6e6" />
+          <View style={styles.textContainer}>
+            <Text style={styles.attribute}>{attribut}</Text>
+            <Text style={styles.attribute}>{value}</Text>
+          </View>
+          <Icon size={24} name="chevron-right" color="#e6e6e6" />
         </View>
       </Card>
     </TouchableOpacity>
@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    marginBottom:20
+    marginBottom: 20
   },
   attrView: {
-    flexDirection:'row',
-    alignItems:'center'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   image: {
     width: 60,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginHorizontal:6
+    marginHorizontal: 6
   },
   name: {
     fontSize: 18,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   attribute: {
     fontSize: 14,
-    paddingVertical:5
+    paddingVertical: 5
   },
   code: {
     fontSize: 14,

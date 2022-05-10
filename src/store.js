@@ -6,6 +6,7 @@ import {stockLocationReducer} from '@/modules/stock/features/stockLocationSlice'
 import {trackingNumberReducer} from '@/modules/stock/features/trackingNumberSlice';
 import {companyReducer} from '@/modules/auth/features/companySlice';
 import {languageReducer} from '@/modules/auth/features/languageSlice';
+import { productVariantReducer } from './modules/stock/features/productVariantSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     company: companyReducer,
     language: languageReducer,
     product: productReducer,
+    productVariant: productVariantReducer,
     stockCorrection: stockCorrectionReducer,
     stockLocation: stockLocationReducer,
     trackingNumber: trackingNumberReducer,

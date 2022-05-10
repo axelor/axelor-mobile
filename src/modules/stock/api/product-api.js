@@ -35,7 +35,7 @@ export async function searchProduct() {
     fields: ['name', 'code','picture', 'trackingNumberConfiguration','salesUnit','unit','length','purchasesUnit','description','height','width',
     'productCategory','netMass','grossMass','procurementMethodSelect','isUnrenewed','isPrototype'],
     sortBy: ['code', 'name'],
-    limit: 20,
+    limit: 100,
     offset: 0,
   });
 }

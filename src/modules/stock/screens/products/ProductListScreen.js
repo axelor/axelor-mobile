@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Text} from '@/components/atoms';
-import {SearchBar} from '@/components/molecules';
-import {fetchProducts} from '@/modules/stock/features/productSlice';
-import {ProductCard} from '@/modules/stock/components/molecules';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { Screen, Text } from '@/components/atoms';
+import { SearchBar } from '@/components/molecules';
+import { fetchProducts } from '@/modules/stock/features/productSlice';
+import { ProductCard } from '@/modules/stock/components/molecules';
 
-const ProductListScreen = ({navigation}) => {
-  
-  const {loading, productList} = useSelector(state => state.product);
+const ProductListScreen = ({ navigation }) => {
+
+  const { loading, productList } = useSelector(state => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,8 +16,9 @@ const ProductListScreen = ({navigation}) => {
   }, [dispatch]);
 
   const showProductDetails = product => {
-    navigation.navigate('ProductStockDetailsScreen', {product:product});
+    navigation.navigate('ProductStockDetailsScreen', { product: product });
   };
+
 
   return (
     <Screen style={styles.container}>
@@ -31,7 +32,7 @@ const ProductListScreen = ({navigation}) => {
       ) : (
         <FlatList
           data={productList}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <ProductCard
               style={styles.item}
               name={item.name}

@@ -5,23 +5,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
 import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
 
-const ProductDetails = ({ route,navigation }) => {
+const ProductDetails = ({ route, navigation }) => {
 
-    const { loading} = useSelector(state => state.product);
+    const { loading } = useSelector(state => state.product);
     const product = route.params.product;
-    useEffect(()=>{
-        console.log(product);
-    },[]);
+    useEffect(() => {
+        console.log(product.productVariant);
+    }, []);
 
     const showProductVariables = () => {
-        navigation.navigate('ProductVariables', { product:product });
-      };
-    
+        navigation.navigate('ProductVariables', { product: product });
+    };
+
     return (
         <Screen>
             {loading ? (<ActivityIndicator size="large" />) : (
                 <View style={styles.container}>
-                    <ProductCardDetails image={product.image} categorie={product.productCategory} prototype={product.isPrototype} unrenewed={product.isUnrenewed} procurMethode={product.procurementMethodSelect}  code={product.code} name={product.name} style={styles.item} />
+                    <ProductCardDetails image={product.image} categorie={product.productCategory} prototype={product.isPrototype} unrenewed={product.isUnrenewed} procurMethode={product.procurementMethodSelect} code={product.code} name={product.name} style={styles.item} />
                     <View style={styles.lineStyle} />
                     <View style={styles.stock}>
                         <StockProprtiesCard style={styles.stockCard} title="STOCK" value={product.unit?.name} />
@@ -42,7 +42,7 @@ const ProductDetails = ({ route,navigation }) => {
                         <Text style={styles.titles}>DESCRIPTION</Text>
                         <View style={styles.submitArea}>
                             <Text style={styles.textArea}>{product.description}</Text>
-                            <Button onPress={()=>showProductVariables()} style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
+                            <Button disabled={!product.productVariant} onPress={() => showProductVariables()} style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
                         </View>
                     </View>
                 </View>
@@ -61,16 +61,16 @@ const styles = StyleSheet.create({
     },
     containerPack: {
         marginHorizontal: '5%',
-        marginTop:18
+        marginTop: 18
     },
     stockCard: {
         marginHorizontal: '1.5%',
         minWidth: '20%',
     },
-    btnText:{
-        fontSize:15,
-        fontWeight:'bold',
-        color:'black'
+    btnText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black'
     },
     variantsBtn: {
         width: '60%',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginHorizontal: '5%',
         flexDirection: 'column',
-        marginTop:'2%'
+        marginTop: '2%'
     },
     submitArea: {
         flexDirection: 'row',
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textArea: {
-        minHeight: '65%',
+        minHeight: '52%',
         width: '90%',
         backgroundColor: '#f3f7fc',
         borderRadius: 10,
-        marginVertical:15,
-        padding :10
+        marginVertical: 15,
+        padding: 10
     },
     titles: {
         marginHorizontal: '5%',

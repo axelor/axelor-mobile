@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 14,
-        alignItems:'center'
+        alignItems: 'center'
     },
-    title:{
-        fontWeight:'bold',
-        color:'black'
+    title: {
+        fontWeight: 'bold',
+        color: 'black'
     }
 });
 
