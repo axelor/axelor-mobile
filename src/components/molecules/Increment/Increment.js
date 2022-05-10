@@ -21,10 +21,19 @@ const Increment = ({value, onValueChange}) => {
   };
 
   const handleInputChange = input => {
-    const newValue = parseFloat(input);
-    if (newValue >= 0) {
-      setValueQty(newValue.toString());
-      onValueChange(newValue);
+    if (input == '') {
+      setValueQty('0.00');
+      onValueChange(0);
+    } else if (input.slice(-1) == '.') {
+      // Check if last element is a '.'
+      // Don't do anything, waiting for user to continue
+      setValueQty(input);
+    } else {
+      const newValue = parseFloat(input);
+      if (newValue >= 0) {
+        setValueQty(newValue.toString());
+        onValueChange(newValue);
+      }
     }
   };
 
