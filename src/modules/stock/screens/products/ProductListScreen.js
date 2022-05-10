@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {SearchBar} from '@/components/molecules';
+import {AutocompleteSearch} from '@/components/organisms';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/molecules';
 
@@ -20,10 +20,11 @@ const ProductListScreen = ({navigation}) => {
 
   return (
     <Screen style={styles.container}>
-      <SearchBar
-        style={styles.searchBar}
-        placeholder="Product"
-        onSearchPress={() => dispatch(fetchProducts())}
+      <AutocompleteSearch
+        objectList={productList}
+        searchName="Product"
+        searchParam="name"
+        setValueSearch={() => {}}
       />
       {loading ? (
         <ActivityIndicator size="large" />
@@ -35,6 +36,7 @@ const ProductListScreen = ({navigation}) => {
               style={styles.item}
               name={item.name}
               code={item.code}
+              pictureId={item.picture == null ? null : item.picture.id}
               onPress={() => showProductDetails(item)}
             />
           )}

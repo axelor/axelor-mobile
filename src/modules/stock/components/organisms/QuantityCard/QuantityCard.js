@@ -21,7 +21,7 @@ const QuantityCard = ({
             onValueChange={onValueChange}
           />
         ) : (
-          <Text style={styles.textField}>{defaultValue}</Text>
+          <Text style={styles.textValue}>{defaultValue}</Text>
         )}
       </View>
     </Card>
@@ -32,22 +32,27 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     marginHorizontal: 12,
-    marginBottom: 6,
+    marginBottom: '2%',
   },
   container_up: {
     borderBottomColor: 'black',
     borderBottomWidth: 0.5,
     flexDirection: 'column',
     width: '100%',
-    paddingBottom: 6,
+    paddingBottom: '3%',
   },
   container_down: {
-    paddingTop: 3,
+    paddingTop: '1%',
     alignItems: 'center',
   },
   textField: {
     fontSize: 16,
-    paddingTop: 10,
+    paddingTop: '3%',
+  },
+  textValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingTop: '3%',
   },
 });
 

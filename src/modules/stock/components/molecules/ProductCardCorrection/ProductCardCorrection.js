@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductCardCorrection = ({style, children, onPress}) => {
@@ -18,7 +17,7 @@ const ProductCardCorrection = ({style, children, onPress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 32,
+    paddingRight: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textContainer: {
-    width: '70%',
+    width: '85%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
