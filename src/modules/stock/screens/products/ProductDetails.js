@@ -42,7 +42,7 @@ const ProductDetails = ({ route, navigation }) => {
                         <Text style={styles.titles}>DESCRIPTION</Text>
                         <View style={styles.submitArea}>
                             <Text style={styles.textArea}>{product.description}</Text>
-                            <Button disabled={!product.productVariant} onPress={() => showProductVariables()} style={styles.variantsBtn} styleTxt={styles.btnText} title="VARIANTS"></Button>
+                            <Button disabled={!product.productVariant} onPress={() => showProductVariables()} style={product.productVariant ? styles.variantsBtn : styles.variantsBtnDisabled} styleTxt={styles.btnText} title="VARIANTS"></Button>
                         </View>
                     </View>
                 </View>
@@ -75,6 +75,12 @@ const styles = StyleSheet.create({
     variantsBtn: {
         width: '60%',
         backgroundColor: '#3ECF8E',
+        borderRadius: 35,
+    },
+    variantsBtnDisabled :{
+        width: '60%',
+        backgroundColor: '#F4F7F7',
+        disabled:true,
         borderRadius: 35,
     },
     description: {
