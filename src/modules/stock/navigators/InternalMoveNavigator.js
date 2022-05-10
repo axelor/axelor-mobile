@@ -6,6 +6,7 @@ import {IconNew} from '@/components/atoms';
 import InternalMoveListScreen from '@/modules/stock/screens/internalMoves/InternalMoveListScreen';
 import InternalMoveNewOriginalLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewOriginalLocationScreen';
 import InternalMoveDetailsScreen from '@/modules/stock/screens/internalMoves/InternalMoveDetailsScreen';
+import InternalMoveNewDestinationLocationScreen from '../screens/internalMoves/InternalMoveNewDestinationLocationScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -37,6 +38,15 @@ const InternalMoveNavigator = () => {
       <Screen
         name="InternalMoveNewOriginalLocationScreen"
         component={InternalMoveNewOriginalLocationScreen}
+        options={{
+          headerTintColor: ICON_COLOR,
+          headerTitle: 'Internal move',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="InternalMoveNewDestinationLocationScreen"
+        component={InternalMoveNewDestinationLocationScreen}
         options={{
           headerTintColor: ICON_COLOR,
           headerTitle: 'Internal move',

@@ -4,16 +4,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
+import {ClearableCard} from '@/components/molecules';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import useScanner, {castIntent} from '@/modules/stock/utils/use-scanner';
 
-const InternalMoveNewOriginalLocationScreen = ({navigation, route}) => {
+const InternalMoveNewDestinationLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockLocations());
   }, [dispatch, route]);
+
+  const handleClearLocation = () => {
+    navigation.navigate('InternalMoveNewOriginalLocationScreen');
+  };
 
   const handleLocationSelection = locationId => {
     if (locationId !== '') {
@@ -41,12 +46,12 @@ const InternalMoveNewOriginalLocationScreen = ({navigation, route}) => {
       typeof route.params !== 'undefined' &&
       typeof route.params.product !== 'undefined'
     ) {
-      navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+      navigation.navigate('StockCorrectionNewProductScreen', {
         stockLocation: location,
         product: route.params.product,
       });
     } else {
-      navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+      navigation.navigate('StockCorrectionNewProductScreen', {
         stockLocation: location,
       });
     }
@@ -56,9 +61,14 @@ const InternalMoveNewOriginalLocationScreen = ({navigation, route}) => {
 
   return (
     <Screen style={styles.container}>
+      <ClearableCard
+        style={styles.infosCard}
+        valueTxt={route.params.stockLocation.name}
+        onClearPress={handleClearLocation}
+      />
       <AutocompleteSearch
         objectList={stockLocationList}
-        searchName="Original Stock Location"
+        searchName="Destination Stock Location"
         searchParam="name"
         setValueSearch={handleLocationSelection}
       />
@@ -70,10 +80,14 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 6,
   },
+  infosCard: {
+    marginHorizontal: 12,
+    marginBottom: 8,
+  },
   searchBar: {
     marginHorizontal: 12,
     marginBottom: 8,
   },
 });
 
-export default InternalMoveNewOriginalLocationScreen;
+export default InternalMoveNewDestinationLocationScreen;
