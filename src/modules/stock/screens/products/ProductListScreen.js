@@ -11,8 +11,11 @@ const ProductListScreen = ({ navigation }) => {
   const { loading, productList } = useSelector(state => state.product);
   const dispatch = useDispatch();
 
+  console.log("hello");
   useEffect(() => {
+    console.log("hi")
     dispatch(fetchProducts());
+    console.log(productList)
   }, [dispatch]);
 
   const showProductDetails = product => {

@@ -10,7 +10,7 @@ export const fetchProductVariants= createAsyncThunk(
 
 const initialState = {
   loading: false,
-  productList: [],
+  productListVariables: [],
 };
 
 const productSlice = createSlice({
@@ -22,7 +22,7 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProductVariants.fulfilled, (state, action) => {
       state.loading = false;
-      state.productList = action.payload;
+      state.productListVariables = action.payload;
     });
   },
 });

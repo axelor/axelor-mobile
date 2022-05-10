@@ -10,7 +10,6 @@ const ProductDetails = ({ route, navigation }) => {
     const { loading } = useSelector(state => state.product);
     const product = route.params.product;
     useEffect(() => {
-        console.log(product.productVariant);
     }, []);
 
     const showProductVariables = () => {

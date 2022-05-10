@@ -9,6 +9,7 @@ import { fetchProducts } from '@/modules/stock/features/productSlice';
 import CardStock from '@/components/molecules/Card/CardStock';
 import { Picker } from '@/components/molecules';
 import { fetchCompanies } from '@/modules/auth/features/companySlice';
+import { fetchProductIndicators } from '../../features/productIndicatorsSlice';
 
 const ProductStockDetailsScreen = ({ route, navigation }) => {
 

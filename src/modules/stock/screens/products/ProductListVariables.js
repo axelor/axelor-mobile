@@ -9,20 +9,21 @@ import ProductCardVariable from '../../components/molecules/ProductCard/ProductC
 
 const ProductListVariables = ({ route }) => {
 
-  const { loading, productList } = useSelector(state => state.productVariant);
+  const { loading, productListVariables } = useSelector(state => state.productVariant);
   const dispatch = useDispatch();
   const product = route.params.product;
   const [listPro, setListPro] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProductVariants(product.productVariant.id))
-    console.log(productList);
+    console.log(productListVariables);
     console.log("----------------------------------------------------------------------------------")
-    setListPro([{ attribut: productList[0].productVariantAttr1, value: productList[0].productVariantValue1 }, { attribut: productList[0].productVariantAttr2, value: productList[0].productVariantValue2 }
-      , { attribut: productList[0].productVariantAttr3, value: productList[0].productVariantValue3 }, { attribut: productList[0].productVariantAttr4, value: productList[0].productVariantValue4 }
-      , { attribut: productList[0].productVariantAttr5, value: productList[0].productVariantValue5 }]);
-    console.log(listPro)
   }, [dispatch]);
+  useEffect(()=>{
+    setListPro([{ attribut: productListVariables[0]?.productVariantAttr1, value: productListVariables[0]?.productVariantValue1 }, { attribut: productListVariables[0]?.productVariantAttr2, value: productListVariables[0]?.productVariantValue2 }
+      , { attribut: productListVariables[0]?.productVariantAttr3, value: productListVariables[0]?.productVariantValue3 }, { attribut: productListVariables[0]?.productVariantAttr4, value: productListVariables[0]?.productVariantValue4 }
+      , { attribut: productListVariables[0]?.productVariantAttr5, value: productListVariables[0]?.productVariantValue5 }]);
+  },[loading])
 
   const showProductDetails = product => {
     navigation.navigate('ProductStockDetailsScreen', { product: product });
