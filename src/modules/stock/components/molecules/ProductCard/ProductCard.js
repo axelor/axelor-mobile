@@ -14,7 +14,6 @@ const ProductCard = ({style, name, code,onPressImage, pictureId, onPress}) => {
   const Image_Http_URL = {
     uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download/`,
   };
-  console.log(Image_Http_URL);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>

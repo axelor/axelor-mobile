@@ -31,12 +31,6 @@ const SearchBar = ({
             <Icon name="remove" style={styles.icon} />
           </TouchableOpacity>
         )}
-        <View style={styles.action}>
-          <Icon name="search" style={styles.icon} />
-        </View>
-        <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" style={styles.icon} />
-        </TouchableOpacity>
       </View>
     </View>
   );

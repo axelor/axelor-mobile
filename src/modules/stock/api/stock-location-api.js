@@ -32,13 +32,5 @@ export async function searchStockLocation() {
   });
 }
 export async function productStockLocation(productId) {
-  return axios.get('/product-with-stock/5', {
-    data: {
-      criteria: [
-        {
-        },
-      ],
-    },
-
-  });
+  return axios.get(`/ws/aos/stock-product/product-with-stock/${productId}`);
 }

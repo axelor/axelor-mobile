@@ -23,7 +23,7 @@ export const store = configureStore({
     language: languageReducer,
     product: productReducer,
     productVariant: productVariantReducer,
-   // productIndicators:productIndicatorsReducer,
+    productIndicators:productIndicatorsReducer,
     stockCorrection: stockCorrectionReducer,
     stockCorrectionReason: stockCorrectionReasonReducer,
     stockLocation: stockLocationReducer,
