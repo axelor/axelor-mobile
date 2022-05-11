@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductCard = ({style, name, code,onPressImage, pictureId, onPress}) => {
   const Image_Http_URL = {
-    uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+    uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download/`,
   };
   console.log(Image_Http_URL);
 

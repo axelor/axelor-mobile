@@ -8,7 +8,7 @@ const ProductCardDetails = ({ style,onPressImage, onPress, ...product }) => {
   const Image_Http_URL = {
     uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download/`,
 };
-console.log(Image_Http_URL.url);
+
   return (
       <Card style={[styles.container, style]}>
         <View  style={styles.content}>
