@@ -5,7 +5,7 @@ export const fetchProductIndicators= createAsyncThunk(
   'product/fetchProductIndicators',
   async function (productId) {
       console.log("on est dans la fonction");
-    return productStockLocation(productId).then(response => {console.log(response);return response.data.object});
+    return productStockLocation(productId).then(response => {response.data.object}).catch((error)=>console.log(error.response));
   },
 );
 

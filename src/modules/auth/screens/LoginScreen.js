@@ -12,12 +12,13 @@ import {login} from '@/modules/auth/features/authSlice';
 import {Screen, Text} from '@/components/atoms';
 
 const LoginScreen = () => {
-  const {loading, error, logged} = useSelector(state => state.auth);
+  const {loading, error, logged,token} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const [url, setUrl] = useState('http://192.168.122.1:8080/');
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin');
+  console.log(token)
 
   // const [url, setUrl] = useState('http://192.168.20.36:8080/axelor-api/');
   // const [username, setUsername] = useState('admin');

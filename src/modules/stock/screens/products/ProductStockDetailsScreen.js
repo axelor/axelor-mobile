@@ -13,8 +13,8 @@ import { fetchProductIndicators } from '../../features/productIndicatorsSlice';
 
 const ProductStockDetailsScreen = ({ route, navigation }) => {
 
-  const { loading } = useSelector(state => state.product);
-  const { productIndicators } = useSelector(state => state.productIndicators);
+  //const { loading } = useSelector(state => state.product);
+  const { loading ,productIndicators } = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
   const options = ["axelor-maroc", "axelor-france"];
   const product = route.params.product;
@@ -28,12 +28,11 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     dispatch(fetchCompanies());
     dispatch(fetchProductIndicators(product.id));
-    console.log("hdheheh")
-    console.log(productIndicators);
   }, [dispatch]);
 
   return (
     <Screen>
+      <Text>{productIndicators?.id}</Text>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
           <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
