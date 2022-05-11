@@ -15,12 +15,15 @@ const ProductDetails = ({ route, navigation }) => {
     const showProductVariables = () => {
         navigation.navigate('ProductVariables', { product: product });
     };
+    const navigateToImageProduct = () => {
+        navigation.navigate('ProductImage', { product: product });
+    }
 
     return (
         <Screen>
             {loading ? (<ActivityIndicator size="large" />) : (
                 <View style={styles.container}>
-                    <ProductCardDetails image={product.image} categorie={product.productCategory} prototype={product.isPrototype} unrenewed={product.isUnrenewed} procurMethode={product.procurementMethodSelect} code={product.code} name={product.name} style={styles.item} />
+                    <ProductCardDetails  onPressImage={()=>navigateToImageProduct()} image={product.image} categorie={product.productCategory} prototype={product.isPrototype} unrenewed={product.isUnrenewed} procurMethode={product.procurementMethodSelect} code={product.code} name={product.name} style={styles.item} />
                     <View style={styles.lineStyle} />
                     <View style={styles.stock}>
                         <StockProprtiesCard style={styles.stockCard} title="STOCK" value={product.unit?.name} />

@@ -3,16 +3,14 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Card, Chip, Text } from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCardDetails = ({ style, onPress, ...product }) => {
-  useEffect(() => {
-
-  }, [])
+const ProductCardDetails = ({ style,onPressImage, onPress, ...product }) => {
 
   return (
-    <TouchableOpacity onPress={onPress}>
       <Card style={[styles.container, style]}>
-        <View style={styles.content}>
+        <View  style={styles.content}>
+        <TouchableOpacity onPress={onPressImage}>
           <View style={styles.image} />
+        </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text style={styles.name}>{product.name}</Text>
             <Text style={styles.code}>{product.code}</Text>
@@ -25,7 +23,6 @@ const ProductCardDetails = ({ style, onPress, ...product }) => {
           </View>
         </View>
       </Card>
-    </TouchableOpacity>
   );
 };
 

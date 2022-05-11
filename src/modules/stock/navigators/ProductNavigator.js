@@ -5,6 +5,7 @@ import ProductListScreen from '@/modules/stock/screens/products/ProductListScree
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
 import ProductDetails from '../screens/products/ProductDetails';
 import ProductListVariables from '../screens/products/ProductListVariables';
+import ProductImageScreen from '../screens/products/productImageScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -38,6 +39,13 @@ const ProductNavigator = () => {
         component={ProductDetails}
         options={{
           headerTitle: 'Product Details',
+        }}
+      />
+      <Screen
+        name="ProductImage"
+        component={ProductImageScreen}
+        options={{
+          headerTitle: 'Product',
         }}
       />
     </Navigator>
