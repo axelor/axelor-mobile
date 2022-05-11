@@ -3,17 +3,15 @@ import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Screen, Text } from '@/components/atoms';
 import { SearchBar } from '@/components/molecules';
-import { fetchProducts } from '@/modules/stock/features/productSlice';
-import { ProductCard } from '@/modules/stock/components/molecules';
+import {AutocompleteSearch} from '@/components/organisms';
+import {fetchProducts} from '@/modules/stock/features/productSlice';
+import {ProductCard} from '@/modules/stock/components/molecules';
 
 const ProductListScreen = ({ navigation }) => {
-
+ 
   const { loading, productList } = useSelector(state => state.product);
   const dispatch = useDispatch();
-
-  console.log("hello");
   useEffect(() => {
-    console.log("hi")
     dispatch(fetchProducts());
     console.log(productList)
   }, [dispatch]);
@@ -22,13 +20,13 @@ const ProductListScreen = ({ navigation }) => {
     navigation.navigate('ProductStockDetailsScreen', { product: product });
   };
 
-
   return (
     <Screen style={styles.container}>
-      <SearchBar
-        style={styles.searchBar}
-        placeholder="Product"
-        onSearchPress={() => dispatch(fetchProducts())}
+      <AutocompleteSearch
+        objectList={productList}
+        searchName="Product"
+        searchParam="name"
+        setValueSearch={() => {}}
       />
       {loading ? (
         <ActivityIndicator size="large" />
@@ -40,6 +38,7 @@ const ProductListScreen = ({ navigation }) => {
               style={styles.item}
               name={item.name}
               code={item.code}
+              pictureId={item.picture == null ? null : item.picture.id}
               onPress={() => showProductDetails(item)}
             />
           )}

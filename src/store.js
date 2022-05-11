@@ -8,16 +8,24 @@ import {companyReducer} from '@/modules/auth/features/companySlice';
 import {languageReducer} from '@/modules/auth/features/languageSlice';
 import { productVariantReducer } from './modules/stock/features/productVariantSlice';
 import { productIndicatorsReducer } from './modules/stock/features/productIndicatorsSlice';
+import {stockCorrectionReasonReducer
+} from '@/modules/stock/features';
+import {
+  userReducer,
+} from '@/modules/auth/features';
+
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userReducer,
     company: companyReducer,
     language: languageReducer,
     product: productReducer,
     productVariant: productVariantReducer,
    // productIndicators:productIndicatorsReducer,
     stockCorrection: stockCorrectionReducer,
+    stockCorrectionReason: stockCorrectionReasonReducer,
     stockLocation: stockLocationReducer,
     trackingNumber: trackingNumberReducer,
   },

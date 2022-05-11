@@ -4,6 +4,8 @@ import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 
 const Picker = ({
+  style,
+  styleTxt,
   title,
   onValueChange,
   defaultValue,
@@ -21,12 +23,13 @@ const Picker = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.titleContainer}>
-        <Text style={styles.input}>{title}</Text>
+        <Text style={[styles.input, styleTxt]}>{title}</Text>
       </View>
       <View style={styles.pickerContainer}>
         <ReactNativePicker
+          style={styles.picker}
           dropdownIconColor={'#CECECE'}
           selectedValue={selectedValue}
           onValueChange={handleValueChange}
@@ -67,6 +70,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 4,
     marginVertical: 6,
+  },
+  picker: {
+    color: '#606060',
   },
 });
 

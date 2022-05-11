@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen, IconNew} from '@/components/atoms';
 import {Chip} from '@/components/molecules';
@@ -10,10 +15,13 @@ import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 
+const STATUS_DRAFT = 1;
+const STATUS_VALIDATED = 2;
+
 const getStatus = option => {
-  if (option === 1) {
+  if (option === STATUS_DRAFT) {
     return 'Draft';
-  } else if (option === 2) {
+  } else if (option === STATUS_VALIDATED) {
     return 'Validated';
   } else {
     return option;
@@ -111,7 +119,7 @@ const StockCorrectionListScreen = ({navigation}) => {
   // ----------  NAVIGATION -------------
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
-      stockCorrectionId: stockCorrection.id,
+      stockCorrection: stockCorrection,
     });
   };
 
@@ -141,13 +149,15 @@ const StockCorrectionListScreen = ({navigation}) => {
         searchParam="name"
         setValueSearch={handleQueryProductChange}
       />
-      <ChipSelect style={styles.statusFilter}>
+      <ChipSelect style={styles.chipContainer}>
         <Chip
+          style={styles.chip}
           selected={draftStatus}
           title="Draft"
           onPress={handleDraftFilter}
         />
         <Chip
+          style={styles.chip}
           selected={validatedStatus}
           title="Validated"
           onPress={handleValidatedFilter}
@@ -164,7 +174,11 @@ const StockCorrectionListScreen = ({navigation}) => {
               status={getStatus(item.statusSelect)}
               productFullname={item.product.fullName}
               stockLocation={item.stockLocation.name}
-              date={new Date(item.createdOn).toDateString()}
+              date={
+                item.statusSelect == STATUS_DRAFT
+                  ? item.createdOn
+                  : item.validationDateT
+              }
               onPress={() => showStockCorrectionDetails(item)}
             />
           )}
@@ -182,12 +196,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginBottom: 8,
   },
-  statusFilter: {
-    marginBottom: 8,
+  chipContainer: {
+    width: '100%',
   },
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
+  },
+  chip: {
+    width: Dimensions.get('window').width * 0.4,
+    marginHorizontal: 12,
   },
 });
 

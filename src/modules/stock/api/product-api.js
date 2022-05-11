@@ -3,7 +3,6 @@ import axios from 'axios';
 export async function searchProduct() {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
     data: {
-      // Criteria from request /stock.root.products/list/1
       criteria: [
         {
           operator: 'and',
@@ -32,10 +31,26 @@ export async function searchProduct() {
         },
       ],
     },
+
     fields: ['name', 'code','picture', 'trackingNumberConfiguration','salesUnit','unit','length','purchasesUnit','description','height','width',
-    'productCategory','netMass','grossMass','procurementMethodSelect','isUnrenewed','isPrototype','productVariant'],
+    'productCategory','netMass','grossMass','procurementMethodSelect','isUnrenewed','isPrototype','productVariant','picture','serialNUmber','trackingNumberConfiguration'],
     sortBy: ['code', 'name'],
-    limit: 100,
+    limit: 50,
     offset: 0,
   });
+}
+
+export async function searchProductWithId(productId) {
+  return axios.post(
+    `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
+    {
+      fields: [
+        'name',
+        'code',
+        'trackingNumberConfiguration',
+        'serialNumber',
+        'picture',
+      ],
+    },
+  );
 }

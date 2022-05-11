@@ -17,11 +17,6 @@ export async function searchStockLocation() {
               value: TYPE_INTERNAL,
             },
             {
-              fieldName: 'isWorkshop',
-              operator: '=',
-              value: false,
-            },
-            {
               fieldName: 'company.id',
               operator: '=',
               value: 1,
@@ -30,7 +25,7 @@ export async function searchStockLocation() {
         },
       ],
     },
-    fields: ['name', 'id'],
+    fields: ['name', 'id', 'serialNumber'],
     sortBy: ['id', 'name'],
     limit: 20,
     offset: 0,

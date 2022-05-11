@@ -20,7 +20,7 @@ function useScanner(handler) {
   useEffect(() => {
     registerBroadcastReceiver({
       filterActions: [
-        'com.tkmfmobile.zebra.ACTION',
+        'com.aosmobile.zebra.ACTION',
         'com.symbol.datawedge.api.RESULT_ACTION',
       ],
       filterCategories: ['android.intent.category.DEFAULT'],

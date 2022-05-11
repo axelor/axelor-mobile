@@ -3,6 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import formatDate from '@/modules/stock/utils/format-date';
 
 const getBadgeColor = status => {
   if (status === 'Draft') {
@@ -33,13 +34,21 @@ const StockCorrectionCard = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
           <View style={styles.textContainer}>
             <Text style={styles.txtImportant}>{productFullname}</Text>
             <Text style={styles.txtDetails}>{stockLocation}</Text>
-            <Text style={styles.txtDetails}>Created on {date}</Text>
+            {status == 'Draft' ? (
+              <Text style={[styles.txtDetails, styles.creationDate]}>
+                Created on {formatDate(date, 'DD/MM/YYYY')}
+              </Text>
+            ) : (
+              <Text style={styles.txtDetails}>
+                Validated on {formatDate(date, 'DD/MM/YYYY')}
+              </Text>
+            )}
           </View>
           <Badge style={getBadgeColor(status)} title={status} />
         </View>
@@ -75,6 +84,9 @@ const styles = StyleSheet.create({
   },
   txtDetails: {
     fontSize: 14,
+  },
+  creationDate: {
+    fontStyle: 'italic',
   },
   statusBadge: {
     flex: 1,

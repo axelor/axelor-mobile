@@ -1,15 +1,32 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  Dimensions,
+} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCard = ({style, name, code,onPressImage, onPress}) => {
+
+const ProductCard = ({style, name, code,onPressImage, pictureId, onPress}) => {
+  const Image_Http_URL = {
+    uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
           <TouchableOpacity onPress={onPressImage}>
-          <View style={styles.image} />
+          <View style={styles.image} > 
+            <Image
+              resizeMode="contain"
+              source={Image_Http_URL}
+              style={styles.image}
+            />
+          </View>
           </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>
@@ -32,10 +49,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 60,
     height: 60,
-    backgroundColor: '#efefef',
-    marginRight: 32,
+    width: 60,
+    marginRight: 30,
   },
   textContainer: {
     flex: 1,
@@ -48,6 +64,11 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 14,
+  },
+  icon: {
+    fontSize: Dimensions.get('window').width * 0.14,
+    color: '#cecece',
+    marginRight: 30,
   },
 });
 

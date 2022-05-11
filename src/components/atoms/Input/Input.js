@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 
 const Input = ({
   style,
@@ -10,11 +10,12 @@ const Input = ({
   readOnly = false,
   onSelection,
   multiline=false,
-  numberOfLines=1
+  numberOfLines=1,
+  keyboardType
 }) => {
   return (
     <TextInput
-      style={style}
+      style={[styles.text, style]}
       value={value}
       onChangeText={onChange}
       placeholder={placeholder}
@@ -22,10 +23,16 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
-      multiline={multiline}
-      numberOfLines={numberOfLines}
+      placeholderTextColor="#606060"
+      keyboardType={keyboardType}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    color: '#606060',
+  },
+});
 
 export default Input;

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
-import {InfosCard} from '@/components/molecules';
+import {ClearableCard} from '@/components/molecules';
 import getFromList from '@/modules/stock/utils/get-from-list';
 
 const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
@@ -35,7 +35,7 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
         'id',
         trackingNumberId,
       );
-      navigation.navigate('StockCorrectionNewDraftScreen', {
+      navigation.navigate('StockCorrectionDetailsScreen', {
         stockLocation: route.params.stockLocation,
         stockProduct: route.params.product,
         trackingNumber: trackingNumber,
@@ -45,12 +45,12 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
 
   return (
     <Screen style={styles.container}>
-      <InfosCard
+      <ClearableCard
         style={styles.infosCard}
         valueTxt={route.params.stockLocation.name}
         onClearPress={handleClearLocation}
       />
-      <InfosCard
+      <ClearableCard
         style={styles.infosCard}
         valueTxt={route.params.product.name}
         onClearPress={handleClearProduct}
