@@ -1,11 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { productStockLocation } from '../api/stock-location-api';
+import {productStockLocation} from '../api/stock-location-api';
 
-export const fetchProductIndicators= createAsyncThunk(
+export const fetchProductIndicators = createAsyncThunk(
   'product/fetchProductIndicators',
-  async function (productId) {
-      console.log("on est dans la fonction");
-    return productStockLocation(productId).then(response => {response.data.object}).catch((error)=>console.log(error.response));
+  async function (data) {
+    return productStockLocation(data)
+      .catch(function (error) {
+        if (error.response) {
+          console.log('Error got caugth: ');
+          console.log(error.response.data);
+        }
+      })
+      .then(response => response.data.object);
   },
 );
 
