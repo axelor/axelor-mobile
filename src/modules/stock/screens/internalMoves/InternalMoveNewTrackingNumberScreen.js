@@ -43,7 +43,7 @@ const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
       navigation.navigate('InternalMoveDetailsScreen', {
         fromStockLocation: route.params.fromStockLocation,
         toStockLocation: route.params.toStockLocation,
-        stockProduct: route.params.product,
+        stockProduct: route.params.stockProduct,
         trackingNumber: trackingNumber,
       });
     }

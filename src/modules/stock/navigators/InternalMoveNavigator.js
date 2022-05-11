@@ -6,9 +6,10 @@ import {IconNew} from '@/components/atoms';
 import InternalMoveListScreen from '@/modules/stock/screens/internalMoves/InternalMoveListScreen';
 import InternalMoveNewOriginalLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewOriginalLocationScreen';
 import InternalMoveDetailsScreen from '@/modules/stock/screens/internalMoves/InternalMoveDetailsScreen';
-import InternalMoveNewDestinationLocationScreen from '../screens/internalMoves/InternalMoveNewDestinationLocationScreen';
-import InternalMoveNewProductScreen from '../screens/internalMoves/InternalMoveNewProductScreen';
-import InternalMoveNewTrackingNumberScreen from '../screens/internalMoves/InternalMoveNewTrackingNumberScreen';
+import InternalMoveNewDestinationLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewDestinationLocationScreen';
+import InternalMoveNewProductScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewProductScreen';
+import InternalMoveNewTrackingNumberScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewTrackingNumberScreen';
+import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -70,6 +71,15 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: ICON_COLOR,
           headerTitle: 'Internal move',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="ProductStockDetailsScreen"
+        component={ProductStockDetailsScreen}
+        options={{
+          headerTintColor: ICON_COLOR,
+          headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}
       />

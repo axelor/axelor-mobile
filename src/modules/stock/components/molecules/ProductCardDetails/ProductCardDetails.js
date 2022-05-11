@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCardCorrection = ({style, children, onPress}) => {
+const ProductCardDetails = ({style, children, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={[styles.container, style]}>
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCardCorrection;
+export default ProductCardDetails;
