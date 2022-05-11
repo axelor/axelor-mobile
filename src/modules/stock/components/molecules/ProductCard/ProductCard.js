@@ -3,12 +3,14 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCard = ({style, name, code, onPress}) => {
+const ProductCard = ({style, name, code,onPressImage, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
+          <TouchableOpacity onPress={onPressImage}>
           <View style={styles.image} />
+          </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.code}>{code}</Text>
