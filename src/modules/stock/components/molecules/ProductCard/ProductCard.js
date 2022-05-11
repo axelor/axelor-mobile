@@ -14,19 +14,18 @@ const ProductCard = ({style, name, code,onPressImage, pictureId, onPress}) => {
   const Image_Http_URL = {
     uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
   };
+  console.log(Image_Http_URL);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
-          <TouchableOpacity onPress={onPressImage}>
-          <View style={styles.image} > 
+          <TouchableOpacity onPress={onPressImage}> 
             <Image
               resizeMode="contain"
               source={Image_Http_URL}
               style={styles.image}
             />
-          </View>
           </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>

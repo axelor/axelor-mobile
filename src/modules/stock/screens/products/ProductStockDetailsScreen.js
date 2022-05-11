@@ -32,7 +32,7 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
     <Screen>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
-          <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} image={product.picture} code={product.code} name={product.name} style={styles.item} />
+          <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
           <Picker defaultValue={1} listItems={companyList} labelField="name" valueField="id" onValueChange={() => { }} />
           <SearchBar style={styles.searchBar} placeholder="Stock location" onSearchPress={() => dispatch(fetchProducts())} />

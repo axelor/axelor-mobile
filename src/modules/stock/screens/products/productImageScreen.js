@@ -6,11 +6,9 @@ import { Screen, Text } from '@/components/atoms';
 const ProductImageScreen = ({ route }) => {
 
     const product = route.params.product;
-    console.log(product.picture.id)
     const Image_Http_URL = {
         uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download/`,
     };
-    console.log(Image_Http_URL)
     return (
         <Screen style={styles.container}>
             <View style={styles.textContainer}>

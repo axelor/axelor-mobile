@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View ,Image } from 'react-native';
 import { Card, Chip, Text } from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductCardDetails = ({ style,onPressImage, onPress, ...product }) => {
 
+  const Image_Http_URL = {
+    uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download/`,
+};
+console.log(Image_Http_URL.url);
   return (
       <Card style={[styles.container, style]}>
         <View  style={styles.content}>
         <TouchableOpacity onPress={onPressImage}>
-          <View style={styles.image} />
+        <Image
+              resizeMode="contain"
+              source={Image_Http_URL}
+              style={styles.image}
+        />
         </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text style={styles.name}>{product.name}</Text>
@@ -44,7 +52,6 @@ const styles = StyleSheet.create({
   image: {
     width: 120,
     height: 120,
-    backgroundColor: '#efefef',
     marginRight: 32,
   },
   textContainer: {
