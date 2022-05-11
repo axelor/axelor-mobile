@@ -31,8 +31,9 @@ export async function searchStockLocation() {
     offset: 0,
   });
 }
+
 export async function productStockLocation(productId) {
-  return axios.get(`/ws/aos/stock-product/product-with-stock/10`, {
-    data:{}
-  });
+
+  return axios.get(`/ws/aos/stock-product/product-with-stock/10`,{});
+
 }

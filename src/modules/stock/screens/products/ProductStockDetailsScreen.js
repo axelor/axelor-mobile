@@ -18,6 +18,7 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const options = ["axelor-maroc", "axelor-france"];
   const product = route.params.product;
+  console.log(productIndicators)
   const { companyList } = useSelector(state => state.company);
   const showProductDetails = product => {
     navigation.navigate('ProductDetails', { product: product });
