@@ -1,60 +1,54 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {Screen} from '@/components/atoms';
-import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
-import getFromList from '@/modules/stock/utils/get-from-list';
-import useScanner, {castIntent} from '../../utils/use-scanner';
+import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+import {AutocompleteSearch} from '@/components/organisms';
+
+const productScanKey = 'product_stock-correction-new';
 
 const StockCorrectionNewProductScreen = ({navigation, route}) => {
-  const {productList} = useSelector(state => state.product);
+  useFocusedScan(productScanKey);
 
+  const {productList} = useSelector(state => state.product);
   const dispatch = useDispatch();
+  const productScanned = useProductScanner(productScanKey);
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch, route]);
+  }, [dispatch]);
 
-  const handleNavigate = product => {
-    if (product.trackingNumberConfiguration == null) {
-      navigation.navigate('StockCorrectionDetailsScreen', {
-        stockLocation: route.params.stockLocation,
-        stockProduct: product,
-      });
-    } else {
-      navigation.navigate('StockCorrectionNewTrackingScreen', {
-        stockLocation: route.params.stockLocation,
-        product: product,
-      });
+  const handleNavigate = useCallback(
+    product => {
+      if (product.trackingNumberConfiguration == null) {
+        navigation.navigate('StockCorrectionDetailsScreen', {
+          stockLocation: route.params.stockLocation,
+          stockProduct: product,
+        });
+      } else {
+        navigation.navigate('StockCorrectionNewTrackingScreen', {
+          stockLocation: route.params.stockLocation,
+          product: product,
+        });
+      }
+    },
+    [navigation, route.params.stockLocation],
+  );
+
+  useEffect(() => {
+    if (productScanned) {
+      handleNavigate(productScanned);
     }
-  };
+  }, [handleNavigate, productScanned]);
 
   const handleClearLocation = () => {
     navigation.navigate('StockCorrectionNewLocationScreen');
   };
-
-  const handleProductSelection = productId => {
-    if (productId !== '') {
-      const product = getFromList(productList, 'id', productId);
-      handleNavigate(product);
-    }
-  };
-
-  const handleProductScan = intent => {
-    console.log('Yes');
-    const serialNumber = castIntent(intent).value;
-    console.log(serialNumber);
-    console.log(productList);
-    if (serialNumber !== '') {
-      const product = getFromList(productList, 'serialNumber', serialNumber);
-      console.log(product);
-      handleNavigate(product);
-    }
-  };
-
-  //useScanner(handleProductScan);
 
   return (
     <Screen style={styles.container}>
@@ -65,14 +59,11 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
       />
       <AutocompleteSearch
         objectList={productList}
-        searchName="Product"
-        searchParam="name"
-        setValueSearch={handleProductSelection}
-        defaultQuery={
-          typeof route.params.product !== 'undefined'
-            ? route.params.product.name
-            : null
-        }
+        scanKey={productScanKey}
+        filter={filterItemByName}
+        displayValue={displayItemName}
+        onChangeValue={item => handleNavigate(item)}
+        placeholder="Product"
       />
     </Screen>
   );

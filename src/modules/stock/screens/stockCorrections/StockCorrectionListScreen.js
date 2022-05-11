@@ -1,22 +1,23 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, IconNew} from '@/components/atoms';
+import {IconNew, Screen} from '@/components/atoms';
 import {Chip} from '@/components/molecules';
-import {ChipSelect, AutocompleteSearch} from '@/components/organisms';
+import {AutocompleteSearch, ChipSelect} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
-import {useScannerSelector} from '@/features/scannerSlice';
-import {searchStockLocationBySerialNumber} from '@/modules/stock/api/stock-location-api';
-import {searchProductBySerialNumber} from '@/modules/stock/api/product-api';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
 
 const STATUS_DRAFT = 1;
 const STATUS_VALIDATED = 2;
@@ -31,14 +32,8 @@ const getStatus = option => {
   }
 };
 
-const stockLocationScanKey = 'stock-location';
-const productScanKey = 'product';
-
-const filterByName = (item, name) => {
-  return item.name.toLowerCase().includes(name.toLowerCase());
-};
-
-const displayName = item => item.name;
+const stockLocationScanKey = 'stock-location_stock-correction-list';
+const productScanKey = 'product_stock-correction-list';
 
 const StockCorrectionListScreen = ({navigation}) => {
   const {loadingCorrections, stockCorrectionList} = useSelector(
@@ -46,7 +41,6 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
-  const {type: scanKey, value: scannedValue} = useScannerSelector();
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
@@ -57,40 +51,19 @@ const StockCorrectionListScreen = ({navigation}) => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
   useEffect(() => {
-    if (scannedValue) {
-      switch (scanKey) {
-        case stockLocationScanKey: {
-          searchStockLocationBySerialNumber(scannedValue).then(
-            searchedStockLocation => {
-              if (searchedStockLocation) {
-                setStockLocation(searchedStockLocation);
-              } else {
-                console.warn(
-                  `Stock location not found with serial number: ${scannedValue}`,
-                );
-              }
-            },
-          );
-          break;
-        }
-        case productScanKey: {
-          searchProductBySerialNumber(scannedValue).then(searchedProduct => {
-            if (searchedProduct) {
-              setProduct(searchedProduct);
-            } else {
-              console.warn(
-                `Product not found with serial number: ${scannedValue}`,
-              );
-            }
-          });
-          break;
-        }
-        default:
-          return;
-      }
+    if (stockLocationScanned) {
+      setStockLocation(stockLocationScanned);
     }
-  }, [scanKey, scannedValue]);
+  }, [stockLocationScanned]);
+
+  const productScanned = useProductScanner(productScanKey);
+  useEffect(() => {
+    if (productScanned) {
+      setProduct(productScanned);
+    }
+  }, [productScanned]);
 
   // Set status filter
 
@@ -189,8 +162,8 @@ const StockCorrectionListScreen = ({navigation}) => {
       <AutocompleteSearch
         objectList={stockLocationList}
         value={stockLocation}
-        displayValue={displayName}
-        filter={filterByName}
+        displayValue={displayItemName}
+        filter={filterItemByName}
         onChangeValue={item => setStockLocation(item)}
         placeholder="Stock location"
         scanKey={stockLocationScanKey}
@@ -199,8 +172,8 @@ const StockCorrectionListScreen = ({navigation}) => {
         objectList={productList}
         value={product}
         onChangeValue={item => setProduct(item)}
-        displayValue={displayName}
-        filter={filterByName}
+        displayValue={displayItemName}
+        filter={filterItemByName}
         scanKey={productScanKey}
         placeholder="Product"
       />

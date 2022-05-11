@@ -1,66 +1,64 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import getFromList from '@/modules/stock/utils/get-from-list';
-import useScanner, {castIntent} from '../../utils/use-scanner';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
+
+const stockLocationScanKey = 'stock-location_from_new-stock-correction';
 
 const StockCorrectionNewLocationScreen = ({navigation, route}) => {
+  useFocusedScan(stockLocationScanKey);
+
   const {stockLocationList} = useSelector(state => state.stockLocation);
+  const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockLocations());
-  }, [dispatch, route]);
+  }, [dispatch]);
 
-  const handleLocationSelection = locationId => {
-    if (locationId !== '') {
-      const location = getFromList(stockLocationList, 'id', locationId);
-      handleNavigate(location);
+  const handleNavigate = useCallback(
+    stockLocation => {
+      if (stockLocation == null) {
+        return;
+      }
+
+      const location = getFromList(stockLocationList, 'id', stockLocation.id);
+      if (route.params?.product != null) {
+        navigation.navigate('StockCorrectionNewProductScreen', {
+          stockLocation: location,
+          product: route.params.product,
+        });
+      } else {
+        navigation.navigate('StockCorrectionNewProductScreen', {
+          stockLocation: location,
+        });
+      }
+    },
+    [navigation, route.params?.product, stockLocationList],
+  );
+
+  useEffect(() => {
+    if (stockLocationScanned) {
+      handleNavigate(stockLocationScanned);
     }
-  };
-
-  const handleLocationScan = intent => {
-    console.log('here');
-    const serialNumber = castIntent(intent).value;
-    if (serialNumber !== '') {
-      const location = getFromList(
-        stockLocationList,
-        'serialNumber',
-        serialNumber,
-      );
-      console.log(location);
-      handleNavigate(location);
-    }
-  };
-
-  const handleNavigate = location => {
-    if (
-      typeof route.params !== 'undefined' &&
-      typeof route.params.product !== 'undefined'
-    ) {
-      navigation.navigate('StockCorrectionNewProductScreen', {
-        stockLocation: location,
-        product: route.params.product,
-      });
-    } else {
-      navigation.navigate('StockCorrectionNewProductScreen', {
-        stockLocation: location,
-      });
-    }
-  };
-
-  useScanner(handleLocationScan);
+  }, [handleNavigate, stockLocationScanned]);
 
   return (
     <Screen style={styles.container}>
       <AutocompleteSearch
         objectList={stockLocationList}
-        searchName="Stock Location"
-        searchParam="name"
-        setValueSearch={handleLocationSelection}
+        placeholder="Stock Location"
+        displayValue={displayItemName}
+        onChangeValue={item => handleNavigate(item)}
+        filter={filterItemByName}
+        scanKey={stockLocationScanKey}
       />
     </Screen>
   );

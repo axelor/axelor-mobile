@@ -6,10 +6,10 @@ import {enableScan} from '@/features/scannerSlice';
 
 interface AutocompleteSearchProps<T> {
   objectList: T[];
-  value: T;
-  onChangeValue: (value: T) => void;
-  displayValue: (value: T) => string;
-  filter: (item: T, search: string) => boolean;
+  value?: T;
+  onChangeValue?: (value: T) => void;
+  displayValue?: (value: T) => string;
+  filter?: (item: T, search: string) => boolean;
   placeholder?: string;
   scanKey?: string;
 }
@@ -37,7 +37,6 @@ const AutocompleteSearch = ({
 
   const handleSelect = item => {
     setDisplayList(false);
-    setSearchText(displayValue(item));
     onChangeValue(item);
   };
 

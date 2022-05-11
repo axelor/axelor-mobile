@@ -5,7 +5,7 @@ import {DeviceEventEmitter} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 const Scanner = () => {
-  const {isEnabled, type} = useScannerSelector();
+  const {isEnabled, scanKey} = useScannerSelector();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const Scanner = () => {
       const listener = DeviceEventEmitter.addListener(
         'datawedge_broadcast_intent',
         intent => {
-          console.log({intent});
           const {labelType, value} = castIntent(intent);
           if (labelType === ean13LabelType) {
             dispatch(scanValue(value.slice(0, -1)));
@@ -37,7 +36,7 @@ const Scanner = () => {
         listener.remove();
       };
     }
-  }, [dispatch, isEnabled, type]);
+  }, [dispatch, isEnabled]);
 
   return null;
 };
