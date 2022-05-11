@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getApiResponseData, getFirstData} from '@/api/utils';
 
 export async function searchProduct() {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
@@ -57,4 +58,30 @@ export async function searchProductWithId(productId) {
       ],
     },
   );
+}
+
+export function searchProductBySerialNumber(serialNumber) {
+  return axios
+    .post('/ws/rest/com.axelor.apps.base.db.Product/search', {
+      data: {
+        criteria: [
+          {
+            fieldName: 'serialNumber',
+            operator: '=',
+            value: serialNumber,
+          },
+        ],
+      },
+      fields: [
+        'name',
+        'code',
+        'trackingNumberConfiguration',
+        'serialNumber',
+        'picture',
+      ],
+      limit: 1,
+      offset: 0,
+    })
+    .then(getApiResponseData)
+    .then(getFirstData);
 }

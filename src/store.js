@@ -1,10 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {
-  authReducer,
-  companyReducer,
-  languageReducer,
-  userReducer,
-} from '@/modules/auth/features';
+import * as rootReducers from '@/features';
+import * as authReducers from '@/modules/auth/features';
 import {
   productReducer,
   stockCorrectionReducer,
@@ -15,10 +11,8 @@ import {
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
-    user: userReducer,
-    company: companyReducer,
-    language: languageReducer,
+    ...rootReducers,
+    ...authReducers,
     product: productReducer,
     stockCorrection: stockCorrectionReducer,
     stockCorrectionReason: stockCorrectionReasonReducer,
