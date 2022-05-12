@@ -19,9 +19,9 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
   const { loading, productIndicators } = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
   const product = route.params.product;
-  const [dataFilter, setDataFilter] = useState({ productId: product.id,companyId:userList[0].activeCompany.id ,stockLocationId : null })
+  const [dataFilter, setDataFilter] = useState({ productId: product.id, companyId: userList[0].activeCompany.id, stockLocationId: null })
   const { companyList } = useSelector(state => state.company);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
+  const { stockLocationList } = useSelector(state => state.stockLocation);
   //console.log(userList)
   const showProductDetails = product => {
     navigation.navigate('ProductDetails', { product: product });
@@ -39,8 +39,10 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
         <View style={styles.container}>
           <ProductCard onPressImage={() => navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
-          <Picker defaultValue={dataFilter.companyId}  listItems={companyList} labelField="name" valueField="id" onValueChange={(itemValue,itemIndex) => {console.log(itemIndex);setDataFilter({ ...dataFilter, companyId: itemIndex == 0 ? null : itemIndex});}} />
-          <AutocompleteSearch objectList={stockLocationList}  searchName="Stock Location" searchParam="name" placeholder="Stock location" defaultQuery={dataFilter.stockLocationName ? dataFilter.stockLocationName : userList[0].stockCorrection} setValueSearch={(locationId,locationName) => {setDataFilter({ ...dataFilter, companyId: 1, stockLocationId: locationId,stockLocationName:locationName }); }} />
+          <Picker defaultValue={dataFilter.companyId} listItems={companyList} labelField="name" valueField="id" onValueChange={(itemValue, itemIndex) => { console.log(itemIndex); setDataFilter({ ...dataFilter, companyId: itemIndex == 0 ? null : itemIndex }); }} />
+          <AutocompleteSearch objectList={stockLocationList} searchName="Stock Location"
+            searchParam="name" placeholder="Stock location" defaultQuery={dataFilter.stockLocationName ? dataFilter.stockLocationName : userList[0].stockCorrection}
+            setValueSearch={(locationId, locationName) => {console.log(locationId,locationName); setDataFilter({ ...dataFilter, stockLocationId: locationId ? locationId : null, stockLocationName: locationName ? locationName : null }); }} />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
             <CardStock title="REAL QUANTITY" number={productIndicators?.realQty} />
