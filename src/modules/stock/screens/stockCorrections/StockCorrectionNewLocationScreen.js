@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
-import getFromList from '@/modules/stock/utils/get-from-list';
 import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
@@ -24,12 +23,10 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   }, [dispatch]);
 
   const handleNavigate = useCallback(
-    stockLocation => {
-      if (stockLocation == null) {
+    location => {
+      if (location == null) {
         return;
       }
-
-      const location = getFromList(stockLocationList, 'id', stockLocation.id);
       if (route.params?.product != null) {
         navigation.navigate('StockCorrectionNewProductScreen', {
           stockLocation: location,

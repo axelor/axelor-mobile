@@ -1,15 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
-import getFromList from '@/modules/stock/utils/get-from-list';
+import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
+import useTrackingNumberScanner from '@/modules/stock/hooks/use-tracking-number-scanner';
+import {filterItemByTrackingNumberSeq} from '@/modules/stock/utils/filters';
+
+const trackingNumberScanKey = 'tracking-number_new-internal-move';
 
 const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
-  const {trackingNumberList} = useSelector(state => state.trackingNumber);
+  useFocusedScan(trackingNumberScanKey);
 
+  const {trackingNumberList} = useSelector(state => state.trackingNumber);
+  const trackingNumberScanned = useTrackingNumberScanner(trackingNumberScanKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,21 +39,23 @@ const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
     });
   };
 
-  const handleTrackingNumberSelection = trackingNumberId => {
-    if (trackingNumberId !== '') {
-      const trackingNumber = getFromList(
-        trackingNumberList,
-        'id',
-        trackingNumberId,
-      );
+  const handleTrackingNumberSelection = useCallback(
+    trackingNumber => {
       navigation.navigate('InternalMoveDetailsScreen', {
         fromStockLocation: route.params.fromStockLocation,
         toStockLocation: route.params.toStockLocation,
         stockProduct: route.params.stockProduct,
         trackingNumber: trackingNumber,
       });
+    },
+    [navigation],
+  );
+
+  useEffect(() => {
+    if (trackingNumberScanned) {
+      handleTrackingNumberSelection(trackingNumberScanned);
     }
-  };
+  }, [handleTrackingNumberSelection, trackingNumberScanned]);
 
   return (
     <Screen style={styles.container}>
@@ -68,9 +76,11 @@ const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
       />
       <AutocompleteSearch
         objectList={trackingNumberList}
-        searchName="Tracking Number"
-        searchParam="trackingNumberSeq"
-        setValueSearch={handleTrackingNumberSelection}
+        scanKeySearch={trackingNumberScanKey}
+        onChangeValue={item => handleTrackingNumberSelection(item)}
+        filter={filterItemByTrackingNumberSeq}
+        placeholder="Tracking number"
+        displayValue={item => item.trackingNumberSeq}
       />
     </Screen>
   );

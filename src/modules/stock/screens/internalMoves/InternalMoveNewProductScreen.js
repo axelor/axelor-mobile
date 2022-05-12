@@ -1,21 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
-import getFromList from '@/modules/stock/utils/get-from-list';
-import useScanner, {castIntent} from '@/modules/stock/utils/use-scanner';
+import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+
+const productScanKey = 'product_new-internal-move';
 
 const InternalMoveNewProductScreen = ({navigation, route}) => {
-  const {productList} = useSelector(state => state.product);
+  useFocusedScan(productScanKey);
 
+  const {productList} = useSelector(state => state.product);
+  const productScanned = useProductScanner(productScanKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch, route]);
+  }, [dispatch]);
 
   const handleClearOriginalLocation = () => {
     navigation.navigate('InternalMoveNewOriginalLocationScreen');
@@ -27,42 +33,30 @@ const InternalMoveNewProductScreen = ({navigation, route}) => {
     });
   };
 
-  const handleProductSelection = productId => {
-    if (productId !== '') {
-      const product = getFromList(productList, 'id', productId);
-      handleNavigate(product);
-    }
-  };
+  const handleNavigate = useCallback(
+    product => {
+      if (product.trackingNumberConfiguration == null) {
+        navigation.navigate('InternalMoveDetailsScreen', {
+          fromStockLocation: route.params.fromStockLocation,
+          toStockLocation: route.params.toStockLocation,
+          stockProduct: product,
+        });
+      } else {
+        navigation.navigate('InternalMoveNewTrackingNumberScreen', {
+          fromStockLocation: route.params.fromStockLocation,
+          toStockLocation: route.params.toStockLocation,
+          stockProduct: product,
+        });
+      }
+    },
+    [navigation],
+  );
 
-  const handleProductScan = intent => {
-    console.log('Yes');
-    const serialNumber = castIntent(intent).value;
-    console.log(serialNumber);
-    console.log(productList);
-    if (serialNumber !== '') {
-      const product = getFromList(productList, 'serialNumber', serialNumber);
-      console.log(product);
-      handleNavigate(product);
+  useEffect(() => {
+    if (productScanned) {
+      handleNavigate(productScanned);
     }
-  };
-
-  const handleNavigate = product => {
-    if (product.trackingNumberConfiguration == null) {
-      navigation.navigate('InternalMoveDetailsScreen', {
-        fromStockLocation: route.params.fromStockLocation,
-        toStockLocation: route.params.toStockLocation,
-        stockProduct: product,
-      });
-    } else {
-      navigation.navigate('InternalMoveNewTrackingNumberScreen', {
-        fromStockLocation: route.params.fromStockLocation,
-        toStockLocation: route.params.toStockLocation,
-        stockProduct: product,
-      });
-    }
-  };
-
-  //useScanner(handleProductScan);
+  }, [handleNavigate, productScanned]);
 
   return (
     <Screen style={styles.container}>
@@ -78,9 +72,11 @@ const InternalMoveNewProductScreen = ({navigation, route}) => {
       />
       <AutocompleteSearch
         objectList={productList}
-        searchName="Product"
-        searchParam="name"
-        setValueSearch={handleProductSelection}
+        scanKeySearch={productScanKey}
+        filter={filterItemByName}
+        displayValue={displayItemName}
+        onChangeValue={item => handleNavigate(item)}
+        placeholder="Product"
       />
     </Screen>
   );

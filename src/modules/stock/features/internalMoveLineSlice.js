@@ -11,7 +11,7 @@ export const fetchInternalMoveLines = createAsyncThunk(
 );
 
 const initialState = {
-  loadingInternalMoveLine: true,
+  loadingInternalMoveLine: false,
   internalMoveLineList: [],
 };
 
