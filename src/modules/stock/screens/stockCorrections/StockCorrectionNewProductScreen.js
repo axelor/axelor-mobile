@@ -59,7 +59,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
       />
       <AutocompleteSearch
         objectList={productList}
-        scanKey={productScanKey}
+        scanKeySearch={productScanKey}
         filter={filterItemByName}
         displayValue={displayItemName}
         onChangeValue={item => handleNavigate(item)}

@@ -65,7 +65,7 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
       />
       <AutocompleteSearch
         objectList={trackingNumberList}
-        scanKey={trackingNumberScanKey}
+        scanKeySearch={trackingNumberScanKey}
         onChangeValue={item => handleTrackingNumberSelection(item)}
         filter={filterItemByTrackingNumberSeq}
         placeholder="Tracking number"

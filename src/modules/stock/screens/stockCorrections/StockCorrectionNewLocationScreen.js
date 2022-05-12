@@ -58,7 +58,7 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
         displayValue={displayItemName}
         onChangeValue={item => handleNavigate(item)}
         filter={filterItemByName}
-        scanKey={stockLocationScanKey}
+        scanKeySearch={stockLocationScanKey}
       />
     </Screen>
   );

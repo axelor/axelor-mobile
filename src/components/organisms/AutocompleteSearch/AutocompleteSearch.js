@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 import {SearchBar, AutocompleteItem} from '@/components/molecules';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {enableScan} from '@/features/scannerSlice';
 
 interface AutocompleteSearchProps<T> {
@@ -11,7 +11,7 @@ interface AutocompleteSearchProps<T> {
   displayValue?: (value: T) => string;
   filter?: (item: T, search: string) => boolean;
   placeholder?: string;
-  scanKey?: string;
+  scanKeySearch?: string;
 }
 
 const AutocompleteSearch = ({
@@ -21,10 +21,11 @@ const AutocompleteSearch = ({
   displayValue,
   filter,
   placeholder,
-  scanKey,
+  scanKeySearch,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const {isEnabled, scanKey} = useSelector(state => state.scanner);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const AutocompleteSearch = ({
   };
 
   const handlePressScan = () => {
-    dispatch(enableScan(scanKey));
+    dispatch(enableScan(scanKeySearch));
   };
 
   const filteredList = useMemo(() => {
@@ -71,7 +72,10 @@ const AutocompleteSearch = ({
         onChangeTxt={handleChangeText}
         onClearPress={handleClear}
         onSelection={() => setDisplayList(true)}
-        onScanPress={scanKey ? handlePressScan : undefined}
+        onScanPress={scanKeySearch ? handlePressScan : undefined}
+        scanIconColor={
+          isEnabled && scanKey == scanKeySearch ? '#84DCB7' : '#606060'
+        }
       />
       {displayList ? (
         <FlatList

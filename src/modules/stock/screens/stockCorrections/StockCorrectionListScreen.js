@@ -157,6 +157,15 @@ const StockCorrectionListScreen = ({navigation}) => {
     });
   }, [navigation]);
 
+  // ----------  REFRESH -------------
+  const [isFetching, setIsFetching] = useState(false);
+
+  const handleRefresh = useCallback(() => {
+    setIsFetching(true);
+    dispatch(fetchStockCorrections());
+    setIsFetching(false);
+  }, [isFetching]);
+
   return (
     <Screen style={styles.container}>
       <AutocompleteSearch
@@ -166,7 +175,7 @@ const StockCorrectionListScreen = ({navigation}) => {
         filter={filterItemByName}
         onChangeValue={item => setStockLocation(item)}
         placeholder="Stock location"
-        scanKey={stockLocationScanKey}
+        scanKeySearch={stockLocationScanKey}
       />
       <AutocompleteSearch
         objectList={productList}
@@ -174,7 +183,7 @@ const StockCorrectionListScreen = ({navigation}) => {
         onChangeValue={item => setProduct(item)}
         displayValue={displayItemName}
         filter={filterItemByName}
-        scanKey={productScanKey}
+        scanKeySearch={productScanKey}
         placeholder="Product"
       />
       <ChipSelect style={styles.chipContainer}>
@@ -196,6 +205,8 @@ const StockCorrectionListScreen = ({navigation}) => {
       ) : (
         <FlatList
           data={filteredList}
+          onRefresh={handleRefresh}
+          refreshing={isFetching}
           renderItem={({item}) => (
             <StockCorrectionCard
               style={styles.item}
