@@ -39,7 +39,7 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
           <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
           <Picker defaultValue={userList[0].activeCompany.id} listItems={companyList} labelField="name" valueField="id" onValueChange={()=>{}}  />
-          <SearchBar valueTxt={userList[0].stockLocation} style={styles.searchBar}  placeholder="Stock location" onSearchPress={() => {} } />
+          <SearchBar valueTxt={userList[0].stockLocation} style={styles.searchBar}  placeholder="Stock location" onSearchPress={() => {setDataFilter({...dataFilter,companyId:1,stockLocationId:1});}}  />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
             <CardStock title="REAL QUANTITY" number={productIndicators?.realQty} />
