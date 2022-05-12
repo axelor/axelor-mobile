@@ -1,10 +1,29 @@
 import React from 'react';
-import {Button as ReactNativeButton} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const Button = ({title, onPress, disabled}) => {
+const Button = ({style, styleTxt, title, onPress, disabled}) => {
   return (
-    <ReactNativeButton title={title} onPress={onPress} disabled={disabled} />
+    <TouchableOpacity style={style} onPress={onPress} disabled={disabled}>
+      <View style={styles.container}>
+        <Text style={[styles.text, styleTxt]}>{title}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    paddingVertical: 5,
+    marginVertical: 6,
+    borderRadius: 13,
+  },
+  text: {
+    color: '#606060',
+  },
+});
 
 export default Button;

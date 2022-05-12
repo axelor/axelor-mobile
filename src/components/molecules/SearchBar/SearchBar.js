@@ -1,18 +1,40 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SearchBar = ({style, placeholder, onSearchPress, onScanPress}) => {
+const SearchBar = ({
+  style,
+  valueTxt,
+  placeholder,
+  onClearPress,
+  onScanPress,
+  onChangeTxt,
+  onSelection,
+}) => {
   return (
     <View style={[styles.container, style]}>
-      <Input style={styles.input} placeholder={placeholder} />
+      <Input
+        style={styles.input}
+        value={valueTxt}
+        placeholder={placeholder}
+        onChange={onChangeTxt}
+        onSelection={onSelection}
+      />
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.action} onPress={onSearchPress}>
-          <Icon name="search" size={24} />
-        </TouchableOpacity>
+        {valueTxt === '' ? (
+          <View style={styles.action}>{null}</View>
+        ) : (
+          <TouchableOpacity style={styles.action} onPress={onClearPress}>
+            <Icon name="remove" style={styles.icon} />
+          </TouchableOpacity>
+        )}
+
+        <View style={styles.action}>
+          <Icon name="search" style={styles.icon} />
+        </View>
         <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" size={24} />
+          <Icon name="qrcode" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>
@@ -30,15 +52,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   input: {
-    width: '80%',
+    width: '70%',
   },
   actions: {
-    width: '20%',
+    width: '30%',
     display: 'flex',
     flexDirection: 'row',
   },
   action: {
+    flex: 1,
     marginLeft: 12,
+  },
+  icon: {
+    fontSize: Dimensions.get('window').width * 0.05,
+    color: '#606060',
   },
 });
 
