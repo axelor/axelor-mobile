@@ -8,8 +8,8 @@ import formatDate from '@/modules/stock/utils/format-date';
 const getStatusColor = status => {
   if (status === 'Draft') {
     return {
-      backgroundColor: '#84DCB7',
-      borderColor: '#84DCB7',
+      backgroundColor: 'rgba(206, 206, 206, 0.6)',
+      borderColor: 'rgba(206, 206, 206, 1)',
     };
   } else if (status === 'Planned') {
     return {

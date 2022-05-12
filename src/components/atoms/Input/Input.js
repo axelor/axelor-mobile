@@ -10,6 +10,7 @@ const Input = ({
   readOnly = false,
   onSelection,
   keyboardType,
+  multiline,
 }) => {
   return (
     <TextInput
@@ -23,6 +24,7 @@ const Input = ({
       onFocus={onSelection}
       placeholderTextColor="#606060"
       keyboardType={keyboardType}
+      multiline={multiline}
     />
   );
 };

@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import {Button, Card, Screen, Text} from '@/components/atoms';
+import {Button, Card, Input, Screen, Text} from '@/components/atoms';
 import {Picker, Badge} from '@/components/molecules';
 import {QuantityCard} from '@/modules/stock/components/organisms';
 import {fetchUnit} from '@/modules/stock/features/unitSlice';
@@ -114,7 +114,6 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(fetchUnit());
     if (route.params.internalMove != null) {
-      console.log(route.params.internalMove);
       dispatch(fetchInternalMoveLines(route.params.internalMove.id));
       dispatch(fetchProducts());
     }
@@ -133,6 +132,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
   const [plannedQty, setPlannedQty] = useState();
   const [movedQty, setMovedQty] = useState();
   const [unit, setUnit] = useState();
+  const [notes, setNotes] = useState();
 
   useEffect(() => {
     initVariables();
@@ -153,6 +153,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       setPlannedQty(0);
       setMovedQty(0);
       setUnit({name: '', id: 'empty'});
+      setNotes('BLallaladkdnanfianfj jnazfjs  evezn cj nd v ds c ');
       setSaveStatus(false);
       setLoading(false);
     } else {
@@ -160,6 +161,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       setAvailabilty(route.params.internalMove.availableStatusSelect);
       setOriginalStockLocation(route.params.internalMove.fromStockLocation);
       setDestinationStockLocation(route.params.internalMove.toStockLocation);
+      setNotes(route.params.internalMove.note);
       if (
         productList == null ||
         internalMoveLineList == null ||
@@ -176,14 +178,12 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         if (internalMoveLine == null) {
           setLoading(true);
         } else {
-          console.log(internalMoveLine);
           setStockProduct(
             getFromList(productList, 'id', internalMoveLine.product.id),
           );
           setTrackingNumber(internalMoveLine.trackingNumber);
           setPlannedQty(internalMoveLine.qty);
           setMovedQty(internalMoveLine.realQty);
-          console.log(unitList);
           setUnit(internalMoveLine.unit);
           setLoading(false);
         }
@@ -205,7 +205,12 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
     setSaveStatus(false);
   };
 
-  const handleReasonChange = unitId => {
+  const handleNotesChange = value => {
+    setNotes(value);
+    setSaveStatus(false);
+  };
+
+  const handleUnitChange = unitId => {
     if (unitId == 'empty') {
       setUnit({name: '', id: 'empty'});
     } else {
@@ -308,13 +313,29 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                   style={styles.picker}
                   styleTxt={unit.id == 'empty' ? styles.picker_empty : null}
                   title="Unit"
-                  onValueChange={handleReasonChange}
+                  onValueChange={handleUnitChange}
                   defaultValue={unit.id}
                   listItems={unitList}
                   labelField="name"
                   valueField="id"
                 />
               )}
+              <View style={styles.reasonTitle}>
+                <Text>Notes on Stock Move </Text>
+              </View>
+              <Card style={styles.infosCard}>
+                {status == STATUS_PLANNED ||
+                status == STATUS_REALIZED ||
+                status == STATUS_CANCELED ? (
+                  <Text numberOfLines={3}>{notes}</Text>
+                ) : (
+                  <Input
+                    value={notes}
+                    onChange={handleNotesChange}
+                    multiline={true}
+                  />
+                )}
+              </Card>
             </ScrollView>
           </View>
           <View style={styles.button_container}>
@@ -437,6 +458,11 @@ const styles = StyleSheet.create({
     color: '#cecece',
     marginRight: 6,
   },
+  notesContainer: {
+    height: '20%',
+    marginHorizontal: 16,
+  },
+  notes: {},
 });
 
 export default InternalMoveDetailsScreen;
