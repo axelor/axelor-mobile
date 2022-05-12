@@ -41,7 +41,7 @@ const AutocompleteSearch = ({
   const handleSelect = item => {
     setToggleList(false);
     setQuery(item[searchParam]);
-    setValueSearch(item.id);
+    setValueSearch(item.id,item.name);
   };
 
   const handleClear = () => {
