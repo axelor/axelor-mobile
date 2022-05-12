@@ -13,6 +13,7 @@ import {stockCorrectionReasonReducer
 import {
   userReducer,
 } from '@/modules/auth/features';
+import { stockLocationLineReducer } from './modules/stock/features/stockLocationLineSlice';
 
 
 export const store = configureStore({
@@ -28,5 +29,6 @@ export const store = configureStore({
     stockCorrectionReason: stockCorrectionReasonReducer,
     stockLocation: stockLocationReducer,
     trackingNumber: trackingNumberReducer,
+    stockLocationLine:stockLocationLineReducer
   },
 });

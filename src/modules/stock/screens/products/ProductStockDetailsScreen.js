@@ -11,6 +11,7 @@ import { Picker } from '@/components/molecules';
 import { fetchCompanies } from '@/modules/auth/features/companySlice';
 import { fetchProductIndicators } from '../../features/productIndicatorsSlice';
 import { AutocompleteSearch } from '@/components/organisms';
+import { fetchStockLocationLine } from '../../features/stockLocationLineSlice';
 
 const ProductStockDetailsScreen = ({ route, navigation }) => {
 
@@ -22,6 +23,7 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
   const [dataFilter, setDataFilter] = useState({ productId: product.id, companyId: userList[0].activeCompany.id, stockLocationId: null })
   const { companyList } = useSelector(state => state.company);
   const { stockLocationList } = useSelector(state => state.stockLocation);
+  const {stockLocationLine} = useSelector(state => state.stockLocationLine)
   //console.log(userList)
   const showProductDetails = product => {
     navigation.navigate('ProductDetails', { product: product });
@@ -31,6 +33,8 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
   }
   useEffect(() => {
     dispatch(fetchProductIndicators(dataFilter));
+    dispatch(fetchStockLocationLine({stockId:1,productId:product.id}));
+    console.log("error catch")
   }, [dispatch, dataFilter]);
 
   return (
@@ -43,7 +47,7 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
           <AutocompleteSearch objectList={stockLocationList} searchName="Stock Location"
             searchParam="name" placeholder="Stock location" defaultQuery={dataFilter.stockLocationName ? dataFilter.stockLocationName : userList[0].stockCorrection}
             setValueSearch={(locationId, locationName) => {console.log(locationId,locationName); setDataFilter({ ...dataFilter, stockLocationId: locationId ? locationId : null, stockLocationName: locationName ? locationName : null }); }} />
-          <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
+          <EditableInput style={styles.searchBar} placeholder={stockLocationLine[0]?.rack ? stockLocationLine[0].rack: "Casier"}></EditableInput>
           <View style={styles.row}>
             <CardStock title="REAL QUANTITY" number={productIndicators?.realQty} />
             <CardStock title="FUTURE QUANTITY" number={productIndicators?.futureQty} />

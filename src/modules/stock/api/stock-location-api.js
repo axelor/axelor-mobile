@@ -25,7 +25,7 @@ export async function searchStockLocation() {
         },
       ],
     },
-    fields: ['name', 'id', 'serialNumber'],
+    fields: ['name', 'id', 'serialNumber','stockLocationLineList'],
     sortBy: ['id', 'name'],
     limit: 20,
     offset: 0,

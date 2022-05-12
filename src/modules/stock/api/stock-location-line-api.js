@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export async function searchStockLocationLine(productId,stockLocationId,companyId) {
+export async function searchStockLocationLine(data) {
+  console.log(data);
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocationLine/search', {
     data: {
       criteria: [
@@ -10,29 +11,25 @@ export async function searchStockLocationLine(productId,stockLocationId,companyI
             {
               fieldName: 'product.id',
               operator: '=',
-              value: productId
+              value: data.productId
             },
+            {
+              fieldName: 'stockLocation.id',
+              operator: '=',
+              value: data.stockId
+          }
           ],
         },
         {
             operator:'or',
             criteria:[
-                {
-                    fieldName: 'detailsStockLocation.id',
-                    operator: '=',
-                    value: stockLocationId
-                },
-                {
-                    fieldName: 'stockLocation.id',
-                    operator: '=',
-                    value: stockLocationId
-                }
+               
+               
             ]
         }
       ],
     },
-    fields: ['id','stockLOcation','currentQty','futureQty','reservedQty'],
-    sortBy: ['id', 'name'],
+    fields: ['id','rack','detailsStockLocation.id','stockLocation.id','product.id'],
     limit: 20,
     offset: 0,
   });
