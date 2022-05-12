@@ -19,6 +19,7 @@ import {
   ProductCardDetails,
   LocationsMoveCard,
 } from '../../components/molecules';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // STATUS SELECT
 const STATUS_DRAFT = 1;
@@ -284,7 +285,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 labelQty="Moved quantity"
                 defaultValue={parseFloat(movedQty).toFixed(2)}
                 onValueChange={handleQtyChange}
-                editable={status == STATUS_DRAFT || status == STATUS_PLANNED}>
+                editable={status == STATUS_DRAFT}>
                 <View>
                   <Text style={styles.text}>
                     {'Available quantity: ' + parseFloat(plannedQty).toFixed(2)}
