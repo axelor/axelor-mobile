@@ -20,7 +20,7 @@ import {
 } from '@/modules/stock/features/stockCorrectionSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import getBadgeColor from '@/modules/stock/utils/get-badge-color';
-import {ProductCardCorrection} from '../../components/molecules';
+import {ProductCardDetails} from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const STATUS_DRAFT = 1;
@@ -262,7 +262,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                       style={styles.image}
                     />
                   )}
-                  <ProductCardCorrection
+                  <ProductCardDetails
                     style
                     name={stockProduct.name}
                     code={stockProduct.code}
@@ -276,10 +276,10 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                     {stockProduct.trackingNumberConfiguration == null ||
                     trackingNumber == null ? null : (
                       <Text style={styles.text_secondary}>
-                        {trackingNumber.trackingNumberSeq}
+                        {stockProduct.code}
                       </Text>
                     )}
-                  </ProductCardCorrection>
+                  </ProductCardDetails>
                 </View>
               </View>
               <QuantityCard
