@@ -80,42 +80,48 @@ const InternalMoveCard = ({
               </Text>
             )}
           </View>
-          <View style={styles.badgeContainer}>
-            <Badge
-              style={[styles.statusBadge, getStatusColor(status)]}
-              title={status}
-            />
-            {availability == null ? null : (
+          <View style={styles.rightContainer}>
+            <View style={styles.badgeContainer}>
               <Badge
-                style={[styles.statusBadge, getAvailabilityColor(availability)]}
-                title={availability}
+                style={[styles.statusBadge, getStatusColor(status)]}
+                title={status}
               />
-            )}
+              {availability == null ? null : (
+                <Badge
+                  style={[
+                    styles.statusBadge,
+                    getAvailabilityColor(availability),
+                  ]}
+                  title={availability}
+                />
+              )}
+            </View>
+            <Icon size={24} name="chevron-right" color="#e6e6e6" />
           </View>
         </View>
-        <Icon size={24} name="chevron-right" color="#e6e6e6" />
       </Card>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  rightContainer: {
+    width: '50%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingRight: 15,
   },
   content: {
     flexDirection: 'row',
   },
-  image: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#efefef',
-    marginRight: 32,
-  },
   textContainer: {
-    flex: 2,
+    width: '50%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -143,7 +149,6 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flex: 1,
     flexDirection: 'column',
-    marginRight: 3,
   },
 });
 

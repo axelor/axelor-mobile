@@ -1,5 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen, IconNew} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
@@ -150,13 +155,10 @@ const InternalMoveListScreen = ({navigation}) => {
   }, [navigation]);
 
   // ----------  REFRESH -------------
-  const [isFetching, setIsFetching] = useState(false);
 
   const handleRefresh = useCallback(() => {
-    setIsFetching(true);
     dispatch(fetchInternalMoves());
-    setIsFetching(false);
-  }, [isFetching]);
+  }, [loadingInternalMove]);
 
   return (
     <Screen style={styles.container}>
@@ -192,8 +194,12 @@ const InternalMoveListScreen = ({navigation}) => {
       ) : (
         <FlatList
           data={filteredList}
-          onRefresh={handleRefresh}
-          refreshing={isFetching}
+          refreshControl={
+            <RefreshControl
+              refreshing={loadingInternalMove}
+              onRefresh={handleRefresh}
+            />
+          }
           renderItem={({item}) => (
             <InternalMoveCard
               style={styles.item}

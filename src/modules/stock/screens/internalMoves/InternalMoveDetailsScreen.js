@@ -20,6 +20,7 @@ import {
   LocationsMoveCard,
 } from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {createInternalStockMove} from '../../api/internal-move-api';
 
 // STATUS SELECT
 const STATUS_DRAFT = 1;
@@ -219,6 +220,105 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
     setSaveStatus(false);
   };
 
+  const {createResponse, updateResponse, error} = useSelector(
+    state => state.stockCorrection,
+  );
+
+  const handleSave = () => {
+    // Request AOS API
+    if (route.params.internalMove == null) {
+      // Stock move doesn't exsist yet : creation
+      if (
+        stockProduct.trackingNumberConfiguration == null ||
+        trackingNumber == null
+      ) {
+        dispatch(
+          createInternalStockMove({
+            productId: stockProduct.id,
+            companyId: 1,
+            originStockLocationId: originalStockLocation.id,
+            destStockLocationId: destinationStockLocation.id,
+            unitId: unit.id,
+            status: STATUS_DRAFT,
+            movedQty: movedQty,
+          }),
+        );
+      } else {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            companyId: 1,
+            originStockLocationId: originalStockLocation.id,
+            destStockLocationId: destinationStockLocation.id,
+            trackingNumberId: trackingNumber.id,
+            unitId: unit.id,
+            status: STATUS_DRAFT,
+            movedQty: movedQty,
+          }),
+        );
+      }
+    } else {
+      // Stock correction already exists : update qty or unit
+      dispatch(
+        updateCorrection({
+          internalMoveId: route.params.internalMove.id,
+          movedQty: movedQty,
+          unitId: unit.id,
+        }),
+      );
+    }
+    navigation.navigate('StockCorrectionListScreen');
+  };
+
+  const handleValidate = () => {
+    // Request AOS API
+    if (route.params.internalMove == null) {
+      // Stock move doesn't exsist yet : creation
+      if (
+        stockProduct.trackingNumberConfiguration == null ||
+        trackingNumber == null
+      ) {
+        dispatch(
+          createInternalStockMove({
+            productId: stockProduct.id,
+            companyId: 1,
+            originStockLocationId: originalStockLocation.id,
+            destStockLocationId: destinationStockLocation.id,
+            unitId: unit.id,
+            status: STATUS_DRAFT,
+            movedQty: movedQty,
+          }),
+        );
+      } else {
+        dispatch(
+          createCorrection({
+            productId: stockProduct.id,
+            companyId: 1,
+            originStockLocationId: originalStockLocation.id,
+            destStockLocationId: destinationStockLocation.id,
+            trackingNumberId: trackingNumber.id,
+            unitId: unit.id,
+            status: STATUS_DRAFT,
+            movedQty: movedQty,
+          }),
+        );
+      }
+    } else {
+      // Stock correction already exists : update qty or unit
+      dispatch(
+        updateCorrection({
+          internalMoveId: route.params.internalMove.id,
+          movedQty: movedQty,
+          unitId: unit.id,
+        }),
+      );
+    }
+    navigation.navigate('InternalMoveNewProductScreen', {
+      fromStockLocation: originalStockLocation,
+      toStockLocation: destinationStockLocation,
+    });
+  };
+
   return (
     <Screen>
       {loading || loadingProduct || loadingInternalMoveLine ? (
@@ -344,15 +444,15 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 title="SAVE"
                 style={[styles.button, styles.button_secondary]}
                 styleTxt={styles.button_title}
-                onPress={() => {}}
+                onPress={handleSave}
               />
             )}
-            {status == STATUS_REALIZED || status == STATUS_CANCELED ? null : (
+            {saveStatus ? null : (
               <Button
-                title="VALIDATE"
+                title="SAVE AND CONTINUE"
                 style={[styles.button, styles.button_primary]}
                 styleTxt={styles.button_title}
-                onPress={() => {}}
+                onPress={handleValidate}
               />
             )}
           </View>
@@ -367,7 +467,7 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   scrollContainer: {
-    height: '86%',
+    height: '82%',
   },
   badgeContainer: {
     marginTop: '2%',

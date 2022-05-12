@@ -40,3 +40,23 @@ export async function searchInternalMove() {
     offset: 0,
   });
 }
+
+export async function createInternalStockMove(data) {
+  return axios.post('ws/aos/stock-move/internal/', {
+    productId: data.productId,
+    companyId: data.companyId,
+    originStockLocationId: data.originStockLocationId,
+    destStockLocationId: data.destStockLocationId,
+    unitId: data.unitId,
+    trackingNumberId: data.trackingNumberId,
+    movedQty: data.movedQty,
+  });
+}
+
+export async function updateInternalStockMove(data) {
+  return axios.put(`/ws/aos/stock-move/internal/${data.internalMoveId}`, {
+    movedQty: data.movedQty,
+    unitId: data.unitId,
+    status: data.status,
+  });
+}
