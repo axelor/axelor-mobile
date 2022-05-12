@@ -10,36 +10,39 @@ import CardStock from '@/components/molecules/Card/CardStock';
 import { Picker } from '@/components/molecules';
 import { fetchCompanies } from '@/modules/auth/features/companySlice';
 import { fetchProductIndicators } from '../../features/productIndicatorsSlice';
+import { AutocompleteSearch } from '@/components/organisms';
 
 const ProductStockDetailsScreen = ({ route, navigation }) => {
 
   //const { loading } = useSelector(state => state.product);
-  const {loadingUser, userList} = useSelector(state => state.user);
-  console.log("-----------")
-  console.log(userList)
-  const { loading ,productIndicators } = useSelector(state => state.productIndicators);
+  const { loadingUser, userList } = useSelector(state => state.user);
+  const { loading, productIndicators } = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
   const product = route.params.product;
-  const [dataFilter,setDataFilter] = useState({productId:product.id})
+  const [dataFilter, setDataFilter] = useState({ productId: product.id })
   const { companyList } = useSelector(state => state.company);
+  const {stockLocationList} = useSelector(state => state.stockLocation);
+  console.log("-----------------")
+  console.log(stockLocationList);
+
   const showProductDetails = product => {
     navigation.navigate('ProductDetails', { product: product });
   };
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImage', { product: product });
-}
+  }
   useEffect(() => {
     dispatch(fetchProductIndicators(dataFilter));
-  }, [dispatch,dataFilter]);
+  }, [dispatch, dataFilter]);
 
   return (
     <Screen>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
-          <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
+          <ProductCard onPressImage={() => navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
-          <Picker defaultValue={userList[0].activeCompany.id} listItems={companyList} labelField="name" valueField="id" onValueChange={()=>{}}  />
-          <SearchBar valueTxt={userList[0].stockLocation} style={styles.searchBar}  placeholder="Stock location" onSearchPress={() => {setDataFilter({...dataFilter,companyId:1,stockLocationId:1});}}  />
+          <Picker defaultValue={userList[0].activeCompany.id} listItems={companyList} labelField="name" valueField="id" onValueChange={() => { }} />
+          <AutocompleteSearch objectList={stockLocationList}  searchName="Stock Location" searchParam="name" style={styles.searchBar} placeholder="Stock location" setValueSearch={(locationId) => {setDataFilter({ ...dataFilter, companyId: 1, stockLocationId: locationId }); }} />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
             <CardStock title="REAL QUANTITY" number={productIndicators?.realQty} />

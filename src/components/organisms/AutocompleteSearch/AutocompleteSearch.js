@@ -59,6 +59,7 @@ const AutocompleteSearch = ({
         onChangeTxt={updateQuery}
         onClearPress={handleClear}
         onSelection={() => setToggleList(true)}
+        
       />
       {toggleList ? (
         <FlatList

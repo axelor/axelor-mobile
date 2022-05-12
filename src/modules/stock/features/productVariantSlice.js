@@ -4,7 +4,7 @@ import {searchProduct} from '@/modules/stock/api/product-variant-api';
 export const fetchProductVariants= createAsyncThunk(
   'product/fetchProductVariant',
   async function (productVariantId) {
-    return searchProduct(productVariantId).then(response => response.data.data);
+    return searchProduct(productVariantId).then(response => {console.log(response.data);return response.data.data});
   },
 );
 
