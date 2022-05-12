@@ -26,7 +26,7 @@ export async function searchStockLocation() {
         },
       ],
     },
-    fields: ['name', 'id', 'serialNumber'],
+    fields: ['name', 'id', 'serialNumber', 'stockLocationLineList'],
     sortBy: ['id', 'name'],
     limit: 20,
     offset: 0,
@@ -51,4 +51,10 @@ export async function searchStockLocationBySerialNumber(serialNumber) {
     })
     .then(getApiResponseData)
     .then(getFirstData);
+}
+export async function productStockLocation(data) {
+  return axios.post(
+    `/ws/aos/stock-product/fetch-product-with-stock/${data.productId}`,
+    {companyId: data.companyId, stockLocationId: data.stockLocationId},
+  );
 }

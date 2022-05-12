@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ActivityIndicator,
@@ -38,7 +38,7 @@ const getStatus = option => {
 
 const StockCorrectiondetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
-  const {loadingReasons, stockCorrectionReasonList} = useSelector(
+  const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
   const {loadingProduct, productFromId} = useSelector(state => state.product);
@@ -49,7 +49,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
     if (route.params.stockCorrection != null) {
       dispatch(fetchProductWithId(route.params.stockCorrection.product.id));
     }
-  }, [dispatch]);
+  }, [dispatch, route.params.stockCorrection]);
 
   // ------------  VARIABLES --------------
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
@@ -63,11 +63,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
   const [realQty, setRealQty] = useState();
   const [reason, setReason] = useState();
 
-  useEffect(() => {
-    initVariables();
-  }, [route, productFromId]);
-
-  const initVariables = () => {
+  const initVariables = useCallback(() => {
     if (route.params.stockCorrection == null) {
       setStatus(STATUS_DRAFT);
       setStockLocation(route.params.stockLocation);
@@ -94,7 +90,11 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
       setSaveStatus(true);
     }
     setLoading(false);
-  };
+  }, [productFromId, route.params]);
+
+  useEffect(() => {
+    initVariables();
+  }, [initVariables]);
 
   // ------------  HANDLERS --------------
 
@@ -110,7 +110,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
   };
 
   const handleReasonChange = reasonId => {
-    if (reasonId == 'empty') {
+    if (reasonId === 'empty') {
       setReason({name: '', id: 'empty'});
     } else {
       setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
@@ -118,12 +118,8 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
     setSaveStatus(false);
   };
 
-  const {createResponse, updateResponse, error} = useSelector(
-    state => state.stockCorrection,
-  );
-
   const handleSave = () => {
-    if (reason.id == 'empty') {
+    if (reason.id === 'empty') {
       // Required field
       setPopUp(true);
       return;

@@ -9,8 +9,8 @@ const Input = ({
   secureTextEntry = false,
   readOnly = false,
   onSelection,
+  multiline = false,
   keyboardType,
-  multiline,
 }) => {
   return (
     <TextInput

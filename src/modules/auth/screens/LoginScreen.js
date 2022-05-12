@@ -15,9 +15,9 @@ const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState('https://test.axelor.com/open-suite-wip/');
+  const [url, setUrl] = useState('http://192.168.122.1:8080/');
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('@axadmin');
+  const [password, setPassword] = useState('admin');
 
   // const [url, setUrl] = useState('http://192.168.20.36:8080/axelor-api/');
   // const [username, setUsername] = useState('admin');

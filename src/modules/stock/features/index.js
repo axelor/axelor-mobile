@@ -1,8 +1,11 @@
+export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSlice';
+export {internalMoveReducer as internalMove} from './internalMoveSlice';
+export {productIndicatorReducer as productIndicator} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
-export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
+export {productVariantReducer as productVariant} from './productVariantSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';
+export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
+export {stockLocationLineReducer as stockLocationLine} from './stockLocationLineSlice';
 export {stockLocationReducer as stockLocation} from './stockLocationSlice';
 export {trackingNumberReducer as trackingNumber} from './trackingNumberSlice';
-export {internalMoveReducer as internalMove} from './internalMoveSlice';
-export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSlice';
 export {unitReducer as unit} from './unitSlice';

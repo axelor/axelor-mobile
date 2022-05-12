@@ -6,3 +6,4 @@ export {default as Increment} from './Increment/Increment';
 export {default as Picker} from './Picker/Picker';
 export {default as PopUp} from './PopUp/PopUp';
 export {default as SearchBar} from './SearchBar/SearchBar';
+export {default as EditableInput} from './EditableInput/EditableInput';

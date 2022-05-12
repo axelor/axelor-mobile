@@ -1,75 +1,92 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 import {SearchBar, AutocompleteItem} from '@/components/molecules';
+import {useDispatch} from 'react-redux';
+import {enableScan, useScannerSelector} from '@/features/scannerSlice';
+
+interface AutocompleteSearchProps<T> {
+  objectList: T[];
+  value?: T;
+  onChangeValue?: (value: T) => void;
+  displayValue?: (value: T) => string;
+  filter?: (item: T, search: string) => boolean;
+  placeholder?: string;
+  scanKeySearch?: string;
+}
 
 const AutocompleteSearch = ({
   objectList,
-  searchName,
-  searchParam,
-  setValueSearch,
-  defaultQuery,
-}) => {
-  const [toggleList, setToggleList] = useState(false);
-  const [data, setData] = useState([]);
-  const [query, setQuery] = useState('');
-  const [filteredList, setFilteredList] = useState([]);
+  value,
+  onChangeValue,
+  displayValue,
+  filter,
+  placeholder,
+  scanKeySearch,
+}: AutocompleteSearchProps) => {
+  const [displayList, setDisplayList] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const {isEnabled, scanKey} = useScannerSelector();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setData(objectList);
-    setFilteredList(objectList.slice());
-    if (typeof defaultQuery === 'undefined' || defaultQuery === null) {
-      setQuery('');
+    if (value) {
+      setSearchText(displayValue(value));
     } else {
-      setQuery(defaultQuery);
+      setSearchText('');
     }
-  }, [objectList, defaultQuery]);
-
-  const updateQuery = input => {
-    setFilteredList(data.slice());
-    setQuery(input);
-  };
-
-  const filter = object => {
-    if (object[searchParam].toLowerCase().includes(query.toLowerCase())) {
-      return object[searchParam];
-    } else {
-      filteredList.splice(filteredList.indexOf(object), 1);
-      return null;
-    }
-  };
+  }, [displayValue, value]);
 
   const handleSelect = item => {
-    setToggleList(false);
-    setQuery(item[searchParam]);
-    setValueSearch(item.id);
+    setDisplayList(false);
+    onChangeValue(item);
+  };
+
+  const handleChangeText = text => {
+    setDisplayList(true);
+    setSearchText(text);
   };
 
   const handleClear = () => {
-    setToggleList(false);
-    setQuery('');
-    setValueSearch('');
+    setDisplayList(false);
+    onChangeValue(null);
+    setSearchText('');
   };
+
+  const handlePressScan = () => {
+    dispatch(enableScan(scanKeySearch));
+  };
+
+  const filteredList = useMemo(() => {
+    if (filter) {
+      return objectList.filter(item => filter(item, searchText));
+    }
+    return objectList;
+  }, [objectList, filter, searchText]);
 
   return (
     <View>
       <SearchBar
-        valueTxt={query}
+        valueTxt={searchText}
         style={styles.searchBar}
-        placeholder={searchName}
-        onChangeTxt={updateQuery}
+        placeholder={placeholder}
+        onChangeTxt={handleChangeText}
         onClearPress={handleClear}
-        onSelection={() => setToggleList(true)}
+        onSelection={() => setDisplayList(true)}
+        onScanPress={scanKeySearch ? handlePressScan : undefined}
+        scanIconColor={
+          isEnabled && scanKey === scanKeySearch ? '#84DCB7' : '#606060'
+        }
       />
-      {toggleList ? (
+      {displayList ? (
         <FlatList
           data={filteredList}
           keyExtractor={item => item.id.toString()}
-          extraData={query}
+          extraData={''}
           style={styles.flatListContainer}
           renderItem={({item}) => (
             <AutocompleteItem
               style={styles.flatListItem}
-              content={filter(item)}
+              content={displayValue(item)}
               onPress={() => handleSelect(item)}
             />
           )}
