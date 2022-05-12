@@ -11,7 +11,7 @@ export const fetchProductIndicators = createAsyncThunk(
           console.log(error.response);
         }
       })
-      .then(response => {console.log(response.data.object);return response.data.object});
+      .then(response => {return response.data.object});
   },
 );
 

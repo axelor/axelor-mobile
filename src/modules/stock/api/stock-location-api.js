@@ -32,7 +32,6 @@ export async function searchStockLocation() {
   });
 }
 export async function productStockLocation(data) {
-  console.log(data)
   return axios.post(
     `/ws/aos/stock-product/fetch-product-with-stock/${data.productId}`,
     {companyId: data.companyId, stockLocationId: data.stockLocationId},

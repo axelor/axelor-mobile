@@ -16,8 +16,6 @@ const ProductListVariables = ({ route }) => {
 
   useEffect(() => {
     dispatch(fetchProductVariants(product.productVariant.id))
-    console.log(productListVariables);
-    console.log("----------------------------------------------------------------------------------")
   }, [dispatch]);
   useEffect(()=>{
     setListPro([{ attribut: productListVariables[0]?.productVariantAttr1, value: productListVariables[0]?.productVariantValue1 }, { attribut: productListVariables[0]?.productVariantAttr2, value: productListVariables[0]?.productVariantValue2 }

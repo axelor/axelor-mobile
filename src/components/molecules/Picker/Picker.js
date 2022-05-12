@@ -17,9 +17,9 @@ const Picker = ({
     defaultValue === null ? '' : defaultValue,
   );
 
-  const handleValueChange = itemValue => {
+  const handleValueChange = (itemValue,itemIndex) => {
     setSelectedValue(itemValue);
-    onValueChange(itemValue);
+    onValueChange(itemValue,itemIndex);
   };
 
   return (
@@ -34,7 +34,7 @@ const Picker = ({
           selectedValue={selectedValue}
           onValueChange={handleValueChange}
           mode="dropdown">
-          <ReactNativePicker.Item label={''} value={'empty'} />
+          <ReactNativePicker.Item  />
           {listItems.map(item => {
             return (
               <ReactNativePicker.Item
