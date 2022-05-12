@@ -1,20 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, IconNew, Text, Button} from '@/components/atoms';
+import {Screen, IconNew} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {InternalMoveCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';
-import getFromList from '@/modules/stock/utils/get-from-list';
 import filterListContain from '@/modules/stock/utils/filter-list-contain';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {fetchInternalMoves} from '@/modules/stock/features/internalMoveSlice';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
 
 // STATUS SELECT
 const STATUS_DRAFT = 1;
@@ -53,12 +51,22 @@ const getAvailability = option => {
   }
 };
 
+const stockOriginalLocationScanKey =
+  'stock-original-location_internal-move-list';
+const stockDestinationLocationScanKey =
+  'stock-destination-location_internal-move-list';
+const productScanKey = 'product_internal-move-list';
+
 const InternalMoveListScreen = ({navigation}) => {
   const {loadingInternalMove, internalMoveList} = useSelector(
     state => state.internalMove,
   );
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
+  const [originalStockLocation, setOriginalStockLocation] = useState(null);
+  const [destinationStockLocation, setDestinationStockLocation] =
+    useState(null);
+  const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,23 +75,33 @@ const InternalMoveListScreen = ({navigation}) => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const originalStockLocationScanned = useStockLocationScanner(
+    stockOriginalLocationScanKey,
+  );
+  useEffect(() => {
+    if (originalStockLocationScanned) {
+      setOriginalStockLocation(originalStockLocationScanned);
+    }
+  }, [originalStockLocationScanned]);
+
+  const destinationStockLocationScanned = useStockLocationScanner(
+    stockDestinationLocationScanKey,
+  );
+  useEffect(() => {
+    if (destinationStockLocationScanned) {
+      setDestinationStockLocation(destinationStockLocationScanned);
+    }
+  }, [destinationStockLocationScanned]);
+
+  const productScanned = useProductScanner(productScanKey);
+  useEffect(() => {
+    if (productScanned) {
+      setProduct(productScanned);
+    }
+  }, [productScanned]);
+
   // ----------  FILTERS -------------
   const [filteredList, setFilteredList] = useState(internalMoveList);
-  const [queryOriginalLocation, setQueryOriginalLocation] = useState('');
-  const [queryDestinationLocation, setQueryDestinationLocation] = useState('');
-  const [queryProduct, setQueryProduct] = useState('');
-
-  const handleQueryOriginalLocation = locationId => {
-    setQueryOriginalLocation(locationId);
-  };
-
-  const handleQueryDestinationLocation = locationId => {
-    setQueryDestinationLocation(locationId);
-  };
-
-  const handleQueryProductChange = productId => {
-    setQueryProduct(productId);
-  };
 
   // Filter list on search params
   useEffect(() => {
@@ -94,24 +112,22 @@ const InternalMoveListScreen = ({navigation}) => {
             internalMoveList,
             'fromStockLocation',
             'id',
-            queryOriginalLocation,
+            originalStockLocation?.id ?? '',
           ),
           'toStockLocation',
           'id',
-          queryDestinationLocation,
+          destinationStockLocation?.id ?? '',
         ),
         'stockMoveLineList',
         'productName',
-        getFromList(productList, 'id', queryProduct) == null
-          ? ''
-          : getFromList(productList, 'id', queryProduct).name,
+        product?.id ?? '',
       ),
     );
   }, [
     internalMoveList,
-    queryOriginalLocation,
-    queryDestinationLocation,
-    queryProduct,
+    originalStockLocation,
+    destinationStockLocation,
+    product,
   ]);
 
   // ----------  NAVIGATION -------------
@@ -133,31 +149,51 @@ const InternalMoveListScreen = ({navigation}) => {
     });
   }, [navigation]);
 
+  // ----------  REFRESH -------------
+  const [isFetching, setIsFetching] = useState(false);
+
+  const handleRefresh = useCallback(() => {
+    setIsFetching(true);
+    dispatch(fetchInternalMoves());
+    setIsFetching(false);
+  }, [isFetching]);
+
   return (
     <Screen style={styles.container}>
       <AutocompleteSearch
         objectList={stockLocationList}
-        searchName="Original Stock Location"
-        searchParam="name"
-        setValueSearch={handleQueryOriginalLocation}
+        value={originalStockLocation}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        onChangeValue={item => setOriginalStockLocation(item)}
+        placeholder="Original Stock Location"
+        scanKeySearch={stockOriginalLocationScanKey}
       />
       <AutocompleteSearch
         objectList={stockLocationList}
-        searchName="Destination Stock Location"
-        searchParam="name"
-        setValueSearch={handleQueryDestinationLocation}
+        value={destinationStockLocation}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        onChangeValue={item => setDestinationStockLocation(item)}
+        placeholder="Destination Stock Location"
+        scanKeySearch={stockDestinationLocationScanKey}
       />
       <AutocompleteSearch
         objectList={productList}
-        searchName="Product"
-        searchParam="name"
-        setValueSearch={handleQueryProductChange}
+        value={product}
+        onChangeValue={item => setProduct(item)}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        scanKeySearch={productScanKey}
+        placeholder="Product"
       />
       {loadingInternalMove ? (
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
           data={filteredList}
+          onRefresh={handleRefresh}
+          refreshing={isFetching}
           renderItem={({item}) => (
             <InternalMoveCard
               style={styles.item}
