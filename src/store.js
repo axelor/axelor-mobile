@@ -1,10 +1,28 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {authReducer} from '@/modules/auth/features/authSlice';
-import {productReducer} from '@/modules/stock/features/productSlice';
+import {
+  authReducer,
+  companyReducer,
+  languageReducer,
+  userReducer,
+} from '@/modules/auth/features';
+import {
+  productReducer,
+  stockCorrectionReducer,
+  stockCorrectionReasonReducer,
+  trackingNumberReducer,
+  stockLocationReducer,
+} from '@/modules/stock/features';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    user: userReducer,
+    company: companyReducer,
+    language: languageReducer,
     product: productReducer,
+    stockCorrection: stockCorrectionReducer,
+    stockCorrectionReason: stockCorrectionReasonReducer,
+    stockLocation: stockLocationReducer,
+    trackingNumber: trackingNumberReducer,
   },
 });

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ErrorText,
@@ -19,15 +19,33 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('@axadmin');
 
+  // const [url, setUrl] = useState('http://192.168.20.36:8080/axelor-api/');
+  // const [username, setUsername] = useState('admin');
+  // const [password, setPassword] = useState('admin');
+
   return (
     <Screen style={styles.container}>
-      <UrlInput value={url} onChange={setUrl} readOnly={loading} />
+      <View style={styles.imageContainer}>
+        <Image
+          resizeMode="contain"
+          source={require('../assets/Logo_Axelor.png')}
+          style={styles.image}
+        />
+      </View>
+      <UrlInput
+        style={[styles.inputContainer]}
+        value={url}
+        onChange={setUrl}
+        readOnly={loading}
+      />
       <UsernameInput
+        style={[styles.inputContainer]}
         value={username}
         onChange={setUsername}
         readOnly={loading}
       />
       <PasswordInput
+        style={[styles.inputContainer]}
         value={password}
         onChange={setPassword}
         readOnly={loading}
@@ -46,6 +64,19 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    marginHorizontal: 20,
+  },
+  inputContainer: {
+    backgroundColor: '#FFFFFF',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    width: '100%',
+    height: '15%',
+    marginBottom: '25%',
+  },
+  image: {
+    flex: 1,
   },
 });
 
