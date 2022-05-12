@@ -11,6 +11,7 @@ const SearchBar = ({
   onScanPress,
   onChangeTxt,
   onSelection,
+  scanIconColor,
 }) => {
   return (
     <View style={[styles.container, style]}>
@@ -34,7 +35,7 @@ const SearchBar = ({
           <Icon name="search" style={styles.icon} />
         </View>
         <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" style={styles.icon} />
+          <Icon name="qrcode" style={styles.icon} color={scanIconColor} />
         </TouchableOpacity>
       </View>
     </View>
@@ -65,7 +66,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.05,
-    color: '#606060',
   },
 });
 

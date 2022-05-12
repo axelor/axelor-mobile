@@ -36,7 +36,7 @@ export const updateCorrection = createAsyncThunk(
           console.log(error.response.data);
         }
       })
-      .then(response => response.data.data);
+      .then(response => response.data.object);
   },
 );
 

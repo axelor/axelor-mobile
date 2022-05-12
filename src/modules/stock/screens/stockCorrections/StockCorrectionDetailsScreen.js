@@ -20,7 +20,7 @@ import {
 } from '@/modules/stock/features/stockCorrectionSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import getBadgeColor from '@/modules/stock/utils/get-badge-color';
-import {ProductCardCorrection} from '../../components/molecules';
+import {ProductCardDetails} from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const STATUS_DRAFT = 1;
@@ -163,9 +163,11 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
         updateCorrection({
           stockCorrectionId: route.params.stockCorrection.id,
           realQty: realQty,
+          reasonId: reason.id,
         }),
       );
     }
+    navigation.navigate('StockCorrectionListScreen');
   };
 
   const handleValidate = () => {
@@ -209,10 +211,12 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
         updateCorrection({
           stockCorrectionId: route.params.stockCorrection.id,
           realQty: saveStatus ? null : realQty,
+          reasonId: saveStatus ? null : reason.id,
           status: STATUS_VALIDATED,
         }),
       );
     }
+    navigation.navigate('StockCorrectionListScreen');
   };
 
   // ------------  RENDER SCREEN --------------
@@ -224,86 +228,92 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
         <ActivityIndicator size="large" />
       ) : (
         <View>
-          <ScrollView>
-            <PopUpOneButton
-              visible={popUp}
-              data="Error Message"
-              title="Caution"
-              btnTitle="OK"
-              onPress={() => setPopUp(!popUp)}
-            />
-            <View>
-              <View style={styles.content}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.text_important}>
-                    {stockLocation.name}
-                  </Text>
-                </View>
-                <Badge
-                  style={[styles.badge, getBadgeColor(getStatus(status))]}
-                  title={getStatus(status)}
-                />
-              </View>
-              <View style={styles.contentProduct}>
-                {stockProduct.picture == null ? (
-                  <Icon name="camera" style={styles.icon} />
-                ) : (
-                  <Image
-                    resizeMode="contain"
-                    source={{
-                      uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
-                    }}
-                    style={styles.image}
-                  />
-                )}
-                <ProductCardCorrection
-                  style
-                  name={stockProduct.name}
-                  code={stockProduct.code}
-                  onPress={handleShowProduct}>
-                  <Text style={styles.text_important}>{stockProduct.name}</Text>
-                  <Text style={styles.text_secondary}>{stockProduct.code}</Text>
-                  {stockProduct.trackingNumberConfiguration == null ||
-                  trackingNumber == null ? null : (
-                    <Text style={styles.text_secondary}>
-                      {trackingNumber.trackingNumberSeq}
-                    </Text>
-                  )}
-                </ProductCardCorrection>
-              </View>
-            </View>
-            <QuantityCard
-              labelQty="Real quantity"
-              defaultValue={parseFloat(realQty).toFixed(2)}
-              onValueChange={handleQtyChange}
-              editable={status == STATUS_DRAFT}>
-              <Text style={styles.text}>
-                {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
-              </Text>
-            </QuantityCard>
-            {status == STATUS_VALIDATED ? (
-              <View>
-                <View style={styles.reasonTitle}>
-                  <Text>Reason</Text>
-                </View>
-                <Card style={styles.infosCard}>
-                  <Text>{reason.name}</Text>
-                </Card>
-              </View>
-            ) : (
-              <Picker
-                style={styles.picker}
-                styleTxt={reason.id == 'empty' ? styles.picker_empty : null}
-                title="Reason"
-                onValueChange={handleReasonChange}
-                defaultValue={reason.id}
-                listItems={stockCorrectionReasonList}
-                labelField="name"
-                valueField="id"
+          <View
+            style={status == STATUS_VALIDATED ? null : styles.scrollContainer}>
+            <ScrollView>
+              <PopUpOneButton
+                visible={popUp}
+                data="Stock correction reason is required, please complete the form"
+                title="Caution"
+                btnTitle="OK"
+                onPress={() => setPopUp(!popUp)}
               />
-            )}
-          </ScrollView>
-
+              <View>
+                <View style={styles.content}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.text_important}>
+                      {stockLocation.name}
+                    </Text>
+                  </View>
+                  <Badge
+                    style={[styles.badge, getBadgeColor(getStatus(status))]}
+                    title={getStatus(status)}
+                  />
+                </View>
+                <View style={styles.contentProduct}>
+                  {stockProduct.picture == null ? (
+                    <Icon name="camera" style={styles.icon} />
+                  ) : (
+                    <Image
+                      resizeMode="contain"
+                      source={{
+                        uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
+                      }}
+                      style={styles.image}
+                    />
+                  )}
+                  <ProductCardDetails
+                    style
+                    name={stockProduct.name}
+                    code={stockProduct.code}
+                    onPress={handleShowProduct}>
+                    <Text style={styles.text_important}>
+                      {stockProduct.name}
+                    </Text>
+                    <Text style={styles.text_secondary}>
+                      {stockProduct.code}
+                    </Text>
+                    {stockProduct.trackingNumberConfiguration == null ||
+                    trackingNumber == null ? null : (
+                      <Text style={styles.text_secondary}>
+                        {stockProduct.code}
+                      </Text>
+                    )}
+                  </ProductCardDetails>
+                </View>
+              </View>
+              <QuantityCard
+                labelQty="Real quantity"
+                defaultValue={parseFloat(realQty).toFixed(2)}
+                onValueChange={handleQtyChange}
+                editable={status == STATUS_DRAFT}>
+                <Text style={styles.text}>
+                  {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
+                </Text>
+              </QuantityCard>
+              {status == STATUS_VALIDATED ? (
+                <View>
+                  <View style={styles.reasonTitle}>
+                    <Text>Reason</Text>
+                  </View>
+                  <Card style={styles.infosCard}>
+                    <Text>{reason.name}</Text>
+                  </Card>
+                </View>
+              ) : (
+                <Picker
+                  style={styles.picker}
+                  styleTxt={reason.id == 'empty' ? styles.picker_empty : null}
+                  title="Reason"
+                  onValueChange={handleReasonChange}
+                  defaultValue={reason.id}
+                  listItems={stockCorrectionReasonList}
+                  labelField="name"
+                  valueField="id"
+                />
+              )}
+            </ScrollView>
+          </View>
           <View style={styles.button_container}>
             {saveStatus ? null : (
               <Button
@@ -331,6 +341,9 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: '2%',
+  },
+  scrollContainer: {
+    height: '86%',
   },
   content: {
     marginHorizontal: 32,
@@ -390,6 +403,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: '2%',
   },
   button: {
     width: '40%',

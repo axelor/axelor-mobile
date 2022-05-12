@@ -1,43 +1,55 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {Screen} from '@/components/atoms';
+import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
 import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
 import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
 import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {AutocompleteSearch} from '@/components/organisms';
 
-const productScanKey = 'product_stock-correction-new';
+const productScanKey = 'product_new-internal-move';
 
-const StockCorrectionNewProductScreen = ({navigation, route}) => {
+const InternalMoveNewProductScreen = ({navigation, route}) => {
   useFocusedScan(productScanKey);
 
   const {productList} = useSelector(state => state.product);
-  const dispatch = useDispatch();
   const productScanned = useProductScanner(productScanKey);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const handleClearOriginalLocation = () => {
+    navigation.navigate('InternalMoveNewOriginalLocationScreen');
+  };
+
+  const handleClearDestinationLocation = () => {
+    navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+      fromStockLocation: route.params.fromStockLocation,
+    });
+  };
+
   const handleNavigate = useCallback(
     product => {
       if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('StockCorrectionDetailsScreen', {
-          stockLocation: route.params.stockLocation,
+        navigation.navigate('InternalMoveDetailsScreen', {
+          fromStockLocation: route.params.fromStockLocation,
+          toStockLocation: route.params.toStockLocation,
           stockProduct: product,
         });
       } else {
-        navigation.navigate('StockCorrectionNewTrackingScreen', {
-          stockLocation: route.params.stockLocation,
-          product: product,
+        navigation.navigate('InternalMoveNewTrackingNumberScreen', {
+          fromStockLocation: route.params.fromStockLocation,
+          toStockLocation: route.params.toStockLocation,
+          stockProduct: product,
         });
       }
     },
-    [navigation, route.params.stockLocation],
+    [navigation],
   );
 
   useEffect(() => {
@@ -46,16 +58,17 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
     }
   }, [handleNavigate, productScanned]);
 
-  const handleClearLocation = () => {
-    navigation.navigate('StockCorrectionNewLocationScreen');
-  };
-
   return (
     <Screen style={styles.container}>
       <ClearableCard
         style={styles.infosCard}
-        valueTxt={route.params.stockLocation.name}
-        onClearPress={handleClearLocation}
+        valueTxt={route.params.fromStockLocation.name}
+        onClearPress={handleClearOriginalLocation}
+      />
+      <ClearableCard
+        style={styles.infosCard}
+        valueTxt={route.params.toStockLocation.name}
+        onClearPress={handleClearDestinationLocation}
       />
       <AutocompleteSearch
         objectList={productList}
@@ -71,7 +84,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 6,
+    marginVertical: 6,
   },
   infosCard: {
     marginHorizontal: 12,
@@ -83,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockCorrectionNewProductScreen;
+export default InternalMoveNewProductScreen;

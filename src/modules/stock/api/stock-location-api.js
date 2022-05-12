@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getApiResponseData, getFirstData} from '@/api/utils';
 
 const TYPE_INTERNAL = 1;
 const TYPE_EXTERNAL = 2;
@@ -30,4 +31,24 @@ export async function searchStockLocation() {
     limit: 20,
     offset: 0,
   });
+}
+
+export async function searchStockLocationBySerialNumber(serialNumber) {
+  return axios
+    .post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
+      data: {
+        criteria: [
+          {
+            fieldName: 'serialNumber',
+            operator: '=',
+            value: serialNumber,
+          },
+        ],
+      },
+      fields: ['id', 'name'],
+      limit: 1,
+      offset: 0,
+    })
+    .then(getApiResponseData)
+    .then(getFirstData);
 }

@@ -1,19 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, IconNew} from '@/components/atoms';
+import {IconNew, Screen} from '@/components/atoms';
 import {Chip} from '@/components/molecules';
-import {ChipSelect, AutocompleteSearch} from '@/components/organisms';
+import {AutocompleteSearch, ChipSelect} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {fetchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
 
 const STATUS_DRAFT = 1;
 const STATUS_VALIDATED = 2;
@@ -28,12 +32,17 @@ const getStatus = option => {
   }
 };
 
+const stockLocationScanKey = 'stock-location_stock-correction-list';
+const productScanKey = 'product_stock-correction-list';
+
 const StockCorrectionListScreen = ({navigation}) => {
   const {loadingCorrections, stockCorrectionList} = useSelector(
     state => state.stockCorrection,
   );
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
+  const [stockLocation, setStockLocation] = useState(null);
+  const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,6 +50,20 @@ const StockCorrectionListScreen = ({navigation}) => {
     dispatch(fetchStockLocations());
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
+  useEffect(() => {
+    if (stockLocationScanned) {
+      setStockLocation(stockLocationScanned);
+    }
+  }, [stockLocationScanned]);
+
+  const productScanned = useProductScanner(productScanKey);
+  useEffect(() => {
+    if (productScanned) {
+      setProduct(productScanned);
+    }
+  }, [productScanned]);
 
   // Set status filter
 
@@ -63,26 +86,46 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   // ----------  FILTERS -------------
   const [filteredList, setFilteredList] = useState(stockCorrectionList);
-  const [queryLocation, setQueryLocation] = useState('');
-  const [queryProduct, setQueryProduct] = useState('');
 
-  const handleQueryLocationChange = locationId => {
-    setQueryLocation(locationId);
-  };
-
-  const handleQueryProductChange = productId => {
-    setQueryProduct(productId);
-  };
+  const filterOnStatus = useCallback(
+    list => {
+      if (draftStatus) {
+        const draftStockCorrectionList = [];
+        list.forEach(item => {
+          if (item.statusSelect === 1) {
+            draftStockCorrectionList.push(item);
+          }
+        });
+        return draftStockCorrectionList;
+      } else if (validatedStatus) {
+        const validatedStockCorrectionList = [];
+        list.forEach(item => {
+          if (item.statusSelect === 2) {
+            validatedStockCorrectionList.push(item);
+          }
+        });
+        return validatedStockCorrectionList;
+      } else {
+        return list;
+      }
+    },
+    [draftStatus, validatedStatus],
+  );
 
   // Filter list on search params
   useEffect(() => {
     setFilteredList(
       filterOnStatus(
         filterList(
-          filterList(stockCorrectionList, 'stockLocation', 'id', queryLocation),
+          filterList(
+            stockCorrectionList,
+            'stockLocation',
+            'id',
+            stockLocation?.id ?? '',
+          ),
           'product',
           'id',
-          queryProduct,
+          product?.id ?? '',
         ),
       ),
     );
@@ -90,31 +133,10 @@ const StockCorrectionListScreen = ({navigation}) => {
     draftStatus,
     validatedStatus,
     stockCorrectionList,
-    queryLocation,
-    queryProduct,
+    stockLocation,
+    product,
+    filterOnStatus,
   ]);
-
-  const filterOnStatus = list => {
-    if (draftStatus) {
-      const draftStockCorrectionList = [];
-      list.forEach(item => {
-        if (item.statusSelect === 1) {
-          draftStockCorrectionList.push(item);
-        }
-      });
-      return draftStockCorrectionList;
-    } else if (validatedStatus) {
-      const validatedStockCorrectionList = [];
-      list.forEach(item => {
-        if (item.statusSelect === 2) {
-          validatedStockCorrectionList.push(item);
-        }
-      });
-      return validatedStockCorrectionList;
-    } else {
-      return list;
-    }
-  };
 
   // ----------  NAVIGATION -------------
   const showStockCorrectionDetails = stockCorrection => {
@@ -135,19 +157,34 @@ const StockCorrectionListScreen = ({navigation}) => {
     });
   }, [navigation]);
 
+  // ----------  REFRESH -------------
+  const [isFetching, setIsFetching] = useState(false);
+
+  const handleRefresh = useCallback(() => {
+    setIsFetching(true);
+    dispatch(fetchStockCorrections());
+    setIsFetching(false);
+  }, [isFetching]);
+
   return (
     <Screen style={styles.container}>
       <AutocompleteSearch
         objectList={stockLocationList}
-        searchName="Stock Location"
-        searchParam="name"
-        setValueSearch={handleQueryLocationChange}
+        value={stockLocation}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        onChangeValue={item => setStockLocation(item)}
+        placeholder="Stock location"
+        scanKeySearch={stockLocationScanKey}
       />
       <AutocompleteSearch
         objectList={productList}
-        searchName="Product"
-        searchParam="name"
-        setValueSearch={handleQueryProductChange}
+        value={product}
+        onChangeValue={item => setProduct(item)}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        scanKeySearch={productScanKey}
+        placeholder="Product"
       />
       <ChipSelect style={styles.chipContainer}>
         <Chip
@@ -168,6 +205,8 @@ const StockCorrectionListScreen = ({navigation}) => {
       ) : (
         <FlatList
           data={filteredList}
+          onRefresh={handleRefresh}
+          refreshing={isFetching}
           renderItem={({item}) => (
             <StockCorrectionCard
               style={styles.item}

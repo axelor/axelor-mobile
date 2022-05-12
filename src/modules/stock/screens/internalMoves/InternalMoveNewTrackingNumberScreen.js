@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
@@ -9,9 +9,9 @@ import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
 import useTrackingNumberScanner from '@/modules/stock/hooks/use-tracking-number-scanner';
 import {filterItemByTrackingNumberSeq} from '@/modules/stock/utils/filters';
 
-const trackingNumberScanKey = 'tracking-number_stock-correction-new';
+const trackingNumberScanKey = 'tracking-number_new-internal-move';
 
-const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
+const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
   useFocusedScan(trackingNumberScanKey);
 
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
@@ -19,18 +19,36 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTrackingNumber(route.params.product.id));
-  }, [dispatch, route.params.product.id]);
+    dispatch(fetchTrackingNumber(route.params.stockProduct.id));
+  }, [dispatch, route.params.stockProduct.id]);
+
+  const handleClearOriginalLocation = () => {
+    navigation.navigate('InternalMoveNewOriginalLocationScreen');
+  };
+
+  const handleClearDestinationLocation = () => {
+    navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+      fromStockLocation: route.params.fromStockLocation,
+    });
+  };
+
+  const handleClearProduct = () => {
+    navigation.navigate('InternalMoveNewProductScreen', {
+      fromStockLocation: route.params.fromStockLocation,
+      toStockLocation: route.params.toStockLocation,
+    });
+  };
 
   const handleTrackingNumberSelection = useCallback(
     trackingNumber => {
-      navigation.navigate('StockCorrectionDetailsScreen', {
-        stockLocation: route.params.stockLocation,
-        stockProduct: route.params.product,
+      navigation.navigate('InternalMoveDetailsScreen', {
+        fromStockLocation: route.params.fromStockLocation,
+        toStockLocation: route.params.toStockLocation,
+        stockProduct: route.params.stockProduct,
         trackingNumber: trackingNumber,
       });
     },
-    [navigation, route.params.product, route.params.stockLocation],
+    [navigation],
   );
 
   useEffect(() => {
@@ -39,28 +57,21 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
     }
   }, [handleTrackingNumberSelection, trackingNumberScanned]);
 
-  const handleClearLocation = () => {
-    navigation.navigate('StockCorrectionNewLocationScreen', {
-      product: route.params.product,
-    });
-  };
-
-  const handleClearProduct = () => {
-    navigation.navigate('StockCorrectionNewProductScreen', {
-      stockLocation: route.params.stockLocation,
-    });
-  };
-
   return (
     <Screen style={styles.container}>
       <ClearableCard
         style={styles.infosCard}
-        valueTxt={route.params.stockLocation.name}
-        onClearPress={handleClearLocation}
+        valueTxt={route.params.fromStockLocation.name}
+        onClearPress={handleClearOriginalLocation}
       />
       <ClearableCard
         style={styles.infosCard}
-        valueTxt={route.params.product.name}
+        valueTxt={route.params.toStockLocation.name}
+        onClearPress={handleClearDestinationLocation}
+      />
+      <ClearableCard
+        style={styles.infosCard}
+        valueTxt={route.params.stockProduct.name}
         onClearPress={handleClearProduct}
       />
       <AutocompleteSearch
@@ -89,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockCorrectionNewTrackingScreen;
+export default InternalMoveNewTrackingNumberScreen;

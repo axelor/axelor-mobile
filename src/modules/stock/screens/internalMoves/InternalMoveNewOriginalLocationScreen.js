@@ -9,13 +9,16 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
 
-const stockLocationScanKey = 'stock-location_from_new-stock-correction';
+const originalStockLocationScanKey =
+  'original-stock-location_from_new-internal-move';
 
-const StockCorrectionNewLocationScreen = ({navigation, route}) => {
-  useFocusedScan(stockLocationScanKey);
+const InternalMoveNewOriginalLocationScreen = ({navigation, route}) => {
+  useFocusedScan(originalStockLocationScanKey);
 
   const {stockLocationList} = useSelector(state => state.stockLocation);
-  const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
+  const stockLocationScanned = useStockLocationScanner(
+    originalStockLocationScanKey,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,18 +30,11 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
       if (location == null) {
         return;
       }
-      if (route.params?.product != null) {
-        navigation.navigate('StockCorrectionNewProductScreen', {
-          stockLocation: location,
-          product: route.params.product,
-        });
-      } else {
-        navigation.navigate('StockCorrectionNewProductScreen', {
-          stockLocation: location,
-        });
-      }
+      navigation.navigate('InternalMoveNewDestinationLocationScreen', {
+        fromStockLocation: location,
+      });
     },
-    [navigation, route.params?.product, stockLocationList],
+    [navigation],
   );
 
   useEffect(() => {
@@ -51,11 +47,11 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
     <Screen style={styles.container}>
       <AutocompleteSearch
         objectList={stockLocationList}
-        placeholder="Stock Location"
+        placeholder="Original Stock Location"
         displayValue={displayItemName}
         onChangeValue={item => handleNavigate(item)}
         filter={filterItemByName}
-        scanKeySearch={stockLocationScanKey}
+        scanKeySearch={originalStockLocationScanKey}
       />
     </Screen>
   );
@@ -71,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockCorrectionNewLocationScreen;
+export default InternalMoveNewOriginalLocationScreen;
