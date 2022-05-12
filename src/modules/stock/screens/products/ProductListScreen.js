@@ -13,7 +13,6 @@ const ProductListScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log(productList)
   }, [dispatch]);
 
   const showProductDetails = product => {

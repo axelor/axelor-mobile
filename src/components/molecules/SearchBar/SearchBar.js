@@ -15,7 +15,7 @@ const SearchBar = ({
 }) => {
   return (
     <View style={[styles.container, style]}>
-      <Input style={styles.input} placeholder={placeholder} />
+      <Input style={styles.input} value={valueTxt} onChange={onChangeTxt} placeholder={placeholder} />
       <View style={styles.actions}>
 
         <TouchableOpacity style={styles.action} onPress={onSearchPress}>

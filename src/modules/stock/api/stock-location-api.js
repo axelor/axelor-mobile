@@ -31,9 +31,10 @@ export async function searchStockLocation() {
     offset: 0,
   });
 }
-
-export async function productStockLocation(productId) {
-
-  return axios.get(`/ws/aos/stock-product/product-with-stock/10`,{});
-
+export async function productStockLocation(data) {
+  console.log(data)
+  return axios.post(
+    `/ws/aos/stock-product/fetch-product-with-stock/${data.productId}`,
+    {companyId: data.companyId, stockLocationId: data.stockLocationId},
+  );
 }

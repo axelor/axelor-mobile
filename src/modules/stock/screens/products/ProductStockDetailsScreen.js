@@ -14,11 +14,13 @@ import { fetchProductIndicators } from '../../features/productIndicatorsSlice';
 const ProductStockDetailsScreen = ({ route, navigation }) => {
 
   //const { loading } = useSelector(state => state.product);
+  const {loadingUser, userList} = useSelector(state => state.user);
+  console.log("-----------")
+  console.log(userList)
   const { loading ,productIndicators } = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
-  const options = ["axelor-maroc", "axelor-france"];
   const product = route.params.product;
-  console.log(productIndicators)
+  const [dataFilter,setDataFilter] = useState({productId:product.id})
   const { companyList } = useSelector(state => state.company);
   const showProductDetails = product => {
     navigation.navigate('ProductDetails', { product: product });
@@ -27,30 +29,28 @@ const ProductStockDetailsScreen = ({ route, navigation }) => {
     navigation.navigate('ProductImage', { product: product });
 }
   useEffect(() => {
-    dispatch(fetchCompanies());
-    dispatch(fetchProductIndicators(product.id));
-  }, [dispatch]);
+    dispatch(fetchProductIndicators(dataFilter));
+  }, [dispatch,dataFilter]);
 
   return (
     <Screen>
-      <Text>{productIndicators?.id}</Text>
       {loading ? (<ActivityIndicator size="large" />) : (
         <View style={styles.container}>
           <ProductCard onPressImage={()=>navigateToImageProduct()} onPress={() => showProductDetails(product)} pictureId={product.picture?.id} code={product.code} name={product.name} style={styles.item} />
           <View style={styles.lineStyle} />
-          <Picker defaultValue={1} listItems={companyList} labelField="name" valueField="id" onValueChange={() => { }} />
-          <SearchBar style={styles.searchBar} placeholder="Stock location" onSearchPress={() => dispatch(fetchProducts())} />
+          <Picker defaultValue listItems={companyList} labelField="name" valueField="id" onValueChange={()=>{}}  />
+          <SearchBar valueTxt style={styles.searchBar}  placeholder="Stock location" onSearchPress={() => {setDataFilter({...dataFilter,companyId:1,stockLocationId:1});}}  />
           <EditableInput style={styles.searchBar} placeholder="Casier"></EditableInput>
           <View style={styles.row}>
-            <CardStock title="REAL QUANTITY" number={1} />
-            <CardStock title="FUTURE QUANTITY" number={1} />
-            <CardStock title="ALLOCATED QUANTITY" number={1} />
-            <CardStock title="SALE ORDER QUANTITY" number={1} />
-            <CardStock title="PURCHASE ORDER QUANTITY" number={1} />
-            <CardStock title="AVIALABLE STOCK" number={1} />
-            <CardStock title="BUILDING QUANTITY" number={1} />
-            <CardStock title="CONSUME MANUF QUANTITY" number={1} />
-            <CardStock title="MISSING MANUF ORDER QUANTITY" number={1} />
+            <CardStock title="REAL QUANTITY" number={productIndicators?.realQty} />
+            <CardStock title="FUTURE QUANTITY" number={productIndicators?.futureQty} />
+            <CardStock title="ALLOCATED QUANTITY" number={productIndicators?.allocatedQty} />
+            <CardStock title="SALE ORDER QUANTITY" number={productIndicators?.saleOrderQty} />
+            <CardStock title="PURCHASE ORDER QUANTITY" number={productIndicators?.purchaseOrderQty} />
+            <CardStock title="AVIALABLE STOCK" number={productIndicators?.availableStock} />
+            <CardStock title="BUILDING QUANTITY" number={productIndicators?.buildingQty} />
+            <CardStock title="CONSUME MANUF QUANTITY" number={productIndicators?.consumeManufOrderQty} />
+            <CardStock title="MISSING MANUF ORDER QUANTITY" number={productIndicators?.missingManufOrderQty} />
           </View>
         </View>
       )}
@@ -99,5 +99,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProductStockDetailsScreen;
-
-// <SelectOptions style={styles.selection} options={options} defaultValue="COMPANY" />
