@@ -4,11 +4,8 @@ import {Screen, Text} from '@/components/atoms';
 
 const ProductImageScreen = ({route}) => {
   const product = route.params.product;
-  const Image_Http_URL = {
-    uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download/`,
-  };
   return (
-    <Screen style={styles.container}>
+    <Screen>
       <View style={styles.textContainer}>
         <Text style={styles.name}>{product.name}</Text>
         <Text style={styles.code}>{product.code}</Text>
@@ -16,7 +13,9 @@ const ProductImageScreen = ({route}) => {
       <View style={styles.imageContainer}>
         <Image
           resizeMode="contain"
-          source={Image_Http_URL}
+          source={{
+            uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+          }}
           style={styles.image}
         />
       </View>
@@ -27,7 +26,6 @@ const ProductImageScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     flexDirection: 'column',
   },
   imageContainer: {

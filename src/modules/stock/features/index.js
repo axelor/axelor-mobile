@@ -1,6 +1,6 @@
 export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSlice';
 export {internalMoveReducer as internalMove} from './internalMoveSlice';
-export {productIndicatorReducer as productIndicator} from './productIndicatorsSlice';
+export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';

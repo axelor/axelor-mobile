@@ -10,21 +10,21 @@ import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductCard = ({style, name, code, onPressImage, pictureId, onPress}) => {
-  const Image_Http_URL = {
-    uri: `http://192.168.122.1:8080/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download/`,
-  };
-
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
-          <TouchableOpacity onPress={onPressImage}>
+          {pictureId == null ? (
+            <Icon name="camera" style={styles.icon} />
+          ) : (
             <Image
               resizeMode="contain"
-              source={Image_Http_URL}
+              source={{
+                uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+              }}
               style={styles.image}
             />
-          </TouchableOpacity>
+          )}
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.code}>{code}</Text>

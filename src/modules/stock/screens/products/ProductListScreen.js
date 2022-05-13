@@ -1,18 +1,37 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Text} from '@/components/atoms';
-import {SearchBar} from '@/components/molecules';
+import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/molecules';
+import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
+import {filterItemByName} from '@/modules/stock/utils/filters';
+import {displayItemName} from '@/modules/stock/utils/displayers';
+
+const productScanKey = 'product_product-list';
 
 const ProductListScreen = ({navigation}) => {
   const {loading, productList} = useSelector(state => state.product);
+  const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const productScanned = useProductScanner(productScanKey);
+  useEffect(() => {
+    if (productScanned) {
+      setProduct(productScanned);
+    }
+  }, [productScanned]);
+
+  useEffect(() => {
+    if (product) {
+      showProductDetails(product);
+    }
+  }, [product]);
 
   const showProductDetails = product => {
     navigation.navigate('ProductStockDetailsScreen', {product: product});
@@ -22,9 +41,12 @@ const ProductListScreen = ({navigation}) => {
     <Screen style={styles.container}>
       <AutocompleteSearch
         objectList={productList}
-        searchName="Product"
-        searchParam="name"
-        setValueSearch={() => {}}
+        value={product}
+        onChangeValue={item => setProduct(item)}
+        displayValue={displayItemName}
+        filter={filterItemByName}
+        scanKeySearch={productScanKey}
+        placeholder="Product"
       />
       {loading ? (
         <ActivityIndicator size="large" />

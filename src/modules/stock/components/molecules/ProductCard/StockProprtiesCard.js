@@ -6,7 +6,7 @@ const StockProprtiesCard = ({style, title, value}) => {
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
-      <Text>{value}</Text>
+      <Text style={styles.value}>{value}</Text>
     </View>
   );
 };
@@ -14,15 +14,20 @@ const StockProprtiesCard = ({style, title, value}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: '#f3f7fc',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 14,
     alignItems: 'center',
+    elevation: 2,
   },
   title: {
+    fontSize: 12,
+    color: '#606060',
+  },
+  value: {
     fontWeight: 'bold',
-    color: 'black',
+    fontSize: 18,
   },
 });
 

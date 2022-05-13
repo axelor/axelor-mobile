@@ -13,9 +13,11 @@ const UrlInput = ({style, value, onChange, readOnly}) => {
         placeholder="URL"
         readOnly={readOnly}
       />
-      <TouchableOpacity style={styles.action} onPress={() => {}}>
-        <Icon name="qrcode" style={styles.icon} />
-      </TouchableOpacity>
+      {true ? null : (
+        <TouchableOpacity style={styles.action} onPress={() => {}}>
+          <Icon name="qrcode" style={styles.icon} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -15,7 +15,7 @@ const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState('http://192.168.122.1:8080/');
+  const [url, setUrl] = useState('https://demo1.axelor.com/salon2/');
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin');
 

@@ -35,15 +35,17 @@ const Picker = ({
           onValueChange={handleValueChange}
           mode="dropdown">
           <ReactNativePicker.Item />
-          {listItems.map(item => {
-            return (
-              <ReactNativePicker.Item
-                key={item[valueField]}
-                label={item[labelField]}
-                value={item[valueField]}
-              />
-            );
-          })}
+          {listItems == null
+            ? null
+            : listItems.map(item => {
+                return (
+                  <ReactNativePicker.Item
+                    key={item[valueField]}
+                    label={item[labelField]}
+                    value={item[valueField]}
+                  />
+                );
+              })}
         </ReactNativePicker>
       </View>
     </View>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {Button, CardStockInfo, Input, Screen, Text} from '@/components/atoms';
-import {StyleSheet, ActivityIndicator, View} from 'react-native';
+import {StyleSheet, ActivityIndicator, View, ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
 import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
@@ -22,84 +22,96 @@ const ProductDetails = ({route, navigation}) => {
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View style={styles.container}>
-          <ProductCardDetails
-            onPressImage={() => navigateToImageProduct()}
-            image={product.image}
-            picture={product.picture}
-            categorie={product.productCategory}
-            prototype={product.isPrototype}
-            unrenewed={product.isUnrenewed}
-            procurMethode={product.procurementMethodSelect}
-            code={product.code}
-            name={product.name}
-            style={styles.item}
-          />
-          <View style={styles.lineStyle} />
-          <View style={styles.stock}>
-            <StockProprtiesCard
-              style={styles.stockCard}
-              title="STOCK"
-              value={product.unit?.name}
+        <View style={styles.scrollContainer}>
+          <ScrollView>
+            <ProductCardDetails
+              onPressImage={() => navigateToImageProduct()}
+              picture={product.picture}
+              categorie={product.productCategory}
+              prototype={product.isPrototype}
+              unrenewed={product.isUnrenewed}
+              procurMethode={product.procurementMethodSelect}
+              code={product.code}
+              name={product.name}
+              style={styles.item}
             />
-            <StockProprtiesCard
-              style={styles.stockCard}
-              title="SALE"
-              value={product.salesUnit?.name}
-            />
-            <StockProprtiesCard
-              style={styles.stockCard}
-              title="PURCHASE"
-              value={product.purchasesUnit?.name}
-            />
-          </View>
-          <View style={styles.containerPack}>
-            <Text style={styles.titles}>PACKING</Text>
-            <View style={styles.packing}>
-              <StockProprtiesCard
-                style={styles.packingCard}
-                title="LENGHT"
-                value={product.length}
-              />
-              <StockProprtiesCard
-                style={styles.packingCard}
-                title="WIDTH"
-                value={product.width}
-              />
-              <StockProprtiesCard
-                style={styles.packingCard}
-                title="HEIGHT"
-                value={product.height}
-              />
-              <StockProprtiesCard
-                style={styles.packingCard}
-                title="NET MASS"
-                value={product.netMass}
-              />
-              <StockProprtiesCard
-                style={styles.packingCard}
-                title="GROSS MASS"
-                value={product.grossMass}
-              />
+            <View style={styles.lineContainer}>
+              <View style={styles.lineStyle} />
             </View>
-          </View>
-          <View style={styles.description}>
-            <Text style={styles.titles}>DESCRIPTION</Text>
-            <View style={styles.submitArea}>
-              <Text style={styles.textArea}>{product.description}</Text>
+            {product.unit ? (
+              <View style={styles.stock}>
+                <StockProprtiesCard
+                  style={styles.stockCard}
+                  title="STOCK"
+                  value={product.unit?.name}
+                />
+                <StockProprtiesCard
+                  style={styles.stockCard}
+                  title="SALE"
+                  value={
+                    product.salesUnit
+                      ? product.salesUnit?.name
+                      : product.unit?.name
+                  }
+                />
+                <StockProprtiesCard
+                  style={styles.stockCard}
+                  title="PURCHASE"
+                  value={
+                    product.purchasesUnit
+                      ? product.purchasesUnit?.name
+                      : product.unit?.name
+                  }
+                />
+              </View>
+            ) : null}
+            <View style={styles.containerPack}>
+              <Text style={styles.titles}>PACKING</Text>
+              <View style={styles.packing}>
+                <StockProprtiesCard
+                  style={styles.packingCard}
+                  title="LENGTH"
+                  value={product.length}
+                />
+                <StockProprtiesCard
+                  style={styles.packingCard}
+                  title="WIDTH"
+                  value={product.width}
+                />
+                <StockProprtiesCard
+                  style={styles.packingCard}
+                  title="HEIGHT"
+                  value={product.height}
+                />
+                <StockProprtiesCard
+                  style={styles.packingCard}
+                  title="NET MASS"
+                  value={product.netMass}
+                />
+                <StockProprtiesCard
+                  style={styles.packingCard}
+                  title="GROSS MASS"
+                  value={product.grossMass}
+                />
+              </View>
+            </View>
+            <View style={styles.description}>
+              <Text style={styles.titles}>DESCRIPTION</Text>
+              <View style={styles.submitArea}>
+                <Text style={styles.textArea} numberOfLines={3}>
+                  {product.description}
+                </Text>
+              </View>
+            </View>
+            {true ? null : (
               <Button
-                disabled={!product.productVariant}
                 onPress={() => showProductVariables()}
-                style={
-                  product.productVariant
-                    ? styles.variantsBtn
-                    : styles.variantsBtnDisabled
-                }
+                style={styles.variantsBtn}
                 styleTxt={styles.btnText}
                 title="VARIANTS"
               />
-            </View>
-          </View>
+            )}
+          </ScrollView>
         </View>
       )}
     </Screen>
@@ -107,9 +119,12 @@ const ProductDetails = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    alignContent: 'center',
+    height: '100%',
+  },
   container: {
     flex: 1,
-    backgroundColor: 'white',
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -127,18 +142,17 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   variantsBtn: {
-    width: '60%',
     backgroundColor: '#3ECF8E',
     borderRadius: 35,
   },
   variantsBtnDisabled: {
-    width: '60%',
     backgroundColor: '#F4F7F7',
     disabled: true,
     borderRadius: 35,
   },
   description: {
-    flex: 1,
+    width: '90%',
+    height: '40%',
     marginHorizontal: '5%',
     flexDirection: 'column',
     marginTop: '2%',
@@ -151,7 +165,7 @@ const styles = StyleSheet.create({
   textArea: {
     minHeight: '52%',
     width: '90%',
-    backgroundColor: '#f3f7fc',
+    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     marginVertical: 15,
     padding: 10,
@@ -176,11 +190,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  searchBar: {
-    marginHorizontal: 12,
-    marginBottom: 7,
-    backgroundColor: '#f3f7fc',
-  },
   item: {
     borderRadius: 0,
     elevation: 0,
@@ -190,6 +199,9 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     borderRadius: 0,
     elevation: 0,
+  },
+  lineContainer: {
+    alignItems: 'center',
   },
   lineStyle: {
     borderWidth: 0.7,

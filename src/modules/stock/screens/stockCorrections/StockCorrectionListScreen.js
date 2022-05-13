@@ -89,24 +89,28 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (draftStatus) {
-        const draftStockCorrectionList = [];
-        list.forEach(item => {
-          if (item.statusSelect === 1) {
-            draftStockCorrectionList.push(item);
-          }
-        });
-        return draftStockCorrectionList;
-      } else if (validatedStatus) {
-        const validatedStockCorrectionList = [];
-        list.forEach(item => {
-          if (item.statusSelect === 2) {
-            validatedStockCorrectionList.push(item);
-          }
-        });
-        return validatedStockCorrectionList;
-      } else {
+      if (list == null || list === []) {
         return list;
+      } else {
+        if (draftStatus) {
+          const draftStockCorrectionList = [];
+          list.forEach(item => {
+            if (item.statusSelect === 1) {
+              draftStockCorrectionList.push(item);
+            }
+          });
+          return draftStockCorrectionList;
+        } else if (validatedStatus) {
+          const validatedStockCorrectionList = [];
+          list.forEach(item => {
+            if (item.statusSelect === 2) {
+              validatedStockCorrectionList.push(item);
+            }
+          });
+          return validatedStockCorrectionList;
+        } else {
+          return list;
+        }
       }
     },
     [draftStatus, validatedStatus],

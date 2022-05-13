@@ -22,7 +22,7 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
-      placeholderTextColor="#606060"
+      placeholderTextColor="#c0c0c0"
       keyboardType={keyboardType}
       multiline={multiline}
     />
