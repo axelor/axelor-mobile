@@ -10,7 +10,7 @@ const EditableInput = ({style, placeholder, onValidate, defaultValue}) => {
   const handleIcon = () => {
     setEditable(!isEditable);
     if (!isEditable) {
-      onValidate(value);
+      onValidate(value == null ? '' : value);
     }
   };
 
