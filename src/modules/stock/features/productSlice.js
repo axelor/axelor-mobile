@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   searchProduct,
   searchProductWithId,
+  updateLocker,
 } from '@/modules/stock/api/product-api';
 
 export const fetchProducts = createAsyncThunk(
@@ -20,10 +21,25 @@ export const fetchProductWithId = createAsyncThunk(
   },
 );
 
+export const updateProductLocker = createAsyncThunk(
+  'product/updateLocker',
+  async function (data) {
+    return updateLocker(data)
+      .catch(function (error) {
+        if (error.response) {
+          console.log('Error got caugth: ');
+          console.log(error.response.data);
+        }
+      })
+      .then(response => response.data.object);
+  },
+);
+
 const initialState = {
   loadingProduct: false,
   productList: [],
-  productFromId: '',
+  productFromId: {},
+  updateResponde: {},
 };
 
 const productSlice = createSlice({
@@ -43,6 +59,13 @@ const productSlice = createSlice({
     builder.addCase(fetchProductWithId.fulfilled, (state, action) => {
       state.loadingProduct = false;
       state.productFromId = action.payload;
+    });
+    builder.addCase(updateProductLocker.pending, state => {
+      state.loadingProduct = true;
+    });
+    builder.addCase(updateProductLocker.fulfilled, (state, action) => {
+      state.loadingProduct = false;
+      state.updateResponde = action.payload;
     });
   },
 });

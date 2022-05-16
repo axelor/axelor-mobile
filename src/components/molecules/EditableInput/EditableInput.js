@@ -7,10 +7,10 @@ const EditableInput = ({style, placeholder, onValidate, defaultValue}) => {
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
 
-  const handleIcon = input => {
+  const handleIcon = () => {
     setEditable(!isEditable);
     if (!isEditable) {
-      onValidate(input);
+      onValidate(value);
     }
   };
 
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    color: 'black',
+    color: '#606060',
     fontSize: 14,
   },
   actions: {

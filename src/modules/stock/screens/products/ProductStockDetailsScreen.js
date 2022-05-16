@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import {updateProductLocker} from '../../features/productSlice';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
@@ -40,8 +41,15 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     dispatch(fetchProductIndicators(dataFilter));
-    dispatch(fetchStockLocationLine({stockId: 1, productId: product.id}));
-  }, [dispatch, dataFilter, product.id]);
+    if (stockLocation != null) {
+      dispatch(
+        fetchStockLocationLine({
+          stockId: stockLocation.id,
+          productId: product.id,
+        }),
+      );
+    }
+  }, [dispatch, dataFilter, product.id, stockLocation]);
 
   const [dataFilter, setDataFilter] = useState({
     productId: product.id,
@@ -71,6 +79,18 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       stockLocationId: stockLocation?.id,
     });
   }, [stockLocation, company, product]);
+
+  const handleLockerChange = input => {
+    if (stockLocation != null) {
+      dispatch(
+        updateProductLocker({
+          productId: product.id,
+          stockLocationId: stockLocation.id,
+          newLocker: input.toString(),
+        }),
+      );
+    }
+  };
 
   return (
     <Screen>
@@ -126,12 +146,14 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               onChangeValue={item => setStockLocation(item)}
               scanKeySearch={stockLocationScanKey}
             />
-            <EditableInput
-              style={styles.lockerContainer}
-              placeholder="Locker"
-              onValidate={() => {}}
-              defaultValue={stockLocationLine[0]?.rack}
-            />
+            {stockLocation == null ? null : (
+              <EditableInput
+                style={styles.lockerContainer}
+                placeholder="Locker"
+                onValidate={input => handleLockerChange(input)}
+                defaultValue={stockLocationLine[0]?.rack}
+              />
+            )}
             <View style={styles.row}>
               <View style={styles.cardStock}>
                 <CardStock

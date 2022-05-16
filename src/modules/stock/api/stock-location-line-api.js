@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export async function searchStockLocationLine(data) {
-  console.log(data);
   return axios.post(
     '/ws/rest/com.axelor.apps.stock.db.StockLocationLine/search',
     {
@@ -21,10 +20,6 @@ export async function searchStockLocationLine(data) {
                 value: data.stockId,
               },
             ],
-          },
-          {
-            operator: 'or',
-            criteria: [],
           },
         ],
       },

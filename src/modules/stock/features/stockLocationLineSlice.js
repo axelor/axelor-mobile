@@ -4,18 +4,13 @@ import {searchStockLocationLine} from '../api/stock-location-line-api';
 export const fetchStockLocationLine = createAsyncThunk(
   'stockLocationLine/fetchStockLocationLines',
   async function (data) {
-    console.log('---------------------');
-    console.log(data.stockId);
-    return searchStockLocationLine(data).then(response => {
-      console.log(response.data.data);
-      return response.data.data;
-    });
+    return searchStockLocationLine(data).then(response => response.data.data);
   },
 );
 
 const initialState = {
   loading: false,
-  stockLocationLine: [],
+  stockLocationLine: {},
 };
 
 const stockLocationLineSlice = createSlice({

@@ -92,3 +92,10 @@ export function searchProductBySerialNumber(serialNumber) {
     .then(getApiResponseData)
     .then(getFirstData);
 }
+
+export async function updateLocker(data) {
+  return axios.put(`/ws/aos/stock-product/modify-locker/${data.productId}`, {
+    stockLocationId: data.stockLocationId,
+    newLocker: data.newLocker,
+  });
+}
