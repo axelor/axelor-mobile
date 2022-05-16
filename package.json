@@ -9,7 +9,8 @@
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write src/ __tests__/"
+    "format": "prettier --write src/ __tests__/",
+    "format:check": "prettier --check src/ __tests__/"
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.4.1",
