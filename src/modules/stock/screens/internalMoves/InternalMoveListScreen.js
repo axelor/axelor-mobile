@@ -158,7 +158,7 @@ const InternalMoveListScreen = ({navigation}) => {
 
   const handleRefresh = useCallback(() => {
     dispatch(fetchInternalMoves());
-  }, [loadingInternalMove]);
+  }, [dispatch]);
 
   return (
     <Screen style={styles.container}>
@@ -210,7 +210,7 @@ const InternalMoveListScreen = ({navigation}) => {
               toStockLocation={item.toStockLocation.name}
               origin={item.origin}
               date={
-                item.statusSelect == STATUS_DRAFT
+                item.statusSelect === STATUS_DRAFT
                   ? item.createdOn
                   : item.realDate
               }

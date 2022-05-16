@@ -40,7 +40,7 @@ const StockCorrectionCard = ({
           <View style={styles.textContainer}>
             <Text style={styles.txtImportant}>{productFullname}</Text>
             <Text style={styles.txtDetails}>{stockLocation}</Text>
-            {status == 'Draft' ? (
+            {status === 'Draft' ? (
               <Text style={[styles.txtDetails, styles.creationDate]}>
                 Created on {formatDate(date, 'DD/MM/YYYY')}
               </Text>

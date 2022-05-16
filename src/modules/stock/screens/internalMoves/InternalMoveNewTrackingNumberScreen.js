@@ -48,7 +48,7 @@ const InternalMoveNewTrackingNumberScreen = ({navigation, route}) => {
         trackingNumber: trackingNumber,
       });
     },
-    [navigation],
+    [navigation, route.params],
   );
 
   useEffect(() => {

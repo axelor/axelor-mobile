@@ -1,9 +1,13 @@
 import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
+import StockLocation from '@/modules/stock/types/stock-location';
 
-const TYPE_INTERNAL = 1;
-const TYPE_EXTERNAL = 2;
-const TYPE_VIRTUAL = 3;
+const stockLocationFields = [
+  'name',
+  'id',
+  'serialNumber',
+  'stockLocationLineList',
+];
 
 export async function searchStockLocation() {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
@@ -15,7 +19,7 @@ export async function searchStockLocation() {
             {
               fieldName: 'typeSelect',
               operator: '=',
-              value: TYPE_INTERNAL,
+              value: StockLocation.type.internal,
             },
             {
               fieldName: 'company.id',
@@ -26,7 +30,7 @@ export async function searchStockLocation() {
         },
       ],
     },
-    fields: ['name', 'id', 'serialNumber', 'stockLocationLineList'],
+    fields: stockLocationFields,
     sortBy: ['id', 'name'],
     limit: 20,
     offset: 0,
@@ -45,7 +49,7 @@ export async function searchStockLocationBySerialNumber(serialNumber) {
           },
         ],
       },
-      fields: ['id', 'name'],
+      fields: stockLocationFields,
       limit: 1,
       offset: 0,
     })

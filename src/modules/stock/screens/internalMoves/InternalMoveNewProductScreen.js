@@ -49,7 +49,7 @@ const InternalMoveNewProductScreen = ({navigation, route}) => {
         });
       }
     },
-    [navigation],
+    [navigation, route.params.fromStockLocation, route.params.toStockLocation],
   );
 
   useEffect(() => {

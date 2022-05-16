@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {CardStockInfo, Screen, Text} from '@/components/atoms';
+import {Screen, Text} from '@/components/atoms';
 import {
   StyleSheet,
   ActivityIndicator,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import {ProductCard, ProductCardDetails} from '../../components/molecules';
+import {ProductCardDetails} from '../../components/molecules';
 import {EditableInput} from '@/components/molecules';
 import {useSelector, useDispatch} from 'react-redux';
 import CardStock from '@/components/molecules/Card/CardStock';
@@ -25,6 +25,7 @@ import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-sc
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
+  const product = route.params.product;
   const {userList} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -40,9 +41,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     dispatch(fetchProductIndicators(dataFilter));
     dispatch(fetchStockLocationLine({stockId: 1, productId: product.id}));
-  }, [dispatch, dataFilter]);
-
-  const product = route.params.product;
+  }, [dispatch, dataFilter, product.id]);
 
   const [dataFilter, setDataFilter] = useState({
     productId: product.id,
@@ -71,7 +70,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       companyId: company?.id,
       stockLocationId: stockLocation?.id,
     });
-  }, [stockLocation, company]);
+  }, [stockLocation, company, product]);
 
   return (
     <Screen>

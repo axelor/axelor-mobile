@@ -1,5 +1,5 @@
 import React from 'react';
-import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import UserNavigator from '@/modules/auth/navigators/UserNavigator';
 import ProductNavigator from '@/modules/stock/navigators/ProductNavigator';
 import StockCorrectionNavigator from '@/modules/stock/navigators/StockCorrectionNavigator';

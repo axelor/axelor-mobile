@@ -40,7 +40,7 @@ const InternalMoveNewDestinationLocationScreen = ({navigation, route}) => {
         toStockLocation: location,
       });
     },
-    [navigation],
+    [navigation, route.params.fromStockLocation],
   );
 
   useEffect(() => {

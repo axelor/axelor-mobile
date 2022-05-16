@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Button, CardStockInfo, Input, Screen, Text} from '@/components/atoms';
+import React, {useEffect} from 'react';
+import {Button, Screen, Text} from '@/components/atoms';
 import {StyleSheet, ActivityIndicator, View, ScrollView} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
 import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
 

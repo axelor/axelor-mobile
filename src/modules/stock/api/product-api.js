@@ -1,6 +1,30 @@
 import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
 
+const productFields = [
+  'name',
+  'code',
+  'picture',
+  'trackingNumberConfiguration',
+  'salesUnit',
+  'unit',
+  'length',
+  'purchasesUnit',
+  'description',
+  'height',
+  'width',
+  'productCategory',
+  'netMass',
+  'grossMass',
+  'procurementMethodSelect',
+  'isUnrenewed',
+  'isPrototype',
+  'productVariant',
+  'picture',
+  'serialNUmber',
+  'trackingNumberConfiguration',
+];
+
 export async function searchProduct() {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
     data: {
@@ -33,29 +57,7 @@ export async function searchProduct() {
       ],
     },
 
-    fields: [
-      'name',
-      'code',
-      'picture',
-      'trackingNumberConfiguration',
-      'salesUnit',
-      'unit',
-      'length',
-      'purchasesUnit',
-      'description',
-      'height',
-      'width',
-      'productCategory',
-      'netMass',
-      'grossMass',
-      'procurementMethodSelect',
-      'isUnrenewed',
-      'isPrototype',
-      'productVariant',
-      'picture',
-      'serialNUmber',
-      'trackingNumberConfiguration',
-    ],
+    fields: productFields,
     sortBy: ['code', 'name'],
     limit: 50,
     offset: 0,
@@ -66,13 +68,7 @@ export async function searchProductWithId(productId) {
   return axios.post(
     `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
     {
-      fields: [
-        'name',
-        'code',
-        'trackingNumberConfiguration',
-        'serialNumber',
-        'picture',
-      ],
+      fields: productFields,
     },
   );
 }
@@ -89,13 +85,7 @@ export function searchProductBySerialNumber(serialNumber) {
           },
         ],
       },
-      fields: [
-        'name',
-        'code',
-        'trackingNumberConfiguration',
-        'serialNumber',
-        'picture',
-      ],
+      fields: productFields,
       limit: 1,
       offset: 0,
     })

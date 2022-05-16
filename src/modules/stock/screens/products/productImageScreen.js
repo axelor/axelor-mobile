@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {Screen, Text} from '@/components/atoms';
 
 const ProductImageScreen = ({route}) => {

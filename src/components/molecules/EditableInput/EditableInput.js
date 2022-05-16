@@ -7,7 +7,7 @@ const EditableInput = ({style, placeholder, onValidate, defaultValue}) => {
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
 
-  handleIcon = input => {
+  const handleIcon = input => {
     setEditable(!isEditable);
     if (!isEditable) {
       onValidate(input);

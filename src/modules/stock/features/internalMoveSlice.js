@@ -1,5 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {searchInternalMove} from '@/modules/stock/api/internal-move-api';
+import {
+  searchInternalMove,
+  createInternalStockMove,
+  updateInternalStockMove,
+} from '@/modules/stock/api/internal-move-api';
 
 export const fetchInternalMoves = createAsyncThunk(
   'internalMove/fetchInternalMove',

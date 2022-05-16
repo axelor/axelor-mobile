@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ActivityIndicator,
@@ -20,7 +20,10 @@ import {
   LocationsMoveCard,
 } from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {createInternalStockMove} from '../../api/internal-move-api';
+import {
+  createInternalStockMove,
+  updateInternalStockMove,
+} from '../../api/internal-move-api';
 
 // STATUS SELECT
 const STATUS_DRAFT = 1;
@@ -108,7 +111,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
     state => state.internalMoveLine,
   );
   const {loadingProduct, productList} = useSelector(state => state.product);
-  const {loadingUnit, unitList} = useSelector(state => state.unit);
+  const {unitList} = useSelector(state => state.unit);
 
   const dispatch = useDispatch();
 
@@ -137,9 +140,9 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 
   useEffect(() => {
     initVariables();
-  }, [route.params, productList, internalMoveLineList]);
+  }, [route.params, productList, internalMoveLineList, initVariables]);
 
-  const initVariables = () => {
+  const initVariables = useCallback(() => {
     if (route.params.internalMove == null) {
       setStatus(STATUS_DRAFT);
       setAvailabilty(null);
@@ -191,7 +194,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       }
       setSaveStatus(true);
     }
-  };
+  }, [internalMoveLineList, productList, route.params]);
 
   // ------------  HANDLERS --------------
 
@@ -212,17 +215,13 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
   };
 
   const handleUnitChange = unitId => {
-    if (unitId == 'empty') {
+    if (unitId === 'empty') {
       setUnit({name: '', id: 'empty'});
     } else {
       setUnit(getFromList(unitList, 'id', unitId));
     }
     setSaveStatus(false);
   };
-
-  const {createResponse, updateResponse, error} = useSelector(
-    state => state.stockCorrection,
-  );
 
   const handleSave = () => {
     // Request AOS API
@@ -245,7 +244,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         );
       } else {
         dispatch(
-          createCorrection({
+          createInternalStockMove({
             productId: stockProduct.id,
             companyId: 1,
             originStockLocationId: originalStockLocation.id,
@@ -260,7 +259,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
     } else {
       // Stock correction already exists : update qty or unit
       dispatch(
-        updateCorrection({
+        updateInternalStockMove({
           internalMoveId: route.params.internalMove.id,
           movedQty: movedQty,
           unitId: unit.id,
@@ -291,7 +290,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         );
       } else {
         dispatch(
-          createCorrection({
+          createInternalStockMove({
             productId: stockProduct.id,
             companyId: 1,
             originStockLocationId: originalStockLocation.id,
@@ -306,7 +305,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
     } else {
       // Stock correction already exists : update qty or unit
       dispatch(
-        updateCorrection({
+        updateInternalStockMove({
           internalMoveId: route.params.internalMove.id,
           movedQty: movedQty,
           unitId: unit.id,
@@ -327,7 +326,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         <View>
           <View
             style={
-              status == STATUS_REALIZED || status == STATUS_CANCELED
+              status === STATUS_REALIZED || status === STATUS_CANCELED
                 ? null
                 : styles.scrollContainer
             }>
@@ -390,16 +389,16 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 labelQty="Moved quantity"
                 defaultValue={parseFloat(movedQty).toFixed(2)}
                 onValueChange={handleQtyChange}
-                editable={status == STATUS_DRAFT}>
+                editable={status === STATUS_DRAFT}>
                 <View>
                   <Text style={styles.text}>
                     {'Available quantity: ' + parseFloat(plannedQty).toFixed(2)}
                   </Text>
                 </View>
               </QuantityCard>
-              {status == STATUS_PLANNED ||
-              status == STATUS_REALIZED ||
-              status == STATUS_CANCELED ? (
+              {status === STATUS_PLANNED ||
+              status === STATUS_REALIZED ||
+              status === STATUS_CANCELED ? (
                 <View>
                   <View style={styles.reasonTitle}>
                     <Text>Unit</Text>
@@ -411,7 +410,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
               ) : (
                 <Picker
                   style={styles.picker}
-                  styleTxt={unit.id == 'empty' ? styles.picker_empty : null}
+                  styleTxt={unit.id === 'empty' ? styles.picker_empty : null}
                   title="Unit"
                   onValueChange={handleUnitChange}
                   defaultValue={unit.id}
@@ -424,9 +423,9 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 <Text>Notes on Stock Move </Text>
               </View>
               <Card style={styles.infosCard}>
-                {status == STATUS_PLANNED ||
-                status == STATUS_REALIZED ||
-                status == STATUS_CANCELED ? (
+                {status === STATUS_PLANNED ||
+                status === STATUS_REALIZED ||
+                status === STATUS_CANCELED ? (
                   <Text numberOfLines={3}>{notes}</Text>
                 ) : (
                   <Input

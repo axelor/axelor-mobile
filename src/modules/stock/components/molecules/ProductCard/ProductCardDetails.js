@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
-import {Card, Chip, Text} from '@/components/atoms';
+import {Card, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductCardDetails = ({style, onPressImage, onPress, ...product}) => {
   return (

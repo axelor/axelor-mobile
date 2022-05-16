@@ -167,7 +167,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
   };
 
   const handleValidate = () => {
-    if (reason.id == 'empty') {
+    if (reason.id === 'empty') {
       // Required field
       setPopUp(true);
       return;
@@ -225,7 +225,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
       ) : (
         <View>
           <View
-            style={status == STATUS_VALIDATED ? null : styles.scrollContainer}>
+            style={status === STATUS_VALIDATED ? null : styles.scrollContainer}>
             <ScrollView>
               <PopUpOneButton
                 visible={popUp}
@@ -253,7 +253,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                     <Image
                       resizeMode="contain"
                       source={{
-                        uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
+                        uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
                       }}
                       style={styles.image}
                     />
@@ -282,12 +282,12 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                 labelQty="Real quantity"
                 defaultValue={parseFloat(realQty).toFixed(2)}
                 onValueChange={handleQtyChange}
-                editable={status == STATUS_DRAFT}>
+                editable={status === STATUS_DRAFT}>
                 <Text style={styles.text}>
                   {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
                 </Text>
               </QuantityCard>
-              {status == STATUS_VALIDATED ? (
+              {status === STATUS_VALIDATED ? (
                 <View>
                   <View style={styles.reasonTitle}>
                     <Text>Reason</Text>
@@ -299,7 +299,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
               ) : (
                 <Picker
                   style={styles.picker}
-                  styleTxt={reason.id == 'empty' ? styles.picker_empty : null}
+                  styleTxt={reason.id === 'empty' ? styles.picker_empty : null}
                   title="Reason"
                   onValueChange={handleReasonChange}
                   defaultValue={reason.id}
@@ -319,7 +319,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                 onPress={handleSave}
               />
             )}
-            {status == STATUS_VALIDATED ? null : (
+            {status === STATUS_VALIDATED ? null : (
               <Button
                 title="VALIDATE"
                 style={[styles.button, styles.button_primary]}

@@ -1,6 +1,6 @@
 import {CardStockInfo, Text} from '@/components/atoms';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const CardStock = ({style, title, number}) => {
   return (

@@ -1,8 +1,6 @@
-import {View, Text, StyleSheet, Modal} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SelectInput} from '@/components/atoms';
-import ModalSelection from '@/components/atoms/Modal/ModalSelection';
 
 const SelectOptions = ({style, defaultValue, options}) => {
   const [isModalVisible, setModalVisible] = useState(false);

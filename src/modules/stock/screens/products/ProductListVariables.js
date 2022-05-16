@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Text} from '@/components/atoms';
+import {Screen} from '@/components/atoms';
 import {SearchBar} from '@/components/molecules';
 import {fetchProductVariants} from '@/modules/stock/features/productVariantSlice';
-import {ProductCard} from '@/modules/stock/components/molecules';
 import ProductCardVariable from '../../components/molecules/ProductCard/ProductCardVariable';
 
-const ProductListVariables = ({route}) => {
+const ProductListVariables = ({route, navigation}) => {
   const {loading, productListVariables} = useSelector(
     state => state.productVariant,
   );
@@ -17,7 +16,8 @@ const ProductListVariables = ({route}) => {
 
   useEffect(() => {
     dispatch(fetchProductVariants(product.productVariant.id));
-  }, [dispatch]);
+  }, [dispatch, product.productVariant.id]);
+
   useEffect(() => {
     setListPro([
       {
@@ -41,18 +41,15 @@ const ProductListVariables = ({route}) => {
         value: productListVariables[0]?.productVariantValue5,
       },
     ]);
-  }, [loading]);
+  }, [loading, productListVariables]);
 
-  const showProductDetails = product => {
-    navigation.navigate('ProductStockDetailsScreen', {product: product});
+  const showProductDetails = item => {
+    navigation.navigate('ProductStockDetailsScreen', {product: item});
   };
+
   return (
     <Screen style={styles.container}>
-      <SearchBar
-        style={styles.searchBar}
-        placeholder="Product"
-        onSearchPress={() => dispatch(fetchProducts())}
-      />
+      <SearchBar style={styles.searchBar} placeholder="Product" />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -67,6 +64,7 @@ const ProductListVariables = ({route}) => {
                 attribut={item.attribut?.name}
                 value={item.value?.name}
                 key={item.id}
+                onPress={showProductDetails}
               />
             )
           }

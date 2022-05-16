@@ -3,9 +3,6 @@ import React from 'react';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const ModalSelection = ({style, options, setModalVisible}) => {
-  const HEIGHT = Dimensions.get('window').height;
-  const WIDTH = Dimensions.get('window').width;
-
   const option = options.map((item, id) => {
     return (
       <TouchableOpacity key={id}>
@@ -17,12 +14,7 @@ const ModalSelection = ({style, options, setModalVisible}) => {
   });
 
   return (
-    <View
-      style={[
-        styles.modal,
-        styles.container,
-        {width: WIDTH - 20, height: 'auto'},
-      ]}>
+    <View style={[styles.modal, styles.container]}>
       <ScrollView>{option}</ScrollView>
     </View>
   );
@@ -32,7 +24,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
   },
-  container: {},
+  container: {
+    width: Dimensions.get('window').width - 20,
+    height: 'auto',
+  },
   modal: {
     backgroundColor: 'white',
     borderRadius: 20,

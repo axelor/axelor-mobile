@@ -38,7 +38,7 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
         });
       }
     },
-    [navigation, route.params?.product, stockLocationList],
+    [navigation, route.params.product],
   );
 
   useEffect(() => {

@@ -21,7 +21,7 @@ export const fetchProductWithId = createAsyncThunk(
 );
 
 const initialState = {
-  loadingProduct: true,
+  loadingProduct: false,
   productList: [],
   productFromId: '',
 };

@@ -9,7 +9,7 @@ import {
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductCard = ({style, name, code, onPressImage, pictureId, onPress}) => {
+const ProductCard = ({style, name, code, pictureId, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>

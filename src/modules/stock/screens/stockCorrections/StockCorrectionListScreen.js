@@ -168,7 +168,7 @@ const StockCorrectionListScreen = ({navigation}) => {
     setIsFetching(true);
     dispatch(fetchStockCorrections());
     setIsFetching(false);
-  }, [isFetching]);
+  }, [dispatch]);
 
   return (
     <Screen style={styles.container}>
@@ -218,7 +218,7 @@ const StockCorrectionListScreen = ({navigation}) => {
               productFullname={item.product.fullName}
               stockLocation={item.stockLocation.name}
               date={
-                item.statusSelect == STATUS_DRAFT
+                item.statusSelect === STATUS_DRAFT
                   ? item.createdOn
                   : item.validationDateT
               }

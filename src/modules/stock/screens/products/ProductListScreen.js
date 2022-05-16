@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
@@ -12,7 +12,7 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 const productScanKey = 'product_product-list';
 
 const ProductListScreen = ({navigation}) => {
-  const {loading, productList} = useSelector(state => state.product);
+  const {loadingProduct, productList} = useSelector(state => state.product);
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
 
@@ -31,11 +31,17 @@ const ProductListScreen = ({navigation}) => {
     if (product) {
       showProductDetails(product);
     }
-  }, [product]);
+  }, [product, showProductDetails]);
 
-  const showProductDetails = product => {
+  const showProductDetails = useCallback(() => {
     navigation.navigate('ProductStockDetailsScreen', {product: product});
-  };
+  }, [navigation, product]);
+
+  // ----------  REFRESH -------------
+
+  const handleRefresh = useCallback(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
     <Screen style={styles.container}>
@@ -48,18 +54,20 @@ const ProductListScreen = ({navigation}) => {
         scanKeySearch={productScanKey}
         placeholder="Product"
       />
-      {loading ? (
-        <ActivityIndicator size="large" />
+      {loadingProduct ? (
+        <ActivityIndicator size="large" color="black" />
       ) : (
         <FlatList
           data={productList}
+          onRefresh={handleRefresh}
+          refreshing={loadingProduct}
           renderItem={({item}) => (
             <ProductCard
               style={styles.item}
               name={item.name}
               code={item.code}
               pictureId={item.picture == null ? null : item.picture.id}
-              onPress={() => showProductDetails(item)}
+              onPress={() => setProduct(item)}
             />
           )}
         />

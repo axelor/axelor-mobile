@@ -70,7 +70,7 @@ const InternalMoveCard = ({
             {origin == null ? null : (
               <Text style={styles.txtDetails}>{origin}</Text>
             )}
-            {status == 'Planned' ? (
+            {status === 'Planned' ? (
               <Text style={[styles.txtDetails, styles.creationDate]}>
                 Created on {formatDate(date, 'DD/MM/YYYY')}
               </Text>
