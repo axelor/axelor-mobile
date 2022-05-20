@@ -83,68 +83,66 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <View style={styles.scrollContainer}>
-          <ScrollView>
-            <View style={styles.infoContainer}>
-              {product.picture == null ? (
-                <Icon name="camera" style={styles.icon} />
-              ) : (
-                <TouchableOpacity
-                  style={styles.imageContainer}
-                  onPress={navigateToImageProduct}
-                  activeOpacity={0.9}>
-                  <Image
-                    resizeMode="contain"
-                    source={{
-                      uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
-                    }}
-                    style={styles.image}
-                  />
-                </TouchableOpacity>
-              )}
-              <ProductCardDetails
-                style={styles.productContainer}
-                name={product.name}
-                code={product.code}
-                onPress={showProductDetails}>
-                <Text style={styles.text_important}>{product.name}</Text>
-                <Text style={styles.text_secondary}>{product.code}</Text>
-              </ProductCardDetails>
-            </View>
-            <View style={styles.lineStyle} />
-            <View style={styles.picker}>
-              <Picker
-                title="Company"
-                defaultValue={selectedCompanyId}
-                listItems={companyList}
-                labelField="name"
-                valueField="id"
-                onValueChange={item => setselectedCompanyId(item)}
-              />
-            </View>
-            <AutocompleteSearch
-              objectList={stockLocationList}
-              searchParam="name"
-              placeholder="Stock location"
-              displayValue={displayItemName}
-              filter={filterItemByName}
-              value={stockLocation}
-              onChangeValue={item => setStockLocation(item)}
-              scanKeySearch={stockLocationScanKey}
-            />
-            {stockLocation == null ? null : (
-              <EditableInput
-                style={styles.lockerContainer}
-                placeholder="Locker"
-                onValidate={input => handleLockerChange(input)}
-                defaultValue={
-                  stockLocationLine ? stockLocationLine[0]?.rack : 'CASIER'
-                }
-              />
+      <View style={styles.scrollContainer}>
+        <ScrollView>
+          <View style={styles.infoContainer}>
+            {product.picture == null ? (
+              <Icon name="camera" style={styles.icon} />
+            ) : (
+              <TouchableOpacity
+                style={styles.imageContainer}
+                onPress={navigateToImageProduct}
+                activeOpacity={0.9}>
+                <Image
+                  resizeMode="contain"
+                  source={{
+                    uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+                  }}
+                  style={styles.image}
+                />
+              </TouchableOpacity>
             )}
+            <ProductCardDetails
+              style={styles.productContainer}
+              name={product.name}
+              code={product.code}
+              onPress={showProductDetails}>
+              <Text style={styles.text_important}>{product.name}</Text>
+              <Text style={styles.text_secondary}>{product.code}</Text>
+            </ProductCardDetails>
+          </View>
+          <View style={styles.lineStyle} />
+          <View style={styles.picker}>
+            <Picker
+              title="Company"
+              defaultValue={selectedCompanyId}
+              listItems={companyList}
+              labelField="name"
+              valueField="id"
+              onValueChange={item => setselectedCompanyId(item)}
+            />
+          </View>
+          <AutocompleteSearch
+            objectList={stockLocationList}
+            searchParam="name"
+            placeholder="Stock location"
+            displayValue={displayItemName}
+            filter={filterItemByName}
+            value={stockLocation}
+            onChangeValue={item => setStockLocation(item)}
+            scanKeySearch={stockLocationScanKey}
+          />
+          {stockLocation == null ? null : (
+            <EditableInput
+              style={styles.lockerContainer}
+              placeholder="Locker"
+              onValidate={input => handleLockerChange(input)}
+              defaultValue={stockLocationLine[0]?.rack}
+            />
+          )}
+          {loading ? (
+            <ActivityIndicator size="large" />
+          ) : (
             <View style={styles.row}>
               <View style={styles.cardStock}>
                 <CardStock
@@ -195,9 +193,9 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
                 ) : null}
               </View>
             </View>
-          </ScrollView>
-        </View>
-      )}
+          )}
+        </ScrollView>
+      </View>
     </Screen>
   );
 };

@@ -18,7 +18,7 @@ export const fetchProductIndicators = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loading: true,
   productIndicators: [],
 };
 

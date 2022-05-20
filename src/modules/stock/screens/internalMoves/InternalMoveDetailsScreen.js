@@ -14,6 +14,7 @@ import {QuantityCard} from '@/modules/stock/components/organisms';
 import {fetchUnit} from '@/modules/stock/features/unitSlice';
 import {fetchProducts} from '@/modules/stock/features/productSlice';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
+import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import {
   ProductCardDetails,
@@ -34,6 +35,10 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
   );
   const {loadingProduct, productList} = useSelector(state => state.product);
   const {unitList} = useSelector(state => state.unit);
+  const {activeCompanyId} = useSelector(
+    state => state.user.userList[0]?.activeCompany.id,
+  ); // à changer après error handling
+  const {productIndicators} = useSelector(state => state.productIndicators);
 
   const dispatch = useDispatch();
 
@@ -44,6 +49,26 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       dispatch(fetchProducts());
     }
   }, [dispatch, route.params.internalMove]);
+
+  useEffect(() => {
+    if (route.params.internalMove != null && internalMoveLineList != null) {
+      dispatch(
+        fetchProductIndicators({
+          productId: internalMoveLineList[0]?.product.id,
+          companyId: activeCompanyId,
+          stockLocationId: route.params.internalMove.fromStockLocation.id,
+        }),
+      );
+    } else if (route.params.internalMove == null) {
+      dispatch(
+        fetchProductIndicators({
+          productId: route.params.stockProduct.id,
+          companyId: activeCompanyId,
+          stockLocationId: route.params.fromStockLocation.id,
+        }),
+      );
+    }
+  }, [activeCompanyId, dispatch, internalMoveLineList, route.params]);
 
   // ------------  VARIABLES --------------
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
@@ -62,7 +87,13 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 
   useEffect(() => {
     initVariables();
-  }, [route.params, productList, internalMoveLineList, initVariables]);
+  }, [
+    route.params,
+    productList,
+    productIndicators,
+    internalMoveLineList,
+    initVariables,
+  ]);
 
   const initVariables = useCallback(() => {
     if (route.params.internalMove == null) {
@@ -76,10 +107,14 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
           ? null
           : route.params.trackingNumber,
       );
-      setPlannedQty(0);
-      setMovedQty(0);
-      setUnit({name: '', id: 'empty'});
-      setNotes('BLallaladkdnanfianfj jnazfjs  evezn cj nd v ds c ');
+      if (productIndicators.id !== route.params.stockProduct.id) {
+        return;
+      } else {
+        setPlannedQty(productIndicators?.availableStock);
+        setMovedQty(productIndicators?.availableStock);
+      }
+      setUnit(route.params.stockProduct.unit);
+      setNotes('');
       setSaveStatus(false);
       setLoading(false);
     } else {
@@ -108,7 +143,13 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             getFromList(productList, 'id', internalMoveLine.product.id),
           );
           setTrackingNumber(internalMoveLine.trackingNumber);
-          setPlannedQty(internalMoveLine.qty);
+          if (
+            route.params.internalMove.statusSelect === StockMove.status.Realized
+          ) {
+            setPlannedQty(internalMoveLine.realQty);
+          } else {
+            setPlannedQty(productIndicators?.availableStock);
+          }
           setMovedQty(internalMoveLine.realQty);
           setUnit(internalMoveLine.unit);
           setLoading(false);
@@ -116,7 +157,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       }
       setSaveStatus(true);
     }
-  }, [internalMoveLineList, productList, route.params]);
+  }, [internalMoveLineList, productIndicators, productList, route.params]);
 
   // ------------  HANDLERS --------------
 
@@ -395,7 +436,7 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   scrollContainer: {
-    height: '82%',
+    height: Dimensions.get('window').height - 150,
   },
   badgeContainer: {
     marginTop: '2%',

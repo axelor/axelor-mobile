@@ -22,6 +22,7 @@ import getFromList from '@/modules/stock/utils/get-from-list';
 import {ProductCardDetails} from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StockCorrection from '../../types/stock-corrrection';
+import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
@@ -29,6 +30,10 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     state => state.stockCorrectionReason,
   );
   const {loadingProduct, productFromId} = useSelector(state => state.product);
+  const {activeCompanyId} = useSelector(
+    state => state.user.userList[0]?.activeCompany.id,
+  ); // à changer après error handling
+  const {productIndicators} = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +41,27 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     if (route.params.stockCorrection != null) {
       dispatch(fetchProductWithId(route.params.stockCorrection.product.id));
     }
-  }, [dispatch, route.params.stockCorrection]);
+
+    dispatch(
+      fetchProductIndicators({
+        productId:
+          route.params.stockCorrection != null
+            ? route.params.stockCorrection.product.id
+            : route.params.stockProduct.id,
+        companyId: activeCompanyId,
+        stockLocationId:
+          route.params.stockCorrection != null
+            ? route.params.stockCorrection.stockLocation.id
+            : route.params.stockLocation.id,
+      }),
+    );
+  }, [
+    dispatch,
+    activeCompanyId,
+    route.params.stockCorrection,
+    route.params.stockProduct?.id,
+    route.params.stockLocation?.id,
+  ]);
 
   // ------------  VARIABLES --------------
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
@@ -60,24 +85,37 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
           ? null
           : route.params.trackingNumber,
       );
-      setDatabaseQty(0); // get current qty of product with request
-      setRealQty(0);
+      if (productIndicators.id !== route.params.stockProduct.id) {
+        setLoading(true);
+        return;
+      } else {
+        setDatabaseQty(productIndicators?.realQty);
+        setRealQty(productIndicators?.realQty);
+      }
       setReason({name: '', id: 'empty'});
 
       setSaveStatus(false);
     } else {
-      setStatus(route.params.stockCorrection.statusSelect);
-      setStockLocation(route.params.stockCorrection.stockLocation);
+      const stockCorrection = route.params.stockCorrection;
+      setStatus(stockCorrection.statusSelect);
+      setStockLocation(stockCorrection.stockLocation);
       setStockProduct(productFromId);
-      setTrackingNumber(route.params.stockCorrection.trackingNumber);
-      setDatabaseQty(route.params.stockCorrection.realQty);
-      setRealQty(route.params.stockCorrection.realQty);
-      setReason(route.params.stockCorrection.stockCorrectionReason);
+      setTrackingNumber(stockCorrection.trackingNumber);
+
+      //Need to access database qty once merged on AOS
+      if (stockCorrection.statusSelect === StockCorrection.status.Validated) {
+        setDatabaseQty(stockCorrection.realQty);
+      } else {
+        setDatabaseQty(productIndicators?.realQty);
+      }
+
+      setRealQty(stockCorrection.realQty);
+      setReason(stockCorrection.stockCorrectionReason);
 
       setSaveStatus(true);
     }
     setLoading(false);
-  }, [productFromId, route.params]);
+  }, [productFromId, productIndicators, route.params]);
 
   useEffect(() => {
     initVariables();

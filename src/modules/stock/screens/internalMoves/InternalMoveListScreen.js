@@ -169,9 +169,11 @@ const InternalMoveListScreen = ({navigation}) => {
               style={styles.item}
               name={item.stockMoveSeq}
               status={StockMove.getStatus(item.statusSelect)}
-              availability={StockMove.getAvailability(
-                item.availableStatusSelect,
-              )}
+              availability={
+                item.availableStatusSelect == null
+                  ? null
+                  : StockMove.getAvailability(item.availableStatusSelect)
+              }
               fromStockLocation={item.fromStockLocation.name}
               toStockLocation={item.toStockLocation.name}
               origin={item.origin}
