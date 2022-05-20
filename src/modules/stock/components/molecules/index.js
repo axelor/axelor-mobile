@@ -1,4 +1,5 @@
 export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
+export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
 export {default as LocationsMoveCard} from './LocationsMoveCard/LocationsMoveCard';
 export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as ProductCardDetails} from './ProductCardDetails/ProductCardDetails';

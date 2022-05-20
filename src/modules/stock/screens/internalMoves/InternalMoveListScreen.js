@@ -101,7 +101,7 @@ const InternalMoveListScreen = ({navigation}) => {
 
   // ----------  NAVIGATION -------------
   const showInternalMoveDetails = internalMove => {
-    navigation.navigate('InternalMoveDetailsScreen', {
+    navigation.navigate('InternalMoveDetailsGeneralScreen', {
       internalMove: internalMove,
     });
   };
