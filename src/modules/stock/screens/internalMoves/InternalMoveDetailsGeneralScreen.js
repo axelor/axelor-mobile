@@ -41,6 +41,13 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     });
   };
 
+  const handleShowLine = item => {
+    navigation.navigate('InternalMoveDetailsScreen', {
+      internalMove: internalMove,
+      internalMoveLine: item,
+    });
+  };
+
   return (
     <Screen>
       {loadingInternalMoveLine ? (
@@ -113,7 +120,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                           ?.trackingNumberSeq
                       }
                       movedQty={internalMoveLineList[0].realQty}
-                      onPress={() => console.log(internalMoveLineList[0])}
+                      onPress={() => handleShowLine(internalMoveLineList[0])}
                     />
                   )}
                   {internalMoveLineList[1] == null ? null : (
@@ -128,7 +135,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                           ?.trackingNumberSeq
                       }
                       movedQty={internalMoveLineList[1].realQty}
-                      onPress={() => console.log(internalMoveLineList[1])}
+                      onPress={() => handleShowLine(internalMoveLineList[1])}
                     />
                   )}
                 </ViewAllContainer>

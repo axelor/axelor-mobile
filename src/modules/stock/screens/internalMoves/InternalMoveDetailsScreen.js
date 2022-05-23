@@ -30,9 +30,6 @@ import Colors from '@/types/colors';
 
 const InternalMoveDetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
-  const {loadingInternalMoveLine, internalMoveLineList} = useSelector(
-    state => state.internalMoveLine,
-  );
   const {loadingProduct, productList} = useSelector(state => state.product);
   const {unitList} = useSelector(state => state.unit);
   const {activeCompanyId} = useSelector(
@@ -51,10 +48,13 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
   }, [dispatch, route.params.internalMove]);
 
   useEffect(() => {
-    if (route.params.internalMove != null && internalMoveLineList != null) {
+    if (
+      route.params.internalMove != null &&
+      route.params.internalMoveLine != null
+    ) {
       dispatch(
         fetchProductIndicators({
-          productId: internalMoveLineList[0]?.product.id,
+          productId: route.params.internalMoveLine.product.id,
           companyId: activeCompanyId,
           stockLocationId: route.params.internalMove.fromStockLocation.id,
         }),
@@ -68,7 +68,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         }),
       );
     }
-  }, [activeCompanyId, dispatch, internalMoveLineList, route.params]);
+  }, [activeCompanyId, dispatch, route.params]);
 
   // ------------  VARIABLES --------------
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
@@ -87,13 +87,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 
   useEffect(() => {
     initVariables();
-  }, [
-    route.params,
-    productList,
-    productIndicators,
-    internalMoveLineList,
-    initVariables,
-  ]);
+  }, [route.params, productList, productIndicators, initVariables]);
 
   const initVariables = useCallback(() => {
     if (route.params.internalMove == null) {
@@ -123,41 +117,28 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
       setOriginalStockLocation(route.params.internalMove.fromStockLocation);
       setDestinationStockLocation(route.params.internalMove.toStockLocation);
       setNotes(route.params.internalMove.note);
-      if (
-        productList == null ||
-        internalMoveLineList == null ||
-        productList.length === 0 ||
-        internalMoveLineList.length === 0
-      ) {
+      if (productList == null || productList.length === 0) {
         setLoading(true);
       } else {
-        const internalMoveLine = getFromList(
-          internalMoveLineList,
-          'id',
-          route.params.internalMove.stockMoveLineList[0].id,
+        const internalMoveLine = route.params.internalMoveLine;
+        setStockProduct(
+          getFromList(productList, 'id', internalMoveLine.product.id),
         );
-        if (internalMoveLine == null) {
-          setLoading(true);
+        setTrackingNumber(internalMoveLine.trackingNumber);
+        if (
+          route.params.internalMove.statusSelect === StockMove.status.Realized
+        ) {
+          setPlannedQty(internalMoveLine.realQty);
         } else {
-          setStockProduct(
-            getFromList(productList, 'id', internalMoveLine.product.id),
-          );
-          setTrackingNumber(internalMoveLine.trackingNumber);
-          if (
-            route.params.internalMove.statusSelect === StockMove.status.Realized
-          ) {
-            setPlannedQty(internalMoveLine.realQty);
-          } else {
-            setPlannedQty(productIndicators?.availableStock);
-          }
-          setMovedQty(internalMoveLine.realQty);
-          setUnit(internalMoveLine.unit);
-          setLoading(false);
+          setPlannedQty(productIndicators?.availableStock);
         }
+        setMovedQty(internalMoveLine.realQty);
+        setUnit(internalMoveLine.unit);
+        setLoading(false);
       }
       setSaveStatus(true);
     }
-  }, [internalMoveLineList, productIndicators, productList, route.params]);
+  }, [productIndicators, productList, route.params]);
 
   // ------------  HANDLERS --------------
 
@@ -229,7 +210,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         }),
       );
     }
-    navigation.navigate('StockCorrectionListScreen');
+    navigation.navigate('InternalMoveListScreen');
   };
 
   const handleValidate = () => {
@@ -283,7 +264,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      {loading || loadingProduct || loadingInternalMoveLine ? (
+      {loading || loadingProduct ? (
         <ActivityIndicator size="large" />
       ) : (
         <View>

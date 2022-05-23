@@ -36,7 +36,9 @@ const InternalMoveLineCard = ({
                 />
               )}
             </View>
-            <Icon name="chevron-right" style={styles.icon} />
+            <View style={styles.iconContainer}>
+              <Icon name="chevron-right" style={styles.icon} />
+            </View>
           </View>
         </View>
       </Card>
@@ -47,9 +49,7 @@ const InternalMoveLineCard = ({
 const styles = StyleSheet.create({
   rightContainer: {
     width: '40%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   container: {
     flexDirection: 'row',
@@ -75,6 +75,10 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flex: 1,
     flexDirection: 'column',
+  },
+  iconContainer: {
+    flex: 3,
+    alignItems: 'flex-end',
   },
   icon: {
     fontSize: 24,
