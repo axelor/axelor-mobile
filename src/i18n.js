@@ -4,7 +4,7 @@ import frTranslation from './i18n/fr/translations.json';
 
 i18next.init({
   compatibilityJSON: 'v3',
-  lng: 'en',
+  lng: ['en', 'fr'],
   debug: true,
   fallbackLng: 'en',
   resources: {
