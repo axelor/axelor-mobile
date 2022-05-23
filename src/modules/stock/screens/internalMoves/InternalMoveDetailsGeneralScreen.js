@@ -61,7 +61,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                 ? null
                 : styles.scrollContainer
             }>
-            <ScrollView nestedScrollEnabled={true}>
+            <ScrollView>
               <View>
                 <View style={styles.infoContainer}>
                   <View style={styles.refContainer}>
@@ -139,18 +139,28 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                     />
                   )}
                 </ViewAllContainer>
-                <View style={styles.reasonTitle}>
-                  <Text>Notes on Preparation </Text>
-                </View>
-                <Card style={styles.infosCard}>
-                  <Text numberOfLines={3}>{internalMove.note}</Text>
-                </Card>
-                <View style={styles.reasonTitle}>
-                  <Text>Notes on Stock Move </Text>
-                </View>
-                <Card style={styles.infosCard}>
-                  <Text numberOfLines={3}>{internalMove.note}</Text>
-                </Card>
+                {internalMove.pickingOrderComments == null ? null : (
+                  <View>
+                    <View style={styles.reasonTitle}>
+                      <Text>Notes on Preparation </Text>
+                    </View>
+                    <Card style={styles.infosCard}>
+                      <Text numberOfLines={3}>
+                        {internalMove.pickingOrderComments}
+                      </Text>
+                    </Card>
+                  </View>
+                )}
+                {internalMove.note == null ? null : (
+                  <View>
+                    <View style={styles.reasonTitle}>
+                      <Text>Notes on Stock Move </Text>
+                    </View>
+                    <Card style={styles.infosCard}>
+                      <Text numberOfLines={3}>{internalMove.note}</Text>
+                    </Card>
+                  </View>
+                )}
               </View>
             </ScrollView>
           </View>

@@ -26,6 +26,7 @@ import {
   updateInternalStockMove,
 } from '../../api/internal-move-api';
 import StockMove from '@/modules/stock/types/stock-move';
+import formatDate from '@/modules/stock/utils/format-date';
 import Colors from '@/types/colors';
 
 const InternalMoveDetailsScreen = ({navigation, route}) => {
@@ -277,25 +278,47 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             }>
             <ScrollView>
               <View>
-                <View style={styles.badgeContainer}>
-                  <Badge
-                    style={[
-                      styles.badge,
-                      StockMove.getStatusColor(StockMove.getStatus(status)),
-                    ]}
-                    title={StockMove.getStatus(status)}
-                  />
-                  {availability == null ? null : (
-                    <Badge
-                      style={[
-                        styles.badge,
-                        StockMove.getAvailabilityColor(
-                          StockMove.getAvailability(availability),
-                        ),
-                      ]}
-                      title={StockMove.getAvailability(availability)}
-                    />
+                <View style={styles.infoContainer}>
+                  {route.params.internalMove == null ? (
+                    <View />
+                  ) : (
+                    <View>
+                      <Text style={styles.text_important}>
+                        {route.params.internalMove.stockMoveSeq}
+                      </Text>
+                      <Text style={styles.text_secondary}>
+                        {route.params.internalMove.statusSelect ===
+                        StockMove.getStatus(StockMove.status.Planned)
+                          ? formatDate(
+                              route.params.internalMove.estimatedDate,
+                              'DD/MM/YYYY',
+                            )
+                          : formatDate(
+                              route.params.internalMove.realDate,
+                              'DD/MM/YYYY',
+                            )}
+                      </Text>
+                    </View>
                   )}
+                  <View style={styles.badgeContainer}>
+                    <Badge
+                      color={
+                        StockMove.getStatusColor(StockMove.getStatus(status))
+                          .backgroundColor
+                      }
+                      title={StockMove.getStatus(status)}
+                    />
+                    {availability == null ? null : (
+                      <Badge
+                        color={
+                          StockMove.getAvailabilityColor(
+                            StockMove.getAvailability(availability),
+                          ).backgroundColor
+                        }
+                        title={StockMove.getAvailability(availability)}
+                      />
+                    )}
+                  </View>
                 </View>
                 <View style={styles.content}>
                   <LocationsMoveCard
@@ -370,22 +393,26 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                   valueField="id"
                 />
               )}
-              <View style={styles.reasonTitle}>
-                <Text>Notes on Stock Move </Text>
-              </View>
-              <Card style={styles.infosCard}>
-                {status === StockMove.status.Planned ||
-                status === StockMove.status.Realized ||
-                status === StockMove.status.Canceled ? (
-                  <Text numberOfLines={3}>{notes}</Text>
-                ) : (
-                  <Input
-                    value={notes}
-                    onChange={handleNotesChange}
-                    multiline={true}
-                  />
-                )}
-              </Card>
+              {status === StockMove.status.Draft && notes != null ? (
+                <View>
+                  <View style={styles.reasonTitle}>
+                    <Text>Notes on Stock Move </Text>
+                  </View>
+                  <Card style={styles.infosCard}>
+                    {status === StockMove.status.Planned ||
+                    status === StockMove.status.Realized ||
+                    status === StockMove.status.Canceled ? (
+                      <Text numberOfLines={3}>{notes}</Text>
+                    ) : (
+                      <Input
+                        value={notes}
+                        onChange={handleNotesChange}
+                        multiline={true}
+                      />
+                    )}
+                  </Card>
+                </View>
+              ) : null}
             </ScrollView>
           </View>
           <View style={styles.button_container}>
@@ -413,6 +440,14 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: '2%',
+    marginBottom: '3%',
+    marginHorizontal: 16,
+  },
   container: {
     marginVertical: '2%',
   },
