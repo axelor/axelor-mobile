@@ -1,6 +1,6 @@
 import i18next from 'i18next';
-import enTranslation from './i18n/en/translations.json';
-import frTranslation from './i18n/fr/translations.json';
+import enTranslation from './i18n/en.json';
+import frTranslation from './i18n/fr.json';
 
 i18next.init({
   compatibilityJSON: 'v3',
@@ -16,5 +16,7 @@ i18next.init({
     },
   },
 });
+
+export const I18n = i18next;
 
 export default lng => i18next.getFixedT(lng);

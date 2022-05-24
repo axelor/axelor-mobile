@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write src/ __tests__/",
-    "format:check": "prettier --check src/ __tests__/"
+    "format:check": "prettier --check src/ __tests__/",
+    "i18n": "i18n-parser --config=./i18n.json"
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.4.1",
