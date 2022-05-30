@@ -21,19 +21,22 @@ const Increment = ({value, onValueChange}) => {
     }
   };
 
-  const handleInputChange = input => {
-    if (input === '') {
+  const handleEndInput = () => {
+    if (valueQty.slice(-1) === '.') {
+      valueQty.replace(/.$/, '');
+    }
+
+    if (valueQty === '' || valueQty === null) {
       setValueQty('0.00');
-      onValueChange(0);
-    } else if (input.slice(-1) === '.') {
-      // Check if last element is a '.'
-      // Don't do anything, waiting for user to continue
-      setValueQty(input);
+      onValueChange(0.0);
     } else {
-      const newValue = parseFloat(input);
+      const newValue = parseFloat(valueQty).toFixed(2);
       if (newValue >= 0) {
         setValueQty(newValue.toString());
         onValueChange(newValue);
+      } else {
+        setValueQty('0.00');
+        onValueChange(0.0);
       }
     }
   };
@@ -49,8 +52,9 @@ const Increment = ({value, onValueChange}) => {
         <Input
           style={styles.input}
           value={valueQty}
-          onChange={handleInputChange}
+          onChange={input => setValueQty(input)}
           keyboardType="numeric"
+          onEndFocus={handleEndInput}
         />
       </View>
       <TouchableOpacity onPress={handlePlus} activeOpacity={0.7}>

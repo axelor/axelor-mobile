@@ -282,6 +282,9 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                 <Text style={styles.text}>
                   {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
                 </Text>
+                <Text style={styles.text}>
+                  {'Unit: ' + stockProduct.unit?.name}
+                </Text>
               </QuantityCard>
               {status === StockCorrection.status.Validated ? (
                 <View>

@@ -12,6 +12,7 @@ const Input = ({
   onSelection,
   multiline = false,
   keyboardType,
+  onEndFocus = () => {},
 }) => {
   return (
     <TextInput
@@ -26,6 +27,7 @@ const Input = ({
       placeholderTextColor="#C0C0C0"
       keyboardType={keyboardType}
       multiline={multiline}
+      onBlur={onEndFocus}
     />
   );
 };

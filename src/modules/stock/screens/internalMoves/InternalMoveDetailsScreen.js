@@ -318,11 +318,12 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 defaultValue={parseFloat(movedQty).toFixed(2)}
                 onValueChange={handleQtyChange}
                 editable={status === StockMove.status.Draft}>
-                <View>
-                  <Text style={styles.text}>
-                    {'Available quantity: ' + parseFloat(plannedQty).toFixed(2)}
-                  </Text>
-                </View>
+                <Text style={styles.text}>
+                  {'Available quantity: ' + parseFloat(plannedQty).toFixed(2)}
+                </Text>
+                <Text style={styles.text}>
+                  {'Unit: ' + stockProduct.unit.name}
+                </Text>
               </QuantityCard>
               {status === StockMove.status.Planned ||
               status === StockMove.status.Realized ||
