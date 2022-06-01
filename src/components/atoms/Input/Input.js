@@ -11,7 +11,6 @@ const Input = ({
   readOnly = false,
   onSelection,
   multiline = false,
-  numberOfLines = 1,
   keyboardType,
 }) => {
   return (

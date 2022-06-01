@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.background.white,
-    width: '80%',
+    width: '100%',
     marginBottom: 8,
   },
   header: {
     fontSize: 20,
+    textAlign: 'center',
     fontWeight: 'bold',
   },
   contentContainer: {

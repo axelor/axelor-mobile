@@ -24,14 +24,12 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {activeCompanyId} = useSelector(
-    state => state.user.userList[0]?.activeCompany,
-  );
+  const {activeCompany} = useSelector(state => state.user.userList[0]);
   const {loading, productIndicators} = useSelector(
     state => state.productIndicators,
   );
   const [stockLocation, setStockLocation] = useState(null);
-  const [selectedCompanyId, setselectedCompanyId] = useState(activeCompanyId);
+  const [selectedCompanyId, setselectedCompanyId] = useState(activeCompany?.id);
   const dispatch = useDispatch();
 
   useEffect(() => {

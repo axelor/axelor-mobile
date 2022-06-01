@@ -2,9 +2,17 @@ import Colors from '@/types/colors';
 import React from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
 
-const Text = ({style, numberOfLines, children}) => {
+const Text = ({
+  style,
+  numberOfLines,
+  adjustsFontSizeToFit = false,
+  children,
+}) => {
   return (
-    <ReactNativeText style={[styles.text, style]} numberOfLines={numberOfLines}>
+    <ReactNativeText
+      style={[styles.text, style]}
+      numberOfLines={numberOfLines}
+      adjustsFontSizeToFit={adjustsFontSizeToFit}>
       {children}
     </ReactNativeText>
   );
