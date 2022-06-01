@@ -1,5 +1,6 @@
 export {default as AutocompleteItem} from './AutocompleteItem/AutocompleteItem';
 export {default as Badge} from './Badge/Badge';
+export {default as CardStock} from './CardStock/CardStock';
 export {default as Chip} from './Chip/Chip';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
 export {default as Increment} from './Increment/Increment';

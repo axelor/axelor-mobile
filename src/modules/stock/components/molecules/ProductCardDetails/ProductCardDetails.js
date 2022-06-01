@@ -19,18 +19,19 @@ const ProductCardDetails = ({style, children, onPress}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   content: {
     flexDirection: 'row',
   },
   textContainer: {
-    width: '85%',
+    width: '80%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
   icon: {
+    width: '10%',
     fontSize: Dimensions.get('window').width * 0.05,
     color: Colors.icon.dark_grey,
   },

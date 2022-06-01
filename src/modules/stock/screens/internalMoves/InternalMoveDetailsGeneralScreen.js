@@ -139,7 +139,8 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                     />
                   )}
                 </ViewAllContainer>
-                {internalMove.pickingOrderComments == null ? null : (
+                {internalMove.pickingOrderComments == null ||
+                internalMove.pickingOrderComments === '' ? null : (
                   <View>
                     <View style={styles.reasonTitle}>
                       <Text>Notes on Preparation </Text>
@@ -151,7 +152,8 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                     </Card>
                   </View>
                 )}
-                {internalMove.note == null ? null : (
+                {internalMove.note == null ||
+                internalMove.note === '' ? null : (
                   <View>
                     <View style={styles.reasonTitle}>
                       <Text>Notes on Stock Move </Text>

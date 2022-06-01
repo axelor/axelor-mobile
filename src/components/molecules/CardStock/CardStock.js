@@ -7,7 +7,6 @@ const CardStock = ({title, number}) => {
   const [popUp, setPopUp] = useState(false);
 
   const handlePress = () => {
-    console.log('Pressed');
     setPopUp(true);
   };
 

@@ -18,9 +18,9 @@ const Picker = ({
     defaultValue === null ? '' : defaultValue,
   );
 
-  const handleValueChange = (itemValue, itemIndex) => {
+  const handleValueChange = itemValue => {
     setSelectedValue(itemValue);
-    onValueChange(itemIndex);
+    onValueChange(itemValue);
   };
 
   return (
