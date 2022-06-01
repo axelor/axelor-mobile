@@ -24,86 +24,8 @@ import {
   createInternalStockMove,
   updateInternalStockMove,
 } from '../../api/internal-move-api';
-
-// STATUS SELECT
-const STATUS_DRAFT = 1;
-const STATUS_PLANNED = 2;
-const STATUS_REALIZED = 3;
-const STATUS_CANCELED = 4;
-
-const getStatus = option => {
-  if (option === STATUS_DRAFT) {
-    return 'Draft';
-  } else if (option === STATUS_PLANNED) {
-    return 'Planned';
-  } else if (option === STATUS_REALIZED) {
-    return 'Realized';
-  } else if (option === STATUS_CANCELED) {
-    return 'Canceled';
-  } else {
-    return option;
-  }
-};
-
-const getStatusColor = status => {
-  if (status === 'Draft') {
-    return {
-      backgroundColor: 'rgba(206, 206, 206, 0.6)',
-      borderColor: 'rgba(206, 206, 206, 1)',
-    };
-  } else if (status === 'Planned') {
-    return {
-      backgroundColor: 'rgba(181, 161, 223, 0.6)',
-      borderColor: '#B5A1DF',
-    };
-  } else if (status === 'Realized') {
-    return {
-      backgroundColor: '#84DCB7',
-      borderColor: '#3ECF8E',
-    };
-  } else if (status === 'Canceled') {
-    return {
-      backgroundColor: 'rgba(229, 77, 29, 0.6)',
-      borderColor: 'rgba(206, 206, 206, 1)',
-    };
-  }
-};
-
-// AVAILABLE STATUS SELECT
-const STATUS_AVAILABLE = 1;
-const STATUS_PARTIALLY_AVAILABLE = 2;
-const STATUS_UNAVAILABLE = 3;
-
-const getAvailability = option => {
-  if (option === STATUS_AVAILABLE) {
-    return 'Available';
-  } else if (option === STATUS_PARTIALLY_AVAILABLE) {
-    return 'Partially';
-  } else if (option === STATUS_UNAVAILABLE) {
-    return 'Unavailable';
-  } else {
-    return option;
-  }
-};
-
-const getAvailabilityColor = availability => {
-  if (availability === 'Available') {
-    return {
-      backgroundColor: '#84DCB7',
-      borderColor: '#3ECF8E',
-    };
-  } else if (availability === 'Partially') {
-    return {
-      backgroundColor: 'rgba(243, 151, 66, 0.6)',
-      borderColor: '#F39743',
-    };
-  } else if (availability === 'Unavailable') {
-    return {
-      backgroundColor: 'rgba(229, 77, 29, 0.6)',
-      borderColor: '#E54D1D',
-    };
-  }
-};
+import StockMove from '@/modules/stock/types/stock-move';
+import Colors from '@/types/colors';
 
 const InternalMoveDetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
@@ -144,7 +66,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
 
   const initVariables = useCallback(() => {
     if (route.params.internalMove == null) {
-      setStatus(STATUS_DRAFT);
+      setStatus(StockMove.status.Draft);
       setAvailabilty(null);
       setOriginalStockLocation(route.params.fromStockLocation);
       setDestinationStockLocation(route.params.toStockLocation);
@@ -238,7 +160,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             originStockLocationId: originalStockLocation.id,
             destStockLocationId: destinationStockLocation.id,
             unitId: unit.id,
-            status: STATUS_DRAFT,
+            status: StockMove.status.Draft,
             movedQty: movedQty,
           }),
         );
@@ -251,7 +173,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             destStockLocationId: destinationStockLocation.id,
             trackingNumberId: trackingNumber.id,
             unitId: unit.id,
-            status: STATUS_DRAFT,
+            status: StockMove.status.Draft,
             movedQty: movedQty,
           }),
         );
@@ -284,7 +206,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             originStockLocationId: originalStockLocation.id,
             destStockLocationId: destinationStockLocation.id,
             unitId: unit.id,
-            status: STATUS_DRAFT,
+            status: StockMove.status.Draft,
             movedQty: movedQty,
           }),
         );
@@ -297,7 +219,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
             destStockLocationId: destinationStockLocation.id,
             trackingNumberId: trackingNumber.id,
             unitId: unit.id,
-            status: STATUS_DRAFT,
+            status: StockMove.status.Draft,
             movedQty: movedQty,
           }),
         );
@@ -326,7 +248,8 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
         <View>
           <View
             style={
-              status === STATUS_REALIZED || status === STATUS_CANCELED
+              status === StockMove.status.Realized ||
+              status === StockMove.status.Canceled
                 ? null
                 : styles.scrollContainer
             }>
@@ -334,16 +257,21 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
               <View>
                 <View style={styles.badgeContainer}>
                   <Badge
-                    style={[styles.badge, getStatusColor(getStatus(status))]}
-                    title={getStatus(status)}
+                    style={[
+                      styles.badge,
+                      StockMove.getStatusColor(StockMove.getStatus(status)),
+                    ]}
+                    title={StockMove.getStatus(status)}
                   />
                   {availability == null ? null : (
                     <Badge
                       style={[
                         styles.badge,
-                        getAvailabilityColor(getAvailability(availability)),
+                        StockMove.getAvailabilityColor(
+                          StockMove.getAvailability(availability),
+                        ),
                       ]}
-                      title={getAvailability(availability)}
+                      title={StockMove.getAvailability(availability)}
                     />
                   )}
                 </View>
@@ -361,7 +289,7 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                     <Image
                       resizeMode="contain"
                       source={{
-                        uri: `https://test.axelor.com/open-suite-wip/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
+                        uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
                       }}
                       style={styles.image}
                     />
@@ -389,16 +317,16 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 labelQty="Moved quantity"
                 defaultValue={parseFloat(movedQty).toFixed(2)}
                 onValueChange={handleQtyChange}
-                editable={status === STATUS_DRAFT}>
+                editable={status === StockMove.status.Draft}>
                 <View>
                   <Text style={styles.text}>
                     {'Available quantity: ' + parseFloat(plannedQty).toFixed(2)}
                   </Text>
                 </View>
               </QuantityCard>
-              {status === STATUS_PLANNED ||
-              status === STATUS_REALIZED ||
-              status === STATUS_CANCELED ? (
+              {status === StockMove.status.Planned ||
+              status === StockMove.status.Realized ||
+              status === StockMove.status.Canceled ? (
                 <View>
                   <View style={styles.reasonTitle}>
                     <Text>Unit</Text>
@@ -423,9 +351,9 @@ const InternalMoveDetailsScreen = ({navigation, route}) => {
                 <Text>Notes on Stock Move </Text>
               </View>
               <Card style={styles.infosCard}>
-                {status === STATUS_PLANNED ||
-                status === STATUS_REALIZED ||
-                status === STATUS_CANCELED ? (
+                {status === StockMove.status.Planned ||
+                status === StockMove.status.Realized ||
+                status === StockMove.status.Canceled ? (
                   <Text numberOfLines={3}>{notes}</Text>
                 ) : (
                   <Input
@@ -541,7 +469,7 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   button_primary: {
-    backgroundColor: '#3ECF8E',
+    backgroundColor: Colors.background.green,
   },
   button_secondary: {
     backgroundColor: '#FFFFFF',
@@ -554,7 +482,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.14,
-    color: '#cecece',
+    color: Colors.icon.dark_grey,
     marginRight: 6,
   },
   notesContainer: {

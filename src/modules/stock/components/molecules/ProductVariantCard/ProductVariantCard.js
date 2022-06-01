@@ -2,8 +2,9 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
-const ProductCardVariable = ({style, name, code, attribut, value, onPress}) => {
+const ProductVariantCard = ({style, name, code, attribut, value, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Card style={[styles.container, style]}>
@@ -19,7 +20,7 @@ const ProductCardVariable = ({style, name, code, attribut, value, onPress}) => {
             <Text style={styles.attribute}>{attribut}</Text>
             <Text style={styles.attribute}>{value}</Text>
           </View>
-          <Icon size={24} name="chevron-right" color="#e6e6e6" />
+          <Icon size={24} name="chevron-right" color={Colors.icon.light_grey} />
         </View>
       </Card>
     </TouchableOpacity>
@@ -64,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCardVariable;
+export default ProductVariantCard;

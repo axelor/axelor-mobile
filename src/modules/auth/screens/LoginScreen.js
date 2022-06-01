@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -15,13 +15,15 @@ const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState('https://demo1.axelor.com/salon2/');
+  const [url, setUrl] = useState(
+    'http://wip-api-mobile-preview.cloud-sw1.axelor.io/',
+  );
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin');
 
-  // const [url, setUrl] = useState('http://192.168.20.36:8080/axelor-api/');
-  // const [username, setUsername] = useState('admin');
-  // const [password, setPassword] = useState('admin');
+  useEffect(() => {
+    global.loggedUrl = url;
+  }, [url]);
 
   return (
     <Screen style={styles.container}>

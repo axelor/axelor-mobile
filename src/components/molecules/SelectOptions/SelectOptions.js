@@ -1,6 +1,7 @@
 import {View, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {SelectInput} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const SelectOptions = ({style, defaultValue, options}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: 'black',
+    color: Colors.text.grey,
     paddingVertical: 15,
   },
 });

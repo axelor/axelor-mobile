@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {Card, Text} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const PopUp = ({visible, title, data, children}) => {
   return (
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
     width: '80%',
     marginBottom: 8,
   },

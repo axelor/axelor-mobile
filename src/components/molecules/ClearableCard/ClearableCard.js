@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const ClearableCard = ({style, valueTxt, onClearPress}) => {
   return (
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 14,
     elevation: 3,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
   },
   text: {
     width: '85%',
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.05,
-    color: '#606060',
+    color: Colors.icon.dark_grey,
   },
 });
 

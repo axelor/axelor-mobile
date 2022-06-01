@@ -18,43 +18,7 @@ import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
-
-// STATUS SELECT
-const STATUS_DRAFT = 1;
-const STATUS_PLANNED = 2;
-const STATUS_REALIZED = 3;
-const STATUS_CANCELED = 4;
-
-const getStatus = option => {
-  if (option === STATUS_DRAFT) {
-    return 'Draft';
-  } else if (option === STATUS_PLANNED) {
-    return 'Planned';
-  } else if (option === STATUS_REALIZED) {
-    return 'Realized';
-  } else if (option === STATUS_CANCELED) {
-    return 'Canceled';
-  } else {
-    return option;
-  }
-};
-
-// AVAILABLE STATUS SELECT
-const STATUS_AVAILABLE = 1;
-const STATUS_PARTIALLY_AVAILABLE = 2;
-const STATUS_UNAVAILABLE = 3;
-
-const getAvailability = option => {
-  if (option === STATUS_AVAILABLE) {
-    return 'Available';
-  } else if (option === STATUS_PARTIALLY_AVAILABLE) {
-    return 'Partially';
-  } else if (option === STATUS_UNAVAILABLE) {
-    return 'Unavailable';
-  } else {
-    return option;
-  }
-};
+import StockMove from '@/modules/stock/types/stock-move';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
@@ -204,13 +168,15 @@ const InternalMoveListScreen = ({navigation}) => {
             <InternalMoveCard
               style={styles.item}
               name={item.stockMoveSeq}
-              status={getStatus(item.statusSelect)}
-              availability={getAvailability(item.availableStatusSelect)}
+              status={StockMove.getStatus(item.statusSelect)}
+              availability={StockMove.getAvailability(
+                item.availableStatusSelect,
+              )}
               fromStockLocation={item.fromStockLocation.name}
               toStockLocation={item.toStockLocation.name}
               origin={item.origin}
               date={
-                item.statusSelect === STATUS_DRAFT
+                item.statusSelect === StockMove.status.Draft
                   ? item.createdOn
                   : item.realDate
               }

@@ -18,19 +18,7 @@ import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
-
-const STATUS_DRAFT = 1;
-const STATUS_VALIDATED = 2;
-
-const getStatus = option => {
-  if (option === STATUS_DRAFT) {
-    return 'Draft';
-  } else if (option === STATUS_VALIDATED) {
-    return 'Validated';
-  } else {
-    return option;
-  }
-};
+import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
 const productScanKey = 'product_stock-correction-list';
@@ -214,11 +202,11 @@ const StockCorrectionListScreen = ({navigation}) => {
           renderItem={({item}) => (
             <StockCorrectionCard
               style={styles.item}
-              status={getStatus(item.statusSelect)}
+              status={StockCorrection.getStatus(item.statusSelect)}
               productFullname={item.product.fullName}
               stockLocation={item.stockLocation.name}
               date={
-                item.statusSelect === STATUS_DRAFT
+                item.statusSelect === StockCorrection.status.Draft
                   ? item.createdOn
                   : item.validationDateT
               }

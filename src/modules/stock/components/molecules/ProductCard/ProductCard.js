@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {Card, Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const ProductCard = ({style, name, code, pictureId, onPress}) => {
   return (
@@ -20,7 +21,7 @@ const ProductCard = ({style, name, code, pictureId, onPress}) => {
             <Image
               resizeMode="contain"
               source={{
-                uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+                uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
               }}
               style={styles.image}
             />
@@ -30,7 +31,7 @@ const ProductCard = ({style, name, code, pictureId, onPress}) => {
             <Text style={styles.code}>{code}</Text>
           </View>
         </View>
-        <Icon size={24} name="chevron-right" color="#e6e6e6" />
+        <Icon size={24} name="chevron-right" color={Colors.icon.light_grey} />
       </Card>
     </TouchableOpacity>
   );
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.14,
-    color: '#cecece',
+    color: Colors.icon.light_grey,
     marginRight: 30,
   },
 });

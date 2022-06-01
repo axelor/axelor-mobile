@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
+import Colors from '@/types/colors';
 
 const Picker = ({
   style,
@@ -30,7 +31,7 @@ const Picker = ({
       <View style={styles.pickerContainer}>
         <ReactNativePicker
           style={styles.picker}
-          dropdownIconColor={'#CECECE'}
+          dropdownIconColor={Colors.icon.dark_grey}
           selectedValue={selectedValue}
           onValueChange={handleValueChange}
           mode="dropdown">
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   pickerContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
     borderRadius: 13,
     elevation: 3,
     paddingHorizontal: 10,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   picker: {
-    color: '#606060',
+    color: Colors.text.grey,
   },
 });
 

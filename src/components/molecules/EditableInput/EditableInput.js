@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const EditableInput = ({style, placeholder, onValidate, defaultValue}) => {
   const [isEditable, setEditable] = useState(true);
@@ -25,7 +26,11 @@ const EditableInput = ({style, placeholder, onValidate, defaultValue}) => {
       />
       <View style={styles.actions}>
         <TouchableOpacity onPress={handleIcon}>
-          <Icon name={isEditable ? 'pencil' : 'check'} size={18} />
+          <Icon
+            name={isEditable ? 'pencil' : 'check'}
+            size={18}
+            style={styles.icon}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -44,7 +49,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    color: '#606060',
     fontSize: 14,
   },
   actions: {
@@ -52,6 +56,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  icon: {
+    fontSize: 18,
+    color: Colors.icon.dark_grey,
   },
 });
 

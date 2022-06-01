@@ -1,21 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {Button, Screen, Text} from '@/components/atoms';
 import {StyleSheet, ActivityIndicator, View, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import ProductCardDetails from '../../components/molecules/ProductCard/ProductCardDetails';
-import StockProprtiesCard from '../../components/molecules/ProductCard/StockProprtiesCard';
+import ProductCharacteristics from '../../components/molecules/ProductCharacteristics/ProductCharacteristics';
+import SmallPropertyCard from '../../components/molecules/SmallPropertyCard/SmallPropertyCard';
+import RenderHtml from 'react-native-render-html';
+import Colors from '@/types/colors';
 
-const ProductDetails = ({route, navigation}) => {
+const ProductDetailsScreen = ({route, navigation}) => {
   const {loading} = useSelector(state => state.product);
   const product = route.params.product;
-  useEffect(() => {}, []);
 
   const showProductVariables = () => {
     navigation.navigate('ProductVariables', {product: product});
   };
   const navigateToImageProduct = () => {
-    navigation.navigate('ProductImage', {product: product});
+    navigation.navigate('ProductImageScreen', {product: product});
   };
+
+  const [widthNotes, setWidthNotes] = useState();
+  const PERCENTAGE_WIDTH_NOTES = 0.95;
 
   return (
     <Screen>
@@ -24,13 +28,19 @@ const ProductDetails = ({route, navigation}) => {
       ) : (
         <View style={styles.scrollContainer}>
           <ScrollView>
-            <ProductCardDetails
+            <ProductCharacteristics
               onPressImage={() => navigateToImageProduct()}
-              picture={product.picture}
-              categorie={product.productCategory}
+              pictureURI={
+                product.picture == null
+                  ? null
+                  : {
+                      uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+                    }
+              }
+              category={product.productCategory?.name}
               prototype={product.isPrototype}
               unrenewed={product.isUnrenewed}
-              procurMethode={product.procurementMethodSelect}
+              procurMethod={product.procurementMethodSelect}
               code={product.code}
               name={product.name}
               style={styles.item}
@@ -40,12 +50,12 @@ const ProductDetails = ({route, navigation}) => {
             </View>
             {product.unit ? (
               <View style={styles.stock}>
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.stockCard}
                   title="STOCK"
                   value={product.unit?.name}
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.stockCard}
                   title="SALE"
                   value={
@@ -54,7 +64,7 @@ const ProductDetails = ({route, navigation}) => {
                       : product.unit?.name
                   }
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.stockCard}
                   title="PURCHASE"
                   value={
@@ -68,27 +78,27 @@ const ProductDetails = ({route, navigation}) => {
             <View style={styles.containerPack}>
               <Text style={styles.titles}>PACKING</Text>
               <View style={styles.packing}>
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.packingCard}
                   title="LENGTH"
                   value={product.length}
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.packingCard}
                   title="WIDTH"
                   value={product.width}
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.packingCard}
                   title="HEIGHT"
                   value={product.height}
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.packingCard}
                   title="NET MASS"
                   value={product.netMass}
                 />
-                <StockProprtiesCard
+                <SmallPropertyCard
                   style={styles.packingCard}
                   title="GROSS MASS"
                   value={product.grossMass}
@@ -97,10 +107,17 @@ const ProductDetails = ({route, navigation}) => {
             </View>
             <View style={styles.description}>
               <Text style={styles.titles}>DESCRIPTION</Text>
-              <View style={styles.submitArea}>
-                <Text style={styles.textArea} numberOfLines={3}>
-                  {product.description}
-                </Text>
+              <View
+                style={styles.notes}
+                onLayout={event => {
+                  const {width} = event.nativeEvent.layout;
+                  setWidthNotes(width);
+                }}>
+                <RenderHtml
+                  source={{html: product.description}}
+                  contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
+                  baseStyle={{color: Colors.text.grey}}
+                />
               </View>
             </View>
             {true ? null : (
@@ -123,11 +140,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     height: '100%',
   },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   containerPack: {
     marginHorizontal: '5%',
     marginTop: 18,
@@ -145,11 +157,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#3ECF8E',
     borderRadius: 35,
   },
-  variantsBtnDisabled: {
-    backgroundColor: '#F4F7F7',
-    disabled: true,
-    borderRadius: 35,
-  },
   description: {
     width: '90%',
     height: '40%',
@@ -157,18 +164,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '2%',
   },
-  submitArea: {
+  notes: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-  },
-  textArea: {
-    minHeight: '52%',
-    width: '90%',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    marginVertical: 15,
     padding: 10,
+    marginVertical: 8,
   },
   titles: {
     marginHorizontal: '5%',
@@ -194,12 +197,6 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     elevation: 0,
   },
-  selection: {
-    marginHorizontal: 12,
-    marginBottom: 7,
-    borderRadius: 0,
-    elevation: 0,
-  },
   lineContainer: {
     alignItems: 'center',
   },
@@ -207,14 +204,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     width: 280,
   },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
 });
 
-export default ProductDetails;
-
-// <SelectOptions style={styles.selection} options={options} defaultValue="COMPANY" />
+export default ProductDetailsScreen;

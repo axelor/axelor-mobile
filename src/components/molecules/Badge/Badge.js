@@ -29,7 +29,6 @@ const getStyles = color =>
 const styles = StyleSheet.create({
   badgeTxt: {
     fontSize: 14,
-    color: '#606060',
   },
 });
 

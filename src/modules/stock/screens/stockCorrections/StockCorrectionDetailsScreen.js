@@ -19,24 +19,11 @@ import {
   updateCorrection,
 } from '@/modules/stock/features/stockCorrectionSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
-import getBadgeColor from '@/modules/stock/utils/get-badge-color';
 import {ProductCardDetails} from '../../components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import StockCorrection from '../../types/stock-corrrection';
 
-const STATUS_DRAFT = 1;
-const STATUS_VALIDATED = 2;
-
-const getStatus = option => {
-  if (option === STATUS_DRAFT) {
-    return 'Draft';
-  } else if (option === STATUS_VALIDATED) {
-    return 'Validated';
-  } else {
-    return option;
-  }
-};
-
-const StockCorrectiondetailsScreen = ({navigation, route}) => {
+const StockCorrectionDetailsScreen = ({navigation, route}) => {
   // ------------  API --------------
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
@@ -65,7 +52,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
 
   const initVariables = useCallback(() => {
     if (route.params.stockCorrection == null) {
-      setStatus(STATUS_DRAFT);
+      setStatus(StockCorrection.status.Draft);
       setStockLocation(route.params.stockLocation);
       setStockProduct(route.params.stockProduct);
       setTrackingNumber(
@@ -137,7 +124,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
             productId: stockProduct.id,
             stockLocationId: stockLocation.id,
             reasonId: reason.id,
-            status: STATUS_DRAFT,
+            status: StockCorrection.status.Draft,
             realQty: realQty,
           }),
         );
@@ -148,7 +135,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
             stockLocationId: stockLocation.id,
             reasonId: reason.id,
             trackingNumberId: trackingNumber.id,
-            status: STATUS_DRAFT,
+            status: StockCorrection.status.Draft,
             realQty: realQty,
           }),
         );
@@ -185,7 +172,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
             productId: stockProduct.id,
             stockLocationId: stockLocation.id,
             reasonId: reason.id,
-            status: STATUS_VALIDATED,
+            status: StockCorrection.status.Validated,
             realQty: realQty,
           }),
         );
@@ -196,7 +183,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
             stockLocationId: stockLocation.id,
             reasonId: reason.id,
             trackingNumberId: trackingNumber.id,
-            status: STATUS_VALIDATED,
+            status: StockCorrection.status.Validated,
             realQty: realQty,
           }),
         );
@@ -208,7 +195,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
           stockCorrectionId: route.params.stockCorrection.id,
           realQty: saveStatus ? null : realQty,
           reasonId: saveStatus ? null : reason.id,
-          status: STATUS_VALIDATED,
+          status: StockCorrection.status.Validated,
         }),
       );
     }
@@ -225,7 +212,11 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
       ) : (
         <View>
           <View
-            style={status === STATUS_VALIDATED ? null : styles.scrollContainer}>
+            style={
+              status === StockCorrection.status.Validated
+                ? null
+                : styles.scrollContainer
+            }>
             <ScrollView>
               <PopUpOneButton
                 visible={popUp}
@@ -242,8 +233,13 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                     </Text>
                   </View>
                   <Badge
-                    style={[styles.badge, getBadgeColor(getStatus(status))]}
-                    title={getStatus(status)}
+                    style={[
+                      styles.badge,
+                      StockCorrection.getStatusColor(
+                        StockCorrection.getStatus(status),
+                      ),
+                    ]}
+                    title={StockCorrection.getStatus(status)}
                   />
                 </View>
                 <View style={styles.contentProduct}>
@@ -253,7 +249,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                     <Image
                       resizeMode="contain"
                       source={{
-                        uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
+                        uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
                       }}
                       style={styles.image}
                     />
@@ -282,12 +278,12 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                 labelQty="Real quantity"
                 defaultValue={parseFloat(realQty).toFixed(2)}
                 onValueChange={handleQtyChange}
-                editable={status === STATUS_DRAFT}>
+                editable={status === StockCorrection.status.Draft}>
                 <Text style={styles.text}>
                   {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
                 </Text>
               </QuantityCard>
-              {status === STATUS_VALIDATED ? (
+              {status === StockCorrection.status.Validated ? (
                 <View>
                   <View style={styles.reasonTitle}>
                     <Text>Reason</Text>
@@ -319,7 +315,7 @@ const StockCorrectiondetailsScreen = ({navigation, route}) => {
                 onPress={handleSave}
               />
             )}
-            {status === STATUS_VALIDATED ? null : (
+            {status === StockCorrection.status.Validated ? null : (
               <Button
                 title="VALIDATE"
                 style={[styles.button, styles.button_primary]}
@@ -426,4 +422,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockCorrectiondetailsScreen;
+export default StockCorrectionDetailsScreen;

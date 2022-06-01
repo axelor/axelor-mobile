@@ -65,11 +65,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   }, [stockLocationScanned]);
 
   const showProductDetails = () => {
-    navigation.navigate('ProductDetails', {product: product});
+    navigation.navigate('ProductDetailsScreen', {product: product});
   };
 
   const navigateToImageProduct = () => {
-    navigation.navigate('ProductImage', {product: product});
+    navigation.navigate('ProductImageScreen', {product: product});
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
                   <Image
                     resizeMode="contain"
                     source={{
-                      uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+                      uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
                     }}
                     style={styles.image}
                   />

@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const SearchBar = ({
   style,
@@ -27,12 +28,20 @@ const SearchBar = ({
           <View style={styles.action}>{null}</View>
         ) : (
           <TouchableOpacity style={styles.action} onPress={onClearPress}>
-            <Icon name="remove" style={styles.icon} />
+            <Icon
+              name="remove"
+              style={styles.icon}
+              color={Colors.icon.dark_grey}
+            />
           </TouchableOpacity>
         )}
 
         <View style={styles.action}>
-          <Icon name="search" style={styles.icon} />
+          <Icon
+            name="search"
+            style={styles.icon}
+            color={Colors.icon.dark_grey}
+          />
         </View>
         <TouchableOpacity style={styles.action} onPress={onScanPress}>
           <Icon name="qrcode" style={styles.icon} color={scanIconColor} />
