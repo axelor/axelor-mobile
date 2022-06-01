@@ -2,7 +2,7 @@ import {Text} from '@/components/atoms';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-const StockProprtiesCard = ({style, title, value}) => {
+const SmallPropertyCard = ({style, title, value}) => {
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StockProprtiesCard;
+export default SmallPropertyCard;

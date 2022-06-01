@@ -1,12 +1,13 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const IconNew = ({onNewPress}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.action} onPress={onNewPress}>
-        <Icon name="plus" size={24} color={'#3ECF8E'} />
+        <Icon name="plus" style={styles.icon} />
       </TouchableOpacity>
     </View>
   );
@@ -22,6 +23,10 @@ const styles = StyleSheet.create({
   },
   action: {
     margin: 5,
+  },
+  icon: {
+    color: Colors.icon.green,
+    fontSize: 24,
   },
 });
 

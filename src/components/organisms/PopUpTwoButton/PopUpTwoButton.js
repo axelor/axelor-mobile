@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {Button, Card, Text} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const PopUpTwoButton = ({
   visible,
@@ -81,14 +82,14 @@ const styles = StyleSheet.create({
   },
   button_primary: {
     marginTop: 15,
-    backgroundColor: '#3ECF8E',
+    backgroundColor: Colors.button.green,
     width: '50%',
     borderRadius: 50,
     elevation: 5,
   },
   button_secondary: {
     marginTop: 15,
-    backgroundColor: '#CECECE',
+    backgroundColor: Colors.button.grey,
     width: '40%',
     borderRadius: 50,
     elevation: 5,

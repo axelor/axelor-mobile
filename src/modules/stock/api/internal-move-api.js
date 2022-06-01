@@ -11,7 +11,7 @@ export async function searchInternalMove() {
             {
               fieldName: 'typeSelect',
               operator: '=',
-              value: StockMove.status.internal,
+              value: StockMove.type.internal,
             },
           ],
         },

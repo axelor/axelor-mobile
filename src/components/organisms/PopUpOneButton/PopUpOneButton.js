@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {Button, Card, Text} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const PopUpOneButton = ({visible, title, data, btnTitle, onPress}) => {
   return (
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
     width: '80%',
     marginBottom: 8,
   },
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15,
-    backgroundColor: '#3ECF8E',
+    backgroundColor: Colors.button.green,
     width: '40%',
     borderRadius: 50,
     elevation: 5,

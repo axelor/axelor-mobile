@@ -14,7 +14,7 @@ const ProductImageScreen = ({route}) => {
         <Image
           resizeMode="contain"
           source={{
-            uri: `https://demo1.axelor.com/salon2/ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+            uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
           }}
           style={styles.image}
         />

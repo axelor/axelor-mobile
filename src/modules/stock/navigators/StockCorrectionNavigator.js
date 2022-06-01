@@ -9,10 +9,9 @@ import StockCorrectionNewProductScreen from '@/modules/stock/screens/stockCorrec
 import StockCorrectionNewTrackingScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewTrackingScreen';
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
 import {IconNew} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const {Navigator, Screen} = createStackNavigator();
-
-const ICON_COLOR = '#3ECF8E';
 
 const StockCorrectionNavigator = () => {
   return (
@@ -22,7 +21,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionListScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={ICON_COLOR} />
+            <DrawerToggleButton {...props} tintColor={Colors.icon.green} />
           ),
           headerTitle: 'Stock corrections',
           headerRight: props => <IconNew {...props} />,
@@ -32,7 +31,7 @@ const StockCorrectionNavigator = () => {
         name="StockCorrectionDetailsScreen"
         component={StockCorrectionDetailsScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Stock correction',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -41,7 +40,7 @@ const StockCorrectionNavigator = () => {
         name="StockCorrectionNewLocationScreen"
         component={StockCorrectionNewLocationScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Stock correction',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -50,7 +49,7 @@ const StockCorrectionNavigator = () => {
         name="StockCorrectionNewProductScreen"
         component={StockCorrectionNewProductScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Stock correction',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -59,7 +58,7 @@ const StockCorrectionNavigator = () => {
         name="StockCorrectionNewTrackingScreen"
         component={StockCorrectionNewTrackingScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Stock correction',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -68,7 +67,7 @@ const StockCorrectionNavigator = () => {
         name="ProductStockDetailsScreen"
         component={ProductStockDetailsScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}

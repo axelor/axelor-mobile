@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Input} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const UsernameInput = ({style, value, onChange, readOnly}) => {
   return (
@@ -18,10 +19,10 @@ const UsernameInput = ({style, value, onChange, readOnly}) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: '#CECECE',
+    borderColor: Colors.border.grey,
     borderWidth: 1,
     borderRadius: 13,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

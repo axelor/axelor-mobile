@@ -1,3 +1,4 @@
+import Colors from '@/types/colors';
 import React from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
 
@@ -10,7 +11,7 @@ const Text = ({style, numberOfLines, children}) => {
 };
 const styles = StyleSheet.create({
   text: {
-    color: '#606060',
+    color: Colors.text.grey,
   },
 });
 

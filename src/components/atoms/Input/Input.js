@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
+import Colors from '@/types/colors';
 
 const Input = ({
   style,
@@ -22,7 +23,7 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
-      placeholderTextColor="#c0c0c0"
+      placeholderTextColor="#C0C0C0"
       keyboardType={keyboardType}
       multiline={multiline}
     />
@@ -31,7 +32,7 @@ const Input = ({
 
 const styles = StyleSheet.create({
   text: {
-    color: '#606060',
+    color: Colors.text.grey,
   },
 });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from '@/components/atoms';
+import Colors from '@/types/colors';
 
 const LoginButton = ({onPress}) => {
   return (
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15,
-    backgroundColor: '#3ECF8E',
+    backgroundColor: Colors.button.green,
     borderRadius: 50,
     width: '30%',
     elevation: 5,

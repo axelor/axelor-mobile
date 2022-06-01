@@ -3,6 +3,7 @@ import {StyleSheet, FlatList, View} from 'react-native';
 import {SearchBar, AutocompleteItem} from '@/components/molecules';
 import {useDispatch} from 'react-redux';
 import {enableScan, useScannerSelector} from '@/features/scannerSlice';
+import Colors from '@/types/colors';
 
 interface AutocompleteSearchProps<T> {
   objectList: T[];
@@ -74,7 +75,9 @@ const AutocompleteSearch = ({
         onSelection={() => setDisplayList(true)}
         onScanPress={scanKeySearch ? handlePressScan : undefined}
         scanIconColor={
-          isEnabled && scanKey === scanKeySearch ? '#84DCB7' : '#606060'
+          isEnabled && scanKey === scanKeySearch
+            ? Colors.icon.green
+            : Colors.icon.dark_grey
         }
       />
       {displayList ? (
@@ -104,12 +107,12 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background.white,
     marginHorizontal: 15,
     paddingLeft: 15,
     paddingVertical: 15,
     fontSize: 18,
-    borderBottomColor: '#84DCB7',
+    borderBottomColor: Colors.border.green,
     borderBottomWidth: 1,
   },
   searchBar: {

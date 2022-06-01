@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Text} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const LocationsMoveCard = ({
   style,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     paddingVertical: '1%',
     borderRadius: 14,
     elevation: 3,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
   },
   card: {
     flexDirection: 'row',
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   icon: {
     marginHorizontal: '4%',
     fontSize: Dimensions.get('window').width * 0.05,
-    color: '#3ECF8E',
+    color: Colors.icon.green,
   },
 });
 

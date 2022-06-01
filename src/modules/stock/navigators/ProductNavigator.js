@@ -4,13 +4,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import ProductListScreen from '@/modules/stock/screens/products/ProductListScreen';
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
-import ProductDetails from '../screens/products/ProductDetails';
-import ProductListVariables from '../screens/products/ProductListVariables';
-import ProductImageScreen from '../screens/products/productImageScreen';
+import ProductDetailsScreen from '@/modules/stock/screens/products/ProductDetailsScreen';
+import ProductListVariables from '@/modules/stock/screens/products/ProductListVariables';
+import ProductImageScreen from '@/modules/stock/screens/products/ProductImageScreen';
+import Colors from '@/types/colors';
 
 const {Navigator, Screen} = createStackNavigator();
-
-const ICON_COLOR = '#3ECF8E';
 
 const ProductNavigator = () => {
   return (
@@ -20,7 +19,7 @@ const ProductNavigator = () => {
         component={ProductListScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={ICON_COLOR} />
+            <DrawerToggleButton {...props} tintColor={Colors.icon.green} />
           ),
           headerTitle: 'Products',
         }}
@@ -29,7 +28,7 @@ const ProductNavigator = () => {
         name="ProductStockDetailsScreen"
         component={ProductStockDetailsScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -38,25 +37,25 @@ const ProductNavigator = () => {
         name="ProductVariables"
         component={ProductListVariables}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Variants',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="ProductDetails"
-        component={ProductDetails}
+        name="ProductDetailsScreen"
+        component={ProductDetailsScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Product Details',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="ProductImage"
+        name="ProductImageScreen"
         component={ProductImageScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.icon.green,
           headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}

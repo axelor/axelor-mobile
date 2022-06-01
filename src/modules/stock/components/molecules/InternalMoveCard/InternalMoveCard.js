@@ -4,49 +4,8 @@ import {Card, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import formatDate from '@/modules/stock/utils/format-date';
-
-const getStatusColor = status => {
-  if (status === 'Draft') {
-    return {
-      backgroundColor: 'rgba(206, 206, 206, 0.6)',
-      borderColor: 'rgba(206, 206, 206, 1)',
-    };
-  } else if (status === 'Planned') {
-    return {
-      backgroundColor: 'rgba(181, 161, 223, 0.6)',
-      borderColor: '#B5A1DF',
-    };
-  } else if (status === 'Realized') {
-    return {
-      backgroundColor: '#84DCB7',
-      borderColor: '#3ECF8E',
-    };
-  } else if (status === 'Canceled') {
-    return {
-      backgroundColor: 'rgba(229, 77, 29, 0.6)',
-      borderColor: 'rgba(206, 206, 206, 1)',
-    };
-  }
-};
-
-const getAvailabilityColor = availability => {
-  if (availability === 'Available') {
-    return {
-      backgroundColor: '#84DCB7',
-      borderColor: '#3ECF8E',
-    };
-  } else if (availability === 'Partially') {
-    return {
-      backgroundColor: 'rgba(243, 151, 66, 0.6)',
-      borderColor: '#F39743',
-    };
-  } else if (availability === 'Unavailable') {
-    return {
-      backgroundColor: 'rgba(229, 77, 29, 0.6)',
-      borderColor: '#E54D1D',
-    };
-  }
-};
+import StockMove from '@/modules/stock/types/stock-move';
+import Colors from '@/types/colors';
 
 const InternalMoveCard = ({
   style,
@@ -70,7 +29,7 @@ const InternalMoveCard = ({
             {origin == null ? null : (
               <Text style={styles.txtDetails}>{origin}</Text>
             )}
-            {status === 'Planned' ? (
+            {status === StockMove.getStatus(StockMove.status.Planned) ? (
               <Text style={[styles.txtDetails, styles.creationDate]}>
                 Created on {formatDate(date, 'DD/MM/YYYY')}
               </Text>
@@ -83,20 +42,20 @@ const InternalMoveCard = ({
           <View style={styles.rightContainer}>
             <View style={styles.badgeContainer}>
               <Badge
-                style={[styles.statusBadge, getStatusColor(status)]}
+                style={[styles.statusBadge, StockMove.getStatusColor(status)]}
                 title={status}
               />
-              {availability == null ? null : (
+              {availability == null || availability === '' ? null : (
                 <Badge
                   style={[
                     styles.statusBadge,
-                    getAvailabilityColor(availability),
+                    StockMove.getAvailabilityColor(availability),
                   ]}
                   title={availability}
                 />
               )}
             </View>
-            <Icon size={24} name="chevron-right" color="#e6e6e6" />
+            <Icon name="chevron-right" style={styles.icon} />
           </View>
         </View>
       </Card>
@@ -149,6 +108,10 @@ const styles = StyleSheet.create({
   badgeContainer: {
     flex: 1,
     flexDirection: 'column',
+  },
+  icon: {
+    fontSize: 24,
+    color: Colors.icon.light_grey,
   },
 });
 

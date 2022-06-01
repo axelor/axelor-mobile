@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Input} from '@/components/atoms';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from '@/types/colors';
 
 const UrlInput = ({style, value, onChange, readOnly}) => {
   return (
@@ -24,10 +25,10 @@ const UrlInput = ({style, value, onChange, readOnly}) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: '#CECECE',
+    borderColor: Colors.border.grey,
     borderWidth: 1,
     borderRadius: 13,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.07,
-    color: '#606060',
+    color: Colors.icon.grey,
   },
 });
 

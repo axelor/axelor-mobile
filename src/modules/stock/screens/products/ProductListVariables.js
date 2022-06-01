@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
 import {SearchBar} from '@/components/molecules';
 import {fetchProductVariants} from '@/modules/stock/features/productVariantSlice';
-import ProductCardVariable from '../../components/molecules/ProductCard/ProductCardVariable';
+import {ProductVariantCard} from '@/modules/stock/components/molecules';
 
 const ProductListVariables = ({route, navigation}) => {
   const {loading, productListVariables} = useSelector(
@@ -57,7 +57,7 @@ const ProductListVariables = ({route, navigation}) => {
           data={listPro}
           renderItem={({item}) =>
             item.attribut && (
-              <ProductCardVariable
+              <ProductVariantCard
                 style={styles.item}
                 name={product.name}
                 code={product.code}

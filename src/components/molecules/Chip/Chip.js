@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Colors from '@/types/colors';
 
 const setStyle = option => {
   return option ? styles.selected : styles.notSelected;
@@ -29,14 +30,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   notSelected: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background.white,
   },
   selected: {
-    backgroundColor: '#84DCB7',
+    backgroundColor: Colors.background.green,
   },
   chipTxt: {
     fontSize: 14,
-    color: '#606060',
   },
 });
 

@@ -1,3 +1,4 @@
+import Colors from '@/types/colors';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: Dimensions.get('window').width * 0.05,
-    color: '#606060',
+    color: Colors.icon.dark_grey,
   },
 });
 
