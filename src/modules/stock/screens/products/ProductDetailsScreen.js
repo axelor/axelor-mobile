@@ -120,7 +120,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
                 />
               </View>
             </View>
-            {true ? null : (
+            {!product.productVariant ? null : (
               <Button
                 onPress={() => showProductVariables()}
                 style={styles.variantsBtn}
@@ -154,12 +154,13 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   variantsBtn: {
+    width: '60%',
     backgroundColor: '#3ECF8E',
     borderRadius: 35,
+    marginHorizontal: '20%',
   },
   description: {
     width: '90%',
-    height: '40%',
     marginHorizontal: '5%',
     flexDirection: 'column',
     marginTop: '2%',

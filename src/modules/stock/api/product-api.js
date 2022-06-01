@@ -23,6 +23,7 @@ const productFields = [
   'picture',
   'serialNUmber',
   'trackingNumberConfiguration',
+  'parentProduct',
 ];
 
 export async function searchProduct() {

@@ -1,73 +1,82 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {SearchBar} from '@/components/molecules';
 import {fetchProductVariants} from '@/modules/stock/features/productVariantSlice';
 import {ProductVariantCard} from '@/modules/stock/components/molecules';
+import {productStockLocation} from '../../api/stock-location-api';
 
 const ProductListVariables = ({route, navigation}) => {
   const {loading, productListVariables} = useSelector(
     state => state.productVariant,
   );
+  const [availabilityList, setAvailabilityList] = useState([]);
   const dispatch = useDispatch();
   const product = route.params.product;
-  const [listPro, setListPro] = useState([]);
+  const companyID = route.params.companyID;
+  const stockLocationId = route.params.stockLocationId;
+  const parentProductId = useMemo(
+    () => product?.parentProduct?.id,
+    [product?.parentProduct?.id],
+  );
 
   useEffect(() => {
-    dispatch(fetchProductVariants(product.productVariant.id));
-  }, [dispatch, product.productVariant.id]);
+    if (parentProductId) {
+      dispatch(fetchProductVariants(parentProductId));
+    }
+  }, [dispatch, parentProductId]);
+
+  async function getAvailability(productId) {
+    return productStockLocation({
+      productId: productId,
+      companyId: companyID !== 0 ? companyID : null,
+      stockLocationId: stockLocationId,
+    }).then(response => {
+      return response.data.object;
+    });
+  }
+
+  async function fetchData(variant) {
+    return await getAvailability(variant.id);
+  }
 
   useEffect(() => {
-    setListPro([
-      {
-        attribut: productListVariables[0]?.productVariantAttr1,
-        value: productListVariables[0]?.productVariantValue1,
-      },
-      {
-        attribut: productListVariables[0]?.productVariantAttr2,
-        value: productListVariables[0]?.productVariantValue2,
-      },
-      {
-        attribut: productListVariables[0]?.productVariantAttr3,
-        value: productListVariables[0]?.productVariantValue3,
-      },
-      {
-        attribut: productListVariables[0]?.productVariantAttr4,
-        value: productListVariables[0]?.productVariantValue4,
-      },
-      {
-        attribut: productListVariables[0]?.productVariantAttr5,
-        value: productListVariables[0]?.productVariantValue5,
-      },
-    ]);
-  }, [loading, productListVariables]);
+    let promises = [];
+    productListVariables.forEach(line => {
+      promises.push(fetchData(line));
+    });
+    Promise.all(promises).then(resultes => {
+      return setAvailabilityList(resultes);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productListVariables]);
 
-  const showProductDetails = item => {
-    navigation.navigate('ProductStockDetailsScreen', {product: item});
+  const navigateToProductVariable = productVar => {
+    navigation.navigate('ProductStockDetailsScreen', {product: productVar});
   };
 
   return (
     <Screen style={styles.container}>
-      <SearchBar style={styles.searchBar} placeholder="Product" />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
-          data={listPro}
-          renderItem={({item}) =>
-            item.attribut && (
-              <ProductVariantCard
-                style={styles.item}
-                name={product.name}
-                code={product.code}
-                attribut={item.attribut?.name}
-                value={item.value?.name}
-                key={item.id}
-                onPress={showProductDetails}
-              />
-            )
-          }
+          data={productListVariables}
+          renderItem={({item, index}) => (
+            <ProductVariantCard
+              style={styles.item}
+              name={item.name}
+              code={item.code}
+              attribut={item.code}
+              value={item.name}
+              key={item.id}
+              picture={item.picture}
+              stockAvailability={
+                availabilityList ? availabilityList[index]?.availableStock : 0
+              }
+              onPress={() => navigateToProductVariable(item)}
+            />
+          )}
         />
       )}
     </Screen>
@@ -85,6 +94,7 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
+    paddingHorizontal: 25,
   },
 });
 

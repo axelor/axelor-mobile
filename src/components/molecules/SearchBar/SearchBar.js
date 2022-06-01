@@ -12,6 +12,7 @@ const SearchBar = ({
   onScanPress,
   onChangeTxt,
   onSelection,
+  onSearchPress,
   scanIconColor,
 }) => {
   return (

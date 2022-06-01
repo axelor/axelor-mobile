@@ -37,16 +37,15 @@ const AutocompleteSearch = ({
     }
   }, [displayValue, value]);
 
-  const handleSelect = item => {
-    setDisplayList(false);
-    onChangeValue(item);
-  };
-
   const handleChangeText = text => {
     setDisplayList(true);
     setSearchText(text);
   };
 
+  const handleSelect = item => {
+    setDisplayList(false);
+    onChangeValue(item);
+  };
   const handleClear = () => {
     setDisplayList(false);
     onChangeValue(null);
@@ -102,6 +101,10 @@ const AutocompleteSearch = ({
 const styles = StyleSheet.create({
   flatListContainer: {
     height: 200, // 4 items : 4*flatListItem.height
+    width: '100%',
+    position: 'absolute',
+    top: '90%',
+    zIndex: 2,
   },
   flatListItem: {
     height: 50,

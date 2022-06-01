@@ -20,7 +20,7 @@ const Picker = ({
 
   const handleValueChange = (itemValue, itemIndex) => {
     setSelectedValue(itemValue);
-    onValueChange(itemValue, itemIndex);
+    onValueChange(itemIndex);
   };
 
   return (

@@ -18,7 +18,6 @@ const ProductCardDetails = ({style, children, onPress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingRight: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

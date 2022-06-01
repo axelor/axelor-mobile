@@ -1,15 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Screen, Text} from '@/components/atoms';
-import {
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import {Screen} from '@/components/atoms';
+import {StyleSheet, ActivityIndicator, View, Text, Image} from 'react-native';
 import {ProductCardDetails} from '../../components/molecules';
+import {ScrollView, Dimensions} from 'react-native';
 import {EditableInput} from '@/components/molecules';
 import {useSelector, useDispatch} from 'react-redux';
 import CardStock from '@/components/molecules/Card/CardStock';
@@ -22,25 +15,33 @@ import {filterItemByName} from '@/modules/stock/utils/filters';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import {updateProductLocker} from '../../features/productSlice';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
   const product = route.params.product;
-  const {userList} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
+  const {activeCompanyId} = useSelector(
+    state => state.user.userList[0]?.activeCompany,
+  );
   const {loading, productIndicators} = useSelector(
     state => state.productIndicators,
   );
   const [stockLocation, setStockLocation] = useState(null);
-  const [company, setCompany] = useState(userList[0].activeCompany);
-
+  const [selectedCompanyId, setselectedCompanyId] = useState(activeCompanyId);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductIndicators(dataFilter));
+    dispatch(
+      fetchProductIndicators({
+        productId: product.id,
+        selectedCompanyId: selectedCompanyId,
+        stockLocationId: stockLocation?.id,
+      }),
+    );
     if (stockLocation != null) {
       dispatch(
         fetchStockLocationLine({
@@ -49,13 +50,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         }),
       );
     }
-  }, [dispatch, dataFilter, product.id, stockLocation]);
-
-  const [dataFilter, setDataFilter] = useState({
-    productId: product.id,
-    companyId: userList[0].activeCompany.id,
-    stockLocationId: null,
-  });
+  }, [dispatch, product.id, stockLocation, selectedCompanyId]);
 
   const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
   useEffect(() => {
@@ -65,20 +60,16 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   }, [stockLocationScanned]);
 
   const showProductDetails = () => {
-    navigation.navigate('ProductDetailsScreen', {product: product});
+    navigation.navigate('ProductDetailsScreen', {
+      product: product,
+      companyID: selectedCompanyId,
+      stockLocationId: stockLocation?.id,
+    });
   };
 
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
   };
-
-  useEffect(() => {
-    setDataFilter({
-      productId: product.id,
-      companyId: company?.id,
-      stockLocationId: stockLocation?.id,
-    });
-  }, [stockLocation, company, product]);
 
   const handleLockerChange = input => {
     if (stockLocation != null) {
@@ -129,11 +120,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             <View style={styles.picker}>
               <Picker
                 title="Company"
-                defaultValue={company?.id}
+                defaultValue={selectedCompanyId}
                 listItems={companyList}
                 labelField="name"
                 valueField="id"
-                onValueChange={item => setCompany(item)}
+                onValueChange={item => setselectedCompanyId(item)}
               />
             </View>
             <AutocompleteSearch
@@ -151,7 +142,9 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
                 style={styles.lockerContainer}
                 placeholder="Locker"
                 onValidate={input => handleLockerChange(input)}
-                defaultValue={stockLocationLine[0]?.rack}
+                defaultValue={
+                  stockLocationLine ? stockLocationLine[0]?.rack : 'CASIER'
+                }
               />
             )}
             <View style={styles.row}>
@@ -232,10 +225,10 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '90%',
-    marginHorizontal: 32,
+    marginHorizontal: '5%',
     marginVertical: '4%',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   textContainer: {
@@ -283,13 +276,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  imageContainer: {
-    marginLeft: '15%',
-  },
   image: {
     height: 60,
     width: 60,
-    marginRight: 8,
   },
 });
 

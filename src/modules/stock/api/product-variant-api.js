@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export async function searchProduct(productVariantId) {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.ProductVariant/search', {
+export async function searchProduct(productVariantParentId) {
+  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
     data: {
       // Criteria from request /stock.root.products/list/1
       criteria: [
@@ -9,26 +9,37 @@ export async function searchProduct(productVariantId) {
           operator: 'and',
           criteria: [
             {
-              fieldName: 'id',
+              fieldName: 'parentProduct.id',
               operator: '=',
-              value: productVariantId,
+              value: productVariantParentId,
             },
           ],
         },
       ],
     },
     fields: [
-      'id',
-      'productVariantAttr1',
-      'productVariantAttr2',
-      'productVariantAttr3',
-      'productVariantAttr4',
-      'productVariantAttr5',
-      'productVariantValue1',
-      'productVariantValue2',
-      'productVariantValue3',
-      'productVariantValue4',
-      'productVariantValue5',
+      'name',
+      'code',
+      'picture',
+      'trackingNumberConfiguration',
+      'salesUnit',
+      'unit',
+      'length',
+      'purchasesUnit',
+      'description',
+      'height',
+      'width',
+      'productCategory',
+      'netMass',
+      'grossMass',
+      'procurementMethodSelect',
+      'isUnrenewed',
+      'isPrototype',
+      'productVariant',
+      'picture',
+      'serialNUmber',
+      'trackingNumberConfiguration',
+      'parentProduct',
     ],
     limit: 20,
     offset: 0,
