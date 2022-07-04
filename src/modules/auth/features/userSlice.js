@@ -1,27 +1,46 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {searchUser} from '@/modules/auth/api/user-api';
+import {getLoggedUser} from '@/modules/auth/api/user-api';
+import {handleError} from '@/api/utils';
 
-export const fetchUser = createAsyncThunk('user/fetchUser', async function () {
-  return searchUser().then(response => response.data.data);
-});
+export const fetchActiveUser = createAsyncThunk(
+  'user/fetchActiveUser',
+  async function () {
+    return getLoggedUser()
+      .catch(function (error) {
+        handleError(error, 'fetch active user');
+      })
+      .then(response => response.data.data[0]);
+  },
+);
 
 const initialState = {
   loadingUser: true,
-  userList: [],
+  user: {},
+  canModifyCompany: false,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
+  reducers: {
+    changeActiveCompany: (state, action) => {
+      state.user = {...state.user, activeCompany: action.payload.newCompany};
+    },
+  },
   extraReducers: builder => {
-    builder.addCase(fetchUser.pending, state => {
+    builder.addCase(fetchActiveUser.pending, state => {
       state.loadingUser = true;
     });
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
+    builder.addCase(fetchActiveUser.fulfilled, (state, action) => {
       state.loadingUser = false;
-      state.userList = action.payload;
+      state.user = action.payload;
+      if (state.user.activeCompany == null) {
+        state.canModifyCompany = true;
+      }
     });
   },
 });
+
+export const {changeActiveCompany} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

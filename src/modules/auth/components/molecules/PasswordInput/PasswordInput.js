@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Input} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Colors from '@/types/colors';
+import React, {useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Icon, Input} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
 const PasswordInput = ({style, value, onChange, readOnly}) => {
   const [visible, setVisible] = useState(false);
+  const Colors = ColorHook();
+
+  const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.container}>
+    <View style={container}>
       <Input
         style={[styles.input, style]}
         value={value}
@@ -17,37 +19,38 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
         secureTextEntry={!visible}
         readOnly={readOnly}
       />
-      <TouchableOpacity
+      <Icon
+        name={visible ? 'eye' : 'eye-slash'}
+        size={15}
+        touchable={true}
+        onPress={() => setVisible(!visible)}
         style={styles.action}
-        onPress={() => setVisible(!visible)}>
-        <Icon name={visible ? 'eye-slash' : 'eye'} style={styles.icon} />
-      </TouchableOpacity>
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    borderColor: Colors.border.grey,
+const getStyles = Colors =>
+  StyleSheet.create({
+    borderColor: Colors.secondaryColor,
     borderWidth: 1,
     borderRadius: 13,
-    backgroundColor: Colors.background.white,
+    backgroundColor: Colors.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 12,
+    marginHorizontal: 20,
     marginVertical: 6,
-  },
+  });
+
+const styles = StyleSheet.create({
   input: {
-    width: '88%',
+    width: '90%',
   },
   action: {
-    width: '12%',
-    marginLeft: 12,
-  },
-  icon: {
-    fontSize: Dimensions.get('window').width * 0.07,
-    color: Colors.icon.dark_grey,
+    width: '10%',
+    margin: 3,
   },
 });
 

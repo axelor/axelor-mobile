@@ -37,6 +37,49 @@ export async function searchStockLocation() {
   });
 }
 
+export async function searchStockLocationsFilter({searchValue, page = 0}) {
+  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
+    data: {
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'typeSelect',
+              operator: '=',
+              value: StockLocation.type.internal,
+            },
+            {
+              fieldName: 'company.id',
+              operator: '=',
+              value: 1,
+            },
+            {
+              operator: 'or',
+              criteria: [
+                {
+                  fieldName: 'name',
+                  operator: 'like',
+                  value: searchValue,
+                },
+                {
+                  fieldName: 'serialNumber',
+                  operator: 'like',
+                  value: searchValue,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    fields: stockLocationFields,
+    sortBy: ['id', 'name'],
+    limit: 10,
+    offset: 10 * page,
+  });
+}
+
 export async function searchStockLocationBySerialNumber(serialNumber) {
   return axios
     .post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
@@ -55,10 +98,4 @@ export async function searchStockLocationBySerialNumber(serialNumber) {
     })
     .then(getApiResponseData)
     .then(getFirstData);
-}
-export async function productStockLocation(data) {
-  return axios.post(
-    `/ws/aos/stock-product/fetch-product-with-stock/${data.productId}`,
-    {companyId: data.companyId, stockLocationId: data.stockLocationId},
-  );
 }

@@ -1,50 +1,74 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Input} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Colors from '@/types/colors';
+import React, {useState, useEffect, useMemo} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {Icon, Input} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
-const UrlInput = ({style, value, onChange, readOnly}) => {
+const UrlInput = ({
+  style,
+  value,
+  onChange,
+  readOnly,
+  onScanPress,
+  onSelection = () => {},
+  scanIconColor,
+}) => {
+  const [inputValue, setInputValue] = useState(null);
+  const Colors = ColorHook();
+
+  useEffect(() => {
+    if (value) {
+      setInputValue(value);
+    }
+  }, [value]);
+
+  const container = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
-    <View style={styles.container}>
+    <View style={container}>
       <Input
         style={[styles.input, style]}
-        value={value}
+        value={inputValue}
         onChange={onChange}
         placeholder="URL"
         readOnly={readOnly}
+        onSelection={onSelection}
       />
-      {true ? null : (
-        <TouchableOpacity style={styles.action} onPress={() => {}}>
-          <Icon name="qrcode" style={styles.icon} />
-        </TouchableOpacity>
-      )}
+      <Icon
+        name="qrcode"
+        size={Dimensions.get('window').width * 0.06}
+        color={
+          scanIconColor == null ? Colors.secondaryColor_dark : scanIconColor
+        }
+        touchable={true}
+        onPress={onScanPress}
+        style={styles.action}
+        FontAwesome5={false}
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    borderColor: Colors.border.grey,
+const getStyles = Colors =>
+  StyleSheet.create({
+    borderColor: Colors.secondaryColor,
     borderWidth: 1,
     borderRadius: 13,
-    backgroundColor: Colors.background.white,
+    backgroundColor: Colors.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 12,
+    marginHorizontal: 20,
     marginVertical: 6,
-  },
+  });
+
+const styles = StyleSheet.create({
   input: {
     width: '90%',
   },
   action: {
     width: '10%',
-    marginLeft: 12,
-  },
-  icon: {
-    fontSize: Dimensions.get('window').width * 0.07,
-    color: Colors.icon.grey,
+    margin: 3,
   },
 });
 

@@ -1,18 +1,25 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {ColorHook} from '@/themeStore';
 
 const Card = ({style, children}) => {
+  const Colors = ColorHook();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return <View style={[styles.container, style]}>{children}</View>;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 14,
-    elevation: 3,
-    backgroundColor: '#fff',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: 24,
+      paddingRight: 32,
+      paddingVertical: 16,
+      borderRadius: 14,
+      elevation: 3,
+      backgroundColor: Colors.backgroundColor,
+    },
+  });
 
 export default Card;

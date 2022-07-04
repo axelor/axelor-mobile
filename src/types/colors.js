@@ -1,37 +1,72 @@
+export class Themes {
+  static ligthTheme = {id: 1, name: 'Light'};
+
+  // Theme used for color blind people, do not modified if not required
+  // Will not appear in theme picker on setting screen
+  // Can be toggle with switch button on setting scrren
+  static colorBlindTheme = {id: 0, name: 'Color blind'};
+
+  static themesList = [{id: 1, name: 'Light'}];
+}
+
 class Colors {
-  static background = {
-    white: '#FFFFFF',
-    grey: 'rgba(206, 206, 206, 0.6)',
-    green: '#84DCB7',
-    orange: 'rgba(243, 151, 66, 0.6)',
-    purple: 'rgba(181, 161, 223, 0.6)',
-    blue: 'rgba(54, 174, 225, 0.6)',
-    red: 'rgba(229, 77, 29, 0.6)',
+  static ligthTheme = {
+    screenBackgroundColor: '#F2F2F2',
+    backgroundColor: '#FFFFFF',
+    primaryColor: '#3ECF8E',
+    primaryColor_light: '#84DCB7',
+    secondaryColor: '#CECECE',
+    secondaryColor_light: '#DDDDDD',
+    secondaryColor_dark: '#606060',
+    errorColor: '#E54D1D',
+    errorColor_light: '#EF9477',
+    cautionColor: '#F49B76',
+    cautionColor_light: '#F5C0AA',
+    plannedColor: '#B5A1DF',
+    plannedColor_light: '#D3C7EC',
+    progressColor: '#FFD101',
+    progressColor_light: '#FCE064',
+    priorityColor: '#36AEE1',
+    priorityColor_light: '#81C9E8',
+    text: '#000000',
+    placeholderTextColor: '#C0C0C0',
   };
 
-  static border = {
-    grey: 'rgba(206, 206, 206, 1)',
-    green: '#3ECF8E',
-    orange: '#F39743',
-    purple: '#B5A1DF',
-    blue: '#36AEE1',
-    red: '#E54D1D',
+  // Theme used for color blind people, do not modified if not required
+  // Will not appear in theme picker on setting screen
+  // Can be toggle with switch button on setting scrren
+  static colorBlindTheme = {
+    screenBackgroundColor: '#F2F2F2',
+    backgroundColor: '#FFFFFF',
+    primaryColor: '#994F00',
+    primaryColor_light: '#BF9263',
+    secondaryColor: '#3288D9',
+    secondaryColor_light: '#63A4E0',
+    secondaryColor_dark: '#006CD1',
+    errorColor: '#E54D1D',
+    errorColor_light: '#EF9477',
+    cautionColor: '#F49B76',
+    cautionColor_light: '#F5C0AA',
+    plannedColor: '#B5A1DF',
+    plannedColor_light: '#D3C7EC',
+    progressColor: '#FFD101',
+    progressColor_light: '#FCE064',
+    priorityColor: '#36AEE1',
+    priorityColor_light: '#81C9E8',
+    text: '#000000',
+    placeholderTextColor: '#C0C0C0',
   };
+}
 
-  static icon = {
-    green: '#3ECF8E',
-    dark_grey: '#606060',
-    light_grey: '#cecece',
-  };
-
-  static text = {
-    grey: '#606060',
-  };
-
-  static button = {
-    green: '#3ECF8E',
-    grey: '#CECECE',
-  };
+export function getColorTheme(themeId) {
+  switch (themeId) {
+    case Themes.ligthTheme.id:
+      return Colors.ligthTheme;
+    case Themes.colorBlindTheme.id:
+      return Colors.colorBlindTheme;
+    default:
+      break;
+  }
 }
 
 export default Colors;

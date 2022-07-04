@@ -1,5 +1,3 @@
-import Colors from '@/types/colors';
-
 class StockMove {
   static type = {
     internal: 1,
@@ -32,27 +30,27 @@ class StockMove {
     }
   };
 
-  static getStatusColor = status => {
+  static getStatusColor = (status, Colors) => {
     switch (status) {
       case 'Draft':
         return {
-          backgroundColor: Colors.background.grey,
-          borderColor: Colors.border.grey,
+          backgroundColor: Colors.secondaryColor_light,
+          borderColor: Colors.secondaryColor,
         };
       case 'Planned':
         return {
-          backgroundColor: Colors.background.purple,
-          borderColor: Colors.border.purple,
+          backgroundColor: Colors.plannedColor_light,
+          borderColor: Colors.plannedColor,
         };
       case 'Realized':
         return {
-          backgroundColor: Colors.background.green,
-          borderColor: Colors.border.green,
+          backgroundColor: Colors.primaryColor_light,
+          borderColor: Colors.primaryColor,
         };
       case 'Canceled':
         return {
-          backgroundColor: Colors.background.red,
-          borderColor: Colors.border.red,
+          backgroundColor: Colors.errorColor_light,
+          borderColor: Colors.errorColor,
         };
       default:
         console.warn(
@@ -84,28 +82,58 @@ class StockMove {
     }
   };
 
-  static getAvailabilityColor = availability => {
+  static getAvailabilityColor = (availability, Colors) => {
     switch (availability) {
       case 'Available':
         return {
-          backgroundColor: Colors.background.green,
-          borderColor: Colors.border.green,
+          backgroundColor: Colors.primaryColor_light,
+          borderColor: Colors.primaryColor,
         };
       case 'Partially':
         return {
-          backgroundColor: Colors.background.orange,
-          borderColor: Colors.border.orange,
+          backgroundColor: Colors.cautionColor_light,
+          borderColor: Colors.cautionColor,
         };
       case 'Unavailable':
         return {
-          backgroundColor: Colors.background.red,
-          borderColor: Colors.border.red,
+          backgroundColor: Colors.errorColor_light,
+          borderColor: Colors.errorColor,
         };
       default:
         console.warn(
           `Availability provided with value ${availability} is not supported by stock move`,
         );
         return {};
+    }
+  };
+
+  static conformity = {
+    Unknown: 0,
+    None: 1,
+    Compliant: 2,
+    Non_Compliant: 3,
+  };
+
+  static conformitySelection = [
+    {name: 'Compliant', id: this.conformity.Compliant},
+    {name: 'Non Compliant', id: this.conformity.Non_Compliant},
+  ];
+
+  static getConformity = select => {
+    switch (select) {
+      case this.conformity.Unknown:
+        return '';
+      case this.conformity.None:
+        return ' ';
+      case this.conformity.Compliant:
+        return 'Compliant';
+      case this.conformity.Non_Compliant:
+        return 'Non Compliant';
+      default:
+        console.warn(
+          `Conformity provided with value ${select} is not supported by stock move`,
+        );
+        return null;
     }
   };
 }

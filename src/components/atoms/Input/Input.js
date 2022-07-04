@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
-import Colors from '@/types/colors';
+import {ColorHook} from '@/themeStore';
 
 const Input = ({
   style,
@@ -11,9 +11,15 @@ const Input = ({
   readOnly = false,
   onSelection,
   multiline = false,
+  numberOfLines = 1,
   keyboardType,
   onEndFocus = () => {},
+  isFocus = false,
 }) => {
+  const Colors = ColorHook();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <TextInput
       style={[styles.text, style]}
@@ -24,18 +30,22 @@ const Input = ({
       autoCapitalize="none"
       editable={!readOnly}
       onFocus={onSelection}
-      placeholderTextColor="#C0C0C0"
+      placeholderTextColor={Colors.placeholderTextColor}
       keyboardType={keyboardType}
       multiline={multiline}
+      numberOfLines={numberOfLines}
       onBlur={onEndFocus}
+      showSoftInputOnFocus={global.zebraConfig ? false : true}
+      autoFocus={isFocus}
     />
   );
 };
 
-const styles = StyleSheet.create({
-  text: {
-    color: Colors.text.grey,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    text: {
+      color: Colors.text,
+    },
+  });
 
 export default Input;

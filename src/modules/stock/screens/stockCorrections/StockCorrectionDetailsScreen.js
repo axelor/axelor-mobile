@@ -1,17 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  ActivityIndicator,
-  View,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Dimensions,
-} from 'react-native';
+import {ActivityIndicator, View, StyleSheet, ScrollView} from 'react-native';
 import {Button, Card, Screen, Text} from '@/components/atoms';
 import {Picker, Badge} from '@/components/molecules';
 import {PopUpOneButton} from '@/components/organisms';
-import {QuantityCard} from '@/modules/stock/components/organisms';
+import {
+  QuantityCard,
+  ProductCardInfo,
+} from '@/modules/stock/components/organisms';
 import {fetchStockCorrectionReasons} from '@/modules/stock/features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '@/modules/stock/features/productSlice';
 import {
@@ -19,20 +15,19 @@ import {
   updateCorrection,
 } from '@/modules/stock/features/stockCorrectionSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
-import {ProductCardDetails} from '../../components/molecules';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import StockCorrection from '../../types/stock-corrrection';
-import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
+import StockCorrection from '@/modules/stock/types/stock-corrrection';
+import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
+import {ColorHook} from '@/themeStore';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
-  // ------------  API --------------
+  const Colors = ColorHook();
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
   const {loadingProduct, productFromId} = useSelector(state => state.product);
-  const {activeCompanyId} = useSelector(
-    state => state.user.userList[0]?.activeCompany.id,
-  ); // à changer après error handling
+  const {id: activeCompanyId} = useSelector(
+    state => state.user.user.activeCompany,
+  );
   const {productIndicators} = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
 
@@ -44,6 +39,10 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 
     dispatch(
       fetchProductIndicators({
+        version:
+          route.params.stockCorrection != null
+            ? route.params.stockCorrection.product.$version
+            : route.params.stockProduct.version,
         productId:
           route.params.stockCorrection != null
             ? route.params.stockCorrection.product.id
@@ -55,15 +54,8 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             : route.params.stockLocation.id,
       }),
     );
-  }, [
-    dispatch,
-    activeCompanyId,
-    route.params.stockCorrection,
-    route.params.stockProduct?.id,
-    route.params.stockLocation?.id,
-  ]);
+  }, [dispatch, activeCompanyId, route.params]);
 
-  // ------------  VARIABLES --------------
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
   const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
 
@@ -92,7 +84,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
         setDatabaseQty(productIndicators?.realQty);
         setRealQty(productIndicators?.realQty);
       }
-      setReason({name: '', id: 'empty'});
+      setReason({name: '', id: null});
 
       setSaveStatus(false);
     } else {
@@ -121,11 +113,12 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     initVariables();
   }, [initVariables]);
 
-  // ------------  HANDLERS --------------
-
   const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: stockProduct,
+    navigation.navigate('ProductNavigator', {
+      screen: 'ProductStockDetailsScreen',
+      params: {
+        product: stockProduct,
+      },
     });
   };
 
@@ -135,8 +128,8 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   };
 
   const handleReasonChange = reasonId => {
-    if (reasonId === 'empty') {
-      setReason({name: '', id: 'empty'});
+    if (reasonId === null) {
+      setReason({name: '', id: null});
     } else {
       setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
     }
@@ -144,7 +137,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   };
 
   const handleSave = () => {
-    if (reason.id === 'empty') {
+    if (reason.id === null) {
       // Required field
       setPopUp(true);
       return;
@@ -182,17 +175,18 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
       // Stock correction already exists : update qty or reason
       dispatch(
         updateCorrection({
+          version: route.params.stockCorrection.version,
           stockCorrectionId: route.params.stockCorrection.id,
           realQty: realQty,
           reasonId: reason.id,
         }),
       );
     }
-    navigation.navigate('StockCorrectionListScreen');
+    handleNavigation();
   };
 
   const handleValidate = () => {
-    if (reason.id === 'empty') {
+    if (reason.id === null) {
       // Required field
       setPopUp(true);
       return;
@@ -230,6 +224,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
       // Stock correction already exists : update qty or reason
       dispatch(
         updateCorrection({
+          version: route.params.stockCorrection.version,
           stockCorrectionId: route.params.stockCorrection.id,
           realQty: saveStatus ? null : realQty,
           reasonId: saveStatus ? null : reason.id,
@@ -237,14 +232,21 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
         }),
       );
     }
-    navigation.navigate('StockCorrectionListScreen');
+    handleNavigation();
   };
 
-  // ------------  RENDER SCREEN --------------
+  const handleNavigation = () => {
+    if (route.params.externeNavigation === true) {
+      navigation.pop();
+    } else {
+      navigation.popToTop();
+    }
+  };
+
   const [popUp, setPopUp] = useState(false);
 
   return (
-    <Screen style={styles.container}>
+    <Screen>
       {loading || loadingProduct ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -271,46 +273,28 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                     </Text>
                   </View>
                   <Badge
-                    style={[
-                      styles.badge,
+                    color={
                       StockCorrection.getStatusColor(
                         StockCorrection.getStatus(status),
-                      ),
-                    ]}
+                        Colors,
+                      ).backgroundColor
+                    }
                     title={StockCorrection.getStatus(status)}
                   />
                 </View>
-                <View style={styles.contentProduct}>
-                  {stockProduct.picture == null ? (
-                    <Icon name="camera" style={styles.icon} />
-                  ) : (
-                    <Image
-                      resizeMode="contain"
-                      source={{
-                        uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${stockProduct.picture.id}/content/download`,
-                      }}
-                      style={styles.image}
-                    />
-                  )}
-                  <ProductCardDetails
-                    style
-                    name={stockProduct.name}
-                    code={stockProduct.code}
-                    onPress={handleShowProduct}>
-                    <Text style={styles.text_important}>
-                      {stockProduct.name}
-                    </Text>
-                    <Text style={styles.text_secondary}>
-                      {stockProduct.code}
-                    </Text>
-                    {stockProduct.trackingNumberConfiguration == null ||
-                    trackingNumber == null ? null : (
-                      <Text style={styles.text_secondary}>
-                        {stockProduct.code}
-                      </Text>
-                    )}
-                  </ProductCardDetails>
-                </View>
+                <ProductCardInfo
+                  name={stockProduct.name}
+                  code={stockProduct.code}
+                  pictureId={stockProduct.picture?.id}
+                  trackingNumber={
+                    stockProduct.trackingNumberConfiguration == null ||
+                    trackingNumber == null
+                      ? null
+                      : trackingNumber.trackingNumberSeq
+                  }
+                  locker={null}
+                  onPress={handleShowProduct}
+                />
               </View>
               <QuantityCard
                 labelQty="Real quantity"
@@ -318,10 +302,9 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                 onValueChange={handleQtyChange}
                 editable={status === StockCorrection.status.Draft}>
                 <Text style={styles.text}>
-                  {'Database quantity: ' + parseFloat(databaseQty).toFixed(2)}
-                </Text>
-                <Text style={styles.text}>
-                  {'Unit: ' + stockProduct.unit?.name}
+                  {`Database quantity: ${parseFloat(databaseQty).toFixed(2)} ${
+                    stockProduct.unit?.name
+                  }`}
                 </Text>
               </QuantityCard>
               {status === StockCorrection.status.Validated ? (
@@ -336,7 +319,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
               ) : (
                 <Picker
                   style={styles.picker}
-                  styleTxt={reason.id === 'empty' ? styles.picker_empty : null}
+                  styleTxt={reason.id === null ? styles.picker_empty : null}
                   title="Reason"
                   onValueChange={handleReasonChange}
                   defaultValue={reason.id}
@@ -351,16 +334,15 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             {saveStatus ? null : (
               <Button
                 title="SAVE"
-                style={[styles.button, styles.button_secondary]}
-                styleTxt={styles.button_title}
+                style={styles.button}
+                color={Colors.secondaryColor_light}
                 onPress={handleSave}
               />
             )}
             {status === StockCorrection.status.Validated ? null : (
               <Button
                 title="VALIDATE"
-                style={[styles.button, styles.button_primary]}
-                styleTxt={styles.button_title}
+                style={styles.button}
                 onPress={handleValidate}
               />
             )}
@@ -372,9 +354,6 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: '2%',
-  },
   scrollContainer: {
     height: '86%',
   },
@@ -410,14 +389,6 @@ const styles = StyleSheet.create({
   text_secondary: {
     fontSize: 14,
   },
-  badge: {
-    flex: 1,
-    alignItems: 'center',
-    width: 55,
-    height: 22,
-    borderRadius: 7,
-    borderWidth: 1.5,
-  },
   infosCard: {
     marginHorizontal: 12,
     marginBottom: '2%',
@@ -444,22 +415,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginBottom: '2%',
   },
-  button_primary: {
-    backgroundColor: '#3ECF8E',
-  },
-  button_secondary: {
-    backgroundColor: '#FFFFFF',
-  },
-  button_title: {
-    fontWeight: 'bold',
-  },
   text: {
     fontSize: 16,
-  },
-  icon: {
-    fontSize: Dimensions.get('window').width * 0.14,
-    color: '#cecece',
-    marginRight: 6,
   },
 });
 

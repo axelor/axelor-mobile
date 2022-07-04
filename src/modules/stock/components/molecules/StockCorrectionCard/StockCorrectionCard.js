@@ -1,11 +1,9 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Text} from '@/components/atoms';
-import {Badge} from '@/components/molecules';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import formatDate from '@/modules/stock/utils/format-date';
+import {Card, Icon, Text} from '@/components/atoms';
+import {formatDate} from '@/modules/stock/utils/formatters';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
-import Colors from '@/types/colors';
+import {ColorHook} from '@/themeStore';
 
 const StockCorrectionCard = ({
   style,
@@ -15,45 +13,54 @@ const StockCorrectionCard = ({
   date,
   onPress,
 }) => {
+  const Colors = ColorHook();
+  const borderStyle = useMemo(() => {
+    return getStyles(
+      StockCorrection.getStatusColor(status, Colors).borderColor,
+    );
+  }, [Colors, status]);
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <View style={styles.content}>
-          <View style={styles.textContainer}>
-            <Text style={styles.txtImportant}>{productFullname}</Text>
-            <Text style={styles.txtDetails}>{stockLocation}</Text>
-            {status === 'Draft' ? (
-              <Text style={[styles.txtDetails, styles.creationDate]}>
-                Created on {formatDate(date, 'DD/MM/YYYY')}
-              </Text>
-            ) : (
-              <Text style={styles.txtDetails}>
-                Validated on {formatDate(date, 'DD/MM/YYYY')}
-              </Text>
-            )}
-          </View>
-          <Badge
-            style={StockCorrection.getStatusColor(status)}
-            title={status}
-          />
+      <Card style={[styles.container, borderStyle, style]}>
+        <View style={styles.textContainer}>
+          <Text style={styles.txtImportant}>{productFullname}</Text>
+          <Text style={styles.txtDetails}>{stockLocation}</Text>
+          {status === 'Draft' ? (
+            <Text style={[styles.txtDetails, styles.creationDate]}>
+              Created on {formatDate(date, 'MM/DD/YYYY')}
+            </Text>
+          ) : (
+            <Text style={styles.txtDetails}>
+              Validated on {formatDate(date, 'MM/DD/YYYY')}
+            </Text>
+          )}
         </View>
-        <Icon size={24} name="chevron-right" color={Colors.icon.light_grey} />
+        <Icon
+          name="chevron-right"
+          color={Colors.secondaryColor_light}
+          size={20}
+        />
       </Card>
     </TouchableOpacity>
   );
 };
+
+const getStyles = color =>
+  StyleSheet.create({
+    borderLeftWidth: 7,
+    borderLeftColor: color,
+  });
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  content: {
-    flexDirection: 'row',
+    paddingRight: 15,
   },
   textContainer: {
-    flex: 2,
+    width: '90%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },

@@ -4,11 +4,16 @@ import {
   createStockCorrection,
   updateStockCorrection,
 } from '@/modules/stock/api/stock-correction-api';
+import {handleError} from '@/api/utils';
 
 export const fetchStockCorrections = createAsyncThunk(
   'stockCorrection/fetchStockCorrection',
-  async function () {
-    return searchStockCorrection().then(response => response.data.data);
+  async function (data) {
+    return searchStockCorrection(data)
+      .catch(function (error) {
+        handleError(error, 'fetch stock corrections');
+      })
+      .then(response => response.data.data);
   },
 );
 
@@ -17,10 +22,7 @@ export const createCorrection = createAsyncThunk(
   async function (data) {
     return createStockCorrection(data)
       .catch(function (error) {
-        if (error.response) {
-          console.log('Error got caugth: ');
-          console.log(error.response.data);
-        }
+        handleError(error, 'create stock correction');
       })
       .then(response => response.data.object);
   },
@@ -31,10 +33,7 @@ export const updateCorrection = createAsyncThunk(
   async function (data) {
     return updateStockCorrection(data)
       .catch(function (error) {
-        if (error.response) {
-          console.log('Error got caugth: ');
-          console.log(error.response.data);
-        }
+        handleError(error, 'update stock correction');
       })
       .then(response => response.data.object);
   },
@@ -42,22 +41,41 @@ export const updateCorrection = createAsyncThunk(
 
 const initialState = {
   loadingStockCorrection: true,
+  moreLoading: false,
+  isListEnd: false,
   stockCorrectionList: [],
   createResponse: {},
   updateResponse: {},
-  errorBody: {},
 };
 
 const stockCorrectionSlice = createSlice({
   name: 'stockCorrection',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchStockCorrections.pending, state => {
-      state.loadingStockCorrection = true;
+    builder.addCase(fetchStockCorrections.pending, (state, action) => {
+      if (action.meta.arg.page === 0) {
+        state.loadingStockCorrection = true;
+      } else {
+        state.moreLoading = true;
+      }
     });
     builder.addCase(fetchStockCorrections.fulfilled, (state, action) => {
       state.loadingStockCorrection = false;
-      state.stockCorrectionList = action.payload;
+      state.moreLoading = false;
+      if (action.meta.arg.page === 0) {
+        state.stockCorrectionList = action.payload;
+        state.isListEnd = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEnd = false;
+          state.stockCorrectionList = [
+            ...state.stockCorrectionList,
+            ...action.payload,
+          ];
+        } else {
+          state.isListEnd = true;
+        }
+      }
     });
     builder.addCase(createCorrection.pending, state => {
       state.loadingStockCorrection = true;
@@ -65,10 +83,6 @@ const stockCorrectionSlice = createSlice({
     builder.addCase(createCorrection.fulfilled, (state, action) => {
       state.loadingStockCorrection = false;
       state.createResponse = action.payload;
-    });
-    builder.addCase(createCorrection.rejected, (state, action) => {
-      state.loadingStockCorrection = false;
-      state.error = action;
     });
     builder.addCase(updateCorrection.pending, state => {
       state.loadingStockCorrection = true;

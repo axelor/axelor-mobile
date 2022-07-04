@@ -1,16 +1,13 @@
-import Colors from '@/types/colors';
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Icon} from '@/components/atoms';
 
 const ProductCardDetails = ({style, children, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View style={[styles.container, style]}>
-        <View style={styles.content}>
-          <View style={styles.textContainer}>{children}</View>
-        </View>
-        <Icon name="chevron-right" style={styles.icon} />
+        <View style={styles.textContainer}>{children}</View>
+        <Icon name="chevron-right" size={20} />
       </View>
     </TouchableOpacity>
   );
@@ -22,18 +19,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
-    flexDirection: 'row',
-  },
   textContainer: {
     width: '80%',
     flexDirection: 'column',
     justifyContent: 'space-between',
-  },
-  icon: {
-    width: '10%',
-    fontSize: Dimensions.get('window').width * 0.05,
-    color: Colors.icon.dark_grey,
   },
 });
 

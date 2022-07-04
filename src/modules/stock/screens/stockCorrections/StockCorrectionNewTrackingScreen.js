@@ -1,26 +1,26 @@
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
+import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
+import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
-import useFocusedScan from '@/modules/stock/hooks/use-focused-scan';
-import useTrackingNumberScanner from '@/modules/stock/hooks/use-tracking-number-scanner';
-import {filterItemByTrackingNumberSeq} from '@/modules/stock/utils/filters';
 
 const trackingNumberScanKey = 'tracking-number_stock-correction-new';
 
 const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
-  useFocusedScan(trackingNumberScanKey);
-
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
-  const trackingNumberScanned = useTrackingNumberScanner(trackingNumberScanKey);
+  const product = route.params.product;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchTrackingNumber(route.params.product.id));
-  }, [dispatch, route.params.product.id]);
+  const fetchTrackingAPI = useCallback(
+    filter => {
+      dispatch(
+        filterTrackingNumber({productId: product.id, searchValue: filter}),
+      );
+    },
+    [dispatch, product.id],
+  );
 
   const handleTrackingNumberSelection = useCallback(
     trackingNumber => {
@@ -33,16 +33,8 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
     [navigation, route.params.product, route.params.stockLocation],
   );
 
-  useEffect(() => {
-    if (trackingNumberScanned) {
-      handleTrackingNumberSelection(trackingNumberScanned);
-    }
-  }, [handleTrackingNumberSelection, trackingNumberScanned]);
-
   const handleClearLocation = () => {
-    navigation.navigate('StockCorrectionNewLocationScreen', {
-      product: route.params.product,
-    });
+    navigation.navigate('StockCorrectionNewLocationScreen');
   };
 
   const handleClearProduct = () => {
@@ -52,41 +44,27 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
   };
 
   return (
-    <Screen style={styles.container}>
+    <Screen>
       <ClearableCard
-        style={styles.infosCard}
         valueTxt={route.params.stockLocation.name}
         onClearPress={handleClearLocation}
       />
       <ClearableCard
-        style={styles.infosCard}
         valueTxt={route.params.product.name}
         onClearPress={handleClearProduct}
       />
       <AutocompleteSearch
         objectList={trackingNumberList}
-        scanKeySearch={trackingNumberScanKey}
         onChangeValue={item => handleTrackingNumberSelection(item)}
-        filter={filterItemByTrackingNumberSeq}
-        placeholder="Tracking number"
-        displayValue={item => item.trackingNumberSeq}
+        fetchData={fetchTrackingAPI}
+        displayValue={displayItemTrackingNumber}
+        scanKeySearch={trackingNumberScanKey}
+        placeholder="Tracking Number"
+        isFocus={true}
+        changeScreenAfter={true}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 6,
-  },
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: 8,
-  },
-  searchBar: {
-    marginHorizontal: 12,
-    marginBottom: 8,
-  },
-});
 
 export default StockCorrectionNewTrackingScreen;

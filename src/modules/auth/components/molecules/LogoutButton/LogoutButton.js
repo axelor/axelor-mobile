@@ -1,34 +1,49 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button} from '@/components/atoms';
-import Colors from '@/types/colors';
+import React, {useMemo} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Icon, Text} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
-const LogoutButton = ({style, onPress}) => {
+const LogoutButton = ({onPress}) => {
+  const Colors = ColorHook();
+  const button = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
-    <View style={[style, styles.container]}>
-      <Button
-        style={styles.button}
-        styleTxt={styles.title}
-        title="LOGOUT"
-        onPress={onPress}
-      />
+    <View style={styles.container}>
+      <TouchableOpacity style={button} onPress={onPress}>
+        <Icon name="power-off" />
+        <Text style={styles.text}>LOGOUT</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+const getStyles = Colors =>
+  StyleSheet.create({
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    paddingVertical: 5,
+    marginVertical: 10,
+    elevation: 2,
+    width: '40%',
+    height: 40,
+    backgroundColor: Colors.secondaryColor,
+    borderRadius: 35,
+  });
+
 const styles = StyleSheet.create({
   container: {
+    alignSelf: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
+    marginTop: '15%',
   },
-  button: {
-    marginTop: 15,
-    backgroundColor: Colors.button.green,
-    borderRadius: 50,
-    width: '30%',
-    elevation: 5,
-  },
-  title: {
+  text: {
+    fontSize: 15,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginLeft: 5,
   },
 });
 

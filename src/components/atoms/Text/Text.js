@@ -1,5 +1,5 @@
-import Colors from '@/types/colors';
-import React from 'react';
+import {ColorHook} from '@/themeStore';
+import React, {useMemo} from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
 
 const Text = ({
@@ -8,6 +8,9 @@ const Text = ({
   adjustsFontSizeToFit = false,
   children,
 }) => {
+  const Colors = ColorHook();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <ReactNativeText
       style={[styles.text, style]}
@@ -17,10 +20,11 @@ const Text = ({
     </ReactNativeText>
   );
 };
-const styles = StyleSheet.create({
-  text: {
-    color: Colors.text.grey,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    text: {
+      color: Colors.text,
+    },
+  });
 
 export default Text;

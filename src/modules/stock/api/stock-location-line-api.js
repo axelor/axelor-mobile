@@ -1,37 +1,77 @@
 import axios from 'axios';
+import StockLocation from '../types/stock-location';
 
-export async function searchStockLocationLine(data) {
+const stockLocationLineFields = [
+  'id',
+  'rack',
+  'stockLocation',
+  'product',
+  'currentQty',
+  'futureQty',
+  'unit',
+];
+
+export async function searchStockLocationLine({
+  stockId,
+  productId,
+  companyId,
+  page = 0,
+}) {
   return axios.post(
     '/ws/rest/com.axelor.apps.stock.db.StockLocationLine/search',
-    {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
+    stockId != null
+      ? {
+          data: {
             criteria: [
               {
-                fieldName: 'product.id',
-                operator: '=',
-                value: data.productId,
-              },
-              {
-                fieldName: 'stockLocation.id',
-                operator: '=',
-                value: data.stockId,
+                operator: 'and',
+                criteria: [
+                  {
+                    fieldName: 'product.id',
+                    operator: '=',
+                    value: productId,
+                  },
+                  {
+                    fieldName: 'stockLocation.id',
+                    operator: '=',
+                    value: stockId,
+                  },
+                ],
               },
             ],
           },
-        ],
-      },
-      fields: [
-        'id',
-        'rack',
-        'detailsStockLocation.id',
-        'stockLocation.id',
-        'product.id',
-      ],
-      limit: 20,
-      offset: 0,
-    },
+          fields: stockLocationLineFields,
+          limit: 10,
+          offset: 10 * page,
+        }
+      : {
+          data: {
+            criteria: [
+              {
+                operator: 'and',
+                criteria: [
+                  {
+                    fieldName: 'product.id',
+                    operator: '=',
+                    value: productId,
+                  },
+                  {
+                    fieldName: 'stockLocation.typeSelect',
+                    operator: '=',
+                    value: StockLocation.type.internal,
+                  },
+                  {
+                    fieldName: 'stockLocation.company.id',
+                    operator: '=',
+                    value: companyId,
+                  },
+                ],
+              },
+            ],
+          },
+          fields: stockLocationLineFields,
+          limit: 10,
+          offset: 10 * page,
+        },
   );
 }

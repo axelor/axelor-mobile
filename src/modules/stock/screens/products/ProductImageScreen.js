@@ -24,10 +24,6 @@ const ProductImageScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
   imageContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -50,14 +46,6 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 14,
-  },
-  searchBar: {
-    marginHorizontal: 12,
-    marginBottom: 8,
-  },
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
   },
 });
 

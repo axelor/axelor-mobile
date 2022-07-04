@@ -1,10 +1,15 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchLanguage} from '@/modules/auth/api/language-api';
+import {handleError} from '@/api/utils';
 
 export const fetchLanguages = createAsyncThunk(
   'language/fetchLanguage',
   async function () {
-    return searchLanguage().then(response => response.data.data);
+    return searchLanguage()
+      .catch(function (error) {
+        handleError(error, 'fetch languages');
+      })
+      .then(response => response.data.data);
   },
 );
 

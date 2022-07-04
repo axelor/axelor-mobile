@@ -1,30 +1,51 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Colors from '@/types/colors';
+import React, {useMemo} from 'react';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {ColorHook} from '@/themeStore';
 
-const Button = ({style, styleTxt, title, onPress, disabled}) => {
+const Button = ({
+  style,
+  color,
+  title,
+  onPress = () => {},
+  disabled = false,
+}) => {
+  const Colors = ColorHook();
+
+  const styles = useMemo(() => {
+    return getStyles(color == null ? Colors.primaryColor : color, Colors);
+  }, [Colors, color]);
+
   return (
-    <TouchableOpacity style={style} onPress={onPress} disabled={disabled}>
-      <View style={styles.container}>
-        <Text style={[styles.text, styleTxt]}>{title}</Text>
-      </View>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      disabled={disabled}>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: 5,
-    marginVertical: 6,
-    borderRadius: 13,
-  },
-  text: {
-    color: Colors.text.grey,
-  },
-});
+const getStyles = (backgroundColor, Colors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      paddingVertical: 5,
+      marginVertical: 10,
+      borderRadius: 35,
+      width: '40%',
+      height: 40,
+      backgroundColor: backgroundColor,
+    },
+    text: {
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: Colors.text,
+      textAlign: 'center',
+    },
+  });
 
 export default Button;

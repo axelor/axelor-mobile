@@ -1,22 +1,43 @@
 import React, {useState} from 'react';
-import {Button, Screen, Text} from '@/components/atoms';
 import {StyleSheet, ActivityIndicator, View, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import ProductCharacteristics from '../../components/molecules/ProductCharacteristics/ProductCharacteristics';
-import SmallPropertyCard from '../../components/molecules/SmallPropertyCard/SmallPropertyCard';
+import {Button, Card, Screen, Text} from '@/components/atoms';
+import {DropdownMenuItem} from '@/components/molecules';
+import {DropdownMenu} from '@/components/organisms';
+import {
+  ProductCharacteristics,
+  SmallPropertyCard,
+} from '@/modules/stock/components/organisms/';
 import RenderHtml from 'react-native-render-html';
-import Colors from '@/types/colors';
+import {ColorHook} from '@/themeStore';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const {loading} = useSelector(state => state.product);
   const product = route.params.product;
 
   const showProductVariables = () => {
-    navigation.navigate('ProductVariables', {product: product});
+    navigation.navigate('ProductListVariantScreen', {product: product});
   };
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <DropdownMenu>
+          <DropdownMenuItem
+            placeholder="See attached files"
+            onPress={() =>
+              navigation.navigate('ProductAttachedFilesScreen', {
+                product: product,
+              })
+            }
+          />
+        </DropdownMenu>
+      ),
+    });
+  }, [navigation, product]);
 
   const [widthNotes, setWidthNotes] = useState();
   const PERCENTAGE_WIDTH_NOTES = 0.95;
@@ -82,53 +103,82 @@ const ProductDetailsScreen = ({route, navigation}) => {
                   style={styles.packingCard}
                   title="LENGTH"
                   value={product.length}
+                  unit={
+                    product.lengthUnit == null
+                      ? 'Mètres'
+                      : product.lengthUnit?.name
+                  }
+                  interactive={true}
                 />
                 <SmallPropertyCard
                   style={styles.packingCard}
                   title="WIDTH"
                   value={product.width}
+                  unit={
+                    product.lengthUnit == null
+                      ? 'Mètres'
+                      : product.lengthUnit?.name
+                  }
+                  interactive={true}
                 />
                 <SmallPropertyCard
                   style={styles.packingCard}
                   title="HEIGHT"
                   value={product.height}
+                  unit={
+                    product.lengthUnit == null
+                      ? 'Mètres'
+                      : product.lengthUnit?.name
+                  }
+                  interactive={true}
                 />
                 <SmallPropertyCard
                   style={styles.packingCard}
                   title="NET MASS"
                   value={product.netMass}
+                  unit={
+                    product.massUnit == null
+                      ? 'Kilogrammes'
+                      : product.massUnit?.name
+                  }
+                  interactive={true}
                 />
                 <SmallPropertyCard
                   style={styles.packingCard}
                   title="GROSS MASS"
                   value={product.grossMass}
+                  unit={
+                    product.massUnit == null
+                      ? 'Kilogrammes'
+                      : product.massUnit?.name
+                  }
+                  interactive={true}
                 />
               </View>
             </View>
-            <View style={styles.description}>
-              <Text style={styles.titles}>DESCRIPTION</Text>
-              <View
-                style={styles.notes}
-                onLayout={event => {
-                  const {width} = event.nativeEvent.layout;
-                  setWidthNotes(width);
-                }}>
-                <RenderHtml
-                  source={{html: product.description}}
-                  contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-                  baseStyle={{color: Colors.text.grey}}
-                />
+            {product.description && (
+              <View style={styles.description}>
+                <Text style={styles.titles}>DESCRIPTION</Text>
+                <Card
+                  style={styles.notes}
+                  onLayout={event => {
+                    const {width} = event.nativeEvent.layout;
+                    setWidthNotes(width);
+                  }}>
+                  <RenderHtml
+                    source={{html: product.description}}
+                    contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
+                    baseStyle={{color: ColorHook().text}}
+                  />
+                </Card>
               </View>
-            </View>
-            {!product.productVariant ? null : (
-              <Button
-                onPress={() => showProductVariables()}
-                style={styles.variantsBtn}
-                styleTxt={styles.btnText}
-                title="VARIANTS"
-              />
             )}
           </ScrollView>
+          {!product.productVariant ? null : (
+            <View style={styles.buttonContainer}>
+              <Button onPress={() => showProductVariables()} title="VARIANTS" />
+            </View>
+          )}
         </View>
       )}
     </Screen>
@@ -148,15 +198,12 @@ const styles = StyleSheet.create({
     marginHorizontal: '1.5%',
     minWidth: '20%',
   },
-  btnText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  variantsBtn: {
-    width: '60%',
-    backgroundColor: '#3ECF8E',
-    borderRadius: 35,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    height: '10%',
   },
   description: {
     width: '90%',
@@ -168,7 +215,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     padding: 10,
     marginVertical: 8,

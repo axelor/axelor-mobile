@@ -8,11 +8,24 @@ import {
   UrlInput,
   UsernameInput,
 } from '@/modules/auth/components/molecules';
+import {
+  enableScan,
+  useScannedValueByKey,
+  useScannerSelector,
+} from '@/features/scannerSlice';
 import {login} from '@/modules/auth/features/authSlice';
-import {Screen, Text} from '@/components/atoms';
+import {CameraScanner, Screen, Text} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
+
+const urlScanKey = 'login_url';
 
 const LoginScreen = () => {
   const {loading, error, logged} = useSelector(state => state.auth);
+  const [camScan, setCamScan] = useState(false);
+  const [scanData, setScanData] = useState(null);
+  const {isEnabled, scanKey} = useScannerSelector();
+  const scannedValue = useScannedValueByKey(urlScanKey);
+  const Colors = ColorHook();
   const dispatch = useDispatch();
 
   const [url, setUrl] = useState(
@@ -25,40 +38,70 @@ const LoginScreen = () => {
     global.loggedUrl = url;
   }, [url]);
 
+  useEffect(() => {
+    if (scannedValue) {
+      setUrl(scannedValue);
+    } else if (scanData != null && scanData.value != null) {
+      setCamScan(false);
+      setUrl(scanData.value);
+    }
+  }, [scanData, scannedValue]);
+
   return (
     <Screen style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode="contain"
-          source={require('../assets/Logo_Axelor.png')}
-          style={styles.image}
-        />
-      </View>
-      <UrlInput
-        style={[styles.inputContainer]}
-        value={url}
-        onChange={setUrl}
-        readOnly={loading}
+      <CameraScanner
+        isActive={camScan}
+        onScan={setScanData}
+        onClose={() => setCamScan(false)}
       />
-      <UsernameInput
-        style={[styles.inputContainer]}
-        value={username}
-        onChange={setUsername}
-        readOnly={loading}
-      />
-      <PasswordInput
-        style={[styles.inputContainer]}
-        value={password}
-        onChange={setPassword}
-        readOnly={loading}
-      />
-      <LoginButton
-        onPress={() => dispatch(login({url, username, password}))}
-        disabled={loading}
-      />
-      {error && <ErrorText message={error.message} />}
-      {loading && <ActivityIndicator size="large" />}
-      {logged && <Text>Success login :)</Text>}
+      {!camScan && (
+        <View>
+          <View style={styles.imageContainer}>
+            <Image
+              resizeMode="contain"
+              source={require('../assets/Logo_Axelor.png')}
+              style={styles.image}
+            />
+          </View>
+          <UrlInput
+            value={url}
+            onChange={setUrl}
+            readOnly={loading}
+            onScanPress={() => setCamScan(true)}
+            onSelection={() => {
+              dispatch(enableScan(urlScanKey));
+            }}
+            scanIconColor={
+              isEnabled && scanKey === urlScanKey
+                ? Colors.primaryColor
+                : Colors.secondaryColor_dark
+            }
+          />
+          <UsernameInput
+            value={username}
+            onChange={setUsername}
+            readOnly={loading}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            readOnly={loading}
+          />
+          {loading ? (
+            <ActivityIndicator size="large" />
+          ) : (
+            <LoginButton
+              onPress={() => dispatch(login({url, username, password}))}
+              disabled={loading}
+            />
+          )}
+          {error && <ErrorText message={error.message} />}
+          {logged && <Text>Success login :)</Text>}
+          <View style={styles.copyright}>
+            <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All Rights Reserved.`}</Text>
+          </View>
+        </View>
+      )}
     </Screen>
   );
 };
@@ -66,19 +109,19 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginHorizontal: 20,
-  },
-  inputContainer: {
-    backgroundColor: '#FFFFFF',
   },
   imageContainer: {
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginBottom: '25%',
+    marginVertical: '15%',
   },
   image: {
     flex: 1,
+  },
+  copyright: {
+    alignSelf: 'center',
+    marginTop: '10%',
   },
 });
 

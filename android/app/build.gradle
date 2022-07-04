@@ -173,6 +173,7 @@ android {
                 }
             }
         }
+        missingDimensionStrategy 'react-native-vsion-camera', 'general'
     }
 
     if (isNewArchitectureEnabled()) {

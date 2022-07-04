@@ -1,8 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchUnit} from '@/modules/stock/api/unit-api';
+import {handleError} from '@/api/utils';
 
 export const fetchUnit = createAsyncThunk('unit/fetchUnit', async function () {
-  return searchUnit().then(response => response.data.data);
+  return searchUnit()
+    .catch(function (error) {
+      handleError(error, 'fetch units');
+    })
+    .then(response => response.data.data);
 });
 
 const initialState = {

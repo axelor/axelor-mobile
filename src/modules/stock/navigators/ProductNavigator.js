@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import ProductListScreen from '@/modules/stock/screens/products/ProductListScreen';
 import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
 import ProductDetailsScreen from '@/modules/stock/screens/products/ProductDetailsScreen';
-import ProductListVariables from '@/modules/stock/screens/products/ProductListVariables';
+import ProductListVariantScreen from '@/modules/stock/screens/products/ProductListVariantScreen';
 import ProductImageScreen from '@/modules/stock/screens/products/ProductImageScreen';
-import Colors from '@/types/colors';
+import ProductAttachedFilesScreen from '@/modules/stock/screens/products/ProductAttachedFilesScreen';
+import ProductStockLocationDetailsScreen from '../screens/products/ProductStockLocationDetailsScreen';
+import {ColorHook} from '@/themeStore';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const ProductNavigator = () => {
+  const Colors = ColorHook();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <Navigator>
       <Screen
@@ -19,25 +24,39 @@ const ProductNavigator = () => {
         component={ProductListScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={Colors.icon.green} />
+            <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Products',
+          headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
         name="ProductStockDetailsScreen"
         component={ProductStockDetailsScreen}
         options={{
-          headerTintColor: Colors.icon.green,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="ProductVariables"
-        component={ProductListVariables}
+        name="ProductStockLocationDetailsScreen"
+        component={ProductStockLocationDetailsScreen}
         options={{
-          headerTintColor: Colors.icon.green,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerTitle: 'Quantity per stock location',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="ProductListVariantScreen"
+        component={ProductListVariantScreen}
+        options={{
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Variants',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -46,7 +65,8 @@ const ProductNavigator = () => {
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
         options={{
-          headerTintColor: Colors.icon.green,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Product Details',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -55,7 +75,18 @@ const ProductNavigator = () => {
         name="ProductImageScreen"
         component={ProductImageScreen}
         options={{
-          headerTintColor: Colors.icon.green,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerTitle: 'Product',
+          headerTitleStyle: styles.headerTitle,
+        }}
+      />
+      <Screen
+        name="ProductAttachedFilesScreen"
+        component={ProductAttachedFilesScreen}
+        options={{
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Product',
           headerTitleStyle: styles.headerTitle,
         }}
@@ -64,10 +95,11 @@ const ProductNavigator = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  headerTitle: {
-    color: '#000000',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    headerTitle: {
+      color: Colors.text,
+    },
+  });
 
 export default ProductNavigator;

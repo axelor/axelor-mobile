@@ -8,49 +8,64 @@ import {
   Dimensions,
 } from 'react-native';
 import {Card, Screen, Text} from '@/components/atoms';
-import {Badge, ViewAllContainer} from '@/components/molecules';
+import {ViewAllContainer} from '@/components/molecules';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
+import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   InternalMoveLineCard,
-  LocationsMoveCard,
-} from '../../components/molecules';
+  StockMoveHeader,
+} from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
-import formatDate from '@/modules/stock/utils/format-date';
-import Colors from '@/types/colors';
+import {getRacks} from '../../features/racksListSlice';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
-  // ------------  API --------------
-  const {loadingInternalMoveLine, internalMoveLineList} = useSelector(
+  const internalMove = route.params.internalMove;
+  const {loadingIMLines, internalMoveLineList} = useSelector(
     state => state.internalMoveLine,
   );
+  const {loadingRacks, racksList} = useSelector(state => state.rack);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (route.params.internalMove != null) {
-      dispatch(fetchInternalMoveLines(route.params.internalMove.id));
+    if (internalMove != null) {
+      dispatch(
+        fetchInternalMoveLines({internalMoveId: internalMove.id, page: 0}),
+      );
     }
-  }, [dispatch, route.params.internalMove]);
+  }, [dispatch, internalMove]);
 
-  // ------------  VARIABLES --------------
-  const internalMove = route.params.internalMove;
+  useEffect(() => {
+    dispatch(
+      getRacks({
+        stockId: internalMove?.fromStockLocation?.id,
+        LineList: internalMoveLineList,
+      }),
+    );
+  }, [dispatch, internalMove, internalMoveLineList]);
 
-  // ------------  HANDLERS --------------
   const handleViewAll = () => {
-    navigation.navigate('InternalMoveDetailsListProductScreen', {
+    navigation.navigate('InternalMoveLineListScreen', {
       internalMove: internalMove,
     });
   };
 
   const handleShowLine = item => {
-    navigation.navigate('InternalMoveDetailsScreen', {
-      internalMove: internalMove,
-      internalMoveLine: item,
-    });
+    if (internalMove.statusSelect === StockMove.status.Realized) {
+      navigation.navigate('InternalMoveLineDetailsScreen', {
+        internalMove: internalMove,
+        internalMoveLine: item,
+      });
+    } else {
+      navigation.navigate('InternalMoveSelectProductScreen', {
+        internalMove: internalMove,
+        internalMoveLine: item,
+      });
+    }
   };
 
   return (
     <Screen>
-      {loadingInternalMoveLine ? (
+      {loadingIMLines ? (
         <ActivityIndicator size="large" />
       ) : (
         <View>
@@ -63,43 +78,18 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
             }>
             <ScrollView>
               <View>
-                <View style={styles.infoContainer}>
-                  <View style={styles.refContainer}>
-                    <Text style={styles.text_important}>
-                      {route.params.internalMove.stockMoveSeq}
-                    </Text>
-                    <Text style={styles.text_secondary}>
-                      {internalMove.statusSelect ===
-                      StockMove.getStatus(StockMove.status.Planned)
-                        ? formatDate(internalMove.estimatedDate, 'DD/MM/YYYY')
-                        : formatDate(internalMove.realDate, 'DD/MM/YYYY')}
-                    </Text>
-                  </View>
-                  <View style={styles.badgeContainer}>
-                    <Badge
-                      color={
-                        StockMove.getStatusColor(
-                          StockMove.getStatus(internalMove.statusSelect),
-                        ).backgroundColor
-                      }
-                      title={StockMove.getStatus(internalMove.statusSelect)}
-                    />
-                    {internalMove.availableStatusSelect == null ? null : (
-                      <Badge
-                        color={
-                          StockMove.getAvailabilityColor(
-                            StockMove.getAvailability(
-                              internalMove.availableStatusSelect,
-                            ),
-                          ).backgroundColor
-                        }
-                        title={StockMove.getAvailability(
-                          internalMove.availableStatusSelect,
-                        )}
-                      />
-                    )}
-                  </View>
-                </View>
+                <StockMoveHeader
+                  reference={internalMove.stockMoveSeq}
+                  status={internalMove.statusSelect}
+                  date={
+                    internalMove.statusSelect === StockMove.status.Draft
+                      ? internalMove.createdOn
+                      : internalMove.statusSelect === StockMove.status.Planned
+                      ? internalMove.estimatedDate
+                      : internalMove.realDate
+                  }
+                  availability={internalMove.availableStatusSelect}
+                />
                 <View style={styles.content}>
                   <LocationsMoveCard
                     fromStockLocation={internalMove.fromStockLocation.name}
@@ -112,13 +102,26 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                     <InternalMoveLineCard
                       style={styles.item}
                       productName={internalMoveLineList[0].product?.fullName}
-                      availability={StockMove.getAvailability(
-                        internalMoveLineList[0].availableStatusSelect,
-                      )}
+                      internalMoveStatus={internalMove.statusSelect}
+                      availability={
+                        internalMoveLineList[0].availableStatusSelect != null
+                          ? StockMove.getAvailability(
+                              internalMoveLineList[0].availableStatusSelect,
+                            )
+                          : null
+                      }
+                      locker={
+                        !loadingRacks &&
+                        racksList != null &&
+                        racksList[0] != null
+                          ? racksList[0][0]?.rack
+                          : ''
+                      }
                       trackingNumber={
                         internalMoveLineList[0].trackingNumber
                           ?.trackingNumberSeq
                       }
+                      expectedQty={internalMoveLineList[0].qty}
                       movedQty={internalMoveLineList[0].realQty}
                       onPress={() => handleShowLine(internalMoveLineList[0])}
                     />
@@ -127,13 +130,26 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                     <InternalMoveLineCard
                       style={styles.item}
                       productName={internalMoveLineList[1].product?.fullName}
-                      availability={StockMove.getAvailability(
-                        internalMoveLineList[1].availableStatusSelect,
-                      )}
+                      internalMoveStatus={internalMove.statusSelect}
+                      availability={
+                        internalMoveLineList[1].availableStatusSelect != null
+                          ? StockMove.getAvailability(
+                              internalMoveLineList[1].availableStatusSelect,
+                            )
+                          : null
+                      }
+                      locker={
+                        !loadingRacks &&
+                        racksList != null &&
+                        racksList[1] != null
+                          ? racksList[1][0]?.rack
+                          : ''
+                      }
                       trackingNumber={
                         internalMoveLineList[1].trackingNumber
                           ?.trackingNumberSeq
                       }
+                      expectedQty={internalMoveLineList[1].qty}
                       movedQty={internalMoveLineList[1].realQty}
                       onPress={() => handleShowLine(internalMoveLineList[1])}
                     />
@@ -173,27 +189,8 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: '2%',
-  },
   scrollContainer: {
     height: Dimensions.get('window').height - 150,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: '2%',
-    marginBottom: '3%',
-    marginHorizontal: 16,
-  },
-  refContainer: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  badgeContainer: {
-    flex: 1,
-    flexDirection: 'row',
   },
   content: {
     marginHorizontal: 32,
@@ -201,78 +198,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  contentProduct: {
-    width: '90%',
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    height: 60,
-    width: 60,
-    marginRight: 6,
-  },
-  textContainer: {
-    flex: 2,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
-  },
   infosCard: {
     marginHorizontal: 12,
     marginBottom: '2%',
   },
   reasonTitle: {
     marginHorizontal: 20,
-  },
-  picker: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  picker_empty: {
-    color: 'red',
-  },
-  button_container: {
-    marginVertical: '2%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  button: {
-    width: '40%',
-    borderRadius: 50,
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  button_primary: {
-    backgroundColor: Colors.background.green,
-  },
-  button_secondary: {
-    backgroundColor: '#FFFFFF',
-  },
-  button_title: {
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 16,
-  },
-  icon: {
-    fontSize: Dimensions.get('window').width * 0.14,
-    color: Colors.icon.dark_grey,
-    marginRight: 6,
-  },
-  notesContainer: {
-    height: '20%',
-    marginHorizontal: 16,
   },
   item: {
     marginHorizontal: 1,

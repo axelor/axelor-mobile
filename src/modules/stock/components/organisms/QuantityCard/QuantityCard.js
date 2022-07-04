@@ -1,18 +1,35 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Text} from '@/components/atoms';
+import {Card, Icon, Text} from '@/components/atoms';
 import {Increment} from '@/components/molecules';
 
 const QuantityCard = ({
+  style,
   children,
   labelQty,
   defaultValue,
   onValueChange,
   editable,
+  actionQty = false,
+  onPressActionQty = () => {},
 }) => {
   return (
-    <Card style={styles.container}>
-      <View style={styles.container_up}>{children}</View>
+    <Card style={[styles.container, style]}>
+      <View style={styles.container_up}>
+        {actionQty ? (
+          <View style={styles.actionContainer}>
+            <View style={styles.childrenContainer}>{children}</View>
+            <Icon
+              name="pencil-alt"
+              size={17}
+              touchable={true}
+              onPress={onPressActionQty}
+            />
+          </View>
+        ) : (
+          <View>{children}</View>
+        )}
+      </View>
       <View style={styles.container_down}>
         <Text style={styles.textField}>{labelQty}</Text>
         {editable ? (
@@ -31,7 +48,7 @@ const QuantityCard = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    marginHorizontal: 12,
+    marginHorizontal: 16,
     marginBottom: '2%',
   },
   container_up: {
@@ -40,6 +57,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     paddingBottom: '3%',
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  childrenContainer: {
+    flexDirection: 'column',
   },
   container_down: {
     paddingTop: '1%',

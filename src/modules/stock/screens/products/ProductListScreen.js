@@ -1,89 +1,121 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {AutocompleteSearch} from '@/components/organisms';
-import {fetchProducts} from '@/modules/stock/features/productSlice';
-import {ProductCard} from '@/modules/stock/components/molecules';
-import useProductScanner from '@/modules/stock/hooks/use-product-scanner';
-import {filterItemByName} from '@/modules/stock/utils/filters';
+import {AutocompleteSearch, ScrollList} from '@/components/organisms';
+import {
+  fetchProducts,
+  searchProducts,
+} from '@/modules/stock/features/productSlice';
+import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
+import {getProductStockIndicators} from '../../api/product-api';
+import {handleError} from '@/api/utils';
 
 const productScanKey = 'product_product-list';
 
 const ProductListScreen = ({navigation}) => {
-  const {loadingProduct, productList} = useSelector(state => state.product);
-  const [product, setProduct] = useState(null);
+  const {loadingProduct, moreLoading, isListEnd, productList} = useSelector(
+    state => state.product,
+  );
+  const {activeCompany} = useSelector(state => state.user.user);
+  const [availabilityList, setAvailabilityList] = useState([]);
+  const [filter, setFilter] = useState(null);
+  const [navigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const fetchProductsAPI = useCallback(
+    page => {
+      if (filter != null && filter !== '') {
+        dispatch(searchProducts({searchValue: filter}));
+      } else {
+        dispatch(fetchProducts({page: page}));
+      }
+    },
+    [dispatch, filter],
+  );
 
-  const productScanned = useProductScanner(productScanKey);
+  const showProductDetails = useCallback(
+    product => {
+      if (product != null) {
+        setNavigate(true);
+        navigation.navigate('ProductStockDetailsScreen', {product: product});
+      }
+    },
+    [navigation],
+  );
+
   useEffect(() => {
-    if (productScanned) {
-      setProduct(productScanned);
+    if (productList != null) {
+      let promises = [];
+
+      async function getAvailability(product) {
+        return getProductStockIndicators({
+          version: product.version,
+          productId: product.id,
+          companyId: activeCompany?.id,
+          stockLocationId: null,
+        })
+          .catch(function (error) {
+            handleError(error, 'fetch product stock indicators');
+          })
+          .then(response => {
+            return response.data.object;
+          });
+      }
+
+      async function fetchData(product) {
+        return await getAvailability(product);
+      }
+
+      productList.forEach(line => {
+        promises.push(fetchData(line));
+      });
+      Promise.all(promises).then(resultes => {
+        return setAvailabilityList(resultes);
+      });
     }
-  }, [productScanned]);
-
-  useEffect(() => {
-    if (product) {
-      showProductDetails(product);
-    }
-  }, [product, showProductDetails]);
-
-  const showProductDetails = useCallback(() => {
-    navigation.navigate('ProductStockDetailsScreen', {product: product});
-  }, [navigation, product]);
-
-  // ----------  REFRESH -------------
-
-  const handleRefresh = useCallback(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  }, [activeCompany, productList]);
 
   return (
-    <Screen style={styles.container}>
+    <Screen>
       <AutocompleteSearch
         objectList={productList}
-        value={product}
-        onChangeValue={item => setProduct(item)}
+        onChangeValue={item => showProductDetails(item)}
+        fetchData={value => setFilter(value)}
         displayValue={displayItemName}
-        filter={filterItemByName}
         scanKeySearch={productScanKey}
         placeholder="Product"
+        isFocus={true}
+        oneFilter={true}
+        navigate={navigate}
       />
-      {loadingProduct ? (
-        <ActivityIndicator size="large" color="black" />
-      ) : (
-        <FlatList
-          data={productList}
-          onRefresh={handleRefresh}
-          refreshing={loadingProduct}
-          renderItem={({item}) => (
-            <ProductCard
-              style={styles.item}
-              name={item.name}
-              code={item.code}
-              pictureId={item.picture == null ? null : item.picture.id}
-              onPress={() => setProduct(item)}
-            />
-          )}
-        />
-      )}
+      <ScrollList
+        loadingList={loadingProduct}
+        data={productList}
+        renderItem={({item, index}) => (
+          <ProductCard
+            key={item.id}
+            style={styles.item}
+            name={item.name}
+            code={item.code}
+            pictureId={item.picture == null ? null : item.picture.id}
+            availableStock={
+              availabilityList ? availabilityList[index]?.availableStock : null
+            }
+            onPress={() => showProductDetails(item)}
+          />
+        )}
+        fetchData={fetchProductsAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        filter={filter != null && filter !== ''}
+      />
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 6,
-  },
-  searchBar: {
-    marginHorizontal: 12,
-    marginBottom: 8,
-  },
   item: {
     marginHorizontal: 12,
     marginVertical: 4,

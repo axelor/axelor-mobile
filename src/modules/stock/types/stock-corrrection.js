@@ -1,5 +1,3 @@
-import Colors from '@/types/colors';
-
 class StockCorrection {
   static status = {
     Draft: 1,
@@ -20,17 +18,17 @@ class StockCorrection {
     }
   };
 
-  static getStatusColor = status => {
+  static getStatusColor = (status, Colors) => {
     switch (status) {
       case 'Draft':
         return {
-          backgroundColor: Colors.background.grey,
-          borderColor: Colors.border.grey,
+          backgroundColor: Colors.secondaryColor_light,
+          borderColor: Colors.secondaryColor,
         };
       case 'Validated':
         return {
-          backgroundColor: Colors.background.green,
-          borderColor: Colors.border.green,
+          backgroundColor: Colors.primaryColor_light,
+          borderColor: Colors.primaryColor,
         };
       default:
         console.warn(

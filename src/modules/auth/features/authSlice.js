@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {loginApi} from '@/modules/auth/api/login-api';
+import {getActiveUserId, loginApi} from '@/modules/auth/api/login-api';
 
 const initialState = {
   loading: false,
@@ -13,6 +13,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({url, username, password}) => {
     const token = await loginApi(url, username, password);
+    global.userId = await getActiveUserId();
     return {url, token};
   },
 );

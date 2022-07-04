@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Input} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Colors from '@/types/colors';
+import React, {useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Icon, Input} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
 const Increment = ({value, onValueChange}) => {
+  const Colors = ColorHook();
   const [valueQty, setValueQty] = useState(value);
 
   const handlePlus = () => {
@@ -41,13 +41,18 @@ const Increment = ({value, onValueChange}) => {
     }
   };
 
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <View style={styles.container_increment}>
-      <TouchableOpacity onPress={handleMinus} activeOpacity={0.7}>
-        <View style={styles.container_icon}>
-          <Icon name="minus" style={styles.icon} />
-        </View>
-      </TouchableOpacity>
+      <Icon
+        name="minus"
+        size={24}
+        color={Colors.primaryColor}
+        touchable={true}
+        onPress={handleMinus}
+        style={styles.container_icon}
+      />
       <View style={styles.inputLine}>
         <Input
           style={styles.input}
@@ -57,47 +62,47 @@ const Increment = ({value, onValueChange}) => {
           onEndFocus={handleEndInput}
         />
       </View>
-      <TouchableOpacity onPress={handlePlus} activeOpacity={0.7}>
-        <View style={styles.container_icon}>
-          <Icon name="plus" style={styles.icon} />
-        </View>
-      </TouchableOpacity>
+      <Icon
+        name="plus"
+        size={24}
+        color={Colors.primaryColor}
+        touchable={true}
+        onPress={handlePlus}
+        style={styles.container_icon}
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container_increment: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  container_icon: {
-    backgroundColor: Colors.background.white,
-    elevation: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 8,
-    padding: 2,
-    paddingHorizontal: 5,
-    borderColor: Colors.border.grey,
-    borderWidth: 0.5,
-    borderRadius: 10,
-  },
-  input: {
-    fontSize: 23,
-    fontWeight: 'bold',
-    paddingBottom: 0,
-  },
-  inputLine: {
-    borderStyle: 'dashed',
-    borderBottomColor: Colors.border.grey,
-    borderBottomWidth: 0.7,
-    marginBottom: 9,
-  },
-  icon: {
-    fontSize: 24,
-    color: Colors.icon.green,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container_increment: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    container_icon: {
+      backgroundColor: Colors.backgroundColor,
+      elevation: 3,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 8,
+      padding: 2,
+      paddingHorizontal: 5,
+      borderColor: Colors.secondaryColor,
+      borderWidth: 0.5,
+      borderRadius: 10,
+    },
+    input: {
+      fontSize: 23,
+      fontWeight: 'bold',
+      paddingBottom: 0,
+    },
+    inputLine: {
+      borderStyle: 'dashed',
+      borderBottomColor: Colors.secondaryColor,
+      borderBottomWidth: 0.7,
+      marginBottom: 9,
+    },
+  });
 
 export default Increment;

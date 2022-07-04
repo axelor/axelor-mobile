@@ -1,8 +1,18 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 
-const ChipSelect = ({style, children}) => {
-  return <View style={[styles.chipContainer, style]}>{children}</View>;
+const ChipSelect = ({children, scrollable = false}) => {
+  return (
+    <View style={styles.chipContainer}>
+      {scrollable ? (
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {children}
+        </ScrollView>
+      ) : (
+        children
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -10,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 2,
+    marginVertical: 2,
   },
 });
 

@@ -6,27 +6,31 @@ const productFields = [
   'code',
   'picture',
   'trackingNumberConfiguration',
-  'salesUnit',
   'unit',
-  'length',
+  'salesUnit',
   'purchasesUnit',
-  'description',
+  'length',
   'height',
   'width',
-  'productCategory',
+  'lengthUnit',
+  'description',
   'netMass',
   'grossMass',
+  'massUnit',
+  'productCategory',
   'procurementMethodSelect',
   'isUnrenewed',
   'isPrototype',
-  'productVariant',
   'picture',
-  'serialNUmber',
+  'serialNumber',
   'trackingNumberConfiguration',
   'parentProduct',
+  'productVariant',
 ];
 
-export async function searchProduct() {
+const sortByFields = ['name'];
+
+export async function searchProduct({page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
     data: {
       criteria: [
@@ -57,11 +61,68 @@ export async function searchProduct() {
         },
       ],
     },
-
     fields: productFields,
-    sortBy: ['code', 'name'],
-    limit: 50,
-    offset: 0,
+    sortBy: sortByFields,
+    limit: 10,
+    offset: 10 * page,
+  });
+}
+
+export async function searchProductsFilter({searchValue, page = 0}) {
+  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
+    data: {
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'isModel',
+              operator: '=',
+              value: false,
+            },
+            {
+              fieldName: 'productTypeSelect',
+              operator: '=',
+              value: 'storable',
+            },
+            {
+              fieldName: 'stockManaged',
+              operator: '=',
+              value: true,
+            },
+            {
+              fieldName: 'dtype',
+              operator: '=',
+              value: 'Product',
+            },
+            {
+              operator: 'or',
+              criteria: [
+                {
+                  fieldName: 'name',
+                  operator: 'like',
+                  value: searchValue,
+                },
+                {
+                  fieldName: 'code',
+                  operator: 'like',
+                  value: searchValue,
+                },
+                {
+                  fieldName: 'serialNumber',
+                  operator: 'like',
+                  value: searchValue,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    fields: productFields,
+    sortBy: sortByFields,
+    limit: 10,
+    offset: 10 * page,
   });
 }
 
@@ -94,9 +155,66 @@ export function searchProductBySerialNumber(serialNumber) {
     .then(getFirstData);
 }
 
-export async function updateLocker(data) {
-  return axios.put(`/ws/aos/stock-product/modify-locker/${data.productId}`, {
-    stockLocationId: data.stockLocationId,
-    newLocker: data.newLocker,
+export async function updateLocker({
+  productId,
+  stockLocationId,
+  newLocker,
+  version,
+}) {
+  return axios.put(`/ws/aos/stock-product/modify-locker/${productId}`, {
+    stockLocationId: stockLocationId,
+    newLocker: newLocker,
+    version: version,
   });
+}
+
+export async function fetchAttachedFiles(productId) {
+  return axios.get(
+    `/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`,
+  );
+}
+
+export async function fetchVariants({productVariantParentId, page = 0}) {
+  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
+    data: {
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'parentProduct.id',
+              operator: '=',
+              value: productVariantParentId,
+            },
+          ],
+        },
+      ],
+    },
+    fields: productFields,
+    limit: 10,
+    offset: 10 * page,
+  });
+}
+
+export async function getProductStockIndicators({
+  productId,
+  companyId,
+  stockLocationId,
+  version,
+}) {
+  return axios.post(
+    `/ws/aos/stock-product/fetch-product-with-stock/${productId}`,
+    {
+      companyId: companyId,
+      stockLocationId: stockLocationId,
+      version: version,
+    },
+  );
+}
+
+export async function fetchVariantAttributes({productVariantId, version}) {
+  return axios.post(
+    `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
+    {version: version},
+  );
 }

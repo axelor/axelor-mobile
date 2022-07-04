@@ -9,3 +9,20 @@ jest.mock('react-native-reanimated', () => {
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.useFakeTimers();
+
+jest.mock('react-native-datawedge-intents', () => ({
+  registerBroadcastReceiver: () => jest.fn(),
+}));
+
+jest.mock('react-native-file-viewer', () => ({
+  open: jest.fn(),
+}));
+
+jest.mock('react-native-fs', () => ({
+  DocumentDirectoryPath: 'FAKE-DIRECTORY-PATH',
+  downloadFile: jest.fn(),
+}));
+
+jest.mock('react-native-device-info', () => ({
+  getManufacturer: 'FAKE-MANUFACTURER',
+}));

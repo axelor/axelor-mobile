@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
-import Colors from '@/types/colors';
+import {ColorHook} from '@/themeStore';
+import getFromList from '@/modules/stock/utils/get-from-list';
 
 const Picker = ({
   style,
@@ -13,15 +14,22 @@ const Picker = ({
   listItems,
   labelField,
   valueField,
+  emptyValue = true,
+  isValueItem = false,
 }) => {
+  const Colors = ColorHook();
   const [selectedValue, setSelectedValue] = useState(
-    defaultValue === null ? '' : defaultValue,
+    defaultValue == null ? '' : defaultValue,
   );
 
   const handleValueChange = itemValue => {
     setSelectedValue(itemValue);
-    onValueChange(itemValue);
+    onValueChange(
+      isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
+    );
   };
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View style={[styles.container, style]}>
@@ -31,16 +39,23 @@ const Picker = ({
       <View style={styles.pickerContainer}>
         <ReactNativePicker
           style={styles.picker}
-          dropdownIconColor={Colors.icon.dark_grey}
+          dropdownIconColor={Colors.secondaryColor_dark}
           selectedValue={selectedValue}
           onValueChange={handleValueChange}
           mode="dropdown">
-          <ReactNativePicker.Item label={''} value={'empty'} />
+          {emptyValue && (
+            <ReactNativePicker.Item
+              style={styles.pickerItem}
+              label={''}
+              value={null}
+            />
+          )}
           {listItems == null
             ? null
             : listItems.map(item => {
                 return (
                   <ReactNativePicker.Item
+                    style={styles.pickerItem}
                     key={item[valueField]}
                     label={item[labelField]}
                     value={item[valueField]}
@@ -53,30 +68,35 @@ const Picker = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '95%',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 12,
-  },
-  input: {
-    width: '90%',
-  },
-  pickerContainer: {
-    backgroundColor: Colors.background.white,
-    borderRadius: 13,
-    elevation: 3,
-    paddingHorizontal: 10,
-    marginHorizontal: 4,
-    marginVertical: 6,
-  },
-  picker: {
-    color: Colors.text.grey,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      width: '95%',
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginHorizontal: 16,
+    },
+    input: {
+      width: '90%',
+    },
+    pickerContainer: {
+      backgroundColor: Colors.backgroundColor,
+      borderRadius: 13,
+      elevation: 3,
+      paddingHorizontal: 10,
+      marginHorizontal: 8,
+      marginVertical: 6,
+    },
+    pickerItem: {
+      backgroundColor: Colors.backgroundColor,
+      color: Colors.text,
+    },
+    picker: {
+      backgroundColor: Colors.backgroundColor,
+    },
+  });
 
 export default Picker;

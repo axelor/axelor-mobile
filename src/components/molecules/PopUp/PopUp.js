@@ -1,14 +1,13 @@
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {Card, Text} from '@/components/atoms';
-import Colors from '@/types/colors';
 
 const PopUp = ({visible, title, data, children}) => {
   return (
     <Modal
       visible={visible}
       transparent
-      animationType="slide"
+      animationType="fade"
       onRequestClose={() => console.log('closed')}>
       <View style={styles.modalBackground}>
         <Card style={styles.container}>
@@ -18,7 +17,7 @@ const PopUp = ({visible, title, data, children}) => {
           <View style={styles.contentContainer}>
             <Text style={styles.text}>{data}</Text>
           </View>
-          <View>{children}</View>
+          <View style={styles.buttonContainer}>{children}</View>
         </Card>
       </View>
     </Modal>
@@ -40,7 +39,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background.white,
     width: '80%',
     marginBottom: 8,
   },
@@ -48,8 +46,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   text: {
-    fontSize: 20,
+    fontSize: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
   },
 });
 

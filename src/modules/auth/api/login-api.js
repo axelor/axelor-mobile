@@ -11,6 +11,9 @@ export async function loginApi(
     .post(`${url}${loginPath}`, {username, password})
     .then(response => {
       const token = response.headers['x-csrf-token'];
+      const jsessinId = response.headers['set-cookie'][0].split(';')[0];
+      global.token = token;
+      global.jsessinId = jsessinId;
       if (token == null) {
         throw new Error('X-CSRF-Token is not exposed in remote header');
       }
@@ -21,4 +24,9 @@ export async function loginApi(
       });
       return token;
     });
+}
+
+export async function getActiveUserId() {
+  const response = await axios.get('/ws/app/info');
+  return response.data['user.id'];
 }

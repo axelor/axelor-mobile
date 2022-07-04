@@ -1,41 +1,51 @@
-import React, {useEffect, useState} from 'react';
-import {Screen} from '@/components/atoms';
-import {StyleSheet, ActivityIndicator, View, Text, Image} from 'react-native';
-import {ProductCardDetails} from '../../components/molecules';
-import {ScrollView, Dimensions} from 'react-native';
-import {EditableInput} from '@/components/molecules';
+import React, {useEffect, useCallback, useState} from 'react';
+import {Icon, Screen} from '@/components/atoms';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Picker, CardStock} from '@/components/molecules';
+import {CardStockIndicator} from '@/modules/stock/components/organisms';
+import {Text} from '@/components/atoms';
+import {EditableInput, DropdownMenuItem, Picker} from '@/components/molecules';
+import {DropdownMenu, AutocompleteSearch} from '@/components/organisms';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {AutocompleteSearch} from '@/components/organisms';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {filterItemByName} from '@/modules/stock/utils/filters';
+import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import {updateProductLocker} from '../../features/productSlice';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ProductCardDetails} from '@/modules/stock/components/molecules';
+import {ColorHook} from '@/themeStore';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
+  const Colors = ColorHook();
   const product = route.params.product;
+  const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {activeCompany} = useSelector(state => state.user.userList[0]);
   const {loading, productIndicators} = useSelector(
     state => state.productIndicators,
   );
   const [stockLocation, setStockLocation] = useState(null);
-  const [selectedCompanyId, setselectedCompanyId] = useState(activeCompany?.id);
+  const [companyId, setCompany] = useState(user.activeCompany?.id);
+  const {baseConfig} = useSelector(state => state.config);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
       fetchProductIndicators({
+        version: product.version,
         productId: product.id,
-        selectedCompanyId: selectedCompanyId,
+        companyId: companyId,
         stockLocationId: stockLocation?.id,
       }),
     );
@@ -47,7 +57,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         }),
       );
     }
-  }, [dispatch, product.id, stockLocation, selectedCompanyId]);
+  }, [companyId, dispatch, product, stockLocation]);
 
   const stockLocationScanned = useStockLocationScanner(stockLocationScanKey);
   useEffect(() => {
@@ -59,13 +69,20 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const showProductDetails = () => {
     navigation.navigate('ProductDetailsScreen', {
       product: product,
-      companyID: selectedCompanyId,
+      companyID: companyId,
       stockLocationId: stockLocation?.id,
     });
   };
 
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
+  };
+
+  const navigateStockLocationDetails = () => {
+    navigation.navigate('ProductStockLocationDetailsScreen', {
+      product: product,
+      companyId: companyId,
+    });
   };
 
   const handleLockerChange = input => {
@@ -75,10 +92,35 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
           productId: product.id,
           stockLocationId: stockLocation.id,
           newLocker: input.toString(),
+          version: product.version,
         }),
       );
     }
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <DropdownMenu>
+          <DropdownMenuItem
+            placeholder="See attached files"
+            onPress={() =>
+              navigation.navigate('ProductAttachedFilesScreen', {
+                product: product,
+              })
+            }
+          />
+        </DropdownMenu>
+      ),
+    });
+  }, [navigation, product]);
+
+  const fetchStockLocationsAPI = useCallback(
+    filterValue => {
+      dispatch(searchStockLocations({searchValue: filterValue}));
+    },
+    [dispatch],
+  );
 
   return (
     <Screen>
@@ -86,7 +128,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         <ScrollView>
           <View style={styles.infoContainer}>
             {product.picture == null ? (
-              <Icon name="camera" style={styles.icon} />
+              <Icon
+                size={60}
+                name="camera"
+                color={Colors.secondaryColor_light}
+              />
             ) : (
               <TouchableOpacity
                 style={styles.imageContainer}
@@ -108,35 +154,57 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               onPress={showProductDetails}>
               <Text style={styles.text_important}>{product.name}</Text>
               <Text style={styles.text_secondary}>{product.code}</Text>
+              <Text
+                style={
+                  styles.text_secondary
+                }>{`Stock unit : ${product.unit?.name}`}</Text>
             </ProductCardDetails>
           </View>
           <View style={styles.lineStyle} />
-          <View style={styles.picker}>
-            <Picker
-              title="Company"
-              defaultValue={selectedCompanyId}
-              listItems={companyList}
-              labelField="name"
-              valueField="id"
-              onValueChange={item => setselectedCompanyId(item)}
-            />
-          </View>
+          {baseConfig.enableMultiCompany && canModifyCompany && (
+            <View style={styles.picker}>
+              <Picker
+                title="Company"
+                defaultValue={companyId}
+                listItems={companyList}
+                labelField="name"
+                valueField="id"
+                onValueChange={item => setCompany(item)}
+              />
+            </View>
+          )}
+          {productIndicators?.realQty != null &&
+            parseInt(productIndicators?.realQty, 10) !== 0 &&
+            parseInt(productIndicators?.futureQty, 10) !== 0 && (
+              <TouchableOpacity onPress={navigateStockLocationDetails}>
+                <View style={styles.arrowContainer}>
+                  <Text>See the repartition by stock location</Text>
+                  <Icon
+                    name="angle-right"
+                    size={24}
+                    color={Colors.primaryColor}
+                    style={styles.arrowIcon}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
           <AutocompleteSearch
             objectList={stockLocationList}
-            searchParam="name"
-            placeholder="Stock location"
-            displayValue={displayItemName}
-            filter={filterItemByName}
             value={stockLocation}
             onChangeValue={item => setStockLocation(item)}
+            fetchData={fetchStockLocationsAPI}
+            displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
+            placeholder="Stock location"
           />
           {stockLocation == null ? null : (
             <EditableInput
               style={styles.lockerContainer}
               placeholder="Locker"
               onValidate={input => handleLockerChange(input)}
-              defaultValue={stockLocationLine[0]?.rack}
+              defaultValue={
+                stockLocationLine == null ? null : stockLocationLine[0]?.rack
+              }
             />
           )}
           {loading ? (
@@ -144,48 +212,48 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
           ) : (
             <View style={styles.row}>
               <View style={styles.cardStock}>
-                <CardStock
+                <CardStockIndicator
                   title="REAL QUANTITY"
                   number={productIndicators?.realQty}
                 />
-                <CardStock
+                <CardStockIndicator
                   title="FUTURE QUANTITY"
                   number={productIndicators?.futureQty}
                 />
-                <CardStock
+                <CardStockIndicator
                   title="ALLOCATED QUANTITY"
                   number={productIndicators?.allocatedQty}
                 />
               </View>
               <View style={styles.cardStock}>
-                <CardStock
+                <CardStockIndicator
                   title="SALE ORDER QUANTITY"
                   number={productIndicators?.saleOrderQty}
                 />
-                <CardStock
+                <CardStockIndicator
                   title="PURCHASE ORDER QUANTITY"
                   number={productIndicators?.purchaseOrderQty}
                 />
-                <CardStock
+                <CardStockIndicator
                   title="AVAILABLE STOCK"
                   number={productIndicators?.availableStock}
                 />
               </View>
               <View style={styles.cardStock}>
                 {productIndicators?.buildingQty ? (
-                  <CardStock
+                  <CardStockIndicator
                     title="BUILDING QUANTITY"
                     number={productIndicators?.buildingQty}
                   />
                 ) : null}
                 {productIndicators?.consumeManufOrderQty ? (
-                  <CardStock
+                  <CardStockIndicator
                     title="CONSUME M.O. QUANTITY"
                     number={productIndicators?.consumeManufOrderQty}
                   />
                 ) : null}
                 {productIndicators?.consumeManufOrderQty ? (
-                  <CardStock
+                  <CardStockIndicator
                     title="MISSING M.O. QUANTITY"
                     number={productIndicators?.missingManufOrderQty}
                   />
@@ -200,6 +268,17 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  arrowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginHorizontal: 32,
+    width: '80%',
+  },
+  arrowIcon: {
+    marginRight: -6,
+    marginLeft: 5,
+  },
   picker: {
     alignItems: 'center',
   },
@@ -226,11 +305,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  textContainer: {
-    flex: 2,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
   text_important: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -238,25 +312,9 @@ const styles = StyleSheet.create({
   text_secondary: {
     fontSize: 16,
   },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   lockerContainer: {
     marginHorizontal: 12,
     marginBottom: 7,
-  },
-  item: {
-    marginHorizontal: 12,
-    borderRadius: 0,
-    elevation: 0,
-  },
-  selection: {
-    marginHorizontal: 12,
-    marginBottom: 7,
-    borderRadius: 0,
-    elevation: 0,
   },
   lineStyle: {
     borderWidth: 0.5,

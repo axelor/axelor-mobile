@@ -20,10 +20,9 @@ const getStyles = color =>
     margin: '1%',
     width: 87,
     height: 22,
-    borderWidth: 1.5,
     backgroundColor: color,
-    borderColor: color,
     alignItems: 'center',
+    justifyContent: 'center',
   });
 
 const styles = StyleSheet.create({

@@ -1,23 +1,25 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
-import {IconNew} from '@/components/atoms';
 import InternalMoveListScreen from '@/modules/stock/screens/internalMoves/InternalMoveListScreen';
-import InternalMoveNewOriginalLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewOriginalLocationScreen';
-import InternalMoveDetailsScreen from '@/modules/stock/screens/internalMoves/InternalMoveDetailsScreen';
-import InternalMoveNewDestinationLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewDestinationLocationScreen';
-import InternalMoveNewProductScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewProductScreen';
-import InternalMoveNewTrackingNumberScreen from '@/modules/stock/screens/internalMoves/InternalMoveNewTrackingNumberScreen';
-import ProductStockDetailsScreen from '@/modules/stock/screens/products/ProductStockDetailsScreen';
-import InternalMoveDetailsGeneralScreen from '../screens/internalMoves/InternalMoveDetailsGeneralScreen';
-import InternalMoveDetailsListProductScreen from '../screens/internalMoves/InternalMoveDetailsListProduct';
+import InternalMoveLineDetailsScreen from '@/modules/stock/screens/internalMoves/InternalMoveLineDetailsScreen';
+import InternalMoveSelectFromLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveSelectFromLocationScreen';
+import InternalMoveSelectToLocationScreen from '@/modules/stock/screens/internalMoves/InternalMoveSelectToLocationScreen';
+import InternalMoveSelectProductScreen from '@/modules/stock/screens/internalMoves/InternalMoveSelectProductScreen';
+import InternalMoveSelectTrackingScreen from '@/modules/stock/screens/internalMoves/InternalMoveSelectTrackingScreen';
+import InternalMoveDetailsGeneralScreen from '@/modules/stock/screens/internalMoves/InternalMoveDetailsGeneralScreen';
+import InternalMoveLineListScreen from '@/modules/stock/screens/internalMoves/InternalMoveLineListScreen';
+import ProductNavigator from './ProductNavigator';
+import StockCorrectionNavigator from './StockCorrectionNavigator';
+import {ColorHook} from '@/themeStore';
 
 const {Navigator, Screen} = createStackNavigator();
 
-const ICON_COLOR = '#3ECF8E';
-
 const InternalMoveNavigator = () => {
+  const Colors = ColorHook();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <Navigator>
       <Screen
@@ -25,92 +27,101 @@ const InternalMoveNavigator = () => {
         component={InternalMoveListScreen}
         options={{
           headerLeft: props => (
-            <DrawerToggleButton {...props} tintColor={ICON_COLOR} />
+            <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal moves',
-          headerRight: props => <IconNew {...props} />,
+          headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
         name="InternalMoveDetailsGeneralScreen"
         component={InternalMoveDetailsGeneralScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveDetailsListProductScreen"
-        component={InternalMoveDetailsListProductScreen}
+        name="InternalMoveLineListScreen"
+        component={InternalMoveLineListScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveDetailsScreen"
-        component={InternalMoveDetailsScreen}
+        name="InternalMoveLineDetailsScreen"
+        component={InternalMoveLineDetailsScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveNewOriginalLocationScreen"
-        component={InternalMoveNewOriginalLocationScreen}
+        name="InternalMoveSelectFromLocationScreen"
+        component={InternalMoveSelectFromLocationScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveNewDestinationLocationScreen"
-        component={InternalMoveNewDestinationLocationScreen}
+        name="InternalMoveSelectToLocationScreen"
+        component={InternalMoveSelectToLocationScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveNewProductScreen"
-        component={InternalMoveNewProductScreen}
+        name="InternalMoveSelectProductScreen"
+        component={InternalMoveSelectProductScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
+          headerStyle: {backgroundColor: Colors.backgroundColor},
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="InternalMoveNewTrackingNumberScreen"
-        component={InternalMoveNewTrackingNumberScreen}
+        name="InternalMoveSelectTrackingScreen"
+        component={InternalMoveSelectTrackingScreen}
         options={{
-          headerTintColor: ICON_COLOR,
+          headerTintColor: Colors.primaryColor,
           headerTitle: 'Internal move',
           headerTitleStyle: styles.headerTitle,
         }}
       />
       <Screen
-        name="ProductStockDetailsScreen"
-        component={ProductStockDetailsScreen}
-        options={{
-          headerTintColor: ICON_COLOR,
-          headerTitle: 'Product',
-          headerTitleStyle: styles.headerTitle,
-        }}
+        name="ProductNavigator"
+        component={ProductNavigator}
+        options={{headerShown: false}}
+      />
+      <Screen
+        name="StockCorrectionNavigator"
+        component={StockCorrectionNavigator}
+        options={{headerShown: false}}
       />
     </Navigator>
   );
 };
 
-const styles = StyleSheet.create({
-  headerTitle: {
-    color: '#000000',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    headerTitle: {
+      color: Colors.text,
+    },
+  });
 
 export default InternalMoveNavigator;

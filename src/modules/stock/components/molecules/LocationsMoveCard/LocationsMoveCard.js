@@ -1,50 +1,73 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Text} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Colors from '@/types/colors';
+import {Icon, Text} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
 const LocationsMoveCard = ({
   style,
   fromStockLocation,
   toStockLocation,
-  editable,
-  onPressFrom,
-  onPressTo,
+  isLockerCard = false,
+  editableFrom = false,
+  editableTo = false,
+  onPressFrom = () => {},
+  onPressTo = () => {},
 }) => {
+  const Colors = ColorHook();
   return (
     <View style={[styles.container, style]}>
-      {editable ? (
-        <TouchableOpacity onPress={onPressFrom} activeOpacity={0.9}>
-          <View style={[styles.card, styles.editableCard]}>
+      <View style={styles.card}>
+        {editableFrom ? (
+          <TouchableOpacity
+            onPress={onPressFrom}
+            activeOpacity={0.9}
+            style={styles.editableCard}>
+            <View style={styles.editableText}>
+              {isLockerCard && <Text style={styles.text}>From locker</Text>}
+              <Text numberOfLines={1} style={styles.text}>
+                {fromStockLocation}
+              </Text>
+            </View>
+            <Icon name="pencil-alt" size={14} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.editableText}>
+            {isLockerCard && <Text style={styles.text}>From locker</Text>}
             <Text numberOfLines={1} style={styles.text}>
               {fromStockLocation}
             </Text>
           </View>
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.card}>
-          <Text numberOfLines={1} style={styles.text}>
-            {fromStockLocation}
-          </Text>
-        </View>
-      )}
-      <Icon name="chevron-right" style={styles.icon} />
-      {editable ? (
-        <TouchableOpacity onPress={onPressTo} activeOpacity={0.9}>
-          <View style={[styles.card, styles.editableCard]}>
+        )}
+      </View>
+      <Icon
+        name="chevron-right"
+        color={Colors.primaryColor}
+        size={Dimensions.get('window').width * 0.05}
+        style={styles.icon}
+      />
+      <View style={styles.card}>
+        {editableTo ? (
+          <TouchableOpacity
+            onPress={onPressTo}
+            activeOpacity={0.9}
+            style={styles.editableCard}>
+            <View style={styles.editableText}>
+              {isLockerCard && <Text style={styles.text}>To locker</Text>}
+              <Text numberOfLines={1} style={styles.text}>
+                {toStockLocation}
+              </Text>
+            </View>
+            <Icon name="pencil-alt" size={14} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.editableText}>
+            {isLockerCard && <Text style={styles.text}>To locker</Text>}
             <Text numberOfLines={1} style={styles.text}>
               {toStockLocation}
             </Text>
           </View>
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.card}>
-          <Text numberOfLines={1} style={styles.text}>
-            {toStockLocation}
-          </Text>
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };
@@ -56,12 +79,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  editableCard: {
-    paddingVertical: '1%',
-    borderRadius: 14,
-    elevation: 3,
-    backgroundColor: Colors.background.white,
-  },
   card: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -69,14 +86,21 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.41,
     height: Dimensions.get('window').height * 0.05,
   },
+  editableCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   text: {
     fontSize: 16,
     fontWeight: 'bold',
   },
+  editableText: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginHorizontal: '2%',
+  },
   icon: {
     marginHorizontal: '4%',
-    fontSize: Dimensions.get('window').width * 0.05,
-    color: Colors.icon.green,
   },
 });
 

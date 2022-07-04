@@ -1,8 +1,7 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Input} from '@/components/atoms';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Colors from '@/types/colors';
+import React, {useMemo} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {Icon, Input} from '@/components/atoms';
+import {ColorHook} from '@/themeStore';
 
 const SearchBar = ({
   style,
@@ -12,56 +11,72 @@ const SearchBar = ({
   onScanPress,
   onChangeTxt,
   onSelection,
-  onSearchPress,
   scanIconColor,
+  onEndFocus = () => {},
+  isFocus = false,
 }) => {
+  const Colors = ColorHook();
+  const container = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
-    <View style={[styles.container, style]}>
+    <View style={[container, style]}>
       <Input
         style={styles.input}
         value={valueTxt}
         placeholder={placeholder}
         onChange={onChangeTxt}
         onSelection={onSelection}
+        onEndFocus={onEndFocus}
+        isFocus={isFocus}
       />
       <View style={styles.actions}>
-        {valueTxt === '' ? (
-          <View style={styles.action}>{null}</View>
-        ) : (
-          <TouchableOpacity style={styles.action} onPress={onClearPress}>
+        <View style={styles.action}>
+          {valueTxt === '' || valueTxt == null ? null : (
             <Icon
-              name="remove"
-              style={styles.icon}
-              color={Colors.icon.dark_grey}
+              name="times"
+              size={Dimensions.get('window').width * 0.05}
+              color={Colors.secondaryColor_dark}
+              touchable={true}
+              onPress={onClearPress}
             />
-          </TouchableOpacity>
-        )}
-
+          )}
+        </View>
         <View style={styles.action}>
           <Icon
             name="search"
-            style={styles.icon}
-            color={Colors.icon.dark_grey}
+            size={Dimensions.get('window').width * 0.05}
+            color={Colors.secondaryColor_dark}
           />
         </View>
-        <TouchableOpacity style={styles.action} onPress={onScanPress}>
-          <Icon name="qrcode" style={styles.icon} color={scanIconColor} />
-        </TouchableOpacity>
+        <View style={styles.action}>
+          <Icon
+            name="qrcode"
+            size={Dimensions.get('window').width * 0.05}
+            color={scanIconColor}
+            touchable={true}
+            onPress={onScanPress}
+            FontAwesome5={false}
+          />
+        </View>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
+const getStyles = Colors =>
+  StyleSheet.create({
+    backgroundColor: Colors.backgroundColor,
     borderRadius: 13,
     elevation: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 12,
-  },
+    marginHorizontal: 16,
+    marginVertical: 3,
+  });
+
+const styles = StyleSheet.create({
   input: {
     width: '70%',
   },
@@ -73,9 +88,6 @@ const styles = StyleSheet.create({
   action: {
     flex: 1,
     marginLeft: 12,
-  },
-  icon: {
-    fontSize: Dimensions.get('window').width * 0.05,
   },
 });
 

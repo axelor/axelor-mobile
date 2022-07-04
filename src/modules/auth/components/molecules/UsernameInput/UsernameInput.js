@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Input} from '@/components/atoms';
-import Colors from '@/types/colors';
+import {ColorHook} from '@/themeStore';
 
-const UsernameInput = ({style, value, onChange, readOnly}) => {
+const UsernameInput = ({value, onChange, readOnly}) => {
+  const Colors = ColorHook();
+  const container = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
-    <View style={styles.container}>
+    <View style={container}>
       <Input
-        style={style}
+        style={styles.input}
         value={value}
         onChange={onChange}
         placeholder="Username"
@@ -17,17 +20,23 @@ const UsernameInput = ({style, value, onChange, readOnly}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    borderColor: Colors.border.grey,
+const getStyles = Colors =>
+  StyleSheet.create({
+    borderColor: Colors.secondaryColor,
     borderWidth: 1,
     borderRadius: 13,
-    backgroundColor: Colors.background.white,
+    backgroundColor: Colors.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 12,
+    marginHorizontal: 20,
     marginVertical: 6,
+  });
+
+const styles = StyleSheet.create({
+  input: {
+    width: '100%',
   },
 });
 
