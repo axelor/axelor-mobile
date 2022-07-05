@@ -9,11 +9,18 @@ const stockLocationScanKey = 'stock-location_stock-correction-new';
 
 const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
+  const {user} = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -35,7 +42,13 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
       <AutocompleteSearch
         objectList={stockLocationList}
         onChangeValue={item => handleNavigate(item)}
-        fetchData={fetchStockLocationsAPI}
+        fetchData={searchValue =>
+          fetchStockLocationsAPI(
+            searchValue,
+            user.activeCompany?.id,
+            user.workshopStockLocation,
+          )
+        }
         displayValue={displayItemName}
         scanKeySearch={stockLocationScanKey}
         placeholder="Stock Location"

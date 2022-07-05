@@ -16,6 +16,7 @@ import {fetchLanguages} from '@/modules/auth/features/languageSlice';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {
   changeActiveCompany,
+  changeDefaultStockLocation,
   fetchActiveUser,
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
@@ -72,8 +73,14 @@ const UserScreen = ({navigation}) => {
   }, [Colors]);
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -88,6 +95,17 @@ const UserScreen = ({navigation}) => {
             id: company.id,
             name: company.name,
           },
+        }),
+      );
+    },
+    [dispatch],
+  );
+
+  const updateDefaultStockLocation = useCallback(
+    stockLocation => {
+      dispatch(
+        changeDefaultStockLocation({
+          newStockLocation: stockLocation,
         }),
       );
     },
@@ -131,8 +149,14 @@ const UserScreen = ({navigation}) => {
           <AutocompleteSearch
             objectList={stockLocationList}
             value={user.workshopStockLocation}
-            onChangeValue={() => {}}
-            fetchData={fetchStockLocationsAPI}
+            onChangeValue={updateDefaultStockLocation}
+            fetchData={searchValue =>
+              fetchStockLocationsAPI(
+                searchValue,
+                user.activeCompany?.id,
+                user.workshopStockLocation,
+              )
+            }
             displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
             placeholder="Stock location"

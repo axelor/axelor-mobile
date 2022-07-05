@@ -17,6 +17,7 @@ const initialState = {
   loadingUser: true,
   user: {},
   canModifyCompany: false,
+  defaultStockLocation: null,
 };
 
 const userSlice = createSlice({
@@ -25,6 +26,12 @@ const userSlice = createSlice({
   reducers: {
     changeActiveCompany: (state, action) => {
       state.user = {...state.user, activeCompany: action.payload.newCompany};
+    },
+    changeDefaultStockLocation: (state, action) => {
+      state.user = {
+        ...state.user,
+        workshopStockLocation: action.payload.newStockLocation,
+      };
     },
   },
   extraReducers: builder => {
@@ -41,6 +48,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {changeActiveCompany} = userSlice.actions;
+export const {changeActiveCompany, changeDefaultStockLocation} =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;

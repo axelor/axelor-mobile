@@ -14,12 +14,19 @@ const stockLocationScanKey = 'stock-location_supplier-arrival-change';
 const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
   const [stockLocation, setStockLocation] = useState(null);
+  const {user} = useSelector(state => state.user);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -66,7 +73,13 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
+          fetchData={searchValue =>
+            fetchStockLocationsAPI(
+              searchValue,
+              user.activeCompany?.id,
+              user.workshopStockLocation,
+            )
+          }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder="Stock Location"

@@ -44,6 +44,31 @@ export async function searchStockLocationLine({
           limit: 10,
           offset: 10 * page,
         }
+      : companyId == null
+      ? {
+          data: {
+            criteria: [
+              {
+                operator: 'and',
+                criteria: [
+                  {
+                    fieldName: 'product.id',
+                    operator: '=',
+                    value: productId,
+                  },
+                  {
+                    fieldName: 'stockLocation.typeSelect',
+                    operator: '=',
+                    value: StockLocation.type.internal,
+                  },
+                ],
+              },
+            ],
+          },
+          fields: stockLocationLineFields,
+          limit: 10,
+          offset: 10 * page,
+        }
       : {
           data: {
             criteria: [

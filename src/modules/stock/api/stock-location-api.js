@@ -9,67 +9,77 @@ const stockLocationFields = [
   'stockLocationLineList',
 ];
 
-export async function searchStockLocation() {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
-    data: {
+const createSearchCriteria = ({
+  companyId,
+  searchValue,
+  defaultStockLocation,
+}) => {
+  let criterias = [];
+  criterias.push({
+    fieldName: 'typeSelect',
+    operator: '=',
+    value: StockLocation.type.internal,
+  });
+  if (companyId != null) {
+    criterias.push({
+      fieldName: 'company.id',
+      operator: '=',
+      value: companyId,
+    });
+  }
+  if (searchValue != null) {
+    criterias.push({
+      operator: 'or',
       criteria: [
         {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockLocation.type.internal,
-            },
-            {
-              fieldName: 'company.id',
-              operator: '=',
-              value: 1,
-            },
-          ],
+          fieldName: 'name',
+          operator: 'like',
+          value: searchValue,
+        },
+        {
+          fieldName: 'serialNumber',
+          operator: 'like',
+          value: searchValue,
         },
       ],
-    },
-    fields: stockLocationFields,
-    sortBy: ['id', 'name'],
-    limit: 20,
-    offset: 0,
-  });
-}
+    });
+  }
+  if (defaultStockLocation != null) {
+    criterias.push({
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'id',
+          operator: '=',
+          value: defaultStockLocation.id,
+        },
+        {
+          fieldName: 'parentStockLocation.id',
+          operator: '=',
+          value: defaultStockLocation.id,
+        },
+      ],
+    });
+  }
+  return criterias;
+};
 
-export async function searchStockLocationsFilter({searchValue, page = 0}) {
+export async function searchStockLocationsFilter({
+  searchValue = null,
+  companyId = null,
+  defaultStockLocation = null,
+  page = 0,
+}) {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
     data: {
       criteria: [
         {
           operator: 'and',
-          criteria: [
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockLocation.type.internal,
-            },
-            {
-              fieldName: 'company.id',
-              operator: '=',
-              value: 1,
-            },
-            {
-              operator: 'or',
-              criteria: [
-                {
-                  fieldName: 'name',
-                  operator: 'like',
-                  value: searchValue,
-                },
-                {
-                  fieldName: 'serialNumber',
-                  operator: 'like',
-                  value: searchValue,
-                },
-              ],
-            },
-          ],
+          criteria: createSearchCriteria({
+            companyId: companyId,
+            searchValue: searchValue,
+            defaultStockLocation: defaultStockLocation,
+          }),
         },
       ],
     },

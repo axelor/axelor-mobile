@@ -27,6 +27,7 @@ const StockCorrectionListScreen = ({navigation}) => {
     useSelector(state => state.stockCorrection);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
+  const {user} = useSelector(state => state.user);
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
   const [draftStatus, setDraftStatus] = useState(false);
@@ -140,8 +141,14 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
 
   const fetchStockLocationsAPI = useCallback(
-    filter => {
-      dispatch(searchStockLocations({searchValue: filter}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -153,7 +160,13 @@ const StockCorrectionListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
+          fetchData={searchValue =>
+            fetchStockLocationsAPI(
+              searchValue,
+              user.activeCompany?.id,
+              user.workshopStockLocation,
+            )
+          }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder="Stock location"

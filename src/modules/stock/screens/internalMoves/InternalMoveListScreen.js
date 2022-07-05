@@ -40,6 +40,7 @@ const InternalMoveListScreen = ({navigation}) => {
     stockLocationList: stockLocationListFirstFilter,
     stockLocationListMultiFilter: stockLocationListSecondFilter,
   } = useSelector(state => state.stockLocation);
+  const {user} = useSelector(state => state.user);
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
@@ -161,15 +162,27 @@ const InternalMoveListScreen = ({navigation}) => {
   );
 
   const fetchOriginalStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
 
   const fetchDestinationStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(filterSecondStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        filterSecondStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -181,7 +194,13 @@ const InternalMoveListScreen = ({navigation}) => {
           objectList={stockLocationListFirstFilter}
           value={originalStockLocation}
           onChangeValue={item => setOriginalStockLocation(item)}
-          fetchData={fetchOriginalStockLocationsAPI}
+          fetchData={searchValue =>
+            fetchOriginalStockLocationsAPI(
+              searchValue,
+              user.activeCompany?.id,
+              user.workshopStockLocation,
+            )
+          }
           displayValue={displayItemName}
           scanKeySearch={stockOriginalLocationScanKey}
           placeholder="Original Stock Location"
@@ -191,7 +210,13 @@ const InternalMoveListScreen = ({navigation}) => {
           objectList={stockLocationListSecondFilter}
           value={destinationStockLocation}
           onChangeValue={item => setDestinationStockLocation(item)}
-          fetchData={fetchDestinationStockLocationsAPI}
+          fetchData={searchValue =>
+            fetchDestinationStockLocationsAPI(
+              searchValue,
+              user.activeCompany?.id,
+              user.workshopStockLocation,
+            )
+          }
           displayValue={displayItemName}
           scanKeySearch={stockDestinationLocationScanKey}
           placeholder="Destination Stock Location"

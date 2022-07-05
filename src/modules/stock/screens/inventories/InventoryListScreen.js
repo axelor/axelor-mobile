@@ -33,6 +33,7 @@ const InventoryListScreen = ({navigation}) => {
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
+  const {user} = useSelector(state => state.user);
   const [filteredList, setFilteredList] = useState(inventoryList);
   const [plannedStatus, setPlannedStatus] = useState(false);
   const [inProgressStatus, setInProgressStatus] = useState(false);
@@ -145,8 +146,14 @@ const InventoryListScreen = ({navigation}) => {
   };
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -169,7 +176,13 @@ const InventoryListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
+          fetchData={searchValue =>
+            fetchStockLocationsAPI(
+              searchValue,
+              user.activeCompany?.id,
+              user.workshopStockLocation,
+            )
+          }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder="Stock location"

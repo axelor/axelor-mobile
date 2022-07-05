@@ -10,6 +10,7 @@ const originalStockLocationScanKey =
 
 const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
+  const {user} = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const handleNavigate = useCallback(
@@ -25,8 +26,14 @@ const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
   );
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, companyId, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
     [dispatch],
   );
@@ -36,7 +43,13 @@ const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
       <AutocompleteSearch
         objectList={stockLocationList}
         onChangeValue={item => handleNavigate(item)}
-        fetchData={fetchStockLocationsAPI}
+        fetchData={searchValue =>
+          fetchStockLocationsAPI(
+            searchValue,
+            user.activeCompany?.id,
+            user.workshopStockLocation,
+          )
+        }
         displayValue={displayItemName}
         scanKeySearch={originalStockLocationScanKey}
         placeholder="Original Stock Location"

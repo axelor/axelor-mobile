@@ -116,10 +116,16 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   }, [navigation, product]);
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(searchStockLocations({searchValue: filterValue}));
+    (filterValue, defaultStockLocation) => {
+      dispatch(
+        searchStockLocations({
+          searchValue: filterValue,
+          companyId: companyId,
+          defaultStockLocation: defaultStockLocation,
+        }),
+      );
     },
-    [dispatch],
+    [companyId, dispatch],
   );
 
   return (
@@ -192,7 +198,9 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             objectList={stockLocationList}
             value={stockLocation}
             onChangeValue={item => setStockLocation(item)}
-            fetchData={fetchStockLocationsAPI}
+            fetchData={searchValue =>
+              fetchStockLocationsAPI(searchValue, user.workshopStockLocation)
+            }
             displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
             placeholder="Stock location"

@@ -1,20 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {
-  searchStockLocation,
-  searchStockLocationsFilter,
-} from '@/modules/stock/api/stock-location-api';
+import {searchStockLocationsFilter} from '@/modules/stock/api/stock-location-api';
 import {handleError} from '@/api/utils';
-
-export const fetchStockLocations = createAsyncThunk(
-  'stockLocation/fetchStockLocation',
-  async function () {
-    return searchStockLocation()
-      .catch(function (error) {
-        handleError(error, 'fetch stock locations');
-      })
-      .then(response => response.data.data);
-  },
-);
 
 export const searchStockLocations = createAsyncThunk(
   'stockLocation/searchStockLocations',
@@ -48,13 +34,6 @@ const stockLocationSlice = createSlice({
   name: 'stockLocation',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchStockLocations.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(fetchStockLocations.fulfilled, (state, action) => {
-      state.loading = false;
-      state.stockLocationList = action.payload;
-    });
     builder.addCase(searchStockLocations.pending, state => {
       state.loading = true;
     });
