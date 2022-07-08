@@ -21,6 +21,4 @@ i18next.use(initReactI18next).init({
   },
 });
 
-export const I18n = i18next;
-
-export default lng => i18next.getFixedT(lng);
+export default i18next;

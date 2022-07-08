@@ -29,7 +29,6 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
 
   const [url, setUrl] = useState(
-    //'http://192.168.20.36:8080/axelor_mobile/',
     'http://wip-api-mobile-preview.cloud-sw1.axelor.io/',
   );
   const [username, setUsername] = useState('admin');

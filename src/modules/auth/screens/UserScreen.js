@@ -17,6 +17,7 @@ import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice'
 import {
   changeActiveCompany,
   changeDefaultStockLocation,
+  changeLanguage,
   fetchActiveUser,
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
@@ -31,10 +32,13 @@ import {
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
 import {Themes} from '@/types/colors';
 import {changeTheme, useThemeColor} from '@/features/themeSlice';
+import {useTranslation} from 'react-i18next';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
 const UserScreen = ({navigation}) => {
+  const {t} = useTranslation();
+
   const {companyList} = useSelector(state => state.company);
   const {userId} = useSelector(state => state.auth);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -136,6 +140,13 @@ const UserScreen = ({navigation}) => {
     [dispatch],
   );
 
+  const updateLanguage = useCallback(
+    language => {
+      dispatch(changeLanguage(language));
+    },
+    [dispatch],
+  );
+
   return (
     <Screen style={styles.container}>
       {loadingUser || loading ? (
@@ -147,6 +158,7 @@ const UserScreen = ({navigation}) => {
             size={Dimensions.get('window').width * 0.2}
             style={styles.imageContainer}
           />
+          <Text>{t('Hello')}</Text>
           {baseConfig.enableMultiCompany && (
             <View style={styles.companyContainer}>
               {canModifyCompany ? (
@@ -192,7 +204,7 @@ const UserScreen = ({navigation}) => {
               listItems={languageList}
               labelField="name"
               valueField="code"
-              onValueChange={() => {}}
+              onValueChange={updateLanguage}
               emptyValue={false}
             />
           )}

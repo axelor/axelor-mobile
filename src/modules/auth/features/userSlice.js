@@ -33,6 +33,9 @@ const userSlice = createSlice({
         workshopStockLocation: action.payload.newStockLocation,
       };
     },
+    changeLanguage: (state, action) => {
+      state.user.language = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchActiveUser.pending, state => {
@@ -48,7 +51,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {changeActiveCompany, changeDefaultStockLocation} =
+export const {changeActiveCompany, changeDefaultStockLocation, changeLanguage} =
   userSlice.actions;
 
 export const userReducer = userSlice.reducer;

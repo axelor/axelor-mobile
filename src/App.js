@@ -8,6 +8,7 @@ import RootNavigator from '@/navigators/RootNavigator';
 import ErrorBoundary from './ErrorBoundary';
 import Toast, {ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
+import Translator from '@/components/molecules/Translator/Translator';
 
 const App = () => {
   const toastConfig = {
@@ -24,6 +25,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Scanner />
+      <Translator />
       <ErrorBoundary>
         <NavigationContainer>
           <RootNavigator />
