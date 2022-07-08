@@ -22,12 +22,12 @@ import {
 } from '@/modules/stock/features/inventorySlice';
 import {InventoryCard} from '@/modules/stock/components/organisms';
 import Inventory from '@/modules/stock/types/inventory';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_inventory-list';
 
 const InventoryListScreen = ({navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const [stockLocation, setStockLocation] = useState(null);
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(

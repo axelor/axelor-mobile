@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import UserNavigator from '@/modules/auth/navigators/UserNavigator';
 import {Icon} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import StockAppNavigator from '@/modules/stock/StockAppNavigator';
 import {useSelector} from 'react-redux';
 
@@ -11,7 +11,7 @@ const {Navigator, Screen} = createDrawerNavigator();
 const ICON_SIZE = 20;
 
 const AppNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {stockMenus} = useSelector(state => state.appConfig);
 
   const stockConfig = useMemo(() => {

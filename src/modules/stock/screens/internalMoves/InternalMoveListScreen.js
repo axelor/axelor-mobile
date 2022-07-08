@@ -25,7 +25,7 @@ import {
 } from '@/modules/stock/utils/displayers';
 import StockMove from '@/modules/stock/types/stock-move';
 import {Chip} from '@/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
@@ -33,7 +33,7 @@ const stockDestinationLocationScanKey =
   'stock-destination-location_internal-move-list';
 
 const InternalMoveListScreen = ({navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {loadingInternalMove, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
   const {

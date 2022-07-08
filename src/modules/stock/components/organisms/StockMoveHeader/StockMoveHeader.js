@@ -4,10 +4,10 @@ import {Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const StockMoveHeader = ({reference, status, date, availability}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <View style={styles.infoContainer}>

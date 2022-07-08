@@ -1,15 +1,14 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {fetchProductVariants} from '@/modules/stock/features/productVariantSlice';
-import {ProductVariantCard} from '@/modules/stock/components/organisms';
 import {
-  fetchVariantAttributes,
-  getProductStockIndicators,
-} from '../../api/product-api';
-import {handleError} from '@/api/utils';
+  fetchProductsAttributes,
+  fetchProductVariants,
+} from '@/modules/stock/features/productVariantSlice';
+import {ProductVariantCard} from '@/modules/stock/components/organisms';
 import {ScrollList} from '@/components/organisms';
+import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
 const ProductListVariables = ({route, navigation}) => {
   const product = route.params.product;
@@ -19,11 +18,14 @@ const ProductListVariables = ({route, navigation}) => {
     () => product?.parentProduct?.id,
     [product?.parentProduct?.id],
   );
-  const {loading, moreLoading, isListEnd, productListVariables} = useSelector(
-    state => state.productVariant,
-  );
-  const [availabilityList, setAvailabilityList] = useState([]);
-  const [attributesList, setAttributesList] = useState([]);
+  const {
+    loading,
+    moreLoading,
+    isListEnd,
+    productListVariables,
+    listProductsAttributes,
+  } = useSelector(state => state.productVariant);
+  const {listAvailabilty} = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
 
   const fetchVariantsAPI = useCallback(
@@ -41,59 +43,17 @@ const ProductListVariables = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    let promisesAvailability = [];
-
-    async function getAvailability(dataProduct) {
-      return getProductStockIndicators({
-        version: dataProduct.version,
-        productId: dataProduct.id,
-        companyId: companyID !== 0 ? companyID : null,
-        stockLocationId: stockLocationId,
-      })
-        .catch(function (error) {
-          handleError(error, 'fetch product stock indicators');
-        })
-        .then(response => {
-          return response.data.object;
-        });
+    if (productListVariables != null) {
+      dispatch(
+        fetchProductsAvailability({
+          productList: productListVariables,
+          companyId: companyID,
+          stockLocationId: stockLocationId,
+        }),
+      );
+      dispatch(fetchProductsAttributes({productList: productListVariables}));
     }
-
-    async function fetchDataAvailability(variant) {
-      return await getAvailability(variant);
-    }
-
-    productListVariables.forEach(line => {
-      promisesAvailability.push(fetchDataAvailability(line));
-    });
-
-    Promise.all(promisesAvailability).then(resultes => {
-      return setAvailabilityList(resultes);
-    });
-
-    let promisesAttr = [];
-
-    async function getAttributes(data) {
-      return fetchVariantAttributes(data)
-        .catch(function (error) {
-          handleError(error, 'fetch product variant attributes');
-        })
-        .then(response => {
-          return response.data.object;
-        });
-    }
-
-    async function fetchDataAttributes(variant) {
-      return await getAttributes(variant);
-    }
-
-    productListVariables.forEach(line => {
-      promisesAttr.push(fetchDataAttributes(line));
-    });
-
-    Promise.all(promisesAttr).then(resultes => {
-      return setAttributesList(resultes);
-    });
-  }, [companyID, productListVariables, stockLocationId]);
+  }, [companyID, dispatch, productListVariables, stockLocationId]);
 
   const navigateToProductVariable = productVar => {
     navigation.navigate('ProductStockDetailsScreen', {product: productVar});
@@ -109,11 +69,13 @@ const ProductListVariables = ({route, navigation}) => {
             style={styles.item}
             name={item.name}
             code={item.code}
-            attributesList={availabilityList ? attributesList[index] : null}
+            attributesList={
+              listProductsAttributes ? listProductsAttributes[index] : null
+            }
             key={item.id}
             picture={item.picture}
             stockAvailability={
-              availabilityList ? availabilityList[index]?.availableStock : 0
+              listAvailabilty ? listAvailabilty[index]?.availableStock : 0
             }
             onPress={() => navigateToProductVariable(item)}
           />

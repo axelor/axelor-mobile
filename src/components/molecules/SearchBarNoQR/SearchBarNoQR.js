@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const SearchBarNoQR = ({
   style,
@@ -13,7 +13,7 @@ const SearchBarNoQR = ({
   onEndFocus = () => {},
   isFocus = false,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

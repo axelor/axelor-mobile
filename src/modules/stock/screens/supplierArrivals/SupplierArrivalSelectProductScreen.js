@@ -8,13 +8,13 @@ import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '../../types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import {StockMoveHeader} from '../../components/organisms';
 
 const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const {productList} = useSelector(state => state.product);

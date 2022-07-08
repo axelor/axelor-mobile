@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const StockCorrectionCard = ({
   style,
@@ -13,7 +13,7 @@ const StockCorrectionCard = ({
   date,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     return getStyles(
       StockCorrection.getStatusColor(status, Colors).borderColor,

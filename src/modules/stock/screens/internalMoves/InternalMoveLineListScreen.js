@@ -10,10 +10,10 @@ import {
 import StockMove from '@/modules/stock/types/stock-move';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const internalMove = route.params.internalMove;
   const {loadingIMLines, moreLoading, isListEnd, internalMoveLineList} =
     useSelector(state => state.internalMoveLine);

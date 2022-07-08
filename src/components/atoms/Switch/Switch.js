@@ -1,10 +1,10 @@
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import React, {useState} from 'react';
 import {Switch as RNSwitch} from 'react-native';
 
 const Switch = ({isEnabled, handleToggle}) => {
   const [enabled, setEnabled] = useState(isEnabled);
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const toggleSwitch = () => {
     handleToggle(!enabled);

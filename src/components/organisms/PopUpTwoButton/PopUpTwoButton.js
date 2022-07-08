@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from '@/components/atoms';
 import {PopUp} from '@/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const PopUpTwoButton = ({
   visible,
@@ -13,7 +13,7 @@ const PopUpTwoButton = ({
   SecondaryBtnTitle,
   onPressSecondary,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   return (
     <PopUp visible={visible} title={title} data={data}>
       <Button

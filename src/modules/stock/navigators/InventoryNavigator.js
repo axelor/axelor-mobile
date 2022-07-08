@@ -10,12 +10,12 @@ import InventoryLineListDetailsScreen from '@/modules/stock/screens/inventories/
 import InventoryLineDetailsScreen from '@/modules/stock/screens/inventories/InventoryLineDetailsScreen';
 import InventorySelectProductScreen from '@/modules/stock/screens/inventories/InventorySelectProductScreen';
 import InventorySelectTrackingScreen from '@/modules/stock/screens/inventories/InventorySelectTrackingScreen';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InventoriesNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

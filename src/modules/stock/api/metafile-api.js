@@ -1,5 +1,29 @@
 import axios from 'axios';
 
-export async function fetchFileDetails(fileId) {
-  return axios.get(`/ws/rest/com.axelor.meta.db.MetaFile/${fileId}`);
+const createCriteria = listFiles => {
+  if (listFiles != null) {
+    let criterias = [];
+    listFiles.forEach(item => {
+      criterias.push({fieldName: 'id', operator: '=', value: item.id});
+    });
+    return criterias;
+  }
+};
+
+const MetaFileFields = ['id', 'fileName', 'createdOn'];
+
+export async function fetchFileDetails(listFiles) {
+  return axios.post('/ws/rest/com.axelor.dms.db.DMSFile/search', {
+    data: {
+      criteria: [
+        {
+          operator: 'or',
+          criteria: createCriteria(listFiles),
+        },
+      ],
+    },
+    fields: MetaFileFields,
+    limit: null,
+    offset: 0,
+  });
 }

@@ -8,13 +8,13 @@ import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import {StockMoveHeader} from '../../components/organisms';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
 const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const product = route.params.product;

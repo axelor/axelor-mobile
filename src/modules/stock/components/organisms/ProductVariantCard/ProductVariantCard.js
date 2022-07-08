@@ -3,7 +3,8 @@ import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
+import {useSelector} from 'react-redux';
 
 const ProductVariantCard = ({
   style,
@@ -14,9 +15,10 @@ const ProductVariantCard = ({
   stockAvailability,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const {baseUrl} = useSelector(state => state.auth);
+  const Colors = useThemeColor();
   const Image_Http_URL = {
-    uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${picture?.id}/content/download/`,
+    uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${picture?.id}/content/download/`,
   };
 
   const attr1 = attributesList?.attributes[0];

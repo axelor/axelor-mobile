@@ -1,5 +1,8 @@
 class File {
   static getFileExtension = filename => {
+    if (filename == null) {
+      return filename;
+    }
     return filename.split('.').pop();
   };
 

@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchCompany} from '@/modules/auth/api/company-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchCompanies = createAsyncThunk(
   'company/fetchCompany',
   async function () {
     return searchCompany()
       .catch(function (error) {
-        handleError(error, 'fetch companies');
+        useHandleError(error, 'fetch companies');
       })
       .then(response => response.data.data);
   },

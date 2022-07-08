@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
+import {useSelector} from 'react-redux';
 
 const Input = ({
   style,
@@ -16,8 +17,8 @@ const Input = ({
   onEndFocus = () => {},
   isFocus = false,
 }) => {
-  const Colors = ColorHook();
-
+  const Colors = useThemeColor();
+  const {zebraConfig} = useSelector(state => state.config);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -35,7 +36,7 @@ const Input = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       onBlur={onEndFocus}
-      showSoftInputOnFocus={global.zebraConfig ? false : true}
+      showSoftInputOnFocus={zebraConfig ? false : true}
       autoFocus={isFocus}
     />
   );

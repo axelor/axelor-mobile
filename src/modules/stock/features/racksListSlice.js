@@ -1,4 +1,4 @@
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchStockLocationLine} from '../api/stock-location-line-api';
 
@@ -18,7 +18,7 @@ var getRack = async (stockId, productId) => {
     productId: productId,
   })
     .catch(function (error) {
-      handleError(error, 'fetch rack');
+      useHandleError(error, 'fetch rack');
     })
     .then(response => {
       return response.data.data;

@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
+import {useSelector} from 'react-redux';
 
 const ProductCardInfo = ({
   name,
@@ -12,7 +13,8 @@ const ProductCardInfo = ({
   locker = null,
   onPress = () => {},
 }) => {
-  const Colors = ColorHook();
+  const {baseUrl} = useSelector(state => state.auth);
+  const Colors = useThemeColor();
   return (
     <View style={styles.container}>
       {pictureId == null ? (
@@ -26,7 +28,7 @@ const ProductCardInfo = ({
         <Image
           resizeMode="contain"
           source={{
-            uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+            uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
           }}
           style={styles.image}
         />

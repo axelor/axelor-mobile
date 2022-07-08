@@ -11,10 +11,10 @@ import {
 } from '@/modules/stock/components/organisms';
 import {fetchCustomerDeliveryLines} from '@/modules/stock/features/customerDeliveryLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const customerDelivery = route.params.customerDelivery;
   const {loadingCDLines, moreLoading, isListEnd, customerDeliveryLineList} =
     useSelector(state => state.customerDeliveryLine);

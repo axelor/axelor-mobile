@@ -3,11 +3,11 @@ import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import Inventory from '@/modules/stock/types/inventory';
 
 const InventoryHeader = ({reference, status, date, stockLocation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <View style={styles.infoContainer}>

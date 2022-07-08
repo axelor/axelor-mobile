@@ -24,12 +24,12 @@ import {
 } from '@/modules/stock/utils/displayers';
 import StockMove from '@/modules/stock/types/stock-move';
 import {filterClients} from '../../features/partnerSlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 
 const CustomerDeliveryListScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const [stockLocation, setStockLocation] = useState(null);
   const [customer, setCustomer] = useState(null);
   const {stockLocationList} = useSelector(state => state.stockLocation);

@@ -4,7 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {checkNullString} from '@/modules/stock/utils/strings';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const CustomerDeliveryLineCard = ({
   style,
@@ -16,7 +16,7 @@ const CustomerDeliveryLineCard = ({
   trackingNumber,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     if (parseFloat(pickedQty) === 0) {
       return null;

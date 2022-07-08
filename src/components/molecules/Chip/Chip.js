@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const Chip = ({
   selected,
@@ -12,7 +12,7 @@ const Chip = ({
   width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const colorStyle = useMemo(() => {
     const color =

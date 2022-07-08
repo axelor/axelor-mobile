@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const Icon = ({
   style,
@@ -13,7 +13,7 @@ const Icon = ({
   touchable = false,
   onPress = () => {},
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const iconStyle = useMemo(() => {
     return getStyles(color == null ? Colors.secondaryColor_dark : color, size);

@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Icon} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const IconSettings = ({onPress}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <Icon

@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {fetchFileDetails} from '@/modules/stock/api/metafile-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const getFileDetails = createAsyncThunk(
   'metafile/getFileDetails',
   async function (metafileId) {
     return fetchFileDetails(metafileId)
       .catch(function (error) {
-        handleError(error, 'fetch metafile details');
+        useHandleError(error, 'fetch metafile details');
       })
       .then(response => response.data.data);
   },

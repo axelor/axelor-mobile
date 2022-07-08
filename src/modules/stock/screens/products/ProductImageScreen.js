@@ -1,8 +1,10 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {Screen, Text} from '@/components/atoms';
+import {useSelector} from 'react-redux';
 
 const ProductImageScreen = ({route}) => {
+  const {baseUrl} = useSelector(state => state.auth);
   const product = route.params.product;
   return (
     <Screen>
@@ -14,7 +16,7 @@ const ProductImageScreen = ({route}) => {
         <Image
           resizeMode="contain"
           source={{
-            uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+            uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
           }}
           style={styles.image}
         />

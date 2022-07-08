@@ -1,30 +1,18 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   fetchAttachedFiles,
-  searchProduct,
   searchProductsFilter,
   searchProductWithId,
   updateLocker,
 } from '@/modules/stock/api/product-api';
-import {handleError} from '@/api/utils';
-
-export const fetchProducts = createAsyncThunk(
-  'product/fetchProduct',
-  async function (data) {
-    return searchProduct(data)
-      .catch(function (error) {
-        handleError(error, 'fetch products');
-      })
-      .then(response => response.data.data);
-  },
-);
+import {useHandleError} from '@/api/utils';
 
 export const searchProducts = createAsyncThunk(
   'product/searchProduct',
   async function (data) {
     return searchProductsFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter products');
+        useHandleError(error, 'filter products');
       })
       .then(response => response.data.data);
   },
@@ -35,7 +23,7 @@ export const fetchProductWithId = createAsyncThunk(
   async function (productId) {
     return searchProductWithId(productId)
       .catch(function (error) {
-        handleError(error, 'fetch product from id');
+        useHandleError(error, 'fetch product from id');
       })
       .then(response => response.data.data[0]);
   },
@@ -46,7 +34,7 @@ export const updateProductLocker = createAsyncThunk(
   async function (data) {
     return updateLocker(data)
       .catch(function (error) {
-        handleError(error, 'update product locker');
+        useHandleError(error, 'update product locker');
       })
       .then(response => response.data.object);
   },
@@ -57,7 +45,7 @@ export const fetchProductAttachedFiles = createAsyncThunk(
   async function (data) {
     return fetchAttachedFiles(data)
       .catch(function (error) {
-        handleError(error, 'fetch attached files');
+        useHandleError(error, 'fetch attached files');
       })
       .then(response => response.data.data);
   },
@@ -78,17 +66,17 @@ const productSlice = createSlice({
   name: 'product',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchProducts.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
+    builder.addCase(searchProducts.pending, (state, action) => {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
         state.loadingProduct = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+    builder.addCase(searchProducts.fulfilled, (state, action) => {
       state.loadingProduct = false;
       state.moreLoading = false;
-      if (action.meta.arg.page === 0) {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
         state.productList = action.payload;
         state.isListEnd = false;
       } else {
@@ -99,14 +87,6 @@ const productSlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(searchProducts.pending, state => {
-      state.loadingProduct = true;
-    });
-    builder.addCase(searchProducts.fulfilled, (state, action) => {
-      state.loadingProduct = false;
-      state.isListEnd = false;
-      state.productList = action.payload;
     });
     builder.addCase(fetchProductWithId.pending, state => {
       state.loadingProduct = true;

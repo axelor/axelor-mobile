@@ -1,4 +1,4 @@
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   searchCustomerDeliveryLines,
@@ -10,7 +10,7 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
   async function (data) {
     return searchCustomerDeliveryLines(data)
       .catch(function (error) {
-        handleError(error, 'fetch customer delivery line');
+        useHandleError(error, 'fetch customer delivery line');
       })
       .then(response => response.data.data);
   },
@@ -21,7 +21,7 @@ export const updateCustomerDeliveryLine = createAsyncThunk(
   async function (data) {
     return updateLine(data)
       .catch(function (error) {
-        handleError(error, 'update customer delivery line');
+        useHandleError(error, 'update customer delivery line');
       })
       .then(response => response.data.object);
   },

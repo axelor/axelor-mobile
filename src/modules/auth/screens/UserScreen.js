@@ -21,32 +21,39 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-import {ColorHook} from '@/themeStore';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {fetchBaseConfig} from '../features/configSlice';
+import {
+  fetchBaseConfig,
+  setFilterShowConfig,
+  setZebraConfig,
+} from '../features/configSlice';
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
+import {Themes} from '@/types/colors';
+import {changeTheme, useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
 const UserScreen = ({navigation}) => {
   const {companyList} = useSelector(state => state.company);
+  const {userId} = useSelector(state => state.auth);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {languageList} = useSelector(state => state.language);
   const {loading, baseConfig} = useSelector(state => state.config);
   const {loadingUser, user, canModifyCompany} = useSelector(
     state => state.user,
   );
-  const Colors = ColorHook();
+  const {theme, isColorBlind} = useSelector(state => state.theme);
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchActiveUser());
+    dispatch(fetchActiveUser(userId));
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
     dispatch(fetchBaseConfig());
     dispatch(fetchStockAppConfig());
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,15 +65,21 @@ const UserScreen = ({navigation}) => {
     });
   }, [navigation, user]);
 
-  useMemo(() => {
+  useEffect(() => {
     const SMALL_SCREEN_HEIGHT = 500;
 
     DeviceInfo.getManufacturer().then(manufacturer => {
-      global.zebraConfig = manufacturer === 'Zebra Technologies';
+      dispatch(
+        setZebraConfig({zebraConfig: manufacturer === 'Zebra Technologies'}),
+      );
     });
 
-    global.filterConfig = Dimensions.get('window').height > SMALL_SCREEN_HEIGHT;
-  }, []);
+    dispatch(
+      setFilterShowConfig({
+        filterShowConfig: Dimensions.get('window').height > SMALL_SCREEN_HEIGHT,
+      }),
+    );
+  }, [dispatch]);
 
   const styles = useMemo(() => {
     return getStyles(Colors);
@@ -90,10 +103,10 @@ const UserScreen = ({navigation}) => {
       dispatch(
         changeActiveCompany({
           newCompany: {
-            $version: company.$version,
-            code: company.code,
-            id: company.id,
-            name: company.name,
+            $version: company?.$version,
+            code: company?.code,
+            id: company?.id,
+            name: company?.name,
           },
         }),
       );
@@ -106,6 +119,17 @@ const UserScreen = ({navigation}) => {
       dispatch(
         changeDefaultStockLocation({
           newStockLocation: stockLocation,
+        }),
+      );
+    },
+    [dispatch],
+  );
+
+  const handleChangeTheme = useCallback(
+    newTheme => {
+      dispatch(
+        changeTheme({
+          newTheme: newTheme,
         }),
       );
     },
@@ -161,15 +185,28 @@ const UserScreen = ({navigation}) => {
             scanKeySearch={stockLocationScanKey}
             placeholder="Stock location"
           />
-          <Picker
-            title="Language"
-            defaultValue={user.language}
-            listItems={languageList}
-            labelField="name"
-            valueField="code"
-            onValueChange={() => {}}
-            emptyValue={false}
-          />
+          {languageList.length > 1 && (
+            <Picker
+              title="Language"
+              defaultValue={user.language}
+              listItems={languageList}
+              labelField="name"
+              valueField="code"
+              onValueChange={() => {}}
+              emptyValue={false}
+            />
+          )}
+          {!isColorBlind && Themes.themesList.length !== 1 && (
+            <Picker
+              title="Theme"
+              defaultValue={theme}
+              listItems={Themes.themesList}
+              labelField="name"
+              valueField="id"
+              onValueChange={handleChangeTheme}
+              emptyValue={false}
+            />
+          )}
           <LogoutButton onPress={() => dispatch(logout())} />
         </ScrollView>
       )}

@@ -1,11 +1,10 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {handleError} from '@/api/utils';
 import {ProductStockLocationCard} from '@/modules/stock/components/organisms';
 import {fetchStockLocationLine} from '@/modules/stock/features/stockLocationLineSlice';
-import {getProductStockIndicators} from '@/modules/stock/api/product-api';
 import {ScrollList} from '@/components/organisms';
+import {fetchProductDistribution} from '../../features/productIndicatorsSlice';
 
 const ProductStockLocationDetailsScreen = ({route}) => {
   const product = route.params.product;
@@ -16,7 +15,9 @@ const ProductStockLocationDetailsScreen = ({route}) => {
     isListEnd,
     stockLocationLine,
   } = useSelector(state => state.stockLocationLine);
-  const [availabilityList, setAvailabilityList] = useState(null);
+  const {listAvailabiltyDistribution} = useSelector(
+    state => state.productIndicators,
+  );
   const dispatch = useDispatch();
 
   const fetchStockLines = useCallback(
@@ -24,45 +25,25 @@ const ProductStockLocationDetailsScreen = ({route}) => {
       dispatch(
         fetchStockLocationLine({
           productId: product.id,
-          companyId: route.params.companyId,
+          companyId: companyId,
           page: page,
         }),
       );
     },
-    [dispatch, product.id, route.params],
+    [companyId, dispatch, product.id],
   );
 
   useEffect(() => {
     if (stockLocationLine != null && stockLocationLine !== []) {
-      let promises = [];
-
-      async function getAvailability(stocklocationLine) {
-        return getProductStockIndicators({
-          version: product.version,
-          productId: product.id,
-          companyId: companyId,
-          stockLocationId: stocklocationLine.stockLocation?.id,
-        })
-          .catch(function (error) {
-            handleError(error, 'fetch product stock indicators');
-          })
-          .then(response => {
-            return response.data.object;
-          });
-      }
-
-      async function fetchData(stocklocationLine) {
-        return await getAvailability(stocklocationLine);
-      }
-
-      stockLocationLine.forEach(line => {
-        promises.push(fetchData(line));
-      });
-      Promise.all(promises).then(resultes => {
-        return setAvailabilityList(resultes);
-      });
+      dispatch(
+        fetchProductDistribution({
+          stockLocationList: stockLocationLine,
+          product: product,
+          companyId: companyId || 1,
+        }),
+      );
     }
-  }, [companyId, product, stockLocationLine]);
+  }, [dispatch, product, stockLocationLine, companyId]);
 
   return (
     <Screen>
@@ -75,7 +56,9 @@ const ProductStockLocationDetailsScreen = ({route}) => {
             realQty={parseFloat(item.currentQty).toFixed(2)}
             futureQty={parseFloat(item.futureQty).toFixed(2)}
             availability={
-              availabilityList ? availabilityList[index]?.availableStock : null
+              listAvailabiltyDistribution
+                ? listAvailabiltyDistribution[index]?.availableStock
+                : null
             }
             unit={item.unit?.name}
           />

@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const ProductCharacteristics = ({
   style,
@@ -16,7 +16,7 @@ const ProductCharacteristics = ({
   prototype,
   unrenewed,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   return (
     <Card style={[styles.container, style]}>
       <View style={styles.content}>

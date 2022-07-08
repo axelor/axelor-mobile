@@ -5,14 +5,14 @@ import {
   searchDelivery,
   searchDeliveryFilter,
 } from '@/modules/stock/api/customer-delivery-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchDeliveries = createAsyncThunk(
   'deliveries/fetchDeliveries',
   async function (data) {
     return searchDelivery(data)
       .catch(function (error) {
-        handleError(error, 'fetch customer deliveries');
+        useHandleError(error, 'fetch customer deliveries');
       })
       .then(response => {
         return response.data.data;
@@ -25,7 +25,7 @@ export const searchDeliveries = createAsyncThunk(
   async function (data) {
     return searchDeliveryFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter customer deliveries');
+        useHandleError(error, 'filter customer deliveries');
       })
       .then(response => {
         return response.data.data;
@@ -38,7 +38,7 @@ export const addNewLine = createAsyncThunk(
   async function (data) {
     return addLineStockMove(data)
       .catch(function (error) {
-        handleError(error, 'add new line to customer delivery');
+        useHandleError(error, 'add new line to customer delivery');
       })
       .then(response => response.data.object);
   },
@@ -49,7 +49,7 @@ export const realizeCustomerDelivery = createAsyncThunk(
   async function (data) {
     return realizeSockMove(data)
       .catch(function (error) {
-        handleError(error, 'realize customer delivery');
+        useHandleError(error, 'realize customer delivery');
       })
       .then(response => response.data.object);
   },

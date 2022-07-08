@@ -4,14 +4,14 @@ import {
   createStockCorrection,
   updateStockCorrection,
 } from '@/modules/stock/api/stock-correction-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchStockCorrections = createAsyncThunk(
   'stockCorrection/fetchStockCorrection',
   async function (data) {
     return searchStockCorrection(data)
       .catch(function (error) {
-        handleError(error, 'fetch stock corrections');
+        useHandleError(error, 'fetch stock corrections');
       })
       .then(response => response.data.data);
   },
@@ -22,7 +22,7 @@ export const createCorrection = createAsyncThunk(
   async function (data) {
     return createStockCorrection(data)
       .catch(function (error) {
-        handleError(error, 'create stock correction');
+        useHandleError(error, 'create stock correction');
       })
       .then(response => response.data.object);
   },
@@ -33,7 +33,7 @@ export const updateCorrection = createAsyncThunk(
   async function (data) {
     return updateStockCorrection(data)
       .catch(function (error) {
-        handleError(error, 'update stock correction');
+        useHandleError(error, 'update stock correction');
       })
       .then(response => response.data.object);
   },

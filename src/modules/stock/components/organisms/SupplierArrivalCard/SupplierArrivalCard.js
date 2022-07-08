@@ -3,7 +3,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const SupplierArrivalCard = ({
   style,
@@ -14,7 +14,7 @@ const SupplierArrivalCard = ({
   date,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).borderColor);
   }, [Colors, status]);

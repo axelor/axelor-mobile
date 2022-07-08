@@ -9,12 +9,12 @@ import ProductNavigator from './ProductNavigator';
 import CustomerDeliverySelectProductScreen from '../screens/customerDeliveries/CustomerDeliverySelectProductScreen';
 import CustomerDeliverySelectTrackingScreen from '../screens/customerDeliveries/CustomerDeliverySelectTrackingScreen';
 import CustomerDeliveryLineDetailScreen from '../screens/customerDeliveries/CustomerDeliveryLineDetailScreen';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const CustomerDeliveryNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

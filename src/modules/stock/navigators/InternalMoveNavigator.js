@@ -12,12 +12,12 @@ import InternalMoveDetailsGeneralScreen from '@/modules/stock/screens/internalMo
 import InternalMoveLineListScreen from '@/modules/stock/screens/internalMoves/InternalMoveLineListScreen';
 import ProductNavigator from './ProductNavigator';
 import StockCorrectionNavigator from './StockCorrectionNavigator';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InternalMoveNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

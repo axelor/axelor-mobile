@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules';
 import {checkNullString} from '@/modules/stock/utils/strings';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const SupplierArrivalLineCard = ({
   style,
@@ -14,7 +14,7 @@ const SupplierArrivalLineCard = ({
   trackingNumber,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     if (parseFloat(deliveredQty) === 0) {
       return null;

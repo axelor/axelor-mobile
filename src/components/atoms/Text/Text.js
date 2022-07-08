@@ -1,4 +1,4 @@
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import React, {useMemo} from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
 
@@ -8,7 +8,7 @@ const Text = ({
   adjustsFontSizeToFit = false,
   children,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

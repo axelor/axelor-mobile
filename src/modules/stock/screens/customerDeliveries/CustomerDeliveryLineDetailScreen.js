@@ -14,10 +14,10 @@ import {fetchProductWithId} from '../../features/productSlice';
 import RenderHtml from 'react-native-render-html';
 import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 import {addNewLine} from '../../features/customerDeliverySlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const customerDelivery = route.params.customerDelivery;
   const customerDeliveryLine = route.params.customerDeliveryLine;
   const trackingNumber = route.params.trackingNumber;

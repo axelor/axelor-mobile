@@ -16,7 +16,7 @@ import {
   StockMoveHeader,
 } from '@/modules/stock/components/organisms';
 import {fetchUnit} from '@/modules/stock/features/unitSlice';
-import {fetchProducts} from '@/modules/stock/features/productSlice';
+import {fetchProductWithId} from '@/modules/stock/features/productSlice';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
@@ -25,11 +25,13 @@ import {
   createInternalMove,
   updateInternalMove,
 } from '@/modules/stock/features/internalMoveSlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const Colors = ColorHook();
-  const {loadingProduct, productList} = useSelector(state => state.product);
+  const Colors = useThemeColor();
+  const {loadingProductFromId, productFromId} = useSelector(
+    state => state.product,
+  );
   const {unitList} = useSelector(state => state.unit);
   const {id: activeCompanyId} = useSelector(
     state => state.user.user.activeCompany,
@@ -40,11 +42,14 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   useEffect(() => {
     dispatch(fetchUnit());
-    if (route.params.internalMove != null) {
+    if (
+      route.params.internalMove != null &&
+      route.params.internalMoveLine != null
+    ) {
       dispatch(fetchInternalMoveLines(route.params.internalMove.id));
-      dispatch(fetchProducts());
+      dispatch(fetchProductWithId(route.params.internalMoveLine.product.id));
     }
-  }, [dispatch, route.params.internalMove]);
+  }, [dispatch, route.params]);
 
   useEffect(() => {
     if (
@@ -87,7 +92,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   useEffect(() => {
     initVariables();
-  }, [route.params, productList, productIndicators, initVariables]);
+  }, [route.params, productFromId, productIndicators, initVariables]);
 
   const initVariables = useCallback(() => {
     if (route.params.internalMove == null) {
@@ -117,13 +122,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setOriginalStockLocation(route.params.internalMove.fromStockLocation);
       setDestinationStockLocation(route.params.internalMove.toStockLocation);
       setNotes(route.params.internalMove.note);
-      if (productList == null || productList.length === 0) {
+      if (productFromId == null || productFromId === {}) {
         setLoading(true);
       } else {
         const internalMoveLine = route.params.internalMoveLine;
-        setStockProduct(
-          getFromList(productList, 'id', internalMoveLine.product.id),
-        );
+        setStockProduct(productFromId);
         setTrackingNumber(internalMoveLine.trackingNumber);
         if (
           route.params.internalMove.statusSelect === StockMove.status.Realized
@@ -138,7 +141,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       }
       setSaveStatus(true);
     }
-  }, [productIndicators, productList, route.params]);
+  }, [productIndicators, productFromId, route.params]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductNavigator', {
@@ -261,7 +264,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      {loading || loadingProduct ? (
+      {loading || loadingProductFromId ? (
         <ActivityIndicator size="large" />
       ) : (
         <View>

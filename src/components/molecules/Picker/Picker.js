@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 import getFromList from '@/modules/stock/utils/get-from-list';
 
 const Picker = ({
@@ -17,7 +17,7 @@ const Picker = ({
   emptyValue = true,
   isValueItem = false,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const [selectedValue, setSelectedValue] = useState(
     defaultValue == null ? '' : defaultValue,
   );

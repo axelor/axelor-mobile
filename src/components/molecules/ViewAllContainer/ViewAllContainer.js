@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const ViewAllContainer = ({
   style,
@@ -10,7 +10,7 @@ const ViewAllContainer = ({
   onNewIcon = () => {},
   onPress = () => {},
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <Card style={[styles.container, style]}>

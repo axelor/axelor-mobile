@@ -24,12 +24,12 @@ import {
 } from '@/modules/stock/features/supplierArrivalSlice';
 import {SupplierArrivalCard} from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 
 const SupplierArrivalListScreen = ({navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const [stockLocation, setStockLocation] = useState(null);
   const {supplierList} = useSelector(state => state.partner);

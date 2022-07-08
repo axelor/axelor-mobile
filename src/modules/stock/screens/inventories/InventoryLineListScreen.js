@@ -11,10 +11,10 @@ import {
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InventoryLineListDetailsScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const inventory = route.params.inventory;
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);

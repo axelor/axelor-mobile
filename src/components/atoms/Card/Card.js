@@ -1,9 +1,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const Card = ({style, children}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 

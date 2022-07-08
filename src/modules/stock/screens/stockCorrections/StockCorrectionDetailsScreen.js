@@ -17,10 +17,10 @@ import {
 import getFromList from '@/modules/stock/utils/get-from-list';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );

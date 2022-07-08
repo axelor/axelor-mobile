@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {getBaseConfig} from '../api/config-api';
 
 export const fetchBaseConfig = createAsyncThunk(
@@ -7,7 +7,7 @@ export const fetchBaseConfig = createAsyncThunk(
   async function () {
     return getBaseConfig()
       .catch(function (error) {
-        handleError(error, 'fetch base config');
+        useHandleError(error, 'fetch base config');
       })
       .then(response => response.data.data[0]);
   },
@@ -16,11 +16,27 @@ export const fetchBaseConfig = createAsyncThunk(
 const initialState = {
   loading: false,
   baseConfig: {},
+  zebraConfig: false,
+  filterShowConfig: true,
 };
 
 const configSlice = createSlice({
   name: 'config',
   initialState,
+  reducers: {
+    setZebraConfig: (state, action) => {
+      state.zebraConfig = action.payload.zebraConfig;
+    },
+    toggleZebraConfig: state => {
+      state.zebraConfig = !state.zebraConfig;
+    },
+    setFilterShowConfig: (state, action) => {
+      state.filterShowConfig = action.payload.filterShowConfig;
+    },
+    toggleFilterShowConfig: state => {
+      state.filterShowConfig = !state.filterShowConfig;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchBaseConfig.pending, state => {
       state.loading = true;
@@ -31,5 +47,12 @@ const configSlice = createSlice({
     });
   },
 });
+
+export const {
+  setFilterShowConfig,
+  toggleFilterShowConfig,
+  setZebraConfig,
+  toggleZebraConfig,
+} = configSlice.actions;
 
 export const configReducer = configSlice.reducer;

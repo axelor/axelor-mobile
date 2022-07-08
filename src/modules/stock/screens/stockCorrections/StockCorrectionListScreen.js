@@ -16,13 +16,13 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
 const productScanKey = 'product_stock-correction-list';
 
 const StockCorrectionListScreen = ({navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
   const {stockLocationList} = useSelector(state => state.stockLocation);

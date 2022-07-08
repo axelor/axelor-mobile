@@ -1,4 +1,4 @@
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   addLineStockMove,
@@ -12,7 +12,7 @@ export const fetchSupplierArrivals = createAsyncThunk(
   async function (data) {
     return searchSupplierArrival(data)
       .catch(function (error) {
-        handleError(error, 'fetch supplier arrival');
+        useHandleError(error, 'fetch supplier arrival');
       })
       .then(response => response.data.data);
   },
@@ -23,7 +23,7 @@ export const searchSupplierArrivals = createAsyncThunk(
   async function (data) {
     return searchSupplierArrivalFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter supplier arrival');
+        useHandleError(error, 'filter supplier arrival');
       })
       .then(response => response.data.data);
   },
@@ -34,7 +34,7 @@ export const addNewLine = createAsyncThunk(
   async function (data) {
     return addLineStockMove(data)
       .catch(function (error) {
-        handleError(error, 'add new line to supplier arrival');
+        useHandleError(error, 'add new line to supplier arrival');
       })
       .then(response => response.data.object);
   },
@@ -45,7 +45,7 @@ export const realizeSupplierArrival = createAsyncThunk(
   async function (data) {
     return realizeSockMove(data)
       .catch(function (error) {
-        handleError(error, 'realize supplier arrival');
+        useHandleError(error, 'realize supplier arrival');
       })
       .then(response => response.data.object);
   },

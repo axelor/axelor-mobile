@@ -10,12 +10,12 @@ import SupplierArrivalSelectProductScreen from '@/modules/stock/screens/supplier
 import SupplierArrivalSelectTrackingScreen from '@/modules/stock/screens/supplierArrivals/SupplierArrivalSelectTrackingScreen';
 import SupplierArrivalLineDetailScreen from '@/modules/stock/screens/supplierArrivals/SupplierArrivalLineDetailScreen';
 import ProductNavigator from './ProductNavigator';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const SupplierArrivalsNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

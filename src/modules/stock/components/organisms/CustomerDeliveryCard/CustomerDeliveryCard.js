@@ -4,7 +4,7 @@ import {Card, Text, Icon} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const CustomerDeliveryCard = ({
   style,
@@ -16,7 +16,7 @@ const CustomerDeliveryCard = ({
   date,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).borderColor);

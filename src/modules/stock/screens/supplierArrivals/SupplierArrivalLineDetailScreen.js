@@ -14,10 +14,10 @@ import {fetchProductWithId} from '@/modules/stock/features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {addNewLine} from '../../features/supplierArrivalSlice';
 import {updateSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const trackingNumber = route.params.trackingNumber;

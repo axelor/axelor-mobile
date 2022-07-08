@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const UrlInput = ({
   style,
@@ -13,7 +13,7 @@ const UrlInput = ({
   scanIconColor,
 }) => {
   const [inputValue, setInputValue] = useState(null);
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   useEffect(() => {
     if (value) {

@@ -21,13 +21,14 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import {updateProductLocker} from '../../features/productSlice';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const product = route.params.product;
+  const {baseUrl} = useSelector(state => state.auth);
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -147,7 +148,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
                 <Image
                   resizeMode="contain"
                   source={{
-                    uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
+                    uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
                   }}
                   style={styles.image}
                 />

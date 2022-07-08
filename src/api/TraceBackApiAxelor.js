@@ -4,7 +4,11 @@ const FUNCTIONAL_ABNORMALITY = 1;
 const CONFIGURATION_PROBLEM = 4;
 
 export default class TraceBackApiAxelor {
-  static async postError(message, cause) {
+  constructor(userId) {
+    this.userId = userId;
+  }
+
+  async postError(message, cause) {
     axios.put('/ws/rest/com.axelor.exception.db.TraceBack', {
       data: {
         origin: 'mobile app',
@@ -14,7 +18,7 @@ export default class TraceBackApiAxelor {
         exception: message,
         message: message,
         cause: JSON.stringify(cause),
-        internalUser: {id: global.userId},
+        internalUser: {id: this.userId},
       },
     });
   }

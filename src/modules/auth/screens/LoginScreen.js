@@ -15,7 +15,7 @@ import {
 } from '@/features/scannerSlice';
 import {login} from '@/modules/auth/features/authSlice';
 import {CameraScanner, Screen, Text} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const urlScanKey = 'login_url';
 
@@ -25,18 +25,15 @@ const LoginScreen = () => {
   const [scanData, setScanData] = useState(null);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const [url, setUrl] = useState(
+    //'http://192.168.20.36:8080/axelor_mobile/',
     'http://wip-api-mobile-preview.cloud-sw1.axelor.io/',
   );
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin');
-
-  useEffect(() => {
-    global.loggedUrl = url;
-  }, [url]);
 
   useEffect(() => {
     if (scannedValue) {

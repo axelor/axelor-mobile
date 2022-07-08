@@ -1,5 +1,5 @@
 import {getStockMenuConfig} from '@/api/app-config';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 export const fetchStockAppConfig = createAsyncThunk(
@@ -7,7 +7,7 @@ export const fetchStockAppConfig = createAsyncThunk(
   async function () {
     return getStockMenuConfig()
       .catch(function (error) {
-        handleError(error, 'fetch Stock App Config');
+        useHandleError(error, 'fetch Stock App Config');
       })
       .then(response => response.data.data);
   },

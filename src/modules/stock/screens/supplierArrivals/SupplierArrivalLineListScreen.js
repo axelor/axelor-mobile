@@ -11,10 +11,10 @@ import {
 import StockMove from '@/modules/stock/types/stock-move';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const SupplierArrivalLineListScreen = ({route, navigation}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const supplierArrival = route.params.supplierArrival;
   const {loadingSALines, moreLoading, isListEnd, supplierArrivalLineList} =
     useSelector(state => state.supplierArrivalLine);

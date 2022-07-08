@@ -9,12 +9,12 @@ import ProductListVariantScreen from '@/modules/stock/screens/products/ProductLi
 import ProductImageScreen from '@/modules/stock/screens/products/ProductImageScreen';
 import ProductAttachedFilesScreen from '@/modules/stock/screens/products/ProductAttachedFilesScreen';
 import ProductStockLocationDetailsScreen from '../screens/products/ProductStockLocationDetailsScreen';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const ProductNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

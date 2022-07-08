@@ -3,14 +3,10 @@ import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch, ScrollList} from '@/components/organisms';
-import {
-  fetchProducts,
-  searchProducts,
-} from '@/modules/stock/features/productSlice';
+import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {getProductStockIndicators} from '../../api/product-api';
-import {handleError} from '@/api/utils';
+import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
 const productScanKey = 'product_product-list';
 
@@ -19,7 +15,7 @@ const ProductListScreen = ({navigation}) => {
     state => state.product,
   );
   const {activeCompany} = useSelector(state => state.user.user);
-  const [availabilityList, setAvailabilityList] = useState([]);
+  const {listAvailabilty} = useSelector(state => state.productIndicators);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
@@ -27,9 +23,9 @@ const ProductListScreen = ({navigation}) => {
   const fetchProductsAPI = useCallback(
     page => {
       if (filter != null && filter !== '') {
-        dispatch(searchProducts({searchValue: filter}));
+        dispatch(searchProducts({searchValue: filter, page: 0}));
       } else {
-        dispatch(fetchProducts({page: page}));
+        dispatch(searchProducts({page: page}));
       }
     },
     [dispatch, filter],
@@ -47,35 +43,15 @@ const ProductListScreen = ({navigation}) => {
 
   useEffect(() => {
     if (productList != null) {
-      let promises = [];
-
-      async function getAvailability(product) {
-        return getProductStockIndicators({
-          version: product.version,
-          productId: product.id,
+      dispatch(
+        fetchProductsAvailability({
+          productList: productList,
           companyId: activeCompany?.id,
           stockLocationId: null,
-        })
-          .catch(function (error) {
-            handleError(error, 'fetch product stock indicators');
-          })
-          .then(response => {
-            return response.data.object;
-          });
-      }
-
-      async function fetchData(product) {
-        return await getAvailability(product);
-      }
-
-      productList.forEach(line => {
-        promises.push(fetchData(line));
-      });
-      Promise.all(promises).then(resultes => {
-        return setAvailabilityList(resultes);
-      });
+        }),
+      );
     }
-  }, [activeCompany, productList]);
+  }, [activeCompany, dispatch, productList]);
 
   return (
     <Screen>
@@ -101,7 +77,7 @@ const ProductListScreen = ({navigation}) => {
             code={item.code}
             pictureId={item.picture == null ? null : item.picture.id}
             availableStock={
-              availabilityList ? availabilityList[index]?.availableStock : null
+              listAvailabilty ? listAvailabilty[index]?.availableStock : null
             }
             onPress={() => showProductDetails(item)}
           />

@@ -1,22 +1,25 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserId, loginApi} from '@/modules/auth/api/login-api';
-
-const initialState = {
-  loading: false,
-  logged: false,
-  baseUrl: null,
-  token: null,
-  error: null,
-};
+import {formatURL} from '@/utils/string';
 
 export const login = createAsyncThunk(
   'auth/login',
   async ({url, username, password}) => {
-    const token = await loginApi(url, username, password);
-    global.userId = await getActiveUserId();
-    return {url, token};
+    const {token, jsessionId} = await loginApi(url, username, password);
+    const userId = await getActiveUserId();
+    return {url, token, jsessionId, userId};
   },
 );
+
+const initialState = {
+  loading: false,
+  logged: false,
+  userId: null,
+  baseUrl: null,
+  token: null,
+  jsessionId: null,
+  error: null,
+};
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -33,11 +36,13 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const {url, token} = action.payload;
+      const {url, token, jsessionId, userId} = action.payload;
       state.logged = token != null;
       state.loading = false;
-      state.baseUrl = url;
+      state.userId = userId;
+      state.baseUrl = formatURL(url);
       state.token = token;
+      state.jsessionId = jsessionId;
       state.error = null;
     });
     builder.addCase(login.rejected, (state, action) => {

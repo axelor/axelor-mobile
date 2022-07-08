@@ -1,4 +1,4 @@
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchSupplierProduct} from '../api/supplier-catalog-api';
 
@@ -7,7 +7,7 @@ export const fetchProductForSupplier = createAsyncThunk(
   async function (data) {
     return searchSupplierProduct(data)
       .catch(function (error) {
-        handleError(error, 'fetch supplier catalog product informations');
+        useHandleError(error, 'fetch supplier catalog product informations');
       })
       .then(response => {
         if (response.data.data == null) {

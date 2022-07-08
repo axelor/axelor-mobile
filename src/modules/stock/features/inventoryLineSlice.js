@@ -1,4 +1,4 @@
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchInventoryLines} from '../api/inventory-line-api';
 
@@ -7,7 +7,7 @@ export const fetchInventoryLines = createAsyncThunk(
   async function (data) {
     return searchInventoryLines(data)
       .catch(function (error) {
-        handleError(error, 'fetch inventory lines');
+        useHandleError(error, 'fetch inventory lines');
       })
       .then(response => {
         return response.data.data;

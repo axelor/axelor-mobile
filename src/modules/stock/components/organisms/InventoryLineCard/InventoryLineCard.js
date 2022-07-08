@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InventoryLineCard = ({
   style,
@@ -14,7 +14,7 @@ const InventoryLineCard = ({
   locker,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     if (realQty == null) {
       return getStyles(Colors.secondaryColor);

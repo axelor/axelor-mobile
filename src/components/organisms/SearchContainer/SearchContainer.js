@@ -1,12 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Icon, Text} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
+import {useSelector} from 'react-redux';
 
 const SearchContainer = ({style, children}) => {
-  const [isVisible, setVisible] = useState(global.filterConfig);
-  const Colors = ColorHook();
+  const {filterShowConfig} = useSelector(state => state.config);
+  const [isVisible, setVisible] = useState();
+  const Colors = useThemeColor();
+
+  useEffect(() => {
+    setVisible(filterShowConfig);
+  }, [filterShowConfig]);
 
   return (
     <View style={[styles.container, style]}>

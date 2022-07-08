@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getLoggedUser} from '@/modules/auth/api/user-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchActiveUser = createAsyncThunk(
   'user/fetchActiveUser',
-  async function () {
-    return getLoggedUser()
+  async function (userId) {
+    return getLoggedUser(userId)
       .catch(function (error) {
-        handleError(error, 'fetch active user');
+        useHandleError(error, 'fetch active user');
       })
       .then(response => response.data.data[0]);
   },

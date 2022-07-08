@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const Button = ({
   style,
@@ -9,7 +9,7 @@ const Button = ({
   onPress = () => {},
   disabled = false,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const styles = useMemo(() => {
     return getStyles(color == null ? Colors.primaryColor : color, Colors);

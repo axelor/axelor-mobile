@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const LogoutButton = ({onPress}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const button = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

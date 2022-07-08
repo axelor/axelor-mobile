@@ -4,7 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {checkNullString} from '@/modules/stock/utils/strings';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InternalMoveLineCard = ({
   style,
@@ -17,7 +17,7 @@ const InternalMoveLineCard = ({
   movedQty,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     if (parseFloat(movedQty) === 0) {
       return null;

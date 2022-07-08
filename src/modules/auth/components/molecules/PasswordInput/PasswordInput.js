@@ -1,11 +1,11 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const PasswordInput = ({style, value, onChange, readOnly}) => {
   const [visible, setVisible] = useState(false);
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   const container = useMemo(() => getStyles(Colors), [Colors]);
 

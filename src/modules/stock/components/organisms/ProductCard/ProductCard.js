@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
+import {useSelector} from 'react-redux';
 
 const ProductCard = ({
   style,
@@ -12,7 +13,8 @@ const ProductCard = ({
   availableStock,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const {baseUrl} = useSelector(state => state.auth);
+  const Colors = useThemeColor();
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
@@ -28,7 +30,7 @@ const ProductCard = ({
             <Image
               resizeMode="contain"
               source={{
-                uri: `${global.loggedUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
+                uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
               }}
               style={styles.image}
             />

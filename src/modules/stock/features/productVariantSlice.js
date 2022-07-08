@@ -1,17 +1,47 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {fetchVariants} from '@/modules/stock/api/product-api';
-import {handleError} from '@/api/utils';
+import {
+  fetchVariantAttributes,
+  fetchVariants,
+} from '@/modules/stock/api/product-api';
+import {useHandleError} from '@/api/utils';
 
 export const fetchProductVariants = createAsyncThunk(
   'product/fetchProductVariant',
   async function (productVariantId) {
     return fetchVariants(productVariantId)
       .catch(function (error) {
-        handleError(error, 'fetch product variants');
+        useHandleError(error, 'fetch product variants');
       })
       .then(response => {
         return response.data.data;
       });
+  },
+);
+
+var getProductAvailabilty = async data => {
+  return fetchVariantAttributes(data)
+    .catch(function (error) {
+      useHandleError(error, 'fetch product variants attributes');
+    })
+    .then(response => {
+      return response.data.object;
+    });
+};
+
+async function fetchData(data) {
+  return await getProductAvailabilty(data);
+}
+
+export const fetchProductsAttributes = createAsyncThunk(
+  'product/fetchProductsAttributes',
+  async function (data) {
+    let promises = [];
+    data.productList.forEach(product => {
+      promises.push(
+        fetchData({productVariantId: product.id, version: product.version}),
+      );
+    });
+    return Promise.all(promises);
   },
 );
 
@@ -20,6 +50,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   productListVariables: [],
+  listProductsAttributes: [],
 };
 
 const productSlice = createSlice({
@@ -50,6 +81,13 @@ const productSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(fetchProductsAttributes.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchProductsAttributes.fulfilled, (state, action) => {
+      state.loading = false;
+      state.listProductsAttributes = action.payload;
     });
   },
 });

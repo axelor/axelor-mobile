@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
+import {fetchFileDetails} from './metafile-api';
 
 const productFields = [
   'name',
@@ -30,43 +31,55 @@ const productFields = [
 
 const sortByFields = ['name'];
 
-export async function searchProduct({page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
-    data: {
+const createProductCriteria = searchValue => {
+  let criterias = [];
+  criterias.push(
+    {
+      fieldName: 'isModel',
+      operator: '=',
+      value: false,
+    },
+    {
+      fieldName: 'productTypeSelect',
+      operator: '=',
+      value: 'storable',
+    },
+    {
+      fieldName: 'stockManaged',
+      operator: '=',
+      value: true,
+    },
+    {
+      fieldName: 'dtype',
+      operator: '=',
+      value: 'Product',
+    },
+  );
+
+  if (searchValue != null) {
+    criterias.push({
+      operator: 'or',
       criteria: [
         {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isModel',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'productTypeSelect',
-              operator: '=',
-              value: 'storable',
-            },
-            {
-              fieldName: 'stockManaged',
-              operator: '=',
-              value: true,
-            },
-            {
-              fieldName: 'dtype',
-              operator: '=',
-              value: 'Product',
-            },
-          ],
+          fieldName: 'name',
+          operator: 'like',
+          value: searchValue,
+        },
+        {
+          fieldName: 'code',
+          operator: 'like',
+          value: searchValue,
+        },
+        {
+          fieldName: 'serialNumber',
+          operator: 'like',
+          value: searchValue,
         },
       ],
-    },
-    fields: productFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
-  });
-}
+    });
+  }
+  return criterias;
+};
 
 export async function searchProductsFilter({searchValue, page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
@@ -74,48 +87,7 @@ export async function searchProductsFilter({searchValue, page = 0}) {
       criteria: [
         {
           operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isModel',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'productTypeSelect',
-              operator: '=',
-              value: 'storable',
-            },
-            {
-              fieldName: 'stockManaged',
-              operator: '=',
-              value: true,
-            },
-            {
-              fieldName: 'dtype',
-              operator: '=',
-              value: 'Product',
-            },
-            {
-              operator: 'or',
-              criteria: [
-                {
-                  fieldName: 'name',
-                  operator: 'like',
-                  value: searchValue,
-                },
-                {
-                  fieldName: 'code',
-                  operator: 'like',
-                  value: searchValue,
-                },
-                {
-                  fieldName: 'serialNumber',
-                  operator: 'like',
-                  value: searchValue,
-                },
-              ],
-            },
-          ],
+          criteria: createProductCriteria(searchValue),
         },
       ],
     },
@@ -169,9 +141,16 @@ export async function updateLocker({
 }
 
 export async function fetchAttachedFiles(productId) {
-  return axios.get(
-    `/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`,
-  );
+  return axios
+    .get(`/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`)
+    .then(getApiResponseData)
+    .then(data => {
+      if (data == null) {
+        return data;
+      } else {
+        return fetchFileDetails(data);
+      }
+    });
 }
 
 export async function fetchVariants({productVariantParentId, page = 0}) {

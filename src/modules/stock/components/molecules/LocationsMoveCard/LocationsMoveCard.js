@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const LocationsMoveCard = ({
   style,
@@ -13,7 +13,7 @@ const LocationsMoveCard = ({
   onPressFrom = () => {},
   onPressTo = () => {},
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   return (
     <View style={[styles.container, style]}>
       <View style={styles.card}>

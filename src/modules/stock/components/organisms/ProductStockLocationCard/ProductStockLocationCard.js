@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const ProductStockLocationCard = ({
   stockLocationName,
@@ -11,7 +11,7 @@ const ProductStockLocationCard = ({
   futureQty,
   availability,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

@@ -3,12 +3,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import UserScreen from '@/modules/auth/screens/UserScreen';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import SettingsScreen from '../screens/SettingsScreen';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const UserNavigator = () => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   return (
     <Navigator>
       <Screen

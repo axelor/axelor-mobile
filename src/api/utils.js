@@ -1,4 +1,5 @@
 import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 import TraceBackApiAxelor from './TraceBackApiAxelor';
 
 export const getApiResponseData = response => response.data.data;
@@ -9,7 +10,10 @@ export const getFirstData = data => {
   }
 };
 
-export const handleError = (error, action: String) => {
+export const useHandleError = (error, action: String) => {
+  const traceBackApiAxelor = new TraceBackApiAxelor(
+    useSelector(state => state.auth.userId),
+  );
   if (error.response) {
     console.log('Error got caugth: ');
     if (error.response.data) {
@@ -20,7 +24,8 @@ export const handleError = (error, action: String) => {
       console.log(
         `Error ${error.response.status}: Request could not be completed.`,
       );
-      TraceBackApiAxelor.postError(
+
+      traceBackApiAxelor.postError(
         'API request',
         error.response.data ? error.response.data : error,
       );

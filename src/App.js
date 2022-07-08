@@ -8,7 +8,6 @@ import RootNavigator from '@/navigators/RootNavigator';
 import ErrorBoundary from './ErrorBoundary';
 import Toast, {ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
-import {ThemeProvider} from './themeStore';
 
 const App = () => {
   const toastConfig = {
@@ -24,15 +23,13 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <Scanner />
-        <ErrorBoundary>
-          <NavigationContainer>
-            <RootNavigator />
-          </NavigationContainer>
-        </ErrorBoundary>
-        <Toast config={toastConfig} />
-      </ThemeProvider>
+      <Scanner />
+      <ErrorBoundary>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </ErrorBoundary>
+      <Toast config={toastConfig} />
     </Provider>
   );
 };

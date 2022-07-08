@@ -3,14 +3,14 @@ import {
   searchTrackingNumber,
   searchTrackingNumberFilter,
 } from '@/modules/stock/api/tracking-number-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchTrackingNumber = createAsyncThunk(
   'trackingNumber/fetchTrackingNumber',
   async function (productId) {
     return searchTrackingNumber(productId)
       .catch(function (error) {
-        handleError(error, 'fetch product tracking numbers');
+        useHandleError(error, 'fetch product tracking numbers');
       })
       .then(response => response.data.data);
   },
@@ -21,7 +21,7 @@ export const filterTrackingNumber = createAsyncThunk(
   async function (data) {
     return searchTrackingNumberFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter tracking numbers');
+        useHandleError(error, 'filter tracking numbers');
       })
       .then(response => response.data.data);
   },

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 import {
   searchClient,
   searchClientsFilter,
@@ -12,7 +12,7 @@ export const fetchClients = createAsyncThunk(
   async function () {
     return searchClient()
       .catch(function (error) {
-        handleError(error, 'fetch clients');
+        useHandleError(error, 'fetch clients');
       })
       .then(response => {
         return response.data.data;
@@ -25,7 +25,7 @@ export const filterClients = createAsyncThunk(
   async function (data) {
     return searchClientsFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter clients');
+        useHandleError(error, 'filter clients');
       })
       .then(response => response.data.data);
   },
@@ -36,7 +36,7 @@ export const fetchSuppliers = createAsyncThunk(
   async function () {
     return searchSuppliers()
       .catch(function (error) {
-        handleError(error, 'fetch suppliers');
+        useHandleError(error, 'fetch suppliers');
       })
       .then(response => {
         return response.data.data;
@@ -49,7 +49,7 @@ export const filterSuppliers = createAsyncThunk(
   async function (data) {
     return searchSuppliersFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter suppliers');
+        useHandleError(error, 'filter suppliers');
       })
       .then(response => response.data.data);
   },

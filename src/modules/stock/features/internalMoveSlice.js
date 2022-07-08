@@ -5,14 +5,14 @@ import {
   createInternalStockMove,
   updateInternalStockMove,
 } from '@/modules/stock/api/internal-move-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchInternalMoves = createAsyncThunk(
   'internalMove/fetchInternalMove',
   async function (data) {
     return searchInternalMove(data)
       .catch(function (error) {
-        handleError(error, 'fetch internal moves');
+        useHandleError(error, 'fetch internal moves');
       })
       .then(response => response.data.data);
   },
@@ -23,7 +23,7 @@ export const searchInternalMoves = createAsyncThunk(
   async function (data) {
     return searchInternalMoveFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter internal moves');
+        useHandleError(error, 'filter internal moves');
       })
       .then(response => response.data.data);
   },
@@ -34,7 +34,7 @@ export const createInternalMove = createAsyncThunk(
   async function (data) {
     return createInternalStockMove(data)
       .catch(function (error) {
-        handleError(error, 'create internal move');
+        useHandleError(error, 'create internal move');
       })
       .then(response => response.data.object);
   },
@@ -45,7 +45,7 @@ export const updateInternalMove = createAsyncThunk(
   async function (data) {
     return updateInternalStockMove(data)
       .catch(function (error) {
-        handleError(error, 'update internal move');
+        useHandleError(error, 'update internal move');
       })
       .then(response => response.data.object);
   },

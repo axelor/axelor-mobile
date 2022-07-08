@@ -8,7 +8,7 @@ import {
   useScannerSelector,
 } from '@/features/scannerSlice';
 import {CameraScanner} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;
@@ -171,7 +171,7 @@ const AutocompleteSearch = ({
     return getStyles(searchBarKey, camScan);
   }, [searchBarKey, camScan]);
 
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <View

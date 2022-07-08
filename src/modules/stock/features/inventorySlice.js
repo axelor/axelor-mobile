@@ -4,14 +4,14 @@ import {
   searchInventory,
   searchInventoryFilter,
 } from '@/modules/stock/api/inventory-api';
-import {handleError} from '@/api/utils';
+import {useHandleError} from '@/api/utils';
 
 export const fetchInventories = createAsyncThunk(
   'inventories/fetchInventories',
   async function (data) {
     return searchInventory(data)
       .catch(function (error) {
-        handleError(error, 'fetch inventories');
+        useHandleError(error, 'fetch inventories');
       })
       .then(response => {
         return response.data.data;
@@ -24,7 +24,7 @@ export const searchInventories = createAsyncThunk(
   async function (data) {
     return searchInventoryFilter(data)
       .catch(function (error) {
-        handleError(error, 'filter inventories');
+        useHandleError(error, 'filter inventories');
       })
       .then(response => {
         return response.data.data;
@@ -37,7 +37,7 @@ export const modifyDescription = createAsyncThunk(
   async function (data) {
     return modifyDescriptionInventory(data)
       .catch(function (error) {
-        handleError(error, 'modify inventory description');
+        useHandleError(error, 'modify inventory description');
       })
       .then(response => response.data.data);
   },

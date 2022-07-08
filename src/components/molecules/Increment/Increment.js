@@ -1,10 +1,10 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const Increment = ({value, onValueChange}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const [valueQty, setValueQty] = useState(value);
 
   const handlePlus = () => {

@@ -1,56 +1,48 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Screen, Switch, Text} from '@/components/atoms';
-import {Themes} from '@/types/colors';
-import {ThemeConsumerHook} from '@/themeStore';
-import {Picker} from '@/components/molecules';
+import {useDispatch, useSelector} from 'react-redux';
+import {activateColorBlind, desactivateColorBlind} from '@/features/themeSlice';
+import {
+  toggleFilterShowConfig,
+  toggleZebraConfig,
+} from '../features/configSlice';
 
 const SettingsScreen = ({route, navigation}) => {
-  const [{theme, isColorBlind}, colorDispatch] = ThemeConsumerHook();
-
-  const handleChangeTheme = useCallback(
-    newTheme => {
-      colorDispatch({
-        type: 'changeTheme',
-        newTheme: newTheme,
-      });
-    },
-    [colorDispatch],
-  );
+  const {isColorBlind} = useSelector(state => state.theme);
+  const {zebraConfig, filterShowConfig} = useSelector(state => state.config);
+  const dispatch = useDispatch();
 
   const handleToggleColorBlind = useCallback(
     state => {
       if (state) {
-        colorDispatch({
-          type: 'activateColorBlind',
-        });
+        dispatch(activateColorBlind());
       } else {
-        colorDispatch({
-          type: 'desactivateColorBlind',
-        });
+        dispatch(desactivateColorBlind());
       }
     },
-    [colorDispatch],
+    [dispatch],
   );
+
+  const handleToggleFilter = useCallback(() => {
+    dispatch(toggleFilterShowConfig());
+  }, [dispatch]);
+
+  const handleToggleZebra = useCallback(() => {
+    dispatch(toggleZebraConfig());
+  }, [dispatch]);
 
   return (
     <Screen style={styles.container}>
       <View style={styles.deviceContainer}>
         <Text>Zebra device? </Text>
-        <Switch
-          isEnabled={global.zebraConfig}
-          handleToggle={state => {
-            global.zebraConfig = state;
-          }}
-        />
+        <Switch isEnabled={zebraConfig} handleToggle={handleToggleZebra} />
       </View>
       <View style={styles.deviceContainer}>
         <Text>Show filter? </Text>
         <Switch
-          isEnabled={global.filterConfig}
-          handleToggle={state => {
-            global.filterConfig = state;
-          }}
+          isEnabled={filterShowConfig}
+          handleToggle={handleToggleFilter}
         />
       </View>
       <View style={styles.deviceContainer}>
@@ -60,17 +52,6 @@ const SettingsScreen = ({route, navigation}) => {
           handleToggle={state => handleToggleColorBlind(state)}
         />
       </View>
-      {!isColorBlind && (
-        <Picker
-          title="Theme"
-          defaultValue={theme}
-          listItems={Themes.themesList}
-          labelField="name"
-          valueField="id"
-          onValueChange={handleChangeTheme}
-          emptyValue={false}
-        />
-      )}
       {route.params.user == null ||
       route.params.user.group.code !== 'admins' ? null : (
         <Button title="Send translations" onPress={() => {}} />

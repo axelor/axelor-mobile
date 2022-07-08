@@ -4,7 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InternalMoveCard = ({
   style,
@@ -17,7 +17,7 @@ const InternalMoveCard = ({
   date,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).borderColor);
   }, [Colors, status]);

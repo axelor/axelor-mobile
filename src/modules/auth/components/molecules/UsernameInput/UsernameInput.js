@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Input} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const UsernameInput = ({value, onChange, readOnly}) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (

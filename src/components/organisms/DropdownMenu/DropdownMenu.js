@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Icon} from '@/components/atoms';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const DropdownMenu = ({children}) => {
   const [visible, setVisible] = useState(false);
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
 
   return (
     <View>

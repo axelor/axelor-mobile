@@ -5,6 +5,8 @@ import TraceBackApiAxelor from './api/TraceBackApiAxelor';
 import {Button, Screen, Text} from './components/atoms';
 
 class ErrorBoundary extends Component {
+  traceBackApi: TraceBackApi;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,18 +20,26 @@ class ErrorBoundary extends Component {
     return {hasError: true};
   }
 
+  componentDidUpdate() {
+    const {userId} = this.props;
+    if (this.traceBackApi == null) {
+      this.traceBackApi = new TraceBackApiAxelor(userId);
+    }
+  }
+
   componentDidCatch(error, errorInfo) {
     this.setState(state => ({
       ...state,
       tracing: true,
       errorMessage: error.message,
     }));
-    TraceBackApiAxelor.postError(
-      error.message,
-      errorInfo.componentStack,
-    ).finally(() => {
-      this.setState(state => ({...state, tracing: false}));
-    });
+    if (this.traceBackApi) {
+      this.traceBackApi
+        .postError(error.message, errorInfo.componentStack)
+        .finally(() => {
+          this.setState(state => ({...state, tracing: false}));
+        });
+    }
   }
 
   reloadApp() {

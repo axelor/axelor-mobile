@@ -3,7 +3,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import Inventory from '@/modules/stock/types/inventory';
-import {ColorHook} from '@/themeStore';
+import {useThemeColor} from '@/features/themeSlice';
 
 const InventoryCard = ({
   style,
@@ -13,7 +13,7 @@ const InventoryCard = ({
   stockLocation,
   onPress,
 }) => {
-  const Colors = ColorHook();
+  const Colors = useThemeColor();
   const borderStyle = useMemo(() => {
     return getStyles(Inventory.getStatusColor(status, Colors).borderColor);
   }, [Colors, status]);
