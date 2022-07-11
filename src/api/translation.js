@@ -3,5 +3,9 @@ import axios from 'axios';
 export async function fetchTranslation(language) {
   return axios
     .get(`/ws/aos/translation/${language}`)
-    .then(res => res.data.translation);
+    .catch(function (error) {
+      console.log('ERROR : Failed to fetch translations from webapp');
+      return;
+    })
+    .then(res => res?.data?.translation);
 }

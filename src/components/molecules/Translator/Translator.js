@@ -19,16 +19,18 @@ const Translator = () => {
 
   useEffect(() => {
     dispatch(fetchActiveUser());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (language) {
       fetchTranslation(language).then(translations => {
-        i18n.addResources(
-          language,
-          DEFAULT_NAMESPACE,
-          reduceTranslationsToI18nResources(translations),
-        );
+        if (translations) {
+          i18n.addResources(
+            language,
+            DEFAULT_NAMESPACE,
+            reduceTranslationsToI18nResources(translations),
+          );
+        }
       });
     }
   }, [language]);
