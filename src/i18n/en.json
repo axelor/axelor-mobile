@@ -1,6 +1,25 @@
 {
-  "je veux cette traduction": "",
-  "salutationWithName": "Hello {{name}}",
-  "salutation": "Hello World",
-  "Hello": "Hiii hiiiii"
+  "Auth": {
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "Password": "Password",
+    "URL": "URL",
+    "Username": "Username"
+  },
+  "User": {
+    "ZebraDevice": "Zebra device",
+    "ShowFilter": "Show filter",
+    "ColorBlind": "Color blind",
+    "SendTranslations": "Send translations",
+    "UserProfile": "User Profile",
+    "Settings": "Settings",
+    "Company": "Company",
+    "ActiveCompany": "Active company",
+    "DefaultStockLocation": "Default stock location",
+    "Language": "Language",
+    "Theme": "Theme"
+  },
+  "Stock": {
+    "StockLocation": "Stock location"
+  }
 }

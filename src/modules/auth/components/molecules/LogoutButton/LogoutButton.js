@@ -2,16 +2,18 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const LogoutButton = ({onPress}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const button = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={button} onPress={onPress}>
         <Icon name="power-off" />
-        <Text style={styles.text}>LOGOUT</Text>
+        <Text style={styles.text}>{I18n.t('Auth.LOGOUT')}</Text>
       </TouchableOpacity>
     </View>
   );

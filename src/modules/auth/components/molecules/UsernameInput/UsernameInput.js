@@ -2,9 +2,11 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const UsernameInput = ({value, onChange, readOnly}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -13,7 +15,7 @@ const UsernameInput = ({value, onChange, readOnly}) => {
         style={styles.input}
         value={value}
         onChange={onChange}
-        placeholder="Username"
+        placeholder={I18n.t('Auth.Username')}
         readOnly={readOnly}
       />
     </View>

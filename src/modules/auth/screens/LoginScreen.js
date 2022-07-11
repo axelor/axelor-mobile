@@ -20,7 +20,7 @@ import {useThemeColor} from '@/features/themeSlice';
 const urlScanKey = 'login_url';
 
 const LoginScreen = () => {
-  const {loading, error, logged} = useSelector(state => state.auth);
+  const {loading, error} = useSelector(state => state.auth);
   const [camScan, setCamScan] = useState(false);
   const [scanData, setScanData] = useState(null);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -92,7 +92,6 @@ const LoginScreen = () => {
             />
           )}
           {error && <ErrorText message={error.message} />}
-          {logged && <Text>Success login :)</Text>}
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All Rights Reserved.`}</Text>
           </View>

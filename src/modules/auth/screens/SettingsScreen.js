@@ -7,10 +7,12 @@ import {
   toggleFilterShowConfig,
   toggleZebraConfig,
 } from '../features/configSlice';
+import useTranslator from '@/hooks/use-translator';
 
-const SettingsScreen = ({route, navigation}) => {
+const SettingsScreen = ({route}) => {
   const {isColorBlind} = useSelector(state => state.theme);
   const {zebraConfig, filterShowConfig} = useSelector(state => state.config);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const handleToggleColorBlind = useCallback(
@@ -35,18 +37,18 @@ const SettingsScreen = ({route, navigation}) => {
   return (
     <Screen style={styles.container}>
       <View style={styles.deviceContainer}>
-        <Text>Zebra device? </Text>
+        <Text>{`${I18n.t('User.ZebraDevice')} ? `}</Text>
         <Switch isEnabled={zebraConfig} handleToggle={handleToggleZebra} />
       </View>
       <View style={styles.deviceContainer}>
-        <Text>Show filter? </Text>
+        <Text>{`${I18n.t('User.ShowFilter')} ? `}</Text>
         <Switch
           isEnabled={filterShowConfig}
           handleToggle={handleToggleFilter}
         />
       </View>
       <View style={styles.deviceContainer}>
-        <Text>Color blind? </Text>
+        <Text>{`${I18n.t('User.ColorBlind')} ? `} </Text>
         <Switch
           isEnabled={isColorBlind}
           handleToggle={state => handleToggleColorBlind(state)}
@@ -54,7 +56,11 @@ const SettingsScreen = ({route, navigation}) => {
       </View>
       {route.params.user == null ||
       route.params.user.group.code !== 'admins' ? null : (
-        <Button title="Send translations" onPress={() => {}} />
+        <Button
+          title={I18n.t('User.SendTranslations')}
+          style={styles.button}
+          onPress={() => {}}
+        />
       )}
     </Screen>
   );
@@ -73,6 +79,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '87%',
     marginVertical: 2,
+  },
+  button: {
+    width: '50%',
   },
 });
 

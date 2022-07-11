@@ -2,10 +2,12 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const PasswordInput = ({style, value, onChange, readOnly}) => {
   const [visible, setVisible] = useState(false);
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -15,7 +17,7 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
         style={[styles.input, style]}
         value={value}
         onChange={onChange}
-        placeholder="Password"
+        placeholder={I18n.t('Auth.Password')}
         secureTextEntry={!visible}
         readOnly={readOnly}
       />

@@ -32,13 +32,11 @@ import {
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
 import {Themes} from '@/types/colors';
 import {changeTheme, useThemeColor} from '@/features/themeSlice';
-import {useTranslation} from 'react-i18next';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
 const UserScreen = ({navigation}) => {
-  const {t} = useTranslation();
-
   const {companyList} = useSelector(state => state.company);
   const {userId} = useSelector(state => state.auth);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -49,6 +47,7 @@ const UserScreen = ({navigation}) => {
   );
   const {theme, isColorBlind} = useSelector(state => state.theme);
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -158,13 +157,12 @@ const UserScreen = ({navigation}) => {
             size={Dimensions.get('window').width * 0.2}
             style={styles.imageContainer}
           />
-          <Text>{t('Hello')}</Text>
           {baseConfig.enableMultiCompany && (
             <View style={styles.companyContainer}>
               {canModifyCompany ? (
                 <Picker
                   style={styles.companyPicker}
-                  title="Company"
+                  title={I18n.t('User.Company')}
                   listItems={companyList}
                   labelField="name"
                   valueField="id"
@@ -174,14 +172,16 @@ const UserScreen = ({navigation}) => {
               ) : (
                 <Card style={styles.cardCompany}>
                   <LabelText
-                    title={'Active Company :'}
+                    title={`${I18n.t('User.ActiveCompany')} :`}
                     value={user.activeCompany.name}
                   />
                 </Card>
               )}
             </View>
           )}
-          <Text style={styles.itemTitle}>Default Stock Location</Text>
+          <Text style={styles.itemTitle}>
+            {`${I18n.t('User.DefaultStockLocation')}`}
+          </Text>
           <AutocompleteSearch
             objectList={stockLocationList}
             value={user.workshopStockLocation}
@@ -195,11 +195,11 @@ const UserScreen = ({navigation}) => {
             }
             displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
-            placeholder="Stock location"
+            placeholder={I18n.t('Stock.StockLocation')}
           />
           {languageList.length > 1 && (
             <Picker
-              title="Language"
+              title={I18n.t('User.Language')}
               defaultValue={user.language}
               listItems={languageList}
               labelField="name"
@@ -210,7 +210,7 @@ const UserScreen = ({navigation}) => {
           )}
           {!isColorBlind && Themes.themesList.length !== 1 && (
             <Picker
-              title="Theme"
+              title={I18n.t('User.Theme')}
               defaultValue={theme}
               listItems={Themes.themesList}
               labelField="name"

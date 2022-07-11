@@ -1,6 +1,25 @@
 {
-  "je veux cette traduction": "",
-  "salutationWithName": "",
-  "salutation": "",
-  "Hello": "Salut saluuuut"
+  "Auth": {
+    "LOGIN": "Se connecter",
+    "LOGOUT": "Se déconnecter",
+    "Password": "Mot de passe",
+    "URL": "URL",
+    "Username": "Nom utilisateur"
+  },
+  "User": {
+    "ZebraDevice": "Appareil Zebra",
+    "ShowFilter": "Afficher les filtres",
+    "ColorBlind": "Daltonien",
+    "SendTranslations": "Envoyer les traductions",
+    "UserProfile": "Profil utilisateur",
+    "Settings": "Paramètres",
+    "Company": "Société",
+    "ActiveCompany": "Société active",
+    "DefaultStockLocation": "Emplacement de stock par défaut",
+    "Language": "Langage",
+    "Theme": "Thème"
+  },
+  "Stock": {
+    "StockLocation": "Emplacement de stock"
+  }
 }

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const UrlInput = ({
   style,
@@ -14,6 +15,7 @@ const UrlInput = ({
 }) => {
   const [inputValue, setInputValue] = useState(null);
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   useEffect(() => {
     if (value) {
@@ -29,7 +31,7 @@ const UrlInput = ({
         style={[styles.input, style]}
         value={inputValue}
         onChange={onChange}
-        placeholder="URL"
+        placeholder={I18n.t('Auth.URL')}
         readOnly={readOnly}
         onSelection={onSelection}
       />

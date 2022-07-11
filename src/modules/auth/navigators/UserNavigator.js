@@ -4,11 +4,14 @@ import UserScreen from '@/modules/auth/screens/UserScreen';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import SettingsScreen from '../screens/SettingsScreen';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const UserNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   return (
     <Navigator>
       <Screen
@@ -19,7 +22,7 @@ const UserNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'User Profile',
+          headerTitle: I18n.t('User.UserProfile'),
           headerTitleStyle: {color: Colors.text},
         }}
       />
@@ -29,7 +32,7 @@ const UserNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Settings',
+          headerTitle: I18n.t('User.Settings'),
           headerTitleStyle: {color: Colors.text},
         }}
       />
