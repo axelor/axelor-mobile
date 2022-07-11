@@ -3,6 +3,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineCard = ({
   style,
@@ -15,6 +16,8 @@ const InventoryLineCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     if (realQty == null) {
       return getStyles(Colors.secondaryColor);
@@ -31,25 +34,25 @@ const InventoryLineCard = ({
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{productName}</Text>
           <LabelText
-            title="Database quantity :"
+            title={`${I18n.t('Stock_DatabaseQty')} :`}
             value={`${parseFloat(currentQty).toFixed(2)} ${unit}`}
           />
           {realQty && (
             <LabelText
-              title="Physical quantity :"
+              title={`${I18n.t('Stock_PhysicalQty')} :`}
               value={`${parseFloat(realQty).toFixed(2)} ${unit}`}
             />
           )}
           {locker != null && (
             <LabelText
-              title="Locker :"
+              title={`${I18n.t('Stock_Locker')} :`}
               value={locker}
               iconName="map-marker-alt"
             />
           )}
           {trackingNumber != null && (
             <LabelText
-              title="Tracking number :"
+              title={`${I18n.t('Stock_TrackingNumber')} :`}
               value={trackingNumber?.trackingNumberSeq}
               iconName="qrcode"
               FontAwesome5={false}

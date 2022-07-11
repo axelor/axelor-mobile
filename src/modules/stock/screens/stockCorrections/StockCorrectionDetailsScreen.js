@@ -18,16 +18,16 @@ import getFromList from '@/modules/stock/utils/get-from-list';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
   const {loadingProduct, productFromId} = useSelector(state => state.product);
-  const {id: activeCompanyId} = useSelector(
-    state => state.user.user.activeCompany,
-  );
+  const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const dispatch = useDispatch();
 
@@ -47,14 +47,14 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
           route.params.stockCorrection != null
             ? route.params.stockCorrection.product.id
             : route.params.stockProduct.id,
-        companyId: activeCompanyId,
+        companyId: activeCompany?.id,
         stockLocationId:
           route.params.stockCorrection != null
             ? route.params.stockCorrection.stockLocation.id
             : route.params.stockLocation.id,
       }),
     );
-  }, [dispatch, activeCompanyId, route.params]);
+  }, [dispatch, activeCompany?.id, route.params]);
 
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
   const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
@@ -260,9 +260,9 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             <ScrollView>
               <PopUpOneButton
                 visible={popUp}
-                data="Stock correction reason is required, please complete the form"
-                title="Caution"
-                btnTitle="OK"
+                title={I18n.t('Auth_Warning')}
+                data={I18n.t('Stock_ReasonRequired')}
+                btnTitle={I18n.t('Auth_Close')}
                 onPress={() => setPopUp(!popUp)}
               />
               <View>
@@ -274,12 +274,10 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                   </View>
                   <Badge
                     color={
-                      StockCorrection.getStatusColor(
-                        StockCorrection.getStatus(status),
-                        Colors,
-                      ).backgroundColor
+                      StockCorrection.getStatusColor(status, Colors)
+                        .backgroundColor
                     }
-                    title={StockCorrection.getStatus(status)}
+                    title={StockCorrection.getStatus(status, I18n)}
                   />
                 </View>
                 <ProductCardInfo
@@ -297,20 +295,20 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                 />
               </View>
               <QuantityCard
-                labelQty="Real quantity"
+                labelQty={I18n.t('Stock_RealQty')}
                 defaultValue={parseFloat(realQty).toFixed(2)}
                 onValueChange={handleQtyChange}
                 editable={status === StockCorrection.status.Draft}>
                 <Text style={styles.text}>
-                  {`Database quantity: ${parseFloat(databaseQty).toFixed(2)} ${
-                    stockProduct.unit?.name
-                  }`}
+                  {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(
+                    databaseQty,
+                  ).toFixed(2)} ${stockProduct.unit?.name}`}
                 </Text>
               </QuantityCard>
               {status === StockCorrection.status.Validated ? (
                 <View>
                   <View style={styles.reasonTitle}>
-                    <Text>Reason</Text>
+                    <Text>{I18n.t('Stock_Reason')}</Text>
                   </View>
                   <Card style={styles.infosCard}>
                     <Text>{reason.name}</Text>
@@ -320,7 +318,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
                 <Picker
                   style={styles.picker}
                   styleTxt={reason.id === null ? styles.picker_empty : null}
-                  title="Reason"
+                  title={I18n.t('Stock_Reason')}
                   onValueChange={handleReasonChange}
                   defaultValue={reason.id}
                   listItems={stockCorrectionReasonList}
@@ -333,7 +331,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
           <View style={styles.button_container}>
             {saveStatus ? null : (
               <Button
-                title="SAVE"
+                title={I18n.t('Base_Save')}
                 style={styles.button}
                 color={Colors.secondaryColor_light}
                 onPress={handleSave}
@@ -341,7 +339,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             )}
             {status === StockCorrection.status.Validated ? null : (
               <Button
-                title="VALIDATE"
+                title={I18n.t('Base_Validate')}
                 style={styles.button}
                 onPress={handleValidate}
               />

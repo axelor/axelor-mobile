@@ -22,11 +22,13 @@ import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-sc
 import {updateProductLocker} from '../../features/productSlice';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const product = route.params.product;
   const {baseUrl} = useSelector(state => state.auth);
   const {user, canModifyCompany} = useSelector(state => state.user);
@@ -104,7 +106,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       headerRight: () => (
         <DropdownMenu>
           <DropdownMenuItem
-            placeholder="See attached files"
+            placeholder={I18n.t('Stock_AttachedFiles')}
             onPress={() =>
               navigation.navigate('ProductAttachedFilesScreen', {
                 product: product,
@@ -114,7 +116,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         </DropdownMenu>
       ),
     });
-  }, [navigation, product]);
+  }, [I18n, navigation, product]);
 
   const fetchStockLocationsAPI = useCallback(
     (filterValue, defaultStockLocation) => {
@@ -161,17 +163,16 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               onPress={showProductDetails}>
               <Text style={styles.text_important}>{product.name}</Text>
               <Text style={styles.text_secondary}>{product.code}</Text>
-              <Text
-                style={
-                  styles.text_secondary
-                }>{`Stock unit : ${product.unit?.name}`}</Text>
+              <Text style={styles.text_secondary}>
+                {`${I18n.t('Stock_StockUnit')} : ${product.unit?.name}`}
+              </Text>
             </ProductCardDetails>
           </View>
           <View style={styles.lineStyle} />
           {baseConfig.enableMultiCompany && canModifyCompany && (
             <View style={styles.picker}>
               <Picker
-                title="Company"
+                title={I18n.t('User_Company')}
                 defaultValue={companyId}
                 listItems={companyList}
                 labelField="name"
@@ -185,7 +186,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             parseInt(productIndicators?.futureQty, 10) !== 0 && (
               <TouchableOpacity onPress={navigateStockLocationDetails}>
                 <View style={styles.arrowContainer}>
-                  <Text>See the repartition by stock location</Text>
+                  <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
                   <Icon
                     name="angle-right"
                     size={24}
@@ -204,12 +205,12 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             }
             displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
-            placeholder="Stock location"
+            placeholder={I18n.t('Stock_StockLocation')}
           />
           {stockLocation == null ? null : (
             <EditableInput
               style={styles.lockerContainer}
-              placeholder="Locker"
+              placeholder={I18n.t('Stock_Locker')}
               onValidate={input => handleLockerChange(input)}
               defaultValue={
                 stockLocationLine == null ? null : stockLocationLine[0]?.rack
@@ -222,48 +223,48 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             <View style={styles.row}>
               <View style={styles.cardStock}>
                 <CardStockIndicator
-                  title="REAL QUANTITY"
+                  title={I18n.t('Stock_RealQty')}
                   number={productIndicators?.realQty}
                 />
                 <CardStockIndicator
-                  title="FUTURE QUANTITY"
+                  title={I18n.t('Stock_FutureQty')}
                   number={productIndicators?.futureQty}
                 />
                 <CardStockIndicator
-                  title="ALLOCATED QUANTITY"
+                  title={I18n.t('Stock_AllocatedQty')}
                   number={productIndicators?.allocatedQty}
                 />
               </View>
               <View style={styles.cardStock}>
                 <CardStockIndicator
-                  title="SALE ORDER QUANTITY"
+                  title={I18n.t('Stock_SaleOrderQty')}
                   number={productIndicators?.saleOrderQty}
                 />
                 <CardStockIndicator
-                  title="PURCHASE ORDER QUANTITY"
+                  title={I18n.t('Stock_PurchaseOrderQty')}
                   number={productIndicators?.purchaseOrderQty}
                 />
                 <CardStockIndicator
-                  title="AVAILABLE STOCK"
+                  title={I18n.t('Stock_AvailableStock')}
                   number={productIndicators?.availableStock}
                 />
               </View>
               <View style={styles.cardStock}>
                 {productIndicators?.buildingQty ? (
                   <CardStockIndicator
-                    title="BUILDING QUANTITY"
+                    title={I18n.t('Stock_BuildingQty')}
                     number={productIndicators?.buildingQty}
                   />
                 ) : null}
                 {productIndicators?.consumeManufOrderQty ? (
                   <CardStockIndicator
-                    title="CONSUME M.O. QUANTITY"
+                    title={I18n.t('Stock_ConsumedMOQty')}
                     number={productIndicators?.consumeManufOrderQty}
                   />
                 ) : null}
                 {productIndicators?.consumeManufOrderQty ? (
                   <CardStockIndicator
-                    title="MISSING M.O. QUANTITY"
+                    title={I18n.t('Stock_MissingMOQty')}
                     number={productIndicators?.missingManufOrderQty}
                   />
                 ) : null}

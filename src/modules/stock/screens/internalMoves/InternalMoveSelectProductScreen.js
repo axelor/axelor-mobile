@@ -9,6 +9,7 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_internal-move-select';
 
@@ -17,6 +18,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
   const internalMoveLine = route.params.internalMoveLine;
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
@@ -117,15 +119,15 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
         fetchData={fetchProductsAPI}
         displayValue={displayItemName}
         scanKeySearch={productScanKey}
-        placeholder="Product"
+        placeholder={I18n.t('Stock_Product')}
         isFocus={true}
         changeScreenAfter={true}
       />
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right product."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorProduct')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

@@ -5,11 +5,13 @@ import {Screen} from '@/components/atoms';
 import {ClearableCard} from '@/components/molecules';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {AutocompleteSearch} from '@/components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_stock-correction-new';
 
 const StockCorrectionNewProductScreen = ({navigation, route}) => {
   const {productList} = useSelector(state => state.product);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
@@ -52,7 +54,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
         fetchData={fetchProductsAPI}
         displayValue={displayItemName}
         scanKeySearch={productScanKey}
-        placeholder="Product"
+        placeholder={I18n.t('Stock_Product')}
         isFocus={true}
         changeScreenAfter={true}
       />

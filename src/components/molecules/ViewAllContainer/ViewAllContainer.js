@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const ViewAllContainer = ({
   style,
@@ -11,12 +12,13 @@ const ViewAllContainer = ({
   onPress = () => {},
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <Card style={[styles.container, style]}>
       {isHeaderExist && (
         <View style={styles.headLineMove}>
-          <Text>CONTENT</Text>
+          <Text>{I18n.t('Base_Content')}</Text>
           <Icon
             name="plus"
             color={Colors.primaryColor}
@@ -30,7 +32,7 @@ const ViewAllContainer = ({
       <View style={styles.cardContainer}>{children}</View>
       <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <View style={styles.iconContainer}>
-          <Text style={styles.txtDetails}>View All</Text>
+          <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
           <Icon
             name="chevron-right"
             color={Colors.secondaryColor_light}

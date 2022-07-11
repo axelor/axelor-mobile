@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const StockCorrectionCard = ({
   style,
@@ -14,6 +15,7 @@ const StockCorrectionCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const borderStyle = useMemo(() => {
     return getStyles(
       StockCorrection.getStatusColor(status, Colors).borderColor,
@@ -26,13 +28,19 @@ const StockCorrectionCard = ({
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{productFullname}</Text>
           <Text style={styles.txtDetails}>{stockLocation}</Text>
-          {status === 'Draft' ? (
+          {status === StockCorrection.status.Draft ? (
             <Text style={[styles.txtDetails, styles.creationDate]}>
-              Created on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_CreatedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           ) : (
             <Text style={styles.txtDetails}>
-              Validated on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_ValidatedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
         </View>

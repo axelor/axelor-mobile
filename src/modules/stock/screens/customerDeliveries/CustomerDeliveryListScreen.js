@@ -25,11 +25,13 @@ import {
 import StockMove from '@/modules/stock/types/stock-move';
 import {filterClients} from '../../features/partnerSlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 
 const CustomerDeliveryListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const [stockLocation, setStockLocation] = useState(null);
   const [customer, setCustomer] = useState(null);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -154,7 +156,7 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
-          placeholder="Stock location"
+          placeholder={I18n.t('Stock_StockLocation')}
         />
         <AutoCompleteSearchNoQR
           objectList={clientList}
@@ -162,7 +164,7 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
           onChangeValue={item => setCustomer(item)}
           fetchData={fetchPartnerAPI}
           displayValue={displayPartner}
-          placeholder="Customer"
+          placeholder={I18n.t('Stock_Customer')}
         />
       </SearchContainer>
       <AutoCompleteSearchNoQR
@@ -170,26 +172,26 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
         onChangeValue={item => navigateToCustomerDelivery(item)}
         fetchData={value => setFilter(value)}
         displayValue={displayStockMoveSeq}
-        placeholder="Ref."
+        placeholder={I18n.t('Stock_Ref')}
         oneFilter={true}
         navigate={navigate}
       />
       <ChipSelect style={styles.chipContainer}>
         <Chip
           selected={planifiedStatus}
-          title="Planned"
+          title={I18n.t('Stock_Status_Planned')}
           onPress={handlePlanifiedFilter}
           selectedColor={StockMove.getStatusColor(
-            StockMove.getStatus(StockMove.status.Planned),
+            StockMove.status.Planned,
             Colors,
           )}
         />
         <Chip
           selected={validatedStatus}
-          title="Realized"
+          title={I18n.t('Stock_Status_Realized')}
           onPress={handleValidatedFilter}
           selectedColor={StockMove.getStatusColor(
-            StockMove.getStatus(StockMove.status.Realized),
+            StockMove.status.Realized,
             Colors,
           )}
         />
@@ -201,7 +203,7 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
           <CustomerDeliveryCard
             reference={item.stockMoveSeq}
             client={item.partner?.fullName}
-            status={StockMove.getStatus(item.statusSelect)}
+            status={item.statusSelect}
             date={
               item.statusSelect === StockMove.status.Draft
                 ? item.createdOn
@@ -214,7 +216,7 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
             availability={
               item.availableStatusSelect == null
                 ? null
-                : StockMove.getAvailability(item.availableStatusSelect)
+                : item.availableStatusSelect
             }
             onPress={() => navigateToCustomerDelivery(item)}
           />

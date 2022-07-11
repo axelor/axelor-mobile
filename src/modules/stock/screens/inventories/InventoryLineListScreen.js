@@ -12,9 +12,11 @@ import {
 } from '@/modules/stock/components/organisms';
 import {ChipSelect, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineListDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const inventory = route.params.inventory;
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
@@ -106,16 +108,20 @@ const InventoryLineListDetailsScreen = ({route, navigation}) => {
       )}
       <View style={styles.detailsCard}>
         {inventory.productFamily != null && (
-          <Text>{`Product family : ${inventory.productFamily?.name}`}</Text>
+          <Text>{`${I18n.t('Stock_ProductFamily')} : ${
+            inventory.productFamily?.name
+          }`}</Text>
         )}
         {inventory.productCategory != null && (
-          <Text>{`Product category : ${inventory.productCategory?.name}`}</Text>
+          <Text>{`${I18n.t('Stock_ProductCategory')} : ${
+            inventory.productCategory?.name
+          }`}</Text>
         )}
       </View>
       <ChipSelect>
         <Chip
           selected={doneStatus}
-          title="Done"
+          title={I18n.t('Stock_Done')}
           onPress={handleDoneStatus}
           selectedColor={{
             backgroundColor: Colors.primaryColor_light,
@@ -124,7 +130,7 @@ const InventoryLineListDetailsScreen = ({route, navigation}) => {
         />
         <Chip
           selected={undoneStatus}
-          title="Not Done"
+          title={I18n.t('Stock_NotDone')}
           onPress={handleUndoneStatus}
           selectedColor={{
             backgroundColor: Colors.secondaryColor_light,

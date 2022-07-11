@@ -4,6 +4,7 @@ import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
+import useTranslator from '@/hooks/use-translator';
 
 const originalStockLocationScanKey =
   'original-stock-location__internal-move-select-from';
@@ -11,6 +12,7 @@ const originalStockLocationScanKey =
 const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const handleNavigate = useCallback(
@@ -52,7 +54,7 @@ const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
         }
         displayValue={displayItemName}
         scanKeySearch={originalStockLocationScanKey}
-        placeholder="Original Stock Location"
+        placeholder={I18n.t('Stock_OriginalStockLocation')}
         isFocus={true}
         changeScreenAfter={true}
       />

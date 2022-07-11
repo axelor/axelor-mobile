@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
 import {useSelector} from 'react-redux';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductCard = ({
   style,
@@ -15,6 +16,8 @@ const ProductCard = ({
 }) => {
   const {baseUrl} = useSelector(state => state.auth);
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
@@ -48,10 +51,10 @@ const ProductCard = ({
               }
               title={
                 availableStock == null
-                  ? 'Calculing...'
+                  ? `${I18n.t('Stock_Calculing')}...`
                   : availableStock > 0
-                  ? 'Available'
-                  : 'Unavailable'
+                  ? I18n.t('Stock_Available')
+                  : I18n.t('Stock_Unavailable')
               }
             />
           </View>

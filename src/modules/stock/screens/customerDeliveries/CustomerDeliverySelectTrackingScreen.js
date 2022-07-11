@@ -8,6 +8,7 @@ import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const trackingScanKey = 'tracking_customer-delivery-select';
 
@@ -17,6 +18,7 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
   const product = route.params.product;
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchTrackingAPI = useCallback(
@@ -75,16 +77,16 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
             fetchData={fetchTrackingAPI}
             displayValue={displayItemTrackingNumber}
             scanKeySearch={trackingScanKey}
-            placeholder="Tracking Number"
+            placeholder={I18n.t('Stock_TrackingNumber')}
             isFocus={true}
             changeScreenAfter={true}
           />
         </View>
         <PopUpOneButton
           visible={isVisible}
-          title="Warning"
-          data="This is not the right tracking number."
-          btnTitle="OK"
+          title={I18n.t('Auth_Warning')}
+          data={I18n.t('Stock_ErrorTrackingNumber')}
+          btnTitle={I18n.t('Auth_Close')}
           onPress={() => setVisible(false)}
         />
       </View>

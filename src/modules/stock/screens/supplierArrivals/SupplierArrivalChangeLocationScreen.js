@@ -8,6 +8,7 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import StockMove from '@/modules/stock/types/stock-move';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-change';
 
@@ -16,6 +17,7 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
   const [stockLocation, setStockLocation] = useState(null);
   const {user} = useSelector(state => state.user);
   const {stockLocationList} = useSelector(state => state.stockLocation);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
@@ -59,16 +61,22 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
         }
       />
       <View style={styles.clientContainer}>
-        <Text>{`Client : ${supplierArrival.partner?.fullName}`}</Text>
+        <Text>{`${I18n.t('Stock_Supplier')} : ${
+          supplierArrival.partner?.fullName
+        }`}</Text>
         {supplierArrival.origin == null ? null : (
-          <Text>{`Origin : ${supplierArrival.origin}`}</Text>
+          <Text>{`${I18n.t('Stock_Origin')} : ${supplierArrival.origin}`}</Text>
         )}
         {supplierArrival.supplierShipmentRef == null ? null : (
-          <Text>{`Supplier Shipment Ref : ${supplierArrival.supplierShipmentRef}`}</Text>
+          <Text>{`${I18n.t('Stock_SupplierShipmentRef')} : ${
+            supplierArrival.supplierShipmentRef
+          }`}</Text>
         )}
       </View>
       <View style={styles.stockView}>
-        <Text style={styles.text_important}>New Stock Location</Text>
+        <Text style={styles.text_important}>
+          {I18n.t('Stock_NewStockLocation')}
+        </Text>
         <AutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -82,13 +90,13 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
-          placeholder="Stock Location"
+          placeholder={I18n.t('Stock_StockLocation')}
         />
       </View>
       <View style={styles.btnContainer}>
         <Button
           style={styles.validateBtn}
-          title="VALIDATE"
+          title={I18n.t('Base_Validate')}
           onPress={() => validateChange()}
         />
       </View>

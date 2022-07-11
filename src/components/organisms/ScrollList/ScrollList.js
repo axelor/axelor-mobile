@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
 import {Text} from '@/components/atoms';
+import useTranslator from '@/hooks/use-translator';
 
 const SearchContainer = ({
   loadingList = false,
@@ -12,6 +13,7 @@ const SearchContainer = ({
   filter = false,
 }) => {
   const [page, setPage] = useState(0);
+  const I18n = useTranslator();
 
   const handleMoreData = () => {
     if (!isListEnd && !moreLoading && !filter) {
@@ -41,7 +43,7 @@ const SearchContainer = ({
         return (
           <View style={styles.footerText}>
             {moreLoading && <ActivityIndicator size="large" color="black" />}
-            {isListEnd && <Text>No more items.</Text>}
+            {isListEnd && <Text>{I18n.t('Base_NoMoreItems')}</Text>}
           </View>
         );
       }}

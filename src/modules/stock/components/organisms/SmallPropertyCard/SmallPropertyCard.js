@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {PopUpOneButton} from '@/components/organisms';
 import {Text, Card} from '@/components/atoms';
+import useTranslator from '@/hooks/use-translator';
 
 const SmallPropertyCard = ({
   style,
@@ -11,6 +12,7 @@ const SmallPropertyCard = ({
   interactive = false,
 }) => {
   const [popUp, setPopUp] = useState(false);
+  const I18n = useTranslator();
 
   const handlePress = () => {
     setPopUp(true);
@@ -22,7 +24,7 @@ const SmallPropertyCard = ({
         visible={popUp}
         data={unit == null ? `${value}` : `${value} ${unit}`}
         title={title}
-        btnTitle="OK"
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setPopUp(!popUp)}
       />
       {interactive ? (

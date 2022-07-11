@@ -12,9 +12,11 @@ import StockMove from '@/modules/stock/types/stock-move';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const {loadingSALines, moreLoading, isListEnd, supplierArrivalLineList} =
     useSelector(state => state.supplierArrivalLine);
@@ -105,7 +107,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
       <ChipSelect>
         <Chip
           selected={doneStatus}
-          title="Done"
+          title={I18n.t('Stock_Done')}
           onPress={handleDoneStatus}
           selectedColor={{
             backgroundColor: Colors.primaryColor_light,
@@ -114,11 +116,11 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         />
         <Chip
           selected={undoneStatus}
-          title="Not Done"
+          title={I18n.t('Stock_NotDone')}
           onPress={handleUndoneStatus}
           selectedColor={{
-            backgroundColor: Colors.secondaryColor_light,
-            borderColor: Colors.secondaryColor,
+            backgroundColor: Colors.cautionColor_light,
+            borderColor: Colors.cautionColor,
           }}
         />
       </ChipSelect>

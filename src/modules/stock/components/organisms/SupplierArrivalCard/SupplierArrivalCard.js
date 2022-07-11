@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalCard = ({
   style,
@@ -15,6 +16,8 @@ const SupplierArrivalCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).borderColor);
   }, [Colors, status]);
@@ -33,11 +36,17 @@ const SupplierArrivalCard = ({
           )}
           {status === 'Planned' ? (
             <Text style={[styles.txtDetails, styles.creationDate]}>
-              Planned for {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_PlannedFor')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           ) : (
             <Text style={styles.txtDetails}>
-              Realized on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_RealizedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
         </View>

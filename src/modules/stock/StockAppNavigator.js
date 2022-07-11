@@ -13,7 +13,7 @@ const {Screen} = createDrawerNavigator();
 
 const ICON_SIZE = 20;
 
-const StockAppNavigator = (Colors, stockMenus) => {
+const StockAppNavigator = (Colors, stockMenus, I18n) => {
   return (
     <>
       {isMenuEnabled({
@@ -26,7 +26,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerInactiveTintColor: Colors.text,
             drawerActiveTintColor: Colors.primaryColor,
-            title: 'Product',
+            title: I18n.t('Stock_Product'),
             drawerIcon: () => (
               <Icon
                 name="shopping-cart"
@@ -47,7 +47,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerActiveTintColor: Colors.primaryColor,
             drawerInactiveTintColor: Colors.text,
-            title: 'Stock correction',
+            title: I18n.t('Stock_StockCorrection'),
             drawerIcon: () => (
               <Icon
                 name="box"
@@ -68,7 +68,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerActiveTintColor: Colors.primaryColor,
             drawerInactiveTintColor: Colors.text,
-            title: 'Internal move',
+            title: I18n.t('Stock_InternalMove'),
             drawerIcon: () => (
               <Icon
                 name="dolly"
@@ -89,7 +89,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerActiveTintColor: Colors.primaryColor,
             drawerInactiveTintColor: Colors.text,
-            title: 'Customer Delivery',
+            title: I18n.t('Stock_CustomerDelivery'),
             drawerIcon: () => (
               <Icon
                 name="truck"
@@ -110,7 +110,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerActiveTintColor: Colors.primaryColor,
             drawerInactiveTintColor: Colors.text,
-            title: 'Supplier Arrivals',
+            title: I18n.t('Stock_SupplierArrival'),
             drawerIcon: () => (
               <Icon
                 name="truck-loading"
@@ -131,7 +131,7 @@ const StockAppNavigator = (Colors, stockMenus) => {
           options={{
             drawerActiveTintColor: Colors.primaryColor,
             drawerInactiveTintColor: Colors.text,
-            title: 'Inventories',
+            title: I18n.t('Stock_Inventory'),
             drawerIcon: () => (
               <Icon
                 name="warehouse"

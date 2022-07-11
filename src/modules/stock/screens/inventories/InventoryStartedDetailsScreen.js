@@ -10,12 +10,14 @@ import {
   InventoryLineCard,
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const {loadingInventoryLines, inventoryLineList} = useSelector(
     state => state.inventoryLine,
   );
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,16 +72,21 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
           )}
           <View style={styles.marginHorizontal}>
             {inventory.productFamily != null && (
-              <Text>{`Product family : ${inventory.productFamily?.name}`}</Text>
+              <Text>{`${I18n.t('Stock_ProductFamily')} : ${
+                inventory.productFamily?.name
+              }`}</Text>
             )}
             {inventory.productCategory != null && (
-              <Text>{`Product category : ${inventory.productCategory?.name}`}</Text>
+              <Text>{`${I18n.t('Stock_ProductCategory')} : ${
+                inventory.productCategory?.name
+              }`}</Text>
             )}
           </View>
           <ViewAllContainer
             isHeaderExist={
               inventory.statusSelect !== Inventory.status.Completed
             }
+            onNewIcon={() => {}}
             onPress={handleViewAll}>
             {inventoryLineList[0] == null ? null : (
               <InventoryLineCard
@@ -107,7 +114,11 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
             )}
           </ViewAllContainer>
           {inventory.statusSelect !== Inventory.status.Completed && (
-            <Button style={styles.btn} title="VALIDATE" onPress={() => {}} />
+            <Button
+              style={styles.btn}
+              title={I18n.t('Base_Validate')}
+              onPress={() => {}}
+            />
           )}
         </ScrollView>
       )}

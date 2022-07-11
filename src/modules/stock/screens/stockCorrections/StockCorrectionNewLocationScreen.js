@@ -4,12 +4,14 @@ import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice'
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_stock-correction-new';
 
 const StockCorrectionNewLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
@@ -51,7 +53,7 @@ const StockCorrectionNewLocationScreen = ({navigation, route}) => {
         }
         displayValue={displayItemName}
         scanKeySearch={stockLocationScanKey}
-        placeholder="Stock Location"
+        placeholder={I18n.t('Stock_StockLocation')}
         isFocus={true}
         changeScreenAfter={true}
       />

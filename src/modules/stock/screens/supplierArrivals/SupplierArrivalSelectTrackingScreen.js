@@ -10,11 +10,13 @@ import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice
 import StockMove from '@/modules/stock/types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
 const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const product = route.params.product;
@@ -74,11 +76,17 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
             </Text>
             {Number(supplierArrivalLine.qty) !==
               Number(supplierArrivalLine.realQty) && (
-              <Badge title="Incomplete" color={Colors.cautionColor_light} />
+              <Badge
+                title={I18n.t('Stock_Status_Incomplete')}
+                color={Colors.cautionColor_light}
+              />
             )}
             {Number(supplierArrivalLine.qty) ===
               Number(supplierArrivalLine.realQty) && (
-              <Badge title="Complete" color={Colors.primaryColor_light} />
+              <Badge
+                title={I18n.t('Stock_Status_Complete')}
+                color={Colors.primaryColor_light}
+              />
             )}
           </View>
         )}
@@ -86,7 +94,9 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
           <Text>{product?.name}</Text>
         </Card>
         <View style={styles.trackingNumber}>
-          <Text style={styles.text_secondary}>ADD TRACKING NUMBER</Text>
+          <Text style={styles.text_secondary}>
+            {I18n.t('Stock_AddTrackingNumber')}
+          </Text>
           <Icon
             name="plus"
             color={Colors.primaryColor}
@@ -102,16 +112,16 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
           fetchData={fetchTrackingAPI}
           displayValue={displayItemTrackingNumber}
           scanKeySearch={trackingScanKey}
-          placeholder="Tracking Number"
+          placeholder={I18n.t('Stock_TrackingNumber')}
           isFocus={true}
           changeScreenAfter={true}
         />
       </View>
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right tracking number."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorTrackingNumber')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

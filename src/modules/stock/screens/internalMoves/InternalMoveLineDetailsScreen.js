@@ -26,16 +26,16 @@ import {
   updateInternalMove,
 } from '@/modules/stock/features/internalMoveSlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
   const {unitList} = useSelector(state => state.unit);
-  const {id: activeCompanyId} = useSelector(
-    state => state.user.user.activeCompany,
-  );
+  const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
 
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         fetchProductIndicators({
           version: route.params.internalMoveLine.product.$version,
           productId: route.params.internalMoveLine.product.id,
-          companyId: activeCompanyId,
+          companyId: activeCompany?.id,
           stockLocationId: route.params.internalMove.fromStockLocation.id,
         }),
       );
@@ -69,12 +69,12 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         fetchProductIndicators({
           version: route.params.stockProduct.version,
           productId: route.params.stockProduct.id,
-          companyId: activeCompanyId,
+          companyId: activeCompany?.id,
           stockLocationId: route.params.fromStockLocation.id,
         }),
       );
     }
-  }, [activeCompanyId, dispatch, route.params]);
+  }, [activeCompany?.id, dispatch, route.params]);
 
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
   const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
@@ -312,7 +312,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
                 />
               </View>
               <QuantityCard
-                labelQty="Moved quantity"
+                labelQty={I18n.t('Stock_MovedQty')}
                 defaultValue={parseFloat(movedQty).toFixed(2)}
                 onValueChange={handleQtyChange}
                 editable={
@@ -325,16 +325,16 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
                 }
                 onPressActionQty={handleCreateCorrection}>
                 <Text style={styles.text}>
-                  {`Available quantity: ${parseFloat(plannedQty).toFixed(2)} ${
-                    stockProduct.unit?.name
-                  }`}
+                  {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
+                    plannedQty,
+                  ).toFixed(2)} ${stockProduct.unit?.name}`}
                 </Text>
               </QuantityCard>
               {status === StockMove.status.Realized ||
               status === StockMove.status.Canceled ? (
                 <View>
                   <View style={styles.reasonTitle}>
-                    <Text>Unit</Text>
+                    <Text>{I18n.t('Stock_Unit')}</Text>
                   </View>
                   <Card style={styles.infosCard}>
                     <Text>{unit.name}</Text>
@@ -344,7 +344,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
                 <Picker
                   style={styles.picker}
                   styleTxt={unit.id === null ? styles.picker_empty : null}
-                  title="Unit"
+                  title={I18n.t('Stock_Unit')}
                   onValueChange={handleUnitChange}
                   defaultValue={unit.id}
                   listItems={unitList}
@@ -355,7 +355,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               {status === StockMove.status.Draft && notes != null && (
                 <View>
                   <View style={styles.reasonTitle}>
-                    <Text>Notes on Stock Move </Text>
+                    <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
                   </View>
                   <Card style={styles.infosCard}>
                     {status === StockMove.status.Planned ||
@@ -377,13 +377,13 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           {!saveStatus && route.params.internalMove == null && (
             <View style={styles.button_container}>
               <Button
-                title="REALIZE"
+                title={I18n.t('Base_Realize')}
                 style={styles.button}
                 color={Colors.secondaryColor_light}
                 onPress={handleRealize}
               />
               <Button
-                title="REALIZE AND CONTINUE"
+                title={I18n.t('Base_RealizeContinue')}
                 style={[styles.button, styles.bigBtn]}
                 onPress={handleValidate}
               />
@@ -391,7 +391,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           )}
           {!saveStatus && route.params.internalMove != null && (
             <View style={styles.button_container}>
-              <Button title="SAVE" style={styles.button} onPress={handleSave} />
+              <Button
+                title={I18n.t('Base_Save')}
+                style={styles.button}
+                onPress={handleSave}
+              />
             </View>
           )}
         </View>

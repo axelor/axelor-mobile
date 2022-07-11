@@ -15,9 +15,11 @@ import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {addNewLine} from '../../features/supplierArrivalSlice';
 import {updateSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const trackingNumber = route.params.trackingNumber;
@@ -35,6 +37,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       supplierArrivalLine != null
         ? supplierArrivalLine.conformitySelect
         : StockMove.conformity.None,
+      I18n,
     ),
     id:
       supplierArrivalLine != null
@@ -69,11 +72,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const handleConformityChange = item => {
     if (item === null) {
       setConformity({
-        name: StockMove.getConformity(StockMove.conformity.None),
+        name: StockMove.getConformity(StockMove.conformity.None, I18n),
         id: StockMove.conformity.None,
       });
     } else {
-      setConformity({name: StockMove.getConformity(item), id: item});
+      setConformity({name: StockMove.getConformity(item, I18n), id: item});
     }
   };
 
@@ -149,11 +152,17 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
                 </Text>
                 {Number(supplierArrivalLine.qty) !==
                   Number(supplierArrivalLine.realQty) && (
-                  <Badge title="Incomplete" color={Colors.cautionColor_light} />
+                  <Badge
+                    title={I18n.t('Stock_Status_Incomplete')}
+                    color={Colors.cautionColor_light}
+                  />
                 )}
                 {Number(supplierArrivalLine.qty) ===
                   Number(supplierArrivalLine.realQty) && (
-                  <Badge title="Complete" color={Colors.primaryColor_light} />
+                  <Badge
+                    title={I18n.t('Stock_Status_Complete')}
+                    color={Colors.primaryColor_light}
+                  />
                 )}
               </View>
             )}
@@ -170,14 +179,20 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             <View style={styles.supplierInfoContainer}>
               <Icon name="info-circle" size={20} />
               <View style={styles.supplierInfo}>
-                <Text style={styles.text_important}>Supplier Catalog :</Text>
-                <Text>{`Name : ${supplierProductInfo?.productSupplierName}`}</Text>
-                <Text>{`Code : ${supplierProductInfo?.productSupplierCode}`}</Text>
+                <Text style={styles.text_important}>
+                  {I18n.t('Stock_SupplierCatalog')}
+                </Text>
+                <Text>{`${I18n.t('Stock_Name')} : ${
+                  supplierProductInfo?.productSupplierName
+                }`}</Text>
+                <Text>{`${I18n.t('Stock_Code')} : ${
+                  supplierProductInfo?.productSupplierCode
+                }`}</Text>
               </View>
             </View>
           )}
           <QuantityCard
-            labelQty="Received quantity"
+            labelQty={I18n.t('Stock_ReceivedQty')}
             defaultValue={parseFloat(realQty).toFixed(2)}
             onValueChange={handleQtyChange}
             style={styles.quantityCard}
@@ -185,7 +200,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
               supplierArrival.statusSelect !== StockMove.status.Realized
             }>
             <Text style={styles.text}>
-              {`Asked quantity : ${parseFloat(
+              {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
                 supplierArrivalLine != null ? supplierArrivalLine.qty : 0,
               ).toFixed(2)} ${
                 supplierArrivalLine != null
@@ -196,10 +211,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           </QuantityCard>
           <Picker
             style={styles.picker}
-            title="Conformity"
+            title={I18n.t('Stock_Conformity')}
             onValueChange={item => handleConformityChange(item)}
             defaultValue={conformity?.id}
-            listItems={StockMove.conformitySelection}
+            listItems={StockMove.getConformitySelection(I18n)}
             labelField="name"
             valueField="id"
           />
@@ -207,7 +222,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             supplierArrival.statusSelect !== StockMove.status.Realized && (
               <Button
                 style={styles.validateBtn}
-                title="VALIDATE"
+                title={I18n.t('Base_Validate')}
                 onPress={handleValidate}
               />
             )}
@@ -215,7 +230,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             supplierArrival.statusSelect !== StockMove.status.Realized && (
               <Button
                 style={styles.validateBtn}
-                title="ADD"
+                title={I18n.t('Base_Add')}
                 onPress={handleAddLine}
               />
             )}

@@ -7,6 +7,7 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_product-list';
 
@@ -18,6 +19,7 @@ const ProductListScreen = ({navigation}) => {
   const {listAvailabilty} = useSelector(state => state.productIndicators);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
@@ -61,7 +63,7 @@ const ProductListScreen = ({navigation}) => {
         fetchData={value => setFilter(value)}
         displayValue={displayItemName}
         scanKeySearch={productScanKey}
-        placeholder="Product"
+        placeholder={I18n.t('Stock_Product')}
         isFocus={true}
         oneFilter={true}
         navigate={navigate}

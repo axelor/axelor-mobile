@@ -3,8 +3,10 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import File from '@/types/file';
 import {formatDate} from '@/modules/stock/utils/formatters';
+import useTranslator from '@/hooks/use-translator';
 
 const AttachmentCard = ({fileName, creationDate, onPress}) => {
+  const I18n = useTranslator();
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.container}>
@@ -12,10 +14,12 @@ const AttachmentCard = ({fileName, creationDate, onPress}) => {
         <View style={styles.textContainer}>
           <Text style={styles.text}>{fileName}</Text>
           {creationDate && (
-            <Text style={styles.text}>{`Added on : ${formatDate(
-              creationDate,
-              'MM/DD/YYYY',
-            )}`}</Text>
+            <Text style={styles.text}>
+              {`${I18n.t('Base_AddedOn')} : ${formatDate(
+                creationDate,
+                'MM/DD/YYYY',
+              )}`}
+            </Text>
           )}
         </View>
       </View>

@@ -5,12 +5,14 @@ import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
+import useTranslator from '@/hooks/use-translator';
 
 const trackingNumberScanKey = 'tracking-number_stock-correction-new';
 
 const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const product = route.params.product;
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchTrackingAPI = useCallback(
@@ -59,7 +61,7 @@ const StockCorrectionNewTrackingScreen = ({navigation, route}) => {
         fetchData={fetchTrackingAPI}
         displayValue={displayItemTrackingNumber}
         scanKeySearch={trackingNumberScanKey}
-        placeholder="Tracking Number"
+        placeholder={I18n.t('Stock_TrackingNumber')}
         isFocus={true}
         changeScreenAfter={true}
       />

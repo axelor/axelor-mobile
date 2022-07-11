@@ -31,7 +31,7 @@ const UrlInput = ({
         style={[styles.input, style]}
         value={inputValue}
         onChange={onChange}
-        placeholder={I18n.t('Auth.URL')}
+        placeholder={I18n.t('Auth_URL')}
         readOnly={readOnly}
         onSelection={onSelection}
       />

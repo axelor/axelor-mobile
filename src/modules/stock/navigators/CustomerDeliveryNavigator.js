@@ -10,11 +10,13 @@ import CustomerDeliverySelectProductScreen from '../screens/customerDeliveries/C
 import CustomerDeliverySelectTrackingScreen from '../screens/customerDeliveries/CustomerDeliverySelectTrackingScreen';
 import CustomerDeliveryLineDetailScreen from '../screens/customerDeliveries/CustomerDeliveryLineDetailScreen';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const CustomerDeliveryNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -27,7 +29,7 @@ const CustomerDeliveryNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -37,7 +39,7 @@ const CustomerDeliveryNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -47,7 +49,7 @@ const CustomerDeliveryNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -57,7 +59,7 @@ const CustomerDeliveryNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -67,7 +69,7 @@ const CustomerDeliveryNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -77,7 +79,7 @@ const CustomerDeliveryNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Customer Delivery',
+          headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

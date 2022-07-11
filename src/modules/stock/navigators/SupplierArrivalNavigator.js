@@ -11,11 +11,13 @@ import SupplierArrivalSelectTrackingScreen from '@/modules/stock/screens/supplie
 import SupplierArrivalLineDetailScreen from '@/modules/stock/screens/supplierArrivals/SupplierArrivalLineDetailScreen';
 import ProductNavigator from './ProductNavigator';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const SupplierArrivalsNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -28,7 +30,7 @@ const SupplierArrivalsNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrivals',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -38,7 +40,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -48,7 +50,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -58,7 +60,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -68,7 +70,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -78,7 +80,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -88,7 +90,7 @@ const SupplierArrivalsNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Supplier Arrival',
+          headerTitle: I18n.t('Stock_SupplierArrival'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

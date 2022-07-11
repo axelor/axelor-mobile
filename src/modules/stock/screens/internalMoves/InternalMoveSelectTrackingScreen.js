@@ -9,6 +9,7 @@ import {displayItemTrackingNumber} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const trackingNumberScanKey = 'tracking-number_internal-move-new';
 
@@ -18,6 +19,7 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
   const product = route.params.stockProduct;
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchTrackingAPI = useCallback(
@@ -117,15 +119,15 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
         fetchData={fetchTrackingAPI}
         displayValue={displayItemTrackingNumber}
         scanKeySearch={trackingNumberScanKey}
-        placeholder="Tracking Number"
+        placeholder={I18n.t('Stock_TrackingNumber')}
         isFocus={true}
         changeScreenAfter={true}
       />
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right tracking number."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorTrackingNumber')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

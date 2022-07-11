@@ -17,12 +17,14 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
 const productScanKey = 'product_stock-correction-list';
 
 const StockCorrectionListScreen = ({navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -169,7 +171,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
-          placeholder="Stock location"
+          placeholder={I18n.t('Stock_StockLocation')}
           searchBarKey={1}
         />
         <AutocompleteSearch
@@ -179,26 +181,26 @@ const StockCorrectionListScreen = ({navigation}) => {
           fetchData={fetchProductsAPI}
           displayValue={displayItemName}
           scanKeySearch={productScanKey}
-          placeholder="Product"
+          placeholder={I18n.t('Stock_Product')}
           searchBarKey={2}
         />
       </SearchContainer>
       <ChipSelect>
         <Chip
           selected={draftStatus}
-          title="Draft"
+          title={I18n.t('Stock_Status_Draft')}
           onPress={handleDraftFilter}
           selectedColor={StockCorrection.getStatusColor(
-            StockCorrection.getStatus(StockCorrection.status.Draft),
+            StockCorrection.status.Draft,
             Colors,
           )}
         />
         <Chip
           selected={validatedStatus}
-          title="Validated"
+          title={I18n.t('Stock_Status_Validated')}
           onPress={handleValidatedFilter}
           selectedColor={StockCorrection.getStatusColor(
-            StockCorrection.getStatus(StockCorrection.status.Validated),
+            StockCorrection.status.Validated,
             Colors,
           )}
         />
@@ -209,7 +211,7 @@ const StockCorrectionListScreen = ({navigation}) => {
         renderItem={({item}) => (
           <StockCorrectionCard
             style={styles.item}
-            status={StockCorrection.getStatus(item.statusSelect)}
+            status={item.statusSelect}
             productFullname={item.product.fullName}
             stockLocation={item.stockLocation.name}
             date={

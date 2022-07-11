@@ -10,11 +10,13 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '../../types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const {productList} = useSelector(state => state.product);
@@ -76,11 +78,17 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
             </Text>
             {parseFloat(supplierArrivalLine.qty) !==
               parseFloat(supplierArrivalLine.realQty) && (
-              <Badge title="Incomplete" color={Colors.cautionColor_light} />
+              <Badge
+                title={I18n.t('Stock_Status_Incomplete')}
+                color={Colors.cautionColor_light}
+              />
             )}
             {parseFloat(supplierArrivalLine.qty) ===
               parseFloat(supplierArrivalLine.realQty) && (
-              <Badge title="Complete" color={Colors.primaryColor_light} />
+              <Badge
+                title={I18n.t('Stock_Status_Complete')}
+                color={Colors.primaryColor_light}
+              />
             )}
           </View>
         )}
@@ -90,16 +98,16 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
           fetchData={fetchProductsAPI}
           displayValue={displayItemName}
           scanKeySearch={productScanKey}
-          placeholder="Product"
+          placeholder={I18n.t('Stock_Product')}
           isFocus={true}
           changeScreenAfter={true}
         />
       </View>
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right product."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorProduct')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
-import {Button, Screen, Text, Card} from '@/components/atoms';
+import {StyleSheet, ScrollView, View} from 'react-native';
+import {Button, Screen, Text} from '@/components/atoms';
 import {EditableInput} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch} from 'react-redux';
 import {modifyDescription} from '@/modules/stock/features/inventorySlice';
 import {InventoryHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryPlannedDetailsScreen = ({route, navigation}) => {
   const [inventory, setInventory] = useState(route.params.inventory);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const handleDescriptionChange = input => {
@@ -35,38 +37,38 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
           <LocationsMoveCard
             fromStockLocation={inventory.fromRack}
             toStockLocation={inventory.toRack}
-            editable={false}
+            isLockerCard={true}
           />
         )}
-        {inventory.productFamily != null ||
-        inventory.productCategory != null ? (
-          <Card style={styles.cardProductInfo}>
-            {inventory.productFamily == null ? null : (
-              <Text>{inventory.productFamily?.name}</Text>
-            )}
-            {inventory.productCategory == null ? null : (
-              <Text>{inventory.productCategory?.name}</Text>
-            )}
-          </Card>
-        ) : null}
-        <Text style={styles.title}>Description</Text>
+        <View style={styles.marginHorizontal}>
+          {inventory.productFamily != null && (
+            <Text>{`${I18n.t('Stock_ProductFamily')} : ${
+              inventory.productFamily?.name
+            }`}</Text>
+          )}
+          {inventory.productCategory != null && (
+            <Text>{`${I18n.t('Stock_ProductCategory')} : ${
+              inventory.productCategory?.name
+            }`}</Text>
+          )}
+        </View>
+        <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
         <EditableInput
           defaultValue={inventory.description}
-          placeholder="Description"
+          placeholder={I18n.t('Base_Description')}
           style={styles.description}
           onValidate={input => handleDescriptionChange(input)}
           multiline={true}
           numberOfLines={5}
         />
-        <Button style={styles.startBtn} title="START" />
+        <Button style={styles.startBtn} title={I18n.t('Base_Start')} />
       </ScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  cardProductInfo: {
-    marginTop: '2%',
+  marginHorizontal: {
     marginHorizontal: 16,
   },
   description: {
@@ -78,29 +80,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 35,
     marginHorizontal: '20%',
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: '2%',
-    marginBottom: '3%',
-    marginHorizontal: 16,
-  },
-  refContainer: {
-    flex: 2,
-    flexDirection: 'column',
-  },
-  badgeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
   },
   title: {
     marginHorizontal: 16,

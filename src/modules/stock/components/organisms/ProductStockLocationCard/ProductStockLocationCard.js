@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductStockLocationCard = ({
   stockLocationName,
@@ -12,6 +13,7 @@ const ProductStockLocationCard = ({
   availability,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -21,17 +23,23 @@ const ProductStockLocationCard = ({
           <Icon name="warehouse" size={18} style={styles.icon} />
           <Text>{stockLocationName}</Text>
         </View>
-        <LabelText title="Real Quantity :" value={`${realQty} ${unit}`} />
-        <LabelText title="Future Quantity :" value={`${futureQty} ${unit}`} />
+        <LabelText
+          title={`${I18n.t('Stock_RealQty')} :`}
+          value={`${realQty} ${unit}`}
+        />
+        <LabelText
+          title={`${I18n.t('Stock_FutureQty')} :`}
+          value={`${futureQty} ${unit}`}
+        />
       </View>
       <View style={styles.badgeContainer}>
         <Badge
           title={
             availability == null
-              ? 'Calculing...'
+              ? `${I18n.t('Stock_Calculing')}...`
               : availability > 0
-              ? 'Available'
-              : 'Unavailable'
+              ? I18n.t('Stock_Available')
+              : I18n.t('Stock_Unavailable')
           }
           color={
             availability == null

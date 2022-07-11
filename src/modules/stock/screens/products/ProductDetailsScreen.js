@@ -10,9 +10,11 @@ import {
 } from '@/modules/stock/components/organisms/';
 import RenderHtml from 'react-native-render-html';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {baseUrl} = useSelector(state => state.auth);
   const product = route.params.product;
 
@@ -28,7 +30,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
       headerRight: () => (
         <DropdownMenu>
           <DropdownMenuItem
-            placeholder="See attached files"
+            placeholder={I18n.t('Stock_AttachedFiles')}
             onPress={() =>
               navigation.navigate('ProductAttachedFilesScreen', {
                 product: product,
@@ -38,7 +40,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
         </DropdownMenu>
       ),
     });
-  }, [navigation, product]);
+  }, [I18n, navigation, product]);
 
   const [widthNotes, setWidthNotes] = useState();
   const PERCENTAGE_WIDTH_NOTES = 0.95;
@@ -71,12 +73,12 @@ const ProductDetailsScreen = ({route, navigation}) => {
             <View style={styles.stock}>
               <SmallPropertyCard
                 style={styles.stockCard}
-                title="STOCK"
+                title={I18n.t('Stock_Stock')}
                 value={product.unit?.name}
               />
               <SmallPropertyCard
                 style={styles.stockCard}
-                title="SALE"
+                title={I18n.t('Sale_Sale')}
                 value={
                   product.salesUnit
                     ? product.salesUnit?.name
@@ -85,7 +87,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
               />
               <SmallPropertyCard
                 style={styles.stockCard}
-                title="PURCHASE"
+                title={I18n.t('Purchase_Purchase')}
                 value={
                   product.purchasesUnit
                     ? product.purchasesUnit?.name
@@ -99,55 +101,55 @@ const ProductDetailsScreen = ({route, navigation}) => {
             <View style={styles.packing}>
               <SmallPropertyCard
                 style={styles.packingCard}
-                title="LENGTH"
+                title={I18n.t('Stock_Length')}
                 value={product.length}
                 unit={
                   product.lengthUnit == null
-                    ? 'Mètres'
+                    ? I18n.t('Stock_Meters')
                     : product.lengthUnit?.name
                 }
                 interactive={true}
               />
               <SmallPropertyCard
                 style={styles.packingCard}
-                title="WIDTH"
+                title={I18n.t('Stock_Width')}
                 value={product.width}
                 unit={
                   product.lengthUnit == null
-                    ? 'Mètres'
+                    ? I18n.t('Stock_Meters')
                     : product.lengthUnit?.name
                 }
                 interactive={true}
               />
               <SmallPropertyCard
                 style={styles.packingCard}
-                title="HEIGHT"
+                title={I18n.t('Stock_Height')}
                 value={product.height}
                 unit={
                   product.lengthUnit == null
-                    ? 'Mètres'
+                    ? I18n.t('Stock_Meters')
                     : product.lengthUnit?.name
                 }
                 interactive={true}
               />
               <SmallPropertyCard
                 style={styles.packingCard}
-                title="NET MASS"
+                title={I18n.t('Stock_NetMass')}
                 value={product.netMass}
                 unit={
                   product.massUnit == null
-                    ? 'Kilogrammes'
+                    ? I18n.t('Stock_Kilograms')
                     : product.massUnit?.name
                 }
                 interactive={true}
               />
               <SmallPropertyCard
                 style={styles.packingCard}
-                title="GROSS MASS"
+                title={I18n.t('Stock_GrossMass')}
                 value={product.grossMass}
                 unit={
                   product.massUnit == null
-                    ? 'Kilogrammes'
+                    ? I18n.t('Stock_Kilograms')
                     : product.massUnit?.name
                 }
                 interactive={true}
@@ -156,7 +158,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
           </View>
           {product.description && (
             <View style={styles.description}>
-              <Text style={styles.titles}>DESCRIPTION</Text>
+              <Text style={styles.titles}>{I18n.t('Base_Description')}</Text>
               <Card
                 style={styles.notes}
                 onLayout={event => {
@@ -174,7 +176,10 @@ const ProductDetailsScreen = ({route, navigation}) => {
         </ScrollView>
         {!product.productVariant ? null : (
           <View style={styles.buttonContainer}>
-            <Button onPress={() => showProductVariables()} title="VARIANTS" />
+            <Button
+              onPress={() => showProductVariables()}
+              title={I18n.t('Stock_Variants')}
+            />
           </View>
         )}
       </View>

@@ -17,6 +17,7 @@ import {
 } from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
 import {getRacks} from '../../features/racksListSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
@@ -24,6 +25,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     state => state.internalMoveLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -105,9 +107,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                       internalMoveStatus={internalMove.statusSelect}
                       availability={
                         internalMoveLineList[0].availableStatusSelect != null
-                          ? StockMove.getAvailability(
-                              internalMoveLineList[0].availableStatusSelect,
-                            )
+                          ? internalMoveLineList[0].availableStatusSelect
                           : null
                       }
                       locker={
@@ -133,9 +133,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                       internalMoveStatus={internalMove.statusSelect}
                       availability={
                         internalMoveLineList[1].availableStatusSelect != null
-                          ? StockMove.getAvailability(
-                              internalMoveLineList[1].availableStatusSelect,
-                            )
+                          ? internalMoveLineList[1].availableStatusSelect
                           : null
                       }
                       locker={
@@ -159,7 +157,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                 internalMove.pickingOrderComments === '' ? null : (
                   <View>
                     <View style={styles.reasonTitle}>
-                      <Text>Notes on Preparation </Text>
+                      <Text>{I18n.t('Stock_NotesOnPreparation')}</Text>
                     </View>
                     <Card style={styles.infosCard}>
                       <Text numberOfLines={3}>
@@ -172,7 +170,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                 internalMove.note === '' ? null : (
                   <View>
                     <View style={styles.reasonTitle}>
-                      <Text>Notes on Stock Move </Text>
+                      <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
                     </View>
                     <Card style={styles.infosCard}>
                       <Text numberOfLines={3}>{internalMove.note}</Text>

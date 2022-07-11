@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import Inventory from '@/modules/stock/types/inventory';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryCard = ({
   style,
@@ -14,6 +15,8 @@ const InventoryCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     return getStyles(Inventory.getStatusColor(status, Colors).borderColor);
   }, [Colors, status]);
@@ -26,24 +29,36 @@ const InventoryCard = ({
           {stockLocation != null && (
             <Text style={styles.txtDetails}>{stockLocation}</Text>
           )}
-          {status === Inventory.getStatus(Inventory.status.Planned) && (
+          {status === Inventory.status.Planned && (
             <Text style={[styles.txtDetails, styles.creationDate]}>
-              Planned for {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_PlannedFor')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
-          {status === Inventory.getStatus(Inventory.status.InProgress) && (
+          {status === Inventory.status.InProgress && (
             <Text style={styles.txtDetails}>
-              Started on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_StartedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
-          {status === Inventory.getStatus(Inventory.status.Completed) && (
+          {status === Inventory.status.Completed && (
             <Text style={styles.txtDetails}>
-              Completed on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_CompletedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
-          {status === Inventory.getStatus(Inventory.status.Validated) && (
+          {status === Inventory.status.Validated && (
             <Text style={styles.txtDetails}>
-              Validated on {formatDate(date, 'MM/DD/YYYY')}
+              {`${I18n.t('Base_ValidatedOn')} ${formatDate(
+                date,
+                I18n.t('Base_DateFormat'),
+              )}`}
             </Text>
           )}
         </View>

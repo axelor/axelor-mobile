@@ -13,7 +13,7 @@ const LogoutButton = ({onPress}) => {
     <View style={styles.container}>
       <TouchableOpacity style={button} onPress={onPress}>
         <Icon name="power-off" />
-        <Text style={styles.text}>{I18n.t('Auth.LOGOUT')}</Text>
+        <Text style={styles.text}>{I18n.t('Auth_LOGOUT')}</Text>
       </TouchableOpacity>
     </View>
   );

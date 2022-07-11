@@ -5,6 +5,7 @@ import {Badge, LabelText} from '@/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {checkNullString} from '@/modules/stock/utils/strings';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryLineCard = ({
   style,
@@ -17,6 +18,8 @@ const CustomerDeliveryLineCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     if (parseFloat(pickedQty) === 0) {
       return null;
@@ -43,23 +46,23 @@ const CustomerDeliveryLineCard = ({
             />
           )}
           <LabelText
-            title="Asked quantity :"
+            title={`${I18n.t('Stock_AskedQty')} :`}
             value={parseFloat(askedQty).toFixed(2)}
           />
           <LabelText
-            title="Picked quantity :"
+            title={`${I18n.t('Stock_PickedQty')} :`}
             value={parseFloat(pickedQty).toFixed(2)}
           />
           {checkNullString(locker) === false && (
             <LabelText
-              title="Locker :"
+              title={`${I18n.t('Stock_Locker')} :`}
               value={locker}
               iconName="map-marker-alt"
             />
           )}
           {trackingNumber != null && (
             <LabelText
-              title="Tracking number :"
+              title={`${I18n.t('Stock_TrackingNumber')} :`}
               value={trackingNumber?.trackingNumberSeq}
               iconName="qrcode"
               FontAwesome5={false}

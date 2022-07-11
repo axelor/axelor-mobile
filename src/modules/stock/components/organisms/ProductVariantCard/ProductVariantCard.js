@@ -5,6 +5,7 @@ import {Badge} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
 import {useThemeColor} from '@/features/themeSlice';
 import {useSelector} from 'react-redux';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductVariantCard = ({
   style,
@@ -17,6 +18,7 @@ const ProductVariantCard = ({
 }) => {
   const {baseUrl} = useSelector(state => state.auth);
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const Image_Http_URL = {
     uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${picture?.id}/content/download/`,
   };
@@ -55,7 +57,11 @@ const ProductVariantCard = ({
                 ? Colors.primaryColor_light
                 : Colors.errorColor_light
             }
-            title={stockAvailability > 0 ? 'Available' : 'Unavailable'}
+            title={
+              stockAvailability > 0
+                ? I18n.t('Stock_Available')
+                : I18n.t('Stock_Unavailable')
+            }
           />
         </View>
         <View style={styles.attrView}>
@@ -70,6 +76,7 @@ const ProductVariantCard = ({
                     {attr1.priceExtra >= 0 && attr1.priceExtra != null
                       ? `(${Product.getApplicationPriceSelect(
                           attr1.applicationPriceSelect,
+                          I18n,
                         )} : +${parseFloat(attr1.priceExtra)})`
                       : null}
                   </Text>
@@ -82,6 +89,7 @@ const ProductVariantCard = ({
                     {attr2.priceExtra > 0 && attr2.priceExtra != null
                       ? `(${Product.getApplicationPriceSelect(
                           attr2.applicationPriceSelect,
+                          I18n,
                         )} : +${parseFloat(attr2.priceExtra)})`
                       : null}
                   </Text>
@@ -94,6 +102,7 @@ const ProductVariantCard = ({
                     {attr3.priceExtra > 0 && attr3.priceExtra != null
                       ? `(${Product.getApplicationPriceSelect(
                           attr3.applicationPriceSelect,
+                          I18n,
                         )} : +${parseFloat(attr3.priceExtra)})`
                       : null}
                   </Text>
@@ -106,6 +115,7 @@ const ProductVariantCard = ({
                     {attr4.priceExtra > 0 && attr4.priceExtra != null
                       ? `(${Product.getApplicationPriceSelect(
                           attr4.applicationPriceSelect,
+                          I18n,
                         )} : +${parseFloat(attr4.priceExtra)})`
                       : null}
                   </Text>
@@ -118,6 +128,7 @@ const ProductVariantCard = ({
                     {attr5.priceExtra > 0 && attr5.priceExtra != null
                       ? `(${Product.getApplicationPriceSelect(
                           attr5.applicationPriceSelect,
+                          I18n,
                         )} : +${parseFloat(attr5.priceExtra)})`
                       : null}
                   </Text>

@@ -37,18 +37,18 @@ const SettingsScreen = ({route}) => {
   return (
     <Screen style={styles.container}>
       <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User.ZebraDevice')} ? `}</Text>
+        <Text>{`${I18n.t('User_ZebraDevice')} ? `}</Text>
         <Switch isEnabled={zebraConfig} handleToggle={handleToggleZebra} />
       </View>
       <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User.ShowFilter')} ? `}</Text>
+        <Text>{`${I18n.t('User_ShowFilter')} ? `}</Text>
         <Switch
           isEnabled={filterShowConfig}
           handleToggle={handleToggleFilter}
         />
       </View>
       <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User.ColorBlind')} ? `} </Text>
+        <Text>{`${I18n.t('User_ColorBlind')} ? `} </Text>
         <Switch
           isEnabled={isColorBlind}
           handleToggle={state => handleToggleColorBlind(state)}
@@ -57,7 +57,7 @@ const SettingsScreen = ({route}) => {
       {route.params.user == null ||
       route.params.user.group.code !== 'admins' ? null : (
         <Button
-          title={I18n.t('User.SendTranslations')}
+          title={I18n.t('User_SendTranslations')}
           style={styles.button}
           onPress={() => {}}
         />

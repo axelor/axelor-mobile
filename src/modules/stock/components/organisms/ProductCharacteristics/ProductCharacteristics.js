@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductCharacteristics = ({
   style,
@@ -17,6 +18,8 @@ const ProductCharacteristics = ({
   unrenewed,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   return (
     <Card style={[styles.container, style]}>
       <View style={styles.content}>
@@ -48,14 +51,20 @@ const ProductCharacteristics = ({
         {procurMethod && (
           <Badge
             color={Colors.plannedColor_light}
-            title={Product.getProcurementMethod(procurMethod)}
+            title={Product.getProcurementMethod(procurMethod, I18n)}
           />
         )}
         {prototype && (
-          <Badge color={Colors.priorityColor_light} title="Prototype" />
+          <Badge
+            color={Colors.priorityColor_light}
+            title={I18n.t('Stock_Prototype')}
+          />
         )}
         {unrenewed && (
-          <Badge color={Colors.cautionColor_light} title="Unrenewed" />
+          <Badge
+            color={Colors.cautionColor_light}
+            title={I18n.t('Stock_Unrenewed')}
+          />
         )}
       </View>
     </Card>

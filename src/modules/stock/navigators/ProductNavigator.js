@@ -10,11 +10,13 @@ import ProductImageScreen from '@/modules/stock/screens/products/ProductImageScr
 import ProductAttachedFilesScreen from '@/modules/stock/screens/products/ProductAttachedFilesScreen';
 import ProductStockLocationDetailsScreen from '../screens/products/ProductStockLocationDetailsScreen';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const ProductNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -27,7 +29,7 @@ const ProductNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Products',
+          headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -37,7 +39,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Product',
+          headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -47,7 +49,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Quantity per stock location',
+          headerTitle: I18n.t('Stock_QuantityStockLocation'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -57,7 +59,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Variants',
+          headerTitle: I18n.t('Stock_Variants'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -67,7 +69,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Product Details',
+          headerTitle: I18n.t('Stock_ProductDetails'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -77,7 +79,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Product',
+          headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -87,7 +89,7 @@ const ProductNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Product',
+          headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

@@ -12,6 +12,7 @@ import {
 import {fetchCustomerDeliveryLines} from '@/modules/stock/features/customerDeliveryLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -22,6 +23,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const [filteredList, setFilteredList] = useState(customerDeliveryLineList);
   const [doneStatus, setDoneStatus] = useState(false);
   const [undoneStatus, setUndoneStatus] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const handleShowLine = (item, index) => {
@@ -114,7 +116,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
       <ChipSelect>
         <Chip
           selected={doneStatus}
-          title="Done"
+          title={I18n.t('Stock_Done')}
           onPress={handleDoneStatus}
           selectedColor={{
             backgroundColor: Colors.primaryColor_light,
@@ -123,11 +125,11 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
         />
         <Chip
           selected={undoneStatus}
-          title="Not Done"
+          title={I18n.t('Stock_NotDone')}
           onPress={handleUndoneStatus}
           selectedColor={{
-            backgroundColor: Colors.secondaryColor_light,
-            borderColor: Colors.secondaryColor,
+            backgroundColor: Colors.cautionColor_light,
+            borderColor: Colors.cautionColor,
           }}
         />
       </ChipSelect>
@@ -148,7 +150,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             availability={
               customerDelivery.statusSelect === StockMove.status.Realized
                 ? null
-                : StockMove.getAvailability(item.availableStatusSelect)
+                : item.availableStatusSelect
             }
             trackingNumber={item?.trackingNumber}
             onPress={() => handleShowLine(item, index)}

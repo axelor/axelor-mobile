@@ -162,7 +162,7 @@ const UserScreen = ({navigation}) => {
               {canModifyCompany ? (
                 <Picker
                   style={styles.companyPicker}
-                  title={I18n.t('User.Company')}
+                  title={I18n.t('User_Company')}
                   listItems={companyList}
                   labelField="name"
                   valueField="id"
@@ -172,7 +172,7 @@ const UserScreen = ({navigation}) => {
               ) : (
                 <Card style={styles.cardCompany}>
                   <LabelText
-                    title={`${I18n.t('User.ActiveCompany')} :`}
+                    title={`${I18n.t('User_ActiveCompany')} :`}
                     value={user.activeCompany.name}
                   />
                 </Card>
@@ -180,7 +180,7 @@ const UserScreen = ({navigation}) => {
             </View>
           )}
           <Text style={styles.itemTitle}>
-            {`${I18n.t('User.DefaultStockLocation')}`}
+            {`${I18n.t('User_DefaultStockLocation')}`}
           </Text>
           <AutocompleteSearch
             objectList={stockLocationList}
@@ -195,11 +195,11 @@ const UserScreen = ({navigation}) => {
             }
             displayValue={displayItemName}
             scanKeySearch={stockLocationScanKey}
-            placeholder={I18n.t('Stock.StockLocation')}
+            placeholder={I18n.t('Stock_StockLocation')}
           />
           {languageList.length > 1 && (
             <Picker
-              title={I18n.t('User.Language')}
+              title={I18n.t('User_Language')}
               defaultValue={user.language}
               listItems={languageList}
               labelField="name"
@@ -210,7 +210,7 @@ const UserScreen = ({navigation}) => {
           )}
           {!isColorBlind && Themes.themesList.length !== 1 && (
             <Picker
-              title={I18n.t('User.Theme')}
+              title={I18n.t('User_Theme')}
               defaultValue={theme}
               listItems={Themes.themesList}
               labelField="name"

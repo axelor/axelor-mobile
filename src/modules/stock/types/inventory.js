@@ -8,56 +8,58 @@ class Inventory {
     Canceled: 6,
   };
 
-  static getStatus = select => {
-    switch (select) {
-      case this.status.Draft:
-        return 'Draft';
-      case this.status.Planned:
-        return 'Planned';
-      case this.status.InProgress:
-        return 'In Progress';
-      case this.status.Completed:
-        return 'Completed';
-      case this.status.Validated:
-        return 'Validated';
-      case this.status.Canceled:
-        return 'Canceled';
-      default:
-        console.warn(
-          `Status provided with value ${select} is not supported by inventory`,
-        );
-        return null;
+  static getStatus = (select, I18n = {t: () => {}}) => {
+    if (I18n) {
+      switch (select) {
+        case this.status.Draft:
+          return I18n.t('Stock_Status_Draft');
+        case this.status.Planned:
+          return I18n.t('Stock_Status_InProgress');
+        case this.status.InProgress:
+          return I18n.t('Stock_Status_Planned');
+        case this.status.Completed:
+          return I18n.t('Stock_Status_Completed');
+        case this.status.Validated:
+          return I18n.t('Stock_Status_Validated');
+        case this.status.Canceled:
+          return I18n.t('Stock_Status_Canceled');
+        default:
+          console.warn(
+            `Status provided with value ${select} is not supported by inventory`,
+          );
+          return null;
+      }
     }
   };
 
   static getStatusColor = (status, Colors) => {
     switch (status) {
-      case 'Draft':
+      case this.status.DraftDraft:
         return {
           backgroundColor: Colors.secondaryColor_light,
           borderColor: Colors.secondaryColor,
         };
-      case 'Planned':
+      case this.status.Planned:
         return {
           backgroundColor: Colors.plannedColor_light,
           borderColor: Colors.plannedColor,
         };
-      case 'In Progress':
+      case this.status.InProgress:
         return {
           backgroundColor: Colors.progressColor_light,
           borderColor: Colors.progressColor,
         };
-      case 'Completed':
+      case this.status.Completed:
         return {
           backgroundColor: Colors.priorityColor_light,
           borderColor: Colors.priorityColor,
         };
-      case 'Validated':
+      case this.status.Validated:
         return {
           backgroundColor: Colors.primaryColor_light,
           borderColor: Colors.primaryColor,
         };
-      case 'Canceled':
+      case this.status.Canceled:
         return {
           backgroundColor: Colors.errorColor_light,
           borderColor: Colors.errorColor,

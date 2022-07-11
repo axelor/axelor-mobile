@@ -9,11 +9,13 @@ import StockCorrectionNewProductScreen from '@/modules/stock/screens/stockCorrec
 import StockCorrectionNewTrackingScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionNewTrackingScreen';
 import ProductNavigator from './ProductNavigator';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const StockCorrectionNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -26,7 +28,7 @@ const StockCorrectionNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Stock corrections',
+          headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -36,7 +38,7 @@ const StockCorrectionNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Stock correction',
+          headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -46,7 +48,7 @@ const StockCorrectionNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Stock correction',
+          headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -56,7 +58,7 @@ const StockCorrectionNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Stock correction',
+          headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -66,7 +68,7 @@ const StockCorrectionNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Stock correction',
+          headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

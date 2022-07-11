@@ -12,42 +12,44 @@ class StockMove {
     Canceled: 4,
   };
 
-  static getStatus = select => {
-    switch (select) {
-      case this.status.Draft:
-        return 'Draft';
-      case this.status.Planned:
-        return 'Planned';
-      case this.status.Realized:
-        return 'Realized';
-      case this.status.Canceled:
-        return 'Canceled';
-      default:
-        console.warn(
-          `Status provided with value ${select} is not supported by stock move`,
-        );
-        return null;
+  static getStatus = (select, I18n = {t: () => {}}) => {
+    if (I18n) {
+      switch (select) {
+        case this.status.Draft:
+          return I18n.t('Stock_Status_Draft');
+        case this.status.Planned:
+          return I18n.t('Stock_Status_Planned');
+        case this.status.Realized:
+          return I18n.t('Stock_Status_Realized');
+        case this.status.Canceled:
+          return I18n.t('Stock_Status_Canceled');
+        default:
+          console.warn(
+            `Status provided with value ${select} is not supported by stock move`,
+          );
+          return null;
+      }
     }
   };
 
   static getStatusColor = (status, Colors) => {
     switch (status) {
-      case 'Draft':
+      case this.status.Draft:
         return {
           backgroundColor: Colors.secondaryColor_light,
           borderColor: Colors.secondaryColor,
         };
-      case 'Planned':
+      case this.status.Planned:
         return {
           backgroundColor: Colors.plannedColor_light,
           borderColor: Colors.plannedColor,
         };
-      case 'Realized':
+      case this.status.Realized:
         return {
           backgroundColor: Colors.primaryColor_light,
           borderColor: Colors.primaryColor,
         };
-      case 'Canceled':
+      case this.status.Canceled:
         return {
           backgroundColor: Colors.errorColor_light,
           borderColor: Colors.errorColor,
@@ -66,35 +68,37 @@ class StockMove {
     Unavailable: 3,
   };
 
-  static getAvailability = select => {
-    switch (select) {
-      case this.availability.Available:
-        return 'Available';
-      case this.availability.Partially_available:
-        return 'Partially';
-      case this.availability.Unavailable:
-        return 'Unavailable';
-      default:
-        console.warn(
-          `Availability provided with value ${select} is not supported by stock move`,
-        );
-        return null;
+  static getAvailability = (select, I18n = {t: () => {}}) => {
+    if (I18n) {
+      switch (select) {
+        case this.availability.Available:
+          return I18n.t('Stock_Available');
+        case this.availability.Partially_available:
+          return I18n.t('Stock_Partially');
+        case this.availability.Unavailable:
+          return I18n.t('Stock_Unavailable');
+        default:
+          console.warn(
+            `Availability provided with value ${select} is not supported by stock move`,
+          );
+          return null;
+      }
     }
   };
 
   static getAvailabilityColor = (availability, Colors) => {
     switch (availability) {
-      case 'Available':
+      case this.availability.Available:
         return {
           backgroundColor: Colors.primaryColor_light,
           borderColor: Colors.primaryColor,
         };
-      case 'Partially':
+      case this.availability.Partially_available:
         return {
           backgroundColor: Colors.cautionColor_light,
           borderColor: Colors.cautionColor,
         };
-      case 'Unavailable':
+      case this.availability.Unavailable:
         return {
           backgroundColor: Colors.errorColor_light,
           borderColor: Colors.errorColor,
@@ -114,21 +118,23 @@ class StockMove {
     Non_Compliant: 3,
   };
 
-  static conformitySelection = [
-    {name: 'Compliant', id: this.conformity.Compliant},
-    {name: 'Non Compliant', id: this.conformity.Non_Compliant},
-  ];
+  static getConformitySelection = (I18n = {t: () => {}}) => {
+    return [
+      {name: I18n.t('Stock_Compliant'), id: this.conformity.Compliant},
+      {name: I18n.t('Stock_NonCompliant'), id: this.conformity.Non_Compliant},
+    ];
+  };
 
-  static getConformity = select => {
+  static getConformity = (select, I18n = {t: () => {}}) => {
     switch (select) {
       case this.conformity.Unknown:
         return '';
       case this.conformity.None:
         return ' ';
       case this.conformity.Compliant:
-        return 'Compliant';
+        return I18n.t('Stock_Compliant');
       case this.conformity.Non_Compliant:
-        return 'Non Compliant';
+        return I18n.t('Stock_NonCompliant');
       default:
         console.warn(
           `Conformity provided with value ${select} is not supported by stock move`,

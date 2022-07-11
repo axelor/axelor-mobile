@@ -22,7 +22,7 @@ const UserNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: I18n.t('User.UserProfile'),
+          headerTitle: I18n.t('User_UserProfile'),
           headerTitleStyle: {color: Colors.text},
         }}
       />
@@ -32,7 +32,7 @@ const UserNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: I18n.t('User.Settings'),
+          headerTitle: I18n.t('User_Settings'),
           headerTitleStyle: {color: Colors.text},
         }}
       />

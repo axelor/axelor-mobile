@@ -5,6 +5,7 @@ import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
 import {displayItemName} from '@/modules/stock/utils/displayers';
+import useTranslator from '@/hooks/use-translator';
 
 const destinationStockLocationScanKey =
   'destination-stock-location_internal-move-select-to';
@@ -12,6 +13,7 @@ const destinationStockLocationScanKey =
 const InternalMoveSelectToLocationScreen = ({navigation, route}) => {
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
@@ -62,7 +64,7 @@ const InternalMoveSelectToLocationScreen = ({navigation, route}) => {
         }
         displayValue={displayItemName}
         scanKeySearch={destinationStockLocationScanKey}
-        placeholder="Destination Stock Location"
+        placeholder={I18n.t('Stock_DestinationStockLocation')}
         isFocus={true}
         changeScreenAfter={true}
       />

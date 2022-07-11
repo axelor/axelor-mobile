@@ -15,7 +15,7 @@ const UsernameInput = ({value, onChange, readOnly}) => {
         style={styles.input}
         value={value}
         onChange={onChange}
-        placeholder={I18n.t('Auth.Username')}
+        placeholder={I18n.t('Auth_Username')}
         readOnly={readOnly}
       />
     </View>

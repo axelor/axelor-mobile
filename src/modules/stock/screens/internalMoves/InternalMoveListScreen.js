@@ -26,6 +26,7 @@ import {
 import StockMove from '@/modules/stock/types/stock-move';
 import {Chip} from '@/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';
@@ -34,6 +35,7 @@ const stockDestinationLocationScanKey =
 
 const InternalMoveListScreen = ({navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {loadingInternalMove, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
   const {
@@ -203,7 +205,7 @@ const InternalMoveListScreen = ({navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockOriginalLocationScanKey}
-          placeholder="Original Stock Location"
+          placeholder={I18n.t('Stock_OriginalStockLocation')}
           searchBarKey={1}
         />
         <AutocompleteSearch
@@ -219,7 +221,7 @@ const InternalMoveListScreen = ({navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockDestinationLocationScanKey}
-          placeholder="Destination Stock Location"
+          placeholder={I18n.t('Stock_DestinationStockLocation')}
           searchBarKey={2}
         />
       </SearchContainer>
@@ -228,17 +230,17 @@ const InternalMoveListScreen = ({navigation}) => {
         onChangeValue={item => showInternalMoveDetails(item)}
         fetchData={value => setFilter(value)}
         displayValue={displayStockMoveSeq}
-        placeholder="Ref."
+        placeholder={I18n.t('Stock_Ref')}
         oneFilter={true}
         navigate={navigate}
       />
       <ChipSelect>
         <Chip
           selected={draftStatus}
-          title="Draft"
+          title={I18n.t('Stock_Status_Draft')}
           onPress={handleDraftFilter}
           selectedColor={StockMove.getStatusColor(
-            StockMove.getStatus(StockMove.status.Draft),
+            StockMove.status.Draft,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -246,10 +248,10 @@ const InternalMoveListScreen = ({navigation}) => {
         />
         <Chip
           selected={plannedStatus}
-          title="Planned"
+          title={I18n.t('Stock_Status_Planned')}
           onPress={handlePlannedFilter}
           selectedColor={StockMove.getStatusColor(
-            StockMove.getStatus(StockMove.status.Planned),
+            StockMove.status.Planned,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -257,10 +259,10 @@ const InternalMoveListScreen = ({navigation}) => {
         />
         <Chip
           selected={realizedStatus}
-          title="Realized"
+          title={I18n.t('Stock_Status_Realized')}
           onPress={handleRealizedFilter}
           selectedColor={StockMove.getStatusColor(
-            StockMove.getStatus(StockMove.status.Realized),
+            StockMove.status.Realized,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -274,11 +276,11 @@ const InternalMoveListScreen = ({navigation}) => {
           <InternalMoveCard
             style={styles.item}
             name={item.stockMoveSeq}
-            status={StockMove.getStatus(item.statusSelect)}
+            status={item.statusSelect}
             availability={
               item.availableStatusSelect == null
                 ? null
-                : StockMove.getAvailability(item.availableStatusSelect)
+                : item.availableStatusSelect
             }
             fromStockLocation={item.fromStockLocation.name}
             toStockLocation={item.toStockLocation.name}

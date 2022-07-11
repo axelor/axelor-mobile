@@ -13,6 +13,7 @@ import {
 } from '../../components/organisms';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
+import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -22,6 +23,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const [widthNotes, setWidthNotes] = useState();
   const PERCENTAGE_WIDTH_NOTES = 0.95;
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -141,9 +143,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
                 }
                 availability={
                   customerDelivery.statusSelect !== StockMove.status.Realized
-                    ? StockMove.getAvailability(
-                        customerDeliveryLineList[0]?.availableStatusSelect,
-                      )
+                    ? customerDeliveryLineList[0]?.availableStatusSelect
                     : null
                 }
                 trackingNumber={customerDeliveryLineList[0]?.trackingNumber}
@@ -163,9 +163,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
                 }
                 availability={
                   customerDelivery.statusSelect !== StockMove.status.Realized
-                    ? StockMove.getAvailability(
-                        customerDeliveryLineList[1]?.availableStatusSelect,
-                      )
+                    ? customerDeliveryLineList[1]?.availableStatusSelect
                     : null
                 }
                 trackingNumber={customerDeliveryLineList[1]?.trackingNumber}
@@ -175,7 +173,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           </ViewAllContainer>
           {customerDelivery.pickingOrderComments && (
             <View style={styles.description}>
-              <Text style={styles.titles}>NOTES OF CLIENT</Text>
+              <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
               <Card
                 style={styles.notes}
                 onLayout={event => {
@@ -195,7 +193,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
             <Button
               style={styles.validateBtn}
               onPress={handleRealize}
-              title="REALIZE"
+              title={I18n.t('Base_Realize')}
             />
           )}
         </ScrollView>

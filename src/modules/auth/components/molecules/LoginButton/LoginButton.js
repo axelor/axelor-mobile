@@ -10,7 +10,7 @@ const LoginButton = ({onPress}) => {
     <View style={styles.container}>
       <Button
         style={styles.button}
-        title={I18n.t('Auth.LOGIN')}
+        title={I18n.t('Auth_LOGIN')}
         onPress={onPress}
       />
     </View>

@@ -8,6 +8,7 @@ import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '@/modules/stock/types/stock-move';
 import {StockMoveHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_customer-delivery-select';
 
@@ -16,6 +17,7 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
   const customerDeliveryLine = route.params.customerDeliveryLine;
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
@@ -74,16 +76,16 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
             fetchData={fetchProductsAPI}
             displayValue={displayItemName}
             scanKeySearch={productScanKey}
-            placeholder="Product"
+            placeholder={I18n.t('Stock_Product')}
             isFocus={true}
             changeScreenAfter={true}
           />
         </View>
         <PopUpOneButton
           visible={isVisible}
-          title="Warning"
-          data="This is not the right product."
-          btnTitle="OK"
+          title={I18n.t('Auth_Warning')}
+          data={I18n.t('Stock_ErrorProduct')}
+          btnTitle={I18n.t('Auth_Close')}
           onPress={() => setVisible(false)}
         />
       </View>

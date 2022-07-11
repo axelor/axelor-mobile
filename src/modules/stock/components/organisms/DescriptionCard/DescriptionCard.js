@@ -2,20 +2,23 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {EditableInput} from '@/components/molecules';
 import {Card, Text} from '@/components/atoms';
+import useTranslator from '@/hooks/use-translator';
 
 const DescriptionCard = ({
   isEditable = true,
   description,
   onChange = () => {},
 }) => {
+  const I18n = useTranslator();
+
   return (
     <View>
       {isEditable ? (
         <View>
-          <Text style={styles.title}>DESCRIPTION</Text>
+          <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
           <EditableInput
             defaultValue={description}
-            placeholder="Description"
+            placeholder={I18n.t('Base_Description')}
             style={styles.description}
             onValidate={onChange}
             multiline={true}
@@ -25,7 +28,7 @@ const DescriptionCard = ({
       ) : (
         description != null && (
           <View>
-            <Text style={styles.title}>DESCRIPTION</Text>
+            <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
             <Card style={styles.description}>
               <Text numberOfLines={5}>{description}</Text>
             </Card>

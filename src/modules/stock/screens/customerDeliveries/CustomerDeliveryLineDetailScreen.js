@@ -15,6 +15,7 @@ import RenderHtml from 'react-native-render-html';
 import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 import {addNewLine} from '../../features/customerDeliverySlice';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -29,6 +30,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   );
   const [widthNotes, setWidthNotes] = useState();
   const PERCENTAGE_WIDTH_NOTES = 0.95;
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -120,11 +122,17 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
                 </Text>
                 {Number(customerDeliveryLine.qty) !==
                   Number(customerDeliveryLine.realQty) && (
-                  <Badge title="Incomplete" color={Colors.cautionColor_light} />
+                  <Badge
+                    title={I18n.t('Stock_Status_Incomplete')}
+                    color={Colors.cautionColor_light}
+                  />
                 )}
                 {Number(customerDeliveryLine.qty) ===
                   Number(customerDeliveryLine.realQty) && (
-                  <Badge title="Complete" color={Colors.primaryColor_light} />
+                  <Badge
+                    title={I18n.t('Stock_Status_Complete')}
+                    color={Colors.primaryColor_light}
+                  />
                 )}
               </View>
             )}
@@ -138,7 +146,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             locker={customerDeliveryLine?.locker}
           />
           <QuantityCard
-            labelQty="Picked quantity"
+            labelQty={I18n.t('Stock_PickedQty')}
             defaultValue={parseFloat(realQty).toFixed(2)}
             onValueChange={handleQtyChange}
             style={styles.quantityCard}
@@ -146,7 +154,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
               customerDelivery.statusSelect !== StockMove.status.Realized
             }>
             <Text style={styles.text}>
-              {`Asked quantity : ${parseFloat(
+              {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
                 customerDeliveryLine != null ? customerDeliveryLine.qty : 0,
               ).toFixed(2)} ${
                 customerDeliveryLine != null
@@ -157,7 +165,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           </QuantityCard>
           {customerDelivery.pickingOrderComments && (
             <View style={styles.description}>
-              <Text style={styles.titles}>NOTES OF CLIENT</Text>
+              <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
               <Card
                 style={styles.notes}
                 onLayout={event => {
@@ -177,7 +185,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             customerDelivery.statusSelect !== StockMove.status.Realized && (
               <Button
                 style={styles.validateBtn}
-                title="VALIDATE"
+                title={I18n.t('Base_Validate')}
                 onPress={handleValidate}
               />
             )}
@@ -185,7 +193,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             customerDelivery.statusSelect !== StockMove.status.Realized && (
               <Button
                 style={styles.validateBtn}
-                title="ADD"
+                title={I18n.t('Base_Add')}
                 onPress={handleAddLine}
               />
             )}

@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const LocationsMoveCard = ({
   style,
@@ -14,6 +15,8 @@ const LocationsMoveCard = ({
   onPressTo = () => {},
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   return (
     <View style={[styles.container, style]}>
       <View style={styles.card}>
@@ -23,7 +26,9 @@ const LocationsMoveCard = ({
             activeOpacity={0.9}
             style={styles.editableCard}>
             <View style={styles.editableText}>
-              {isLockerCard && <Text style={styles.text}>From locker</Text>}
+              {isLockerCard && (
+                <Text style={styles.text}>{I18n.t('Stock_FromLocker')}</Text>
+              )}
               <Text numberOfLines={1} style={styles.text}>
                 {fromStockLocation}
               </Text>
@@ -32,7 +37,9 @@ const LocationsMoveCard = ({
           </TouchableOpacity>
         ) : (
           <View style={styles.editableText}>
-            {isLockerCard && <Text style={styles.text}>From locker</Text>}
+            {isLockerCard && (
+              <Text style={styles.text}>{I18n.t('Stock_FromLocker')}</Text>
+            )}
             <Text numberOfLines={1} style={styles.text}>
               {fromStockLocation}
             </Text>
@@ -52,7 +59,9 @@ const LocationsMoveCard = ({
             activeOpacity={0.9}
             style={styles.editableCard}>
             <View style={styles.editableText}>
-              {isLockerCard && <Text style={styles.text}>To locker</Text>}
+              {isLockerCard && (
+                <Text style={styles.text}>{I18n.t('Stock_ToLocker')}</Text>
+              )}
               <Text numberOfLines={1} style={styles.text}>
                 {toStockLocation}
               </Text>
@@ -61,7 +70,9 @@ const LocationsMoveCard = ({
           </TouchableOpacity>
         ) : (
           <View style={styles.editableText}>
-            {isLockerCard && <Text style={styles.text}>To locker</Text>}
+            {isLockerCard && (
+              <Text style={styles.text}>{I18n.t('Stock_ToLocker')}</Text>
+            )}
             <Text numberOfLines={1} style={styles.text}>
               {toStockLocation}
             </Text>

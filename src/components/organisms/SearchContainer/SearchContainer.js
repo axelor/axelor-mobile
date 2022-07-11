@@ -4,11 +4,13 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Icon, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
 import {useSelector} from 'react-redux';
+import useTranslator from '@/hooks/use-translator';
 
 const SearchContainer = ({style, children}) => {
   const {filterShowConfig} = useSelector(state => state.config);
   const [isVisible, setVisible] = useState();
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   useEffect(() => {
     setVisible(filterShowConfig);
@@ -18,7 +20,7 @@ const SearchContainer = ({style, children}) => {
     <View style={[styles.container, style]}>
       <TouchableOpacity onPress={() => setVisible(!isVisible)}>
         <View style={styles.arrowContainer}>
-          <Text>All filters</Text>
+          <Text>{I18n.t('Base_AllFilters')}</Text>
           <Icon
             name={isVisible ? 'angle-up' : 'angle-down'}
             size={24}

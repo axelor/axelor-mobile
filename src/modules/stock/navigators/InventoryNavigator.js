@@ -11,11 +11,13 @@ import InventoryLineDetailsScreen from '@/modules/stock/screens/inventories/Inve
 import InventorySelectProductScreen from '@/modules/stock/screens/inventories/InventorySelectProductScreen';
 import InventorySelectTrackingScreen from '@/modules/stock/screens/inventories/InventorySelectTrackingScreen';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InventoriesNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -28,7 +30,7 @@ const InventoriesNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventories',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -38,7 +40,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -48,7 +50,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -58,7 +60,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -68,7 +70,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -78,7 +80,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -88,7 +90,7 @@ const InventoriesNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Inventory',
+          headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

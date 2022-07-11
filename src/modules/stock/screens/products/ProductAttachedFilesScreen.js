@@ -9,9 +9,11 @@ import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import {PopUpOneButton, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const ProductAttachedFilesScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const product = route.params.product;
   const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
   const {loadingProduct, filesList} = useSelector(state => state.product);
@@ -82,9 +84,9 @@ const ProductAttachedFilesScreen = ({route, navigation}) => {
       {errorFile && (
         <PopUpOneButton
           visible={errorFile}
-          title="Error"
-          data="Cannot open file"
-          btnTitle="OK"
+          title={I18n.t('Auth_Error')}
+          data={I18n.t('Auth_CannotOpenFile')}
+          btnTitle={I18n.t('Auth_Close')}
           onPress={() => setErrorFile(false)}
         />
       )}

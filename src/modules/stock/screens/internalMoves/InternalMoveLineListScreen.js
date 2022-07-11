@@ -11,9 +11,11 @@ import StockMove from '@/modules/stock/types/stock-move';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const internalMove = route.params.internalMove;
   const {loadingIMLines, moreLoading, isListEnd, internalMoveLineList} =
     useSelector(state => state.internalMoveLine);
@@ -102,7 +104,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       <ChipSelect>
         <Chip
           selected={doneStatus}
-          title="Done"
+          title={I18n.t('Stock_Done')}
           onPress={handleDoneStatus}
           selectedColor={{
             backgroundColor: Colors.primaryColor_light,
@@ -111,7 +113,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         />
         <Chip
           selected={undoneStatus}
-          title="Not Done"
+          title={I18n.t('Stock_NotDone')}
           onPress={handleUndoneStatus}
           selectedColor={{
             backgroundColor: Colors.cautionColor_light,
@@ -130,7 +132,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             availability={
               item.availableStatusSelect == null
                 ? null
-                : StockMove.getAvailability(item.availableStatusSelect)
+                : item.availableStatusSelect
             }
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
             expectedQty={item.qty}

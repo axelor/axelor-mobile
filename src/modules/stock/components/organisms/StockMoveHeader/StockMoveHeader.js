@@ -5,9 +5,11 @@ import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const StockMoveHeader = ({reference, status, date, availability}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <View style={styles.infoContainer}>
@@ -17,29 +19,24 @@ const StockMoveHeader = ({reference, status, date, availability}) => {
         )}
         {date != null && (
           <Text style={styles.text_secondary}>
-            {formatDate(date, 'MM/DD/YYYY')}
+            {formatDate(date, I18n.t('Base_DateFormat'))}
           </Text>
         )}
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={
-            StockMove.getStatusColor(StockMove.getStatus(status), Colors)
-              .backgroundColor
-          }
-          title={StockMove.getStatus(status)}
+          color={StockMove.getStatusColor(status, Colors).backgroundColor}
+          title={StockMove.getStatus(status, I18n)}
         />
         {availability == null ? (
           <View style={styles.refContainer} />
         ) : (
           <Badge
             color={
-              StockMove.getAvailabilityColor(
-                StockMove.getAvailability(availability),
-                Colors,
-              ).backgroundColor
+              StockMove.getAvailabilityColor(availability, Colors)
+                .backgroundColor
             }
-            title={StockMove.getAvailability(availability)}
+            title={StockMove.getAvailability(availability, I18n)}
           />
         )}
       </View>

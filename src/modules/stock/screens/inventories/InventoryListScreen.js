@@ -23,11 +23,13 @@ import {
 import {InventoryCard} from '@/modules/stock/components/organisms';
 import Inventory from '@/modules/stock/types/inventory';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_inventory-list';
 
 const InventoryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const [stockLocation, setStockLocation] = useState(null);
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
@@ -185,7 +187,7 @@ const InventoryListScreen = ({navigation}) => {
           }
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
-          placeholder="Stock location"
+          placeholder={I18n.t('Stock_StockLocation')}
         />
       </SearchContainer>
       <AutoCompleteSearchNoQR
@@ -193,17 +195,17 @@ const InventoryListScreen = ({navigation}) => {
         onChangeValue={item => navigateToInventoryDetail(item)}
         fetchData={value => setFilter(value)}
         displayValue={displayInventorySeq}
-        placeholder="Ref."
+        placeholder={I18n.t('Stock_Ref')}
         oneFilter={true}
         navigate={navigate}
       />
       <ChipSelect scrollable={true}>
         <Chip
           selected={plannedStatus}
-          title="Planned"
+          title={I18n.t('Stock_Status_Planned')}
           onPress={handlePlanifiedFilter}
           selectedColor={Inventory.getStatusColor(
-            Inventory.getStatus(Inventory.status.Planned),
+            Inventory.status.Planned,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -211,10 +213,10 @@ const InventoryListScreen = ({navigation}) => {
         />
         <Chip
           selected={inProgressStatus}
-          title="In Progress"
+          title={I18n.t('Stock_Status_InProgress')}
           onPress={handleInProgressFilter}
           selectedColor={Inventory.getStatusColor(
-            Inventory.getStatus(Inventory.status.InProgress),
+            Inventory.status.InProgress,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -222,10 +224,10 @@ const InventoryListScreen = ({navigation}) => {
         />
         <Chip
           selected={completedStatus}
-          title="Completed"
+          title={I18n.t('Stock_Status_Completed')}
           onPress={handleCompletedFilter}
           selectedColor={Inventory.getStatusColor(
-            Inventory.getStatus(Inventory.status.Completed),
+            Inventory.status.Completed,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -233,10 +235,10 @@ const InventoryListScreen = ({navigation}) => {
         />
         <Chip
           selected={validatedStatus}
-          title="Validated"
+          title={I18n.t('Stock_Status_Validated')}
           onPress={handleValidatedFilter}
           selectedColor={Inventory.getStatusColor(
-            Inventory.getStatus(Inventory.status.Validated),
+            Inventory.status.Validated,
             Colors,
           )}
           width={Dimensions.get('window').width * 0.3}
@@ -249,7 +251,7 @@ const InventoryListScreen = ({navigation}) => {
         renderItem={({item}) => (
           <InventoryCard
             reference={item.inventorySeq}
-            status={Inventory.getStatus(item.statusSelect)}
+            status={item.statusSelect}
             date={Inventory.getDate(item)}
             stockLocation={item.stockLocation?.name}
             origin={item.origin}

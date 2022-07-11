@@ -5,9 +5,11 @@ import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import {useThemeColor} from '@/features/themeSlice';
 import Inventory from '@/modules/stock/types/inventory';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryHeader = ({reference, status, date, stockLocation}) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <View style={styles.infoContainer}>
@@ -27,11 +29,8 @@ const InventoryHeader = ({reference, status, date, stockLocation}) => {
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={
-            Inventory.getStatusColor(Inventory.getStatus(status), Colors)
-              .backgroundColor
-          }
-          title={Inventory.getStatus(status)}
+          color={Inventory.getStatusColor(status, Colors).backgroundColor}
+          title={Inventory.getStatus(status, I18n)}
         />
       </View>
     </View>

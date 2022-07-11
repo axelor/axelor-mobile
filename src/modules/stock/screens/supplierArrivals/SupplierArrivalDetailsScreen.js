@@ -12,6 +12,7 @@ import {fetchSupplierArrivalLines} from '@/modules/stock/features/supplierArriva
 import StockMove from '@/modules/stock/types/stock-move';
 import {getRacks} from '@/modules/stock/features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalDetailScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
@@ -22,6 +23,7 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -123,12 +125,18 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
             onPressTo={handleChangeLocation}
           />
           <View style={styles.clientContainer}>
-            <Text>{`Client : ${supplierArrival.partner?.fullName}`}</Text>
+            <Text>{`${I18n.t('Stock_Supplier')} : ${
+              supplierArrival.partner?.fullName
+            }`}</Text>
             {supplierArrival.origin == null ? null : (
-              <Text>{`Origin : ${supplierArrival.origin}`}</Text>
+              <Text>{`${I18n.t('Stock_Origin')} : ${
+                supplierArrival.origin
+              }`}</Text>
             )}
             {supplierArrival.supplierShipmentRef == null ? null : (
-              <Text>{`Supplier Shipment Ref : ${supplierArrival.supplierShipmentRef}`}</Text>
+              <Text>{`${I18n.t('Stock_SupplierShipmentRef')} : ${
+                supplierArrival.supplierShipmentRef
+              }`}</Text>
             )}
           </View>
           <ViewAllContainer
@@ -174,7 +182,7 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
             <Button
               style={styles.validateBtn}
               onPress={handleRealize}
-              title="REALIZE"
+              title={I18n.t('Base_Realize')}
             />
           )}
         </ScrollView>

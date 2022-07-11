@@ -17,7 +17,7 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
         style={[styles.input, style]}
         value={value}
         onChange={onChange}
-        placeholder={I18n.t('Auth.Password')}
+        placeholder={I18n.t('Auth_Password')}
         secureTextEntry={!visible}
         readOnly={readOnly}
       />

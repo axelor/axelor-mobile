@@ -11,6 +11,7 @@ import {
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
 import {fetchProductWithId} from '../../features/productSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
@@ -22,6 +23,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const [realQty, setRealQty] = useState(
     inventoryLine.realQty == null ? 0 : inventoryLine.realQty,
   );
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -72,12 +74,12 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
             locker={inventoryLine.rack}
           />
           <QuantityCard
-            labelQty="Physical quantity"
+            labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
             defaultValue={parseFloat(realQty).toFixed(2)}
             onValueChange={setRealQty}
             editable={inventory.statusSelect !== Inventory.status.Validated}>
             <Text style={styles.text}>
-              {`Quantity to check : ${parseFloat(
+              {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
                 inventoryLine.currentQty,
               ).toFixed(2)} ${inventoryLine.unit.name}`}
             </Text>
@@ -91,10 +93,18 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
             }
           />
           {inventory.statusSelect < Inventory.status.InProgress && (
-            <Button style={styles.btn} title="SAVE" onPress={() => {}} />
+            <Button
+              style={styles.btn}
+              title={I18n.t('Base_Save')}
+              onPress={() => {}}
+            />
           )}
           {inventory.statusSelect === Inventory.status.Completed && (
-            <Button style={styles.btn} title="CHECK" onPress={() => {}} />
+            <Button
+              style={styles.btn}
+              title={I18n.t('Base_Check')}
+              onPress={() => {}}
+            />
           )}
         </ScrollView>
       )}

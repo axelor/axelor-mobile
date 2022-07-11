@@ -13,11 +13,13 @@ import InternalMoveLineListScreen from '@/modules/stock/screens/internalMoves/In
 import ProductNavigator from './ProductNavigator';
 import StockCorrectionNavigator from './StockCorrectionNavigator';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InternalMoveNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -30,7 +32,7 @@ const InternalMoveNavigator = () => {
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal moves',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -40,7 +42,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -50,7 +52,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -60,7 +62,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -70,7 +72,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -80,7 +82,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -90,7 +92,7 @@ const InternalMoveNavigator = () => {
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />
@@ -99,7 +101,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveSelectTrackingScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerTitle: 'Internal move',
+          headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
       />

@@ -7,6 +7,7 @@ import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {InventoryHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_inventory-select';
 
@@ -15,6 +16,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
   const inventoryLine = route.params.inventoryLine;
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
@@ -60,6 +62,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
         <LocationsMoveCard
           fromStockLocation={inventory.fromRack}
           toStockLocation={inventory.toRack}
+          isLockerCard={true}
         />
       )}
       <AutocompleteSearch
@@ -68,15 +71,15 @@ const InventorySelectProductScreen = ({route, navigation}) => {
         fetchData={fetchProductsAPI}
         displayValue={displayItemName}
         scanKeySearch={productScanKey}
-        placeholder="Product"
+        placeholder={I18n.t('Stock_Product')}
         isFocus={true}
         changeScreenAfter={true}
       />
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right product."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorProduct')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

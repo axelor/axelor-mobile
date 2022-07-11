@@ -8,6 +8,7 @@ import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '../../features/trackingNumberSlice';
 import {InventoryHeader} from '../../components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const trackingScanKey = 'tracking_inventory-select';
 
@@ -17,6 +18,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
   const product = route.params.product;
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchTrackingAPI = useCallback(
@@ -62,6 +64,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
         <LocationsMoveCard
           fromStockLocation={inventory.fromRack}
           toStockLocation={inventory.toRack}
+          isLockerCard={true}
         />
       )}
       <Card style={styles.cardProductInfo}>
@@ -73,15 +76,15 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
         fetchData={fetchTrackingAPI}
         displayValue={displayItemTrackingNumber}
         scanKeySearch={trackingScanKey}
-        placeholder="Tracking Number"
+        placeholder={I18n.t('Stock_TrackingNumber')}
         isFocus={true}
         changeScreenAfter={true}
       />
       <PopUpOneButton
         visible={isVisible}
-        title="Warning"
-        data="This is not the right tracking number."
-        btnTitle="OK"
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ErrorTrackingNumber')}
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setVisible(false)}
       />
     </Screen>

@@ -2,9 +2,11 @@ import {Card, Text} from '@/components/atoms';
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {PopUpOneButton} from '@/components/organisms';
+import useTranslator from '@/hooks/use-translator';
 
 const CardStockIndicator = ({title, number}) => {
   const [popUp, setPopUp] = useState(false);
+  const I18n = useTranslator();
 
   const handlePress = () => {
     setPopUp(true);
@@ -16,7 +18,7 @@ const CardStockIndicator = ({title, number}) => {
         visible={popUp}
         data={number}
         title={title}
-        btnTitle="OK"
+        btnTitle={I18n.t('Auth_Close')}
         onPress={() => setPopUp(!popUp)}
       />
       <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>

@@ -4,6 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules';
 import {checkNullString} from '@/modules/stock/utils/strings';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalLineCard = ({
   style,
@@ -15,6 +16,8 @@ const SupplierArrivalLineCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     if (parseFloat(deliveredQty) === 0) {
       return null;
@@ -31,23 +34,23 @@ const SupplierArrivalLineCard = ({
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{productName}</Text>
           <LabelText
-            title="Asked quantity :"
+            title={`${I18n.t('Stock_AskedQty')} :`}
             value={parseFloat(askedQty).toFixed(2)}
           />
           <LabelText
-            title="Delivered quantity :"
+            title={`${I18n.t('Stock_DeliveredQty')} :`}
             value={parseFloat(deliveredQty).toFixed(2)}
           />
           {checkNullString(locker) === false && (
             <LabelText
-              title="Locker :"
+              title={`${I18n.t('Stock_Locker')} :`}
               value={locker}
               iconName="map-marker-alt"
             />
           )}
           {trackingNumber != null && (
             <LabelText
-              title="Tracking number :"
+              title={`${I18n.t('Stock_TrackingNumber')} :`}
               value={trackingNumber?.trackingNumberSeq}
               iconName="qrcode"
             />

@@ -5,6 +5,7 @@ import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
+import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryCard = ({
   style,
@@ -17,6 +18,7 @@ const CustomerDeliveryCard = ({
   onPress,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).borderColor);
@@ -35,17 +37,26 @@ const CustomerDeliveryCard = ({
             </View>
           )}
           {date != null &&
-            (status === 'Draft' ? (
+            (status === StockMove.status.Draft ? (
               <Text style={[styles.txtDetails, styles.date]}>
-                Created on {formatDate(date, 'MM/DD/YYYY')}
+                {`${I18n.t('Base_CreatedOn')} ${formatDate(
+                  date,
+                  I18n.t('Base_DateFormat'),
+                )}`}
               </Text>
-            ) : status === 'Planned' ? (
+            ) : status === StockMove.status.Planned ? (
               <Text style={[styles.txtDetails, styles.date]}>
-                Planned for {formatDate(date, 'MM/DD/YYYY')}
+                {`${I18n.t('Base_PlannedFor')} ${formatDate(
+                  date,
+                  I18n.t('Base_DateFormat'),
+                )}`}
               </Text>
             ) : (
               <Text style={styles.txtDetails}>
-                Validated on {formatDate(date, 'MM/DD/YYYY')}
+                {`${I18n.t('Base_ValidatedOn')} ${formatDate(
+                  date,
+                  I18n.t('Base_DateFormat'),
+                )}`}
               </Text>
             ))}
         </View>

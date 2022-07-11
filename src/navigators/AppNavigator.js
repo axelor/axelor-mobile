@@ -5,6 +5,7 @@ import {Icon} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
 import StockAppNavigator from '@/modules/stock/StockAppNavigator';
 import {useSelector} from 'react-redux';
+import useTranslator from '@/hooks/use-translator';
 
 const {Navigator, Screen} = createDrawerNavigator();
 
@@ -12,11 +13,14 @@ const ICON_SIZE = 20;
 
 const AppNavigator = () => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const {stockMenus} = useSelector(state => state.appConfig);
 
   const stockConfig = useMemo(() => {
-    return StockAppNavigator(Colors, stockMenus);
-  }, [Colors, stockMenus]);
+    if (I18n && Colors) {
+      return StockAppNavigator(Colors, stockMenus, I18n);
+    }
+  }, [Colors, I18n, stockMenus]);
 
   return (
     <Navigator
@@ -34,7 +38,7 @@ const AppNavigator = () => {
         options={{
           drawerActiveTintColor: Colors.primaryColor,
           drawerInactiveTintColor: Colors.text,
-          title: 'User',
+          title: I18n.t('User_User'),
           drawerIcon: () => (
             <Icon
               name="user-alt"
