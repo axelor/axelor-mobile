@@ -71,9 +71,15 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         return list;
       } else {
         if (doneStatus) {
-          return list.filter(item => parseFloat(item.realQty) != null);
+          return list.filter(
+            item => parseFloat(item.realQty) >= parseFloat(item.qty),
+          );
         } else if (undoneStatus) {
-          return list.filter(item => parseFloat(item.realQty) == null);
+          return list.filter(
+            item =>
+              parseFloat(item.realQty) == null ||
+              parseFloat(item.realQty) < parseFloat(item.qty),
+          );
         } else {
           return list;
         }

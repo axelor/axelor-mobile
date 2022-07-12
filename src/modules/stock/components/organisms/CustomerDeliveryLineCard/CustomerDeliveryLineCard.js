@@ -21,9 +21,7 @@ const CustomerDeliveryLineCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    if (parseFloat(pickedQty) === 0) {
-      return null;
-    } else if (parseFloat(askedQty) === parseFloat(pickedQty)) {
+    if (parseFloat(askedQty) <= parseFloat(pickedQty)) {
       return getStyles(Colors.primaryColor);
     } else {
       return getStyles(Colors.cautionColor);
@@ -42,7 +40,7 @@ const CustomerDeliveryLineCard = ({
                 StockMove.getAvailabilityColor(availability, Colors)
                   .backgroundColor
               }
-              title={availability}
+              title={StockMove.getAvailability(availability, I18n)}
             />
           )}
           <LabelText

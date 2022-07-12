@@ -19,9 +19,7 @@ const SupplierArrivalLineCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    if (parseFloat(deliveredQty) === 0) {
-      return null;
-    } else if (parseFloat(askedQty) === parseFloat(deliveredQty)) {
+    if (parseFloat(askedQty) <= parseFloat(deliveredQty)) {
       return getStyles(Colors.primaryColor);
     } else {
       return getStyles(Colors.cautionColor);

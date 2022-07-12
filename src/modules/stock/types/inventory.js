@@ -14,9 +14,9 @@ class Inventory {
         case this.status.Draft:
           return I18n.t('Stock_Status_Draft');
         case this.status.Planned:
-          return I18n.t('Stock_Status_InProgress');
-        case this.status.InProgress:
           return I18n.t('Stock_Status_Planned');
+        case this.status.InProgress:
+          return I18n.t('Stock_Status_InProgress');
         case this.status.Completed:
           return I18n.t('Stock_Status_Completed');
         case this.status.Validated:

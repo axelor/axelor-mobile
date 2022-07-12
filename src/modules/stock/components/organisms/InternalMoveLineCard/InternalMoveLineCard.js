@@ -22,9 +22,7 @@ const InternalMoveLineCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    if (parseFloat(movedQty) === 0) {
-      return null;
-    } else if (parseFloat(expectedQty) === parseFloat(movedQty)) {
+    if (parseFloat(expectedQty) <= parseFloat(movedQty)) {
       return getStyles(Colors.primaryColor);
     } else {
       return getStyles(Colors.cautionColor);
@@ -81,7 +79,7 @@ const InternalMoveLineCard = ({
                 StockMove.getAvailabilityColor(availability, Colors)
                   .backgroundColor
               }
-              title={availability}
+              title={StockMove.getAvailability(availability, I18n)}
             />
           )}
           <Icon

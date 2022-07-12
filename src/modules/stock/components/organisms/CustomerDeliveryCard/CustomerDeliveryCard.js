@@ -67,7 +67,7 @@ const CustomerDeliveryCard = ({
                 StockMove.getAvailabilityColor(availability, Colors)
                   .backgroundColor
               }
-              title={availability}
+              title={StockMove.getAvailability(availability, I18n)}
             />
           )}
           <Icon

@@ -71,10 +71,14 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       } else {
         if (doneStatus) {
           return list.filter(
-            item => parseFloat(item.qty) === parseFloat(item.realQty),
+            item => parseFloat(item.realQty) >= parseFloat(item.qty),
           );
         } else if (undoneStatus) {
-          return list.filter(item => parseFloat(item.realQty) == null);
+          return list.filter(
+            item =>
+              parseFloat(item.realQty) == null ||
+              parseFloat(item.realQty) < parseFloat(item.qty),
+          );
         } else {
           return list;
         }

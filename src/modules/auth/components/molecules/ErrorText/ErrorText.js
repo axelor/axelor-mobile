@@ -9,6 +9,7 @@ const ErrorText = ({message}) => {
 const styles = StyleSheet.create({
   text: {
     color: 'red',
+    alignSelf: 'center',
   },
 });
 

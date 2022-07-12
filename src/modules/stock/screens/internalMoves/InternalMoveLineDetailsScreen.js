@@ -378,7 +378,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             <View style={styles.button_container}>
               <Button
                 title={I18n.t('Base_Realize')}
-                style={styles.button}
+                style={[styles.button, styles.bigBtn]}
                 color={Colors.secondaryColor_light}
                 onPress={handleRealize}
               />
@@ -440,6 +440,7 @@ const styles = StyleSheet.create({
   },
   bigBtn: {
     height: 50,
+    paddingHorizontal: 9,
   },
   text: {
     fontSize: 16,
