@@ -6,7 +6,6 @@ import frTranslation from './i18n/fr.json';
 i18next.use(initReactI18next).init({
   compatibilityJSON: 'v3',
   lng: ['en', 'fr'],
-  debug: true,
   fallbackLng: 'en',
   resources: {
     en: {
