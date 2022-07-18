@@ -20,6 +20,7 @@ before_script:
       - curl -sL https://deb.nodesource.com/setup_14.x | bash -
       - apt-get -y install nodejs # Install Node
 
+      - npm install -g npm@latest # Install npm last version
       - npm install -g react-native-cli #Install React-Native CLI
       - npm install #Install npm packages
       - react-native link #Link the resources
