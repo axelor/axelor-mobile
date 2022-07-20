@@ -1,19 +1,36 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Screen, Switch, Text} from '@/components/atoms';
 import {useDispatch, useSelector} from 'react-redux';
 import {activateColorBlind, desactivateColorBlind} from '@/features/themeSlice';
 import {
+  clearMessage,
   toggleFilterShowConfig,
   toggleZebraConfig,
+  uploadTranslations,
 } from '../features/configSlice';
 import useTranslator from '@/hooks/use-translator';
+import {
+  getTranslations,
+  selectLanguage,
+} from '@/components/molecules/Translator/Translator';
+import Toast from 'react-native-toast-message';
 
 const SettingsScreen = ({route}) => {
   const {isColorBlind} = useSelector(state => state.theme);
-  const {zebraConfig, filterShowConfig} = useSelector(state => state.config);
+  const {loading, zebraConfig, filterShowConfig, message} = useSelector(
+    state => state.config,
+  );
+  const language = useSelector(selectLanguage);
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (message) {
+      Toast.show({position: 'bottom', text1: message});
+      dispatch(clearMessage());
+    }
+  }, [message, dispatch]);
 
   const handleToggleColorBlind = useCallback(
     state => {
@@ -33,6 +50,11 @@ const SettingsScreen = ({route}) => {
   const handleToggleZebra = useCallback(() => {
     dispatch(toggleZebraConfig());
   }, [dispatch]);
+
+  const handleSendTranslations = useCallback(() => {
+    const translations = getTranslations(language);
+    dispatch(uploadTranslations({language, translations}));
+  }, [dispatch, language]);
 
   return (
     <Screen style={styles.container}>
@@ -59,7 +81,8 @@ const SettingsScreen = ({route}) => {
         <Button
           title={I18n.t('User_SendTranslations')}
           style={styles.button}
-          onPress={() => {}}
+          onPress={handleSendTranslations}
+          disabled={loading}
         />
       )}
     </Screen>

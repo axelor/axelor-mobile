@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {useHandleError} from '@/api/utils';
 import {getBaseConfig} from '../api/config-api';
+import {postTranslations} from '@/api/translation';
 
 export const fetchBaseConfig = createAsyncThunk(
   'base/fetchBaseConfig',
@@ -13,11 +14,19 @@ export const fetchBaseConfig = createAsyncThunk(
   },
 );
 
+export const uploadTranslations = createAsyncThunk(
+  'base/uploadTranslations',
+  async function ({language, translations}) {
+    return postTranslations(language, translations);
+  },
+);
+
 const initialState = {
   loading: false,
   baseConfig: {},
   zebraConfig: false,
   filterShowConfig: true,
+  message: null,
 };
 
 const configSlice = createSlice({
@@ -36,6 +45,9 @@ const configSlice = createSlice({
     toggleFilterShowConfig: state => {
       state.filterShowConfig = !state.filterShowConfig;
     },
+    clearMessage: state => {
+      state.message = null;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchBaseConfig.pending, state => {
@@ -45,6 +57,13 @@ const configSlice = createSlice({
       state.loading = false;
       state.baseConfig = action.payload;
     });
+    builder.addCase(uploadTranslations.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(uploadTranslations.fulfilled, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    });
   },
 });
 
@@ -53,6 +72,7 @@ export const {
   toggleFilterShowConfig,
   setZebraConfig,
   toggleZebraConfig,
+  clearMessage,
 } = configSlice.actions;
 
 export const configReducer = configSlice.reducer;
