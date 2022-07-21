@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View, Image} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ErrorText,
@@ -16,6 +16,7 @@ import {
 import {login} from '@/modules/auth/features/authSlice';
 import {CameraScanner, Screen, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import {Image} from '@/components/molecules';
 
 const urlScanKey = 'login_url';
 
@@ -56,7 +57,8 @@ const LoginScreen = () => {
             <Image
               resizeMode="contain"
               source={require('../assets/Logo_Axelor.png')}
-              style={styles.image}
+              imageSize={styles.imageSize}
+              defaultIconSize={80}
             />
           </View>
           <UrlInput
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     height: '15%',
     marginVertical: '15%',
   },
-  image: {
+  imageSize: {
     flex: 1,
   },
   copyright: {

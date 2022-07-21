@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Image, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import TraceBackApiAxelor from './api/TraceBackApiAxelor';
 import {Button, Screen, Text} from './components/atoms';
+import {Image} from './components/molecules';
 
 class ErrorBoundary extends Component {
   traceBackApi: TraceBackApi;
@@ -54,7 +55,9 @@ class ErrorBoundary extends Component {
             <Image
               resizeMode="contain"
               source={require('./modules/auth/assets/Logo_Axelor.png')}
-              style={styles.image}
+              generalStyle={styles.imageStyle}
+              imageSize={styles.imageSize}
+              defaultIconSize={80}
             />
             <Text>{this.state.errorMessage}</Text>
             <Button
@@ -82,9 +85,11 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: '10%',
   },
-  image: {
+  imageSize: {
     height: 100,
     width: '100%',
+  },
+  imageStyle: {
     marginHorizontal: 50,
     marginVertical: '10%',
   },

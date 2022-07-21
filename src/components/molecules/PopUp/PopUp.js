@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
 import {Card, Text} from '@/components/atoms';
 
-const PopUp = ({visible, title, data, children}) => {
+const PopUp = ({style, visible, title, data, children}) => {
   return (
     <Modal
       visible={visible}
@@ -10,13 +10,15 @@ const PopUp = ({visible, title, data, children}) => {
       animationType="fade"
       onRequestClose={() => console.log('closed')}>
       <View style={styles.modalBackground}>
-        <Card style={styles.container}>
+        <Card style={[styles.container, style]}>
           <View style={styles.headerContainer}>
             <Text style={styles.header}>{title}</Text>
           </View>
-          <View style={styles.contentContainer}>
-            <Text style={styles.text}>{data}</Text>
-          </View>
+          {data != null && (
+            <View style={styles.contentContainer}>
+              <Text style={styles.text}>{data}</Text>
+            </View>
+          )}
           <View style={styles.buttonContainer}>{children}</View>
         </Card>
       </View>

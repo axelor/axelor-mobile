@@ -5,14 +5,18 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   View,
-  Image,
   ScrollView,
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {CardStockIndicator} from '@/modules/stock/components/organisms';
 import {Text} from '@/components/atoms';
-import {EditableInput, DropdownMenuItem, Picker} from '@/components/molecules';
+import {
+  EditableInput,
+  DropdownMenuItem,
+  Picker,
+  Image,
+} from '@/components/molecules';
 import {DropdownMenu, AutocompleteSearch} from '@/components/organisms';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
@@ -30,7 +34,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const product = route.params.product;
-  const {baseUrl} = useSelector(state => state.auth);
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
@@ -136,26 +139,18 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       <View style={styles.scrollContainer}>
         <ScrollView>
           <View style={styles.infoContainer}>
-            {product.picture == null ? (
-              <Icon
-                size={60}
-                name="camera"
-                color={Colors.secondaryColor_light}
+            <TouchableOpacity
+              style={styles.imageContainer}
+              onPress={navigateToImageProduct}
+              activeOpacity={0.9}>
+              <Image
+                generalStyle={styles.imageStyle}
+                imageSize={styles.imageSize}
+                resizeMode="contain"
+                pictureId={product?.picture?.id}
+                defaultIconSize={60}
               />
-            ) : (
-              <TouchableOpacity
-                style={styles.imageContainer}
-                onPress={navigateToImageProduct}
-                activeOpacity={0.9}>
-                <Image
-                  resizeMode="contain"
-                  source={{
-                    uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
-                  }}
-                  style={styles.image}
-                />
-              </TouchableOpacity>
-            )}
+            </TouchableOpacity>
             <ProductCardDetails
               style={styles.productContainer}
               name={product.name}
@@ -339,7 +334,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  image: {
+  imageSize: {
     height: 60,
     width: 60,
   },

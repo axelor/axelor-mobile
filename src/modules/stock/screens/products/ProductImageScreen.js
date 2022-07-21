@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Screen, Text} from '@/components/atoms';
-import {useSelector} from 'react-redux';
+import {Image} from '@/components/molecules';
 
 const ProductImageScreen = ({route}) => {
-  const {baseUrl} = useSelector(state => state.auth);
   const product = route.params.product;
+
   return (
     <Screen>
       <View style={styles.textContainer}>
@@ -14,11 +14,11 @@ const ProductImageScreen = ({route}) => {
       </View>
       <View style={styles.imageContainer}>
         <Image
+          generalStyle={styles.imageStyle}
+          imageSize={styles.imageSize}
           resizeMode="contain"
-          source={{
-            uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
-          }}
-          style={styles.image}
+          pictureId={product?.picture?.id}
+          defaultIconSize={200}
         />
       </View>
     </Screen>
@@ -32,9 +32,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
+  imageSize: {
     height: '60%',
     width: '60%',
+  },
+  imageStyle: {
     marginHorizontal: 20,
   },
   textContainer: {

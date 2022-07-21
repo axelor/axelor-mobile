@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
-import {useThemeColor} from '@/features/themeSlice';
-import {useSelector} from 'react-redux';
+import {Image} from '@/components/molecules';
 
 const ProductCardInfo = ({
   name,
@@ -13,26 +12,15 @@ const ProductCardInfo = ({
   locker = null,
   onPress = () => {},
 }) => {
-  const {baseUrl} = useSelector(state => state.auth);
-  const Colors = useThemeColor();
   return (
     <View style={styles.container}>
-      {pictureId == null ? (
-        <Icon
-          name="camera"
-          size={60}
-          color={Colors.secondaryColor_light}
-          style={styles.icon}
-        />
-      ) : (
-        <Image
-          resizeMode="contain"
-          source={{
-            uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
-          }}
-          style={styles.image}
-        />
-      )}
+      <Image
+        generalStyle={styles.imageStyle}
+        imageSize={styles.imageSize}
+        resizeMode="contain"
+        pictureId={pictureId}
+        defaultIconSize={60}
+      />
       <ProductCardDetails style={styles.textContainer} onPress={onPress}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.code}>{code}</Text>
@@ -66,9 +54,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 10,
   },
-  image: {
+  imageSize: {
     height: 60,
     width: 60,
+  },
+  imageStyle: {
     marginRight: 10,
   },
   textContainer: {
@@ -81,9 +71,6 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 14,
-  },
-  icon: {
-    marginRight: 30,
   },
   labelText: {
     flexDirection: 'row',

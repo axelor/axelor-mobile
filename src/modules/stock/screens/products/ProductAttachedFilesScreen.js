@@ -1,9 +1,9 @@
 import React, {useCallback, useState, useMemo} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Icon, Screen} from '@/components/atoms';
 import {fetchProductAttachedFiles} from '../../features/productSlice';
-import {AttachmentCard} from '@/components/molecules';
+import {AttachmentCard, Image} from '@/components/molecules';
 import File from '@/types/file';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
@@ -101,7 +101,12 @@ const ProductAttachedFilesScreen = ({route, navigation}) => {
             style={styles.iconContainer}
           />
           <View style={imageContainer}>
-            <Image style={styles.image} resizeMode="contain" source={image} />
+            <Image
+              generalStyle={styles.imageStyle}
+              imageSize={styles.imageSize}
+              resizeMode="contain"
+              source={image}
+            />
           </View>
         </View>
       )}
@@ -146,8 +151,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 6,
   },
-  image: {
+  imageSize: {
     height: 100,
+  },
+  imageStyle: {
     margin: 10,
   },
   iconContainer: {

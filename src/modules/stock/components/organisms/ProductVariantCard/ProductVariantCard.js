@@ -1,10 +1,9 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
-import {Badge} from '@/components/molecules';
+import {Badge, Image} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
 import {useThemeColor} from '@/features/themeSlice';
-import {useSelector} from 'react-redux';
 import useTranslator from '@/hooks/use-translator';
 
 const ProductVariantCard = ({
@@ -16,12 +15,8 @@ const ProductVariantCard = ({
   stockAvailability,
   onPress,
 }) => {
-  const {baseUrl} = useSelector(state => state.auth);
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const Image_Http_URL = {
-    uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${picture?.id}/content/download/`,
-  };
 
   const attr1 = attributesList?.attributes[0];
   const attr2 = attributesList?.attributes[1];
@@ -33,20 +28,13 @@ const ProductVariantCard = ({
     <TouchableOpacity onPress={onPress}>
       <Card style={style}>
         <View style={styles.content}>
-          {picture == null ? (
-            <Icon
-              name="camera"
-              size={40}
-              color={Colors.secondaryColor_light}
-              style={styles.icon}
-            />
-          ) : (
-            <Image
-              resizeMode="contain"
-              source={Image_Http_URL}
-              style={styles.image}
-            />
-          )}
+          <Image
+            generalStyle={styles.imageStyle}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            pictureId={picture?.id}
+            defaultIconSize={40}
+          />
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.code}>{code}</Text>
@@ -159,12 +147,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  image: {
-    width: 40,
+  imageSize: {
     height: 40,
-    marginRight: 15,
+    width: 40,
   },
-  icon: {
+  imageStyle: {
     marginRight: 15,
   },
   textContainer: {

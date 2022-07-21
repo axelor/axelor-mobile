@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
-import {Badge} from '@/components/molecules';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Card, Text} from '@/components/atoms';
+import {Badge, Image} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
 
 const ProductCharacteristics = ({
   style,
-  pictureURI,
+  pictureId,
   onPressImage,
   name,
   code,
@@ -23,22 +23,15 @@ const ProductCharacteristics = ({
   return (
     <Card style={[styles.container, style]}>
       <View style={styles.content}>
-        {pictureURI == null ? (
-          <Icon
-            name="camera"
-            size={120}
-            color={Colors.secondaryColor_light}
-            style={styles.icon}
+        <TouchableOpacity onPress={onPressImage}>
+          <Image
+            generalStyle={styles.imageStyle}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            pictureId={pictureId}
+            defaultIconSize={120}
           />
-        ) : (
-          <TouchableOpacity onPress={onPressImage}>
-            <Image
-              resizeMode="contain"
-              source={pictureURI}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        )}
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.code}>{code}</Text>
@@ -85,13 +78,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  image: {
-    width: 120,
+  imageSize: {
     height: 120,
-    marginRight: 32,
+    width: 120,
   },
-  icon: {
-    marginRight: 30,
+  imageStyle: {
+    marginRight: 32,
   },
   textContainer: {
     flex: 1,

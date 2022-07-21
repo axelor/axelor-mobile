@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
-import {Badge} from '@/components/molecules';
+import {Badge, Image} from '@/components/molecules';
 import {useThemeColor} from '@/features/themeSlice';
-import {useSelector} from 'react-redux';
 import useTranslator from '@/hooks/use-translator';
 
 const ProductCard = ({
@@ -14,7 +13,6 @@ const ProductCard = ({
   availableStock,
   onPress,
 }) => {
-  const {baseUrl} = useSelector(state => state.auth);
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -22,22 +20,13 @@ const ProductCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.content}>
-          {pictureId == null ? (
-            <Icon
-              name="camera"
-              color={Colors.secondaryColor_light}
-              size={60}
-              style={styles.icon}
-            />
-          ) : (
-            <Image
-              resizeMode="contain"
-              source={{
-                uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
-              }}
-              style={styles.image}
-            />
-          )}
+          <Image
+            generalStyle={styles.imageStyle}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            pictureId={pictureId}
+            defaultIconSize={60}
+          />
           <View style={styles.textContainer}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.code}>{code}</Text>
@@ -78,9 +67,11 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
   },
-  image: {
+  imageSize: {
     height: 60,
     width: 60,
+  },
+  imageStyle: {
     marginRight: 30,
   },
   textContainer: {
@@ -94,9 +85,6 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 14,
-  },
-  icon: {
-    marginRight: 30,
   },
 });
 

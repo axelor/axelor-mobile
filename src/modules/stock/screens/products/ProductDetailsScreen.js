@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
 import {Button, Card, Screen, Text} from '@/components/atoms';
 import {DropdownMenuItem} from '@/components/molecules';
 import {DropdownMenu} from '@/components/organisms';
@@ -15,7 +14,6 @@ import useTranslator from '@/hooks/use-translator';
 const ProductDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {baseUrl} = useSelector(state => state.auth);
   const product = route.params.product;
 
   const showProductVariables = () => {
@@ -51,13 +49,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
         <ScrollView>
           <ProductCharacteristics
             onPressImage={() => navigateToImageProduct()}
-            pictureURI={
-              product.picture == null
-                ? null
-                : {
-                    uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${product.picture?.id}/content/download`,
-                  }
-            }
+            pictureId={product?.picture?.id}
             category={product.productCategory?.name}
             prototype={product.isPrototype}
             unrenewed={product.isUnrenewed}
