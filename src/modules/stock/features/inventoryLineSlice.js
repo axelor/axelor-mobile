@@ -1,6 +1,10 @@
 import {useHandleError} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {searchInventoryLines} from '../api/inventory-line-api';
+import {
+  createInventoryLine,
+  searchInventoryLines,
+  updateInventoryLineDetails,
+} from '../api/inventory-line-api';
 
 export const fetchInventoryLines = createAsyncThunk(
   'inventoryLines/fetchInventoryLines',
@@ -15,11 +19,35 @@ export const fetchInventoryLines = createAsyncThunk(
   },
 );
 
+export const updateInventoryLine = createAsyncThunk(
+  'inventoryLines/updateInventoryLine',
+  async function (data) {
+    return updateInventoryLineDetails(data)
+      .catch(function (error) {
+        useHandleError(error, 'update inventory line details');
+      })
+      .then(response => response.data.object);
+  },
+);
+
+export const createNewInventoryLine = createAsyncThunk(
+  'inventoryLines/createNewInventoryLine',
+  async function (data) {
+    return createInventoryLine(data)
+      .catch(function (error) {
+        useHandleError(error, 'create inventory line');
+      })
+      .then(response => response.data.object);
+  },
+);
+
 const initialState = {
   loadingInventoryLines: false,
   moreLoading: false,
   isListEnd: false,
   inventoryLineList: [],
+  updateResponse: null,
+  createResponse: null,
 };
 
 const inventoryLineSlice = createSlice({
@@ -50,6 +78,20 @@ const inventoryLineSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(updateInventoryLine.pending, state => {
+      state.loadingInventoryLines = true;
+    });
+    builder.addCase(updateInventoryLine.fulfilled, (state, action) => {
+      state.loadingInventoryLines = false;
+      state.updateResponse = action.payload;
+    });
+    builder.addCase(createNewInventoryLine.pending, state => {
+      state.loadingInventoryLines = true;
+    });
+    builder.addCase(createNewInventoryLine.fulfilled, (state, action) => {
+      state.loadingInventoryLines = false;
+      state.createResponse = action.payload;
     });
   },
 });

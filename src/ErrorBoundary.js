@@ -59,7 +59,7 @@ class ErrorBoundary extends Component {
               imageSize={styles.imageSize}
               defaultIconSize={80}
             />
-            <Text>{this.state.errorMessage}</Text>
+            <Text style={styles.text}>{this.state.errorMessage}</Text>
             <Button
               title="RELOAD SCREEN"
               onPress={() => this.setState({hasError: false})}
@@ -92,6 +92,9 @@ const styles = StyleSheet.create({
   imageStyle: {
     marginHorizontal: 50,
     marginVertical: '10%',
+  },
+  text: {
+    marginHorizontal: 10,
   },
 });
 

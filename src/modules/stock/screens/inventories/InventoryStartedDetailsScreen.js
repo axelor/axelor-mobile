@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import {Screen, Text, Button} from '@/components/atoms';
@@ -11,9 +11,14 @@ import {
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
 import useTranslator from '@/hooks/use-translator';
+import {
+  fetchInventoryById,
+  updateInventory,
+} from '../../features/inventorySlice';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
-  const inventory = route.params.inventory;
+  const inventoryId = route.params.inventoryId;
+  const {loading, inventory} = useSelector(state => state.inventory);
   const {loadingInventoryLines, inventoryLineList} = useSelector(
     state => state.inventoryLine,
   );
@@ -21,10 +26,9 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (inventory != null) {
-      dispatch(fetchInventoryLines({inventoryId: inventory.id, page: 0}));
-    }
-  }, [dispatch, inventory]);
+    dispatch(fetchInventoryById({inventoryId: inventoryId}));
+    dispatch(fetchInventoryLines({inventoryId: inventoryId, page: 0}));
+  }, [dispatch, inventoryId]);
 
   const handleShowLine = item => {
     if (inventory.statusSelect === Inventory.status.Validated) {
@@ -41,14 +45,45 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   };
 
   const handleViewAll = () => {
-    navigation.navigate('InventoryLineListDetailsScreen', {
+    navigation.navigate('InventoryLineListScreen', {
       inventory: inventory,
     });
   };
 
+  const handleCompleteInventory = useCallback(() => {
+    dispatch(
+      updateInventory({
+        inventoryId: inventory.id,
+        version: inventory.version,
+        status: Inventory.status.Completed,
+        userId: null,
+      }),
+    );
+    navigation.popToTop();
+  }, [dispatch, inventory, navigation]);
+
+  const handleValidateInventory = useCallback(() => {
+    dispatch(
+      updateInventory({
+        inventoryId: inventory.id,
+        version: inventory.version,
+        status: Inventory.status.Validated,
+        userId: null,
+      }),
+    );
+    navigation.popToTop();
+  }, [dispatch, inventory, navigation]);
+
+  const handleNewLine = useCallback(() => {
+    navigation.navigate('InventorySelectProductScreen', {
+      inventoryLine: null,
+      inventory: inventory,
+    });
+  }, [inventory, navigation]);
+
   return (
     <Screen>
-      {loadingInventoryLines ? (
+      {loadingInventoryLines || loading || inventory == null ? (
         <ActivityIndicator size="large" />
       ) : (
         <ScrollView>
@@ -86,9 +121,10 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
             isHeaderExist={
               inventory.statusSelect !== Inventory.status.Completed
             }
-            onNewIcon={() => {}}
+            onNewIcon={handleNewLine}
             onPress={handleViewAll}>
-            {inventoryLineList[0] == null ? null : (
+            {inventoryLineList == null ||
+            inventoryLineList[0] == null ? null : (
               <InventoryLineCard
                 style={styles.item}
                 productName={inventoryLineList[0].product?.fullName}
@@ -100,7 +136,8 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
                 onPress={() => handleShowLine(inventoryLineList[0])}
               />
             )}
-            {inventoryLineList[1] == null ? null : (
+            {inventoryLineList == null ||
+            inventoryLineList[1] == null ? null : (
               <InventoryLineCard
                 style={styles.item}
                 productName={inventoryLineList[1].product?.fullName}
@@ -113,11 +150,18 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
               />
             )}
           </ViewAllContainer>
-          {inventory.statusSelect !== Inventory.status.Completed && (
+          {inventory.statusSelect === Inventory.status.InProgress && (
+            <Button
+              style={styles.btn}
+              title={I18n.t('Base_Complete')}
+              onPress={handleCompleteInventory}
+            />
+          )}
+          {inventory.statusSelect === Inventory.status.Completed && (
             <Button
               style={styles.btn}
               title={I18n.t('Base_Validate')}
-              onPress={() => {}}
+              onPress={handleValidateInventory}
             />
           )}
         </ScrollView>

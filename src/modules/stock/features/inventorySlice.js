@@ -1,8 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
+  fetchInventory,
   modifyDescriptionInventory,
   searchInventory,
   searchInventoryFilter,
+  updateInventoryStatus,
 } from '@/modules/stock/api/inventory-api';
 import {useHandleError} from '@/api/utils';
 
@@ -43,8 +45,35 @@ export const modifyDescription = createAsyncThunk(
   },
 );
 
+export const updateInventory = createAsyncThunk(
+  'inventories/updateInventory',
+  async function (data) {
+    return updateInventoryStatus(data)
+      .catch(function (error) {
+        useHandleError(error, 'update inventory status');
+      })
+      .then(response => response.data.object)
+      .then(object => fetchInventory({inventoryId: object.inventoryId}))
+      .catch(function (error) {
+        useHandleError(error, 'fetch Inventory by id');
+      })
+      .then(response => response.data.data[0]);
+  },
+);
+export const fetchInventoryById = createAsyncThunk(
+  'inventories/fetchInventoryById',
+  async function (data) {
+    return fetchInventory(data)
+      .catch(function (error) {
+        useHandleError(error, 'fetch Inventory by id');
+      })
+      .then(response => response.data.data[0]);
+  },
+);
+
 const initialState = {
   loading: false,
+  inventory: null,
   moreLoading: false,
   isListEnd: false,
   inventoryList: [],
@@ -54,6 +83,13 @@ const inventorySlice = createSlice({
   name: 'inventories',
   initialState,
   extraReducers: builder => {
+    builder.addCase(fetchInventoryById.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(fetchInventoryById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.inventory = action.payload;
+    });
     builder.addCase(fetchInventories.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loading = true;
@@ -89,6 +125,13 @@ const inventorySlice = createSlice({
     });
     builder.addCase(modifyDescription.fulfilled, (state, action) => {
       state.loading = false;
+    });
+    builder.addCase(updateInventory.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(updateInventory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.inventory = action.payload;
     });
   },
 });

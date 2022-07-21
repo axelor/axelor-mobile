@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {StyleSheet, ScrollView} from 'react-native';
 import {Screen, Text, Button} from '@/components/atoms';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
@@ -10,27 +10,25 @@ import {
   DescriptionCard,
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
-import {fetchProductWithId} from '../../features/productSlice';
 import useTranslator from '@/hooks/use-translator';
+import {
+  createNewInventoryLine,
+  updateInventoryLine,
+} from '../../features/inventoryLineSlice';
+import {EditableInput} from '@/components/molecules';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
-  const {loadingProductFromId, productFromId: product} = useSelector(
-    state => state.product,
-  );
-  const trackingNumber = inventoryLine.trackingNumber;
+  const product = route.params.product;
+  const trackingNumber = route.params.trackingNumber;
+  const [rack, setRack] = useState(null);
   const [realQty, setRealQty] = useState(
-    inventoryLine.realQty == null ? 0 : inventoryLine.realQty,
+    inventoryLine?.realQty == null ? 0 : inventoryLine.realQty,
   );
+  const [description, setDescription] = useState(inventoryLine?.description);
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchProductWithId(inventoryLine.product?.id));
-  }, [dispatch, inventoryLine]);
-
-  const handleDescriptionChange = input => {};
 
   const handleShowProduct = () => {
     navigation.navigate('ProductNavigator', {
@@ -41,73 +39,116 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     });
   };
 
+  const handleNewLine = useCallback(() => {
+    dispatch(
+      createNewInventoryLine({
+        inventoryId: inventory.id,
+        inventoryVersion: inventory.version,
+        productId: product.id,
+        trackingNumberId: trackingNumber?.id,
+        rack: rack == null || rack === '' ? null : rack,
+        realQty: realQty,
+      }),
+    );
+    navigation.navigate('InventoryLineListScreen', {
+      inventoryId: inventory.id,
+    });
+  }, [dispatch, inventory, navigation, product, rack, realQty, trackingNumber]);
+
+  const handleUpdateLine = useCallback(() => {
+    dispatch(
+      updateInventoryLine({
+        inventoryLineId: inventoryLine.id,
+        version: inventoryLine.version,
+        realQty: realQty,
+        description: description,
+      }),
+    );
+    navigation.navigate('InventoryLineListScreen', {
+      inventoryId: inventory.id,
+    });
+  }, [description, dispatch, inventory, inventoryLine, navigation, realQty]);
+
   return (
     <Screen>
-      {loadingProductFromId ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <InventoryHeader
-            reference={inventory.inventorySeq}
-            status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory.status.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
-            stockLocation={inventory.stockLocation?.name}
+      <ScrollView>
+        <InventoryHeader
+          reference={inventory.inventorySeq}
+          status={inventory.statusSelect}
+          date={
+            inventory.statusSelect === Inventory.status.Planned
+              ? inventory.plannedStartDateT
+              : inventory.plannedEndDateT
+          }
+          stockLocation={inventory.stockLocation?.name}
+        />
+        {inventory.fromRack && (
+          <LocationsMoveCard
+            style={styles.moveCard}
+            isLockerCard={true}
+            fromStockLocation={inventory.fromRack}
+            toStockLocation={inventory.toRack}
           />
-          {inventory.fromRack && (
-            <LocationsMoveCard
-              style={styles.moveCard}
-              isLockerCard={true}
-              fromStockLocation={inventory.fromRack}
-              toStockLocation={inventory.toRack}
-            />
-          )}
-          <ProductCardInfo
-            onPress={handleShowProduct}
-            pictureId={product?.picture.id}
-            code={product?.code}
-            name={product?.name}
-            trackingNumber={trackingNumber?.trackingNumberSeq}
-            locker={inventoryLine.rack}
-          />
-          <QuantityCard
-            labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
-            defaultValue={parseFloat(realQty).toFixed(2)}
-            onValueChange={setRealQty}
-            editable={inventory.statusSelect !== Inventory.status.Validated}>
+        )}
+        <ProductCardInfo
+          onPress={handleShowProduct}
+          pictureId={product?.picture.id}
+          code={product?.code}
+          name={product?.name}
+          trackingNumber={trackingNumber?.trackingNumberSeq}
+          locker={inventoryLine?.rack}
+        />
+        <QuantityCard
+          labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
+          defaultValue={parseFloat(realQty).toFixed(2)}
+          onValueChange={setRealQty}
+          editable={inventory.statusSelect !== Inventory.status.Validated}>
+          {inventoryLine == null ? (
+            <Text style={styles.text}>
+              {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}
+            </Text>
+          ) : (
             <Text style={styles.text}>
               {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
                 inventoryLine.currentQty,
               ).toFixed(2)} ${inventoryLine.unit.name}`}
             </Text>
-          </QuantityCard>
-          <DescriptionCard
-            onChange={input => handleDescriptionChange(input)}
-            description={inventoryLine.description}
-            isEditable={
-              inventory.statusSelect !== Inventory.status.Completed &&
-              inventory.statusSelect !== Inventory.status.Validated
-            }
+          )}
+        </QuantityCard>
+        <DescriptionCard
+          onChange={input => setDescription(input)}
+          description={description}
+          isEditable={
+            inventory.statusSelect !== Inventory.status.Completed &&
+            inventory.statusSelect !== Inventory.status.Validated
+          }
+        />
+        {inventoryLine == null && (
+          <EditableInput
+            style={styles.lockerContainer}
+            placeholder={I18n.t('Stock_Locker')}
+            onValidate={input => setRack(input)}
+            defaultValue={rack}
           />
-          {inventory.statusSelect < Inventory.status.InProgress && (
-            <Button
-              style={styles.btn}
-              title={I18n.t('Base_Save')}
-              onPress={() => {}}
-            />
-          )}
-          {inventory.statusSelect === Inventory.status.Completed && (
-            <Button
-              style={styles.btn}
-              title={I18n.t('Base_Check')}
-              onPress={() => {}}
-            />
-          )}
-        </ScrollView>
-      )}
+        )}
+        {inventoryLine == null ? (
+          <Button
+            style={styles.btn}
+            title={I18n.t('Base_Add')}
+            onPress={handleNewLine}
+          />
+        ) : (
+          <Button
+            style={styles.btn}
+            title={
+              inventory.statusSelect <= Inventory.status.InProgress
+                ? I18n.t('Base_Save')
+                : I18n.t('Base_Check')
+            }
+            onPress={handleUpdateLine}
+          />
+        )}
+      </ScrollView>
     </Screen>
   );
 };
@@ -118,6 +159,10 @@ const styles = StyleSheet.create({
   },
   moveCard: {
     marginVertical: 10,
+  },
+  lockerContainer: {
+    marginVertical: '2%',
+    marginHorizontal: 16,
   },
 });
 

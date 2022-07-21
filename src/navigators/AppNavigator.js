@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import UserNavigator from '@/modules/auth/navigators/UserNavigator';
 import {Icon} from '@/components/atoms';
@@ -21,6 +21,16 @@ const AppNavigator = () => {
       return StockAppNavigator(Colors, stockMenus, I18n);
     }
   }, [Colors, I18n, stockMenus]);
+
+  const nbMenuEnabled = useMemo(() => {
+    return React.Children.count(stockConfig.props.children);
+  }, [stockConfig]);
+
+  useEffect(() => {
+    if (nbMenuEnabled <= 0) {
+      throw new Error(I18n.t('Base_Error_ConfigureStockApp'));
+    }
+  }, [I18n, nbMenuEnabled]);
 
   return (
     <Navigator

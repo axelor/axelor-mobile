@@ -28,6 +28,15 @@ const sortByFields = [
   'inventorySeq',
 ];
 
+export async function fetchInventory({inventoryId}) {
+  return axios.post(
+    `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}/fetch`,
+    {
+      fields: inventoryFields,
+    },
+  );
+}
+
 export async function searchInventory({page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.Inventory/search', {
     data: {
@@ -105,5 +114,26 @@ export async function modifyDescriptionInventory({
         version: version,
       },
     },
+  );
+}
+
+export async function updateInventoryStatus({
+  inventoryId,
+  version,
+  status,
+  userId = null,
+}) {
+  return axios.put(
+    `/ws/aos/inventory/update-status/${inventoryId}`,
+    userId != null
+      ? {
+          version: version,
+          status: status,
+          userId: userId,
+        }
+      : {
+          version: version,
+          status: status,
+        },
   );
 }

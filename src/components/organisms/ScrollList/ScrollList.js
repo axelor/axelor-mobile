@@ -12,22 +12,31 @@ const SearchContainer = ({
   isListEnd = false,
   filter = false,
 }) => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState();
   const I18n = useTranslator();
 
-  const handleMoreData = () => {
-    if (!isListEnd && !moreLoading && !filter) {
-      setPage(page + 1);
-    }
-  };
-
-  const updateData = useCallback(() => {
-    fetchData(page);
-  }, [fetchData, page]);
-
-  useEffect(() => {
+  const initialize = useCallback(() => {
     updateData();
   }, [updateData]);
+
+  const handleMoreData = useCallback(
+    currentPage => {
+      if (!isListEnd && !moreLoading && !filter) {
+        setPage(currentPage + 1);
+        fetchData(currentPage + 1);
+      }
+    },
+    [fetchData, filter, isListEnd, moreLoading],
+  );
+
+  const updateData = useCallback(() => {
+    setPage(0);
+    fetchData(0);
+  }, [fetchData]);
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   if (loadingList) {
     return <ActivityIndicator size="large" color="black" />;
@@ -36,9 +45,9 @@ const SearchContainer = ({
   return (
     <FlatList
       data={data}
-      onRefresh={() => setPage(0)}
+      onRefresh={updateData}
       refreshing={loadingList}
-      onEndReached={handleMoreData}
+      onEndReached={() => handleMoreData(page)}
       ListFooterComponent={() => {
         return (
           <View style={styles.footerText}>

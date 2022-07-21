@@ -49,6 +49,7 @@ const AutocompleteSearch = ({
   const [searchText, setSearchText] = useState(null);
   const [previousState, setPreviousState] = useState(null);
   const [newInterval, setNewInterval] = useState(0);
+  const [selected, setSelected] = useState(false);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
   const dispatch = useDispatch();
@@ -57,12 +58,16 @@ const AutocompleteSearch = ({
 
   useEffect(() => {
     if (value) {
+      setSelected(true);
       setSearchText(displayValue(value));
+    } else {
+      handleAPICall();
     }
-  }, [displayValue, value]);
+  }, [displayValue, handleAPICall, value]);
 
   const handleSelect = item => {
     setDisplayList(false);
+    setSelected(true);
     if (changeScreenAfter) {
       setSearchText('');
     }
@@ -77,9 +82,10 @@ const AutocompleteSearch = ({
 
   const handleClear = () => {
     setDisplayList(false);
-    onChangeValue(null);
+    setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
+    onChangeValue(null);
   };
 
   useEffect(() => {
@@ -125,27 +131,36 @@ const AutocompleteSearch = ({
         clearTimeout(timeOutRequestCall.current);
       };
     }
-  }, [handleTimeOut, oneFilter, searchText]);
+  }, [handleTimeOut, searchText]);
 
   const handleTimeOut = useCallback(() => {
     stopInterval();
-    if (searchText == null && searchText === '') {
-      fetchData(null);
-    } else {
-      fetchData(searchText);
+    if (!selected) {
+      if (searchText == null && searchText === '') {
+        fetchData(null);
+      } else {
+        fetchData(searchText);
+      }
     }
-  }, [fetchData, searchText, stopInterval]);
+  }, [fetchData, searchText, selected, stopInterval]);
 
   const handleAPICall = useCallback(() => {
-    if (searchText == null && searchText === '') {
-      fetchData(null);
-    } else {
-      fetchData(searchText);
+    if (!selected) {
+      if (searchText == null && searchText === '') {
+        fetchData(null);
+      } else {
+        fetchData(searchText);
+      }
     }
-  }, [fetchData, searchText]);
+  }, [fetchData, searchText, selected]);
 
   useEffect(() => {
-    if (objectList != null && searchText != null && searchText !== '') {
+    if (
+      objectList != null &&
+      searchText != null &&
+      searchText !== '' &&
+      !selected
+    ) {
       if (objectList.length === 1) {
         if (changeScreenAfter || oneFilter) {
           setSearchText('');
@@ -153,6 +168,7 @@ const AutocompleteSearch = ({
           setSearchText(displayValue(objectList[0]));
           setDisplayList(false);
         }
+        stopInterval();
         onChangeValue(objectList[0]);
       } else {
         setDisplayList(true);
@@ -165,6 +181,8 @@ const AutocompleteSearch = ({
     onChangeValue,
     oneFilter,
     searchText,
+    selected,
+    stopInterval,
   ]);
 
   const containerPosition = useMemo(() => {

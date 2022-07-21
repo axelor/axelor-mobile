@@ -142,7 +142,7 @@ const InventoryListScreen = ({navigation}) => {
         item.statusSelect === Inventory.status.Planned
           ? 'InventoryPlannedDetailsScreen'
           : 'InventoryStartedDetailsScreen',
-        {inventory: item},
+        {inventoryId: item.id},
       );
     }
   };

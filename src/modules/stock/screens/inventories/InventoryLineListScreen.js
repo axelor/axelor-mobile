@@ -14,7 +14,7 @@ import {ChipSelect, ScrollList} from '@/components/organisms';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
 
-const InventoryLineListDetailsScreen = ({route, navigation}) => {
+const InventoryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const inventory = route.params.inventory;
@@ -71,9 +71,9 @@ const InventoryLineListDetailsScreen = ({route, navigation}) => {
         return list;
       } else {
         if (doneStatus) {
-          return list.filter(item => parseFloat(item.realQty) != null);
+          return list.filter(item => item.realQty != null);
         } else if (undoneStatus) {
-          return list.filter(item => parseFloat(item.realQty) == null);
+          return list.filter(item => item.realQty == null);
         } else {
           return list;
         }
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InventoryLineListDetailsScreen;
+export default InventoryLineListScreen;

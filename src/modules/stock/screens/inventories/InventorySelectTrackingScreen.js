@@ -33,8 +33,17 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
   const handleTrackingNumberSelection = useCallback(
     item => {
       if (item !== null) {
-        if (item.id !== inventoryLine.trackingNumber?.id) {
-          setVisible(true);
+        if (inventoryLine != null) {
+          if (item.id !== inventoryLine.trackingNumber?.id) {
+            setVisible(true);
+          } else {
+            navigation.navigate('InventoryLineDetailsScreen', {
+              inventoryLine: inventoryLine,
+              inventory: inventory,
+              product: product,
+              trackingNumber: item,
+            });
+          }
         } else {
           navigation.navigate('InventoryLineDetailsScreen', {
             inventoryLine: inventoryLine,

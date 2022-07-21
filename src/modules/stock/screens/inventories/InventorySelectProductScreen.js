@@ -28,20 +28,36 @@ const InventorySelectProductScreen = ({route, navigation}) => {
 
   const handleProductSelection = item => {
     if (item !== null) {
-      if (item.id !== inventoryLine?.product.id) {
-        setVisible(true);
-      } else if (item.trackingNumberConfiguration != null) {
-        navigation.navigate('InventorySelectTrackingScreen', {
-          inventoryLine: inventoryLine,
-          inventory: inventory,
-          product: item,
-        });
+      if (inventoryLine != null) {
+        if (item.id !== inventoryLine?.product.id) {
+          setVisible(true);
+        } else if (item.trackingNumberConfiguration != null) {
+          navigation.navigate('InventorySelectTrackingScreen', {
+            inventoryLine: inventoryLine,
+            inventory: inventory,
+            product: item,
+          });
+        } else {
+          navigation.navigate('InventoryLineDetailsScreen', {
+            inventoryLine: inventoryLine,
+            inventory: inventory,
+            product: item,
+          });
+        }
       } else {
-        navigation.navigate('InventoryLineDetailsScreen', {
-          inventoryLine: inventoryLine,
-          inventory: inventory,
-          product: item,
-        });
+        if (item.trackingNumberConfiguration != null) {
+          navigation.navigate('InventorySelectTrackingScreen', {
+            inventoryLine: null,
+            inventory: inventory,
+            product: item,
+          });
+        } else {
+          navigation.navigate('InventoryLineDetailsScreen', {
+            inventoryLine: null,
+            inventory: inventory,
+            product: item,
+          });
+        }
       }
     }
   };

@@ -6,7 +6,7 @@ import ProductNavigator from './ProductNavigator';
 import InventoryListScreen from '@/modules/stock/screens/inventories/InventoryListScreen';
 import InventoryPlannedDetailsScreen from '@/modules/stock/screens/inventories/InventoryPlannedDetailsScreen';
 import InventoryStartedDetailsScreen from '@/modules/stock/screens/inventories/InventoryStartedDetailsScreen';
-import InventoryLineListDetailsScreen from '@/modules/stock/screens/inventories/InventoryLineListScreen';
+import InventoryLineListScreen from '@/modules/stock/screens/inventories/InventoryLineListScreen';
 import InventoryLineDetailsScreen from '@/modules/stock/screens/inventories/InventoryLineDetailsScreen';
 import InventorySelectProductScreen from '@/modules/stock/screens/inventories/InventorySelectProductScreen';
 import InventorySelectTrackingScreen from '@/modules/stock/screens/inventories/InventorySelectTrackingScreen';
@@ -55,8 +55,8 @@ const InventoriesNavigator = () => {
         }}
       />
       <Screen
-        name="InventoryLineListDetailsScreen"
-        component={InventoryLineListDetailsScreen}
+        name="InventoryLineListScreen"
+        component={InventoryLineListScreen}
         options={{
           headerTintColor: Colors.primaryColor,
           headerStyle: {backgroundColor: Colors.backgroundColor},

@@ -32,3 +32,34 @@ export async function searchInventoryLines({inventoryId, page = 0}) {
     offset: 10 * page,
   });
 }
+
+export async function updateInventoryLineDetails({
+  inventoryLineId,
+  version,
+  realQty,
+  description = null,
+}) {
+  return axios.put(`/ws/aos/inventory-line/${inventoryLineId}`, {
+    version: version,
+    realQty: realQty,
+    description: description,
+  });
+}
+
+export async function createInventoryLine({
+  inventoryId,
+  inventoryVersion,
+  productId,
+  trackingNumberId = null,
+  rack = null,
+  realQty,
+}) {
+  return axios.post('/ws/aos/inventory-line/', {
+    inventoryId: inventoryId,
+    inventoryVersion: inventoryVersion,
+    productId: productId,
+    trackingNumberId: trackingNumberId,
+    rack: rack,
+    realQty: realQty,
+  });
+}
