@@ -12,4 +12,5 @@ export {default as Picker} from './Picker/Picker';
 export {default as PopUp} from './PopUp/PopUp';
 export {default as SearchBar} from './SearchBar/SearchBar';
 export {default as SearchBarNoQR} from './SearchBarNoQR/SearchBarNoQR';
+export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as ViewAllContainer} from './ViewAllContainer/ViewAllContainer';

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button, Screen, Switch, Text} from '@/components/atoms';
+import {StyleSheet} from 'react-native';
+import {Button, Screen} from '@/components/atoms';
 import {useDispatch, useSelector} from 'react-redux';
 import {activateColorBlind, desactivateColorBlind} from '@/features/themeSlice';
 import {
@@ -15,6 +15,7 @@ import {
   selectLanguage,
 } from '@/components/molecules/Translator/Translator';
 import Toast from 'react-native-toast-message';
+import {SwitchCard} from '@/components/molecules';
 
 const SettingsScreen = ({route}) => {
   const {isColorBlind} = useSelector(state => state.theme);
@@ -58,24 +59,21 @@ const SettingsScreen = ({route}) => {
 
   return (
     <Screen style={styles.container}>
-      <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User_ZebraDevice')} ? `}</Text>
-        <Switch isEnabled={zebraConfig} handleToggle={handleToggleZebra} />
-      </View>
-      <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User_ShowFilter')} ? `}</Text>
-        <Switch
-          isEnabled={filterShowConfig}
-          handleToggle={handleToggleFilter}
-        />
-      </View>
-      <View style={styles.deviceContainer}>
-        <Text>{`${I18n.t('User_ColorBlind')} ? `} </Text>
-        <Switch
-          isEnabled={isColorBlind}
-          handleToggle={state => handleToggleColorBlind(state)}
-        />
-      </View>
+      <SwitchCard
+        title={I18n.t('User_ShowFilter')}
+        defaultValue={filterShowConfig}
+        onToggle={handleToggleFilter}
+      />
+      <SwitchCard
+        title={I18n.t('User_ZebraDevice')}
+        defaultValue={zebraConfig}
+        onToggle={handleToggleZebra}
+      />
+      <SwitchCard
+        title={I18n.t('User_ColorForColorBlind')}
+        defaultValue={isColorBlind}
+        onToggle={state => handleToggleColorBlind(state)}
+      />
       {route.params.user == null ||
       route.params.user.group.code !== 'admins' ? null : (
         <Button
@@ -95,13 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-  },
-  deviceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '87%',
-    marginVertical: 2,
   },
   button: {
     width: '50%',
