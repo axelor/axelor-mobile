@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
@@ -13,15 +13,8 @@ const UrlInput = ({
   onSelection = () => {},
   scanIconColor,
 }) => {
-  const [inputValue, setInputValue] = useState(null);
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  useEffect(() => {
-    if (value) {
-      setInputValue(value);
-    }
-  }, [value]);
 
   const container = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -29,7 +22,7 @@ const UrlInput = ({
     <View style={container}>
       <Input
         style={[styles.input, style]}
-        value={inputValue}
+        value={value}
         onChange={onChange}
         placeholder={I18n.t('Auth_URL')}
         readOnly={readOnly}
