@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
-import ModuleMenu from './ModuleMenu';
-import IconMenu from './IconMenu';
+import IconButton from './IconButton';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const modules = [
   {
@@ -13,61 +13,73 @@ const modules = [
     title: 'Production',
   },
   {
-    icon: 'tree',
+    icon: 'sitemap',
     title: 'Human Ressources',
   },
 ];
 
 const DrawerContent = () => {
-  const [moduleMenusActive, setModuleMenusActive] = useState(false);
-  const moduleMenusX = useRef(new Animated.Value(0)).current;
-  const moduleMenusWith = useRef(null);
+  const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
+  const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
 
-  const toggleMenusModule = () => {
-    if (!moduleMenusActive) {
-      setModuleMenusActive(true);
-      Animated.timing(moduleMenusX, {
-        toValue: 0,
+  const toggleSecondaryMenusVisibility = () => {
+    if (!secondaryMenusVisible) {
+      Animated.timing(secondaryMenusLeft, {
+        toValue: 100,
+        duration: 300,
         useNativeDriver: false,
       }).start();
     } else {
-      setModuleMenusActive(false);
-      Animated.timing(moduleMenusX, {
-        toValue: -moduleMenusWith.current,
+      Animated.timing(secondaryMenusLeft, {
+        toValue: 0,
+        duration: 300,
         useNativeDriver: false,
       }).start();
     }
-  };
-
-  const onLayout = event => {
-    const {width} = event.nativeEvent.layout;
-    if (moduleMenusWith.current === null) {
-      moduleMenusWith.current = width;
-      moduleMenusX.setValue(-width);
-    }
+    setSecondaryMenusVisible(!secondaryMenusVisible);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.modulesView}>
-        <View style={styles.moduleContainer}>
+      <View style={styles.iconsContainer}>
+        <View style={styles.appIconsContainer}>
           {modules.map(module => (
-            <ModuleMenu
-              key={module.title}
-              icon={module.icon}
-              title={module.title}
-            />
+            <View style={styles.menuItemContainer}>
+              <IconButton key={module.title} icon={module.icon} />
+            </View>
           ))}
         </View>
-        <View style={styles.footerContainer}>
-          <IconMenu icon="user" onPress={toggleMenusModule} />
+        <View style={styles.otherIconsContainer}>
+          <IconButton
+            icon="user"
+            rounded
+            onPress={toggleSecondaryMenusVisibility}
+          />
         </View>
       </View>
-      <Animated.View
-        onLayout={onLayout}
-        style={[styles.moduleMenusView, {right: moduleMenusX}]}>
-        <Text>Hello world</Text>
-      </Animated.View>
+      <View style={styles.menusContainer}>
+        <View style={styles.primaryMenusContainer}>
+          {modules.map(module => (
+            <TouchableOpacity
+              key={module.title}
+              style={styles.menuItemContainer}>
+              <Text style={styles.primaryMenuTitle}>{module.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Animated.View
+          style={[
+            styles.secondaryMenusContainer,
+            {
+              left: secondaryMenusLeft.interpolate({
+                inputRange: [0, 100],
+                outputRange: ['0%', '100%'],
+              }),
+            },
+          ]}>
+          <Text>Hello world</Text>
+        </Animated.View>
+      </View>
     </View>
   );
 };
@@ -79,24 +91,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     overflow: 'hidden',
   },
-  modulesView: {
+  menusContainer: {
     flex: 1,
+  },
+  iconsContainer: {
     justifyContent: 'space-between',
-    paddingLeft: 12,
-    paddingVertical: 16,
+    alignItems: 'center',
+    marginHorizontal: 12,
   },
-  moduleMenusView: {
-    backgroundColor: '#fff',
-    elevation: 2,
+  otherIconsContainer: {
+    marginBottom: 8,
+  },
+  menuItemContainer: {
+    height: 60,
+    marginVertical: 8,
+    justifyContent: 'center',
+  },
+  primaryMenuTitle: {
+    marginHorizontal: 6,
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  secondaryMenusContainer: {
     position: 'absolute',
+    backgroundColor: '#fff',
+    left: 0,
     top: 0,
-    right: 0,
-    width: '72%',
+    width: '100%',
     height: '100%',
-  },
-  moduleContainer: {},
-  footerContainer: {
-    flexDirection: 'row',
+    elevation: 4,
   },
 });
 
