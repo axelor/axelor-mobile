@@ -16,6 +16,7 @@ const ModuleMenu = ({icon, title}) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: 54,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 12,

@@ -6,6 +6,7 @@ import {useThemeColor} from '@/features/themeSlice';
 import StockAppNavigator from '@/modules/stock/StockAppNavigator';
 import {useSelector} from 'react-redux';
 import useTranslator from '@/hooks/use-translator';
+import DrawerContent from '@/drawer/DrawerContent';
 
 const {Navigator, Screen} = createDrawerNavigator();
 
@@ -40,7 +41,8 @@ const AppNavigator = () => {
           backgroundColor: Colors.backgroundColor,
         },
       }}
-      initialRouteName="base-menu-user">
+      initialRouteName="base-menu-user"
+      drawerContent={() => <DrawerContent />}>
       {stockConfig}
       <Screen
         name="base-menu-user"

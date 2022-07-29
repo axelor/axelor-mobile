@@ -1,12 +1,14 @@
 import {Icon} from '@/components/atoms';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
-const IconMenu = ({icon}) => {
+const IconMenu = ({icon, onPress}) => {
   return (
-    <View style={styles.container}>
-      <Icon size={32} name={icon} />
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <Icon size={32} name={icon} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
