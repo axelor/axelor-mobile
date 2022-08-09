@@ -42,7 +42,7 @@ const AppNavigator = () => {
         },
       }}
       initialRouteName="base-menu-user"
-      drawerContent={() => <DrawerContent />}>
+      drawerContent={props => <DrawerContent {...props} />}>
       {stockConfig}
       <Screen
         name="base-menu-user"

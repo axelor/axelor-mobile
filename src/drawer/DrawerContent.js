@@ -1,12 +1,15 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
 import IconButton from './IconButton';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {NavigationContext} from '@react-navigation/native';
+import Menu from './Menu';
 
 const modules = [
   {
     icon: 'boxes',
     title: 'Stock',
+    isActive: true,
   },
   {
     icon: 'cogs',
@@ -18,9 +21,16 @@ const modules = [
   },
 ];
 
-const DrawerContent = () => {
+const DrawerContent = props => {
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
+
+  const navigation = useContext(NavigationContext);
+
+  const state = navigation.getState();
+  const actualRoute = state.routes[state.index];
+
+  console.log({actualRoute});
 
   const toggleSecondaryMenusVisibility = () => {
     if (!secondaryMenusVisible) {
@@ -45,7 +55,11 @@ const DrawerContent = () => {
         <View style={styles.appIconsContainer}>
           {modules.map(module => (
             <View style={styles.menuItemContainer}>
-              <IconButton key={module.title} icon={module.icon} />
+              <IconButton
+                key={module.title}
+                icon={module.icon}
+                color={module.isActive && '#76DCAE'}
+              />
             </View>
           ))}
         </View>
@@ -77,7 +91,7 @@ const DrawerContent = () => {
               }),
             },
           ]}>
-          <Text>Hello world</Text>
+          <Menu title="Stock" />
         </Animated.View>
       </View>
     </View>
@@ -120,6 +134,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     elevation: 4,
+  },
+  subMenuContainer: {
+    padding: 8,
   },
 });
 
