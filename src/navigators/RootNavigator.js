@@ -2,7 +2,16 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '@/modules/auth/screens/LoginScreen';
-import AppNavigator from '@/navigators/AppNavigator';
+
+import StockModule from '@/modules/stock';
+
+import BasicNavigator from './Navigator';
+
+const modules = [StockModule];
+
+const AppNavigator = () => {
+  return <BasicNavigator modules={modules} />;
+};
 
 const {Navigator, Screen} = createNativeStackNavigator();
 

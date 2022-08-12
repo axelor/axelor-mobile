@@ -41,8 +41,7 @@ const AppNavigator = () => {
           backgroundColor: Colors.backgroundColor,
         },
       }}
-      initialRouteName="base-menu-user"
-      drawerContent={props => <DrawerContent {...props} />}>
+      initialRouteName="base-menu-user">
       {stockConfig}
       <Screen
         name="base-menu-user"
