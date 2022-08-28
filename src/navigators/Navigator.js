@@ -3,6 +3,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import DrawerContent from '@/drawer/DrawerContent';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -36,6 +37,8 @@ const Navigator = ({modules}) => {
     [modulesScreens],
   );
 
+  const pressModule = () => {};
+
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -43,7 +46,8 @@ const Navigator = ({modules}) => {
         drawerStyle: {
           backgroundColor: Colors.backgroundColor,
         },
-      }}>
+      }}
+      drawerContent={props => <DrawerContent {...props} modules={modules} />}>
       {Object.entries(drawerMenus).map(([key, menu]) => (
         <Drawer.Screen
           key={key}
@@ -63,7 +67,7 @@ const Navigator = ({modules}) => {
   );
 };
 
-function getMenuTitle(menu, {I18n}) {
+export function getMenuTitle(menu, {I18n}) {
   if (typeof menu.title === 'function') {
     return menu.title(I18n.t);
   }

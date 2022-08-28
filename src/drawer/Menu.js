@@ -1,60 +1,69 @@
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
+import useTranslator from '@/hooks/use-translator';
+import {getMenuTitle} from '@/navigators/Navigator';
+import {AppDrawerContext} from './DrawerContent';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {CommonActions} from '@react-navigation/native';
 
-const examplesMenus = [
-  {
-    icon: 'home',
-    title: 'Home',
-    isActive: true,
-  },
-  {
-    icon: 'home',
-    title: 'Product',
-  },
-  {
-    icon: 'home',
-    title: 'Inventories',
-  },
-  {
-    icon: 'home',
-    title: 'Realized inventories',
-  },
-  {
-    icon: 'home',
-    title: 'Internal moves',
-  },
-  {
-    icon: 'heart',
-    title: 'A long long long long menu name',
-  },
-];
+const MenuItem = ({name, icon, title, screen}) => {
+  const {navigation, activeRoute} = useContext(AppDrawerContext);
+  const isActive = activeRoute.name === name;
 
-const MenuItem = ({icon, title, isActive}) => {
+  const onPress = () => {
+    navigation.closeDrawer();
+    navigation.replace(screen);
+  };
+
   return (
-    <View style={[styles.menuItemContainer]}>
-      {isActive && <View style={styles.menuItemActive} />}
-      {icon && <Icon style={styles.menuItemIcon} name={icon} size={24} />}
-      <View style={styles.menuItemTextContainer}>
-        <Text style={styles.menuItemTitle}>{title}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.menuItemContainer]}>
+        {isActive && <View style={styles.menuItemActive} />}
+        {icon && <Icon style={styles.menuItemIcon} name={icon} size={24} />}
+        <View style={styles.menuItemTextContainer}>
+          <Text style={styles.menuItemTitle}>{title}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const Menu = ({title}) => {
+  const I18n = useTranslator();
+
+  const {
+    activeModule: {menus},
+  } = useContext(AppDrawerContext);
+
+  const menusItems = useMemo(() => {
+    return Object.entries(menus).reduce((menusItems, [key, menu]) => {
+      return [
+        ...menusItems,
+        {
+          key,
+          name: key,
+          icon: menu.icon,
+          title: getMenuTitle(menu, {I18n}),
+          screen: menu.screen,
+        },
+      ];
+    }, []);
+  }, [menus]);
+
   return (
     <View style={styles.menuContainer}>
       <View style={styles.menuTitleContainer}>
         <Text style={styles.menuTitle}>{title}</Text>
       </View>
       <View style={styles.itemsContainer}>
-        {examplesMenus.map(menu => (
+        {menusItems.map(menu => (
           <MenuItem
-            key={menu.title}
+            key={menu.key}
+            name={menu.name}
             icon={menu.icon}
             title={menu.title}
-            isActive={menu.isActive}
+            screen={menu.screen}
           />
         ))}
       </View>

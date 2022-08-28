@@ -1,36 +1,32 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useRef, useState, useMemo, createContext} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
 import IconButton from './IconButton';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {NavigationContext} from '@react-navigation/native';
 import Menu from './Menu';
+import useTranslator from '@/hooks/use-translator';
+import {getMenuTitle} from '@/navigators/Navigator';
 
-const modules = [
-  {
-    icon: 'boxes',
-    title: 'Stock',
-    isActive: true,
-  },
-  {
-    icon: 'cogs',
-    title: 'Production',
-  },
-  {
-    icon: 'sitemap',
-    title: 'Human Ressources',
-  },
-];
+const ACTIVE_COLOR = '#76DCAE';
 
-const DrawerContent = props => {
+export const AppDrawerContext = createContext();
+
+const DrawerContent = ({state, modules, navigation}) => {
+  const {routes, index} = state;
+  const I18n = useTranslator();
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
+  const activeRoute = useMemo(() => routes[index], [routes, index]);
+  const activeModule = useMemo(
+    () =>
+      modules.find(module =>
+        Object.keys(module.menus).find(
+          menuName => menuName === activeRoute.name,
+        ),
+      ),
+    [modules, activeRoute],
+  );
 
-  const navigation = useContext(NavigationContext);
-
-  const state = navigation.getState();
-  const actualRoute = state.routes[state.index];
-
-  console.log({actualRoute});
+  console.log(state);
 
   const toggleSecondaryMenusVisibility = () => {
     if (!secondaryMenusVisible) {
@@ -50,51 +46,60 @@ const DrawerContent = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconsContainer}>
-        <View style={styles.appIconsContainer}>
-          {modules.map(module => (
-            <View style={styles.menuItemContainer}>
-              <IconButton
+    <AppDrawerContext.Provider value={{activeModule, activeRoute, navigation}}>
+      <View style={styles.container}>
+        <View style={styles.iconsContainer}>
+          <View style={styles.appIconsContainer}>
+            {modules.map(module => (
+              <View key={module.name} style={styles.menuItemContainer}>
+                <IconButton
+                  key={module.title}
+                  icon={module.icon}
+                  color={module === activeModule && '#76DCAE'}
+                  onPress={() => console.log('press on', module.name)}
+                />
+              </View>
+            ))}
+          </View>
+          <View style={styles.otherIconsContainer}>
+            <IconButton
+              icon="user"
+              rounded
+              onPress={toggleSecondaryMenusVisibility}
+            />
+          </View>
+        </View>
+        <View style={styles.menusContainer}>
+          <View style={styles.primaryMenusContainer}>
+            {modules.map(module => (
+              <TouchableOpacity
                 key={module.title}
-                icon={module.icon}
-                color={module.isActive && '#76DCAE'}
-              />
-            </View>
-          ))}
-        </View>
-        <View style={styles.otherIconsContainer}>
-          <IconButton
-            icon="user"
-            rounded
-            onPress={toggleSecondaryMenusVisibility}
-          />
+                style={styles.menuItemContainer}
+                onPress={() => console.log('Press on', module.name)}>
+                <Text style={styles.primaryMenuTitle}>
+                  {getMenuTitle(module, {I18n})}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <Animated.View
+            style={[
+              styles.secondaryMenusContainer,
+              {
+                left: secondaryMenusLeft.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ['0%', '100%'],
+                }),
+              },
+            ]}>
+            <Menu
+              title={getMenuTitle(activeModule, {I18n})}
+              menus={activeModule.menus}
+            />
+          </Animated.View>
         </View>
       </View>
-      <View style={styles.menusContainer}>
-        <View style={styles.primaryMenusContainer}>
-          {modules.map(module => (
-            <TouchableOpacity
-              key={module.title}
-              style={styles.menuItemContainer}>
-              <Text style={styles.primaryMenuTitle}>{module.title}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <Animated.View
-          style={[
-            styles.secondaryMenusContainer,
-            {
-              left: secondaryMenusLeft.interpolate({
-                inputRange: [0, 100],
-                outputRange: ['0%', '100%'],
-              }),
-            },
-          ]}>
-          <Menu title="Stock" />
-        </Animated.View>
-      </View>
-    </View>
+    </AppDrawerContext.Provider>
   );
 };
 
