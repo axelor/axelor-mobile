@@ -1,25 +1,21 @@
-import React, {useContext, useMemo} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import useTranslator from '@/hooks/use-translator';
 import {getMenuTitle} from '@/navigators/Navigator';
-import {AppDrawerContext} from './DrawerContent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, DrawerActions} from '@react-navigation/native';
 
-const MenuItem = ({name, icon, title, screen}) => {
-  const {navigation, activeRoute} = useContext(AppDrawerContext);
-  const isActive = activeRoute.name === name;
-
-  const onPress = () => {
-    navigation.closeDrawer();
-    navigation.replace(screen);
-  };
-
+const MenuItem = ({icon, title, isActive, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.menuItemContainer]}>
-        {isActive && <View style={styles.menuItemActive} />}
+        <View
+          style={[
+            styles.menuItemActive,
+            {backgroundColor: isActive ? '#76DCAE' : '#fff'},
+          ]}
+        />
         {icon && <Icon style={styles.menuItemIcon} name={icon} size={24} />}
         <View style={styles.menuItemTextContainer}>
           <Text style={styles.menuItemTitle}>{title}</Text>
@@ -29,44 +25,49 @@ const MenuItem = ({name, icon, title, screen}) => {
   );
 };
 
-const Menu = ({title}) => {
+const MenuItemList = ({state, navigation, menus}) => {
   const I18n = useTranslator();
 
-  const {
-    activeModule: {menus},
-  } = useContext(AppDrawerContext);
+  return state.routes.map((route, i) => {
+    const focused = i === state.index;
+    const menu = menus[route.name];
 
-  const menusItems = useMemo(() => {
-    return Object.entries(menus).reduce((menusItems, [key, menu]) => {
-      return [
-        ...menusItems,
-        {
-          key,
-          name: key,
-          icon: menu.icon,
-          title: getMenuTitle(menu, {I18n}),
-          screen: menu.screen,
-        },
-      ];
-    }, []);
-  }, [menus]);
+    const onPress = () => {
+      const event = navigation.emit({
+        type: 'drawerItemPress',
+        target: route.key,
+        canPreventDefault: true,
+      });
 
+      if (!event.defaultPrevented) {
+        navigation.dispatch({
+          ...(focused
+            ? DrawerActions.closeDrawer()
+            : CommonActions.navigate({name: route.name, merge: true})),
+          target: state.key,
+        });
+      }
+    };
+
+    return (
+      <MenuItem
+        key={route.key}
+        title={getMenuTitle(menu, {I18n})}
+        icon={menu.icon}
+        onPress={onPress}
+        isActive={focused}
+      />
+    );
+  });
+};
+
+const Menu = ({title, state, navigation, menus}) => {
   return (
     <View style={styles.menuContainer}>
       <View style={styles.menuTitleContainer}>
         <Text style={styles.menuTitle}>{title}</Text>
       </View>
-      <View style={styles.itemsContainer}>
-        {menusItems.map(menu => (
-          <MenuItem
-            key={menu.key}
-            name={menu.name}
-            icon={menu.icon}
-            title={menu.title}
-            screen={menu.screen}
-          />
-        ))}
-      </View>
+      <MenuItemList state={state} navigation={navigation} menus={menus} />
     </View>
   );
 };
@@ -83,29 +84,24 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: 'bold',
   },
-  itemsContainer: {},
   menuItemContainer: {
-    position: 'relative',
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    marginTop: 21,
+    paddingVertical: 8,
   },
   menuItemActive: {
-    position: 'absolute',
-    left: 0,
-    top: '-25%',
-    width: 6,
-    height: '150%',
-    backgroundColor: '#76DCAE',
-    borderTopEndRadius: 8,
-    borderBottomEndRadius: 8,
+    width: 7,
+    height: 32,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
   },
   menuItemIcon: {
-    marginRight: 12,
+    marginLeft: 12,
+    marginRight: 18,
   },
   menuItemTextContainer: {
     flex: 1,
+    alignSelf: 'center',
+    paddingRight: 16,
   },
   menuItemTitle: {
     fontSize: 16,
