@@ -1,5 +1,9 @@
 import React, {useCallback, useMemo} from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {StyleSheet} from 'react-native';
+import {
+  createDrawerNavigator,
+  DrawerToggleButton,
+} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
@@ -11,6 +15,7 @@ const Stack = createStackNavigator();
 const Navigator = ({modules}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const drawerMenus = useMemo(
     () => modules.reduce((menus, module) => ({...menus, ...module.menus}), {}),
@@ -30,11 +35,32 @@ const Navigator = ({modules}) => {
     ({initialRouteName, ...rest}) => (
       <Stack.Navigator {...rest} initialRouteName={initialRouteName}>
         {Object.entries(modulesScreens).map(([key, component]) => (
-          <Stack.Screen key={key} name={key} component={component} />
+          <Stack.Screen
+            key={key}
+            name={key}
+            component={component}
+            options={
+              initialRouteName === key
+                ? {
+                    headerLeft: props => (
+                      <DrawerToggleButton
+                        {...props}
+                        tintColor={Colors.primaryColor}
+                      />
+                    ),
+                    headerStyle: styles.headerStyle,
+                  }
+                : {
+                    headerTintColor: Colors.primaryColor,
+                    headerStyle: styles.headerStyle,
+                    headerTitleStyle: styles.headerTitle,
+                  }
+            }
+          />
         ))}
       </Stack.Navigator>
     ),
-    [modulesScreens],
+    [Colors, modulesScreens, styles],
   );
 
   const pressModule = () => {};
@@ -76,5 +102,15 @@ export function getMenuTitle(menu, {I18n}) {
   }
   return menu.screen;
 }
+
+const getStyles = Colors =>
+  StyleSheet.create({
+    headerTitle: {
+      color: Colors.text,
+    },
+    headerStyle: {
+      backgroundColor: Colors.backgroundColor,
+    },
+  });
 
 export default Navigator;
