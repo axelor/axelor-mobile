@@ -1,59 +1,59 @@
-import React, {useRef, useState, useMemo, createContext} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
 import IconButton from './IconButton';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Menu from './Menu';
 import useTranslator from '@/hooks/use-translator';
-import {getMenuTitle} from '@/navigators/Navigator';
+import {getMenuTitle, ModuleNavigatorContext} from '@/navigators/Navigator';
 
-const ACTIVE_COLOR = '#76DCAE';
-
-export const AppDrawerContext = createContext();
-
-const DrawerContent = ({state, modules, navigation}) => {
-  const {routes, index} = state;
+const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   const I18n = useTranslator();
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
-  const activeRoute = useMemo(() => routes[index], [routes, index]);
-  const activeModule = useMemo(
-    () =>
-      modules.find(module =>
-        Object.keys(module.menus).find(
-          menuName => menuName === activeRoute.name,
-        ),
-      ),
-    [modules, activeRoute],
-  );
+  const {activeModule} = useContext(ModuleNavigatorContext);
+
+  const openSecondaryMenu = () => {
+    Animated.timing(secondaryMenusLeft, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setSecondaryMenusVisible(true);
+  };
+
+  const closeSecondaryMenu = () => {
+    Animated.timing(secondaryMenusLeft, {
+      toValue: 100,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setSecondaryMenusVisible(false);
+  };
 
   const toggleSecondaryMenusVisibility = () => {
     if (!secondaryMenusVisible) {
-      Animated.timing(secondaryMenusLeft, {
-        toValue: 100,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
+      openSecondaryMenu();
     } else {
-      Animated.timing(secondaryMenusLeft, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
+      closeSecondaryMenu();
     }
-    setSecondaryMenusVisible(!secondaryMenusVisible);
+  };
+
+  const handleModuleClick = moduleIndex => {
+    onModuleClick(moduleIndex);
+    openSecondaryMenu();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
         <View style={styles.appIconsContainer}>
-          {modules.map(module => (
+          {modules.map((module, index) => (
             <View key={module.name} style={styles.menuItemContainer}>
               <IconButton
                 key={module.title}
                 icon={module.icon}
                 color={module === activeModule && '#76DCAE'}
-                onPress={() => console.log('press on', module.name)}
+                onPress={() => handleModuleClick(index)}
               />
             </View>
           ))}
@@ -68,11 +68,11 @@ const DrawerContent = ({state, modules, navigation}) => {
       </View>
       <View style={styles.menusContainer}>
         <View style={styles.primaryMenusContainer}>
-          {modules.map(module => (
+          {modules.map((module, index) => (
             <TouchableOpacity
               key={module.title}
               style={styles.menuItemContainer}
-              onPress={() => console.log('Press on', module.name)}>
+              onPress={() => handleModuleClick(index)}>
               <Text style={styles.primaryMenuTitle}>
                 {getMenuTitle(module, {I18n})}
               </Text>
@@ -93,7 +93,6 @@ const DrawerContent = ({state, modules, navigation}) => {
             title={getMenuTitle(activeModule, {I18n})}
             state={state}
             navigation={navigation}
-            menus={activeModule.menus}
           />
         </Animated.View>
       </View>

@@ -6,8 +6,26 @@ import LoginScreen from '@/modules/auth/screens/LoginScreen';
 import StockModule from '@/modules/stock';
 
 import BasicNavigator from './Navigator';
+import {View} from 'react-native';
 
-const modules = [StockModule];
+// Use only for example multiples modules
+const ChessModule = {
+  name: 'Chess',
+  title: 'Chess',
+  icon: 'chess-king',
+  menus: {
+    todo: {
+      title: 'Queen',
+      icon: 'chess-queen',
+      screen: 'QueenScreen',
+    },
+  },
+  screens: {
+    QueenScreen: View,
+  },
+};
+
+const modules = [StockModule, ChessModule];
 
 const AppNavigator = () => {
   return <BasicNavigator modules={modules} />;

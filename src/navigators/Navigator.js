@@ -1,4 +1,11 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   createDrawerNavigator,
@@ -12,12 +19,26 @@ import DrawerContent from '@/drawer/DrawerContent';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+export const ModuleNavigatorContext = createContext({
+  activeModule: null,
+  modulesMenus: {},
+  modulesScreens: {},
+});
+
 const Navigator = ({modules}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const [activeModule, setActiveModule] = useState(getDefaultModule(modules));
 
-  const drawerMenus = useMemo(
+  const changeActiveModule = useCallback(
+    moduleIndex => {
+      setActiveModule(modules[moduleIndex]);
+    },
+    [modules],
+  );
+
+  const modulesMenus = useMemo(
     () => modules.reduce((menus, module) => ({...menus, ...module.menus}), {}),
     [modules],
   );
@@ -63,35 +84,49 @@ const Navigator = ({modules}) => {
     [Colors, modulesScreens, styles],
   );
 
-  const pressModule = () => {};
-
   return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerShown: false,
-        drawerStyle: {
-          backgroundColor: Colors.backgroundColor,
-        },
-      }}
-      drawerContent={props => <DrawerContent {...props} modules={modules} />}>
-      {Object.entries(drawerMenus).map(([key, menu]) => (
-        <Drawer.Screen
-          key={key}
-          name={key}
-          options={{
-            title: getMenuTitle(menu, {I18n}),
-          }}>
-          {props => (
-            <ModulesScreensStackNavigator
-              {...props}
-              initialRouteName={menu.screen}
-            />
-          )}
-        </Drawer.Screen>
-      ))}
-    </Drawer.Navigator>
+    <ModuleNavigatorContext.Provider
+      value={{activeModule, modulesMenus, modulesScreens}}>
+      <Drawer.Navigator
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: {
+            backgroundColor: Colors.backgroundColor,
+          },
+        }}
+        drawerContent={props => (
+          <DrawerContent
+            {...props}
+            modules={modules}
+            onModuleClick={changeActiveModule}
+          />
+        )}>
+        {Object.entries(modulesMenus).map(([key, menu]) => (
+          <Drawer.Screen
+            key={key}
+            name={key}
+            options={{
+              title: getMenuTitle(menu, {I18n}),
+            }}>
+            {props => (
+              <ModulesScreensStackNavigator
+                {...props}
+                initialRouteName={menu.screen}
+              />
+            )}
+          </Drawer.Screen>
+        ))}
+      </Drawer.Navigator>
+    </ModuleNavigatorContext.Provider>
   );
 };
+
+function getDefaultModule(modules) {
+  if (modules == null || modules.length === 0) {
+    return null;
+  }
+  return modules[0];
+}
 
 export function getMenuTitle(menu, {I18n}) {
   if (typeof menu.title === 'function') {

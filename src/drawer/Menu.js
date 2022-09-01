@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import useTranslator from '@/hooks/use-translator';
-import {getMenuTitle} from '@/navigators/Navigator';
+import {getMenuTitle, ModuleNavigatorContext} from '@/navigators/Navigator';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 
@@ -27,10 +27,16 @@ const MenuItem = ({icon, title, isActive, onPress}) => {
 
 const MenuItemList = ({state, navigation, menus}) => {
   const I18n = useTranslator();
+  const {activeModule, modulesMenus} = useContext(ModuleNavigatorContext);
 
   return state.routes.map((route, i) => {
-    const focused = i === state.index;
-    const menu = menus[route.name];
+    if (activeModule.menus[route.name] == null) {
+      return null;
+    }
+
+    const focused =
+      i === state.index && Object.keys(activeModule.menus).includes(route.name);
+    const menu = modulesMenus[route.name];
 
     const onPress = () => {
       const event = navigation.emit({
@@ -61,13 +67,13 @@ const MenuItemList = ({state, navigation, menus}) => {
   });
 };
 
-const Menu = ({title, state, navigation, menus}) => {
+const Menu = ({title, state, navigation}) => {
   return (
     <View style={styles.menuContainer}>
       <View style={styles.menuTitleContainer}>
         <Text style={styles.menuTitle}>{title}</Text>
       </View>
-      <MenuItemList state={state} navigation={navigation} menus={menus} />
+      <MenuItemList state={state} navigation={navigation} />
     </View>
   );
 };
