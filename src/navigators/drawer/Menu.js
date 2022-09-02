@@ -1,31 +1,13 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Text} from '@/components/atoms';
 import useTranslator from '@/hooks/use-translator';
-import {getMenuTitle, ModuleNavigatorContext} from '@/navigators/Navigator';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ModuleNavigatorContext} from '@/navigators/Navigator';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
+import MenuItem from './MenuItem';
+import {getMenuTitle} from '@/navigators/menu.helper';
 
-const MenuItem = ({icon, title, isActive, onPress}) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[styles.menuItemContainer]}>
-        <View
-          style={[
-            styles.menuItemActive,
-            {backgroundColor: isActive ? '#76DCAE' : '#fff'},
-          ]}
-        />
-        {icon && <Icon style={styles.menuItemIcon} name={icon} size={24} />}
-        <View style={styles.menuItemTextContainer}>
-          <Text style={styles.menuItemTitle}>{title}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const MenuItemList = ({state, navigation, menus}) => {
+const MenuItemList = ({state, navigation}) => {
   const I18n = useTranslator();
   const {activeModule, modulesMenus} = useContext(ModuleNavigatorContext);
 
@@ -88,29 +70,6 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     fontSize: 21,
-    fontWeight: 'bold',
-  },
-  menuItemContainer: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-  },
-  menuItemActive: {
-    width: 7,
-    height: 32,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-  },
-  menuItemIcon: {
-    marginLeft: 12,
-    marginRight: 18,
-  },
-  menuItemTextContainer: {
-    flex: 1,
-    alignSelf: 'center',
-    paddingRight: 16,
-  },
-  menuItemTitle: {
-    fontSize: 16,
     fontWeight: 'bold',
   },
 });

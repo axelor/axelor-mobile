@@ -4,7 +4,9 @@ import IconButton from './IconButton';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Menu from './Menu';
 import useTranslator from '@/hooks/use-translator';
-import {getMenuTitle, ModuleNavigatorContext} from '@/navigators/Navigator';
+import {ModuleNavigatorContext} from '@/navigators/Navigator';
+import {moduleHasMenus} from '@/navigators/module.helper';
+import {getMenuTitle} from '@/navigators/menu.helper';
 
 const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   const I18n = useTranslator();
@@ -38,8 +40,8 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
     }
   };
 
-  const handleModuleClick = moduleIndex => {
-    onModuleClick(moduleIndex);
+  const handleModuleClick = moduleName => {
+    onModuleClick(moduleName);
     openSecondaryMenu();
   };
 
@@ -47,34 +49,28 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
     <View style={styles.container}>
       <View style={styles.iconsContainer}>
         <View style={styles.appIconsContainer}>
-          {modules.map((module, index) => (
-            <View key={module.name} style={styles.menuItemContainer}>
+          {modules.filter(moduleHasMenus).map(_module => (
+            <View key={_module.name} style={styles.menuItemContainer}>
               <IconButton
-                key={module.title}
-                icon={module.icon}
-                color={module === activeModule && '#76DCAE'}
-                onPress={() => handleModuleClick(index)}
+                key={_module.title}
+                icon={_module.icon}
+                color={_module === activeModule && '#76DCAE'}
+                onPress={() => handleModuleClick(_module.name)}
               />
             </View>
           ))}
         </View>
-        <View style={styles.otherIconsContainer}>
-          <IconButton
-            icon="user"
-            rounded
-            onPress={toggleSecondaryMenusVisibility}
-          />
-        </View>
+        <View style={styles.otherIconsContainer}>{/* TODO: UserScreen */}</View>
       </View>
       <View style={styles.menusContainer}>
         <View style={styles.primaryMenusContainer}>
-          {modules.map((module, index) => (
+          {modules.filter(moduleHasMenus).map(_module => (
             <TouchableOpacity
-              key={module.title}
+              key={_module.name}
               style={styles.menuItemContainer}
-              onPress={() => handleModuleClick(index)}>
+              onPress={() => handleModuleClick(_module.name)}>
               <Text style={styles.primaryMenuTitle}>
-                {getMenuTitle(module, {I18n})}
+                {getMenuTitle(_module, {I18n})}
               </Text>
             </TouchableOpacity>
           ))}

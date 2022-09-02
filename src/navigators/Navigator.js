@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {createContext, useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   createDrawerNavigator,
@@ -14,7 +7,9 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
-import DrawerContent from '@/drawer/DrawerContent';
+import DrawerContent from './drawer/DrawerContent';
+import {getDefaultModule, moduleHasMenus} from './module.helper';
+import {getMenuTitle} from './menu.helper';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -25,21 +20,26 @@ export const ModuleNavigatorContext = createContext({
   modulesScreens: {},
 });
 
-const Navigator = ({modules}) => {
+const Navigator = ({modules, mainMenu}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-  const [activeModule, setActiveModule] = useState(getDefaultModule(modules));
+  const [activeModule, setActiveModule] = useState(
+    getDefaultModule(modules, mainMenu),
+  );
 
   const changeActiveModule = useCallback(
-    moduleIndex => {
-      setActiveModule(modules[moduleIndex]);
+    moduleName => {
+      setActiveModule(modules.find(_module => _module.name === moduleName));
     },
     [modules],
   );
 
   const modulesMenus = useMemo(
-    () => modules.reduce((menus, module) => ({...menus, ...module.menus}), {}),
+    () =>
+      modules
+        .filter(moduleHasMenus)
+        .reduce((menus, _module) => ({...menus, ..._module.menus}), {}),
     [modules],
   );
 
@@ -88,6 +88,7 @@ const Navigator = ({modules}) => {
     <ModuleNavigatorContext.Provider
       value={{activeModule, modulesMenus, modulesScreens}}>
       <Drawer.Navigator
+        initialRouteName={mainMenu}
         screenOptions={{
           headerShown: false,
           drawerStyle: {
@@ -120,23 +121,6 @@ const Navigator = ({modules}) => {
     </ModuleNavigatorContext.Provider>
   );
 };
-
-function getDefaultModule(modules) {
-  if (modules == null || modules.length === 0) {
-    return null;
-  }
-  return modules[0];
-}
-
-export function getMenuTitle(menu, {I18n}) {
-  if (typeof menu.title === 'function') {
-    return menu.title(I18n.t);
-  }
-  if (menu.title != null) {
-    return menu.title;
-  }
-  return menu.screen;
-}
 
 const getStyles = Colors =>
   StyleSheet.create({
