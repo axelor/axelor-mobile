@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator, View, StyleSheet, ScrollView} from 'react-native';
-import {Button, Card, Screen, Text} from '@/components/atoms';
-import {Picker, Badge} from '@/components/molecules';
-import {PopUpOneButton} from '@/components/organisms';
+import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {Button, Screen, Text} from '@/components/atoms';
+import {Badge} from '@/components/molecules';
+import {Picker, PopUpOneButton} from '@/components/organisms';
 import {
   QuantityCard,
   ProductCardInfo,
@@ -147,7 +147,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     if (route.params.stockCorrection == null) {
       // Stock correction doesn't exsist yet : creation
       if (
-        stockProduct.trackingNumberConfiguration == null ||
+        stockProduct?.trackingNumberConfiguration == null ||
         trackingNumber == null
       ) {
         dispatch(
@@ -196,7 +196,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     if (route.params.stockCorrection == null) {
       // Stock correction doesn't exsist yet : creation
       if (
-        stockProduct.trackingNumberConfiguration == null ||
+        stockProduct?.trackingNumberConfiguration == null ||
         trackingNumber == null
       ) {
         dispatch(
@@ -246,106 +246,82 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const [popUp, setPopUp] = useState(false);
 
   return (
-    <Screen>
-      {loading || loadingProduct ? (
+    <Screen
+      fixedItems={
+        <>
+          {saveStatus ? null : (
+            <Button
+              title={I18n.t('Base_Save')}
+              color={Colors.secondaryColor_light}
+              onPress={handleSave}
+            />
+          )}
+          {status === StockCorrection.status.Validated ? null : (
+            <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
+          )}
+        </>
+      }
+      loading={loadingProduct}>
+      {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View>
-          <View
-            style={
-              status === StockCorrection.status.Validated
-                ? null
-                : styles.scrollContainer
-            }>
-            <ScrollView>
-              <PopUpOneButton
-                visible={popUp}
-                title={I18n.t('Auth_Warning')}
-                data={I18n.t('Stock_ReasonRequired')}
-                btnTitle={I18n.t('Auth_Close')}
-                onPress={() => setPopUp(!popUp)}
-              />
-              <View>
-                <View style={styles.content}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.text_important}>
-                      {stockLocation.name}
-                    </Text>
-                  </View>
-                  <Badge
-                    color={
-                      StockCorrection.getStatusColor(status, Colors)
-                        .backgroundColor
-                    }
-                    title={StockCorrection.getStatus(status, I18n)}
-                  />
-                </View>
-                <ProductCardInfo
-                  name={stockProduct.name}
-                  code={stockProduct.code}
-                  pictureId={stockProduct.picture?.id}
-                  trackingNumber={
-                    stockProduct.trackingNumberConfiguration == null ||
-                    trackingNumber == null
-                      ? null
-                      : trackingNumber.trackingNumberSeq
-                  }
-                  locker={null}
-                  onPress={handleShowProduct}
-                />
+        <ScrollView>
+          <PopUpOneButton
+            visible={popUp}
+            title={I18n.t('Auth_Warning')}
+            data={I18n.t('Stock_ReasonRequired')}
+            btnTitle={I18n.t('Auth_Close')}
+            onPress={() => setPopUp(!popUp)}
+          />
+          <View>
+            <View style={styles.content}>
+              <View style={styles.textContainer}>
+                <Text style={styles.text_important}>{stockLocation?.name}</Text>
               </View>
-              <QuantityCard
-                labelQty={I18n.t('Stock_RealQty')}
-                defaultValue={parseFloat(realQty).toFixed(2)}
-                onValueChange={handleQtyChange}
-                editable={status === StockCorrection.status.Draft}>
-                <Text style={styles.text}>
-                  {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(
-                    databaseQty,
-                  ).toFixed(2)} ${stockProduct.unit?.name}`}
-                </Text>
-              </QuantityCard>
-              {status === StockCorrection.status.Validated ? (
-                <View>
-                  <View style={styles.reasonTitle}>
-                    <Text>{I18n.t('Stock_Reason')}</Text>
-                  </View>
-                  <Card style={styles.infosCard}>
-                    <Text>{reason.name}</Text>
-                  </Card>
-                </View>
-              ) : (
-                <Picker
-                  style={styles.picker}
-                  styleTxt={reason.id === null ? styles.picker_empty : null}
-                  title={I18n.t('Stock_Reason')}
-                  onValueChange={handleReasonChange}
-                  defaultValue={reason.id}
-                  listItems={stockCorrectionReasonList}
-                  labelField="name"
-                  valueField="id"
-                />
-              )}
-            </ScrollView>
-          </View>
-          <View style={styles.button_container}>
-            {saveStatus ? null : (
-              <Button
-                title={I18n.t('Base_Save')}
-                style={styles.button}
-                color={Colors.secondaryColor_light}
-                onPress={handleSave}
+              <Badge
+                color={
+                  StockCorrection.getStatusColor(status, Colors).backgroundColor
+                }
+                title={StockCorrection.getStatus(status, I18n)}
               />
-            )}
-            {status === StockCorrection.status.Validated ? null : (
-              <Button
-                title={I18n.t('Base_Validate')}
-                style={styles.button}
-                onPress={handleValidate}
-              />
-            )}
+            </View>
+            <ProductCardInfo
+              name={stockProduct?.name}
+              code={stockProduct?.code}
+              pictureId={stockProduct?.picture?.id}
+              trackingNumber={
+                stockProduct?.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.trackingNumberSeq
+              }
+              locker={null}
+              onPress={handleShowProduct}
+            />
           </View>
-        </View>
+          <QuantityCard
+            labelQty={I18n.t('Stock_RealQty')}
+            defaultValue={parseFloat(realQty).toFixed(2)}
+            onValueChange={handleQtyChange}
+            editable={status === StockCorrection.status.Draft}>
+            <Text style={styles.text}>
+              {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(
+                databaseQty,
+              ).toFixed(2)} ${stockProduct?.unit?.name}`}
+            </Text>
+          </QuantityCard>
+          <Picker
+            styleTxt={reason?.id === null ? styles.picker_empty : null}
+            title={I18n.t('Stock_Reason')}
+            onValueChange={handleReasonChange}
+            defaultValue={reason?.id}
+            listItems={stockCorrectionReasonList}
+            labelField="name"
+            valueField="id"
+            disabled={status === StockCorrection.status.Validated}
+            disabledValue={reason?.name}
+          />
+        </ScrollView>
       )}
     </Screen>
   );
@@ -394,24 +370,8 @@ const styles = StyleSheet.create({
   reasonTitle: {
     marginHorizontal: 20,
   },
-  picker: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
   picker_empty: {
     color: 'red',
-  },
-  button_container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: '2%',
-  },
-  button: {
-    width: '40%',
-    borderRadius: 50,
-    marginHorizontal: 12,
-    marginBottom: '2%',
   },
   text: {
     fontSize: 16,

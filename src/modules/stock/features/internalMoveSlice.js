@@ -1,53 +1,47 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
-  searchInternalMove,
   searchInternalMoveFilter,
   createInternalStockMove,
   updateInternalStockMove,
 } from '@/modules/stock/api/internal-move-api';
-import {useHandleError} from '@/api/utils';
-
-export const fetchInternalMoves = createAsyncThunk(
-  'internalMove/fetchInternalMove',
-  async function (data) {
-    return searchInternalMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch internal moves');
-      })
-      .then(response => response.data.data);
-  },
-);
+import {handlerApiCall} from '@/api/utils';
 
 export const searchInternalMoves = createAsyncThunk(
   'internalMove/searchInternalMoves',
-  async function (data) {
-    return searchInternalMoveFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter internal moves');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchInternalMoveFilter},
+      data,
+      'filter internal moves',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const createInternalMove = createAsyncThunk(
   'internalMove/createInternalMove',
-  async function (data) {
-    return createInternalStockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'create internal move');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: createInternalStockMove},
+      data,
+      'create internal move',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const updateInternalMove = createAsyncThunk(
   'internalMove/updateInternalMove',
-  async function (data) {
-    return updateInternalStockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'update internal move');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateInternalStockMove},
+      data,
+      'update internal move',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
@@ -64,14 +58,14 @@ const internalMoveSlice = createSlice({
   name: 'internalMove',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchInternalMoves.pending, (state, action) => {
+    builder.addCase(searchInternalMoves.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loadingInternalMove = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchInternalMoves.fulfilled, (state, action) => {
+    builder.addCase(searchInternalMoves.fulfilled, (state, action) => {
       state.loadingInternalMove = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
@@ -88,14 +82,6 @@ const internalMoveSlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(searchInternalMoves.pending, state => {
-      state.loadingInternalMove = true;
-    });
-    builder.addCase(searchInternalMoves.fulfilled, (state, action) => {
-      state.loadingInternalMove = false;
-      state.isListEnd = false;
-      state.internalMoveList = action.payload;
     });
     builder.addCase(createInternalMove.pending, state => {
       state.loadingInternalMove = true;

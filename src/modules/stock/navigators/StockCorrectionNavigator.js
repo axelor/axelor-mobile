@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import StockCorrectionListScreen from '@/modules/stock/screens/stockCorrections/StockCorrectionListScreen';
@@ -10,13 +9,14 @@ import StockCorrectionNewTrackingScreen from '@/modules/stock/screens/stockCorre
 import ProductNavigator from './ProductNavigator';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const StockCorrectionNavigator = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
     <Navigator>
@@ -27,7 +27,7 @@ const StockCorrectionNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.listScreenHeaderStyle,
           headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -37,7 +37,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -47,7 +47,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionNewLocationScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -57,7 +57,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionNewProductScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -67,7 +67,7 @@ const StockCorrectionNavigator = () => {
         component={StockCorrectionNewTrackingScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_StockCorrection'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -80,12 +80,5 @@ const StockCorrectionNavigator = () => {
     </Navigator>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-  });
 
 export default StockCorrectionNavigator;

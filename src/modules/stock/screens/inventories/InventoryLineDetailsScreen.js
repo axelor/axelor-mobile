@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, ScrollView} from 'react-native';
 import {Screen, Text, Button} from '@/components/atoms';
 import Inventory from '@/modules/stock/types/inventory';
@@ -16,12 +16,16 @@ import {
   updateInventoryLine,
 } from '../../features/inventoryLineSlice';
 import {EditableInput} from '@/components/molecules';
+import {fetchProductWithId} from '../../features/productSlice';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
   const product = route.params.product;
   const trackingNumber = route.params.trackingNumber;
+  const {loadingProductFromId, productFromId} = useSelector(
+    state => state.product,
+  );
   const [rack, setRack] = useState(null);
   const [realQty, setRealQty] = useState(
     inventoryLine?.realQty == null ? 0 : inventoryLine.realQty,
@@ -30,11 +34,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(
+      fetchProductWithId(
+        product != null ? product.id : inventoryLine?.product?.id,
+      ),
+    );
+  }, [dispatch, inventoryLine, product]);
+
   const handleShowProduct = () => {
     navigation.navigate('ProductNavigator', {
       screen: 'ProductStockDetailsScreen',
       params: {
-        product: product,
+        product: productFromId,
       },
     });
   };
@@ -44,16 +56,24 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
       createNewInventoryLine({
         inventoryId: inventory.id,
         inventoryVersion: inventory.version,
-        productId: product.id,
+        productId: productFromId?.id,
         trackingNumberId: trackingNumber?.id,
         rack: rack == null || rack === '' ? null : rack,
         realQty: realQty,
       }),
     );
     navigation.navigate('InventoryLineListScreen', {
-      inventoryId: inventory.id,
+      inventory: inventory,
     });
-  }, [dispatch, inventory, navigation, product, rack, realQty, trackingNumber]);
+  }, [
+    dispatch,
+    inventory,
+    navigation,
+    productFromId,
+    rack,
+    realQty,
+    trackingNumber,
+  ]);
 
   const handleUpdateLine = useCallback(() => {
     dispatch(
@@ -65,12 +85,27 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
       }),
     );
     navigation.navigate('InventoryLineListScreen', {
-      inventoryId: inventory.id,
+      inventory: inventory,
     });
   }, [description, dispatch, inventory, inventoryLine, navigation, realQty]);
 
   return (
-    <Screen>
+    <Screen
+      fixedItems={
+        inventoryLine == null ? (
+          <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />
+        ) : inventory?.statusSelect !== Inventory.status.Validated ? (
+          <Button
+            title={
+              inventory.statusSelect <= Inventory.status.InProgress
+                ? I18n.t('Base_Save')
+                : I18n.t('Base_Check')
+            }
+            onPress={handleUpdateLine}
+          />
+        ) : null
+      }
+      loading={loadingProductFromId}>
       <ScrollView>
         <InventoryHeader
           reference={inventory.inventorySeq}
@@ -92,9 +127,9 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
         )}
         <ProductCardInfo
           onPress={handleShowProduct}
-          pictureId={product?.picture.id}
-          code={product?.code}
-          name={product?.name}
+          pictureId={productFromId?.picture?.id}
+          code={productFromId?.code}
+          name={productFromId?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
@@ -125,27 +160,9 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
         />
         {inventoryLine == null && (
           <EditableInput
-            style={styles.lockerContainer}
             placeholder={I18n.t('Stock_Locker')}
             onValidate={input => setRack(input)}
             defaultValue={rack}
-          />
-        )}
-        {inventoryLine == null ? (
-          <Button
-            style={styles.btn}
-            title={I18n.t('Base_Add')}
-            onPress={handleNewLine}
-          />
-        ) : (
-          <Button
-            style={styles.btn}
-            title={
-              inventory.statusSelect <= Inventory.status.InProgress
-                ? I18n.t('Base_Save')
-                : I18n.t('Base_Check')
-            }
-            onPress={handleUpdateLine}
           />
         )}
       </ScrollView>
@@ -154,15 +171,8 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  btn: {
-    marginTop: 20,
-  },
   moveCard: {
     marginVertical: 10,
-  },
-  lockerContainer: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
   },
 });
 

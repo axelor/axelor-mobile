@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import InternalMoveListScreen from '@/modules/stock/screens/internalMoves/InternalMoveListScreen';
@@ -14,13 +13,14 @@ import ProductNavigator from './ProductNavigator';
 import StockCorrectionNavigator from './StockCorrectionNavigator';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InternalMoveNavigator = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
     <Navigator>
@@ -31,7 +31,7 @@ const InternalMoveNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.listScreenHeaderStyle,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -41,7 +41,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveDetailsGeneralScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -51,7 +51,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveLineListScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -61,7 +61,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveLineDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -71,7 +71,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveSelectFromLocationScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -81,7 +81,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveSelectToLocationScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -91,7 +91,7 @@ const InternalMoveNavigator = () => {
         component={InternalMoveSelectProductScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_InternalMove'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -118,12 +118,5 @@ const InternalMoveNavigator = () => {
     </Navigator>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-  });
 
 export default InternalMoveNavigator;

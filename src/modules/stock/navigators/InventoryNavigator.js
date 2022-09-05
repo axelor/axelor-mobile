@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
-import {StyleSheet} from 'react-native';
 import ProductNavigator from './ProductNavigator';
 import InventoryListScreen from '@/modules/stock/screens/inventories/InventoryListScreen';
 import InventoryPlannedDetailsScreen from '@/modules/stock/screens/inventories/InventoryPlannedDetailsScreen';
@@ -12,13 +11,14 @@ import InventorySelectProductScreen from '@/modules/stock/screens/inventories/In
 import InventorySelectTrackingScreen from '@/modules/stock/screens/inventories/InventorySelectTrackingScreen';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const InventoriesNavigator = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
     <Navigator>
@@ -29,7 +29,7 @@ const InventoriesNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.listScreenHeaderStyle,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -39,7 +39,7 @@ const InventoriesNavigator = () => {
         component={InventoryPlannedDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -49,7 +49,7 @@ const InventoriesNavigator = () => {
         component={InventoryStartedDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -59,7 +59,7 @@ const InventoriesNavigator = () => {
         component={InventoryLineListScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -69,7 +69,7 @@ const InventoriesNavigator = () => {
         component={InventorySelectProductScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -79,7 +79,7 @@ const InventoriesNavigator = () => {
         component={InventorySelectTrackingScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -89,7 +89,7 @@ const InventoriesNavigator = () => {
         component={InventoryLineDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Inventory'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -102,12 +102,5 @@ const InventoriesNavigator = () => {
     </Navigator>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-  });
 
 export default InventoriesNavigator;

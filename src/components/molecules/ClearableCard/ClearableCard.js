@@ -1,10 +1,21 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
+import {getCommonStyles} from '@/components/commons-styles';
+import {useThemeColor} from '@/features/themeSlice';
 
 const ClearableCard = ({style, valueTxt, onClearPress}) => {
+  const Colors = useThemeColor();
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
   return (
-    <Card style={[styles.container, style]}>
+    <Card
+      style={[
+        commonStyles.filter,
+        commonStyles.filterAlign,
+        commonStyles.filterSize,
+        style,
+      ]}>
       <Text style={styles.text}>{valueTxt}</Text>
       <Icon
         name="times"
@@ -17,13 +28,6 @@ const ClearableCard = ({style, valueTxt, onClearPress}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginHorizontal: 16,
-    marginVertical: 6,
-  },
   text: {
     width: '95%',
     margin: 1,

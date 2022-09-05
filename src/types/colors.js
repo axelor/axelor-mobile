@@ -12,7 +12,7 @@ export class Themes {
 class Colors {
   static ligthTheme = {
     screenBackgroundColor: '#F2F2F2',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAFBFC',
     primaryColor: '#3ECF8E',
     primaryColor_light: '#84DCB7',
     secondaryColor: '#CECECE',

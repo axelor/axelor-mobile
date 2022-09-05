@@ -1,15 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchCompany} from '@/modules/auth/api/company-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchCompanies = createAsyncThunk(
   'company/fetchCompany',
-  async function () {
-    return searchCompany()
-      .catch(function (error) {
-        useHandleError(error, 'fetch companies');
-      })
-      .then(response => response.data.data);
+  async function (data = {}, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchCompany},
+      data,
+      'fetch companies',
+      {getState},
+      {array: true},
+    );
   },
 );
 

@@ -18,10 +18,7 @@ import {
   displayPartner,
   displayStockMoveSeq,
 } from '@/modules/stock/utils/displayers';
-import {
-  fetchSupplierArrivals,
-  searchSupplierArrivals,
-} from '@/modules/stock/features/supplierArrivalSlice';
+import {searchSupplierArrivals} from '@/modules/stock/features/supplierArrivalSlice';
 import {SupplierArrivalCard} from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
 import {useThemeColor} from '@/features/themeSlice';
@@ -130,19 +127,63 @@ const SupplierArrivalListScreen = ({navigation}) => {
   );
 
   const fetchSupplierArrivalsAPI = useCallback(
-    page => {
-      if (filter != null && filter !== '') {
-        dispatch(searchSupplierArrivals({searchValue: filter}));
-      } else {
-        dispatch(fetchSupplierArrivals({page: page}));
-      }
+    ({page = 0, searchValue}) => {
+      dispatch(
+        searchSupplierArrivals({
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch, filter],
+    [dispatch],
   );
 
+  const handleRefChange = searchValue => {
+    setFilter(searchValue);
+    dispatch(
+      searchSupplierArrivals({
+        searchValue: searchValue,
+        page: 0,
+      }),
+    );
+  };
+
   return (
-    <Screen>
-      <SearchContainer>
+    <Screen listScreen={true}>
+      <SearchContainer
+        fixedItems={
+          <AutoCompleteSearchNoQR
+            placeholder={I18n.t('Stock_Ref')}
+            objectList={supplierArrivalsList}
+            displayValue={displayStockMoveSeq}
+            onChangeValue={item => navigateToSupplierDetail(item)}
+            oneFilter={true}
+            fetchData={value => handleRefChange(value)}
+            navigate={navigate}
+          />
+        }
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={planifiedStatus}
+              title={I18n.t('Stock_Status_Planned')}
+              onPress={handlePlanifiedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Planned,
+                Colors,
+              )}
+            />
+            <Chip
+              selected={validatedStatus}
+              title={I18n.t('Stock_Status_Realized')}
+              onPress={handleValidatedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Realized,
+                Colors,
+              )}
+            />
+          </ChipSelect>
+        }>
         <AutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -167,35 +208,6 @@ const SupplierArrivalListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_Supplier')}
         />
       </SearchContainer>
-      <AutoCompleteSearchNoQR
-        placeholder={I18n.t('Stock_Ref')}
-        objectList={supplierArrivalsList}
-        displayValue={displayStockMoveSeq}
-        onChangeValue={item => navigateToSupplierDetail(item)}
-        oneFilter={true}
-        fetchData={value => setFilter(value)}
-        navigate={navigate}
-      />
-      <ChipSelect>
-        <Chip
-          selected={planifiedStatus}
-          title={I18n.t('Stock_Status_Planned')}
-          onPress={handlePlanifiedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Planned,
-            Colors,
-          )}
-        />
-        <Chip
-          selected={validatedStatus}
-          title={I18n.t('Stock_Status_Realized')}
-          onPress={handleValidatedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Realized,
-            Colors,
-          )}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loading}
         data={filteredList}
@@ -214,10 +226,11 @@ const SupplierArrivalListScreen = ({navigation}) => {
             style={styles.cardDelivery}
           />
         )}
-        fetchData={fetchSupplierArrivalsAPI}
+        fetchData={page =>
+          fetchSupplierArrivalsAPI({page, searchValue: filter})
+        }
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
       />
     </Screen>
   );

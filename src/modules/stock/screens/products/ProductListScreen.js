@@ -2,7 +2,11 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@/components/atoms';
-import {AutocompleteSearch, ScrollList} from '@/components/organisms';
+import {
+  AutocompleteSearch,
+  ScrollList,
+  SearchContainer,
+} from '@/components/organisms';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
@@ -23,14 +27,15 @@ const ProductListScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
-    page => {
-      if (filter != null && filter !== '') {
-        dispatch(searchProducts({searchValue: filter, page: 0}));
+    ({page = 0, searchValue}) => {
+      if (searchValue != null && searchValue !== '') {
+        setFilter(searchValue);
+        dispatch(searchProducts({searchValue: searchValue, page: 0}));
       } else {
         dispatch(searchProducts({page: page}));
       }
     },
-    [dispatch, filter],
+    [dispatch],
   );
 
   const showProductDetails = useCallback(
@@ -56,17 +61,22 @@ const ProductListScreen = ({navigation}) => {
   }, [activeCompany, dispatch, productList]);
 
   return (
-    <Screen>
-      <AutocompleteSearch
-        objectList={productList}
-        onChangeValue={item => showProductDetails(item)}
-        fetchData={value => setFilter(value)}
-        displayValue={displayItemName}
-        scanKeySearch={productScanKey}
-        placeholder={I18n.t('Stock_Product')}
-        isFocus={true}
-        oneFilter={true}
-        navigate={navigate}
+    <Screen listScreen={true}>
+      <SearchContainer
+        expandableFilter={false}
+        fixedItems={
+          <AutocompleteSearch
+            objectList={productList}
+            onChangeValue={item => showProductDetails(item)}
+            fetchData={value => fetchProductsAPI({searchValue: value})}
+            displayValue={displayItemName}
+            scanKeySearch={productScanKey}
+            placeholder={I18n.t('Stock_Product')}
+            isFocus={true}
+            oneFilter={true}
+            navigate={navigate}
+          />
+        }
       />
       <ScrollList
         loadingList={loadingProduct}
@@ -84,7 +94,7 @@ const ProductListScreen = ({navigation}) => {
             onPress={() => showProductDetails(item)}
           />
         )}
-        fetchData={fetchProductsAPI}
+        fetchData={page => fetchProductsAPI({page})}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         filter={filter != null && filter !== ''}

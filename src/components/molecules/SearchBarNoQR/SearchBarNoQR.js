@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const SearchBarNoQR = ({
   style,
@@ -14,10 +15,16 @@ const SearchBarNoQR = ({
   isFocus = false,
 }) => {
   const Colors = useThemeColor();
-  const container = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
-    <View style={[container, style]}>
+    <View
+      style={[
+        commonStyles.filter,
+        commonStyles.filterAlign,
+        commonStyles.filterSize,
+        style,
+      ]}>
       <Input
         style={styles.input}
         value={valueTxt}
@@ -51,20 +58,10 @@ const SearchBarNoQR = ({
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    backgroundColor: Colors.backgroundColor,
-    borderRadius: 13,
-    elevation: 3,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    marginHorizontal: 16,
-    marginVertical: 3,
-  });
-
 const styles = StyleSheet.create({
+  container: {
+    height: 40,
+  },
   input: {
     width: '70%',
   },

@@ -3,42 +3,45 @@ import {
   fetchVariantAttributes,
   fetchVariants,
 } from '@/modules/stock/api/product-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchProductVariants = createAsyncThunk(
   'product/fetchProductVariant',
-  async function (productVariantId) {
-    return fetchVariants(productVariantId)
-      .catch(function (error) {
-        useHandleError(error, 'fetch product variants');
-      })
-      .then(response => {
-        return response.data.data;
-      });
+  async function (productVariantId, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: fetchVariants},
+      productVariantId,
+      'fetch product variants',
+      {getState},
+      {array: true},
+    );
   },
 );
 
-var getProductAvailabilty = async data => {
-  return fetchVariantAttributes(data)
-    .catch(function (error) {
-      useHandleError(error, 'fetch product variants attributes');
-    })
-    .then(response => {
-      return response.data.object;
-    });
+var getProductAttributes = async (data, {getState}) => {
+  return handlerApiCall(
+    {fetchFunction: fetchVariantAttributes},
+    data,
+    'fetch product variants attributes',
+    {getState},
+    {array: true},
+  );
 };
 
-async function fetchData(data) {
-  return await getProductAvailabilty(data);
+async function fetchData(data, {getState}) {
+  return await getProductAttributes(data, {getState});
 }
 
 export const fetchProductsAttributes = createAsyncThunk(
   'product/fetchProductsAttributes',
-  async function (data) {
+  async function (data, {getState}) {
     let promises = [];
     data.productList.forEach(product => {
       promises.push(
-        fetchData({productVariantId: product.id, version: product.version}),
+        fetchData(
+          {productVariantId: product.id, version: product.version},
+          {getState},
+        ),
       );
     });
     return Promise.all(promises);

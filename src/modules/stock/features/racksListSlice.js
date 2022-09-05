@@ -1,32 +1,35 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchStockLocationLine} from '../api/stock-location-line-api';
 
-export const getRacks = createAsyncThunk('Utils/racks', async function (data) {
-  let promises = [];
-  data.LineList.forEach(line => {
-    promises.push(fetchData(data.stockId, line));
-  });
-  return Promise.all(promises).then(resultes => {
-    return resultes;
-  });
-});
-
-var getRack = async (stockId, productId) => {
-  return searchStockLocationLine({
-    stockId: stockId,
-    productId: productId,
-  })
-    .catch(function (error) {
-      useHandleError(error, 'fetch rack');
-    })
-    .then(response => {
-      return response.data.data;
+export const getRacks = createAsyncThunk(
+  'Utils/racks',
+  async function (data, {getState}) {
+    let promises = [];
+    data.LineList.forEach(line => {
+      promises.push(fetchData(data.stockId, line, {getState}));
     });
+    return Promise.all(promises).then(resultes => {
+      return resultes;
+    });
+  },
+);
+
+var getRack = async (stockId, productId, {getState}) => {
+  return handlerApiCall(
+    {fetchFunction: searchStockLocationLine},
+    {
+      stockId: stockId,
+      productId: productId,
+    },
+    'fetch rack',
+    {getState},
+    {array: true},
+  );
 };
 
-async function fetchData(stockId, line) {
-  return await getRack(stockId, line.product.id);
+async function fetchData(stockId, line, {getState}) {
+  return await getRack(stockId, line.product.id, {getState});
 }
 
 const initialState = {

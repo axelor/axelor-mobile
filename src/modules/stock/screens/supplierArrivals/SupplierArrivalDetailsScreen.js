@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View, StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Screen, Text} from '@/components/atoms';
 import {ViewAllContainer} from '@/components/molecules';
@@ -16,13 +16,10 @@ import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalDetailScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
-  const newDestinationStockLocation = route.params.destinationStockLocation;
   const {loadingSALines, supplierArrivalLineList} = useSelector(
     state => state.supplierArrivalLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
-  const [destinationStockLocation, setDestinationStockLocation] =
-    useState(null);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -44,17 +41,6 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
       }),
     );
   }, [dispatch, supplierArrival?.toStockLocation?.id, supplierArrivalLineList]);
-  useEffect(() => {
-    setDestinationStockLocation(
-      newDestinationStockLocation
-        ? newDestinationStockLocation
-        : supplierArrival.toStockLocation,
-    );
-  }, [
-    newDestinationStockLocation,
-    route.params,
-    supplierArrival.toStockLocation,
-  ]);
 
   const handleViewAll = () => {
     navigation.navigate('SupplierArrivalLineListScreen', {
@@ -76,13 +62,6 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
     }
   };
 
-  const handleChangeLocation = () => {
-    navigation.navigate('SupplierArrivalChangeLocationScreen', {
-      destinationStockLocation: destinationStockLocation,
-      supplierArrival: supplierArrival,
-    });
-  };
-
   const handleRealize = () => {
     dispatch(
       realizeSupplierArrival({
@@ -100,104 +79,89 @@ const SupplierArrivalDetailScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      {loadingSALines ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <StockMoveHeader
-            reference={supplierArrival.stockMoveSeq}
-            status={supplierArrival.statusSelect}
-            date={
-              supplierArrival.statusSelect === StockMove.status.Draft
-                ? supplierArrival.createdOn
-                : supplierArrival.statusSelect === StockMove.status.Planned
-                ? supplierArrival.estimatedDate
-                : supplierArrival.realDate
-            }
-          />
-          <LocationsMoveCard
-            fromStockLocation={supplierArrival.fromAddress?.fullName}
-            toStockLocation={destinationStockLocation?.name}
-            editableTo={
-              supplierArrival.statusSelect !== StockMove.status.Realized
-            }
-            onPressTo={handleChangeLocation}
-          />
-          <View style={styles.clientContainer}>
-            <Text>{`${I18n.t('Stock_Supplier')} : ${
-              supplierArrival.partner?.fullName
+    <Screen
+      fixedItems={
+        supplierArrival.statusSelect !== StockMove.status.Realized && (
+          <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />
+        )
+      }
+      loading={loadingSALines}>
+      <ScrollView>
+        <StockMoveHeader
+          reference={supplierArrival.stockMoveSeq}
+          status={supplierArrival.statusSelect}
+          date={
+            supplierArrival.statusSelect === StockMove.status.Draft
+              ? supplierArrival.createdOn
+              : supplierArrival.statusSelect === StockMove.status.Planned
+              ? supplierArrival.estimatedDate
+              : supplierArrival.realDate
+          }
+        />
+        <LocationsMoveCard
+          fromStockLocation={supplierArrival.fromAddress?.fullName}
+          toStockLocation={supplierArrival.toStockLocation?.name}
+        />
+        <View style={styles.clientContainer}>
+          <Text>{`${I18n.t('Stock_Supplier')} : ${
+            supplierArrival.partner?.fullName
+          }`}</Text>
+          {supplierArrival.origin == null ? null : (
+            <Text>{`${I18n.t('Stock_Origin')} : ${
+              supplierArrival.origin
             }`}</Text>
-            {supplierArrival.origin == null ? null : (
-              <Text>{`${I18n.t('Stock_Origin')} : ${
-                supplierArrival.origin
-              }`}</Text>
-            )}
-            {supplierArrival.supplierShipmentRef == null ? null : (
-              <Text>{`${I18n.t('Stock_SupplierShipmentRef')} : ${
-                supplierArrival.supplierShipmentRef
-              }`}</Text>
-            )}
-          </View>
-          <ViewAllContainer
-            isHeaderExist={
-              supplierArrival.statusSelect !== StockMove.status.Realized
-            }
-            onNewIcon={handleNewLine}
-            onPress={handleViewAll}>
-            {supplierArrivalLineList == null ||
-            supplierArrivalLineList[0] == null ? null : (
-              <SupplierArrivalLineCard
-                style={styles.item}
-                productName={supplierArrivalLineList[0].product?.fullName}
-                deliveredQty={supplierArrivalLineList[0]?.realQty}
-                askedQty={supplierArrivalLineList[0].qty}
-                trackingNumber={supplierArrivalLineList[0]?.trackingNumber}
-                locker={
-                  !loadingRacks && racksList != null && racksList[0] != null
-                    ? racksList[0][0]?.rack
-                    : ''
-                }
-                onPress={() => handleShowLine(supplierArrivalLineList[0])}
-              />
-            )}
-            {supplierArrivalLineList == null ||
-            supplierArrivalLineList[1] == null ? null : (
-              <SupplierArrivalLineCard
-                style={styles.item}
-                productName={supplierArrivalLineList[1].product.fullName}
-                deliveredQty={supplierArrivalLineList[1].realQty}
-                askedQty={supplierArrivalLineList[1].qty}
-                trackingNumber={supplierArrivalLineList[1]?.trackingNumber}
-                locker={
-                  !loadingRacks && racksList != null && racksList[1] != null
-                    ? racksList[1][0]?.rack
-                    : ''
-                }
-                onPress={() => handleShowLine(supplierArrivalLineList[1])}
-              />
-            )}
-          </ViewAllContainer>
-          {supplierArrival.statusSelect !== StockMove.status.Realized && (
-            <Button
-              style={styles.validateBtn}
-              onPress={handleRealize}
-              title={I18n.t('Base_Realize')}
+          )}
+          {supplierArrival.supplierShipmentRef == null ? null : (
+            <Text>{`${I18n.t('Stock_SupplierShipmentRef')} : ${
+              supplierArrival.supplierShipmentRef
+            }`}</Text>
+          )}
+        </View>
+        <ViewAllContainer
+          isHeaderExist={
+            supplierArrival.statusSelect !== StockMove.status.Realized
+          }
+          onNewIcon={handleNewLine}
+          onPress={handleViewAll}>
+          {supplierArrivalLineList == null ||
+          supplierArrivalLineList[0] == null ? null : (
+            <SupplierArrivalLineCard
+              style={styles.item}
+              productName={supplierArrivalLineList[0].product?.fullName}
+              deliveredQty={supplierArrivalLineList[0]?.realQty}
+              askedQty={supplierArrivalLineList[0].qty}
+              trackingNumber={supplierArrivalLineList[0]?.trackingNumber}
+              locker={
+                !loadingRacks && racksList != null && racksList[0] != null
+                  ? racksList[0][0]?.rack
+                  : ''
+              }
+              onPress={() => handleShowLine(supplierArrivalLineList[0])}
             />
           )}
-        </ScrollView>
-      )}
+          {supplierArrivalLineList == null ||
+          supplierArrivalLineList[1] == null ? null : (
+            <SupplierArrivalLineCard
+              style={styles.item}
+              productName={supplierArrivalLineList[1].product.fullName}
+              deliveredQty={supplierArrivalLineList[1].realQty}
+              askedQty={supplierArrivalLineList[1].qty}
+              trackingNumber={supplierArrivalLineList[1]?.trackingNumber}
+              locker={
+                !loadingRacks && racksList != null && racksList[1] != null
+                  ? racksList[1][0]?.rack
+                  : ''
+              }
+              onPress={() => handleShowLine(supplierArrivalLineList[1])}
+            />
+          )}
+        </ViewAllContainer>
+      </ScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  validateBtn: {
-    width: '60%',
-    marginTop: 10,
-    borderRadius: 35,
-    marginHorizontal: '20%',
-  },
   clientContainer: {
     marginHorizontal: 16,
     marginVertical: 6,

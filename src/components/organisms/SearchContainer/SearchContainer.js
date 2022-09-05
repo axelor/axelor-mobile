@@ -1,50 +1,64 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Icon, Text} from '@/components/atoms';
+import {Icon} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
 import {useSelector} from 'react-redux';
-import useTranslator from '@/hooks/use-translator';
 
-const SearchContainer = ({style, children}) => {
+const SearchContainer = ({
+  style,
+  children,
+  fixedItems = null,
+  chipComponent = null,
+  expandableFilter = true,
+}) => {
   const {filterShowConfig} = useSelector(state => state.config);
   const [isVisible, setVisible] = useState();
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
   useEffect(() => {
     setVisible(filterShowConfig);
   }, [filterShowConfig]);
 
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={() => setVisible(!isVisible)}>
-        <View style={styles.arrowContainer}>
-          <Text>{I18n.t('Base_AllFilters')}</Text>
-          <Icon
-            name={isVisible ? 'angle-up' : 'angle-down'}
-            size={24}
-            color={Colors.primaryColor}
-          />
-        </View>
-      </TouchableOpacity>
-      {isVisible && children}
+      {fixedItems}
+      {expandableFilter && isVisible && children}
+      {chipComponent}
+      {expandableFilter && (
+        <TouchableOpacity onPress={() => setVisible(!isVisible)}>
+          <View style={styles.arrowContainer}>
+            <Icon
+              name={isVisible ? 'angle-up' : 'angle-down'}
+              size={22}
+              color={Colors.primaryColor}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  arrowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    width: '80%',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      backgroundColor: Colors.backgroundColor,
+      elevation: 3,
+      zIndex: 2,
+      paddingBottom: 5,
+      borderBottomEndRadius: 10,
+      borderBottomStartRadius: 10,
+    },
+    arrowContainer: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
 
 export default SearchContainer;

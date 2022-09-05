@@ -2,7 +2,6 @@ import React, {useMemo} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import CustomerDeliveryListScreen from '../screens/customerDeliveries/CustomerDeliveryListScreen';
-import {StyleSheet} from 'react-native';
 import CustomerDeliveryDetailScreen from '../screens/customerDeliveries/CustomerDeliveryDetailScreen';
 import CustomerDeliveryLineListScreen from '../screens/customerDeliveries/CustomerDeliveryLineListScreen';
 import ProductNavigator from './ProductNavigator';
@@ -11,13 +10,14 @@ import CustomerDeliverySelectTrackingScreen from '../screens/customerDeliveries/
 import CustomerDeliveryLineDetailScreen from '../screens/customerDeliveries/CustomerDeliveryLineDetailScreen';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const CustomerDeliveryNavigator = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
     <Navigator>
@@ -28,7 +28,7 @@ const CustomerDeliveryNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.listScreenHeaderStyle,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -38,7 +38,7 @@ const CustomerDeliveryNavigator = () => {
         component={CustomerDeliveryDetailScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -48,7 +48,7 @@ const CustomerDeliveryNavigator = () => {
         component={CustomerDeliveryLineListScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -58,7 +58,7 @@ const CustomerDeliveryNavigator = () => {
         component={CustomerDeliverySelectProductScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -68,7 +68,7 @@ const CustomerDeliveryNavigator = () => {
         component={CustomerDeliverySelectTrackingScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -78,7 +78,7 @@ const CustomerDeliveryNavigator = () => {
         component={CustomerDeliveryLineDetailScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_CustomerDelivery'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -91,12 +91,5 @@ const CustomerDeliveryNavigator = () => {
     </Navigator>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-  });
 
 export default CustomerDeliveryNavigator;

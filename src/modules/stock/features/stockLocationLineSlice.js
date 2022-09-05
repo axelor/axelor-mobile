@@ -1,15 +1,17 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchStockLocationLine} from '../api/stock-location-line-api';
 
 export const fetchStockLocationLine = createAsyncThunk(
   'stockLocationLine/fetchStockLocationLines',
-  async function (data) {
-    return searchStockLocationLine(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch stock location line');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchStockLocationLine},
+      data,
+      'fetch stock location line',
+      {getState},
+      {array: true},
+    );
   },
 );
 

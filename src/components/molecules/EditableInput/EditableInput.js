@@ -2,9 +2,9 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const EditableInput = ({
-  style,
   placeholder,
   onValidate,
   defaultValue,
@@ -22,10 +22,15 @@ const EditableInput = ({
     }
   };
 
-  const container = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
-    <View style={[container, style]}>
+    <View
+      style={[
+        commonStyles.filter,
+        commonStyles.filterAlign,
+        multiline ? styles.size : commonStyles.filterSize,
+      ]}>
       <Input
         style={styles.input}
         placeholder={placeholder}
@@ -44,18 +49,11 @@ const EditableInput = ({
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    backgroundColor: Colors.backgroundColor,
-    borderRadius: 13,
-    elevation: 3,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 13,
-  });
-
 const styles = StyleSheet.create({
+  size: {
+    width: '90%',
+    minHeight: 40,
+  },
   input: {
     width: '80%',
     fontSize: 14,

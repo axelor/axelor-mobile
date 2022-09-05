@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     paddingVertical: 5,
-    marginBottom: 2,
+    marginVertical: 2,
     borderRadius: 20,
     elevation: 3,
   },

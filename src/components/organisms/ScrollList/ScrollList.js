@@ -3,7 +3,7 @@ import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
 import {Text} from '@/components/atoms';
 import useTranslator from '@/hooks/use-translator';
 
-const SearchContainer = ({
+const ScrollList = ({
   loadingList = false,
   data = [],
   renderItem = () => {},
@@ -44,6 +44,7 @@ const SearchContainer = ({
 
   return (
     <FlatList
+      style={styles.scrollView}
       data={data}
       onRefresh={updateData}
       refreshing={loadingList}
@@ -52,7 +53,11 @@ const SearchContainer = ({
         return (
           <View style={styles.footerText}>
             {moreLoading && <ActivityIndicator size="large" color="black" />}
-            {isListEnd && <Text>{I18n.t('Base_NoMoreItems')}</Text>}
+            {data == null || data?.length === 0 ? (
+              <Text>{I18n.t('Base_NoData')}</Text>
+            ) : (
+              isListEnd && <Text>{I18n.t('Base_NoMoreItems')}</Text>
+            )}
           </View>
         );
       }}
@@ -64,7 +69,11 @@ const SearchContainer = ({
 const styles = StyleSheet.create({
   footerText: {
     alignSelf: 'center',
+    marginBottom: 7,
+  },
+  scrollView: {
+    paddingTop: 7,
   },
 });
 
-export default SearchContainer;
+export default ScrollList;

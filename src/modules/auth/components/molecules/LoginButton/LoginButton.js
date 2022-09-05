@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15,
-    width: '30%',
+    width: 150,
+    height: 30,
     elevation: 5,
   },
 });

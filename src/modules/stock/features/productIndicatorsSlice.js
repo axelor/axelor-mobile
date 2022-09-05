@@ -1,44 +1,49 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getProductStockIndicators} from '../api/product-api';
 
 export const fetchProductIndicators = createAsyncThunk(
   'product/fetchProductIndicators',
-  async function (data) {
-    return getProductStockIndicators(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch product stock indicators');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: getProductStockIndicators},
+      data,
+      'fetch product stock indicators',
+      {getState},
+      {array: false},
+    );
   },
 );
 
-var getProductAvailabilty = async data => {
-  return getProductStockIndicators(data)
-    .catch(function (error) {
-      useHandleError(error, 'fetch product stock indicators');
-    })
-    .then(response => {
-      return response.data.object;
-    });
+var getProductAvailabilty = async (data, {getState}) => {
+  return handlerApiCall(
+    {fetchFunction: getProductStockIndicators},
+    data,
+    'fetch product stock indicators',
+    {getState},
+    {array: false},
+  );
 };
 
-async function fetchData(data) {
-  return await getProductAvailabilty(data);
+async function fetchData(data, {getState}) {
+  return await getProductAvailabilty(data, {getState});
 }
 
 export const fetchProductsAvailability = createAsyncThunk(
   'product/fetchProductsAvailability',
-  async function (data) {
+  async function (data, {getState}) {
     let promises = [];
     data.productList.forEach(product => {
       promises.push(
-        fetchData({
-          productId: product.id,
-          companyId: data.companyId,
-          stockLocationId: data.stockLocationId,
-          version: product.version,
-        }),
+        fetchData(
+          {
+            productId: product.id,
+            companyId: data.companyId,
+            stockLocationId: data.stockLocationId,
+            version: product.version,
+          },
+          {getState},
+        ),
       );
     });
     return Promise.all(promises);
@@ -47,16 +52,19 @@ export const fetchProductsAvailability = createAsyncThunk(
 
 export const fetchProductDistribution = createAsyncThunk(
   'product/fetchProductDistribution',
-  async function (data) {
+  async function (data, {getState}) {
     let promises = [];
     data.stockLocationList.forEach(line => {
       promises.push(
-        fetchData({
-          productId: data.product.id,
-          companyId: data.companyId,
-          stockLocationId: line.stockLocation.id,
-          version: data.product.version,
-        }),
+        fetchData(
+          {
+            productId: data.product.id,
+            companyId: data.companyId,
+            stockLocationId: line.stockLocation.id,
+            version: data.product.version,
+          },
+          {getState},
+        ),
       );
     });
     return Promise.all(promises);

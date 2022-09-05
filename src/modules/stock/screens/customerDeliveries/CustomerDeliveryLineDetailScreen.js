@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {Button, Card, Screen, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
@@ -93,112 +93,107 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      {loadingProductFromId ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <StockMoveHeader
-            reference={customerDelivery.stockMoveSeq}
-            status={customerDelivery.statusSelect}
-            date={
-              customerDelivery.statusSelect === StockMove.status.Draft
-                ? customerDelivery.createdOn
-                : customerDelivery.statusSelect === StockMove.status.Planned
-                ? customerDelivery.estimatedDate
-                : customerDelivery.realDate
-            }
-            availability={customerDelivery.availableStatusSelect}
-          />
-          <LocationsMoveCard
-            fromStockLocation={customerDelivery.fromStockLocation?.name}
-            toStockLocation={customerDelivery?.toAddress.fullName}
-          />
-          <View style={styles.stockView}>
-            {customerDeliveryLine != null && (
-              <View style={styles.stateLine}>
-                <Text style={styles.text_secondary}>
-                  {customerDeliveryLine?.name}
-                </Text>
-                {Number(customerDeliveryLine.qty) !==
-                  Number(customerDeliveryLine.realQty) && (
-                  <Badge
-                    title={I18n.t('Stock_Status_Incomplete')}
-                    color={Colors.cautionColor_light}
-                  />
-                )}
-                {Number(customerDeliveryLine.qty) ===
-                  Number(customerDeliveryLine.realQty) && (
-                  <Badge
-                    title={I18n.t('Stock_Status_Complete')}
-                    color={Colors.primaryColor_light}
-                  />
-                )}
-              </View>
-            )}
-          </View>
-          <ProductCardInfo
-            onPress={handleShowProduct}
-            pictureId={product?.picture.id}
-            code={product?.code}
-            name={product?.name}
-            trackingNumber={trackingNumber?.trackingNumberSeq}
-            locker={customerDeliveryLine?.locker}
-          />
-          <QuantityCard
-            labelQty={I18n.t('Stock_PickedQty')}
-            defaultValue={parseFloat(realQty).toFixed(2)}
-            onValueChange={handleQtyChange}
-            style={styles.quantityCard}
-            editable={
-              customerDelivery.statusSelect !== StockMove.status.Realized
-            }>
-            <Text style={styles.text}>
-              {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
-                customerDeliveryLine != null ? customerDeliveryLine.qty : 0,
-              ).toFixed(2)} ${
-                customerDeliveryLine != null
-                  ? customerDeliveryLine.unit.name
-                  : product.unit.name
-              }`}
-            </Text>
-          </QuantityCard>
-          {customerDelivery.pickingOrderComments && (
-            <View style={styles.description}>
-              <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
-              <Card
-                style={styles.notes}
-                onLayout={event => {
-                  const {width} = event.nativeEvent.layout;
-                  setWidthNotes(width);
-                }}>
-                <RenderHtml
-                  source={{
-                    html: customerDelivery.pickingOrderComments,
-                  }}
-                  contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-                />
-              </Card>
-            </View>
-          )}
+    <Screen
+      fixedItems={
+        <>
           {customerDeliveryLine != null &&
             customerDelivery.statusSelect !== StockMove.status.Realized && (
               <Button
-                style={styles.validateBtn}
                 title={I18n.t('Base_Validate')}
                 onPress={handleValidate}
               />
             )}
           {customerDeliveryLine == null &&
             customerDelivery.statusSelect !== StockMove.status.Realized && (
-              <Button
-                style={styles.validateBtn}
-                title={I18n.t('Base_Add')}
-                onPress={handleAddLine}
-              />
+              <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />
             )}
-        </ScrollView>
-      )}
+        </>
+      }
+      loading={loadingProductFromId}>
+      <ScrollView>
+        <StockMoveHeader
+          reference={customerDelivery.stockMoveSeq}
+          status={customerDelivery.statusSelect}
+          date={
+            customerDelivery.statusSelect === StockMove.status.Draft
+              ? customerDelivery.createdOn
+              : customerDelivery.statusSelect === StockMove.status.Planned
+              ? customerDelivery.estimatedDate
+              : customerDelivery.realDate
+          }
+          availability={customerDelivery.availableStatusSelect}
+        />
+        <LocationsMoveCard
+          fromStockLocation={customerDelivery.fromStockLocation?.name}
+          toStockLocation={customerDelivery?.toAddress.fullName}
+        />
+        <View style={styles.stockView}>
+          {customerDeliveryLine != null && (
+            <View style={styles.stateLine}>
+              <Text style={styles.text_secondary}>
+                {customerDeliveryLine?.name}
+              </Text>
+              {Number(customerDeliveryLine.qty) !==
+                Number(customerDeliveryLine.realQty) && (
+                <Badge
+                  title={I18n.t('Stock_Status_Incomplete')}
+                  color={Colors.cautionColor_light}
+                />
+              )}
+              {Number(customerDeliveryLine.qty) ===
+                Number(customerDeliveryLine.realQty) && (
+                <Badge
+                  title={I18n.t('Stock_Status_Complete')}
+                  color={Colors.primaryColor_light}
+                />
+              )}
+            </View>
+          )}
+        </View>
+        <ProductCardInfo
+          onPress={handleShowProduct}
+          pictureId={product?.picture?.id}
+          code={product?.code}
+          name={product?.name}
+          trackingNumber={trackingNumber?.trackingNumberSeq}
+          locker={customerDeliveryLine?.locker}
+        />
+        <QuantityCard
+          labelQty={I18n.t('Stock_PickedQty')}
+          defaultValue={parseFloat(realQty).toFixed(2)}
+          onValueChange={handleQtyChange}
+          editable={
+            customerDelivery.statusSelect !== StockMove.status.Realized
+          }>
+          <Text style={styles.text}>
+            {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
+              customerDeliveryLine != null ? customerDeliveryLine.qty : 0,
+            ).toFixed(2)} ${
+              customerDeliveryLine != null
+                ? customerDeliveryLine.unit.name
+                : product?.unit?.name
+            }`}
+          </Text>
+        </QuantityCard>
+        {customerDelivery.pickingOrderComments && (
+          <View style={styles.description}>
+            <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
+            <Card
+              style={styles.notes}
+              onLayout={event => {
+                const {width} = event.nativeEvent.layout;
+                setWidthNotes(width);
+              }}>
+              <RenderHtml
+                source={{
+                  html: customerDelivery.pickingOrderComments,
+                }}
+                contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
+              />
+            </Card>
+          </View>
+        )}
+      </ScrollView>
     </Screen>
   );
 };
@@ -212,9 +207,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 35,
     marginHorizontal: '20%',
-  },
-  quantityCard: {
-    marginTop: '3%',
   },
   description: {
     marginHorizontal: 16,

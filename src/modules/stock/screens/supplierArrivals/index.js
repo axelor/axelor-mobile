@@ -1,4 +1,3 @@
-export {default as SupplierArrivalChangeLocationScreen} from './SupplierArrivalChangeLocationScreen';
 export {default as SupplierArrivalDetailsScreen} from './SupplierArrivalDetailsScreen';
 export {default as SupplierArrivalLineDetailScreen} from './SupplierArrivalLineDetailScreen';
 export {default as SupplierArrivalLineListScreen} from './SupplierArrivalLineListScreen';

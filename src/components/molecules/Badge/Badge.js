@@ -2,12 +2,12 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 
-const Badge = ({style, title, color}) => {
+const Badge = ({style, txtStyle, title, color, numberOfLines = 1}) => {
   const badgeStyle = useMemo(() => getStyles(color), [color]);
 
   return (
     <View style={[badgeStyle, style]}>
-      <Text style={styles.badgeTxt} numberOfLines={1}>
+      <Text style={[styles.badgeTxt, txtStyle]} numberOfLines={numberOfLines}>
         {title}
       </Text>
     </View>

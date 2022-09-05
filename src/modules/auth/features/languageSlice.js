@@ -1,15 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchLanguage} from '@/modules/auth/api/language-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchLanguages = createAsyncThunk(
   'language/fetchLanguage',
-  async function () {
-    return searchLanguage()
-      .catch(function (error) {
-        useHandleError(error, 'fetch languages');
-      })
-      .then(response => response.data.data);
+  async function (data = {}, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchLanguage},
+      data,
+      'fetch languages',
+      {getState},
+      {array: true},
+    );
   },
 );
 

@@ -1,41 +1,86 @@
 import Toast from 'react-native-toast-message';
-import {useSelector} from 'react-redux';
-import TraceBackApiAxelor from './TraceBackApiAxelor';
+import {traceError} from './traceback-api';
 
-export const getApiResponseData = response => response.data.data;
+export const getApiResponseData = (response, {array = true}) => {
+  if (response.data && response.data.object != null) {
+    return response.data.object;
+  }
+  return array ? response?.data?.data : getFirstData(response?.data?.data);
+};
+
+const getApiResponseCode = response =>
+  response?.data?.codeStatus || response?.status;
+
+const getApiResponseMessage = response =>
+  response?.data?.messageStatus || response?.statusTxt;
 
 export const getFirstData = data => {
   if (data instanceof Array) {
     return data[0];
   }
+  return null;
 };
 
-export const useHandleError = (error, action: String) => {
-  const traceBackApiAxelor = new TraceBackApiAxelor(
-    useSelector(state => state.auth.userId),
-  );
-  if (error.response) {
-    console.log('Error got caugth: ');
-    if (error.response.data) {
-      // Error from API
-      console.log(error.response.data);
-    } else {
-      // Error from path
-      console.log(
-        `Error ${error.response.status}: Request could not be completed.`,
-      );
+const getUser = ({getState = () => {}}) => {
+  return getState()?.auth?.userId;
+};
 
-      traceBackApiAxelor.postError(
-        'API request',
-        error.response.data ? error.response.data : error,
-      );
-    }
+const manageError = (error, action, userId) => {
+  if (error.response) {
+    const message =
+      error?.response?.data?.messageStatus || error?.response?.statusText;
+    const code = error.response?.data?.codeStatus || error?.response?.status;
+
+    traceError({
+      message: 'API request',
+      cause: error.response.data ? error.response.data : error,
+      userId,
+    });
+
     Toast.show({
       type: 'error',
       position: 'bottom',
       bottomOffset: 20,
-      text1: `Error ${error.response.status}`,
-      text2: `Failed to ${action}.`,
+      text1: `Error ${code}`,
+      text2: `Failed to ${action}: ${message}.`,
     });
   }
+};
+
+export const handlerError = (message, {getState = () => {}}) => {
+  return error => manageError(error, message, getUser({getState}));
+};
+
+const manageSucess = (response, {showToast = false, array}) => {
+  const data = getApiResponseData(response, {array});
+  const code = getApiResponseCode(response);
+  const message = getApiResponseMessage(response);
+
+  if (showToast) {
+    Toast.show({
+      type: 'success',
+      position: 'bottom',
+      bottomOffset: 20,
+      text1: `Success ${code}`,
+      text2: `${message ? message : 'Request successful'}.`,
+    });
+  }
+
+  return data;
+};
+
+const handlerSuccess = ({showToast = false, array}) => {
+  return response => manageSucess(response, {showToast, array});
+};
+
+export const handlerApiCall = (
+  {fetchFunction = () => {}},
+  data = {},
+  action = null,
+  {getState = () => {}},
+  {showToast = false, array = false},
+) => {
+  return fetchFunction(data)
+    .catch(handlerError(action, {getState}))
+    .then(handlerSuccess({showToast, array}));
 };

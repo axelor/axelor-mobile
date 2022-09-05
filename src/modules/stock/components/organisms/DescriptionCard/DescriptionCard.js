@@ -19,7 +19,6 @@ const DescriptionCard = ({
           <EditableInput
             defaultValue={description}
             placeholder={I18n.t('Base_Description')}
-            style={styles.description}
             onValidate={onChange}
             multiline={true}
             numberOfLines={5}
@@ -40,10 +39,6 @@ const DescriptionCard = ({
 };
 
 const styles = StyleSheet.create({
-  description: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
   title: {
     marginHorizontal: 16,
   },

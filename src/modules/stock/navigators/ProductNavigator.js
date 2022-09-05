@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerToggleButton} from '@react-navigation/drawer';
 import ProductListScreen from '@/modules/stock/screens/products/ProductListScreen';
@@ -11,13 +10,14 @@ import ProductAttachedFilesScreen from '@/modules/stock/screens/products/Product
 import ProductStockLocationDetailsScreen from '../screens/products/ProductStockLocationDetailsScreen';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const ProductNavigator = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
     <Navigator>
@@ -28,7 +28,7 @@ const ProductNavigator = () => {
           headerLeft: props => (
             <DrawerToggleButton {...props} tintColor={Colors.primaryColor} />
           ),
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.listScreenHeaderStyle,
           headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -38,7 +38,7 @@ const ProductNavigator = () => {
         component={ProductStockDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -48,7 +48,7 @@ const ProductNavigator = () => {
         component={ProductStockLocationDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_QuantityStockLocation'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -58,7 +58,7 @@ const ProductNavigator = () => {
         component={ProductListVariantScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Variants'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -68,7 +68,7 @@ const ProductNavigator = () => {
         component={ProductDetailsScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_ProductDetails'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -78,7 +78,7 @@ const ProductNavigator = () => {
         component={ProductImageScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -88,7 +88,7 @@ const ProductNavigator = () => {
         component={ProductAttachedFilesScreen}
         options={{
           headerTintColor: Colors.primaryColor,
-          headerStyle: {backgroundColor: Colors.backgroundColor},
+          headerStyle: styles.headerColor,
           headerTitle: I18n.t('Stock_Product'),
           headerTitleStyle: styles.headerTitle,
         }}
@@ -96,12 +96,5 @@ const ProductNavigator = () => {
     </Navigator>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-  });
 
 export default ProductNavigator;

@@ -1,6 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {Screen, Text} from '@/components/atoms';
 import {Chip} from '@/components/molecules';
 import Inventory from '@/modules/stock/types/inventory';
@@ -22,6 +22,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
     useSelector(state => state.inventoryLine);
   const [filteredList, setFilteredList] = useState(inventoryLineList);
   const [doneStatus, setDoneStatus] = useState(false);
+  const [diffStatus, setDiffStatus] = useState(false);
   const [undoneStatus, setUndoneStatus] = useState(false);
   const dispatch = useDispatch();
 
@@ -43,24 +44,34 @@ const InventoryLineListScreen = ({route, navigation}) => {
     page => {
       dispatch(
         fetchInventoryLines({
-          inventoryId: inventory.id,
+          inventoryId: inventory?.id,
           page: page,
         }),
       );
     },
-    [inventory.id, dispatch],
+    [inventory, dispatch],
   );
 
   const handleDoneStatus = () => {
-    if (!doneStatus && undoneStatus) {
-      setUndoneStatus(!undoneStatus);
+    if (!doneStatus && (undoneStatus || diffStatus)) {
+      setUndoneStatus(false);
+      setDiffStatus(false);
     }
     setDoneStatus(!doneStatus);
   };
 
+  const handleDiffStatus = () => {
+    if (!diffStatus && (undoneStatus || doneStatus)) {
+      setUndoneStatus(false);
+      setDoneStatus(false);
+    }
+    setDiffStatus(!diffStatus);
+  };
+
   const handleUndoneStatus = () => {
-    if (!undoneStatus && doneStatus) {
-      setDoneStatus(!doneStatus);
+    if (!undoneStatus && (diffStatus || doneStatus)) {
+      setDoneStatus(false);
+      setDiffStatus(false);
     }
     setUndoneStatus(!undoneStatus);
   };
@@ -71,7 +82,11 @@ const InventoryLineListScreen = ({route, navigation}) => {
         return list;
       } else {
         if (doneStatus) {
-          return list.filter(item => item.realQty != null);
+          return list.filter(item => item.realQty === item.currentQty);
+        } else if (diffStatus) {
+          return list.filter(
+            item => item.realQty != null && item.realQty !== item.currentQty,
+          );
         } else if (undoneStatus) {
           return list.filter(item => item.realQty == null);
         } else {
@@ -79,7 +94,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
         }
       }
     },
-    [doneStatus, undoneStatus],
+    [diffStatus, doneStatus, undoneStatus],
   );
 
   useEffect(() => {
@@ -121,12 +136,25 @@ const InventoryLineListScreen = ({route, navigation}) => {
       <ChipSelect>
         <Chip
           selected={doneStatus}
-          title={I18n.t('Stock_Done')}
+          title={I18n.t('Stock_Complete')}
           onPress={handleDoneStatus}
           selectedColor={{
             backgroundColor: Colors.primaryColor_light,
             borderColor: Colors.primaryColor,
           }}
+          marginHorizontal={3}
+          width={Dimensions.get('window').width * 0.3}
+        />
+        <Chip
+          selected={diffStatus}
+          title={I18n.t('Stock_Difference')}
+          onPress={handleDiffStatus}
+          selectedColor={{
+            backgroundColor: Colors.cautionColor_light,
+            borderColor: Colors.cautionColor,
+          }}
+          marginHorizontal={3}
+          width={Dimensions.get('window').width * 0.3}
         />
         <Chip
           selected={undoneStatus}
@@ -136,6 +164,8 @@ const InventoryLineListScreen = ({route, navigation}) => {
             backgroundColor: Colors.secondaryColor_light,
             borderColor: Colors.secondaryColor,
           }}
+          marginHorizontal={3}
+          width={Dimensions.get('window').width * 0.3}
         />
       </ChipSelect>
       <ScrollList

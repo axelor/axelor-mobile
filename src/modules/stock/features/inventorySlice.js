@@ -2,72 +2,76 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   fetchInventory,
   modifyDescriptionInventory,
-  searchInventory,
   searchInventoryFilter,
   updateInventoryStatus,
 } from '@/modules/stock/api/inventory-api';
-import {useHandleError} from '@/api/utils';
-
-export const fetchInventories = createAsyncThunk(
-  'inventories/fetchInventories',
-  async function (data) {
-    return searchInventory(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch inventories');
-      })
-      .then(response => {
-        return response.data.data;
-      });
-  },
-);
+import {handlerApiCall} from '@/api/utils';
 
 export const searchInventories = createAsyncThunk(
   'inventories/searchInventories',
-  async function (data) {
-    return searchInventoryFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter inventories');
-      })
-      .then(response => {
-        return response.data.data;
-      });
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchInventoryFilter},
+      data,
+      'filter inventories',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const modifyDescription = createAsyncThunk(
   'inventories/modifyDescription',
-  async function (data) {
-    return modifyDescriptionInventory(data)
-      .catch(function (error) {
-        useHandleError(error, 'modify inventory description');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: modifyDescriptionInventory},
+      data,
+      'modify inventory description',
+      {getState},
+      {showToast: true, array: false},
+    ).then(object =>
+      handlerApiCall(
+        {fetchFunction: fetchInventory},
+        {inventoryId: object.id},
+        'fetch Inventory by id',
+        {getState},
+        {array: false},
+      ),
+    );
   },
 );
 
 export const updateInventory = createAsyncThunk(
   'inventories/updateInventory',
-  async function (data) {
-    return updateInventoryStatus(data)
-      .catch(function (error) {
-        useHandleError(error, 'update inventory status');
-      })
-      .then(response => response.data.object)
-      .then(object => fetchInventory({inventoryId: object.inventoryId}))
-      .catch(function (error) {
-        useHandleError(error, 'fetch Inventory by id');
-      })
-      .then(response => response.data.data[0]);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateInventoryStatus},
+      data,
+      'update inventory status',
+      {getState},
+      {showToast: true},
+    ).then(object =>
+      handlerApiCall(
+        {fetchFunction: fetchInventory},
+        {inventoryId: object.inventoryId},
+        'fetch Inventory by id',
+        {getState},
+        {array: false},
+      ),
+    );
   },
 );
+
 export const fetchInventoryById = createAsyncThunk(
   'inventories/fetchInventoryById',
-  async function (data) {
-    return fetchInventory(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch Inventory by id');
-      })
-      .then(response => response.data.data[0]);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: fetchInventory},
+      data,
+      'fetch Inventory by id',
+      {getState},
+      {array: false},
+    );
   },
 );
 
@@ -90,14 +94,14 @@ const inventorySlice = createSlice({
       state.loading = false;
       state.inventory = action.payload;
     });
-    builder.addCase(fetchInventories.pending, (state, action) => {
+    builder.addCase(searchInventories.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loading = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchInventories.fulfilled, (state, action) => {
+    builder.addCase(searchInventories.fulfilled, (state, action) => {
       state.loading = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
@@ -112,19 +116,12 @@ const inventorySlice = createSlice({
         }
       }
     });
-    builder.addCase(searchInventories.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(searchInventories.fulfilled, (state, action) => {
-      state.loading = false;
-      state.isListEnd = false;
-      state.inventoryList = action.payload;
-    });
     builder.addCase(modifyDescription.pending, state => {
       state.loading = true;
     });
     builder.addCase(modifyDescription.fulfilled, (state, action) => {
       state.loading = false;
+      state.inventory = action.payload;
     });
     builder.addCase(updateInventory.pending, state => {
       state.loading = true;

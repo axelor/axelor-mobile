@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  ActivityIndicator,
   View,
   StyleSheet,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {Button, Card, Input, Screen, Text} from '@/components/atoms';
-import {Picker} from '@/components/molecules';
+import {Picker} from '@/components/organisms';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   QuantityCard,
@@ -263,142 +263,123 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   };
 
   return (
-    <Screen>
-      {loading || loadingProductFromId ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <View>
-          <View
-            style={
-              status === StockMove.status.Realized ||
-              status === StockMove.status.Canceled
-                ? null
-                : styles.scrollContainer
-            }>
-            <ScrollView>
-              <View>
-                <StockMoveHeader
-                  reference={route.params.internalMove?.stockMoveSeq}
-                  status={status}
-                  date={
-                    route.params.internalMove?.statusSelect ===
-                    StockMove.status.Draft
-                      ? route.params.internalMove?.createdOn
-                      : route.params.internalMove?.statusSelect ===
-                        StockMove.status.Planned
-                      ? route.params.internalMove?.estimatedDate
-                      : route.params.internalMove?.realDate
-                  }
-                  availability={availability}
-                />
-                <View style={styles.content}>
-                  <LocationsMoveCard
-                    fromStockLocation={originalStockLocation.name}
-                    toStockLocation={destinationStockLocation.name}
-                  />
-                </View>
-                <ProductCardInfo
-                  name={stockProduct.name}
-                  code={stockProduct.code}
-                  pictureId={stockProduct.picture?.id}
-                  trackingNumber={
-                    stockProduct.trackingNumberConfiguration == null ||
-                    trackingNumber == null
-                      ? null
-                      : trackingNumber.trackingNumberSeq
-                  }
-                  locker={null}
-                  onPress={handleShowProduct}
-                />
-              </View>
-              <QuantityCard
-                labelQty={I18n.t('Stock_MovedQty')}
-                defaultValue={parseFloat(movedQty).toFixed(2)}
-                onValueChange={handleQtyChange}
-                editable={
-                  status === StockMove.status.Draft ||
-                  status === StockMove.status.Planned
-                }
-                actionQty={
-                  status === StockMove.status.Draft ||
-                  status === StockMove.status.Planned
-                }
-                onPressActionQty={handleCreateCorrection}>
-                <Text style={styles.text}>
-                  {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
-                    plannedQty,
-                  ).toFixed(2)} ${stockProduct.unit?.name}`}
-                </Text>
-              </QuantityCard>
-              {status === StockMove.status.Realized ||
-              status === StockMove.status.Canceled ? (
-                <View>
-                  <View style={styles.reasonTitle}>
-                    <Text>{I18n.t('Stock_Unit')}</Text>
-                  </View>
-                  <Card style={styles.infosCard}>
-                    <Text>{unit.name}</Text>
-                  </Card>
-                </View>
-              ) : (
-                <Picker
-                  style={styles.picker}
-                  styleTxt={unit.id === null ? styles.picker_empty : null}
-                  title={I18n.t('Stock_Unit')}
-                  onValueChange={handleUnitChange}
-                  defaultValue={unit.id}
-                  listItems={unitList}
-                  labelField="name"
-                  valueField="id"
-                />
-              )}
-              {status === StockMove.status.Draft && notes != null && (
-                <View>
-                  <View style={styles.reasonTitle}>
-                    <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-                  </View>
-                  <Card style={styles.infosCard}>
-                    {status === StockMove.status.Planned ||
-                    status === StockMove.status.Realized ||
-                    status === StockMove.status.Canceled ? (
-                      <Text numberOfLines={3}>{notes}</Text>
-                    ) : (
-                      <Input
-                        value={notes}
-                        onChange={handleNotesChange}
-                        multiline={true}
-                      />
-                    )}
-                  </Card>
-                </View>
-              )}
-            </ScrollView>
-          </View>
+    <Screen
+      fixedItems={
+        <>
           {!saveStatus && route.params.internalMove == null && (
             <View style={styles.button_container}>
               <Button
                 title={I18n.t('Base_Realize')}
-                style={[styles.button, styles.bigBtn]}
                 color={Colors.secondaryColor_light}
                 onPress={handleRealize}
               />
               <Button
                 title={I18n.t('Base_RealizeContinue')}
-                style={[styles.button, styles.bigBtn]}
                 onPress={handleValidate}
               />
             </View>
           )}
           {!saveStatus && route.params.internalMove != null && (
             <View style={styles.button_container}>
-              <Button
-                title={I18n.t('Base_Save')}
-                style={styles.button}
-                onPress={handleSave}
-              />
+              <Button title={I18n.t('Base_Save')} onPress={handleSave} />
             </View>
           )}
-        </View>
+        </>
+      }
+      loading={loading || loadingProductFromId}>
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <ScrollView>
+          <View>
+            <StockMoveHeader
+              reference={route.params.internalMove?.stockMoveSeq}
+              status={status}
+              date={
+                route.params.internalMove?.statusSelect ===
+                StockMove.status.Draft
+                  ? route.params.internalMove?.createdOn
+                  : route.params.internalMove?.statusSelect ===
+                    StockMove.status.Planned
+                  ? route.params.internalMove?.estimatedDate
+                  : route.params.internalMove?.realDate
+              }
+              availability={availability}
+            />
+            <View style={styles.content}>
+              <LocationsMoveCard
+                fromStockLocation={originalStockLocation.name}
+                toStockLocation={destinationStockLocation.name}
+              />
+            </View>
+            <ProductCardInfo
+              name={stockProduct.name}
+              code={stockProduct.code}
+              pictureId={stockProduct.picture?.id}
+              trackingNumber={
+                stockProduct.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.trackingNumberSeq
+              }
+              locker={null}
+              onPress={handleShowProduct}
+            />
+          </View>
+          <QuantityCard
+            labelQty={I18n.t('Stock_MovedQty')}
+            defaultValue={parseFloat(movedQty).toFixed(2)}
+            onValueChange={handleQtyChange}
+            editable={
+              status === StockMove.status.Draft ||
+              status === StockMove.status.Planned
+            }
+            actionQty={
+              status === StockMove.status.Draft ||
+              status === StockMove.status.Planned
+            }
+            onPressActionQty={handleCreateCorrection}>
+            <Text style={styles.text}>
+              {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
+                plannedQty,
+              ).toFixed(2)} ${stockProduct.unit?.name}`}
+            </Text>
+          </QuantityCard>
+          <Picker
+            styleTxt={unit?.id === null ? styles.picker_empty : null}
+            title={I18n.t('Stock_Unit')}
+            onValueChange={handleUnitChange}
+            defaultValue={unit?.id}
+            listItems={unitList}
+            labelField="name"
+            valueField="id"
+            disabled={
+              status === StockMove.status.Realized ||
+              status === StockMove.status.Canceled
+            }
+            disabledValue={unit?.name}
+          />
+          {status === StockMove.status.Draft && notes != null && (
+            <View>
+              <View style={styles.reasonTitle}>
+                <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
+              </View>
+              <Card style={styles.infosCard}>
+                {status === StockMove.status.Planned ||
+                status === StockMove.status.Realized ||
+                status === StockMove.status.Canceled ? (
+                  <Text numberOfLines={3}>{notes}</Text>
+                ) : (
+                  <Input
+                    value={notes}
+                    onChange={handleNotesChange}
+                    multiline={true}
+                  />
+                )}
+              </Card>
+            </View>
+          )}
+        </ScrollView>
       )}
     </Screen>
   );
@@ -406,7 +387,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    height: Dimensions.get('window').height * 0.8,
+    height: Dimensions.get('window').height * 0.75,
   },
   content: {
     marginHorizontal: 32,
@@ -421,26 +402,15 @@ const styles = StyleSheet.create({
   reasonTitle: {
     marginHorizontal: 20,
   },
-  picker: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
   picker_empty: {
     color: 'red',
   },
   button_container: {
-    marginVertical: '2%',
-    flexDirection: 'row',
+    marginVertical: '1%',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-  },
-  button: {
-    marginHorizontal: '3%',
-  },
-  bigBtn: {
-    height: 50,
-    paddingHorizontal: 9,
   },
   text: {
     fontSize: 16,
