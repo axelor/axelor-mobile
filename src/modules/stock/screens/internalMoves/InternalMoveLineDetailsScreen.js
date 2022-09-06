@@ -144,11 +144,8 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   }, [productIndicators, productFromId, route.params]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductNavigator', {
-      screen: 'ProductStockDetailsScreen',
-      params: {
-        product: stockProduct,
-      },
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: stockProduct,
     });
   };
 
@@ -251,14 +248,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   };
 
   const handleCreateCorrection = () => {
-    navigation.navigate('StockCorrectionNavigator', {
-      screen: 'StockCorrectionDetailsScreen',
-      params: {
-        stockLocation: originalStockLocation,
-        stockProduct: stockProduct,
-        trackingNumber: trackingNumber,
-        externeNavigation: true,
-      },
+    navigation.navigate('StockCorrectionDetailsScreen', {
+      stockLocation: originalStockLocation,
+      stockProduct: stockProduct,
+      trackingNumber: trackingNumber,
+      externeNavigation: true,
     });
   };
 

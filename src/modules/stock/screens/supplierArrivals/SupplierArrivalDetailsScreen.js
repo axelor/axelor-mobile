@@ -14,7 +14,7 @@ import {getRacks} from '@/modules/stock/features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
 import useTranslator from '@/hooks/use-translator';
 
-const SupplierArrivalDetailScreen = ({route, navigation}) => {
+const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
   const {loadingSALines, supplierArrivalLineList} = useSelector(
     state => state.supplierArrivalLine,
@@ -173,4 +173,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SupplierArrivalDetailScreen;
+export default SupplierArrivalDetailsScreen;

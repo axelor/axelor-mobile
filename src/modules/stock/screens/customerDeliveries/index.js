@@ -1,6 +1,36 @@
-export {default as CustomerDeliveryDetailScreen} from './CustomerDeliveryDetailScreen';
-export {default as CustomerDeliveryLineDetailScreen} from './CustomerDeliveryLineDetailScreen';
-export {default as CustomerDeliveryLineListScreen} from './CustomerDeliveryLineListScreen';
-export {default as CustomerDeliveryListScreen} from './CustomerDeliveryListScreen';
-export {default as CustomerDeliverySelectProductScreen} from './CustomerDeliverySelectProductScreen';
-export {default as CustomerDeliverySelectTrackingScreen} from './CustomerDeliverySelectTrackingScreen';
+import CustomerDeliveryDetailScreen from './CustomerDeliveryDetailScreen';
+import CustomerDeliveryLineDetailScreen from './CustomerDeliveryLineDetailScreen';
+import CustomerDeliveryLineListScreen from './CustomerDeliveryLineListScreen';
+import CustomerDeliveryListScreen from './CustomerDeliveryListScreen';
+import CustomerDeliverySelectProductScreen from './CustomerDeliverySelectProductScreen';
+import CustomerDeliverySelectTrackingScreen from './CustomerDeliverySelectTrackingScreen';
+
+export default {
+  CustomerDeliveryListScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliveryListScreen,
+    options: {
+      isListScreen: true,
+    },
+  },
+  CustomerDeliveryDetailScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliveryDetailScreen,
+  },
+  CustomerDeliveryLineDetailScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliveryLineDetailScreen,
+  },
+  CustomerDeliveryLineListScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliveryLineListScreen,
+  },
+  CustomerDeliverySelectProductScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliverySelectProductScreen,
+  },
+  CustomerDeliverySelectTrackingScreen: {
+    title: t => t('Stock_CustomerDelivery'),
+    component: CustomerDeliverySelectTrackingScreen,
+  },
+};

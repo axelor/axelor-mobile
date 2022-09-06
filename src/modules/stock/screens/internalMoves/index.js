@@ -1,8 +1,46 @@
-export {default as InternalMoveDetailsGeneralScreen} from './InternalMoveDetailsGeneralScreen';
-export {default as InternalMoveLineDetailsScreen} from './InternalMoveLineDetailsScreen';
-export {default as InternalMoveLineListScreen} from './InternalMoveLineListScreen';
-export {default as InternalMoveListScreen} from './InternalMoveListScreen';
-export {default as InternalMoveSelectFromLocationScreen} from './InternalMoveSelectFromLocationScreen';
-export {default as InternalMoveSelectProductScreen} from './InternalMoveSelectProductScreen';
-export {default as InternalMoveSelectToLocationScreen} from './InternalMoveSelectToLocationScreen';
-export {default as InternalMoveSelectTrackingScreen} from './InternalMoveSelectTrackingScreen';
+import InternalMoveDetailsGeneralScreen from './InternalMoveDetailsGeneralScreen';
+import InternalMoveLineDetailsScreen from './InternalMoveLineDetailsScreen';
+import InternalMoveLineListScreen from './InternalMoveLineListScreen';
+import InternalMoveListScreen from './InternalMoveListScreen';
+import InternalMoveSelectFromLocationScreen from './InternalMoveSelectFromLocationScreen';
+import InternalMoveSelectProductScreen from './InternalMoveSelectProductScreen';
+import InternalMoveSelectToLocationScreen from './InternalMoveSelectToLocationScreen';
+import InternalMoveSelectTrackingScreen from './InternalMoveSelectTrackingScreen';
+
+export default {
+  InternalMoveListScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveListScreen,
+    options: {
+      isListScreen: true,
+    },
+  },
+  InternalMoveDetailsGeneralScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveDetailsGeneralScreen,
+  },
+  InternalMoveLineDetailsScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveLineDetailsScreen,
+  },
+  InternalMoveLineListScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveLineListScreen,
+  },
+  InternalMoveSelectFromLocationScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveSelectFromLocationScreen,
+  },
+  InternalMoveSelectProductScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveSelectProductScreen,
+  },
+  InternalMoveSelectToLocationScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveSelectToLocationScreen,
+  },
+  InternalMoveSelectTrackingScreen: {
+    title: t => t('Stock_InternalMove'),
+    component: InternalMoveSelectTrackingScreen,
+  },
+};

@@ -43,11 +43,8 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   }, [dispatch, inventoryLine, product]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductNavigator', {
-      screen: 'ProductStockDetailsScreen',
-      params: {
-        product: productFromId,
-      },
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: productFromId,
     });
   };
 

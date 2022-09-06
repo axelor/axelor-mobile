@@ -1,5 +1,4 @@
 import React, {createContext, useCallback, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerToggleButton,
@@ -10,6 +9,7 @@ import useTranslator from '@/hooks/use-translator';
 import DrawerContent from './drawer/DrawerContent';
 import {getDefaultModule, moduleHasMenus} from './module.helper';
 import {getMenuTitle} from './menu.helper';
+import {getHeaderStyles} from '@/utils/headerStyle';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -23,7 +23,7 @@ export const ModuleNavigatorContext = createContext({
 const Navigator = ({modules, mainMenu}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(modules, mainMenu),
   );
@@ -55,33 +55,39 @@ const Navigator = ({modules, mainMenu}) => {
   const ModulesScreensStackNavigator = useCallback(
     ({initialRouteName, ...rest}) => (
       <Stack.Navigator {...rest} initialRouteName={initialRouteName}>
-        {Object.entries(modulesScreens).map(([key, component]) => (
-          <Stack.Screen
-            key={key}
-            name={key}
-            component={component}
-            options={
-              initialRouteName === key
-                ? {
-                    headerLeft: props => (
-                      <DrawerToggleButton
-                        {...props}
-                        tintColor={Colors.primaryColor}
-                      />
-                    ),
-                    headerStyle: styles.headerStyle,
-                  }
-                : {
-                    headerTintColor: Colors.primaryColor,
-                    headerStyle: styles.headerStyle,
-                    headerTitleStyle: styles.headerTitle,
-                  }
+        {Object.entries(modulesScreens).map(
+          ([key, {component, title, options = {isListScreen: false}}]) => {
+            const screenOptions = {
+              headerTintColor: Colors.primaryColor,
+              headerStyle: options?.isListScreen
+                ? styles.listScreenHeaderStyle
+                : styles.headerColor,
+              headerTitle: title(I18n.t),
+              headerTitleStyle: styles.headerTitle,
+            };
+
+            if (initialRouteName === key) {
+              screenOptions.headerLeft = props => (
+                <DrawerToggleButton
+                  {...props}
+                  tintColor={Colors.primaryColor}
+                />
+              );
             }
-          />
-        ))}
+
+            return (
+              <Stack.Screen
+                key={key}
+                name={key}
+                component={component}
+                options={screenOptions}
+              />
+            );
+          },
+        )}
       </Stack.Navigator>
     ),
-    [Colors, modulesScreens, styles],
+    [Colors, I18n, modulesScreens, styles],
   );
 
   return (
@@ -121,15 +127,5 @@ const Navigator = ({modules, mainMenu}) => {
     </ModuleNavigatorContext.Provider>
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-    },
-    headerStyle: {
-      backgroundColor: Colors.backgroundColor,
-    },
-  });
 
 export default Navigator;

@@ -66,11 +66,8 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   };
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductNavigator', {
-      screen: 'ProductStockDetailsScreen',
-      params: {
-        product: product,
-      },
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: product,
     });
   };
 

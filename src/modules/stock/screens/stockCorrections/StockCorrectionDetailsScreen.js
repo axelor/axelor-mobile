@@ -114,11 +114,8 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   }, [initVariables]);
 
   const handleShowProduct = () => {
-    navigation.navigate('ProductNavigator', {
-      screen: 'ProductStockDetailsScreen',
-      params: {
-        product: stockProduct,
-      },
+    navigation.navigate('ProductStockDetailsScreen', {
+      product: stockProduct,
     });
   };
 
