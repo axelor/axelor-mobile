@@ -2,11 +2,16 @@
   "name": "aos-mobile",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/demo", "**/demo/**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/demo",
+      "**/demo/**"
+    ]
   },
   "scripts": {
-    "clean": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock",
+    "clean": "find . -type d -name node_modules | xargs rm -rf && rm -rf yarn.lock",
     "start": "yarn workspace @aos-mobile/demo start",
     "android": "yarn workspace @aos-mobile/demo android",
     "format:check": "yarn workspaces run format:check",
