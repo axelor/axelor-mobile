@@ -1,23 +1,26 @@
-# AOS Mobile
+<center>
+    <img src="https://i.imgur.com/QrtTa9b.png" alt="drawing" width="200"/>
+    <h1> AOS Mobile</h1>
+</center>
 
-## Scripts
+## 📋 Scripts
 
-### Initialize repository with dependencies
+### :rocket: Initialize repository with dependencies
 
 ```bash
 yarn
 ```
 
-### Running AOS application (@aos-mobile/demo)
+### :ferris_wheel: Running AOS application (@aos-mobile/demo)
 
-#### Start Metro
+#### :station: Start Metro
 
 ```bash
 yarn start
 ```
 
-#### Start application
+#### :rotating_light: Start application
+
 ```bash
 yarn android
 ```
-
