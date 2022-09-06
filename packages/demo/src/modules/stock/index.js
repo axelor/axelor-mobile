@@ -1,9 +1,9 @@
-import * as CustomerDeliveryScreens from './screens/customerDeliveries';
-import * as InternalMovesScreens from './screens/internalMoves';
-import * as InventoriesScreens from './screens/inventories';
-import * as ProductsScreens from './screens/products';
-import * as StockCorrectionScreens from './screens/stockCorrections';
-import * as SupplierArrivalsScreens from './screens/supplierArrivals';
+import CustomerDeliveryScreens from './screens/customerDeliveries';
+import InternalMovesScreens from './screens/internalMoves';
+import InventoriesScreens from './screens/inventories';
+import ProductsScreens from './screens/products';
+import StockCorrectionScreens from './screens/stockCorrections';
+import SupplierArrivalsScreens from './screens/supplierArrivals';
 
 export default {
   name: 'Stock',

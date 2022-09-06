@@ -143,12 +143,11 @@ export async function updateLocker({
 export async function fetchAttachedFiles(productId) {
   return axios
     .get(`/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`)
-    .then(getApiResponseData)
-    .then(data => {
-      if (data == null) {
-        return data;
+    .then(response => {
+      if (response?.data?.data == null) {
+        return response;
       } else {
-        return fetchFileDetails(data);
+        return fetchFileDetails(response?.data?.data);
       }
     });
 }

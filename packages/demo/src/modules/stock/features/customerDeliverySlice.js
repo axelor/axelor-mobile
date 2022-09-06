@@ -2,56 +2,46 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   addLineStockMove,
   realizeSockMove,
-  searchDelivery,
   searchDeliveryFilter,
 } from '@/modules/stock/api/customer-delivery-api';
-import {useHandleError} from '@/api/utils';
-
-export const fetchDeliveries = createAsyncThunk(
-  'deliveries/fetchDeliveries',
-  async function (data) {
-    return searchDelivery(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch customer deliveries');
-      })
-      .then(response => {
-        return response.data.data;
-      });
-  },
-);
+import {handlerApiCall} from '@/api/utils';
 
 export const searchDeliveries = createAsyncThunk(
   'deliveries/searchDeliveries',
-  async function (data) {
-    return searchDeliveryFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter customer deliveries');
-      })
-      .then(response => {
-        return response.data.data;
-      });
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchDeliveryFilter},
+      data,
+      'filter customer deliveries',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const addNewLine = createAsyncThunk(
   'deliveries/addNewLine',
-  async function (data) {
-    return addLineStockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'add new line to customer delivery');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: addLineStockMove},
+      data,
+      'add new line to customer delivery',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const realizeCustomerDelivery = createAsyncThunk(
   'deliveries/realizeCustomerDelivery',
-  async function (data) {
-    return realizeSockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'realize customer delivery');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: realizeSockMove},
+      data,
+      'realize customer delivery',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
@@ -68,14 +58,14 @@ const customerDeliverySlice = createSlice({
   name: 'deliveries',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchDeliveries.pending, (state, action) => {
+    builder.addCase(searchDeliveries.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loading = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchDeliveries.fulfilled, (state, action) => {
+    builder.addCase(searchDeliveries.fulfilled, (state, action) => {
       state.loading = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
@@ -89,14 +79,6 @@ const customerDeliverySlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(searchDeliveries.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(searchDeliveries.fulfilled, (state, action) => {
-      state.loading = false;
-      state.isListEnd = false;
-      state.deliveryList = action.payload;
     });
     builder.addCase(addNewLine.pending, state => {
       state.loading = true;

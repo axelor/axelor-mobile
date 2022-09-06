@@ -1,4 +1,4 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   searchCustomerDeliveryLines,
@@ -7,23 +7,27 @@ import {
 
 export const fetchCustomerDeliveryLines = createAsyncThunk(
   'CustomerDeliveryLines/fetchCustomerDeliveryLine',
-  async function (data) {
-    return searchCustomerDeliveryLines(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch customer delivery line');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchCustomerDeliveryLines},
+      data,
+      'fetch customer delivery line',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'CustomerDeliveryLines/updateCustomerDeliveryLine',
-  async function (data) {
-    return updateLine(data)
-      .catch(function (error) {
-        useHandleError(error, 'update customer delivery line');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateLine},
+      data,
+      'update customer delivery line',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 

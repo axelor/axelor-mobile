@@ -3,29 +3,6 @@ import {getApiResponseData, getFirstData} from '@/api/utils';
 
 const trackingNumberFields = ['id', 'trackingNumberSeq', 'serialNumber'];
 
-export async function searchTrackingNumber(productId) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.TrackingNumber/search', {
-    data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'product.id',
-              operator: '=',
-              value: productId,
-            },
-          ],
-        },
-      ],
-    },
-    fields: trackingNumberFields,
-    sortBy: ['id', 'trackingNumberSeq'],
-    limit: 50,
-    offset: 0,
-  });
-}
-
 export async function searchTrackingNumberFilter({
   productId,
   searchValue,

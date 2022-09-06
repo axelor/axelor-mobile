@@ -10,7 +10,7 @@ import {ProductVariantCard} from '@/modules/stock/components/organisms';
 import {ScrollList} from '@/components/organisms';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
-const ProductListVariables = ({route, navigation}) => {
+const ProductListVariantScreen = ({route, navigation}) => {
   const product = route.params.product;
   const companyID = route.params.companyID;
   const stockLocationId = route.params.stockLocationId;
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductListVariables;
+export default ProductListVariantScreen;

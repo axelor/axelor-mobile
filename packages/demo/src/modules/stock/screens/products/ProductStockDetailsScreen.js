@@ -1,5 +1,4 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {Icon, Screen} from '@/components/atoms';
 import {
   StyleSheet,
   ActivityIndicator,
@@ -9,22 +8,17 @@ import {
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {CardStockIndicator} from '@/modules/stock/components/organisms';
-import {Text} from '@/components/atoms';
-import {
-  EditableInput,
-  DropdownMenuItem,
-  Picker,
-  Image,
-} from '@/components/molecules';
-import {DropdownMenu, AutocompleteSearch} from '@/components/organisms';
-import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
-import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
-import {displayItemName} from '@/modules/stock/utils/displayers';
-import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
-import {updateProductLocker} from '../../features/productSlice';
+import {Icon, Screen, Text} from '@/components/atoms';
+import {EditableInput, DropdownMenuItem, Image} from '@/components/molecules';
+import {DropdownMenu, AutocompleteSearch, Picker} from '@/components/organisms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
+import {CardStockIndicator} from '@/modules/stock/components/organisms';
+import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
+import {fetchStockLocationLine} from '@/modules/stock/features/stockLocationLineSlice';
+import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
+import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
+import {updateProductLocker} from '@/modules/stock/features/productSlice';
+import {displayItemName} from '@/modules/stock/utils/displayers';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
 
@@ -136,138 +130,135 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen>
-      <View style={styles.scrollContainer}>
-        <ScrollView>
-          <View style={styles.infoContainer}>
-            <TouchableOpacity
-              style={styles.imageContainer}
-              onPress={navigateToImageProduct}
-              activeOpacity={0.9}>
-              <Image
-                generalStyle={styles.imageStyle}
-                imageSize={styles.imageSize}
-                resizeMode="contain"
-                pictureId={product?.picture?.id}
-                defaultIconSize={60}
-              />
-            </TouchableOpacity>
-            <ProductCardDetails
-              style={styles.productContainer}
-              name={product.name}
-              code={product.code}
-              onPress={showProductDetails}>
-              <Text style={styles.text_important}>{product.name}</Text>
-              <Text style={styles.text_secondary}>{product.code}</Text>
-              <Text style={styles.text_secondary}>
-                {`${I18n.t('Stock_StockUnit')} : ${product.unit?.name}`}
-              </Text>
-            </ProductCardDetails>
-          </View>
-          <View style={styles.lineStyle} />
-          {baseConfig.enableMultiCompany && canModifyCompany && (
-            <View style={styles.picker}>
-              <Picker
-                title={I18n.t('User_Company')}
-                defaultValue={companyId}
-                listItems={companyList}
-                labelField="name"
-                valueField="id"
-                onValueChange={item => setCompany(item)}
-              />
-            </View>
-          )}
-          {productIndicators?.realQty != null &&
-            parseInt(productIndicators?.realQty, 10) !== 0 &&
-            parseInt(productIndicators?.futureQty, 10) !== 0 && (
-              <TouchableOpacity onPress={navigateStockLocationDetails}>
-                <View style={styles.arrowContainer}>
-                  <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-                  <Icon
-                    name="angle-right"
-                    size={24}
-                    color={Colors.primaryColor}
-                    style={styles.arrowIcon}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-          <AutocompleteSearch
-            objectList={stockLocationList}
-            value={stockLocation}
-            onChangeValue={item => setStockLocation(item)}
-            fetchData={searchValue =>
-              fetchStockLocationsAPI(searchValue, user.workshopStockLocation)
-            }
-            displayValue={displayItemName}
-            scanKeySearch={stockLocationScanKey}
-            placeholder={I18n.t('Stock_StockLocation')}
-          />
-          {stockLocation == null ? null : (
-            <EditableInput
-              style={styles.lockerContainer}
-              placeholder={I18n.t('Stock_Locker')}
-              onValidate={input => handleLockerChange(input)}
-              defaultValue={
-                stockLocationLine == null ? null : stockLocationLine[0]?.rack
-              }
+      <ScrollView>
+        <View style={styles.infoContainer}>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={navigateToImageProduct}
+            activeOpacity={0.9}>
+            <Image
+              generalStyle={styles.imageStyle}
+              imageSize={styles.imageSize}
+              resizeMode="contain"
+              pictureId={product?.picture?.id}
+              defaultIconSize={60}
             />
+          </TouchableOpacity>
+          <ProductCardDetails
+            style={styles.productContainer}
+            name={product.name}
+            code={product.code}
+            onPress={showProductDetails}>
+            <Text style={styles.text_important}>{product.name}</Text>
+            <Text style={styles.text_secondary}>{product.code}</Text>
+            <Text style={styles.text_secondary}>
+              {`${I18n.t('Stock_StockUnit')} : ${product.unit?.name}`}
+            </Text>
+          </ProductCardDetails>
+        </View>
+        <View style={styles.lineStyle} />
+        {baseConfig.enableMultiCompany && canModifyCompany && (
+          <View style={styles.picker}>
+            <Picker
+              title={I18n.t('User_Company')}
+              defaultValue={companyId}
+              listItems={companyList}
+              labelField="name"
+              valueField="id"
+              onValueChange={item => setCompany(item)}
+            />
+          </View>
+        )}
+        {productIndicators?.realQty != null &&
+          parseInt(productIndicators?.realQty, 10) !== 0 &&
+          parseInt(productIndicators?.futureQty, 10) !== 0 && (
+            <TouchableOpacity onPress={navigateStockLocationDetails}>
+              <View style={styles.arrowContainer}>
+                <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+                <Icon
+                  name="angle-right"
+                  size={24}
+                  color={Colors.primaryColor}
+                  style={styles.arrowIcon}
+                />
+              </View>
+            </TouchableOpacity>
           )}
-          {loading ? (
-            <ActivityIndicator size="large" />
-          ) : (
-            <View style={styles.row}>
-              <View style={styles.cardStock}>
-                <CardStockIndicator
-                  title={I18n.t('Stock_RealQty')}
-                  number={productIndicators?.realQty}
-                />
-                <CardStockIndicator
-                  title={I18n.t('Stock_FutureQty')}
-                  number={productIndicators?.futureQty}
-                />
-                <CardStockIndicator
-                  title={I18n.t('Stock_AllocatedQty')}
-                  number={productIndicators?.allocatedQty}
-                />
-              </View>
-              <View style={styles.cardStock}>
-                <CardStockIndicator
-                  title={I18n.t('Stock_SaleOrderQty')}
-                  number={productIndicators?.saleOrderQty}
-                />
-                <CardStockIndicator
-                  title={I18n.t('Stock_PurchaseOrderQty')}
-                  number={productIndicators?.purchaseOrderQty}
-                />
-                <CardStockIndicator
-                  title={I18n.t('Stock_AvailableStock')}
-                  number={productIndicators?.availableStock}
-                />
-              </View>
-              <View style={styles.cardStock}>
-                {productIndicators?.buildingQty ? (
-                  <CardStockIndicator
-                    title={I18n.t('Stock_BuildingQty')}
-                    number={productIndicators?.buildingQty}
-                  />
-                ) : null}
-                {productIndicators?.consumeManufOrderQty ? (
-                  <CardStockIndicator
-                    title={I18n.t('Stock_ConsumedMOQty')}
-                    number={productIndicators?.consumeManufOrderQty}
-                  />
-                ) : null}
-                {productIndicators?.consumeManufOrderQty ? (
-                  <CardStockIndicator
-                    title={I18n.t('Stock_MissingMOQty')}
-                    number={productIndicators?.missingManufOrderQty}
-                  />
-                ) : null}
-              </View>
+        <AutocompleteSearch
+          objectList={stockLocationList}
+          value={stockLocation}
+          onChangeValue={item => setStockLocation(item)}
+          fetchData={searchValue =>
+            fetchStockLocationsAPI(searchValue, user.workshopStockLocation)
+          }
+          displayValue={displayItemName}
+          scanKeySearch={stockLocationScanKey}
+          placeholder={I18n.t('Stock_StockLocation')}
+        />
+        {stockLocation == null ? null : (
+          <EditableInput
+            placeholder={I18n.t('Stock_Locker')}
+            onValidate={input => handleLockerChange(input)}
+            defaultValue={
+              stockLocationLine == null ? null : stockLocationLine[0]?.rack
+            }
+          />
+        )}
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <View style={styles.row}>
+            <View style={styles.cardStock}>
+              <CardStockIndicator
+                title={I18n.t('Stock_RealQty')}
+                number={productIndicators?.realQty}
+              />
+              <CardStockIndicator
+                title={I18n.t('Stock_FutureQty')}
+                number={productIndicators?.futureQty}
+              />
+              <CardStockIndicator
+                title={I18n.t('Stock_AllocatedQty')}
+                number={productIndicators?.allocatedQty}
+              />
             </View>
-          )}
-        </ScrollView>
-      </View>
+            <View style={styles.cardStock}>
+              <CardStockIndicator
+                title={I18n.t('Stock_SaleOrderQty')}
+                number={productIndicators?.saleOrderQty}
+              />
+              <CardStockIndicator
+                title={I18n.t('Stock_PurchaseOrderQty')}
+                number={productIndicators?.purchaseOrderQty}
+              />
+              <CardStockIndicator
+                title={I18n.t('Stock_AvailableStock')}
+                number={productIndicators?.availableStock}
+              />
+            </View>
+            <View style={styles.cardStock}>
+              {productIndicators?.buildingQty ? (
+                <CardStockIndicator
+                  title={I18n.t('Stock_BuildingQty')}
+                  number={productIndicators?.buildingQty}
+                />
+              ) : null}
+              {productIndicators?.consumeManufOrderQty ? (
+                <CardStockIndicator
+                  title={I18n.t('Stock_ConsumedMOQty')}
+                  number={productIndicators?.consumeManufOrderQty}
+                />
+              ) : null}
+              {productIndicators?.consumeManufOrderQty ? (
+                <CardStockIndicator
+                  title={I18n.t('Stock_MissingMOQty')}
+                  number={productIndicators?.missingManufOrderQty}
+                />
+              ) : null}
+            </View>
+          </View>
+        )}
+      </ScrollView>
     </Screen>
   );
 };
@@ -292,10 +283,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: Dimensions.get('window').width,
   },
-  scrollContainer: {
-    alignContent: 'center',
-    height: '100%',
-  },
   productContainer: {
     width: '95%',
     flexDirection: 'row',
@@ -316,10 +303,6 @@ const styles = StyleSheet.create({
   },
   text_secondary: {
     fontSize: 16,
-  },
-  lockerContainer: {
-    marginHorizontal: 12,
-    marginBottom: 7,
   },
   lineStyle: {
     borderWidth: 0.5,

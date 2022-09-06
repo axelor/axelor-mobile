@@ -1,15 +1,17 @@
 import {getStockMenuConfig} from '@/api/app-config';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 export const fetchStockAppConfig = createAsyncThunk(
   'appConfig/fetchStockAppConfig',
-  async function () {
-    return getStockMenuConfig()
-      .catch(function (error) {
-        useHandleError(error, 'fetch Stock App Config');
-      })
-      .then(response => response.data.data);
+  async function (data = {}, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: getStockMenuConfig},
+      data,
+      'fetch Stock App Config',
+      {getState},
+      {array: true},
+    );
   },
 );
 

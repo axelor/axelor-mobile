@@ -1,15 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchInternalMoveLines} from '@/modules/stock/api/internal-move-line-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchInternalMoveLines = createAsyncThunk(
   'internalMoveLine/fetchInternalMoveLine',
-  async function (data) {
-    return searchInternalMoveLines(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch internal move lines');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchInternalMoveLines},
+      data,
+      'fetch internal move lines',
+      {getState},
+      {array: true},
+    );
   },
 );
 

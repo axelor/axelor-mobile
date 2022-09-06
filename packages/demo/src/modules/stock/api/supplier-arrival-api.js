@@ -29,49 +29,46 @@ const sortByFields = [
   'stockMoveSeq',
 ];
 
-export async function searchSupplierArrival({page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
-    data: {
+const createSearchCriteria = searchValue => {
+  const criteria = [];
+  criteria.push(
+    {
+      fieldName: 'isReversion',
+      operator: '=',
+      value: false,
+    },
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: StockMove.type.incoming,
+    },
+    {
+      operator: 'OR',
       criteria: [
         {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isReversion',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.incoming,
-            },
-            {
-              operator: 'OR',
-              criteria: [
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Planned,
-                },
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Realized,
-                },
-              ],
-            },
-          ],
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: StockMove.status.Planned,
+        },
+        {
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: StockMove.status.Realized,
         },
       ],
     },
+  );
 
-    fields: supplierArrivalsFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
-  });
-}
+  if (searchValue != null) {
+    criteria.push({
+      fieldName: 'stockMoveSeq',
+      operator: 'like',
+      value: searchValue,
+    });
+  }
+
+  return criteria;
+};
 
 export async function searchSupplierArrivalFilter({searchValue, page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
@@ -79,38 +76,7 @@ export async function searchSupplierArrivalFilter({searchValue, page = 0}) {
       criteria: [
         {
           operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isReversion',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.incoming,
-            },
-            {
-              operator: 'OR',
-              criteria: [
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Planned,
-                },
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Realized,
-                },
-              ],
-            },
-            {
-              fieldName: 'stockMoveSeq',
-              operator: 'like',
-              value: searchValue,
-            },
-          ],
+          criteria: createSearchCriteria(searchValue),
         },
       ],
     },

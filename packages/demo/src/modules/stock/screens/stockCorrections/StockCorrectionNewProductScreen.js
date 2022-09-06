@@ -23,16 +23,18 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
 
   const handleNavigate = useCallback(
     product => {
-      if (product.trackingNumberConfiguration == null) {
-        navigation.navigate('StockCorrectionDetailsScreen', {
-          stockLocation: route.params.stockLocation,
-          stockProduct: product,
-        });
-      } else {
-        navigation.navigate('StockCorrectionNewTrackingScreen', {
-          stockLocation: route.params.stockLocation,
-          product: product,
-        });
+      if (product != null) {
+        if (product.trackingNumberConfiguration == null) {
+          navigation.navigate('StockCorrectionDetailsScreen', {
+            stockLocation: route.params.stockLocation,
+            stockProduct: product,
+          });
+        } else {
+          navigation.navigate('StockCorrectionNewTrackingScreen', {
+            stockLocation: route.params.stockLocation,
+            product: product,
+          });
+        }
       }
     },
     [navigation, route.params.stockLocation],

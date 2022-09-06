@@ -28,87 +28,53 @@ const sortByFields = [
   'stockMoveSeq',
 ];
 
-export async function searchDelivery({page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
-    data: {
+const createSearchCriteria = searchValue => {
+  const criteria = [];
+  criteria.push(
+    {
+      fieldName: 'isReversion',
+      operator: '=',
+      value: false,
+    },
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: StockMove.type.outgoing,
+    },
+    {
+      operator: 'OR',
       criteria: [
         {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isReversion',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.outgoing,
-            },
-            {
-              operator: 'OR',
-              criteria: [
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Planned,
-                },
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Realized,
-                },
-              ],
-            },
-          ],
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: StockMove.status.Planned,
+        },
+        {
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: StockMove.status.Realized,
         },
       ],
     },
-    fields: deliveryFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
-  });
-}
+  );
 
-export async function searchDeliveryFilter({searchValue, page = 0}) {
+  if (searchValue) {
+    criteria.push({
+      fieldName: 'stockMoveSeq',
+      operator: 'like',
+      value: searchValue,
+    });
+  }
+  return criteria;
+};
+
+export async function searchDeliveryFilter({searchValue = null, page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
     data: {
       criteria: [
         {
           operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isReversion',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.outgoing,
-            },
-            {
-              operator: 'OR',
-              criteria: [
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Planned,
-                },
-                {
-                  fieldName: 'statusSelect',
-                  operator: '=',
-                  value: StockMove.status.Realized,
-                },
-              ],
-            },
-            {
-              fieldName: 'stockMoveSeq',
-              operator: 'like',
-              value: searchValue,
-            },
-          ],
+          criteria: createSearchCriteria(searchValue),
         },
       ],
     },

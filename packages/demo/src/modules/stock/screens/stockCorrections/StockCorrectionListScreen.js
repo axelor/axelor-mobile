@@ -156,8 +156,30 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen>
-      <SearchContainer>
+    <Screen listScreen={true}>
+      <SearchContainer
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={draftStatus}
+              title={I18n.t('Stock_Status_Draft')}
+              onPress={handleDraftFilter}
+              selectedColor={StockCorrection.getStatusColor(
+                StockCorrection.status.Draft,
+                Colors,
+              )}
+            />
+            <Chip
+              selected={validatedStatus}
+              title={I18n.t('Stock_Status_Validated')}
+              onPress={handleValidatedFilter}
+              selectedColor={StockCorrection.getStatusColor(
+                StockCorrection.status.Validated,
+                Colors,
+              )}
+            />
+          </ChipSelect>
+        }>
         <AutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -185,26 +207,6 @@ const StockCorrectionListScreen = ({navigation}) => {
           searchBarKey={2}
         />
       </SearchContainer>
-      <ChipSelect>
-        <Chip
-          selected={draftStatus}
-          title={I18n.t('Stock_Status_Draft')}
-          onPress={handleDraftFilter}
-          selectedColor={StockCorrection.getStatusColor(
-            StockCorrection.status.Draft,
-            Colors,
-          )}
-        />
-        <Chip
-          selected={validatedStatus}
-          title={I18n.t('Stock_Status_Validated')}
-          onPress={handleValidatedFilter}
-          selectedColor={StockCorrection.getStatusColor(
-            StockCorrection.status.Validated,
-            Colors,
-          )}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loadingStockCorrection}
         data={filteredList}

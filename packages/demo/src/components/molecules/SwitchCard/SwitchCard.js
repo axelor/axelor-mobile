@@ -1,28 +1,18 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useMemo} from 'react';
 import {Card, Switch, Text} from '@/components/atoms';
+import {useThemeColor} from '@/features/themeSlice';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const SwitchCard = ({style, title, defaultValue, onToggle = () => {}}) => {
+  const Colors = useThemeColor();
+  const styles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
   return (
-    <Card style={[styles.container, style]}>
+    <Card style={[styles.filter, styles.filterAlign, styles.filterSize, style]}>
       <Text>{title}</Text>
       <Switch isEnabled={defaultValue} handleToggle={onToggle} />
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingRight: 12,
-    paddingLeft: 12,
-    paddingVertical: 10,
-    elevation: 1,
-    marginBottom: 8,
-  },
-});
 
 export default SwitchCard;

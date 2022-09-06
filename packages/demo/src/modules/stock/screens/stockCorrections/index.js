@@ -1,5 +1,31 @@
-export {default as StockCorrectionListScreen} from './StockCorrectionListScreen';
-export {default as StockCorrectionDetailsScreen} from './StockCorrectionDetailsScreen';
-export {default as StockCorrectionNewLocationScreen} from './StockCorrectionNewLocationScreen';
-export {default as StockCorrectionNewProductScreen} from './StockCorrectionNewProductScreen';
-export {default as StockCorrectionNewTrackingScreen} from './StockCorrectionNewTrackingScreen';
+import StockCorrectionDetailsScreen from './StockCorrectionDetailsScreen';
+import StockCorrectionListScreen from './StockCorrectionListScreen';
+import StockCorrectionNewLocationScreen from './StockCorrectionNewLocationScreen';
+import StockCorrectionNewProductScreen from './StockCorrectionNewProductScreen';
+import StockCorrectionNewTrackingScreen from './StockCorrectionNewTrackingScreen';
+
+export default {
+  StockCorrectionListScreen: {
+    title: t => t('Stock_StockCorrection'),
+    component: StockCorrectionListScreen,
+    options: {
+      isListScreen: true,
+    },
+  },
+  StockCorrectionDetailsScreen: {
+    title: t => t('Stock_StockCorrection'),
+    component: StockCorrectionDetailsScreen,
+  },
+  StockCorrectionNewLocationScreen: {
+    title: t => t('Stock_StockCorrection'),
+    component: StockCorrectionNewLocationScreen,
+  },
+  StockCorrectionNewProductScreen: {
+    title: t => t('Stock_StockCorrection'),
+    component: StockCorrectionNewProductScreen,
+  },
+  StockCorrectionNewTrackingScreen: {
+    title: t => t('Stock_StockCorrection'),
+    component: StockCorrectionNewTrackingScreen,
+  },
+};

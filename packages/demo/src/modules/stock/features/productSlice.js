@@ -5,49 +5,57 @@ import {
   searchProductWithId,
   updateLocker,
 } from '@/modules/stock/api/product-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const searchProducts = createAsyncThunk(
   'product/searchProduct',
-  async function (data) {
-    return searchProductsFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter products');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchProductsFilter},
+      data,
+      'filter products',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const fetchProductWithId = createAsyncThunk(
   'product/fetchProductWithId',
-  async function (productId) {
-    return searchProductWithId(productId)
-      .catch(function (error) {
-        useHandleError(error, 'fetch product from id');
-      })
-      .then(response => response.data.data[0]);
+  async function (productId, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchProductWithId},
+      productId,
+      'fetch product from id',
+      {getState},
+      {array: false},
+    );
   },
 );
 
 export const updateProductLocker = createAsyncThunk(
   'product/updateLocker',
-  async function (data) {
-    return updateLocker(data)
-      .catch(function (error) {
-        useHandleError(error, 'update product locker');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateLocker},
+      data,
+      'update product locker',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const fetchProductAttachedFiles = createAsyncThunk(
   'product/fetchAttachedFiles',
-  async function (data) {
-    return fetchAttachedFiles(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch attached files');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: fetchAttachedFiles},
+      data,
+      'fetch attached files',
+      {getState},
+      {array: true},
+    );
   },
 );
 
@@ -56,7 +64,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   productList: [],
-  loadingProductFromId: true,
+  loadingProductFromId: false,
   productFromId: {},
   updateResponde: {},
   filesList: [],

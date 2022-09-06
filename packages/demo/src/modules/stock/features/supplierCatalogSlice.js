@@ -1,21 +1,17 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchSupplierProduct} from '../api/supplier-catalog-api';
 
 export const fetchProductForSupplier = createAsyncThunk(
   'supplierCatalog/fetchProductForSupplier',
-  async function (data) {
-    return searchSupplierProduct(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch supplier catalog product informations');
-      })
-      .then(response => {
-        if (response.data.data == null) {
-          return null;
-        } else {
-          return response.data.data[0];
-        }
-      });
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchSupplierProduct},
+      data,
+      'fetch supplier catalog product informations',
+      {getState},
+      {array: false},
+    );
   },
 );
 

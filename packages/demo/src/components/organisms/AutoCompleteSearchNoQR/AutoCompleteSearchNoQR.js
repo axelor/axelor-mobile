@@ -34,17 +34,22 @@ const AutoCompleteSearchNoQR = ({
   const [searchText, setSearchText] = useState(null);
   const [previousState, setPreviousState] = useState(null);
   const [newInterval, setNewInterval] = useState(0);
+  const [selected, setSelected] = useState(false);
   let timeOutRequestCall = useRef();
   let intervalRequestCall = useRef();
 
   useEffect(() => {
     if (value) {
+      setSelected(true);
       setSearchText(displayValue(value));
+    } else {
+      handleAPICall();
     }
-  }, [displayValue, value]);
+  }, [displayValue, handleAPICall, value]);
 
   const handleSelect = item => {
     setDisplayList(false);
+    setSelected(true);
     if (changeScreenAfter) {
       setSearchText('');
     }
@@ -52,16 +57,17 @@ const AutoCompleteSearchNoQR = ({
   };
 
   useEffect(() => {
-    if (navigate) {
+    if (navigate && oneFilter) {
       setSearchText('');
     }
-  }, [navigate]);
+  }, [navigate, oneFilter]);
 
   const handleClear = () => {
     setDisplayList(false);
-    onChangeValue(null);
+    setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
+    onChangeValue(null);
   };
 
   useEffect(() => {
@@ -98,44 +104,59 @@ const AutoCompleteSearchNoQR = ({
         clearTimeout(timeOutRequestCall.current);
       };
     }
-  }, [handleTimeOut, oneFilter, searchText]);
+  }, [handleTimeOut, searchText]);
 
   const handleTimeOut = useCallback(() => {
     stopInterval();
-    if (searchText == null && searchText === '') {
-      fetchData(null);
-    } else {
-      fetchData(searchText);
+    if (!selected) {
+      if (searchText == null && searchText === '') {
+        fetchData(null);
+      } else {
+        fetchData(searchText);
+      }
     }
-  }, [fetchData, searchText, stopInterval]);
+  }, [fetchData, searchText, selected, stopInterval]);
 
   const handleAPICall = useCallback(() => {
-    if (searchText == null && searchText === '') {
-      fetchData(null);
-    } else {
-      fetchData(searchText);
+    if (!selected) {
+      if (searchText == null && searchText === '') {
+        fetchData(null);
+      } else {
+        fetchData(searchText);
+      }
     }
-  }, [fetchData, searchText]);
+  }, [fetchData, searchText, selected]);
 
   useEffect(() => {
-    if (objectList != null && searchText != null && searchText !== '') {
+    if (
+      objectList != null &&
+      searchText != null &&
+      searchText !== '' &&
+      !selected
+    ) {
       if (objectList.length === 1) {
-        handleChangeScreen();
+        if (changeScreenAfter || oneFilter) {
+          setSearchText('');
+        } else {
+          setSearchText(displayValue(objectList[0]));
+          setDisplayList(false);
+        }
+        stopInterval();
+        onChangeValue(objectList[0]);
       } else {
         setDisplayList(true);
       }
     }
-  }, [handleChangeScreen, objectList, onChangeValue, searchText]);
-
-  const handleChangeScreen = useCallback(() => {
-    if (changeScreenAfter || oneFilter) {
-      setSearchText('');
-    } else {
-      setSearchText(displayValue(objectList[0]));
-      setDisplayList(false);
-    }
-    onChangeValue(objectList[0]);
-  }, [changeScreenAfter, displayValue, objectList, onChangeValue, oneFilter]);
+  }, [
+    changeScreenAfter,
+    displayValue,
+    objectList,
+    onChangeValue,
+    oneFilter,
+    searchText,
+    selected,
+    stopInterval,
+  ]);
 
   return (
     <View>
@@ -150,17 +171,20 @@ const AutoCompleteSearchNoQR = ({
         onEndFocus={() => setDisplayList(false)}
         isFocus={isFocus}
       />
-      {displayList && !oneFilter && (
-        <View style={styles.flatListContainer}>
-          {objectList.slice(0, 4).map(item => (
-            <AutocompleteItem
-              key={item?.id.toString()}
-              content={displayValue(item)}
-              onPress={() => handleSelect(item)}
-            />
-          ))}
-        </View>
-      )}
+      {objectList != null &&
+        objectList.length > 0 &&
+        displayList &&
+        !oneFilter && (
+          <View style={styles.flatListContainer}>
+            {objectList.slice(0, 4).map(item => (
+              <AutocompleteItem
+                key={item?.id.toString()}
+                content={displayValue(item)}
+                onPress={() => handleSelect(item)}
+              />
+            ))}
+          </View>
+        )}
     </View>
   );
 };

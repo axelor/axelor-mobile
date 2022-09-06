@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Screen, Text} from '@/components/atoms';
-import {StyleSheet, ScrollView, ActivityIndicator, View} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ViewAllContainer} from '@/components/molecules';
 import {CarrierCard, LocationsMoveCard} from '../../components/molecules';
@@ -94,110 +94,105 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      {loadingCDLines ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <StockMoveHeader
-            reference={customerDelivery.stockMoveSeq}
-            status={customerDelivery.statusSelect}
-            date={
-              customerDelivery.statusSelect === StockMove.status.Draft
-                ? customerDelivery.createdOn
-                : customerDelivery.statusSelect === StockMove.status.Planned
-                ? customerDelivery.estimatedDate
-                : customerDelivery.realDate
-            }
-            availability={customerDelivery.availableStatusSelect}
-          />
-          <LocationsMoveCard
-            fromStockLocation={customerDelivery.fromStockLocation?.name}
-            toStockLocation={customerDelivery?.toAddress.fullName}
-          />
-          <View style={styles.infoContainer}>
-            <View style={styles.cardInfoContainer}>
-              <Text>{customerDelivery.partner?.fullName}</Text>
-              {customerDelivery?.origin && (
-                <Text>{customerDelivery?.origin}</Text>
-              )}
-            </View>
-            <CarrierCard />
+    <Screen
+      fixedItems={
+        customerDelivery.statusSelect !== StockMove.status.Realized && (
+          <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />
+        )
+      }
+      loading={loadingCDLines}>
+      <ScrollView>
+        <StockMoveHeader
+          reference={customerDelivery.stockMoveSeq}
+          status={customerDelivery.statusSelect}
+          date={
+            customerDelivery.statusSelect === StockMove.status.Draft
+              ? customerDelivery.createdOn
+              : customerDelivery.statusSelect === StockMove.status.Planned
+              ? customerDelivery.estimatedDate
+              : customerDelivery.realDate
+          }
+          availability={customerDelivery.availableStatusSelect}
+        />
+        <LocationsMoveCard
+          fromStockLocation={customerDelivery.fromStockLocation?.name}
+          toStockLocation={customerDelivery?.toAddress.fullName}
+        />
+        <View style={styles.infoContainer}>
+          <View style={styles.cardInfoContainer}>
+            <Text>{customerDelivery.partner?.fullName}</Text>
+            {customerDelivery?.origin && (
+              <Text>{customerDelivery?.origin}</Text>
+            )}
           </View>
-          <ViewAllContainer
-            isHeaderExist={
-              customerDelivery.statusSelect !== StockMove.status.Realized
-            }
-            onNewIcon={handleNewLine}
-            onPress={handleViewAll}>
-            {customerDeliveryLineList[0] != null && (
-              <CustomerDeliveryLineCard
-                style={styles.item}
-                productName={customerDeliveryLineList[0].product?.fullName}
-                pickedQty={customerDeliveryLineList[0]?.realQty}
-                askedQty={customerDeliveryLineList[0]?.qty}
-                locker={
-                  !loadingRacks && racksList != null && racksList[0] != null
-                    ? racksList[0][0]?.rack
-                    : ''
-                }
-                availability={
-                  customerDelivery.statusSelect !== StockMove.status.Realized
-                    ? customerDeliveryLineList[0]?.availableStatusSelect
-                    : null
-                }
-                trackingNumber={customerDeliveryLineList[0]?.trackingNumber}
-                onPress={() => handleShowLine(customerDeliveryLineList[0], 0)}
-              />
-            )}
-            {customerDeliveryLineList[1] != null && (
-              <CustomerDeliveryLineCard
-                style={styles.item}
-                productName={customerDeliveryLineList[1]?.product.fullName}
-                pickedQty={customerDeliveryLineList[1]?.realQty}
-                askedQty={customerDeliveryLineList[1]?.qty}
-                locker={
-                  !loadingRacks && racksList != null && racksList[1] != null
-                    ? racksList[1][0]?.rack
-                    : ''
-                }
-                availability={
-                  customerDelivery.statusSelect !== StockMove.status.Realized
-                    ? customerDeliveryLineList[1]?.availableStatusSelect
-                    : null
-                }
-                trackingNumber={customerDeliveryLineList[1]?.trackingNumber}
-                onPress={() => handleShowLine(customerDeliveryLineList[1], 1)}
-              />
-            )}
-          </ViewAllContainer>
-          {customerDelivery.pickingOrderComments && (
-            <View style={styles.description}>
-              <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
-              <Card
-                style={styles.notes}
-                onLayout={event => {
-                  const {width} = event.nativeEvent.layout;
-                  setWidthNotes(width);
-                }}>
-                <RenderHtml
-                  source={{
-                    html: customerDelivery.pickingOrderComments,
-                  }}
-                  contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-                />
-              </Card>
-            </View>
-          )}
-          {customerDelivery.statusSelect !== StockMove.status.Realized && (
-            <Button
-              style={styles.validateBtn}
-              onPress={handleRealize}
-              title={I18n.t('Base_Realize')}
+          <CarrierCard />
+        </View>
+        <ViewAllContainer
+          isHeaderExist={
+            customerDelivery.statusSelect !== StockMove.status.Realized
+          }
+          onNewIcon={handleNewLine}
+          onPress={handleViewAll}>
+          {customerDeliveryLineList[0] != null && (
+            <CustomerDeliveryLineCard
+              style={styles.item}
+              productName={customerDeliveryLineList[0].product?.fullName}
+              pickedQty={customerDeliveryLineList[0]?.realQty}
+              askedQty={customerDeliveryLineList[0]?.qty}
+              locker={
+                !loadingRacks && racksList != null && racksList[0] != null
+                  ? racksList[0][0]?.rack
+                  : ''
+              }
+              availability={
+                customerDelivery.statusSelect !== StockMove.status.Realized
+                  ? customerDeliveryLineList[0]?.availableStatusSelect
+                  : null
+              }
+              trackingNumber={customerDeliveryLineList[0]?.trackingNumber}
+              onPress={() => handleShowLine(customerDeliveryLineList[0], 0)}
             />
           )}
-        </ScrollView>
-      )}
+          {customerDeliveryLineList[1] != null && (
+            <CustomerDeliveryLineCard
+              style={styles.item}
+              productName={customerDeliveryLineList[1]?.product.fullName}
+              pickedQty={customerDeliveryLineList[1]?.realQty}
+              askedQty={customerDeliveryLineList[1]?.qty}
+              locker={
+                !loadingRacks && racksList != null && racksList[1] != null
+                  ? racksList[1][0]?.rack
+                  : ''
+              }
+              availability={
+                customerDelivery.statusSelect !== StockMove.status.Realized
+                  ? customerDeliveryLineList[1]?.availableStatusSelect
+                  : null
+              }
+              trackingNumber={customerDeliveryLineList[1]?.trackingNumber}
+              onPress={() => handleShowLine(customerDeliveryLineList[1], 1)}
+            />
+          )}
+        </ViewAllContainer>
+        {customerDelivery.pickingOrderComments && (
+          <View style={styles.description}>
+            <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
+            <Card
+              style={styles.notes}
+              onLayout={event => {
+                const {width} = event.nativeEvent.layout;
+                setWidthNotes(width);
+              }}>
+              <RenderHtml
+                source={{
+                  html: customerDelivery.pickingOrderComments,
+                }}
+                contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
+              />
+            </Card>
+          </View>
+        )}
+      </ScrollView>
     </Screen>
   );
 };
@@ -210,12 +205,6 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     marginBottom: '3%',
     marginHorizontal: 16,
-  },
-  validateBtn: {
-    width: '60%',
-    marginTop: '10%',
-    borderRadius: 35,
-    marginHorizontal: '20%',
   },
   description: {
     marginHorizontal: 16,

@@ -1,53 +1,47 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   addLineStockMove,
   realizeSockMove,
-  searchSupplierArrival,
   searchSupplierArrivalFilter,
 } from '../api/supplier-arrival-api';
 
-export const fetchSupplierArrivals = createAsyncThunk(
-  'arrivals/fetchSupplierArrivals',
-  async function (data) {
-    return searchSupplierArrival(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch supplier arrival');
-      })
-      .then(response => response.data.data);
-  },
-);
-
 export const searchSupplierArrivals = createAsyncThunk(
   'arrivals/searchSupplierArrivals',
-  async function (data) {
-    return searchSupplierArrivalFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter supplier arrival');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchSupplierArrivalFilter},
+      data,
+      'filter supplier arrival',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const addNewLine = createAsyncThunk(
   'arrivals/addNewLine',
-  async function (data) {
-    return addLineStockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'add new line to supplier arrival');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: addLineStockMove},
+      data,
+      'add new line to supplier arrival',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const realizeSupplierArrival = createAsyncThunk(
   'arrivals/realizeSupplierArrival',
-  async function (data) {
-    return realizeSockMove(data)
-      .catch(function (error) {
-        useHandleError(error, 'realize supplier arrival');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: realizeSockMove},
+      data,
+      'realize supplier arrival',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
@@ -64,14 +58,14 @@ const supplierArrivalSlice = createSlice({
   name: 'supplierArrivals',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchSupplierArrivals.pending, (state, action) => {
+    builder.addCase(searchSupplierArrivals.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loading = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchSupplierArrivals.fulfilled, (state, action) => {
+    builder.addCase(searchSupplierArrivals.fulfilled, (state, action) => {
       state.loading = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
@@ -88,14 +82,6 @@ const supplierArrivalSlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(searchSupplierArrivals.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(searchSupplierArrivals.fulfilled, (state, action) => {
-      state.loading = false;
-      state.isListEnd = false;
-      state.supplierArrivalsList = action.payload;
     });
     builder.addCase(addNewLine.pending, state => {
       state.loading = true;

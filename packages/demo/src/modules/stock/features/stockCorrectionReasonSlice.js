@@ -1,15 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchStockCorrectionReason} from '@/modules/stock/api/stock-correction-reason-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchStockCorrectionReasons = createAsyncThunk(
   'stockCorrectionReason/fetchStockCorrectionReason',
-  async function () {
-    return searchStockCorrectionReason()
-      .catch(function (error) {
-        useHandleError(error, 'fetch stock correction reasons');
-      })
-      .then(response => response.data.data);
+  async function (data = {}, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchStockCorrectionReason},
+      data,
+      'fetch stock correction reasons',
+      {getState},
+      {array: true},
+    );
   },
 );
 

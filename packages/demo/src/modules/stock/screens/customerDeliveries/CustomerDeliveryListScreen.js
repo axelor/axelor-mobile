@@ -11,10 +11,7 @@ import {
   SearchContainer,
 } from '@/components/organisms';
 import {CustomerDeliveryCard} from '@/modules/stock/components/organisms';
-import {
-  fetchDeliveries,
-  searchDeliveries,
-} from '@/modules/stock/features/customerDeliverySlice';
+import {searchDeliveries} from '@/modules/stock/features/customerDeliverySlice';
 import filterList from '@/modules/stock/utils/filter-list';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {
@@ -29,7 +26,7 @@ import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 
-const CustomerDeliveryListScreen = ({route, navigation}) => {
+const CustomerDeliveryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const [stockLocation, setStockLocation] = useState(null);
@@ -110,15 +107,26 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
   };
 
   const fetchDeliveriesAPI = useCallback(
-    page => {
-      if (filter != null && filter !== '') {
-        dispatch(searchDeliveries({searchValue: filter}));
-      } else {
-        dispatch(fetchDeliveries({page: page}));
-      }
+    ({page = 0, searchValue = null}) => {
+      dispatch(
+        searchDeliveries({
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch, filter],
+    [dispatch],
   );
+
+  const handleRefChange = searchValue => {
+    setFilter(searchValue);
+    dispatch(
+      searchDeliveries({
+        searchValue: searchValue,
+        page: 0,
+      }),
+    );
+  };
 
   const fetchStockLocationsAPI = useCallback(
     (filterValue, companyId, defaultStockLocation) => {
@@ -141,8 +149,41 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
   );
 
   return (
-    <Screen>
-      <SearchContainer>
+    <Screen listScreen={true}>
+      <SearchContainer
+        fixedItems={
+          <AutoCompleteSearchNoQR
+            objectList={deliveryList}
+            onChangeValue={item => navigateToCustomerDelivery(item)}
+            fetchData={value => handleRefChange(value)}
+            displayValue={displayStockMoveSeq}
+            placeholder={I18n.t('Stock_Ref')}
+            oneFilter={true}
+            navigate={navigate}
+          />
+        }
+        chipComponent={
+          <ChipSelect style={styles.chipContainer}>
+            <Chip
+              selected={planifiedStatus}
+              title={I18n.t('Stock_Status_Planned')}
+              onPress={handlePlanifiedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Planned,
+                Colors,
+              )}
+            />
+            <Chip
+              selected={validatedStatus}
+              title={I18n.t('Stock_Status_Realized')}
+              onPress={handleValidatedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Realized,
+                Colors,
+              )}
+            />
+          </ChipSelect>
+        }>
         <AutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -167,35 +208,6 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
           placeholder={I18n.t('Stock_Customer')}
         />
       </SearchContainer>
-      <AutoCompleteSearchNoQR
-        objectList={deliveryList}
-        onChangeValue={item => navigateToCustomerDelivery(item)}
-        fetchData={value => setFilter(value)}
-        displayValue={displayStockMoveSeq}
-        placeholder={I18n.t('Stock_Ref')}
-        oneFilter={true}
-        navigate={navigate}
-      />
-      <ChipSelect style={styles.chipContainer}>
-        <Chip
-          selected={planifiedStatus}
-          title={I18n.t('Stock_Status_Planned')}
-          onPress={handlePlanifiedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Planned,
-            Colors,
-          )}
-        />
-        <Chip
-          selected={validatedStatus}
-          title={I18n.t('Stock_Status_Realized')}
-          onPress={handleValidatedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Realized,
-            Colors,
-          )}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loading}
         data={filteredList}
@@ -221,10 +233,9 @@ const CustomerDeliveryListScreen = ({route, navigation}) => {
             onPress={() => navigateToCustomerDelivery(item)}
           />
         )}
-        fetchData={fetchDeliveriesAPI}
+        fetchData={page => fetchDeliveriesAPI({page, searchValue: filter})}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
       />
     </Screen>
   );

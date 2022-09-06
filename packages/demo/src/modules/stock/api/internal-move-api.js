@@ -24,47 +24,31 @@ const sortByFields = [
   'stockMoveSeq',
 ];
 
-export async function searchInternalMove({page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
-    data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.internal,
-            },
-          ],
-        },
-      ],
-    },
-    fields: internalMoveFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
+const createSearchCriteria = searchValue => {
+  const criteria = [];
+  criteria.push({
+    fieldName: 'typeSelect',
+    operator: '=',
+    value: StockMove.type.internal,
   });
-}
 
-export async function searchInternalMoveFilter({searchValue, page = 0}) {
+  if (searchValue != null) {
+    criteria.push({
+      fieldName: 'stockMoveSeq',
+      operator: 'like',
+      value: searchValue,
+    });
+  }
+  return criteria;
+};
+
+export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
     data: {
       criteria: [
         {
           operator: 'and',
-          criteria: [
-            {
-              fieldName: 'typeSelect',
-              operator: '=',
-              value: StockMove.type.internal,
-            },
-            {
-              fieldName: 'stockMoveSeq',
-              operator: 'like',
-              value: searchValue,
-            },
-          ],
+          criteria: createSearchCriteria(searchValue),
         },
       ],
     },

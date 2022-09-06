@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useThemeColor} from '@/features/themeSlice';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const Button = ({
   style,
@@ -15,9 +16,13 @@ const Button = ({
     return getStyles(color == null ? Colors.primaryColor : color, Colors);
   }, [Colors, color]);
 
+  const commonStyles = useMemo(() => {
+    return getCommonStyles(Colors);
+  }, [Colors]);
+
   return (
     <TouchableOpacity
-      style={[styles.container, style]}
+      style={[styles.colorButton, commonStyles.button, style]}
       onPress={onPress}
       disabled={disabled}>
       <Text style={styles.text}>{title}</Text>
@@ -27,17 +32,7 @@ const Button = ({
 
 const getStyles = (backgroundColor, Colors) =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center',
-      paddingVertical: 5,
-      marginVertical: 10,
-      borderRadius: 35,
-      width: '40%',
-      height: 40,
+    colorButton: {
       backgroundColor: backgroundColor,
     },
     text: {

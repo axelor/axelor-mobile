@@ -13,7 +13,7 @@ export default {
     },
   },
   screens: {
-    SettingsScreen,
-    UserScreen,
+    SettingsScreen: {component: SettingsScreen, title: t => t('User_Settings')},
+    UserScreen: {component: UserScreen, title: t => t('User_UserProfile')},
   },
 };

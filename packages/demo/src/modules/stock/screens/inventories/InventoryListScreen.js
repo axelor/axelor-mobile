@@ -16,10 +16,7 @@ import {
   displayInventorySeq,
   displayItemName,
 } from '@/modules/stock/utils/displayers';
-import {
-  fetchInventories,
-  searchInventories,
-} from '@/modules/stock/features/inventorySlice';
+import {searchInventories} from '@/modules/stock/features/inventorySlice';
 import {InventoryCard} from '@/modules/stock/components/organisms';
 import Inventory from '@/modules/stock/types/inventory';
 import {useThemeColor} from '@/features/themeSlice';
@@ -161,19 +158,84 @@ const InventoryListScreen = ({navigation}) => {
   );
 
   const fetchInventoriesAPI = useCallback(
-    page => {
-      if (filter != null && filter !== '') {
-        dispatch(searchInventories({searchValue: filter}));
-      } else {
-        dispatch(fetchInventories({page: page}));
-      }
+    ({page = 0, searchValue}) => {
+      dispatch(searchInventories({searchValue: searchValue, page: page}));
     },
-    [dispatch, filter],
+    [dispatch],
   );
 
+  const handleRefChange = searchValue => {
+    setFilter(searchValue);
+    dispatch(
+      searchInventories({
+        searchValue: searchValue,
+        page: 0,
+      }),
+    );
+  };
+
   return (
-    <Screen>
-      <SearchContainer>
+    <Screen listScreen={true}>
+      <SearchContainer
+        fixedItems={
+          <AutoCompleteSearchNoQR
+            objectList={inventoryList}
+            onChangeValue={item => navigateToInventoryDetail(item)}
+            fetchData={value => handleRefChange(value)}
+            displayValue={displayInventorySeq}
+            placeholder={I18n.t('Stock_Ref')}
+            oneFilter={true}
+            navigate={navigate}
+          />
+        }
+        chipComponent={
+          <ChipSelect scrollable={true}>
+            <Chip
+              selected={plannedStatus}
+              title={I18n.t('Stock_Status_Planned')}
+              onPress={handlePlanifiedFilter}
+              selectedColor={Inventory.getStatusColor(
+                Inventory.status.Planned,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.35}
+              marginHorizontal={3}
+            />
+            <Chip
+              selected={inProgressStatus}
+              title={I18n.t('Stock_Status_InProgress')}
+              onPress={handleInProgressFilter}
+              selectedColor={Inventory.getStatusColor(
+                Inventory.status.InProgress,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.35}
+              marginHorizontal={3}
+            />
+            <Chip
+              selected={completedStatus}
+              title={I18n.t('Stock_Status_Completed')}
+              onPress={handleCompletedFilter}
+              selectedColor={Inventory.getStatusColor(
+                Inventory.status.Completed,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.35}
+              marginHorizontal={3}
+            />
+            <Chip
+              selected={validatedStatus}
+              title={I18n.t('Stock_Status_Validated')}
+              onPress={handleValidatedFilter}
+              selectedColor={Inventory.getStatusColor(
+                Inventory.status.Validated,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.35}
+              marginHorizontal={3}
+            />
+          </ChipSelect>
+        }>
         <AutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -190,61 +252,6 @@ const InventoryListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_StockLocation')}
         />
       </SearchContainer>
-      <AutoCompleteSearchNoQR
-        objectList={inventoryList}
-        onChangeValue={item => navigateToInventoryDetail(item)}
-        fetchData={value => setFilter(value)}
-        displayValue={displayInventorySeq}
-        placeholder={I18n.t('Stock_Ref')}
-        oneFilter={true}
-        navigate={navigate}
-      />
-      <ChipSelect scrollable={true}>
-        <Chip
-          selected={plannedStatus}
-          title={I18n.t('Stock_Status_Planned')}
-          onPress={handlePlanifiedFilter}
-          selectedColor={Inventory.getStatusColor(
-            Inventory.status.Planned,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-        <Chip
-          selected={inProgressStatus}
-          title={I18n.t('Stock_Status_InProgress')}
-          onPress={handleInProgressFilter}
-          selectedColor={Inventory.getStatusColor(
-            Inventory.status.InProgress,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-        <Chip
-          selected={completedStatus}
-          title={I18n.t('Stock_Status_Completed')}
-          onPress={handleCompletedFilter}
-          selectedColor={Inventory.getStatusColor(
-            Inventory.status.Completed,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-        <Chip
-          selected={validatedStatus}
-          title={I18n.t('Stock_Status_Validated')}
-          onPress={handleValidatedFilter}
-          selectedColor={Inventory.getStatusColor(
-            Inventory.status.Validated,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loading}
         data={filteredList}
@@ -259,10 +266,9 @@ const InventoryListScreen = ({navigation}) => {
             onPress={() => navigateToInventoryDetail(item)}
           />
         )}
-        fetchData={fetchInventoriesAPI}
+        fetchData={page => fetchInventoriesAPI({page, searchValue: filter})}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
       />
     </Screen>
   );

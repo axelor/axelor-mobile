@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {Increment} from '@/components/molecules';
+import {useThemeColor} from '@/features/themeSlice';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const QuantityCard = ({
-  style,
   children,
   labelQty,
   defaultValue,
@@ -13,8 +14,12 @@ const QuantityCard = ({
   actionQty = false,
   onPressActionQty = () => {},
 }) => {
+  const Colors = useThemeColor();
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
   return (
-    <Card style={[styles.container, style]}>
+    <Card style={[commonStyles.filter, styles.container]}>
       <View style={styles.container_up}>
         {actionQty ? (
           <View style={styles.actionContainer}>
@@ -48,8 +53,11 @@ const QuantityCard = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    marginHorizontal: 16,
-    marginBottom: '2%',
+    marginHorizontal: 18,
+    paddingVertical: 16,
+    paddingRight: 16,
+    paddingLeft: 16,
+    width: '90%',
   },
   container_up: {
     borderBottomColor: 'black',
@@ -57,6 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     paddingBottom: '3%',
+    alignSelf: 'center',
   },
   actionContainer: {
     flexDirection: 'row',

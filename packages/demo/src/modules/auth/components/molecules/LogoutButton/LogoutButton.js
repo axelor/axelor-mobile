@@ -3,15 +3,17 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {useThemeColor} from '@/features/themeSlice';
 import useTranslator from '@/hooks/use-translator';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const LogoutButton = ({onPress}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const button = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={button} onPress={onPress}>
+      <TouchableOpacity style={[button, commonStyles.button]} onPress={onPress}>
         <Icon name="power-off" />
         <Text style={styles.text}>{I18n.t('Auth_LOGOUT')}</Text>
       </TouchableOpacity>
@@ -21,17 +23,7 @@ const LogoutButton = ({onPress}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: 5,
-    marginVertical: 10,
-    elevation: 2,
-    width: '40%',
-    height: 40,
     backgroundColor: Colors.secondaryColor,
-    borderRadius: 35,
   });
 
 const styles = StyleSheet.create({
@@ -39,7 +31,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '15%',
   },
   text: {
     fontSize: 15,

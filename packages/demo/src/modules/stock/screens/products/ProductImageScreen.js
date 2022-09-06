@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Screen, Text} from '@/components/atoms';
 import {Image} from '@/components/molecules';
 
@@ -18,7 +18,7 @@ const ProductImageScreen = ({route}) => {
           imageSize={styles.imageSize}
           resizeMode="contain"
           pictureId={product?.picture?.id}
-          defaultIconSize={200}
+          defaultIconSize={Dimensions.get('window').width * 0.8}
         />
       </View>
     </Screen>
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageSize: {
-    height: '60%',
-    width: '60%',
+    height: Dimensions.get('window').width * 0.8,
+    width: Dimensions.get('window').width * 0.8,
   },
   imageStyle: {
     marginHorizontal: 20,

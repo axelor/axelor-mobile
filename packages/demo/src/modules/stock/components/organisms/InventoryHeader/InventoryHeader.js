@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: '2%',
     marginBottom: '2%',
   },
   refContainer: {

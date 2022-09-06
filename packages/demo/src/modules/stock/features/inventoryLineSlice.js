@@ -1,4 +1,4 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   createInventoryLine,
@@ -8,36 +8,40 @@ import {
 
 export const fetchInventoryLines = createAsyncThunk(
   'inventoryLines/fetchInventoryLines',
-  async function (data) {
-    return searchInventoryLines(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch inventory lines');
-      })
-      .then(response => {
-        return response.data.data;
-      });
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchInventoryLines},
+      data,
+      'fetch inventory lines',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const updateInventoryLine = createAsyncThunk(
   'inventoryLines/updateInventoryLine',
-  async function (data) {
-    return updateInventoryLineDetails(data)
-      .catch(function (error) {
-        useHandleError(error, 'update inventory line details');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateInventoryLineDetails},
+      data,
+      'update inventory line details',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const createNewInventoryLine = createAsyncThunk(
   'inventoryLines/createNewInventoryLine',
-  async function (data) {
-    return createInventoryLine(data)
-      .catch(function (error) {
-        useHandleError(error, 'create inventory line');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: createInventoryLine},
+      data,
+      'create inventory line',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 

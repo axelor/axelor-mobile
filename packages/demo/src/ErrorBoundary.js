@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
-import TraceBackApiAxelor from './api/TraceBackApiAxelor';
 import {Button, Screen, Text} from './components/atoms';
 import {Image} from './components/molecules';
+import {traceError} from './api/traceback-api';
 
 class ErrorBoundary extends Component {
-  traceBackApi: TraceBackApi;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -21,26 +19,19 @@ class ErrorBoundary extends Component {
     return {hasError: true};
   }
 
-  componentDidUpdate() {
-    const {userId} = this.props;
-    if (this.traceBackApi == null) {
-      this.traceBackApi = new TraceBackApiAxelor(userId);
-    }
-  }
-
   componentDidCatch(error, errorInfo) {
     this.setState(state => ({
       ...state,
       tracing: true,
       errorMessage: error.message,
     }));
-    if (this.traceBackApi) {
-      this.traceBackApi
-        .postError(error.message, errorInfo.componentStack)
-        .finally(() => {
-          this.setState(state => ({...state, tracing: false}));
-        });
-    }
+    traceError({
+      message: error.message,
+      cause: errorInfo.componentStack,
+      userId: this.props.userId,
+    }).finally(() => {
+      this.setState(state => ({...state, tracing: false}));
+    });
   }
 
   reloadApp() {
@@ -50,7 +41,13 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <Screen>
+        <Screen
+          fixedItems={
+            <Button
+              title="RELOAD SCREEN"
+              onPress={() => this.setState({hasError: false})}
+            />
+          }>
           <View style={styles.container}>
             <Image
               resizeMode="contain"
@@ -60,11 +57,6 @@ class ErrorBoundary extends Component {
               defaultIconSize={80}
             />
             <Text style={styles.text}>{this.state.errorMessage}</Text>
-            <Button
-              title="RELOAD SCREEN"
-              onPress={() => this.setState({hasError: false})}
-              style={styles.button}
-            />
           </View>
         </Screen>
       );
@@ -76,14 +68,9 @@ class ErrorBoundary extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
-  },
-  button: {
-    marginVertical: '10%',
+    height: '92%',
   },
   imageSize: {
     height: 100,

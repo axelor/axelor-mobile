@@ -1,4 +1,4 @@
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   searchSupplierArrivalLines,
@@ -7,23 +7,27 @@ import {
 
 export const fetchSupplierArrivalLines = createAsyncThunk(
   'SupplierLines/fetchSupplierLine',
-  async function (data) {
-    return searchSupplierArrivalLines(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch supplier arrival lines');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchSupplierArrivalLines},
+      data,
+      'fetch supplier arrival lines',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const updateSupplierArrivalLine = createAsyncThunk(
   'SupplierLines/updateSupplierArrivalLine',
-  async function (data) {
-    return updateLine(data)
-      .catch(function (error) {
-        useHandleError(error, 'update supplier arrival line');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateLine},
+      data,
+      'update supplier arrival line',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 

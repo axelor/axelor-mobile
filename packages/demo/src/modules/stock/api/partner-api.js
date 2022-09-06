@@ -9,33 +9,6 @@ const partnerFields = [
   'simpleFullName',
 ];
 
-export async function searchSuppliers() {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.Partner/search', {
-    data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isContact',
-              operator: '=',
-              value: false,
-            },
-            {
-              fieldName: 'isSupplier',
-              operator: '=',
-              value: true,
-            },
-          ],
-        },
-      ],
-    },
-    fields: partnerFields,
-    limit: 50,
-    offset: 0,
-  });
-}
-
 export async function searchSuppliersFilter({searchValue, page = 0}) {
   return axios.post('/ws/rest/com.axelor.apps.base.db.Partner/search', {
     data: {
@@ -90,43 +63,6 @@ export async function searchSuppliersFilter({searchValue, page = 0}) {
     fields: partnerFields,
     limit: 10,
     offset: 10 * page,
-  });
-}
-
-export async function searchClient() {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.Partner/search', {
-    data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'isContact',
-              operator: '=',
-              value: false,
-            },
-            {
-              operator: 'or',
-              criteria: [
-                {
-                  fieldName: 'isCustomer',
-                  operator: '=',
-                  value: true,
-                },
-                {
-                  fieldName: 'isProspect',
-                  operator: '=',
-                  value: true,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    fields: partnerFields,
-    limit: 50,
-    offset: 0,
   });
 }
 

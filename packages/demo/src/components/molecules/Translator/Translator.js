@@ -1,8 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {useEffect, useCallback} from 'react';
 import i18n from '@/i18n';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchActiveUser} from '@/modules/auth/features/userSlice';
+import {useSelector} from 'react-redux';
 import {fetchTranslation} from '@/api/translation';
 import {reduceTranslationsToI18nResources} from './translation-helpers';
 import {storage} from '@/storage';
@@ -25,12 +24,6 @@ const useLanguageEffect = callback => {
 };
 
 const Translator = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchActiveUser());
-  }, [dispatch]);
-
   useLanguageEffect(
     useCallback(language => {
       loadTranslationsFromStorage(language);

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Button, Screen} from '@/components/atoms';
 import {useDispatch, useSelector} from 'react-redux';
 import {activateColorBlind, desactivateColorBlind} from '@/features/themeSlice';
@@ -58,44 +58,47 @@ const SettingsScreen = ({route}) => {
   }, [dispatch, language]);
 
   return (
-    <Screen style={styles.container}>
-      <SwitchCard
-        title={I18n.t('User_ShowFilter')}
-        defaultValue={filterShowConfig}
-        onToggle={handleToggleFilter}
-      />
-      <SwitchCard
-        title={I18n.t('User_ZebraDevice')}
-        defaultValue={zebraConfig}
-        onToggle={handleToggleZebra}
-      />
-      <SwitchCard
-        title={I18n.t('User_ColorForColorBlind')}
-        defaultValue={isColorBlind}
-        onToggle={state => handleToggleColorBlind(state)}
-      />
-      {route.params.user == null ||
-      route.params.user.group.code !== 'admins' ? null : (
-        <Button
-          title={I18n.t('User_SendTranslations')}
-          style={styles.button}
-          onPress={handleSendTranslations}
-          disabled={loading}
+    <Screen
+      style={styles.screen}
+      fixedItems={
+        route.params.user == null ||
+        route.params.user.group.code !== 'admins' ? null : (
+          <Button
+            title={I18n.t('User_SendTranslations')}
+            onPress={handleSendTranslations}
+            disabled={loading}
+          />
+        )
+      }>
+      <View style={styles.container}>
+        <SwitchCard
+          title={I18n.t('User_ShowFilter')}
+          defaultValue={filterShowConfig}
+          onToggle={handleToggleFilter}
         />
-      )}
+        <SwitchCard
+          title={I18n.t('User_ZebraDevice')}
+          defaultValue={zebraConfig}
+          onToggle={handleToggleZebra}
+        />
+        <SwitchCard
+          title={I18n.t('User_ColorForColorBlind')}
+          defaultValue={isColorBlind}
+          onToggle={state => handleToggleColorBlind(state)}
+        />
+      </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    justifyContent: 'space-between',
+  },
   container: {
+    marginTop: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  button: {
-    width: '50%',
   },
 });
 

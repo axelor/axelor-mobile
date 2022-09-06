@@ -4,38 +4,44 @@ import {
   createStockCorrection,
   updateStockCorrection,
 } from '@/modules/stock/api/stock-correction-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const fetchStockCorrections = createAsyncThunk(
   'stockCorrection/fetchStockCorrection',
-  async function (data) {
-    return searchStockCorrection(data)
-      .catch(function (error) {
-        useHandleError(error, 'fetch stock corrections');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchStockCorrection},
+      data,
+      'fetch stock corrections',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const createCorrection = createAsyncThunk(
   'stockCorrection/createStockCorrection',
-  async function (data) {
-    return createStockCorrection(data)
-      .catch(function (error) {
-        useHandleError(error, 'create stock correction');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: createStockCorrection},
+      data,
+      'create stock correction',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 
 export const updateCorrection = createAsyncThunk(
   'stockCorrection/updateStockCorrection',
-  async function (data) {
-    return updateStockCorrection(data)
-      .catch(function (error) {
-        useHandleError(error, 'update stock correction');
-      })
-      .then(response => response.data.object);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: updateStockCorrection},
+      data,
+      'update stock correction',
+      {getState},
+      {showToast: true},
+    );
   },
 );
 

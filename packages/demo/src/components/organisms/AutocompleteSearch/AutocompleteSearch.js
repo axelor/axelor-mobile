@@ -224,17 +224,20 @@ const AutocompleteSearch = ({
         onEndFocus={() => setDisplayList(false)}
         isFocus={isFocus}
       />
-      {objectList != null && displayList && !oneFilter && (
-        <View style={styles.flatListContainer}>
-          {objectList.slice(0, 4).map(item => (
-            <AutocompleteItem
-              key={item?.id.toString()}
-              content={displayValue(item)}
-              onPress={() => handleSelect(item)}
-            />
-          ))}
-        </View>
-      )}
+      {objectList != null &&
+        objectList.length > 0 &&
+        displayList &&
+        !oneFilter && (
+          <View style={styles.flatListContainer}>
+            {objectList.slice(0, 4).map(item => (
+              <AutocompleteItem
+                key={item?.id.toString()}
+                content={displayValue(item)}
+                onPress={() => handleSelect(item)}
+              />
+            ))}
+          </View>
+        )}
     </View>
   );
 };

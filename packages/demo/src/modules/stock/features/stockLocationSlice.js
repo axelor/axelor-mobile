@@ -1,26 +1,30 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {searchStockLocationsFilter} from '@/modules/stock/api/stock-location-api';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 
 export const searchStockLocations = createAsyncThunk(
   'stockLocation/searchStockLocations',
-  async function (data) {
-    return searchStockLocationsFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter stock locations');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchStockLocationsFilter},
+      data,
+      'filter stock locations',
+      {getState},
+      {array: true},
+    );
   },
 );
 
 export const filterSecondStockLocations = createAsyncThunk(
   'stockLocation/filterSecondStockLocations',
-  async function (data) {
-    return searchStockLocationsFilter(data)
-      .catch(function (error) {
-        useHandleError(error, 'filter stock locations');
-      })
-      .then(response => response.data.data);
+  async function (data, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: searchStockLocationsFilter},
+      data,
+      'filter stock locations',
+      {getState},
+      {array: true},
+    );
   },
 );
 

@@ -1,14 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  View,
-} from 'react-native';
+import {StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Card, Icon, Screen, Text} from '@/components/atoms';
-import {LabelText, Picker} from '@/components/molecules';
+import {Icon, Screen, Text} from '@/components/atoms';
 import {LogoutButton} from '@/modules/auth/components/molecules';
 import {logout} from '@/modules/auth/features/authSlice';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
@@ -22,7 +15,7 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-import {AutocompleteSearch} from '@/components/organisms';
+import {AutocompleteSearch, Picker} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {
   fetchBaseConfig,
@@ -146,77 +139,65 @@ const UserScreen = ({navigation}) => {
   );
 
   return (
-    <Screen style={styles.container}>
-      {loadingUser || loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView contentContainerStyle={styles.centerItems}>
-          <Icon
-            name="user-alt"
-            size={Dimensions.get('window').width * 0.2}
-            style={styles.imageContainer}
+    <Screen
+      style={styles.container}
+      fixedItems={<LogoutButton onPress={() => dispatch(logout())} />}
+      loading={loadingUser || loading}>
+      <ScrollView contentContainerStyle={styles.centerItems}>
+        <Icon
+          name="user-alt"
+          size={Dimensions.get('window').width * 0.2}
+          style={styles.imageContainer}
+        />
+        {baseConfig.enableMultiCompany && (
+          <Picker
+            title={I18n.t('User_ActiveCompany')}
+            listItems={companyList}
+            labelField="name"
+            valueField="id"
+            onValueChange={updateActiveCompany}
+            isValueItem={true}
+            disabled={!canModifyCompany}
+            disabledValue={user?.activeCompany?.name}
           />
-          {baseConfig.enableMultiCompany && (
-            <View style={styles.companyContainer}>
-              {canModifyCompany ? (
-                <Picker
-                  style={styles.companyPicker}
-                  title={I18n.t('User_Company')}
-                  listItems={companyList}
-                  labelField="name"
-                  valueField="id"
-                  onValueChange={updateActiveCompany}
-                  isValueItem={true}
-                />
-              ) : (
-                <Card style={styles.cardCompany}>
-                  <LabelText
-                    title={`${I18n.t('User_ActiveCompany')} :`}
-                    value={user.activeCompany.name}
-                  />
-                </Card>
-              )}
-            </View>
-          )}
-          <Text style={styles.itemTitle}>
-            {`${I18n.t('User_DefaultStockLocation')}`}
-          </Text>
-          <AutocompleteSearch
-            objectList={stockLocationList}
-            value={user.workshopStockLocation}
-            onChangeValue={updateDefaultStockLocation}
-            fetchData={searchValue =>
-              fetchStockLocationsAPI(searchValue, user.activeCompany?.id)
-            }
-            displayValue={displayItemName}
-            scanKeySearch={stockLocationScanKey}
-            placeholder={I18n.t('Stock_StockLocation')}
+        )}
+        <Text style={styles.itemTitle}>
+          {`${I18n.t('User_DefaultStockLocation')}`}
+        </Text>
+        <AutocompleteSearch
+          objectList={stockLocationList}
+          value={user.workshopStockLocation}
+          onChangeValue={updateDefaultStockLocation}
+          fetchData={searchValue =>
+            fetchStockLocationsAPI(searchValue, user.activeCompany?.id)
+          }
+          displayValue={displayItemName}
+          scanKeySearch={stockLocationScanKey}
+          placeholder={I18n.t('Stock_StockLocation')}
+        />
+        {languageList.length > 1 && (
+          <Picker
+            title={I18n.t('User_Language')}
+            defaultValue={user.language}
+            listItems={languageList}
+            labelField="name"
+            valueField="code"
+            onValueChange={updateLanguage}
+            emptyValue={false}
           />
-          {languageList.length > 1 && (
-            <Picker
-              title={I18n.t('User_Language')}
-              defaultValue={user.language}
-              listItems={languageList}
-              labelField="name"
-              valueField="code"
-              onValueChange={updateLanguage}
-              emptyValue={false}
-            />
-          )}
-          {!isColorBlind && Themes.themesList.length !== 1 && (
-            <Picker
-              title={I18n.t('User_Theme')}
-              defaultValue={theme}
-              listItems={Themes.themesList}
-              labelField="name"
-              valueField="id"
-              onValueChange={handleChangeTheme}
-              emptyValue={false}
-            />
-          )}
-          <LogoutButton onPress={() => dispatch(logout())} />
-        </ScrollView>
-      )}
+        )}
+        {!isColorBlind && Themes.themesList.length !== 1 && (
+          <Picker
+            title={I18n.t('User_Theme')}
+            defaultValue={theme}
+            listItems={Themes.themesList}
+            labelField="name"
+            valueField="id"
+            onValueChange={handleChangeTheme}
+            emptyValue={false}
+          />
+        )}
+      </ScrollView>
     </Screen>
   );
 };

@@ -44,137 +44,133 @@ const ProductDetailsScreen = ({route, navigation}) => {
   const PERCENTAGE_WIDTH_NOTES = 0.95;
 
   return (
-    <Screen>
-      <View style={styles.scrollContainer}>
-        <ScrollView>
-          <ProductCharacteristics
-            onPressImage={() => navigateToImageProduct()}
-            pictureId={product?.picture?.id}
-            category={product.productCategory?.name}
-            prototype={product.isPrototype}
-            unrenewed={product.isUnrenewed}
-            procurMethod={product.procurementMethodSelect}
-            code={product.code}
-            name={product.name}
-            style={styles.item}
+    <Screen
+      fixedItems={
+        product.productVariant != null && (
+          <Button
+            onPress={() => showProductVariables()}
+            title={I18n.t('Stock_Variants')}
           />
-          <View style={styles.lineContainer}>
-            <View style={styles.lineStyle} />
-          </View>
-          {product.unit ? (
-            <View style={styles.stock}>
-              <SmallPropertyCard
-                style={styles.stockCard}
-                title={I18n.t('Stock_Stock')}
-                value={product.unit?.name}
-              />
-              <SmallPropertyCard
-                style={styles.stockCard}
-                title={I18n.t('Sale_Sale')}
-                value={
-                  product.salesUnit
-                    ? product.salesUnit?.name
-                    : product.unit?.name
-                }
-              />
-              <SmallPropertyCard
-                style={styles.stockCard}
-                title={I18n.t('Purchase_Purchase')}
-                value={
-                  product.purchasesUnit
-                    ? product.purchasesUnit?.name
-                    : product.unit?.name
-                }
-              />
-            </View>
-          ) : null}
-          <View style={styles.containerPack}>
-            <Text style={styles.titles}>PACKING</Text>
-            <View style={styles.packing}>
-              <SmallPropertyCard
-                style={styles.packingCard}
-                title={I18n.t('Stock_Length')}
-                value={product.length}
-                unit={
-                  product.lengthUnit == null
-                    ? I18n.t('Stock_Meters')
-                    : product.lengthUnit?.name
-                }
-                interactive={true}
-              />
-              <SmallPropertyCard
-                style={styles.packingCard}
-                title={I18n.t('Stock_Width')}
-                value={product.width}
-                unit={
-                  product.lengthUnit == null
-                    ? I18n.t('Stock_Meters')
-                    : product.lengthUnit?.name
-                }
-                interactive={true}
-              />
-              <SmallPropertyCard
-                style={styles.packingCard}
-                title={I18n.t('Stock_Height')}
-                value={product.height}
-                unit={
-                  product.lengthUnit == null
-                    ? I18n.t('Stock_Meters')
-                    : product.lengthUnit?.name
-                }
-                interactive={true}
-              />
-              <SmallPropertyCard
-                style={styles.packingCard}
-                title={I18n.t('Stock_NetMass')}
-                value={product.netMass}
-                unit={
-                  product.massUnit == null
-                    ? I18n.t('Stock_Kilograms')
-                    : product.massUnit?.name
-                }
-                interactive={true}
-              />
-              <SmallPropertyCard
-                style={styles.packingCard}
-                title={I18n.t('Stock_GrossMass')}
-                value={product.grossMass}
-                unit={
-                  product.massUnit == null
-                    ? I18n.t('Stock_Kilograms')
-                    : product.massUnit?.name
-                }
-                interactive={true}
-              />
-            </View>
-          </View>
-          {product.description && (
-            <View style={styles.description}>
-              <Text style={styles.titles}>{I18n.t('Base_Description')}</Text>
-              <Card
-                style={styles.notes}
-                onLayout={event => {
-                  const {width} = event.nativeEvent.layout;
-                  setWidthNotes(width);
-                }}>
-                <RenderHtml
-                  source={{html: product.description}}
-                  contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-                  baseStyle={{color: Colors.text}}
-                />
-              </Card>
-            </View>
-          )}
-        </ScrollView>
-        {!product.productVariant ? null : (
-          <View style={styles.buttonContainer}>
-            <Button
-              onPress={() => showProductVariables()}
-              title={I18n.t('Stock_Variants')}
+        )
+      }>
+      <ScrollView>
+        <ProductCharacteristics
+          onPressImage={() => navigateToImageProduct()}
+          pictureId={product?.picture?.id}
+          category={product.productCategory?.name}
+          prototype={product.isPrototype}
+          unrenewed={product.isUnrenewed}
+          procurMethod={product.procurementMethodSelect}
+          code={product.code}
+          name={product.name}
+          style={styles.item}
+        />
+        <View style={styles.lineContainer}>
+          <View style={styles.lineStyle} />
+        </View>
+        {product.unit ? (
+          <View style={styles.stock}>
+            <SmallPropertyCard
+              style={styles.stockCard}
+              title={I18n.t('Stock_Stock')}
+              value={product.unit?.name}
+            />
+            <SmallPropertyCard
+              style={styles.stockCard}
+              title={I18n.t('Sale_Sale')}
+              value={
+                product.salesUnit ? product.salesUnit?.name : product.unit?.name
+              }
+            />
+            <SmallPropertyCard
+              style={styles.stockCard}
+              title={I18n.t('Purchase_Purchase')}
+              value={
+                product.purchasesUnit
+                  ? product.purchasesUnit?.name
+                  : product.unit?.name
+              }
             />
           </View>
+        ) : null}
+        <View style={styles.containerPack}>
+          <Text style={styles.titles}>PACKING</Text>
+          <View style={styles.packing}>
+            <SmallPropertyCard
+              style={styles.packingCard}
+              title={I18n.t('Stock_Length')}
+              value={product.length}
+              unit={
+                product.lengthUnit == null
+                  ? I18n.t('Stock_Meters')
+                  : product.lengthUnit?.name
+              }
+              interactive={true}
+            />
+            <SmallPropertyCard
+              style={styles.packingCard}
+              title={I18n.t('Stock_Width')}
+              value={product.width}
+              unit={
+                product.lengthUnit == null
+                  ? I18n.t('Stock_Meters')
+                  : product.lengthUnit?.name
+              }
+              interactive={true}
+            />
+            <SmallPropertyCard
+              style={styles.packingCard}
+              title={I18n.t('Stock_Height')}
+              value={product.height}
+              unit={
+                product.lengthUnit == null
+                  ? I18n.t('Stock_Meters')
+                  : product.lengthUnit?.name
+              }
+              interactive={true}
+            />
+            <SmallPropertyCard
+              style={styles.packingCard}
+              title={I18n.t('Stock_NetMass')}
+              value={product.netMass}
+              unit={
+                product.massUnit == null
+                  ? I18n.t('Stock_Kilograms')
+                  : product.massUnit?.name
+              }
+              interactive={true}
+            />
+            <SmallPropertyCard
+              style={styles.packingCard}
+              title={I18n.t('Stock_GrossMass')}
+              value={product.grossMass}
+              unit={
+                product.massUnit == null
+                  ? I18n.t('Stock_Kilograms')
+                  : product.massUnit?.name
+              }
+              interactive={true}
+            />
+          </View>
+        </View>
+        {product.description && (
+          <View style={styles.description}>
+            <Text style={styles.titles}>{I18n.t('Base_Description')}</Text>
+            <Card
+              style={styles.notes}
+              onLayout={event => {
+                const {width} = event.nativeEvent.layout;
+                setWidthNotes(width);
+              }}>
+              <RenderHtml
+                source={{html: product.description}}
+                contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
+                baseStyle={{color: Colors.text}}
+              />
+            </Card>
+          </View>
         )}
-      </View>
+      </ScrollView>
     </Screen>
   );
 };
@@ -191,13 +187,6 @@ const styles = StyleSheet.create({
   stockCard: {
     marginHorizontal: '1.5%',
     minWidth: '20%',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    height: '10%',
   },
   description: {
     width: '90%',

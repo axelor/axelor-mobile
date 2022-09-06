@@ -1,16 +1,18 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {useHandleError} from '@/api/utils';
+import {handlerApiCall} from '@/api/utils';
 import {getBaseConfig} from '../api/config-api';
 import {postTranslations} from '@/api/translation';
 
 export const fetchBaseConfig = createAsyncThunk(
   'base/fetchBaseConfig',
-  async function () {
-    return getBaseConfig()
-      .catch(function (error) {
-        useHandleError(error, 'fetch base config');
-      })
-      .then(response => response.data.data[0]);
+  async function (data = {}, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: getBaseConfig},
+      data,
+      'fetch base config',
+      {getState},
+      {array: false},
+    );
   },
 );
 

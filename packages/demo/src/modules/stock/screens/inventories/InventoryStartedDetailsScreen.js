@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {Screen, Text, Button} from '@/components/atoms';
 import {ViewAllContainer} from '@/components/molecules';
 import Inventory from '@/modules/stock/types/inventory';
@@ -82,90 +82,82 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   }, [inventory, navigation]);
 
   return (
-    <Screen>
-      {loadingInventoryLines || loading || inventory == null ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <InventoryHeader
-            reference={inventory.inventorySeq}
-            status={inventory.statusSelect}
-            date={
-              inventory.statusSelect === Inventory.status.Planned
-                ? inventory.plannedStartDateT
-                : inventory.plannedEndDateT
-            }
-            stockLocation={inventory.stockLocation?.name}
+    <Screen
+      fixedItems={
+        inventory?.statusSelect === Inventory.status.InProgress ? (
+          <Button
+            title={I18n.t('Base_Complete')}
+            onPress={handleCompleteInventory}
           />
-          {inventory.fromRack && (
-            <LocationsMoveCard
-              style={styles.moveCard}
-              isLockerCard={true}
-              fromStockLocation={inventory.fromRack}
-              toStockLocation={inventory.toRack}
+        ) : inventory?.statusSelect === Inventory.status.Completed ? (
+          <Button
+            title={I18n.t('Base_Validate')}
+            onPress={handleValidateInventory}
+          />
+        ) : null
+      }
+      loading={loadingInventoryLines || loading || inventory == null}>
+      <ScrollView>
+        <InventoryHeader
+          reference={inventory?.inventorySeq}
+          status={inventory?.statusSelect}
+          date={
+            inventory?.statusSelect === Inventory.status.Planned
+              ? inventory?.plannedStartDateT
+              : inventory?.plannedEndDateT
+          }
+          stockLocation={inventory?.stockLocation?.name}
+        />
+        {inventory?.fromRack && (
+          <LocationsMoveCard
+            style={styles.moveCard}
+            isLockerCard={true}
+            fromStockLocation={inventory?.fromRack}
+            toStockLocation={inventory?.toRack}
+          />
+        )}
+        <View style={styles.marginHorizontal}>
+          {inventory?.productFamily != null && (
+            <Text>{`${I18n.t('Stock_ProductFamily')} : ${
+              inventory?.productFamily?.name
+            }`}</Text>
+          )}
+          {inventory?.productCategory != null && (
+            <Text>{`${I18n.t('Stock_ProductCategory')} : ${
+              inventory?.productCategory?.name
+            }`}</Text>
+          )}
+        </View>
+        <ViewAllContainer
+          isHeaderExist={inventory?.statusSelect !== Inventory.status.Completed}
+          onNewIcon={handleNewLine}
+          onPress={handleViewAll}>
+          {inventoryLineList == null || inventoryLineList[0] == null ? null : (
+            <InventoryLineCard
+              style={styles.item}
+              productName={inventoryLineList[0].product?.fullName}
+              currentQty={inventoryLineList[0].currentQty}
+              realQty={inventoryLineList[0].realQty}
+              unit={inventoryLineList[0].unit?.name}
+              locker={inventoryLineList[0].rack}
+              trackingNumber={inventoryLineList[0].trackingNumber}
+              onPress={() => handleShowLine(inventoryLineList[0])}
             />
           )}
-          <View style={styles.marginHorizontal}>
-            {inventory.productFamily != null && (
-              <Text>{`${I18n.t('Stock_ProductFamily')} : ${
-                inventory.productFamily?.name
-              }`}</Text>
-            )}
-            {inventory.productCategory != null && (
-              <Text>{`${I18n.t('Stock_ProductCategory')} : ${
-                inventory.productCategory?.name
-              }`}</Text>
-            )}
-          </View>
-          <ViewAllContainer
-            isHeaderExist={
-              inventory.statusSelect !== Inventory.status.Completed
-            }
-            onNewIcon={handleNewLine}
-            onPress={handleViewAll}>
-            {inventoryLineList == null ||
-            inventoryLineList[0] == null ? null : (
-              <InventoryLineCard
-                style={styles.item}
-                productName={inventoryLineList[0].product?.fullName}
-                currentQty={inventoryLineList[0].currentQty}
-                realQty={inventoryLineList[0].realQty}
-                unit={inventoryLineList[0].unit?.name}
-                locker={inventoryLineList[0].rack}
-                trackingNumber={inventoryLineList[0].trackingNumber}
-                onPress={() => handleShowLine(inventoryLineList[0])}
-              />
-            )}
-            {inventoryLineList == null ||
-            inventoryLineList[1] == null ? null : (
-              <InventoryLineCard
-                style={styles.item}
-                productName={inventoryLineList[1].product?.fullName}
-                currentQty={inventoryLineList[1].currentQty}
-                realQty={inventoryLineList[1].realQty}
-                unit={inventoryLineList[1].unit?.name}
-                locker={inventoryLineList[1].rack}
-                trackingNumber={inventoryLineList[1].trackingNumber}
-                onPress={() => handleShowLine(inventoryLineList[1])}
-              />
-            )}
-          </ViewAllContainer>
-          {inventory.statusSelect === Inventory.status.InProgress && (
-            <Button
-              style={styles.btn}
-              title={I18n.t('Base_Complete')}
-              onPress={handleCompleteInventory}
+          {inventoryLineList == null || inventoryLineList[1] == null ? null : (
+            <InventoryLineCard
+              style={styles.item}
+              productName={inventoryLineList[1].product?.fullName}
+              currentQty={inventoryLineList[1].currentQty}
+              realQty={inventoryLineList[1].realQty}
+              unit={inventoryLineList[1].unit?.name}
+              locker={inventoryLineList[1].rack}
+              trackingNumber={inventoryLineList[1].trackingNumber}
+              onPress={() => handleShowLine(inventoryLineList[1])}
             />
           )}
-          {inventory.statusSelect === Inventory.status.Completed && (
-            <Button
-              style={styles.btn}
-              title={I18n.t('Base_Validate')}
-              onPress={handleValidateInventory}
-            />
-          )}
-        </ScrollView>
-      )}
+        </ViewAllContainer>
+      </ScrollView>
     </Screen>
   );
 };
@@ -176,9 +168,6 @@ const styles = StyleSheet.create({
   },
   marginHorizontal: {
     marginHorizontal: 16,
-  },
-  btn: {
-    marginTop: 20,
   },
 });
 

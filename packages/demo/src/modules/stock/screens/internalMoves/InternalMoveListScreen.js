@@ -15,10 +15,7 @@ import {
   filterSecondStockLocations,
   searchStockLocations,
 } from '@/modules/stock/features/stockLocationSlice';
-import {
-  fetchInternalMoves,
-  searchInternalMoves,
-} from '@/modules/stock/features/internalMoveSlice';
+import {searchInternalMoves} from '@/modules/stock/features/internalMoveSlice';
 import {
   displayItemName,
   displayStockMoveSeq,
@@ -153,15 +150,26 @@ const InternalMoveListScreen = ({navigation}) => {
   }, [Colors, navigation]);
 
   const fetchInternalMovesAPI = useCallback(
-    page => {
-      if (filter != null && filter !== '') {
-        dispatch(searchInternalMoves({searchValue: filter, page: page}));
-      } else {
-        dispatch(fetchInternalMoves({page: page}));
-      }
+    ({page = 0, searchValue}) => {
+      dispatch(
+        searchInternalMoves({
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch, filter],
+    [dispatch],
   );
+
+  const handleRefChange = searchValue => {
+    setFilter(searchValue);
+    dispatch(
+      searchInternalMoves({
+        searchValue: searchValue,
+        page: 0,
+      }),
+    );
+  };
 
   const fetchOriginalStockLocationsAPI = useCallback(
     (filterValue, companyId, defaultStockLocation) => {
@@ -190,8 +198,56 @@ const InternalMoveListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen>
-      <SearchContainer>
+    <Screen listScreen={true}>
+      <SearchContainer
+        fixedItems={
+          <AutoCompleteSearchNoQR
+            objectList={internalMoveList}
+            onChangeValue={item => showInternalMoveDetails(item)}
+            fetchData={value => handleRefChange(value)}
+            displayValue={displayStockMoveSeq}
+            placeholder={I18n.t('Stock_Ref')}
+            oneFilter={true}
+            navigate={navigate}
+          />
+        }
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={draftStatus}
+              title={I18n.t('Stock_Status_Draft')}
+              onPress={handleDraftFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Draft,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.3}
+              marginHorizontal={3}
+            />
+            <Chip
+              selected={plannedStatus}
+              title={I18n.t('Stock_Status_Planned')}
+              onPress={handlePlannedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Planned,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.3}
+              marginHorizontal={3}
+            />
+            <Chip
+              selected={realizedStatus}
+              title={I18n.t('Stock_Status_Realized')}
+              onPress={handleRealizedFilter}
+              selectedColor={StockMove.getStatusColor(
+                StockMove.status.Realized,
+                Colors,
+              )}
+              width={Dimensions.get('window').width * 0.3}
+              marginHorizontal={3}
+            />
+          </ChipSelect>
+        }>
         <AutocompleteSearch
           objectList={stockLocationListFirstFilter}
           value={originalStockLocation}
@@ -225,50 +281,6 @@ const InternalMoveListScreen = ({navigation}) => {
           searchBarKey={2}
         />
       </SearchContainer>
-      <AutoCompleteSearchNoQR
-        objectList={internalMoveList}
-        onChangeValue={item => showInternalMoveDetails(item)}
-        fetchData={value => setFilter(value)}
-        displayValue={displayStockMoveSeq}
-        placeholder={I18n.t('Stock_Ref')}
-        oneFilter={true}
-        navigate={navigate}
-      />
-      <ChipSelect>
-        <Chip
-          selected={draftStatus}
-          title={I18n.t('Stock_Status_Draft')}
-          onPress={handleDraftFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Draft,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-        <Chip
-          selected={plannedStatus}
-          title={I18n.t('Stock_Status_Planned')}
-          onPress={handlePlannedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Planned,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-        <Chip
-          selected={realizedStatus}
-          title={I18n.t('Stock_Status_Realized')}
-          onPress={handleRealizedFilter}
-          selectedColor={StockMove.getStatusColor(
-            StockMove.status.Realized,
-            Colors,
-          )}
-          width={Dimensions.get('window').width * 0.3}
-          marginHorizontal={3}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loadingInternalMove}
         data={filteredList}
@@ -295,10 +307,9 @@ const InternalMoveListScreen = ({navigation}) => {
             onPress={() => showInternalMoveDetails(item)}
           />
         )}
-        fetchData={fetchInternalMovesAPI}
+        fetchData={page => fetchInternalMovesAPI({page, searchValue: filter})}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        filter={filter != null && filter !== ''}
       />
     </Screen>
   );

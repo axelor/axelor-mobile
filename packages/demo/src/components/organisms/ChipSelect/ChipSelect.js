@@ -3,7 +3,7 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 
 const ChipSelect = ({children, scrollable = false}) => {
   return (
-    <View style={styles.chipContainer}>
+    <View style={[styles.chipContainer, scrollable ? styles.marginLeft : null]}>
       {scrollable ? (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {children}
@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 2,
+  },
+  marginLeft: {
+    marginHorizontal: 16,
   },
 });
 
