@@ -1,7 +1,8 @@
 {
-  "name": "aosmobile",
+  "name": "@aos-mobile/demo",
   "version": "0.0.1",
   "private": true,
+  "workspaces": { "nohoist": "**" },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
