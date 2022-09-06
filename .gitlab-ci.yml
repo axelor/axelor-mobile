@@ -22,9 +22,8 @@ before_script:
 
       - npm install -g yarn@latest # Install yarn
       - yarn global add react-native-cli #Install React-Native CLI
-      - yarn install #Install npm packages
-      - react-native link #Link the resources
-      - chmod +x android/gradlew #Provide permission for execution
+      - yarn install #Install packages node_modules
+      - chmod +x packages/demo/android/gradlew #Provide permission for execution
 
 # Define stages 
 stages:
