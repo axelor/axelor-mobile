@@ -1,5 +1,5 @@
 export {default as AutocompleteSearch} from './AutocompleteSearch/AutocompleteSearch';
-export {default as AutoCompleteSearchNoQR} from './AutoCompleteSearchNoQR/AutoCompleteSearchNoQR.js';
+export {default as AutoCompleteSearchNoQR} from './AutoCompleteSearchNoQR/AutoCompleteSearchNoQR';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as Picker} from './Picker/Picker';
