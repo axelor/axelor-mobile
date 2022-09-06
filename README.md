@@ -13,16 +13,11 @@ yarn
 #### Start Metro
 
 ```bash
-yarn workspace @aos-mobile/demo start
+yarn start
 ```
 
 #### Start application
 ```bash
-yarn workspace @aos-mobile/demo android
+yarn android
 ```
 
-#### Clean projects
-
-```bash
-yarn clean
-```
