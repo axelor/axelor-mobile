@@ -8,6 +8,10 @@
   "scripts": {
     "clean": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock",
     "start": "yarn workspace @aos-mobile/demo start",
-    "android": "yarn workspace @aos-mobile/demo android"
+    "android": "yarn workspace @aos-mobile/demo android",
+    "format:check": "yarn workspaces run format:check",
+    "format": "yarn workspaces run format",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test"
   }
 }

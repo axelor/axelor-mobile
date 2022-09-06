@@ -20,9 +20,9 @@ before_script:
       - curl -sL https://deb.nodesource.com/setup_14.x | bash -
       - apt-get -y install nodejs # Install Node
 
-      - npm install -g npm@latest # Install npm last version
-      - npm install -g react-native-cli #Install React-Native CLI
-      - npm install #Install npm packages
+      - npm install -g yarn@latest # Install yarn
+      - yarn global add react-native-cli #Install React-Native CLI
+      - yarn install #Install npm packages
       - react-native link #Link the resources
       - chmod +x android/gradlew #Provide permission for execution
 
@@ -33,6 +33,6 @@ stages:
 test:
   stage: test
   script:
-    - npm run format:check
-    - npm run lint
-    - npm test
+    - yarn format:check
+    - yarn lint
+    - yarn test
