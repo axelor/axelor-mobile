@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button} from '@/components/atoms';
+import {Button} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const LoginButton = ({onPress}) => {

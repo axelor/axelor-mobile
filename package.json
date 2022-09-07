@@ -2,8 +2,13 @@
   "name": "aos-mobile",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/demo", "**/demo/**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/demo",
+      "**/demo/**"
+    ]
   },
   "scripts": {
     "clean": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock",
@@ -13,5 +18,9 @@
     "format": "yarn workspaces run format",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.19.0",
+    "typescript": "^4.8.2"
   }
 }

@@ -14,6 +14,7 @@
     "i18n": "i18n-parser --config=./i18n.json"
   },
   "dependencies": {
+    "@aos-mobile/ui": "1.0.0",
     "@react-native-picker/picker": "^2.4.1",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/native": "^6.0.10",
