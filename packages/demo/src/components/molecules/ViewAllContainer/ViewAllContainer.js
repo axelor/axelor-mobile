@@ -8,6 +8,7 @@ const ViewAllContainer = ({
   style,
   children,
   isHeaderExist = false,
+  disable = false,
   onNewIcon = () => {},
   onPress = () => {},
 }) => {
@@ -30,16 +31,18 @@ const ViewAllContainer = ({
         </View>
       )}
       <View style={styles.cardContainer}>{children}</View>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor_light}
-            size={20}
-          />
-        </View>
-      </TouchableOpacity>
+      {!disable && (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.txtDetails}>{I18n.t('Base_ViewAll')}</Text>
+            <Icon
+              name="chevron-right"
+              color={Colors.secondaryColor_light}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
     </Card>
   );
 };

@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useThemeColor} from '@/features/themeSlice';
 import {Icon} from '@/components/atoms';
+import {getCommonStyles} from '@/components/commons-styles';
 
 const IconButton = ({
   style,
@@ -17,9 +18,13 @@ const IconButton = ({
     return getStyles(color == null ? Colors.primaryColor : color, Colors);
   }, [Colors, color]);
 
+  const commonStyles = useMemo(() => {
+    return getCommonStyles(Colors);
+  }, [Colors]);
+
   return (
     <TouchableOpacity
-      style={[styles.container, style]}
+      style={[styles.colorButton, commonStyles.button, style]}
       onPress={onPress}
       disabled={disabled}>
       <Icon name={iconName} size={15} color={Colors.text} />
@@ -30,17 +35,7 @@ const IconButton = ({
 
 const getStyles = (backgroundColor, Colors) =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center',
-      paddingVertical: 5,
-      marginVertical: 5,
-      borderRadius: 35,
-      width: '40%',
-      height: 40,
+    colorButton: {
       backgroundColor: backgroundColor,
     },
     text: {

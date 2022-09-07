@@ -2,7 +2,13 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 
-const LabelText = ({title, value, iconName = null, FontAwesome5 = true}) => {
+const LabelText = ({
+  style,
+  title,
+  value = null,
+  iconName = null,
+  FontAwesome5 = true,
+}) => {
   return (
     <View style={styles.textDisplay}>
       {iconName && (
@@ -13,15 +19,15 @@ const LabelText = ({title, value, iconName = null, FontAwesome5 = true}) => {
           FontAwesome5={FontAwesome5}
         />
       )}
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.txtDetails}>{value}</Text>
+      <Text style={[styles.title, style]}>{title}</Text>
+      {value != null && <Text style={styles.txtDetails}>{value}</Text>}
     </View>
   );
 };
 const styles = StyleSheet.create({
   textDisplay: {
     flexDirection: 'row',
-    width: '60%',
+    width: '100%',
   },
   txtDetails: {
     fontSize: 14,
