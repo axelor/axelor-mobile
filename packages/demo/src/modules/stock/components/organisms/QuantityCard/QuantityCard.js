@@ -6,6 +6,7 @@ import {useThemeColor} from '@/features/themeSlice';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const QuantityCard = ({
+  style,
   children,
   labelQty,
   defaultValue,
@@ -17,6 +18,22 @@ const QuantityCard = ({
   const Colors = useThemeColor();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  if (children == null || children.length === 0) {
+    return (
+      <Card style={[styles.noChildrenContainer, style]}>
+        <Text style={styles.noChildrenTextField}>{labelQty}</Text>
+        {editable ? (
+          <Increment
+            value={defaultValue.toString()}
+            onValueChange={onValueChange}
+          />
+        ) : (
+          <Text style={styles.noChildrenTextValue}>{defaultValue}</Text>
+        )}
+      </Card>
+    );
+  }
 
   return (
     <Card style={[commonStyles.filter, styles.container]}>
@@ -51,6 +68,19 @@ const QuantityCard = ({
 };
 
 const styles = StyleSheet.create({
+  noChildrenContainer: {
+    flexDirection: 'column',
+    marginHorizontal: 16,
+    marginBottom: '2%',
+    alignItems: 'center',
+  },
+  noChildrenTextField: {
+    fontSize: 16,
+  },
+  noChildrenTextValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   container: {
     flexDirection: 'column',
     marginHorizontal: 18,
