@@ -1,11 +1,13 @@
 import Toast from 'react-native-toast-message';
 import {traceError} from './traceback-api';
 
-export const getApiResponseData = (response, {array = true}) => {
+export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
     return response.data.object;
   }
-  return array ? response?.data?.data : getFirstData(response?.data?.data);
+  return isArrayResponse
+    ? response?.data?.data
+    : getFirstData(response?.data?.data);
 };
 
 const getApiResponseCode = response =>
@@ -51,8 +53,8 @@ export const handlerError = (message, {getState = () => {}}) => {
   return error => manageError(error, message, getUser({getState}));
 };
 
-const manageSucess = (response, {showToast = false, array}) => {
-  const data = getApiResponseData(response, {array});
+const manageSucess = (response, {showToast = false, isArrayResponse}) => {
+  const data = getApiResponseData(response, {isArrayResponse});
   const code = getApiResponseCode(response);
   const message = getApiResponseMessage(response);
 
@@ -69,8 +71,8 @@ const manageSucess = (response, {showToast = false, array}) => {
   return data;
 };
 
-const handlerSuccess = ({showToast = false, array}) => {
-  return response => manageSucess(response, {showToast, array});
+const handlerSuccess = ({showToast = false, isArrayResponse}) => {
+  return response => manageSucess(response, {showToast, isArrayResponse});
 };
 
 export const handlerApiCall = (
@@ -82,5 +84,5 @@ export const handlerApiCall = (
 ) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}))
-    .then(handlerSuccess({showToast, array}));
+    .then(handlerSuccess({showToast, isArrayResponse: array}));
 };

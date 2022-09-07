@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {getLoggedUser} from '@/modules/auth/api/user-api';
+import {getLoggedUser, postUser} from '@/modules/auth/api/user-api';
 import {handlerApiCall} from '@/api/utils';
 
 export const fetchActiveUser = createAsyncThunk(
@@ -9,6 +9,19 @@ export const fetchActiveUser = createAsyncThunk(
       {fetchFunction: getLoggedUser},
       userId,
       'fetch active user',
+      {getState},
+      {array: false},
+    );
+  },
+);
+
+export const updateActiveUser = createAsyncThunk(
+  'user/updateActiveUser',
+  async function (user, {getState}) {
+    return handlerApiCall(
+      {fetchFunction: postUser},
+      user,
+      'update active user',
       {getState},
       {array: false},
     );
@@ -35,9 +48,6 @@ const userSlice = createSlice({
         workshopStockLocation: action.payload.newStockLocation,
       };
     },
-    changeLanguage: (state, action) => {
-      state.user.language = action.payload;
-    },
   },
   extraReducers: builder => {
     builder.addCase(fetchActiveUser.pending, state => {
@@ -50,10 +60,20 @@ const userSlice = createSlice({
         state.canModifyCompany = true;
       }
     });
+    builder.addCase(updateActiveUser.pending, state => {
+      state.loadingUser = true;
+    });
+    builder.addCase(updateActiveUser.fulfilled, (state, action) => {
+      state.loadingUser = false;
+      state.user = action.payload;
+      if (state.user.activeCompany == null) {
+        state.canModifyCompany = true;
+      }
+    });
   },
 });
 
-export const {changeActiveCompany, changeDefaultStockLocation, changeLanguage} =
+export const {changeActiveCompany, changeDefaultStockLocation} =
   userSlice.actions;
 
 export const userReducer = userSlice.reducer;

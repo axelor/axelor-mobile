@@ -10,7 +10,7 @@ import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice'
 import {
   changeActiveCompany,
   changeDefaultStockLocation,
-  changeLanguage,
+  updateActiveUser,
   fetchActiveUser,
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
@@ -133,9 +133,11 @@ const UserScreen = ({navigation}) => {
 
   const updateLanguage = useCallback(
     language => {
-      dispatch(changeLanguage(language));
+      dispatch(
+        updateActiveUser({id: user.id, language, version: user.version}),
+      );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   return (
