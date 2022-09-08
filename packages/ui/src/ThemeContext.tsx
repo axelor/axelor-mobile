@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useReducer } from "react";
+import React, { createContext, useCallback, useContext, useMemo, useReducer } from "react";
 import { Theme, lightTheme, colorBlindTheme } from "./themes";
 
 const DEFAULT_THEME = lightTheme;

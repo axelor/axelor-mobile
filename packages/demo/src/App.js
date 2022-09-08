@@ -9,6 +9,7 @@ import ErrorBoundary from './ErrorBoundary';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
 import Translator from '@/components/molecules/Translator/Translator';
+import { ThemeProvider } from '@aos-mobile/ui';
 
 const App = () => {
   const toastConfig = {
@@ -36,14 +37,16 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Scanner />
-      <Translator />
-      <ErrorBoundary>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </ErrorBoundary>
-      <Toast config={toastConfig} />
+      <ThemeProvider>
+        <Scanner />
+        <Translator />
+        <ErrorBoundary>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </ErrorBoundary>
+        <Toast config={toastConfig} />
+      </ThemeProvider>
     </Provider>
   );
 };
