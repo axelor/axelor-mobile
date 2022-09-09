@@ -5,3 +5,10 @@ export function formatURL(url: String): String {
 
   return url + '/';
 }
+
+export function splitInTwo(value: String, spacer = '.'): Array<String> {
+  if (value == null) {
+    return null;
+  }
+  return value.toString().split(spacer);
+}
