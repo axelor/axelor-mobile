@@ -35,8 +35,8 @@ const AutoCompleteSearchNoQR = ({
   const [previousState, setPreviousState] = useState(null);
   const [newInterval, setNewInterval] = useState(0);
   const [selected, setSelected] = useState(false);
-  let timeOutRequestCall = useRef();
-  let intervalRequestCall = useRef();
+  let timeOutRequestCall = useRef<number>();
+  let intervalRequestCall = useRef<number>();
 
   const handleAPICall = useCallback(() => {
     if (!selected) {

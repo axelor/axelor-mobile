@@ -23,7 +23,7 @@ const ScrollList = ({
   filter = false,
   translator,
 }: ScrollListProps) => {
-  const [page, setPage] = useState();
+  const [page, setPage] = useState(0);
 
   const updateData = useCallback(() => {
     setPage(0);

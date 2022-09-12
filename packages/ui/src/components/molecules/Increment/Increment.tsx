@@ -13,16 +13,16 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
   const [valueQty, setValueQty] = useState(value);
 
   const handlePlus = () => {
-    const newValue = (parseFloat(valueQty) + parseFloat("1")).toFixed(2);
-    setValueQty(newValue.toString());
-    onValueChange(newValue);
+    const newValue: number = parseFloat(valueQty) + parseFloat("1");
+    setValueQty(newValue.toFixed(2).toString());
+    onValueChange(newValue.toFixed(2));
   };
 
   const handleMinus = () => {
-    const newValue = (parseFloat(valueQty) - parseFloat("1")).toFixed(2);
+    const newValue = parseFloat(valueQty) - parseFloat("1");
     if (newValue >= 0) {
-      setValueQty(newValue.toString());
-      onValueChange(newValue);
+      setValueQty(newValue.toFixed(2).toString());
+      onValueChange(newValue.toFixed(2));
     }
   };
 
@@ -35,10 +35,10 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
       setValueQty("0.00");
       onValueChange(0.0);
     } else {
-      const newValue = parseFloat(valueQty).toFixed(2);
+      const newValue: number = parseFloat(valueQty);
       if (newValue >= 0) {
-        setValueQty(newValue.toString());
-        onValueChange(newValue);
+        setValueQty(newValue.toFixed(2).toString());
+        onValueChange(newValue.toFixed(2));
       } else {
         setValueQty("0.00");
         onValueChange(0.0);
