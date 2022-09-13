@@ -51,6 +51,14 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
     }
   };
 
+  const handleAddTrackingNumber = () => {
+    navigation.navigate('SupplierArrivalAddTrackingScreen', {
+      supplierArrivalLine: supplierArrivalLine,
+      supplierArrival: supplierArrival,
+      product: product,
+    });
+  };
+
   return (
     <Screen>
       <StockMoveHeader
@@ -103,7 +111,7 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
             size={24}
             style={styles.action}
             touchable={true}
-            onPress={() => {}}
+            onPress={handleAddTrackingNumber}
           />
         </View>
         <AutocompleteSearch

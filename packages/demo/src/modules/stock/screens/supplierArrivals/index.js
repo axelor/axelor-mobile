@@ -1,3 +1,4 @@
+import SupplierArrivalAddTrackingScreen from './SupplierArrivalAddTrackingScreen';
 import SupplierArrivalDetailsScreen from './SupplierArrivalDetailsScreen';
 import SupplierArrivalLineDetailScreen from './SupplierArrivalLineDetailScreen';
 import SupplierArrivalLineListScreen from './SupplierArrivalLineListScreen';
@@ -32,5 +33,9 @@ export default {
   SupplierArrivalSelectTrackingScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalSelectTrackingScreen,
+  },
+  SupplierArrivalAddTrackingScreen: {
+    title: t => t('Stock_SupplierArrival'),
+    component: SupplierArrivalAddTrackingScreen,
   },
 };

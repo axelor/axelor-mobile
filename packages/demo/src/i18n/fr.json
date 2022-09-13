@@ -40,6 +40,7 @@
   "Base_Check": "Vérifier",
   "Base_Start": "Commencer",
   "Base_Complete": "Terminer",
+  "Base_Create": "Créer",
   "Base_Content": "Contenu",
   "Base_ViewAll": "Tout voir",
   "Base_Error_ConfigureStockApp": "Votre application stock n'est pas configurée, merci de contacter un administrateur.",
@@ -137,6 +138,8 @@
   "Stock_Compliant": "Conforme",
   "Stock_NonCompliant": "Non-conforme",
   "Stock_Conformity": "Conformité",
+  "Stock_TrackingSequence": "Sequence du numéro de suivi",
+  "Stock_TrackingQty": "Quantité du nouveau n° de suivi",
   "Sale_Sale": "Vente",
   "Purchase_Purchase": "Achat"
 }

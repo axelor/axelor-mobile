@@ -65,3 +65,30 @@ export function searchTrackingNumberBySerialNumber(serialNumber) {
     .then(getApiResponseData)
     .then(getFirstData);
 }
+
+export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
+  return axios.post('/ws/rest/com.axelor.apps.stock.db.TrackingNumber', {
+    data: {
+      counter: qty,
+      product: product,
+      trackingNumberSeq: trackingNumberSeq,
+    },
+  });
+}
+
+export async function updateStockMoveLineTrackingNumber({
+  stockMoveLineId,
+  stockMoveLineVersion,
+  trackingNumber,
+}) {
+  return axios.post(
+    `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${stockMoveLineId}`,
+    {
+      data: {
+        id: stockMoveLineId,
+        version: stockMoveLineVersion,
+        trackingNumber: trackingNumber,
+      },
+    },
+  );
+}
