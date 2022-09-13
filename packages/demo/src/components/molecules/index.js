@@ -10,6 +10,7 @@ export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
 export {default as IconButton} from './IconButton/IconButton';
 export {default as Image} from './Image/Image';
 export {default as Increment} from './Increment/Increment';
+export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as LabelText} from './LabelText/LabelText';
 export {default as NextButton} from './NextButton/NextButton';
 export {default as PopUp} from './PopUp/PopUp';
