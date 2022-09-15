@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Picker as ReactNativePicker } from "@react-native-picker/picker";
+//import { Picker as ReactNativePicker } from "@react-native-picker/picker";
 import { useThemeColor } from "../../../ThemeContext";
 import { getFromList } from "../../../utils/list";
 import { getCommonStyles } from "../../../commons-styles";
@@ -79,7 +79,7 @@ const Picker = ({
         </View>
       ) : (
         <View style={[commonStyles.filter, styles.pickerContainer]}>
-          <ReactNativePicker
+          {/*<ReactNativePicker
             style={styles.picker}
             itemStyle={styles.pickerItem}
             dropdownIconColor={Colors.secondaryColor_dark}
@@ -99,7 +99,7 @@ const Picker = ({
                     />
                   );
                 })}
-          </ReactNativePicker>
+          </ReactNativePicker>*/}
         </View>
       )}
     </View>
