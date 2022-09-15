@@ -1,16 +1,7 @@
 {
+  "extends": "../../tsconfig",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": ["esnext"],
-    "jsx": "react-native",
-    "moduleResolution": "node",
     "outDir": "./lib",
-    "declaration": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "lib"]
 }
