@@ -1,8 +1,11 @@
 {
-  "name": "@aos-mobile/ui",
+  "name": "@aos-mobile/core",
   "version": "1.0.0",
-  "private": true,
-  "main": "lib/index.js",
+  "description": "",
+  "main": "./lib/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "build": "tsc",
     "lint": "eslint .",
@@ -11,17 +14,12 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-vector-icons": "^9.2.0"
-  },
-  "dependencies": {
-    "react-native-system-navigation-bar": "^2.0.0"
+    "react-redux": "^8.0.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.2",
     "@types/react-native": "^0.68.1",
-    "metro-react-native-babel-preset": "^0.72.3",
     "react": "17.0.2",
-    "react-native": "0.68.1",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native": "0.68.1"
   }
 }

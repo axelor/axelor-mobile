@@ -23,10 +23,5 @@
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
     "typescript": "^4.8.2"
-  },
-  "dependencies": {
-    "@react-native-picker/picker": "^2.4.4",
-    "react-native-system-navigation-bar": "^2.0.0",
-    "react-native-vector-icons": "^9.2.0"
   }
 }
