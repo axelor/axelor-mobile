@@ -9,6 +9,7 @@
   "scripts": {
     "clean": "rm -rf lib/",
     "compile": "tsc -p tsconfig.build.json",
+    "dev": "npm run compile -- --watch",
     "build": "npm run clean && npm run compile",
     "lint": "eslint .",
     "format": "prettier --write src/"
