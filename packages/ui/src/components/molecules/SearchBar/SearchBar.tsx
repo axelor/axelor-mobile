@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import { getCommonStyles } from "../../../commons-styles";
-import { useThemeColor } from "../../../ThemeContext";
-import { Icon, Input } from "../../atoms";
+import React, {useMemo} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../ThemeContext';
+import {Icon, Input} from '../../atoms';
 
 interface SearchBarProps {
   style?: any;
@@ -39,8 +39,7 @@ const SearchBar = ({
         commonStyles.filterAlign,
         commonStyles.filterSize,
         style,
-      ]}
-    >
+      ]}>
       <Input
         style={styles.input}
         value={valueTxt}
@@ -52,10 +51,10 @@ const SearchBar = ({
       />
       <View style={styles.actions}>
         <View style={styles.action}>
-          {valueTxt === "" || valueTxt == null ? null : (
+          {valueTxt === '' || valueTxt == null ? null : (
             <Icon
               name="times"
-              size={Dimensions.get("window").width * 0.05}
+              size={Dimensions.get('window').width * 0.05}
               color={Colors.secondaryColor_dark}
               touchable={true}
               onPress={onClearPress}
@@ -65,14 +64,14 @@ const SearchBar = ({
         <View style={styles.action}>
           <Icon
             name="search"
-            size={Dimensions.get("window").width * 0.05}
+            size={Dimensions.get('window').width * 0.05}
             color={Colors.secondaryColor_dark}
           />
         </View>
         <View style={styles.action}>
           <Icon
             name="qrcode"
-            size={Dimensions.get("window").width * 0.05}
+            size={Dimensions.get('window').width * 0.05}
             color={scanIconColor}
             touchable={true}
             onPress={onScanPress}
@@ -86,12 +85,12 @@ const SearchBar = ({
 
 const styles = StyleSheet.create({
   input: {
-    width: "70%",
+    width: '70%',
   },
   actions: {
-    width: "30%",
-    display: "flex",
-    flexDirection: "row",
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'row',
   },
   action: {
     flex: 1,

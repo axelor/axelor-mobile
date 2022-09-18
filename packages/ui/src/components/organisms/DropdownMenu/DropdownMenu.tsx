@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Card, Icon } from "../../atoms";
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {
   children: any;
 }
 
-const DropdownMenu = ({ children }: DropdownMenuProps) => {
+const DropdownMenu = ({children}: DropdownMenuProps) => {
   const [visible, setVisible] = useState(false);
   const Colors = useThemeColor();
 
@@ -33,9 +33,9 @@ const DropdownMenu = ({ children }: DropdownMenuProps) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 13,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: 15,
   },
   menuContainer: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    position: "absolute",
+    position: 'absolute',
     zIndex: 6,
   },
   action: {

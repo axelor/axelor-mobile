@@ -1,25 +1,25 @@
-import React, { useMemo, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Icon, Input } from "../../atoms";
+import React, {useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Icon, Input} from '../../atoms';
 
 interface IncrementProps {
   value: string | undefined;
   onValueChange: (any) => void;
 }
 
-const Increment = ({ value, onValueChange }: IncrementProps) => {
+const Increment = ({value, onValueChange}: IncrementProps) => {
   const Colors = useThemeColor();
   const [valueQty, setValueQty] = useState(value);
 
   const handlePlus = () => {
-    const newValue: number = parseFloat(valueQty) + parseFloat("1");
+    const newValue: number = parseFloat(valueQty) + parseFloat('1');
     setValueQty(newValue.toFixed(2).toString());
     onValueChange(newValue.toFixed(2));
   };
 
   const handleMinus = () => {
-    const newValue = parseFloat(valueQty) - parseFloat("1");
+    const newValue = parseFloat(valueQty) - parseFloat('1');
     if (newValue >= 0) {
       setValueQty(newValue.toFixed(2).toString());
       onValueChange(newValue.toFixed(2));
@@ -27,12 +27,12 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
   };
 
   const handleEndInput = () => {
-    if (valueQty.slice(-1) === ".") {
-      valueQty.replace(/.$/, "");
+    if (valueQty.slice(-1) === '.') {
+      valueQty.replace(/.$/, '');
     }
 
-    if (valueQty === "" || valueQty === null) {
-      setValueQty("0.00");
+    if (valueQty === '' || valueQty === null) {
+      setValueQty('0.00');
       onValueChange(0.0);
     } else {
       const newValue: number = parseFloat(valueQty);
@@ -40,7 +40,7 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
         setValueQty(newValue.toFixed(2).toString());
         onValueChange(newValue.toFixed(2));
       } else {
-        setValueQty("0.00");
+        setValueQty('0.00');
         onValueChange(0.0);
       }
     }
@@ -62,7 +62,7 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
         <Input
           style={styles.input}
           value={valueQty}
-          onChange={(input) => setValueQty(input)}
+          onChange={input => setValueQty(input)}
           keyboardType="numeric"
           onEndFocus={handleEndInput}
         />
@@ -79,17 +79,17 @@ const Increment = ({ value, onValueChange }: IncrementProps) => {
   );
 };
 
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     container_increment: {
-      flexDirection: "row",
-      alignItems: "center",
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     container_icon: {
       backgroundColor: Colors.backgroundColor,
       elevation: 3,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
       marginHorizontal: 8,
       padding: 2,
       paddingHorizontal: 5,
@@ -99,11 +99,11 @@ const getStyles = (Colors) =>
     },
     input: {
       fontSize: 23,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       paddingBottom: 0,
     },
     inputLine: {
-      borderStyle: "dashed",
+      borderStyle: 'dashed',
       borderBottomColor: Colors.secondaryColor,
       borderBottomWidth: 0.7,
       marginBottom: 9,

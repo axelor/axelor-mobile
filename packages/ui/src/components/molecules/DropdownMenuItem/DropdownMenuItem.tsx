@@ -1,13 +1,13 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Icon, Text } from "../../atoms";
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Icon, Text} from '../../atoms';
 
 interface DropdownMenuItemProps {
   placeholder: string;
   onPress: (any) => void;
 }
 
-const DropdownMenuItem = ({ placeholder, onPress }: DropdownMenuItemProps) => {
+const DropdownMenuItem = ({placeholder, onPress}: DropdownMenuItemProps) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.menuItem}>
@@ -20,10 +20,10 @@ const DropdownMenuItem = ({ placeholder, onPress }: DropdownMenuItemProps) => {
 
 const styles = StyleSheet.create({
   menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
     paddingVertical: 5,
   },
   text: {

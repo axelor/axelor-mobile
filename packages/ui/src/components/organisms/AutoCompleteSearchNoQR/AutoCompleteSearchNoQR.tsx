@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { StyleSheet, View } from "react-native";
-import { AutocompleteItem, SearchBarNoQR } from "../../molecules";
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {AutocompleteItem, SearchBarNoQR} from '../../molecules';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;
@@ -40,7 +40,7 @@ const AutoCompleteSearchNoQR = ({
 
   const handleAPICall = useCallback(() => {
     if (!selected) {
-      if (searchText == null && searchText === "") {
+      if (searchText == null && searchText === '') {
         fetchData(null);
       } else {
         fetchData(searchText);
@@ -57,18 +57,18 @@ const AutoCompleteSearchNoQR = ({
     }
   }, [displayValue, handleAPICall, value]);
 
-  const handleSelect = (item) => {
+  const handleSelect = item => {
     setDisplayList(false);
     setSelected(true);
     if (changeScreenAfter) {
-      setSearchText("");
+      setSearchText('');
     }
     onChangeValue(item);
   };
 
   useEffect(() => {
     if (navigate && oneFilter) {
-      setSearchText("");
+      setSearchText('');
     }
   }, [navigate, oneFilter]);
 
@@ -76,19 +76,19 @@ const AutoCompleteSearchNoQR = ({
     setDisplayList(false);
     setSelected(false);
     setPreviousState(searchText);
-    setSearchText("");
+    setSearchText('');
     onChangeValue(null);
   };
 
   useEffect(() => {
     if (
-      (previousState === "" || previousState == null) &&
+      (previousState === '' || previousState == null) &&
       searchText != null &&
-      searchText !== ""
+      searchText !== ''
     ) {
       const id = setInterval(
-        () => setNewInterval((state) => state + 1),
-        TIME_BETWEEN_CALL
+        () => setNewInterval(state => state + 1),
+        TIME_BETWEEN_CALL,
       );
       intervalRequestCall.current = id;
     }
@@ -108,7 +108,7 @@ const AutoCompleteSearchNoQR = ({
   const handleTimeOut = useCallback(() => {
     stopInterval();
     if (!selected) {
-      if (searchText == null && searchText === "") {
+      if (searchText == null && searchText === '') {
         fetchData(null);
       } else {
         fetchData(searchText);
@@ -131,12 +131,12 @@ const AutoCompleteSearchNoQR = ({
     if (
       objectList != null &&
       searchText != null &&
-      searchText !== "" &&
+      searchText !== '' &&
       !selected
     ) {
       if (objectList.length === 1) {
         if (changeScreenAfter || oneFilter) {
-          setSearchText("");
+          setSearchText('');
         } else {
           setSearchText(displayValue(objectList[0]));
           setDisplayList(false);
@@ -163,7 +163,7 @@ const AutoCompleteSearchNoQR = ({
       <SearchBarNoQR
         valueTxt={searchText}
         placeholder={placeholder}
-        onChangeTxt={(input) => {
+        onChangeTxt={input => {
           setPreviousState(searchText);
           setSearchText(input);
         }}
@@ -176,7 +176,7 @@ const AutoCompleteSearchNoQR = ({
         displayList &&
         !oneFilter && (
           <View style={styles.flatListContainer}>
-            {objectList.slice(0, 4).map((item) => (
+            {objectList.slice(0, 4).map(item => (
               <AutocompleteItem
                 key={item?.id.toString()}
                 content={displayValue(item)}
@@ -192,9 +192,9 @@ const AutoCompleteSearchNoQR = ({
 const styles = StyleSheet.create({
   flatListContainer: {
     height: 200, // 4 items : 4*flatListItem.height
-    width: "100%",
-    position: "absolute",
-    top: "90%",
+    width: '100%',
+    position: 'absolute',
+    top: '90%',
     zIndex: 2,
   },
 });

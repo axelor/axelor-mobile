@@ -1,11 +1,11 @@
-import React, { Children, ReactChildren, useMemo, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import React, {Children, ReactChildren, useMemo, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
 //import { Picker as ReactNativePicker } from "@react-native-picker/picker";
-import { useThemeColor } from "../../../ThemeContext";
-import { getFromList } from "../../../utils/list";
-import { getCommonStyles } from "../../../commons-styles";
-import { Text } from "../../atoms";
-import { LabelText } from "../../molecules";
+import {useThemeColor} from '../../../ThemeContext';
+import {getFromList} from '../../../utils/list';
+import {getCommonStyles} from '../../../commons-styles';
+import {Text} from '../../atoms';
+import {LabelText} from '../../molecules';
 
 interface PickerProps {
   styleTxt?: any;
@@ -38,13 +38,13 @@ const Picker = ({
 }: PickerProps) => {
   const Colors = useThemeColor();
   const [selectedValue, setSelectedValue] = useState(
-    defaultValue == null ? "" : defaultValue
+    defaultValue == null ? '' : defaultValue,
   );
 
-  const handleValueChange = (itemValue) => {
+  const handleValueChange = itemValue => {
     setSelectedValue(itemValue);
     onValueChange(
-      isValueItem ? getFromList(listItems, "id", itemValue) : itemValue
+      isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
     );
   };
 
@@ -65,12 +65,11 @@ const Picker = ({
             commonStyles.filterSize,
             commonStyles.filterAlign,
             styles.infosCard,
-          ]}
-        >
+          ]}>
           <LabelText
             value={
-              disabledValue == null || disabledValue === ""
-                ? "-"
+              disabledValue == null || disabledValue === ''
+                ? '-'
                 : disabledValue
             }
             title={`${title} :`}
@@ -106,22 +105,22 @@ const Picker = ({
   );
 };
 
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     titleContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       marginHorizontal: 6,
     },
     title: {
-      width: "90%",
+      width: '90%',
     },
     container: {
-      alignSelf: "center",
+      alignSelf: 'center',
     },
     pickerContainer: {
-      width: Dimensions.get("window").width * 0.9,
+      width: Dimensions.get('window').width * 0.9,
     },
     pickerItem: {
       backgroundColor: Colors.backgroundColor,
@@ -131,8 +130,8 @@ const getStyles = (Colors) =>
       backgroundColor: Colors.backgroundColor,
     },
     infosCard: {
-      justifyContent: "flex-start",
-      width: Dimensions.get("window").width * 0.9,
+      justifyContent: 'flex-start',
+      width: Dimensions.get('window').width * 0.9,
     },
   });
 

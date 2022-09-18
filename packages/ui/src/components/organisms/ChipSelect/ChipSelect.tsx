@@ -1,12 +1,12 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
 
 interface ChipSelectProps {
   children: any;
   scrollable?: boolean;
 }
 
-const ChipSelect = ({ children, scrollable = false }: ChipSelectProps) => {
+const ChipSelect = ({children, scrollable = false}: ChipSelectProps) => {
   return (
     <View style={[styles.chipContainer, scrollable ? styles.marginLeft : null]}>
       {scrollable ? (
@@ -22,9 +22,9 @@ const ChipSelect = ({ children, scrollable = false }: ChipSelectProps) => {
 
 const styles = StyleSheet.create({
   chipContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 2,
   },
   marginLeft: {

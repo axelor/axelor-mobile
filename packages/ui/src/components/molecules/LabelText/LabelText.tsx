@@ -1,6 +1,6 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Icon, Text } from "../../atoms";
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
   title: string;
@@ -32,12 +32,12 @@ const LabelText = ({
 };
 const styles = StyleSheet.create({
   textDisplay: {
-    flexDirection: "row",
-    width: "60%",
+    flexDirection: 'row',
+    width: '60%',
   },
   txtDetails: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginHorizontal: 5,
   },
   title: {

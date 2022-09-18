@@ -1,13 +1,13 @@
-import React, { useMemo } from "react";
-import { Dimensions, StyleSheet, View, TouchableOpacity } from "react-native";
-import { Text } from "../../atoms";
-import { useThemeColor } from "../../../ThemeContext";
+import React, {useMemo} from 'react';
+import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Text} from '../../atoms';
+import {useThemeColor} from '../../../ThemeContext';
 
 interface ChipProps {
   selected: boolean;
   title: string;
   onPress: (any) => void;
-  selectedColor: { backgroundColor: string; borderColor: string };
+  selectedColor: {backgroundColor: string; borderColor: string};
   width?: number;
   marginHorizontal?: number;
 }
@@ -17,7 +17,7 @@ const Chip = ({
   title,
   onPress,
   selectedColor,
-  width = Dimensions.get("window").width * 0.4,
+  width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
 }: ChipProps) => {
   const Colors = useThemeColor();
@@ -40,16 +40,14 @@ const Chip = ({
     <TouchableOpacity
       style={getWidth(width, marginHorizontal)}
       onPress={onPress}
-      activeOpacity={0.8}
-    >
+      activeOpacity={0.8}>
       <View style={[styles.container, colorStyle]}>
         <Text
           style={
             selected
               ? styles.chipTxt
               : getStyles(selectedColor, Colors).textColor
-          }
-        >
+          }>
           {title}
         </Text>
       </View>
@@ -87,10 +85,10 @@ const getWidth = (width, margin) =>
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
     paddingVertical: 5,
     marginVertical: 2,
     borderRadius: 20,

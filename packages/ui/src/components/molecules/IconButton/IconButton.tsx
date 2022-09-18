@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Icon, Text } from "../../atoms";
+import React, {useMemo} from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Icon, Text} from '../../atoms';
 
 interface IconButtonProps {
   style?: any;
@@ -30,8 +30,7 @@ const IconButton = ({
     <TouchableOpacity
       style={[styles.container, style]}
       onPress={onPress}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       <Icon name={iconName} size={15} color={Colors.text} />
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
@@ -41,23 +40,23 @@ const IconButton = ({
 const getStyles = (backgroundColor, Colors) =>
   StyleSheet.create({
     container: {
-      flexDirection: "row",
-      alignSelf: "center",
-      justifyContent: "center",
-      alignItems: "center",
-      alignContent: "center",
+      flexDirection: 'row',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
       paddingVertical: 5,
       marginVertical: 5,
       borderRadius: 35,
-      width: "40%",
+      width: '40%',
       height: 40,
       backgroundColor: backgroundColor,
     },
     text: {
       fontSize: 15,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: Colors.text,
-      textAlign: "center",
+      textAlign: 'center',
       marginLeft: 10,
     },
   });

@@ -4,8 +4,8 @@ import React, {
   useContext,
   useMemo,
   useReducer,
-} from "react";
-import { Theme, lightTheme, colorBlindTheme } from "./themes";
+} from 'react';
+import {Theme, lightTheme, colorBlindTheme} from './themes';
 
 const DEFAULT_THEME = lightTheme;
 
@@ -26,14 +26,14 @@ const defaultThemeContext = {
   activeTheme: DEFAULT_THEME,
   themes: [lightTheme, colorBlindTheme],
   changeTheme: () => {
-    throw new Error("ThemeProvider should be mounted to change theme");
+    throw new Error('ThemeProvider should be mounted to change theme');
   },
   activateColorBlind() {
-    throw new Error("ThemeProvider should be mounted to activate color blind");
+    throw new Error('ThemeProvider should be mounted to activate color blind');
   },
   desactivateColorBlind() {
     throw new Error(
-      "ThemeProvider should be mounted to desactivate color blind"
+      'ThemeProvider should be mounted to desactivate color blind',
     );
   },
 };
@@ -41,21 +41,21 @@ const defaultThemeContext = {
 const ThemeContext = createContext<ThemeContextState>(defaultThemeContext);
 
 const actionTypes = {
-  changeTheme: "changeTheme",
-  activateColorBlind: "activateColorBlind",
-  desactivateColorBlind: "desactivateColorBlind",
+  changeTheme: 'changeTheme',
+  activateColorBlind: 'activateColorBlind',
+  desactivateColorBlind: 'desactivateColorBlind',
 };
 
 const themeReducer = (state: ThemeContextState, action: ThemeAction) => {
   switch (action.type) {
     case actionTypes.changeTheme: {
       const newActiveTheme = state.themes.find(
-        (theme) => theme.key === action.payload
+        theme => theme.key === action.payload,
       );
       if (newActiveTheme == null) {
         return state;
       }
-      return { ...state, activeTheme: newActiveTheme };
+      return {...state, activeTheme: newActiveTheme};
     }
     case actionTypes.activateColorBlind: {
       return {
@@ -73,7 +73,7 @@ const themeReducer = (state: ThemeContextState, action: ThemeAction) => {
 };
 
 const actions = {
-  changeTheme: (themeKey) => ({
+  changeTheme: themeKey => ({
     type: actionTypes.changeTheme,
     payload: themeKey,
   }),
@@ -85,19 +85,19 @@ const actions = {
   }),
 };
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({children}) => {
   const [state, dispatch] = useReducer(themeReducer, defaultThemeContext);
   const changeTheme = useCallback(
-    (themeKey) => dispatch(actions.changeTheme(themeKey)),
-    []
+    themeKey => dispatch(actions.changeTheme(themeKey)),
+    [],
   );
   const activateColorBlind = useCallback(
     () => dispatch(actions.activateColorBlind()),
-    []
+    [],
   );
   const desactivateColorBlind = useCallback(
     () => dispatch(actions.desactivateColorBlind()),
-    []
+    [],
   );
   const themeContextState = useMemo<ThemeContextState>(
     () => ({
@@ -106,7 +106,7 @@ export const ThemeProvider = ({ children }) => {
       activateColorBlind,
       desactivateColorBlind,
     }),
-    [state]
+    [state],
   );
 
   return (
@@ -117,7 +117,7 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useThemeColor = () => {
-  const { activeTheme } = useContext<ThemeContextState>(ThemeContext);
+  const {activeTheme} = useContext<ThemeContextState>(ThemeContext);
   return useMemo(() => activeTheme.colors, [activeTheme]);
 };
 

@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import { getCommonStyles } from "../../../commons-styles";
-import { useThemeColor } from "../../../ThemeContext";
-import { Icon, Input } from "../../atoms";
+import React, {useMemo} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../ThemeContext';
+import {Icon, Input} from '../../atoms';
 
 interface SearchBarNoQRProps {
   style?: any;
@@ -35,8 +35,7 @@ const SearchBarNoQR = ({
         commonStyles.filterAlign,
         commonStyles.filterSize,
         style,
-      ]}
-    >
+      ]}>
       <Input
         style={styles.input}
         value={valueTxt}
@@ -48,10 +47,10 @@ const SearchBarNoQR = ({
       />
       <View style={styles.actions}>
         <View style={styles.action}>
-          {valueTxt === "" || valueTxt == null ? null : (
+          {valueTxt === '' || valueTxt == null ? null : (
             <Icon
               name="times"
-              size={Dimensions.get("window").width * 0.05}
+              size={Dimensions.get('window').width * 0.05}
               color={Colors.secondaryColor_dark}
               touchable={true}
               onPress={onClearPress}
@@ -61,7 +60,7 @@ const SearchBarNoQR = ({
         <View style={styles.action}>
           <Icon
             name="search"
-            size={Dimensions.get("window").width * 0.05}
+            size={Dimensions.get('window').width * 0.05}
             color={Colors.secondaryColor_dark}
           />
         </View>
@@ -75,12 +74,12 @@ const styles = StyleSheet.create({
     height: 40,
   },
   input: {
-    width: "70%",
+    width: '70%',
   },
   actions: {
-    width: "30%",
-    display: "flex",
-    flexDirection: "row",
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'row',
   },
   action: {
     flex: 1,

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Text } from "../../atoms";
+import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
+import {Text} from '../../atoms';
 
 interface ScrollListProps {
   loadingList: boolean;
@@ -35,13 +35,13 @@ const ScrollList = ({
   }, [updateData]);
 
   const handleMoreData = useCallback(
-    (currentPage) => {
+    currentPage => {
       if (!isListEnd && !moreLoading && !filter) {
         setPage(currentPage + 1);
         fetchData(currentPage + 1);
       }
     },
-    [fetchData, filter, isListEnd, moreLoading]
+    [fetchData, filter, isListEnd, moreLoading],
   );
 
   useEffect(() => {
@@ -65,14 +65,14 @@ const ScrollList = ({
             {moreLoading && <ActivityIndicator size="large" color="black" />}
             {data == null || data?.length === 0 ? (
               <Text>
-                {translator != null ? translator("Base_NoData") : "No data."}
+                {translator != null ? translator('Base_NoData') : 'No data.'}
               </Text>
             ) : (
               isListEnd && (
                 <Text>
                   {translator != null
-                    ? translator("Base_NoMoreItems")
-                    : "No more items."}
+                    ? translator('Base_NoMoreItems')
+                    : 'No more items.'}
                 </Text>
               )
             )}
@@ -86,7 +86,7 @@ const ScrollList = ({
 
 const styles = StyleSheet.create({
   footerText: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 7,
   },
   scrollView: {

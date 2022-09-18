@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Text } from "../../atoms";
+import React, {useMemo} from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Text} from '../../atoms';
 
 interface AutocompleteItemProps {
   style?: any;
@@ -9,11 +9,7 @@ interface AutocompleteItemProps {
   onPress: (any) => void;
 }
 
-const AutocompleteItem = ({
-  style,
-  content,
-  onPress,
-}: AutocompleteItemProps) => {
+const AutocompleteItem = ({style, content, onPress}: AutocompleteItemProps) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -24,18 +20,18 @@ const AutocompleteItem = ({
   );
 };
 
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     item: {
       height: 50,
-      flexDirection: "row",
+      flexDirection: 'row',
       backgroundColor: Colors.backgroundColor,
       marginHorizontal: 15,
       paddingLeft: 15,
       paddingVertical: 15,
       borderBottomColor: Colors.primaryColor,
       borderBottomWidth: 1,
-      position: "relative",
+      position: 'relative',
       zIndex: 50,
     },
     text: {

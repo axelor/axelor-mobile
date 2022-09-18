@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import Icon5 from "react-native-vector-icons/FontAwesome5";
-import Icon4 from "react-native-vector-icons/FontAwesome";
-import { useThemeColor } from "../../../ThemeContext";
+import React, {useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import Icon5 from 'react-native-vector-icons/FontAwesome5';
+import Icon4 from 'react-native-vector-icons/FontAwesome';
+import {useThemeColor} from '../../../ThemeContext';
 
 interface IconProps {
   style?: any;
@@ -60,9 +60,9 @@ const getStyles = (color, size) =>
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

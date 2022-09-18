@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Card, Icon, Text } from "../../atoms";
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {
   style?: any;
@@ -27,7 +27,7 @@ const ViewAllContainer = ({
       {isHeaderExist && (
         <View style={styles.headLineMove}>
           <Text>
-            {translator == null ? "Content" : translator("Base_Content")}
+            {translator == null ? 'Content' : translator('Base_Content')}
           </Text>
           <Icon
             name="plus"
@@ -42,7 +42,7 @@ const ViewAllContainer = ({
       <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <View style={styles.iconContainer}>
           <Text style={styles.txtDetails}>
-            {translator == null ? "View all" : translator("Base_ViewAll")}
+            {translator == null ? 'View all' : translator('Base_ViewAll')}
           </Text>
           <Icon
             name="chevron-right"
@@ -57,33 +57,33 @@ const ViewAllContainer = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: "2%",
-    paddingHorizontal: "3%",
+    paddingVertical: '2%',
+    paddingHorizontal: '3%',
     paddingRight: 16,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: 12,
     marginVertical: 4,
   },
   headLineMove: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginHorizontal: 1,
     marginVertical: 2,
-    width: "100%",
+    width: '100%',
   },
   cardContainer: {
     marginBottom: 2,
-    width: "100%",
+    width: '100%',
   },
   iconContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    alignContent: "center",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignContent: 'center',
     marginBottom: 2,
     elevation: 3,
   },

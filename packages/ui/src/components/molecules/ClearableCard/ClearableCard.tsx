@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { StyleSheet, Dimensions } from "react-native";
-import { getCommonStyles } from "../../../commons-styles";
-import { useThemeColor } from "../../../ThemeContext";
-import { Card, Icon, Text } from "../../atoms";
+import React, {useMemo} from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
+import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../ThemeContext';
+import {Card, Icon, Text} from '../../atoms';
 
 interface ClearableCardPops {
   style?: any;
@@ -10,7 +10,7 @@ interface ClearableCardPops {
   onClearPress: (any) => void;
 }
 
-const ClearableCard = ({ style, valueTxt, onClearPress }) => {
+const ClearableCard = ({style, valueTxt, onClearPress}) => {
   const Colors = useThemeColor();
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -21,14 +21,13 @@ const ClearableCard = ({ style, valueTxt, onClearPress }) => {
         commonStyles.filterAlign,
         commonStyles.filterSize,
         style,
-      ]}
-    >
+      ]}>
       <Text style={styles.text}>{valueTxt}</Text>
       <Icon
         name="times"
         touchable={true}
         onPress={onClearPress}
-        size={Dimensions.get("window").width * 0.05}
+        size={Dimensions.get('window').width * 0.05}
       />
     </Card>
   );
@@ -36,7 +35,7 @@ const ClearableCard = ({ style, valueTxt, onClearPress }) => {
 
 const styles = StyleSheet.create({
   text: {
-    width: "95%",
+    width: '95%',
     margin: 1,
   },
 });

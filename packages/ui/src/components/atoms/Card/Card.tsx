@@ -1,13 +1,13 @@
-import React, { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
+import React, {useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
 
 interface CardProps {
   style?: any;
   children: any;
 }
 
-const Card = ({ style, children }: CardProps) => {
+const Card = ({style, children}: CardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -15,7 +15,7 @@ const Card = ({ style, children }: CardProps) => {
   return <View style={[styles.container, style]}>{children}</View>;
 };
 
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 24,

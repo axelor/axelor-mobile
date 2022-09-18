@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { Text as ReactNativeText, StyleSheet } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
+import React, {useMemo} from 'react';
+import {Text as ReactNativeText, StyleSheet} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
 
 interface TextProps {
   style?: any;
@@ -22,13 +22,12 @@ const Text = ({
     <ReactNativeText
       style={[styles.text, style]}
       numberOfLines={numberOfLines}
-      adjustsFontSizeToFit={adjustsFontSizeToFit}
-    >
+      adjustsFontSizeToFit={adjustsFontSizeToFit}>
       {children}
     </ReactNativeText>
   );
 };
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     text: {
       color: Colors.text,

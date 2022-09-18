@@ -1,1 +1,1 @@
-console.log("hello from core");
+export {default as Application} from './Application';

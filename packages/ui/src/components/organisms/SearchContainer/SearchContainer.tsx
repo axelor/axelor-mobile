@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Icon } from "../../atoms";
+import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Icon} from '../../atoms';
 
 interface SearchContainerProps {
   style?: any;
@@ -39,7 +39,7 @@ const SearchContainer = ({
         <TouchableOpacity onPress={() => setVisible(!isVisible)}>
           <View style={styles.arrowContainer}>
             <Icon
-              name={isVisible ? "angle-up" : "angle-down"}
+              name={isVisible ? 'angle-up' : 'angle-down'}
               size={22}
               color={Colors.primaryColor}
             />
@@ -50,11 +50,11 @@ const SearchContainer = ({
   );
 };
 
-const getStyles = (Colors) =>
+const getStyles = Colors =>
   StyleSheet.create({
     container: {
-      flexDirection: "column",
-      justifyContent: "center",
+      flexDirection: 'column',
+      justifyContent: 'center',
       backgroundColor: Colors.backgroundColor,
       elevation: 3,
       zIndex: 2,
@@ -63,9 +63,9 @@ const getStyles = (Colors) =>
       borderBottomStartRadius: 10,
     },
     arrowContainer: {
-      alignSelf: "center",
-      justifyContent: "center",
-      alignItems: "center",
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 

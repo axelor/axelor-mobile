@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import File from "../../../types/file";
-import { formatDate } from "../../../utils/formatters";
-import { Icon, Text } from "../../atoms";
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import File from '../../../types/file';
+import {formatDate} from '../../../utils/formatters';
+import {Icon, Text} from '../../atoms';
 
 interface AttachmentCardProps {
   fileName: string;
@@ -26,12 +26,12 @@ const AttachmentCard = ({
           {creationDate && (
             <Text style={styles.text}>
               {`${
-                translator != null ? translator("Base_AddedOn") : "Added on"
+                translator != null ? translator('Base_AddedOn') : 'Added on'
               } : ${formatDate(
                 creationDate,
                 translator != null
-                  ? translator("Base_DateFormat")
-                  : "MM/DD/YYYY"
+                  ? translator('Base_DateFormat')
+                  : 'MM/DD/YYYY',
               )}`}
             </Text>
           )}
@@ -43,15 +43,15 @@ const AttachmentCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 16,
     marginTop: 15,
     marginBottom: 5,
   },
   textContainer: {
-    flexDirection: "column",
-    marginLeft: "5%",
+    flexDirection: 'column',
+    marginLeft: '5%',
   },
   text: {
     fontSize: 18,

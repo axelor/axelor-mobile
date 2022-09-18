@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useThemeColor } from "../../../ThemeContext";
-import { Button } from "../../atoms";
-import { PopUp } from "../../molecules";
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useThemeColor} from '../../../ThemeContext';
+import {Button} from '../../atoms';
+import {PopUp} from '../../molecules';
 
 interface PopUpTwoButtonProps {
   visible: boolean;
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     marginTop: 15,
     elevation: 5,
-    width: "40%",
+    width: '40%',
   },
 });
 

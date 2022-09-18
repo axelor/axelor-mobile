@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Button } from "../../atoms";
-import { PopUp } from "../../molecules";
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Button} from '../../atoms';
+import {PopUp} from '../../molecules';
 
 interface PopUpOneButtonProps {
   visible: boolean;
@@ -27,10 +27,10 @@ const PopUpOneButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: 15,
     elevation: 5,
-    width: "40%",
+    width: '40%',
   },
 });
 

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { getCommonStyles } from "../../../commons-styles";
-import { useThemeColor } from "../../../ThemeContext";
-import { Card, Switch, Text } from "../../atoms";
+import React, {useMemo} from 'react';
+import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../ThemeContext';
+import {Card, Switch, Text} from '../../atoms';
 
 interface SwitchCardProps {
   style?: any;

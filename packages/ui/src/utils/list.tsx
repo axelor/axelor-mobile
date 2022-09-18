@@ -1,5 +1,5 @@
 export function getFromList(list: any[], objectParam: string, query: any) {
-  if (query === "") {
+  if (query === '') {
     return null;
   } else {
     for (let i = 0; i < list.length; i++) {

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { getCommonStyles } from "../../../commons-styles";
-import { useThemeColor } from "../../../ThemeContext";
+import React, {useMemo} from 'react';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../ThemeContext';
 
 interface ButtonProps {
   style?: any;
@@ -32,8 +32,7 @@ const Button = ({
     <TouchableOpacity
       style={[styles.colorButton, commonStyles.button, style]}
       onPress={onPress}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -46,9 +45,9 @@ const getStyles = (backgroundColor, Colors) =>
     },
     text: {
       fontSize: 15,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: Colors.text,
-      textAlign: "center",
+      textAlign: 'center',
     },
   });
 

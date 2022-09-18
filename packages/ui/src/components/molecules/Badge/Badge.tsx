@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { ImageStyle, StyleSheet, View } from "react-native";
-import { Text } from "../../atoms";
+import React, {useMemo} from 'react';
+import {ImageStyle, StyleSheet, View} from 'react-native';
+import {Text} from '../../atoms';
 
 interface BadgeProps {
   style?: any;
@@ -28,16 +28,16 @@ const Badge = ({
   );
 };
 
-const getStyles = (color) =>
+const getStyles = color =>
   StyleSheet.create({
     container: {
       borderRadius: 7,
-      margin: "1%",
+      margin: '1%',
       width: 87,
       height: 22,
       backgroundColor: color,
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 
