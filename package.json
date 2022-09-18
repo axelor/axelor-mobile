@@ -13,15 +13,15 @@
   },
   "scripts": {
     "clean": "find . -type d -name node_modules | xargs rm -rf && rm -rf yarn.lock",
-    "start": "yarn workspace @aos-mobile/demo start",
-    "android": "yarn workspace @aos-mobile/demo android",
-    "format:check": "yarn workspaces run format:check",
-    "format": "yarn workspaces run format",
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test"
+    "dev": "nx run-many --target=dev",
+    "build": "nx run-many --target=build",
+    "format": "nx run-many --target=format",
+    "start": "nx start example",
+    "android": "nx android example"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "nx": "14.7.5"
   }
 }

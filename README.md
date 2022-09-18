@@ -8,7 +8,19 @@
 yarn
 ```
 
-### Running AOS application (@aos-mobile/demo)
+### Build packages
+
+```bash
+yarn build
+```
+
+### Development
+
+```bash
+yarn dev
+```
+
+### Running AOS application (example)
 
 #### Start Metro
 
@@ -16,7 +28,8 @@ yarn
 yarn start
 ```
 
-#### Start application
+#### Install Android application
+
 ```bash
 yarn android
 ```
