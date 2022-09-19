@@ -17,17 +17,15 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-redux": "^8.0.2"
+    "react-native-mmkv": "^2.4.3"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.19.0",
     "@types/react": "^17.0.2",
     "@types/react-native": "^0.68.1",
     "metro-react-native-babel-preset": "^0.72.3",
     "prettier": "^2.7.1",
     "react": "17.0.2",
     "react-native": "0.68.1"
-  },
-  "dependencies": {
-    "react-native-mmkv": "^2.4.3"
   }
 }
