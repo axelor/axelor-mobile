@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Input} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {Input, useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const UsernameInput = ({value, onChange, readOnly}) => {

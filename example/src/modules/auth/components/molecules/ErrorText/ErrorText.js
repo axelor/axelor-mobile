@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text} from '@/components/atoms';
+import {Text} from '@aos-mobile/ui';
 
 const ErrorText = ({message}) => {
   return <Text style={styles.text}>{message}</Text>;

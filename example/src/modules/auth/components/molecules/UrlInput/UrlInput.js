@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {Icon, Input} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {Icon, Input, useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const UrlInput = ({
