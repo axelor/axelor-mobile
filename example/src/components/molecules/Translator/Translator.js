@@ -4,7 +4,7 @@ import i18n from '@/i18n';
 import {useSelector} from 'react-redux';
 import {fetchTranslation} from '@/api/translation';
 import {reduceTranslationsToI18nResources} from './translation-helpers';
-import {storage} from '@/storage';
+import {storage} from '@aos-mobile/core';
 
 export const selectLanguage = createSelector(
   state => state?.user,

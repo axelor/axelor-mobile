@@ -1,15 +1,20 @@
-import {mmkvStorage} from './mmkv';
+import {MMKV} from 'react-native-mmkv';
+
+interface InternalStorage {
+  set(key: string, value: any): void;
+  getString(key: string): string | undefined;
+  contains(key: string): boolean;
+  clearAll(): void;
+}
 
 class Storage {
-  constructor() {
-    this.storage = mmkvStorage;
-  }
+  constructor(private storage: InternalStorage) {}
 
-  contains(key) {
+  contains(key: string): boolean {
     return this.storage.contains(key);
   }
 
-  setItem(key, value) {
+  setItem(key: string, value: any) {
     if (value instanceof Object || value instanceof Array) {
       this.storage.set(key, JSON.stringify(value));
     } else {
@@ -17,7 +22,7 @@ class Storage {
     }
   }
 
-  getItem(key) {
+  getItem(key: string) {
     const strItem = this.storage.getString(key);
     try {
       const item = JSON.parse(strItem);
@@ -31,7 +36,8 @@ class Storage {
     this.storage.clearAll();
   }
 }
-export const storage = new Storage();
+
+export const storage = new Storage(new MMKV());
 
 export function useStorage() {
   return storage;
