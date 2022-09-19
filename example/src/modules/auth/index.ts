@@ -1,7 +1,8 @@
+import {Module} from '@aos-mobile/core';
 import SettingsScreen from './screens/SettingsScreen';
 import UserScreen from './screens/UserScreen';
 
-export default {
+const authModule: Module = {
   name: 'Auth',
   title: t => t('Auth'),
   icon: 'user',
@@ -17,3 +18,5 @@ export default {
     UserScreen: {component: UserScreen, title: t => t('User_UserProfile')},
   },
 };
+
+export default authModule;

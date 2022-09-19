@@ -1,3 +1,4 @@
+import {Module} from '@aos-mobile/core';
 import CustomerDeliveryScreens from './screens/customerDeliveries';
 import InternalMovesScreens from './screens/internalMoves';
 import InventoriesScreens from './screens/inventories';
@@ -5,7 +6,7 @@ import ProductsScreens from './screens/products';
 import StockCorrectionScreens from './screens/stockCorrections';
 import SupplierArrivalsScreens from './screens/supplierArrivals';
 
-export default {
+const stockModule: Module = {
   name: 'Stock',
   title: t => t('Stock'),
   icon: 'boxes',
@@ -50,3 +51,5 @@ export default {
     ...SupplierArrivalsScreens,
   },
 };
+
+export default stockModule;
