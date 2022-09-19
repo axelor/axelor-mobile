@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
-    "typescript": "^4.8.2",
-    "nx": "14.7.5"
+    "@types/react": "^17.0.2",
+    "@types/react-native": "^0.68.1",
+    "nx": "14.7.5",
+    "typescript": "^4.8.2"
   }
 }

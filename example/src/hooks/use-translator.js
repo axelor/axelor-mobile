@@ -1,5 +1,4 @@
-import {useMemo} from 'react';
-import {useTranslation} from 'react-i18next';
+import {useTranslator as useCoreTranslator} from '@aos-mobile/core';
 
 /**
  * @typedef Translator
@@ -10,8 +9,8 @@ import {useTranslation} from 'react-i18next';
  * @returns {Translator}
  */
 function useTranslator() {
-  const {t} = useTranslation();
-  return useMemo(() => ({t: t}), [t]);
+  const I18n = useCoreTranslator();
+  return I18n;
 }
 
 export default useTranslator;

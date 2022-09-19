@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "outDir": "./lib",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "outDir": "./lib"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*"]
 }

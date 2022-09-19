@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {useEffect, useCallback} from 'react';
-import i18n from '@/i18n';
+import {i18nProvider} from '@aos-mobile/core';
 import {useSelector} from 'react-redux';
 import {fetchTranslation} from '@/api/translation';
 import {reduceTranslationsToI18nResources} from './translation-helpers';
@@ -43,7 +43,7 @@ const Translator = () => {
 
   useLanguageEffect(
     useCallback(language => {
-      i18n.changeLanguage(language);
+      i18nProvider.i18n.changeLanguage(language);
     }, []),
   );
 
@@ -51,18 +51,22 @@ const Translator = () => {
 };
 
 export function getTranslations(language) {
-  return i18n.getResourceBundle(language, DEFAULT_NAMESPACE);
+  return i18nProvider.i18n.getResourceBundle(language, DEFAULT_NAMESPACE);
 }
 
 function loadTranslationsFromStorage(language) {
   const translations = storage.getItem(`language.${language}`);
   if (translations != null) {
-    i18n.addResourceBundle(language, DEFAULT_NAMESPACE, translations);
+    i18nProvider.i18n.addResourceBundle(
+      language,
+      DEFAULT_NAMESPACE,
+      translations,
+    );
   }
 }
 
 function addTranslationsToI18n(language, translations) {
-  i18n.addResources(
+  i18nProvider.i18n.addResources(
     language,
     DEFAULT_NAMESPACE,
     reduceTranslationsToI18nResources(translations),
@@ -70,7 +74,7 @@ function addTranslationsToI18n(language, translations) {
 }
 
 function saveTranslationResourcesToStorage(language) {
-  const translationResources = i18n.getResourceBundle(
+  const translationResources = i18nProvider.i18n.getResourceBundle(
     language,
     DEFAULT_NAMESPACE,
   );
