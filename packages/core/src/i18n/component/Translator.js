@@ -1,10 +1,9 @@
+import React, {useEffect, useCallback} from 'react';
 import {createSelector} from '@reduxjs/toolkit';
-import {useEffect, useCallback} from 'react';
-import {i18nProvider} from '@aos-mobile/core';
 import {useSelector} from 'react-redux';
-import {fetchTranslation} from '@/api/translation';
-import {reduceTranslationsToI18nResources} from './translation-helpers';
-import {storage} from '@aos-mobile/core';
+import {fetchTranslation} from '../api/translation';
+import {reduceTranslationsToI18nResources} from '../helpers/translations';
+import {storage, i18nProvider} from '@aos-mobile/core';
 
 export const selectLanguage = createSelector(
   state => state?.user,
@@ -24,6 +23,14 @@ const useLanguageEffect = callback => {
 };
 
 const Translator = () => {
+  useEffect(() => {
+    i18nProvider.i18n.on('initialized', function () {
+      console.log('initialized');
+      console.log(i18nProvider.i18n);
+      loadTranslationsFromStorage(i18nProvider.i18n.language);
+    });
+  }, []);
+
   useLanguageEffect(
     useCallback(language => {
       loadTranslationsFromStorage(language);

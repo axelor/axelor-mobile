@@ -5,14 +5,13 @@
     "lib": ["esnext"],
     "jsx": "react-native",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "declaration": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "types": ["react-native"],
     "noEmitOnError": true,
-    "sourceMap": true,
-    "skipLibCheck": true
-  },
-  "exclude": ["node_modules", "lib"]
+    "sourceMap": true
+  }
 }

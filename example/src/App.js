@@ -2,7 +2,11 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
+import {ThemeProvider} from '@aos-mobile/ui';
 import {Application} from '@aos-mobile/core';
+import enTranslation from './i18n/en.json';
+import frTranslation from './i18n/fr.json';
+import {store} from './store';
 
 const App = () => {
   const toastConfig = {
@@ -28,7 +32,7 @@ const App = () => {
     ),
   };
 
-  return <Application modules={[]} />;
+  return <Application modules={[]} store={store} />;
 };
 
 const styles = StyleSheet.create({
