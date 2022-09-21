@@ -1,0 +1,34 @@
+{
+  "name": "@aos-mobile/ui",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rm -rf lib/",
+    "compile": "tsc -p tsconfig.build.json",
+    "dev": "npm run compile -- --watch",
+    "build": "npm run clean && npm run compile",
+    "lint": "eslint .",
+    "format": "prettier --write src/"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-system-navigation-bar": "^2.0.0",
+    "react-native-vector-icons": "^9.2.0"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.19.0",
+    "@types/react": "^17.0.2",
+    "@types/react-native": "^0.68.1",
+    "metro-react-native-babel-preset": "^0.72.3",
+    "prettier": "^2.7.1",
+    "react": "17.0.2",
+    "react-native": "0.68.1",
+    "react-native-system-navigation-bar": "^2.0.0",
+    "react-native-vector-icons": "^9.2.0"
+  }
+}

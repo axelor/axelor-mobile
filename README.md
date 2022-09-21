@@ -11,7 +11,19 @@
 yarn
 ```
 
-### :ferris_wheel: Running AOS application (@aos-mobile/demo)
+### Build packages
+
+```bash
+yarn build
+```
+
+### Development
+
+```bash
+yarn dev
+```
+
+### :ferris_wheel: Running AOS application (example)
 
 #### :station: Start Metro
 
