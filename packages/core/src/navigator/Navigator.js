@@ -4,12 +4,11 @@ import {
   DrawerToggleButton,
 } from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useThemeColor} from '@/features/themeSlice';
-import useTranslator from '@/hooks/use-translator';
+import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
 import DrawerContent from './drawer/DrawerContent';
 import {getDefaultModule, moduleHasMenus} from './module.helper';
 import {getMenuTitle} from './menu.helper';
-import {getHeaderStyles} from '@/utils/headerStyle';
+import {useTranslator} from '../__to-replace';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

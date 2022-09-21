@@ -1,15 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Provider} from 'react-redux';
-import {store} from '@/store';
-import Scanner from '@/components/molecules/Scanner/Scanner';
-import {NavigationContainer} from '@react-navigation/native';
-import RootNavigator from '@/navigators/RootNavigator';
-import ErrorBoundary from './ErrorBoundary';
-import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
-import Translator from '@/components/molecules/Translator/Translator';
-import {ThemeProvider} from '@aos-mobile/ui';
 import {Application} from '@aos-mobile/core';
 
 const App = () => {
@@ -36,22 +28,7 @@ const App = () => {
     ),
   };
 
-  return (
-    <Application>
-      <Provider store={store}>
-        <ThemeProvider>
-          <Scanner />
-          <Translator />
-          <ErrorBoundary>
-            <NavigationContainer>
-              <RootNavigator />
-            </NavigationContainer>
-          </ErrorBoundary>
-          <Toast config={toastConfig} />
-        </ThemeProvider>
-      </Provider>
-    </Application>
-  );
+  return <Application modules={[]} />;
 };
 
 const styles = StyleSheet.create({

@@ -1,20 +1,20 @@
-import React, {createContext, ReactChildren, useEffect} from 'react';
+import React, {createContext} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import Module from './Module';
+import RootNavigator from './RootNavigator';
 
 const ApplicationContext = createContext(null);
 
 interface ApplicationProsp {
-  modules: [any];
-  children: ReactChildren;
+  modules: [Module];
 }
 
-const Application = ({modules, children}: ApplicationProsp) => {
-  useEffect(() => {
-    console.log('Successfully Initialisation Application');
-  }, []);
-  console.log({modules});
+const Application = ({modules}: ApplicationProsp) => {
   return (
     <ApplicationContext.Provider value={{}}>
-      {children}
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
     </ApplicationContext.Provider>
   );
 };

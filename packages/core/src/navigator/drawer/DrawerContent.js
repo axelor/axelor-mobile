@@ -1,13 +1,12 @@
 import React, {useRef, useState, useContext} from 'react';
-import {StyleSheet, View, Text, Animated} from 'react-native';
-import IconButton from './IconButton';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Menu from './Menu';
-import useTranslator from '@/hooks/use-translator';
-import {ModuleNavigatorContext} from '@/navigators/Navigator';
-import {moduleHasMenus} from '@/navigators/module.helper';
-import {getMenuTitle} from '@/navigators/menu.helper';
+import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {ModuleNavigatorContext} from '../Navigator';
+import IconButton from './IconButton';
+import Menu from './Menu';
+import {moduleHasMenus} from '../module.helper';
+import {getMenuTitle} from '../menu.helper';
+import {useTranslator} from '../../__to-replace';
 
 const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   const I18n = useTranslator();

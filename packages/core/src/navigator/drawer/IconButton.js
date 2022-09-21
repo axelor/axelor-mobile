@@ -1,6 +1,6 @@
-import {Icon} from '@/components/atoms';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Icon} from '@aos-mobile/ui';
 
 const WIDTH = 54;
 const HEIGHT = 54;

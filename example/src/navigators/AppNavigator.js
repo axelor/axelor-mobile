@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigator from './Navigator';
+import {Navigator} from '@aos-mobile/core';
 import StockModule from '@/modules/stock';
 import AuthModule from '@/modules/auth';
 

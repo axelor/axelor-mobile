@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from '@/components/atoms';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useThemeColor} from '@/features/themeSlice';
 
 const Chip = ({

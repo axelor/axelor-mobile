@@ -11,7 +11,8 @@
     "esModuleInterop": true,
     "types": ["react-native"],
     "noEmitOnError": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "lib"]
 }

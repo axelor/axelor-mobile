@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from '@/components/atoms';
-import useTranslator from '@/hooks/use-translator';
-import {ModuleNavigatorContext} from '@/navigators/Navigator';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
+import {Text} from '@aos-mobile/ui';
+import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
-import {getMenuTitle} from '@/navigators/menu.helper';
+import {getMenuTitle} from '../menu.helper';
+import {useTranslator} from '../../__to-replace';
 
 const MenuItemList = ({state, navigation}) => {
   const I18n = useTranslator();

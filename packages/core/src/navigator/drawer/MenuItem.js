@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
-import {TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Icon, Text} from '@aos-mobile/ui';
 
 const MenuItem = ({icon, title, isActive, onPress}) => {
   return (
