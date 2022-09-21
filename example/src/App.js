@@ -1,22 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Colors from '@/types/colors';
 import {ThemeProvider} from '@aos-mobile/ui';
-import {Application, configI18n, Translator} from '@aos-mobile/core';
+import {Application} from '@aos-mobile/core';
 import enTranslation from './i18n/en.json';
 import frTranslation from './i18n/fr.json';
+import {store} from './store';
 
 const App = () => {
-  useEffect(() => {
-    configI18n({
-      resources: [
-        {lng: 'en', translationsObject: enTranslation},
-        {lng: 'fr', translationsObject: frTranslation},
-      ],
-    });
-  }, []);
-
   const toastConfig = {
     success: props => (
       <BaseToast
@@ -40,7 +32,7 @@ const App = () => {
     ),
   };
 
-  return <Application modules={[]} />;
+  return <Application modules={[]} store={store} />;
 };
 
 const styles = StyleSheet.create({

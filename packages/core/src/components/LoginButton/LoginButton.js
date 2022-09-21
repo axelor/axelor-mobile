@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from '@aos-mobile/ui';
-import useTranslator from '../../__to-replace';
+import useTranslator from '../../i18n/hooks/use-translator';
 
 const LoginButton = ({onPress}) => {
   const I18n = useTranslator();

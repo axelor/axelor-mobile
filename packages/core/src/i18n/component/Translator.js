@@ -23,6 +23,14 @@ const useLanguageEffect = callback => {
 };
 
 const Translator = () => {
+  useEffect(() => {
+    i18nProvider.i18n.on('initialized', function () {
+      console.log('initialized');
+      console.log(i18nProvider.i18n);
+      loadTranslationsFromStorage(i18nProvider.i18n.language);
+    });
+  }, []);
+
   useLanguageEffect(
     useCallback(language => {
       loadTranslationsFromStorage(language);
