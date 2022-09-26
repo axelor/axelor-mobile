@@ -32,6 +32,8 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
     setSecondaryMenusVisible(false);
   };
 
+  // Will be used later with menu improvements
+  // eslint-disable-next-line no-unused-vars
   const toggleSecondaryMenusVisibility = () => {
     if (!secondaryMenusVisible) {
       openSecondaryMenu();

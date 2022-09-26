@@ -1,22 +1,16 @@
-import React, {
-  createContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {createContext, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {Store} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
-import Module from './Module';
+import {Module} from './Module';
 import RootNavigator from './RootNavigator';
 import Translator from './i18n/component/Translator';
 import {configI18n} from './i18n/i18n';
 import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
-import {Text, lightTheme, ThemeProvider} from '@aos-mobile/ui';
+import {lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import ErrorBoundary from './ErrorBoundary';
 
 const ApplicationContext = createContext(null);
@@ -59,7 +53,7 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
         (translations, module) => ({...translations, ...module.translations}),
         {en: enTranslation, fr: frTranslation},
       ),
-    [modules, enTranslation, frTranslation],
+    [modules],
   );
 
   useEffect(() => {
@@ -70,6 +64,8 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
       ],
     });
     setLoading(false);
+    // I18n should be initialize only once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

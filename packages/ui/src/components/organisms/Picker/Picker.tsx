@@ -1,8 +1,7 @@
-import React, {Children, ReactChildren, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 //import { Picker as ReactNativePicker } from "@react-native-picker/picker";
 import {useThemeColor} from '../../../ThemeContext';
-import {getFromList} from '../../../utils/list';
 import {getCommonStyles} from '../../../commons-styles';
 import {Text} from '../../atoms';
 import {LabelText} from '../../molecules';
@@ -25,19 +24,19 @@ interface PickerProps {
 const Picker = ({
   styleTxt,
   title,
-  onValueChange,
+  /*onValueChange,
   defaultValue,
   listItems,
   labelField,
   valueField,
-  emptyValue = true,
-  isValueItem = false,
+  emptyValue = true,*/
+  //isValueItem = false,
   disabled = false,
   disabledValue = null,
   iconName = null,
 }: PickerProps) => {
   const Colors = useThemeColor();
-  const [selectedValue, setSelectedValue] = useState(
+  /*const [selectedValue, setSelectedValue] = useState(
     defaultValue == null ? '' : defaultValue,
   );
 
@@ -46,7 +45,7 @@ const Picker = ({
     onValueChange(
       isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
     );
-  };
+  };*/
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);

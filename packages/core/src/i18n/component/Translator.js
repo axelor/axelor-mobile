@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useMemo} from 'react';
+import {useEffect, useCallback} from 'react';
 import {createSelector} from '@reduxjs/toolkit';
 import {fetchTranslation} from '../api/translation';
 import {reduceTranslationsToI18nResources} from '../helpers/translations';

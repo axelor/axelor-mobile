@@ -106,7 +106,7 @@ export const ThemeProvider = ({children}) => {
       activateColorBlind,
       desactivateColorBlind,
     }),
-    [state],
+    [activateColorBlind, changeTheme, desactivateColorBlind, state],
   );
 
   return (

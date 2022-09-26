@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+//import {useSelector} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
 import {Button, Screen, Text} from '@aos-mobile/ui';
 import {traceError} from './api/traceback-api';
@@ -33,12 +33,12 @@ class ErrorBoundary extends React.Component<
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return {hasError: true};
   }
 
   componentDidCatch(error, errorInfo) {
-    const userId = useSelector(selectUserId);
+    const userId = 1; //useSelector(selectUserId);
     this.setState(state => ({
       ...state,
       tracing: true,

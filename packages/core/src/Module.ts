@@ -1,7 +1,7 @@
 type TranslateFunc = (key: string) => string;
 type Title = string | ((t: TranslateFunc) => string);
 
-interface Module {
+export interface Module {
   name: string;
   title: Title;
   icon: string;
@@ -24,5 +24,3 @@ interface Module {
     [languageKey: string]: any;
   };
 }
-
-export default Module;

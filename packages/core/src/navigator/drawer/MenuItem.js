@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon, Text} from '@aos-mobile/ui';
 
 const MenuItem = ({icon, title, isActive, onPress}) => {
+  const backgroundColor = useMemo(
+    () => getBackgroundColor(isActive).container,
+    [isActive],
+  );
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.menuItemContainer]}>
-        <View
-          style={[
-            styles.menuItemActive,
-            {backgroundColor: isActive ? '#76DCAE' : '#fff'},
-          ]}
-        />
+        <View style={[styles.menuItemActive, backgroundColor]} />
         {icon && <Icon style={styles.menuItemIcon} name={icon} size={24} />}
         <View style={styles.menuItemTextContainer}>
           <Text style={styles.menuItemTitle}>{title}</Text>
@@ -19,6 +19,14 @@ const MenuItem = ({icon, title, isActive, onPress}) => {
       </View>
     </TouchableOpacity>
   );
+};
+
+const getBackgroundColor = isMenuActive => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: isMenuActive ? '#76DCAE' : '#fff',
+    },
+  });
 };
 
 const styles = StyleSheet.create({

@@ -1,8 +1,6 @@
 import i18next, {i18n} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import {formatResources, getSupportedLangages} from './helpers/langages';
-import enTranslation from './translations/en.json';
-import frTranslation from './translations/fr.json';
 
 export interface resourcesBinding {
   lng: string;

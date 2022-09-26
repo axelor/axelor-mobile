@@ -1,6 +1,6 @@
 // Application
 export {default as Application} from './Application';
-export {default as Module} from './Module';
+export {Module} from './Module';
 
 // Navigation
 export {default as Navigator} from './navigator/Navigator';
