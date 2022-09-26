@@ -15,9 +15,7 @@ const CameraScanner = ({
     return getStyles(coordinate);
   }, [coordinate]);
 
-  // issue with package react-native-vision-camera
-
-  /*const [hasPermission, setHasPermission] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
   const devices = useCameraDevices();
   const device = devices.back;
   const Colors = useThemeColor();
@@ -82,8 +80,7 @@ const CameraScanner = ({
         />
       </>
     )
-  );*/
-  return null;
+  );
 };
 
 const getStyles = coordinate => {
