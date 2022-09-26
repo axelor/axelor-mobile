@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@/components/atoms';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {
   AutocompleteSearch,
   ScrollList,
@@ -11,7 +12,6 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
-import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_product-list';
 

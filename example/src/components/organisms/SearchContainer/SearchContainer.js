@@ -1,8 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Icon} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
 import {useSelector} from 'react-redux';
+import {Icon, useThemeColor} from '@aos-mobile/ui';
 
 const SearchContainer = ({
   style,

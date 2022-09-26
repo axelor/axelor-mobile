@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@/components/atoms';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {AutocompleteSearch} from '@/components/organisms';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import useTranslator from '@/hooks/use-translator';
 
 const originalStockLocationScanKey =
   'original-stock-location__internal-move-select-from';

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
-import {Text} from '@/components/atoms';
-import useTranslator from '@/hooks/use-translator';
+import {Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const ScrollList = ({
   loadingList = false,

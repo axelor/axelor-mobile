@@ -1,13 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@/components/atoms';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {InventoryHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_inventory-select';
 

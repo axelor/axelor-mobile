@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Screen} from '@/components/atoms';
+import {Screen} from '@aos-mobile/ui';
 import {ProductStockLocationCard} from '@/modules/stock/components/organisms';
 import {fetchStockLocationLine} from '@/modules/stock/features/stockLocationLineSlice';
 import {ScrollList} from '@/components/organisms';

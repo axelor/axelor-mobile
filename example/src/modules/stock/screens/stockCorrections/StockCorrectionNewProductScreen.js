@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchProducts} from '@/modules/stock/features/productSlice';
-import {Screen} from '@/components/atoms';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {ClearableCard} from '@/components/molecules';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {AutocompleteSearch} from '@/components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_stock-correction-new';
 

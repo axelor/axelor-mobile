@@ -1,14 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Screen} from '@/components/atoms';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
+import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '@/modules/stock/types/stock-move';
 import {StockMoveHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_customer-delivery-select';
 

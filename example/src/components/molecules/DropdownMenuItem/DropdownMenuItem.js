@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Icon, Text} from '@aos-mobile/ui';
 
 const DropdownMenuItem = ({placeholder, onPress}) => {
   return (

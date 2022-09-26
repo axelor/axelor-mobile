@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Icon, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import File from '@/types/file';
 import {formatDate} from '@/modules/stock/utils/formatters';
-import useTranslator from '@/hooks/use-translator';
 
 const AttachmentCard = ({fileName, creationDate, onPress}) => {
   const I18n = useTranslator();

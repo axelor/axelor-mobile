@@ -1,11 +1,10 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
-import {useThemeColor} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
-import useTranslator from '@/hooks/use-translator';
 
 const InventoryHeader = ({reference, status, date, stockLocation}) => {
   const Colors = useThemeColor();

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Icon, Text} from '@aos-mobile/ui';
 
 const LabelText = ({
   style,

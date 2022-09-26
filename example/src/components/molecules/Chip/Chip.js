@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Text} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
+import {Text, useThemeColor} from '@aos-mobile/ui';
 
 const Chip = ({
   selected,

@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, Screen, Text} from '@/components/atoms';
+import {Icon, Screen, Text, useTheme, useThemeColor} from '@aos-mobile/ui';
+import {logout, useTranslator} from '@aos-mobile/core';
 import {LogoutButton} from '@/modules/auth/components/molecules';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
@@ -22,8 +23,6 @@ import {
   setZebraConfig,
 } from '../features/configSlice';
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
-import {logout, useTranslator} from '@aos-mobile/core';
-import {useTheme, useThemeColor} from '@aos-mobile/ui';
 
 const stockLocationScanKey = 'stock-location_user-default';
 

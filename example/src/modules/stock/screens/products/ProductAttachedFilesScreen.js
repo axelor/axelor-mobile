@@ -1,15 +1,14 @@
 import React, {useCallback, useState, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Icon, Screen} from '@/components/atoms';
+import {Icon, Screen, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {fetchProductAttachedFiles} from '../../features/productSlice';
 import {AttachmentCard, Image} from '@/components/molecules';
 import File from '@/types/file';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import {PopUpOneButton, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const ProductAttachedFilesScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

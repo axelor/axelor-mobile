@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Screen, Text} from '@/components/atoms';
+import {Screen, Text} from '@aos-mobile/ui';
 import {Image} from '@/components/molecules';
 
 const ProductImageScreen = ({route}) => {

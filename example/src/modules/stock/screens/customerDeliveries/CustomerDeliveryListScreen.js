@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet} from 'react-native';
-import {Screen} from '@/components/atoms';
+import {useDispatch, useSelector} from 'react-redux';
+import {Screen, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Chip} from '@/components/molecules';
 import {
   AutocompleteSearch,
@@ -21,8 +22,6 @@ import {
 } from '@/modules/stock/utils/displayers';
 import StockMove from '@/modules/stock/types/stock-move';
 import {filterClients} from '../../features/partnerSlice';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
 

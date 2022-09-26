@@ -1,15 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {searchProducts} from '@/modules/stock/features/productSlice';
-import {Screen} from '@/components/atoms';
 import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {ClearableCard} from '@/components/molecules';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';
 import {StockMoveHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const productScanKey = 'product_internal-move-select';
 

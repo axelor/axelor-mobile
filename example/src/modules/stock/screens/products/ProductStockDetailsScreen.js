@@ -8,7 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Icon, Screen, Text} from '@/components/atoms';
+import {Icon, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {EditableInput, DropdownMenuItem, Image} from '@/components/molecules';
 import {DropdownMenu, AutocompleteSearch, Picker} from '@/components/organisms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
@@ -19,8 +20,6 @@ import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice'
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import {updateProductLocker} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 

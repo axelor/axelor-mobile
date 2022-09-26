@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
+import {Icon, Text} from '@aos-mobile/ui';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {Image} from '@/components/molecules';
 

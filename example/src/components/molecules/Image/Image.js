@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {Image as ReactNativeImage} from 'react-native';
 import {useSelector} from 'react-redux';
-import {useThemeColor} from '@aos-mobile/ui';
-import {Icon} from '@/components/atoms';
+import {Icon, useThemeColor} from '@aos-mobile/ui';
 
 const Image = ({
   imageSize,

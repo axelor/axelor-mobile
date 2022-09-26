@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {Screen} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
-import {Screen} from '@/components/atoms';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_stock-correction-new';
 

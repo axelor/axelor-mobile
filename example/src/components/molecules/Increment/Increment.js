@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Input} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
+import {Icon, Input, useThemeColor} from '@aos-mobile/ui';
 
 const Increment = ({value, onValueChange}) => {
   const Colors = useThemeColor();

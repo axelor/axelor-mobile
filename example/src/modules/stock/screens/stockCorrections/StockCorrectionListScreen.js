@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, Screen} from '@/components/atoms';
+import {Icon, Screen, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Chip} from '@/components/molecules';
 import {
   AutocompleteSearch,
@@ -16,8 +17,6 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
 const productScanKey = 'product_stock-correction-list';

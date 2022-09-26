@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '@/components/atoms';
+import {Text} from '@aos-mobile/ui';
 
 const Badge = ({style, txtStyle, title, color, numberOfLines = 1}) => {
   const badgeStyle = useMemo(() => getStyles(color), [color]);

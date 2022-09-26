@@ -1,7 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, Dimensions} from 'react-native';
-import {Screen, Text} from '@/components/atoms';
+import {useDispatch, useSelector} from 'react-redux';
+import {Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Chip} from '@/components/molecules';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
@@ -11,8 +12,6 @@ import {
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

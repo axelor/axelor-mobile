@@ -1,11 +1,10 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '@/components/atoms';
+import {Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const StockMoveHeader = ({reference, status, date, availability}) => {
   const Colors = useThemeColor();

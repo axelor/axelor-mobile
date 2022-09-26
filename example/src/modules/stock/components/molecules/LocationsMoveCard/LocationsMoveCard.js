@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {Icon, Text} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const LocationsMoveCard = ({
   style,

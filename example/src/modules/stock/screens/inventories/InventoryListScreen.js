@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
-import {Screen} from '@/components/atoms';
+import {useDispatch, useSelector} from 'react-redux';
+import {Screen, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Chip} from '@/components/molecules';
 import {
   AutocompleteSearch,
@@ -9,7 +11,6 @@ import {
   ScrollList,
   SearchContainer,
 } from '@/components/organisms';
-import {useDispatch, useSelector} from 'react-redux';
 import filterList from '@/modules/stock/utils/filter-list';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {
@@ -19,8 +20,6 @@ import {
 import {searchInventories} from '@/modules/stock/features/inventorySlice';
 import {InventoryCard} from '@/modules/stock/components/organisms';
 import Inventory from '@/modules/stock/types/inventory';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_inventory-list';
 

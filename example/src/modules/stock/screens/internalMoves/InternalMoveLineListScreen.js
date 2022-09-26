@@ -1,7 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@/components/atoms';
+import {Screen, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Chip} from '@/components/molecules';
 import {
   InternalMoveLineCard,
@@ -10,8 +11,6 @@ import {
 import StockMove from '@/modules/stock/types/stock-move';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {SearchBar, AutocompleteItem} from '@/components/molecules';
 import {useDispatch} from 'react-redux';
+import {useThemeColor} from '@aos-mobile/ui';
+import {SearchBar, AutocompleteItem} from '@/components/molecules';
 import {
   enableScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '@/features/scannerSlice';
 import {CameraScanner} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;

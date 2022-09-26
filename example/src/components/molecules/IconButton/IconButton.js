@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '@aos-mobile/ui';
-import {Icon} from '@/components/atoms';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const IconButton = ({

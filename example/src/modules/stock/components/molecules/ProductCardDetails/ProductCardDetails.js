@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon} from '@/components/atoms';
+import {Icon} from '@aos-mobile/ui';
 
 const ProductCardDetails = ({style, children, onPress}) => {
   return (
