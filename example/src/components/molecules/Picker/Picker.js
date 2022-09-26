@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import getFromList from '@/modules/stock/utils/get-from-list';
 
 const Picker = ({

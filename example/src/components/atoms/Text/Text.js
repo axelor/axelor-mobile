@@ -1,4 +1,4 @@
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import React, {useMemo} from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
 

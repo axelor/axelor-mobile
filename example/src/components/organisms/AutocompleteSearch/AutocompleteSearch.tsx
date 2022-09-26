@@ -8,7 +8,7 @@ import {
   useScannerSelector,
 } from '@/features/scannerSlice';
 import {CameraScanner} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;

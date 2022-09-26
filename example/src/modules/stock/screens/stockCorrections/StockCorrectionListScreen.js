@@ -16,7 +16,7 @@ import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';

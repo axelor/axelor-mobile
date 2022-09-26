@@ -19,7 +19,7 @@ import {
 import {searchInventories} from '@/modules/stock/features/inventorySlice';
 import {InventoryCard} from '@/modules/stock/components/organisms';
 import Inventory from '@/modules/stock/types/inventory';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_inventory-list';

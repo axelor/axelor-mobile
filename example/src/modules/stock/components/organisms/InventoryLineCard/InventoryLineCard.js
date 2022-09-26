@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineCard = ({

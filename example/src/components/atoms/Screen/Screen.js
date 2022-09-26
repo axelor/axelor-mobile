@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 const immersiveMode = async () => {

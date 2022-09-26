@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Screen} from '@/components/atoms';
 import {useDispatch, useSelector} from 'react-redux';
-import {activateColorBlind, desactivateColorBlind} from '@/features/themeSlice';
+import {useTheme} from '@aos-mobile/ui';
 import {
   clearMessage,
   toggleFilterShowConfig,
@@ -15,12 +15,12 @@ import Toast from 'react-native-toast-message';
 import {SwitchCard} from '@/components/molecules';
 
 const SettingsScreen = ({route}) => {
-  const {isColorBlind} = useSelector(state => state.theme);
   const {loading, zebraConfig, filterShowConfig, message} = useSelector(
     state => state.config,
   );
   const language = useSelector(selectLanguage);
   const I18n = useTranslator();
+  const Theme = useTheme();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,12 +33,12 @@ const SettingsScreen = ({route}) => {
   const handleToggleColorBlind = useCallback(
     state => {
       if (state) {
-        dispatch(activateColorBlind());
+        Theme.activateColorBlind();
       } else {
-        dispatch(desactivateColorBlind());
+        Theme.desactivateColorBlind();
       }
     },
-    [dispatch],
+    [Theme],
   );
 
   const handleToggleFilter = useCallback(() => {
@@ -80,7 +80,7 @@ const SettingsScreen = ({route}) => {
         />
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
-          defaultValue={isColorBlind}
+          defaultValue={Theme.isColorBlind}
           onToggle={state => handleToggleColorBlind(state)}
         />
       </View>

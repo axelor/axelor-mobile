@@ -8,9 +8,11 @@ import React, {
 import {Theme, lightTheme, colorBlindTheme} from './themes';
 
 const DEFAULT_THEME = lightTheme;
+const COLORBLIND_THEME = colorBlindTheme;
 
 interface ThemeContextState {
   activeTheme: Theme;
+  isColorBlind: boolean;
   themes: Theme[];
   changeTheme: (themeKey: string) => void;
   activateColorBlind: () => void;
@@ -24,7 +26,8 @@ interface ThemeAction {
 
 const defaultThemeContext = {
   activeTheme: DEFAULT_THEME,
-  themes: [lightTheme, colorBlindTheme],
+  isColorBlind: DEFAULT_THEME === COLORBLIND_THEME,
+  themes: [lightTheme],
   changeTheme: () => {
     throw new Error('ThemeProvider should be mounted to change theme');
   },
@@ -46,7 +49,10 @@ const actionTypes = {
   desactivateColorBlind: 'desactivateColorBlind',
 };
 
-const themeReducer = (state: ThemeContextState, action: ThemeAction) => {
+const themeReducer = (
+  state: ThemeContextState,
+  action: ThemeAction,
+): ThemeContextState => {
   switch (action.type) {
     case actionTypes.changeTheme: {
       const newActiveTheme = state.themes.find(
@@ -55,18 +61,24 @@ const themeReducer = (state: ThemeContextState, action: ThemeAction) => {
       if (newActiveTheme == null) {
         return state;
       }
-      return {...state, activeTheme: newActiveTheme};
+      return {
+        ...state,
+        activeTheme: newActiveTheme,
+        isColorBlind: newActiveTheme === COLORBLIND_THEME,
+      };
     }
     case actionTypes.activateColorBlind: {
       return {
         ...state,
         activeTheme: colorBlindTheme,
+        isColorBlind: true,
       };
     }
     case actionTypes.desactivateColorBlind: {
       return {
         ...state,
         activeTheme: lightTheme,
+        isColorBlind: false,
       };
     }
   }
@@ -121,4 +133,5 @@ export const useThemeColor = () => {
   return useMemo(() => activeTheme.colors, [activeTheme]);
 };
 
-export const useTheme = () => useContext<ThemeContextState>(ThemeContext);
+export const useTheme = (): ThemeContextState =>
+  useContext<ThemeContextState>(ThemeContext);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const NextButton = ({style, onPress = () => {}}) => {

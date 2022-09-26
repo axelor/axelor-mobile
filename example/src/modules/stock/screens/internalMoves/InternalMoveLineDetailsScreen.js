@@ -25,7 +25,7 @@ import {
   createInternalMove,
   updateInternalMove,
 } from '@/modules/stock/features/internalMoveSlice';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {

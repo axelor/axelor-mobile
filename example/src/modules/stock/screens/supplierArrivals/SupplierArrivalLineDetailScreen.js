@@ -15,7 +15,7 @@ import {fetchProductWithId} from '@/modules/stock/features/productSlice';
 import {fetchProductForSupplier} from '@/modules/stock/features/supplierCatalogSlice';
 import {addNewLine} from '@/modules/stock/features/supplierArrivalSlice';
 import {updateSupplierArrivalLine} from '@/modules/stock/features/supplierArrivalLineSlice';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {

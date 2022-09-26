@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const CardIconButton = ({style, iconName, color, onPress = () => {}}) => {
   const Colors = useThemeColor();

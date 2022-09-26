@@ -11,7 +11,7 @@ import {
   InventoryHeader,
 } from '@/modules/stock/components/organisms';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const InventoryLineListScreen = ({route, navigation}) => {

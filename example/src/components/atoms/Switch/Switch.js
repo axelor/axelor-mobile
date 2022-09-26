@@ -1,4 +1,4 @@
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import React, {useState} from 'react';
 import {Switch as RNSwitch} from 'react-native';
 

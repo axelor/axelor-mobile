@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
 import useTranslator from '@/hooks/use-translator';
 

@@ -19,7 +19,7 @@ import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice'
 import useStockLocationScanner from '@/modules/stock/hooks/use-stock-location-scanner';
 import {updateProductLocker} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_product-indicators';

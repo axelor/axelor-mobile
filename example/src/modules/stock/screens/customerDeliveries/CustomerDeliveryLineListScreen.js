@@ -11,7 +11,7 @@ import {
 } from '@/modules/stock/components/organisms';
 import {fetchCustomerDeliveryLines} from '@/modules/stock/features/customerDeliveryLineSlice';
 import {ChipSelect, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {

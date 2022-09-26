@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {getCommonStyles} from '@/components/commons-styles';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const ClearableCard = ({
   style,

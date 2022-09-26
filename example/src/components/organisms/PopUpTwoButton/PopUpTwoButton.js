@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from '@/components/atoms';
 import {PopUp} from '@/components/molecules';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const PopUpTwoButton = ({
   visible,

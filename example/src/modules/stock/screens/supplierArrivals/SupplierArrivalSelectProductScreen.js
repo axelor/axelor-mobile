@@ -8,7 +8,7 @@ import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '../../types/stock-move';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import {StockMoveHeader} from '../../components/organisms';
 import useTranslator from '@/hooks/use-translator';
 

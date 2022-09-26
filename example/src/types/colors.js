@@ -6,7 +6,10 @@ export class Themes {
   // Can be toggle with switch button on setting scrren
   static colorBlindTheme = {id: 0, name: 'Color blind'};
 
-  static themesList = [{id: 1, name: 'Light'}];
+  static themesList = [
+    {id: 0, name: 'Color blind'},
+    {id: 1, name: 'Light'},
+  ];
 }
 
 class Colors {

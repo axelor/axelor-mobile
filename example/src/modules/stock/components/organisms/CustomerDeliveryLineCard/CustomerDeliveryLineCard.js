@@ -4,7 +4,7 @@ import {Card, Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {checkNullString} from '@/modules/stock/utils/strings';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const CustomerDeliveryLineCard = ({

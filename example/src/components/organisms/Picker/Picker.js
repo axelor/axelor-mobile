@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {Text} from '@/components/atoms';
 import {LabelText} from '@/components/molecules/';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import {getCommonStyles} from '@/components/commons-styles';
 

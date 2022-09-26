@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text} from '@/components/atoms';
 import {Badge, Image} from '@/components/molecules';
 import Product from '@/modules/stock/types/product';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const ProductVariantCard = ({

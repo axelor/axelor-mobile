@@ -15,7 +15,7 @@ import {
 } from '@/features/scannerSlice';
 import {login} from '@/modules/auth/features/authSlice';
 import {CameraScanner, Screen, Text} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import {Image} from '@/components/molecules';
 
 const urlScanKey = 'login_url';

@@ -21,7 +21,7 @@ import {
 import {searchSupplierArrivals} from '@/modules/stock/features/supplierArrivalSlice';
 import {SupplierArrivalCard} from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';

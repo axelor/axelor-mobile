@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const Card = ({style, children}) => {
   const Colors = useThemeColor();

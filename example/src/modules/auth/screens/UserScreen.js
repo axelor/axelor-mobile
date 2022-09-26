@@ -3,7 +3,6 @@ import {StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Icon, Screen, Text} from '@/components/atoms';
 import {LogoutButton} from '@/modules/auth/components/molecules';
-import {logout} from '@aos-mobile/core';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
@@ -23,9 +22,8 @@ import {
   setZebraConfig,
 } from '../features/configSlice';
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
-import {Themes} from '@/types/colors';
-import {changeTheme, useThemeColor} from '@/features/themeSlice';
-import useTranslator from '@/hooks/use-translator';
+import {logout, useTranslator} from '@aos-mobile/core';
+import {useTheme, useThemeColor} from '@aos-mobile/ui';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
@@ -38,7 +36,7 @@ const UserScreen = ({navigation}) => {
   const {loadingUser, user, canModifyCompany} = useSelector(
     state => state.user,
   );
-  const {theme, isColorBlind} = useSelector(state => state.theme);
+  const Theme = useTheme();
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -121,14 +119,8 @@ const UserScreen = ({navigation}) => {
   );
 
   const handleChangeTheme = useCallback(
-    newTheme => {
-      dispatch(
-        changeTheme({
-          newTheme: newTheme,
-        }),
-      );
-    },
-    [dispatch],
+    newTheme => Theme.changeTheme(newTheme),
+    [Theme],
   );
 
   const updateLanguage = useCallback(
@@ -188,13 +180,13 @@ const UserScreen = ({navigation}) => {
             emptyValue={false}
           />
         )}
-        {!isColorBlind && Themes.themesList.length !== 1 && (
+        {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
           <Picker
             title={I18n.t('User_Theme')}
-            defaultValue={theme}
-            listItems={Themes.themesList}
+            defaultValue={Theme.activeTheme?.key}
+            listItems={Theme.themes}
             labelField="name"
-            valueField="id"
+            valueField="key"
             onValueChange={handleChangeTheme}
             emptyValue={false}
           />

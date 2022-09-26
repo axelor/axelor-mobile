@@ -8,7 +8,7 @@ import File from '@/types/file';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import {PopUpOneButton, ScrollList} from '@/components/organisms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const ProductAttachedFilesScreen = ({route, navigation}) => {

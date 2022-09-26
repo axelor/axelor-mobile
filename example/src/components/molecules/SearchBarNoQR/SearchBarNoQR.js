@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {Icon, Input} from '@/components/atoms';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const SearchBarNoQR = ({

@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from '@/components/atoms';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 
 const AutocompleteItem = ({style, content, onPress}) => {
   const Colors = useThemeColor();

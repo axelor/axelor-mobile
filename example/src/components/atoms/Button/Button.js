@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const Button = ({

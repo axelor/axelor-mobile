@@ -17,7 +17,7 @@ import {
 import getFromList from '@/modules/stock/utils/get-from-list';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
-import {useThemeColor} from '@/features/themeSlice';
+import {useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '@/hooks/use-translator';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
