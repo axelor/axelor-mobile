@@ -1,31 +1,31 @@
 image: openjdk:8-jdk-bullseye #Defining the Docker Image
 
 variables:
-  ANDROID_COMPILE_SDK:    "31" #set compile SDK version
-  ANDROID_BUILD_TOOLS:    "32.0.0" #set build tool version
-  ANDROID_CMD_LINE_TOOLS: "8092744_latest" #set Command line tool build number you can find yous here https://developer.android.com/studio#cmdline-tools
+  ANDROID_COMPILE_SDK: '31' #set compile SDK version
+  ANDROID_BUILD_TOOLS: '32.0.0' #set build tool version
+  ANDROID_CMD_LINE_TOOLS: '8092744_latest' #set Command line tool build number you can find yous here https://developer.android.com/studio#cmdline-tools
 
 before_script:
-      # Fetch the specified SDK tools version to build with
-      - wget --quiet --output-document=/tmp/command-line-tools-linux.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_CMD_LINE_TOOLS}.zip
-      - unzip -qq /tmp/command-line-tools-linux.zip -d .android
+  # Fetch the specified SDK tools version to build with
+  - wget --quiet --output-document=/tmp/command-line-tools-linux.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_CMD_LINE_TOOLS}.zip
+  - unzip -qq /tmp/command-line-tools-linux.zip -d .android
 
-      # Set up environment variables
-      - export ANDROID_HOME=$PWD/.android
-      - export PATH=$PATH:$PWD/.android/platform-tools/
+  # Set up environment variables
+  - export ANDROID_HOME=$PWD/.android
+  - export PATH=$PATH:$PWD/.android/platform-tools/
 
-      # Install platform tools and Android SDK for the compile target
-      - echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
-      
-      - curl -sL https://deb.nodesource.com/setup_14.x | bash -
-      - apt-get -y install nodejs # Install Node
+  # Install platform tools and Android SDK for the compile target
+  - echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
 
-      - npm install -g yarn@latest # Install yarn
-      - yarn global add react-native-cli #Install React-Native CLI
-      - yarn install #Install packages node_modules
-      - chmod +x packages/demo/android/gradlew #Provide permission for execution
+  - curl -sL https://deb.nodesource.com/setup_14.x | bash -
+  - apt-get -y install nodejs # Install Node
 
-# Define stages 
+  - npm install -g yarn@latest # Install yarn
+  - yarn global add react-native-cli #Install React-Native CLI
+  - yarn install #Install packages node_modules
+  - chmod +x example/android/gradlew #Provide permission for execution
+
+# Define stages
 stages:
   - test
 
