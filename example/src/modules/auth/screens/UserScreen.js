@@ -3,7 +3,7 @@ import {StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Icon, Screen, Text} from '@/components/atoms';
 import {LogoutButton} from '@/modules/auth/components/molecules';
-import {logout} from '@/modules/auth/features/authSlice';
+import {logout} from '@aos-mobile/core';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';

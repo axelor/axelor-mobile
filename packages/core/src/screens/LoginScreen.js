@@ -8,15 +8,17 @@ import {
   UrlInput,
   UsernameInput,
 } from '../components';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../features/authSlice';
 
 const urlScanKey = 'login_url';
 
 const LoginScreen = () => {
-  const error = false;
-  const loading = false;
+  const {loading, error} = useSelector(state => state.auth);
   const isEnabled = false;
   const scanKey = 'login_url';
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const [url, setUrl] = useState(
     'http://wip-api-mobile-preview.cloud-sw1.axelor.io/',
@@ -63,9 +65,7 @@ const LoginScreen = () => {
           <ActivityIndicator size="large" />
         ) : (
           <LoginButton
-            onPress={() =>
-              console.log('dispatch(login({url, username, password}))')
-            }
+            onPress={() => dispatch(login({url, username, password}))}
             disabled={loading}
           />
         )}

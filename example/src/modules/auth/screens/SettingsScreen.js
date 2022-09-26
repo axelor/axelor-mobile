@@ -10,10 +10,7 @@ import {
   uploadTranslations,
 } from '../features/configSlice';
 import useTranslator from '@/hooks/use-translator';
-import {
-  getTranslations,
-  selectLanguage,
-} from '@/components/molecules/Translator/Translator';
+import {getTranslations, selectLanguage} from '@aos-mobile/core';
 import Toast from 'react-native-toast-message';
 import {SwitchCard} from '@/components/molecules';
 
