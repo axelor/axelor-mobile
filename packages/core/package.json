@@ -13,6 +13,7 @@
     "build": "npm run clean && npm run compile && npm run copy:assets",
     "lint": "eslint .",
     "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
     "copy:assets": "cpx src/assets/** lib/assets"
   },
   "peerDependencies": {

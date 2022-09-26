@@ -12,7 +12,8 @@
     "dev": "npm run compile -- --watch",
     "build": "npm run clean && npm run compile",
     "lint": "eslint .",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/"
   },
   "peerDependencies": {
     "react": "*",
