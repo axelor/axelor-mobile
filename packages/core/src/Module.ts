@@ -20,6 +20,9 @@ interface Module {
           title: Title;
         };
   };
+  translations?: {
+    [languageKey: string]: any;
+  };
 }
 
 export default Module;

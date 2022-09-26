@@ -5,6 +5,8 @@ import InventoriesScreens from './screens/inventories';
 import ProductsScreens from './screens/products';
 import StockCorrectionScreens from './screens/stockCorrections';
 import SupplierArrivalsScreens from './screens/supplierArrivals';
+import enTranslations from './i18n/en.json';
+import frTranslations from './i18n/fr.json';
 
 const stockModule: Module = {
   name: 'Stock',
@@ -49,6 +51,10 @@ const stockModule: Module = {
     ...ProductsScreens,
     ...StockCorrectionScreens,
     ...SupplierArrivalsScreens,
+  },
+  translations: {
+    en: enTranslations,
+    fr: frTranslations,
   },
 };
 

@@ -1,13 +1,14 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useMemo} from 'react';
 import {createSelector} from '@reduxjs/toolkit';
-import {useSelector} from 'react-redux';
 import {fetchTranslation} from '../api/translation';
 import {reduceTranslationsToI18nResources} from '../helpers/translations';
-import {storage, i18nProvider} from '@aos-mobile/core';
+import {storage} from '../../storage/Storage';
+import {i18nProvider} from '../i18n';
+import {useSelector} from 'react-redux';
 
 export const selectLanguage = createSelector(
   state => state?.user,
-  userState => userState.user.language,
+  userState => userState?.user?.language,
 );
 
 const DEFAULT_NAMESPACE = 'translation';
@@ -25,8 +26,6 @@ const useLanguageEffect = callback => {
 const Translator = () => {
   useEffect(() => {
     i18nProvider.i18n.on('initialized', function () {
-      console.log('initialized');
-      console.log(i18nProvider.i18n);
       loadTranslationsFromStorage(i18nProvider.i18n.language);
     });
   }, []);
