@@ -1,11 +1,29 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
+import {useSelector} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
-import {Button, Screen, Text} from './components/atoms';
-import {Image} from './components/molecules';
+import {Button, Screen, Text} from '@aos-mobile/ui';
 import {traceError} from './api/traceback-api';
+import {createSelector} from '@reduxjs/toolkit';
 
-class ErrorBoundary extends Component {
+export const selectUserId = createSelector(
+  state => state?.user,
+  userState => userState.user.id,
+);
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  tracing: boolean;
+  errorMessage: string;
+}
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,6 +38,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    const userId = useSelector(selectUserId);
     this.setState(state => ({
       ...state,
       tracing: true,
@@ -28,14 +47,14 @@ class ErrorBoundary extends Component {
     traceError({
       message: error.message,
       cause: errorInfo.componentStack,
-      userId: this.props.userId,
+      userId: userId,
     }).finally(() => {
       this.setState(state => ({...state, tracing: false}));
     });
   }
 
   reloadApp() {
-    window.location.reload();
+    (window as any).location.reload();
   }
 
   render() {
@@ -49,13 +68,6 @@ class ErrorBoundary extends Component {
             />
           }>
           <View style={styles.container}>
-            <Image
-              resizeMode="contain"
-              source={require('./modules/auth/assets/Logo_Axelor.png')}
-              generalStyle={styles.imageStyle}
-              imageSize={styles.imageSize}
-              defaultIconSize={80}
-            />
             <Text style={styles.text}>{this.state.errorMessage}</Text>
           </View>
         </Screen>
@@ -85,8 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
-  userId: state.user?.user?.id,
-});
-
-export default connect(mapStateToProps, undefined)(ErrorBoundary);
+export default ErrorBoundary;
