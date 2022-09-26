@@ -4,7 +4,7 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {useThemeColor} from '../../../ThemeContext';
 
 interface ScreenProps {
-  style: any;
+  style?: any;
   children: any;
   fixedItems: any;
   listScreen?: boolean;
