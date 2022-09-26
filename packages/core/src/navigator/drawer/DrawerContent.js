@@ -6,7 +6,7 @@ import IconButton from './IconButton';
 import Menu from './Menu';
 import {moduleHasMenus} from '../module.helper';
 import {getMenuTitle} from '../menu.helper';
-import {useTranslator} from '../../__to-replace';
+import useTranslator from '../../i18n/hooks/use-translator';
 
 const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   const I18n = useTranslator();

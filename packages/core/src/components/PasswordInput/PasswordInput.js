@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Input, useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '../../__to-replace';
+import useTranslator from '../../i18n/hooks/use-translator';
 
 const PasswordInput = ({style, value, onChange, readOnly}) => {
   const [visible, setVisible] = useState(false);

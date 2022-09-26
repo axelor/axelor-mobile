@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Input, useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '../../__to-replace';
+import useTranslator from '../../i18n/hooks/use-translator';
 
 const UsernameInput = ({value, onChange, readOnly}) => {
   const Colors = useThemeColor();

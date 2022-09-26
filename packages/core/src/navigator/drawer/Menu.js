@@ -5,7 +5,7 @@ import {Text} from '@aos-mobile/ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
 import {getMenuTitle} from '../menu.helper';
-import {useTranslator} from '../../__to-replace';
+import useTranslator from '../../i18n/hooks/use-translator';
 
 const MenuItemList = ({state, navigation}) => {
   const I18n = useTranslator();

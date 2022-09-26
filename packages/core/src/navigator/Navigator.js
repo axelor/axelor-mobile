@@ -8,7 +8,7 @@ import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
 import DrawerContent from './drawer/DrawerContent';
 import {getDefaultModule, moduleHasMenus} from './module.helper';
 import {getMenuTitle} from './menu.helper';
-import {useTranslator} from '../__to-replace';
+import useTranslator from '../i18n/hooks/use-translator';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
