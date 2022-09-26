@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, Card, Screen, Text} from '@/components/atoms';
+import {Button, Card, Screen, Text} from '@aos-mobile/ui';
 import {Badge} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {ProductCardInfo} from '@/modules/stock/components/organisms';

@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Screen, Text} from '@/components/atoms';
+import {Button, Screen, Text} from '@aos-mobile/ui';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
 import {AutocompleteSearch} from '@/components/organisms';

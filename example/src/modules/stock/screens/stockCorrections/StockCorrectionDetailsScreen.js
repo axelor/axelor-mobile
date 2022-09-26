@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
-import {Button, Screen, Text} from '@/components/atoms';
+import {Button, Screen, Text} from '@aos-mobile/ui';
 import {Badge} from '@/components/molecules';
 import {Picker, PopUpOneButton} from '@/components/organisms';
 import {

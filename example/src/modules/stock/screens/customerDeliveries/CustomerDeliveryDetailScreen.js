@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Screen, Text} from '@/components/atoms';
+import {Button, Card, Screen, Text} from '@aos-mobile/ui';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ViewAllContainer} from '@/components/molecules';

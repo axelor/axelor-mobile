@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Screen} from '@/components/atoms';
+import {Button, Screen} from '@aos-mobile/ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTheme} from '@aos-mobile/ui';
 import {

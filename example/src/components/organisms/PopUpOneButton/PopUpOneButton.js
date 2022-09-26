@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Button} from '@/components/atoms';
+import {Button} from '@aos-mobile/ui';
 import {PopUp} from '@/components/molecules';
 
 const PopUpOneButton = ({visible, title, data, btnTitle, onPress}) => {

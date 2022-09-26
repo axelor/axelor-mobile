@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, ScrollView} from 'react-native';
-import {Screen, Text, Button} from '@/components/atoms';
+import {Screen, Text, Button} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {

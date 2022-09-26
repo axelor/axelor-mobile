@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {Button, Card, Screen, Text} from '@/components/atoms';
+import {Button, Card, Screen, Text} from '@aos-mobile/ui';
 import {DropdownMenuItem} from '@/components/molecules';
 import {DropdownMenu} from '@/components/organisms';
 import {

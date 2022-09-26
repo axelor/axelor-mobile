@@ -7,7 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import {Button, Card, Input, Screen, Text} from '@/components/atoms';
+import {Button, Card, Input, Screen, Text} from '@aos-mobile/ui';
 import {Picker} from '@/components/organisms';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {

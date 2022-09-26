@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {Button, Screen, Text} from '@/components/atoms';
+import {Button, Screen, Text} from '@aos-mobile/ui';
 import {EditableInput} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
