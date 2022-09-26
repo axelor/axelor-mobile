@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const createCriteria = listFiles => {
   if (listFiles != null) {
@@ -13,17 +13,20 @@ const createCriteria = listFiles => {
 const MetaFileFields = ['id', 'fileName', 'createdOn'];
 
 export async function fetchFileDetails(listFiles) {
-  return axios.post('/ws/rest/com.axelor.dms.db.DMSFile/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.dms.db.DMSFile/search',
     data: {
-      criteria: [
-        {
-          operator: 'or',
-          criteria: createCriteria(listFiles),
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'or',
+            criteria: createCriteria(listFiles),
+          },
+        ],
+      },
+      fields: MetaFileFields,
+      limit: null,
+      offset: 0,
     },
-    fields: MetaFileFields,
-    limit: null,
-    offset: 0,
   });
 }

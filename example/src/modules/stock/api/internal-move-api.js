@@ -1,5 +1,5 @@
-import axios from 'axios';
 import StockMove from '@/modules/stock/types/stock-move';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const internalMoveFields = [
   'name',
@@ -43,19 +43,22 @@ const createSearchCriteria = searchValue => {
 };
 
 export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMove/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: createSearchCriteria(searchValue),
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: createSearchCriteria(searchValue),
+          },
+        ],
+      },
+      fields: internalMoveFields,
+      sortBy: sortByFields,
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: internalMoveFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -68,14 +71,17 @@ export async function createInternalStockMove({
   trackingNumberId,
   movedQty,
 }) {
-  return axios.post('ws/aos/stock-move/internal/', {
-    productId: productId,
-    companyId: companyId,
-    originStockLocationId: originStockLocationId,
-    destStockLocationId: destStockLocationId,
-    unitId: unitId,
-    trackingNumberId: trackingNumberId,
-    movedQty: movedQty,
+  return axiosApiProvider.post({
+    url: 'ws/aos/stock-move/internal/',
+    data: {
+      productId: productId,
+      companyId: companyId,
+      originStockLocationId: originStockLocationId,
+      destStockLocationId: destStockLocationId,
+      unitId: unitId,
+      trackingNumberId: trackingNumberId,
+      movedQty: movedQty,
+    },
   });
 }
 
@@ -86,10 +92,13 @@ export async function updateInternalStockMove({
   unitId,
   status,
 }) {
-  return axios.put(`/ws/aos/stock-move/internal/${internalMoveId}`, {
-    version: version,
-    movedQty: movedQty,
-    unitId: unitId,
-    status: status,
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-move/internal/${internalMoveId}`,
+    data: {
+      version: version,
+      movedQty: movedQty,
+      unitId: unitId,
+      status: status,
+    },
   });
 }

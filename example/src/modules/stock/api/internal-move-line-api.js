@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const internalMoveLineFields = [
   'id',
@@ -11,24 +11,27 @@ const internalMoveLineFields = [
 ];
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'stockMove.id',
-              operator: '=',
-              value: internalMoveId,
-            },
-          ],
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'stockMove.id',
+                operator: '=',
+                value: internalMoveId,
+              },
+            ],
+          },
+        ],
+      },
+      fields: internalMoveLineFields,
+      sortBy: ['id'],
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: internalMoveLineFields,
-    sortBy: ['id'],
-    limit: 10,
-    offset: 10 * page,
   });
 }

@@ -1,5 +1,7 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 export async function getBaseConfig() {
-  return axios.get('/ws/rest/com.axelor.apps.base.db.AppBase/');
+  return axiosApiProvider.get({
+    url: '/ws/rest/com.axelor.apps.base.db.AppBase/',
+  });
 }

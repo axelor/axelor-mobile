@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const stockCorrectionFields = [
   'statusSelect',
@@ -14,9 +14,9 @@ const stockCorrectionFields = [
 const sortByFields = ['statusSelect', '-validationDateT', 'createdOn'];
 
 export async function searchStockCorrection({page = 0}) {
-  return axios.post(
-    '/ws/rest/com.axelor.apps.stock.db.StockCorrection/search',
-    {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockCorrection/search',
+    data: {
       data: {
         criteria: [
           {
@@ -30,7 +30,7 @@ export async function searchStockCorrection({page = 0}) {
       limit: 10,
       offset: 10 * page,
     },
-  );
+  });
 }
 
 export async function createStockCorrection({
@@ -41,13 +41,16 @@ export async function createStockCorrection({
   status,
   realQty,
 }) {
-  return axios.post('ws/aos/stock-correction/', {
-    productId: productId,
-    stockLocationId: stockLocationId,
-    reasonId: reasonId,
-    trackingNumberId: trackingNumberId,
-    status: status,
-    realQty: realQty,
+  return axiosApiProvider.post({
+    url: 'ws/aos/stock-correction/',
+    data: {
+      productId: productId,
+      stockLocationId: stockLocationId,
+      reasonId: reasonId,
+      trackingNumberId: trackingNumberId,
+      status: status,
+      realQty: realQty,
+    },
   });
 }
 
@@ -57,9 +60,12 @@ export async function updateStockCorrection({
   realQty,
   status,
 }) {
-  return axios.put(`/ws/aos/stock-correction/${stockCorrectionId}`, {
-    version: version,
-    realQty: realQty,
-    status: status,
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-correction/${stockCorrectionId}`,
+    data: {
+      version: version,
+      realQty: realQty,
+      status: status,
+    },
   });
 }

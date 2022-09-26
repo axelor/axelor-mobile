@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 import StockMove from '../types/stock-move';
 
 const deliveryFields = [
@@ -69,19 +69,22 @@ const createSearchCriteria = searchValue => {
 };
 
 export async function searchDeliveryFilter({searchValue = null, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMove/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMove/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: createSearchCriteria(searchValue),
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: createSearchCriteria(searchValue),
+          },
+        ],
+      },
+      fields: deliveryFields,
+      sortBy: sortByFields,
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: deliveryFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -93,18 +96,24 @@ export async function addLineStockMove({
   expectedQty,
   realQty,
 }) {
-  return axios.post(`/ws/aos/stock-move/add-line/${stockMoveId}`, {
-    productId: productId,
-    unitId: unitId,
-    trackingNumberId: trackingNumberId,
-    expectedQty: expectedQty,
-    realQty: realQty,
-    conformity: StockMove.conformity.None,
+  return axiosApiProvider.post({
+    url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
+    data: {
+      productId: productId,
+      unitId: unitId,
+      trackingNumberId: trackingNumberId,
+      expectedQty: expectedQty,
+      realQty: realQty,
+      conformity: StockMove.conformity.None,
+    },
   });
 }
 
 export async function realizeSockMove({stockMoveId, version}) {
-  return axios.put(`/ws/aos/stock-move/realize/${stockMoveId}`, {
-    version: version,
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-move/realize/${stockMoveId}`,
+    data: {
+      version: version,
+    },
   });
 }

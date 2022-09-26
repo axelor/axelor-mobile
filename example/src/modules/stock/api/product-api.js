@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
+import {axiosApiProvider} from '@aos-mobile/core';
 import {fetchFileDetails} from './metafile-api';
 
 const productFields = [
@@ -82,46 +82,52 @@ const createProductCriteria = searchValue => {
 };
 
 export async function searchProductsFilter({searchValue, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.base.db.Product/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: createProductCriteria(searchValue),
-        },
-      ],
-    },
-    fields: productFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
-  });
-}
-
-export async function searchProductWithId(productId) {
-  return axios.post(
-    `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
-    {
-      fields: productFields,
-    },
-  );
-}
-
-export function searchProductBySerialNumber(serialNumber) {
-  return axios
-    .post('/ws/rest/com.axelor.apps.base.db.Product/search', {
       data: {
         criteria: [
           {
-            fieldName: 'serialNumber',
-            operator: '=',
-            value: serialNumber,
+            operator: 'and',
+            criteria: createProductCriteria(searchValue),
           },
         ],
       },
       fields: productFields,
-      limit: 1,
-      offset: 0,
+      sortBy: sortByFields,
+      limit: 10,
+      offset: 10 * page,
+    },
+  });
+}
+
+export async function searchProductWithId(productId) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
+    data: {
+      fields: productFields,
+    },
+  });
+}
+
+export function searchProductBySerialNumber(serialNumber) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.base.db.Product/search',
+      data: {
+        data: {
+          criteria: [
+            {
+              fieldName: 'serialNumber',
+              operator: '=',
+              value: serialNumber,
+            },
+          ],
+        },
+        fields: productFields,
+        limit: 1,
+        offset: 0,
+      },
     })
     .then(getApiResponseData)
     .then(getFirstData);
@@ -133,16 +139,21 @@ export async function updateLocker({
   newLocker,
   version,
 }) {
-  return axios.put(`/ws/aos/stock-product/modify-locker/${productId}`, {
-    stockLocationId: stockLocationId,
-    newLocker: newLocker,
-    version: version,
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-product/modify-locker/${productId}`,
+    data: {
+      stockLocationId: stockLocationId,
+      newLocker: newLocker,
+      version: version,
+    },
   });
 }
 
 export async function fetchAttachedFiles(productId) {
-  return axios
-    .get(`/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`)
+  return axiosApiProvider
+    .get({
+      url: `/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`,
+    })
     .then(response => {
       if (response?.data?.data == null) {
         return response;
@@ -153,24 +164,27 @@ export async function fetchAttachedFiles(productId) {
 }
 
 export async function fetchVariants({productVariantParentId, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.base.db.Product/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.base.db.Product/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'parentProduct.id',
-              operator: '=',
-              value: productVariantParentId,
-            },
-          ],
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'parentProduct.id',
+                operator: '=',
+                value: productVariantParentId,
+              },
+            ],
+          },
+        ],
+      },
+      fields: productFields,
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: productFields,
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -180,19 +194,19 @@ export async function getProductStockIndicators({
   stockLocationId,
   version,
 }) {
-  return axios.post(
-    `/ws/aos/stock-product/fetch-product-with-stock/${productId}`,
-    {
+  return axiosApiProvider.post({
+    url: `/ws/aos/stock-product/fetch-product-with-stock/${productId}`,
+    data: {
       companyId: companyId,
       stockLocationId: stockLocationId,
       version: version,
     },
-  );
+  });
 }
 
 export async function fetchVariantAttributes({productVariantId, version}) {
-  return axios.post(
-    `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
-    {version: version},
-  );
+  return axiosApiProvider.post({
+    url: `/ws/aos/stock-product/get-variant-attributes/${productVariantId}`,
+    data: {version: version},
+  });
 }

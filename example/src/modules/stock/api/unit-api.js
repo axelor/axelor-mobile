@@ -1,5 +1,5 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 export async function searchUnit() {
-  return axios.get('/ws/rest/com.axelor.apps.base.db.Unit');
+  return axiosApiProvider.get({url: '/ws/rest/com.axelor.apps.base.db.Unit'});
 }

@@ -6,7 +6,7 @@ export async function loginApi(
   url: string,
   username: string,
   password: string,
-): Promise<string> {
+): Promise<{token: string; jsessionId: string}> {
   return axios
     .post(`${url}${loginPath}`, {username, password})
     .then(response => {

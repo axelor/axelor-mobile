@@ -1,9 +1,9 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 export async function searchSupplierProduct({supplierId, productId}) {
-  return axios.post(
-    '/ws/rest/com.axelor.apps.purchase.db.SupplierCatalog/search',
-    {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.purchase.db.SupplierCatalog/search',
+    data: {
       data: {
         criteria: [
           {
@@ -28,5 +28,5 @@ export async function searchSupplierProduct({supplierId, productId}) {
       limit: 1,
       offset: 0,
     },
-  );
+  });
 }

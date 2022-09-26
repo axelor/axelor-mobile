@@ -1,5 +1,5 @@
 import Toast from 'react-native-toast-message';
-import {traceError} from './traceback-api';
+import {traceError} from '@aos-mobile/core';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {

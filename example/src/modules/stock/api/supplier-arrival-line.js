@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 import StockMove from '../types/stock-move';
 
 const supplierArrivalLineFields = [
@@ -18,25 +18,28 @@ export async function searchSupplierArrivalLines({
   supplierArrivalId,
   page = 0,
 }) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'stockMove.id',
-              operator: '=',
-              value: supplierArrivalId,
-            },
-          ],
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'stockMove.id',
+                operator: '=',
+                value: supplierArrivalId,
+              },
+            ],
+          },
+        ],
+      },
+      fields: supplierArrivalLineFields,
+      sortBy: ['id'],
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: supplierArrivalLineFields,
-    sortBy: ['id'],
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -46,9 +49,12 @@ export async function updateLine({
   realQty,
   conformity = StockMove.conformity.None,
 }) {
-  return axios.put(`/ws/aos/stock-move-line/${stockMoveLineId}`, {
-    version: version,
-    realQty: realQty,
-    conformity: conformity,
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
+    data: {
+      version: version,
+      realQty: realQty,
+      conformity: conformity,
+    },
   });
 }

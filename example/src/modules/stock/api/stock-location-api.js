@@ -1,6 +1,6 @@
-import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
 import StockLocation from '@/modules/stock/types/stock-location';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const stockLocationFields = [
   'name',
@@ -70,41 +70,47 @@ export async function searchStockLocationsFilter({
   defaultStockLocation = null,
   page = 0,
 }) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.StockLocation/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: createSearchCriteria({
-            companyId: companyId,
-            searchValue: searchValue,
-            defaultStockLocation: defaultStockLocation,
-          }),
-        },
-      ],
-    },
-    fields: stockLocationFields,
-    sortBy: ['id', 'name'],
-    limit: 10,
-    offset: 10 * page,
-  });
-}
-
-export async function searchStockLocationBySerialNumber(serialNumber) {
-  return axios
-    .post('/ws/rest/com.axelor.apps.stock.db.StockLocation/search', {
       data: {
         criteria: [
           {
-            fieldName: 'serialNumber',
-            operator: '=',
-            value: serialNumber,
+            operator: 'and',
+            criteria: createSearchCriteria({
+              companyId: companyId,
+              searchValue: searchValue,
+              defaultStockLocation: defaultStockLocation,
+            }),
           },
         ],
       },
       fields: stockLocationFields,
-      limit: 1,
-      offset: 0,
+      sortBy: ['id', 'name'],
+      limit: 10,
+      offset: 10 * page,
+    },
+  });
+}
+
+export async function searchStockLocationBySerialNumber(serialNumber) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.stock.db.StockLocation/search',
+      data: {
+        data: {
+          criteria: [
+            {
+              fieldName: 'serialNumber',
+              operator: '=',
+              value: serialNumber,
+            },
+          ],
+        },
+        fields: stockLocationFields,
+        limit: 1,
+        offset: 0,
+      },
     })
     .then(getApiResponseData)
     .then(getFirstData);

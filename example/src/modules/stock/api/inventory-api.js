@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 import Inventory from '../types/inventory';
 
 const inventoryFields = [
@@ -55,29 +55,31 @@ const createSearchCriteria = searchValue => {
 };
 
 export async function fetchInventory({inventoryId}) {
-  return axios.post(
-    `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}/fetch`,
-    {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}/fetch`,
+    data: {
       fields: inventoryFields,
     },
-  );
+  });
 }
 
 export async function searchInventoryFilter({searchValue, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.Inventory/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.Inventory/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: createSearchCriteria(searchValue),
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: createSearchCriteria(searchValue),
+          },
+        ],
+      },
+      fields: inventoryFields,
+      sortBy: sortByFields,
+      limit: 10,
+      offset: 10 * page,
     },
-
-    fields: inventoryFields,
-    sortBy: sortByFields,
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -86,16 +88,16 @@ export async function modifyDescriptionInventory({
   description,
   version,
 }) {
-  return axios.post(
-    `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}`,
-    {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}`,
+    data: {
       data: {
         id: inventoryId,
         description: description,
         version: version,
       },
     },
-  );
+  });
 }
 
 export async function updateInventoryStatus({
@@ -104,17 +106,18 @@ export async function updateInventoryStatus({
   status,
   userId = null,
 }) {
-  return axios.put(
-    `/ws/aos/inventory/update-status/${inventoryId}`,
-    userId != null
-      ? {
-          version: version,
-          status: status,
-          userId: userId,
-        }
-      : {
-          version: version,
-          status: status,
-        },
-  );
+  return axiosApiProvider.put({
+    url: `/ws/aos/inventory/update-status/${inventoryId}`,
+    data:
+      userId != null
+        ? {
+            version: version,
+            status: status,
+            userId: userId,
+          }
+        : {
+            version: version,
+            status: status,
+          },
+  });
 }

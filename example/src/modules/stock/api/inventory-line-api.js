@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const inventoryLineFields = [
   'id',
@@ -12,24 +12,27 @@ const inventoryLineFields = [
 ];
 
 export async function searchInventoryLines({inventoryId, page = 0}) {
-  return axios.post('/ws/rest/com.axelor.apps.stock.db.InventoryLine/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.stock.db.InventoryLine/search',
     data: {
-      criteria: [
-        {
-          operator: 'and',
-          criteria: [
-            {
-              fieldName: 'inventory.id',
-              operator: '=',
-              value: inventoryId,
-            },
-          ],
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'inventory.id',
+                operator: '=',
+                value: inventoryId,
+              },
+            ],
+          },
+        ],
+      },
+      fields: inventoryLineFields,
+      limit: 10,
+      offset: 10 * page,
     },
-    fields: inventoryLineFields,
-    limit: 10,
-    offset: 10 * page,
   });
 }
 
@@ -39,10 +42,13 @@ export async function updateInventoryLineDetails({
   realQty,
   description = null,
 }) {
-  return axios.put(`/ws/aos/inventory-line/${inventoryLineId}`, {
-    version: version,
-    realQty: realQty,
-    description: description,
+  return axiosApiProvider.put({
+    url: `/ws/aos/inventory-line/${inventoryLineId}`,
+    data: {
+      version: version,
+      realQty: realQty,
+      description: description,
+    },
   });
 }
 
@@ -54,12 +60,15 @@ export async function createInventoryLine({
   rack = null,
   realQty,
 }) {
-  return axios.post('/ws/aos/inventory-line/', {
-    inventoryId: inventoryId,
-    inventoryVersion: inventoryVersion,
-    productId: productId,
-    trackingNumberId: trackingNumberId,
-    rack: rack,
-    realQty: realQty,
+  return axiosApiProvider.post({
+    url: '/ws/aos/inventory-line/',
+    data: {
+      inventoryId: inventoryId,
+      inventoryVersion: inventoryVersion,
+      productId: productId,
+      trackingNumberId: trackingNumberId,
+      rack: rack,
+      realQty: realQty,
+    },
   });
 }

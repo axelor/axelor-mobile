@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {getApiResponseData, getFirstData} from '@/api/utils';
+import {axiosApiProvider} from '@aos-mobile/core';
 
 const MobileMenuFields = ['name', 'enabled'];
 
@@ -14,42 +14,46 @@ const createCriteria = listMenus => {
 };
 
 async function searchMenu({listMenus}) {
-  return axios.post(
-    '/ws/rest/com.axelor.apps.mobile.db.MobileMenu/search',
-    listMenus == null
-      ? {
-          fields: MobileMenuFields,
-          limit: null,
-          offset: 0,
-        }
-      : {
-          data: {
-            criteria: [
-              {
-                operator: 'or',
-                criteria: createCriteria(listMenus),
-              },
-            ],
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.mobile.db.MobileMenu/search',
+    data:
+      listMenus == null
+        ? {
+            fields: MobileMenuFields,
+            limit: null,
+            offset: 0,
+          }
+        : {
+            data: {
+              criteria: [
+                {
+                  operator: 'or',
+                  criteria: createCriteria(listMenus),
+                },
+              ],
+            },
+            fields: MobileMenuFields,
+            limit: null,
+            offset: 0,
           },
-          fields: MobileMenuFields,
-          limit: null,
-          offset: 0,
-        },
-  );
+  });
 }
 
 export async function getMenuConfig({AppSequence}) {
-  return axios.post('/ws/rest/com.axelor.apps.mobile.db.MobileConfig/search', {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.mobile.db.MobileConfig/search',
     data: {
-      criteria: [
-        {
-          fieldName: 'sequence',
-          operator: '=',
-          value: AppSequence,
-        },
-      ],
+      data: {
+        criteria: [
+          {
+            fieldName: 'sequence',
+            operator: '=',
+            value: AppSequence,
+          },
+        ],
+      },
+      fields: ['menus', 'sequence'],
     },
-    fields: ['menus', 'sequence'],
   });
 }
 
