@@ -1,11 +1,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
 import {Badge, LabelText} from '@/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {checkNullString} from '@/modules/stock/utils/strings';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const InternalMoveLineCard = ({
   style,

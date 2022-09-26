@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {PopUpOneButton} from '@/components/organisms';
-import {Text, Card} from '@/components/atoms';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const SmallPropertyCard = ({
   style,

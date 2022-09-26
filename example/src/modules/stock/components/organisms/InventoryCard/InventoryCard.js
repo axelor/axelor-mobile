@@ -1,10 +1,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import Inventory from '@/modules/stock/types/inventory';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const InventoryCard = ({
   style,

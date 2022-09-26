@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   View,
   StyleSheet,
@@ -7,7 +6,9 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import {Button, Card, Input, Screen, Text} from '@aos-mobile/ui';
+import {useDispatch, useSelector} from 'react-redux';
+import {Button, Card, Input, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Picker} from '@/components/organisms';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
@@ -25,8 +26,6 @@ import {
   createInternalMove,
   updateInternalMove,
 } from '@/modules/stock/features/internalMoveSlice';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();

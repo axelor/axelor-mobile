@@ -1,13 +1,19 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Card, Screen, ScrollView, Text} from '@aos-mobile/ui';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  Button,
+  Card,
+  Screen,
+  ScrollView,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Badge, InputBarCodeCard} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
-import {useThemeColor} from '@aos-mobile/ui';
 import {QuantityCard, StockMoveHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
-import {useDispatch, useSelector} from 'react-redux';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 
 const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {

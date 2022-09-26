@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
+import {Card, Icon, Text} from '@aos-mobile/ui';
 
 const HalfLabelCard = ({style, iconName, title, onPress}) => {
   return (

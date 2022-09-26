@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Icon, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const CarrierCard = ({style, onPress}) => {
   const I18n = useTranslator();

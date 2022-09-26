@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Icon} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
+import {Card, Icon, useThemeColor} from '@aos-mobile/ui';
 
 const DropdownMenu = ({children}) => {
   const [visible, setVisible] = useState(false);

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Screen, Text} from '@aos-mobile/ui';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ViewAllContainer} from '@/components/molecules';
@@ -13,7 +12,8 @@ import {
 } from '../../components/organisms';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
-import useTranslator from '@/hooks/use-translator';
+import {Button, Card, Screen, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;

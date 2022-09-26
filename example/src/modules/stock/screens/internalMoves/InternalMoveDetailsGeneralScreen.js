@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import {Card, Screen, Text} from '@/components/atoms';
+import {useDispatch, useSelector} from 'react-redux';
+import {Card, Screen, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {ViewAllContainer} from '@/components/molecules';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
@@ -11,7 +12,6 @@ import {
 } from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';
 import {getRacks} from '../../features/racksListSlice';
-import useTranslator from '@/hooks/use-translator';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;

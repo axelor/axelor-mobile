@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react';
-import {Card, Switch, Text} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
+import {Card, Switch, Text, useThemeColor} from '@aos-mobile/ui';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const SwitchCard = ({style, title, defaultValue, onToggle = () => {}}) => {

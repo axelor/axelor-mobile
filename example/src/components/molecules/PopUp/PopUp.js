@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
-import {Card, Text} from '@/components/atoms';
+import {Card, Text} from '@aos-mobile/ui';
 
 const PopUp = ({style, visible, title, data, children}) => {
   return (

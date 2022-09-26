@@ -1,8 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const NextButton = ({style, onPress = () => {}}) => {
   const Colors = useThemeColor();

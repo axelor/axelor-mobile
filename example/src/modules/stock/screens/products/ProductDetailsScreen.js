@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {Button, Card, Screen, Text} from '@aos-mobile/ui';
+import {Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {DropdownMenuItem} from '@/components/molecules';
 import {DropdownMenu} from '@/components/organisms';
 import {
@@ -8,8 +9,6 @@ import {
   SmallPropertyCard,
 } from '@/modules/stock/components/organisms/';
 import RenderHtml from 'react-native-render-html';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

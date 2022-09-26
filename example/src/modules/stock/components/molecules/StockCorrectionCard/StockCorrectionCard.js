@@ -1,10 +1,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, Text} from '@/components/atoms';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const StockCorrectionCard = ({
   style,

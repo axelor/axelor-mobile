@@ -6,8 +6,8 @@ import {
   useScannedValueByKey,
   useScannerSelector,
 } from '@/features/scannerSlice';
-import {CameraScanner, Card, Icon, Input, Text} from '@/components/atoms';
-import {useThemeColor} from '@aos-mobile/ui';
+import {CameraScanner} from '@/components/atoms';
+import {useThemeColor, Card, Icon, Input, Text} from '@aos-mobile/ui';
 import {getCommonStyles} from '@/components/commons-styles';
 
 const InputBarCodeCard = ({

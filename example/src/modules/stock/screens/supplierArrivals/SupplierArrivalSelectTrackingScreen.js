@@ -1,16 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Card, Icon, Screen, Text} from '@/components/atoms';
+import {useDispatch, useSelector} from 'react-redux';
+import {Card, Icon, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Badge} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {useDispatch, useSelector} from 'react-redux';
 import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
-import {useThemeColor} from '@aos-mobile/ui';
 import {StockMoveHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 

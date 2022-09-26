@@ -1,11 +1,10 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Text, Icon} from '@/components/atoms';
 import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
+import {Card, Text, Icon, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const CustomerDeliveryCard = ({
   style,
