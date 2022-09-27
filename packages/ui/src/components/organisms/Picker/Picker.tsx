@@ -1,10 +1,11 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-//import { Picker as ReactNativePicker } from "@react-native-picker/picker";
+import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 import {useThemeColor} from '../../../ThemeContext';
 import {getCommonStyles} from '../../../commons-styles';
 import {Text} from '../../atoms';
 import {LabelText} from '../../molecules';
+import {getFromList} from '../../../utils/list';
 
 interface PickerProps {
   styleTxt?: any;
@@ -24,19 +25,19 @@ interface PickerProps {
 const Picker = ({
   styleTxt,
   title,
-  /*onValueChange,
+  onValueChange,
   defaultValue,
   listItems,
   labelField,
   valueField,
-  emptyValue = true,*/
-  //isValueItem = false,
+  emptyValue = true,
+  isValueItem = false,
   disabled = false,
   disabledValue = null,
   iconName = null,
 }: PickerProps) => {
   const Colors = useThemeColor();
-  /*const [selectedValue, setSelectedValue] = useState(
+  const [selectedValue, setSelectedValue] = useState(
     defaultValue == null ? '' : defaultValue,
   );
 
@@ -45,7 +46,7 @@ const Picker = ({
     onValueChange(
       isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
     );
-  };*/
+  };
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -77,27 +78,28 @@ const Picker = ({
         </View>
       ) : (
         <View style={[commonStyles.filter, styles.pickerContainer]}>
-          {/*<ReactNativePicker
-            style={styles.picker}
-            itemStyle={styles.pickerItem}
-            dropdownIconColor={Colors.secondaryColor_dark}
-            selectedValue={selectedValue}
-            onValueChange={handleValueChange}
-            mode="dropdown"
-          >
-            {emptyValue && <ReactNativePicker.Item label={""} value={null} />}
-            {listItems == null
-              ? null
-              : listItems.map((item) => {
-                  return (
-                    <ReactNativePicker.Item
-                      key={item[valueField]}
-                      label={item[labelField]}
-                      value={item[valueField]}
-                    />
-                  );
-                })}
-          </ReactNativePicker>*/}
+          {
+            <ReactNativePicker
+              style={styles.picker}
+              itemStyle={styles.pickerItem}
+              dropdownIconColor={Colors.secondaryColor_dark}
+              selectedValue={selectedValue}
+              onValueChange={handleValueChange}
+              mode="dropdown">
+              {emptyValue && <ReactNativePicker.Item label={''} value={null} />}
+              {listItems == null
+                ? null
+                : listItems.map(item => {
+                    return (
+                      <ReactNativePicker.Item
+                        key={item[valueField]}
+                        label={item[labelField]}
+                        value={item[valueField]}
+                      />
+                    );
+                  })}
+            </ReactNativePicker>
+          }
         </View>
       )}
     </View>
