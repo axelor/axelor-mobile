@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {PopUp} from '@/components/molecules';
-import {useThemeColor, Button} from '@aos-mobile/ui';
+import {Button, PopUp, useThemeColor} from '@aos-mobile/ui';
 
 const PopUpTwoButton = ({
   visible,

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, Icon, Screen, Text} from '@aos-mobile/ui';
-import {Badge} from '@/components/molecules';
+import {Badge, Button, Icon, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Picker} from '@/components/organisms';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
@@ -15,8 +15,6 @@ import {fetchProductWithId} from '@/modules/stock/features/productSlice';
 import {fetchProductForSupplier} from '@/modules/stock/features/supplierCatalogSlice';
 import {addNewLine} from '@/modules/stock/features/supplierArrivalSlice';
 import {updateSupplierArrivalLine} from '@/modules/stock/features/supplierArrivalLineSlice';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

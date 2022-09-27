@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Icon, useThemeColor} from '@aos-mobile/ui';
+import {Chip, Icon, Screen, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {
   AutocompleteSearch,
@@ -22,7 +22,6 @@ import {
   displayStockMoveSeq,
 } from '@/modules/stock/utils/displayers';
 import StockMove from '@/modules/stock/types/stock-move';
-import {Chip} from '@/components/molecules';
 
 const stockOriginalLocationScanKey =
   'stock-original-location_internal-move-list';

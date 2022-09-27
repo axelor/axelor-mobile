@@ -1,9 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, useThemeColor} from '@aos-mobile/ui';
+import {Chip, Screen, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Chip} from '@/components/molecules';
 import {
   AutocompleteSearch,
   AutoCompleteSearchNoQR,

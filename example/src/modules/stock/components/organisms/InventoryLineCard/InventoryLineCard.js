@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {LabelText} from '@/components/molecules';
-import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Card, Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 
 const InventoryLineCard = ({

@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Badge, Image} from '@/components/molecules';
-import Product from '@/modules/stock/types/product';
-import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Badge, Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
+import {Image} from '@/components/molecules';
+import Product from '@/modules/stock/types/product';
 
 const ProductVariantCard = ({
   style,

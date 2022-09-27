@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Card, Screen, Text} from '@aos-mobile/ui';
+import {Card, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {ViewAllContainer} from '@/components/molecules';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {

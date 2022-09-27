@@ -1,9 +1,8 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {LabelText} from '@/components/molecules';
-import {checkNullString} from '@/modules/stock/utils/strings';
-import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Card, Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
+import {checkNullString} from '@/modules/stock/utils/strings';
 
 const SupplierArrivalLineCard = ({
   style,

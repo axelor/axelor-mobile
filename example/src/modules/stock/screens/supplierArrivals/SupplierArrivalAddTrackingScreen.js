@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  Badge,
   Button,
   Card,
   Screen,
@@ -10,7 +11,7 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Badge, InputBarCodeCard} from '@/components/molecules';
+import {InputBarCodeCard} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {QuantityCard, StockMoveHeader} from '../../components/organisms';

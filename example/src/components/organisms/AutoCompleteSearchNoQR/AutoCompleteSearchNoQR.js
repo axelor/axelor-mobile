@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {AutocompleteItem, SearchBarNoQR} from '@/components/molecules';
+import {AutocompleteItem, SearchBarNoQR} from '@aos-mobile/ui';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;

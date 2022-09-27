@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@aos-mobile/ui';
+import {ClearableCard, Screen} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {AutocompleteSearch} from '@/components/organisms';
-import {ClearableCard} from '@/components/molecules';
 
 const trackingNumberScanKey = 'tracking-number_stock-correction-new';
 

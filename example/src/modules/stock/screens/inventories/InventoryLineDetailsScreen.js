@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, ScrollView} from 'react-native';
-import {Screen, Text, Button} from '@aos-mobile/ui';
+import {Button, EditableInput, Screen, Text} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
@@ -15,7 +15,6 @@ import {
   createNewInventoryLine,
   updateInventoryLine,
 } from '../../features/inventoryLineSlice';
-import {EditableInput} from '@/components/molecules';
 import {fetchProductWithId} from '../../features/productSlice';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {

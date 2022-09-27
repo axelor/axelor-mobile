@@ -1,18 +1,15 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Screen} from '@aos-mobile/ui';
 import {useDispatch, useSelector} from 'react-redux';
-import {useTheme} from '@aos-mobile/ui';
+import {Button, Screen, SwitchCard, useTheme} from '@aos-mobile/ui';
+import {getTranslations, selectLanguage, useTranslator} from '@aos-mobile/core';
 import {
   clearMessage,
   toggleFilterShowConfig,
   toggleZebraConfig,
   uploadTranslations,
 } from '../features/configSlice';
-import useTranslator from '@/hooks/use-translator';
-import {getTranslations, selectLanguage} from '@aos-mobile/core';
 import Toast from 'react-native-toast-message';
-import {SwitchCard} from '@/components/molecules';
 
 const SettingsScreen = ({route}) => {
   const {loading, zebraConfig, filterShowConfig, message} = useSelector(

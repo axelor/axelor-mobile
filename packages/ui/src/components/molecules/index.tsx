@@ -6,6 +6,7 @@ export {default as Chip} from './Chip/Chip';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as EditableInput} from './EditableInput/EditableInput';
+export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
 export {default as IconButton} from './IconButton/IconButton';
 export {default as Increment} from './Increment/Increment';
 export {default as LabelText} from './LabelText/LabelText';

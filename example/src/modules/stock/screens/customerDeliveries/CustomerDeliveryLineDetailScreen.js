@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Badge} from '@/components/molecules';
+import {Badge, Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {ProductCardInfo} from '@/modules/stock/components/organisms';
 import {
@@ -13,8 +14,6 @@ import {fetchProductWithId} from '../../features/productSlice';
 import RenderHtml from 'react-native-render-html';
 import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 import {addNewLine} from '../../features/customerDeliverySlice';
-import {Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

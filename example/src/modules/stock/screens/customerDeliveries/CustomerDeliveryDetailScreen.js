@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {ViewAllContainer} from '@/components/molecules';
+import {Button, Card, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {CarrierCard, LocationsMoveCard} from '../../components/molecules';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import RenderHtml from 'react-native-render-html';
@@ -12,8 +13,6 @@ import {
 } from '../../components/organisms';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
-import {Button, Card, Screen, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;

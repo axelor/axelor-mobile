@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Screen, Text} from '@aos-mobile/ui';
-import {ViewAllContainer} from '@/components/molecules';
+import {Button, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   SupplierArrivalLineCard,
@@ -12,7 +12,6 @@ import {fetchSupplierArrivalLines} from '@/modules/stock/features/supplierArriva
 import StockMove from '@/modules/stock/types/stock-move';
 import {getRacks} from '@/modules/stock/features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
-import useTranslator from '@/hooks/use-translator';
 
 const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;

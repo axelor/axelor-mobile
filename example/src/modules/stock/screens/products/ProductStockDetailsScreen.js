@@ -8,9 +8,16 @@ import {
   Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Icon, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {
+  DropdownMenuItem,
+  EditableInput,
+  Icon,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {EditableInput, DropdownMenuItem, Image} from '@/components/molecules';
+import {Image} from '@/components/molecules';
 import {DropdownMenu, AutocompleteSearch, Picker} from '@/components/organisms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {CardStockIndicator} from '@/modules/stock/components/organisms';

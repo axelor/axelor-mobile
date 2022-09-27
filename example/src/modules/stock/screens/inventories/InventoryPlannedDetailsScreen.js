@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {Button, Screen, Text} from '@aos-mobile/ui';
-import {EditableInput} from '@/components/molecules';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
+import {Button, EditableInput, Screen, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
+import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   fetchInventoryById,
   modifyDescription,
   updateInventory,
 } from '@/modules/stock/features/inventorySlice';
 import {InventoryHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 import Inventory from '../../types/inventory';
 
 const InventoryPlannedDetailsScreen = ({route, navigation}) => {

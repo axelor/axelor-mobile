@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {
+  Button,
+  Card,
+  DropdownMenuItem,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {DropdownMenuItem} from '@/components/molecules';
 import {DropdownMenu} from '@/components/organisms';
 import {
   ProductCharacteristics,

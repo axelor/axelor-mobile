@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Badge, Icon, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Badge} from '@/components/molecules';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import Inventory from '@/modules/stock/types/inventory';
 

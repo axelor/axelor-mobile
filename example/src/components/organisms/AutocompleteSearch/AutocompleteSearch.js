@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {useThemeColor} from '@aos-mobile/ui';
-import {SearchBar, AutocompleteItem} from '@/components/molecules';
+import {AutocompleteItem, SearchBar, useThemeColor} from '@aos-mobile/ui';
 import {
   enableScan,
   useScannedValueByKey,

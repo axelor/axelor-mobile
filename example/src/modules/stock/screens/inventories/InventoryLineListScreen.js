@@ -1,9 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {Chip, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Chip} from '@/components/molecules';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {fetchInventoryLines} from '@/modules/stock/features/inventoryLineSlice';

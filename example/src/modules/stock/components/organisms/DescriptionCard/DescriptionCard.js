@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {EditableInput} from '@/components/molecules';
-import {Card, Text} from '@aos-mobile/ui';
+import {Card, EditableInput, Text} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 
 const DescriptionCard = ({

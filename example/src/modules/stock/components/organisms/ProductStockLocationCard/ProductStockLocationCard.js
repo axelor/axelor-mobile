@@ -1,8 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Badge, Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Badge, LabelText} from '@/components/molecules';
 
 const ProductStockLocationCard = ({
   stockLocationName,

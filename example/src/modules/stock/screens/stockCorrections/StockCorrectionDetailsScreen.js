@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
-import {Button, Screen, Text} from '@aos-mobile/ui';
-import {Badge} from '@/components/molecules';
+import {Badge, Button, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 import {Picker, PopUpOneButton} from '@/components/organisms';
 import {
   QuantityCard,
@@ -17,8 +17,6 @@ import {
 import getFromList from '@/modules/stock/utils/get-from-list';
 import StockCorrection from '@/modules/stock/types/stock-corrrection';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
-import {useThemeColor} from '@aos-mobile/ui';
-import useTranslator from '@/hooks/use-translator';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();

@@ -1,8 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {Badge, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Badge} from '@/components/molecules';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
 import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
