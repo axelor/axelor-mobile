@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Text, useThemeColor} from '@aos-mobile/ui';
-import {LabelText} from '@/components/molecules/';
+import {LabelText, Text, useThemeColor} from '@aos-mobile/ui';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 import getFromList from '@/modules/stock/utils/get-from-list';
 import {getCommonStyles} from '@/components/commons-styles';

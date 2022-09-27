@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen} from '@aos-mobile/ui';
+import {Screen, ScrollList} from '@aos-mobile/ui';
 import {
   fetchProductsAttributes,
   fetchProductVariants,
 } from '@/modules/stock/features/productVariantSlice';
 import {ProductVariantCard} from '@/modules/stock/components/organisms';
-import {ScrollList} from '@/components/organisms';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
 const ProductListVariantScreen = ({route, navigation}) => {

@@ -1,10 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Badge, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {
+  Badge,
+  PopUpOneButton,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
-import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
+import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '../../types/stock-move';

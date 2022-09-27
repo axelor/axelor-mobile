@@ -1,10 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Card, ClearableCard, Screen, Text} from '@aos-mobile/ui';
+import {
+  Card,
+  ClearableCard,
+  PopUpOneButton,
+  Screen,
+  Text,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
-import {AutocompleteSearch, PopUpOneButton} from '@/components/organisms';
+import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';

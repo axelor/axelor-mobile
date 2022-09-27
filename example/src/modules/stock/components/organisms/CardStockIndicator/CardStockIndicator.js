@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {PopUpOneButton} from '@/components/organisms';
+import {Card, PopUpOneButton, Text} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Card, Text} from '@aos-mobile/ui';
 
 const CardStockIndicator = ({title, number}) => {
   const [popUp, setPopUp] = useState(false);

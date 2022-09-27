@@ -1,14 +1,17 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Chip, Icon, Screen, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
 import {
-  AutocompleteSearch,
+  Chip,
   ChipSelect,
-  ScrollList,
+  Icon,
   SearchContainer,
-} from '@/components/organisms';
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
+import {AutocompleteSearch} from '@/components/organisms';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';

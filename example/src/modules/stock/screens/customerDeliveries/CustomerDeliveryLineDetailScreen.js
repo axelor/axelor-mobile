@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Badge, Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {ProductCardInfo} from '@/modules/stock/components/organisms';
 import {
   QuantityCard,
+  ProductCardInfo,
   StockMoveHeader,
 } from '@/modules/stock/components/organisms';
 import StockMove from '@/modules/stock/types/stock-move';

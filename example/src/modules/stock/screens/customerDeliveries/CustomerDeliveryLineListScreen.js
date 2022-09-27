@@ -1,7 +1,13 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Chip, Screen, useThemeColor} from '@aos-mobile/ui';
+import {
+  Chip,
+  ChipSelect,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -10,7 +16,6 @@ import {
   StockMoveHeader,
 } from '@/modules/stock/components/organisms';
 import {fetchCustomerDeliveryLines} from '@/modules/stock/features/customerDeliveryLineSlice';
-import {ChipSelect, ScrollList} from '@/components/organisms';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();

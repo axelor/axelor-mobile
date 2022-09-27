@@ -3,13 +3,13 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 import {
   Button,
   Card,
+  DropdownMenu,
   DropdownMenuItem,
   Screen,
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {DropdownMenu} from '@/components/organisms';
 import {
   ProductCharacteristics,
   SmallPropertyCard,
