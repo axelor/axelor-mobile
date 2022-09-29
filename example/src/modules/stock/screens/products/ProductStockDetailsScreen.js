@@ -13,13 +13,14 @@ import {
   DropdownMenuItem,
   EditableInput,
   Icon,
+  Picker,
   Screen,
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {Image} from '@/components/molecules';
-import {AutocompleteSearch, Picker} from '@/components/organisms';
+import {AutocompleteSearch} from '@/components/organisms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {CardStockIndicator} from '@/modules/stock/components/organisms';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';

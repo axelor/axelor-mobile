@@ -1,7 +1,14 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, Dimensions, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, Screen, Text, useTheme, useThemeColor} from '@aos-mobile/ui';
+import {
+  Icon,
+  Picker,
+  Screen,
+  Text,
+  useTheme,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {logout, useTranslator} from '@aos-mobile/core';
 import {LogoutButton} from '@/modules/auth/components/molecules';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
@@ -15,7 +22,7 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-import {AutocompleteSearch, Picker} from '@/components/organisms';
+import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {
   fetchBaseConfig,

@@ -16,6 +16,7 @@
     "format:check": "prettier --check src/"
   },
   "peerDependencies": {
+    "@react-native-picker/picker": "^2.4.1",
     "react": "*",
     "react-native": "*",
     "react-native-system-navigation-bar": "^2.0.0",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@react-native-picker/picker": "^2.4.1",
     "@types/react": "18.0.20",
     "@types/react-native": "0.68.1",
     "eslint": "^7.32.0",
@@ -33,8 +35,5 @@
     "react-native": "0.68.1",
     "react-native-system-navigation-bar": "^2.0.0",
     "react-native-vector-icons": "^9.2.0"
-  },
-  "dependencies": {
-    "@react-native-picker/picker": "^2.4.1"
   }
 }

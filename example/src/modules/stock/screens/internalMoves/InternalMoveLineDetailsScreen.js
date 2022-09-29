@@ -7,9 +7,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Card, Input, Screen, Text, useThemeColor} from '@aos-mobile/ui';
+import {
+  Button,
+  Card,
+  Input,
+  Picker,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Picker} from '@/components/organisms';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   QuantityCard,

@@ -4,13 +4,13 @@ import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import {
   Badge,
   Button,
+  Picker,
   PopUpOneButton,
   Screen,
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {Picker} from '@/components/organisms';
 import {
   QuantityCard,
   ProductCardInfo,
