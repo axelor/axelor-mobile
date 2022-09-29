@@ -1,14 +1,13 @@
 import React, {createContext, useCallback, useMemo, useState} from 'react';
-import {
-  createDrawerNavigator,
-  DrawerToggleButton,
-} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
 import DrawerContent from './drawer/DrawerContent';
 import {getDefaultModule, moduleHasMenus} from './module.helper';
 import {getMenuTitle} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
+import DrawerToggleButton from './drawer/DrawerToggleButton';
+import BackIcon from './drawer/BackIcon';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -66,11 +65,12 @@ const Navigator = ({modules, mainMenu}) => {
             };
 
             if (initialRouteName === key) {
-              screenOptions.headerLeft = props => (
-                <DrawerToggleButton
-                  {...props}
-                  tintColor={Colors.primaryColor}
-                />
+              screenOptions.headerLeft = () => (
+                <DrawerToggleButton tintColor={Colors.primaryColor} />
+              );
+            } else {
+              screenOptions.headerLeft = () => (
+                <BackIcon tintColor={Colors.primaryColor} />
               );
             }
 
