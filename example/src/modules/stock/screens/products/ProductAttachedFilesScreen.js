@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
+  File,
   Icon,
   Image,
   PopUpOneButton,
@@ -12,7 +13,6 @@ import {
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {fetchProductAttachedFiles} from '../../features/productSlice';
-import File from '@/types/file';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 
