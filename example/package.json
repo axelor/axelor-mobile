@@ -41,8 +41,10 @@
     "react-native-system-navigation-bar": "^2.0.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.1.0",
+    "react-native-vision-camera": "^2.13.5",
     "react-redux": "^7.2.8",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
