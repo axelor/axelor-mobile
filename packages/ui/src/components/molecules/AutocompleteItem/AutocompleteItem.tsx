@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
 
 interface AutocompleteItemProps {

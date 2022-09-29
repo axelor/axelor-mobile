@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface InputProps {
   style: any;

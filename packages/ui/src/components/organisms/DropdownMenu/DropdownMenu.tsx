@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {

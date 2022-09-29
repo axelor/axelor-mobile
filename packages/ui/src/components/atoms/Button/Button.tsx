@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {getCommonStyles} from '../../../commons-styles';
-import {useThemeColor} from '../../../ThemeContext';
+import {getCommonStyles} from '../../../utils/commons-styles';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface ButtonProps {
   style?: any;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {

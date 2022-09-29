@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface IconProps {
   style?: any;

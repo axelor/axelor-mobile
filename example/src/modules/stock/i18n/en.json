@@ -92,5 +92,7 @@
   "Stock_NonCompliant": "Non-compliant",
   "Stock_Conformity": "Conformity",
   "Stock_TrackingSequence": "Tracking number sequence",
-  "Stock_TrackingQty": "Quantity of new tracking number"
+  "Stock_TrackingQty": "Quantity of new tracking number",
+  "Sale_Sale": "Sale",
+  "Purchase_Purchase": "Purchase"
 }

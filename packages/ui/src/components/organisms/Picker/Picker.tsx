@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {Picker as ReactNativePicker} from '@react-native-picker/picker';
-import {useThemeColor} from '../../../ThemeContext';
-import {getCommonStyles} from '../../../commons-styles';
+import {useThemeColor} from '../../../theme/ThemeContext';
+import {getCommonStyles} from '../../../utils/commons-styles';
 import {Text} from '../../atoms';
 import {LabelText} from '../../molecules';
 import {getFromList} from '../../../utils/list';

@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {getCommonStyles} from '../../../commons-styles';
-import {useTheme} from '../../../ThemeContext';
+import {getCommonStyles} from '../../../utils/commons-styles';
+import {useTheme} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
 
 interface EditableInputProps {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Switch as RNSwitch} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface SwitchProps {
   isEnabled: boolean;

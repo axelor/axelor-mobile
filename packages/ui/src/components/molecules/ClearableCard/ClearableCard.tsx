@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
-import {getCommonStyles} from '../../../commons-styles';
-import {useThemeColor} from '../../../ThemeContext';
+import {getCommonStyles} from '../../../utils/commons-styles';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon, Text} from '../../atoms';
 
 interface ClearableCardPops {

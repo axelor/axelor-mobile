@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {Text as ReactNativeText, StyleSheet} from 'react-native';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface TextProps {
   style?: any;

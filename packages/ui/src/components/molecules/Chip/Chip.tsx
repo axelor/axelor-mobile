@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from '../../atoms';
-import {useThemeColor} from '../../../ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface ChipProps {
   selected: boolean;
