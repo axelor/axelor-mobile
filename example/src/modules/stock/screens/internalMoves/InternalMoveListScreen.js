@@ -151,51 +151,54 @@ const InternalMoveListScreen = ({navigation}) => {
   }, [Colors, navigation]);
 
   const fetchInternalMovesAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    page => {
       dispatch(
         searchInternalMoves({
-          searchValue: searchValue,
+          searchValue: filter,
           page: page,
         }),
       );
     },
+    [dispatch, filter],
+  );
+
+  const handleRefChange = useCallback(
+    searchValue => {
+      setFilter(searchValue);
+      dispatch(
+        searchInternalMoves({
+          searchValue: searchValue,
+          page: 0,
+        }),
+      );
+    },
     [dispatch],
   );
 
-  const handleRefChange = searchValue => {
-    setFilter(searchValue);
-    dispatch(
-      searchInternalMoves({
-        searchValue: searchValue,
-        page: 0,
-      }),
-    );
-  };
-
   const fetchOriginalStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const fetchDestinationStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         filterSecondStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   return (
@@ -205,7 +208,7 @@ const InternalMoveListScreen = ({navigation}) => {
           <AutoCompleteSearchNoQR
             objectList={internalMoveList}
             onChangeValue={item => showInternalMoveDetails(item)}
-            fetchData={value => handleRefChange(value)}
+            fetchData={handleRefChange}
             displayValue={displayStockMoveSeq}
             placeholder={I18n.t('Stock_Ref')}
             oneFilter={true}
@@ -253,13 +256,7 @@ const InternalMoveListScreen = ({navigation}) => {
           objectList={stockLocationListFirstFilter}
           value={originalStockLocation}
           onChangeValue={item => setOriginalStockLocation(item)}
-          fetchData={searchValue =>
-            fetchOriginalStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchOriginalStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockOriginalLocationScanKey}
           placeholder={I18n.t('Stock_OriginalStockLocation')}
@@ -269,13 +266,7 @@ const InternalMoveListScreen = ({navigation}) => {
           objectList={stockLocationListSecondFilter}
           value={destinationStockLocation}
           onChangeValue={item => setDestinationStockLocation(item)}
-          fetchData={searchValue =>
-            fetchDestinationStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchDestinationStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockDestinationLocationScanKey}
           placeholder={I18n.t('Stock_DestinationStockLocation')}
@@ -308,7 +299,7 @@ const InternalMoveListScreen = ({navigation}) => {
             onPress={() => showInternalMoveDetails(item)}
           />
         )}
-        fetchData={page => fetchInternalMovesAPI({page, searchValue: filter})}
+        fetchData={fetchInternalMovesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
       />

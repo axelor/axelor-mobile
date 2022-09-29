@@ -107,38 +107,41 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   };
 
   const fetchDeliveriesAPI = useCallback(
-    ({page = 0, searchValue = null}) => {
+    page => {
+      dispatch(
+        searchDeliveries({
+          searchValue: filter,
+          page: page,
+        }),
+      );
+    },
+    [dispatch, filter],
+  );
+
+  const handleRefChange = useCallback(
+    searchValue => {
+      setFilter(searchValue);
       dispatch(
         searchDeliveries({
           searchValue: searchValue,
-          page: page,
+          page: 0,
         }),
       );
     },
     [dispatch],
   );
 
-  const handleRefChange = searchValue => {
-    setFilter(searchValue);
-    dispatch(
-      searchDeliveries({
-        searchValue: searchValue,
-        page: 0,
-      }),
-    );
-  };
-
   const fetchStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const fetchPartnerAPI = useCallback(
@@ -155,7 +158,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
           <AutoCompleteSearchNoQR
             objectList={deliveryList}
             onChangeValue={item => navigateToCustomerDelivery(item)}
-            fetchData={value => handleRefChange(value)}
+            fetchData={handleRefChange}
             displayValue={displayStockMoveSeq}
             placeholder={I18n.t('Stock_Ref')}
             oneFilter={true}
@@ -188,13 +191,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={searchValue =>
-            fetchStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
@@ -233,7 +230,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             onPress={() => navigateToCustomerDelivery(item)}
           />
         )}
-        fetchData={page => fetchDeliveriesAPI({page, searchValue: filter})}
+        fetchData={fetchDeliveriesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
       />

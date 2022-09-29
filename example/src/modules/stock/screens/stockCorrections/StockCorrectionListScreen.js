@@ -144,16 +144,16 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
 
   const fetchStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   return (
@@ -185,13 +185,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={searchValue =>
-            fetchStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}

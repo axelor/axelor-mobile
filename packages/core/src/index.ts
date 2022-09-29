@@ -20,6 +20,7 @@ export {postTranslations} from './i18n/api/translation';
 
 // Error
 export {traceError} from './api/traceback-api';
+export {useEffectDebugger} from './hooks/use-effect-debugger';
 
 // API
 export {logout} from './features/authSlice';

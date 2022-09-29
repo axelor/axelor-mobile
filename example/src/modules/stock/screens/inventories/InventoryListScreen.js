@@ -145,34 +145,37 @@ const InventoryListScreen = ({navigation}) => {
   };
 
   const fetchStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
+        }),
+      );
+    },
+    [dispatch, user],
+  );
+
+  const fetchInventoriesAPI = useCallback(
+    page => {
+      dispatch(searchInventories({searchValue: filter, page: page}));
+    },
+    [dispatch, filter],
+  );
+
+  const handleRefChange = useCallback(
+    searchValue => {
+      setFilter(searchValue);
+      dispatch(
+        searchInventories({
+          searchValue: searchValue,
+          page: 0,
         }),
       );
     },
     [dispatch],
   );
-
-  const fetchInventoriesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(searchInventories({searchValue: searchValue, page: page}));
-    },
-    [dispatch],
-  );
-
-  const handleRefChange = searchValue => {
-    setFilter(searchValue);
-    dispatch(
-      searchInventories({
-        searchValue: searchValue,
-        page: 0,
-      }),
-    );
-  };
 
   return (
     <Screen listScreen={true}>
@@ -181,7 +184,7 @@ const InventoryListScreen = ({navigation}) => {
           <AutoCompleteSearchNoQR
             objectList={inventoryList}
             onChangeValue={item => navigateToInventoryDetail(item)}
-            fetchData={value => handleRefChange(value)}
+            fetchData={handleRefChange}
             displayValue={displayInventorySeq}
             placeholder={I18n.t('Stock_Ref')}
             oneFilter={true}
@@ -240,13 +243,7 @@ const InventoryListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={searchValue =>
-            fetchStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
@@ -266,7 +263,7 @@ const InventoryListScreen = ({navigation}) => {
             onPress={() => navigateToInventoryDetail(item)}
           />
         )}
-        fetchData={page => fetchInventoriesAPI({page, searchValue: filter})}
+        fetchData={fetchInventoriesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
       />

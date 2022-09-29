@@ -107,16 +107,16 @@ const SupplierArrivalListScreen = ({navigation}) => {
   };
 
   const fetchStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const fetchPartnerAPI = useCallback(
@@ -127,26 +127,29 @@ const SupplierArrivalListScreen = ({navigation}) => {
   );
 
   const fetchSupplierArrivalsAPI = useCallback(
-    ({page = 0, searchValue}) => {
+    page => {
+      dispatch(
+        searchSupplierArrivals({
+          searchValue: filter,
+          page: page,
+        }),
+      );
+    },
+    [dispatch, filter],
+  );
+
+  const handleRefChange = useCallback(
+    searchValue => {
+      setFilter(searchValue);
       dispatch(
         searchSupplierArrivals({
           searchValue: searchValue,
-          page: page,
+          page: 0,
         }),
       );
     },
     [dispatch],
   );
-
-  const handleRefChange = searchValue => {
-    setFilter(searchValue);
-    dispatch(
-      searchSupplierArrivals({
-        searchValue: searchValue,
-        page: 0,
-      }),
-    );
-  };
 
   return (
     <Screen listScreen={true}>
@@ -158,7 +161,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
             displayValue={displayStockMoveSeq}
             onChangeValue={item => navigateToSupplierDetail(item)}
             oneFilter={true}
-            fetchData={value => handleRefChange(value)}
+            fetchData={handleRefChange}
             navigate={navigate}
           />
         }
@@ -188,13 +191,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={searchValue =>
-            fetchStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
@@ -226,9 +223,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
             style={styles.cardDelivery}
           />
         )}
-        fetchData={page =>
-          fetchSupplierArrivalsAPI({page, searchValue: filter})
-        }
+        fetchData={fetchSupplierArrivalsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
       />

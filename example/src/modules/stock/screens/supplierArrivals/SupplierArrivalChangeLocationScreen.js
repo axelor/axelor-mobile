@@ -21,16 +21,16 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const fetchStockLocationsAPI = useCallback(
-    (filterValue, companyId, defaultStockLocation) => {
+    filterValue => {
       dispatch(
         searchStockLocations({
           searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: defaultStockLocation,
+          companyId: user.activeCompany?.id,
+          defaultStockLocation: user.workshopStockLocation,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   const validateChange = () => {
@@ -81,13 +81,7 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={searchValue =>
-            fetchStockLocationsAPI(
-              searchValue,
-              user.activeCompany?.id,
-              user.workshopStockLocation,
-            )
-          }
+          fetchData={fetchStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}

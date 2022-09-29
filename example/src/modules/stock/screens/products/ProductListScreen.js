@@ -34,6 +34,15 @@ const ProductListScreen = ({navigation}) => {
     [dispatch],
   );
 
+  const filterProductsAPI = useCallback(
+    value => fetchProductsAPI({searchValue: value}),
+    [fetchProductsAPI],
+  );
+  const scrollProductsAPI = useCallback(
+    page => fetchProductsAPI({page}),
+    [fetchProductsAPI],
+  );
+
   const showProductDetails = useCallback(
     product => {
       if (product != null) {
@@ -64,7 +73,7 @@ const ProductListScreen = ({navigation}) => {
           <AutocompleteSearch
             objectList={productList}
             onChangeValue={item => showProductDetails(item)}
-            fetchData={value => fetchProductsAPI({searchValue: value})}
+            fetchData={filterProductsAPI}
             displayValue={displayItemName}
             scanKeySearch={productScanKey}
             placeholder={I18n.t('Stock_Product')}
@@ -90,10 +99,11 @@ const ProductListScreen = ({navigation}) => {
             onPress={() => showProductDetails(item)}
           />
         )}
-        fetchData={page => fetchProductsAPI({page})}
+        fetchData={scrollProductsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         filter={filter != null && filter !== ''}
+        translator={I18n.t}
       />
     </Screen>
   );
