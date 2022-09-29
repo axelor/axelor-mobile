@@ -2,12 +2,12 @@ import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {AutocompleteItem, SearchBar, useThemeColor} from '@aos-mobile/ui';
+import {CameraScanner} from '@aos-mobile/core';
 import {
   enableScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '@/features/scannerSlice';
-import {CameraScanner} from '@/components/atoms';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;

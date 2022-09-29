@@ -1,7 +1,13 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Icon, Increment, Text, useThemeColor} from '@aos-mobile/ui';
-import {getCommonStyles} from '@/components/commons-styles';
+import {
+  Card,
+  getCommonStyles,
+  Icon,
+  Increment,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 
 const QuantityCard = ({
   style,
