@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Badge, Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {Image} from '@/components/molecules';
+import {AOSImage, useTranslator} from '@aos-mobile/core';
 import Product from '@/modules/stock/types/product';
 
 const ProductVariantCard = ({
@@ -27,11 +26,11 @@ const ProductVariantCard = ({
     <TouchableOpacity onPress={onPress}>
       <Card style={style}>
         <View style={styles.content}>
-          <Image
+          <AOSImage
             generalStyle={styles.imageStyle}
             imageSize={styles.imageSize}
             resizeMode="contain"
-            pictureId={picture?.id}
+            metaFileId={picture?.id}
             defaultIconSize={40}
           />
           <View style={styles.textContainer}>

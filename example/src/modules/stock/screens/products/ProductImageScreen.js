@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {Screen, Text} from '@aos-mobile/ui';
-import {Image} from '@/components/molecules';
+import {AOSImage} from '@aos-mobile/core';
 
 const ProductImageScreen = ({route}) => {
   const product = route.params.product;
@@ -13,11 +13,11 @@ const ProductImageScreen = ({route}) => {
         <Text style={styles.code}>{product.code}</Text>
       </View>
       <View style={styles.imageContainer}>
-        <Image
+        <AOSImage
           generalStyle={styles.imageStyle}
           imageSize={styles.imageSize}
           resizeMode="contain"
-          pictureId={product?.picture?.id}
+          metaFileId={product?.picture?.id}
           defaultIconSize={Dimensions.get('window').width * 0.8}
         />
       </View>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, View, Image} from 'react-native';
-import {useThemeColor, Text, Screen} from '@aos-mobile/ui';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {useThemeColor, Text, Screen, Image} from '@aos-mobile/ui';
 import {
   ErrorText,
   LoginButton,
@@ -33,7 +33,7 @@ const LoginScreen = () => {
           <Image
             resizeMode="contain"
             source={require('../assets/Logo_Axelor.png')}
-            style={styles.imageSize}
+            imageSize={styles.imageSize}
             defaultIconSize={80}
           />
         </View>

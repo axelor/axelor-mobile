@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
   Icon,
+  Image,
   PopUpOneButton,
   Screen,
   ScrollList,
@@ -11,7 +12,6 @@ import {
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {fetchProductAttachedFiles} from '../../features/productSlice';
-import {Image} from '@/components/molecules';
 import File from '@/types/file';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
@@ -111,6 +111,7 @@ const ProductAttachedFilesScreen = ({route, navigation}) => {
               imageSize={styles.imageSize}
               resizeMode="contain"
               source={image}
+              defaultIconSize={80}
             />
           </View>
         </View>

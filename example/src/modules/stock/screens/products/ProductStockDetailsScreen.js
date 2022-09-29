@@ -18,8 +18,7 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {Image} from '@/components/molecules';
+import {AOSImage, useTranslator} from '@aos-mobile/core';
 import {AutocompleteSearch} from '@/components/organisms';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {CardStockIndicator} from '@/modules/stock/components/organisms';
@@ -144,11 +143,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             style={styles.imageContainer}
             onPress={navigateToImageProduct}
             activeOpacity={0.9}>
-            <Image
+            <AOSImage
               generalStyle={styles.imageStyle}
               imageSize={styles.imageSize}
               resizeMode="contain"
-              pictureId={product?.picture?.id}
+              metaFileId={product?.picture?.id}
               defaultIconSize={60}
             />
           </TouchableOpacity>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@aos-mobile/ui';
+import {AOSImage} from '@aos-mobile/core';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
-import {Image} from '@/components/molecules';
 
 const ProductCardInfo = ({
   name,
@@ -14,11 +14,11 @@ const ProductCardInfo = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Image
+      <AOSImage
         generalStyle={styles.imageStyle}
         imageSize={styles.imageSize}
         resizeMode="contain"
-        pictureId={pictureId}
+        metaFileId={pictureId}
         defaultIconSize={60}
       />
       <ProductCardDetails style={styles.textContainer} onPress={onPress}>

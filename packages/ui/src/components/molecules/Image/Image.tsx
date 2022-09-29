@@ -1,19 +1,31 @@
 import React, {useState} from 'react';
-import {Image as ReactNativeImage} from 'react-native';
-import {useSelector} from 'react-redux';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {
+  Image as ReactNativeImage,
+  ImageResizeMode,
+  ImageSourcePropType,
+  ImageStyle,
+  StyleProp,
+} from 'react-native';
+import {useThemeColor} from '../../../theme/ThemeContext';
+import {Icon} from '../../atoms';
+
+interface ImageProps {
+  imageSize: StyleProp<ImageStyle>;
+  generalStyle: StyleProp<ImageStyle>;
+  resizeMode: ImageResizeMode;
+  source: ImageSourcePropType;
+  defaultIconSize: number;
+}
 
 const Image = ({
   imageSize,
   generalStyle,
   resizeMode,
   source,
-  pictureId,
   defaultIconSize = 60,
-}) => {
+}: ImageProps) => {
   const Colors = useThemeColor();
   const [isValid, setValid] = useState(true);
-  const {baseUrl} = useSelector(state => state.auth);
 
   const handleURIError = () => {
     if (isValid) {
@@ -21,7 +33,7 @@ const Image = ({
     }
   };
 
-  if ((pictureId == null && source == null) || isValid === false) {
+  if (source == null || isValid === false) {
     return (
       <Icon
         name="camera"
@@ -36,13 +48,7 @@ const Image = ({
     <ReactNativeImage
       onError={handleURIError}
       resizeMode={resizeMode}
-      source={
-        pictureId != null
-          ? {
-              uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${pictureId}/content/download`,
-            }
-          : source
-      }
+      source={source}
       style={[imageSize, generalStyle]}
     />
   );
