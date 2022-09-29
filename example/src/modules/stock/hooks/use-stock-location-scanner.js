@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {useScannedValueByKey} from '@/features/scannerSlice';
+import {useScannedValueByKey} from '@aos-mobile/core';
 import {searchStockLocationBySerialNumber} from '@/modules/stock/api/stock-location-api';
 
 function useStockLocationScanner(scanKey) {

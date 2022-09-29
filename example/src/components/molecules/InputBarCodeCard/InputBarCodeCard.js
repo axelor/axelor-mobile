@@ -2,11 +2,6 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {
-  enableScan,
-  useScannedValueByKey,
-  useScannerSelector,
-} from '@/features/scannerSlice';
-import {
   Card,
   getCommonStyles,
   Icon,
@@ -14,7 +9,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {CameraScanner} from '@aos-mobile/core';
+import {
+  CameraScanner,
+  enableScan,
+  useScannedValueByKey,
+  useScannerSelector,
+} from '@aos-mobile/core';
 
 const InputBarCodeCard = ({
   style,

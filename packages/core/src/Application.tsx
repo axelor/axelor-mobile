@@ -12,6 +12,7 @@ import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
 import {lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import ErrorBoundary from './ErrorBoundary';
+import {Scanner} from './components';
 
 const ApplicationContext = createContext(null);
 
@@ -76,6 +77,7 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
         <ThemeProvider>
+          <Scanner />
           <Translator />
           <ErrorBoundary>
             <NavigationContainer>

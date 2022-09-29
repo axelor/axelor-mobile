@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {useSelector} from 'react-redux';
 import {useMemo} from 'react';
+import {useSelector} from 'react-redux';
+import {createSlice} from '@reduxjs/toolkit';
 
 interface ScannerSliceState {
   isEnabled: boolean;
@@ -17,13 +17,8 @@ const scannerSlice = createSlice({
   },
   reducers: {
     enableScan(state, action) {
-      if (state.type === action.payload) {
-        state.isEnabled = false;
-        state.scanKey = null;
-      } else {
-        state.isEnabled = true;
-        state.scanKey = action.payload;
-      }
+      state.isEnabled = true;
+      state.scanKey = action.payload;
       state.scannedValue = null;
     },
     scanValue(state, action) {
@@ -40,6 +35,7 @@ const scannerSlice = createSlice({
 export const {enableScan, scanValue, disableScan} = scannerSlice.actions;
 
 const selectScanner = state => state.scanner;
+
 export const useScannerSelector: () => ScannerSliceState = () =>
   useSelector(selectScanner);
 

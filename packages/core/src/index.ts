@@ -28,3 +28,11 @@ export {axiosApiProvider} from './axios/AxiosApi';
 
 // Component
 export * from './components';
+export {
+  useScannedValueByKey,
+  useScannerSelector,
+  enableScan,
+  scanValue,
+  disableScan,
+  default as scannerReducer,
+} from './features/scannerSlice';
