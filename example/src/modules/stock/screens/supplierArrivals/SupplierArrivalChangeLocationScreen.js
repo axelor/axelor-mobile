@@ -1,14 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Screen, Text} from '@aos-mobile/ui';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
+import {Button, Screen, Text} from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
+import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import StockMove from '@/modules/stock/types/stock-move';
 import {StockMoveHeader} from '../../components/organisms';
-import useTranslator from '@/hooks/use-translator';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-change';
 
