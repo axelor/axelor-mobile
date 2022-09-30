@@ -1,17 +1,17 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchSupplierProduct} from '../api/supplier-catalog-api';
 
 export const fetchProductForSupplier = createAsyncThunk(
   'supplierCatalog/fetchProductForSupplier',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchSupplierProduct},
+    return handlerApiCall({
+      fetchFunction: searchSupplierProduct,
       data,
-      'fetch supplier catalog product informations',
-      {getState},
-      {array: false},
-    );
+      action: 'fetch supplier catalog product informations',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 

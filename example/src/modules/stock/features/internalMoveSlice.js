@@ -1,47 +1,47 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchInternalMoveFilter,
   createInternalStockMove,
   updateInternalStockMove,
 } from '@/modules/stock/api/internal-move-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const searchInternalMoves = createAsyncThunk(
   'internalMove/searchInternalMoves',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchInternalMoveFilter},
+    return handlerApiCall({
+      fetchFunction: searchInternalMoveFilter,
       data,
-      'filter internal moves',
-      {getState},
-      {array: true},
-    );
+      action: 'filter internal moves',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const createInternalMove = createAsyncThunk(
   'internalMove/createInternalMove',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: createInternalStockMove},
+    return handlerApiCall({
+      fetchFunction: createInternalStockMove,
       data,
-      'create internal move',
-      {getState},
-      {showToast: true},
-    );
+      action: 'create internal move',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const updateInternalMove = createAsyncThunk(
   'internalMove/updateInternalMove',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateInternalStockMove},
+    return handlerApiCall({
+      fetchFunction: updateInternalStockMove,
       data,
-      'update internal move',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update internal move',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

@@ -1,5 +1,5 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchSupplierArrivalLines,
   updateLine,
@@ -8,26 +8,26 @@ import {
 export const fetchSupplierArrivalLines = createAsyncThunk(
   'SupplierLines/fetchSupplierLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchSupplierArrivalLines},
+    return handlerApiCall({
+      fetchFunction: searchSupplierArrivalLines,
       data,
-      'fetch supplier arrival lines',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch supplier arrival lines',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const updateSupplierArrivalLine = createAsyncThunk(
   'SupplierLines/updateSupplierArrivalLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateLine},
+    return handlerApiCall({
+      fetchFunction: updateLine,
       data,
-      'update supplier arrival line',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update supplier arrival line',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

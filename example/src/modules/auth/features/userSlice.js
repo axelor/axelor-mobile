@@ -1,30 +1,30 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {getLoggedUser, postUser} from '@/modules/auth/api/user-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchActiveUser = createAsyncThunk(
   'user/fetchActiveUser',
   async function (userId, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: getLoggedUser},
-      userId,
-      'fetch active user',
-      {getState},
-      {array: false},
-    );
+    return handlerApiCall({
+      fetchFunction: getLoggedUser,
+      data: userId,
+      action: 'fetch active user',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 
 export const updateActiveUser = createAsyncThunk(
   'user/updateActiveUser',
   async function (user, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: postUser},
-      user,
-      'update active user',
-      {getState},
-      {array: false},
-    );
+    return handlerApiCall({
+      fetchFunction: postUser,
+      data: user,
+      action: 'update active user',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 
@@ -32,7 +32,6 @@ const initialState = {
   loadingUser: true,
   user: {},
   canModifyCompany: false,
-  defaultStockLocation: null,
 };
 
 const userSlice = createSlice({

@@ -1,5 +1,5 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchCustomerDeliveryLines,
   updateLine,
@@ -8,26 +8,26 @@ import {
 export const fetchCustomerDeliveryLines = createAsyncThunk(
   'CustomerDeliveryLines/fetchCustomerDeliveryLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchCustomerDeliveryLines},
+    return handlerApiCall({
+      fetchFunction: searchCustomerDeliveryLines,
       data,
-      'fetch customer delivery line',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch customer delivery line',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
   'CustomerDeliveryLines/updateCustomerDeliveryLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateLine},
+    return handlerApiCall({
+      fetchFunction: updateLine,
       data,
-      'update customer delivery line',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update customer delivery line',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

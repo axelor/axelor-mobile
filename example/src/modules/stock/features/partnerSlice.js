@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@/api/utils';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchClientsFilter,
   searchSuppliersFilter,
@@ -8,26 +8,26 @@ import {
 export const filterClients = createAsyncThunk(
   'partners/filterClients',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchClientsFilter},
+    return handlerApiCall({
+      fetchFunction: searchClientsFilter,
       data,
-      'filter clients',
-      {getState},
-      {array: true},
-    );
+      action: 'filter clients',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const filterSuppliers = createAsyncThunk(
   'partners/filterSuppliers',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchSuppliersFilter},
+    return handlerApiCall({
+      fetchFunction: searchSuppliersFilter,
       data,
-      'filter suppliers',
-      {getState},
-      {array: true},
-    );
+      action: 'filter suppliers',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

@@ -1,61 +1,61 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   fetchAttachedFiles,
   searchProductsFilter,
   searchProductWithId,
   updateLocker,
 } from '@/modules/stock/api/product-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const searchProducts = createAsyncThunk(
   'product/searchProduct',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchProductsFilter},
+    return handlerApiCall({
+      fetchFunction: searchProductsFilter,
       data,
-      'filter products',
-      {getState},
-      {array: true},
-    );
+      action: 'filter products',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const fetchProductWithId = createAsyncThunk(
   'product/fetchProductWithId',
   async function (productId, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchProductWithId},
-      productId,
-      'fetch product from id',
-      {getState},
-      {array: false},
-    );
+    return handlerApiCall({
+      fetchFunction: searchProductWithId,
+      data: productId,
+      action: 'fetch product from id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 
 export const updateProductLocker = createAsyncThunk(
   'product/updateLocker',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateLocker},
+    return handlerApiCall({
+      fetchFunction: updateLocker,
       data,
-      'update product locker',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update product locker',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const fetchProductAttachedFiles = createAsyncThunk(
   'product/fetchAttachedFiles',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: fetchAttachedFiles},
+    return handlerApiCall({
+      fetchFunction: fetchAttachedFiles,
       data,
-      'fetch attached files',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch attached files',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

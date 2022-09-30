@@ -1,5 +1,5 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   addLineStockMove,
   realizeSockMove,
@@ -9,39 +9,39 @@ import {
 export const searchSupplierArrivals = createAsyncThunk(
   'arrivals/searchSupplierArrivals',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchSupplierArrivalFilter},
+    return handlerApiCall({
+      fetchFunction: searchSupplierArrivalFilter,
       data,
-      'filter supplier arrival',
-      {getState},
-      {array: true},
-    );
+      action: 'filter supplier arrival',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const addNewLine = createAsyncThunk(
   'arrivals/addNewLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: addLineStockMove},
+    return handlerApiCall({
+      fetchFunction: addLineStockMove,
       data,
-      'add new line to supplier arrival',
-      {getState},
-      {showToast: true},
-    );
+      action: 'add new line to supplier arrival',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const realizeSupplierArrival = createAsyncThunk(
   'arrivals/realizeSupplierArrival',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: realizeSockMove},
+    return handlerApiCall({
+      fetchFunction: realizeSockMove,
       data,
-      'realize supplier arrival',
-      {getState},
-      {showToast: true},
-    );
+      action: 'realize supplier arrival',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

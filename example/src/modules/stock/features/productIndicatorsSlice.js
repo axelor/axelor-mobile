@@ -1,28 +1,28 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {getProductStockIndicators} from '../api/product-api';
 
 export const fetchProductIndicators = createAsyncThunk(
   'product/fetchProductIndicators',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: getProductStockIndicators},
+    return handlerApiCall({
+      fetchFunction: getProductStockIndicators,
       data,
-      'fetch product stock indicators',
-      {getState},
-      {array: false},
-    );
+      action: 'fetch product stock indicators',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 
 var getProductAvailabilty = async (data, {getState}) => {
-  return handlerApiCall(
-    {fetchFunction: getProductStockIndicators},
+  return handlerApiCall({
+    fetchFunction: getProductStockIndicators,
     data,
-    'fetch product stock indicators',
-    {getState},
-    {array: false},
-  );
+    action: 'fetch product stock indicators',
+    getState,
+    responseOptions: {isArrayResponse: false},
+  });
 };
 
 async function fetchData(data, {getState}) {

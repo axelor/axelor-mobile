@@ -1,42 +1,42 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   fetchInventory,
   modifyDescriptionInventory,
   searchInventoryFilter,
   updateInventoryStatus,
 } from '@/modules/stock/api/inventory-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const searchInventories = createAsyncThunk(
   'inventories/searchInventories',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchInventoryFilter},
+    return handlerApiCall({
+      fetchFunction: searchInventoryFilter,
       data,
-      'filter inventories',
-      {getState},
-      {array: true},
-    );
+      action: 'filter inventories',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const modifyDescription = createAsyncThunk(
   'inventories/modifyDescription',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: modifyDescriptionInventory},
+    return handlerApiCall({
+      fetchFunction: modifyDescriptionInventory,
       data,
-      'modify inventory description',
-      {getState},
-      {showToast: true, array: false},
-    ).then(object =>
-      handlerApiCall(
-        {fetchFunction: fetchInventory},
-        {inventoryId: object.id},
-        'fetch Inventory by id',
-        {getState},
-        {array: false},
-      ),
+      action: 'modify inventory description',
+      getState,
+      responseOptions: {showToast: true, isArrayResponse: false},
+    }).then(object =>
+      handlerApiCall({
+        fetchFunction: fetchInventory,
+        data: {inventoryId: object.id},
+        action: 'fetch Inventory by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      }),
     );
   },
 );
@@ -44,20 +44,20 @@ export const modifyDescription = createAsyncThunk(
 export const updateInventory = createAsyncThunk(
   'inventories/updateInventory',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateInventoryStatus},
+    return handlerApiCall({
+      fetchFunction: updateInventoryStatus,
       data,
-      'update inventory status',
-      {getState},
-      {showToast: true},
-    ).then(object =>
-      handlerApiCall(
-        {fetchFunction: fetchInventory},
-        {inventoryId: object.inventoryId},
-        'fetch Inventory by id',
-        {getState},
-        {array: false},
-      ),
+      action: 'update inventory status',
+      getState,
+      responseOptions: {showToast: true, isArrayResponse: false},
+    }).then(object =>
+      handlerApiCall({
+        fetchFunction: fetchInventory,
+        data: {inventoryId: object.id},
+        action: 'fetch Inventory by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      }),
     );
   },
 );
@@ -65,13 +65,13 @@ export const updateInventory = createAsyncThunk(
 export const fetchInventoryById = createAsyncThunk(
   'inventories/fetchInventoryById',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: fetchInventory},
+    return handlerApiCall({
+      fetchFunction: fetchInventory,
       data,
-      'fetch Inventory by id',
-      {getState},
-      {array: false},
-    );
+      action: 'fetch Inventory by id',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

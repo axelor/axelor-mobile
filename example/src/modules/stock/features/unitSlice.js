@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchUnit} from '@/modules/stock/api/unit-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchUnit = createAsyncThunk(
   'unit/fetchUnit',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchUnit},
+    return handlerApiCall({
+      fetchFunction: searchUnit,
       data,
-      'fetch units',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch units',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

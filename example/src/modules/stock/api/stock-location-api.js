@@ -1,6 +1,9 @@
-import {getApiResponseData, getFirstData} from '@/api/utils';
+import {
+  axiosApiProvider,
+  getApiResponseData,
+  getFirstData,
+} from '@aos-mobile/core';
 import StockLocation from '@/modules/stock/types/stock-location';
-import {axiosApiProvider} from '@aos-mobile/core';
 
 const stockLocationFields = [
   'name',

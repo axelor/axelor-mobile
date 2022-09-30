@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchLanguage} from '@/modules/auth/api/language-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchLanguages = createAsyncThunk(
   'language/fetchLanguage',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchLanguage},
+    return handlerApiCall({
+      fetchFunction: searchLanguage,
       data,
-      'fetch languages',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch languages',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

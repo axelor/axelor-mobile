@@ -1,30 +1,30 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchStockLocationsFilter} from '@/modules/stock/api/stock-location-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const searchStockLocations = createAsyncThunk(
   'stockLocation/searchStockLocations',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchStockLocationsFilter},
+    return handlerApiCall({
+      fetchFunction: searchStockLocationsFilter,
       data,
-      'filter stock locations',
-      {getState},
-      {array: true},
-    );
+      action: 'filter stock locations',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const filterSecondStockLocations = createAsyncThunk(
   'stockLocation/filterSecondStockLocations',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchStockLocationsFilter},
+    return handlerApiCall({
+      fetchFunction: searchStockLocationsFilter,
       data,
-      'filter stock locations',
-      {getState},
-      {array: true},
-    );
+      action: 'filter stock locations',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

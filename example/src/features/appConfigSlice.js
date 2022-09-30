@@ -1,17 +1,17 @@
-import {getStockMenuConfig} from '@/api/app-config';
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
+import {getStockMenuConfig} from '@/api/app-config';
 
 export const fetchStockAppConfig = createAsyncThunk(
   'appConfig/fetchStockAppConfig',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: getStockMenuConfig},
+    return handlerApiCall({
+      fetchFunction: getStockMenuConfig,
       data,
-      'fetch Stock App Config',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch Stock App Config',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

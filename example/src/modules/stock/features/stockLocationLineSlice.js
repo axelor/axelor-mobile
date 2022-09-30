@@ -1,17 +1,17 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchStockLocationLine} from '../api/stock-location-line-api';
 
 export const fetchStockLocationLine = createAsyncThunk(
   'stockLocationLine/fetchStockLocationLines',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchStockLocationLine},
+    return handlerApiCall({
+      fetchFunction: searchStockLocationLine,
       data,
-      'fetch stock location line',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch stock location line',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

@@ -1,5 +1,5 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchStockLocationLine} from '../api/stock-location-line-api';
 
 export const getRacks = createAsyncThunk(
@@ -16,16 +16,16 @@ export const getRacks = createAsyncThunk(
 );
 
 var getRack = async (stockId, productId, {getState}) => {
-  return handlerApiCall(
-    {fetchFunction: searchStockLocationLine},
-    {
+  return handlerApiCall({
+    fetchFunction: searchStockLocationLine,
+    data: {
       stockId: stockId,
       productId: productId,
     },
-    'fetch rack',
-    {getState},
-    {array: true},
-  );
+    action: 'fetch rack',
+    getState,
+    responseOptions: {isArrayResponse: true},
+  });
 };
 
 async function fetchData(stockId, line, {getState}) {

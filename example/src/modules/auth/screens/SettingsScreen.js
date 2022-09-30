@@ -2,9 +2,13 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Screen, SwitchCard, useConfig, useTheme} from '@aos-mobile/ui';
-import {getTranslations, selectLanguage, useTranslator} from '@aos-mobile/core';
+import {
+  getTranslations,
+  selectLanguage,
+  showToastMessage,
+  useTranslator,
+} from '@aos-mobile/core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
-import Toast from 'react-native-toast-message';
 
 const SettingsScreen = ({route}) => {
   const {loading, message} = useSelector(state => state.config);
@@ -21,7 +25,7 @@ const SettingsScreen = ({route}) => {
 
   useEffect(() => {
     if (message) {
-      Toast.show({position: 'bottom', text1: message});
+      showToastMessage({type: 'success', position: 'bottom', text1: message});
       dispatch(clearMessage());
     }
   }, [message, dispatch]);

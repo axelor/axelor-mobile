@@ -1,5 +1,5 @@
 import Toast from 'react-native-toast-message';
-import {traceError} from '@aos-mobile/core';
+import {traceError} from './traceback-api';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -23,7 +23,7 @@ export const getFirstData = data => {
   return null;
 };
 
-const getUser = ({getState = () => {}}) => {
+const getUser = ({getState}: {getState: () => any}) => {
   return getState()?.auth?.userId;
 };
 
@@ -71,18 +71,26 @@ const manageSucess = (response, {showToast = false, isArrayResponse}) => {
   return data;
 };
 
-const handlerSuccess = ({showToast = false, isArrayResponse}) => {
+const handlerSuccess = ({showToast, isArrayResponse}) => {
   return response => manageSucess(response, {showToast, isArrayResponse});
 };
 
-export const handlerApiCall = (
-  {fetchFunction = () => {}},
-  data = {},
-  action = null,
-  {getState = () => {}},
-  {showToast = false, array = false},
-) => {
+interface ApiHandlerProps {
+  fetchFunction: (data: any) => Promise<any>;
+  data: any;
+  action: string;
+  getState: () => any;
+  responseOptions?: {showToast?: boolean; isArrayResponse?: boolean};
+}
+
+export const handlerApiCall = ({
+  fetchFunction,
+  data,
+  action,
+  getState,
+  responseOptions: {showToast = false, isArrayResponse = false},
+}: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}))
-    .then(handlerSuccess({showToast, isArrayResponse: array}));
+    .then(handlerSuccess({showToast, isArrayResponse}));
 };

@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {fetchFileDetails} from '@/modules/stock/api/metafile-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const getFileDetails = createAsyncThunk(
   'metafile/getFileDetails',
   async function (metafileId, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: fetchFileDetails},
-      metafileId,
-      'fetch metafile details',
-      {getState},
-      {array: true},
-    );
+    return handlerApiCall({
+      fetchFunction: fetchFileDetails,
+      data: metafileId,
+      action: 'fetch metafile details',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

@@ -1,5 +1,5 @@
-import {handlerApiCall} from '@/api/utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   createInventoryLine,
   searchInventoryLines,
@@ -9,39 +9,39 @@ import {
 export const fetchInventoryLines = createAsyncThunk(
   'inventoryLines/fetchInventoryLines',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchInventoryLines},
+    return handlerApiCall({
+      fetchFunction: searchInventoryLines,
       data,
-      'fetch inventory lines',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch inventory lines',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const updateInventoryLine = createAsyncThunk(
   'inventoryLines/updateInventoryLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateInventoryLineDetails},
+    return handlerApiCall({
+      fetchFunction: updateInventoryLineDetails,
       data,
-      'update inventory line details',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update inventory line details',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const createNewInventoryLine = createAsyncThunk(
   'inventoryLines/createNewInventoryLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: createInventoryLine},
+    return handlerApiCall({
+      fetchFunction: createInventoryLine,
       data,
-      'create inventory line',
-      {getState},
-      {showToast: true},
-    );
+      action: 'create inventory line',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

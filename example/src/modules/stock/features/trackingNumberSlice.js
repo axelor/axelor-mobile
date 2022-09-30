@@ -1,34 +1,34 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   createTrackingNumber,
   searchTrackingNumberFilter,
   updateStockMoveLineTrackingNumber,
 } from '@/modules/stock/api/tracking-number-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const filterTrackingNumber = createAsyncThunk(
   'trackingNumber/filterTrackingNumber',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchTrackingNumberFilter},
+    return handlerApiCall({
+      fetchFunction: searchTrackingNumberFilter,
       data,
-      'filter product tracking numbers',
-      {getState},
-      {isArrayResponse: true},
-    );
+      action: 'filter product tracking numbers',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const createTrackingNumberSeq = createAsyncThunk(
   'trackingNumber/createTrackingNumberSeq',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: createTrackingNumber},
+    return handlerApiCall({
+      fetchFunction: createTrackingNumber,
       data,
-      'create tracking number sequence',
-      {getState},
-      {isArrayResponse: false, showToast: true},
-    );
+      action: 'create tracking number sequence',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
   },
 );
 
@@ -37,24 +37,24 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
   async function (data, {getState}) {
     const {stockMoveLineId, stockMoveLineVersion} = data;
 
-    return handlerApiCall(
-      {fetchFunction: createTrackingNumber},
+    return handlerApiCall({
+      fetchFunction: createTrackingNumber,
       data,
-      'create tracking number sequence',
-      {getState},
-      {isArrayResponse: false, showToast: true},
-    ).then(trackingNumber => {
-      handlerApiCall(
-        {fetchFunction: updateStockMoveLineTrackingNumber},
-        {
+      action: 'create tracking number sequence',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(trackingNumber => {
+      handlerApiCall({
+        fetchFunction: updateStockMoveLineTrackingNumber,
+        data: {
           stockMoveLineId: stockMoveLineId,
           stockMoveLineVersion: stockMoveLineVersion,
           trackingNumber: trackingNumber,
         },
-        'update supplier arrival line with new tracking number',
-        {getState},
-        {isArrayResponse: false, showToast: true},
-      );
+        action: 'update supplier arrival line with new tracking number',
+        getState,
+        responseOptions: {isArrayResponse: false, showToast: true},
+      });
       return trackingNumber;
     });
   },

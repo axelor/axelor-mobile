@@ -1,5 +1,8 @@
-import {getApiResponseData, getFirstData} from '@/api/utils';
-import {axiosApiProvider} from '@aos-mobile/core';
+import {
+  axiosApiProvider,
+  getApiResponseData,
+  getFirstData,
+} from '@aos-mobile/core';
 
 const MobileMenuFields = ['name', 'enabled'];
 

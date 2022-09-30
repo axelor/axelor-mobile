@@ -1,47 +1,47 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   addLineStockMove,
   realizeSockMove,
   searchDeliveryFilter,
 } from '@/modules/stock/api/customer-delivery-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const searchDeliveries = createAsyncThunk(
   'deliveries/searchDeliveries',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchDeliveryFilter},
+    return handlerApiCall({
+      fetchFunction: searchDeliveryFilter,
       data,
-      'filter customer deliveries',
-      {getState},
-      {array: true},
-    );
+      action: 'filter customer deliveries',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const addNewLine = createAsyncThunk(
   'deliveries/addNewLine',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: addLineStockMove},
+    return handlerApiCall({
+      fetchFunction: addLineStockMove,
       data,
-      'add new line to customer delivery',
-      {getState},
-      {showToast: true},
-    );
+      action: 'add new line to customer delivery',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const realizeCustomerDelivery = createAsyncThunk(
   'deliveries/realizeCustomerDelivery',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: realizeSockMove},
+    return handlerApiCall({
+      fetchFunction: realizeSockMove,
       data,
-      'realize customer delivery',
-      {getState},
-      {showToast: true},
-    );
+      action: 'realize customer delivery',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

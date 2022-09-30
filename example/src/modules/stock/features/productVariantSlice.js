@@ -1,31 +1,31 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   fetchVariantAttributes,
   fetchVariants,
 } from '@/modules/stock/api/product-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchProductVariants = createAsyncThunk(
   'product/fetchProductVariant',
   async function (productVariantId, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: fetchVariants},
-      productVariantId,
-      'fetch product variants',
-      {getState},
-      {array: true},
-    );
+    return handlerApiCall({
+      fetchFunction: fetchVariants,
+      data: productVariantId,
+      action: 'fetch product variants',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 var getProductAttributes = async (data, {getState}) => {
-  return handlerApiCall(
-    {fetchFunction: fetchVariantAttributes},
+  return handlerApiCall({
+    fetchFunction: fetchVariantAttributes,
     data,
-    'fetch product variants attributes',
-    {getState},
-    {array: true},
-  );
+    action: 'fetch product variants attributes',
+    getState,
+    responseOptions: {isArrayResponse: true},
+  });
 };
 
 async function fetchData(data, {getState}) {

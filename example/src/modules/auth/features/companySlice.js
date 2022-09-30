@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchCompany} from '@/modules/auth/api/company-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchCompanies = createAsyncThunk(
   'company/fetchCompany',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchCompany},
+    return handlerApiCall({
+      fetchFunction: searchCompany,
       data,
-      'fetch companies',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch companies',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

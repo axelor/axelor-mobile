@@ -1,47 +1,47 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchStockCorrection,
   createStockCorrection,
   updateStockCorrection,
 } from '@/modules/stock/api/stock-correction-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchStockCorrections = createAsyncThunk(
   'stockCorrection/fetchStockCorrection',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchStockCorrection},
+    return handlerApiCall({
+      fetchFunction: searchStockCorrection,
       data,
-      'fetch stock corrections',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch stock corrections',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 
 export const createCorrection = createAsyncThunk(
   'stockCorrection/createStockCorrection',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: createStockCorrection},
+    return handlerApiCall({
+      fetchFunction: createStockCorrection,
       data,
-      'create stock correction',
-      {getState},
-      {showToast: true},
-    );
+      action: 'create stock correction',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 
 export const updateCorrection = createAsyncThunk(
   'stockCorrection/updateStockCorrection',
   async function (data, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: updateStockCorrection},
+    return handlerApiCall({
+      fetchFunction: updateStockCorrection,
       data,
-      'update stock correction',
-      {getState},
-      {showToast: true},
-    );
+      action: 'update stock correction',
+      getState,
+      responseOptions: {showToast: true},
+    });
   },
 );
 

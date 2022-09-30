@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {handlerApiCall} from '@aos-mobile/core';
 import {searchStockCorrectionReason} from '@/modules/stock/api/stock-correction-reason-api';
-import {handlerApiCall} from '@/api/utils';
 
 export const fetchStockCorrectionReasons = createAsyncThunk(
   'stockCorrectionReason/fetchStockCorrectionReason',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: searchStockCorrectionReason},
+    return handlerApiCall({
+      fetchFunction: searchStockCorrectionReason,
       data,
-      'fetch stock correction reasons',
-      {getState},
-      {array: true},
-    );
+      action: 'fetch stock correction reasons',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
   },
 );
 

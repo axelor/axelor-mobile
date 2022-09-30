@@ -1,18 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@/api/utils';
+import {handlerApiCall, postTranslations} from '@aos-mobile/core';
 import {getBaseConfig} from '../api/config-api';
-import {postTranslations} from '@aos-mobile/core';
 
 export const fetchBaseConfig = createAsyncThunk(
   'base/fetchBaseConfig',
   async function (data = {}, {getState}) {
-    return handlerApiCall(
-      {fetchFunction: getBaseConfig},
+    return handlerApiCall({
+      fetchFunction: getBaseConfig,
       data,
-      'fetch base config',
-      {getState},
-      {array: false},
-    );
+      action: 'fetch base config',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
   },
 );
 
