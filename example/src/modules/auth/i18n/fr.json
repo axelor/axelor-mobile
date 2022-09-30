@@ -9,7 +9,7 @@
   "Auth_CannotOpenFile": "Impossible d'ouvrir le fichier",
   "Auth_Close": "Fermer",
   "User_User": "Utilisateur",
-  "User_ZebraDevice": "Mode scanner de codes-barres",
+  "User_VirtualKeyboardConfig": "Afficher le clavier virtuel",
   "User_ShowFilter": "Afficher les filtres",
   "User_ColorForColorBlind": "Mode daltonien",
   "User_SendTranslations": "Envoyer les traductions",

@@ -1,20 +1,19 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Screen, SwitchCard, useTheme} from '@aos-mobile/ui';
+import {Button, Screen, SwitchCard, useConfig, useTheme} from '@aos-mobile/ui';
 import {getTranslations, selectLanguage, useTranslator} from '@aos-mobile/core';
-import {
-  clearMessage,
-  toggleFilterShowConfig,
-  toggleZebraConfig,
-  uploadTranslations,
-} from '../features/configSlice';
+import {clearMessage, uploadTranslations} from '../features/configSlice';
 import Toast from 'react-native-toast-message';
 
 const SettingsScreen = ({route}) => {
-  const {loading, zebraConfig, filterShowConfig, message} = useSelector(
-    state => state.config,
-  );
+  const {loading, message} = useSelector(state => state.config);
+  const {
+    showFilter,
+    showVirtualKeyboard,
+    toggleFilterConfig,
+    toggleVirtualKeyboardConfig,
+  } = useConfig();
   const language = useSelector(selectLanguage);
   const I18n = useTranslator();
   const Theme = useTheme();
@@ -38,14 +37,6 @@ const SettingsScreen = ({route}) => {
     [Theme],
   );
 
-  const handleToggleFilter = useCallback(() => {
-    dispatch(toggleFilterShowConfig());
-  }, [dispatch]);
-
-  const handleToggleZebra = useCallback(() => {
-    dispatch(toggleZebraConfig());
-  }, [dispatch]);
-
   const handleSendTranslations = useCallback(() => {
     const translations = getTranslations(language);
     dispatch(uploadTranslations({language, translations}));
@@ -67,13 +58,13 @@ const SettingsScreen = ({route}) => {
       <View style={styles.container}>
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
-          defaultValue={filterShowConfig}
-          onToggle={handleToggleFilter}
+          defaultValue={showFilter}
+          onToggle={toggleFilterConfig}
         />
         <SwitchCard
-          title={I18n.t('User_ZebraDevice')}
-          defaultValue={zebraConfig}
-          onToggle={handleToggleZebra}
+          title={I18n.t('User_VirtualKeyboardConfig')}
+          defaultValue={showVirtualKeyboard}
+          onToggle={toggleVirtualKeyboardConfig}
         />
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}

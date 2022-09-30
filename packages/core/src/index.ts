@@ -15,6 +15,7 @@ export {default as useTranslator} from './i18n/hooks/use-translator';
 export {
   default as Translator,
   selectLanguage,
+  getTranslations,
 } from './i18n/component/Translator';
 export {postTranslations} from './i18n/api/translation';
 

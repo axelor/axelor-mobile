@@ -6,6 +6,7 @@ import {
   Picker,
   Screen,
   Text,
+  useConfig,
   useTheme,
   useThemeColor,
 } from '@aos-mobile/ui';
@@ -24,11 +25,7 @@ import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {
-  fetchBaseConfig,
-  setFilterShowConfig,
-  setZebraConfig,
-} from '../features/configSlice';
+import {fetchBaseConfig} from '../features/configSlice';
 import {fetchStockAppConfig} from '@/features/appConfigSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
@@ -45,6 +42,7 @@ const UserScreen = ({navigation}) => {
   const Theme = useTheme();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -68,18 +66,12 @@ const UserScreen = ({navigation}) => {
   useEffect(() => {
     const SMALL_SCREEN_HEIGHT = 500;
 
-    DeviceInfo.getManufacturer().then(manufacturer => {
-      dispatch(
-        setZebraConfig({zebraConfig: manufacturer === 'Zebra Technologies'}),
-      );
-    });
-
-    dispatch(
-      setFilterShowConfig({
-        filterShowConfig: Dimensions.get('window').height > SMALL_SCREEN_HEIGHT,
-      }),
+    DeviceInfo.getManufacturer().then(manufacturer =>
+      setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
     );
-  }, [dispatch]);
+
+    setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
+  }, [setFilterConfig, setVirtualKeyboardConfig]);
 
   const styles = useMemo(() => {
     return getStyles(Colors);

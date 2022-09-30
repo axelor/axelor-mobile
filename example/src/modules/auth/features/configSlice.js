@@ -26,8 +26,6 @@ export const uploadTranslations = createAsyncThunk(
 const initialState = {
   loading: false,
   baseConfig: {},
-  zebraConfig: false,
-  filterShowConfig: true,
   message: null,
 };
 
@@ -35,18 +33,6 @@ const configSlice = createSlice({
   name: 'config',
   initialState,
   reducers: {
-    setZebraConfig: (state, action) => {
-      state.zebraConfig = action.payload.zebraConfig;
-    },
-    toggleZebraConfig: state => {
-      state.zebraConfig = !state.zebraConfig;
-    },
-    setFilterShowConfig: (state, action) => {
-      state.filterShowConfig = action.payload.filterShowConfig;
-    },
-    toggleFilterShowConfig: state => {
-      state.filterShowConfig = !state.filterShowConfig;
-    },
     clearMessage: state => {
       state.message = null;
     },
@@ -69,12 +55,6 @@ const configSlice = createSlice({
   },
 });
 
-export const {
-  setFilterShowConfig,
-  toggleFilterShowConfig,
-  setZebraConfig,
-  toggleZebraConfig,
-  clearMessage,
-} = configSlice.actions;
+export const {clearMessage} = configSlice.actions;
 
 export const configReducer = configSlice.reducer;

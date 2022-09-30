@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {KeyboardTypeOptions, StyleSheet, TextInput} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {useConfig} from '../../../config/ConfigContext';
 
 interface InputProps {
   style: any;
@@ -32,7 +33,7 @@ const Input = ({
   isFocus = false,
 }: InputProps) => {
   const Colors = useThemeColor();
-  //const { zebraConfig } = useSelector((state) => state.config);
+  const {showVirtualKeyboard} = useConfig();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -50,7 +51,7 @@ const Input = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       onBlur={onEndFocus}
-      //showSoftInputOnFocus={zebraConfig ? false : true}
+      showSoftInputOnFocus={showVirtualKeyboard ? false : true}
       autoFocus={isFocus}
     />
   );

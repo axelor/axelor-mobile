@@ -9,7 +9,7 @@
   "Auth_CannotOpenFile": "Cannot open file",
   "Auth_Close": "Close",
   "User_User": "User",
-  "User_ZebraDevice": "Barcode scanners mode",
+  "User_VirtualKeyboardConfig": "Show virtual keyboard",
   "User_ShowFilter": "Show filter",
   "User_ColorForColorBlind": "Color blind mode",
   "User_SendTranslations": "Send translations",

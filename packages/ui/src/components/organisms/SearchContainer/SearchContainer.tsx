@@ -1,5 +1,6 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
 
@@ -18,15 +19,13 @@ const SearchContainer = ({
   chipComponent = null,
   expandableFilter = true,
 }: SearchContainerProps) => {
-  //const {filterShowConfig} = useSelector(state => state.config);
+  const {showFilter} = useConfig();
   const [isVisible, setVisible] = useState(true);
   const Colors = useThemeColor();
 
-  /*
   useEffect(() => {
-    setVisible(filterShowConfig);
-  }, [filterShowConfig]);
-  */
+    setVisible(showFilter);
+  }, [showFilter]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 

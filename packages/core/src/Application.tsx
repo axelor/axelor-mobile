@@ -10,7 +10,7 @@ import Translator from './i18n/component/Translator';
 import {configI18n} from './i18n/i18n';
 import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
-import {lightTheme, ThemeProvider} from '@aos-mobile/ui';
+import {ConfigProvider, lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import ErrorBoundary from './ErrorBoundary';
 import {Scanner} from './components';
 
@@ -51,7 +51,10 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
   const appTranslations = useMemo(
     () =>
       modules.reduce(
-        (translations, module) => ({...translations, ...module.translations}),
+        (translations, _module) => ({
+          en: {...translations.en, ..._module.translations?.en},
+          fr: {...translations.fr, ..._module.translations?.fr},
+        }),
         {en: enTranslation, fr: frTranslation},
       ),
     [modules],
@@ -77,14 +80,16 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
         <ThemeProvider>
-          <Scanner />
-          <Translator />
-          <ErrorBoundary>
-            <NavigationContainer>
-              <RootNavigator modules={modules} mainMenu={mainMenu} />
-            </NavigationContainer>
-          </ErrorBoundary>
-          <Toast config={toastConfig} />
+          <ConfigProvider>
+            <Scanner />
+            <Translator />
+            <ErrorBoundary>
+              <NavigationContainer>
+                <RootNavigator modules={modules} mainMenu={mainMenu} />
+              </NavigationContainer>
+            </ErrorBoundary>
+            <Toast config={toastConfig} />
+          </ConfigProvider>
         </ThemeProvider>
       </Provider>
     </ApplicationContext.Provider>

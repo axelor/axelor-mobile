@@ -11,3 +11,6 @@ export {lightTheme, colorBlindTheme} from './theme/themes';
 
 // Type
 export {default as File} from './types/file';
+
+// Config
+export {ConfigProvider, useConfig} from './config/ConfigContext';
