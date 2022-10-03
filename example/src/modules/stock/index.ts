@@ -13,32 +13,32 @@ const stockModule: Module = {
   title: t => t('Stock'),
   icon: 'boxes',
   menus: {
-    StockProduct: {
+    stock_menu_product: {
       title: t => t('Stock_Product'),
       icon: 'shopping-cart',
       screen: 'ProductListScreen',
     },
-    StockCorrection: {
+    stock_menu_stock_correction: {
       title: t => t('Stock_StockCorrection'),
       icon: 'box',
       screen: 'StockCorrectionListScreen',
     },
-    StockInternalMove: {
+    stock_menu_internal_move: {
       title: t => t('Stock_InternalMove'),
       icon: 'dolly',
       screen: 'InternalMoveListScreen',
     },
-    StockCustomerDelivery: {
+    stock_menu_customer_delivery: {
       title: t => t('Stock_CustomerDelivery'),
       icon: 'truck',
       screen: 'CustomerDeliveryListScreen',
     },
-    StockSupplierArrival: {
+    stock_menu_supplier_arrival: {
       title: t => t('Stock_SupplierArrival'),
       icon: 'truck-loading',
       screen: 'SupplierArrivalListScreen',
     },
-    StockInventory: {
+    stock_menu_inventory: {
       title: t => t('Stock_Inventory'),
       icon: 'warehouse',
       screen: 'InventoryListScreen',

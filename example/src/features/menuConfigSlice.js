@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {getStockMenuConfig} from '../api/menu-config-api';
 import {handlerApiCall} from '@aos-mobile/core';
-import {getStockMenuConfig} from '@/api/app-config';
 
-export const fetchStockAppConfig = createAsyncThunk(
-  'appConfig/fetchStockAppConfig',
+export const fetchStockMenuConfig = createAsyncThunk(
+  'menuConfig/fetchStockMenuConfig',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getStockMenuConfig,
@@ -17,21 +17,21 @@ export const fetchStockAppConfig = createAsyncThunk(
 
 const initialState = {
   loadingConfig: false,
-  stockMenus: [],
+  restrictedMenus: [],
 };
 
-const appConfigSlice = createSlice({
-  name: 'appConfig',
+const menuConfigSlice = createSlice({
+  name: 'menuConfig',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchStockAppConfig.pending, state => {
+    builder.addCase(fetchStockMenuConfig.pending, state => {
       state.loadingConfig = true;
     });
-    builder.addCase(fetchStockAppConfig.fulfilled, (state, action) => {
+    builder.addCase(fetchStockMenuConfig.fulfilled, (state, action) => {
       state.loadingConfig = false;
-      state.stockMenus = action.payload;
+      state.restrictedMenus = [...action.payload];
     });
   },
 });
 
-export const appConfigReducer = appConfigSlice.reducer;
+export const menuConfigReducer = menuConfigSlice.reducer;

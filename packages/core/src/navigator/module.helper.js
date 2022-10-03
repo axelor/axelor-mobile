@@ -1,5 +1,29 @@
+import {isMenuEnabled} from './menu.helper';
+
 export function moduleHasMenus(_module) {
   return _module.menus != null && Object.keys(_module.menus).length > 0;
+}
+
+export function filterEnabledMenus(_module, restrictedMenus, user) {
+  if (moduleHasMenus(_module)) {
+    const enabledMenus = {};
+    const {menus} = _module;
+    const menuKeys = Object.keys(menus);
+    menuKeys.forEach(_key => {
+      if (
+        isMenuEnabled({listMenu: restrictedMenus, menuKey: _key, user: user})
+      ) {
+        enabledMenus[_key] = menus[_key];
+      }
+    });
+    return enabledMenus;
+  }
+  return [];
+}
+
+export function updateAccessibleMenus(_module, restrictedMenus, user) {
+  _module.menus = filterEnabledMenus(_module, restrictedMenus, user);
+  return _module;
 }
 
 export function moduleInMenuFooter(_module) {

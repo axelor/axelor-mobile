@@ -9,7 +9,7 @@ const authModule: Module = {
   title: t => t('Auth'),
   icon: 'user',
   menus: {
-    User: {
+    auth_menu_user: {
       title: t => t('User_UserProfile'),
       icon: 'user',
       screen: 'UserScreen',

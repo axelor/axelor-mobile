@@ -3,11 +3,16 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
 import DrawerContent from './drawer/DrawerContent';
-import {getDefaultModule, moduleHasMenus} from './module.helper';
+import {
+  updateAccessibleMenus,
+  getDefaultModule,
+  moduleHasMenus,
+} from './module.helper';
 import {getMenuTitle} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import DrawerToggleButton from './drawer/DrawerToggleButton';
 import BackIcon from './drawer/BackIcon';
+import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -19,12 +24,15 @@ export const ModuleNavigatorContext = createContext({
 });
 
 const Navigator = ({modules, mainMenu}) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
+  const {user} = useSelector(state => state.user);
+  const {restrictedMenus} = useSelector(state => state.menuConfig);
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(modules, mainMenu),
   );
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+
+  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   const changeActiveModule = useCallback(
     moduleName => {
@@ -33,13 +41,12 @@ const Navigator = ({modules, mainMenu}) => {
     [modules],
   );
 
-  const modulesMenus = useMemo(
-    () =>
-      modules
-        .filter(moduleHasMenus)
-        .reduce((menus, _module) => ({...menus, ..._module.menus}), {}),
-    [modules],
-  );
+  const modulesMenus = useMemo(() => {
+    return modules
+      .map(_module => updateAccessibleMenus(_module, restrictedMenus, user))
+      .filter(moduleHasMenus)
+      .reduce((menus, _module) => ({...menus, ..._module.menus}), {});
+  }, [modules, user, restrictedMenus]);
 
   const modulesScreens = useMemo(
     () =>

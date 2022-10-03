@@ -1,10 +1,6 @@
-import {
-  axiosApiProvider,
-  getApiResponseData,
-  getFirstData,
-} from '@aos-mobile/core';
+import {axiosApiProvider, getFirstData} from '@aos-mobile/core';
 
-const MobileMenuFields = ['name', 'enabled'];
+const MobileMenuFields = ['name', 'technicalName', 'authorizedRoles'];
 
 const createCriteria = listMenus => {
   if (listMenus != null) {
@@ -18,7 +14,7 @@ const createCriteria = listMenus => {
 
 async function searchMenu({listMenus}) {
   return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.mobile.db.MobileMenu/search',
+    url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileMenu/search',
     data:
       listMenus == null
         ? {
@@ -44,7 +40,7 @@ async function searchMenu({listMenus}) {
 
 export async function getMenuConfig({AppSequence}) {
   return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.mobile.db.MobileConfig/search',
+    url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileConfig/search',
     data: {
       data: {
         criteria: [
@@ -60,9 +56,13 @@ export async function getMenuConfig({AppSequence}) {
   });
 }
 
-export async function getStockMenuConfig() {
-  return getMenuConfig({AppSequence: 1})
-    .then(getApiResponseData)
+async function getModuleConfig({AppSequence}) {
+  return getMenuConfig({AppSequence})
+    .then(res => res?.data?.data)
     .then(getFirstData)
     .then(data => searchMenu({listMenus: data.menus}));
+}
+
+export async function getStockMenuConfig() {
+  return getModuleConfig({AppSequence: 1});
 }

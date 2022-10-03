@@ -26,7 +26,7 @@ import DeviceInfo from 'react-native-device-info';
 import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {fetchBaseConfig} from '../features/configSlice';
-import {fetchStockAppConfig} from '@/features/appConfigSlice';
+import {fetchStockMenuConfig} from '@/features/menuConfigSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
@@ -50,7 +50,7 @@ const UserScreen = ({navigation}) => {
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
     dispatch(fetchBaseConfig());
-    dispatch(fetchStockAppConfig());
+    dispatch(fetchStockMenuConfig());
   }, [dispatch, userId]);
 
   React.useLayoutEffect(() => {

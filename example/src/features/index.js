@@ -1,1 +1,1 @@
-export {appConfigReducer as appConfig} from './appConfigSlice';
+export {menuConfigReducer as menuConfig} from './menuConfigSlice';
