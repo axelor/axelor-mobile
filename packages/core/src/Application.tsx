@@ -1,17 +1,26 @@
-import React, {createContext, useEffect, useMemo, useState} from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {Store} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
+import {Store} from '@reduxjs/toolkit';
+import axios from 'axios';
+import {ConfigProvider, lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
-import {Module} from './Module';
+import {NavigationContainer} from '@react-navigation/native';
 import RootNavigator from './RootNavigator';
+import {Module} from './Module';
 import Translator from './i18n/component/Translator';
 import {configI18n} from './i18n/i18n';
 import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
-import {ConfigProvider, lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import ErrorBoundary from './ErrorBoundary';
+import {getActiveUserId} from './api/login-api';
+import ErrorScreen from './screens/ErrorScreen';
 import {Scanner} from './components';
 
 const ApplicationContext = createContext(null);
@@ -72,6 +81,10 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const traceBackPutMethod = useCallback(({additionalURL, data}) => {
+    return axios.put(additionalURL, {data: data});
+  }, []);
+
   if (loading) {
     return null;
   }
@@ -83,7 +96,10 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
           <ConfigProvider>
             <Scanner />
             <Translator />
-            <ErrorBoundary>
+            <ErrorBoundary
+              errorScreen={ErrorScreen}
+              userIdfetcher={getActiveUserId}
+              putMethod={traceBackPutMethod}>
               <NavigationContainer>
                 <RootNavigator modules={modules} mainMenu={mainMenu} />
               </NavigationContainer>

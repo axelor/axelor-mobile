@@ -1,17 +1,19 @@
 import React from 'react';
-//import {useSelector} from 'react-redux';
-import {StyleSheet, View} from 'react-native';
-import {Button, Screen, Text} from '@aos-mobile/ui';
-import {traceError} from './api/traceback-api';
-import {createSelector} from '@reduxjs/toolkit';
 
-export const selectUserId = createSelector(
-  state => state?.user,
-  userState => userState.user.id,
-);
+const TECHNICAL_ABNORMALITY = 0;
+const CONFIGURATION_PROBLEM = 4;
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
+  errorScreen: ({
+    errorMessage,
+    onReloadPress,
+  }: {
+    errorMessage: string;
+    onReloadPress: () => any;
+  }) => React.ReactNode;
+  putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
+  userIdfetcher: () => Promise<any>;
 }
 
 interface ErrorBoundaryState {
@@ -38,18 +40,27 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error, errorInfo) {
-    const userId = 1; //useSelector(selectUserId);
-    this.setState(state => ({
-      ...state,
-      tracing: true,
-      errorMessage: error.message,
-    }));
-    traceError({
-      message: error.message,
-      cause: errorInfo.componentStack,
-      userId: userId,
-    }).finally(() => {
-      this.setState(state => ({...state, tracing: false}));
+    const {putMethod, userIdfetcher} = this.props;
+    userIdfetcher().then(userId => {
+      this.setState(state => ({
+        ...state,
+        tracing: true,
+        errorMessage: error.message,
+      }));
+
+      putMethod({
+        additionalURL: '/ws/rest/com.axelor.exception.db.TraceBack',
+        data: {
+          origin: 'mobile app',
+          typeSelect: TECHNICAL_ABNORMALITY,
+          categorySelect: CONFIGURATION_PROBLEM,
+          date: new Date(),
+          exception: error.message,
+          message: error.message,
+          cause: JSON.stringify(errorInfo.componentStack),
+          internalUser: {id: userId},
+        },
+      }).finally(() => this.setState(state => ({...state, tracing: false})));
     });
   }
 
@@ -58,43 +69,16 @@ class ErrorBoundary extends React.Component<
   }
 
   render() {
+    const {errorScreen} = this.props;
     if (this.state.hasError) {
-      return (
-        <Screen
-          fixedItems={
-            <Button
-              title="RELOAD SCREEN"
-              onPress={() => this.setState({hasError: false})}
-            />
-          }>
-          <View style={styles.container}>
-            <Text style={styles.text}>{this.state.errorMessage}</Text>
-          </View>
-        </Screen>
-      );
+      return errorScreen({
+        errorMessage: this.state.errorMessage,
+        onReloadPress: () => this.setState({hasError: false}),
+      });
     }
 
     return this.props.children;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '92%',
-  },
-  imageSize: {
-    height: 100,
-    width: '100%',
-  },
-  imageStyle: {
-    marginHorizontal: 50,
-    marginVertical: '10%',
-  },
-  text: {
-    marginHorizontal: 10,
-  },
-});
 
 export default ErrorBoundary;

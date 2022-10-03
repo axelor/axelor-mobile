@@ -3,7 +3,13 @@ import axios from 'axios';
 const TECHNICAL_ABNORMALITY = 0;
 const CONFIGURATION_PROBLEM = 4;
 
-export const traceError = ({message, cause, userId}) => {
+interface traceErrorProps {
+  message: string;
+  cause: string;
+  userId: number;
+}
+
+export const traceError = ({message, cause, userId}: traceErrorProps) => {
   return axios.put('/ws/rest/com.axelor.exception.db.TraceBack', {
     data: {
       origin: 'mobile app',
