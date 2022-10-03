@@ -10,8 +10,7 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {InputBarCodeCard} from '@/components/molecules';
+import {InputBarCodeCard, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {QuantityCard, StockMoveHeader} from '../../components/organisms';

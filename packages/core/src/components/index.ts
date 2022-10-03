@@ -1,6 +1,7 @@
 export {default as AOSImage} from './AOSImage/AOSImage';
 export {default as CameraScanner} from './CameraScanner/CameraScanner';
 export {default as ErrorText} from './ErrorText/ErrorText';
+export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as PasswordInput} from './PasswordInput/PasswordInput';
 export {default as Scanner} from './Scanner/Scanner';

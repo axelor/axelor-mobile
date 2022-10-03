@@ -10,11 +10,11 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
-  CameraScanner,
   enableScan,
   useScannedValueByKey,
   useScannerSelector,
-} from '@aos-mobile/core';
+} from '../../features/scannerSlice';
+import CameraScanner from '../CameraScanner/CameraScanner';
 
 const InputBarCodeCard = ({
   style,
