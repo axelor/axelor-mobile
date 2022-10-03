@@ -10,9 +10,8 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -120,7 +119,7 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
             onPress={handleAddTrackingNumber}
           />
         </View>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={trackingNumberList}
           onChangeValue={item => handleTrackingNumberSelection(item)}
           fetchData={fetchTrackingAPI}

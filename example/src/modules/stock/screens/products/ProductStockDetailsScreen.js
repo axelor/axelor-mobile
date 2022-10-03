@@ -18,8 +18,11 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {AOSImage, useTranslator} from '@aos-mobile/core';
-import {AutocompleteSearch} from '@/components/organisms';
+import {
+  AOSImage,
+  ScannerAutocompleteSearch,
+  useTranslator,
+} from '@aos-mobile/core';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
 import {CardStockIndicator} from '@/modules/stock/components/organisms';
 import {fetchProductIndicators} from '@/modules/stock/features/productIndicatorsSlice';
@@ -191,7 +194,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               </View>
             </TouchableOpacity>
           )}
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}

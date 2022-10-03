@@ -2,9 +2,8 @@ import React, {useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Card, PopUpOneButton, Screen, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -71,7 +70,7 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
           <Card style={styles.cardProductInfo}>
             <Text>{product.name}</Text>
           </Card>
-          <AutocompleteSearch
+          <ScannerAutocompleteSearch
             objectList={trackingNumberList}
             onChangeValue={item => handleTrackingNumberSelection(item)}
             fetchData={fetchTrackingAPI}

@@ -8,9 +8,8 @@ import {
   Screen,
   Text,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';
@@ -118,7 +117,7 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
           />
         </View>
       )}
-      <AutocompleteSearch
+      <ScannerAutocompleteSearch
         objectList={trackingNumberList}
         onChangeValue={item => handleTrackingNumberSelection(item)}
         fetchData={fetchTrackingAPI}

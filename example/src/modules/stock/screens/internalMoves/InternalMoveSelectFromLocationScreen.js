@@ -1,8 +1,7 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Screen} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {AutocompleteSearch} from '@/components/organisms';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 
@@ -42,7 +41,7 @@ const InternalMoveSelectFromLocationScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <AutocompleteSearch
+      <ScannerAutocompleteSearch
         objectList={stockLocationList}
         onChangeValue={item => handleNavigate(item)}
         fetchData={fetchStockLocationsAPI}

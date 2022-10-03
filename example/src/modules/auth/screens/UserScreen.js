@@ -10,7 +10,11 @@ import {
   useTheme,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {logout, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  logout,
+  useTranslator,
+} from '@aos-mobile/core';
 import {LogoutButton} from '@/modules/auth/components/molecules';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
@@ -23,7 +27,7 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-import {AutocompleteSearch} from '@/components/organisms';
+//import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {fetchBaseConfig} from '../features/configSlice';
 import {fetchStockMenuConfig} from '@/features/menuConfigSlice';
@@ -156,7 +160,7 @@ const UserScreen = ({navigation}) => {
         <Text style={styles.itemTitle}>
           {`${I18n.t('User_DefaultStockLocation')}`}
         </Text>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={user.workshopStockLocation}
           onChangeValue={updateDefaultStockLocation}

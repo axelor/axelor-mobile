@@ -10,8 +10,7 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {AutocompleteSearch} from '@/components/organisms';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {fetchStockCorrections} from '@/modules/stock/features/stockCorrectionSlice';
 import {StockCorrectionCard} from '@/modules/stock/components/molecules';
 import filterList from '@/modules/stock/utils/filter-list';
@@ -181,7 +180,7 @@ const StockCorrectionListScreen = ({navigation}) => {
             />
           </ChipSelect>
         }>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
@@ -191,7 +190,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_StockLocation')}
           searchBarKey={1}
         />
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={productList}
           value={product}
           onChangeValue={item => setProduct(item)}

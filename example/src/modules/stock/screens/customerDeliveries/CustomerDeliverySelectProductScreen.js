@@ -2,9 +2,8 @@ import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {PopUpOneButton, Screen} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -70,7 +69,7 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
           toStockLocation={customerDelivery?.toAddress.fullName}
         />
         <View style={styles.stockView}>
-          <AutocompleteSearch
+          <ScannerAutocompleteSearch
             objectList={productList}
             onChangeValue={item => handleProductSelection(item)}
             fetchData={fetchProductsAPI}

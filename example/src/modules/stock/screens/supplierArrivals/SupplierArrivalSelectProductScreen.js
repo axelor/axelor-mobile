@@ -7,10 +7,9 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {useDispatch, useSelector} from 'react-redux';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '../../types/stock-move';
@@ -96,7 +95,7 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
             )}
           </View>
         )}
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={productList}
           onChangeValue={item => handleProductSelection(item)}
           fetchData={fetchProductsAPI}

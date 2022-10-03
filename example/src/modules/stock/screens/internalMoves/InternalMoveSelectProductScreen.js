@@ -2,9 +2,8 @@ import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ClearableCard, PopUpOneButton, Screen} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {searchProducts} from '@/modules/stock/features/productSlice';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockMove from '../../types/stock-move';
 import {LocationsMoveCard} from '../../components/molecules';
@@ -112,7 +111,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
           />
         </View>
       )}
-      <AutocompleteSearch
+      <ScannerAutocompleteSearch
         objectList={productList}
         onChangeValue={item => handleNavigate(item)}
         fetchData={fetchProductsAPI}

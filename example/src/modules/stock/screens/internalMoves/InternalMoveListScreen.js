@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  AutoCompleteSearchNoQR,
+  AutoCompleteSearch,
   Chip,
   ChipSelect,
   Icon,
@@ -11,8 +11,7 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {AutocompleteSearch} from '@/components/organisms';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {InternalMoveCard} from '@/modules/stock/components/organisms';
 import filterList from '@/modules/stock/utils/filter-list';
 import {
@@ -205,7 +204,7 @@ const InternalMoveListScreen = ({navigation}) => {
     <Screen listScreen={true}>
       <SearchContainer
         fixedItems={
-          <AutoCompleteSearchNoQR
+          <AutoCompleteSearch
             objectList={internalMoveList}
             onChangeValue={item => showInternalMoveDetails(item)}
             fetchData={handleRefChange}
@@ -252,7 +251,7 @@ const InternalMoveListScreen = ({navigation}) => {
             />
           </ChipSelect>
         }>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationListFirstFilter}
           value={originalStockLocation}
           onChangeValue={item => setOriginalStockLocation(item)}
@@ -262,7 +261,7 @@ const InternalMoveListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_OriginalStockLocation')}
           searchBarKey={1}
         />
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationListSecondFilter}
           value={destinationStockLocation}
           onChangeValue={item => setDestinationStockLocation(item)}

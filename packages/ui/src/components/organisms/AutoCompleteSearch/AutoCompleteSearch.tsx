@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {AutocompleteItem, SearchBarNoQR} from '../../molecules';
+import {AutocompleteItem} from '../../molecules';
+import {SearchBar} from '../../organisms';
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;
 
-interface AutocompleteSearchNoQRProps {
+interface AutocompleteSearchProps {
   objectList: any[];
   value?: any;
   onChangeValue?: (any) => void;
@@ -16,9 +17,12 @@ interface AutocompleteSearchNoQRProps {
   changeScreenAfter?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
+  onSelection?: () => void;
+  onScanPress?: () => void;
+  scanIconColor?: string;
 }
 
-const AutoCompleteSearchNoQR = ({
+const AutoCompleteSearch = ({
   objectList,
   value = null,
   onChangeValue,
@@ -29,7 +33,10 @@ const AutoCompleteSearchNoQR = ({
   changeScreenAfter = false,
   navigate = false,
   oneFilter = false,
-}: AutocompleteSearchNoQRProps) => {
+  onSelection,
+  onScanPress,
+  scanIconColor = null,
+}: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [searchText, setSearchText] = useState(null);
   const [previousState, setPreviousState] = useState(null);
@@ -160,16 +167,19 @@ const AutoCompleteSearchNoQR = ({
 
   return (
     <View>
-      <SearchBarNoQR
+      <SearchBar
         valueTxt={searchText}
         placeholder={placeholder}
+        onClearPress={handleClear}
         onChangeTxt={input => {
           setPreviousState(searchText);
           setSearchText(input);
         }}
-        onClearPress={handleClear}
+        onSelection={onSelection}
         onEndFocus={() => setDisplayList(false)}
         isFocus={isFocus}
+        onScanPress={onScanPress}
+        scanIconColor={scanIconColor}
       />
       {objectList != null &&
         objectList.length > 0 &&
@@ -199,4 +209,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AutoCompleteSearchNoQR;
+export default AutoCompleteSearch;

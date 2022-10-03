@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  AutoCompleteSearchNoQR,
+  AutoCompleteSearch,
   Chip,
   ChipSelect,
   SearchContainer,
@@ -10,8 +10,7 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {AutocompleteSearch} from '@/components/organisms';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import filterList from '@/modules/stock/utils/filter-list';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {filterSuppliers} from '../../features/partnerSlice';
@@ -155,7 +154,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
     <Screen listScreen={true}>
       <SearchContainer
         fixedItems={
-          <AutoCompleteSearchNoQR
+          <AutoCompleteSearch
             placeholder={I18n.t('Stock_Ref')}
             objectList={supplierArrivalsList}
             displayValue={displayStockMoveSeq}
@@ -187,7 +186,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
             />
           </ChipSelect>
         }>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
@@ -196,7 +195,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
         />
-        <AutoCompleteSearchNoQR
+        <AutoCompleteSearch
           objectList={supplierList}
           value={partner}
           onChangeValue={item => setPartner(item)}

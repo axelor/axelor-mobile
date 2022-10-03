@@ -2,9 +2,8 @@ import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Screen, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
-import {AutocompleteSearch} from '@/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -77,7 +76,7 @@ const SupplierArrivalChangeLocationScreen = ({route, navigation}) => {
         <Text style={styles.text_important}>
           {I18n.t('Stock_NewStockLocation')}
         </Text>
-        <AutocompleteSearch
+        <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}

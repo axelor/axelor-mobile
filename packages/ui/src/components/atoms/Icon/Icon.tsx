@@ -11,6 +11,7 @@ interface IconProps {
   color?: string;
   size?: number;
   touchable?: boolean;
+  visible?: boolean;
   onPress?: () => void;
 }
 
@@ -21,6 +22,7 @@ const Icon = ({
   color,
   size = 18,
   touchable = false,
+  visible = true,
   onPress = () => {},
 }: IconProps) => {
   const Colors = useThemeColor();
@@ -28,6 +30,10 @@ const Icon = ({
   const iconStyle = useMemo(() => {
     return getStyles(color == null ? Colors.secondaryColor_dark : color, size);
   }, [Colors, color, size]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <View style={[styles.container, style]}>

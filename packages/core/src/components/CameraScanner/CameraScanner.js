@@ -7,7 +7,7 @@ import {Icon, useThemeColor} from '@aos-mobile/ui';
 
 const CameraScanner = ({
   isActive = false,
-  onScan = () => {},
+  onScan = value => {},
   coordinate = {x: 0, y: 0},
   onClose = () => {},
 }) => {

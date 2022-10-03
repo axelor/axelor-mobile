@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ClearableCard, Screen} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
-import {AutocompleteSearch} from '@/components/organisms';
 
 const productScanKey = 'product_stock-correction-new';
 
@@ -49,7 +48,7 @@ const StockCorrectionNewProductScreen = ({navigation, route}) => {
         valueTxt={route.params.stockLocation.name}
         onClearPress={handleClearLocation}
       />
-      <AutocompleteSearch
+      <ScannerAutocompleteSearch
         objectList={productList}
         onChangeValue={item => handleNavigate(item)}
         fetchData={fetchProductsAPI}
