@@ -6,7 +6,7 @@ import {
   Chip,
   ChipSelect,
   Screen,
-  SearchContainer,
+  HeaderContainer,
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
@@ -152,7 +152,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         fixedItems={
           <AutoCompleteSearch
             objectList={deliveryList}
@@ -203,7 +203,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
           displayValue={displayPartner}
           placeholder={I18n.t('Stock_Customer')}
         />
-      </SearchContainer>
+      </HeaderContainer>
       <ScrollList
         loadingList={loading}
         data={filteredList}

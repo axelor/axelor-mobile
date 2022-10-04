@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Screen, ScrollList, SearchContainer} from '@aos-mobile/ui';
+import {Screen, ScrollList, HeaderContainer} from '@aos-mobile/ui';
 import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
@@ -66,7 +66,7 @@ const ProductListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         expandableFilter={false}
         fixedItems={
           <ScannerAutocompleteSearch

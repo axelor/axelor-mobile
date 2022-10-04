@@ -4,7 +4,7 @@ import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
 
-interface SearchContainerProps {
+interface HeaderContainerProps {
   style?: any;
   children?: any;
   fixedItems?: any;
@@ -12,13 +12,13 @@ interface SearchContainerProps {
   expandableFilter?: boolean;
 }
 
-const SearchContainer = ({
+const HeaderContainer = ({
   style,
   children,
   fixedItems = null,
   chipComponent = null,
   expandableFilter = true,
-}: SearchContainerProps) => {
+}: HeaderContainerProps) => {
   const {showFilter} = useConfig();
   const [isVisible, setVisible] = useState(true);
   const Colors = useThemeColor();
@@ -68,4 +68,4 @@ const getStyles = Colors =>
     },
   });
 
-export default SearchContainer;
+export default HeaderContainer;

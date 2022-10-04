@@ -1,7 +1,44 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {AutocompleteItem} from '../../molecules';
+import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Text} from '../../atoms';
 import {SearchBar} from '../../organisms';
+import {useThemeColor} from '../../../theme/ThemeContext';
+
+interface AutocompleteItemProps {
+  style?: any;
+  content: string;
+  onPress: (any) => void;
+}
+
+const AutocompleteItem = ({style, content, onPress}: AutocompleteItemProps) => {
+  const Colors = useThemeColor();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  return content == null ? null : (
+    <TouchableOpacity style={[styles.item, style]} onPress={onPress}>
+      <Text style={styles.text}>{content}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const getStyles = Colors =>
+  StyleSheet.create({
+    item: {
+      height: 50,
+      flexDirection: 'row',
+      backgroundColor: Colors.backgroundColor,
+      marginHorizontal: 15,
+      paddingLeft: 15,
+      paddingVertical: 15,
+      borderBottomColor: Colors.primaryColor,
+      borderBottomWidth: 1,
+      position: 'relative',
+      zIndex: 50,
+    },
+    text: {
+      fontSize: 18,
+    },
+  });
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;

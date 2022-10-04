@@ -6,7 +6,7 @@ import {
   Chip,
   ChipSelect,
   Icon,
-  SearchContainer,
+  HeaderContainer,
   Screen,
   ScrollList,
   useThemeColor,
@@ -202,7 +202,7 @@ const InternalMoveListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         fixedItems={
           <AutoCompleteSearch
             objectList={internalMoveList}
@@ -271,7 +271,7 @@ const InternalMoveListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_DestinationStockLocation')}
           searchBarKey={2}
         />
-      </SearchContainer>
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingInternalMove}
         data={filteredList}

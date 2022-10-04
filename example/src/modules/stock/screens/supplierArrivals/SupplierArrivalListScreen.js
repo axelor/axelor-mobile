@@ -5,7 +5,7 @@ import {
   AutoCompleteSearch,
   Chip,
   ChipSelect,
-  SearchContainer,
+  HeaderContainer,
   Screen,
   ScrollList,
   useThemeColor,
@@ -152,7 +152,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         fixedItems={
           <AutoCompleteSearch
             placeholder={I18n.t('Stock_Ref')}
@@ -203,7 +203,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
           displayValue={displayPartner}
           placeholder={I18n.t('Stock_Supplier')}
         />
-      </SearchContainer>
+      </HeaderContainer>
       <ScrollList
         loadingList={loading}
         data={filteredList}

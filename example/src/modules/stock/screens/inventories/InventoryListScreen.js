@@ -5,7 +5,7 @@ import {
   AutoCompleteSearch,
   Chip,
   ChipSelect,
-  SearchContainer,
+  HeaderContainer,
   Screen,
   ScrollList,
   useThemeColor,
@@ -178,7 +178,7 @@ const InventoryListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         fixedItems={
           <AutoCompleteSearch
             objectList={inventoryList}
@@ -247,7 +247,7 @@ const InventoryListScreen = ({navigation}) => {
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
         />
-      </SearchContainer>
+      </HeaderContainer>
       <ScrollList
         loadingList={loading}
         data={filteredList}

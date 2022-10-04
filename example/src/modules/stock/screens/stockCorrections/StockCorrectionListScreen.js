@@ -5,7 +5,7 @@ import {
   Chip,
   ChipSelect,
   Icon,
-  SearchContainer,
+  HeaderContainer,
   Screen,
   ScrollList,
   useThemeColor,
@@ -157,7 +157,7 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   return (
     <Screen listScreen={true}>
-      <SearchContainer
+      <HeaderContainer
         chipComponent={
           <ChipSelect>
             <Chip
@@ -200,7 +200,7 @@ const StockCorrectionListScreen = ({navigation}) => {
           placeholder={I18n.t('Stock_Product')}
           searchBarKey={2}
         />
-      </SearchContainer>
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingStockCorrection}
         data={filteredList}
