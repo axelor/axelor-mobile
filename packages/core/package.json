@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@aos-mobile/ui": "1.0.0",
+    "@aos-mobile/error": "1.0.0",
     "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.10",
     "@react-navigation/native-stack": "6.6.1",
