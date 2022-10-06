@@ -10,8 +10,8 @@ export default {
   SupplierArrivalListScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalListScreen,
-    option: {
-      isListScreen: true,
+    options: {
+      shadedHeader: false,
     },
   },
   SupplierArrivalDetailsScreen: {

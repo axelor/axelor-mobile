@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Card, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {CarrierCard, LocationsMoveCard} from '../../components/molecules';
+import {LocationsMoveCard} from '../../components/molecules';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import RenderHtml from 'react-native-render-html';
 import StockMove from '../../types/stock-move';
@@ -115,7 +115,10 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         />
         <LocationsMoveCard
           fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={customerDelivery?.toAddress.fullName}
+          toStockLocation={
+            customerDelivery.toAddress?.fullName ||
+            customerDelivery.toAddressStr
+          }
         />
         <View style={styles.infoContainer}>
           <View style={styles.cardInfoContainer}>
@@ -124,7 +127,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
               <Text>{customerDelivery?.origin}</Text>
             )}
           </View>
-          <CarrierCard />
         </View>
         <ViewAllContainer
           isHeaderExist={

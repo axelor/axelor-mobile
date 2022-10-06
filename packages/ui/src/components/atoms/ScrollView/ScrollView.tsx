@@ -1,5 +1,9 @@
 import React from 'react';
-import {ScrollView as ReactNativeScrollView, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  ScrollView as ReactNativeScrollView,
+  StyleSheet,
+} from 'react-native';
 
 interface ScrollViewProps {
   style?: any;
@@ -18,7 +22,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingBottom: 10,
-    height: '100%',
+    height: Dimensions.get('window').height,
   },
 });
 

@@ -11,7 +11,7 @@ import frTranslations from './i18n/fr.json';
 const stockModule: Module = {
   name: 'Stock',
   title: t => t('Stock'),
-  icon: 'boxes',
+  icon: 'cubes',
   menus: {
     stock_menu_product: {
       title: t => t('Stock_Product'),

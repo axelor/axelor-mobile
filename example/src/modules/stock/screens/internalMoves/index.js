@@ -12,7 +12,7 @@ export default {
     title: t => t('Stock_InternalMove'),
     component: InternalMoveListScreen,
     options: {
-      isListScreen: true,
+      shadedHeader: false,
     },
   },
   InternalMoveDetailsGeneralScreen: {

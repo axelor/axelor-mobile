@@ -11,7 +11,7 @@ export default {
     title: t => t('Stock_Inventory'),
     component: InventoryListScreen,
     options: {
-      isListScreen: true,
+      shadedHeader: false,
     },
   },
   InventoryPlannedDetailsScreen: {

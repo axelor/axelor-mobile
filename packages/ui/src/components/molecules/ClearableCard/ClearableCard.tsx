@@ -7,10 +7,16 @@ import {Card, Icon, Text} from '../../atoms';
 interface ClearableCardPops {
   style?: any;
   valueTxt: string;
-  onClearPress: (any) => void;
+  onClearPress: () => void;
+  clearable: boolean;
 }
 
-const ClearableCard = ({style, valueTxt, onClearPress}) => {
+const ClearableCard = ({
+  style,
+  valueTxt,
+  onClearPress,
+  clearable = true,
+}: ClearableCardPops) => {
   const Colors = useThemeColor();
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -23,12 +29,14 @@ const ClearableCard = ({style, valueTxt, onClearPress}) => {
         style,
       ]}>
       <Text style={styles.text}>{valueTxt}</Text>
-      <Icon
-        name="times"
-        touchable={true}
-        onPress={onClearPress}
-        size={Dimensions.get('window').width * 0.05}
-      />
+      {clearable && (
+        <Icon
+          name="times"
+          touchable={true}
+          onPress={onClearPress}
+          size={Dimensions.get('window').width * 0.05}
+        />
+      )}
     </Card>
   );
 };

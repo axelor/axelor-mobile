@@ -9,7 +9,7 @@ export default {
     title: t => t('Stock_StockCorrection'),
     component: StockCorrectionListScreen,
     options: {
-      isListScreen: true,
+      shadedHeader: false,
     },
   },
   StockCorrectionDetailsScreen: {

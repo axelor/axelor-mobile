@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Text} from '../../atoms';
 
@@ -23,12 +24,14 @@ const IconButton = ({
   const Colors = useThemeColor();
 
   const styles = useMemo(() => {
-    return getStyles(color == null ? Colors.primaryColor : color, Colors);
+    return getStyles(color == null ? Colors.primaryColor : color);
   }, [Colors, color]);
+
+  const commonStyle = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
     <TouchableOpacity
-      style={[styles.container, style]}
+      style={[styles.container, commonStyle.button, style]}
       onPress={onPress}
       disabled={disabled}>
       <Icon name={iconName} size={15} color={Colors.text} />
@@ -37,25 +40,14 @@ const IconButton = ({
   );
 };
 
-const getStyles = (backgroundColor, Colors) =>
+const getStyles = backgroundColor =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center',
-      paddingVertical: 5,
-      marginVertical: 5,
-      borderRadius: 35,
-      width: '40%',
-      height: 40,
       backgroundColor: backgroundColor,
     },
     text: {
       fontSize: 15,
       fontWeight: 'bold',
-      color: Colors.text,
       textAlign: 'center',
       marginLeft: 10,
     },

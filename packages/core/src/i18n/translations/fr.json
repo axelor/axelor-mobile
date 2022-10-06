@@ -5,6 +5,7 @@
   "Base_Description": "Description",
   "Base_AllFilters": "Tous les filtres",
   "Base_DateFormat": "DD/MM/YYYY",
+  "Base_DateTimeFormat": "DD/MM/YYYY HH:mm",
   "Base_CreatedOn": "Créé le",
   "Base_ValidatedOn": "Validé le",
   "Base_PlannedFor": "Planifé pour le",

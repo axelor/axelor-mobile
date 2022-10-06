@@ -1,43 +1,26 @@
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Input, useThemeColor} from '@aos-mobile/ui';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Icon, IconInput} from '@aos-mobile/ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const UsernameInput = ({value, onChange, readOnly}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
-  const container = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={container}>
-      <Input
-        style={styles.input}
-        value={value}
-        onChange={onChange}
-        placeholder={I18n.t('Auth_Username')}
-        readOnly={readOnly}
-      />
-    </View>
+    <IconInput
+      value={value}
+      onChange={onChange}
+      readOnly={readOnly}
+      placeholder={I18n.t('Auth_Username')}
+      leftIconsList={[<Icon name="user" size={15} style={styles.icon} />]}
+    />
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    borderColor: Colors.secondaryColor,
-    borderWidth: 1,
-    borderRadius: 13,
-    backgroundColor: Colors.backgroundColor,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    marginHorizontal: 20,
-    marginVertical: 6,
-  });
-
 const styles = StyleSheet.create({
-  input: {
-    width: '100%',
+  icon: {
+    width: '7%',
+    margin: 3,
   },
 });
 

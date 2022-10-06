@@ -119,8 +119,9 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
       />
       <LocationsMoveCard
         fromStockLocation={customerDelivery.fromStockLocation?.name}
-        toStockLocation={customerDelivery?.toAddress.fullName}
-        style={styles.LocationsMoveCard}
+        toStockLocation={
+          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
+        }
       />
       <ChipSelect>
         <Chip
@@ -174,9 +175,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  LocationsMoveCard: {
-    marginBottom: '2%',
-  },
   item: {
     marginHorizontal: 16,
     marginVertical: 4,

@@ -61,12 +61,12 @@ const Navigator = ({modules, mainMenu}) => {
     ({initialRouteName, ...rest}) => (
       <Stack.Navigator {...rest} initialRouteName={initialRouteName}>
         {Object.entries(modulesScreens).map(
-          ([key, {component, title, options = {isListScreen: false}}]) => {
+          ([key, {component, title, options = {shadedHeader: true}}]) => {
             const screenOptions = {
               headerTintColor: Colors.primaryColor,
-              headerStyle: options?.isListScreen
-                ? styles.listScreenHeaderStyle
-                : styles.headerColor,
+              headerStyle: options?.shadedHeader
+                ? styles.headerColor
+                : styles.listScreenHeaderStyle,
               headerTitle: title(I18n.t),
               headerTitleStyle: styles.headerTitle,
             };

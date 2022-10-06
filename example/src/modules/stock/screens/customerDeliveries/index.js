@@ -10,7 +10,7 @@ export default {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliveryListScreen,
     options: {
-      isListScreen: true,
+      shadedHeader: false,
     },
   },
   CustomerDeliveryDetailScreen: {

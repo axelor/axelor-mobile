@@ -64,7 +64,10 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
         />
         <LocationsMoveCard
           fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={customerDelivery?.toAddress.fullName}
+          toStockLocation={
+            customerDelivery.toAddress?.fullName ||
+            customerDelivery.toAddressStr
+          }
         />
         <View style={styles.stockView}>
           <Card style={styles.cardProductInfo}>

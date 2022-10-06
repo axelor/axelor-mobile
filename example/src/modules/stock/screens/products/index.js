@@ -11,7 +11,7 @@ export default {
     title: t => t('Stock_Product'),
     component: ProductListScreen,
     options: {
-      isListScreen: true,
+      shadedHeader: false,
     },
   },
   ProductStockDetailsScreen: {

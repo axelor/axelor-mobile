@@ -17,7 +17,7 @@ const ScrollList = ({
   loadingList = false,
   data = [],
   renderItem,
-  fetchData,
+  fetchData = () => [],
   moreLoading = false,
   isListEnd = false,
   filter = false,
