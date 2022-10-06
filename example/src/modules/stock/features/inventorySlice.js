@@ -53,7 +53,7 @@ export const updateInventory = createAsyncThunk(
     }).then(object =>
       handlerApiCall({
         fetchFunction: fetchInventory,
-        data: {inventoryId: object.id},
+        data: {inventoryId: object.inventoryId},
         action: 'fetch Inventory by id',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -70,7 +70,7 @@ export const fetchInventoryById = createAsyncThunk(
       data,
       action: 'fetch Inventory by id',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

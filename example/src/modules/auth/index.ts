@@ -6,7 +6,7 @@ import frTranslations from './i18n/fr.json';
 
 const authModule: Module = {
   name: 'Auth',
-  title: t => t('Auth'),
+  title: t => t('User_User'),
   icon: 'user',
   menus: {
     auth_menu_user: {

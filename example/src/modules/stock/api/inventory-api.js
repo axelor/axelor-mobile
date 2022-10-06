@@ -19,6 +19,8 @@ const inventoryFields = [
   'version',
   'fromRack',
   'toRack',
+  'productCategory',
+  'productFamily',
 ];
 
 const sortByFields = [

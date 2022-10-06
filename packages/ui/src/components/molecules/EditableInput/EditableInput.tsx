@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {useTheme} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
 
 interface EditableInputProps {
@@ -19,7 +19,7 @@ const EditableInput = ({
   multiline = false,
   numberOfLines = 1,
 }: EditableInputProps) => {
-  const Colors = useTheme();
+  const Colors = useThemeColor();
   const [isEditable, setEditable] = useState(true);
   const [value, setValue] = useState(defaultValue);
 
