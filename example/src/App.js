@@ -8,6 +8,7 @@ import * as rootReducers from '@/features';
 import * as authReducers from '@/modules/auth/features';
 import * as stockReducers from '@/modules/stock/features';
 import * as manufacturingReducers from '@/modules/manufacturing/features';
+import application_properties from '../package.json';
 
 const store = configGlobalStore({
   ...rootReducers,
@@ -25,6 +26,7 @@ const App = () => {
         modules={appModules}
         mainMenu="auth_menu_user"
         store={store}
+        version={application_properties.version}
       />
     </Provider>
   );

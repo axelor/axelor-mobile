@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {useThemeColor, Text, Screen, Image} from '@aos-mobile/ui';
+import {useThemeColor, Text, Screen, Image, ScrollView} from '@aos-mobile/ui';
 import {
+  CameraScanner,
   ErrorText,
   LoginButton,
   PasswordInput,
@@ -10,13 +11,21 @@ import {
 } from '../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../features/authSlice';
+import {
+  enableScan,
+  useScannedValueByKey,
+  useScannerSelector,
+} from '../features/scannerSlice';
 
 const urlScanKey = 'login_url';
 
-const LoginScreen = () => {
+const LoginScreen = ({route}) => {
   const {loading, error} = useSelector(state => state.auth);
-  const isEnabled = false;
-  const scanKey = 'login_url';
+  const [camScan, setCamScan] = useState(false);
+  const [scanData, setScanData] = useState(null);
+  const {isEnabled, scanKey} = useScannerSelector();
+  const scannedValue = useScannedValueByKey(urlScanKey);
+  const appVersion = route?.params?.version;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -26,9 +35,23 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin');
 
+  useEffect(() => {
+    if (scannedValue) {
+      setUrl(scannedValue);
+    } else if (scanData != null && scanData.value != null) {
+      setCamScan(false);
+      setUrl(scanData.value);
+    }
+  }, [scanData, scannedValue]);
+
   return (
     <Screen style={styles.container}>
-      <View>
+      <CameraScanner
+        isActive={camScan}
+        onScan={setScanData}
+        onClose={() => setCamScan(false)}
+      />
+      <ScrollView>
         <View style={styles.imageContainer}>
           <Image
             resizeMode="contain"
@@ -41,9 +64,9 @@ const LoginScreen = () => {
           value={url}
           onChange={setUrl}
           readOnly={loading}
-          onScanPress={() => console.log('setCamScan(true)')}
+          onScanPress={() => setCamScan(true)}
           onSelection={() => {
-            console.log('dispatch(enableScan(urlScanKey))');
+            dispatch(enableScan(urlScanKey));
           }}
           scanIconColor={
             isEnabled && scanKey === urlScanKey
@@ -61,19 +84,22 @@ const LoginScreen = () => {
           onChange={setPassword}
           readOnly={loading}
         />
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <LoginButton
-            onPress={() => dispatch(login({url, username, password}))}
-            disabled={loading}
-          />
-        )}
+        <View style={styles.buttonContainer}>
+          {loading ? (
+            <ActivityIndicator size="large" />
+          ) : (
+            <LoginButton
+              onPress={() => dispatch(login({url, username, password}))}
+              disabled={loading}
+            />
+          )}
+        </View>
         {error && <ErrorText message={error.message} />}
         <View style={styles.copyright}>
-          <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All Rights Reserved.`}</Text>
+          <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
+          <Text>{`Version ${appVersion}`}</Text>
         </View>
-      </View>
+      </ScrollView>
     </Screen>
   );
 };
@@ -86,13 +112,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginVertical: '15%',
+    marginTop: '20%',
+    marginBottom: '10%',
   },
   imageSize: {
     flex: 1,
   },
+  buttonContainer: {
+    flex: 1,
+  },
   copyright: {
+    flex: 1,
     alignSelf: 'center',
+    alignItems: 'center',
     marginTop: '10%',
   },
 });

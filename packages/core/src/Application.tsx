@@ -29,9 +29,10 @@ interface ApplicationProps {
   modules: [Module];
   mainMenu: string;
   store: Store;
+  version: string;
 }
 
-const Application = ({modules, mainMenu, store}: ApplicationProps) => {
+const Application = ({modules, mainMenu, store, version}: ApplicationProps) => {
   const toastConfig = {
     success: props => (
       <BaseToast
@@ -101,7 +102,11 @@ const Application = ({modules, mainMenu, store}: ApplicationProps) => {
               userIdfetcher={getActiveUserId}
               putMethod={traceBackPutMethod}>
               <NavigationContainer>
-                <RootNavigator modules={modules} mainMenu={mainMenu} />
+                <RootNavigator
+                  modules={modules}
+                  mainMenu={mainMenu}
+                  version={version}
+                />
               </NavigationContainer>
             </ErrorBoundary>
             <Toast config={toastConfig} />
