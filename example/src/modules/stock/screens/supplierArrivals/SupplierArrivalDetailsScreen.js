@@ -1,7 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
+import {
+  Button,
+  PopUpOneButton,
+  Screen,
+  Text,
+  ViewAllContainer,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
@@ -19,6 +25,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
     state => state.supplierArrivalLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -99,6 +106,8 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         />
         <LocationsMoveCard
           fromStockLocation={supplierArrival.fromAddress?.fullName}
+          touchableFrom={true}
+          onPressFrom={() => setVisiblePopup(true)}
           toStockLocation={supplierArrival.toStockLocation?.name}
         />
         <View style={styles.clientContainer}>
@@ -156,6 +165,13 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
           )}
         </ViewAllContainer>
       </ScrollView>
+      <PopUpOneButton
+        title={I18n.t('Stock_OriginalAdress')}
+        visible={isPopupVisible}
+        data={supplierArrival.fromAddress?.fullName}
+        btnTitle={I18n.t('Base_OK')}
+        onPress={() => setVisiblePopup(false)}
+      />
     </Screen>
   );
 };

@@ -80,6 +80,8 @@
   "Stock_Carrier": "Transporteur",
   "Stock_Supplier": "Fournisseur",
   "Stock_SupplierCatalog": "Catalogue fournisseur",
+  "Stock_OriginalAdress": "Adresse d'origine",
+  "Stock_DestinationAdress": "Adresse de destination",
   "Stock_Name": "Nom",
   "Stock_Code": "Code",
   "Stock_Origin": "Origine",

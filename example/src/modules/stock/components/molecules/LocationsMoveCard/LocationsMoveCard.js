@@ -8,8 +8,10 @@ const LocationsMoveCard = ({
   fromStockLocation,
   toStockLocation,
   isLockerCard = false,
-  editableFrom = false,
-  editableTo = false,
+  touchableFrom = false,
+  editIconFrom = false,
+  touchableTo = false,
+  editIconTo = false,
   onPressFrom = () => {},
   onPressTo = () => {},
 }) => {
@@ -19,31 +21,21 @@ const LocationsMoveCard = ({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.card}>
-        {editableFrom ? (
-          <TouchableOpacity
-            onPress={onPressFrom}
-            activeOpacity={0.9}
-            style={styles.editableCard}>
-            <View style={styles.editableText}>
-              {isLockerCard && (
-                <Text style={styles.text}>{I18n.t('Stock_FromLocker')}</Text>
-              )}
-              <Text numberOfLines={1} style={styles.text}>
-                {fromStockLocation}
-              </Text>
-            </View>
-            <Icon name="pencil-alt" size={14} />
-          </TouchableOpacity>
-        ) : (
+        <TouchableOpacity
+          onPress={onPressFrom}
+          activeOpacity={0.9}
+          style={styles.editableCard}
+          disabled={!touchableFrom}>
           <View style={styles.editableText}>
             {isLockerCard && (
               <Text style={styles.text}>{I18n.t('Stock_FromLocker')}</Text>
             )}
-            <Text numberOfLines={1} style={styles.text}>
+            <Text numberOfLines={3} style={styles.text}>
               {fromStockLocation}
             </Text>
           </View>
-        )}
+          {editIconFrom && <Icon name="pencil-alt" size={14} />}
+        </TouchableOpacity>
       </View>
       <Icon
         name="chevron-right"
@@ -52,31 +44,21 @@ const LocationsMoveCard = ({
         style={styles.icon}
       />
       <View style={styles.card}>
-        {editableTo ? (
-          <TouchableOpacity
-            onPress={onPressTo}
-            activeOpacity={0.9}
-            style={styles.editableCard}>
-            <View style={styles.editableText}>
-              {isLockerCard && (
-                <Text style={styles.text}>{I18n.t('Stock_ToLocker')}</Text>
-              )}
-              <Text numberOfLines={1} style={styles.text}>
-                {toStockLocation}
-              </Text>
-            </View>
-            <Icon name="pencil-alt" size={14} />
-          </TouchableOpacity>
-        ) : (
+        <TouchableOpacity
+          onPress={onPressTo}
+          activeOpacity={0.9}
+          style={styles.editableCard}
+          disabled={!touchableTo}>
           <View style={styles.editableText}>
             {isLockerCard && (
               <Text style={styles.text}>{I18n.t('Stock_ToLocker')}</Text>
             )}
-            <Text numberOfLines={1} style={styles.text}>
+            <Text numberOfLines={3} style={styles.text}>
               {toStockLocation}
             </Text>
           </View>
-        )}
+          {editIconTo && <Icon name="pencil-alt" size={14} />}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -94,7 +76,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width * 0.41,
-    height: Dimensions.get('window').height * 0.05,
   },
   editableCard: {
     flexDirection: 'row',

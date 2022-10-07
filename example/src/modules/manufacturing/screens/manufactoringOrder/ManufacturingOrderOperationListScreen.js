@@ -258,9 +258,6 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  LocationsMoveCard: {
-    marginBottom: '2%',
-  },
   item: {
     marginHorizontal: 16,
     marginVertical: 4,

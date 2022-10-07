@@ -3,7 +3,6 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Badge, Button, Card, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   QuantityCard,
   ProductCardInfo,
@@ -117,13 +116,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
               : customerDelivery.realDate
           }
           availability={customerDelivery.availableStatusSelect}
-        />
-        <LocationsMoveCard
-          fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
         />
         <View style={styles.stockView}>
           {customerDeliveryLine != null && (

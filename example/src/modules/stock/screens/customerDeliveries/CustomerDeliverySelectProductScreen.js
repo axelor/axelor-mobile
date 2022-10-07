@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {PopUpOneButton, Screen} from '@aos-mobile/ui';
 import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -63,13 +62,6 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
               : customerDelivery.realDate
           }
           availability={customerDelivery.availableStatusSelect}
-        />
-        <LocationsMoveCard
-          fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
         />
         <View style={styles.stockView}>
           <ScannerAutocompleteSearch

@@ -86,7 +86,6 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
                 <LocationsMoveCard
                   fromStockLocation={internalMove.fromStockLocation.name}
                   toStockLocation={internalMove.toStockLocation.name}
-                  editable={false}
                 />
               </View>
               <ViewAllContainer onPress={handleViewAll}>

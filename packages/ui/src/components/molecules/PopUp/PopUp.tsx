@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
+    textAlign: 'center',
     fontSize: 16,
   },
   buttonContainer: {

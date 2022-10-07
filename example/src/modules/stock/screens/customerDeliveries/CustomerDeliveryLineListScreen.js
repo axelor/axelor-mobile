@@ -9,7 +9,6 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import StockMove from '@/modules/stock/types/stock-move';
 import {
   CustomerDeliveryLineCard,
@@ -116,12 +115,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             : customerDelivery.realDate
         }
         availability={customerDelivery.availableStatusSelect}
-      />
-      <LocationsMoveCard
-        fromStockLocation={customerDelivery.fromStockLocation?.name}
-        toStockLocation={
-          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
-        }
       />
       <ChipSelect>
         <Chip

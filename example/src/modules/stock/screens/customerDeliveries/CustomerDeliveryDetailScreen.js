@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Card, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
+import {
+  Button,
+  Card,
+  PopUpOneButton,
+  Screen,
+  Text,
+  ViewAllContainer,
+} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '../../components/molecules';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
@@ -21,6 +28,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const [widthNotes, setWidthNotes] = useState();
+  const [isPopupVisible, setVisiblePopup] = useState(false);
   const PERCENTAGE_WIDTH_NOTES = 0.95;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -119,6 +127,8 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
             customerDelivery.toAddress?.fullName ||
             customerDelivery.toAddressStr
           }
+          touchableTo={true}
+          onPressTo={() => setVisiblePopup(true)}
         />
         <View style={styles.infoContainer}>
           <View style={styles.cardInfoContainer}>
@@ -194,6 +204,15 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           </View>
         )}
       </ScrollView>
+      <PopUpOneButton
+        title={I18n.t('Stock_DestinationAdress')}
+        data={
+          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
+        }
+        visible={isPopupVisible}
+        btnTitle={I18n.t('Base_OK')}
+        onPress={() => setVisiblePopup(false)}
+      />
     </Screen>
   );
 };

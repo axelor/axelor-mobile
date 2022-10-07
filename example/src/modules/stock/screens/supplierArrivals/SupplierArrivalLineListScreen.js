@@ -9,7 +9,6 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   SupplierArrivalLineCard,
   StockMoveHeader,
@@ -107,11 +106,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             ? supplierArrival.estimatedDate
             : supplierArrival.realDate
         }
-      />
-      <LocationsMoveCard
-        fromStockLocation={supplierArrival.fromAddress?.fullName}
-        toStockLocation={supplierArrival.toStockLocation?.name}
-        editable={true}
       />
       <ChipSelect>
         <Chip

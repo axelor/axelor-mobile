@@ -11,7 +11,6 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -76,10 +75,6 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
             ? supplierArrival.estimatedDate
             : supplierArrival.realDate
         }
-      />
-      <LocationsMoveCard
-        fromStockLocation={supplierArrival.fromAddress?.fullName}
-        toStockLocation={supplierArrival.toStockLocation?.name}
       />
       <View style={styles.stockView}>
         {supplierArrivalLine != null && (

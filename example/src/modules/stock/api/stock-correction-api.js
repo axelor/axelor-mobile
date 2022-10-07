@@ -8,6 +8,7 @@ const stockCorrectionFields = [
   'validationDateT',
   'trackingNumber',
   'realQty',
+  'baseQty',
   'stockCorrectionReason',
 ];
 

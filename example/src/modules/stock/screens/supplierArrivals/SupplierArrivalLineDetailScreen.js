@@ -11,7 +11,6 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   QuantityCard,
   StockMoveHeader,
@@ -155,10 +154,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
               ? supplierArrival.estimatedDate
               : supplierArrival.realDate
           }
-        />
-        <LocationsMoveCard
-          fromStockLocation={supplierArrival.fromAddress?.fullName}
-          toStockLocation={supplierArrival.toStockLocation?.name}
         />
         <View style={styles.stockView}>
           {supplierArrivalLine != null && (

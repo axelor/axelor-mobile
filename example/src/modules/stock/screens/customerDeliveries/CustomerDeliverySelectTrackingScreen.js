@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Card, PopUpOneButton, Screen, Text} from '@aos-mobile/ui';
 import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -61,13 +60,6 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
               : customerDelivery.realDate
           }
           availability={customerDelivery.availableStatusSelect}
-        />
-        <LocationsMoveCard
-          fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
         />
         <View style={styles.stockView}>
           <Card style={styles.cardProductInfo}>

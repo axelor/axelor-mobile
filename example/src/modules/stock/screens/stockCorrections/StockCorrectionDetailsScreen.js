@@ -99,9 +99,8 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
       setStockProduct(productFromId);
       setTrackingNumber(stockCorrection.trackingNumber);
 
-      //Need to access database qty once merged on AOS
       if (stockCorrection.statusSelect === StockCorrection.status.Validated) {
-        setDatabaseQty(stockCorrection.realQty);
+        setDatabaseQty(stockCorrection.baseQty);
       } else {
         setDatabaseQty(productIndicators?.realQty);
       }
