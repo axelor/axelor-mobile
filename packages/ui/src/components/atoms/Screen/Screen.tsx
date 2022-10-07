@@ -7,7 +7,7 @@ interface ScreenProps {
   style?: any;
   children: any;
   fixedItems: any;
-  listScreen?: boolean;
+  removeSpaceOnTop?: boolean;
   loading?: boolean;
 }
 
@@ -19,7 +19,7 @@ const Screen = ({
   style,
   children,
   fixedItems,
-  listScreen = false,
+  removeSpaceOnTop = false,
   loading = false,
 }: ScreenProps) => {
   const Colors = useThemeColor();
@@ -35,7 +35,11 @@ const Screen = ({
 
   return (
     <View
-      style={[styles.container, listScreen ? null : styles.marginTop, style]}>
+      style={[
+        styles.container,
+        removeSpaceOnTop ? null : styles.marginTop,
+        style,
+      ]}>
       {children}
       {React.Children.count(fixedItems) > 0 && (
         <View style={[styles.fixedContainer, styles.smallTopShadow]}>

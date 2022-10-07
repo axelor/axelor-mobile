@@ -31,7 +31,7 @@ const WasteProductSelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

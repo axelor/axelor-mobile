@@ -98,7 +98,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      listScreen={true}
+      removeSpaceOnTop={true}
       fixedItems={
         <>
           {manufOrder.statusSelect === ManufacturingOrder.status.Planned && (

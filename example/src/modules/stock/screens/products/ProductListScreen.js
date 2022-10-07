@@ -65,7 +65,7 @@ const ProductListScreen = ({navigation}) => {
   }, [activeCompany, dispatch, productList]);
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

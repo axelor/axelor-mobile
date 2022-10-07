@@ -164,7 +164,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   }, [operationOrderList, filterOnStatus]);
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

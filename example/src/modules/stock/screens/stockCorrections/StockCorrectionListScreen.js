@@ -156,7 +156,7 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         chipComponent={
           <ChipSelect>

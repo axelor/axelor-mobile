@@ -205,7 +205,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         fixedItems={
           <ScannerAutocompleteSearch

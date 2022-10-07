@@ -66,7 +66,7 @@ const WasteProductListScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      listScreen={true}
+      removeSpaceOnTop={true}
       fixedItems={<Button title={I18n.t('Base_Declare')} onPress={() => {}} />}>
       <HeaderContainer
         expandableFilter={false}

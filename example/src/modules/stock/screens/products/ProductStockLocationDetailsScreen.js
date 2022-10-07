@@ -114,7 +114,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
   }, [dispatch, product, stockLocationLine, companyId]);
 
   return (
-    <Screen listScreen={true}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<Text style={styles.title}>{product.fullName}</Text>}

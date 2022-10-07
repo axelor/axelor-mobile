@@ -47,7 +47,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
-      listScreen={true}
+      removeSpaceOnTop={true}
       fixedItems={<Button title={I18n.t('Base_Save')} onPress={() => {}} />}>
       <HeaderContainer
         expandableFilter={false}
