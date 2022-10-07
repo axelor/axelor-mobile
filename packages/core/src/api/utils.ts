@@ -27,30 +27,47 @@ const getUser = ({getState}: {getState: () => any}) => {
   return getState()?.auth?.userId;
 };
 
-const manageError = (error, action, userId) => {
+const manageError = (
+  error,
+  action,
+  userId,
+  {showErrorToast = true, errorTracing = true},
+) => {
   if (error.response) {
     const message =
       error?.response?.data?.messageStatus || error?.response?.statusText;
     const code = error.response?.data?.codeStatus || error?.response?.status;
 
-    traceError({
-      message: 'API request',
-      cause: error.response.data ? error.response.data : error,
-      userId,
-    });
+    if (errorTracing) {
+      traceError({
+        message: 'API request',
+        cause: error.response.data ? error.response.data : error,
+        userId,
+      });
+    }
 
-    Toast.show({
-      type: 'error',
-      position: 'bottom',
-      bottomOffset: 20,
-      text1: `Error ${code}`,
-      text2: `Failed to ${action}: ${message}.`,
-    });
+    if (showErrorToast) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        bottomOffset: 20,
+        text1: `Error ${code}`,
+        text2: `Failed to ${action}: ${message}.`,
+      });
+    }
   }
 };
 
-export const handlerError = (message, {getState = () => {}}) => {
-  return error => manageError(error, message, getUser({getState}));
+export const handlerError = (
+  message,
+  {getState = () => {}},
+  {showErrorToast, errorTracing}: errorOptionsProps,
+) => {
+  return error =>
+    manageError(error, message, getUser({getState}), {
+      showErrorToast,
+      errorTracing,
+    });
 };
 
 const manageSucess = (response, {showToast = false, isArrayResponse}) => {
@@ -81,6 +98,12 @@ interface ApiHandlerProps {
   action: string;
   getState: () => any;
   responseOptions?: {showToast?: boolean; isArrayResponse?: boolean};
+  errorOptions?: errorOptionsProps;
+}
+
+interface errorOptionsProps {
+  showErrorToast?: boolean;
+  errorTracing?: boolean;
 }
 
 export const handlerApiCall = ({
@@ -89,8 +112,9 @@ export const handlerApiCall = ({
   action,
   getState,
   responseOptions: {showToast = false, isArrayResponse = false},
+  errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
-    .catch(handlerError(action, {getState}))
+    .catch(handlerError(action, {getState}, errorOptions))
     .then(handlerSuccess({showToast, isArrayResponse}));
 };
