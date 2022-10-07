@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Icon,
   Picker,
   Screen,
+  ScrollView,
   Text,
   useConfig,
   useTheme,
@@ -139,7 +140,7 @@ const UserScreen = ({navigation}) => {
       style={styles.container}
       fixedItems={<LogoutButton onPress={() => dispatch(logout())} />}
       loading={loadingUser || loading}>
-      <ScrollView contentContainerStyle={styles.centerItems}>
+      <ScrollView>
         <Icon
           name="user-alt"
           size={Dimensions.get('window').width * 0.2}
@@ -206,6 +207,7 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     imageContainer: {
+      alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: Colors.backgroundColor,

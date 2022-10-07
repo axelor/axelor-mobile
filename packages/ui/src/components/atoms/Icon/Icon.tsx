@@ -27,7 +27,7 @@ const Icon = ({
 }: IconProps) => {
   const Colors = useThemeColor();
 
-  const iconStyle = useMemo(() => {
+  const styles = useMemo(() => {
     return getStyles(color == null ? Colors.secondaryColor_dark : color, size);
   }, [Colors, color, size]);
 
@@ -37,39 +37,28 @@ const Icon = ({
 
   return (
     <View style={[styles.container, style]}>
-      {touchable ? (
-        <TouchableOpacity onPress={onPress}>
-          {FontAwesome5 ? (
-            <Icon5 name={name} style={iconStyle} />
-          ) : (
-            <Icon4 name={name} style={iconStyle} />
-          )}
-        </TouchableOpacity>
-      ) : (
-        <View>
-          {FontAwesome5 ? (
-            <Icon5 name={name} style={iconStyle} />
-          ) : (
-            <Icon4 name={name} style={iconStyle} />
-          )}
-        </View>
-      )}
+      <TouchableOpacity onPress={onPress} disabled={!touchable}>
+        {FontAwesome5 ? (
+          <Icon5 name={name} style={styles.icon} />
+        ) : (
+          <Icon4 name={name} style={styles.icon} />
+        )}
+      </TouchableOpacity>
     </View>
   );
 };
 
 const getStyles = (color, size) =>
   StyleSheet.create({
-    color: color,
-    fontSize: size,
+    icon: {
+      color: color,
+      fontSize: size,
+    },
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Icon;
