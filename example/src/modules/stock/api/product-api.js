@@ -8,6 +8,7 @@ import {fetchFileDetails} from './metafile-api';
 const productFields = [
   'name',
   'code',
+  'fullName',
   'picture',
   'trackingNumberConfiguration',
   'unit',

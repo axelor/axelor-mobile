@@ -1,9 +1,20 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Screen, ScrollList} from '@aos-mobile/ui';
+import {
+  Chip,
+  ChipSelect,
+  HeaderContainer,
+  Screen,
+  ScrollList,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import {ProductStockLocationCard} from '@/modules/stock/components/organisms';
 import {fetchStockLocationLine} from '@/modules/stock/features/stockLocationLineSlice';
 import {fetchProductDistribution} from '../../features/productIndicatorsSlice';
+import {useTranslator} from '@aos-mobile/core/lib';
+import {StyleSheet} from 'react-native';
+import {fetchSupplychainConfigForStockApp} from '../../features/stockAppConfigSlice';
 
 const ProductStockLocationDetailsScreen = ({route}) => {
   const product = route.params.product;
@@ -17,7 +28,65 @@ const ProductStockLocationDetailsScreen = ({route}) => {
   const {listAvailabiltyDistribution} = useSelector(
     state => state.productIndicators,
   );
+  const {supplychainConfig} = useSelector(state => state.stockAppConfig);
+  const [filteredList, setFilteredList] = useState(stockLocationLine);
+  const [availableStatus, setAvailableStatus] = useState(false);
+  const [unavailableStatus, setUnvailableStatus] = useState(false);
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSupplychainConfigForStockApp());
+  }, [dispatch]);
+
+  const handleAvailableStatus = () => {
+    if (!availableStatus && unavailableStatus) {
+      setUnvailableStatus(!unavailableStatus);
+    }
+    setAvailableStatus(!availableStatus);
+  };
+
+  const handleUnavailableStatus = () => {
+    if (!unavailableStatus && availableStatus) {
+      setAvailableStatus(!availableStatus);
+    }
+    setUnvailableStatus(!unavailableStatus);
+  };
+
+  const filterOnStatus = useCallback(
+    (list, availabilityList) => {
+      if (
+        list == null ||
+        list === [] ||
+        availabilityList == null ||
+        availabilityList === []
+      ) {
+        return list;
+      } else {
+        if (availableStatus) {
+          return list.filter(
+            (item, index) =>
+              parseFloat(availabilityList[index]?.availableStock) > 0,
+          );
+        } else if (unavailableStatus) {
+          return list.filter(
+            (item, index) =>
+              parseFloat(availabilityList[index]?.availableStock) === 0,
+          );
+        } else {
+          return list;
+        }
+      }
+    },
+    [availableStatus, unavailableStatus],
+  );
+
+  useEffect(() => {
+    setFilteredList(
+      filterOnStatus(stockLocationLine, listAvailabiltyDistribution),
+    );
+  }, [stockLocationLine, filterOnStatus, listAvailabiltyDistribution]);
 
   const fetchStockLines = useCallback(
     page => {
@@ -45,15 +114,45 @@ const ProductStockLocationDetailsScreen = ({route}) => {
   }, [dispatch, product, stockLocationLine, companyId]);
 
   return (
-    <Screen>
+    <Screen listScreen={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={<Text style={styles.title}>{product.fullName}</Text>}
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={availableStatus}
+              title={I18n.t('Stock_Available')}
+              onPress={handleAvailableStatus}
+              selectedColor={{
+                backgroundColor: Colors.primaryColor_light,
+                borderColor: Colors.primaryColor,
+              }}
+            />
+            <Chip
+              selected={unavailableStatus}
+              title={I18n.t('Stock_Unavailable')}
+              onPress={handleUnavailableStatus}
+              selectedColor={{
+                backgroundColor: Colors.errorColor_light,
+                borderColor: Colors.errorColor,
+              }}
+            />
+          </ChipSelect>
+        }
+      />
       <ScrollList
         loadingList={loadingLines}
-        data={stockLocationLine}
+        data={filteredList}
         renderItem={({item, index}) => (
           <ProductStockLocationCard
             stockLocationName={item.stockLocation?.name}
             realQty={parseFloat(item.currentQty).toFixed(2)}
             futureQty={parseFloat(item.futureQty).toFixed(2)}
+            reservedQty={
+              supplychainConfig?.manageStockReservation &&
+              parseFloat(item.reservedQty).toFixed(2)
+            }
             availability={
               listAvailabiltyDistribution
                 ? listAvailabiltyDistribution[index]?.availableStock
@@ -69,5 +168,13 @@ const ProductStockLocationDetailsScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontWeight: 'bold',
+    marginLeft: 15,
+    marginBottom: 5,
+  },
+});
 
 export default ProductStockLocationDetailsScreen;

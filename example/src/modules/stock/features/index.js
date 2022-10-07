@@ -7,6 +7,7 @@ export {partnerReducer as partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';
+export {stockAppConfigReducer as stockAppConfig} from './stockAppConfigSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';
 export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
 export {stockLocationLineReducer as stockLocationLine} from './stockLocationLineSlice';

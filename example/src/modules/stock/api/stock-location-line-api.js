@@ -8,6 +8,7 @@ const stockLocationLineFields = [
   'product',
   'currentQty',
   'futureQty',
+  'reservedQty',
   'unit',
 ];
 

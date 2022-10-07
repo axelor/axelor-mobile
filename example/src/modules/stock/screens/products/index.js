@@ -21,6 +21,9 @@ export default {
   ProductStockLocationDetailsScreen: {
     title: t => t('Stock_QuantityStockLocation'),
     component: ProductStockLocationDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   ProductDetailsScreen: {
     title: t => t('Stock_ProductDetails'),
