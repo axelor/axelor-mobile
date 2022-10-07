@@ -8,6 +8,7 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
+import {useTranslator} from '@aos-mobile/core';
 
 const QuantityCard = ({
   style,
@@ -19,6 +20,7 @@ const QuantityCard = ({
   actionQty = false,
   onPressActionQty = () => {},
 }) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -61,6 +63,8 @@ const QuantityCard = ({
         {editable ? (
           <Increment
             value={defaultValue.toString()}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
           />
         ) : (

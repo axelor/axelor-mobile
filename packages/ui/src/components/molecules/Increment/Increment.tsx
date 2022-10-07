@@ -1,16 +1,26 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {formatNumber} from '../../../utils/formatters';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
 
 interface IncrementProps {
   value: string | undefined;
+  decimalSpacer?: string;
+  thousandSpacer?: string;
   onValueChange: (any) => void;
 }
 
-const Increment = ({value, onValueChange}: IncrementProps) => {
+const Increment = ({
+  value,
+  decimalSpacer,
+  thousandSpacer,
+  onValueChange,
+}: IncrementProps) => {
   const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState(value);
+  const [valueQty, setValueQty] = useState(
+    formatNumber(value, decimalSpacer, thousandSpacer),
+  );
 
   const handlePlus = () => {
     const newValue: number = parseFloat(valueQty) + parseFloat('1');
@@ -27,20 +37,26 @@ const Increment = ({value, onValueChange}: IncrementProps) => {
   };
 
   const handleEndInput = () => {
-    if (valueQty.slice(-1) === '.') {
-      valueQty.replace(/.$/, '');
+    if (valueQty.slice(-1) === decimalSpacer) {
+      valueQty.replace(/.,$/, '');
     }
 
     if (valueQty === '' || valueQty === null) {
-      setValueQty('0.00');
+      setValueQty(`0${decimalSpacer}00`);
       onValueChange(0.0);
     } else {
       const newValue: number = parseFloat(valueQty);
       if (newValue >= 0) {
-        setValueQty(newValue.toFixed(2).toString());
+        setValueQty(
+          formatNumber(
+            newValue.toFixed(2).toString(),
+            decimalSpacer,
+            thousandSpacer,
+          ),
+        );
         onValueChange(newValue.toFixed(2));
       } else {
-        setValueQty('0.00');
+        setValueQty(`0${decimalSpacer}00`);
         onValueChange(0.0);
       }
     }
