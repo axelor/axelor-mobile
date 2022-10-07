@@ -69,6 +69,7 @@
   "Stock_NotesOnPreparation": "Notes sur la préparation",
   "Stock_NotesOnStockMove": "Notes sur le mouvement de stock",
   "Stock_NotesClient": "Notes du client",
+  "Stock_DeliveryCondition": "Condition de livraison",
   "Stock_Done": "Réalisée",
   "Stock_NotDone": "Non réalisée",
   "Stock_Complete": "Complet",

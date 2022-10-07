@@ -1,23 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {
   Button,
-  Card,
   DropdownMenu,
   DropdownMenuItem,
   Screen,
   Text,
-  useThemeColor,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {
   ProductCharacteristics,
   SmallPropertyCard,
 } from '@/modules/stock/components/organisms/';
-import RenderHtml from 'react-native-render-html';
+import {NotesCard} from '../../components/molecules';
 
 const ProductDetailsScreen = ({route, navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const product = route.params.product;
 
@@ -44,9 +41,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
       ),
     });
   }, [I18n, navigation, product]);
-
-  const [widthNotes, setWidthNotes] = useState();
-  const PERCENTAGE_WIDTH_NOTES = 0.95;
 
   return (
     <Screen
@@ -159,21 +153,10 @@ const ProductDetailsScreen = ({route, navigation}) => {
           </View>
         </View>
         {product.description && (
-          <View style={styles.description}>
-            <Text style={styles.titles}>{I18n.t('Base_Description')}</Text>
-            <Card
-              style={styles.notes}
-              onLayout={event => {
-                const {width} = event.nativeEvent.layout;
-                setWidthNotes(width);
-              }}>
-              <RenderHtml
-                source={{html: product.description}}
-                contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-                baseStyle={{color: Colors.text}}
-              />
-            </Card>
-          </View>
+          <NotesCard
+            title={I18n.t('Base_Description')}
+            data={product.description}
+          />
         )}
       </ScrollView>
     </Screen>

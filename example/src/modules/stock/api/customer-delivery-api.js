@@ -20,6 +20,7 @@ const deliveryFields = [
   'partner',
   'statusSelect',
   'pickingOrderComments',
+  'deliveryCondition',
 ];
 
 const sortByFields = [

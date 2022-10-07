@@ -3,16 +3,14 @@ import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
-  Card,
   PopUpOneButton,
   Screen,
   Text,
   ViewAllContainer,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '../../components/molecules';
+import {LocationsMoveCard, NotesCard} from '../../components/molecules';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import RenderHtml from 'react-native-render-html';
 import StockMove from '../../types/stock-move';
 import {
   CustomerDeliveryLineCard,
@@ -27,9 +25,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     state => state.customerDeliveryLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
-  const [widthNotes, setWidthNotes] = useState();
   const [isPopupVisible, setVisiblePopup] = useState(false);
-  const PERCENTAGE_WIDTH_NOTES = 0.95;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -186,22 +182,16 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           )}
         </ViewAllContainer>
         {customerDelivery.pickingOrderComments && (
-          <View style={styles.description}>
-            <Text style={styles.titles}>{I18n.t('Stock_NotesClient')}</Text>
-            <Card
-              style={styles.notes}
-              onLayout={event => {
-                const {width} = event.nativeEvent.layout;
-                setWidthNotes(width);
-              }}>
-              <RenderHtml
-                source={{
-                  html: customerDelivery.pickingOrderComments,
-                }}
-                contentWidth={widthNotes * PERCENTAGE_WIDTH_NOTES}
-              />
-            </Card>
-          </View>
+          <NotesCard
+            title={I18n.t('Stock_NotesClient')}
+            data={customerDelivery.pickingOrderComments}
+          />
+        )}
+        {customerDelivery.deliveryCondition && (
+          <NotesCard
+            title={I18n.t('Stock_DeliveryCondition')}
+            data={customerDelivery.deliveryCondition}
+          />
         )}
       </ScrollView>
       <PopUpOneButton
@@ -225,21 +215,6 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     marginBottom: '3%',
     marginHorizontal: 16,
-  },
-  description: {
-    marginHorizontal: 16,
-    flexDirection: 'column',
-    marginTop: '2%',
-  },
-  notes: {
-    justifyContent: 'center',
-    elevation: 0,
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 8,
-  },
-  titles: {
-    marginHorizontal: '5%',
   },
   cardInfoContainer: {
     width: '58%',
