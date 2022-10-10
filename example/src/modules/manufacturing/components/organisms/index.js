@@ -4,5 +4,6 @@ export {default as ManufacturingOrderCard} from './ManufacturingOrderCard/Manufa
 export {default as ManufacturingOrderHeader} from './ManufacturingOrderHeader/ManufacturingOrderHeader';
 export {default as OperationOrderCard} from './OperationOrderCard/OperationOrderCard';
 export {default as OperationOrderDetailsCard} from './OperationOrderDetailsCard/OperationOrderDetailsCard';
+export {default as OperationOrderHeader} from './OperationOrderHeader/OperationOrderHeader';
 export {default as ProducedProductCard} from './ProducedProductCard/ProducedProductCard';
 export {default as WasteProductCard} from './WasteProductCard/WasteProductCard';

@@ -89,17 +89,18 @@ class OperationOrder {
     realStartDate,
     realEndDate,
     I18n = {t: () => {}},
+    showTitle = false,
   ) => {
     switch (status) {
       case OperationOrder.status.Draft:
       case OperationOrder.status.Planned:
         return [
-          `${I18n.t('Manufacturing_PlannedStartDate')}: ${
+          `${showTitle ? I18n.t('Manufacturing_PlannedStartDate') + ':' : ''} ${
             plannedStartDate
               ? formatDateTime(plannedStartDate, I18n.t('Base_DateTimeFormat'))
               : ''
           }`,
-          `${I18n.t('Manufacturing_PlannedEndDate')}: ${
+          `${showTitle ? I18n.t('Manufacturing_PlannedEndDate') + ':' : ''} ${
             plannedEndDate
               ? formatDateTime(plannedEndDate, I18n.t('Base_DateTimeFormat'))
               : ''
@@ -108,7 +109,7 @@ class OperationOrder {
       case OperationOrder.status.InProgress:
       case OperationOrder.status.StandBy:
         return [
-          `${I18n.t('Manufacturing_RealStartDate')}: ${
+          `${showTitle ? I18n.t('Manufacturing_RealStartDate') + ':' : ''} ${
             realStartDate
               ? formatDateTime(realStartDate, I18n.t('Base_DateTimeFormat'))
               : ''
@@ -116,17 +117,22 @@ class OperationOrder {
         ];
       case OperationOrder.status.Finished:
         return [
-          `${I18n.t('Manufacturing_RealStartDate')}: ${
+          `${showTitle ? I18n.t('Manufacturing_RealStartDate') + ':' : ''} ${
             realStartDate
               ? formatDateTime(realStartDate, I18n.t('Base_DateTimeFormat'))
               : ''
           }`,
-          `${I18n.t('Manufacturing_RealEndDate')}: ${
+          `${showTitle ? I18n.t('Manufacturing_RealEndDate') + ':' : ''} ${
             realEndDate
               ? formatDateTime(realEndDate, I18n.t('Base_DateTimeFormat'))
               : ''
           }`,
         ];
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by operation order`,
+        );
+        return [null, null];
     }
   };
 }

@@ -85,3 +85,12 @@ export async function searchOperationOrderFilter({
     },
   });
 }
+
+export async function fetchOperationOrder({operationOrderId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.production.db.OperationOrder/${operationOrderId}/fetch`,
+    data: {
+      fields: operationOrderListFields,
+    },
+  });
+}

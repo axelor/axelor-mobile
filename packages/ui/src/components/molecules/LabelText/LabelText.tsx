@@ -5,6 +5,7 @@ import {Icon, Text} from '../../atoms';
 interface LabelTextProps {
   title: string;
   value: string;
+  size?: number;
   iconName?: string;
   FontAwesome5?: boolean;
 }
@@ -12,6 +13,7 @@ interface LabelTextProps {
 const LabelText = ({
   title,
   value,
+  size = 12,
   iconName = null,
   FontAwesome5 = true,
 }: LabelTextProps) => {
@@ -20,7 +22,7 @@ const LabelText = ({
       {iconName && (
         <Icon
           name={iconName}
-          size={12}
+          size={size}
           style={styles.icon}
           FontAwesome5={FontAwesome5}
         />

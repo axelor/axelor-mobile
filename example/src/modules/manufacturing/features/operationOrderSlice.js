@@ -1,6 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@aos-mobile/core';
-import {searchOperationOrderFilter} from '../api/operation-order-api';
+import {
+  searchOperationOrderFilter,
+  fetchOperationOrder,
+} from '../api/operation-order-api';
 
 export const fetchOperationOrders = createAsyncThunk(
   'operationOrder/fetchOperationOrders',
@@ -15,11 +18,26 @@ export const fetchOperationOrders = createAsyncThunk(
   },
 );
 
+export const fetchOperationOrderById = createAsyncThunk(
+  'OperationOrder/fetchOperationOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: fetchOperationOrder,
+      data,
+      action: 'fetch operation order from id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
   operationOrderList: [],
+  loadingOrder: false,
+  operationOrder: null,
 };
 
 const operationOrderSlice = createSlice({
@@ -50,6 +68,13 @@ const operationOrderSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(fetchOperationOrderById.pending, state => {
+      state.loadingOrder = true;
+    });
+    builder.addCase(fetchOperationOrderById.fulfilled, (state, action) => {
+      state.loadingOrder = false;
+      state.operationOrder = action.payload;
     });
   },
 });

@@ -41,6 +41,7 @@ const OperationOrderDetailsCard = ({
     realStartDate,
     realEndDate,
     I18n,
+    true,
   );
 
   return (

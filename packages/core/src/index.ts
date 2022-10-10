@@ -44,6 +44,7 @@ export {
   default as scannerReducer,
 } from './features/scannerSlice';
 export {showToastMessage} from './utils/show-toast-message';
+export {default as StopwatchType} from './types/stopwatch-type';
 
 // Utils
 export {formatURL, splitInTwo} from './utils/string';

@@ -113,9 +113,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   container: {
+    alignSelf: 'center',
     width: '95%',
     marginHorizontal: 12,
-    marginVertical: 4,
+    marginVertical: '30%',
   },
   icon: {
     width: '50%',

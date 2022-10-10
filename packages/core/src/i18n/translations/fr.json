@@ -28,6 +28,8 @@
   "Base_Error_ConfigureStockApp": "Votre application stock n'est pas configurée, merci de contacter un administrateur.",
   "Base_Unknown": "Inconnue",
   "Base_Next": "Suivant",
+  "Base_Estimated": "Estimée",
+  "Base_Real": "Réelle",
   "Stopwatch_Status_Ready": "Prêt",
   "Stopwatch_Status_InProgress": "En cours",
   "Stopwatch_Status_Paused": "En pause",
