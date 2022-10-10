@@ -10,6 +10,7 @@ const customerDeliveryLineFields = [
   'realQty',
   'locker',
   'name',
+  'saleOrderLine.pickingOrderInfo',
 ];
 
 export async function searchCustomerDeliveryLines({

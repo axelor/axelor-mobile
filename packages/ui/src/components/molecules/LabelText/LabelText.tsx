@@ -33,7 +33,6 @@ const LabelText = ({
 const styles = StyleSheet.create({
   textDisplay: {
     flexDirection: 'row',
-    width: '60%',
   },
   txtDetails: {
     fontSize: 14,

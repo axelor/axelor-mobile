@@ -96,6 +96,8 @@
   "Stock_Conformity": "Conformity",
   "Stock_TrackingSequence": "Tracking number sequence",
   "Stock_TrackingQty": "Quantity of new tracking number",
+  "Stock_StandardISPM": "ISPM standard",
+  "Stock_LineComment": "Line comment",
   "Sale_Sale": "Sale",
   "Purchase_Purchase": "Purchase"
 }

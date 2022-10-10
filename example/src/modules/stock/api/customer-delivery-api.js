@@ -21,6 +21,7 @@ const deliveryFields = [
   'statusSelect',
   'pickingOrderComments',
   'deliveryCondition',
+  'isIspmRequired',
 ];
 
 const sortByFields = [

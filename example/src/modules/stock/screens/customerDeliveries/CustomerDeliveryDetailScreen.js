@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  Badge,
   Button,
+  LabelText,
   PopUpOneButton,
   Screen,
-  Text,
+  useThemeColor,
   ViewAllContainer,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
@@ -27,6 +29,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -117,6 +120,26 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           }
           availability={customerDelivery.availableStatusSelect}
         />
+        <View style={styles.generalInfoContainer}>
+          <View style={styles.clientInfos}>
+            <LabelText
+              iconName="user"
+              title={customerDelivery.partner?.fullName}
+            />
+            {customerDelivery?.origin && (
+              <LabelText iconName="tag" title={customerDelivery?.origin} />
+            )}
+          </View>
+          <View style={styles.ispmInfos}>
+            {customerDelivery?.isIspmRequired && (
+              <Badge
+                color={Colors.errorColor_light}
+                title={I18n.t('Stock_StandardISPM')}
+                style={styles.ispmBadge}
+              />
+            )}
+          </View>
+        </View>
         <LocationsMoveCard
           fromStockLocation={customerDelivery.fromStockLocation?.name}
           toStockLocation={
@@ -126,14 +149,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           touchableTo={true}
           onPressTo={() => setVisiblePopup(true)}
         />
-        <View style={styles.infoContainer}>
-          <View style={styles.cardInfoContainer}>
-            <Text>{customerDelivery.partner?.fullName}</Text>
-            {customerDelivery?.origin && (
-              <Text>{customerDelivery?.origin}</Text>
-            )}
-          </View>
-        </View>
         <ViewAllContainer
           isHeaderExist={
             customerDelivery.statusSelect !== StockMove.status.Realized
@@ -213,11 +228,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: '2%',
-    marginBottom: '3%',
     marginHorizontal: 16,
   },
-  cardInfoContainer: {
-    width: '58%',
+  generalInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 24,
+  },
+  clientInfos: {
+    flex: 3,
+  },
+  ispmInfos: {
+    flex: 2,
+    flexDirection: 'row-reverse',
+  },
+  ispmBadge: {
+    width: '90%',
   },
   item: {
     marginHorizontal: 1,
