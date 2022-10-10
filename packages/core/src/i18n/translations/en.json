@@ -27,5 +27,10 @@
   "Base_ViewAll": "View all",
   "Base_Error_ConfigureStockApp": "Your stock app is not configured, please contact an administrator.",
   "Base_Unknown": "Unknown",
-  "Base_Next": "Next"
+  "Base_Next": "Next",
+  "Stopwatch_Status_Ready": "Ready",
+  "Stopwatch_Status_InProgress": "InProgress",
+  "Stopwatch_Status_Paused": "Paused",
+  "Stopwatch_Status_Finished": "Finished",
+  "Stopwatch_Status_Canceled": "Canceled"
 }

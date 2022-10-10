@@ -6,5 +6,7 @@ export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as PasswordInput} from './PasswordInput/PasswordInput';
 export {default as Scanner} from './Scanner/Scanner';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
+export {default as Stopwatch} from './Stopwatch/Stopwatch';
+export {default as Timer} from './Timer/Timer';
 export {default as UrlInput} from './UrlInput/UrlInput';
 export {default as UsernameInput} from './UsernameInput/UsernameInput';
