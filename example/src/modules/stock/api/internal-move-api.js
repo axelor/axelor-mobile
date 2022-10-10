@@ -1,5 +1,6 @@
 import StockMove from '@/modules/stock/types/stock-move';
 import {axiosApiProvider} from '@aos-mobile/core';
+import StockLocation from '../types/stock-location';
 
 const internalMoveFields = [
   'name',
@@ -26,6 +27,16 @@ const sortByFields = [
 
 const createSearchCriteria = searchValue => {
   const criteria = [];
+  criteria.push({
+    fieldName: 'fromStockLocation.typeSelect',
+    operator: '=',
+    value: StockLocation.type.internal,
+  });
+  criteria.push({
+    fieldName: 'toStockLocation.typeSelect',
+    operator: '=',
+    value: StockLocation.type.internal,
+  });
   criteria.push({
     fieldName: 'typeSelect',
     operator: '=',
