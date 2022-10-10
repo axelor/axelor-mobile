@@ -3,15 +3,14 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Badge,
-  Card,
   HalfLabelCard,
   IconButton,
   Screen,
   ScrollView,
   HeaderContainer,
-  Text,
   ViewAllContainer,
   useThemeColor,
+  Text,
 } from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import {ProductCardInfo} from '@/modules/stock/components/organisms';
@@ -25,6 +24,7 @@ import {
 } from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
+import {NotesCard} from '@/modules/stock/components/molecules';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const {operationOrderList} = useSelector(state => state.operationOrder);
@@ -154,7 +154,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         {manufOrder.saleOrderSet != null && manufOrder.saleOrderSet.length > 0 && (
           <ViewAllContainer
             onPress={handleViewSaleOrderRefs}
-            disable={manufOrder.saleOrderSet.length < 3}>
+            disabled={manufOrder.saleOrderSet.length < 3}>
             <View style={styles.orderTitle}>
               <Text>{I18n.t('Manufacturing_RefClient')}</Text>
             </View>
@@ -177,7 +177,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           linkedManufOrders.length > 0 && (
             <ViewAllContainer
               onPress={handleViewProductionOrderRefs}
-              disable={linkedManufOrders.length === 0}>
+              disabled={linkedManufOrders.length === 0}>
               <View style={styles.orderTitle}>
                 <Text>{I18n.t('Manufacturing_RefOP')}</Text>
               </View>
@@ -207,65 +207,34 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           />
         </View>
         {operationOrderList != null && (
-          <ViewAllContainer onPress={handleViewAll}>
-            {operationOrderList[0] != null && (
+          <ViewAllContainer
+            onViewPress={handleViewAll}
+            data={operationOrderList}
+            renderFirstTwoItems={item => (
               <OperationOrderCard
                 style={styles.item}
-                status={operationOrderList[0].statusSelect}
-                operationName={operationOrderList[0].operationName}
-                workcenter={operationOrderList[0].workCenter.name}
-                plannedDuration={operationOrderList[0].plannedDuration}
-                priority={operationOrderList[0].priority}
-                onPress={() => handleShowLine(operationOrderList[0])}
+                status={item?.statusSelect}
+                operationName={item?.operationName}
+                workcenter={item?.workCenter.name}
+                plannedDuration={item?.plannedDuration}
+                priority={item?.priority}
+                onPress={() => handleShowLine(item)}
               />
             )}
-            {operationOrderList[1] != null && (
-              <OperationOrderCard
-                style={styles.item}
-                status={operationOrderList[1].statusSelect}
-                operationName={operationOrderList[1].operationName}
-                workcenter={operationOrderList[1].workCenter.name}
-                plannedDuration={operationOrderList[1].plannedDuration}
-                priority={operationOrderList[1].priority}
-                onPress={() => handleShowLine(operationOrderList[1])}
-              />
-            )}
-          </ViewAllContainer>
+          />
         )}
-        {manufOrder.note == null || manufOrder.note === '' ? null : (
-          <View>
-            <View style={styles.noteTitle}>
-              <Text>{I18n.t('Manufacturing_Notes')}</Text>
-            </View>
-            <Card style={styles.infosCard}>
-              <Text numberOfLines={3}>{manufOrder.note}</Text>
-            </Card>
-          </View>
-        )}
-        {manufOrder.moCommentFromSaleOrder == null ||
-        manufOrder.moCommentFromSaleOrder === '' ? null : (
-          <View>
-            <View style={styles.noteTitle}>
-              <Text>{I18n.t('Manufacturing_NotesOnSaleOrder')}</Text>
-            </View>
-            <Card style={styles.infosCard}>
-              <Text numberOfLines={3}>{manufOrder.moCommentFromSaleOrder}</Text>
-            </Card>
-          </View>
-        )}
-        {manufOrder.moCommentFromSaleOrderLine == null ||
-        manufOrder.moCommentFromSaleOrderLine === '' ? null : (
-          <View>
-            <View style={styles.noteTitle}>
-              <Text>{I18n.t('Manufacturing_NotesOnSaleOrderLine')}</Text>
-            </View>
-            <Card style={styles.infosCard}>
-              <Text numberOfLines={3}>
-                {manufOrder.moCommentFromSaleOrderLine}
-              </Text>
-            </Card>
-          </View>
-        )}
+        <NotesCard
+          title={I18n.t('Manufacturing_Notes')}
+          data={manufOrder.note}
+        />
+        <NotesCard
+          title={I18n.t('Manufacturing_Notes')}
+          data={manufOrder.moCommentFromSaleOrder}
+        />
+        <NotesCard
+          title={I18n.t('Manufacturing_Notes')}
+          data={manufOrder.moCommentFromSaleOrderLine}
+        />
       </ScrollView>
     </Screen>
   );
@@ -275,14 +244,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
-  },
-  noteTitle: {
-    marginHorizontal: 20,
-  },
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-    elevation: 0,
   },
   cardsContainer: {
     flexDirection: 'row',

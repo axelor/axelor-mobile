@@ -98,7 +98,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
     navigation.setOptions({
       headerRight: () => (
         <Icon
-          name="dumpster"
+          name="trash"
           color={Colors.primaryColor}
           size={24}
           style={styles.action}

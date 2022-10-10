@@ -163,19 +163,14 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             }`}
           </Text>
         </QuantityCard>
-        {customerDelivery.pickingOrderComments && (
-          <NotesCard
-            title={I18n.t('Stock_NotesClient')}
-            data={customerDelivery.pickingOrderComments}
-          />
-        )}
-        {customerDeliveryLine &&
-          customerDeliveryLine['saleOrderLine.pickingOrderInfo'] && (
-            <NotesCard
-              title={I18n.t('Stock_LineComment')}
-              data={customerDeliveryLine['saleOrderLine.pickingOrderInfo']}
-            />
-          )}
+        <NotesCard
+          title={I18n.t('Stock_NotesClient')}
+          data={customerDelivery.pickingOrderComments}
+        />
+        <NotesCard
+          title={I18n.t('Stock_LineComment')}
+          data={customerDeliveryLine['saleOrderLine.pickingOrderInfo']}
+        />
       </ScrollView>
     </Screen>
   );

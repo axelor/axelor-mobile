@@ -130,32 +130,21 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
         <ViewAllContainer
           isHeaderExist={inventory?.statusSelect !== Inventory.status.Completed}
           onNewIcon={handleNewLine}
-          onPress={handleViewAll}>
-          {inventoryLineList == null || inventoryLineList[0] == null ? null : (
+          data={inventoryLineList}
+          renderFirstTwoItems={item => (
             <InventoryLineCard
               style={styles.item}
-              productName={inventoryLineList[0].product?.fullName}
-              currentQty={inventoryLineList[0].currentQty}
-              realQty={inventoryLineList[0].realQty}
-              unit={inventoryLineList[0].unit?.name}
-              locker={inventoryLineList[0].rack}
-              trackingNumber={inventoryLineList[0].trackingNumber}
-              onPress={() => handleShowLine(inventoryLineList[0])}
+              productName={item.product?.fullName}
+              currentQty={item.currentQty}
+              realQty={item.realQty}
+              unit={item.unit?.name}
+              locker={item.rack}
+              trackingNumber={item.trackingNumber}
+              onPress={() => handleShowLine(item)}
             />
           )}
-          {inventoryLineList == null || inventoryLineList[1] == null ? null : (
-            <InventoryLineCard
-              style={styles.item}
-              productName={inventoryLineList[1].product?.fullName}
-              currentQty={inventoryLineList[1].currentQty}
-              realQty={inventoryLineList[1].realQty}
-              unit={inventoryLineList[1].unit?.name}
-              locker={inventoryLineList[1].rack}
-              trackingNumber={inventoryLineList[1].trackingNumber}
-              onPress={() => handleShowLine(inventoryLineList[1])}
-            />
-          )}
-        </ViewAllContainer>
+          onViewPress={handleViewAll}
+        />
       </ScrollView>
     </Screen>
   );

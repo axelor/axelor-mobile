@@ -17,7 +17,6 @@ const AttachmentCard = ({
   onPress,
   translator,
 }: AttachmentCardProps) => {
-  console.log(File.getFileIcon(fileName));
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.container}>

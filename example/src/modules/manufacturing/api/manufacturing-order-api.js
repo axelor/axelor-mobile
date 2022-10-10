@@ -42,11 +42,6 @@ const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
         {
           fieldName: 'statusSelect',
           operator: '=',
-          value: ManufacturingOrder.status.Draft,
-        },
-        {
-          fieldName: 'statusSelect',
-          operator: '=',
           value: ManufacturingOrder.status.Planned,
         },
         {

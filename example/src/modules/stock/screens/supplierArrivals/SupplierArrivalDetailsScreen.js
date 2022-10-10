@@ -104,12 +104,6 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
               : supplierArrival.realDate
           }
         />
-        <LocationsMoveCard
-          fromStockLocation={supplierArrival.fromAddress?.fullName}
-          touchableFrom={true}
-          onPressFrom={() => setVisiblePopup(true)}
-          toStockLocation={supplierArrival.toStockLocation?.name}
-        />
         <View style={styles.clientContainer}>
           <Text>{`${I18n.t('Stock_Supplier')} : ${
             supplierArrival.partner?.fullName
@@ -125,45 +119,35 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
             }`}</Text>
           )}
         </View>
+        <LocationsMoveCard
+          fromStockLocation={supplierArrival.fromAddress?.fullName}
+          touchableFrom={true}
+          onPressFrom={() => setVisiblePopup(true)}
+          toStockLocation={supplierArrival.toStockLocation?.name}
+        />
         <ViewAllContainer
           isHeaderExist={
             supplierArrival.statusSelect !== StockMove.status.Realized
           }
           onNewIcon={handleNewLine}
-          onPress={handleViewAll}>
-          {supplierArrivalLineList == null ||
-          supplierArrivalLineList[0] == null ? null : (
+          data={supplierArrivalLineList}
+          renderFirstTwoItems={(item, index) => (
             <SupplierArrivalLineCard
               style={styles.item}
-              productName={supplierArrivalLineList[0].product?.fullName}
-              deliveredQty={supplierArrivalLineList[0]?.realQty}
-              askedQty={supplierArrivalLineList[0].qty}
-              trackingNumber={supplierArrivalLineList[0]?.trackingNumber}
+              productName={item.product?.fullName}
+              deliveredQty={item?.realQty}
+              askedQty={item.qty}
+              trackingNumber={item?.trackingNumber}
               locker={
-                !loadingRacks && racksList != null && racksList[0] != null
-                  ? racksList[0][0]?.rack
+                !loadingRacks && racksList != null && racksList[index] != null
+                  ? racksList[index][0]?.rack
                   : ''
               }
-              onPress={() => handleShowLine(supplierArrivalLineList[0])}
+              onPress={() => handleShowLine(item)}
             />
           )}
-          {supplierArrivalLineList == null ||
-          supplierArrivalLineList[1] == null ? null : (
-            <SupplierArrivalLineCard
-              style={styles.item}
-              productName={supplierArrivalLineList[1].product.fullName}
-              deliveredQty={supplierArrivalLineList[1].realQty}
-              askedQty={supplierArrivalLineList[1].qty}
-              trackingNumber={supplierArrivalLineList[1]?.trackingNumber}
-              locker={
-                !loadingRacks && racksList != null && racksList[1] != null
-                  ? racksList[1][0]?.rack
-                  : ''
-              }
-              onPress={() => handleShowLine(supplierArrivalLineList[1])}
-            />
-          )}
-        </ViewAllContainer>
+          onViewPress={handleViewAll}
+        />
       </ScrollView>
       <PopUpOneButton
         title={I18n.t('Stock_OriginalAdress')}

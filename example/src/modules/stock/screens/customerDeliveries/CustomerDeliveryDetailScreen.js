@@ -154,60 +154,37 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
             customerDelivery.statusSelect !== StockMove.status.Realized
           }
           onNewIcon={handleNewLine}
-          onPress={handleViewAll}>
-          {customerDeliveryLineList[0] != null && (
+          data={customerDeliveryLineList}
+          renderFirstTwoItems={(item, index) => (
             <CustomerDeliveryLineCard
               style={styles.item}
-              productName={customerDeliveryLineList[0].product?.fullName}
-              pickedQty={customerDeliveryLineList[0]?.realQty}
-              askedQty={customerDeliveryLineList[0]?.qty}
+              productName={item.product?.fullName}
+              pickedQty={item?.realQty}
+              askedQty={item?.qty}
               locker={
-                !loadingRacks && racksList != null && racksList[0] != null
-                  ? racksList[0][0]?.rack
+                !loadingRacks && racksList != null && racksList[index] != null
+                  ? racksList[index][0]?.rack
                   : ''
               }
               availability={
                 customerDelivery.statusSelect !== StockMove.status.Realized
-                  ? customerDeliveryLineList[0]?.availableStatusSelect
+                  ? item?.availableStatusSelect
                   : null
               }
-              trackingNumber={customerDeliveryLineList[0]?.trackingNumber}
-              onPress={() => handleShowLine(customerDeliveryLineList[0], 0)}
+              trackingNumber={item?.trackingNumber}
+              onPress={() => handleShowLine(item, index)}
             />
           )}
-          {customerDeliveryLineList[1] != null && (
-            <CustomerDeliveryLineCard
-              style={styles.item}
-              productName={customerDeliveryLineList[1]?.product.fullName}
-              pickedQty={customerDeliveryLineList[1]?.realQty}
-              askedQty={customerDeliveryLineList[1]?.qty}
-              locker={
-                !loadingRacks && racksList != null && racksList[1] != null
-                  ? racksList[1][0]?.rack
-                  : ''
-              }
-              availability={
-                customerDelivery.statusSelect !== StockMove.status.Realized
-                  ? customerDeliveryLineList[1]?.availableStatusSelect
-                  : null
-              }
-              trackingNumber={customerDeliveryLineList[1]?.trackingNumber}
-              onPress={() => handleShowLine(customerDeliveryLineList[1], 1)}
-            />
-          )}
-        </ViewAllContainer>
-        {customerDelivery.pickingOrderComments && (
-          <NotesCard
-            title={I18n.t('Stock_NotesClient')}
-            data={customerDelivery.pickingOrderComments}
-          />
-        )}
-        {customerDelivery.deliveryCondition && (
-          <NotesCard
-            title={I18n.t('Stock_DeliveryCondition')}
-            data={customerDelivery.deliveryCondition}
-          />
-        )}
+          onViewPress={handleViewAll}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesClient')}
+          data={customerDelivery.pickingOrderComments}
+        />
+        <NotesCard
+          title={I18n.t('Stock_DeliveryCondition')}
+          data={customerDelivery.deliveryCondition}
+        />
       </ScrollView>
       <PopUpOneButton
         title={I18n.t('Stock_DestinationAdress')}

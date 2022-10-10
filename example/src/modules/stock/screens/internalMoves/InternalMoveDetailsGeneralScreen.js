@@ -109,66 +109,39 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
           fromStockLocation={internalMove.fromStockLocation.name}
           toStockLocation={internalMove.toStockLocation.name}
         />
-        <ViewAllContainer onPress={handleViewAll}>
-          {internalMoveLineList[0] == null ? null : (
+        <ViewAllContainer
+          data={internalMoveLineList}
+          renderFirstTwoItems={(item, index) => (
             <InternalMoveLineCard
               style={styles.item}
-              productName={internalMoveLineList[0].product?.fullName}
+              productName={item.product?.fullName}
               internalMoveStatus={internalMove.statusSelect}
               availability={
-                internalMoveLineList[0].availableStatusSelect != null
-                  ? internalMoveLineList[0].availableStatusSelect
+                item.availableStatusSelect != null
+                  ? item.availableStatusSelect
                   : null
               }
               locker={
-                !loadingRacks && racksList != null && racksList[0] != null
-                  ? racksList[0][0]?.rack
+                !loadingRacks && racksList != null && racksList[index] != null
+                  ? racksList[index][0]?.rack
                   : ''
               }
-              trackingNumber={
-                internalMoveLineList[0].trackingNumber?.trackingNumberSeq
-              }
-              expectedQty={internalMoveLineList[0].qty}
-              movedQty={internalMoveLineList[0].realQty}
-              onPress={() => handleShowLine(internalMoveLineList[0])}
+              trackingNumber={item.trackingNumber?.trackingNumberSeq}
+              expectedQty={item.qty}
+              movedQty={item.realQty}
+              onPress={() => handleShowLine(item)}
             />
           )}
-          {internalMoveLineList[1] == null ? null : (
-            <InternalMoveLineCard
-              style={styles.item}
-              productName={internalMoveLineList[1].product?.fullName}
-              internalMoveStatus={internalMove.statusSelect}
-              availability={
-                internalMoveLineList[1].availableStatusSelect != null
-                  ? internalMoveLineList[1].availableStatusSelect
-                  : null
-              }
-              locker={
-                !loadingRacks && racksList != null && racksList[1] != null
-                  ? racksList[1][0]?.rack
-                  : ''
-              }
-              trackingNumber={
-                internalMoveLineList[1].trackingNumber?.trackingNumberSeq
-              }
-              expectedQty={internalMoveLineList[1].qty}
-              movedQty={internalMoveLineList[1].realQty}
-              onPress={() => handleShowLine(internalMoveLineList[1])}
-            />
-          )}
-        </ViewAllContainer>
-        {internalMove.pickingOrderComments && (
-          <NotesCard
-            title={I18n.t('Stock_NotesOnPreparation')}
-            data={internalMove.pickingOrderComments}
-          />
-        )}
-        {internalMove.note && (
-          <NotesCard
-            title={I18n.t('Stock_NotesOnStockMove')}
-            data={internalMove.note}
-          />
-        )}
+          onViewPress={handleViewAll}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesOnPreparation')}
+          data={internalMove.pickingOrderComments}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesOnStockMove')}
+          data={internalMove.note}
+        />
       </ScrollView>
     </Screen>
   );

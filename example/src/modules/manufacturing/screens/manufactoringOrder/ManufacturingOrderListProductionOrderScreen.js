@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingLeft: '10%',
   },

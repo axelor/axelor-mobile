@@ -5,19 +5,27 @@ import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {
   style?: any;
+  title: string;
+  data: any[];
+  disabled: boolean;
   children: any;
   isHeaderExist?: boolean;
   onNewIcon?: () => void;
-  onPress: () => void;
+  onViewPress: () => void;
+  renderFirstTwoItems: (item: any, index: number) => any;
   translator?: (any) => void | undefined;
 }
 
 const ViewAllContainer = ({
   style,
+  title,
+  data = [],
+  disabled = false,
   children,
   isHeaderExist = false,
   onNewIcon = () => {},
-  onPress = () => {},
+  onViewPress = () => {},
+  renderFirstTwoItems,
   translator = null,
 }: ViewAllContainerProps) => {
   const Colors = useThemeColor();
@@ -38,19 +46,26 @@ const ViewAllContainer = ({
           />
         </View>
       )}
-      <View style={styles.cardContainer}>{children}</View>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.txtDetails}>
-            {translator == null ? 'View all' : translator('Base_ViewAll')}
-          </Text>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor_light}
-            size={20}
-          />
-        </View>
-      </TouchableOpacity>
+      {title && <Text style={styles.title}>{title}</Text>}
+      <View style={styles.cardContainer}>
+        {data[0] != null && renderFirstTwoItems(data[0], 0)}
+        {data[1] != null && renderFirstTwoItems(data[1], 1)}
+        {children}
+      </View>
+      {!disabled && (
+        <TouchableOpacity onPress={onViewPress} activeOpacity={0.9}>
+          <View style={styles.iconContainer}>
+            <Text style={styles.txtDetails}>
+              {translator == null ? 'View all' : translator('Base_ViewAll')}
+            </Text>
+            <Icon
+              name="chevron-right"
+              color={Colors.secondaryColor_light}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
     </Card>
   );
 };
@@ -73,6 +88,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 2,
     width: '100%',
+  },
+  title: {
+    alignSelf: 'flex-start',
+    fontSize: 14,
+    marginHorizontal: 8,
+    marginBottom: 0,
   },
   cardContainer: {
     marginBottom: 2,

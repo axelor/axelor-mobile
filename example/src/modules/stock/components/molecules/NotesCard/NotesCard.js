@@ -9,6 +9,10 @@ const NotesCard = ({title, data}) => {
   const [widthNotes, setWidthNotes] = useState();
   const Colors = useThemeColor();
 
+  if (data == null || data === '') {
+    return null;
+  }
+
   return (
     <View style={styles.description}>
       <Text style={styles.title}>{title}</Text>

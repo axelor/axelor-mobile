@@ -152,12 +152,10 @@ const ProductDetailsScreen = ({route, navigation}) => {
             />
           </View>
         </View>
-        {product.description && (
-          <NotesCard
-            title={I18n.t('Base_Description')}
-            data={product.description}
-          />
-        )}
+        <NotesCard
+          title={I18n.t('Base_Description')}
+          data={product.description}
+        />
       </ScrollView>
     </Screen>
   );

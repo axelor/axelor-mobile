@@ -31,7 +31,6 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const {productList} = useSelector(state => state.product);
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
-  const [draftStatus, setDraftStatus] = useState(false);
   const [plannedStatus, setPlannedStatus] = useState(false);
   const [progressStatus, setProgressStatus] = useState(false);
   const [standByStatus, setStandByStatus] = useState(false);
@@ -41,23 +40,14 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const desactivateChip = () => {
-    setDraftStatus(false);
     setPlannedStatus(false);
     setProgressStatus(false);
     setStandByStatus(false);
     setFinishedStatus(false);
   };
 
-  const handleDraftStatus = () => {
-    if (plannedStatus && progressStatus && standByStatus && finishedStatus) {
-      desactivateChip();
-    } else {
-      setDraftStatus(!draftStatus);
-    }
-  };
-
   const handlePlannedStatus = () => {
-    if (draftStatus && progressStatus && standByStatus && finishedStatus) {
+    if (progressStatus && standByStatus && finishedStatus) {
       desactivateChip();
     } else {
       setPlannedStatus(!plannedStatus);
@@ -65,7 +55,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   };
 
   const handleProgressStatus = () => {
-    if (plannedStatus && draftStatus && standByStatus && finishedStatus) {
+    if (plannedStatus && standByStatus && finishedStatus) {
       desactivateChip();
     } else {
       setProgressStatus(!progressStatus);
@@ -73,7 +63,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   };
 
   const handleStandByStatus = () => {
-    if (plannedStatus && progressStatus && draftStatus && finishedStatus) {
+    if (plannedStatus && progressStatus && finishedStatus) {
       desactivateChip();
     } else {
       setStandByStatus(!standByStatus);
@@ -81,7 +71,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   };
 
   const handleFinishedStatus = () => {
-    if (plannedStatus && progressStatus && standByStatus && draftStatus) {
+    if (plannedStatus && progressStatus && standByStatus) {
       desactivateChip();
     } else {
       setFinishedStatus(!finishedStatus);
@@ -95,19 +85,11 @@ const ManufacturingOrderListScreen = ({navigation}) => {
       } else {
         const listFilter = [];
         if (
-          draftStatus ||
           plannedStatus ||
           progressStatus ||
           standByStatus ||
           finishedStatus
         ) {
-          if (draftStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.Draft) {
-                listFilter.push(item);
-              }
-            });
-          }
           if (plannedStatus) {
             list.forEach(item => {
               if (item.statusSelect === ManufacturingOrder.status.Planned) {
@@ -143,7 +125,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
         return listFilter;
       }
     },
-    [draftStatus, finishedStatus, plannedStatus, progressStatus, standByStatus],
+    [finishedStatus, plannedStatus, progressStatus, standByStatus],
   );
 
   useEffect(() => {
@@ -221,17 +203,6 @@ const ManufacturingOrderListScreen = ({navigation}) => {
         }
         chipComponent={
           <ChipSelect style={styles.chipContainer} scrollable={true}>
-            <Chip
-              selected={draftStatus}
-              title={I18n.t('Manufacturing_Status_Draft')}
-              onPress={handleDraftStatus}
-              selectedColor={ManufacturingOrder.getStatusColor(
-                ManufacturingOrder.status.Draft,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.35}
-              marginHorizontal={3}
-            />
             <Chip
               selected={plannedStatus}
               title={I18n.t('Manufacturing_Status_Planned')}
