@@ -34,7 +34,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
         operationOrder.realStartDateT,
         operationOrder.realEndDateT,
         I18n,
-        false,
       );
     }
     return [null, null];
@@ -56,8 +55,8 @@ function OperationOrderDetailsScreen({route, navigation}) {
       <View style={styles.contentContainer}>
         <OperationOrderDatesCard
           status={operationOrder?.statusSelect}
-          startDate={startDate}
-          endDate={endDate}
+          startDate={startDate?.value}
+          endDate={endDate?.value}
         />
         <View style={styles.detailsContainer}>
           <LabelText

@@ -89,44 +89,54 @@ class OperationOrder {
     realStartDate,
     realEndDate,
     I18n = {t: () => {}},
-    showTitle = false,
   ) => {
     switch (status) {
       case OperationOrder.status.Draft:
       case OperationOrder.status.Planned:
         return [
-          `${showTitle ? I18n.t('Manufacturing_PlannedStartDate') + ':' : ''} ${
-            plannedStartDate
+          {
+            title: I18n.t('Manufacturing_PlannedStartDate') + ':',
+            value: plannedStartDate
               ? formatDateTime(plannedStartDate, I18n.t('Base_DateTimeFormat'))
-              : ''
-          }`,
-          `${showTitle ? I18n.t('Manufacturing_PlannedEndDate') + ':' : ''} ${
-            plannedEndDate
+              : '',
+          },
+          {
+            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            value: plannedEndDate
               ? formatDateTime(plannedEndDate, I18n.t('Base_DateTimeFormat'))
-              : ''
-          }`,
+              : '',
+          },
         ];
       case OperationOrder.status.InProgress:
       case OperationOrder.status.StandBy:
         return [
-          `${showTitle ? I18n.t('Manufacturing_RealStartDate') + ':' : ''} ${
-            realStartDate
+          {
+            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            value: realStartDate
               ? formatDateTime(realStartDate, I18n.t('Base_DateTimeFormat'))
-              : ''
-          }`,
+              : '',
+          },
+          {
+            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            value: plannedEndDate
+              ? formatDateTime(plannedEndDate, I18n.t('Base_DateTimeFormat'))
+              : '',
+          },
         ];
       case OperationOrder.status.Finished:
         return [
-          `${showTitle ? I18n.t('Manufacturing_RealStartDate') + ':' : ''} ${
-            realStartDate
-              ? formatDateTime(realStartDate, I18n.t('Base_DateTimeFormat'))
-              : ''
-          }`,
-          `${showTitle ? I18n.t('Manufacturing_RealEndDate') + ':' : ''} ${
-            realEndDate
+          {
+            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            value: plannedStartDate
+              ? formatDateTime(plannedStartDate, I18n.t('Base_DateTimeFormat'))
+              : '',
+          },
+          {
+            title: I18n.t('Manufacturing_RealEndDate') + ':',
+            value: realEndDate
               ? formatDateTime(realEndDate, I18n.t('Base_DateTimeFormat'))
-              : ''
-          }`,
+              : '',
+          },
         ];
       default:
         console.warn(

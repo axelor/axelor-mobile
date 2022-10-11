@@ -41,7 +41,6 @@ const OperationOrderDetailsCard = ({
     realStartDate,
     realEndDate,
     I18n,
-    true,
   );
 
   return (
@@ -55,8 +54,20 @@ const OperationOrderDetailsCard = ({
             iconName="pallet"
             title={workcenter + ' ' + (machine ? `- ${machine}` : '')}
           />
-          {startDate && <Text style={styles.txtDetails}>{startDate}</Text>}
-          {endDate && <Text style={styles.txtDetails}>{endDate}</Text>}
+          {startDate && (
+            <Text
+              style={
+                styles.txtDetails
+              }>{`${startDate.title} ${startDate.value}`}</Text>
+          )}
+          {status !== OperationOrder.status.InProgress &&
+            status !== OperationOrder.status.StandBy &&
+            endDate && (
+              <Text
+                style={
+                  styles.txtDetails
+                }>{`${endDate.title} ${endDate.value}`}</Text>
+            )}
           {(status === OperationOrder.status.InProgress ||
             status === OperationOrder.status.StandBy) && (
             <LabelText
