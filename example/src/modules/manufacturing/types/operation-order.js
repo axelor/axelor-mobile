@@ -132,7 +132,7 @@ class OperationOrder {
         console.warn(
           `Status provided with value ${status} is not supported by operation order`,
         );
-        return [null, null];
+        return [];
     }
   };
 }

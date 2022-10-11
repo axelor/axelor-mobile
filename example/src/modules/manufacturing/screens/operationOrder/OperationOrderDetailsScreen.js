@@ -26,7 +26,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
   }, [dispatch, route.params.operationOrderId]);
 
   const [startDate, endDate] = useMemo(() => {
-    if (operationOrder != null) {
+    if (operationOrder != null && operationOrder.statusSelect != null) {
       return OperationOrder.getDates(
         operationOrder.statusSelect,
         operationOrder.plannedStartDateT,

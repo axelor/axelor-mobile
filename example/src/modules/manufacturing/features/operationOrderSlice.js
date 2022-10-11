@@ -37,7 +37,7 @@ const initialState = {
   isListEnd: false,
   operationOrderList: [],
   loadingOrder: false,
-  operationOrder: null,
+  operationOrder: {},
 };
 
 const operationOrderSlice = createSlice({
