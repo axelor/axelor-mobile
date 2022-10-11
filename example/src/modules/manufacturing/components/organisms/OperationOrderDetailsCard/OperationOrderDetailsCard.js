@@ -53,7 +53,7 @@ const OperationOrderDetailsCard = ({
           <LabelText
             style={styles.txtDetails}
             iconName="pallet"
-            title={workcenter + ' ' + (machine && `- ${machine}`)}
+            title={workcenter + ' ' + (machine ? `- ${machine}` : '')}
           />
           {startDate && <Text style={styles.txtDetails}>{startDate}</Text>}
           {endDate && <Text style={styles.txtDetails}>{endDate}</Text>}
