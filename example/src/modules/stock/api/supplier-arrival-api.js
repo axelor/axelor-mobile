@@ -12,6 +12,7 @@ const supplierArrivalsFields = [
   'company',
   'originId',
   'origin',
+  'supplierShipmentRef',
   'toAddress',
   'createdOn',
   'partner',
