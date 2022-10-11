@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
 import {useThemeColor, Text, Screen, Image, ScrollView} from '@aos-mobile/ui';
 import {
   CameraScanner,
@@ -45,7 +45,14 @@ const LoginScreen = ({route}) => {
   }, [scanData, scannedValue]);
 
   return (
-    <Screen style={styles.container}>
+    <Screen
+      style={styles.container}
+      fixedItems={
+        <View style={styles.copyright}>
+          <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
+          <Text>{`Version ${appVersion}`}</Text>
+        </View>
+      }>
       <CameraScanner
         isActive={camScan}
         onScan={setScanData}
@@ -95,10 +102,6 @@ const LoginScreen = ({route}) => {
           )}
         </View>
         {error && <ErrorText message={error.message} />}
-        <View style={styles.copyright}>
-          <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-          <Text>{`Version ${appVersion}`}</Text>
-        </View>
       </ScrollView>
     </Screen>
   );
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginTop: '20%',
+    marginTop: Dimensions.get('window').height < 500 ? '25%' : '50%',
     marginBottom: '10%',
   },
   imageSize: {
@@ -122,10 +125,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   copyright: {
-    flex: 1,
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: '10%',
+    position: 'absolute',
+    bottom: 10,
   },
 });
 
