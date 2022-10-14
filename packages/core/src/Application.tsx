@@ -21,7 +21,7 @@ import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
 import {getActiveUserId} from './api/login-api';
 import ErrorScreen from './screens/ErrorScreen';
-import {Scanner} from './components';
+import {Scanner, LoadingIndicator} from './components';
 
 const ApplicationContext = createContext(null);
 
@@ -107,6 +107,7 @@ const Application = ({modules, mainMenu, store, version}: ApplicationProps) => {
                   mainMenu={mainMenu}
                   version={version}
                 />
+                <LoadingIndicator />
               </NavigationContainer>
             </ErrorBoundary>
             <Toast config={toastConfig} />

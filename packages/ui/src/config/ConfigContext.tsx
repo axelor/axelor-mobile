@@ -9,6 +9,8 @@ import React, {
 interface ConfigContextState {
   showFilter: boolean;
   showVirtualKeyboard: boolean;
+  showActivityIndicator: boolean;
+  setActivityIndicator: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
   setVirtualKeyboardConfig: (option: boolean) => void;
@@ -23,6 +25,10 @@ interface ConfigAction {
 const defaultConfigContext = {
   showFilter: true,
   showVirtualKeyboard: true,
+  showActivityIndicator: false,
+  setActivityIndicator: () => {
+    throw new Error('ConfigProvider should be mounted to set Indicator config');
+  },
   setFilterConfig: () => {
     throw new Error('ConfigProvider should be mounted to set filter config');
   },
@@ -48,6 +54,7 @@ const actionTypes = {
   toggleFilterConfig: 'toggleFilterConfig',
   setVirtualKeyboardConfig: 'setVirtualKeyboardConfig',
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
+  setActivityIndicator: 'setActivityIndicator',
 };
 
 const configReducer = (
@@ -55,6 +62,12 @@ const configReducer = (
   action: ConfigAction,
 ): ConfigContextState => {
   switch (action.type) {
+    case actionTypes.setActivityIndicator: {
+      return {
+        ...state,
+        showActivityIndicator: action.payload,
+      };
+    }
     case actionTypes.setFilterConfig: {
       return {
         ...state,
@@ -83,6 +96,10 @@ const configReducer = (
 };
 
 const actions = {
+  setActivityIndicator: option => ({
+    type: actionTypes.setActivityIndicator,
+    payload: option,
+  }),
   setFilterConfig: option => ({
     type: actionTypes.setFilterConfig,
     payload: option,
@@ -101,6 +118,11 @@ const actions = {
 
 export const ConfigProvider = ({children}) => {
   const [state, dispatch] = useReducer(configReducer, defaultConfigContext);
+
+  const setActivityIndicator = useCallback(
+    option => dispatch(actions.setActivityIndicator(option)),
+    [],
+  );
   const setFilterConfig = useCallback(
     option => dispatch(actions.setFilterConfig(option)),
     [],
@@ -120,12 +142,14 @@ export const ConfigProvider = ({children}) => {
   const configContextState = useMemo<ConfigContextState>(
     () => ({
       ...state,
+      setActivityIndicator,
       setFilterConfig,
       toggleFilterConfig,
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
     }),
     [
+      setActivityIndicator,
       setFilterConfig,
       setVirtualKeyboardConfig,
       state,

@@ -2,6 +2,7 @@ import React, {useEffect, useMemo} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {useConfig} from '../../../config/ConfigContext';
 
 interface ScreenProps {
   style?: any;
@@ -25,6 +26,8 @@ const Screen = ({
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const {showActivityIndicator} = useConfig();
+
   useEffect(() => {
     immersiveMode();
   }, []);
@@ -35,6 +38,7 @@ const Screen = ({
 
   return (
     <View
+      pointerEvents={showActivityIndicator === true ? 'none' : 'auto'}
       style={[
         styles.container,
         removeSpaceOnTop ? null : styles.marginTop,
