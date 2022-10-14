@@ -1,4 +1,4 @@
-image: openjdk:8-jdk-bullseye #Defining the Docker Image
+image: openjdk:11-jdk-bullseye #Defining the Docker Image
 
 variables:
   ANDROID_COMPILE_SDK: '31' #set compile SDK version
@@ -6,6 +6,7 @@ variables:
   ANDROID_CMD_LINE_TOOLS: '8092744_latest' #set Command line tool build number you can find yous here https://developer.android.com/studio#cmdline-tools
 
 before_script:
+  - apt-get --quiet update -y
   # Fetch the specified SDK tools version to build with
   - wget --quiet --output-document=/tmp/command-line-tools-linux.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_CMD_LINE_TOOLS}.zip
   - unzip -qq /tmp/command-line-tools-linux.zip -d .android
@@ -16,6 +17,7 @@ before_script:
 
   # Install platform tools and Android SDK for the compile target
   - echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+  - echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "cmake;3.18.1" # install right version of CMAKE
 
   - curl -sL https://deb.nodesource.com/setup_14.x | bash -
   - apt-get -y install nodejs # Install Node
@@ -27,11 +29,17 @@ before_script:
 
 # Define stages
 stages:
-  - test
+  - format
+  - build
 
-test:
-  stage: test
+format:
+  stage: format
   script:
     - yarn format:check
     - yarn lint
-    - yarn test
+
+build:
+  stage: build
+  script:
+    - yarn build
+    - cd example/android && ./gradlew app:assembleRelease
