@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import {StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
-import {Store} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {ConfigProvider, lightTheme, ThemeProvider} from '@aos-mobile/ui';
 import {ErrorBoundary} from '@aos-mobile/error';
@@ -22,17 +21,23 @@ import frTranslation from './i18n/translations/fr.json';
 import {getActiveUserId} from './api/login-api';
 import ErrorScreen from './screens/ErrorScreen';
 import {Scanner, LoadingIndicator} from './components';
+import {configGlobalStore} from './store';
 
 const ApplicationContext = createContext(null);
 
 interface ApplicationProps {
   modules: [Module];
   mainMenu: string;
-  store: Store;
+  additionalsReducers?: any;
   version: string;
 }
 
-const Application = ({modules, mainMenu, store, version}: ApplicationProps) => {
+const Application = ({
+  modules,
+  mainMenu,
+  additionalsReducers,
+  version,
+}: ApplicationProps) => {
   const toastConfig = {
     success: props => (
       <BaseToast
@@ -81,6 +86,22 @@ const Application = ({modules, mainMenu, store, version}: ApplicationProps) => {
     // I18n should be initialize only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const externalsReducers = useMemo(
+    () =>
+      modules.reduce(
+        (reducers, _module) => ({...reducers, ..._module.reducers}),
+        {
+          ...additionalsReducers,
+        },
+      ),
+    [additionalsReducers, modules],
+  );
+
+  const store = useMemo(
+    () => configGlobalStore(externalsReducers),
+    [externalsReducers],
+  );
 
   const traceBackPutMethod = useCallback(({additionalURL, data}) => {
     return axios.put(additionalURL, {data: data});

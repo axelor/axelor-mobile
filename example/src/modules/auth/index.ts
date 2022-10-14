@@ -3,6 +3,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import UserScreen from './screens/UserScreen';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import * as authReducers from './features';
 
 const authModule: Module = {
   name: 'Auth',
@@ -22,6 +23,9 @@ const authModule: Module = {
   translations: {
     en: enTranslations,
     fr: frTranslations,
+  },
+  reducers: {
+    ...authReducers,
   },
 };
 

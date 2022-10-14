@@ -3,6 +3,7 @@ import ManufacturingOrderScreens from './screens/manufactoringOrder';
 import OperationOrderScreens from './screens/operationOrder';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import * as manufacturingReducers from './features';
 
 const ManufacturingModule: Module = {
   name: 'Manufacturing',
@@ -27,6 +28,9 @@ const ManufacturingModule: Module = {
   translations: {
     en: enTranslations,
     fr: frTranslations,
+  },
+  reducers: {
+    ...manufacturingReducers,
   },
 };
 

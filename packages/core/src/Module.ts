@@ -23,4 +23,5 @@ export interface Module {
   translations?: {
     [languageKey: string]: any;
   };
+  reducers?: any;
 }
