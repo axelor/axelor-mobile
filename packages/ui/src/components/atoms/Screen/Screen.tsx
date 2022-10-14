@@ -6,7 +6,7 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 interface ScreenProps {
   style?: any;
   children: any;
-  fixedItems: any;
+  fixedItems?: any;
   removeSpaceOnTop?: boolean;
   loading?: boolean;
 }
