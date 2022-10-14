@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Badge,
   Button,
@@ -10,7 +9,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {InputBarCodeCard, useTranslator} from '@aos-mobile/core';
+import {
+  InputBarCodeCard,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import StockMove from '@/modules/stock/types/stock-move';
 import {QuantityCard, StockMoveHeader} from '../../components/organisms';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';

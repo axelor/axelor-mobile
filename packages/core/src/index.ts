@@ -49,3 +49,6 @@ export {default as StopwatchType} from './types/stopwatch-type';
 // Utils
 export {formatURL, splitInTwo} from './utils/string';
 export {formatDate, formatScan} from './utils/formatters';
+
+// React-redux
+export {useDispatch, useSelector} from './redux/hooks';

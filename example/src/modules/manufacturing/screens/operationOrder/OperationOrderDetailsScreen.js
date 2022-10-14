@@ -1,8 +1,13 @@
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {HeaderContainer, LabelText, Screen} from '@aos-mobile/ui';
-import {Stopwatch, StopwatchType, useTranslator} from '@aos-mobile/core';
+import {
+  Stopwatch,
+  StopwatchType,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {OperationOrderDatesCard} from '../../components/molecules';
 import {OperationOrderHeader} from '../../components/organisms';
 import OperationOrder from '../../types/operation-order';

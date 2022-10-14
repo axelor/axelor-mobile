@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Badge,
   Card,
@@ -11,7 +10,7 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '../../components/organisms';
 import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';

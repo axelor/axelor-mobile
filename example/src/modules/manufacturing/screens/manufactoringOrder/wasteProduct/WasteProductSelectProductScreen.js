@@ -1,7 +1,11 @@
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {Screen, ScrollView, HeaderContainer} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';

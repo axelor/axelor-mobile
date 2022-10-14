@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {
   Badge,
   Button,
   Picker,
   PopUpOneButton,
   Screen,
+  ScrollView,
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
   QuantityCard,
   ProductCardInfo,

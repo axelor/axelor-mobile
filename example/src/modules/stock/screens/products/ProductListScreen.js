@@ -1,8 +1,12 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {Screen, ScrollList, HeaderContainer} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {ProductCard} from '@/modules/stock/components/organisms';
 import {displayItemName} from '@/modules/stock/utils/displayers';

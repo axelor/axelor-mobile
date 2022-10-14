@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   AutoCompleteSearch,
   Chip,
@@ -10,7 +9,12 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator, ScannerAutocompleteSearch} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {CustomerDeliveryCard} from '@/modules/stock/components/organisms';
 import {searchDeliveries} from '@/modules/stock/features/customerDeliverySlice';
 import filterList from '@/modules/stock/utils/filter-list';

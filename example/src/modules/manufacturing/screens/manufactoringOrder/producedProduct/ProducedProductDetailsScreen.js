@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Screen,
   Text,
@@ -7,7 +6,7 @@ import {
   ScrollView,
   HeaderContainer,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
 import {
   QuantityCard,

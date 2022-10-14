@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   AutoCompleteSearch,
   Chip,
@@ -10,7 +9,12 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import OperationOrder from '@/modules/manufacturing/types/operation-order';
 import {fetchOperationOrders} from '@/modules/manufacturing/features/operationOrderSlice';
 import filterList from '@/modules/stock/utils/filter-list';

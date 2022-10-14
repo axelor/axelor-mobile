@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   ClearableCard,
   Icon,
@@ -10,7 +9,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';

@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
   Screen,
@@ -8,7 +7,7 @@ import {
   useThemeColor,
   ViewAllContainer,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
 import {
   LocationsMoveCard,

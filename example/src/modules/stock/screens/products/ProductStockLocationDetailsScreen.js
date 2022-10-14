@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {StyleSheet} from 'react-native';
 import {
   Chip,
   ChipSelect,
@@ -9,11 +9,10 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
+import {useSelector, useDispatch, useTranslator} from '@aos-mobile/core';
 import {ProductStockLocationCard} from '@/modules/stock/components/organisms';
 import {fetchStockLocationLine} from '@/modules/stock/features/stockLocationLineSlice';
 import {fetchProductDistribution} from '../../features/productIndicatorsSlice';
-import {useTranslator} from '@aos-mobile/core/lib';
-import {StyleSheet} from 'react-native';
 import {fetchSupplychainConfigForStockApp} from '../../features/stockAppConfigSlice';
 
 const ProductStockLocationDetailsScreen = ({route}) => {

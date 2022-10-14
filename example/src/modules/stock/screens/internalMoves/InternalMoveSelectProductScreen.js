@@ -1,8 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {ClearableCard, PopUpOneButton, Screen} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockMove from '../../types/stock-move';

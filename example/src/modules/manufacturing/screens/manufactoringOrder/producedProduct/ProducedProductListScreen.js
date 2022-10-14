@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Chip,
   ChipSelect,
@@ -11,7 +10,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {
   ManufacturingOrderHeader,
   ProducedProductCard,

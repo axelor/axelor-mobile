@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Card,
   ClearableCard,
@@ -8,7 +7,12 @@ import {
   Screen,
   Text,
 } from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';

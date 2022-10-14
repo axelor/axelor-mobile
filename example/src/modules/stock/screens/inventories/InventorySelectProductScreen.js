@@ -1,7 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {PopUpOneButton, Screen} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {searchProducts} from '@/modules/stock/features/productSlice';

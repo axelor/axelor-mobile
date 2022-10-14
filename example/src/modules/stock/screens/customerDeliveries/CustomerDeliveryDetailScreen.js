@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Badge,
   Button,
@@ -10,7 +9,7 @@ import {
   useThemeColor,
   ViewAllContainer,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard, NotesCard} from '../../components/molecules';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import StockMove from '../../types/stock-move';

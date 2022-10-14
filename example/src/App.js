@@ -1,5 +1,4 @@
 import React from 'react';
-import {Provider} from 'react-redux';
 import {Application, configGlobalStore} from '@aos-mobile/core';
 import StockModule from '@/modules/stock';
 import AuthModule from '@/modules/auth';
@@ -21,14 +20,12 @@ const appModules = [StockModule, ManufacturingModule, AuthModule];
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Application
-        modules={appModules}
-        mainMenu="auth_menu_user"
-        store={store}
-        version={application_properties.version}
-      />
-    </Provider>
+    <Application
+      modules={appModules}
+      mainMenu="auth_menu_user"
+      store={store}
+      version={application_properties.version}
+    />
   );
 };
 

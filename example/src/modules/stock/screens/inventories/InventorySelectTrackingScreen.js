@@ -1,8 +1,12 @@
 import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet} from 'react-native';
 import {Card, PopUpOneButton, Screen, Text} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';

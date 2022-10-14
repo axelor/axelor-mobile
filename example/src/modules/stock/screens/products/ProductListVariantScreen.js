@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {Screen, ScrollList} from '@aos-mobile/ui';
+import {useDispatch, useSelector} from '@aos-mobile/core';
 import {
   fetchProductsAttributes,
   fetchProductVariants,

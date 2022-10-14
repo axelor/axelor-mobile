@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {Button, Screen, SwitchCard, useConfig, useTheme} from '@aos-mobile/ui';
 import {
   getTranslations,
   selectLanguage,
   showToastMessage,
+  useDispatch,
+  useSelector,
   useTranslator,
 } from '@aos-mobile/core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';

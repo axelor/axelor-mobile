@@ -1,7 +1,11 @@
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import {ClearableCard, Screen} from '@aos-mobile/ui';
-import {ScannerAutocompleteSearch, useTranslator} from '@aos-mobile/core';
+import {
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 

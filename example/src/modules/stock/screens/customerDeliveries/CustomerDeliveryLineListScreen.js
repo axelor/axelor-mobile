@@ -1,6 +1,5 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Chip,
   ChipSelect,
@@ -8,7 +7,7 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import StockMove from '@/modules/stock/types/stock-move';
 import {
   CustomerDeliveryLineCard,

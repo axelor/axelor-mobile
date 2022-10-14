@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Icon,
   Picker,
@@ -14,6 +13,8 @@ import {
 import {
   ScannerAutocompleteSearch,
   logout,
+  useDispatch,
+  useSelector,
   useTranslator,
 } from '@aos-mobile/core';
 import {LogoutButton} from '@/modules/auth/components/molecules';

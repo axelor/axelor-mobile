@@ -1,6 +1,5 @@
 import React, {useCallback, useState, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
   File,
@@ -11,7 +10,7 @@ import {
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useSelector, useDispatch, useTranslator} from '@aos-mobile/core';
 import {fetchProductAttachedFiles} from '../../features/productSlice';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {View, StyleSheet} from 'react-native';
 import {
   Button,
   PopUpOneButton,
   Screen,
+  ScrollView,
   Text,
   ViewAllContainer,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   SupplierArrivalLineCard,

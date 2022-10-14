@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {Button, EditableInput, Screen, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   fetchInventoryById,

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Badge,
   HalfLabelCard,
@@ -12,7 +11,7 @@ import {
   useThemeColor,
   Text,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {ProductCardInfo} from '@/modules/stock/components/organisms';
 import {
   ManufacturingOrderHeader,

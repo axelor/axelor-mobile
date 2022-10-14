@@ -4,10 +4,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   View,
-  ScrollView,
   Dimensions,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -15,12 +13,15 @@ import {
   Icon,
   Picker,
   Screen,
+  ScrollView,
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
   AOSImage,
   ScannerAutocompleteSearch,
+  useSelector,
+  useDispatch,
   useTranslator,
 } from '@aos-mobile/core';
 import {ProductCardDetails} from '@/modules/stock/components/molecules';
