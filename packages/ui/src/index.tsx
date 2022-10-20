@@ -7,7 +7,7 @@ export {getHeaderStyles} from './utils/headerStyle';
 
 // Theme
 export {ThemeProvider, useTheme, useThemeColor} from './theme/ThemeContext';
-export {lightTheme, colorBlindTheme} from './theme/themes';
+export {lightTheme, colorBlindTheme, Theme} from './theme/themes';
 
 // Type
 export {default as File} from './types/file';

@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  ReactNode,
   useCallback,
   useContext,
   useMemo,
@@ -39,6 +40,13 @@ const defaultThemeContext = {
       'ThemeProvider should be mounted to desactivate color blind',
     );
   },
+};
+
+const getInitialThemeState = (additionalThemes: Theme[] = []) => {
+  return {
+    ...defaultThemeContext,
+    themes: [...defaultThemeContext.themes, ...additionalThemes],
+  };
 };
 
 const ThemeContext = createContext<ThemeContextState>(defaultThemeContext);
@@ -97,8 +105,16 @@ const actions = {
   }),
 };
 
-export const ThemeProvider = ({children}) => {
-  const [state, dispatch] = useReducer(themeReducer, defaultThemeContext);
+interface ThemeProviderProps {
+  themes?: Theme[];
+  children?: ReactNode;
+}
+
+export const ThemeProvider = ({children, themes}: ThemeProviderProps) => {
+  const [state, dispatch] = useReducer(
+    themeReducer,
+    getInitialThemeState(themes),
+  );
   const changeTheme = useCallback(
     themeKey => dispatch(actions.changeTheme(themeKey)),
     [],

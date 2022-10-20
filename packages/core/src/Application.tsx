@@ -8,7 +8,7 @@ import React, {
 import {StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
 import axios from 'axios';
-import {ConfigProvider, lightTheme, ThemeProvider} from '@aos-mobile/ui';
+import {ConfigProvider, lightTheme, ThemeProvider, Theme} from '@aos-mobile/ui';
 import {ErrorBoundary} from '@aos-mobile/error';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
@@ -30,6 +30,7 @@ interface ApplicationProps {
   mainMenu: string;
   additionalsReducers?: any;
   version: string;
+  themes?: Theme[];
 }
 
 const Application = ({
@@ -37,6 +38,7 @@ const Application = ({
   mainMenu,
   additionalsReducers,
   version,
+  themes,
 }: ApplicationProps) => {
   const toastConfig = {
     success: props => (
@@ -114,7 +116,7 @@ const Application = ({
   return (
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
-        <ThemeProvider>
+        <ThemeProvider themes={themes}>
           <ConfigProvider>
             <Scanner />
             <Translator />
