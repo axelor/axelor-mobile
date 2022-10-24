@@ -1,6 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button, Screen, SwitchCard, useConfig, useTheme} from '@aos-mobile/ui';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {
+  Screen,
+  SwitchCard,
+  useConfig,
+  useTheme,
+  NextButton,
+} from '@aos-mobile/ui';
 import {
   getTranslations,
   selectLanguage,
@@ -12,10 +18,11 @@ import {
 import {clearMessage, uploadTranslations} from '../features/configSlice';
 
 const SettingsScreen = ({route}) => {
-  const {loading, message} = useSelector(state => state.config);
+  const {message} = useSelector(state => state.config);
   const {
     showFilter,
     showVirtualKeyboard,
+    setActivityIndicator,
     toggleFilterConfig,
     toggleVirtualKeyboardConfig,
   } = useConfig();
@@ -27,9 +34,10 @@ const SettingsScreen = ({route}) => {
   useEffect(() => {
     if (message) {
       showToastMessage({type: 'success', position: 'bottom', text1: message});
+      setActivityIndicator(false);
       dispatch(clearMessage());
     }
-  }, [message, dispatch]);
+  }, [message, dispatch, setActivityIndicator]);
 
   const handleToggleColorBlind = useCallback(
     state => {
@@ -43,23 +51,13 @@ const SettingsScreen = ({route}) => {
   );
 
   const handleSendTranslations = useCallback(() => {
+    setActivityIndicator(true);
     const translations = getTranslations(language);
     dispatch(uploadTranslations({language, translations}));
-  }, [dispatch, language]);
+  }, [dispatch, language, setActivityIndicator]);
 
   return (
-    <Screen
-      style={styles.screen}
-      fixedItems={
-        route.params.user == null ||
-        route.params.user.group.code !== 'admins' ? null : (
-          <Button
-            title={I18n.t('User_SendTranslations')}
-            onPress={handleSendTranslations}
-            disabled={loading}
-          />
-        )
-      }>
+    <Screen style={styles.screen}>
       <View style={styles.container}>
         <SwitchCard
           title={I18n.t('User_ShowFilter')}
@@ -76,6 +74,14 @@ const SettingsScreen = ({route}) => {
           defaultValue={Theme.isColorBlind}
           onToggle={state => handleToggleColorBlind(state)}
         />
+        {route.params.user == null ||
+        route.params.user.group.code !== 'admins' ? null : (
+          <NextButton
+            style={styles.NextButton}
+            translation={I18n.t('User_SendTranslations')}
+            onPress={handleSendTranslations}
+          />
+        )}
       </View>
     </Screen>
   );
@@ -89,6 +95,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  NextButton: {
+    width: Dimensions.get('window').width * 0.9,
+    height: 40,
+    marginLeft: 18,
+    paddingRight: 50,
+    paddingLeft: 10,
   },
 });
 
