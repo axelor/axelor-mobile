@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {
   Icon,
   Picker,
@@ -9,6 +9,7 @@ import {
   useConfig,
   useTheme,
   useThemeColor,
+  Image,
 } from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
@@ -17,7 +18,6 @@ import {
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
-import {LogoutButton} from '@/modules/auth/components/molecules';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
 import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
@@ -38,7 +38,7 @@ const stockLocationScanKey = 'stock-location_user-default';
 
 const UserScreen = ({navigation}) => {
   const {companyList} = useSelector(state => state.company);
-  const {userId} = useSelector(state => state.auth);
+  const {userId, baseUrl} = useSelector(state => state.auth);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {languageList} = useSelector(state => state.language);
   const {loading, baseConfig} = useSelector(state => state.config);
@@ -137,16 +137,27 @@ const UserScreen = ({navigation}) => {
   );
 
   return (
-    <Screen
-      style={styles.container}
-      fixedItems={<LogoutButton onPress={() => dispatch(logout())} />}
-      loading={loadingUser || loading}>
+    <Screen style={styles.container} loading={loadingUser || loading}>
       <ScrollView>
-        <Icon
-          name="user-alt"
-          size={Dimensions.get('window').width * 0.2}
-          style={styles.imageContainer}
-        />
+        <View style={styles.imageContainer}>
+          <Image
+            generalStyle={styles.imageIcon}
+            imageSize={Dimensions.get('window').width * 0.2}
+            defaultIconSize={80}
+            source={{
+              uri: `${baseUrl}ws/rest/com.axelor.auth.db.User/${user.id}/image/download?v=${user.version}&parentId=${user.id}&parentModel=com.axelor.auth.db.User&image=true`,
+            }}
+          />
+          <Icon
+            style={styles.logOutIcon}
+            name="power-off"
+            color={Colors.primaryColor}
+            size={Dimensions.get('window').width * 0.07}
+            touchable={true}
+            onPress={() => dispatch(logout())}
+          />
+          <Text style={styles.textUser}>{user.name}</Text>
+        </View>
         {baseConfig.enableMultiCompany && (
           <Picker
             title={I18n.t('User_ActiveCompany')}
@@ -208,6 +219,9 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     imageContainer: {
+      alignItems: 'center',
+    },
+    imageIcon: {
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
@@ -216,6 +230,22 @@ const getStyles = Colors =>
       width: Dimensions.get('window').width * 0.3,
       height: Dimensions.get('window').width * 0.3,
       marginVertical: '5%',
+    },
+    logOutIcon: {
+      position: 'relative',
+      bottom: Dimensions.get('window').width * 0.12,
+      left: Dimensions.get('window').width * 0.1,
+      backgroundColor: Colors.backgroundColor,
+      borderRadius: Dimensions.get('window').width * 0.1,
+      width: Dimensions.get('window').width * 0.1,
+      height: Dimensions.get('window').width * 0.1,
+      elevation: 5,
+    },
+    textUser: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 50,
+      marginTop: -35,
     },
     companyContainer: {
       width: '95%',
