@@ -8,7 +8,13 @@ import React, {
 import {StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
 import axios from 'axios';
-import {ConfigProvider, lightTheme, ThemeProvider, Theme} from '@aos-mobile/ui';
+import {
+  ConfigProvider,
+  lightTheme,
+  OutsideAlerterProvider,
+  ThemeProvider,
+  Theme,
+} from '@aos-mobile/ui';
 import {ErrorBoundary} from '@aos-mobile/error';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
@@ -116,26 +122,28 @@ const Application = ({
   return (
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
-        <ThemeProvider themes={themes}>
-          <ConfigProvider>
-            <Scanner />
-            <Translator />
-            <ErrorBoundary
-              errorScreen={ErrorScreen}
-              userIdfetcher={getActiveUserId}
-              putMethod={traceBackPutMethod}>
-              <NavigationContainer>
-                <RootNavigator
-                  modules={modules}
-                  mainMenu={mainMenu}
-                  version={version}
-                />
-                <LoadingIndicator />
-              </NavigationContainer>
-            </ErrorBoundary>
-            <Toast config={toastConfig} />
-          </ConfigProvider>
-        </ThemeProvider>
+        <OutsideAlerterProvider>
+          <ThemeProvider themes={themes}>
+            <ConfigProvider>
+              <Scanner />
+              <Translator />
+              <ErrorBoundary
+                errorScreen={ErrorScreen}
+                userIdfetcher={getActiveUserId}
+                putMethod={traceBackPutMethod}>
+                <NavigationContainer>
+                  <RootNavigator
+                    modules={modules}
+                    mainMenu={mainMenu}
+                    version={version}
+                  />
+                  <LoadingIndicator />
+                </NavigationContainer>
+              </ErrorBoundary>
+              <Toast config={toastConfig} />
+            </ConfigProvider>
+          </ThemeProvider>
+        </OutsideAlerterProvider>
       </Provider>
     </ApplicationContext.Provider>
   );

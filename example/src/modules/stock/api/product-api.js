@@ -3,7 +3,6 @@ import {
   getApiResponseData,
   getFirstData,
 } from '@aos-mobile/core';
-import {fetchFileDetails} from './metafile-api';
 
 const productFields = [
   'name',
@@ -151,20 +150,6 @@ export async function updateLocker({
       version: version,
     },
   });
-}
-
-export async function fetchAttachedFiles(productId) {
-  return axiosApiProvider
-    .get({
-      url: `/ws/dms/attachments/com.axelor.apps.base.db.Product/${productId}`,
-    })
-    .then(response => {
-      if (response?.data?.data == null) {
-        return response;
-      } else {
-        return fetchFileDetails(response?.data?.data);
-      }
-    });
 }
 
 export async function fetchVariants({productVariantParentId, page = 0}) {

@@ -1,4 +1,6 @@
-import {axiosApiProvider} from '@aos-mobile/core';
+import {axiosApiProvider} from '../axios/AxiosApi';
+
+const MetaFileFields = ['id', 'fileName', 'createdOn'];
 
 const createCriteria = listFiles => {
   if (listFiles != null) {
@@ -9,8 +11,6 @@ const createCriteria = listFiles => {
     return criterias;
   }
 };
-
-const MetaFileFields = ['id', 'fileName', 'createdOn'];
 
 export async function fetchFileDetails(listFiles) {
   return axiosApiProvider.post({

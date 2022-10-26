@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@aos-mobile/core';
 import {
-  fetchAttachedFiles,
   searchProductsFilter,
   searchProductWithId,
   updateLocker,
@@ -46,19 +45,6 @@ export const updateProductLocker = createAsyncThunk(
   },
 );
 
-export const fetchProductAttachedFiles = createAsyncThunk(
-  'product/fetchAttachedFiles',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: fetchAttachedFiles,
-      data,
-      action: 'fetch attached files',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 const initialState = {
   loadingProduct: false,
   moreLoading: false,
@@ -67,7 +53,6 @@ const initialState = {
   loadingProductFromId: false,
   productFromId: {},
   updateResponde: {},
-  filesList: [],
 };
 
 const productSlice = createSlice({
@@ -111,13 +96,6 @@ const productSlice = createSlice({
     builder.addCase(updateProductLocker.fulfilled, (state, action) => {
       state.loadingProduct = false;
       state.updateResponde = action.payload;
-    });
-    builder.addCase(fetchProductAttachedFiles.pending, state => {
-      state.loadingProduct = true;
-    });
-    builder.addCase(fetchProductAttachedFiles.fulfilled, (state, action) => {
-      state.loadingProduct = false;
-      state.filesList = action.payload;
     });
   },
 });

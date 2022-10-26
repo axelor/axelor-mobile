@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import File from '../../../types/file';
 import {formatDate} from '../../../utils/formatters';
-import {Icon, Text} from '../../atoms';
+import {HorizontalRule, Icon, Text} from '../../atoms';
 
 interface AttachmentCardProps {
   fileName: string;
@@ -20,7 +20,7 @@ const AttachmentCard = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.container}>
-        <Icon name={File.getFileIcon(fileName)} size={20} />
+        <Icon name={File.getFileIcon(fileName)} size={35} />
         <View style={styles.textContainer}>
           <Text style={styles.text}>{fileName}</Text>
           {creationDate && (
@@ -37,6 +37,7 @@ const AttachmentCard = ({
           )}
         </View>
       </View>
+      <HorizontalRule style={styles.bottomLine} />
     </TouchableOpacity>
   );
 };
@@ -55,6 +56,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
+  },
+  bottomLine: {
+    marginTop: 10,
+    width: '45%',
+    alignSelf: 'center',
   },
 });
 

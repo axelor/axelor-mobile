@@ -30,6 +30,8 @@
   "Base_Next": "Next",
   "Base_Estimated": "Estimated",
   "Base_Real": "Real",
+  "Base_Large": "Large",
+  "Base_Small": "Small",
   "Stopwatch_Status_Ready": "Ready",
   "Stopwatch_Status_InProgress": "InProgress",
   "Stopwatch_Status_Paused": "Paused",

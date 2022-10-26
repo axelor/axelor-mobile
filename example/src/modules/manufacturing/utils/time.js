@@ -56,3 +56,32 @@ export const formatDateTime = (dateTime, format = 'DD/MM/YYYY HH:mm') => {
 
   return format;
 };
+
+export const calculateDiff = (start, end) => {
+  if (start == null) {
+    console.warn('the start date value cannot be null');
+    return 0;
+  }
+
+  let startDate = new Date(start);
+  let endDate;
+
+  if (end == null) {
+    endDate = new Date();
+  } else {
+    endDate = new Date(end);
+  }
+
+  //ignore light difference (< 500 milliseconds) due to the async await
+  if (startDate > endDate) {
+    if (Math.abs(startDate - endDate) > 500) {
+      console.warn(
+        `Invalid dates: start date: ${startDate}, end date ${endDate}`,
+      );
+      return 0;
+    }
+    return 0;
+  }
+
+  return endDate - startDate;
+};

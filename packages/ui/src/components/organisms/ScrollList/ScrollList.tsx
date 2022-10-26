@@ -6,7 +6,7 @@ interface ScrollListProps {
   loadingList: boolean;
   data: any[];
   renderItem: (item: any) => any;
-  fetchData: (fetchOptions: any) => any[];
+  fetchData: (fetchOptions?: any) => any[] | void;
   moreLoading: boolean;
   isListEnd: boolean;
   filter: boolean;

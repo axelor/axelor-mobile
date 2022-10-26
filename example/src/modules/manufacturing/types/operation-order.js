@@ -1,4 +1,5 @@
-import {formatDateTime} from '../utils/time';
+import {StopwatchType} from '@aos-mobile/core';
+import {calculateDiff, formatDateTime} from '../utils/time';
 
 class OperationOrder {
   static status = {
@@ -144,6 +145,58 @@ class OperationOrder {
         );
         return [];
     }
+  };
+
+  static getTimerState = operationOrder => {
+    switch (operationOrder.statusSelect) {
+      case OperationOrder.status.Draft:
+      case OperationOrder.status.Planned:
+        return {
+          status: StopwatchType.status.Ready,
+          time: 0,
+        };
+      case OperationOrder.status.InProgress:
+        return {
+          status: StopwatchType.status.InProgress,
+          time: this.getTotalDuration(
+            operationOrder?.operationOrderDurationList,
+          ),
+        };
+      case OperationOrder.status.StandBy:
+        return {
+          status: StopwatchType.status.Paused,
+          time: this.getTotalDuration(
+            operationOrder?.operationOrderDurationList,
+          ),
+        };
+      case OperationOrder.status.Finished:
+        return {
+          status: StopwatchType.status.Finished,
+          time: operationOrder.realDuration * 1000,
+        };
+      default:
+        console.warn(
+          `Status provided with value ${operationOrder.statusSelect} is not supported by operation order`,
+        );
+        return {};
+    }
+  };
+
+  static getTotalDuration = operationOrderDurationList => {
+    if (operationOrderDurationList == null) {
+      console.warn('Operation order duration list cannot be null');
+      return 0;
+    }
+
+    let totalDuration = 0;
+    operationOrderDurationList.forEach(duration => {
+      let diff = calculateDiff(
+        duration.startingDateTime,
+        duration.stoppingDateTime,
+      );
+      totalDuration += diff;
+    });
+    return totalDuration;
   };
 }
 

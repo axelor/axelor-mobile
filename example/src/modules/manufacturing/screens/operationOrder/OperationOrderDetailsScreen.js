@@ -1,6 +1,12 @@
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, LabelText, Screen} from '@aos-mobile/ui';
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  HeaderContainer,
+  LabelText,
+  Screen,
+} from '@aos-mobile/ui';
 import {
   Stopwatch,
   StopwatchType,
@@ -12,7 +18,11 @@ import {OperationOrderDatesCard} from '../../components/molecules';
 import {OperationOrderHeader} from '../../components/organisms';
 import OperationOrder from '../../types/operation-order';
 import {formatDuration} from '../../utils/time';
-import {fetchOperationOrderById} from '../../features/operationOrderSlice';
+import {
+  fetchOperationOrderById,
+  updateOperationOrder,
+} from '../../features/operationOrderSlice';
+import {isEmpty} from '../../utils/objects';
 
 function OperationOrderDetailsScreen({route, navigation}) {
   const I18n = useTranslator();
@@ -22,6 +32,38 @@ function OperationOrderDetailsScreen({route, navigation}) {
     state => state.operationOrder,
   );
 
+  const updateStatus = async status => {
+    dispatch(
+      await updateOperationOrder({
+        operationOrderId: operationOrder.id,
+        version: operationOrder.version,
+        status,
+      }),
+    );
+  };
+
+  const [startDate, endDate] = useMemo(() => {
+    if (!isEmpty(operationOrder)) {
+      return OperationOrder.getDates(
+        operationOrder.statusSelect,
+        operationOrder.plannedStartDateT,
+        operationOrder.plannedEndDateT,
+        operationOrder.realStartDateT,
+        operationOrder.realEndDateT,
+        I18n,
+        false,
+      );
+    }
+    return [];
+  }, [I18n, operationOrder]);
+
+  const {status: timerStatus, time} = useMemo(() => {
+    if (!isEmpty(operationOrder)) {
+      return OperationOrder.getTimerState(operationOrder);
+    }
+    return {status: StopwatchType.status.Ready, time: 0};
+  }, [operationOrder]);
+
   useEffect(() => {
     dispatch(
       fetchOperationOrderById({
@@ -30,19 +72,31 @@ function OperationOrderDetailsScreen({route, navigation}) {
     );
   }, [dispatch, route.params.operationOrderId]);
 
-  const [startDate, endDate] = useMemo(() => {
-    if (operationOrder != null && operationOrder.statusSelect != null) {
-      return OperationOrder.getDates(
-        operationOrder.statusSelect,
-        operationOrder.plannedStartDateT,
-        operationOrder.plannedEndDateT,
-        operationOrder.realStartDateT,
-        operationOrder.realEndDateT,
-        I18n,
-      );
-    }
-    return [null, null];
-  }, [I18n, operationOrder]);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <DropdownMenu>
+          <DropdownMenuItem
+            icon="folder-open"
+            placeholder={I18n.t('Manufacturing_ProductionFile')}
+            onPress={() =>
+              navigation.navigate('ProductionFileScreen', {
+                prodProcessLineId: operationOrder.prodProcessLine.id,
+              })
+            }
+          />
+          <DropdownMenuItem
+            placeholder={I18n.t('Stock_AttachedFiles')}
+            onPress={() =>
+              navigation.navigate('OperationOrderAttachedFilesScreen', {
+                operationOrderId: operationOrder?.id,
+              })
+            }
+          />
+        </DropdownMenu>
+      ),
+    });
+  }, [I18n, navigation, operationOrder]);
 
   return (
     <Screen removeSpaceOnTop={true} loading={loadingOrder}>
@@ -87,7 +141,20 @@ function OperationOrderDetailsScreen({route, navigation}) {
             />
           )}
         </View>
-        <Stopwatch startTime={0} status={StopwatchType.status.Ready} />
+        <Stopwatch
+          startTime={time}
+          status={timerStatus}
+          onPlay={() => updateStatus(OperationOrder.status.InProgress)}
+          onPause={() => updateStatus(OperationOrder.status.StandBy)}
+          onStop={() => updateStatus(OperationOrder.status.Finished)}
+          disableStop={
+            operationOrder.statusSelect === OperationOrder.status.StandBy
+          }
+          disableCancel={
+            operationOrder.statusSelect === OperationOrder.status.Finished
+          }
+          hideCancel={true}
+        />
       </View>
     </Screen>
   );

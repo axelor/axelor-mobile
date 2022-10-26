@@ -38,5 +38,7 @@
   "Manufacturing_PlannedStartDate": "Début planifié",
   "Manufacturing_PlannedEndDate": "Fin planifiée",
   "Manufacturing_RealStartDate": "Début réel",
-  "Manufacturing_RealEndDate": "Fin réelle"
+  "Manufacturing_RealEndDate": "Fin réelle",
+  "Manufacturing_ProductionFile": "Dossier de production",
+  "Manufacturing_AttachedFiles": "Fichiers attachés"
 }

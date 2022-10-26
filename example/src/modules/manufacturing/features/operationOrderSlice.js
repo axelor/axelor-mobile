@@ -3,6 +3,7 @@ import {handlerApiCall} from '@aos-mobile/core';
 import {
   searchOperationOrderFilter,
   fetchOperationOrder,
+  updateOperationOrderStatus,
 } from '../api/operation-order-api';
 
 export const fetchOperationOrders = createAsyncThunk(
@@ -24,10 +25,31 @@ export const fetchOperationOrderById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchOperationOrder,
       data,
-      action: 'fetch operation order from id',
+      action: 'fetch operation order by id',
       getState,
       responseOptions: {isArrayResponse: false},
     });
+  },
+);
+
+export const updateOperationOrder = createAsyncThunk(
+  'OperationOrder/updateOperationOrderStatus',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateOperationOrderStatus,
+      data: data,
+      action: 'update operation order status',
+      getState: getState,
+      responseOptions: {showToast: true},
+    }).then(object =>
+      handlerApiCall({
+        fetchFunction: fetchOperationOrder,
+        data: {operationOrderId: object.id},
+        action: 'fetch operation order by id',
+        getState: getState,
+        responseOptions: {isArrayResponse: false},
+      }),
+    );
   },
 );
 
@@ -73,6 +95,16 @@ const operationOrderSlice = createSlice({
       state.loadingOrder = true;
     });
     builder.addCase(fetchOperationOrderById.fulfilled, (state, action) => {
+      state.loadingOrder = false;
+      state.operationOrder = action.payload;
+    });
+    builder.addCase(updateOperationOrder.pending, state => {
+      state.loadingOrder = true;
+    });
+    builder.addCase(updateOperationOrder.rejected, (state, action) => {
+      state.loadingOrder = false;
+    });
+    builder.addCase(updateOperationOrder.fulfilled, (state, action) => {
       state.loadingOrder = false;
       state.operationOrder = action.payload;
     });

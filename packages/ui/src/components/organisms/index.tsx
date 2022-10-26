@@ -1,6 +1,5 @@
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
-export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as Picker} from './Picker/Picker';
 export {default as PopUpOneButton} from './PopUpOneButton/PopUpOneButton';

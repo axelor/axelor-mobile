@@ -1,16 +1,13 @@
-// Components
 export * from './components/atoms';
 export * from './components/molecules';
 export * from './components/organisms';
 export {getCommonStyles} from './utils/commons-styles';
 export {getHeaderStyles} from './utils/headerStyle';
-
-// Theme
 export {ThemeProvider, useTheme, useThemeColor} from './theme/ThemeContext';
 export {lightTheme, colorBlindTheme, Theme} from './theme/themes';
-
-// Type
 export {default as File} from './types/file';
-
-// Config
 export {ConfigProvider, useConfig} from './config/ConfigContext';
+export {
+  OutsideAlerterProvider,
+  useClickOutside,
+} from './hooks/use-click-outside';

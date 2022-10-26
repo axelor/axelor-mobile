@@ -14,6 +14,9 @@ const operationOrderListFields = [
   'plannedEndDateT',
   'realStartDateT',
   'realEndDateT',
+  'operationOrderDurationList',
+  'realDuration',
+  'prodProcessLine',
 ];
 
 const sortByFields = ['manufOrder.manufOrderSeq', 'statusSelect', 'priority'];
@@ -91,6 +94,24 @@ export async function fetchOperationOrder({operationOrderId}) {
     url: `/ws/rest/com.axelor.apps.production.db.OperationOrder/${operationOrderId}/fetch`,
     data: {
       fields: operationOrderListFields,
+      related: {
+        operationOrderDurationList: ['startingDateTime', 'stoppingDateTime'],
+        prodProcessLine: ['objectDescriptionList'],
+      },
+    },
+  });
+}
+
+export async function updateOperationOrderStatus({
+  operationOrderId,
+  version,
+  status,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/operation-order/${operationOrderId}`,
+    data: {
+      version,
+      status,
     },
   });
 }

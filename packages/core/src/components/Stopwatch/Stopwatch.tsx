@@ -5,7 +5,21 @@ import useTranslator from '../../i18n/hooks/use-translator';
 import StopwatchType from '../../types/stopwatch-type';
 import Timer from '../Timer/Timer';
 
-function Stopwatch({startTime = 0, status, style}) {
+function Stopwatch({
+  startTime = 0,
+  status = StopwatchType.status.Ready,
+  disable = false,
+  disablePlay = false,
+  disablePause = false,
+  disableStop = false,
+  disableCancel = false,
+  hideCancel = false,
+  style,
+  onPlay = () => {},
+  onPause = () => {},
+  onStop = () => {},
+  onCancel = () => {},
+}) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -18,16 +32,20 @@ function Stopwatch({startTime = 0, status, style}) {
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
+    onPlay();
   };
 
   const handlePauseBtn = () => {
     setState(StopwatchType.status.Paused);
+    onPause();
   };
   const handleStopBtn = () => {
     setState(StopwatchType.status.Finished);
+    onStop();
   };
   const handleCancelBtn = () => {
     setState(StopwatchType.status.Canceled);
+    onCancel();
   };
 
   return (
@@ -45,6 +63,8 @@ function Stopwatch({startTime = 0, status, style}) {
               name="play"
               size={25}
               disabled={
+                disable ||
+                disablePlay ||
                 state === StopwatchType.status.InProgress ||
                 state === StopwatchType.status.Finished
               }
@@ -57,6 +77,7 @@ function Stopwatch({startTime = 0, status, style}) {
             <Icon
               name="pause"
               size={25}
+              disabled={disable || disablePause}
               touchable={true}
               onPress={handlePauseBtn}
               style={styles.btn}
@@ -66,6 +87,8 @@ function Stopwatch({startTime = 0, status, style}) {
             name="power-off"
             size={25}
             disabled={
+              disable ||
+              disableStop ||
               state === StopwatchType.status.Ready ||
               state === StopwatchType.status.Finished
             }
@@ -73,14 +96,18 @@ function Stopwatch({startTime = 0, status, style}) {
             onPress={handleStopBtn}
             style={styles.btn}
           />
-          <Icon
-            name="undo"
-            size={25}
-            disabled={state === StopwatchType.status.Ready}
-            touchable={true}
-            onPress={handleCancelBtn}
-            style={styles.btn}
-          />
+          {!hideCancel && (
+            <Icon
+              name="undo"
+              size={25}
+              disabled={
+                disable || disableCancel || state === StopwatchType.status.Ready
+              }
+              touchable={true}
+              onPress={handleCancelBtn}
+              style={styles.btn}
+            />
+          )}
         </View>
         <Timer
           time={time}
