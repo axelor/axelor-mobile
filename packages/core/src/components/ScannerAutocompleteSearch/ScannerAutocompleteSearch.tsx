@@ -22,6 +22,7 @@ interface AutocompleteSearchProps {
   navigate?: boolean;
   oneFilter?: boolean;
   searchBarKey?: number;
+  selectLastItem?: boolean;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -37,6 +38,7 @@ const ScannerAutocompleteSearch = ({
   navigate = false,
   oneFilter = false,
   searchBarKey = 1,
+  selectLastItem = true,
 }: AutocompleteSearchProps) => {
   const [camScan, setCamScan] = useState(false);
   const [scanData, setScanData] = useState(null);
@@ -75,6 +77,7 @@ const ScannerAutocompleteSearch = ({
         onClose={() => setCamScan(false)}
       />
       <AutoCompleteSearch
+        selectLastItem={selectLastItem}
         objectList={objectList}
         value={searchText}
         onChangeValue={result => {

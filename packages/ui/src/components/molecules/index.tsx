@@ -15,6 +15,7 @@ export {default as Increment} from './Increment/Increment';
 export {default as LabelText} from './LabelText/LabelText';
 export {default as NextButton} from './NextButton/NextButton';
 export {default as PopUp} from './PopUp/PopUp';
+export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as TitledValue} from './TitledValue/TitledValue';
 export {default as ToggleSwitch} from './ToggleSwitch/ToggleSwitch';

@@ -1,44 +1,7 @@
-import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from '../../atoms';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {View} from 'react-native';
+import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-
-interface AutocompleteItemProps {
-  style?: any;
-  content: string;
-  onPress: (any) => void;
-}
-
-const AutocompleteItem = ({style, content, onPress}: AutocompleteItemProps) => {
-  const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  return content == null ? null : (
-    <TouchableOpacity style={[styles.item, style]} onPress={onPress}>
-      <Text style={styles.text}>{content}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    item: {
-      height: 50,
-      flexDirection: 'row',
-      backgroundColor: Colors.backgroundColor,
-      marginHorizontal: 15,
-      paddingLeft: 15,
-      paddingVertical: 15,
-      borderBottomColor: Colors.primaryColor,
-      borderBottomWidth: 1,
-      position: 'relative',
-      zIndex: 50,
-    },
-    text: {
-      fontSize: 18,
-    },
-  });
 
 const TIME_WITHOUT_INPUT = 1000;
 const TIME_BETWEEN_CALL = 1000;
@@ -57,6 +20,7 @@ interface AutocompleteSearchProps {
   onSelection?: () => void;
   onScanPress?: () => void;
   scanIconColor?: string;
+  selectLastItem?: boolean;
 }
 
 const AutoCompleteSearch = ({
@@ -73,6 +37,7 @@ const AutoCompleteSearch = ({
   onSelection,
   onScanPress,
   scanIconColor = null,
+  selectLastItem = true,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [searchText, setSearchText] = useState(null);
@@ -178,7 +143,7 @@ const AutoCompleteSearch = ({
       searchText !== '' &&
       !selected
     ) {
-      if (objectList.length === 1) {
+      if (objectList.length === 1 && selectLastItem === true) {
         if (changeScreenAfter || oneFilter) {
           setSearchText('');
         } else {
@@ -195,6 +160,7 @@ const AutoCompleteSearch = ({
     changeScreenAfter,
     displayValue,
     objectList,
+    selectLastItem,
     onChangeValue,
     oneFilter,
     searchText,
@@ -218,32 +184,15 @@ const AutoCompleteSearch = ({
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
       />
-      {objectList != null &&
-        objectList.length > 0 &&
-        displayList &&
-        !oneFilter && (
-          <View style={styles.flatListContainer}>
-            {objectList.slice(0, 4).map(item => (
-              <AutocompleteItem
-                key={item?.id.toString()}
-                content={displayValue(item)}
-                onPress={() => handleSelect(item)}
-              />
-            ))}
-          </View>
-        )}
+      {displayList && !oneFilter && (
+        <SelectionContainer
+          objectList={objectList}
+          displayValue={displayValue}
+          handleSelect={handleSelect}
+        />
+      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  flatListContainer: {
-    height: 200, // 4 items : 4*flatListItem.height
-    width: '100%',
-    position: 'absolute',
-    top: '90%',
-    zIndex: 2,
-  },
-});
 
 export default AutoCompleteSearch;
