@@ -1,6 +1,7 @@
 export {default as Button} from './Button/Button';
 export {default as Card} from './Card/Card';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
+export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as Icon} from './Icon/Icon';
 export {default as Input} from './Input/Input';
 export {default as Screen} from './Screen/Screen';

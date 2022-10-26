@@ -9,7 +9,7 @@ import {Card, useConfig, useThemeColor} from '@aos-mobile/ui';
 function LoadingIndicator() {
   const Colors = useThemeColor();
   const {showActivityIndicator} = useConfig();
-  if (showActivityIndicator === false) {
+  if (showActivityIndicator !== true) {
     return null;
   } else {
     return (
