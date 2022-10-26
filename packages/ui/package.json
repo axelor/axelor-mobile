@@ -19,6 +19,8 @@
     "@react-native-picker/picker": "^2.4.1",
     "react": "*",
     "react-native": "*",
+    "react-native-file-viewer": "^2.1.5",
+    "react-native-fs": "^2.20.0",
     "react-native-system-navigation-bar": "^2.0.0",
     "react-native-vector-icons": "^9.2.0"
   },
@@ -33,6 +35,8 @@
     "prettier": "^2.7.1",
     "react": "18.2.0",
     "react-native": "0.68.1",
+    "react-native-file-viewer": "^2.1.5",
+    "react-native-fs": "^2.20.0",
     "react-native-system-navigation-bar": "^2.0.0",
     "react-native-vector-icons": "^9.2.0"
   }
