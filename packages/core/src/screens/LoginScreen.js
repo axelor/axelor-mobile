@@ -16,6 +16,7 @@ import {
   useScannedValueByKey,
   useScannerSelector,
 } from '../features/scannerSlice';
+import LogoImage from '../components/LogoImage/LogoImage';
 
 const urlScanKey = 'login_url';
 
@@ -60,12 +61,7 @@ const LoginScreen = ({route}) => {
       />
       <ScrollView>
         <View style={styles.imageContainer}>
-          <Image
-            resizeMode="contain"
-            source={require('../assets/Logo_Axelor.png')}
-            imageSize={styles.imageSize}
-            defaultIconSize={80}
-          />
+          <LogoImage url={url} />
         </View>
         <UrlInput
           value={url}
