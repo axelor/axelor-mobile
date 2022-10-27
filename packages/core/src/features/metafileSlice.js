@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@aos-mobile/core';
+import {handlerApiCall} from '../api/utils';
 import {fetchFileDetails} from '../api/metafile-api';
 
 export const getFileDetails = createAsyncThunk(
