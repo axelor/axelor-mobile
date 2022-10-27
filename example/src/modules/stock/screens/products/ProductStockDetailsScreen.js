@@ -43,7 +43,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {loading, productIndicators} = useSelector(
+  const {loadingProductIndicators, productIndicators} = useSelector(
     state => state.productIndicators,
   );
   const [stockLocation, setStockLocation] = useState(null);
@@ -213,7 +213,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             }
           />
         )}
-        {loading ? (
+        {loadingProductIndicators ? (
           <ActivityIndicator size="large" />
         ) : (
           <View style={styles.row}>

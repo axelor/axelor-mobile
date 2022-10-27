@@ -73,6 +73,7 @@ export const fetchProductDistribution = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  loadingProductIndicators: false,
   productIndicators: {},
   listAvailabilty: [],
   listAvailabiltyDistribution: [],
@@ -83,10 +84,10 @@ const productIndicators = createSlice({
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchProductIndicators.pending, state => {
-      state.loading = true;
+      state.loadingProductIndicators = true;
     });
     builder.addCase(fetchProductIndicators.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingProductIndicators = false;
       state.productIndicators = action.payload;
     });
     builder.addCase(fetchProductsAvailability.pending, state => {
