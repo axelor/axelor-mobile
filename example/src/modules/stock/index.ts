@@ -11,36 +11,36 @@ import * as stockReducers from './features';
 
 const stockModule: Module = {
   name: 'Stock',
-  title: t => t('Stock'),
+  title: 'Stock',
   icon: 'cubes',
   menus: {
     stock_menu_product: {
-      title: t => t('Stock_Product'),
+      title: 'Stock_Product',
       icon: 'shopping-cart',
       screen: 'ProductListScreen',
     },
     stock_menu_stock_correction: {
-      title: t => t('Stock_StockCorrection'),
+      title: 'Stock_StockCorrection',
       icon: 'box',
       screen: 'StockCorrectionListScreen',
     },
     stock_menu_internal_move: {
-      title: t => t('Stock_InternalMove'),
+      title: 'Stock_InternalMove',
       icon: 'dolly',
       screen: 'InternalMoveListScreen',
     },
     stock_menu_customer_delivery: {
-      title: t => t('Stock_CustomerDelivery'),
+      title: 'Stock_CustomerDelivery',
       icon: 'truck',
       screen: 'CustomerDeliveryListScreen',
     },
     stock_menu_supplier_arrival: {
-      title: t => t('Stock_SupplierArrival'),
+      title: 'Stock_SupplierArrival',
       icon: 'truck-loading',
       screen: 'SupplierArrivalListScreen',
     },
     stock_menu_inventory: {
-      title: t => t('Stock_Inventory'),
+      title: 'Stock_Inventory',
       icon: 'warehouse',
       screen: 'InventoryListScreen',
     },

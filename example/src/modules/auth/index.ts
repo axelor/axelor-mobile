@@ -7,18 +7,18 @@ import * as authReducers from './features';
 
 const authModule: Module = {
   name: 'Auth',
-  title: t => t('User_User'),
+  title: 'User_User',
   icon: 'user',
   menus: {
     auth_menu_user: {
-      title: t => t('User_UserProfile'),
+      title: 'User_UserProfile',
       icon: 'user',
       screen: 'UserScreen',
     },
   },
   screens: {
-    SettingsScreen: {component: SettingsScreen, title: t => t('User_Settings')},
-    UserScreen: {component: UserScreen, title: t => t('User_UserProfile')},
+    SettingsScreen: {component: SettingsScreen, title: 'User_Settings'},
+    UserScreen: {component: UserScreen, title: 'User_UserProfile'},
   },
   translations: {
     en: enTranslations,

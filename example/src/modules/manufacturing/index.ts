@@ -7,16 +7,16 @@ import * as manufacturingReducers from './features';
 
 const ManufacturingModule: Module = {
   name: 'Manufacturing',
-  title: t => t('Manufacturing_Manufacturing'),
+  title: 'Manufacturing_Manufacturing',
   icon: 'cogs',
   menus: {
     ManufacturingOrder: {
-      title: t => t('Manufacturing_ManufacturingOrder'),
+      title: 'Manufacturing_ManufacturingOrder',
       icon: 'clipboard-list',
       screen: 'ManufacturingOrderListScreen',
     },
     OperationOrder: {
-      title: t => t('Manufacturing_OperationOrder'),
+      title: 'Manufacturing_OperationOrder',
       icon: 'dolly-flatbed',
       screen: 'OperationOrderListScreen',
     },

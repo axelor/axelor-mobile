@@ -8,37 +8,37 @@ import ProductStockLocationDetailsScreen from './ProductStockLocationDetailsScre
 
 export default {
   ProductListScreen: {
-    title: t => t('Stock_Product'),
+    title: 'Stock_Product',
     component: ProductListScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProductStockDetailsScreen: {
-    title: t => t('Stock_Product'),
+    title: 'Stock_Product',
     component: ProductStockDetailsScreen,
   },
   ProductStockLocationDetailsScreen: {
-    title: t => t('Stock_QuantityStockLocation'),
+    title: 'Stock_QuantityStockLocation',
     component: ProductStockLocationDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProductDetailsScreen: {
-    title: t => t('Stock_ProductDetails'),
+    title: 'Stock_ProductDetails',
     component: ProductDetailsScreen,
   },
   ProductImageScreen: {
-    title: t => t('Stock_Product'),
+    title: 'Stock_Product',
     component: ProductImageScreen,
   },
   ProductListVariantScreen: {
-    title: t => t('Stock_Variants'),
+    title: 'Stock_Variants',
     component: ProductListVariantScreen,
   },
   ProductAttachedFilesScreen: {
-    title: t => t('Stock_Product'),
+    title: 'Stock_Product',
     component: ProductAttachedFilesScreen,
   },
 };

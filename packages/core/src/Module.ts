@@ -1,13 +1,10 @@
-type TranslateFunc = (key: string) => string;
-type Title = string | ((t: TranslateFunc) => string);
-
 export interface Module {
   name: string;
-  title: Title;
+  title: string;
   icon: string;
   menus: {
     [screenKey: string]: {
-      title: Title;
+      title: string;
       icon: string;
       screen: string;
     };
@@ -17,7 +14,7 @@ export interface Module {
       | React.FC<any>
       | {
           component: React.FC<any>;
-          title: Title;
+          title: string;
         };
   };
   translations?: {

@@ -45,11 +45,8 @@ export const isMenuEnabled = ({listMenu, menuKey, user}) => {
 };
 
 export function getMenuTitle(menu, {I18n}) {
-  if (typeof menu.title === 'function') {
-    return menu.title(I18n.t);
-  }
   if (menu.title != null) {
-    return menu.title;
+    return I18n.t(menu.title);
   }
   return menu.screen;
 }

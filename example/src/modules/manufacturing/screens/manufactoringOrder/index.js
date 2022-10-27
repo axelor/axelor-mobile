@@ -9,35 +9,35 @@ import ManufacturingOrderListProductionOrderScreen from './ManufacturingOrderLis
 
 export default {
   ManufacturingOrderListScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListScreen,
     options: {
       shadedHeader: false,
     },
   },
   ManufacturingOrderDetailsScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
   ManufacturingOrderListSaleOrderScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListSaleOrderScreen,
     options: {
       shadedHeader: false,
     },
   },
   ManufacturingOrderOperationListScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderOperationListScreen,
     options: {
       shadedHeader: false,
     },
   },
   ManufacturingOrderListProductionOrderScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderListProductionOrderScreen,
     options: {
       shadedHeader: false,

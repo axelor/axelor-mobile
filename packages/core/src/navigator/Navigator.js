@@ -67,7 +67,7 @@ const Navigator = ({modules, mainMenu}) => {
               headerStyle: options?.shadedHeader
                 ? styles.headerColor
                 : styles.listScreenHeaderStyle,
-              headerTitle: title(I18n.t),
+              headerTitle: I18n.t(title),
               headerTitleStyle: styles.headerTitle,
             };
 
