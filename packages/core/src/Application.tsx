@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {StyleSheet} from 'react-native';
@@ -40,12 +41,14 @@ interface ApplicationProps {
 }
 
 const Application = ({
-  modules,
+  modules: modulesProvided,
   mainMenu,
   additionalsReducers,
   version,
   themes,
 }: ApplicationProps) => {
+  const modules = useRef(modulesProvided).current;
+
   const toastConfig = {
     success: props => (
       <BaseToast

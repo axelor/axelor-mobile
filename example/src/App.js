@@ -6,12 +6,10 @@ import ManufacturingModule from '@/modules/manufacturing';
 import * as rootReducers from '@/features';
 import application_properties from '../package.json';
 
-const appModules = [StockModule, ManufacturingModule, AuthModule];
-
 const App = () => {
   return (
     <Application
-      modules={appModules}
+      modules={[StockModule, ManufacturingModule, AuthModule]}
       mainMenu="auth_menu_user"
       additionalsReducers={{...rootReducers}}
       version={application_properties.version}
