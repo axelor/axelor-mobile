@@ -1,7 +1,14 @@
 import React, {useCallback, useEffect} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, Screen, Text, ViewAllContainer} from '@aos-mobile/ui';
+import {View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  Button,
+  Screen,
+  ScrollView,
+  Text,
+  ViewAllContainer,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {fetchInventoryLines} from '@/modules/stock/features/inventoryLineSlice';
@@ -81,6 +88,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         inventory?.statusSelect === Inventory.status.InProgress ? (
           <Button
@@ -95,17 +103,22 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
         ) : null
       }
       loading={loadingInventoryLines || loading || inventory == null}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <InventoryHeader
+            reference={inventory?.inventorySeq}
+            status={inventory?.statusSelect}
+            date={
+              inventory?.statusSelect === Inventory.status.Planned
+                ? inventory?.plannedStartDateT
+                : inventory?.plannedEndDateT
+            }
+            stockLocation={inventory?.stockLocation?.name}
+          />
+        }
+      />
       <ScrollView>
-        <InventoryHeader
-          reference={inventory?.inventorySeq}
-          status={inventory?.statusSelect}
-          date={
-            inventory?.statusSelect === Inventory.status.Planned
-              ? inventory?.plannedStartDateT
-              : inventory?.plannedEndDateT
-          }
-          stockLocation={inventory?.stockLocation?.name}
-        />
         {inventory?.fromRack && (
           <LocationsMoveCard
             style={styles.moveCard}

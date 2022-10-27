@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, ScrollView, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Badge,
   Button,
   LabelText,
   PopUpOneButton,
   Screen,
+  ScrollView,
   useThemeColor,
   ViewAllContainer,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard, NotesCard} from '../../components/molecules';
@@ -100,45 +102,53 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         customerDelivery.statusSelect !== StockMove.status.Realized && (
           <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />
         )
       }
       loading={loadingCDLines}>
-      <ScrollView>
-        <StockMoveHeader
-          reference={customerDelivery.stockMoveSeq}
-          status={customerDelivery.statusSelect}
-          date={
-            customerDelivery.statusSelect === StockMove.status.Draft
-              ? customerDelivery.createdOn
-              : customerDelivery.statusSelect === StockMove.status.Planned
-              ? customerDelivery.estimatedDate
-              : customerDelivery.realDate
-          }
-          availability={customerDelivery.availableStatusSelect}
-        />
-        <View style={styles.generalInfoContainer}>
-          <View style={styles.clientInfos}>
-            <LabelText
-              iconName="user"
-              title={customerDelivery.partner?.fullName}
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View>
+            <StockMoveHeader
+              reference={customerDelivery.stockMoveSeq}
+              status={customerDelivery.statusSelect}
+              date={
+                customerDelivery.statusSelect === StockMove.status.Draft
+                  ? customerDelivery.createdOn
+                  : customerDelivery.statusSelect === StockMove.status.Planned
+                  ? customerDelivery.estimatedDate
+                  : customerDelivery.realDate
+              }
+              availability={customerDelivery.availableStatusSelect}
             />
-            {customerDelivery?.origin && (
-              <LabelText iconName="tag" title={customerDelivery?.origin} />
-            )}
+            <View style={styles.generalInfoContainer}>
+              <View style={styles.clientInfos}>
+                <LabelText
+                  iconName="user"
+                  title={customerDelivery.partner?.fullName}
+                />
+                {customerDelivery?.origin && (
+                  <LabelText iconName="tag" title={customerDelivery?.origin} />
+                )}
+              </View>
+              <View style={styles.ispmInfos}>
+                {customerDelivery?.isIspmRequired && (
+                  <Badge
+                    color={Colors.errorColor_light}
+                    title={I18n.t('Stock_StandardISPM')}
+                    style={styles.ispmBadge}
+                  />
+                )}
+              </View>
+            </View>
           </View>
-          <View style={styles.ispmInfos}>
-            {customerDelivery?.isIspmRequired && (
-              <Badge
-                color={Colors.errorColor_light}
-                title={I18n.t('Stock_StandardISPM')}
-                style={styles.ispmBadge}
-              />
-            )}
-          </View>
-        </View>
+        }
+      />
+      <ScrollView>
         <LocationsMoveCard
           fromStockLocation={customerDelivery.fromStockLocation?.name}
           toStockLocation={

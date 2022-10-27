@@ -15,6 +15,9 @@ export default {
   StockCorrectionDetailsScreen: {
     title: t => t('Stock_StockCorrection'),
     component: StockCorrectionDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   StockCorrectionNewLocationScreen: {
     title: t => t('Stock_StockCorrection'),

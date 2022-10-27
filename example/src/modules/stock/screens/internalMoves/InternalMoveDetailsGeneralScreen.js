@@ -6,6 +6,7 @@ import {
   ScrollView,
   useThemeColor,
   ViewAllContainer,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {fetchInternalMoveLines} from '@/modules/stock/features/internalMoveLineSlice';
@@ -80,6 +81,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       loading={loadingIMLines}
       fixedItems={
         internalMove.statusSelect === StockMove.status.Planned && (
@@ -90,19 +92,24 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
           />
         )
       }>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={internalMove.stockMoveSeq}
+            status={internalMove.statusSelect}
+            date={
+              internalMove.statusSelect === StockMove.status.Draft
+                ? internalMove.createdOn
+                : internalMove.statusSelect === StockMove.status.Planned
+                ? internalMove.estimatedDate
+                : internalMove.realDate
+            }
+            availability={internalMove.availableStatusSelect}
+          />
+        }
+      />
       <ScrollView>
-        <StockMoveHeader
-          reference={internalMove.stockMoveSeq}
-          status={internalMove.statusSelect}
-          date={
-            internalMove.statusSelect === StockMove.status.Draft
-              ? internalMove.createdOn
-              : internalMove.statusSelect === StockMove.status.Planned
-              ? internalMove.estimatedDate
-              : internalMove.realDate
-          }
-          availability={internalMove.availableStatusSelect}
-        />
         <LocationsMoveCard
           style={styles.content}
           fromStockLocation={internalMove.fromStockLocation.name}
@@ -148,7 +155,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   content: {
-    marginBottom: '3%',
+    marginVertical: '2%',
   },
   item: {
     marginHorizontal: 1,

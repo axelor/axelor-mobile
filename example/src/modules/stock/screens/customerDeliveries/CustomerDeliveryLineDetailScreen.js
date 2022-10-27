@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Badge, Button, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  Badge,
+  Button,
+  Screen,
+  Text,
+  useThemeColor,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import {
   QuantityCard,
   ProductCardInfo,
@@ -85,6 +92,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <>
           {customerDeliveryLine != null &&
@@ -101,75 +109,80 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         </>
       }
       loading={loadingProductFromId}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={customerDelivery.stockMoveSeq}
+            status={customerDelivery.statusSelect}
+            lineRef={customerDeliveryLine != null && customerDeliveryLine.name}
+            date={
+              customerDelivery.statusSelect === StockMove.status.Draft
+                ? customerDelivery.createdOn
+                : customerDelivery.statusSelect === StockMove.status.Planned
+                ? customerDelivery.estimatedDate
+                : customerDelivery.realDate
+            }
+            availability={customerDelivery.availableStatusSelect}
+          />
+        }
+      />
       <ScrollView>
-        <StockMoveHeader
-          reference={customerDelivery.stockMoveSeq}
-          status={customerDelivery.statusSelect}
-          date={
-            customerDelivery.statusSelect === StockMove.status.Draft
-              ? customerDelivery.createdOn
-              : customerDelivery.statusSelect === StockMove.status.Planned
-              ? customerDelivery.estimatedDate
-              : customerDelivery.realDate
-          }
-          availability={customerDelivery.availableStatusSelect}
-        />
         <View style={styles.stockView}>
-          {customerDeliveryLine != null && (
-            <View style={styles.stateLine}>
-              <Text style={styles.text_secondary}>
-                {customerDeliveryLine?.name}
+          <ProductCardInfo
+            onPress={handleShowProduct}
+            pictureId={product?.picture?.id}
+            code={product?.code}
+            name={product?.name}
+            trackingNumber={trackingNumber?.trackingNumberSeq}
+            locker={customerDeliveryLine?.locker}
+          />
+          <QuantityCard
+            labelQty={I18n.t('Stock_PickedQty')}
+            defaultValue={parseFloat(realQty).toFixed(2)}
+            onValueChange={handleQtyChange}
+            editable={
+              customerDelivery.statusSelect !== StockMove.status.Realized
+            }>
+            <View style={styles.headerQuantityCard}>
+              <Text style={styles.text}>
+                {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
+                  customerDeliveryLine != null ? customerDeliveryLine.qty : 0,
+                ).toFixed(2)} ${
+                  customerDeliveryLine != null
+                    ? customerDeliveryLine.unit.name
+                    : product?.unit?.name
+                }`}
               </Text>
-              {Number(customerDeliveryLine.qty) !==
-                Number(customerDeliveryLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Incomplete')}
-                  color={Colors.cautionColor_light}
-                />
-              )}
-              {Number(customerDeliveryLine.qty) ===
-                Number(customerDeliveryLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Complete')}
-                  color={Colors.primaryColor_light}
-                />
+              {customerDeliveryLine != null && (
+                <View>
+                  {Number(customerDeliveryLine.qty) !==
+                    Number(customerDeliveryLine.realQty) && (
+                    <Badge
+                      title={I18n.t('Stock_Status_Incomplete')}
+                      color={Colors.cautionColor_light}
+                    />
+                  )}
+                  {Number(customerDeliveryLine.qty) ===
+                    Number(customerDeliveryLine.realQty) && (
+                    <Badge
+                      title={I18n.t('Stock_Status_Complete')}
+                      color={Colors.primaryColor_light}
+                    />
+                  )}
+                </View>
               )}
             </View>
-          )}
+          </QuantityCard>
+          <NotesCard
+            title={I18n.t('Stock_NotesClient')}
+            data={customerDelivery.pickingOrderComments}
+          />
+          <NotesCard
+            title={I18n.t('Stock_LineComment')}
+            data={customerDeliveryLine['saleOrderLine.pickingOrderInfo']}
+          />
         </View>
-        <ProductCardInfo
-          onPress={handleShowProduct}
-          pictureId={product?.picture?.id}
-          code={product?.code}
-          name={product?.name}
-          trackingNumber={trackingNumber?.trackingNumberSeq}
-          locker={customerDeliveryLine?.locker}
-        />
-        <QuantityCard
-          labelQty={I18n.t('Stock_PickedQty')}
-          defaultValue={parseFloat(realQty).toFixed(2)}
-          onValueChange={handleQtyChange}
-          editable={
-            customerDelivery.statusSelect !== StockMove.status.Realized
-          }>
-          <Text style={styles.text}>
-            {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
-              customerDeliveryLine != null ? customerDeliveryLine.qty : 0,
-            ).toFixed(2)} ${
-              customerDeliveryLine != null
-                ? customerDeliveryLine.unit.name
-                : product?.unit?.name
-            }`}
-          </Text>
-        </QuantityCard>
-        <NotesCard
-          title={I18n.t('Stock_NotesClient')}
-          data={customerDelivery.pickingOrderComments}
-        />
-        <NotesCard
-          title={I18n.t('Stock_LineComment')}
-          data={customerDeliveryLine['saleOrderLine.pickingOrderInfo']}
-        />
       </ScrollView>
     </Screen>
   );
@@ -197,6 +210,10 @@ const styles = StyleSheet.create({
   },
   text_secondary: {
     fontSize: 14,
+  },
+  headerQuantityCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

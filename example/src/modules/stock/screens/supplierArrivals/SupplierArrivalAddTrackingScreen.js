@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
-  Badge,
   Button,
   Card,
+  HeaderContainer,
   Screen,
   ScrollView,
   Text,
-  useThemeColor,
 } from '@aos-mobile/ui';
 import {
   InputBarCodeCard,
@@ -28,7 +27,6 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
   const {loading, createdTrackingNumber} = useSelector(
     state => state.trackingNumber,
   );
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -74,42 +72,26 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           />
         )
       }
+      removeSpaceOnTop={true}
       loading={loading}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={supplierArrival.stockMoveSeq}
+            lineRef={supplierArrivalLine?.name}
+            status={supplierArrival.statusSelect}
+            date={
+              supplierArrival.statusSelect === StockMove.status.Draft
+                ? supplierArrival.createdOn
+                : supplierArrival.statusSelect === StockMove.status.Planned
+                ? supplierArrival.estimatedDate
+                : supplierArrival.realDate
+            }
+          />
+        }
+      />
       <ScrollView>
-        <StockMoveHeader
-          reference={supplierArrival.stockMoveSeq}
-          status={supplierArrival.statusSelect}
-          date={
-            supplierArrival.statusSelect === StockMove.status.Draft
-              ? supplierArrival.createdOn
-              : supplierArrival.statusSelect === StockMove.status.Planned
-              ? supplierArrival.estimatedDate
-              : supplierArrival.realDate
-          }
-        />
-        <View style={styles.stockView}>
-          {supplierArrivalLine != null && (
-            <View style={styles.stateLine}>
-              <Text style={styles.text_secondary}>
-                {supplierArrivalLine?.name}
-              </Text>
-              {Number(supplierArrivalLine.qty) !==
-                Number(supplierArrivalLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Incomplete')}
-                  color={Colors.cautionColor_light}
-                />
-              )}
-              {Number(supplierArrivalLine.qty) ===
-                Number(supplierArrivalLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Complete')}
-                  color={Colors.primaryColor_light}
-                />
-              )}
-            </View>
-          )}
-        </View>
         <Card style={styles.cardProductInfo}>
           <Text>{product?.name}</Text>
         </Card>
@@ -133,19 +115,6 @@ const styles = StyleSheet.create({
   cardProductInfo: {
     marginVertical: '2%',
     marginHorizontal: 16,
-  },
-  stateLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    marginVertical: '1%',
-  },
-  stockView: {
-    marginTop: '2%',
-  },
-  text_secondary: {
-    fontSize: 14,
   },
   input: {
     zIndex: 50,

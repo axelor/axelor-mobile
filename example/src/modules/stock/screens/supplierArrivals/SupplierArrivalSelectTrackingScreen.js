@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  Badge,
   Card,
+  HeaderContainer,
   Icon,
   PopUpOneButton,
   Screen,
@@ -68,40 +68,25 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      <StockMoveHeader
-        reference={supplierArrival.stockMoveSeq}
-        status={supplierArrival.statusSelect}
-        date={
-          supplierArrival.statusSelect === StockMove.status.Draft
-            ? supplierArrival.createdOn
-            : supplierArrival.statusSelect === StockMove.status.Planned
-            ? supplierArrival.estimatedDate
-            : supplierArrival.realDate
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={supplierArrival.stockMoveSeq}
+            lineRef={supplierArrivalLine?.name}
+            status={supplierArrival.statusSelect}
+            date={
+              supplierArrival.statusSelect === StockMove.status.Draft
+                ? supplierArrival.createdOn
+                : supplierArrival.statusSelect === StockMove.status.Planned
+                ? supplierArrival.estimatedDate
+                : supplierArrival.realDate
+            }
+          />
         }
       />
       <View style={styles.stockView}>
-        {supplierArrivalLine != null && (
-          <View style={styles.stateLine}>
-            <Text style={styles.text_secondary}>
-              {supplierArrivalLine?.name}
-            </Text>
-            {Number(supplierArrivalLine.qty) !==
-              Number(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Incomplete')}
-                color={Colors.cautionColor_light}
-              />
-            )}
-            {Number(supplierArrivalLine.qty) ===
-              Number(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Complete')}
-                color={Colors.primaryColor_light}
-              />
-            )}
-          </View>
-        )}
         <Card style={styles.cardProductInfo}>
           <Text>{product?.name}</Text>
         </Card>
@@ -151,13 +136,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 16,
     marginBottom: 5,
-  },
-  stateLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    marginVertical: '1%',
   },
   stockView: {
     marginTop: '2%',

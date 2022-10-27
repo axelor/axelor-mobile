@@ -1,12 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {
-  Badge,
-  PopUpOneButton,
-  Screen,
-  Text,
-  useThemeColor,
-} from '@aos-mobile/ui';
+import {PopUpOneButton, Screen, HeaderContainer} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
@@ -21,7 +15,6 @@ import {StockMoveHeader} from '../../components/organisms';
 const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
@@ -60,40 +53,25 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      <StockMoveHeader
-        reference={supplierArrival.stockMoveSeq}
-        status={supplierArrival.statusSelect}
-        date={
-          supplierArrival.statusSelect === StockMove.status.Draft
-            ? supplierArrival.createdOn
-            : supplierArrival.statusSelect === StockMove.status.Planned
-            ? supplierArrival.estimatedDate
-            : supplierArrival.realDate
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={supplierArrival.stockMoveSeq}
+            lineRef={supplierArrivalLine != null && supplierArrivalLine.name}
+            status={supplierArrival.statusSelect}
+            date={
+              supplierArrival.statusSelect === StockMove.status.Draft
+                ? supplierArrival.createdOn
+                : supplierArrival.statusSelect === StockMove.status.Planned
+                ? supplierArrival.estimatedDate
+                : supplierArrival.realDate
+            }
+          />
         }
       />
       <View style={styles.stockView}>
-        {supplierArrivalLine != null && (
-          <View style={styles.stateLine}>
-            <Text style={styles.text_secondary}>
-              {supplierArrivalLine?.name}
-            </Text>
-            {parseFloat(supplierArrivalLine.qty) !==
-              parseFloat(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Incomplete')}
-                color={Colors.cautionColor_light}
-              />
-            )}
-            {parseFloat(supplierArrivalLine.qty) ===
-              parseFloat(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Complete')}
-                color={Colors.primaryColor_light}
-              />
-            )}
-          </View>
-        )}
         <ScannerAutocompleteSearch
           objectList={productList}
           onChangeValue={item => handleProductSelection(item)}
@@ -117,16 +95,8 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  stateLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    marginVertical: '1%',
-  },
   stockView: {
     marginTop: '2%',
-    marginBottom: '50%',
   },
   text_secondary: {
     fontSize: 14,

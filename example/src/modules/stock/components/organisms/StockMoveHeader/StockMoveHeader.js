@@ -5,15 +5,24 @@ import {useTranslator} from '@aos-mobile/core';
 import {formatDate} from '@/modules/stock/utils/formatters';
 import StockMove from '@/modules/stock/types/stock-move';
 
-const StockMoveHeader = ({reference, status, date, availability}) => {
+const StockMoveHeader = ({reference, status, date, availability, lineRef}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
   return (
     <View style={styles.infoContainer}>
       <View style={styles.refContainer}>
+        {lineRef !== false && lineRef != null && (
+          <Text style={styles.text_important}>{lineRef}</Text>
+        )}
         {reference != null && (
-          <Text style={styles.text_important}>{reference}</Text>
+          <Text
+            style={
+              lineRef !== false && lineRef != null && lineRef !== undefined
+                ? styles.text_secondary
+                : styles.text_important
+            }>
+            {reference}
+          </Text>
         )}
         {date != null && (
           <Text style={styles.text_secondary}>

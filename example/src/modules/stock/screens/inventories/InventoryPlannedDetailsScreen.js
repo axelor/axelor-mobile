@@ -1,7 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {Button, EditableInput, Screen, Text} from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  Button,
+  EditableInput,
+  Screen,
+  Text,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   fetchInventoryById,
@@ -46,17 +52,37 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <Button title={I18n.t('Base_Start')} onPress={handleStartInventory} />
       }
       loading={loading || inventory == null}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View>
+            <InventoryHeader
+              reference={inventory?.inventorySeq}
+              status={inventory?.statusSelect}
+              date={inventory?.plannedStartDateT}
+              stockLocation={inventory?.stockLocation?.name}
+            />
+            <View style={styles.marginHorizontal}>
+              {inventory?.productFamily != null && (
+                <Text>{`${I18n.t('Stock_ProductFamily')} : ${
+                  inventory?.productFamily?.name
+                }`}</Text>
+              )}
+              {inventory?.productCategory != null && (
+                <Text>{`${I18n.t('Stock_ProductCategory')} : ${
+                  inventory?.productCategory?.name
+                }`}</Text>
+              )}
+            </View>
+          </View>
+        }
+      />
       <ScrollView>
-        <InventoryHeader
-          reference={inventory?.inventorySeq}
-          status={inventory?.statusSelect}
-          date={inventory?.plannedStartDateT}
-          stockLocation={inventory?.stockLocation?.name}
-        />
         {inventory?.fromRack && (
           <LocationsMoveCard
             fromStockLocation={inventory?.fromRack}
@@ -64,18 +90,6 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
             isLockerCard={true}
           />
         )}
-        <View style={styles.marginHorizontal}>
-          {inventory?.productFamily != null && (
-            <Text>{`${I18n.t('Stock_ProductFamily')} : ${
-              inventory?.productFamily?.name
-            }`}</Text>
-          )}
-          {inventory?.productCategory != null && (
-            <Text>{`${I18n.t('Stock_ProductCategory')} : ${
-              inventory?.productCategory?.name
-            }`}</Text>
-          )}
-        </View>
         <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
         <EditableInput
           defaultValue={inventory?.description}
@@ -91,7 +105,7 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   marginHorizontal: {
-    marginHorizontal: 16,
+    marginHorizontal: 24,
   },
   title: {
     marginHorizontal: 16,

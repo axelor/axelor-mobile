@@ -1,12 +1,18 @@
 import React, {useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Card, PopUpOneButton, Screen, Text} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
+import {
+  Card,
+  PopUpOneButton,
+  Screen,
+  Text,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -51,20 +57,27 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={customerDelivery.stockMoveSeq}
+            status={customerDelivery.statusSelect}
+            lineRef={customerDeliveryLine != null && customerDeliveryLine.name}
+            date={
+              customerDelivery.statusSelect === StockMove.status.Draft
+                ? customerDelivery.createdOn
+                : customerDelivery.statusSelect === StockMove.status.Planned
+                ? customerDelivery.estimatedDate
+                : customerDelivery.realDate
+            }
+            availability={customerDelivery.availableStatusSelect}
+          />
+        }
+      />
+
       <View style={styles.container}>
-        <StockMoveHeader
-          reference={customerDelivery.stockMoveSeq}
-          status={customerDelivery.statusSelect}
-          date={
-            customerDelivery.statusSelect === StockMove.status.Draft
-              ? customerDelivery.createdOn
-              : customerDelivery.statusSelect === StockMove.status.Planned
-              ? customerDelivery.estimatedDate
-              : customerDelivery.realDate
-          }
-          availability={customerDelivery.availableStatusSelect}
-        />
         <View style={styles.stockView}>
           <Card style={styles.cardProductInfo}>
             <Text>{product.name}</Text>

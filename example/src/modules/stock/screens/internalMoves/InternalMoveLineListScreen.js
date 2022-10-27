@@ -6,6 +6,7 @@ import {
   Screen,
   ScrollList,
   useThemeColor,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
@@ -94,39 +95,46 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   }, [internalMoveLineList, filterOnStatus]);
 
   return (
-    <Screen>
-      <StockMoveHeader
-        reference={internalMove.stockMoveSeq}
-        status={internalMove.statusSelect}
-        date={
-          internalMove.statusSelect === StockMove.status.Draft
-            ? internalMove.createdOn
-            : internalMove.statusSelect === StockMove.status.Planned
-            ? internalMove.estimatedDate
-            : internalMove.realDate
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={internalMove.stockMoveSeq}
+            status={internalMove.statusSelect}
+            date={
+              internalMove.statusSelect === StockMove.status.Draft
+                ? internalMove.createdOn
+                : internalMove.statusSelect === StockMove.status.Planned
+                ? internalMove.estimatedDate
+                : internalMove.realDate
+            }
+            availability={internalMove.availableStatusSelect}
+          />
         }
-        availability={internalMove.availableStatusSelect}
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={doneStatus}
+              title={I18n.t('Stock_Done')}
+              onPress={handleDoneStatus}
+              selectedColor={{
+                backgroundColor: Colors.primaryColor_light,
+                borderColor: Colors.primaryColor,
+              }}
+            />
+            <Chip
+              selected={undoneStatus}
+              title={I18n.t('Stock_NotDone')}
+              onPress={handleUndoneStatus}
+              selectedColor={{
+                backgroundColor: Colors.cautionColor_light,
+                borderColor: Colors.cautionColor,
+              }}
+            />
+          </ChipSelect>
+        }
       />
-      <ChipSelect>
-        <Chip
-          selected={doneStatus}
-          title={I18n.t('Stock_Done')}
-          onPress={handleDoneStatus}
-          selectedColor={{
-            backgroundColor: Colors.primaryColor_light,
-            borderColor: Colors.primaryColor,
-          }}
-        />
-        <Chip
-          selected={undoneStatus}
-          title={I18n.t('Stock_NotDone')}
-          onPress={handleUndoneStatus}
-          selectedColor={{
-            backgroundColor: Colors.cautionColor_light,
-            borderColor: Colors.cautionColor,
-          }}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loadingIMLines}
         data={filteredList}

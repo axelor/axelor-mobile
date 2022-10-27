@@ -1,13 +1,12 @@
 import React, {useCallback, useState} from 'react';
-import {PopUpOneButton, Screen} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
+import {PopUpOneButton, Screen, HeaderContainer} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {InventoryHeader} from '../../components/organisms';
@@ -66,24 +65,22 @@ const InventorySelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
-      <InventoryHeader
-        reference={inventory.inventorySeq}
-        status={inventory.statusSelect}
-        date={
-          inventory.statusSelect === Inventory.status.Planned
-            ? inventory.plannedStartDateT
-            : inventory.plannedEndDateT
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <InventoryHeader
+            reference={inventory.inventorySeq}
+            status={inventory.statusSelect}
+            date={
+              inventory.statusSelect === Inventory.status.Planned
+                ? inventory.plannedStartDateT
+                : inventory.plannedEndDateT
+            }
+            stockLocation={inventory.stockLocation?.name}
+          />
         }
-        stockLocation={inventory.stockLocation?.name}
       />
-      {inventory.fromRack && (
-        <LocationsMoveCard
-          fromStockLocation={inventory.fromRack}
-          toStockLocation={inventory.toRack}
-          isLockerCard={true}
-        />
-      )}
       <ScannerAutocompleteSearch
         objectList={productList}
         onChangeValue={item => handleProductSelection(item)}

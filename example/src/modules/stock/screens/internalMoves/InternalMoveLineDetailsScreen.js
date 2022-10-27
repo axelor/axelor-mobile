@@ -1,22 +1,17 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, ActivityIndicator} from 'react-native';
 import {
   Button,
   Card,
   Input,
   Picker,
   Screen,
+  ScrollView,
   Text,
   useThemeColor,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   QuantityCard,
   ProductCardInfo,
@@ -263,6 +258,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <>
           {!saveStatus && route.params.internalMove == null && (
@@ -286,45 +282,41 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         </>
       }
       loading={loading || loadingProductFromId}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={route.params.internalMove?.stockMoveSeq}
+            status={status}
+            date={
+              route.params.internalMove?.statusSelect === StockMove.status.Draft
+                ? route.params.internalMove?.createdOn
+                : route.params.internalMove?.statusSelect ===
+                  StockMove.status.Planned
+                ? route.params.internalMove?.estimatedDate
+                : route.params.internalMove?.realDate
+            }
+            availability={availability}
+          />
+        }
+      />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
         <ScrollView>
-          <View>
-            <StockMoveHeader
-              reference={route.params.internalMove?.stockMoveSeq}
-              status={status}
-              date={
-                route.params.internalMove?.statusSelect ===
-                StockMove.status.Draft
-                  ? route.params.internalMove?.createdOn
-                  : route.params.internalMove?.statusSelect ===
-                    StockMove.status.Planned
-                  ? route.params.internalMove?.estimatedDate
-                  : route.params.internalMove?.realDate
-              }
-              availability={availability}
-            />
-            <View style={styles.content}>
-              <LocationsMoveCard
-                fromStockLocation={originalStockLocation.name}
-                toStockLocation={destinationStockLocation.name}
-              />
-            </View>
-            <ProductCardInfo
-              name={stockProduct.name}
-              code={stockProduct.code}
-              pictureId={stockProduct.picture?.id}
-              trackingNumber={
-                stockProduct.trackingNumberConfiguration == null ||
-                trackingNumber == null
-                  ? null
-                  : trackingNumber.trackingNumberSeq
-              }
-              locker={null}
-              onPress={handleShowProduct}
-            />
-          </View>
+          <ProductCardInfo
+            name={stockProduct.name}
+            code={stockProduct.code}
+            pictureId={stockProduct.picture?.id}
+            trackingNumber={
+              stockProduct.trackingNumberConfiguration == null ||
+              trackingNumber == null
+                ? null
+                : trackingNumber.trackingNumberSeq
+            }
+            locker={null}
+            onPress={handleShowProduct}
+          />
           <QuantityCard
             labelQty={I18n.t('Stock_MovedQty')}
             defaultValue={parseFloat(movedQty).toFixed(2)}
@@ -390,6 +382,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginHorizontal: 32,
+    marginTop: '3%',
     marginBottom: '3%',
     flexDirection: 'row',
     justifyContent: 'flex-start',

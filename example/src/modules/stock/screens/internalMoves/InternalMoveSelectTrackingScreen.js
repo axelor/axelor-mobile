@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   Card,
   ClearableCard,
+  HeaderContainer,
   PopUpOneButton,
   Screen,
   Text,
@@ -16,7 +17,6 @@ import {
 import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
-import {LocationsMoveCard} from '../../components/molecules';
 import {StockMoveHeader} from '../../components/organisms';
 
 const trackingNumberScanKey = 'tracking-number_internal-move-new';
@@ -80,27 +80,26 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
   );
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop={internalMove != null ? true : false}>
       {internalMove != null ? (
         <View>
-          <StockMoveHeader
-            reference={internalMove.stockMoveSeq}
-            status={internalMove.statusSelect}
-            date={
-              internalMove.statusSelect === StockMove.status.Draft
-                ? internalMove.createdOn
-                : internalMove.statusSelect === StockMove.status.Planned
-                ? internalMove.estimatedDate
-                : internalMove.realDate
+          <HeaderContainer
+            expandableFilter={false}
+            fixedItems={
+              <StockMoveHeader
+                reference={internalMove.stockMoveSeq}
+                status={internalMove.statusSelect}
+                date={
+                  internalMove.statusSelect === StockMove.status.Draft
+                    ? internalMove.createdOn
+                    : internalMove.statusSelect === StockMove.status.Planned
+                    ? internalMove.estimatedDate
+                    : internalMove.realDate
+                }
+                availability={internalMove.availableStatusSelect}
+              />
             }
-            availability={internalMove.availableStatusSelect}
           />
-          <View style={styles.content}>
-            <LocationsMoveCard
-              fromStockLocation={internalMove.fromStockLocation.name}
-              toStockLocation={internalMove.toStockLocation.name}
-            />
-          </View>
           <Card style={styles.cardProductInfo}>
             <Text>{internalMoveLine.product?.fullName}</Text>
           </Card>
@@ -143,12 +142,6 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  content: {
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
   cardProductInfo: {
     marginVertical: '2%',
     marginHorizontal: 16,

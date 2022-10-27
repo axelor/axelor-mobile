@@ -1,6 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card, PopUpOneButton, Screen, Text} from '@aos-mobile/ui';
+import {
+  Card,
+  HeaderContainer,
+  PopUpOneButton,
+  Screen,
+  Text,
+} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
@@ -8,7 +14,6 @@ import {
   useTranslator,
 } from '@aos-mobile/core';
 import Inventory from '@/modules/stock/types/inventory';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
 import {filterTrackingNumber} from '../../features/trackingNumberSlice';
 import {InventoryHeader} from '../../components/organisms';
@@ -61,24 +66,22 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
   );
 
   return (
-    <Screen>
-      <InventoryHeader
-        reference={inventory.inventorySeq}
-        status={inventory.statusSelect}
-        date={
-          inventory.statusSelect === Inventory.status.Planned
-            ? inventory.plannedStartDateT
-            : inventory.plannedEndDateT
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <InventoryHeader
+            reference={inventory.inventorySeq}
+            status={inventory.statusSelect}
+            date={
+              inventory.statusSelect === Inventory.status.Planned
+                ? inventory.plannedStartDateT
+                : inventory.plannedEndDateT
+            }
+            stockLocation={inventory.stockLocation?.name}
+          />
         }
-        stockLocation={inventory.stockLocation?.name}
       />
-      {inventory.fromRack && (
-        <LocationsMoveCard
-          fromStockLocation={inventory.fromRack}
-          toStockLocation={inventory.toRack}
-          isLockerCard={true}
-        />
-      )}
       <Card style={styles.cardProductInfo}>
         <Text>{inventoryLine.product?.fullName}</Text>
       </Card>

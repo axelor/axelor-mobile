@@ -9,6 +9,7 @@ import {
   ScrollView,
   Text,
   useThemeColor,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
@@ -127,6 +128,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <>
           {supplierArrivalLine != null &&
@@ -143,41 +145,24 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         </>
       }
       loading={loadingProductFromId || loadingSupplierCatalog}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={supplierArrival.stockMoveSeq}
+            status={supplierArrival.statusSelect}
+            lineRef={supplierArrivalLine != null && supplierArrivalLine.name}
+            date={
+              supplierArrival.statusSelect === StockMove.status.Draft
+                ? supplierArrival.createdOn
+                : supplierArrival.statusSelect === StockMove.status.Planned
+                ? supplierArrival.estimatedDate
+                : supplierArrival.realDate
+            }
+          />
+        }
+      />
       <ScrollView>
-        <StockMoveHeader
-          reference={supplierArrival.stockMoveSeq}
-          status={supplierArrival.statusSelect}
-          date={
-            supplierArrival.statusSelect === StockMove.status.Draft
-              ? supplierArrival.createdOn
-              : supplierArrival.statusSelect === StockMove.status.Planned
-              ? supplierArrival.estimatedDate
-              : supplierArrival.realDate
-          }
-        />
-        <View style={styles.stockView}>
-          {supplierArrivalLine != null && (
-            <View style={styles.stateLine}>
-              <Text style={styles.text_secondary}>
-                {supplierArrivalLine?.name}
-              </Text>
-              {Number(supplierArrivalLine.qty) !==
-                Number(supplierArrivalLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Incomplete')}
-                  color={Colors.cautionColor_light}
-                />
-              )}
-              {Number(supplierArrivalLine.qty) ===
-                Number(supplierArrivalLine.realQty) && (
-                <Badge
-                  title={I18n.t('Stock_Status_Complete')}
-                  color={Colors.primaryColor_light}
-                />
-              )}
-            </View>
-          )}
-        </View>
         <ProductCardInfo
           onPress={handleShowProduct}
           pictureId={product?.picture?.id}
@@ -207,15 +192,35 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           defaultValue={parseFloat(realQty).toFixed(2)}
           onValueChange={handleQtyChange}
           editable={supplierArrival.statusSelect !== StockMove.status.Realized}>
-          <Text style={styles.text}>
-            {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
-              supplierArrivalLine != null ? supplierArrivalLine.qty : 0,
-            ).toFixed(2)} ${
-              supplierArrivalLine != null
-                ? supplierArrivalLine?.unit?.name
-                : product?.unit?.name
-            }`}
-          </Text>
+          <View style={styles.headerQuantityCard}>
+            <Text style={styles.text}>
+              {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
+                supplierArrivalLine != null ? supplierArrivalLine.qty : 0,
+              ).toFixed(2)} ${
+                supplierArrivalLine != null
+                  ? supplierArrivalLine?.unit?.name
+                  : product?.unit?.name
+              }`}
+            </Text>
+            {supplierArrivalLine != null && (
+              <View>
+                {parseFloat(supplierArrivalLine.qty) !==
+                  parseFloat(supplierArrivalLine.realQty) && (
+                  <Badge
+                    title={I18n.t('Stock_Status_Incomplete')}
+                    color={Colors.cautionColor_light}
+                  />
+                )}
+                {parseFloat(supplierArrivalLine.qty) ===
+                  parseFloat(supplierArrivalLine.realQty) && (
+                  <Badge
+                    title={I18n.t('Stock_Status_Complete')}
+                    color={Colors.primaryColor_light}
+                  />
+                )}
+              </View>
+            )}
+          </View>
         </QuantityCard>
         <Picker
           title={I18n.t('Stock_Conformity')}
@@ -257,6 +262,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 32,
     marginVertical: '1%',
+  },
+  headerQuantityCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   stockView: {
     marginTop: '2%',

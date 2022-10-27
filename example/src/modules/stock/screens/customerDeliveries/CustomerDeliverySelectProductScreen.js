@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {PopUpOneButton, Screen} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
+import {PopUpOneButton, Screen, HeaderContainer} from '@aos-mobile/ui';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import StockMove from '@/modules/stock/types/stock-move';
@@ -53,20 +53,26 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={customerDelivery.stockMoveSeq}
+            status={customerDelivery.statusSelect}
+            lineRef={customerDeliveryLine != null && customerDeliveryLine.name}
+            date={
+              customerDelivery.statusSelect === StockMove.status.Draft
+                ? customerDelivery.createdOn
+                : customerDelivery.statusSelect === StockMove.status.Planned
+                ? customerDelivery.estimatedDate
+                : customerDelivery.realDate
+            }
+            availability={customerDelivery.availableStatusSelect}
+          />
+        }
+      />
       <View style={styles.container}>
-        <StockMoveHeader
-          reference={customerDelivery.stockMoveSeq}
-          status={customerDelivery.statusSelect}
-          date={
-            customerDelivery.statusSelect === StockMove.status.Draft
-              ? customerDelivery.createdOn
-              : customerDelivery.statusSelect === StockMove.status.Planned
-              ? customerDelivery.estimatedDate
-              : customerDelivery.realDate
-          }
-          availability={customerDelivery.availableStatusSelect}
-        />
         <View style={styles.stockView}>
           <ScannerAutocompleteSearch
             objectList={productList}

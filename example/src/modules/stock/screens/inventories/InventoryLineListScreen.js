@@ -1,16 +1,15 @@
 import React, {useCallback, useState, useEffect} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {
   Chip,
   ChipSelect,
   Screen,
   ScrollList,
-  Text,
   useThemeColor,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import Inventory from '@/modules/stock/types/inventory';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {fetchInventoryLines} from '@/modules/stock/features/inventoryLineSlice';
 import {
   InventoryLineCard,
@@ -105,72 +104,59 @@ const InventoryLineListScreen = ({route, navigation}) => {
   }, [inventoryLineList, filterOnStatus]);
 
   return (
-    <Screen>
-      <InventoryHeader
-        reference={inventory.inventorySeq}
-        status={inventory.statusSelect}
-        date={
-          inventory.statusSelect === Inventory.status.Planned
-            ? inventory.plannedStartDateT
-            : inventory.plannedEndDateT
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <InventoryHeader
+            reference={inventory.inventorySeq}
+            status={inventory.statusSelect}
+            date={
+              inventory.statusSelect === Inventory.status.Planned
+                ? inventory.plannedStartDateT
+                : inventory.plannedEndDateT
+            }
+            stockLocation={inventory.stockLocation?.name}
+          />
         }
-        stockLocation={inventory.stockLocation?.name}
+        chipComponent={
+          <ChipSelect>
+            <Chip
+              selected={doneStatus}
+              title={I18n.t('Stock_Complete')}
+              onPress={handleDoneStatus}
+              selectedColor={{
+                backgroundColor: Colors.primaryColor_light,
+                borderColor: Colors.primaryColor,
+              }}
+              marginHorizontal={3}
+              width={Dimensions.get('window').width * 0.3}
+            />
+            <Chip
+              selected={diffStatus}
+              title={I18n.t('Stock_Difference')}
+              onPress={handleDiffStatus}
+              selectedColor={{
+                backgroundColor: Colors.cautionColor_light,
+                borderColor: Colors.cautionColor,
+              }}
+              marginHorizontal={3}
+              width={Dimensions.get('window').width * 0.3}
+            />
+            <Chip
+              selected={undoneStatus}
+              title={I18n.t('Stock_NotDone')}
+              onPress={handleUndoneStatus}
+              selectedColor={{
+                backgroundColor: Colors.secondaryColor_light,
+                borderColor: Colors.secondaryColor,
+              }}
+              marginHorizontal={3}
+              width={Dimensions.get('window').width * 0.3}
+            />
+          </ChipSelect>
+        }
       />
-      {inventory.fromRack && (
-        <LocationsMoveCard
-          fromStockLocation={inventory.fromRack}
-          toStockLocation={inventory.toRack}
-          isLockerCard={true}
-          style={styles.moveCard}
-        />
-      )}
-      <View style={styles.detailsCard}>
-        {inventory.productFamily != null && (
-          <Text>{`${I18n.t('Stock_ProductFamily')} : ${
-            inventory.productFamily?.name
-          }`}</Text>
-        )}
-        {inventory.productCategory != null && (
-          <Text>{`${I18n.t('Stock_ProductCategory')} : ${
-            inventory.productCategory?.name
-          }`}</Text>
-        )}
-      </View>
-      <ChipSelect>
-        <Chip
-          selected={doneStatus}
-          title={I18n.t('Stock_Complete')}
-          onPress={handleDoneStatus}
-          selectedColor={{
-            backgroundColor: Colors.primaryColor_light,
-            borderColor: Colors.primaryColor,
-          }}
-          marginHorizontal={3}
-          width={Dimensions.get('window').width * 0.3}
-        />
-        <Chip
-          selected={diffStatus}
-          title={I18n.t('Stock_Difference')}
-          onPress={handleDiffStatus}
-          selectedColor={{
-            backgroundColor: Colors.cautionColor_light,
-            borderColor: Colors.cautionColor,
-          }}
-          marginHorizontal={3}
-          width={Dimensions.get('window').width * 0.3}
-        />
-        <Chip
-          selected={undoneStatus}
-          title={I18n.t('Stock_NotDone')}
-          onPress={handleUndoneStatus}
-          selectedColor={{
-            backgroundColor: Colors.secondaryColor_light,
-            borderColor: Colors.secondaryColor,
-          }}
-          marginHorizontal={3}
-          width={Dimensions.get('window').width * 0.3}
-        />
-      </ChipSelect>
       <ScrollList
         loadingList={loadingInventoryLines}
         data={filteredList}

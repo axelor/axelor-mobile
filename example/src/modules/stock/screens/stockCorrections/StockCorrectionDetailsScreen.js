@@ -9,6 +9,7 @@ import {
   ScrollView,
   Text,
   useThemeColor,
+  HeaderContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
@@ -248,6 +249,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <>
           {saveStatus ? null : (
@@ -263,6 +265,24 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
         </>
       }
       loading={loadingProduct}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View style={styles.content}>
+            <View style={styles.textContainer}>
+              <Text style={styles.text_important}>{stockLocation?.name}</Text>
+            </View>
+            {status && (
+              <Badge
+                color={
+                  StockCorrection.getStatusColor(status, Colors).backgroundColor
+                }
+                title={StockCorrection.getStatus(status, I18n)}
+              />
+            )}
+          </View>
+        }
+      />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -275,17 +295,6 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             onPress={() => setPopUp(!popUp)}
           />
           <View>
-            <View style={styles.content}>
-              <View style={styles.textContainer}>
-                <Text style={styles.text_important}>{stockLocation?.name}</Text>
-              </View>
-              <Badge
-                color={
-                  StockCorrection.getStatusColor(status, Colors).backgroundColor
-                }
-                title={StockCorrection.getStatus(status, I18n)}
-              />
-            </View>
             <ProductCardInfo
               name={stockProduct?.name}
               code={stockProduct?.code}
@@ -329,28 +338,12 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    height: '86%',
-  },
   content: {
     marginHorizontal: 32,
     marginBottom: '3%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  contentProduct: {
-    width: '90%',
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    height: 60,
-    width: 60,
-    marginRight: 6,
   },
   textContainer: {
     flex: 2,
@@ -360,16 +353,6 @@ const styles = StyleSheet.create({
   text_important: {
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 14,
-  },
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  reasonTitle: {
-    marginHorizontal: 20,
   },
   picker_empty: {
     color: 'red',

@@ -5,8 +5,9 @@ import {
   PopUpOneButton,
   Screen,
   ScrollView,
-  Text,
   ViewAllContainer,
+  HeaderContainer,
+  LabelText,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {LocationsMoveCard} from '@/modules/stock/components/molecules';
@@ -86,39 +87,47 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         supplierArrival.statusSelect !== StockMove.status.Realized && (
           <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />
         )
       }
       loading={loadingSALines}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View>
+            <StockMoveHeader
+              reference={supplierArrival.stockMoveSeq}
+              status={supplierArrival.statusSelect}
+              date={
+                supplierArrival.statusSelect === StockMove.status.Draft
+                  ? supplierArrival.createdOn
+                  : supplierArrival.statusSelect === StockMove.status.Planned
+                  ? supplierArrival.estimatedDate
+                  : supplierArrival.realDate
+              }
+            />
+            <View style={styles.clientContainer}>
+              <LabelText
+                iconName="user"
+                title={supplierArrival.partner?.fullName}
+              />
+              {supplierArrival.origin == null ? null : (
+                <LabelText iconName="tag" title={supplierArrival.origin} />
+              )}
+              {supplierArrival.supplierShipmentRef == null ? null : (
+                <LabelText
+                  iconName="user-tag"
+                  title={supplierArrival.supplierShipmentRef}
+                />
+              )}
+            </View>
+          </View>
+        }
+      />
       <ScrollView>
-        <StockMoveHeader
-          reference={supplierArrival.stockMoveSeq}
-          status={supplierArrival.statusSelect}
-          date={
-            supplierArrival.statusSelect === StockMove.status.Draft
-              ? supplierArrival.createdOn
-              : supplierArrival.statusSelect === StockMove.status.Planned
-              ? supplierArrival.estimatedDate
-              : supplierArrival.realDate
-          }
-        />
-        <View style={styles.clientContainer}>
-          <Text>{`${I18n.t('Stock_Supplier')} : ${
-            supplierArrival.partner?.fullName
-          }`}</Text>
-          {supplierArrival.origin == null ? null : (
-            <Text>{`${I18n.t('Stock_Origin')} : ${
-              supplierArrival.origin
-            }`}</Text>
-          )}
-          {supplierArrival.supplierShipmentRef == null ? null : (
-            <Text>{`${I18n.t('Stock_SupplierShipmentRef')} : ${
-              supplierArrival.supplierShipmentRef
-            }`}</Text>
-          )}
-        </View>
         <LocationsMoveCard
           fromStockLocation={supplierArrival.fromAddress?.fullName}
           touchableFrom={true}
@@ -162,7 +171,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   clientContainer: {
-    marginHorizontal: 16,
+    marginHorizontal: 24,
     marginVertical: 6,
     flexDirection: 'column',
   },

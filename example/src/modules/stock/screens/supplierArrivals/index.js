@@ -17,25 +17,43 @@ export default {
   SupplierArrivalDetailsScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   SupplierArrivalLineDetailScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalLineDetailScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   SupplierArrivalLineListScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalLineListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   SupplierArrivalSelectProductScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalSelectProductScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   SupplierArrivalSelectTrackingScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalSelectTrackingScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   SupplierArrivalAddTrackingScreen: {
     title: t => t('Stock_SupplierArrival'),
     component: SupplierArrivalAddTrackingScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };

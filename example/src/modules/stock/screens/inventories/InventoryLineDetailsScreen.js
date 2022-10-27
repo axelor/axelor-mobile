@@ -1,9 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
-import {Button, EditableInput, Screen, Text} from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  Button,
+  EditableInput,
+  Screen,
+  ScrollView,
+  Text,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import Inventory from '@/modules/stock/types/inventory';
-import {LocationsMoveCard} from '@/modules/stock/components/molecules';
 import {
   ProductCardInfo,
   QuantityCard,
@@ -86,6 +91,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         inventoryLine == null ? (
           <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />
@@ -101,25 +107,22 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
         ) : null
       }
       loading={loadingProductFromId}>
-      <ScrollView>
-        <InventoryHeader
-          reference={inventory.inventorySeq}
-          status={inventory.statusSelect}
-          date={
-            inventory.statusSelect === Inventory.status.Planned
-              ? inventory.plannedStartDateT
-              : inventory.plannedEndDateT
-          }
-          stockLocation={inventory.stockLocation?.name}
-        />
-        {inventory.fromRack && (
-          <LocationsMoveCard
-            style={styles.moveCard}
-            isLockerCard={true}
-            fromStockLocation={inventory.fromRack}
-            toStockLocation={inventory.toRack}
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <InventoryHeader
+            reference={inventory.inventorySeq}
+            status={inventory.statusSelect}
+            date={
+              inventory.statusSelect === Inventory.status.Planned
+                ? inventory.plannedStartDateT
+                : inventory.plannedEndDateT
+            }
+            stockLocation={inventory.stockLocation?.name}
           />
-        )}
+        }
+      />
+      <ScrollView>
         <ProductCardInfo
           onPress={handleShowProduct}
           pictureId={productFromId?.picture?.id}
@@ -134,11 +137,11 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           onValueChange={setRealQty}
           editable={inventory.statusSelect !== Inventory.status.Validated}>
           {inventoryLine == null ? (
-            <Text style={styles.text}>
+            <Text>
               {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}
             </Text>
           ) : (
-            <Text style={styles.text}>
+            <Text>
               {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
                 inventoryLine.currentQty,
               ).toFixed(2)} ${inventoryLine.unit.name}`}
@@ -164,11 +167,5 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  moveCard: {
-    marginVertical: 10,
-  },
-});
 
 export default InventoryLineDetailsScreen;

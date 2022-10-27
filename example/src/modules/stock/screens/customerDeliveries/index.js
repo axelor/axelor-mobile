@@ -16,21 +16,36 @@ export default {
   CustomerDeliveryDetailScreen: {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliveryDetailScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   CustomerDeliveryLineDetailScreen: {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliveryLineDetailScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   CustomerDeliveryLineListScreen: {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliveryLineListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   CustomerDeliverySelectProductScreen: {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliverySelectProductScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   CustomerDeliverySelectTrackingScreen: {
     title: t => t('Stock_CustomerDelivery'),
     component: CustomerDeliverySelectTrackingScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };

@@ -1,16 +1,20 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ClearableCard, PopUpOneButton, Screen} from '@aos-mobile/ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
+import {
+  ClearableCard,
+  PopUpOneButton,
+  Screen,
+  HeaderContainer,
+} from '@aos-mobile/ui';
 import {searchProducts} from '@/modules/stock/features/productSlice';
 import {displayItemName} from '@/modules/stock/utils/displayers';
 import StockMove from '../../types/stock-move';
-import {LocationsMoveCard} from '../../components/molecules';
 import {StockMoveHeader} from '../../components/organisms';
 
 const productScanKey = 'product_internal-move-select';
@@ -81,28 +85,28 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
   );
 
   return (
-    <Screen>
-      {internalMove != null ? (
-        <View>
-          <StockMoveHeader
-            reference={internalMove.stockMoveSeq}
-            status={internalMove.statusSelect}
-            date={
-              internalMove.statusSelect === StockMove.status.Draft
-                ? internalMove.createdOn
-                : internalMove.statusSelect === StockMove.status.Planned
-                ? internalMove.estimatedDate
-                : internalMove.realDate
-            }
-            availability={internalMove.availableStatusSelect}
-          />
-          <View style={styles.content}>
-            <LocationsMoveCard
-              fromStockLocation={internalMove.fromStockLocation.name}
-              toStockLocation={internalMove.toStockLocation.name}
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          internalMove != null ? (
+            <StockMoveHeader
+              reference={internalMove.stockMoveSeq}
+              status={internalMove.statusSelect}
+              date={
+                internalMove.statusSelect === StockMove.status.Draft
+                  ? internalMove.createdOn
+                  : internalMove.statusSelect === StockMove.status.Planned
+                  ? internalMove.estimatedDate
+                  : internalMove.realDate
+              }
+              availability={internalMove.availableStatusSelect}
             />
-          </View>
-        </View>
+          ) : null
+        }
+      />
+      {internalMove != null ? (
+        <View style={styles.content} />
       ) : (
         <View>
           <ClearableCard
@@ -138,10 +142,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   content: {
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    marginVertical: '1%',
   },
 });
 
