@@ -18,9 +18,11 @@ import ManufacturingOrder from '@/modules/manufacturing/types/manufacturing-orde
 import {fetchManufacturingOrders} from '@/modules/manufacturing/features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '@/modules/manufacturing/components/organisms';
 import {displayManufOrderSeq} from '@/modules/manufacturing/utils/displayers';
-import {searchProducts} from '@/modules/stock/features/productSlice';
-import {displayItemName} from '@/modules/stock/utils/displayers';
-import filterList from '@/modules/stock/utils/filter-list';
+import {
+  displayItemName,
+  filterList,
+  searchProducts,
+} from '@aos-mobile/app-stock';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';

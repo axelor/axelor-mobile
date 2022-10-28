@@ -1,0 +1,112 @@
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Badge, Card, Text, useThemeColor} from '@aos-mobile/ui';
+import {AOSImage, useTranslator} from '@aos-mobile/core';
+import Product from '../../../types/product';
+
+interface ProductCharacteristicsProps {
+  style?: any;
+  pictureId: number | null | undefined;
+  onPressImage: () => void;
+  name: string;
+  code: string;
+  category: string;
+  procurMethod: string;
+  prototype: boolean;
+  unrenewed: boolean;
+}
+
+const ProductCharacteristics = ({
+  style,
+  pictureId,
+  onPressImage,
+  name,
+  code,
+  category,
+  procurMethod,
+  prototype,
+  unrenewed,
+}: ProductCharacteristicsProps) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  return (
+    <Card style={[styles.container, style]}>
+      <View style={styles.content}>
+        <TouchableOpacity onPress={onPressImage}>
+          <AOSImage
+            generalStyle={styles.imageStyle}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            metaFileId={pictureId}
+            defaultIconSize={120}
+          />
+        </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.code}>{code}</Text>
+        </View>
+      </View>
+      <View style={styles.states}>
+        {category && (
+          <Badge color={Colors.primaryColor_light} title={category} />
+        )}
+        {procurMethod && (
+          <Badge
+            color={Colors.plannedColor_light}
+            title={Product.getProcurementMethod(procurMethod, I18n)}
+          />
+        )}
+        {prototype && (
+          <Badge
+            color={Colors.priorityColor_light}
+            title={I18n.t('Stock_Prototype')}
+          />
+        )}
+        {unrenewed && (
+          <Badge
+            color={Colors.cautionColor_light}
+            title={I18n.t('Stock_Unrenewed')}
+          />
+        )}
+      </View>
+    </Card>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: null,
+  },
+  content: {
+    flexDirection: 'row',
+  },
+  states: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  imageSize: {
+    height: 120,
+    width: 120,
+  },
+  imageStyle: {
+    marginRight: 32,
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  code: {
+    fontSize: 14,
+  },
+});
+
+export default ProductCharacteristics;

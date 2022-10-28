@@ -7,8 +7,7 @@ import {
   useTranslator,
 } from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
-import {searchProducts} from '@/modules/stock/features/productSlice';
-import {displayItemName} from '@/modules/stock/utils/displayers';
+import {displayItemName, searchProducts} from '@aos-mobile/app-stock';
 
 const productScanKey = 'product_manufacturing-order-produced-product-select';
 

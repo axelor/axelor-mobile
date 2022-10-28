@@ -60,23 +60,25 @@ const SelectionContainer = ({
 
   return (
     <View style={styles.flatListContainer}>
-      {objectList.slice(0, 5).map((item, index) => (
-        <View key={'item' + index}>
-          <SelectionItem
-            key={item?.id.toString()}
-            content={displayValue(item)}
-            onPress={() => handleSelect(item)}
-          />
-          <View
-            key={'border' + index}
-            style={
-              index + 1 === objectList.length || index + 1 === 5
-                ? null
-                : styles.border
-            }
-          />
-        </View>
-      ))}
+      {objectList != null &&
+        objectList.length > 0 &&
+        objectList.slice(0, 5).map((item, index) => (
+          <View key={'item' + index}>
+            <SelectionItem
+              key={item?.id.toString()}
+              content={displayValue(item)}
+              onPress={() => handleSelect(item)}
+            />
+            <View
+              key={'border' + index}
+              style={
+                index + 1 === objectList.length || index + 1 === 5
+                  ? null
+                  : styles.border
+              }
+            />
+          </View>
+        ))}
     </View>
   );
 };

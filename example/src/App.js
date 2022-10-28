@@ -1,6 +1,6 @@
 import React from 'react';
 import {Application} from '@aos-mobile/core';
-import StockModule from '@/modules/stock';
+import {StockModule} from '@aos-mobile/app-stock';
 import AuthModule from '@/modules/auth';
 import ManufacturingModule from '@/modules/manufacturing';
 import * as rootReducers from '@/features';

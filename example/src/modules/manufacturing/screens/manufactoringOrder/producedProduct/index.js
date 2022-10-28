@@ -5,28 +5,28 @@ import ProducedProductSelectTrackingScreen from './ProducedProductSelectTracking
 
 export default {
   ProducedProductListScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ProducedProductListScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProducedProductDetailsScreen: {
-    title: t => t('Manufacturing_ProducedProduct'),
+    title: 'Manufacturing_ProducedProduct',
     component: ProducedProductDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProducedProductSelectProductScreen: {
-    title: t => t('Manufacturing_ProducedProduct'),
+    title: 'Manufacturing_ProducedProduct',
     component: ProducedProductSelectProductScreen,
     options: {
       shadedHeader: false,
     },
   },
   ProducedProductSelectTrackingScreen: {
-    title: t => t('Manufacturing_ProducedProduct'),
+    title: 'Manufacturing_ProducedProduct',
     component: ProducedProductSelectTrackingScreen,
     options: {
       shadedHeader: false,

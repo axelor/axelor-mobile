@@ -12,11 +12,11 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
 import {
+  fetchProductWithId,
+  fetchUnit,
   ProductCardInfo,
   QuantityCard,
-} from '@/modules/stock/components/organisms';
-import {fetchUnit} from '@/modules/stock/features/unitSlice';
-import {fetchProductWithId} from '@/modules/stock/features/productSlice';
+} from '@aos-mobile/app-stock';
 import ManufacturingOrder from '@/modules/manufacturing/types/manufacturing-order';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {

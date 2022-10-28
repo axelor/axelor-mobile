@@ -1,4 +1,4 @@
-import {formatDate} from '@/modules/stock/utils/formatters';
+import {formatDate} from '@aos-mobile/core';
 
 const NB_SECOND_IN_MINUTES = 60;
 const NB_MINUTES_IN_HOURS = 60;

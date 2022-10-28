@@ -9,10 +9,10 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
 import {
+  fetchProductWithId,
   QuantityCard,
   ProductCardInfo,
-} from '@/modules/stock/components/organisms';
-import {fetchProductWithId} from '@/modules/stock/features/productSlice';
+} from '@aos-mobile/app-stock';
 
 const ProducedProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();

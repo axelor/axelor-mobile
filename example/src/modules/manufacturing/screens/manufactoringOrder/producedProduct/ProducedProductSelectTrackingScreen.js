@@ -16,8 +16,10 @@ import {
   useTranslator,
 } from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '@/modules/manufacturing/components/organisms';
-import {displayItemTrackingNumber} from '@/modules/stock/utils/displayers';
-import {filterTrackingNumber} from '@/modules/stock/features/trackingNumberSlice';
+import {
+  displayItemTrackingNumber,
+  filterTrackingNumber,
+} from '@aos-mobile/app-stock';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-produced-product-select';

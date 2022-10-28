@@ -6,35 +6,35 @@ import ConsumedProductSelectTrackingScreen from './ConsumedProductSelectTracking
 
 export default {
   ConsumedProductListScreen: {
-    title: t => t('Manufacturing_ManufacturingOrder'),
+    title: 'Manufacturing_ManufacturingOrder',
     component: ConsumedProductListScreen,
     options: {
       shadedHeader: false,
     },
   },
   ConsumedProductDetailsScreen: {
-    title: t => t('Manufacturing_ConsumedProduct'),
+    title: 'Manufacturing_ConsumedProduct',
     component: ConsumedProductDetailsScreen,
     options: {
       shadedHeader: false,
     },
   },
   ConsumedProductSelectProductScreen: {
-    title: t => t('Manufacturing_ConsumedProduct'),
+    title: 'Manufacturing_ConsumedProduct',
     component: ConsumedProductSelectProductScreen,
     options: {
       shadedHeader: false,
     },
   },
   ConsumedProductSelectTrackingScreen: {
-    title: t => t('Manufacturing_ConsumedProduct'),
+    title: 'Manufacturing_ConsumedProduct',
     component: ConsumedProductSelectTrackingScreen,
     options: {
       shadedHeader: false,
     },
   },
   ChildrenManufOrderListScreen: {
-    title: t => t('Manufacturing_ConsumedProduct'),
+    title: 'Manufacturing_ConsumedProduct',
     component: ChildrenManufOrderListScreen,
     options: {
       shadedHeader: false,

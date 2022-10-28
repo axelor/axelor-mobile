@@ -12,7 +12,7 @@ import {
   Text,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
-import {ProductCardInfo} from '@/modules/stock/components/organisms';
+import {NotesCard, ProductCardInfo} from '@aos-mobile/app-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
@@ -23,7 +23,6 @@ import {
 } from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
-import {NotesCard} from '@/modules/stock/components/molecules';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const {operationOrderList} = useSelector(state => state.operationOrder);

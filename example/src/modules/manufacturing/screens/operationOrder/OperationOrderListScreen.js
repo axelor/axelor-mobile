@@ -17,12 +17,11 @@ import {
 } from '@aos-mobile/core';
 import OperationOrder from '@/modules/manufacturing/types/operation-order';
 import {fetchOperationOrders} from '@/modules/manufacturing/features/operationOrderSlice';
-import filterList from '@/modules/stock/utils/filter-list';
 import {displayManufOrderSeq} from '@/modules/manufacturing/utils/displayers';
 import {OperationOrderDetailsCard} from '../../components/organisms';
 import {searchWorkCenters} from '../../features/workCentersSlice';
 import {searchMachines} from '../../features/machinesSlice';
-import {displayItemName} from '@/modules/stock/utils/displayers';
+import {displayItemName, filterList} from '@aos-mobile/app-stock';
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 

@@ -20,7 +20,7 @@ import {
 } from '@aos-mobile/core';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
-import {searchStockLocations} from '@/modules/stock/features/stockLocationSlice';
+import {searchStockLocations, displayItemName} from '@aos-mobile/app-stock';
 import {
   changeActiveCompany,
   changeDefaultStockLocation,
@@ -29,8 +29,6 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-//import {AutocompleteSearch} from '@/components/organisms';
-import {displayItemName} from '@/modules/stock/utils/displayers';
 import {fetchBaseConfig} from '../features/configSlice';
 import {fetchStockMenuConfig} from '@/features/menuConfigSlice';
 
