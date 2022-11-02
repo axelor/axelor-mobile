@@ -97,7 +97,9 @@ const LoginScreen = ({route}) => {
             />
           )}
         </View>
-        {error && <ErrorText message={error.message} />}
+        <View style={styles.errorContainer}>
+          {error && <ErrorText message={error.message} />}
+        </View>
       </ScrollView>
     </Screen>
   );
@@ -118,6 +120,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
+    flex: 1,
+  },
+  errorContainer: {
     flex: 1,
   },
   copyright: {
