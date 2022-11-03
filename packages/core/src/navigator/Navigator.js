@@ -1,18 +1,27 @@
-import React, {createContext, useCallback, useMemo, useState} from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
 import DrawerContent from './drawer/DrawerContent';
 import {
-  updateAccessibleMenus,
+  filterAuthorizedModules,
   getDefaultModule,
   moduleHasMenus,
+  updateAccessibleMenus,
 } from './module.helper';
 import {getMenuTitle} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import DrawerToggleButton from './drawer/DrawerToggleButton';
 import BackIcon from './drawer/BackIcon';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchMenuConfig} from '../features/menuConfigSlice';
+import {fetchMobileConfig} from '../features/mobileConfigSlice';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -26,11 +35,18 @@ export const ModuleNavigatorContext = createContext({
 const Navigator = ({modules, mainMenu}) => {
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
+  const {mobileConfigs} = useSelector(state => state.mobileConfig);
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(modules, mainMenu),
   );
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMobileConfig());
+    dispatch(fetchMenuConfig());
+  }, [dispatch]);
 
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
@@ -41,12 +57,17 @@ const Navigator = ({modules, mainMenu}) => {
     [modules],
   );
 
+  const enabledModule = useMemo(
+    () => filterAuthorizedModules(modules, mobileConfigs, user),
+    [mobileConfigs, modules, user],
+  );
+
   const modulesMenus = useMemo(() => {
-    return modules
+    return enabledModule
       .map(_module => updateAccessibleMenus(_module, restrictedMenus, user))
       .filter(moduleHasMenus)
       .reduce((menus, _module) => ({...menus, ..._module.menus}), {});
-  }, [modules, user, restrictedMenus]);
+  }, [enabledModule, restrictedMenus, user]);
 
   const modulesScreens = useMemo(
     () =>
@@ -110,7 +131,7 @@ const Navigator = ({modules, mainMenu}) => {
         drawerContent={props => (
           <DrawerContent
             {...props}
-            modules={modules}
+            modules={enabledModule}
             onModuleClick={changeActiveModule}
           />
         )}>

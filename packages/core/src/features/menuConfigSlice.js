@@ -1,14 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {getStockMenuConfig} from '../api/menu-config-api';
-import {handlerApiCall} from '@aos-mobile/core';
+import {getModulesConfig} from '../api/menu-config-api';
+import {handlerApiCall} from '../api/utils';
 
-export const fetchStockMenuConfig = createAsyncThunk(
-  'menuConfig/fetchStockMenuConfig',
+export const fetchMenuConfig = createAsyncThunk(
+  'menuConfig/fetchMenuConfig',
   async function (data = {}, {getState}) {
     return handlerApiCall({
-      fetchFunction: getStockMenuConfig,
+      fetchFunction: getModulesConfig,
       data,
-      action: 'fetch Stock App Config',
+      action: 'fetch menu config',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -24,10 +24,10 @@ const menuConfigSlice = createSlice({
   name: 'menuConfig',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchStockMenuConfig.pending, state => {
+    builder.addCase(fetchMenuConfig.pending, state => {
       state.loadingConfig = true;
     });
-    builder.addCase(fetchStockMenuConfig.fulfilled, (state, action) => {
+    builder.addCase(fetchMenuConfig.fulfilled, (state, action) => {
       state.loadingConfig = false;
       state.restrictedMenus = [...action.payload];
     });

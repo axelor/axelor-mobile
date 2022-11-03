@@ -30,7 +30,6 @@ import {
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
 import {fetchBaseConfig} from '../features/configSlice';
-import {fetchStockMenuConfig} from '@/features/menuConfigSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
@@ -54,7 +53,6 @@ const UserScreen = ({navigation}) => {
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
     dispatch(fetchBaseConfig());
-    dispatch(fetchStockMenuConfig());
   }, [dispatch, userId]);
 
   React.useLayoutEffect(() => {

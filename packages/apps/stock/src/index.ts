@@ -10,7 +10,7 @@ import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
 
 export const StockModule: Module = {
-  name: 'Stock',
+  name: 'app-stock',
   title: 'Stock',
   icon: 'cubes',
   menus: {

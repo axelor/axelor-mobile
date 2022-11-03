@@ -1,4 +1,35 @@
 import {isMenuEnabled} from './menu.helper';
+import {userHaveAccessToConfig} from './roles.helper';
+
+export function filterAuthorizedModules(modules, mobileConfigs, user) {
+  if (modules == null || mobileConfigs == null || mobileConfigs.length === 0) {
+    return modules;
+  }
+  const authorizedModules = [];
+
+  modules.forEach(_module => {
+    const mobileConfigForModule = mobileConfigs?.filter(
+      config => config.sequence === _module.name,
+    );
+
+    if (mobileConfigForModule == null || mobileConfigForModule.length === 0) {
+      authorizedModules.push(_module);
+    } else if (mobileConfigForModule[0].isAppEnable) {
+      if (
+        mobileConfigForModule[0].authorizedRoles == null ||
+        mobileConfigForModule[0].authorizedRoles.length === 0
+      ) {
+        authorizedModules.push(_module);
+      } else if (
+        userHaveAccessToConfig({config: mobileConfigForModule[0], user: user})
+      ) {
+        authorizedModules.push(_module);
+      }
+    }
+  });
+
+  return authorizedModules;
+}
 
 export function moduleHasMenus(_module) {
   return _module.menus != null && Object.keys(_module.menus).length > 0;
@@ -22,8 +53,10 @@ export function filterEnabledMenus(_module, restrictedMenus, user) {
 }
 
 export function updateAccessibleMenus(_module, restrictedMenus, user) {
-  _module.menus = filterEnabledMenus(_module, restrictedMenus, user);
-  return _module;
+  return {
+    ..._module,
+    menus: filterEnabledMenus(_module, restrictedMenus, user),
+  };
 }
 
 export function moduleInMenuFooter(_module) {
