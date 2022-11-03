@@ -40,5 +40,8 @@ export default {
   ProductAttachedFilesScreen: {
     title: 'Stock_Product',
     component: ProductAttachedFilesScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };

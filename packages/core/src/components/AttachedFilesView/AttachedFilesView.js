@@ -1,9 +1,12 @@
-import React, {useCallback, useState, useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useCallback, useState, useMemo, useEffect} from 'react';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
+  Chip,
+  ChipSelect,
   File,
+  HeaderContainer,
   Icon,
   Image,
   PopUpOneButton,
@@ -26,8 +29,12 @@ function AttachedFilesView({model, modelId}) {
   const [visible, setVisible] = useState(false);
   const [errorFile, setErrorFile] = useState(false);
   const [image, setImage] = useState(null);
+  const [extensionList, setExtensionList] = useState([]);
+  const [selectedExtension, setSelectedExtension] = useState();
 
   const dispatch = useDispatch();
+
+  const imageContainer = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleShowImage = item => {
     if (File.getFileExtension(item.fileName) === 'png') {
@@ -80,10 +87,76 @@ function AttachedFilesView({model, modelId}) {
     );
   }, [dispatch, model, modelId]);
 
-  const imageContainer = useMemo(() => getStyles(Colors), [Colors]);
+  const desactivateChip = () => {
+    setSelectedExtension(null);
+  };
+
+  const filterOnSelectExtension = useCallback(
+    list => {
+      if (list == null || list === [] || !selectedExtension) {
+        return list;
+      } else {
+        return list.filter(
+          item => File.getFileExtension(item.fileName) === selectedExtension,
+        );
+      }
+    },
+    [selectedExtension],
+  );
+
+  const handleSelectExtension = ext => {
+    if (selectedExtension === ext) {
+      desactivateChip();
+    } else {
+      setSelectedExtension(ext);
+    }
+  };
+
+  const filtredList = useMemo(
+    () => filterOnSelectExtension(attachedFilesList),
+    [filterOnSelectExtension, attachedFilesList],
+  );
+
+  useEffect(() => {
+    setExtensionList(
+      Array.from(
+        new Set(
+          attachedFilesList?.map(item => File.getFileExtension(item.fileName)),
+        ),
+      ),
+    );
+  }, [attachedFilesList]);
 
   return (
-    <Screen>
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={false}
+        chipComponent={
+          <ChipSelect scrollable={true}>
+            {extensionList.map((ext, index) => (
+              <Chip
+                key={'chip' + index}
+                selected={selectedExtension === ext}
+                title={`${ext}`.toUpperCase()}
+                onPress={() => handleSelectExtension(ext)}
+                selectedColor={
+                  selectedExtension === ext
+                    ? {
+                        backgroundColor: Colors.primaryColor_light,
+                        borderColor: Colors.primaryColor,
+                      }
+                    : {
+                        backgroundColor: Colors.secondaryColor_light,
+                        borderColor: Colors.secondaryColor,
+                      }
+                }
+                width={Dimensions.get('window').width * 0.25}
+                marginHorizontal={3}
+              />
+            ))}
+          </ChipSelect>
+        }
+      />
       {errorFile && (
         <PopUpOneButton
           visible={errorFile}
@@ -116,7 +189,7 @@ function AttachedFilesView({model, modelId}) {
       )}
       <ScrollList
         loadingList={loading}
-        data={attachedFilesList}
+        data={filtredList}
         renderItem={({item}) => (
           <AttachmentCard
             fileName={item.fileName}
