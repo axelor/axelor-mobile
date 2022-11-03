@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
-import {useThemeColor, Text, Screen, Image, ScrollView} from '@aos-mobile/ui';
+import {useThemeColor, Text, Screen, ScrollView} from '@aos-mobile/ui';
 import {
   CameraScanner,
   ErrorText,
@@ -38,10 +38,23 @@ const LoginScreen = ({route}) => {
 
   useEffect(() => {
     if (scannedValue) {
-      setUrl(scannedValue);
+      if (scannedValue.includes('username') === true) {
+        const parseScannnedData = JSON.parse(scannedValue);
+        setUrl(parseScannnedData.url);
+        setUsername(parseScannnedData.username);
+      } else {
+        setUrl(scannedValue);
+      }
     } else if (scanData != null && scanData.value != null) {
-      setCamScan(false);
-      setUrl(scanData.value);
+      if (scanData.value.includes('username') === true) {
+        const parseScannnedData = JSON.parse(scanData.value);
+        setUrl(parseScannnedData.url);
+        setUsername(parseScannnedData.username);
+        setCamScan(false);
+      } else {
+        setUrl(scanData.value);
+        setCamScan(false);
+      }
     }
   }, [scanData, scannedValue]);
 
