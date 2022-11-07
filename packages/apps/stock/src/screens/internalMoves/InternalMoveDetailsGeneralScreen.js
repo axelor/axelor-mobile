@@ -3,6 +3,8 @@ import {StyleSheet} from 'react-native';
 import {
   Button,
   HeaderContainer,
+  Icon,
+  MovementIndicationCard,
   Screen,
   ScrollView,
   useThemeColor,
@@ -11,7 +13,6 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
   InternalMoveLineCard,
-  LocationsMoveCard,
   NotesCard,
   StockMoveHeader,
 } from '../../components';
@@ -108,10 +109,11 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <LocationsMoveCard
-          style={styles.content}
-          fromStockLocation={internalMove.fromStockLocation.name}
-          toStockLocation={internalMove.toStockLocation.name}
+        <MovementIndicationCard
+          titleTop={internalMove.fromStockLocation.name}
+          iconTop={<Icon name="warehouse" color={Colors.primaryColor} />}
+          titleDown={internalMove.toStockLocation.name}
+          iconDown={<Icon name="warehouse" color={Colors.primaryColor} />}
         />
         <ViewAllContainer
           data={internalMoveLineList}
@@ -152,9 +154,6 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  content: {
-    marginVertical: '2%',
-  },
   item: {
     marginHorizontal: 1,
     marginVertical: 4,

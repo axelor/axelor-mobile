@@ -10,11 +10,12 @@ import {
   useThemeColor,
   ViewAllContainer,
   HeaderContainer,
+  MovementIndicationCard,
+  Icon,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {
   CustomerDeliveryLineCard,
-  LocationsMoveCard,
   NotesCard,
   StockMoveHeader,
 } from '../../components';
@@ -150,14 +151,16 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
-        <LocationsMoveCard
-          fromStockLocation={customerDelivery.fromStockLocation?.name}
-          toStockLocation={
+        <MovementIndicationCard
+          titleTop={customerDelivery.fromStockLocation?.name}
+          iconTop={<Icon name="warehouse" color={Colors.primaryColor} />}
+          titleDown={
             customerDelivery.toAddress?.fullName ||
             customerDelivery.toAddressStr
           }
-          touchableTo={true}
-          onPressTo={() => setVisiblePopup(true)}
+          iconDown={<Icon name="map-marker-alt" />}
+          disabledDown={false}
+          onPressTitleDown={() => setVisiblePopup(true)}
         />
         <ViewAllContainer
           isHeaderExist={
@@ -210,13 +213,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: '2%',
-    marginHorizontal: 16,
-  },
   generalInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

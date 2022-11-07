@@ -3,18 +3,17 @@ import {View, StyleSheet} from 'react-native';
 import {
   Button,
   HeaderContainer,
+  Icon,
   LabelText,
+  MovementIndicationCard,
   PopUpOneButton,
   Screen,
   ScrollView,
+  useThemeColor,
   ViewAllContainer,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
-import {
-  LocationsMoveCard,
-  SupplierArrivalLineCard,
-  StockMoveHeader,
-} from '../../components';
+import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
@@ -28,6 +27,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -128,11 +128,13 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
-        <LocationsMoveCard
-          fromStockLocation={supplierArrival.fromAddress?.fullName}
-          touchableFrom={true}
-          onPressFrom={() => setVisiblePopup(true)}
-          toStockLocation={supplierArrival.toStockLocation?.name}
+        <MovementIndicationCard
+          titleTop={supplierArrival.fromAddress?.fullName}
+          iconTop={<Icon name="map-marker-alt" />}
+          titleDown={supplierArrival.toStockLocation?.name}
+          iconDown={<Icon name="warehouse" color={Colors.primaryColor} />}
+          disabledTop={false}
+          onPressTitleTop={() => setVisiblePopup(true)}
         />
         <ViewAllContainer
           isHeaderExist={
