@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall, postTranslations} from '@aos-mobile/core';
-import {getBaseConfig} from '../api/config-api';
+import {getBaseConfig, getMobileSettings} from '../api/config-api';
 
 export const fetchBaseConfig = createAsyncThunk(
   'base/fetchBaseConfig',
@@ -22,9 +22,23 @@ export const uploadTranslations = createAsyncThunk(
   },
 );
 
+export const fetchMobileSettings = createAsyncThunk(
+  'mobile-settings/fetchMobileSettings',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getMobileSettings,
+      data,
+      action: 'fetch app mobile settings',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   baseConfig: {},
+  mobileSettings: {},
   message: null,
 };
 
@@ -50,6 +64,13 @@ const configSlice = createSlice({
     builder.addCase(uploadTranslations.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload;
+    });
+    builder.addCase(fetchMobileSettings.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(fetchMobileSettings.fulfilled, (state, action) => {
+      state.loading = false;
+      state.mobileSettings = action.payload;
     });
   },
 });

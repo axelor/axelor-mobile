@@ -32,6 +32,8 @@
   "Base_Real": "Real",
   "Base_Large": "Large",
   "Base_Small": "Small",
+  "Base_MailMessages": "Mail Messages",
+  "Base_Comment": "Comment",
   "Stopwatch_Status_Ready": "Ready",
   "Stopwatch_Status_InProgress": "InProgress",
   "Stopwatch_Status_Paused": "Paused",

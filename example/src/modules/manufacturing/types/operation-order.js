@@ -1,5 +1,5 @@
-import {StopwatchType} from '@aos-mobile/core';
-import {calculateDiff, formatDateTime} from '../utils/time';
+import {StopwatchType, formatDateTime} from '@aos-mobile/core';
+import {calculateDiff} from '../utils/time';
 
 class OperationOrder {
   static status = {

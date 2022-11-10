@@ -3,9 +3,13 @@ import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
-  title: string;
+  title?: string;
   value: string;
   size?: number;
+  color?: string;
+  style?: any;
+  iconStyle?: any;
+  textStyle?: any;
   iconName?: string;
   FontAwesome5?: boolean;
 }
@@ -14,26 +18,31 @@ const LabelText = ({
   title,
   value,
   size = 12,
+  color,
+  style,
+  iconStyle,
+  textStyle,
   iconName = null,
   FontAwesome5 = true,
 }: LabelTextProps) => {
   return (
-    <View style={styles.textDisplay}>
+    <View style={[styles.container, style]}>
       {iconName && (
         <Icon
           name={iconName}
           size={size}
-          style={styles.icon}
+          style={[styles.icon, iconStyle]}
           FontAwesome5={FontAwesome5}
+          color={color}
         />
       )}
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.txtDetails}>{value}</Text>
+      <Text style={[styles.title, textStyle]}>{title}</Text>
+      <Text style={[styles.txtDetails, textStyle]}>{value}</Text>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  textDisplay: {
+  container: {
     flexDirection: 'row',
   },
   txtDetails: {

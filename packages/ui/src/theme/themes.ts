@@ -18,6 +18,12 @@ export interface ThemeColors {
   priorityColor_light: string;
   text: string;
   placeholderTextColor: string;
+  defaultColor: string;
+  importantColor: string;
+  successColor: string;
+  warningColor: string;
+  inverseColor: string;
+  infoColor: string;
 }
 
 export interface Theme {
@@ -49,6 +55,12 @@ export const lightTheme: Theme = {
     priorityColor_light: '#81C9E8',
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
+    defaultColor: '#C0C0C0',
+    importantColor: '#E54D1D',
+    successColor: '#3ECF8E',
+    warningColor: '#F49B76',
+    inverseColor: '#606060',
+    infoColor: '#36AEE1',
   },
 };
 
@@ -75,5 +87,11 @@ export const colorBlindTheme: Theme = {
     priorityColor_light: '#81C9E8',
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
+    defaultColor: '#C0C0C0',
+    importantColor: '#E54D1D',
+    successColor: '#994F00',
+    warningColor: '#F49B76',
+    inverseColor: '#006CD1',
+    infoColor: '#36AEE1',
   },
 };

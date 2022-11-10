@@ -29,7 +29,7 @@ import {
 } from '@/modules/auth/features/userSlice';
 import {IconSettings} from '../components/atoms';
 import DeviceInfo from 'react-native-device-info';
-import {fetchBaseConfig} from '../features/configSlice';
+import {fetchBaseConfig, fetchMobileSettings} from '../features/configSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
@@ -53,6 +53,7 @@ const UserScreen = ({navigation}) => {
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
     dispatch(fetchBaseConfig());
+    dispatch(fetchMobileSettings());
   }, [dispatch, userId]);
 
   React.useLayoutEffect(() => {

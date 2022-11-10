@@ -1,6 +1,7 @@
 import ManufacturingOrderDetailsScreen from './ManufacturingOrderDetailsScreen';
 import ManufacturingOrderListSaleOrderScreen from './ManufacturingOrderListSaleOrderScreen';
 import ManufacturingOrderListScreen from './ManufacturingOrderListScreen';
+import ManufacturingOrderMailMessagesScreen from './ManufacturingOrderMailMessagesScreen';
 import ManufacturingOrderOperationListScreen from './ManufacturingOrderOperationListScreen';
 import ConsumedProductScreens from './consumedProduct';
 import ProducedProductScreens from './producedProduct';
@@ -42,6 +43,10 @@ export default {
     options: {
       shadedHeader: false,
     },
+  },
+  ManufacturingOrderMailMessagesScreen: {
+    title: 'Base_MailMessages',
+    component: ManufacturingOrderMailMessagesScreen,
   },
   ...ConsumedProductScreens,
   ...ProducedProductScreens,

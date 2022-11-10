@@ -4,6 +4,8 @@ import {
   Badge,
   Button,
   HeaderContainer,
+  DropdownMenu,
+  DropdownMenuItem,
   Picker,
   PopUpOneButton,
   Screen,
@@ -32,6 +34,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const {loadingProduct, productFromId} = useSelector(state => state.product);
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
+  const {mobileSettings} = useSelector(state => state.config);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -243,6 +246,29 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   };
 
   const [popUp, setPopUp] = useState(false);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('StockCorrectionMailMessagesScreen', {
+                    stockCorrectionId: route.params.stockCorrection?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, route.params.stockCorrection]);
 
   return (
     <Screen

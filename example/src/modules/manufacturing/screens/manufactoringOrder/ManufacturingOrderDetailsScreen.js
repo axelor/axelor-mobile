@@ -10,6 +10,8 @@ import {
   ViewAllContainer,
   useThemeColor,
   Text,
+  DropdownMenu,
+  DropdownMenuItem,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {NotesCard, ProductCardInfo} from '@aos-mobile/app-stock';
@@ -25,6 +27,7 @@ import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
+  const {mobileSettings} = useSelector(state => state.config);
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {loadingOrder, manufOrder, linkedManufOrders} = useSelector(
     state => state.manufacturingOrder,
@@ -93,6 +96,29 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnProductionApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('ManufacturingOrderMailMessagesScreen', {
+                    manufOrderId: manufOrder?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, manufOrder]);
 
   return (
     <Screen

@@ -20,4 +20,5 @@ export {default as SelectionContainer} from './SelectionContainer/SelectionConta
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as TitledValue} from './TitledValue/TitledValue';
 export {default as ToggleSwitch} from './ToggleSwitch/ToggleSwitch';
+export {default as UnorderedList} from './UnorderedList/UnorderedList';
 export {default as ViewAllContainer} from './ViewAllContainer/ViewAllContainer';

@@ -3,6 +3,8 @@ import {StyleSheet, View} from 'react-native';
 import {
   Badge,
   Button,
+  DropdownMenu,
+  DropdownMenuItem,
   LabelText,
   PopUpOneButton,
   Screen,
@@ -30,6 +32,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     state => state.customerDeliveryLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const {mobileSettings} = useSelector(state => state.config);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -101,6 +104,29 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       customerDelivery: customerDelivery,
     });
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('CustomerDeliveryMailMessagesScreen', {
+                    customerDeliveryId: customerDelivery?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, customerDelivery]);
 
   return (
     <Screen

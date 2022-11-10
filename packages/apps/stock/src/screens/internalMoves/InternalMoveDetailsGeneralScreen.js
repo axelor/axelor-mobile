@@ -5,6 +5,8 @@ import {
   HeaderContainer,
   Icon,
   MovementIndicationCard,
+  DropdownMenu,
+  DropdownMenuItem,
   Screen,
   ScrollView,
   useThemeColor,
@@ -27,6 +29,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     state => state.internalMoveLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const {mobileSettings} = useSelector(state => state.config);
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -77,6 +80,29 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
       }),
     );
   }, [dispatch, internalMove]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('InternalMoveMailMessagesScreen', {
+                    internalMoveId: internalMove?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, internalMove]);
 
   return (
     <Screen

@@ -4,6 +4,8 @@ import {
   Button,
   EditableInput,
   HeaderContainer,
+  DropdownMenu,
+  DropdownMenuItem,
   Screen,
   ScrollView,
   Text,
@@ -19,6 +21,7 @@ import Inventory from '../../types/inventory';
 
 const InventoryPlannedDetailsScreen = ({route, navigation}) => {
   const {loading, inventory} = useSelector(state => state.inventory);
+  const {mobileSettings} = useSelector(state => state.config);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -49,6 +52,29 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
       inventoryId: inventory?.id,
     });
   }, [dispatch, inventory, navigation]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('InventoryMailMessagesScreen', {
+                    inventoryId: inventory?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, inventory]);
 
   return (
     <Screen

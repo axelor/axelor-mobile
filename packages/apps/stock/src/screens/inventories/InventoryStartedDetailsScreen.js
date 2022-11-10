@@ -3,6 +3,8 @@ import {View, StyleSheet} from 'react-native';
 import {
   Button,
   HeaderContainer,
+  DropdownMenu,
+  DropdownMenuItem,
   Screen,
   ScrollView,
   Text,
@@ -27,6 +29,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const {loadingInventoryLines, inventoryLineList} = useSelector(
     state => state.inventoryLine,
   );
+  const {mobileSettings} = useSelector(state => state.config);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -85,6 +88,29 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
       inventory: inventory,
     });
   }, [inventory, navigation]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('InventoryMailMessagesScreen', {
+                    inventoryId: inventory?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, inventory]);
 
   return (
     <Screen

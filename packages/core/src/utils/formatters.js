@@ -13,6 +13,18 @@ export function formatDate(inputDate, format) {
   return format;
 }
 
+export const formatDateTime = (dateTime, format) => {
+  const date = new Date(dateTime);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  format = formatDate(dateTime, format);
+  format = format.replace('HH', hours.toString().padStart(2, '0'));
+  format = format.replace('mm', minutes.toString().padStart(2, '0'));
+
+  return format;
+};
+
 export function formatScan(barcodeValue, barcodeType, config = true) {
   if (config && barcodeType != null && barcodeValue != null) {
     if (

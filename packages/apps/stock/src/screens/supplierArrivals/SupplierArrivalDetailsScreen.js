@@ -6,6 +6,8 @@ import {
   Icon,
   LabelText,
   MovementIndicationCard,
+  DropdownMenu,
+  DropdownMenuItem,
   PopUpOneButton,
   Screen,
   ScrollView,
@@ -25,6 +27,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
     state => state.supplierArrivalLine,
   );
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const {mobileSettings} = useSelector(state => state.config);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -84,6 +87,29 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
       supplierArrival: supplierArrival,
     });
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (mobileSettings?.isTrackerMessageOnStockApp) {
+          return (
+            <DropdownMenu>
+              <DropdownMenuItem
+                placeholder={I18n.t('Base_MailMessages')}
+                icon="bell"
+                onPress={() =>
+                  navigation.navigate('SupplierArrivalMailMessagesScreen', {
+                    supplierArrivalId: supplierArrival?.id,
+                  })
+                }
+              />
+            </DropdownMenu>
+          );
+        }
+        return null;
+      },
+    });
+  }, [I18n, mobileSettings, navigation, supplierArrival]);
 
   return (
     <Screen

@@ -46,7 +46,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   );
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
-  const {baseConfig} = useSelector(state => state.config);
+  const {baseConfig, mobileSettings} = useSelector(state => state.config);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -112,10 +112,21 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               })
             }
           />
+          {mobileSettings.isTrackerMessageOnStockApp && (
+            <DropdownMenuItem
+              placeholder={I18n.t('Base_MailMessages')}
+              icon="bell"
+              onPress={() =>
+                navigation.navigate('ProductMailMessagesScreen', {
+                  productId: product?.id,
+                })
+              }
+            />
+          )}
         </DropdownMenu>
       ),
     });
-  }, [I18n, navigation, product]);
+  }, [I18n, mobileSettings, navigation, product]);
 
   const fetchStockLocationsAPI = useCallback(
     filterValue => {

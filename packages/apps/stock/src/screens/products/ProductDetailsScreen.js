@@ -8,7 +8,7 @@ import {
   ScrollView,
   Text,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {useTranslator, useSelector} from '@aos-mobile/core';
 import {
   NotesCard,
   ProductCharacteristics,
@@ -18,6 +18,7 @@ import {
 const ProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const product = route.params.product;
+  const {mobileSettings} = useSelector(state => state.config);
 
   const showProductVariables = () => {
     navigation.navigate('ProductListVariantScreen', {product: product});
@@ -38,10 +39,21 @@ const ProductDetailsScreen = ({route, navigation}) => {
               })
             }
           />
+          {mobileSettings.isTrackerMessageOnStockApp && (
+            <DropdownMenuItem
+              placeholder={I18n.t('Base_MailMessages')}
+              icon="bell"
+              onPress={() =>
+                navigation.navigate('ProductMailMessagesScreen', {
+                  productId: product?.id,
+                })
+              }
+            />
+          )}
         </DropdownMenu>
       ),
     });
-  }, [I18n, navigation, product]);
+  }, [I18n, mobileSettings, navigation, product]);
 
   return (
     <Screen

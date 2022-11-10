@@ -3,6 +3,7 @@ import ProductDetailsScreen from './ProductDetailsScreen';
 import ProductImageScreen from './ProductImageScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductListVariantScreen from './ProductListVariantScreen';
+import ProductMailMessagesScreen from './ProductMailMessagesScreen';
 import ProductStockDetailsScreen from './ProductStockDetailsScreen';
 import ProductStockLocationDetailsScreen from './ProductStockLocationDetailsScreen';
 
@@ -43,5 +44,9 @@ export default {
     options: {
       shadedHeader: false,
     },
+  },
+  ProductMailMessagesScreen: {
+    title: 'Base_MailMessages',
+    component: ProductMailMessagesScreen,
   },
 };

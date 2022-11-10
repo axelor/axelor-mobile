@@ -1,5 +1,3 @@
-import {formatDate} from '@aos-mobile/core';
-
 const NB_SECOND_IN_MINUTES = 60;
 const NB_MINUTES_IN_HOURS = 60;
 const NB_HOURS_IN_DAYS = 24;
@@ -43,18 +41,6 @@ export const formatDuration = (secondsValue, format = 'hh:mm:ss') => {
       minutes,
     )}:${getIntegerPart(seconds)}`;
   }
-};
-
-export const formatDateTime = (dateTime, format = 'DD/MM/YYYY HH:mm') => {
-  const date = new Date(dateTime);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  format = formatDate(dateTime, format);
-  format = format.replace('HH', hours.toString().padStart(2, '0'));
-  format = format.replace('mm', minutes.toString().padStart(2, '0'));
-
-  return format;
 };
 
 export const calculateDiff = (start, end) => {

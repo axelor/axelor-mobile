@@ -3,6 +3,7 @@ import SupplierArrivalDetailsScreen from './SupplierArrivalDetailsScreen';
 import SupplierArrivalLineDetailScreen from './SupplierArrivalLineDetailScreen';
 import SupplierArrivalLineListScreen from './SupplierArrivalLineListScreen';
 import SupplierArrivalListScreen from './SupplierArrivalListScreen';
+import SupplierArrivalMailMessagesScreen from './SupplierArrivalMailMessagesScreen';
 import SupplierArrivalSelectProductScreen from './SupplierArrivalSelectProductScreen';
 import SupplierArrivalSelectTrackingScreen from './SupplierArrivalSelectTrackingScreen';
 
@@ -55,5 +56,9 @@ export default {
     options: {
       shadedHeader: false,
     },
+  },
+  SupplierArrivalMailMessagesScreen: {
+    title: 'Base_MailMessages',
+    component: SupplierArrivalMailMessagesScreen,
   },
 };

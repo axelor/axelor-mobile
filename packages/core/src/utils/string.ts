@@ -12,3 +12,11 @@ export function splitInTwo(value: String, spacer = '.'): Array<String> {
   }
   return value.toString().split(spacer);
 }
+
+export function isHtml(value: string): boolean {
+  const regex = /<\/?[a-z][\s\S]*>/i;
+  if (value == null) {
+    return null;
+  }
+  return regex.test(value);
+}

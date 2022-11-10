@@ -34,7 +34,9 @@ export {
   default as scannerReducer,
 } from './features/scannerSlice';
 export {showToastMessage} from './utils/show-toast-message';
-export {default as StopwatchType} from './types/stopwatch-type';
-export {formatURL, splitInTwo} from './utils/string';
-export {formatDate, formatScan} from './utils/formatters';
+export {formatURL, splitInTwo, isHtml} from './utils/string';
+export {formatDate, formatDateTime, formatScan} from './utils/formatters';
+
 export {useDispatch, useSelector} from './redux/hooks';
+
+export * from './types';

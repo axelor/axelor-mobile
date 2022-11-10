@@ -6,6 +6,7 @@ interface TextProps {
   style?: any;
   numberOfLines?: number;
   adjustsFontSizeToFit?: boolean;
+  onTextLayout?: (any) => void;
   children: any;
 }
 
@@ -13,6 +14,7 @@ const Text = ({
   style,
   numberOfLines,
   adjustsFontSizeToFit = false,
+  onTextLayout,
   children,
 }: TextProps) => {
   const Colors = useThemeColor();
@@ -22,7 +24,8 @@ const Text = ({
     <ReactNativeText
       style={[styles.text, style]}
       numberOfLines={numberOfLines}
-      adjustsFontSizeToFit={adjustsFontSizeToFit}>
+      adjustsFontSizeToFit={adjustsFontSizeToFit}
+      onTextLayout={onTextLayout}>
       {children}
     </ReactNativeText>
   );

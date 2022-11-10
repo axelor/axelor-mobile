@@ -93,6 +93,15 @@ function OperationOrderDetailsScreen({route, navigation}) {
               })
             }
           />
+          <DropdownMenuItem
+            placeholder={I18n.t('Base_MailMessages')}
+            icon="bell"
+            onPress={() =>
+              navigation.navigate('OperationOrderMailMessagesScreen', {
+                operationOrderId: operationOrder?.id,
+              })
+            }
+          />
         </DropdownMenu>
       ),
     });

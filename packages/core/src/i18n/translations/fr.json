@@ -32,6 +32,8 @@
   "Base_Real": "Réelle",
   "Base_Large": "Large",
   "Base_Small": " Petit",
+  "Base_MailMessages": "Suivi des notifications",
+  "Base_Comment": "Commentaire",
   "Stopwatch_Status_Ready": "Prêt",
   "Stopwatch_Status_InProgress": "En cours",
   "Stopwatch_Status_Paused": "En pause",
