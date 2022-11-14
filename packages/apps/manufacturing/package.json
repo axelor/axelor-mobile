@@ -10,11 +10,10 @@
     "clean": "rm -rf lib/",
     "compile": "tsc -p tsconfig.build.json",
     "dev": "npm run compile -- --watch",
-    "build": "npm run clean && npm run compile && npm run copy:assets",
+    "build": "npm run clean && npm run compile",
     "lint": "eslint .",
     "format": "prettier --write src/",
-    "format:check": "prettier --check src/",
-    "copy:assets": "cpx src/assets/** lib/assets"
+    "format:check": "prettier --check src/"
   },
   "peerDependencies": {
     "react": "18.2.0",
