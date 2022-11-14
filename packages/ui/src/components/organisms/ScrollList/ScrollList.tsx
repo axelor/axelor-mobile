@@ -49,7 +49,11 @@ const ScrollList = ({
   }, [initialize]);
 
   if (loadingList) {
-    return <ActivityIndicator size="large" color="black" />;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
   }
 
   return (
@@ -85,6 +89,9 @@ const ScrollList = ({
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+  },
   footerText: {
     alignSelf: 'center',
     marginBottom: 7,

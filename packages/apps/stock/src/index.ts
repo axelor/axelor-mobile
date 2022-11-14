@@ -80,7 +80,7 @@ export {
   filterTrackingNumber,
 } from './utils/filters';
 export {formatDate, formatScan} from './utils/formatters';
-export {filterList, filterListContain} from './utils/list';
+export {filterList, filterListContain, areObjectsEquals} from './utils/list';
 export {checkNullString, stringNoAccent} from './utils/strings';
 
 export * from './types';

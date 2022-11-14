@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 interface AOSImageProps {
   imageSize: StyleProp<ImageStyle>;
-  generalStyle: StyleProp<ImageStyle>;
+  generalStyle?: StyleProp<ImageStyle>;
   resizeMode: ImageResizeMode;
   metaFileId: number;
   defaultIconSize: number;

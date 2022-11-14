@@ -4,7 +4,7 @@ import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
   title?: string;
-  value: string;
+  value?: string;
   size?: number;
   color?: string;
   style?: any;
@@ -36,8 +36,8 @@ const LabelText = ({
           color={color}
         />
       )}
-      <Text style={[styles.title, textStyle]}>{title}</Text>
-      <Text style={[styles.txtDetails, textStyle]}>{value}</Text>
+      {title && <Text style={[styles.title, textStyle]}>{title}</Text>}
+      {value && <Text style={[styles.txtDetails, textStyle]}>{value}</Text>}
     </View>
   );
 };

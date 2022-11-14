@@ -1,8 +1,8 @@
 import React from 'react';
 import {Application} from '@aos-mobile/core';
 import {StockModule} from '@aos-mobile/app-stock';
+import {ManufacturingModule} from '@aos-mobile/app-manufacturing';
 import AuthModule from '@/modules/auth';
-import ManufacturingModule from '@/modules/manufacturing';
 import application_properties from '../package.json';
 
 const App = () => {

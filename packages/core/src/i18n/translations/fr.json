@@ -23,6 +23,8 @@
   "Base_Check": "Vérifier",
   "Base_Start": "Commencer",
   "Base_Complete": "Terminer",
+  "Base_Confirm": "Confirmer",
+  "Base_Cancel": "Annuler",
   "Base_Content": "Contenu",
   "Base_ViewAll": "Tout voir",
   "Base_Error_ConfigureStockApp": "Votre application stock n'est pas configurée, merci de contacter un administrateur.",

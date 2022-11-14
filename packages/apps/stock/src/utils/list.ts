@@ -1,3 +1,5 @@
+import {stringNoAccent} from './strings';
+
 export function filterList(list, subObject, objectParam, query) {
   if (query === '' || list == null || list?.length === 0) {
     return list;
@@ -21,7 +23,10 @@ export function filterList(list, subObject, objectParam, query) {
               (query[i] === ''
                 ? true
                 : item[subObject[i]] != null &&
-                  item[subObject[i]][objectParam[i]] === query[i]);
+                  areObjectsEquals(
+                    item[subObject[i]][objectParam[i]],
+                    query[i],
+                  ));
           }
 
           if (criteria) {
@@ -35,7 +40,10 @@ export function filterList(list, subObject, objectParam, query) {
       }
     } else {
       list.forEach(item => {
-        if (item[subObject] != null && item[subObject][objectParam] === query) {
+        if (
+          item[subObject] != null &&
+          areObjectsEquals(item[subObject][objectParam], query)
+        ) {
           filteredList.push(item);
         }
       });
@@ -81,5 +89,19 @@ export function getFromList(list, objectParam, query) {
       }
     }
     return null;
+  }
+}
+
+export function areObjectsEquals(object1, object2) {
+  if (typeof object1 !== typeof object2 || object1 == null || object2 == null) {
+    return false;
+  } else {
+    if (typeof object1 === 'string') {
+      return stringNoAccent(object1)
+        .toLowerCase()
+        .includes(stringNoAccent(object2).toLowerCase());
+    } else {
+      return object1 === object2;
+    }
   }
 }
