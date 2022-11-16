@@ -2,6 +2,7 @@ import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import {AOSImage} from '@aos-mobile/core';
+import {useThemeColor} from '@aos-mobile/ui';
 
 interface ProductionFileSmallCardProps {
   imageId?: number;
@@ -12,6 +13,8 @@ function ProductionFileSmallCard({
   imageId,
   description,
 }: ProductionFileSmallCardProps) {
+  const Colors = useThemeColor();
+
   const source = {
     html: `${description}`,
   };
@@ -28,6 +31,7 @@ function ProductionFileSmallCard({
         <RenderHTML
           source={source}
           contentWidth={Dimensions.get('window').width * 0.7}
+          baseStyle={{color: Colors.text}}
         />
       </View>
     </View>

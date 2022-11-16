@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import {AOSImage, useTranslator} from '@aos-mobile/core';
-import {Text} from '@aos-mobile/ui';
+import {Text, useThemeColor} from '@aos-mobile/ui';
 
 interface ProductionFileLargeCardProps {
   imageId?: number;
@@ -14,6 +14,7 @@ function ProductionFileLargeCard({
   description,
 }: ProductionFileLargeCardProps) {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const source = {
     html: `${description}`,
@@ -34,6 +35,7 @@ function ProductionFileLargeCard({
         <RenderHTML
           source={source}
           contentWidth={Dimensions.get('window').width * 0.9}
+          baseStyle={{color: Colors.text}}
         />
       </View>
     </View>

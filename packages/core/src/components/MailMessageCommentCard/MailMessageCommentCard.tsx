@@ -64,6 +64,7 @@ const MailMessageCommentCard = ({
                 html: `${value}`,
               }}
               contentWidth={Dimensions.get('window').width * 0.6}
+              baseStyle={{color: Colors.text}}
             />
           </View>
         ) : (
