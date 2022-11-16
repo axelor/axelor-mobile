@@ -42,6 +42,7 @@ const MenuItemList = ({state, navigation}) => {
         key={route.key}
         title={getMenuTitle(menu, {I18n})}
         icon={menu.icon}
+        disabled={menu.disabled}
         onPress={onPress}
         isActive={focused}
       />

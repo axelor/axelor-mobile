@@ -56,6 +56,7 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
               <IconButton
                 key={_module.title}
                 icon={_module.icon}
+                disabled={_module.disabled}
                 color={_module === activeModule && '#76DCAE'}
                 onPress={() => handleModuleClick(_module.name)}
               />

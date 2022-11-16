@@ -2,11 +2,13 @@ export interface Module {
   name: string;
   title: string;
   icon: string;
+  disabled?: boolean;
   menus: {
     [screenKey: string]: {
       title: string;
       icon: string;
       screen: string;
+      disabled?: boolean;
     };
   };
   screens: {
