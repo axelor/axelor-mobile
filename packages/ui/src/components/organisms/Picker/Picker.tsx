@@ -1,17 +1,20 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Picker as ReactNativePicker} from '@react-native-picker/picker';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {Text} from '../../atoms';
-import {LabelText} from '../../molecules';
+import {Icon, Text} from '../../atoms';
+import {LabelText, SelectionContainer, RightIconButton} from '../../molecules';
 import {getFromList} from '../../../utils/list';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
 
 interface PickerProps {
   styleTxt?: any;
   title: string;
   onValueChange: (any) => void;
-  defaultValue: number | undefined;
+  defaultValue: string;
   listItems: any[];
   labelField: string;
   valueField: string;
@@ -26,7 +29,7 @@ const Picker = ({
   styleTxt,
   title,
   onValueChange,
-  defaultValue,
+  defaultValue = '',
   listItems,
   labelField,
   valueField,
@@ -36,26 +39,42 @@ const Picker = ({
   disabledValue = null,
   iconName = null,
 }: PickerProps) => {
+  const [pickerIsOpen, setPickerIsOpen] = useState(false);
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside(wrapperRef);
   const Colors = useThemeColor();
-  const [selectedValue, setSelectedValue] = useState(
-    defaultValue == null ? '' : defaultValue,
-  );
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+      setPickerIsOpen(false);
+    }
+  }, [clickOutside, pickerIsOpen]);
+
+  const togglePicker = () => {
+    setPickerIsOpen(current => !current);
+  };
 
   const handleValueChange = itemValue => {
-    setSelectedValue(itemValue);
-    onValueChange(
-      isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
-    );
+    setPickerIsOpen(false);
+    itemValue === null
+      ? onValueChange(
+          isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
+        )
+      : onValueChange(
+          isValueItem
+            ? getFromList(listItems, 'id', itemValue[valueField])
+            : itemValue[valueField],
+        );
   };
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.container}>
+    <View ref={wrapperRef}>
       {!disabled && (
         <View style={styles.titleContainer}>
-          <Text style={[styles.title, styleTxt]}>{title}</Text>
+          <Text style={styleTxt}>{title}</Text>
         </View>
       )}
       {disabled ? (
@@ -77,29 +96,37 @@ const Picker = ({
           />
         </View>
       ) : (
-        <View style={[commonStyles.filter, styles.pickerContainer]}>
-          {
-            <ReactNativePicker
-              style={styles.picker}
-              itemStyle={styles.pickerItem}
-              dropdownIconColor={Colors.secondaryColor_dark}
-              selectedValue={selectedValue}
-              onValueChange={handleValueChange}
-              mode="dropdown">
-              {emptyValue && <ReactNativePicker.Item label={''} value={null} />}
-              {listItems == null
-                ? null
-                : listItems.map(item => {
-                    return (
-                      <ReactNativePicker.Item
-                        key={item[valueField]}
-                        label={item[labelField]}
-                        value={item[valueField]}
-                      />
-                    );
-                  })}
-            </ReactNativePicker>
-          }
+        <View>
+          <RightIconButton
+            onPress={togglePicker}
+            icon={
+              <Icon name="chevron-down" color={Colors.secondaryColor_dark} />
+            }
+            title={
+              listItems.find(elt => elt[valueField] === defaultValue) !==
+              undefined
+                ? listItems.find(elt => elt[valueField] === defaultValue)[
+                    labelField
+                  ]
+                : ''
+            }
+            styleText={styles.styleTextButton}
+            style={[
+              commonStyles.filter,
+              commonStyles.filterSize,
+              commonStyles.filterAlign,
+              styles.rightIconButton,
+            ]}
+          />
+          {pickerIsOpen ? (
+            <SelectionContainer
+              emptyValue={emptyValue}
+              objectList={listItems}
+              displayValue={item => item.name}
+              handleSelect={handleValueChange}
+              isPicker={true}
+            />
+          ) : null}
         </View>
       )}
     </View>
@@ -109,26 +136,15 @@ const Picker = ({
 const getStyles = Colors =>
   StyleSheet.create({
     titleContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginHorizontal: 6,
+      marginHorizontal: 24,
     },
-    title: {
-      width: '90%',
-    },
-    container: {
-      alignSelf: 'center',
-    },
-    pickerContainer: {
+    rightIconButton: {
       width: Dimensions.get('window').width * 0.9,
+      borderColor: Colors.secondaryColor,
+      borderWidth: 1,
     },
-    pickerItem: {
-      backgroundColor: Colors.backgroundColor,
-      color: Colors.text,
-    },
-    picker: {
-      backgroundColor: Colors.backgroundColor,
+    styleTextButton: {
+      left: '-20%',
     },
     infosCard: {
       justifyContent: 'flex-start',

@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
@@ -23,8 +23,6 @@ const itemStyles = StyleSheet.create({
     flexDirection: 'row',
     position: 'relative',
     width: '104%',
-    left: -14,
-    top: -10,
     zIndex: 50,
   },
   text: {
@@ -38,63 +36,93 @@ interface SelectionContainerProps {
   objectList: any[];
   displayValue?: (any) => string;
   handleSelect?: (any) => void;
+  emptyValue?: boolean;
+  isPicker?: boolean;
 }
 
 const SelectionContainer = ({
   objectList,
   displayValue,
   handleSelect,
+  emptyValue = false,
+  isPicker = false,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
   const listLength =
     objectList != null && (objectList.length <= 5 ? objectList.length : 5);
 
   const styles = useMemo(
-    () => getStyles(Colors, listLength),
-    [Colors, listLength],
+    () => getStyles(Colors, listLength, emptyValue),
+    [Colors, listLength, emptyValue],
   );
 
   if (objectList == null || objectList.length === 0) {
     return null;
   }
 
+  const renderListItemContainerPicker = () => {
+    return (
+      <View>
+        {emptyValue ? (
+          <View>
+            <SelectionItem
+              key={'null'}
+              content={''}
+              onPress={() => handleSelect(null)}
+            />
+            <View style={styles.border} />
+          </View>
+        ) : null}
+        {renderListItemContainer()}
+      </View>
+    );
+  };
+
+  const renderListItemContainer = () => {
+    if (objectList == null || objectList.length === 0) {
+      return null;
+    }
+
+    const visibleObjects = isPicker ? objectList : objectList.slice(0, 5);
+
+    return visibleObjects.map((item, index) => (
+      <View key={'item' + index}>
+        <SelectionItem
+          key={item?.id.toString()}
+          content={displayValue(item)}
+          onPress={() => handleSelect(item)}
+        />
+        <View
+          key={'border' + index}
+          style={
+            index + 1 === objectList.length || (!isPicker && index + 1 === 5)
+              ? null
+              : styles.border
+          }
+        />
+      </View>
+    ));
+  };
+
   return (
     <View style={styles.flatListContainer}>
-      {objectList != null &&
-        objectList.length > 0 &&
-        objectList.slice(0, 5).map((item, index) => (
-          <View key={'item' + index}>
-            <SelectionItem
-              key={item?.id.toString()}
-              content={displayValue(item)}
-              onPress={() => handleSelect(item)}
-            />
-            <View
-              key={'border' + index}
-              style={
-                index + 1 === objectList.length || index + 1 === 5
-                  ? null
-                  : styles.border
-              }
-            />
-          </View>
-        ))}
+      <ScrollView>
+        {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
+      </ScrollView>
     </View>
   );
 };
 
-const getStyles = (Colors, listLength) =>
+const getStyles = (Colors, listLength, emptyValue) =>
   StyleSheet.create({
     flatListContainer: {
-      height: listLength * 40 + 5,
-      width: '91%',
+      height: emptyValue ? listLength * 40 + 45 : listLength * 40 + 5,
+      width: '90%',
       position: 'absolute',
-      top: '99%',
+      top: '95%',
       zIndex: 51,
       backgroundColor: Colors.backgroundColor,
-      marginHorizontal: 15,
-      paddingLeft: 15,
-      paddingVertical: 10,
+      marginLeft: 18,
       borderRadius: 10,
       borderColor: Colors.secondaryColor,
       borderWidth: 1,
@@ -106,7 +134,6 @@ const getStyles = (Colors, listLength) =>
       zIndex: 52,
       width: '104%',
       left: -14,
-      top: -10,
     },
   });
 

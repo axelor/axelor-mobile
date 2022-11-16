@@ -5,7 +5,9 @@ import {
   SwitchCard,
   useConfig,
   useTheme,
-  NextButton,
+  RightIconButton,
+  Icon,
+  useThemeColor,
 } from '@aos-mobile/ui';
 import {
   getTranslations,
@@ -27,6 +29,7 @@ const SettingsScreen = ({route}) => {
     toggleVirtualKeyboardConfig,
   } = useConfig();
   const language = useSelector(selectLanguage);
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const Theme = useTheme();
   const dispatch = useDispatch();
@@ -76,9 +79,10 @@ const SettingsScreen = ({route}) => {
         />
         {route.params.user == null ||
         route.params.user.group.code !== 'admins' ? null : (
-          <NextButton
-            style={styles.NextButton}
-            translation={I18n.t('User_SendTranslations')}
+          <RightIconButton
+            icon={<Icon name="chevron-right" color={Colors.primaryColor} />}
+            style={styles.RightIconButton}
+            title={I18n.t('User_SendTranslations')}
             onPress={handleSendTranslations}
           />
         )}
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  NextButton: {
+  RightIconButton: {
     width: Dimensions.get('window').width * 0.9,
     height: 40,
     marginLeft: 18,

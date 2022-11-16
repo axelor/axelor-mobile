@@ -8,6 +8,9 @@ import React, {
 } from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 
+export const OUTSIDE_INDICATOR = 'outside';
+export const INSIDE_INDICATOR = 'inside';
+
 const defaultOutsideAlerterContext = {
   ref: undefined,
   clickOutside: undefined,
@@ -36,7 +39,7 @@ const handleClickOutsideReducer = (ref, target) => {
   }
 
   if (ref._nativeTag === target._nativeTag) {
-    return 'inside';
+    return INSIDE_INDICATOR;
   }
 
   // check ref if one ref child has target._nativeTag
@@ -44,10 +47,12 @@ const handleClickOutsideReducer = (ref, target) => {
     const res = ref._children.map(child =>
       handleClickOutsideReducer(child, target),
     );
-    return res.find(r => r === 'inside') ? 'inside' : 'outside';
+    return res.find(r => r === INSIDE_INDICATOR)
+      ? INSIDE_INDICATOR
+      : OUTSIDE_INDICATOR;
   }
 
-  return 'outside';
+  return OUTSIDE_INDICATOR;
 };
 
 const outsideAlerterReducer = (state, action) => {

@@ -1,28 +1,29 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Card, Icon, Text} from '../../atoms';
+import {Card, Text} from '../../atoms';
 
-interface NextButtonProps {
+interface RightIconProps {
   style?: any;
+  styleText?: any;
   onPress: (any) => void;
-  translation?: string;
+  title?: string;
+  icon: React.ReactNode;
 }
 
-const NextButton = ({
+const RightIconButton = ({
   style,
+  styleText,
   onPress = () => {},
-  translation = null,
-}: NextButtonProps) => {
-  const Colors = useThemeColor();
-
+  title = null,
+  icon,
+}: RightIconProps) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
-        <Text style={styles.text} numberOfLines={2}>
-          {translation != null ? translation : 'Next'}
+        <Text style={[styleText, styles.text]} numberOfLines={2}>
+          {title != null ? title : ''}
         </Text>
-        <Icon name="chevron-right" color={Colors.primaryColor} />
+        {icon}
       </Card>
     </TouchableOpacity>
   );
@@ -46,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NextButton;
+export default RightIconButton;
