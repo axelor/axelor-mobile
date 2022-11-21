@@ -1,7 +1,6 @@
 import InventoryLineDetailsScreen from './InventoryLineDetailsScreen';
 import InventoryLineListScreen from './InventoryLineListScreen';
 import InventoryListScreen from './InventoryListScreen';
-import InventoryMailMessagesScreen from './InventoryMailMessagesScreen';
 import InventoryPlannedDetailsScreen from './InventoryPlannedDetailsScreen';
 import InventorySelectProductScreen from './InventorySelectProductScreen';
 import InventorySelectTrackingScreen from './InventorySelectTrackingScreen';
@@ -56,9 +55,5 @@ export default {
     options: {
       shadedHeader: false,
     },
-  },
-  InventoryMailMessagesScreen: {
-    title: 'Base_MailMessages',
-    component: InventoryMailMessagesScreen,
   },
 };

@@ -2,7 +2,6 @@ import CustomerDeliveryDetailScreen from './CustomerDeliveryDetailScreen';
 import CustomerDeliveryLineDetailScreen from './CustomerDeliveryLineDetailScreen';
 import CustomerDeliveryLineListScreen from './CustomerDeliveryLineListScreen';
 import CustomerDeliveryListScreen from './CustomerDeliveryListScreen';
-import CustomerDeliveryMailMessagesScreen from './CustomerDeliveryMailMessagesScreen';
 import CustomerDeliverySelectProductScreen from './CustomerDeliverySelectProductScreen';
 import CustomerDeliverySelectTrackingScreen from './CustomerDeliverySelectTrackingScreen';
 
@@ -48,9 +47,5 @@ export default {
     options: {
       shadedHeader: false,
     },
-  },
-  CustomerDeliveryMailMessagesScreen: {
-    title: 'Base_MailMessages',
-    component: CustomerDeliveryMailMessagesScreen,
   },
 };

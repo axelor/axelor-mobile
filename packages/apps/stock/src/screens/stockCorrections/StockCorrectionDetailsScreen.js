@@ -4,8 +4,6 @@ import {
   Badge,
   Button,
   HeaderContainer,
-  DropdownMenu,
-  DropdownMenuItem,
   Picker,
   PopUpOneButton,
   Screen,
@@ -13,7 +11,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  HeaderOptionsMenu,
+} from '@aos-mobile/core';
 import {QuantityCard, ProductCardInfo} from '../../components';
 import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -249,24 +252,14 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        if (mobileSettings?.isTrackerMessageOnStockApp) {
-          return (
-            <DropdownMenu>
-              <DropdownMenuItem
-                placeholder={I18n.t('Base_MailMessages')}
-                icon="bell"
-                onPress={() =>
-                  navigation.navigate('StockCorrectionMailMessagesScreen', {
-                    stockCorrectionId: route.params.stockCorrection?.id,
-                  })
-                }
-              />
-            </DropdownMenu>
-          );
-        }
-        return null;
-      },
+      headerRight: () => (
+        <HeaderOptionsMenu
+          model="com.axelor.apps.stock.db.StockCorrection"
+          modelId={route.params.stockCorrection?.id}
+          navigation={navigation}
+          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
+        />
+      ),
     });
   }, [I18n, mobileSettings, navigation, route.params.stockCorrection]);
 

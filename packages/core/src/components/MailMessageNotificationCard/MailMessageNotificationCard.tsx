@@ -10,6 +10,7 @@ import {
   Badge,
 } from '@aos-mobile/ui';
 import MailMessageNotificationType from '@aos-mobile/core/src/types/mail-message-notification-type';
+import MailMessageReadIcon from '../MailMessageReadIcon/MailMessageReadIcon';
 
 interface TagProps {
   title: string;
@@ -17,18 +18,24 @@ interface TagProps {
 }
 
 interface MailMessageNotificationCardProps {
+  relatedModel: string;
+  relatedId: number;
   title: string;
   tag?: TagProps;
   tracks?: any[];
+  flags?: any;
   style?: any;
 }
 
 const MAX_TRACK_ITEMS = 5;
 
 const MailMessageNotificationCard = ({
+  relatedModel,
+  relatedId,
   title,
   tag,
   tracks,
+  flags,
   style,
 }: MailMessageNotificationCardProps) => {
   const Colors = useThemeColor();
@@ -61,6 +68,13 @@ const MailMessageNotificationCard = ({
               />
             </View>
           )}
+          {flags != null && (
+            <MailMessageReadIcon
+              mailMessageFlag={flags}
+              model={relatedModel}
+              modelId={relatedId}
+            />
+          )}
         </View>
         {tracks && (
           <>
@@ -78,12 +92,13 @@ const MailMessageNotificationCard = ({
                         item.oldDisplayValue
                           ? item.oldDisplayValue
                           : item.oldValue
-                      } `}
+                      }`}
                     {(item.oldDisplayValue || item.oldValue) && (
                       <Icon
                         name="long-arrow-right"
                         size={10}
                         FontAwesome5={false}
+                        style={styles.arrowIcon}
                       />
                     )}
                     {item.displayValue ? item.displayValue : item.value}
@@ -106,6 +121,9 @@ const MailMessageNotificationCard = ({
 };
 
 const styles = StyleSheet.create({
+  arrowIcon: {
+    paddingHorizontal: 5,
+  },
   card: {
     width: '95%',
     paddingHorizontal: 20,
@@ -116,7 +134,12 @@ const styles = StyleSheet.create({
   },
   cardHeader: {
     flexDirection: 'row',
-    width: '100%',
+    width: '105%',
+  },
+  checkIcon: {
+    width: '10%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   listItem: {
     flexDirection: 'row',
@@ -132,17 +155,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   tagContainer: {
-    width: '40%',
+    width: '30%',
     flexDirection: 'row-reverse',
   },
   tagTxt: {
     fontSize: 12,
   },
   headerLabel: {
-    width: '60%',
+    flex: 1,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
   },
 });
 

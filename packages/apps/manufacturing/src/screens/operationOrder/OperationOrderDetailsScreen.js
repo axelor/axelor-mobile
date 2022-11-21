@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  DropdownMenu,
   DropdownMenuItem,
   HeaderContainer,
   LabelText,
@@ -13,6 +12,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  HeaderOptionsMenu,
 } from '@aos-mobile/core';
 import {OperationOrderDatesCard} from '../../components/molecules';
 import {OperationOrderHeader} from '../../components/organisms';
@@ -28,6 +28,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
@@ -75,7 +76,11 @@ function OperationOrderDetailsScreen({route, navigation}) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <DropdownMenu>
+        <HeaderOptionsMenu
+          model="com.axelor.apps.production.db.OperationOrder"
+          modelId={operationOrder?.id}
+          navigation={navigation}
+          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}>
           <DropdownMenuItem
             icon="folder-open"
             placeholder={I18n.t('Manufacturing_ProductionFile')}
@@ -85,27 +90,10 @@ function OperationOrderDetailsScreen({route, navigation}) {
               })
             }
           />
-          <DropdownMenuItem
-            placeholder={I18n.t('Stock_AttachedFiles')}
-            onPress={() =>
-              navigation.navigate('OperationOrderAttachedFilesScreen', {
-                operationOrderId: operationOrder?.id,
-              })
-            }
-          />
-          <DropdownMenuItem
-            placeholder={I18n.t('Base_MailMessages')}
-            icon="bell"
-            onPress={() =>
-              navigation.navigate('OperationOrderMailMessagesScreen', {
-                operationOrderId: operationOrder?.id,
-              })
-            }
-          />
-        </DropdownMenu>
+        </HeaderOptionsMenu>
       ),
     });
-  }, [I18n, navigation, operationOrder]);
+  }, [I18n, navigation, mobileSettings, operationOrder]);
 
   return (
     <Screen removeSpaceOnTop={true} loading={loadingOrder}>

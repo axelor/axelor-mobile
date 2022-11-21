@@ -16,6 +16,8 @@ const getApiResponseCode = response =>
 const getApiResponseMessage = response =>
   response?.data?.messageStatus || response?.statusTxt;
 
+const getApiResponseTotal = response => response?.data?.total || 0;
+
 export const getFirstData = data => {
   if (data instanceof Array) {
     return data[0];
@@ -70,10 +72,14 @@ export const handlerError = (
     });
 };
 
-const manageSucess = (response, {showToast = false, isArrayResponse}) => {
+const manageSucess = (
+  response,
+  {showToast = false, isArrayResponse, returnTotal = false},
+) => {
   const data = getApiResponseData(response, {isArrayResponse});
   const code = getApiResponseCode(response);
   const message = getApiResponseMessage(response);
+  const total = getApiResponseTotal(response);
 
   if (showToast) {
     Toast.show({
@@ -85,11 +91,12 @@ const manageSucess = (response, {showToast = false, isArrayResponse}) => {
     });
   }
 
-  return data;
+  return returnTotal ? total : data;
 };
 
-const handlerSuccess = ({showToast, isArrayResponse}) => {
-  return response => manageSucess(response, {showToast, isArrayResponse});
+const handlerSuccess = ({showToast, isArrayResponse, returnTotal}) => {
+  return response =>
+    manageSucess(response, {showToast, isArrayResponse, returnTotal});
 };
 
 interface ApiHandlerProps {
@@ -97,7 +104,11 @@ interface ApiHandlerProps {
   data: any;
   action: string;
   getState: () => any;
-  responseOptions?: {showToast?: boolean; isArrayResponse?: boolean};
+  responseOptions?: {
+    showToast?: boolean;
+    isArrayResponse?: boolean;
+    returnTotal?: boolean;
+  };
   errorOptions?: errorOptionsProps;
 }
 
@@ -111,10 +122,14 @@ export const handlerApiCall = ({
   data,
   action,
   getState,
-  responseOptions: {showToast = false, isArrayResponse = false},
+  responseOptions: {
+    showToast = false,
+    isArrayResponse = false,
+    returnTotal = false,
+  },
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess({showToast, isArrayResponse}));
+    .then(handlerSuccess({showToast, isArrayResponse, returnTotal}));
 };

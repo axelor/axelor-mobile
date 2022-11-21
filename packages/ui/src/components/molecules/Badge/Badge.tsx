@@ -5,7 +5,7 @@ import {Text} from '../../atoms';
 interface BadgeProps {
   style?: any;
   txtStyle?: any;
-  title: string;
+  title: string | number;
   color: string;
   numberOfLines?: number;
 }

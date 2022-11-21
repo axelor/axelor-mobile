@@ -10,10 +10,13 @@ import {
   ViewAllContainer,
   useThemeColor,
   Text,
-  DropdownMenu,
-  DropdownMenuItem,
 } from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  HeaderOptionsMenu,
+} from '@aos-mobile/core';
 import {NotesCard, ProductCardInfo} from '@aos-mobile/app-stock';
 import {
   ManufacturingOrderHeader,
@@ -113,24 +116,14 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        if (mobileSettings?.isTrackerMessageOnProductionApp) {
-          return (
-            <DropdownMenu>
-              <DropdownMenuItem
-                placeholder={I18n.t('Base_MailMessages')}
-                icon="bell"
-                onPress={() =>
-                  navigation.navigate('ManufacturingOrderMailMessagesScreen', {
-                    manufOrderId: manufOrder?.id,
-                  })
-                }
-              />
-            </DropdownMenu>
-          );
-        }
-        return null;
-      },
+      headerRight: () => (
+        <HeaderOptionsMenu
+          model="com.axelor.apps.production.db.ManufOrder"
+          modelId={manufOrder?.id}
+          navigation={navigation}
+          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
+        />
+      ),
     });
   }, [I18n, mobileSettings, navigation, manufOrder]);
 

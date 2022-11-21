@@ -3,8 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {
   Badge,
   Button,
-  DropdownMenu,
-  DropdownMenuItem,
   LabelText,
   PopUpOneButton,
   Screen,
@@ -15,7 +13,12 @@ import {
   MovementIndicationCard,
   Icon,
 } from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  HeaderOptionsMenu,
+} from '@aos-mobile/core';
 import {
   CustomerDeliveryLineCard,
   NotesCard,
@@ -107,24 +110,14 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        if (mobileSettings?.isTrackerMessageOnStockApp) {
-          return (
-            <DropdownMenu>
-              <DropdownMenuItem
-                placeholder={I18n.t('Base_MailMessages')}
-                icon="bell"
-                onPress={() =>
-                  navigation.navigate('CustomerDeliveryMailMessagesScreen', {
-                    customerDeliveryId: customerDelivery?.id,
-                  })
-                }
-              />
-            </DropdownMenu>
-          );
-        }
-        return null;
-      },
+      headerRight: () => (
+        <HeaderOptionsMenu
+          model="com.axelor.apps.stock.db.StockMove"
+          modelId={customerDelivery?.id}
+          navigation={navigation}
+          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
+        />
+      ),
     });
   }, [I18n, mobileSettings, navigation, customerDelivery]);
 

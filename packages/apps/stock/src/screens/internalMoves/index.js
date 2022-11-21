@@ -2,7 +2,6 @@ import InternalMoveDetailsGeneralScreen from './InternalMoveDetailsGeneralScreen
 import InternalMoveLineDetailsScreen from './InternalMoveLineDetailsScreen';
 import InternalMoveLineListScreen from './InternalMoveLineListScreen';
 import InternalMoveListScreen from './InternalMoveListScreen';
-import InternalMoveMailMessagesScreen from './InternalMoveMailMessagesScreen';
 import InternalMoveSelectFromLocationScreen from './InternalMoveSelectFromLocationScreen';
 import InternalMoveSelectProductScreen from './InternalMoveSelectProductScreen';
 import InternalMoveSelectToLocationScreen from './InternalMoveSelectToLocationScreen';
@@ -58,9 +57,5 @@ export default {
     options: {
       shadedHeader: false,
     },
-  },
-  InternalMoveMailMessagesScreen: {
-    title: 'Base_MailMessages',
-    component: InternalMoveMailMessagesScreen,
   },
 };

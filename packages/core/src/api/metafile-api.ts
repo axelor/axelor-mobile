@@ -12,9 +12,20 @@ const createCriteria = listFiles => {
   }
 };
 
-export async function fetchFileDetails(listFiles) {
+interface fetchFileDetailsProps {
+  listFiles: [any];
+  isMetaFile?: boolean;
+}
+
+export async function fetchFileDetails({
+  listFiles,
+  isMetaFile,
+}: fetchFileDetailsProps) {
+  const model = isMetaFile
+    ? 'com.axelor.meta.db.MetaFile'
+    : 'com.axelor.dms.db.DMSFile';
   return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.dms.db.DMSFile/search',
+    url: `/ws/rest/${model}/search`,
     data: {
       data: {
         criteria: [

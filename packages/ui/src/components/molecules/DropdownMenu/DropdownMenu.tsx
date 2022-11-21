@@ -22,7 +22,7 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
   }, [clickOutside, visible]);
 
   return (
-    <View ref={wrapperRef} style={styles.container}>
+    <View ref={wrapperRef}>
       <Icon
         name="ellipsis-v"
         color={Colors.primaryColor}
@@ -39,16 +39,9 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 13,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 15,
-  },
   menuContainer: {
     width: 255,
-    top: 45,
+    top: 30,
     right: -12,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -57,7 +50,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   action: {
-    margin: 5,
+    marginRight: 5,
+    marginLeft: 15,
   },
 });
 

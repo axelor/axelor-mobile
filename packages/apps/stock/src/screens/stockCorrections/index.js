@@ -1,6 +1,5 @@
 import StockCorrectionDetailsScreen from './StockCorrectionDetailsScreen';
 import StockCorrectionListScreen from './StockCorrectionListScreen';
-import StockCorrectionMailMessagesScreen from './StockCorrectionMailMessagesScreen';
 import StockCorrectionNewLocationScreen from './StockCorrectionNewLocationScreen';
 import StockCorrectionNewProductScreen from './StockCorrectionNewProductScreen';
 import StockCorrectionNewTrackingScreen from './StockCorrectionNewTrackingScreen';
@@ -31,9 +30,5 @@ export default {
   StockCorrectionNewTrackingScreen: {
     title: 'Stock_StockCorrection',
     component: StockCorrectionNewTrackingScreen,
-  },
-  StockCorrectionMailMessagesScreen: {
-    title: 'Base_MailMessages',
-    component: StockCorrectionMailMessagesScreen,
   },
 };

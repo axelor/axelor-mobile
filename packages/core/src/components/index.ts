@@ -2,12 +2,14 @@ export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesVie
 export {default as AOSImage} from './AOSImage/AOSImage';
 export {default as CameraScanner} from './CameraScanner/CameraScanner';
 export {default as ErrorText} from './ErrorText/ErrorText';
+export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
 export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
 export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
 export {default as MailMessageNotificationCard} from './MailMessageNotificationCard/MailMessageNotificationCard';
+export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PasswordInput} from './PasswordInput/PasswordInput';
 export {default as Scanner} from './Scanner/Scanner';

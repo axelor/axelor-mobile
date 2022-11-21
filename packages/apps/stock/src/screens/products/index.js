@@ -1,9 +1,7 @@
-import ProductAttachedFilesScreen from './ProductAttachedFilesScreen';
 import ProductDetailsScreen from './ProductDetailsScreen';
 import ProductImageScreen from './ProductImageScreen';
 import ProductListScreen from './ProductListScreen';
 import ProductListVariantScreen from './ProductListVariantScreen';
-import ProductMailMessagesScreen from './ProductMailMessagesScreen';
 import ProductStockDetailsScreen from './ProductStockDetailsScreen';
 import ProductStockLocationDetailsScreen from './ProductStockLocationDetailsScreen';
 
@@ -37,16 +35,5 @@ export default {
   ProductListVariantScreen: {
     title: 'Stock_Variants',
     component: ProductListVariantScreen,
-  },
-  ProductAttachedFilesScreen: {
-    title: 'Stock_Product',
-    component: ProductAttachedFilesScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  ProductMailMessagesScreen: {
-    title: 'Base_MailMessages',
-    component: ProductMailMessagesScreen,
   },
 };

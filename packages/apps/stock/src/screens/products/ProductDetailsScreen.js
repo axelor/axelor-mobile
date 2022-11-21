@@ -1,14 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuItem,
-  Screen,
-  ScrollView,
-  Text,
-} from '@aos-mobile/ui';
-import {useTranslator, useSelector} from '@aos-mobile/core';
+import {Button, Screen, ScrollView, Text} from '@aos-mobile/ui';
+import {useTranslator, useSelector, HeaderOptionsMenu} from '@aos-mobile/core';
 import {
   NotesCard,
   ProductCharacteristics,
@@ -30,27 +23,13 @@ const ProductDetailsScreen = ({route, navigation}) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <DropdownMenu>
-          <DropdownMenuItem
-            placeholder={I18n.t('Stock_AttachedFiles')}
-            onPress={() =>
-              navigation.navigate('ProductAttachedFilesScreen', {
-                product: product,
-              })
-            }
-          />
-          {mobileSettings.isTrackerMessageOnStockApp && (
-            <DropdownMenuItem
-              placeholder={I18n.t('Base_MailMessages')}
-              icon="bell"
-              onPress={() =>
-                navigation.navigate('ProductMailMessagesScreen', {
-                  productId: product?.id,
-                })
-              }
-            />
-          )}
-        </DropdownMenu>
+        <HeaderOptionsMenu
+          model="com.axelor.apps.base.db.Product"
+          modelId={product.id}
+          navigation={navigation}
+          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
+          attachedFileScreenTitle={product.name}
+        />
       ),
     });
   }, [I18n, mobileSettings, navigation, product]);

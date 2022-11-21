@@ -22,6 +22,8 @@ import BackIcon from './drawer/BackIcon';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMenuConfig} from '../features/menuConfigSlice';
 import {fetchMobileConfig} from '../features/mobileConfigSlice';
+import AttachedFilesScreen from '../screens/AttachedFilesScreen';
+import MailMessageScreen from '../screens/MailMessageScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -71,10 +73,22 @@ const Navigator = ({modules, mainMenu}) => {
 
   const modulesScreens = useMemo(
     () =>
-      modules.reduce(
-        (screens, module) => ({...screens, ...module.screens}),
-        {},
-      ),
+      modules.reduce((screens, module) => ({...screens, ...module.screens}), {
+        AttachedFilesScreen: {
+          title: 'Base_AttachedFiles',
+          component: AttachedFilesScreen,
+          options: {
+            shadedHeader: false,
+          },
+        },
+        MailMessageScreen: {
+          title: 'Base_MailMessages',
+          component: MailMessageScreen,
+          options: {
+            shadedHeader: false,
+          },
+        },
+      }),
     [modules],
   );
 

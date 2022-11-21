@@ -17,9 +17,20 @@ import {
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import useTranslator from '../../i18n/hooks/use-translator';
-import {getAttachedFiles} from '../../features/attachedFilesSlice';
+import {
+  getAttachedFiles,
+  getAttachedFilesDetails,
+} from '../../features/attachedFilesSlice';
 
-function AttachedFilesView({model, modelId}) {
+function AttachedFilesView({
+  files,
+  model,
+  modelId,
+  isStaticList = false,
+  isMetaFile = false,
+  screenTitle,
+  navigation,
+}) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
@@ -40,7 +51,9 @@ function AttachedFilesView({model, modelId}) {
     if (File.getFileExtension(item.fileName) === 'png') {
       setVisible(true);
       setImage({
-        uri: `${baseUrl}ws/dms/download/${item?.id}`,
+        uri: isMetaFile
+          ? `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${item?.id}/content/download`
+          : `${baseUrl}ws/dms/download/${item?.id}`,
       });
     }
   };
@@ -57,7 +70,9 @@ function AttachedFilesView({model, modelId}) {
     }
     const localFile = `${RNFS.DocumentDirectoryPath}/${item?.fileName}`;
     const options = {
-      fromUrl: `${baseUrl}ws/dms/inline/${item?.id}`,
+      fromUrl: isMetaFile
+        ? `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${item?.id}/content/download`
+        : `${baseUrl}ws/dms/inline/${item?.id}`,
       toFile: localFile,
       headers: {
         Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`,
@@ -80,12 +95,17 @@ function AttachedFilesView({model, modelId}) {
 
   const fetchFilesAPI = useCallback(() => {
     dispatch(
-      getAttachedFiles({
-        model,
-        modelId,
-      }),
+      isStaticList
+        ? getAttachedFilesDetails({
+            listFiles: files,
+            isMetaFile: true,
+          })
+        : getAttachedFiles({
+            model,
+            modelId,
+          }),
     );
-  }, [dispatch, model, modelId]);
+  }, [dispatch, isStaticList, files, model, modelId]);
 
   const desactivateChip = () => {
     setSelectedExtension(null);
@@ -117,6 +137,14 @@ function AttachedFilesView({model, modelId}) {
     [filterOnSelectExtension, attachedFilesList],
   );
 
+  React.useLayoutEffect(() => {
+    if (screenTitle) {
+      navigation.setOptions({
+        headerTitle: screenTitle,
+      });
+    }
+  }, [navigation, screenTitle]);
+
   useEffect(() => {
     setExtensionList(
       Array.from(
@@ -125,7 +153,7 @@ function AttachedFilesView({model, modelId}) {
         ),
       ),
     );
-  }, [attachedFilesList]);
+  }, [files, attachedFilesList]);
 
   return (
     <Screen removeSpaceOnTop={true}>

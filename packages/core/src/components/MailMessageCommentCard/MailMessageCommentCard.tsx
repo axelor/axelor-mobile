@@ -1,23 +1,41 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
+import {
+  Card,
+  getCommonStyles,
+  Icon,
+  LabelText,
+  Text,
+  useThemeColor,
+} from '@aos-mobile/ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 import RenderHTML from 'react-native-render-html';
 import {isHtml} from '../../utils/string';
+import {MailMessageReadIcon} from '../../components';
 
 interface MailMessageCommentCardProps {
+  relatedModel: string;
+  relatedId: number;
   subject?: string;
+  files: [any];
   value: string;
+  flags?: any;
   style?: any;
+  navigation?: any;
 }
 
 const MAX_TEXT_LINES = 5;
 const MAX_HEIGHT = 150;
 
 const MailMessageCommentCard = ({
+  relatedModel,
+  relatedId,
   subject,
+  files,
   value,
+  flags,
   style,
+  navigation,
 }: MailMessageCommentCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -26,15 +44,26 @@ const MailMessageCommentCard = ({
   const [numOfLines, setNumOfLines] = useState(MAX_TEXT_LINES);
   const [htmlContentHeight, setHtmlContentHeight] = useState();
 
-  const handleTextLayout = event => {
+  const handleTextLayout = useCallback(event => {
     setNumOfLines(event.nativeEvent.lines.length);
-  };
+  }, []);
 
-  const handleHtmlContainerLayout = event => {
-    if (!htmlContentHeight) {
-      setHtmlContentHeight(event?.nativeEvent?.layout?.height);
-    }
-  };
+  const handleHtmlContainerLayout = useCallback(
+    event => {
+      if (!htmlContentHeight) {
+        setHtmlContentHeight(event?.nativeEvent?.layout?.height);
+      }
+    },
+    [htmlContentHeight],
+  );
+
+  const handleCommentAttachedFilesPress = useCallback(() => {
+    navigation.navigate('AttachedFilesScreen', {
+      files: files,
+    });
+  }, [navigation, files]);
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const styles = useMemo(
     () => getStyles(numOfLines, htmlContentHeight, more),
@@ -42,74 +71,122 @@ const MailMessageCommentCard = ({
   );
 
   return (
-    <TouchableOpacity
-      onPress={() => setMore(!more)}
-      disabled={numOfLines < MAX_TEXT_LINES}
-      activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <LabelText
-          iconName="comment"
-          size={18}
-          value={subject || I18n.t('Base_Comment')}
-          style={styles.headerLabel}
-          textStyle={styles.title}
-          color={Colors.primaryColor}
-        />
-        {isHtml(value) ? (
-          <View
-            style={styles.htmlContainer}
-            onLayout={!htmlContentHeight && handleHtmlContainerLayout}>
-            <RenderHTML
-              source={{
-                html: `${value}`,
-              }}
-              contentWidth={Dimensions.get('window').width * 0.6}
-              baseStyle={{color: Colors.text}}
+    <View style={[styles.container, style]}>
+      <TouchableOpacity
+        onPress={() => setMore(!more)}
+        disabled={numOfLines < MAX_TEXT_LINES}
+        activeOpacity={0.9}
+        style={styles.cardContainer}>
+        <Card style={styles.card}>
+          <View style={styles.cardHeader}>
+            <LabelText
+              iconName="comment"
+              size={18}
+              value={subject || I18n.t('Base_Comment')}
+              style={styles.headerLabel}
+              textStyle={styles.title}
+              color={Colors.primaryColor}
             />
+            {flags != null && (
+              <MailMessageReadIcon
+                mailMessageFlag={flags}
+                model={relatedModel}
+                modelId={relatedId}
+              />
+            )}
           </View>
-        ) : (
-          <Text
-            numberOfLines={more ? numOfLines : MAX_TEXT_LINES}
-            style={styles.text}
-            onTextLayout={handleTextLayout}>
-            {value}
-          </Text>
-        )}
-        {(numOfLines > MAX_TEXT_LINES ||
-          (htmlContentHeight && htmlContentHeight > MAX_HEIGHT)) && (
-          <Icon
-            name={more ? 'chevron-up' : 'chevron-down'}
-            color={Colors.primaryColor}
-            style={styles.moreIcon}
-          />
-        )}
-      </Card>
-    </TouchableOpacity>
+          {isHtml(value) ? (
+            <View
+              style={styles.htmlContainer}
+              onLayout={!htmlContentHeight && handleHtmlContainerLayout}>
+              <RenderHTML
+                source={{
+                  html: `${value}`,
+                }}
+                contentWidth={Dimensions.get('window').width * 0.6}
+              />
+            </View>
+          ) : (
+            <Text
+              numberOfLines={more ? numOfLines : MAX_TEXT_LINES}
+              style={styles.text}
+              onTextLayout={handleTextLayout}>
+              {value}
+            </Text>
+          )}
+          {(numOfLines > MAX_TEXT_LINES ||
+            (htmlContentHeight && htmlContentHeight > MAX_HEIGHT)) && (
+            <Icon
+              name={more ? 'chevron-up' : 'chevron-down'}
+              color={Colors.primaryColor}
+              style={styles.moreIcon}
+            />
+          )}
+        </Card>
+      </TouchableOpacity>
+      {files.length > 0 && (
+        <View style={styles.actionContainer}>
+          <TouchableOpacity
+            style={[commonStyles.filter, styles.action]}
+            onPress={handleCommentAttachedFilesPress}
+            activeOpacity={0.9}>
+            <Icon name="paperclip" size={20} />
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
   );
 };
 
 const getStyles = (numOfLines, htmlContentHeight, more) =>
   StyleSheet.create({
-    container: {
-      width: '95%',
+    action: {
+      maxHeight: 80,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 0,
+      padding: 10,
+    },
+    actionContainer: {
+      width: '15%',
+      flex: 2,
+    },
+    card: {
+      width: '100%',
       paddingHorizontal: 20,
       paddingRight: 25,
       paddingVertical: 10,
       paddingBottom: numOfLines > MAX_TEXT_LINES ? 5 : 10,
-      margin: 5,
       overflow: 'hidden',
     },
+    cardContainer: {
+      flex: 10,
+      marginRight: 5,
+    },
+    cardHeader: {
+      width: '105%',
+      flexDirection: 'row',
+    },
+    container: {
+      width: '95%',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      margin: 5,
+    },
     headerLabel: {
-      width: '100%',
+      flex: 1,
     },
     htmlContainer: {
       width: '100%',
       overflow: 'hidden',
       height:
         htmlContentHeight &&
-        (htmlContentHeight > MAX_HEIGHT && more
-          ? htmlContentHeight
-          : MAX_HEIGHT),
+        (htmlContentHeight > MAX_HEIGHT
+          ? more
+            ? htmlContentHeight
+            : MAX_HEIGHT
+          : htmlContentHeight),
     },
     icon: {
       alignItems: 'flex-start',
@@ -125,7 +202,7 @@ const getStyles = (numOfLines, htmlContentHeight, more) =>
       marginVertical: 5,
     },
     title: {
-      fontSize: 18,
+      fontSize: 16,
     },
   });
 

@@ -17,14 +17,18 @@ const MailMessageCard = ({
   body,
   eventText,
   eventTime,
+  files,
   style,
   subject,
   title,
   type,
+  flags,
+  navigation,
+  relatedId,
+  relatedModel,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
   const {baseUrl} = useSelector(state => state.auth);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -50,13 +54,24 @@ const MailMessageCard = ({
           )}`}
         </Text>
         {type === mailMessageTypes.comment && (
-          <MailMessageCommentCard subject={subject} value={body} />
+          <MailMessageCommentCard
+            subject={subject}
+            files={files}
+            value={body}
+            flags={flags}
+            navigation={navigation}
+            relatedId={relatedId}
+            relatedModel={relatedModel}
+          />
         )}
         {type === mailMessageTypes.notificaiton && (
           <MailMessageNotificationCard
             title={title}
             tracks={JSON.parse(body ?? '{}').tracks}
             tag={JSON.parse(body ?? '{}').tags[0]}
+            flags={flags}
+            relatedId={relatedId}
+            relatedModel={relatedModel}
           />
         )}
       </View>
