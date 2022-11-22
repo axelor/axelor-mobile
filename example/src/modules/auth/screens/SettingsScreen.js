@@ -80,7 +80,12 @@ const SettingsScreen = ({route}) => {
         {route.params.user == null ||
         route.params.user.group.code !== 'admins' ? null : (
           <RightIconButton
-            icon={<Icon name="chevron-right" color={Colors.primaryColor} />}
+            icon={
+              <Icon
+                name="chevron-right"
+                color={Colors.primaryColor.background}
+              />
+            }
             style={styles.RightIconButton}
             title={I18n.t('User_SendTranslations')}
             onPress={handleSendTranslations}

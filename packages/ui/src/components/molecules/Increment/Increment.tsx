@@ -69,7 +69,7 @@ const Increment = ({
       <Icon
         name="minus"
         size={24}
-        color={Colors.primaryColor}
+        color={Colors.primaryColor.background}
         touchable={true}
         onPress={handleMinus}
         style={styles.container_icon}
@@ -86,7 +86,7 @@ const Increment = ({
       <Icon
         name="plus"
         size={24}
-        color={Colors.primaryColor}
+        color={Colors.primaryColor.background}
         touchable={true}
         onPress={handlePlus}
         style={styles.container_icon}
@@ -109,7 +109,7 @@ const getStyles = Colors =>
       marginHorizontal: 8,
       padding: 2,
       paddingHorizontal: 5,
-      borderColor: Colors.secondaryColor,
+      borderColor: Colors.secondaryColor.background,
       borderWidth: 0.5,
       borderRadius: 10,
     },
@@ -120,7 +120,7 @@ const getStyles = Colors =>
     },
     inputLine: {
       borderStyle: 'dashed',
-      borderBottomColor: Colors.secondaryColor,
+      borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,
     },

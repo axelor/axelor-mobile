@@ -82,8 +82,8 @@ const InputBarCodeCard = ({
           onPress={() => setCamScan(true)}
           color={
             isEnabled && scanKey === scanKeySearch
-              ? Colors.primaryColor
-              : Colors.secondaryColor_dark
+              ? Colors.primaryColor.background
+              : Colors.secondaryColor_dark.background
           }
         />
       </Card>

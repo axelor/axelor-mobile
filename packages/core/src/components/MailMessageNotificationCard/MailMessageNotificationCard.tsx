@@ -54,7 +54,7 @@ const MailMessageNotificationCard = ({
             value={title}
             style={styles.headerLabel}
             textStyle={styles.title}
-            color={Colors.primaryColor}
+            color={Colors.primaryColor.background}
           />
           {tag && (
             <View style={styles.tagContainer}>
@@ -109,7 +109,7 @@ const MailMessageNotificationCard = ({
             {tracks.length > MAX_TRACK_ITEMS && (
               <Icon
                 name={moreItems ? 'chevron-up' : 'chevron-down'}
-                color={Colors.primaryColor}
+                color={Colors.primaryColor.background}
                 style={styles.moreIcon}
               />
             )}

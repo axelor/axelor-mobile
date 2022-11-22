@@ -4,12 +4,8 @@ import {Badge, Icon, useThemeColor} from '@aos-mobile/ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;
-  indicator?: number;
   FontAwesome5?: boolean;
-  disabled?: boolean;
-  size?: number;
-  badgeSize?: number;
-  badgeBorderColor?: string;
+  indicator?: number;
   hideIf: boolean;
   onPress: () => void;
 }
@@ -17,19 +13,12 @@ interface HeaderOptionMenuItemProps {
 const HeaderOptionMenuItem = ({
   icon,
   indicator = 0,
-  size = 22,
   FontAwesome5 = true,
-  disabled = false,
-  badgeSize = 16,
-  badgeBorderColor,
   hideIf = false,
   onPress,
 }: HeaderOptionMenuItemProps) => {
   const Colors = useThemeColor();
-  const styles = useMemo(
-    () => getStyles(badgeBorderColor || Colors.primaryColor, badgeSize),
-    [badgeBorderColor, badgeSize, Colors.primaryColor],
-  );
+  const styles = useMemo(() => getStyles(16), []);
 
   if (hideIf) {
     return null;
@@ -39,14 +28,17 @@ const HeaderOptionMenuItem = ({
     <TouchableOpacity
       style={styles.container}
       onPress={onPress}
-      disabled={disabled}
       activeOpacity={0.7}>
-      <Icon name={icon} FontAwesome5={FontAwesome5} size={size} />
+      <Icon name={icon} FontAwesome5={FontAwesome5} size={22} />
       {indicator > 0 && (
         <Badge
           style={styles.badge}
           txtStyle={styles.badgeText}
-          color={Colors.backgroundColor}
+          color={{
+            background_light: Colors.backgroundColor,
+            foreground: Colors.text,
+            background: Colors.primaryColor.background,
+          }}
           title={indicator}
         />
       )}
@@ -54,21 +46,19 @@ const HeaderOptionMenuItem = ({
   );
 };
 
-const getStyles = (badgeBorderColor, size) =>
+const getStyles = badgeSize =>
   StyleSheet.create({
     badge: {
-      width: size,
-      height: size,
-      borderColor: badgeBorderColor,
-      borderWidth: 2,
-      borderRadius: Math.ceil(size / 2),
+      width: badgeSize,
+      height: badgeSize,
+      borderRadius: Math.ceil(badgeSize / 2),
       position: 'absolute',
       top: -4,
       right: -8,
       zIndex: 10,
     },
     badgeText: {
-      fontSize: Math.ceil(size / 2),
+      fontSize: Math.ceil(badgeSize / 2),
     },
     container: {
       marginRight: 5,

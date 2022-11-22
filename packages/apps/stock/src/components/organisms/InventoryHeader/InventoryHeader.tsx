@@ -39,7 +39,7 @@ const InventoryHeader = ({
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={Inventory.getStatusColor(status, Colors).backgroundColor}
+          color={Inventory.getStatusColor(status, Colors)}
           title={Inventory.getStatus(status, I18n)}
         />
       </View>

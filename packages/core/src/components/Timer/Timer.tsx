@@ -59,7 +59,7 @@ const getStyles = Colors =>
     text: {
       fontSize: 36,
       fontWeight: 'bold',
-      color: Colors.secondaryColor_dark,
+      color: Colors.secondaryColor_dark.background,
     },
   });
 

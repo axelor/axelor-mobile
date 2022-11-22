@@ -26,7 +26,7 @@ const InventoryCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    return getStyles(Inventory.getStatusColor(status, Colors).borderColor)
+    return getStyles(Inventory.getStatusColor(status, Colors).background)
       ?.border;
   }, [Colors, status]);
 
@@ -73,7 +73,7 @@ const InventoryCard = ({
         </View>
         <Icon
           name="chevron-right"
-          color={Colors.secondaryColor_light}
+          color={Colors.secondaryColor.background_light}
           size={20}
         />
       </Card>

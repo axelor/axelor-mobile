@@ -18,7 +18,7 @@ const getStyles = Colors =>
       borderStyle: 'dotted',
       height: 35,
       borderLeftWidth: 2,
-      borderColor: Colors.secondaryColor_dark,
+      borderColor: Colors.secondaryColor_dark.background,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',

@@ -16,7 +16,10 @@ function LoadingIndicator() {
       <View style={styles.view}>
         <View style={styles.greyCard} />
         <Card style={styles.loadingIndicatorCard}>
-          <ActivityIndicator size="large" color={Colors.primaryColor} />
+          <ActivityIndicator
+            size="large"
+            color={Colors.primaryColor.background}
+          />
         </Card>
       </View>
     );

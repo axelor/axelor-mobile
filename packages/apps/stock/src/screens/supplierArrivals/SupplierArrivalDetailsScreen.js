@@ -151,7 +151,9 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
           titleTop={supplierArrival.fromAddress?.fullName}
           iconTop={<Icon name="map-marker-alt" />}
           titleDown={supplierArrival.toStockLocation?.name}
-          iconDown={<Icon name="warehouse" color={Colors.primaryColor} />}
+          iconDown={
+            <Icon name="warehouse" color={Colors.primaryColor.background} />
+          }
           disabledTop={false}
           onPressTitleTop={() => setVisiblePopup(true)}
         />

@@ -1,4 +1,4 @@
-import {ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@aos-mobile/ui';
 import {TranslatorProps} from '@aos-mobile/core';
 
 class StockMove {
@@ -35,36 +35,21 @@ class StockMove {
     }
   };
 
-  static getStatusColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Draft:
-        return {
-          backgroundColor: Colors.secondaryColor_light,
-          borderColor: Colors.secondaryColor,
-        };
+        return Colors.secondaryColor;
       case this.status.Planned:
-        return {
-          backgroundColor: Colors.plannedColor_light,
-          borderColor: Colors.plannedColor,
-        };
+        return Colors.plannedColor;
       case this.status.Realized:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       case this.status.Canceled:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by stock move`,
         );
-        return {};
+        return null;
     }
   };
 
@@ -95,28 +80,19 @@ class StockMove {
   static getAvailabilityColor = (
     availability: number,
     Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  ): Color => {
     switch (availability) {
       case this.availability.Available:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       case this.availability.Partially_available:
-        return {
-          backgroundColor: Colors.cautionColor_light,
-          borderColor: Colors.cautionColor,
-        };
+        return Colors.cautionColor;
       case this.availability.Unavailable:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Availability provided with value ${availability} is not supported by stock move`,
         );
-        return {};
+        return null;
     }
   };
 

@@ -204,14 +204,14 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
                   parseFloat(supplierArrivalLine.realQty) && (
                   <Badge
                     title={I18n.t('Stock_Status_Incomplete')}
-                    color={Colors.cautionColor_light}
+                    color={Colors.cautionColor}
                   />
                 )}
                 {parseFloat(supplierArrivalLine.qty) ===
                   parseFloat(supplierArrivalLine.realQty) && (
                   <Badge
                     title={I18n.t('Stock_Status_Complete')}
-                    color={Colors.primaryColor_light}
+                    color={Colors.primaryColor}
                   />
                 )}
               </View>

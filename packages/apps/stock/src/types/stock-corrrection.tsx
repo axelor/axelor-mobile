@@ -1,4 +1,4 @@
-import {ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@aos-mobile/ui';
 import {TranslatorProps} from '@aos-mobile/core';
 
 class StockCorrection {
@@ -21,26 +21,17 @@ class StockCorrection {
     }
   };
 
-  static getStatusColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Draft:
-        return {
-          backgroundColor: Colors.secondaryColor_light,
-          borderColor: Colors.secondaryColor,
-        };
+        return Colors.secondaryColor;
       case this.status.Validated:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by stock correction`,
         );
-        return {};
+        return null;
     }
   };
 }

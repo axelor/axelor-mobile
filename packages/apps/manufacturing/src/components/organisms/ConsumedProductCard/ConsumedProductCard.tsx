@@ -33,15 +33,15 @@ const ConsumedProductCard = ({
 
   const borderStyle = useMemo(() => {
     if (missingQty > 0) {
-      return getBorderStyles(Colors.errorColor)?.border;
+      return getBorderStyles(Colors.errorColor.background)?.border;
     } else if (
       consumedQty == null ||
       consumedQty === 0 ||
       plannedQty > consumedQty
     ) {
-      return getBorderStyles(Colors.plannedColor)?.border;
+      return getBorderStyles(Colors.plannedColor.background)?.border;
     } else {
-      return getBorderStyles(Colors.primaryColor)?.border;
+      return getBorderStyles(Colors.primaryColor.background)?.border;
     }
   }, [Colors, consumedQty, missingQty, plannedQty]);
 
@@ -54,7 +54,7 @@ const ConsumedProductCard = ({
             <Badge
               title={`+ ${increment.addedQty}`}
               style={styles.badge}
-              color={Colors.priorityColor_light}
+              color={Colors.priorityColor}
               txtStyle={styles.badgeInfos}
             />
           )}
@@ -84,9 +84,9 @@ const ConsumedProductCard = ({
           color={
             availableQty > 0
               ? missingQty > 0
-                ? Colors.cautionColor_light
-                : Colors.primaryColor_light
-              : Colors.errorColor_light
+                ? Colors.cautionColor
+                : Colors.primaryColor
+              : Colors.errorColor
           }
           title={
             availableQty > 0

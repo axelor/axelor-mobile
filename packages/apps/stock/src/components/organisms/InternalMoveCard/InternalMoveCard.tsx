@@ -31,7 +31,7 @@ const InternalMoveCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const borderStyle = useMemo(() => {
-    return getStyles(StockMove.getStatusColor(status, Colors).borderColor)
+    return getStyles(StockMove.getStatusColor(status, Colors).background)
       ?.border;
   }, [Colors, status]);
 
@@ -74,16 +74,13 @@ const InternalMoveCard = ({
         <View style={styles.rightContainer}>
           {availability != null && (
             <Badge
-              color={
-                StockMove.getAvailabilityColor(availability, Colors)
-                  .backgroundColor
-              }
+              color={StockMove.getAvailabilityColor(availability, Colors)}
               title={StockMove.getAvailability(availability, I18n)}
             />
           )}
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

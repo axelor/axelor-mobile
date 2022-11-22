@@ -1,14 +1,16 @@
 import React, {useRef, useState, useContext} from 'react';
 import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useThemeColor} from '@aos-mobile/ui';
 import {ModuleNavigatorContext} from '../Navigator';
-import IconButton from './IconButton';
+import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
 import {moduleHasMenus} from '../module.helper';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
@@ -53,11 +55,15 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
         <View style={styles.appIconsContainer}>
           {modules.filter(moduleHasMenus).map(_module => (
             <View key={_module.name} style={styles.menuItemContainer}>
-              <IconButton
+              <MenuIconButton
                 key={_module.title}
                 icon={_module.icon}
                 disabled={_module.disabled}
-                color={_module === activeModule && '#76DCAE'}
+                color={
+                  _module === activeModule
+                    ? Colors.primaryColor.background_light
+                    : null
+                }
                 onPress={() => handleModuleClick(_module.name)}
               />
             </View>

@@ -261,7 +261,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             <View style={styles.button_container}>
               <Button
                 title={I18n.t('Base_Realize')}
-                color={Colors.secondaryColor_light}
+                color={Colors.secondaryColor}
                 onPress={handleRealize}
               />
               <Button

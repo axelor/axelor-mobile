@@ -28,9 +28,9 @@ const SupplierArrivalLineCard = ({
 
   const borderStyle = useMemo(() => {
     if (askedQty <= deliveredQty) {
-      return getStyles(Colors.primaryColor)?.border;
+      return getStyles(Colors.primaryColor.background)?.border;
     } else {
-      return getStyles(Colors.cautionColor)?.border;
+      return getStyles(Colors.cautionColor.background)?.border;
     }
   }, [Colors, askedQty, deliveredQty]);
 
@@ -65,7 +65,7 @@ const SupplierArrivalLineCard = ({
         <View style={styles.rightContainer}>
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

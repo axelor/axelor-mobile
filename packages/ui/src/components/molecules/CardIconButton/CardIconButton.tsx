@@ -6,14 +6,14 @@ import {Icon} from '../../atoms';
 interface CardIconButtonProps {
   style?: any;
   iconName: string;
-  color: string;
+  iconColor: string;
   onPress: (any) => void;
 }
 
 const CardIconButton = ({
   style,
   iconName,
-  color,
+  iconColor,
   onPress = () => {},
 }: CardIconButtonProps) => {
   const Colors = useThemeColor();
@@ -25,7 +25,7 @@ const CardIconButton = ({
       style={[styles.container, style]}
       onPress={onPress}
       activeOpacity={0.4}>
-      <Icon size={20} name={iconName} color={color} />
+      <Icon size={20} name={iconName} color={iconColor} />
     </TouchableOpacity>
   );
 };

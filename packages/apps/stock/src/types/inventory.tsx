@@ -1,4 +1,4 @@
-import {ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@aos-mobile/ui';
 import {TranslatorProps} from '@aos-mobile/core';
 
 class Inventory {
@@ -35,46 +35,25 @@ class Inventory {
     }
   };
 
-  static getStatusColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Draft:
-        return {
-          backgroundColor: Colors.secondaryColor_light,
-          borderColor: Colors.secondaryColor,
-        };
+        return Colors.secondaryColor;
       case this.status.Planned:
-        return {
-          backgroundColor: Colors.plannedColor_light,
-          borderColor: Colors.plannedColor,
-        };
+        return Colors.plannedColor;
       case this.status.InProgress:
-        return {
-          backgroundColor: Colors.progressColor_light,
-          borderColor: Colors.progressColor,
-        };
+        return Colors.progressColor;
       case this.status.Completed:
-        return {
-          backgroundColor: Colors.priorityColor_light,
-          borderColor: Colors.priorityColor,
-        };
+        return Colors.priorityColor;
       case this.status.Validated:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       case this.status.Canceled:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by inventory`,
         );
-        return {};
+        return null;
     }
   };
 

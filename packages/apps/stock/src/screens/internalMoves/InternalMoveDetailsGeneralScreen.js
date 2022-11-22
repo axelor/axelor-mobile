@@ -7,8 +7,8 @@ import {
   MovementIndicationCard,
   Screen,
   ScrollView,
-  useThemeColor,
   ViewAllContainer,
+  useThemeColor,
 } from '@aos-mobile/ui';
 import {
   useDispatch,
@@ -106,7 +106,6 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
           <Button
             title={I18n.t('Base_Realize')}
             onPress={handleRealizeStockMove}
-            color={Colors.primaryColor}
           />
         )
       }>
@@ -130,9 +129,13 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
       <ScrollView>
         <MovementIndicationCard
           titleTop={internalMove.fromStockLocation.name}
-          iconTop={<Icon name="warehouse" color={Colors.primaryColor} />}
+          iconTop={
+            <Icon name="warehouse" color={Colors.primaryColor.background} />
+          }
           titleDown={internalMove.toStockLocation.name}
-          iconDown={<Icon name="warehouse" color={Colors.primaryColor} />}
+          iconDown={
+            <Icon name="warehouse" color={Colors.primaryColor.background} />
+          }
         />
         <ViewAllContainer
           data={internalMoveLineList}

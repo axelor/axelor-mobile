@@ -8,7 +8,7 @@ const DEFAULT_RADIUS = 8;
 const ROUNDED_RADIUS = WIDTH / 2;
 const DEFAULT_COLOR = '#fff';
 
-const IconButton = ({
+const MenuIconButton = ({
   style,
   icon,
   onPress,
@@ -26,7 +26,7 @@ const IconButton = ({
           {borderRadius: rounded ? ROUNDED_RADIUS : DEFAULT_RADIUS},
           {
             backgroundColor: disabled
-              ? Colors.secondaryColor_light
+              ? Colors.secondaryColor.background_light
               : color
               ? color
               : DEFAULT_COLOR,
@@ -36,7 +36,11 @@ const IconButton = ({
         <Icon
           size={32}
           name={icon}
-          color={disabled ? Colors.secondaryColor : Colors.secondaryColor_dark}
+          color={
+            disabled
+              ? Colors.secondaryColor.background
+              : Colors.secondaryColor_dark.background
+          }
         />
       </View>
     </TouchableOpacity>
@@ -54,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IconButton;
+export default MenuIconButton;

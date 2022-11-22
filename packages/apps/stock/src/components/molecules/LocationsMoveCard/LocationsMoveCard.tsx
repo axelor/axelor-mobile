@@ -52,7 +52,7 @@ const LocationsMoveCard = ({
       </View>
       <Icon
         name="chevron-right"
-        color={Colors.primaryColor}
+        color={Colors.primaryColor.background}
         size={Dimensions.get('window').width * 0.05}
         style={styles.icon}
       />

@@ -32,15 +32,15 @@ class StopwatchType {
   static getStatusBorderColor = (status, Colors) => {
     switch (status) {
       case this.status.Ready:
-        return Colors.secondaryColor;
+        return Colors.secondaryColor.background;
       case this.status.InProgress:
-        return Colors.progressColor;
+        return Colors.progressColor.background;
       case this.status.Paused:
-        return Colors.cautionColor;
+        return Colors.cautionColor.background;
       case this.status.Finished:
-        return Colors.primaryColor;
+        return Colors.primaryColor.background;
       case this.status.Canceled:
-        return Colors.errorColor;
+        return Colors.errorColor.background;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by stopwatch`,

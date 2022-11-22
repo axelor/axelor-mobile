@@ -68,7 +68,7 @@ const IconInput = ({
 const getStyles = Colors =>
   StyleSheet.create({
     container: {
-      borderColor: Colors.secondaryColor,
+      borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       borderRadius: 13,
       backgroundColor: Colors.backgroundColor,

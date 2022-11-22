@@ -169,14 +169,8 @@ function AttachedFilesView({
                 onPress={() => handleSelectExtension(ext)}
                 selectedColor={
                   selectedExtension === ext
-                    ? {
-                        backgroundColor: Colors.primaryColor_light,
-                        borderColor: Colors.primaryColor,
-                      }
-                    : {
-                        backgroundColor: Colors.secondaryColor_light,
-                        borderColor: Colors.secondaryColor,
-                      }
+                    ? Colors.primaryColor
+                    : Colors.secondaryColor
                 }
                 width={Dimensions.get('window').width * 0.25}
                 marginHorizontal={3}
@@ -198,7 +192,7 @@ function AttachedFilesView({
         <View style={styles.viewContainer}>
           <Icon
             name="times"
-            color={Colors.primaryColor}
+            color={Colors.primaryColor.background}
             size={24}
             touchable={true}
             onPress={handleCloseImage}

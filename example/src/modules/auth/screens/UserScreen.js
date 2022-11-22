@@ -148,7 +148,7 @@ const UserScreen = ({navigation}) => {
           <Icon
             style={styles.logOutIcon}
             name="power-off"
-            color={Colors.primaryColor}
+            color={Colors.primaryColor.background}
             size={Dimensions.get('window').width * 0.07}
             touchable={true}
             onPress={() => dispatch(logout())}

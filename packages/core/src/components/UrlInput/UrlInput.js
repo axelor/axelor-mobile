@@ -29,7 +29,9 @@ const UrlInput = ({
           name="qrcode"
           size={Dimensions.get('window').width * 0.06}
           color={
-            scanIconColor == null ? Colors.secondaryColor_dark : scanIconColor
+            scanIconColor == null
+              ? Colors.secondaryColor_dark.background
+              : scanIconColor
           }
           touchable={true}
           style={styles.icon}

@@ -40,9 +40,9 @@ const InternalMoveLineCard = ({
 
   const borderStyle = useMemo(() => {
     if (expectedQty <= movedQty) {
-      return getStyles(Colors.primaryColor).border;
+      return getStyles(Colors.primaryColor.background).border;
     } else {
-      return getStyles(Colors.cautionColor).border;
+      return getStyles(Colors.cautionColor.background).border;
     }
   }, [Colors, expectedQty, movedQty]);
 
@@ -91,16 +91,13 @@ const InternalMoveLineCard = ({
           {availability == null ||
           internalMoveStatus === StockMove.status.Realized ? null : (
             <Badge
-              color={
-                StockMove.getAvailabilityColor(availability, Colors)
-                  .backgroundColor
-              }
+              color={StockMove.getAvailabilityColor(availability, Colors)}
               title={StockMove.getAvailability(availability, I18n)}
             />
           )}
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

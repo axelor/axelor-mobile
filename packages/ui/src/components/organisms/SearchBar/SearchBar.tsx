@@ -51,7 +51,7 @@ const SearchBar = ({
         <Icon
           style={styles.action}
           name="times"
-          color={Colors.secondaryColor_dark}
+          color={Colors.secondaryColor_dark.background}
           size={Dimensions.get('window').width * 0.05}
           touchable={true}
           visible={valueTxt != null && valueTxt !== ''}
@@ -60,7 +60,7 @@ const SearchBar = ({
         <Icon
           style={styles.action}
           name="search"
-          color={Colors.secondaryColor_dark}
+          color={Colors.secondaryColor_dark.background}
           size={Dimensions.get('window').width * 0.05}
         />,
         <Icon

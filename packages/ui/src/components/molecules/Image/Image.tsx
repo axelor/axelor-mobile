@@ -38,7 +38,7 @@ const Image = ({
       <Icon
         name="camera"
         size={defaultIconSize}
-        color={Colors.secondaryColor_light}
+        color={Colors.secondaryColor.background_light}
         style={generalStyle}
       />
     );

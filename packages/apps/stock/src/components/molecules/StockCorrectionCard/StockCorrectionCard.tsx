@@ -25,7 +25,7 @@ const StockCorrectionCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const borderStyle = useMemo(() => {
-    return getStyles(StockCorrection.getStatusColor(status, Colors).borderColor)
+    return getStyles(StockCorrection.getStatusColor(status, Colors).background)
       ?.border;
   }, [Colors, status]);
 
@@ -53,7 +53,7 @@ const StockCorrectionCard = ({
         </View>
         <Icon
           name="chevron-right"
-          color={Colors.secondaryColor_light}
+          color={Colors.secondaryColor.background_light}
           size={20}
         />
       </Card>

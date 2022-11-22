@@ -48,24 +48,22 @@ const ProductCharacteristics = ({
         </View>
       </View>
       <View style={styles.states}>
-        {category && (
-          <Badge color={Colors.primaryColor_light} title={category} />
-        )}
+        {category && <Badge color={Colors.primaryColor} title={category} />}
         {procurMethod && (
           <Badge
-            color={Colors.plannedColor_light}
+            color={Colors.plannedColor}
             title={Product.getProcurementMethod(procurMethod, I18n)}
           />
         )}
         {prototype && (
           <Badge
-            color={Colors.priorityColor_light}
+            color={Colors.priorityColor}
             title={I18n.t('Stock_Prototype')}
           />
         )}
         {unrenewed && (
           <Badge
-            color={Colors.cautionColor_light}
+            color={Colors.cautionColor}
             title={I18n.t('Stock_Unrenewed')}
           />
         )}

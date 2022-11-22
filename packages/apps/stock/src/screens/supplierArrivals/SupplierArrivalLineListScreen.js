@@ -114,19 +114,13 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
               selected={doneStatus}
               title={I18n.t('Stock_Done')}
               onPress={handleDoneStatus}
-              selectedColor={{
-                backgroundColor: Colors.primaryColor_light,
-                borderColor: Colors.primaryColor,
-              }}
+              selectedColor={Colors.primaryColor}
             />
             <Chip
               selected={undoneStatus}
               title={I18n.t('Stock_NotDone')}
               onPress={handleUndoneStatus}
-              selectedColor={{
-                backgroundColor: Colors.cautionColor_light,
-                borderColor: Colors.cautionColor,
-              }}
+              selectedColor={Colors.cautionColor}
             />
           </ChipSelect>
         }

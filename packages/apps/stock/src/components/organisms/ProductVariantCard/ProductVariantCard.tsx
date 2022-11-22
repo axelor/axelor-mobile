@@ -56,9 +56,7 @@ const ProductVariantCard = ({
           </View>
           <Badge
             color={
-              stockAvailability > 0
-                ? Colors.primaryColor_light
-                : Colors.errorColor_light
+              stockAvailability > 0 ? Colors.primaryColor : Colors.errorColor
             }
             title={
               stockAvailability > 0
@@ -141,7 +139,7 @@ const ProductVariantCard = ({
           )}
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

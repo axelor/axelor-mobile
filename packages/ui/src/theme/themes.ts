@@ -1,29 +1,28 @@
+export interface Color {
+  background_light: string;
+  foreground: string;
+  background: string;
+}
+
 export interface ThemeColors {
   screenBackgroundColor: string;
   backgroundColor: string;
-  primaryColor: string;
-  primaryColor_light: string;
-  secondaryColor: string;
-  secondaryColor_light: string;
-  secondaryColor_dark: string;
-  errorColor: string;
-  errorColor_light: string;
-  cautionColor: string;
-  cautionColor_light: string;
-  plannedColor: string;
-  plannedColor_light: string;
-  progressColor: string;
-  progressColor_light: string;
-  priorityColor: string;
-  priorityColor_light: string;
+  primaryColor: Color;
+  secondaryColor: Color;
+  secondaryColor_dark: Color;
+  errorColor: Color;
+  cautionColor: Color;
+  plannedColor: Color;
+  progressColor: Color;
+  priorityColor: Color;
+  defaultColor: Color;
+  importantColor: Color;
+  successColor: Color;
+  warningColor: Color;
+  inverseColor: Color;
+  infoColor: Color;
   text: string;
   placeholderTextColor: string;
-  defaultColor: string;
-  importantColor: string;
-  successColor: string;
-  warningColor: string;
-  inverseColor: string;
-  infoColor: string;
 }
 
 export interface Theme {
@@ -38,29 +37,78 @@ export const lightTheme: Theme = {
   colors: {
     screenBackgroundColor: '#F2F2F2',
     backgroundColor: '#FAFBFC',
-    primaryColor: '#3ECF8E',
-    primaryColor_light: '#84DCB7',
-    secondaryColor: '#CECECE',
-    secondaryColor_light: '#DDDDDD',
-    secondaryColor_dark: '#606060',
-    errorColor: '#E54D1D',
-    errorColor_light: '#EF9477',
-    cautionColor: '#F49B76',
-    cautionColor_light: '#F5C0AA',
-    plannedColor: '#B5A1DF',
-    plannedColor_light: '#D3C7EC',
-    progressColor: '#FFD101',
-    progressColor_light: '#FCE064',
-    priorityColor: '#36AEE1',
-    priorityColor_light: '#81C9E8',
+    primaryColor: {
+      background_light: '#84DCB7',
+      foreground: '#000000',
+      background: '#3ECF8E',
+    },
+    secondaryColor: {
+      background_light: '#DDDDDD',
+      foreground: '#000000',
+      background: '#CECECE',
+    },
+    secondaryColor_dark: {
+      background_light: '#606060',
+      foreground: '#FFFFFF',
+      background: '#424242',
+    },
+    errorColor: {
+      background_light: '#EE6666',
+      foreground: '#000000',
+      background: '#F12F2F',
+    },
+    cautionColor: {
+      background_light: '#EE9B67',
+      foreground: '#000000',
+      background: '#F27B30',
+    },
+    plannedColor: {
+      background_light: '#D3C7EC',
+      foreground: '#000000',
+      background: '#B5A1DF',
+    },
+    progressColor: {
+      background_light: '#FCE064',
+      foreground: '#000000',
+      background: '#FFD101',
+    },
+    priorityColor: {
+      background_light: '#81C9E8',
+      foreground: '#000000',
+      background: '#36AEE1',
+    },
+    defaultColor: {
+      background_light: '#DDDDDD',
+      foreground: '#000000',
+      background: '#CECECE',
+    },
+    importantColor: {
+      background_light: '#EE6666',
+      foreground: '#000000',
+      background: '#F12F2F',
+    },
+    successColor: {
+      background_light: '#84DCB7',
+      foreground: '#000000',
+      background: '#3ECF8E',
+    },
+    warningColor: {
+      background_light: '#EE9B67',
+      foreground: '#000000',
+      background: '#F27B30',
+    },
+    inverseColor: {
+      background_light: '#9E9E9F',
+      foreground: '#FFFFFF',
+      background: '#606060',
+    },
+    infoColor: {
+      background_light: '#81C9E8',
+      foreground: '#000000',
+      background: '#36AEE1',
+    },
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
-    defaultColor: '#C0C0C0',
-    importantColor: '#E54D1D',
-    successColor: '#3ECF8E',
-    warningColor: '#F49B76',
-    inverseColor: '#606060',
-    infoColor: '#36AEE1',
   },
 };
 
@@ -69,29 +117,78 @@ export const colorBlindTheme: Theme = {
   name: 'Color blind',
   colors: {
     screenBackgroundColor: '#F2F2F2',
-    backgroundColor: '#FFFFFF',
-    primaryColor: '#994F00',
-    primaryColor_light: '#BF9263',
-    secondaryColor: '#3288D9',
-    secondaryColor_light: '#63A4E0',
-    secondaryColor_dark: '#006CD1',
-    errorColor: '#E54D1D',
-    errorColor_light: '#EF9477',
-    cautionColor: '#F49B76',
-    cautionColor_light: '#F5C0AA',
-    plannedColor: '#B5A1DF',
-    plannedColor_light: '#D3C7EC',
-    progressColor: '#FFD101',
-    progressColor_light: '#FCE064',
-    priorityColor: '#36AEE1',
-    priorityColor_light: '#81C9E8',
+    backgroundColor: '#FAFBFC',
+    primaryColor: {
+      background_light: '#BF9263',
+      foreground: '#000000',
+      background: '#994F00',
+    },
+    secondaryColor: {
+      background_light: '#63A4E0',
+      foreground: '#000000',
+      background: '#3288D9',
+    },
+    secondaryColor_dark: {
+      background_light: '#006CD1',
+      foreground: '#FFFFFF',
+      background: '#154470',
+    },
+    errorColor: {
+      background_light: '#EF9477',
+      foreground: '#000000',
+      background: '#E54D1D',
+    },
+    cautionColor: {
+      background_light: '#F5C0AA',
+      foreground: '#000000',
+      background: '#F49B76',
+    },
+    plannedColor: {
+      background_light: '#D3C7EC',
+      foreground: '#000000',
+      background: '#B5A1DF',
+    },
+    progressColor: {
+      background_light: '#FCE064',
+      foreground: '#000000',
+      background: '#FFD101',
+    },
+    priorityColor: {
+      background_light: '#81C9E8',
+      foreground: '#000000',
+      background: '#36AEE1',
+    },
+    defaultColor: {
+      background_light: '#63A4E0',
+      foreground: '#000000',
+      background: '#3288D9',
+    },
+    importantColor: {
+      background_light: '#EE6666',
+      foreground: '#000000',
+      background: '#F12F2F',
+    },
+    successColor: {
+      background_light: '#BF9263',
+      foreground: '#000000',
+      background: '#994F00',
+    },
+    warningColor: {
+      background_light: '#EE9B67',
+      foreground: '#000000',
+      background: '#F27B30',
+    },
+    inverseColor: {
+      background_light: '#9E9E9F',
+      foreground: '#FFFFFF',
+      background: '#606060',
+    },
+    infoColor: {
+      background_light: '#81C9E8',
+      foreground: '#000000',
+      background: '#36AEE1',
+    },
     text: '#000000',
     placeholderTextColor: '#C0C0C0',
-    defaultColor: '#C0C0C0',
-    importantColor: '#E54D1D',
-    successColor: '#994F00',
-    warningColor: '#F49B76',
-    inverseColor: '#006CD1',
-    infoColor: '#36AEE1',
   },
 };

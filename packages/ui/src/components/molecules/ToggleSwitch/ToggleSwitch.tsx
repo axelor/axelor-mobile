@@ -52,7 +52,7 @@ const ToggleSwitch = ({
 const getStyles = Colors =>
   StyleSheet.create({
     container: {
-      borderColor: Colors.secondaryColor_light,
+      borderColor: Colors.secondaryColor.background_light,
       borderWidth: 2,
       borderRadius: 20,
       flexDirection: 'row',
@@ -69,7 +69,7 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     active: {
-      backgroundColor: Colors.primaryColor_light,
+      backgroundColor: Colors.primaryColor.background_light,
     },
   });
 export default ToggleSwitch;

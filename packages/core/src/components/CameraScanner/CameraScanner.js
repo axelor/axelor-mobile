@@ -66,7 +66,7 @@ const CameraScanner = ({
         <Icon
           name="times"
           size={24}
-          color={Colors.primaryColor}
+          color={Colors.primaryColor.background}
           touchable={true}
           onPress={onClose}
           style={[styles.icon, positionStyle.icon]}

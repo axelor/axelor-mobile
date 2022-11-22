@@ -31,15 +31,13 @@ function OperationOrderHeader({
       <View style={styles.badgeContainer}>
         {status && (
           <Badge
-            color={
-              OperationOrder.getStatusColor(status, Colors).backgroundColor
-            }
+            color={OperationOrder.getStatusColor(status, Colors)}
             title={OperationOrder.getStatus(status, I18n)}
           />
         )}
         {priority && (
           <Badge
-            color={Colors.priorityColor_light}
+            color={Colors.priorityColor}
             title={priority.toString()}
             style={styles.badge}
           />

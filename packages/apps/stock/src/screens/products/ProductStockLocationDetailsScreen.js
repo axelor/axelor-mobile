@@ -123,19 +123,13 @@ const ProductStockLocationDetailsScreen = ({route}) => {
               selected={availableStatus}
               title={I18n.t('Stock_Available')}
               onPress={handleAvailableStatus}
-              selectedColor={{
-                backgroundColor: Colors.primaryColor_light,
-                borderColor: Colors.primaryColor,
-              }}
+              selectedColor={Colors.primaryColor}
             />
             <Chip
               selected={unavailableStatus}
               title={I18n.t('Stock_Unavailable')}
               onPress={handleUnavailableStatus}
-              selectedColor={{
-                backgroundColor: Colors.errorColor_light,
-                borderColor: Colors.errorColor,
-              }}
+              selectedColor={Colors.errorColor}
             />
           </ChipSelect>
         }

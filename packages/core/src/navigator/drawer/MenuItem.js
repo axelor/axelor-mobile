@@ -22,8 +22,8 @@ const MenuItem = ({icon, title, isActive, onPress, disabled}) => {
             size={24}
             color={
               disabled
-                ? Colors.secondaryColor_light
-                : Colors.secondaryColor_dark
+                ? Colors.secondaryColor.background_light
+                : Colors.secondaryColor_dark.background
             }
           />
         )}
@@ -67,7 +67,7 @@ const getStyles = (Colors, disabled) =>
     menuItemTitle: {
       fontSize: 16,
       fontWeight: 'bold',
-      color: disabled ? Colors.secondaryColor_light : Colors.text,
+      color: disabled ? Colors.secondaryColor.background_light : Colors.text,
     },
   });
 

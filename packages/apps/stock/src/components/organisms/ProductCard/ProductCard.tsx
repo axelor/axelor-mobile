@@ -40,10 +40,10 @@ const ProductCard = ({
             <Badge
               color={
                 availableStock == null
-                  ? Colors.secondaryColor_light
+                  ? Colors.secondaryColor
                   : availableStock > 0
-                  ? Colors.primaryColor_light
-                  : Colors.errorColor_light
+                  ? Colors.primaryColor
+                  : Colors.errorColor
               }
               title={
                 availableStock == null
@@ -57,7 +57,7 @@ const ProductCard = ({
         </View>
         <Icon
           name="chevron-right"
-          color={Colors.secondaryColor_light}
+          color={Colors.secondaryColor.background_light}
           size={20}
         />
       </Card>

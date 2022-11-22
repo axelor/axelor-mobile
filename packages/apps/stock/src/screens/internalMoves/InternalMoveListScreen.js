@@ -138,7 +138,7 @@ const InternalMoveListScreen = ({navigation}) => {
       headerRight: () => (
         <Icon
           name="plus"
-          color={Colors.primaryColor}
+          color={Colors.primaryColor.background}
           size={24}
           style={styles.action}
           touchable={true}

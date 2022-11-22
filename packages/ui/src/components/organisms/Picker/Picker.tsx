@@ -100,7 +100,10 @@ const Picker = ({
           <RightIconButton
             onPress={togglePicker}
             icon={
-              <Icon name="chevron-down" color={Colors.secondaryColor_dark} />
+              <Icon
+                name="chevron-down"
+                color={Colors.secondaryColor_dark.background}
+              />
             }
             title={
               listItems.find(elt => elt[valueField] === defaultValue) !==
@@ -140,7 +143,7 @@ const getStyles = Colors =>
     },
     rightIconButton: {
       width: Dimensions.get('window').width * 0.9,
-      borderColor: Colors.secondaryColor,
+      borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
     },
     styleTextButton: {

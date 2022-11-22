@@ -34,7 +34,7 @@ const OperationOrderCard = ({
 
   const borderStyle = useMemo(() => {
     return getStyles(
-      ManufacturingOrder.getStatusColor(status, Colors).borderColor,
+      ManufacturingOrder.getStatusColor(status, Colors).background,
     )?.border;
   }, [Colors, status]);
 
@@ -54,14 +54,14 @@ const OperationOrderCard = ({
         <View style={styles.rightContainer}>
           {priority == null ? null : (
             <Badge
-              color={Colors.priorityColor_light}
+              color={Colors.priorityColor}
               title={priority.toString()}
               style={styles.badge}
             />
           )}
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

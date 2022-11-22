@@ -40,7 +40,7 @@ const HeaderContainer = ({
             <Icon
               name={isVisible ? 'angle-up' : 'angle-down'}
               size={22}
-              color={Colors.primaryColor}
+              color={Colors.primaryColor.background}
             />
           </View>
         </TouchableOpacity>

@@ -107,7 +107,11 @@ const MailMessageView = ({model, modelId, navigation}) => {
           />
           <Icon
             name={subscribe ? 'star' : 'star-o'}
-            color={subscribe ? Colors.primaryColor : Colors.secondaryColor_dark}
+            color={
+              subscribe
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
             size={22}
             style={styles.action}
             FontAwesome5={false}
@@ -205,9 +209,6 @@ const MailMessageView = ({model, modelId, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  action: {
-    marginLeft: 15,
-  },
   commentContainer: {
     width: Dimensions.get('screen').width,
     justifyContent: 'center',
@@ -220,7 +221,11 @@ const styles = StyleSheet.create({
   },
   headerOptionsContainer: {
     flexDirection: 'row',
+    width: '50%',
     margin: 15,
+  },
+  action: {
+    flex: 1,
   },
   scrollListContainer: {
     flex: 1,

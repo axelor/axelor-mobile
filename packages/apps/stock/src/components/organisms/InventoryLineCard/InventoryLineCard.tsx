@@ -29,11 +29,11 @@ const InventoryLineCard = ({
 
   const borderStyle = useMemo(() => {
     if (realQty == null) {
-      return getStyles(Colors.secondaryColor)?.border;
+      return getStyles(Colors.secondaryColor.background)?.border;
     } else if (currentQty === realQty) {
-      return getStyles(Colors.primaryColor)?.border;
+      return getStyles(Colors.primaryColor.background)?.border;
     } else {
-      return getStyles(Colors.cautionColor)?.border;
+      return getStyles(Colors.cautionColor.background)?.border;
     }
   }, [Colors, currentQty, realQty]);
 
@@ -70,7 +70,7 @@ const InventoryLineCard = ({
         </View>
         <Icon
           name="chevron-right"
-          color={Colors.secondaryColor_light}
+          color={Colors.secondaryColor.background_light}
           size={20}
         />
       </Card>

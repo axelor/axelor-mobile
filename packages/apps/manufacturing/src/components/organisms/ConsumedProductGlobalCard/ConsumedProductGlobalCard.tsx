@@ -83,14 +83,14 @@ const ConsumedProductGlobalCard = ({
         <CardIconButton
           style={styles.cardIconButton}
           iconName="map-marker-alt"
-          color={Colors.secondaryColor}
+          iconColor={Colors.secondaryColor.background}
           onPress={onLocationPress}
         />
         {isSubOF ? (
           <CardIconButton
             style={styles.cardIconButton}
             iconName="sitemap"
-            color={Colors.secondaryColor}
+            iconColor={Colors.secondaryColor.background}
             onPress={onSubOfPress}
           />
         ) : null}
@@ -100,7 +100,7 @@ const ConsumedProductGlobalCard = ({
           <CardIconButton
             style={styles.cardIconButton}
             iconName="plus"
-            color={Colors.primaryColor}
+            iconColor={Colors.primaryColor.background}
             onPress={handleIncrement}
           />
         </View>

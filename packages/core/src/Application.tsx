@@ -154,10 +154,10 @@ const Application = ({
 
 const styles = StyleSheet.create({
   error: {
-    borderLeftColor: lightTheme.colors.errorColor,
+    borderLeftColor: lightTheme.colors.errorColor.background,
   },
   success: {
-    borderLeftColor: lightTheme.colors.primaryColor,
+    borderLeftColor: lightTheme.colors.primaryColor.background,
   },
   toast: {
     width: '90%',

@@ -1,5 +1,5 @@
 import {StopwatchType, TranslatorProps, formatDateTime} from '@aos-mobile/core';
-import {ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@aos-mobile/ui';
 import {calculateDiff} from '../utils/time';
 
 class OperationOrder {
@@ -39,51 +39,27 @@ class OperationOrder {
     }
   };
 
-  static getStatusColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Draft:
-        return {
-          backgroundColor: Colors.secondaryColor_light,
-          borderColor: Colors.secondaryColor,
-        };
+        return Colors.secondaryColor;
       case this.status.Planned:
-        return {
-          backgroundColor: Colors.plannedColor_light,
-          borderColor: Colors.plannedColor,
-        };
+        return Colors.plannedColor;
       case this.status.InProgress:
-        return {
-          backgroundColor: Colors.progressColor_light,
-          borderColor: Colors.progressColor,
-        };
+        return Colors.progressColor;
       case this.status.StandBy:
-        return {
-          backgroundColor: Colors.cautionColor_light,
-          borderColor: Colors.cautionColor,
-        };
+        return Colors.cautionColor;
       case this.status.Finished:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       case this.status.Merged:
-        return {
-          backgroundColor: Colors.priorityColor_light,
-          borderColor: Colors.priorityColor,
-        };
+        return Colors.priorityColor;
       case this.status.Canceled:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by operation order`,
         );
-        return {};
+        return null;
     }
   };
 

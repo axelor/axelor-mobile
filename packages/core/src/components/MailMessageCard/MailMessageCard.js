@@ -101,7 +101,7 @@ const getStyles = Colors =>
       paddingLeft: 10,
     },
     cardContainer: {
-      width: Dimensions.get('window').width * 0.8,
+      width: Dimensions.get('window').width * 0.83,
       overflow: 'hidden',
     },
     container: {

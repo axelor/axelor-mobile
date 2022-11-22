@@ -271,7 +271,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
           {saveStatus ? null : (
             <Button
               title={I18n.t('Base_Save')}
-              color={Colors.secondaryColor_light}
+              color={Colors.secondaryColor}
               onPress={handleSave}
             />
           )}
@@ -290,9 +290,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             </View>
             {status && (
               <Badge
-                color={
-                  StockCorrection.getStatusColor(status, Colors).backgroundColor
-                }
+                color={StockCorrection.getStatusColor(status, Colors)}
                 title={StockCorrection.getStatus(status, I18n)}
               />
             )}

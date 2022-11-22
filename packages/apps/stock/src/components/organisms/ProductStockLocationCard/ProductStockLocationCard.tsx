@@ -32,11 +32,11 @@ const ProductStockLocationCard = ({
 
   const borderStyle = useMemo(() => {
     if (availability == null) {
-      return getStyles(Colors.secondaryColor).container;
+      return getStyles(Colors.secondaryColor.background).container;
     } else if (availability > 0) {
-      return getStyles(Colors.primaryColor).container;
+      return getStyles(Colors.primaryColor.background).container;
     } else {
-      return getStyles(Colors.errorColor).container;
+      return getStyles(Colors.errorColor.background).container;
     }
   }, [Colors, availability]);
 
@@ -73,8 +73,8 @@ const ProductStockLocationCard = ({
             }
             color={
               availability == null
-                ? Colors.secondaryColor_light
-                : availability > 0 && Colors.primaryColor_light
+                ? Colors.secondaryColor
+                : availability > 0 && Colors.primaryColor
             }
           />
         )}

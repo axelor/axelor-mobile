@@ -2,12 +2,13 @@ import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {Color} from '../../../theme/themes';
 
 interface ChipProps {
   selected: boolean;
   title: string;
   onPress: (any) => void;
-  selectedColor: {backgroundColor: string; borderColor: string};
+  selectedColor: Color;
   width?: number;
   marginHorizontal?: number;
 }
@@ -23,13 +24,7 @@ const Chip = ({
   const Colors = useThemeColor();
 
   const colorStyle = useMemo(() => {
-    const color =
-      selectedColor == null
-        ? {
-            backgroundColor: Colors.primaryColor_light,
-            borderColor: Colors.primaryColor,
-          }
-        : selectedColor;
+    const color = selectedColor == null ? Colors.primaryColor : selectedColor;
 
     return selected
       ? getStyles(color, Colors).selected
@@ -58,22 +53,22 @@ const Chip = ({
 const getStyles = (selectedColor, Colors) =>
   StyleSheet.create({
     selected: {
-      backgroundColor: selectedColor.backgroundColor,
+      backgroundColor: selectedColor.background_light,
       borderLeftWidth: 3,
-      borderLeftColor: selectedColor.borderColor,
+      borderLeftColor: selectedColor.background,
       borderRightWidth: 3,
-      borderRightColor: selectedColor.borderColor,
+      borderRightColor: selectedColor.background,
     },
     notSelected: {
       backgroundColor: Colors.backgroundColor,
       borderLeftWidth: 3,
-      borderLeftColor: selectedColor.borderColor,
+      borderLeftColor: selectedColor.background,
       borderRightWidth: 3,
-      borderRightColor: selectedColor.borderColor,
+      borderRightColor: selectedColor.background,
     },
     textColor: {
       fontSize: 14,
-      color: selectedColor.borderColor,
+      color: selectedColor.foreground,
     },
   });
 

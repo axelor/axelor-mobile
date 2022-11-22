@@ -1,4 +1,4 @@
-import {ThemeColors} from '@aos-mobile/ui';
+import {ThemeColors, Color} from '@aos-mobile/ui';
 import {TranslatorProps} from '@aos-mobile/core';
 
 class ManufacturingOrder {
@@ -51,51 +51,27 @@ class ManufacturingOrder {
     }
   };
 
-  static getStatusColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Draft:
-        return {
-          backgroundColor: Colors.secondaryColor_light,
-          borderColor: Colors.secondaryColor,
-        };
+        return Colors.secondaryColor;
       case this.status.Planned:
-        return {
-          backgroundColor: Colors.plannedColor_light,
-          borderColor: Colors.plannedColor,
-        };
+        return Colors.plannedColor;
       case this.status.InProgress:
-        return {
-          backgroundColor: Colors.progressColor_light,
-          borderColor: Colors.progressColor,
-        };
+        return Colors.progressColor;
       case this.status.StandBy:
-        return {
-          backgroundColor: Colors.cautionColor_light,
-          borderColor: Colors.cautionColor,
-        };
+        return Colors.cautionColor;
       case this.status.Finished:
-        return {
-          backgroundColor: Colors.primaryColor_light,
-          borderColor: Colors.primaryColor,
-        };
+        return Colors.primaryColor;
       case this.status.Merged:
-        return {
-          backgroundColor: Colors.priorityColor_light,
-          borderColor: Colors.priorityColor,
-        };
+        return Colors.priorityColor;
       case this.status.Canceled:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by manufacturing order`,
         );
-        return {};
+        return null;
     }
   };
 
@@ -119,36 +95,21 @@ class ManufacturingOrder {
     }
   };
 
-  static getPriorityColor = (
-    status: number,
-    Colors: ThemeColors,
-  ): {backgroundColor?: string; borderColor?: string} => {
+  static getPriorityColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.priority.Low:
-        return {
-          backgroundColor: Colors.plannedColor_light,
-          borderColor: Colors.plannedColor,
-        };
+        return Colors.plannedColor;
       case this.priority.Normal:
-        return {
-          backgroundColor: Colors.priorityColor_light,
-          borderColor: Colors.priorityColor,
-        };
+        return Colors.priorityColor;
       case this.priority.High:
-        return {
-          backgroundColor: Colors.cautionColor_light,
-          borderColor: Colors.cautionColor,
-        };
+        return Colors.cautionColor;
       case this.priority.Urgent:
-        return {
-          backgroundColor: Colors.errorColor_light,
-          borderColor: Colors.errorColor,
-        };
+        return Colors.errorColor;
       default:
         console.warn(
           `Priority provided with value ${status} is not supported by manufacturing order`,
         );
-        return {};
+        return null;
     }
   };
 }

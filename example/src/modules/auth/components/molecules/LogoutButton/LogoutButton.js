@@ -21,7 +21,7 @@ const LogoutButton = ({onPress}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    backgroundColor: Colors.secondaryColor,
+    backgroundColor: Colors.secondaryColor.background_light,
   });
 
 const styles = StyleSheet.create({

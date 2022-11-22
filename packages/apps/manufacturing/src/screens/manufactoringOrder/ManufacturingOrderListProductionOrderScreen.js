@@ -66,10 +66,10 @@ const ManufacturingOrderListProductionOrderScreen = ({route, navigation}) => {
               />
               <Badge
                 title={ManufacturingOrder.getStatus(item.statusSelect, I18n)}
-                color={
-                  ManufacturingOrder.getStatusColor(item.statusSelect, Colors)
-                    .backgroundColor
-                }
+                color={ManufacturingOrder.getStatusColor(
+                  item.statusSelect,
+                  Colors,
+                )}
               />
             </Card>
           );

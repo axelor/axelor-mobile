@@ -86,8 +86,8 @@ const LoginScreen = ({route}) => {
           }}
           scanIconColor={
             isEnabled && scanKey === urlScanKey
-              ? Colors.primaryColor
-              : Colors.secondaryColor_dark
+              ? Colors.primaryColor.background
+              : Colors.secondaryColor_dark.background
           }
         />
         <UsernameInput

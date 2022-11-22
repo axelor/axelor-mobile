@@ -116,7 +116,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
       headerRight: () => (
         <Icon
           name="trash"
-          color={Colors.primaryColor}
+          color={Colors.primaryColor.background}
           size={24}
           style={styles.action}
           touchable={true}
@@ -149,7 +149,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
                 <Icon
                   name="plus"
                   size={20}
-                  color={Colors.primaryColor}
+                  color={Colors.primaryColor.background}
                   touchable={true}
                   onPress={handleAddProduct}
                 />
@@ -171,19 +171,13 @@ const ProducedProductListScreen = ({route, navigation}) => {
               selected={plannedStatus}
               title={I18n.t('Manufacturing_Status_Planned')}
               onPress={handlePlannedStatus}
-              selectedColor={{
-                backgroundColor: Colors.plannedColor_light,
-                borderColor: Colors.plannedColor,
-              }}
+              selectedColor={Colors.plannedColor}
             />
             <Chip
               selected={realizedStatus}
               title={I18n.t('Manufacturing_Status_Realized')}
               onPress={handleRealizedStatus}
-              selectedColor={{
-                backgroundColor: Colors.primaryColor_light,
-                borderColor: Colors.primaryColor,
-              }}
+              selectedColor={Colors.primaryColor}
             />
           </ChipSelect>
         }

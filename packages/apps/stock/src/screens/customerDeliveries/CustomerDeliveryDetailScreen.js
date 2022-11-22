@@ -159,7 +159,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
               <View style={styles.ispmInfos}>
                 {customerDelivery?.isIspmRequired && (
                   <Badge
-                    color={Colors.errorColor_light}
+                    color={Colors.errorColor}
                     title={I18n.t('Stock_StandardISPM')}
                     style={styles.ispmBadge}
                   />
@@ -172,7 +172,9 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       <ScrollView>
         <MovementIndicationCard
           titleTop={customerDelivery.fromStockLocation?.name}
-          iconTop={<Icon name="warehouse" color={Colors.primaryColor} />}
+          iconTop={
+            <Icon name="warehouse" color={Colors.primaryColor.background} />
+          }
           titleDown={
             customerDelivery.toAddress?.fullName ||
             customerDelivery.toAddressStr

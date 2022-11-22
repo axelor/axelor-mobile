@@ -85,7 +85,7 @@ const MailMessageCommentCard = ({
               value={subject || I18n.t('Base_Comment')}
               style={styles.headerLabel}
               textStyle={styles.title}
-              color={Colors.primaryColor}
+              color={Colors.primaryColor.background}
             />
             {flags != null && (
               <MailMessageReadIcon
@@ -118,7 +118,7 @@ const MailMessageCommentCard = ({
             (htmlContentHeight && htmlContentHeight > MAX_HEIGHT)) && (
             <Icon
               name={more ? 'chevron-up' : 'chevron-down'}
-              color={Colors.primaryColor}
+              color={Colors.primaryColor.background}
               style={styles.moreIcon}
             />
           )}

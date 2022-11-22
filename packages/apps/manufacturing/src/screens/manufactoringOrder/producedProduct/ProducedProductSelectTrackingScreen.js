@@ -72,7 +72,7 @@ const ProducedProductSelectTrackingScreen = ({route, navigation}) => {
           </Text>
           <Icon
             name="plus"
-            color={Colors.primaryColor}
+            color={Colors.primaryColor.background}
             size={24}
             style={styles.action}
             touchable={true}

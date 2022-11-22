@@ -8,7 +8,7 @@ const IconSettings = ({onPress}) => {
   return (
     <Icon
       name="cog"
-      color={Colors.primaryColor}
+      color={Colors.primaryColor.background}
       size={24}
       style={styles.action}
       touchable={true}

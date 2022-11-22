@@ -139,7 +139,7 @@ const WasteProductListScreen = ({route, navigation}) => {
                 <Icon
                   name="plus"
                   size={20}
-                  color={Colors.primaryColor}
+                  color={Colors.primaryColor.background}
                   touchable={true}
                   onPress={handleAddProduct}
                 />

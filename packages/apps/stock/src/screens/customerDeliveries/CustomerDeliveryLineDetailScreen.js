@@ -160,14 +160,14 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
                   Number(customerDeliveryLine.realQty) && (
                   <Badge
                     title={I18n.t('Stock_Status_Incomplete')}
-                    color={Colors.cautionColor_light}
+                    color={Colors.cautionColor}
                   />
                 )}
                 {Number(customerDeliveryLine.qty) ===
                   Number(customerDeliveryLine.realQty) && (
                   <Badge
                     title={I18n.t('Stock_Status_Complete')}
-                    color={Colors.primaryColor_light}
+                    color={Colors.primaryColor}
                   />
                 )}
               </View>

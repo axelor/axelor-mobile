@@ -39,7 +39,7 @@ const ManufacturingOrderCard = ({
 
   const borderStyle = useMemo(() => {
     return getStyles(
-      ManufacturingOrder.getStatusColor(status, Colors).borderColor,
+      ManufacturingOrder.getStatusColor(status, Colors).background,
     )?.border;
   }, [Colors, status]);
 
@@ -67,16 +67,13 @@ const ManufacturingOrderCard = ({
         <View style={styles.rightContainer}>
           {priority == null ? null : (
             <Badge
-              color={
-                ManufacturingOrder.getPriorityColor(priority, Colors)
-                  .backgroundColor
-              }
+              color={ManufacturingOrder.getPriorityColor(priority, Colors)}
               title={ManufacturingOrder.getPriority(priority, I18n)}
             />
           )}
           <Icon
             name="chevron-right"
-            color={Colors.secondaryColor_light}
+            color={Colors.secondaryColor.background_light}
             size={20}
           />
         </View>

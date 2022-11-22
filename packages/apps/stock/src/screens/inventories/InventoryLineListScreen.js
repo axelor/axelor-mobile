@@ -122,10 +122,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
               selected={doneStatus}
               title={I18n.t('Stock_Complete')}
               onPress={handleDoneStatus}
-              selectedColor={{
-                backgroundColor: Colors.primaryColor_light,
-                borderColor: Colors.primaryColor,
-              }}
+              selectedColor={Colors.primaryColor}
               marginHorizontal={3}
               width={Dimensions.get('window').width * 0.3}
             />
@@ -133,10 +130,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
               selected={diffStatus}
               title={I18n.t('Stock_Difference')}
               onPress={handleDiffStatus}
-              selectedColor={{
-                backgroundColor: Colors.cautionColor_light,
-                borderColor: Colors.cautionColor,
-              }}
+              selectedColor={Colors.cautionColor}
               marginHorizontal={3}
               width={Dimensions.get('window').width * 0.3}
             />
@@ -144,10 +138,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
               selected={undoneStatus}
               title={I18n.t('Stock_NotDone')}
               onPress={handleUndoneStatus}
-              selectedColor={{
-                backgroundColor: Colors.secondaryColor_light,
-                borderColor: Colors.secondaryColor,
-              }}
+              selectedColor={Colors.secondaryColor}
               marginHorizontal={3}
               width={Dimensions.get('window').width * 0.3}
             />

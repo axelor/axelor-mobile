@@ -38,9 +38,9 @@ const CustomerDeliveryLineCard = ({
 
   const borderStyle = useMemo(() => {
     if (askedQty <= pickedQty) {
-      return getStyles(Colors.primaryColor)?.border;
+      return getStyles(Colors.primaryColor.background)?.border;
     } else {
-      return getStyles(Colors.cautionColor)?.border;
+      return getStyles(Colors.cautionColor.background)?.border;
     }
   }, [askedQty, pickedQty, Colors]);
 
@@ -52,10 +52,7 @@ const CustomerDeliveryLineCard = ({
           {availability != null && (
             <Badge
               style={styles.badgeContainer}
-              color={
-                StockMove.getAvailabilityColor(availability, Colors)
-                  .backgroundColor
-              }
+              color={StockMove.getAvailabilityColor(availability, Colors)}
               title={StockMove.getAvailability(availability, I18n)}
             />
           )}
@@ -85,7 +82,7 @@ const CustomerDeliveryLineCard = ({
         </View>
         <Icon
           name="chevron-right"
-          color={Colors.secondaryColor_light}
+          color={Colors.secondaryColor.background_light}
           size={20}
         />
       </Card>

@@ -35,9 +35,7 @@ const ManufacturingOrderHeader = ({
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={
-              ManufacturingOrder.getStatusColor(status, Colors).backgroundColor
-            }
+            color={ManufacturingOrder.getStatusColor(status, Colors)}
             title={ManufacturingOrder.getStatus(status, I18n)}
           />
         )}
@@ -45,10 +43,7 @@ const ManufacturingOrderHeader = ({
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={
-              ManufacturingOrder.getPriorityColor(priority, Colors)
-                .backgroundColor
-            }
+            color={ManufacturingOrder.getPriorityColor(priority, Colors)}
             title={ManufacturingOrder.getPriority(priority, I18n)}
           />
         )}

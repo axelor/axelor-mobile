@@ -45,17 +45,14 @@ const StockMoveHeader = ({
       </View>
       <View style={styles.badgeContainer}>
         <Badge
-          color={StockMove.getStatusColor(status, Colors).backgroundColor}
+          color={StockMove.getStatusColor(status, Colors)}
           title={StockMove.getStatus(status, I18n)}
         />
         {availability == null ? (
           <View style={styles.refContainer} />
         ) : (
           <Badge
-            color={
-              StockMove.getAvailabilityColor(availability, Colors)
-                .backgroundColor
-            }
+            color={StockMove.getAvailabilityColor(availability, Colors)}
             title={StockMove.getAvailability(availability, I18n)}
           />
         )}

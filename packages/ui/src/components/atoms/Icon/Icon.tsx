@@ -32,7 +32,7 @@ const Icon = ({
   const styles = useMemo(() => {
     return getStyles(
       Colors,
-      color == null ? Colors.secondaryColor_dark : color,
+      color == null ? Colors.secondaryColor_dark.background : color,
       touchable ? disabled : false,
       size,
     );
@@ -58,7 +58,7 @@ const Icon = ({
 const getStyles = (Colors, color, disabled, size) =>
   StyleSheet.create({
     icon: {
-      color: disabled ? Colors.secondaryColor_light : color,
+      color: disabled ? Colors.secondaryColor.background_light : color,
       fontSize: size,
     },
     container: {

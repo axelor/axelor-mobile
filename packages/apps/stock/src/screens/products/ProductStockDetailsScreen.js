@@ -176,7 +176,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
                 <Icon
                   name="angle-right"
                   size={24}
-                  color={Colors.primaryColor}
+                  color={Colors.primaryColor.background}
                   style={styles.arrowIcon}
                 />
               </View>

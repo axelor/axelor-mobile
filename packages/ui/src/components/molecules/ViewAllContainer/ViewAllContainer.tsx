@@ -39,7 +39,7 @@ const ViewAllContainer = ({
           </Text>
           <Icon
             name="plus"
-            color={Colors.primaryColor}
+            color={Colors.primaryColor.background}
             size={24}
             touchable={true}
             onPress={onNewIcon}
@@ -60,7 +60,7 @@ const ViewAllContainer = ({
             </Text>
             <Icon
               name="chevron-right"
-              color={Colors.secondaryColor_light}
+              color={Colors.secondaryColor.background_light}
               size={20}
             />
           </View>

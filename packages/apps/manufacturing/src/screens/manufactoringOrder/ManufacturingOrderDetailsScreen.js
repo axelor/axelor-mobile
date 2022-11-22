@@ -203,7 +203,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
                   style={styles.orderBadge}
                   title={item.fullName}
                   key={item.id}
-                  color={Colors.priorityColor_light}
+                  color={Colors.priorityColor}
                   numberOfLines={null}
                 />
               ))}
@@ -226,7 +226,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
                     style={styles.orderBadge}
                     title={item.manufOrderSeq}
                     key={item.id}
-                    color={Colors.priorityColor_light}
+                    color={Colors.priorityColor}
                     numberOfLines={null}
                   />
                 ))}

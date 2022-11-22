@@ -98,7 +98,7 @@ const Navigator = ({modules, mainMenu}) => {
         {Object.entries(modulesScreens).map(
           ([key, {component, title, options = {shadedHeader: true}}]) => {
             const screenOptions = {
-              headerTintColor: Colors.primaryColor,
+              headerTintColor: Colors.primaryColor.background,
               headerStyle: options?.shadedHeader
                 ? styles.headerColor
                 : styles.listScreenHeaderStyle,
@@ -108,11 +108,13 @@ const Navigator = ({modules, mainMenu}) => {
 
             if (initialRouteName === key) {
               screenOptions.headerLeft = () => (
-                <DrawerToggleButton tintColor={Colors.primaryColor} />
+                <DrawerToggleButton
+                  tintColor={Colors.primaryColor.background}
+                />
               );
             } else {
               screenOptions.headerLeft = () => (
-                <BackIcon tintColor={Colors.primaryColor} />
+                <BackIcon tintColor={Colors.primaryColor.background} />
               );
             }
 

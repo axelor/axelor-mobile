@@ -19,7 +19,7 @@ const HorizontalRule = ({style}: HorizontalRuleProps) => {
 const getStyles = Colors =>
   StyleSheet.create({
     line: {
-      borderBottomColor: Colors.secondaryColor,
+      borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 1,
     },
   });

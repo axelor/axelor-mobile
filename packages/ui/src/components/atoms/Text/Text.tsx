@@ -8,6 +8,8 @@ interface TextProps {
   adjustsFontSizeToFit?: boolean;
   onTextLayout?: (any) => void;
   children: any;
+  textColor?: string;
+  fontSize?: number;
 }
 
 const Text = ({
@@ -16,9 +18,14 @@ const Text = ({
   adjustsFontSizeToFit = false,
   onTextLayout,
   children,
+  textColor,
+  fontSize = 12,
 }: TextProps) => {
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(
+    () => getStyles(textColor ? textColor : Colors.text, fontSize),
+    [Colors.text, fontSize, textColor],
+  );
 
   return (
     <ReactNativeText
@@ -30,10 +37,11 @@ const Text = ({
     </ReactNativeText>
   );
 };
-const getStyles = Colors =>
+const getStyles = (textColor, fontSize) =>
   StyleSheet.create({
     text: {
-      color: Colors.text,
+      color: textColor,
+      fontSize: fontSize,
     },
   });
 

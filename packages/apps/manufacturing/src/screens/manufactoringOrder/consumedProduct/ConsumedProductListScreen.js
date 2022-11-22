@@ -175,7 +175,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
                 <Icon
                   name="plus"
                   size={20}
-                  color={Colors.primaryColor}
+                  color={Colors.primaryColor.background}
                   touchable={true}
                   onPress={handleAddProduct}
                 />
@@ -198,10 +198,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               selected={missingStatus}
               title={I18n.t('Manufacturing_Status_Missing')}
               onPress={handleMissingStatus}
-              selectedColor={{
-                backgroundColor: Colors.errorColor_light,
-                borderColor: Colors.errorColor,
-              }}
+              selectedColor={Colors.errorColor}
               width={Dimensions.get('window').width * 0.3}
               marginHorizontal={2}
             />
@@ -209,10 +206,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               selected={partiallyStatus}
               title={I18n.t('Manufacturing_Status_Planned')}
               onPress={handlePartiallyStatus}
-              selectedColor={{
-                backgroundColor: Colors.plannedColor_light,
-                borderColor: Colors.plannedColor,
-              }}
+              selectedColor={Colors.plannedColor}
               width={Dimensions.get('window').width * 0.3}
               marginHorizontal={2}
             />
@@ -220,10 +214,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               selected={finishedStatus}
               title={I18n.t('Manufacturing_Status_Finished')}
               onPress={handleFinishedStatus}
-              selectedColor={{
-                backgroundColor: Colors.primaryColor_light,
-                borderColor: Colors.primaryColor,
-              }}
+              selectedColor={Colors.primaryColor}
               width={Dimensions.get('window').width * 0.3}
               marginHorizontal={2}
             />

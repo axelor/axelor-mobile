@@ -27,9 +27,9 @@ const ProducedProductCard = ({
 
   const borderStyles = useMemo(() => {
     if (plannedQty > producedQty) {
-      return getStyles(Colors.plannedColor)?.border;
+      return getStyles(Colors.plannedColor.background)?.border;
     }
-    return getStyles(Colors.primaryColor)?.border;
+    return getStyles(Colors.primaryColor.background)?.border;
   }, [Colors, plannedQty, producedQty]);
 
   return (

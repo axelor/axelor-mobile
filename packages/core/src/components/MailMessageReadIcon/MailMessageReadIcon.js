@@ -41,11 +41,17 @@ const MailMessageReadIcon = ({
   return (
     <Icon
       name={mailMessageFlag == null ? 'check-double' : 'check'}
-      color={isRead ? Colors.primaryColor : Colors.secondaryColor}
+      color={
+        isRead
+          ? Colors.primaryColor.background
+          : Colors.secondaryColor.background
+      }
       size={mailMessageFlag == null ? 18 : 15}
       touchable={!isRead}
       onPress={mailMessageFlag != null ? handleMarkAsRead : handleMarkAll}
-      style={styles.checkIcon}
+      style={
+        mailMessageFlag == null ? styles.doucleCheckIcon : styles.checkIcon
+      }
     />
   );
 };
@@ -55,6 +61,9 @@ const styles = StyleSheet.create({
     width: '10%',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  doucleCheckIcon: {
+    flex: 1,
   },
 });
 

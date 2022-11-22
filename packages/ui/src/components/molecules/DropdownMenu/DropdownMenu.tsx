@@ -25,7 +25,7 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
     <View ref={wrapperRef}>
       <Icon
         name="ellipsis-v"
-        color={Colors.primaryColor}
+        color={Colors.primaryColor.background}
         size={22}
         style={styles.action}
         touchable={true}

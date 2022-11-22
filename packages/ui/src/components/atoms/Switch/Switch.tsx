@@ -19,8 +19,8 @@ const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
   return (
     <RNSwitch
       trackColor={{
-        false: Colors.secondaryColor_light,
-        true: Colors.primaryColor_light,
+        false: Colors.secondaryColor.background_light,
+        true: Colors.primaryColor.background_light,
       }}
       thumbColor={'#f4f4f4'}
       ios_backgroundColor="#3e3e3e"

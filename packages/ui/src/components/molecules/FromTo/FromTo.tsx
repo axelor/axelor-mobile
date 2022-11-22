@@ -15,7 +15,11 @@ function FromTo({fromComponent, toComponent, style}: FromToProps) {
     <View style={[styles.container, style]}>
       {fromComponent}
       <View style={styles.panel}>
-        <Icon name="chevron-right" size={35} color={Colors.primaryColor} />
+        <Icon
+          name="chevron-right"
+          size={35}
+          color={Colors.primaryColor.background}
+        />
       </View>
       {toComponent}
     </View>
