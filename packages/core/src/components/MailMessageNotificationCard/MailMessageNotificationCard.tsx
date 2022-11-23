@@ -4,13 +4,13 @@ import {
   Card,
   Icon,
   LabelText,
-  Text,
   useThemeColor,
   UnorderedList,
   Badge,
 } from '@aos-mobile/ui';
 import MailMessageNotificationType from '@aos-mobile/core/src/types/mail-message-notification-type';
 import MailMessageReadIcon from '../MailMessageReadIcon/MailMessageReadIcon';
+import TrackItem from '../TrackItem/TrackItem';
 
 interface TagProps {
   title: string;
@@ -84,26 +84,13 @@ const MailMessageNotificationCard = ({
                 !moreItems && tracks.length > MAX_TRACK_ITEMS && MAX_TRACK_ITEMS
               }
               renderItem={({item}) => (
-                <Text style={styles.listItem}>
-                  <Text style={styles.itemTitle}>{`${item.title}: `}</Text>
-                  <Text style={styles.itemValue}>
-                    {(item.oldDisplayValue || item.oldValue) &&
-                      `${
-                        item.oldDisplayValue
-                          ? item.oldDisplayValue
-                          : item.oldValue
-                      }`}
-                    {(item.oldDisplayValue || item.oldValue) && (
-                      <Icon
-                        name="long-arrow-right"
-                        size={10}
-                        FontAwesome5={false}
-                        style={styles.arrowIcon}
-                      />
-                    )}
-                    {item.displayValue ? item.displayValue : item.value}
-                  </Text>
-                </Text>
+                <TrackItem
+                  title={item.title}
+                  oldDisplayValue={item.oldDisplayValue}
+                  oldValue={item.oldValue}
+                  displayValue={item.displayValue}
+                  value={item.value}
+                />
               )}
             />
             {tracks.length > MAX_TRACK_ITEMS && (
@@ -121,9 +108,6 @@ const MailMessageNotificationCard = ({
 };
 
 const styles = StyleSheet.create({
-  arrowIcon: {
-    paddingHorizontal: 5,
-  },
   card: {
     width: '95%',
     paddingHorizontal: 20,
@@ -140,16 +124,6 @@ const styles = StyleSheet.create({
     width: '10%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  listItem: {
-    flexDirection: 'row',
-    fontSize: 13,
-  },
-  itemTitle: {
-    fontWeight: 'bold',
-  },
-  itemValue: {
-    textAlign: 'justify',
   },
   moreIcon: {
     alignSelf: 'center',

@@ -16,5 +16,6 @@ export {default as Scanner} from './Scanner/Scanner';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
 export {default as Stopwatch} from './Stopwatch/Stopwatch';
 export {default as Timer} from './Timer/Timer';
+export {default as TrackItem} from './TrackItem/TrackItem';
 export {default as UrlInput} from './UrlInput/UrlInput';
 export {default as UsernameInput} from './UsernameInput/UsernameInput';

@@ -33,6 +33,7 @@ export {
   disableScan,
   default as scannerReducer,
 } from './features/scannerSlice';
+export {isDate} from './utils/date';
 export {showToastMessage} from './utils/show-toast-message';
 export {formatURL, splitInTwo, isHtml} from './utils/string';
 export {formatDate, formatDateTime, formatScan} from './utils/formatters';
