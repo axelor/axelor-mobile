@@ -20,12 +20,13 @@ import React from 'react';
 import {Application} from '@axelor/aos-mobile-core';
 import {StockModule} from '@axelor/aos-mobile-stock';
 import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
+import {CrmModule} from '@aos-mobile/app-crm';
 import application_properties from '../package.json';
 
 const App = () => {
   return (
     <Application
-      modules={[StockModule, ManufacturingModule]}
+      modules={[StockModule, ManufacturingModule, CrmModule]}
       mainMenu="auth_menu_user"
       version={application_properties.version}
     />
