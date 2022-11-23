@@ -17,6 +17,7 @@
     "copy:assets": "cpx src/assets/** lib/assets"
   },
   "peerDependencies": {
+    "@react-native-clipboard/clipboard": "^1.11.1",
     "axios": "^0.26.1",
     "i18next": "^21.9.2",
     "react": "18.2.0",
@@ -35,10 +36,11 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
+    "@react-native-clipboard/clipboard": "^1.11.1",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "18.0.20",
-    "@types/react-native": "0.68.1",
     "@types/react-i18next": "^8.1.0",
+    "@types/react-native": "0.68.1",
     "axios": "^0.26.1",
     "cpx2": "^4.2.0",
     "eslint": "^7.32.0",
@@ -61,8 +63,8 @@
     "vision-camera-code-scanner": "^0.2.0"
   },
   "dependencies": {
-    "@aos-mobile/ui": "1.0.0",
     "@aos-mobile/error": "1.0.0",
+    "@aos-mobile/ui": "1.0.0",
     "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.10",
     "@react-navigation/native-stack": "6.6.1",
