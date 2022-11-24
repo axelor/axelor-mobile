@@ -312,7 +312,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             <ProductCardInfo
               name={stockProduct?.name}
               code={stockProduct?.code}
-              pictureId={stockProduct?.picture?.id}
+              picture={stockProduct?.picture}
               trackingNumber={
                 stockProduct?.trackingNumberConfiguration == null ||
                 trackingNumber == null

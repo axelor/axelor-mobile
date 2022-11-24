@@ -17,8 +17,9 @@ const ProductImageScreen = ({route}) => {
           generalStyle={styles.imageStyle}
           imageSize={styles.imageSize}
           resizeMode="contain"
-          metaFileId={product?.picture?.id}
+          metaFile={product?.picture}
           defaultIconSize={Dimensions.get('window').width * 0.8}
+          enableImageViewer={true}
         />
       </View>
     </Screen>

@@ -32,7 +32,7 @@ const NotesCard = ({title, data}: NotesCardProps) => {
             html: data,
           }}
           contentWidth={
-            widthNotes != null && widthNotes * PERCENTAGE_WIDTH_NOTES
+            widthNotes != null ? widthNotes * PERCENTAGE_WIDTH_NOTES : 100
           }
           baseStyle={{color: Colors.text}}
         />

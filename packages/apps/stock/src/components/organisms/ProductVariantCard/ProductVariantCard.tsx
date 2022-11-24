@@ -16,7 +16,7 @@ interface ProductVariantCardProps {
   name: string;
   code: string;
   attributesList: {attributes: ProductAttribut[]};
-  picture?: {id: number; [objectKey: string]: any};
+  picture?: any;
   stockAvailability: number;
   onPress: () => void;
 }
@@ -47,7 +47,7 @@ const ProductVariantCard = ({
             generalStyle={styles.imageStyle}
             imageSize={styles.imageSize}
             resizeMode="contain"
-            metaFileId={picture?.id}
+            metaFile={picture}
             defaultIconSize={40}
           />
           <View style={styles.textContainer}>

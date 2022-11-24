@@ -6,7 +6,7 @@ import Product from '../../../types/product';
 
 interface ProductCharacteristicsProps {
   style?: any;
-  pictureId: number | null | undefined;
+  picture?: any;
   onPressImage: () => void;
   name: string;
   code: string;
@@ -18,7 +18,7 @@ interface ProductCharacteristicsProps {
 
 const ProductCharacteristics = ({
   style,
-  pictureId,
+  picture,
   onPressImage,
   name,
   code,
@@ -38,7 +38,7 @@ const ProductCharacteristics = ({
             generalStyle={styles.imageStyle}
             imageSize={styles.imageSize}
             resizeMode="contain"
-            metaFileId={pictureId}
+            metaFile={picture}
             defaultIconSize={120}
           />
         </TouchableOpacity>

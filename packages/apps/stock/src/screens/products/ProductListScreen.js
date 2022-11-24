@@ -95,7 +95,7 @@ const ProductListScreen = ({navigation}) => {
             style={styles.item}
             name={item.name}
             code={item.code}
-            pictureId={item.picture == null ? null : item.picture.id}
+            picture={item.picture == null ? null : item.picture}
             availableStock={
               listAvailabilty ? listAvailabilty[index]?.availableStock : null
             }

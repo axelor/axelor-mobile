@@ -125,7 +125,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductCardInfo
           onPress={handleShowProduct}
-          pictureId={productFromId?.picture?.id}
+          picture={productFromId?.picture}
           code={productFromId?.code}
           name={productFromId?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}

@@ -47,7 +47,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductCharacteristics
           onPressImage={() => navigateToImageProduct()}
-          pictureId={product?.picture?.id}
+          picture={product?.picture}
           category={product.productCategory?.name}
           prototype={product.isPrototype}
           unrenewed={product.isUnrenewed}

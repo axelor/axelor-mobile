@@ -7,7 +7,7 @@ import {ProductCardDetails} from '../../molecules';
 interface ProductCardInfoProps {
   name: string;
   code: string;
-  pictureId: number | null | undefined;
+  picture: any;
   trackingNumber?: string;
   locker?: string;
   onPress: () => void;
@@ -16,7 +16,7 @@ interface ProductCardInfoProps {
 const ProductCardInfo = ({
   name,
   code,
-  pictureId = null,
+  picture = null,
   trackingNumber = null,
   locker = null,
   onPress = () => {},
@@ -27,7 +27,7 @@ const ProductCardInfo = ({
         generalStyle={styles.imageStyle}
         imageSize={styles.imageSize}
         resizeMode="contain"
-        metaFileId={pictureId}
+        metaFile={picture}
         defaultIconSize={60}
       />
       <ProductCardDetails style={styles.textContainer} onPress={onPress}>

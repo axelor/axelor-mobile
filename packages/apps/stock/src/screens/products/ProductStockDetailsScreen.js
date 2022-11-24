@@ -138,7 +138,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
               generalStyle={styles.imageStyle}
               imageSize={styles.imageSize}
               resizeMode="contain"
-              metaFileId={product?.picture?.id}
+              metaFile={product?.picture}
               defaultIconSize={60}
             />
           </TouchableOpacity>

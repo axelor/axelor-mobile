@@ -131,7 +131,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductCardInfo
           onPress={handleShowProduct}
-          pictureId={product?.picture?.id}
+          picture={product?.picture}
           code={product?.code}
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}

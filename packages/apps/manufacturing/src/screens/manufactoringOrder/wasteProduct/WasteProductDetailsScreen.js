@@ -112,7 +112,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           <ProductCardInfo
             name={product.name}
             code={product.code}
-            pictureId={product.picture?.id}
+            picture={product.picture}
             onPress={handleShowProduct}
           />
         )}

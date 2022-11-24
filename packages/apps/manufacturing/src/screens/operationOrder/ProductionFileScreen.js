@@ -51,14 +51,14 @@ const ProductionFileScreen = ({route, navigation}) => {
           if (tab) {
             return (
               <ProductionFileSmallCard
-                imageId={item.image?.id}
+                image={item.image}
                 description={item.description}
               />
             );
           }
           return (
             <ProductionFileLargeCard
-              imageId={item.image?.id}
+              image={item.image}
               description={item.description}
             />
           );

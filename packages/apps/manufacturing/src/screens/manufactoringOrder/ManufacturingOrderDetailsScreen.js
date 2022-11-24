@@ -186,7 +186,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductCardInfo
           onPress={handleShowProduct}
-          pictureId={manufOrder.product?.picture.id}
+          picture={manufOrder.product?.picture}
           code={manufOrder.product?.code}
           name={manufOrder.product?.name}
         />

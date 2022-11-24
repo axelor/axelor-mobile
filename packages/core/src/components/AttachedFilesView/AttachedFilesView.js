@@ -1,5 +1,5 @@
 import React, {useCallback, useState, useMemo, useEffect} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
@@ -7,20 +7,16 @@ import {
   ChipSelect,
   File,
   HeaderContainer,
-  Icon,
-  Image,
-  PopUpOneButton,
   Screen,
   ScrollList,
   useThemeColor,
 } from '@aos-mobile/ui';
-import FileViewer from 'react-native-file-viewer';
-import RNFS from 'react-native-fs';
 import useTranslator from '../../i18n/hooks/use-translator';
 import {
   getAttachedFiles,
   getAttachedFilesDetails,
 } from '../../features/attachedFilesSlice';
+import {openFileInExternalApp} from '../../tools/FileViewer';
 
 function AttachedFilesView({
   files,
@@ -37,60 +33,17 @@ function AttachedFilesView({
   const {loading, attachedFilesList} = useSelector(
     state => state.attachedFiles,
   );
-  const [visible, setVisible] = useState(false);
-  const [errorFile, setErrorFile] = useState(false);
-  const [image, setImage] = useState(null);
   const [extensionList, setExtensionList] = useState([]);
   const [selectedExtension, setSelectedExtension] = useState();
 
   const dispatch = useDispatch();
 
-  const imageContainer = useMemo(() => getStyles(Colors), [Colors]);
-
-  const handleShowImage = item => {
-    if (File.getFileExtension(item.fileName) === 'png') {
-      setVisible(true);
-      setImage({
-        uri: isMetaFile
-          ? `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${item?.id}/content/download`
-          : `${baseUrl}ws/dms/download/${item?.id}`,
-      });
-    }
-  };
-
-  const handleCloseImage = () => {
-    setVisible(false);
-    setImage(null);
-  };
-
   const handleShowFile = async item => {
-    if (File.getFileExtension(item.fileName) === 'png') {
-      handleShowImage(item);
-      return;
-    }
-    const localFile = `${RNFS.DocumentDirectoryPath}/${item?.fileName}`;
-    const options = {
-      fromUrl: isMetaFile
-        ? `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${item?.id}/content/download`
-        : `${baseUrl}ws/dms/inline/${item?.id}`,
-      toFile: localFile,
-      headers: {
-        Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`,
-      },
-    };
-
-    RNFS.downloadFile(options)
-      .promise.then(() =>
-        FileViewer.open(localFile, {showOpenWithDialog: true}),
-      )
-      .then(() => {
-        // success
-      })
-      .catch(error => {
-        // error
-        console.log(error);
-        setErrorFile(true);
-      });
+    await openFileInExternalApp(
+      {fileName: item.fileName, id: item.id, isMetaFile: isMetaFile},
+      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+      I18n,
+    );
   };
 
   const fetchFilesAPI = useCallback(() => {
@@ -132,7 +85,7 @@ function AttachedFilesView({
     }
   };
 
-  const filtredList = useMemo(
+  const filteredList = useMemo(
     () => filterOnSelectExtension(attachedFilesList),
     [filterOnSelectExtension, attachedFilesList],
   );
@@ -179,39 +132,9 @@ function AttachedFilesView({
           </ChipSelect>
         }
       />
-      {errorFile && (
-        <PopUpOneButton
-          visible={errorFile}
-          title={I18n.t('Auth_Error')}
-          data={I18n.t('Auth_CannotOpenFile')}
-          btnTitle={I18n.t('Auth_Close')}
-          onPress={() => setErrorFile(false)}
-        />
-      )}
-      {visible && image != null && (
-        <View style={styles.viewContainer}>
-          <Icon
-            name="times"
-            color={Colors.primaryColor.background}
-            size={24}
-            touchable={true}
-            onPress={handleCloseImage}
-            style={styles.iconContainer}
-          />
-          <View style={imageContainer}>
-            <Image
-              defaultIconSize={80}
-              generalStyle={styles.imageStyle}
-              imageSize={styles.imageSize}
-              resizeMode="contain"
-              source={image}
-            />
-          </View>
-        </View>
-      )}
       <ScrollList
         loadingList={loading}
-        data={filtredList}
+        data={filteredList}
         renderItem={({item}) => (
           <AttachmentCard
             fileName={item.fileName}
@@ -229,42 +152,5 @@ function AttachedFilesView({
     </Screen>
   );
 }
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    backgroundColor: Colors.backgroundColor,
-  });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 16,
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  text: {
-    fontSize: 18,
-  },
-  viewContainer: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    zIndex: 6,
-  },
-  imageSize: {
-    height: 100,
-  },
-  imageStyle: {
-    margin: 10,
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    margin: 15,
-  },
-});
 
 export default AttachedFilesView;

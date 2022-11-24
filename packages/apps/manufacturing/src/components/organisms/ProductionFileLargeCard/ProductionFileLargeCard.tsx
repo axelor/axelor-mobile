@@ -4,13 +4,18 @@ import RenderHTML from 'react-native-render-html';
 import {AOSImage, useTranslator} from '@aos-mobile/core';
 import {Text, useThemeColor} from '@aos-mobile/ui';
 
+interface MetaFileProps {
+  id: number;
+  fileName: string;
+}
+
 interface ProductionFileLargeCardProps {
-  imageId?: number;
+  image?: MetaFileProps;
   description: string;
 }
 
 function ProductionFileLargeCard({
-  imageId,
+  image,
   description,
 }: ProductionFileLargeCardProps) {
   const I18n = useTranslator();
@@ -24,10 +29,11 @@ function ProductionFileLargeCard({
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <AOSImage
-          metaFileId={imageId}
+          metaFile={image}
           defaultIconSize={Dimensions.get('window').width * 0.4}
           imageSize={styles.imageStyle}
           resizeMode="contain"
+          enableImageViewer={true}
         />
       </View>
       <View style={styles.descriptionContainer}>

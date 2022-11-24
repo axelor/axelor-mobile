@@ -125,7 +125,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           <ProductCardInfo
             name={product.name}
             code={product.code}
-            pictureId={product.picture?.id}
+            picture={product.picture}
             trackingNumber={
               product.trackingNumberConfiguration == null ||
               trackingNumber == null

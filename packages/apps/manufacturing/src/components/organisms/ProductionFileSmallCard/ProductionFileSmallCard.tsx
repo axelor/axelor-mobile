@@ -4,13 +4,18 @@ import RenderHTML from 'react-native-render-html';
 import {AOSImage} from '@aos-mobile/core';
 import {useThemeColor} from '@aos-mobile/ui';
 
+interface MetaFileProps {
+  id: number;
+  fileName: string;
+}
+
 interface ProductionFileSmallCardProps {
-  imageId?: number;
+  image?: MetaFileProps;
   description: string;
 }
 
 function ProductionFileSmallCard({
-  imageId,
+  image,
   description,
 }: ProductionFileSmallCardProps) {
   const Colors = useThemeColor();
@@ -22,10 +27,11 @@ function ProductionFileSmallCard({
   return (
     <View style={styles.container}>
       <AOSImage
-        metaFileId={imageId}
+        metaFile={image}
         defaultIconSize={Dimensions.get('window').width * 0.25}
         imageSize={styles.imageStyle}
         resizeMode="contain"
+        enableImageViewer={true}
       />
       <View style={styles.description}>
         <RenderHTML

@@ -7,7 +7,7 @@ interface ProductCardProps {
   style?: any;
   name: string;
   code: string;
-  pictureId: number | null | undefined;
+  picture: any;
   availableStock: number | null | undefined;
   onPress: () => void;
 }
@@ -16,7 +16,7 @@ const ProductCard = ({
   style,
   name,
   code,
-  pictureId,
+  picture,
   availableStock,
   onPress,
 }: ProductCardProps) => {
@@ -31,7 +31,7 @@ const ProductCard = ({
             generalStyle={styles.imageStyle}
             imageSize={styles.imageSize}
             resizeMode="contain"
-            metaFileId={pictureId}
+            metaFile={picture}
             defaultIconSize={60}
           />
           <View style={styles.textContainer}>
