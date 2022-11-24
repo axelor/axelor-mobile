@@ -14,6 +14,7 @@ export {default as IconInput} from './IconInput/IconInput';
 export {default as Image} from './Image/Image';
 export {default as Increment} from './Increment/Increment';
 export {default as LabelText} from './LabelText/LabelText';
+export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
 export {default as MovementIndicationCard} from './MovementIndicationCard/MovementIndicationCard';
 export {default as PopUp} from './PopUp/PopUp';

@@ -10,22 +10,25 @@ interface ConfigContextState {
   showFilter: boolean;
   showVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
+  headerHeight: number;
   setActivityIndicator: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
   setVirtualKeyboardConfig: (option: boolean) => void;
   toggleVirtualKeyboardConfig: () => void;
+  setHeaderHeight: (height: number) => void;
 }
 
 interface ConfigAction {
   type: string;
-  payload?: boolean;
+  payload?: boolean | number;
 }
 
 const defaultConfigContext = {
   showFilter: true,
   showVirtualKeyboard: true,
   showActivityIndicator: false,
+  headerHeight: 115,
   setActivityIndicator: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
   },
@@ -45,6 +48,11 @@ const defaultConfigContext = {
       'ConfigProvider should be mounted to toggle virtual keyboard config',
     );
   },
+  setHeaderHeight: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set header height config',
+    );
+  },
 };
 
 const ConfigContext = createContext<ConfigContextState>(defaultConfigContext);
@@ -55,6 +63,7 @@ const actionTypes = {
   setVirtualKeyboardConfig: 'setVirtualKeyboardConfig',
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
+  setHeaderHeight: 'setHeaderHeight',
 };
 
 const configReducer = (
@@ -65,13 +74,13 @@ const configReducer = (
     case actionTypes.setActivityIndicator: {
       return {
         ...state,
-        showActivityIndicator: action.payload,
+        showActivityIndicator: action.payload as boolean,
       };
     }
     case actionTypes.setFilterConfig: {
       return {
         ...state,
-        showFilter: action.payload,
+        showFilter: action.payload as boolean,
       };
     }
     case actionTypes.toggleFilterConfig: {
@@ -83,13 +92,19 @@ const configReducer = (
     case actionTypes.setVirtualKeyboardConfig: {
       return {
         ...state,
-        showVirtualKeyboard: action.payload,
+        showVirtualKeyboard: action.payload as boolean,
       };
     }
     case actionTypes.toggleVirtualKeyboardConfig: {
       return {
         ...state,
         showVirtualKeyboard: !state.showVirtualKeyboard,
+      };
+    }
+    case actionTypes.setHeaderHeight: {
+      return {
+        ...state,
+        headerHeight: action.payload as number,
       };
     }
   }
@@ -113,6 +128,10 @@ const actions = {
   }),
   toggleVirtualKeyboardConfig: () => ({
     type: actionTypes.toggleVirtualKeyboardConfig,
+  }),
+  setHeaderHeight: value => ({
+    type: actionTypes.setHeaderHeight,
+    payload: value,
   }),
 };
 
@@ -139,6 +158,11 @@ export const ConfigProvider = ({children}) => {
     () => dispatch(actions.toggleVirtualKeyboardConfig()),
     [],
   );
+  const setHeaderHeight = useCallback(
+    value => dispatch(actions.setHeaderHeight(value)),
+    [],
+  );
+
   const configContextState = useMemo<ConfigContextState>(
     () => ({
       ...state,
@@ -147,6 +171,7 @@ export const ConfigProvider = ({children}) => {
       toggleFilterConfig,
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
+      setHeaderHeight,
     }),
     [
       setActivityIndicator,
@@ -155,6 +180,7 @@ export const ConfigProvider = ({children}) => {
       state,
       toggleFilterConfig,
       toggleVirtualKeyboardConfig,
+      setHeaderHeight,
     ],
   );
 

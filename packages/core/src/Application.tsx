@@ -15,6 +15,7 @@ import {
   OutsideAlerterProvider,
   ThemeProvider,
   Theme,
+  LoadingIndicator,
 } from '@aos-mobile/ui';
 import {ErrorBoundary} from '@aos-mobile/error';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
@@ -27,7 +28,7 @@ import enTranslation from './i18n/translations/en.json';
 import frTranslation from './i18n/translations/fr.json';
 import {getActiveUserId} from './api/login-api';
 import ErrorScreen from './screens/ErrorScreen';
-import {Scanner, LoadingIndicator} from './components';
+import {Scanner} from './components';
 import {configGlobalStore} from './store';
 
 const ApplicationContext = createContext(null);

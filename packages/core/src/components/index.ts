@@ -4,7 +4,6 @@ export {default as CameraScanner} from './CameraScanner/CameraScanner';
 export {default as ErrorText} from './ErrorText/ErrorText';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
 export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
-export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
 export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
