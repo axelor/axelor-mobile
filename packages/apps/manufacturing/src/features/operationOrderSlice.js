@@ -4,11 +4,11 @@ import {
   searchOperationOrderFilter,
   fetchOperationOrder,
   updateOperationOrderStatus,
-  getOperationOrder,
+  getPlannedOperationOrder,
 } from '../api/operation-order-api';
 
 export const fetchOperationOrders = createAsyncThunk(
-  'operationOrder/fetchOperationOrders',
+  'OperationOrder/fetchOperationOrders',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchOperationOrderFilter,
@@ -20,13 +20,13 @@ export const fetchOperationOrders = createAsyncThunk(
   },
 );
 
-export const fetchAllOperationOrder = createAsyncThunk(
-  'operation/fetchOperationOrder',
+export const fetchPlannedOperationOrder = createAsyncThunk(
+  'OperationOrder/fetchPlannedOperationOrder',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: getOperationOrder,
+      fetchFunction: getPlannedOperationOrder,
       data,
-      action: 'fetch operation',
+      action: 'fetch planned operation orders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -54,7 +54,7 @@ export const updateOperationOrder = createAsyncThunk(
       data: data,
       action: 'update operation order status',
       getState: getState,
-      responseOptions: {showToast: true},
+      responseOptions: {showToast: false},
     }).then(object =>
       handlerApiCall({
         fetchFunction: fetchOperationOrder,
@@ -74,7 +74,7 @@ const initialState = {
   operationOrderList: [],
   loadingOrder: false,
   operationOrder: {},
-  operationList: [],
+  plannedOperationOrderList: [],
 };
 
 const operationOrderSlice = createSlice({
@@ -88,12 +88,12 @@ const operationOrderSlice = createSlice({
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchAllOperationOrder.pending, state => {
+    builder.addCase(fetchPlannedOperationOrder.pending, state => {
       state.loading = true;
     });
-    builder.addCase(fetchAllOperationOrder.fulfilled, (state, action) => {
+    builder.addCase(fetchPlannedOperationOrder.fulfilled, (state, action) => {
       state.loading = false;
-      state.operationList = action.payload;
+      state.plannedOperationOrderList = action.payload;
     });
     builder.addCase(fetchOperationOrders.fulfilled, (state, action) => {
       state.loading = false;
@@ -120,14 +120,7 @@ const operationOrderSlice = createSlice({
       state.loadingOrder = false;
       state.operationOrder = action.payload;
     });
-    builder.addCase(updateOperationOrder.pending, state => {
-      state.loadingOrder = true;
-    });
-    builder.addCase(updateOperationOrder.rejected, (state, action) => {
-      state.loadingOrder = false;
-    });
     builder.addCase(updateOperationOrder.fulfilled, (state, action) => {
-      state.loadingOrder = false;
       state.operationOrder = action.payload;
     });
   },

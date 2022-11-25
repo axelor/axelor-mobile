@@ -2,11 +2,13 @@ import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, LabelText, Screen, Text, useThemeColor} from '@aos-mobile/ui';
 import {PlanningView, useDispatch, useSelector} from '@aos-mobile/core';
-import {fetchAllOperationOrder} from '../../features/operationOrderSlice';
+import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 import OperationOrder from '../../types/operation-order';
 
 function OperationOrderPlanningScreen() {
-  const {operationList, loading} = useSelector(state => state.operationOrder);
+  const {plannedOperationOrderList, loading} = useSelector(
+    state => state.operationOrder,
+  );
   const dispatch = useDispatch();
   const Colors = useThemeColor();
 
@@ -15,8 +17,11 @@ function OperationOrderPlanningScreen() {
   }, [Colors]);
 
   const listItem = useMemo(() => {
-    if (operationList !== undefined && operationList.length > 1) {
-      return operationList.map(elt => {
+    if (
+      plannedOperationOrderList !== undefined &&
+      plannedOperationOrderList.length > 1
+    ) {
+      return plannedOperationOrderList.map(elt => {
         const borderColor = OperationOrder.getStatusColor(
           elt.statusSelect,
           Colors,
@@ -43,11 +48,11 @@ function OperationOrderPlanningScreen() {
         };
       });
     }
-  }, [Colors, operationList]);
+  }, [Colors, plannedOperationOrderList]);
 
   const fetchItemsByMonth = useCallback(
     date => {
-      dispatch(fetchAllOperationOrder(date));
+      dispatch(fetchPlannedOperationOrder(date));
     },
     [dispatch],
   );

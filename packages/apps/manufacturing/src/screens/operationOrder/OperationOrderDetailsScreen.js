@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   DropdownMenuItem,
@@ -33,24 +33,27 @@ function OperationOrderDetailsScreen({route, navigation}) {
     state => state.operationOrder,
   );
 
-  const updateStatus = async status => {
-    dispatch(
-      await updateOperationOrder({
-        operationOrderId: operationOrder.id,
-        version: operationOrder.version,
-        status,
-      }),
-    );
-  };
+  const updateStatus = useCallback(
+    status => {
+      dispatch(
+        updateOperationOrder({
+          operationOrderId: operationOrder?.id,
+          version: operationOrder?.version,
+          status,
+        }),
+      );
+    },
+    [dispatch, operationOrder],
+  );
 
   const [startDate, endDate] = useMemo(() => {
     if (!isEmpty(operationOrder)) {
       return OperationOrder.getDates(
-        operationOrder.statusSelect,
-        operationOrder.plannedStartDateT,
-        operationOrder.plannedEndDateT,
-        operationOrder.realStartDateT,
-        operationOrder.realEndDateT,
+        operationOrder?.statusSelect,
+        operationOrder?.plannedStartDateT,
+        operationOrder?.plannedEndDateT,
+        operationOrder?.realStartDateT,
+        operationOrder?.realEndDateT,
         I18n,
         false,
       );
@@ -86,7 +89,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
             placeholder={I18n.t('Manufacturing_ProductionFile')}
             onPress={() =>
               navigation.navigate('ProductionFileScreen', {
-                prodProcessLineId: operationOrder.prodProcessLine.id,
+                prodProcessLineId: operationOrder?.prodProcessLine?.id,
               })
             }
           />
@@ -145,10 +148,10 @@ function OperationOrderDetailsScreen({route, navigation}) {
           onPause={() => updateStatus(OperationOrder.status.StandBy)}
           onStop={() => updateStatus(OperationOrder.status.Finished)}
           disableStop={
-            operationOrder.statusSelect === OperationOrder.status.StandBy
+            operationOrder?.statusSelect === OperationOrder.status.StandBy
           }
           disableCancel={
-            operationOrder.statusSelect === OperationOrder.status.Finished
+            operationOrder?.statusSelect === OperationOrder.status.Finished
           }
           hideCancel={true}
         />

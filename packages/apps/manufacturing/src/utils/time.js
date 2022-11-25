@@ -58,9 +58,9 @@ export const calculateDiff = (start, end) => {
     endDate = new Date(end);
   }
 
-  //ignore light difference (< 500 milliseconds) due to the async await
+  //ignore light difference (< 5000 milliseconds) due to the async await
   if (startDate > endDate) {
-    if (Math.abs(startDate - endDate) > 500) {
+    if (Math.abs(startDate - endDate) > 5000) {
       console.warn(
         `Invalid dates: start date: ${startDate}, end date ${endDate}`,
       );

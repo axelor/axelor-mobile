@@ -89,7 +89,7 @@ export async function searchOperationOrderFilter({
   });
 }
 
-export async function getOperationOrder(date) {
+export async function getPlannedOperationOrder(date) {
   const startMonth = date?.month;
   const endMonth = date?.month + 1;
   return axiosApiProvider.post({
