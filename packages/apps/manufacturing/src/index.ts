@@ -20,6 +20,11 @@ export const ManufacturingModule: Module = {
       icon: 'dolly-flatbed',
       screen: 'OperationOrderListScreen',
     },
+    OperationOrderPlanning: {
+      title: 'Manufacturing_OperationOrder',
+      icon: 'calendar-alt',
+      screen: 'OperationOrderPlanningScreen',
+    },
   },
   screens: {
     ...ManufacturingOrderScreens,

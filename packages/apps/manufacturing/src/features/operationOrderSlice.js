@@ -4,6 +4,7 @@ import {
   searchOperationOrderFilter,
   fetchOperationOrder,
   updateOperationOrderStatus,
+  getOperationOrder,
 } from '../api/operation-order-api';
 
 export const fetchOperationOrders = createAsyncThunk(
@@ -13,6 +14,19 @@ export const fetchOperationOrders = createAsyncThunk(
       fetchFunction: searchOperationOrderFilter,
       data,
       action: 'fetch operation orders',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchAllOperationOrder = createAsyncThunk(
+  'operation/fetchOperationOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getOperationOrder,
+      data,
+      action: 'fetch operation',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -60,6 +74,7 @@ const initialState = {
   operationOrderList: [],
   loadingOrder: false,
   operationOrder: {},
+  operationList: [],
 };
 
 const operationOrderSlice = createSlice({
@@ -72,6 +87,13 @@ const operationOrderSlice = createSlice({
       } else {
         state.moreLoading = true;
       }
+    });
+    builder.addCase(fetchAllOperationOrder.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllOperationOrder.fulfilled, (state, action) => {
+      state.loading = false;
+      state.operationList = action.payload;
     });
     builder.addCase(fetchOperationOrders.fulfilled, (state, action) => {
       state.loading = false;

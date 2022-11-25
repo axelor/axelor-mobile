@@ -11,6 +11,7 @@ export {default as MailMessageNotificationCard} from './MailMessageNotificationC
 export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PasswordInput} from './PasswordInput/PasswordInput';
+export {default as PlanningView} from './PlanningView/PlanningView';
 export {default as Scanner} from './Scanner/Scanner';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
 export {default as Stopwatch} from './Stopwatch/Stopwatch';

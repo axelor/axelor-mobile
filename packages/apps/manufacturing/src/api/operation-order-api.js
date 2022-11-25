@@ -89,6 +89,39 @@ export async function searchOperationOrderFilter({
   });
 }
 
+export async function getOperationOrder(date) {
+  const startMonth = date?.month;
+  const endMonth = date?.month + 1;
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.production.db.OperationOrder/search',
+    data: {
+      data: {
+        criteria: [
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'plannedStartDateT',
+                operator: '>=',
+                value: `${date.year}-${startMonth
+                  .toString()
+                  .padStart(2, '0')}-01T00:00:00.000Z`,
+              },
+              {
+                fieldName: 'plannedStartDateT',
+                operator: '<=',
+                value: `${date.year}-${endMonth
+                  .toString()
+                  .padStart(2, '0')}-31T23:59:00.000Z`,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  });
+}
+
 export async function fetchOperationOrder({operationOrderId}) {
   return axiosApiProvider.post({
     url: `/ws/rest/com.axelor.apps.production.db.OperationOrder/${operationOrderId}/fetch`,

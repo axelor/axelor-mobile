@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
-  title?: string;
+  title?: string | number | object;
   value?: string;
   size?: number;
   color?: string;

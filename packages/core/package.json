@@ -71,6 +71,7 @@
     "@react-navigation/stack": "6.2.1",
     "@reduxjs/toolkit": "^1.8.5",
     "moment": "^2.29.4",
+    "react-native-calendars": "1.1284",
     "react-native-reanimated": "2.10.0",
     "react-redux": "^7.2.8"
   },
