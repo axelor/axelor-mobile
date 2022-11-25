@@ -33,7 +33,7 @@ const Input = ({
   isFocus = false,
 }: InputProps) => {
   const Colors = useThemeColor();
-  const {showVirtualKeyboard} = useConfig();
+  const {hideVirtualKeyboard} = useConfig();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
@@ -51,7 +51,7 @@ const Input = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       onBlur={onEndFocus}
-      showSoftInputOnFocus={showVirtualKeyboard ? false : true}
+      showSoftInputOnFocus={hideVirtualKeyboard ? false : true}
       autoFocus={isFocus}
     />
   );

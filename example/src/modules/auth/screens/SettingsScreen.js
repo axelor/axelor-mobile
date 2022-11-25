@@ -23,7 +23,7 @@ const SettingsScreen = ({route}) => {
   const {message} = useSelector(state => state.config);
   const {
     showFilter,
-    showVirtualKeyboard,
+    hideVirtualKeyboard,
     setActivityIndicator,
     toggleFilterConfig,
     toggleVirtualKeyboardConfig,
@@ -69,7 +69,7 @@ const SettingsScreen = ({route}) => {
         />
         <SwitchCard
           title={I18n.t('User_VirtualKeyboardConfig')}
-          defaultValue={showVirtualKeyboard}
+          defaultValue={hideVirtualKeyboard}
           onToggle={toggleVirtualKeyboardConfig}
         />
         <SwitchCard

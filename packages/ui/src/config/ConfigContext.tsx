@@ -8,7 +8,7 @@ import React, {
 
 interface ConfigContextState {
   showFilter: boolean;
-  showVirtualKeyboard: boolean;
+  hideVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
   headerHeight: number;
   setActivityIndicator: (option: boolean) => void;
@@ -26,7 +26,7 @@ interface ConfigAction {
 
 const defaultConfigContext = {
   showFilter: true,
-  showVirtualKeyboard: true,
+  hideVirtualKeyboard: false,
   showActivityIndicator: false,
   headerHeight: 115,
   setActivityIndicator: () => {
@@ -92,13 +92,13 @@ const configReducer = (
     case actionTypes.setVirtualKeyboardConfig: {
       return {
         ...state,
-        showVirtualKeyboard: action.payload as boolean,
+        hideVirtualKeyboard: action.payload as boolean,
       };
     }
     case actionTypes.toggleVirtualKeyboardConfig: {
       return {
         ...state,
-        showVirtualKeyboard: !state.showVirtualKeyboard,
+        hideVirtualKeyboard: !state.hideVirtualKeyboard,
       };
     }
     case actionTypes.setHeaderHeight: {
