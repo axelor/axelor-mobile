@@ -11,21 +11,23 @@ import {
 } from '../../../hooks/use-click-outside';
 
 interface PickerProps {
+  style?: any;
   styleTxt?: any;
   title: string;
   onValueChange: (any) => void;
-  defaultValue: string;
+  defaultValue?: string;
   listItems: any[];
   labelField: string;
   valueField: string;
   emptyValue?: boolean;
   isValueItem?: boolean;
-  disabled: boolean;
-  disabledValue: string;
+  disabled?: boolean;
+  disabledValue?: string;
   iconName?: string;
 }
 
 const Picker = ({
+  style,
   styleTxt,
   title,
   onValueChange,
@@ -43,6 +45,9 @@ const Picker = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside(wrapperRef);
   const Colors = useThemeColor();
+  const [selectedItem, setSelectedItem] = useState(
+    getFromList(listItems, valueField, defaultValue),
+  );
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
@@ -56,22 +61,21 @@ const Picker = ({
 
   const handleValueChange = itemValue => {
     setPickerIsOpen(false);
-    itemValue === null
+    setSelectedItem(itemValue);
+    itemValue
       ? onValueChange(
-          isValueItem ? getFromList(listItems, 'id', itemValue) : itemValue,
-        )
-      : onValueChange(
           isValueItem
             ? getFromList(listItems, 'id', itemValue[valueField])
             : itemValue[valueField],
-        );
+        )
+      : onValueChange(itemValue);
   };
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View ref={wrapperRef}>
+    <View ref={wrapperRef} style={style}>
       {!disabled && (
         <View style={styles.titleContainer}>
           <Text style={styleTxt}>{title}</Text>
@@ -105,14 +109,7 @@ const Picker = ({
                 color={Colors.secondaryColor_dark.background}
               />
             }
-            title={
-              listItems.find(elt => elt[valueField] === defaultValue) !==
-              undefined
-                ? listItems.find(elt => elt[valueField] === defaultValue)[
-                    labelField
-                  ]
-                : ''
-            }
+            title={selectedItem ? selectedItem[labelField] : ''}
             styleText={styles.styleTextButton}
             style={[
               commonStyles.filter,
@@ -125,7 +122,7 @@ const Picker = ({
             <SelectionContainer
               emptyValue={emptyValue}
               objectList={listItems}
-              displayValue={item => item.name}
+              displayValue={item => item[labelField]}
               handleSelect={handleValueChange}
               isPicker={true}
             />
