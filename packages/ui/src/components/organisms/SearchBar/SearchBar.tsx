@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
@@ -52,7 +52,7 @@ const SearchBar = ({
           style={styles.action}
           name="times"
           color={Colors.secondaryColor_dark.background}
-          size={Dimensions.get('window').width * 0.05}
+          size={20}
           touchable={true}
           visible={valueTxt != null && valueTxt !== ''}
           onPress={onClearPress}
@@ -61,14 +61,14 @@ const SearchBar = ({
           style={styles.action}
           name="search"
           color={Colors.secondaryColor_dark.background}
-          size={Dimensions.get('window').width * 0.05}
+          size={20}
         />,
         <Icon
           style={styles.action}
           name="qrcode"
           FontAwesome5={false}
           color={scanIconColor}
-          size={Dimensions.get('window').width * 0.05}
+          size={20}
           touchable={true}
           visible={scanIconColor != null}
           onPress={onScanPress}

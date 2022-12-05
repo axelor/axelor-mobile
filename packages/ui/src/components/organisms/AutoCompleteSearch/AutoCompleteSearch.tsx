@@ -21,6 +21,7 @@ interface AutocompleteSearchProps {
   onScanPress?: () => void;
   scanIconColor?: string;
   selectLastItem?: boolean;
+  style?: any;
 }
 
 const AutoCompleteSearch = ({
@@ -38,6 +39,7 @@ const AutoCompleteSearch = ({
   onScanPress,
   scanIconColor = null,
   selectLastItem = true,
+  style,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [searchText, setSearchText] = useState(null);
@@ -171,6 +173,7 @@ const AutoCompleteSearch = ({
   return (
     <View>
       <SearchBar
+        style={style}
         valueTxt={searchText}
         placeholder={placeholder}
         onClearPress={handleClear}
