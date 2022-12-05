@@ -154,7 +154,7 @@ const MailMessageView = ({model, modelId, navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 70}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 85}
       style={styles.container}>
       <Screen removeSpaceOnTop={true}>
         <PopUpTwoButton
