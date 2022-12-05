@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@aos-mobile/ui';
 import {Agenda, AgendaEntry} from 'react-native-calendars';
@@ -33,6 +33,7 @@ const PlanningView = ({
     () => createAgendaSchedule(itemList, numberMonthsAroundToday),
     [itemList, numberMonthsAroundToday],
   );
+  const [fetchDate, setFetchDate] = useState<any>();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -76,6 +77,7 @@ const PlanningView = ({
       <Agenda
         items={agendaItems}
         loadItemsForMonth={date => {
+          setFetchDate(date);
           fetchbyMonth(date);
         }}
         pastScrollRange={numberMonthsAroundToday}
@@ -83,8 +85,11 @@ const PlanningView = ({
         renderItem={renderDayItem}
         renderDay={renderDate}
         renderEmptyDate={renderEmptyDate}
-        // Callback that gets called when refreshing
-        onRefresh={() => {}}
+        onRefresh={() => {
+          console.log('refresh');
+          console.log(fetchDate);
+          fetchbyMonth(fetchDate);
+        }}
         refreshing={loading}
         theme={{
           todayTextColor: Colors.text,

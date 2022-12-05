@@ -25,6 +25,7 @@ export {
   handlerError,
 } from './api/utils';
 export * from './components';
+export {updateAgendaItems} from './utils/agenda';
 export {
   useScannedValueByKey,
   useScannerSelector,
@@ -33,7 +34,7 @@ export {
   disableScan,
   default as scannerReducer,
 } from './features/scannerSlice';
-export {isDate, isDateTime} from './utils/date';
+export {isDate, isDateTime, getNextMonth, getPreviousMonth} from './utils/date';
 export {clipboardProvider} from './tools/ClipboardProvider';
 export {showToastMessage} from './utils/show-toast-message';
 export {formatURL, splitInTwo, isHtml} from './utils/string';

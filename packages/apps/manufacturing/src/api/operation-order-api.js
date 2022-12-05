@@ -1,4 +1,8 @@
-import {axiosApiProvider} from '@aos-mobile/core';
+import {
+  axiosApiProvider,
+  getNextMonth,
+  getPreviousMonth,
+} from '@aos-mobile/core';
 import OperationOrder from '../types/operation-order';
 
 const operationOrderListFields = [
@@ -90,8 +94,8 @@ export async function searchOperationOrderFilter({
 }
 
 export async function getPlannedOperationOrder(date) {
-  const startMonth = date?.month;
-  const endMonth = date?.month + 1;
+  const startDate = getPreviousMonth(new Date(date.dateString));
+  const endDate = getNextMonth(new Date(date.dateString));
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.production.db.OperationOrder/search',
     data: {
@@ -103,14 +107,14 @@ export async function getPlannedOperationOrder(date) {
               {
                 fieldName: 'plannedStartDateT',
                 operator: '>=',
-                value: `${date.year}-${startMonth
+                value: `${startDate.getFullYear()}-${(startDate.getMonth() + 1)
                   .toString()
                   .padStart(2, '0')}-01T00:00:00.000Z`,
               },
               {
                 fieldName: 'plannedStartDateT',
                 operator: '<=',
-                value: `${date.year}-${endMonth
+                value: `${endDate.getFullYear()}-${(endDate.getMonth() + 1)
                   .toString()
                   .padStart(2, '0')}-31T23:59:00.000Z`,
               },

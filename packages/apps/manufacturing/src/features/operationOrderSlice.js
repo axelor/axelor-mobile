@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@aos-mobile/core';
+import {handlerApiCall, updateAgendaItems} from '@aos-mobile/core';
 import {
   searchOperationOrderFilter,
   fetchOperationOrder,
@@ -93,7 +93,10 @@ const operationOrderSlice = createSlice({
     });
     builder.addCase(fetchPlannedOperationOrder.fulfilled, (state, action) => {
       state.loading = false;
-      state.plannedOperationOrderList = action.payload;
+      state.plannedOperationOrderList = updateAgendaItems(
+        state.plannedOperationOrderList,
+        action.payload,
+      );
     });
     builder.addCase(fetchOperationOrders.fulfilled, (state, action) => {
       state.loading = false;
