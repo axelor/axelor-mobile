@@ -36,6 +36,7 @@ interface SelectionContainerProps {
   objectList: any[];
   displayValue?: (any) => string;
   handleSelect?: (any) => void;
+  keyField?: string;
   emptyValue?: boolean;
   isPicker?: boolean;
 }
@@ -44,6 +45,7 @@ const SelectionContainer = ({
   objectList,
   displayValue,
   handleSelect,
+  keyField = 'id',
   emptyValue = false,
   isPicker = false,
 }: SelectionContainerProps) => {
@@ -88,7 +90,7 @@ const SelectionContainer = ({
     return visibleObjects.map((item, index) => (
       <View key={'item' + index}>
         <SelectionItem
-          key={item?.id.toString()}
+          key={item[keyField]?.toString()}
           content={displayValue(item)}
           onPress={() => handleSelect(item)}
         />

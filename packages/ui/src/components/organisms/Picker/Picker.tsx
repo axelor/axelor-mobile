@@ -122,6 +122,7 @@ const Picker = ({
             <SelectionContainer
               emptyValue={emptyValue}
               objectList={listItems}
+              keyField={valueField}
               displayValue={item => item[labelField]}
               handleSelect={handleValueChange}
               isPicker={true}

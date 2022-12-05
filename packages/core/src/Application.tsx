@@ -39,6 +39,7 @@ interface ApplicationProps {
   additionalsReducers?: any;
   version: string;
   themes?: Theme[];
+  defaultTheme?: Theme;
 }
 
 const Application = ({
@@ -47,6 +48,7 @@ const Application = ({
   additionalsReducers,
   version,
   themes,
+  defaultTheme,
 }: ApplicationProps) => {
   const modules = useRef(modulesProvided).current;
 
@@ -127,7 +129,7 @@ const Application = ({
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
         <OutsideAlerterProvider>
-          <ThemeProvider themes={themes}>
+          <ThemeProvider themes={themes} defaultTheme={defaultTheme}>
             <ConfigProvider>
               <Scanner />
               <Translator />

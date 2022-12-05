@@ -42,9 +42,13 @@ const defaultThemeContext = {
   },
 };
 
-const getInitialThemeState = (additionalThemes: Theme[] = []) => {
+const getInitialThemeState = (
+  additionalThemes: Theme[] = [],
+  defaultTheme: Theme = DEFAULT_THEME,
+) => {
   return {
     ...defaultThemeContext,
+    activeTheme: defaultTheme,
     themes: [...defaultThemeContext.themes, ...additionalThemes],
   };
 };
@@ -107,13 +111,18 @@ const actions = {
 
 interface ThemeProviderProps {
   themes?: Theme[];
+  defaultTheme?: Theme;
   children?: ReactNode;
 }
 
-export const ThemeProvider = ({children, themes}: ThemeProviderProps) => {
+export const ThemeProvider = ({
+  children,
+  themes,
+  defaultTheme,
+}: ThemeProviderProps) => {
   const [state, dispatch] = useReducer(
     themeReducer,
-    getInitialThemeState(themes),
+    getInitialThemeState(themes, defaultTheme),
   );
   const changeTheme = useCallback(
     themeKey => dispatch(actions.changeTheme(themeKey)),
