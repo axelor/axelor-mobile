@@ -24,6 +24,7 @@ import {fetchMenuConfig} from '../features/menuConfigSlice';
 import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import AttachedFilesScreen from '../screens/AttachedFilesScreen';
 import MailMessageScreen from '../screens/MailMessageScreen';
+import {Dimensions} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -133,6 +134,9 @@ const Navigator = ({modules, mainMenu}) => {
     [Colors, I18n, modulesScreens, styles],
   );
 
+  const windowWidth = Dimensions.get('window').width;
+  const isLargeScreen = windowWidth >= 768;
+
   return (
     <ModuleNavigatorContext.Provider
       value={{activeModule, modulesMenus, modulesScreens}}>
@@ -142,6 +146,7 @@ const Navigator = ({modules, mainMenu}) => {
           headerShown: false,
           drawerStyle: {
             backgroundColor: Colors.backgroundColor,
+            width: isLargeScreen ? windowWidth * 0.5 : windowWidth * 0.8,
           },
         }}
         drawerContent={props => (
