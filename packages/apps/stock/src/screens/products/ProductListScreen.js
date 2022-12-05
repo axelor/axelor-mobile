@@ -2,6 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -10,7 +11,6 @@ import {
 import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
-import {displayItemName} from '../../utils/displayers';
 
 const productScanKey = 'product_product-list';
 

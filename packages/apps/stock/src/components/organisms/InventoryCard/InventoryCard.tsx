@@ -1,8 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {formatDate} from '../../../utils/formatters';
+import {formatDate, useTranslator} from '@aos-mobile/core';
 import Inventory from '../../../types/inventory';
 
 interface InventoryCardProps {

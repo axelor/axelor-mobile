@@ -8,9 +8,8 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {checkNullString, useTranslator} from '@aos-mobile/core';
 import StockMove from '../../../types/stock-move';
-import {checkNullString} from '../../../utils/strings';
 
 interface InternalMoveLineCardProps {
   style?: any;

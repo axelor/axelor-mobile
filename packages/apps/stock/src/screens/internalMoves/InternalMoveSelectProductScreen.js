@@ -7,6 +7,7 @@ import {
   Screen,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -14,7 +15,6 @@ import {
 } from '@aos-mobile/core';
 import {StockMoveHeader} from '../../components';
 import {searchProducts} from '../../features/productSlice';
-import {displayItemName} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_internal-move-select';

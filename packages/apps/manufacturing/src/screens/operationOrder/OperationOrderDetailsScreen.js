@@ -7,22 +7,22 @@ import {
   Screen,
 } from '@aos-mobile/ui';
 import {
+  formatDuration,
+  HeaderOptionsMenu,
+  isEmpty,
   Stopwatch,
   StopwatchType,
   useDispatch,
   useSelector,
   useTranslator,
-  HeaderOptionsMenu,
 } from '@aos-mobile/core';
 import {OperationOrderDatesCard} from '../../components/molecules';
 import {OperationOrderHeader} from '../../components/organisms';
 import OperationOrder from '../../types/operation-order';
-import {formatDuration} from '../../utils/time';
 import {
   fetchOperationOrderById,
   updateOperationOrder,
 } from '../../features/operationOrderSlice';
-import {isEmpty} from '../../utils/objects';
 
 function OperationOrderDetailsScreen({route, navigation}) {
   const I18n = useTranslator();

@@ -17,6 +17,7 @@ import {
 } from '@aos-mobile/ui';
 import {
   AOSImage,
+  displayItemName,
   ScannerAutocompleteSearch,
   useSelector,
   useDispatch,
@@ -28,7 +29,6 @@ import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {updateProductLocker} from '../../features/productSlice';
-import {displayItemName} from '../../utils/displayers';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 

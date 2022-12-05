@@ -43,13 +43,6 @@ export * from './components';
 
 export {displayManufOrderSeq} from './utils/displayers';
 export {splitSaleOrderRef} from './utils/formaters';
-export {isEmpty} from './utils/objects';
-export {
-  formatDuration,
-  formatTwoNumber,
-  getIntegerPart,
-  calculateDiff,
-} from './utils/time';
 
 export * from './types';
 export * from './api';

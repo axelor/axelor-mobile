@@ -1,13 +1,14 @@
 import React, {useCallback} from 'react';
 import {Screen, ScrollView, HeaderContainer} from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
-import {displayItemName, searchProducts} from '@aos-mobile/app-stock';
+import {searchProducts} from '@aos-mobile/app-stock';
 
 const productScanKey = 'product_manufacturing-order-produced-product-select';
 

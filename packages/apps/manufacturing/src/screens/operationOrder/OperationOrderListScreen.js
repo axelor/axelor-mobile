@@ -10,6 +10,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -21,7 +23,6 @@ import {displayManufOrderSeq} from '../../utils/displayers';
 import {OperationOrderDetailsCard} from '../../components/organisms';
 import {searchWorkCenters} from '../../features/workCentersSlice';
 import {searchMachines} from '../../features/machinesSlice';
-import {displayItemName, filterList} from '@aos-mobile/app-stock';
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 

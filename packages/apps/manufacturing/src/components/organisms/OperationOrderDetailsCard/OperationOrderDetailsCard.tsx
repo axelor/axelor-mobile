@@ -8,9 +8,8 @@ import {
   LabelText,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {formatDuration, useTranslator} from '@aos-mobile/core';
 import OperationOrder from '../../../types/operation-order';
-import {formatDuration} from '../../../utils/time';
 
 interface OperationOrderCardProps {
   style?: any;

@@ -12,6 +12,7 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  getFromList,
   useDispatch,
   useSelector,
   useTranslator,
@@ -25,7 +26,6 @@ import {
   updateCorrection,
 } from '../../features/stockCorrectionSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {getFromList} from '../../utils/list';
 import StockCorrection from '../../types/stock-corrrection';
 
 const StockCorrectionDetailsScreen = ({navigation, route}) => {

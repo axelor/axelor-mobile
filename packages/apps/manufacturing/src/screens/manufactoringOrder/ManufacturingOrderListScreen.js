@@ -9,6 +9,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -18,11 +20,7 @@ import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '../../components/organisms';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {
-  displayItemName,
-  filterList,
-  searchProducts,
-} from '@aos-mobile/app-stock';
+import {searchProducts} from '@aos-mobile/app-stock';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';

@@ -12,6 +12,7 @@ import {
   Image,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   logout,
   useDispatch,
@@ -20,7 +21,7 @@ import {
 } from '@aos-mobile/core';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
-import {searchStockLocations, displayItemName} from '@aos-mobile/app-stock';
+import {searchStockLocations} from '@aos-mobile/app-stock';
 import {
   changeActiveCompany,
   changeDefaultStockLocation,

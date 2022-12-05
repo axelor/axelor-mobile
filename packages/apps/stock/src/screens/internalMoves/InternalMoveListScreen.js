@@ -11,6 +11,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -22,8 +24,7 @@ import {
   searchStockLocations,
 } from '../../features/stockLocationSlice';
 import {searchInternalMoves} from '../../features/internalMoveSlice';
-import {displayItemName, displayStockMoveSeq} from '../../utils/displayers';
-import {filterList} from '../../utils/list';
+import {displayStockMoveSeq} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 
 const stockOriginalLocationScanKey =

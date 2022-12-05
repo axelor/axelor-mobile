@@ -1,6 +1,10 @@
-import {StopwatchType, TranslatorProps, formatDateTime} from '@aos-mobile/core';
+import {
+  calculateDiff,
+  formatDateTime,
+  StopwatchType,
+  TranslatorProps,
+} from '@aos-mobile/core';
 import {Color, ThemeColors} from '@aos-mobile/ui';
-import {calculateDiff} from '../utils/time';
 
 class OperationOrder {
   static status = {

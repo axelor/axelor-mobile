@@ -10,6 +10,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -18,8 +20,7 @@ import {
 import {InventoryCard} from '../../components/organisms';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {searchInventories} from '../../features/inventorySlice';
-import {displayInventorySeq, displayItemName} from '../../utils/displayers';
-import {filterList} from '../../utils/list';
+import {displayInventorySeq} from '../../utils/displayers';
 import Inventory from '../../types/inventory';
 
 const stockLocationScanKey = 'stock-location_inventory-list';

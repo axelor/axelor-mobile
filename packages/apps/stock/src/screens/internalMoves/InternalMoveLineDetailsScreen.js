@@ -11,7 +11,12 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {
+  getFromList,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@aos-mobile/core';
 import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -21,7 +26,6 @@ import {
   createInternalMove,
   updateInternalMove,
 } from '../../features/internalMoveSlice';
-import {getFromList} from '../../utils/list';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {

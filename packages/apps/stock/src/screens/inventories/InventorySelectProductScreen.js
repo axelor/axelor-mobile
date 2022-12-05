@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -8,7 +9,6 @@ import {
 } from '@aos-mobile/core';
 import {InventoryHeader} from '../../components';
 import {searchProducts} from '../../features/productSlice';
-import {displayItemName} from '../../utils/displayers';
 import Inventory from '../../types/inventory';
 
 const productScanKey = 'product_inventory-select';

@@ -8,8 +8,8 @@ import {
   Text,
   useThemeColor,
 } from '@aos-mobile/ui';
+import {formatDuration} from '@aos-mobile/core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
-import {formatDuration} from '../../../utils/time';
 
 interface OperationOrderCardProps {
   style?: any;

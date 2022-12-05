@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Badge, Icon, Text, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {formatDate} from '../../../utils/formatters';
+import {formatDate, useTranslator} from '@aos-mobile/core';
 import Inventory from '../../../types/inventory';
 
 interface InventoryHeaderProps {

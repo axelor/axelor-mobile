@@ -1,8 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Badge, Card, Text, Icon, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
-import {formatDate} from '../../../utils/formatters';
+import {formatDate, useTranslator} from '@aos-mobile/core';
 import StockMove from '../../../types/stock-move';
 
 interface CustomerDeliveryCardProps {

@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 import {ClearableCard, Screen} from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {displayItemName} from '../../utils/displayers';
 
 const destinationStockLocationScanKey =
   'destination-stock-location_internal-move-select-to';

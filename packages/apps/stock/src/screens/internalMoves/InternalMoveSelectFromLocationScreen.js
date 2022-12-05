@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 import {Screen} from '@aos-mobile/ui';
 import {
+  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@aos-mobile/core';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {displayItemName} from '../../utils/displayers';
 
 const originalStockLocationScanKey =
   'original-stock-location__internal-move-select-from';

@@ -10,6 +10,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -19,12 +21,7 @@ import {SupplierArrivalCard} from '../../components';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {filterSuppliers} from '../../features/partnerSlice';
 import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
-import {
-  displayItemName,
-  displayPartner,
-  displayStockMoveSeq,
-} from '../../utils/displayers';
-import {filterList} from '../../utils/list';
+import {displayPartner, displayStockMoveSeq} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';

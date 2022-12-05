@@ -66,7 +66,6 @@ export * from './components';
 
 export {
   displayInventorySeq,
-  displayItemName,
   displayItemTrackingNumber,
   displayPartner,
   displayStockMoveSeq,
@@ -79,9 +78,6 @@ export {
   filterStockLocation,
   filterTrackingNumber,
 } from './utils/filters';
-export {formatDate, formatScan} from './utils/formatters';
-export {filterList, filterListContain, areObjectsEquals} from './utils/list';
-export {checkNullString, stringNoAccent} from './utils/strings';
 
 export * from './types';
 export * from './api';

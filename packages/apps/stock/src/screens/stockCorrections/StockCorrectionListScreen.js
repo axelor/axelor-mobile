@@ -10,6 +10,8 @@ import {
   useThemeColor,
 } from '@aos-mobile/ui';
 import {
+  displayItemName,
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
@@ -19,8 +21,6 @@ import {StockCorrectionCard} from '../../components';
 import {fetchStockCorrections} from '../../features/stockCorrectionSlice';
 import {searchProducts} from '../../features/productSlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {filterList} from '../../utils/list';
-import {displayItemName} from '../../utils/displayers';
 import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
