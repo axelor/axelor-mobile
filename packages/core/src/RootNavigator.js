@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import {useSelector} from 'react-redux';
@@ -9,8 +9,9 @@ const {Navigator, Screen} = createNativeStackNavigator();
 const RootNavigator = ({modules, mainMenu, version}) => {
   const {logged} = useSelector(state => state.auth);
 
-  const AppNavigator = () => (
-    <CoreNavigator modules={modules} mainMenu={mainMenu} />
+  const AppNavigator = useCallback(
+    () => <CoreNavigator modules={modules} mainMenu={mainMenu} />,
+    [modules, mainMenu],
   );
 
   return (

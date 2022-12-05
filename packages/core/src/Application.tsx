@@ -16,6 +16,7 @@ import {
   ThemeProvider,
   Theme,
   LoadingIndicator,
+  HeaderIndicator,
 } from '@aos-mobile/ui';
 import {ErrorBoundary} from '@aos-mobile/error';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
@@ -138,12 +139,13 @@ const Application = ({
                 userIdfetcher={getActiveUserId}
                 putMethod={traceBackPutMethod}>
                 <NavigationContainer>
+                  <HeaderIndicator />
+                  <LoadingIndicator />
                   <RootNavigator
                     modules={modules}
                     mainMenu={mainMenu}
                     version={version}
                   />
-                  <LoadingIndicator />
                 </NavigationContainer>
               </ErrorBoundary>
               <Toast config={toastConfig} />

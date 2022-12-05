@@ -11,17 +11,27 @@ interface ConfigContextState {
   hideVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
   headerHeight: number;
+  isHeaderIndicatorVisible: boolean;
+  headerIndicatorState: HeaderIndicatorState;
   setActivityIndicator: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
   setVirtualKeyboardConfig: (option: boolean) => void;
   toggleVirtualKeyboardConfig: () => void;
   setHeaderHeight: (height: number) => void;
+  setIsHeaderIndicatorVisible: (option: boolean) => void;
+  setHeaderIndicatorState: (state: HeaderIndicatorState) => void;
 }
 
 interface ConfigAction {
   type: string;
-  payload?: boolean | number;
+  payload?: boolean | number | HeaderIndicatorState;
+}
+
+interface HeaderIndicatorState {
+  text: string;
+  color?: string;
+  textColor?: string;
 }
 
 const defaultConfigContext = {
@@ -29,6 +39,10 @@ const defaultConfigContext = {
   hideVirtualKeyboard: false,
   showActivityIndicator: false,
   headerHeight: 115,
+  isHeaderIndicatorVisible: false,
+  headerIndicatorState: {
+    text: '',
+  },
   setActivityIndicator: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
   },
@@ -53,6 +67,16 @@ const defaultConfigContext = {
       'ConfigProvider should be mounted to set header height config',
     );
   },
+  setIsHeaderIndicatorVisible: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set is header indicator visible config',
+    );
+  },
+  setHeaderIndicatorState: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set header indicator state config',
+    );
+  },
 };
 
 const ConfigContext = createContext<ConfigContextState>(defaultConfigContext);
@@ -64,6 +88,8 @@ const actionTypes = {
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
+  setIsHeaderIndicatorVisible: 'setIsHeaderIndicatorVisible',
+  setHeaderIndicatorState: 'setHeaderIndicatorState',
 };
 
 const configReducer = (
@@ -107,6 +133,18 @@ const configReducer = (
         headerHeight: action.payload as number,
       };
     }
+    case actionTypes.setIsHeaderIndicatorVisible: {
+      return {
+        ...state,
+        isHeaderIndicatorVisible: action.payload as boolean,
+      };
+    }
+    case actionTypes.setHeaderIndicatorState: {
+      return {
+        ...state,
+        headerIndicatorState: action.payload as HeaderIndicatorState,
+      };
+    }
   }
 };
 
@@ -132,6 +170,14 @@ const actions = {
   setHeaderHeight: value => ({
     type: actionTypes.setHeaderHeight,
     payload: value,
+  }),
+  setIsHeaderIndicatorVisible: option => ({
+    type: actionTypes.setIsHeaderIndicatorVisible,
+    payload: option,
+  }),
+  setHeaderIndicatorState: state => ({
+    type: actionTypes.setHeaderIndicatorState,
+    payload: state,
   }),
 };
 
@@ -162,6 +208,15 @@ export const ConfigProvider = ({children}) => {
     value => dispatch(actions.setHeaderHeight(value)),
     [],
   );
+  const setIsHeaderIndicatorVisible = useCallback(
+    option => dispatch(actions.setIsHeaderIndicatorVisible(option)),
+    [],
+  );
+  const setHeaderIndicatorState = useCallback(
+    headerIndicatorState =>
+      dispatch(actions.setHeaderIndicatorState(headerIndicatorState)),
+    [],
+  );
 
   const configContextState = useMemo<ConfigContextState>(
     () => ({
@@ -172,6 +227,8 @@ export const ConfigProvider = ({children}) => {
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setIsHeaderIndicatorVisible,
+      setHeaderIndicatorState,
     }),
     [
       setActivityIndicator,
@@ -181,6 +238,8 @@ export const ConfigProvider = ({children}) => {
       toggleFilterConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setIsHeaderIndicatorVisible,
+      setHeaderIndicatorState,
     ],
   );
 
