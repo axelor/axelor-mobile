@@ -12,7 +12,7 @@ const UsernameInput = ({value, onChange, readOnly}) => {
       onChange={onChange}
       readOnly={readOnly}
       placeholder={I18n.t('Auth_Username')}
-      leftIconsList={[<Icon name="user" size={15} style={styles.icon} />]}
+      leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
     />
   );
 };

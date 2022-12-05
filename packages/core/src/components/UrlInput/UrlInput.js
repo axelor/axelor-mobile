@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Icon, IconInput, useThemeColor} from '@aos-mobile/ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 
@@ -23,11 +23,11 @@ const UrlInput = ({
       readOnly={readOnly}
       onSelection={onSelection}
       placeholder={I18n.t('Auth_URL')}
-      leftIconsList={[<Icon name="link" size={15} style={styles.icon} />]}
+      leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
           name="qrcode"
-          size={Dimensions.get('window').width * 0.06}
+          size={20}
           color={
             scanIconColor == null
               ? Colors.secondaryColor_dark.background

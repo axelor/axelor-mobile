@@ -15,11 +15,11 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
       readOnly={readOnly}
       secureTextEntry={!visible}
       placeholder={I18n.t('Auth_Password')}
-      leftIconsList={[<Icon name="key" size={15} style={styles.icon} />]}
+      leftIconsList={[<Icon name="key" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
           name={visible ? 'eye' : 'eye-slash'}
-          size={15}
+          size={17}
           touchable={true}
           onPress={() => setVisible(!visible)}
           style={styles.icon}
