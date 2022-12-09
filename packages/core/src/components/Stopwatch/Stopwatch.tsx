@@ -5,7 +5,23 @@ import useTranslator from '../../i18n/hooks/use-translator';
 import StopwatchType from '../../types/stopwatch-type';
 import Timer from '../Timer/Timer';
 
-function Stopwatch({
+interface StopwatchProps {
+  startTime: number;
+  status: number;
+  disable?: boolean;
+  disablePlay?: boolean;
+  disablePause?: boolean;
+  disableStop?: boolean;
+  disableCancel?: boolean;
+  hideCancel?: boolean;
+  style?: any;
+  onPlay: () => void;
+  onPause: () => void;
+  onStop: () => void;
+  onCancel?: () => void;
+}
+
+const Stopwatch = ({
   startTime = 0,
   status = StopwatchType.status.Ready,
   disable = false,
@@ -19,7 +35,7 @@ function Stopwatch({
   onPause = () => {},
   onStop = () => {},
   onCancel = () => {},
-}) {
+}: StopwatchProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -45,6 +61,7 @@ function Stopwatch({
   };
   const handleCancelBtn = () => {
     setState(StopwatchType.status.Canceled);
+    setTime(0);
     onCancel();
   };
 
@@ -118,7 +135,7 @@ function Stopwatch({
       </View>
     </Card>
   );
-}
+};
 
 const getStyles = color =>
   StyleSheet.create({
