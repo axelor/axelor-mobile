@@ -22,14 +22,18 @@ const Chip = ({
   marginHorizontal = 12,
 }: ChipProps) => {
   const Colors = useThemeColor();
+  const chipColor = useMemo(
+    () => (selectedColor == null ? Colors.primaryColor : selectedColor),
+    [Colors.primaryColor, selectedColor],
+  );
 
-  const colorStyle = useMemo(() => {
-    const color = selectedColor == null ? Colors.primaryColor : selectedColor;
-
-    return selected
-      ? getStyles(color, Colors).selected
-      : getStyles(color, Colors).notSelected;
-  }, [Colors, selected, selectedColor]);
+  const colorStyle = useMemo(
+    () =>
+      selected
+        ? getStyles(chipColor, Colors).selected
+        : getStyles(chipColor, Colors).notSelected,
+    [Colors, chipColor, selected],
+  );
 
   return (
     <TouchableOpacity
@@ -38,11 +42,8 @@ const Chip = ({
       activeOpacity={0.8}>
       <View style={[styles.container, colorStyle]}>
         <Text
-          style={
-            selected
-              ? styles.chipTxt
-              : getStyles(selectedColor, Colors).textColor
-          }>
+          textColor={selected ? chipColor.foreground : Colors.text}
+          fontSize={14}>
           {title}
         </Text>
       </View>
@@ -66,10 +67,6 @@ const getStyles = (selectedColor, Colors) =>
       borderRightWidth: 3,
       borderRightColor: selectedColor.background,
     },
-    textColor: {
-      fontSize: 14,
-      color: selectedColor.foreground,
-    },
   });
 
 const getWidth = (width, margin) =>
@@ -88,9 +85,6 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     borderRadius: 20,
     elevation: 3,
-  },
-  chipTxt: {
-    fontSize: 14,
   },
 });
 
