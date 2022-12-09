@@ -23,6 +23,7 @@ export {default as MovementIndicationCard} from './MovementIndicationCard/Moveme
 export {default as PopUp} from './PopUp/PopUp';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';
+export {default as StarScore} from './StarScore/StarScore';
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
 export {default as TitledValue} from './TitledValue/TitledValue';
 export {default as ToggleSwitch} from './ToggleSwitch/ToggleSwitch';
