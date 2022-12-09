@@ -9,7 +9,7 @@ import {
   useConfig,
   useTheme,
   useThemeColor,
-  Image,
+  ImageBubble,
 } from '@aos-mobile/ui';
 import {
   displayItemName,
@@ -138,21 +138,24 @@ const UserScreen = ({navigation}) => {
     <Screen style={styles.container} loading={loadingUser || loading}>
       <ScrollView>
         <View style={styles.imageContainer}>
-          <Image
-            generalStyle={styles.imageIcon}
-            imageSize={Dimensions.get('window').width * 0.2}
-            defaultIconSize={80}
+          <ImageBubble
+            style={styles.imageIcon}
+            imageSize={Dimensions.get('window').width * 0.3}
+            defaultIconSize={60}
             source={{
               uri: `${baseUrl}ws/rest/com.axelor.auth.db.User/${user.id}/image/download?v=${user.version}&parentId=${user.id}&parentModel=com.axelor.auth.db.User&image=true`,
             }}
-          />
-          <Icon
-            style={styles.logOutIcon}
-            name="power-off"
-            color={Colors.primaryColor.background}
-            size={Dimensions.get('window').width * 0.07}
-            touchable={true}
-            onPress={() => dispatch(logout())}
+            listComponent={[
+              null,
+              <Icon
+                style={styles.logOutIcon}
+                name="power-off"
+                color={Colors.primaryColor.background}
+                size={Dimensions.get('window').width * 0.07}
+                touchable={true}
+                onPress={() => dispatch(logout())}
+              />,
+            ]}
           />
           <Text style={styles.textUser}>{user.name}</Text>
         </View>
@@ -220,19 +223,9 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     imageIcon: {
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
       backgroundColor: Colors.backgroundColor,
-      borderRadius: Dimensions.get('window').width * 0.3,
-      width: Dimensions.get('window').width * 0.3,
-      height: Dimensions.get('window').width * 0.3,
-      marginVertical: '5%',
     },
     logOutIcon: {
-      position: 'relative',
-      bottom: Dimensions.get('window').width * 0.12,
-      left: Dimensions.get('window').width * 0.1,
       backgroundColor: Colors.backgroundColor,
       borderRadius: Dimensions.get('window').width * 0.1,
       width: Dimensions.get('window').width * 0.1,
@@ -242,8 +235,8 @@ const getStyles = Colors =>
     textUser: {
       fontSize: 16,
       fontWeight: 'bold',
-      marginBottom: 50,
-      marginTop: -35,
+      marginBottom: 30,
+      marginTop: 0,
     },
     companyContainer: {
       width: '95%',
