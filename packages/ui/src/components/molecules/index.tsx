@@ -4,6 +4,7 @@ export {default as Button} from './Button/Button';
 export {default as CardIconButton} from './CardIconButton/CardIconButton';
 export {default as Chip} from './Chip/Chip';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
+export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as EditableInput} from './EditableInput/EditableInput';
