@@ -13,3 +13,5 @@ export const CrmModule: Module = {
     fr: frTranslations,
   },
 };
+
+export * from './components';
