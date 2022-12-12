@@ -12,6 +12,7 @@ import {
   HeaderContainer,
   MovementIndicationCard,
   Icon,
+  NotesCard,
 } from '@aos-mobile/ui';
 import {
   useDispatch,
@@ -19,11 +20,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@aos-mobile/core';
-import {
-  CustomerDeliveryLineCard,
-  NotesCard,
-  StockMoveHeader,
-} from '../../components';
+import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';

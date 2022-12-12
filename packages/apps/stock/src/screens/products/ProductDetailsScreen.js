@@ -1,12 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Screen, ScrollView, Text} from '@aos-mobile/ui';
+import {Button, Screen, ScrollView, Text, NotesCard} from '@aos-mobile/ui';
 import {useTranslator, useSelector, HeaderOptionsMenu} from '@aos-mobile/core';
-import {
-  NotesCard,
-  ProductCharacteristics,
-  SmallPropertyCard,
-} from '../../components';
+import {ProductCharacteristics, SmallPropertyCard} from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
@@ -33,7 +29,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
       ),
     });
   }, [I18n, mobileSettings, navigation, product]);
-
+  console.log(product.description);
   return (
     <Screen
       fixedItems={

@@ -20,6 +20,7 @@ export {default as LabelText} from './LabelText/LabelText';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
 export {default as MovementIndicationCard} from './MovementIndicationCard/MovementIndicationCard';
+export {default as NotesCard} from './NotesCard/NotesCard';
 export {default as PopUp} from './PopUp/PopUp';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Text, useThemeColor} from '@aos-mobile/ui';
+import Card from '../../atoms/Card/Card';
+import Text from '../../atoms/Text/Text';
+import {useThemeColor} from '../../../theme/ThemeContext';
 import RenderHTML from 'react-native-render-html';
 
 const PERCENTAGE_WIDTH_NOTES = 0.95;
@@ -17,7 +19,6 @@ const NotesCard = ({title, data}: NotesCardProps) => {
   if (data == null || data === '') {
     return null;
   }
-
   return (
     <View
       style={styles.description}

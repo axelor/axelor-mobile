@@ -8,14 +8,10 @@ import {
   ScrollView,
   Text,
   useThemeColor,
+  NotesCard,
 } from '@aos-mobile/ui';
 import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
-import {
-  QuantityCard,
-  NotesCard,
-  ProductCardInfo,
-  StockMoveHeader,
-} from '../../components';
+import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 import {addNewLine} from '../../features/customerDeliverySlice';

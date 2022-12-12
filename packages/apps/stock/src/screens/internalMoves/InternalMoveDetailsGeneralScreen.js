@@ -9,6 +9,7 @@ import {
   ScrollView,
   ViewAllContainer,
   useThemeColor,
+  NotesCard,
 } from '@aos-mobile/ui';
 import {
   useDispatch,
@@ -16,11 +17,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@aos-mobile/core';
-import {
-  InternalMoveLineCard,
-  NotesCard,
-  StockMoveHeader,
-} from '../../components';
+import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {updateInternalMove} from '../../features/internalMoveSlice';

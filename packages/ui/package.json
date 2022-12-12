@@ -19,7 +19,8 @@
     "react": "*",
     "react-native": "*",
     "react-native-system-navigation-bar": "^2.0.0",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-render-html": "^6.3.4"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
@@ -32,6 +33,7 @@
     "react": "18.2.0",
     "react-native": "0.68.1",
     "react-native-system-navigation-bar": "^2.0.0",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-render-html": "^6.3.4"
   }
 }

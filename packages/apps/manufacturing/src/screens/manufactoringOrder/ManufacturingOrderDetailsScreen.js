@@ -10,6 +10,7 @@ import {
   ViewAllContainer,
   useThemeColor,
   Text,
+  NotesCard,
 } from '@aos-mobile/ui';
 import {
   useDispatch,
@@ -17,7 +18,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@aos-mobile/core';
-import {NotesCard, ProductCardInfo} from '@aos-mobile/app-stock';
+import {ProductCardInfo} from '@aos-mobile/app-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
