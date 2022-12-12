@@ -9,6 +9,7 @@ interface DropdownCardProps {
   title: string;
   children: any;
   DropdownIsOpen?: boolean;
+  onPress?: () => void;
 }
 
 const DropdownCard = ({
@@ -17,15 +18,21 @@ const DropdownCard = ({
   title,
   DropdownIsOpen = false,
   children,
+  onPress,
 }: DropdownCardProps) => {
   const [isOpen, setIsOpen] = useState(DropdownIsOpen);
   const Colors = useThemeColor();
+
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
 
+  const displayCard = useMemo(() => {
+    return onPress ? DropdownIsOpen : isOpen;
+  }, [DropdownIsOpen, isOpen, onPress]);
+
   const handleCardPress = () => {
-    setIsOpen(!isOpen);
+    onPress ? onPress() : setIsOpen(!isOpen);
   };
 
   return (
@@ -39,12 +46,12 @@ const DropdownCard = ({
             {title}
           </Text>
           <Icon
-            name={isOpen ? 'chevron-up' : 'chevron-down'}
+            name={displayCard ? 'chevron-up' : 'chevron-down'}
             color={Colors.primaryColor.background}
           />
         </Card>
       </TouchableOpacity>
-      {isOpen && <Card style={styles.containerChildren}>{children}</Card>}
+      {displayCard && <Card style={styles.containerChildren}>{children}</Card>}
     </View>
   );
 };
