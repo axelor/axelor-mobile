@@ -22,6 +22,7 @@
   "dependencies": {
     "@aos-mobile/ui": "1.0.0",
     "@aos-mobile/core": "1.0.0",
+    "@aos-mobile/app-stock": "1.0.0",
     "@reduxjs/toolkit": "^1.8.5"
   },
   "devDependencies": {
