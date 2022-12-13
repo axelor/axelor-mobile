@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
-import {KeyboardTypeOptions, StyleSheet, TextInput} from 'react-native';
+import {KeyboardTypeOptions, TextInput, TextStyle} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {useWritingType} from '../../../theme/writingTheme';
 import {useConfig} from '../../../config/ConfigContext';
 
 interface InputProps {
@@ -16,6 +17,7 @@ interface InputProps {
   keyboardType?: KeyboardTypeOptions;
   onEndFocus?: () => void;
   isFocus?: boolean;
+  writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
 }
 
 const Input = ({
@@ -31,14 +33,23 @@ const Input = ({
   keyboardType,
   onEndFocus = () => {},
   isFocus = false,
+  writingType = null,
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const writingStyle = useWritingType(writingType);
+
+  const defaultStyle: TextStyle = useMemo(() => {
+    return {
+      ...writingStyle,
+      color: Colors.text,
+      fontSize: 15,
+    };
+  }, [Colors.text, writingStyle]);
 
   return (
     <TextInput
-      style={[styles.text, style]}
+      style={[defaultStyle, style]}
       value={value}
       onChangeText={onChange}
       placeholder={placeholder}
@@ -56,12 +67,5 @@ const Input = ({
     />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    text: {
-      color: Colors.text,
-    },
-  });
 
 export default Input;

@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen';
 import {useSelector} from 'react-redux';
-import {default as CoreNavigator} from './navigator/Navigator';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import LoginScreen from '../screens/LoginScreen';
+import {default as CoreNavigator} from '../navigator/Navigator';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 

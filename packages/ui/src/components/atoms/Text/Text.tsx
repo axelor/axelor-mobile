@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
-import {Text as ReactNativeText, StyleSheet} from 'react-native';
+import {Text as ReactNativeText, TextStyle} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {useWritingType} from '../../../theme/writingTheme';
 
 interface TextProps {
   style?: any;
@@ -10,6 +11,7 @@ interface TextProps {
   children: any;
   textColor?: string;
   fontSize?: number;
+  writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
 }
 
 const Text = ({
@@ -19,17 +21,23 @@ const Text = ({
   onTextLayout,
   children,
   textColor,
-  fontSize = 12,
+  fontSize,
+  writingType,
 }: TextProps) => {
   const Colors = useThemeColor();
-  const styles = useMemo(
-    () => getStyles(textColor ? textColor : Colors.text, fontSize),
-    [Colors.text, fontSize, textColor],
-  );
+  const writingStyle = useWritingType(writingType);
+
+  const defaultStyle: TextStyle = useMemo(() => {
+    return {
+      ...writingStyle,
+      color: textColor ? textColor : Colors.text,
+      fontSize: fontSize ? fontSize : writingStyle.fontSize,
+    };
+  }, [Colors.text, fontSize, textColor, writingStyle]);
 
   return (
     <ReactNativeText
-      style={[styles.text, style]}
+      style={[defaultStyle, style]}
       numberOfLines={numberOfLines}
       adjustsFontSizeToFit={adjustsFontSizeToFit}
       onTextLayout={onTextLayout}>
@@ -37,12 +45,5 @@ const Text = ({
     </ReactNativeText>
   );
 };
-const getStyles = (textColor, fontSize) =>
-  StyleSheet.create({
-    text: {
-      color: textColor,
-      fontSize: fontSize,
-    },
-  });
 
 export default Text;

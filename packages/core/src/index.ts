@@ -1,7 +1,6 @@
-export {default as Application} from './Application';
-export {Module} from './Module';
+export * from './app';
 export {default as Navigator} from './navigator/Navigator';
-export {configGlobalStore} from './store';
+export {configGlobalStore} from './redux/store';
 export {storage, useStorage} from './storage/Storage';
 export {i18nProvider, configI18n} from './i18n/i18n';
 export {
