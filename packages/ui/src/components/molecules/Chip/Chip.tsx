@@ -21,6 +21,7 @@ import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Color} from '../../../theme/themes';
+import {sliceString} from '../../../utils/strings';
 
 interface ChipProps {
   selected: boolean;
@@ -62,7 +63,7 @@ const Chip = ({
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
           fontSize={14}>
-          {title}
+          {sliceString(title, 23)}
         </Text>
       </View>
     </TouchableOpacity>

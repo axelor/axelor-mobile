@@ -1,3 +1,6 @@
 {
-  "Crm_Crm": "CRM"
+  "Crm_Crm": "Crm",
+  "Crm_CrmLeads": "Leads",
+  "Crm_AssignedToMe": "Assigned to me",
+  "Crm_All": "All"
 }
