@@ -31,3 +31,11 @@ export function checkNullString(message) {
     return newMessage == null || newMessage === '';
   }
 }
+
+export function sliceString(string: string, maxStringLenght: number) {
+  if (string.length > maxStringLenght) {
+    return string.slice(0, maxStringLenght - 3) + '...';
+  } else {
+    return string;
+  }
+}

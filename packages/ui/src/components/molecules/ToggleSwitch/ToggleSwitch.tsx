@@ -22,14 +22,16 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
 
 interface ToggleSwitchProps {
-  style?: any;
+  styleContainer?: any;
+  styleToogle?: any;
   leftTitle: string;
   rightTitle: string;
   onSwitch: () => void;
 }
 
 const ToggleSwitch = ({
-  style,
+  styleContainer,
+  styleToogle,
   leftTitle,
   rightTitle,
   onSwitch = () => {},
@@ -50,15 +52,15 @@ const ToggleSwitch = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, styleContainer]}>
       <TouchableOpacity
-        style={[styles.toggle, active && styles.active]}
+        style={[styles.toggle, active && styles.active, styleToogle]}
         disabled={active}
         onPress={onLeftPress}>
         <Text>{leftTitle}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.toggle, !active && styles.active]}
+        style={[styles.toggle, !active && styles.active, styleToogle]}
         disabled={!active}
         onPress={onRightPress}>
         <Text>{rightTitle}</Text>
