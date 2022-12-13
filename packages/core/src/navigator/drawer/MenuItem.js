@@ -7,8 +7,11 @@ const MenuItem = ({icon, title, isActive, onPress, disabled}) => {
   const styles = useMemo(() => getStyles(Colors, disabled), [Colors, disabled]);
 
   const backgroundColor = useMemo(
-    () => getBackgroundColor(isActive).container,
-    [isActive],
+    () =>
+      getIndicatorColor(
+        isActive ? Colors.primaryColor.background : Colors.backgroundColor,
+      ).container,
+    [Colors.backgroundColor, Colors.primaryColor.background, isActive],
   );
 
   return (
@@ -35,10 +38,10 @@ const MenuItem = ({icon, title, isActive, onPress, disabled}) => {
   );
 };
 
-const getBackgroundColor = isMenuActive => {
+const getIndicatorColor = color => {
   return StyleSheet.create({
     container: {
-      backgroundColor: isMenuActive ? '#76DCAE' : '#fff',
+      backgroundColor: color,
     },
   });
 };

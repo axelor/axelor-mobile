@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useRef, useState, useContext, useMemo} from 'react';
 import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useThemeColor} from '@aos-mobile/ui';
@@ -15,6 +15,8 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const openSecondaryMenu = () => {
     Animated.timing(secondaryMenusLeft, {
@@ -105,46 +107,47 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#efefef',
-    overflow: 'hidden',
-  },
-  menusContainer: {
-    flex: 1,
-  },
-  iconsContainer: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 12,
-  },
-  otherIconsContainer: {
-    marginBottom: 8,
-  },
-  menuItemContainer: {
-    height: 60,
-    marginVertical: 8,
-    justifyContent: 'center',
-  },
-  primaryMenuTitle: {
-    marginHorizontal: 6,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  secondaryMenusContainer: {
-    position: 'absolute',
-    backgroundColor: '#fff',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    elevation: 4,
-  },
-  subMenuContainer: {
-    padding: 8,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: 'row',
+      backgroundColor: Colors.screenBackgroundColor,
+      overflow: 'hidden',
+    },
+    menusContainer: {
+      flex: 1,
+    },
+    iconsContainer: {
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginHorizontal: 12,
+    },
+    otherIconsContainer: {
+      marginBottom: 8,
+    },
+    menuItemContainer: {
+      height: 60,
+      marginVertical: 8,
+      justifyContent: 'center',
+    },
+    primaryMenuTitle: {
+      marginHorizontal: 6,
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
+    secondaryMenusContainer: {
+      position: 'absolute',
+      backgroundColor: Colors.backgroundColor,
+      left: 0,
+      top: 0,
+      width: '100%',
+      height: '100%',
+      elevation: 4,
+    },
+    subMenuContainer: {
+      padding: 8,
+    },
+  });
 
 export default DrawerContent;

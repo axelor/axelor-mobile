@@ -22,8 +22,8 @@ const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
         false: Colors.secondaryColor.background_light,
         true: Colors.primaryColor.background_light,
       }}
-      thumbColor={'#f4f4f4'}
-      ios_backgroundColor="#3e3e3e"
+      thumbColor={Colors.secondaryColor_dark.background}
+      ios_backgroundColor={Colors.backgroundColor}
       onValueChange={toggleSwitch}
       value={enabled}
     />

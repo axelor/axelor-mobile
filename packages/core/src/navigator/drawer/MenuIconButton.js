@@ -6,7 +6,6 @@ const WIDTH = 54;
 const HEIGHT = 54;
 const DEFAULT_RADIUS = 8;
 const ROUNDED_RADIUS = WIDTH / 2;
-const DEFAULT_COLOR = '#fff';
 
 const MenuIconButton = ({
   style,
@@ -19,7 +18,10 @@ const MenuIconButton = ({
   const Colors = useThemeColor();
 
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled}>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      activeOpacity={0.95}>
       <View
         style={[
           styles.container,
@@ -29,7 +31,7 @@ const MenuIconButton = ({
               ? Colors.secondaryColor.background_light
               : color
               ? color
-              : DEFAULT_COLOR,
+              : Colors.backgroundColor,
           },
           style,
         ]}>
@@ -49,7 +51,6 @@ const MenuIconButton = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: DEFAULT_COLOR,
     width: WIDTH,
     height: HEIGHT,
     flexDirection: 'row',
