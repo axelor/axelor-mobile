@@ -3,41 +3,57 @@ import {View, StyleSheet} from 'react-native';
 import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
-  title?: string | number | object;
-  value?: string;
-  size?: number;
-  color?: string;
   style?: any;
   iconStyle?: any;
   textStyle?: any;
+  title?: string | number;
+  value?: string | number;
+  size?: number;
+  color?: string;
   iconName?: string;
   FontAwesome5?: boolean;
+  onlyOneLine?: boolean;
 }
 
 const LabelText = ({
+  style,
+  iconStyle,
+  textStyle,
   title,
   value,
   size = 12,
   color,
-  style,
-  iconStyle,
-  textStyle,
   iconName = null,
   FontAwesome5 = true,
+  onlyOneLine = false,
 }: LabelTextProps) => {
   return (
     <View style={[styles.container, style]}>
       {iconName && (
         <Icon
+          style={[styles.icon, iconStyle]}
           name={iconName}
           size={size}
-          style={[styles.icon, iconStyle]}
-          FontAwesome5={FontAwesome5}
           color={color}
+          FontAwesome5={FontAwesome5}
         />
       )}
-      {title && <Text style={[styles.title, textStyle]}>{title}</Text>}
-      {value && <Text style={[styles.txtDetails, textStyle]}>{value}</Text>}
+      {title && (
+        <Text
+          style={textStyle}
+          fontSize={14}
+          numberOfLines={onlyOneLine ? 1 : null}>
+          {title}
+        </Text>
+      )}
+      {value && (
+        <Text
+          style={[styles.txtDetails, textStyle]}
+          fontSize={14}
+          numberOfLines={onlyOneLine ? 1 : null}>
+          {value}
+        </Text>
+      )}
     </View>
   );
 };
@@ -46,12 +62,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   txtDetails: {
-    fontSize: 14,
     fontWeight: 'bold',
     marginHorizontal: 5,
-  },
-  title: {
-    fontSize: 14,
   },
   icon: {
     marginRight: 5,
