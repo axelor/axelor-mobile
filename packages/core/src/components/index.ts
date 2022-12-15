@@ -1,5 +1,6 @@
 export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
 export {default as AOSImage} from './AOSImage/AOSImage';
+export {default as Camera} from './Camera/Camera';
 export {default as CameraScanner} from './CameraScanner/CameraScanner';
 export {default as ErrorText} from './ErrorText/ErrorText';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';

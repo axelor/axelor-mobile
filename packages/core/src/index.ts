@@ -32,6 +32,14 @@ export {
   disableScan,
   default as scannerReducer,
 } from './features/scannerSlice';
+export {
+  useCameraSelector,
+  useCameraValueByKey,
+  enableCamera,
+  takePhoto,
+  disableCamera,
+  default as cameraReducer,
+} from './features/cameraSlice';
 export {clipboardProvider} from './tools/ClipboardProvider';
 export {useDispatch, useSelector} from './redux/hooks';
 export * from './utils';
