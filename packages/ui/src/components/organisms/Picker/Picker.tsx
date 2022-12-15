@@ -12,6 +12,7 @@ import {
 
 interface PickerProps {
   style?: any;
+  pickerStyle?: any;
   styleTxt?: any;
   title: string;
   onValueChange: (any) => void;
@@ -28,6 +29,7 @@ interface PickerProps {
 
 const Picker = ({
   style,
+  pickerStyle,
   styleTxt,
   title,
   onValueChange,
@@ -48,6 +50,10 @@ const Picker = ({
   const [selectedItem, setSelectedItem] = useState(
     getFromList(listItems, valueField, defaultValue),
   );
+
+  useEffect(() => {
+    setSelectedItem(getFromList(listItems, valueField, defaultValue));
+  }, [defaultValue, listItems, valueField]);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
@@ -88,6 +94,7 @@ const Picker = ({
             commonStyles.filterSize,
             commonStyles.filterAlign,
             styles.infosCard,
+            pickerStyle,
           ]}>
           <LabelText
             value={
@@ -116,6 +123,7 @@ const Picker = ({
               commonStyles.filterSize,
               commonStyles.filterAlign,
               styles.rightIconButton,
+              pickerStyle,
             ]}
           />
           {pickerIsOpen ? (

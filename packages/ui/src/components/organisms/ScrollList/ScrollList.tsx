@@ -3,6 +3,7 @@ import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
 import {Text} from '../../atoms';
 
 interface ScrollListProps {
+  style?: any;
   loadingList: boolean;
   data: any[];
   renderItem: (item: any) => any;
@@ -14,6 +15,7 @@ interface ScrollListProps {
 }
 
 const ScrollList = ({
+  style,
   loadingList = false,
   data = [],
   renderItem,
@@ -58,7 +60,7 @@ const ScrollList = ({
 
   return (
     <FlatList
-      style={styles.scrollView}
+      style={[styles.scrollView, style]}
       data={data}
       onRefresh={updateData}
       refreshing={loadingList}
