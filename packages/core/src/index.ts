@@ -41,6 +41,7 @@ export {
   default as cameraReducer,
 } from './features/cameraSlice';
 export {clipboardProvider} from './tools/ClipboardProvider';
+export {linkingProvider} from './tools/LinkingProvider';
 export {useDispatch, useSelector} from './redux/hooks';
 export * from './utils';
 export * from './types';
