@@ -21,12 +21,14 @@ interface ContextedApplicationProps {
   modules: [Module];
   mainMenu: string;
   version: string;
+  showModulesSubtitle: boolean;
 }
 
 const ContextedApplication = ({
   modules,
   mainMenu,
   version,
+  showModulesSubtitle = false,
 }: ContextedApplicationProps) => {
   const Colors = useThemeColor();
 
@@ -75,6 +77,7 @@ const ContextedApplication = ({
             modules={modules}
             mainMenu={mainMenu}
             version={version}
+            showModulesSubtitle={showModulesSubtitle}
           />
         </NavigationContainer>
       </ErrorBoundary>

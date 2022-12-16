@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
 
 const WIDTH = 54;
 const HEIGHT = 54;
@@ -12,6 +12,7 @@ const MenuIconButton = ({
   icon,
   onPress,
   color,
+  subtitle,
   rounded = false,
   disabled = false,
 }) => {
@@ -45,6 +46,11 @@ const MenuIconButton = ({
           }
         />
       </View>
+      {subtitle && (
+        <Text style={styles.moduleSubtitle} numberOfLines={1}>
+          {subtitle}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -56,6 +62,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     elevation: 2,
+  },
+  moduleSubtitle: {
+    fontSize: 10,
+    maxWidth: 54,
+    alignSelf: 'center',
   },
 });
 

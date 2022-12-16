@@ -8,6 +8,7 @@ import * as authReducers from './features';
 const authModule: Module = {
   name: 'Auth',
   title: 'User_User',
+  subtitle: 'User_User',
   icon: 'user',
   menus: {
     auth_menu_user: {

@@ -9,7 +9,13 @@ import {moduleHasMenus} from '../module.helper';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
-const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
+const DrawerContent = ({
+  state,
+  modules,
+  navigation,
+  onModuleClick,
+  showModulesSubtitle = false,
+}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
@@ -60,6 +66,7 @@ const DrawerContent = ({state, modules, navigation, onModuleClick}) => {
               <MenuIconButton
                 key={_module.title}
                 icon={_module.icon}
+                subtitle={showModulesSubtitle && I18n.t(_module.subtitle)}
                 disabled={_module.disabled}
                 color={
                   _module === activeModule

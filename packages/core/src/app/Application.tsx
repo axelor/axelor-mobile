@@ -13,6 +13,7 @@ interface ApplicationProps {
   defaultTheme?: Theme;
   writingThemes?: Writing[];
   defaultWritingTheme?: Writing;
+  showModulesSubtitle: boolean;
 }
 
 const Application = ({
@@ -24,6 +25,7 @@ const Application = ({
   defaultTheme,
   writingThemes,
   defaultWritingTheme,
+  showModulesSubtitle = false,
 }: ApplicationProps) => {
   const modules = useRef(modulesProvided).current;
 
@@ -39,6 +41,7 @@ const Application = ({
         modules={modules}
         mainMenu={mainMenu}
         version={version}
+        showModulesSubtitle={showModulesSubtitle}
       />
     </ContextsProvider>
   );

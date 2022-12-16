@@ -8,6 +8,7 @@ import * as manufacturingReducers from './features';
 export const ManufacturingModule: Module = {
   name: 'Manufacturing',
   title: 'Manufacturing_Manufacturing',
+  subtitle: 'Manufacturing_Manufacturing',
   icon: 'cogs',
   menus: {
     ManufacturingOrder: {

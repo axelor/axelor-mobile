@@ -12,6 +12,7 @@ import * as stockReducers from './features';
 export const StockModule: Module = {
   name: 'app-stock',
   title: 'Stock',
+  subtitle: 'Stock',
   icon: 'cubes',
   menus: {
     stock_menu_product: {

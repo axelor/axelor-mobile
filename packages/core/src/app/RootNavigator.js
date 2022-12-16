@@ -6,12 +6,23 @@ import {default as CoreNavigator} from '../navigator/Navigator';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-const RootNavigator = ({modules, mainMenu, version}) => {
+const RootNavigator = ({
+  modules,
+  mainMenu,
+  version,
+  showModulesSubtitle = false,
+}) => {
   const {logged} = useSelector(state => state.auth);
 
   const AppNavigator = useCallback(
-    () => <CoreNavigator modules={modules} mainMenu={mainMenu} />,
-    [modules, mainMenu],
+    () => (
+      <CoreNavigator
+        modules={modules}
+        mainMenu={mainMenu}
+        showModulesSubtitle={showModulesSubtitle}
+      />
+    ),
+    [modules, mainMenu, showModulesSubtitle],
   );
 
   return (

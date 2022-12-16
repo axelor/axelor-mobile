@@ -1,6 +1,7 @@
 export interface Module {
   name: string;
   title: string;
+  subtitle: string;
   icon: string;
   disabled?: boolean;
   menus: {
