@@ -144,6 +144,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
         <Stopwatch
           startTime={time}
           status={timerStatus}
+          timerFormat={I18n.t('Stopwatch_TimerFormat')}
           onPlay={() => updateStatus(OperationOrder.status.InProgress)}
           onPause={() => updateStatus(OperationOrder.status.StandBy)}
           onStop={() => updateStatus(OperationOrder.status.Finished)}

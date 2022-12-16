@@ -45,5 +45,6 @@
   "Stopwatch_Status_InProgress": "En cours",
   "Stopwatch_Status_Paused": "En pause",
   "Stopwatch_Status_Finished": "Terminé",
-  "Stopwatch_Status_Canceled": "Annulé"
+  "Stopwatch_Status_Canceled": "Annulé",
+  "Stopwatch_TimerFormat": "mm:ss"
 }

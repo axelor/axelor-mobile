@@ -8,6 +8,7 @@ import Timer from '../Timer/Timer';
 interface StopwatchProps {
   startTime: number;
   status: number;
+  timerFormat: string;
   disable?: boolean;
   disablePlay?: boolean;
   disablePause?: boolean;
@@ -24,6 +25,7 @@ interface StopwatchProps {
 const Stopwatch = ({
   startTime = 0,
   status = StopwatchType.status.Ready,
+  timerFormat,
   disable = false,
   disablePlay = false,
   disablePause = false,
@@ -131,6 +133,7 @@ const Stopwatch = ({
           onCount={setTime}
           style={styles.timer}
           isPaused={state !== StopwatchType.status.InProgress}
+          timerFormat={timerFormat}
         />
       </View>
     </Card>

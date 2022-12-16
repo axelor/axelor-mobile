@@ -1,22 +1,24 @@
 import React, {useEffect, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@aos-mobile/ui';
-import moment from 'moment';
+import {formatDuration} from '../../utils/formatters';
 
 interface TimerProps {
   time: number;
+  timerFormat: string;
   style?: any;
   isPaused?: boolean;
   onCount: (value: any) => void;
 }
 
-function Timer({time = 0, style, isPaused = true, onCount}: TimerProps) {
+function Timer({
+  style,
+  timerFormat,
+  time = 0,
+  isPaused = true,
+  onCount,
+}: TimerProps) {
   const interval = React.useRef(null);
-
-  const duration = moment.duration(time);
-  const minutes = duration.minutes().toString().padStart(2, '0');
-  const seconds = duration.seconds().toString().padStart(2, '0');
-
   const Colors = useThemeColor();
   const styles = useMemo(() => {
     return getStyles(Colors);
@@ -41,9 +43,7 @@ function Timer({time = 0, style, isPaused = true, onCount}: TimerProps) {
 
   return (
     <View style={[styles.timer, style]}>
-      <Text style={styles.text}>
-        {minutes}:{seconds}
-      </Text>
+      <Text style={styles.text}>{formatDuration(time, timerFormat)}</Text>
     </View>
   );
 }
