@@ -5,7 +5,7 @@ import {useThemeColor} from '@aos-mobile/ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
-import {moduleHasMenus} from '../module.helper';
+import {moduleHasMenus, numberOfModules} from '../module.helper';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
@@ -59,27 +59,32 @@ const DrawerContent = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.iconsContainer}>
-        <View style={styles.appIconsContainer}>
-          {modules.filter(moduleHasMenus).map(_module => (
-            <View key={_module.name} style={styles.menuItemContainer}>
-              <MenuIconButton
-                key={_module.title}
-                icon={_module.icon}
-                subtitle={showModulesSubtitle && I18n.t(_module.subtitle)}
-                disabled={_module.disabled}
-                color={
-                  _module === activeModule
-                    ? Colors.primaryColor.background_light
-                    : null
-                }
-                onPress={() => handleModuleClick(_module.name)}
-              />
-            </View>
-          ))}
+      {/* TODO: after moving auth module use 1 instead of 2 : because we have by default auth module.*/}
+      {numberOfModules(modules) > 2 && (
+        <View style={styles.iconsContainer}>
+          <View style={styles.appIconsContainer}>
+            {modules.filter(moduleHasMenus).map(_module => (
+              <View key={_module.name} style={styles.menuItemContainer}>
+                <MenuIconButton
+                  key={_module.title}
+                  icon={_module.icon}
+                  subtitle={showModulesSubtitle && I18n.t(_module.subtitle)}
+                  disabled={_module.disabled}
+                  color={
+                    _module === activeModule
+                      ? Colors.primaryColor.background_light
+                      : null
+                  }
+                  onPress={() => handleModuleClick(_module.name)}
+                />
+              </View>
+            ))}
+          </View>
+          <View style={styles.otherIconsContainer}>
+            {/* TODO: UserScreen */}
+          </View>
         </View>
-        <View style={styles.otherIconsContainer}>{/* TODO: UserScreen */}</View>
-      </View>
+      )}
       <View style={styles.menusContainer}>
         <View style={styles.primaryMenusContainer}>
           {modules.filter(moduleHasMenus).map(_module => (

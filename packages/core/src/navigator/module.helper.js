@@ -73,6 +73,10 @@ export function getDefaultModule(modules, mainMenu) {
   return firstModulesWithMenus(modules);
 }
 
+export function numberOfModules(modules) {
+  return modules.filter(moduleHasMenus).length;
+}
+
 function modulesContainsMenu(modules, menuKey) {
   return modules
     .filter(moduleHasMenus)
