@@ -1,6 +1,20 @@
 {
   "Crm_Crm": "Crm",
-  "Crm_CrmLeads": "Leads",
+  "Crm_Leads": "Leads",
+  "Crm_Lead": "Lead",
   "Crm_AssignedToMe": "Assigned to me",
-  "Crm_All": "All"
+  "Crm_All": "All",
+  "Crm_ThisLeadDoesNotAcceptEmails": "This lead does not accept emails",
+  "Crm_ThisLeadDoesNotAcceptCall": "This lead does not accept call",
+  "Crm_LeadNotes": "Description",
+  "Crm_Contact": "Contact",
+  "Crm_Adress": "Adress",
+  "Crm_Phone": "Phone number",
+  "Crm_MobilePhone": "Mobile phone",
+  "Crm_Email": "Mail address",
+  "Crm_WebSite": "Web site",
+  "Crm_GeneralInformation": "General informations",
+  "Crm_AssignedTo": "Assigned to",
+  "Crm_Categorie": "Category",
+  "Crm_Sector": "Sector"
 }

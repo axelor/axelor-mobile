@@ -12,7 +12,7 @@ import {
 import {useSelector} from '@aos-mobile/core';
 import Lead from '../../../types/lead';
 
-interface CrmLeadsCardProps {
+interface LeadsCardProps {
   style?: any;
   leadsFullname: string;
   leadsCompany: string;
@@ -27,7 +27,7 @@ interface CrmLeadsCardProps {
   leadsStatus?: any;
   onPress: () => void;
 }
-const CrmLeadsCard = ({
+const LeadsCard = ({
   style,
   leadsFullname,
   leadsCompany,
@@ -41,7 +41,7 @@ const CrmLeadsCard = ({
   allLeadStatus,
   leadsStatus,
   onPress,
-}: CrmLeadsCardProps) => {
+}: LeadsCardProps) => {
   const Colors = useThemeColor();
   const {baseUrl} = useSelector((state: any) => state.auth);
 
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CrmLeadsCard;
+export default LeadsCard;

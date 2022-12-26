@@ -1,1 +1,1 @@
-export {crmLeadReducer as crmLead} from './crmLeadSlice';
+export {leadReducer as lead} from './leadSlice';

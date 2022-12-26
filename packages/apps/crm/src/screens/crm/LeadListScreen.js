@@ -16,37 +16,32 @@ import {
   useDispatch,
   ScannerAutocompleteSearch,
 } from '@aos-mobile/core';
-import {fetchCrmLeads, fetchCrmLeadStatus} from '../../features/crmLeadSlice';
-import {CrmLeadsCard} from '../../components';
+import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
+import {LeadsCard} from '../../components';
 import Lead from '../../types/lead';
 
 const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const {
-    loadingCrmLead,
-    moreLoading,
-    isListEnd,
-    crmLeadList,
-    crmLeadStatusList,
-  } = useSelector(state => state.crmLead);
+  const {loadingLead, moreLoading, isListEnd, leadList, leadStatusList} =
+    useSelector(state => state.lead);
   const {userId} = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const [assigned, setAssigned] = useState(false);
   const [product, setProduct] = useState(null);
-  const [filteredList, setFilteredList] = useState(crmLeadList);
+  const [filteredList, setFilteredList] = useState(leadList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
-  const fetchCrmLeadsAPI = useCallback(
+  const fetchLeadsAPI = useCallback(
     page => {
-      dispatch(fetchCrmLeads({page: page}));
+      dispatch(fetchLeads({page: page}));
     },
     [dispatch],
   );
-  const fetchCrmLeadFilter = useCallback(
+  const fetchLeadFilter = useCallback(
     filter => {
-      dispatch(fetchCrmLeads({searchValue: filter}));
+      dispatch(fetchLeads({searchValue: filter}));
     },
     [dispatch],
   );
@@ -101,12 +96,12 @@ const LeadListScreen = ({navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchCrmLeadStatus());
+    dispatch(fetchLeadStatus());
   }, [dispatch]);
 
   useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(crmLeadList)));
-  }, [crmLeadList, filterOnUserAssigned, filterOnStatus]);
+    setFilteredList(filterOnUserAssigned(filterOnStatus(leadList)));
+  }, [leadList, filterOnUserAssigned, filterOnStatus]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -122,11 +117,11 @@ const LeadListScreen = ({navigation}) => {
               onSwitch={() => setAssigned(!assigned)}
             />
             <ScannerAutocompleteSearch
-              objectList={crmLeadList}
+              objectList={leadList}
               value={product}
               onChangeValue={item => setProduct(item)}
-              fetchData={fetchCrmLeadFilter}
-              placeholder={I18n.t('Crm_CrmLeads')}
+              fetchData={fetchLeadFilter}
+              placeholder={I18n.t('Crm_Leads')}
               oneFilter={true}
               selectLastItem={false}
             />
@@ -134,7 +129,7 @@ const LeadListScreen = ({navigation}) => {
         }
         chipComponent={
           <ChipSelect scrollable={true}>
-            {crmLeadStatusList.map((status, index) => {
+            {leadStatusList.map((status, index) => {
               return (
                 <Chip
                   key={index}
@@ -148,12 +143,12 @@ const LeadListScreen = ({navigation}) => {
           </ChipSelect>
         }
       />
-      {crmLeadList != null && crmLeadList.length > 0 ? (
+      {leadList != null && leadList.length > 0 ? (
         <ScrollList
-          loadingList={loadingCrmLead}
+          loadingList={loadingLead}
           data={filteredList}
           renderItem={({item}) => (
-            <CrmLeadsCard
+            <LeadsCard
               style={styles.item}
               leadsFullname={item.simpleFullName}
               leadsCompany={item.enterpriseName}
@@ -171,11 +166,18 @@ const LeadListScreen = ({navigation}) => {
               leadVersion={item.version}
               leadsId={item.id}
               leadsStatus={item.leadStatus}
-              allLeadStatus={crmLeadStatusList}
-              onPress={() => {}}
+              allLeadStatus={leadStatusList}
+              onPress={() =>
+                navigation.navigate('LeadDetailsScreen', {
+                  lead: item,
+                  colorIndex: leadStatusList?.findIndex(
+                    status => status.id === item.leadStatus.id,
+                  ),
+                })
+              }
             />
           )}
-          fetchData={fetchCrmLeadsAPI}
+          fetchData={fetchLeadsAPI}
           moreLoading={moreLoading}
           isListEnd={isListEnd}
         />
