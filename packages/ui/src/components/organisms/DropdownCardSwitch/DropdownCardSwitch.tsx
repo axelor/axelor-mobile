@@ -23,6 +23,7 @@ import {DropdownCard} from '../../molecules';
 interface DropdownCardSwitchProps {
   style?: any;
   dropdownItems: DropdownItem[];
+  styleTitle?: any;
 }
 interface DropdownItem {
   key: number;
@@ -33,8 +34,17 @@ interface DropdownItem {
 const DropdownCardSwitch = ({
   style,
   dropdownItems,
+  styleTitle,
 }: DropdownCardSwitchProps) => {
   const [openedCardKey, setOpenedCardKey] = useState<Number>();
+
+  const handlePress = key => {
+    if (openedCardKey === key) {
+      setOpenedCardKey(null);
+    } else {
+      setOpenedCardKey(key);
+    }
+  };
 
   return (
     <View style={[styles.container, style]}>
@@ -43,7 +53,8 @@ const DropdownCardSwitch = ({
           <DropdownCard
             key={index}
             title={elt.title}
-            onPress={() => setOpenedCardKey(elt.key)}
+            styleText={styleTitle}
+            onPress={() => handlePress(elt.key)}
             DropdownIsOpen={elt.key === openedCardKey}>
             {elt.childrenComp}
           </DropdownCard>
