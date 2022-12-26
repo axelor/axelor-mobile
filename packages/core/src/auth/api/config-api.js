@@ -37,11 +37,21 @@ export async function getMobileSettings() {
               {
                 isTrackerMessageOnStockApp: true,
                 isTrackerMessageOnProductionApp: true,
+                isTrackerMessageOnCrmApp: true,
               },
             ],
           },
         };
       }
-      return res;
+      return {
+        data: {
+          data: [
+            {
+              isTrackerMessageOnCrmApp: true,
+              ...res?.data?.data[0],
+            },
+          ],
+        },
+      };
     });
 }
