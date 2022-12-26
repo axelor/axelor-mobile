@@ -1,1 +1,1 @@
-export {fetchCrmLeads} from './crmLeadSlice';
+export {fetchLeads} from './leadSlice';

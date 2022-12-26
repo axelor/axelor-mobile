@@ -14,13 +14,24 @@ const crmLeadsFields = [
   'leadScoring',
   'simpleFullName',
   'user',
+  'isDoNotSendEmail',
+  'isDoNotCall',
+  'jobTitleFunction',
+  'description',
+  'webSite',
+  'type',
+  'industrySector',
 ];
 
 const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];
 
 const createLeadCriteria = searchValue => {
   let criterias = [];
-
+  criterias.push({
+    fieldName: 'leadStatus.isOpen',
+    operator: '=',
+    value: true,
+  });
   if (searchValue != null) {
     criterias.push({
       operator: 'or',

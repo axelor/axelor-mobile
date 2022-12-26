@@ -66,6 +66,7 @@ const InfoBubble = ({
           name={iconName}
           style={styles.imageStyle}
           color={badgeColor.foreground}
+          size={13}
         />
       </TouchableOpacity>
       {isOpen ? (
@@ -91,16 +92,17 @@ const getStyles = (badgeColor, Colors) =>
       backgroundColor: badgeColor.background_light,
       borderWidth: 2,
       borderColor: badgeColor.background,
-      borderRadius: Dimensions.get('window').width * 0.1,
-      width: Dimensions.get('window').width * 0.1,
-      height: Dimensions.get('window').width * 0.1,
+      borderRadius: Dimensions.get('window').width * 0.07,
+      width: Dimensions.get('window').width * 0.07,
+      height: Dimensions.get('window').width * 0.07,
     },
     indicationCard: {
       position: 'absolute',
-      marginLeft: '12%',
+      left: Dimensions.get('window').width * 0.08,
       paddingLeft: 10,
       paddingVertical: 10,
       paddingRight: 10,
+      zIndex: 99,
       backgroundColor: Colors.backgroundColor,
     },
   });

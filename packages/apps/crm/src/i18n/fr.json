@@ -1,6 +1,20 @@
 {
   "Crm_Crm": "Crm",
-  "Crm_CrmLeads": "Pistes",
+  "Crm_Leads": "Pistes",
+  "Crm_Lead": "Piste",
   "Crm_AssignedToMe": "Assigné à moi",
-  "Crm_All": "Tout"
+  "Crm_All": "Tout",
+  "Crm_ThisLeadDoesNotAcceptEmails": "Cette piste n'accepte pas les emails",
+  "Crm_ThisLeadDoesNotAcceptCall": "Cette piste n'accepte pas d'appel",
+  "Crm_LeadNotes": "Description",
+  "Crm_Contact": "Contact",
+  "Crm_Adress": "Adresse",
+  "Crm_Phone": "Numéro de téléphone",
+  "Crm_MobilePhone": "Téléphone mobile",
+  "Crm_Email": "Email",
+  "Crm_WebSite": "Site internet",
+  "Crm_GeneralInformation": "Informations générales",
+  "Crm_AssignedTo": "Assigné à ",
+  "Crm_Categorie": "Catégorie",
+  "Crm_Sector": "Secteur"
 }

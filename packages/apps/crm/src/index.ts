@@ -10,7 +10,7 @@ export const CrmModule: Module = {
   icon: 'users',
   menus: {
     Crm: {
-      title: 'Crm_CrmLeads',
+      title: 'Crm_Leads',
       icon: 'address-card',
       screen: 'LeadListScreen',
     },
