@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@aos-mobile/core';
 import {searchCrmLeads, getLeadStatus} from '../api/crm-leads-api';
 
-export const fetchCrmLeads = createAsyncThunk(
+export const fetchLeads = createAsyncThunk(
   'crm/Lead',
   async function (data, {getState}) {
     return handlerApiCall({
@@ -15,7 +15,7 @@ export const fetchCrmLeads = createAsyncThunk(
   },
 );
 
-export const fetchCrmLeadStatus = createAsyncThunk(
+export const fetchLeadStatus = createAsyncThunk(
   'crm/leadStatus',
   async function (data = {}, {getState}) {
     return handlerApiCall({
@@ -29,48 +29,48 @@ export const fetchCrmLeadStatus = createAsyncThunk(
 );
 
 const initialState = {
-  loadingCrmLead: true,
-  loadingCrmLeadStatus: true,
+  loadingLead: true,
+  loadingLeadStatus: true,
   moreLoading: false,
   isListEnd: false,
-  crmLeadList: [],
-  crmLeadStatusList: [],
+  leadList: [],
+  leadStatusList: [],
 };
 
-const crmLeadSlice = createSlice({
-  name: 'crmLead',
+const leadSlice = createSlice({
+  name: 'lead',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchCrmLeads.pending, (state, action) => {
+    builder.addCase(fetchLeads.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
-        state.loadingCrmLead = true;
+        state.loadingLead = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchCrmLeads.fulfilled, (state, action) => {
-      state.loadingCrmLead = false;
+    builder.addCase(fetchLeads.fulfilled, (state, action) => {
+      state.loadingLead = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.crmLeadList = action.payload;
+        state.leadList = action.payload;
         state.isListEnd = false;
       } else {
         if (action.payload != null) {
           state.isListEnd = false;
-          state.crmLeadList = [...state.crmLeadList, ...action.payload];
+          state.leadList = [...state.leadList, ...action.payload];
         } else {
           state.isListEnd = true;
         }
       }
     });
-    builder.addCase(fetchCrmLeadStatus.pending, state => {
-      state.loadingCrmLeadStatus = true;
+    builder.addCase(fetchLeadStatus.pending, state => {
+      state.loadingLeadStatus = true;
     });
-    builder.addCase(fetchCrmLeadStatus.fulfilled, (state, action) => {
-      state.loadingCrmLeadStatus = false;
-      state.crmLeadStatusList = action.payload;
+    builder.addCase(fetchLeadStatus.fulfilled, (state, action) => {
+      state.loadingLeadStatus = false;
+      state.leadStatusList = action.payload;
     });
   },
 });
 
-export const crmLeadReducer = crmLeadSlice.reducer;
+export const leadReducer = leadSlice.reducer;

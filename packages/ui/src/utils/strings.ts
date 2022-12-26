@@ -32,9 +32,9 @@ export function checkNullString(message) {
   }
 }
 
-export function sliceString(string: string, maxStringLenght: number) {
-  if (string.length > maxStringLenght) {
-    return string.slice(0, maxStringLenght - 3) + '...';
+export function sliceString(string: string, maxStringLength: number) {
+  if (string.length > maxStringLength) {
+    return string.slice(0, maxStringLength - 3) + '...';
   } else {
     return string;
   }
