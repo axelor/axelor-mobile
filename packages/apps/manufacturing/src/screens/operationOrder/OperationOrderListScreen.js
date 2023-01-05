@@ -37,7 +37,6 @@ function OperationOrderListScreen({navigation}) {
   const [workCenter, setWorkCenter] = useState(null);
   const [machine, setMachine] = useState(null);
   const [filteredList, setFilteredList] = useState(operationOrderList);
-  const [draftStatus, setDraftStatus] = useState(false);
   const [plannedStatus, setPlannedStatus] = useState(false);
   const [progressStatus, setProgressStatus] = useState(false);
   const [standByStatus, setStandByStatus] = useState(false);
@@ -47,7 +46,6 @@ function OperationOrderListScreen({navigation}) {
   const dispatch = useDispatch();
 
   const desactivateChip = () => {
-    setDraftStatus(false);
     setPlannedStatus(false);
     setProgressStatus(false);
     setStandByStatus(false);
@@ -55,7 +53,7 @@ function OperationOrderListScreen({navigation}) {
   };
 
   const handlePlannedStatus = () => {
-    if (draftStatus && progressStatus && standByStatus && finishedStatus) {
+    if (progressStatus && standByStatus && finishedStatus) {
       desactivateChip();
     } else {
       setPlannedStatus(!plannedStatus);
@@ -63,7 +61,7 @@ function OperationOrderListScreen({navigation}) {
   };
 
   const handleProgressStatus = () => {
-    if (plannedStatus && draftStatus && standByStatus && finishedStatus) {
+    if (plannedStatus && standByStatus && finishedStatus) {
       desactivateChip();
     } else {
       setProgressStatus(!progressStatus);
@@ -71,7 +69,7 @@ function OperationOrderListScreen({navigation}) {
   };
 
   const handleStandByStatus = () => {
-    if (plannedStatus && progressStatus && draftStatus && finishedStatus) {
+    if (plannedStatus && progressStatus && finishedStatus) {
       desactivateChip();
     } else {
       setStandByStatus(!standByStatus);
@@ -79,7 +77,7 @@ function OperationOrderListScreen({navigation}) {
   };
 
   const handleFinishedStatus = () => {
-    if (plannedStatus && progressStatus && standByStatus && draftStatus) {
+    if (plannedStatus && progressStatus && standByStatus) {
       desactivateChip();
     } else {
       setFinishedStatus(!finishedStatus);
@@ -93,19 +91,11 @@ function OperationOrderListScreen({navigation}) {
       } else {
         const listFilter = [];
         if (
-          draftStatus ||
           plannedStatus ||
           progressStatus ||
           standByStatus ||
           finishedStatus
         ) {
-          if (draftStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === OperationOrder.status.Draft) {
-                listFilter.push(item);
-              }
-            });
-          }
           if (plannedStatus) {
             list.forEach(item => {
               if (item.statusSelect === OperationOrder.status.Planned) {
@@ -141,7 +131,7 @@ function OperationOrderListScreen({navigation}) {
         return listFilter;
       }
     },
-    [draftStatus, finishedStatus, plannedStatus, progressStatus, standByStatus],
+    [finishedStatus, plannedStatus, progressStatus, standByStatus],
   );
 
   useEffect(() => {
