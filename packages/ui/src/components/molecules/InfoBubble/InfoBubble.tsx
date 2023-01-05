@@ -24,7 +24,7 @@ const InfoBubble = ({
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
   const Colors = useThemeColor();
-  const clickOutside = useClickOutside(wrapperRef);
+  const clickOutside = useClickOutside({wrapperRef, visible: isOpen});
 
   const styles = useMemo(
     () => getStyles(badgeColor, Colors),

@@ -45,7 +45,10 @@ const Picker = ({
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside(wrapperRef);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: pickerIsOpen,
+  });
   const Colors = useThemeColor();
   const [selectedItem, setSelectedItem] = useState(
     getFromList(listItems, valueField, defaultValue),

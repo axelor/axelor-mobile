@@ -1,6 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useClickOutside} from '../../../hooks/use-click-outside';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon} from '../../atoms';
 
@@ -13,10 +16,10 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
   const Colors = useThemeColor();
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside(wrapperRef);
+  const clickOutside = useClickOutside({wrapperRef, visible});
 
   useEffect(() => {
-    if (clickOutside === 'outside' && visible) {
+    if (clickOutside === OUTSIDE_INDICATOR && visible) {
       setVisible(false);
     }
   }, [clickOutside, visible]);

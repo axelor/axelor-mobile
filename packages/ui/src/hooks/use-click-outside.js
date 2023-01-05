@@ -7,16 +7,17 @@ import React, {
   useReducer,
 } from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
+import {findVisibleRef, pushRef} from './use-click-outside.helper';
 
 export const OUTSIDE_INDICATOR = 'outside';
 export const INSIDE_INDICATOR = 'inside';
 
 const defaultOutsideAlerterContext = {
-  ref: undefined,
+  refList: [],
   clickOutside: undefined,
-  setRef: () => {
+  addRef: () => {
     throw new Error(
-      'OutsideAlerter should be mounted to set target component reference',
+      'OutsideAlerter should be mounted to add target component reference',
     );
   },
   handleClickOutside: () => {
@@ -29,7 +30,7 @@ const defaultOutsideAlerterContext = {
 const OutsideAlerterContext = createContext(defaultOutsideAlerterContext);
 
 const actionTypes = {
-  setRef: 'setRef',
+  addRef: 'addRef',
   handleClickOutside: 'handleClickOutside',
 };
 
@@ -57,17 +58,17 @@ const handleClickOutsideReducer = (ref, target) => {
 
 const outsideAlerterReducer = (state, action) => {
   switch (action.type) {
-    case actionTypes.setRef: {
+    case actionTypes.addRef: {
       return {
         ...state,
-        ref: action.payload,
+        refList: pushRef(state.refList, action.payload),
       };
     }
     case actionTypes.handleClickOutside: {
       return {
         ...state,
         clickOutside: handleClickOutsideReducer(
-          state.ref?.current,
+          findVisibleRef(state.refList)?.wrapperRef?.current,
           action.payload,
         ),
       };
@@ -76,9 +77,9 @@ const outsideAlerterReducer = (state, action) => {
 };
 
 const actions = {
-  setRef: ref => {
+  addRef: ref => {
     return {
-      type: actionTypes.setRef,
+      type: actionTypes.addRef,
       payload: ref,
     };
   },
@@ -96,26 +97,26 @@ export const OutsideAlerterProvider = ({children}) => {
     defaultOutsideAlerterContext,
   );
 
-  const setRef = useCallback(ref => dispatch(actions.setRef(ref)), []);
+  const addRef = useCallback(ref => dispatch(actions.addRef(ref)), []);
 
   const handleClickOutside = useCallback(
-    (ref, target) => dispatch(actions.handleClickOutside(ref, target)),
+    target => dispatch(actions.handleClickOutside(target)),
     [],
   );
 
   const outsideAlerterContextState = useMemo(
     () => ({
       ...state,
-      setRef,
+      addRef,
       handleClickOutside,
     }),
-    [state, setRef, handleClickOutside],
+    [state, addRef, handleClickOutside],
   );
 
   return (
     <OutsideAlerterContext.Provider value={outsideAlerterContextState}>
       <View
-        onTouchStart={e => handleClickOutside(e.target, state.ref?.current)}
+        onTouchStart={e => handleClickOutside(e.target)}
         style={styles.container}>
         {children}
       </View>
@@ -136,13 +137,15 @@ const styles = StyleSheet.create({
 
 /**
  * Hook that alerts clicks outside
- * @param {Object} ref - component reference to track if we click outside of it.
+ * @param {Object} wrapperRef - component reference to track if we click outside of it.
+ * @param {Boolean} visible - boolean to track component if it is visible.
  */
-export const useClickOutside = ref => {
-  const {clickOutside, setRef} = useContext(OutsideAlerterContext);
+export const useClickOutside = ({wrapperRef, visible}) => {
+  const {clickOutside, addRef} = useContext(OutsideAlerterContext);
+
   useEffect(() => {
-    setRef(ref);
-  }, [ref, setRef]);
+    addRef({nativeTag: wrapperRef?.current?._nativeTag, wrapperRef, visible});
+  }, [addRef, visible, wrapperRef]);
 
   return useMemo(() => {
     return clickOutside;
