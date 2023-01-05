@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {animationUtil} from '../../../tools/AnimationUtil';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon, Text} from '../../atoms';
 
@@ -32,6 +33,7 @@ const DropdownCard = ({
   }, [DropdownIsOpen, isOpen, onPress]);
 
   const handleCardPress = () => {
+    animationUtil.animateNext();
     onPress ? onPress() : setIsOpen(!isOpen);
   };
 

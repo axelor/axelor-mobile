@@ -1,5 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {animationUtil} from '../../../tools/AnimationUtil';
 import {useConfig} from '../../../config/ConfigContext';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
@@ -29,13 +30,18 @@ const HeaderContainer = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const handleExpandPress = useCallback(() => {
+    animationUtil.animateNext();
+    setVisible(!isVisible);
+  }, [isVisible]);
+
   return (
     <View style={[styles.container, style]}>
       {fixedItems}
       {expandableFilter && isVisible && children}
       {chipComponent}
       {expandableFilter && (
-        <TouchableOpacity onPress={() => setVisible(!isVisible)}>
+        <TouchableOpacity onPress={handleExpandPress}>
           <View style={styles.arrowContainer}>
             <Icon
               name={isVisible ? 'angle-up' : 'angle-down'}
