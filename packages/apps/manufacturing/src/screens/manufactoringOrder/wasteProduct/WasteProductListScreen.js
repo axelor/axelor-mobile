@@ -10,14 +10,14 @@ import {
   Text,
   useThemeColor,
   useConfig,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
-import {filterList} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-core';
+import {filterList} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   WasteProductCard,

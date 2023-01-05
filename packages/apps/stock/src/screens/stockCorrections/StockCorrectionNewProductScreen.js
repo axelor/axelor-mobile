@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
-import {ClearableCard, Screen} from '@aos-mobile/ui';
+import {ClearableCard, Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {searchProducts} from '../../features/productSlice';
 
 const productScanKey = 'product_stock-correction-new';

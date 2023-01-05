@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const MenuItem = ({icon, title, isActive, onPress, disabled}) => {
   const Colors = useThemeColor();

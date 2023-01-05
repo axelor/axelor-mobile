@@ -8,8 +8,8 @@ import {
   ScrollList,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {useSelector, useDispatch, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductStockLocationCard} from '../../components';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
 import {fetchProductDistribution} from '../../features/productIndicatorsSlice';

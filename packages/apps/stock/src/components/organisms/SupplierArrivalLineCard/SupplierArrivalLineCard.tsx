@@ -1,7 +1,13 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
-import {checkNullString, useTranslator} from '@aos-mobile/core';
+import {
+  Card,
+  Icon,
+  LabelText,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {checkNullString, useTranslator} from '@axelor/aos-mobile-core';
 
 interface SupplierArrivalLineCardProps {
   style?: any;

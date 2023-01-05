@@ -10,7 +10,7 @@ import {
   Screen,
   ScrollList,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 import {
   getAttachedFiles,

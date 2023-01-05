@@ -14,10 +14,10 @@
     "i18n": "i18n-parser --config=./i18n.json"
   },
   "dependencies": {
-    "@aos-mobile/ui": "1.0.0",
-    "@aos-mobile/core": "1.0.0",
-    "@aos-mobile/app-stock": "1.0.0",
-    "@aos-mobile/app-manufacturing": "1.0.0",
+    "@axelor/aos-mobile-ui": "0.0.1",
+    "@axelor/aos-mobile-core": "0.0.1",
+    "@axelor/aos-mobile-stock": "0.0.1",
+    "@axelor/aos-mobile-manufacturing": "0.0.1",
     "@react-native-clipboard/clipboard": "^1.11.1",
     "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.10",

@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
-import {formatDate, useTranslator} from '@aos-mobile/core';
+import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import StockCorrection from '../../../types/stock-corrrection';
 
 interface StockCorrectionCardProps {

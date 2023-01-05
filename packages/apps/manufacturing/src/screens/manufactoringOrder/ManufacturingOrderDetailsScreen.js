@@ -11,14 +11,14 @@ import {
   useThemeColor,
   Text,
   NotesCard,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
-import {ProductCardInfo} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-core';
+import {ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,

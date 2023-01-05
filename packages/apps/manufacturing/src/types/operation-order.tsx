@@ -3,8 +3,8 @@ import {
   formatDateTime,
   StopwatchType,
   TranslatorProps,
-} from '@aos-mobile/core';
-import {Color, ThemeColors} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-core';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class OperationOrder {
   static status = {

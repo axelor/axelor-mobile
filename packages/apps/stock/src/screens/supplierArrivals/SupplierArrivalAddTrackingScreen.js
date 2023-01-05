@@ -7,13 +7,13 @@ import {
   Screen,
   ScrollView,
   Text,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   InputBarCodeCard,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {QuantityCard, StockMoveHeader} from '../../components';
 import {updateSupplierTrackingNumber} from '../../features/trackingNumberSlice';
 import StockMove from '../../types/stock-move';

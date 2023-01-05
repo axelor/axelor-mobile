@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Screen, ScrollList} from '@aos-mobile/ui';
-import {useDispatch, useSelector} from '@aos-mobile/core';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {ProductVariantCard} from '../../components';
 import {
   fetchProductsAttributes,

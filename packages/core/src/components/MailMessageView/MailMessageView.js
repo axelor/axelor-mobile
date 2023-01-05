@@ -16,7 +16,7 @@ import {
   Icon,
   PopUpTwoButton,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {MailMessageCard, MailMessageReadIcon} from '../../components';
 import {
   getMailMessages,

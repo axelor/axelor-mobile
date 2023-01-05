@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '@aos-mobile/ui';
-import {AOSImage} from '@aos-mobile/core';
+import {Icon, Text} from '@axelor/aos-mobile-ui';
+import {AOSImage} from '@axelor/aos-mobile-core';
 import {ProductCardDetails} from '../../molecules';
 
 interface ProductCardInfoProps {

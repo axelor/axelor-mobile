@@ -1,7 +1,12 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Icon, Text, useThemeColor, getCommonStyles} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {
+  Icon,
+  Text,
+  useThemeColor,
+  getCommonStyles,
+} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 const LogoutButton = ({onPress}) => {
   const Colors = useThemeColor();

@@ -1,5 +1,5 @@
-import {ThemeColors, Color} from '@aos-mobile/ui';
-import {TranslatorProps} from '@aos-mobile/core';
+import {ThemeColors, Color} from '@axelor/aos-mobile-ui';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class ManufacturingOrder {
   static status = {

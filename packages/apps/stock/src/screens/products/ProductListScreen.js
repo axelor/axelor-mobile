@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {Screen, ScrollList, HeaderContainer} from '@aos-mobile/ui';
+import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {ProductCard} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';

@@ -1,5 +1,5 @@
-import {Color, ThemeColors} from '@aos-mobile/ui';
-import {TranslatorProps} from '@aos-mobile/core';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class StockCorrection {
   static status = {

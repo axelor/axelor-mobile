@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
-import {Text} from '@aos-mobile/ui';
+import {Text} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
 import {getMenuTitle} from '../menu.helper';

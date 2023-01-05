@@ -1,6 +1,6 @@
 {
-  "name": "@aos-mobile/app-manufacturing",
-  "version": "1.0.0",
+  "name": "@axelor/aos-mobile-manufacturing",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
@@ -21,9 +21,9 @@
     "react-native-render-html": "^6.3.4"
   },
   "dependencies": {
-    "@aos-mobile/ui": "1.0.0",
-    "@aos-mobile/core": "1.0.0",
-    "@aos-mobile/app-stock": "1.0.0",
+    "@axelor/aos-mobile-ui": "0.0.1",
+    "@axelor/aos-mobile-core": "0.0.1",
+    "@axelor/aos-mobile-stock": "0.0.1",
     "@reduxjs/toolkit": "^1.8.5"
   },
   "devDependencies": {

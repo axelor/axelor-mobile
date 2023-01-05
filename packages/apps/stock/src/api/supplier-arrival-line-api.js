@@ -1,4 +1,4 @@
-import {axiosApiProvider} from '@aos-mobile/core';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
 
 const supplierArrivalLineFields = [

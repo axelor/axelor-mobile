@@ -1,7 +1,7 @@
-# @aos-mobile/ui
+# @axelor/aos-mobile-ui
 
-## Peer dependencies
+## Required libraries
 
 - react-native-vector-icons
 - react-native-system-navigation-bar
-
+- react-native-render-html

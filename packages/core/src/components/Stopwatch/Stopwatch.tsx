@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 import StopwatchType from '../../types/stopwatch-type';
 import Timer from '../Timer/Timer';

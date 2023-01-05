@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {AutoCompleteSearch, useThemeColor} from '@aos-mobile/ui';
+import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   enableScan,
   useScannedValueByKey,

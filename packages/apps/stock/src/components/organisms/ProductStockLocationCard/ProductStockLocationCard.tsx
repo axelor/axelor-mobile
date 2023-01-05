@@ -7,8 +7,8 @@ import {
   LabelText,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ProductStockLocationCardProps {
   stockLocationName: string;

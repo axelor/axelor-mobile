@@ -1,4 +1,4 @@
-import {Module} from '@aos-mobile/core';
+import {Module} from '@axelor/aos-mobile-core';
 import ManufacturingOrderScreens from './screens/manufactoringOrder';
 import OperationOrderScreens from './screens/operationOrder';
 import enTranslations from './i18n/en.json';

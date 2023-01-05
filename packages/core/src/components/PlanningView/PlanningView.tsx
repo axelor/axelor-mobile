@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, useThemeColor} from '@aos-mobile/ui';
+import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Agenda, AgendaEntry} from 'react-native-calendars';
 import {
   AgendaItem,

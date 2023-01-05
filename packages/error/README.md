@@ -1,1 +1,1 @@
-# @aos-mobile/error
+# @axelor/aos-mobile-error

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Application} from '@aos-mobile/core';
-import {StockModule} from '@aos-mobile/app-stock';
-import {ManufacturingModule} from '@aos-mobile/app-manufacturing';
+import {Application} from '@axelor/aos-mobile-core';
+import {StockModule} from '@axelor/aos-mobile-stock';
+import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
 import AuthModule from '@/modules/auth';
 import application_properties from '../package.json';
 

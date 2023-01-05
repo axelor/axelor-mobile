@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchProductionFile} from '../../features/productionFileSlice';
 import {
   ProductionFileLargeCard,
@@ -10,7 +10,7 @@ import {
   ScrollList,
   HeaderContainer,
   ToggleSwitch,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 
 const ProductionFileScreen = ({route, navigation}) => {
   const [tab, setTab] = useState(false);

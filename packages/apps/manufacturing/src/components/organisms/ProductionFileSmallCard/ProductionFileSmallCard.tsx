@@ -1,8 +1,8 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import RenderHTML from 'react-native-render-html';
-import {AOSImage} from '@aos-mobile/core';
-import {useThemeColor} from '@aos-mobile/ui';
+import {AOSImage} from '@axelor/aos-mobile-core';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface MetaFileProps {
   id: number;

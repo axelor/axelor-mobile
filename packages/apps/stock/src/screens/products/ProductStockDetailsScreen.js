@@ -14,7 +14,7 @@ import {
   ScrollView,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   AOSImage,
   displayItemName,
@@ -23,7 +23,7 @@ import {
   useDispatch,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {CardStockIndicator, ProductCardDetails} from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';

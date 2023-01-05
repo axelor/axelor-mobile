@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Badge, Card, Text, useThemeColor} from '@aos-mobile/ui';
-import {AOSImage, useTranslator} from '@aos-mobile/core';
+import {Badge, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {AOSImage, useTranslator} from '@axelor/aos-mobile-core';
 import Product from '../../../types/product';
 
 interface ProductCharacteristicsProps {

@@ -11,13 +11,13 @@ import {
   ScrollView,
   useThemeColor,
   ViewAllContainer,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {getRacks} from '../../features/racksListSlice';

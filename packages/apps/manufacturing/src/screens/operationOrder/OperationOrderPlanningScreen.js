@@ -1,7 +1,13 @@
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, LabelText, Screen, Text, useThemeColor} from '@aos-mobile/ui';
-import {PlanningView, useDispatch, useSelector} from '@aos-mobile/core';
+import {
+  Card,
+  LabelText,
+  Screen,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 import OperationOrder from '../../types/operation-order';
 

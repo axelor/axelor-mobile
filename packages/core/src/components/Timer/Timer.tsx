@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, useThemeColor} from '@aos-mobile/ui';
+import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDuration} from '../../utils/formatters';
 
 interface TimerProps {

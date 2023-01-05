@@ -1,7 +1,17 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Screen, ScrollView, Text, NotesCard} from '@aos-mobile/ui';
-import {useTranslator, useSelector, HeaderOptionsMenu} from '@aos-mobile/core';
+import {
+  Button,
+  Screen,
+  ScrollView,
+  Text,
+  NotesCard,
+} from '@axelor/aos-mobile-ui';
+import {
+  useTranslator,
+  useSelector,
+  HeaderOptionsMenu,
+} from '@axelor/aos-mobile-core';
 import {ProductCharacteristics, SmallPropertyCard} from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {

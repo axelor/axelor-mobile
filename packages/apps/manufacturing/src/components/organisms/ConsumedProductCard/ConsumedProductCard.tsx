@@ -1,7 +1,13 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Badge, Card, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {
+  Badge,
+  Card,
+  LabelText,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ConsumedProductCardProps {
   style?: any;

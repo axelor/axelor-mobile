@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch} from '../../redux/hooks';
 import {
   markAllMailMessageAsRead,

@@ -1,4 +1,4 @@
-import {Module} from '@aos-mobile/core';
+import {Module} from '@axelor/aos-mobile-core';
 import SettingsScreen from './screens/SettingsScreen';
 import UserScreen from './screens/UserScreen';
 import enTranslations from './i18n/en.json';

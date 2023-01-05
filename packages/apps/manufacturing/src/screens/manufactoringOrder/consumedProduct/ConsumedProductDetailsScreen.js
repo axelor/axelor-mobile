@@ -5,13 +5,13 @@ import {
   ScrollView,
   HeaderContainer,
   Text,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
   QuantityCard,
   ProductCardInfo,
-} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-stock';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
 import {
   addProdProductToManufOrder,

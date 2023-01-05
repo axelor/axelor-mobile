@@ -1,4 +1,4 @@
-import {axiosApiProvider} from '@aos-mobile/core';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
 import Inventory from '../types/inventory';
 
 const inventoryFields = [

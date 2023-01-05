@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge, useThemeColor} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
 interface OperationOrderHeaderProps {

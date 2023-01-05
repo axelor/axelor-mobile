@@ -13,13 +13,13 @@ import {
   MovementIndicationCard,
   Icon,
   NotesCard,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../features/racksListSlice';

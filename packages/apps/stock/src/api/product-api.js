@@ -2,7 +2,7 @@ import {
   axiosApiProvider,
   getApiResponseData,
   getFirstData,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 
 const productFields = [
   'name',

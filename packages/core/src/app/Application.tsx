@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Theme, Writing} from '@aos-mobile/ui';
+import {Theme, Writing} from '@axelor/aos-mobile-ui';
 import {Module} from './Module';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';

@@ -10,13 +10,13 @@ import {
   ScrollView,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   getFromList,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';

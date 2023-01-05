@@ -2,7 +2,7 @@ import {
   axiosApiProvider,
   getNextMonth,
   getPreviousMonth,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import OperationOrder from '../types/operation-order';
 
 const operationOrderListFields = [

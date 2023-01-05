@@ -9,8 +9,8 @@ import {
   Text,
   useThemeColor,
   NotesCard,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';

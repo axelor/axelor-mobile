@@ -9,14 +9,14 @@ import {
   HeaderContainer,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
-import {areObjectsEquals} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-core';
+import {areObjectsEquals} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ConsumedProductGlobalCard,

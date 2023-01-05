@@ -8,8 +8,8 @@ import {
   HeaderIndicator,
   ThemeColors,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {ErrorBoundary} from '@aos-mobile/error';
+} from '@axelor/aos-mobile-ui';
+import {ErrorBoundary} from '@axelor/aos-mobile-error';
 import RootNavigator from './RootNavigator';
 import {Module} from './Module';
 import Translator from '../i18n/component/Translator';

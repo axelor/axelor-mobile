@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
-import {useThemeColor, Text, Screen, ScrollView} from '@aos-mobile/ui';
+import {useThemeColor, Text, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   CameraScanner,
   ErrorText,

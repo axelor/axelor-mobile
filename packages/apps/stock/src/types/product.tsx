@@ -1,4 +1,4 @@
-import {TranslatorProps} from '@aos-mobile/core';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class Product {
   static procurementMethod = {

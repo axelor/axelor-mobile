@@ -5,14 +5,14 @@ import {
   HeaderContainer,
   PopUpOneButton,
   Screen,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {StockMoveHeader} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import StockMove from '../../types/stock-move';

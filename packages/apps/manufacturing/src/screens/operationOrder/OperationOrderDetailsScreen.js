@@ -5,7 +5,7 @@ import {
   HeaderContainer,
   LabelText,
   Screen,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   formatDuration,
   HeaderOptionsMenu,
@@ -15,7 +15,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {OperationOrderDatesCard} from '../../components/molecules';
 import {OperationOrderHeader} from '../../components/organisms';
 import OperationOrder from '../../types/operation-order';

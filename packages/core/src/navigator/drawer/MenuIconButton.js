@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@aos-mobile/ui';
+import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const WIDTH = 54;
 const HEIGHT = 54;

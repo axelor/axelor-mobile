@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, PopUpOneButton, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {Card, PopUpOneButton, Text} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface SmallPropertyCardProps {
   style?: any;

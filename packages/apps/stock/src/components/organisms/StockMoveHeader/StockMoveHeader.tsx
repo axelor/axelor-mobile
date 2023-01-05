@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, Text, useThemeColor} from '@aos-mobile/ui';
-import {formatDate, useTranslator} from '@aos-mobile/core';
+import {Badge, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../types/stock-move';
 
 interface StockMoveHeaderProps {

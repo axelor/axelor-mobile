@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {DropdownMenu} from '@aos-mobile/ui';
+import {DropdownMenu} from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {countAttachmentFiles} from '../../features/attachedFilesSlice';

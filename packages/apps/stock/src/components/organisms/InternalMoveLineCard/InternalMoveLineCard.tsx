@@ -7,8 +7,8 @@ import {
   LabelText,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {checkNullString, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {checkNullString, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../types/stock-move';
 
 interface InternalMoveLineCardProps {

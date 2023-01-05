@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const IconSettings = ({onPress}) => {
   const Colors = useThemeColor();

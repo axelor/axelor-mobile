@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {CardIconButton, useThemeColor} from '@aos-mobile/ui';
+import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import ConsumedProductCard from '../ConsumedProductCard/ConsumedProductCard';
 
 interface ConsumedProductGlobalCardProps {

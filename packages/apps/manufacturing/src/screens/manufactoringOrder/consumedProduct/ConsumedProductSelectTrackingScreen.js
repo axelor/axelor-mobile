@@ -4,18 +4,18 @@ import {
   Screen,
   ScrollView,
   HeaderContainer,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
 import {
   displayItemTrackingNumber,
   filterTrackingNumber,
-} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-stock';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-consumed-product-select';

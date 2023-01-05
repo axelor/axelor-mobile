@@ -8,7 +8,7 @@ import {
   RightIconButton,
   Icon,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   getTranslations,
   selectLanguage,
@@ -16,7 +16,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
 
 const SettingsScreen = ({route}) => {

@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {BarcodeFormat, useScanBarcodes} from 'vision-camera-code-scanner';
 import {formatScan} from '../../utils/formatters';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 const CameraScanner = ({
   isActive = false,

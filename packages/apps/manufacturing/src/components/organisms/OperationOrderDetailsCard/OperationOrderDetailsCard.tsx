@@ -7,8 +7,8 @@ import {
   Text,
   LabelText,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {formatDuration, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {formatDuration, useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
 interface OperationOrderCardProps {

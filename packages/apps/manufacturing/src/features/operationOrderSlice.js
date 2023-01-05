@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, updateAgendaItems} from '@aos-mobile/core';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
 import {
   searchOperationOrderFilter,
   fetchOperationOrder,

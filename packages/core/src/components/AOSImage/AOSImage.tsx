@@ -5,7 +5,7 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native';
-import {Image} from '@aos-mobile/ui';
+import {Image} from '@axelor/aos-mobile-ui';
 import {useSelector} from 'react-redux';
 import {openFileInExternalApp} from '../../tools/FileViewer';
 import useTranslator from '../../i18n/hooks/use-translator';

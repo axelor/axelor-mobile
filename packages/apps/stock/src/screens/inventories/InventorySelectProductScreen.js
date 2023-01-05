@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react';
-import {HeaderContainer, PopUpOneButton, Screen} from '@aos-mobile/ui';
+import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {InventoryHeader} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import Inventory from '../../types/inventory';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, EditableInput, Text} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {Card, EditableInput, Text} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface DescriptionCardProps {
   isEditable?: boolean;

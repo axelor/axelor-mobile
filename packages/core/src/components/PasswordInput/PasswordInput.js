@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, IconInput} from '@aos-mobile/ui';
+import {Icon, IconInput} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const PasswordInput = ({style, value, onChange, readOnly}) => {

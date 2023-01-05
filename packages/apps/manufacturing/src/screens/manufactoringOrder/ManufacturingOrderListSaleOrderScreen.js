@@ -7,8 +7,8 @@ import {
   ScrollList,
   HeaderContainer,
   Text,
-} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../components/organisms';
 import {splitSaleOrderRef} from '../../utils/formaters';
 

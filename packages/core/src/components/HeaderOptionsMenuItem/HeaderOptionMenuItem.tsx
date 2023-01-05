@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Badge, Icon, useThemeColor} from '@aos-mobile/ui';
+import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;

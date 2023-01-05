@@ -7,7 +7,7 @@ import {
   WritingThemeProvider,
   Theme,
   Writing,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {Module} from './Module';
 import {configI18n} from '../i18n/i18n';
 import enTranslation from '../i18n/translations/en.json';

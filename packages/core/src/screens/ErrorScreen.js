@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Dimensions} from 'react-native';
-import {Text, Screen, Image, Button} from '@aos-mobile/ui';
+import {Text, Screen, Image, Button} from '@axelor/aos-mobile-ui';
 
 const ErrorScreen = ({errorMessage, onReloadPress}) => {
   return (

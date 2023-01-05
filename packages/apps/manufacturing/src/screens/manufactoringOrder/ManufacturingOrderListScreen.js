@@ -7,7 +7,7 @@ import {
   ScrollList,
   HeaderContainer,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   filterList,
@@ -15,12 +15,12 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '../../components/organisms';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {searchProducts} from '@aos-mobile/app-stock';
+import {searchProducts} from '@axelor/aos-mobile-stock';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';

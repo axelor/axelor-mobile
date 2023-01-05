@@ -10,13 +10,13 @@ import {
   ViewAllContainer,
   useThemeColor,
   NotesCard,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {getRacks} from '../../features/racksListSlice';

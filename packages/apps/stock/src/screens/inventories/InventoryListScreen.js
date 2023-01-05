@@ -8,7 +8,7 @@ import {
   Screen,
   ScrollList,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   filterList,
@@ -16,7 +16,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {InventoryCard} from '../../components/organisms';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {searchInventories} from '../../features/inventorySlice';

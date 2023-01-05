@@ -8,7 +8,7 @@ import {
   Input,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   enableScan,
   useScannedValueByKey,

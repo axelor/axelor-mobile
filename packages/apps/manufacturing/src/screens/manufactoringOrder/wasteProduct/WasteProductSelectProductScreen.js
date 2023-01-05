@@ -1,14 +1,14 @@
 import React, {useCallback} from 'react';
-import {Screen, ScrollView, HeaderContainer} from '@aos-mobile/ui';
+import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
-import {searchProducts} from '@aos-mobile/app-stock';
+import {searchProducts} from '@axelor/aos-mobile-stock';
 
 const productScanKey = 'product_manufacturing-order-waste-product-select';
 

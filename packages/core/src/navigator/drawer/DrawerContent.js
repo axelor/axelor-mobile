@@ -1,7 +1,7 @@
 import React, {useRef, useState, useContext, useMemo} from 'react';
 import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useThemeColor} from '@aos-mobile/ui';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';

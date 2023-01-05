@@ -1,6 +1,6 @@
 import React from 'react';
-import {FromTo, TitledValue} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
 interface OperationOrderDatesCardProps {

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useThemeColor, getHeaderStyles} from '@aos-mobile/ui';
+import {useThemeColor, getHeaderStyles} from '@axelor/aos-mobile-ui';
 import DrawerContent from './drawer/DrawerContent';
 import {
   filterAuthorizedModules,

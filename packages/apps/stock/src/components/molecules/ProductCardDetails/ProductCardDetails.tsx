@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon} from '@aos-mobile/ui';
+import {Icon} from '@axelor/aos-mobile-ui';
 
 interface ProductCardDetailsProps {
   style?: any;

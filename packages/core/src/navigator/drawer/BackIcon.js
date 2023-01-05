@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {StackActions, useNavigation} from '@react-navigation/native';
-import {Icon} from '@aos-mobile/ui';
+import {Icon} from '@axelor/aos-mobile-ui';
 
 const BackIcon = ({tintColor}) => {
   const navigation = useNavigation();

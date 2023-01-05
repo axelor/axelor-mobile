@@ -1,13 +1,20 @@
-# @aos-mobile/core
+# @axelor/aos-mobile-core
 
-## Peer dependencies
+## Required libraries
 
-- @react-navigation/drawer
-- @react-navigation/native
-- @react-navigation/native-stack
-- @react-navigation/stack
+- @react-native-clipboard/clipboard
+- axios
+- i18next
+- react-i18next
+- react-native-datawedge-intents
+- react-native-file-viewer
+- react-native-fs
 - react-native-gesture-handler
 - react-native-mmkv
-- react-native-reanimated
+- react-native-render-html
 - react-native-safe-area-context
 - react-native-screens
+- react-native-static-safe-area-insets
+- react-native-toast-message
+- react-native-vision-camera
+- vision-camera-code-scanner

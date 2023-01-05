@@ -1,4 +1,4 @@
-import {Module} from '@aos-mobile/core';
+import {Module} from '@axelor/aos-mobile-core';
 import CustomerDeliveryScreens from './screens/customerDeliveries';
 import InternalMovesScreens from './screens/internalMoves';
 import InventoriesScreens from './screens/inventories';

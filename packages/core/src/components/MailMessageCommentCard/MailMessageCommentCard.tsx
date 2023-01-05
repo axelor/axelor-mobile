@@ -7,7 +7,7 @@ import {
   LabelText,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../i18n/hooks/use-translator';
 import RenderHTML from 'react-native-render-html';
 import {isHtml} from '../../utils/string';

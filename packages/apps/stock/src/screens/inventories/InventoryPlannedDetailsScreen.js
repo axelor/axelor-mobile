@@ -7,13 +7,13 @@ import {
   Screen,
   ScrollView,
   Text,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   HeaderOptionsMenu,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {InventoryHeader, LocationsMoveCard} from '../../components';
 import {
   fetchInventoryById,

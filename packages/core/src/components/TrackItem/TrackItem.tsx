@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {Icon, Text} from '@aos-mobile/ui';
+import {Icon, Text} from '@axelor/aos-mobile-ui';
 import {isDate, isDateTime} from '../../utils/date';
 import useTranslator from '../../i18n/hooks/use-translator';
 import {formatDate, formatDateTime} from '../../utils/formatters';

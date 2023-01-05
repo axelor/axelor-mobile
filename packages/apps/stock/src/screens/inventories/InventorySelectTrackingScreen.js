@@ -6,13 +6,13 @@ import {
   PopUpOneButton,
   Screen,
   Text,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {InventoryHeader} from '../../components/organisms';
 import {filterTrackingNumber} from '../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';

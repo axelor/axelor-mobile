@@ -9,8 +9,8 @@ import {
   HeaderContainer,
   Text,
   useThemeColor,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../components/organisms';
 import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';

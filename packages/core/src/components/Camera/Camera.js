@@ -14,7 +14,7 @@ import {
   useCameraSelector,
 } from '../../features/cameraSlice';
 import {useDispatch} from 'react-redux';
-import {Icon, useThemeColor} from '@aos-mobile/ui';
+import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import CaptureButton from './CaptureButton';
 
 const CONTENT_SPACING = 40;

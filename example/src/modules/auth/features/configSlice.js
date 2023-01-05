@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, postTranslations} from '@aos-mobile/core';
+import {handlerApiCall, postTranslations} from '@axelor/aos-mobile-core';
 import {getBaseConfig, getMobileSettings} from '../api/config-api';
 
 export const fetchBaseConfig = createAsyncThunk(

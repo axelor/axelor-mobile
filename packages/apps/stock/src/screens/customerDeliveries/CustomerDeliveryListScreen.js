@@ -8,7 +8,7 @@ import {
   HeaderContainer,
   ScrollList,
   useThemeColor,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   filterList,
@@ -16,7 +16,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {CustomerDeliveryCard} from '../../components';
 import {searchDeliveries} from '../../features/customerDeliverySlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';

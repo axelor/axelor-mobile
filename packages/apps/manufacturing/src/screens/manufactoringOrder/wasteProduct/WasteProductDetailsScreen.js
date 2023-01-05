@@ -6,14 +6,14 @@ import {
   Screen,
   ScrollView,
   HeaderContainer,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
   fetchUnit,
   ProductCardInfo,
   QuantityCard,
-} from '@aos-mobile/app-stock';
+} from '@axelor/aos-mobile-stock';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
 import {ManufacturingOrder} from '../../../types';
 import {

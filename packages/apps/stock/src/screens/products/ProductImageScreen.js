@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Screen, Text} from '@aos-mobile/ui';
-import {AOSImage} from '@aos-mobile/core';
+import {Screen, Text} from '@axelor/aos-mobile-ui';
+import {AOSImage} from '@axelor/aos-mobile-core';
 
 const ProductImageScreen = ({route}) => {
   const product = route.params.product;

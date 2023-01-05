@@ -10,7 +10,7 @@ import {
   useTheme,
   useThemeColor,
   ImageBubble,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -18,10 +18,10 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {fetchCompanies} from '@/modules/auth/features/companySlice';
 import {fetchLanguages} from '@/modules/auth/features/languageSlice';
-import {searchStockLocations} from '@aos-mobile/app-stock';
+import {searchStockLocations} from '@axelor/aos-mobile-stock';
 import {
   changeActiveCompany,
   changeDefaultStockLocation,

@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react';
-import {ClearableCard, Screen} from '@aos-mobile/ui';
+import {ClearableCard, Screen} from '@axelor/aos-mobile-ui';
 import {
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {filterTrackingNumber} from '../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 

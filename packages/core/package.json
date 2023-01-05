@@ -1,6 +1,6 @@
 {
-  "name": "@aos-mobile/core",
-  "version": "1.0.0",
+  "name": "@axelor/aos-mobile-core",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
@@ -67,8 +67,8 @@
     "vision-camera-code-scanner": "^0.2.0"
   },
   "dependencies": {
-    "@aos-mobile/error": "1.0.0",
-    "@aos-mobile/ui": "1.0.0",
+    "@axelor/aos-mobile-error": "0.0.1",
+    "@axelor/aos-mobile-ui": "0.0.1",
     "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.10",
     "@react-navigation/native-stack": "6.6.1",

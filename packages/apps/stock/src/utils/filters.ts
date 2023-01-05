@@ -1,4 +1,4 @@
-import {stringNoAccent} from '@aos-mobile/core';
+import {stringNoAccent} from '@axelor/aos-mobile-core';
 
 export const filterItemByStockMoveSeq = (item, name) => {
   return item.stockMoveSeq.toLowerCase().includes(name.toLowerCase());

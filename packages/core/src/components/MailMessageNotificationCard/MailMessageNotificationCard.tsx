@@ -7,8 +7,8 @@ import {
   useThemeColor,
   UnorderedList,
   Badge,
-} from '@aos-mobile/ui';
-import MailMessageNotificationType from '@aos-mobile/core/src/types/mail-message-notification-type';
+} from '@axelor/aos-mobile-ui';
+import MailMessageNotificationType from '../../types/mail-message-notification-type';
 import MailMessageReadIcon from '../MailMessageReadIcon/MailMessageReadIcon';
 import TrackItem from '../TrackItem/TrackItem';
 

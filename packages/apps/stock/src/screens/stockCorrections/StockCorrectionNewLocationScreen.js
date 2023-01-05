@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
-import {Screen} from '@aos-mobile/ui';
+import {Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 
 const stockLocationScanKey = 'stock-location_stock-correction-new';
