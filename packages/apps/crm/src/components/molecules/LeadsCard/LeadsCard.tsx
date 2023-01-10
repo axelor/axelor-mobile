@@ -47,11 +47,11 @@ const LeadsCard = ({
 
   const borderStyle = useMemo(() => {
     const colorIndex = allLeadStatus?.findIndex(
-      status => status.id === leadsStatus.id,
+      status => status.id === leadsStatus?.id,
     );
-    return getStyles(Lead.getStatusColor(colorIndex, Colors).background)
+    return getStyles(Lead.getStatusColor(colorIndex, Colors)?.background)
       ?.border;
-  }, [Colors, allLeadStatus, leadsStatus.id]);
+  }, [Colors, allLeadStatus, leadsStatus?.id]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
@@ -73,21 +73,23 @@ const LeadsCard = ({
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{leadsFullname}</Text>
           <LabelText iconName="building" title={leadsCompany} />
-          {leadsAddress !== null ? (
+          {leadsAddress != null && (
             <LabelText iconName="map-marker-alt" title={leadsAddress} />
-          ) : null}
-          {leadsPhoneNumber !== null ? (
+          )}
+          {leadsPhoneNumber != null && (
             <LabelText
               iconName="mobile-phone"
               title={leadsPhoneNumber}
               FontAwesome5={false}
               size={18}
             />
-          ) : null}
-          {leadsFixedPhone !== null ? (
+          )}
+          {leadsFixedPhone != null && (
             <LabelText iconName="phone" title={leadsFixedPhone} />
-          ) : null}
-          <LabelText iconName="envelope" title={leadsEmail} />
+          )}
+          {leadsEmail != null && (
+            <LabelText iconName="envelope" title={leadsEmail} />
+          )}
         </View>
         <Icon
           name="chevron-right"

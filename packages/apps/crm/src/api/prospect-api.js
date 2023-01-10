@@ -1,36 +1,43 @@
 import {axiosApiProvider} from '@aos-mobile/core';
 
-const crmLeadsFields = [
-  'enterpriseName',
-  'fullName',
-  'fixedPhone',
-  'firstName',
-  'leadStatus',
-  'mobilePhone',
-  'fixedPhone',
-  'primaryPostalCode',
-  'emailAddress',
-  'primaryAddress',
-  'leadScoring',
+const prospectFields = [
   'simpleFullName',
+  'name',
+  'fullName',
+  'partnerSeq',
+  'mainAddress',
+  'fixedPhone',
+  'mobilePhone',
+  'leadScoring',
+  'emailAddress',
+  'emailAddress.address',
   'user',
-  'isDoNotSendEmail',
-  'isDoNotCall',
-  'jobTitleFunction',
+  'industrySector',
+  'partnerCategory',
   'description',
   'webSite',
-  'type',
-  'industrySector',
+  'contactPartnerSet',
+  'picture',
 ];
 
-const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];
+const sortByFields = ['name', 'partnerSeq', 'createdOn'];
 
-const createLeadCriteria = searchValue => {
+const createProspectCriteria = searchValue => {
   let criterias = [];
   criterias.push({
-    fieldName: 'leadStatus.isOpen',
-    operator: '=',
-    value: true,
+    operator: 'and',
+    criteria: [
+      {
+        fieldName: 'isContact',
+        operator: '=',
+        value: false,
+      },
+      {
+        fieldName: 'isProspect',
+        operator: '=',
+        value: true,
+      },
+    ],
   });
   if (searchValue != null) {
     criterias.push({
@@ -42,12 +49,12 @@ const createLeadCriteria = searchValue => {
           value: searchValue,
         },
         {
-          fieldName: 'enterpriseName',
+          fieldName: 'partnerSeq',
           operator: 'like',
           value: searchValue,
         },
         {
-          fieldName: 'primaryAddress',
+          fieldName: 'mainAddress.fullName',
           operator: 'like',
           value: searchValue,
         },
@@ -72,28 +79,22 @@ const createLeadCriteria = searchValue => {
   return criterias;
 };
 
-export async function searchCrmLeads({searchValue, page = 0}) {
+export async function searchProspect({searchValue, page = 0}) {
   return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.Lead/search',
+    url: '/ws/rest/com.axelor.apps.base.db.Partner/search/',
     data: {
       data: {
         criteria: [
           {
             operator: 'and',
-            criteria: createLeadCriteria(searchValue),
+            criteria: createProspectCriteria(searchValue),
           },
         ],
       },
-      fields: crmLeadsFields,
+      fields: prospectFields,
       sortBy: sortByFields,
       limit: 10,
       offset: 10 * page,
     },
-  });
-}
-
-export async function getLeadStatus() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.crm.db.LeadStatus',
   });
 }

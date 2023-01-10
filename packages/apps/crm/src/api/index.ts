@@ -1,1 +1,1 @@
-export * from './crm-leads-api';
+export * from './leads-api';

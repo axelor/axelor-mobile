@@ -31,17 +31,19 @@ const LeadListScreen = ({navigation}) => {
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(leadList);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [filter, setFilter] = useState(null);
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchLeadsAPI = useCallback(
     page => {
-      dispatch(fetchLeads({page: page}));
+      dispatch(fetchLeads({searchValue: filter, page: page}));
     },
-    [dispatch],
+    [dispatch, filter],
   );
   const fetchLeadFilter = useCallback(
-    filter => {
-      dispatch(fetchLeads({searchValue: filter}));
+    searchValue => {
+      setFilter(searchValue);
+      dispatch(fetchLeads({searchValue: searchValue, page: 0}));
     },
     [dispatch],
   );
@@ -143,45 +145,37 @@ const LeadListScreen = ({navigation}) => {
           </ChipSelect>
         }
       />
-      {leadList != null && leadList.length > 0 ? (
-        <ScrollList
-          loadingList={loadingLead}
-          data={filteredList}
-          renderItem={({item}) => (
-            <LeadsCard
-              style={styles.item}
-              leadsFullname={item.simpleFullName}
-              leadsCompany={item.enterpriseName}
-              leadsAddress={
-                item.primaryAddress !== null ? item.primaryAddress : null
-              }
-              leadsFixedPhone={
-                item.fixedPhone !== null ? item.fixedPhone : null
-              }
-              leadsPhoneNumber={
-                item.mobilePhone !== null ? item.mobilePhone : null
-              }
-              leadsEmail={item.emailAddress.name}
-              leadScoring={item.leadScoring}
-              leadVersion={item.version}
-              leadsId={item.id}
-              leadsStatus={item.leadStatus}
-              allLeadStatus={leadStatusList}
-              onPress={() =>
-                navigation.navigate('LeadDetailsScreen', {
-                  lead: item,
-                  colorIndex: leadStatusList?.findIndex(
-                    status => status.id === item.leadStatus.id,
-                  ),
-                })
-              }
-            />
-          )}
-          fetchData={fetchLeadsAPI}
-          moreLoading={moreLoading}
-          isListEnd={isListEnd}
-        />
-      ) : null}
+      <ScrollList
+        loadingList={loadingLead}
+        data={filteredList}
+        renderItem={({item}) => (
+          <LeadsCard
+            style={styles.item}
+            leadsFullname={item.simpleFullName}
+            leadsCompany={item.enterpriseName}
+            leadsAddress={item.primaryAddress}
+            leadsFixedPhone={item.fixedPhone}
+            leadsPhoneNumber={item.mobilePhone}
+            leadsEmail={item['emailAddress.address']}
+            leadScoring={item.leadScoring}
+            leadVersion={item.version}
+            leadsId={item.id}
+            leadsStatus={item.leadStatus}
+            allLeadStatus={leadStatusList}
+            onPress={() =>
+              navigation.navigate('LeadDetailsScreen', {
+                lead: item,
+                colorIndex: leadStatusList?.findIndex(
+                  status => status.id === item.leadStatus.id,
+                ),
+              })
+            }
+          />
+        )}
+        fetchData={fetchLeadsAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+      />
     </Screen>
   );
 };
