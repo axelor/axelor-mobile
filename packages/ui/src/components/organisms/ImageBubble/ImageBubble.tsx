@@ -83,7 +83,7 @@ function getComponentPosition(index, imageSize): ViewStyle {
 
 interface ImageBubbleProps {
   style?: any;
-  listComponent: any;
+  listComponent?: any;
   source: ImageSourcePropType;
   imageSize?: number;
   defaultIconSize?: number;
@@ -108,13 +108,14 @@ const ImageBubble = ({
         source={source}
       />
       <View>
-        {listComponent.map((elt, index) => {
-          return (
-            <View style={getComponentPosition(index, imageSize)} key={index}>
-              {elt}
-            </View>
-          );
-        })}
+        {listComponent &&
+          listComponent.map((elt, index) => {
+            return (
+              <View style={getComponentPosition(index, imageSize)} key={index}>
+                {elt}
+              </View>
+            );
+          })}
       </View>
     </View>
   );
