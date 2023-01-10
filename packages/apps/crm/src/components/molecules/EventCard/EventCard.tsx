@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor, Badge} from '@aos-mobile/ui';
 import {useTranslator} from '@aos-mobile/core';
 import EventType from '../../../types/event-type';
@@ -13,6 +13,25 @@ interface EventCardProps {
   eventName: string;
   onPress: () => void;
 }
+
+const dayOfWeek = [
+  'Crm_Sun',
+  'Crm_Mon',
+  'Crm_Tue',
+  'Crm_Wed',
+  'Crm_Thu',
+  'Crm_Fri',
+  'Crm_Sat',
+];
+
+const formatTime = (date: Date): string => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}`;
+};
+
 const EventCard = ({
   style,
   startDate = new Date(),
@@ -24,21 +43,12 @@ const EventCard = ({
 }: EventCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  var dayOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+
   const dayString = dayOfWeek[startDate.getDay()];
-  const day = startDate.getUTCDay();
-  const startHours = startDate.getHours();
-  const startMin = startDate.getMinutes();
-  const endHours = endDate.getHours();
-  const endMin = endDate.getMinutes();
+  const day = startDate.getDate();
+
+  const startTime = useMemo(() => formatTime(startDate), [startDate]);
+  const endTime = useMemo(() => formatTime(endDate), [endDate]);
 
   const borderStyle = useMemo(() => {
     return getStyles(EventType.getStatusBorderColor(status, Colors)).border;
@@ -50,15 +60,11 @@ const EventCard = ({
         <View style={styles.containerChild}>
           <View style={styles.containerLeft}>
             <Text style={styles.textNumber}>{day}</Text>
-            <Text>{dayString.slice(0, 3)}</Text>
+            <Text>{I18n.t(dayString)}</Text>
           </View>
           <View style={styles.containerMid}>
-            <Text>
-              {startHours}:{startMin}
-            </Text>
-            <Text>
-              {endHours}:{endMin}
-            </Text>
+            <Text>{startTime}</Text>
+            <Text>{endTime}</Text>
           </View>
           <View style={styles.containerRight}>
             <Text style={styles.bold}>{eventName}</Text>
@@ -66,7 +72,6 @@ const EventCard = ({
               title={EventType.getCategory(category, I18n)}
               style={styles.badge}
               color={EventType.getCategoryColor(category, Colors)}
-              //txtStyle={styles.badgeInfos}
             />
           </View>
         </View>
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 7,
     borderLeftColor: 'red',
     justifyContent: 'space-between',
-    width: Dimensions.get('window').width * 0.9,
+    width: '90%',
   },
   containerChild: {
     flexDirection: 'row',
