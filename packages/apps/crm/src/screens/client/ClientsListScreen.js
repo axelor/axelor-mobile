@@ -7,13 +7,9 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
+  AutoCompleteSearch,
 } from '@aos-mobile/ui';
-import {
-  useTranslator,
-  useSelector,
-  ScannerAutocompleteSearch,
-  useDispatch,
-} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {fetchClients} from '../../features/clientSlice';
 import {PartnerCard} from '../../components';
 
@@ -79,10 +75,10 @@ const CLientsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ScannerAutocompleteSearch
+            <AutoCompleteSearch
               objectList={clientList}
               value={client}
-              onChangeValue={item => setClient(item)}
+              onChangeValue={setClient}
               fetchData={fetchClientFilter}
               placeholder={I18n.t('Crm_Clients')}
               oneFilter={true}
@@ -117,6 +113,7 @@ const CLientsListScreen = ({navigation}) => {
     </Screen>
   );
 };
+
 const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,

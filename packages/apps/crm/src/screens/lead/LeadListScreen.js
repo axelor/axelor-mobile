@@ -9,29 +9,26 @@ import {
   Chip,
   useThemeColor,
   getCommonStyles,
+  AutoCompleteSearch,
 } from '@aos-mobile/ui';
-import {
-  useTranslator,
-  useSelector,
-  useDispatch,
-  ScannerAutocompleteSearch,
-} from '@aos-mobile/core';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
 import {LeadsCard} from '../../components';
 import Lead from '../../types/lead';
 
 const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
   const {loadingLead, moreLoading, isListEnd, leadList, leadStatusList} =
     useSelector(state => state.lead);
   const {userId} = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const Colors = useThemeColor();
-  const [assigned, setAssigned] = useState(false);
-  const [product, setProduct] = useState(null);
-  const [filteredList, setFilteredList] = useState(leadList);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [filteredList, setFilteredList] = useState(leadList);
+  const [assigned, setAssigned] = useState(false);
+  const [lead, setLead] = useState(null);
   const [filter, setFilter] = useState(null);
+
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchLeadsAPI = useCallback(
@@ -40,6 +37,7 @@ const LeadListScreen = ({navigation}) => {
     },
     [dispatch, filter],
   );
+
   const fetchLeadFilter = useCallback(
     searchValue => {
       setFilter(searchValue);
@@ -118,10 +116,10 @@ const LeadListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ScannerAutocompleteSearch
+            <AutoCompleteSearch
               objectList={leadList}
-              value={product}
-              onChangeValue={item => setProduct(item)}
+              value={lead}
+              onChangeValue={setLead}
               fetchData={fetchLeadFilter}
               placeholder={I18n.t('Crm_Leads')}
               oneFilter={true}
