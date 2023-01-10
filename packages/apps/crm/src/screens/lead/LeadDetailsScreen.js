@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useMemo} from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -11,12 +11,18 @@ import {
   Badge,
   StarScore,
   DropdownCardSwitch,
-  ScrollView,
   NotesCard,
 } from '@aos-mobile/ui';
-import {useTranslator, useSelector, HeaderOptionsMenu} from '@aos-mobile/core';
+import {
+  useTranslator,
+  useSelector,
+  HeaderOptionsMenu,
+  useDispatch,
+} from '@aos-mobile/core';
 import {Lead} from '../../types';
-import {ContactInfoCard} from '../../components';
+import {DropdownContactView, DropdownEventView} from '../../components';
+import {searchEventById} from '../../features/eventSlice';
+import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
 
 const LeadDetailsScreen = ({navigation, route}) => {
   const lead = route.params.lead;
@@ -25,6 +31,16 @@ const LeadDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
   const {baseUrl} = useSelector(state => state.auth);
   const {mobileSettings} = useSelector(state => state.config);
+  const {listEventById} = useSelector(state => state.event);
+  const dispatch = useDispatch();
+
+  const lastEventLead = useMemo(() => {
+    return getLastEvent(listEventById);
+  }, [listEventById]);
+
+  const nextEventLead = useMemo(() => {
+    return getNextEvent(listEventById);
+  }, [listEventById]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -39,6 +55,11 @@ const LeadDetailsScreen = ({navigation, route}) => {
       ),
     });
   }, [mobileSettings, navigation, lead]);
+
+  useEffect(() => {
+    const idList = lead.eventList.map(item => item.id);
+    dispatch(searchEventById(idList));
+  }, [dispatch, lead.eventList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -72,7 +93,7 @@ const LeadDetailsScreen = ({navigation, route}) => {
               <LabelText iconName="building" title={lead.enterpriseName} />
               <LabelText
                 iconName="suitcase"
-                title={lead.jobTitleFunction.name}
+                title={lead.jobTitleFunction?.name}
               />
             </View>
             <View style={styles.headerInfo}>
@@ -101,57 +122,13 @@ const LeadDetailsScreen = ({navigation, route}) => {
                 title: I18n.t('Crm_Contact'),
                 key: 1,
                 childrenComp: (
-                  <View>
-                    <ContactInfoCard
-                      headerIconName={'map-marker-alt'}
-                      title={I18n.t('Crm_Adress')}
-                      data={lead.primaryAddress}
-                      rightIconName={'map-marked-alt'}
-                      border={
-                        lead.fixedPhone ||
-                        lead.mobilePhone ||
-                        lead.emailAddress?.name ||
-                        (lead.webSite && true)
-                      }
-                      styleBorder={styles.borderInfoCard}
-                    />
-                    <ContactInfoCard
-                      headerIconName={'phone-alt'}
-                      title={I18n.t('Crm_Phone')}
-                      data={lead.fixedPhone}
-                      rightIconName={'phone-alt'}
-                      border={
-                        lead.mobilePhone ||
-                        lead.emailAddress?.name ||
-                        (lead.webSite && true)
-                      }
-                      styleBorder={styles.borderInfoCard}
-                    />
-                    <ContactInfoCard
-                      headerIconName={'mobile-alt'}
-                      title={I18n.t('Crm_MobilePhone')}
-                      data={lead.mobilePhone}
-                      rightIconName={'phone-alt'}
-                      border={lead.emailAddress?.name || (lead.webSite && true)}
-                      styleBorder={styles.borderInfoCard}
-                    />
-                    <ContactInfoCard
-                      headerIconName={'envelope'}
-                      title={I18n.t('Crm_Email')}
-                      data={lead.emailAddress?.name}
-                      rightIconName={'send'}
-                      FontAwesome5RightIcon={false}
-                      border={lead.webSite && true}
-                      styleBorder={styles.borderInfoCard}
-                    />
-                    <ContactInfoCard
-                      headerIconName={'link'}
-                      title={I18n.t('Crm_WebSite')}
-                      data={lead.webSite}
-                      rightIconName={'external-link-alt'}
-                      styleBorder={styles.borderInfoCard}
-                    />
-                  </View>
+                  <DropdownContactView
+                    address={lead.primaryAddress}
+                    fixedPhone={lead.fixedPhone}
+                    mobilePhone={lead.mobilePhone}
+                    emailAddress={lead['emailAddress.address']}
+                    webSite={lead.webSite}
+                  />
                 ),
               },
               {
@@ -182,9 +159,14 @@ const LeadDetailsScreen = ({navigation, route}) => {
                 ),
               },
               {
-                title: I18n.t('Events'),
+                title: I18n.t('Crm_Events'),
                 key: 3,
-                childrenComp: <Text>{'Comming soon ;)'}</Text>,
+                childrenComp: (
+                  <DropdownEventView
+                    lastEvent={lastEventLead}
+                    nextEvent={nextEventLead}
+                  />
+                ),
               },
             ]}
           />
@@ -199,7 +181,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
   },
-  headerContainer: {flexDirection: 'row', justifyContent: 'space-around'},
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
   headerInfo: {
     flexDirection: 'column',
   },
@@ -208,10 +193,6 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
-  },
-  borderInfoCard: {
-    width: '112%',
-    left: '-5%',
   },
   leadScoring: {
     marginTop: '10%',

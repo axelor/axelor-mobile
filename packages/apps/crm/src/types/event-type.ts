@@ -18,14 +18,14 @@ class EventType {
     if (I18n) {
       switch (select) {
         case this.status.Planned:
-          return I18n.t('Prospect_Status_Planned');
+          return I18n.t('Crm_Event_Status_Planned');
         case this.status.Realized:
-          return I18n.t('Prospect_Status_Realized');
+          return I18n.t('Crm_Event_Status_Realized');
         case this.status.Canceled:
-          return I18n.t('Prospect_Status_Canceled');
+          return I18n.t('Crm_Event_Status_Canceled');
         default:
           console.warn(
-            `Status provided with value ${select} is not supported by Prospect`,
+            `Status provided with value ${select} is not supported by Event`,
           );
           return null;
       }
@@ -42,7 +42,7 @@ class EventType {
         return Colors.cautionColor.background;
       default:
         console.warn(
-          `Status provided with value ${status} is not supported by Prospect`,
+          `Status provided with value ${status} is not supported by Event`,
         );
         return {};
     }
@@ -55,20 +55,20 @@ class EventType {
     if (I18n) {
       switch (select) {
         case this.category.Event:
-          return I18n.t('Prospect_Category_Event');
+          return I18n.t('Crm_Event_Category_Event');
         case this.category.Call:
-          return I18n.t('Prospect_Category_Call');
+          return I18n.t('Crm_Event_Category_Call');
         case this.category.Meeting:
-          return I18n.t('Prospect_Category_Meeting');
+          return I18n.t('Crm_Event_Category_Meeting');
         case this.category.Task:
-          return I18n.t('Prospect_Category_Task');
+          return I18n.t('Crm_Event_Category_Task');
         case this.category.Leave:
-          return I18n.t('Prospect_Category_Leave');
+          return I18n.t('Crm_Event_Category_Leave');
         case this.category.Note:
-          return I18n.t('Prospect_Category_Note');
+          return I18n.t('Crm_Event_Category_Note');
         default:
           console.warn(
-            `Category provided with value ${select} is not supported by Prospect`,
+            `Category provided with value ${select} is not supported by Event`,
           );
           return '';
       }
@@ -91,7 +91,7 @@ class EventType {
         return Colors.importantColor;
       default:
         console.warn(
-          `Status provided with value ${category} is not supported by Prospect`,
+          `Status provided with value ${category} is not supported by Event`,
         );
         return Colors.warningColor;
     }

@@ -1,12 +1,12 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@aos-mobile/core';
-import {searchCrmLeads, getLeadStatus} from '../api/crm-leads-api';
+import {searchLeads, getLeadStatus} from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
   'crm/Lead',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: searchCrmLeads,
+      fetchFunction: searchLeads,
       data,
       action: 'fetch crm lead',
       getState,
