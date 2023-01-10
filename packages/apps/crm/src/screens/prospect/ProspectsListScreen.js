@@ -1,4 +1,5 @@
 import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
   Screen,
@@ -6,22 +7,16 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
+  AutoCompleteSearch,
 } from '@aos-mobile/ui';
+import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
 import {PartnerCard} from '../../components';
-import {StyleSheet, View} from 'react-native';
-import {
-  useTranslator,
-  useSelector,
-  ScannerAutocompleteSearch,
-  useDispatch,
-} from '@aos-mobile/core';
 import {fetchProspects} from '../../features/prospectSlice';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const {userId} = useSelector(state => state.auth);
   const {loadingProspect, moreLoading, isListEnd, prospectList} = useSelector(
     state => state.prospect,
@@ -30,6 +25,8 @@ const ProspectsListScreen = ({navigation}) => {
   const [assigned, setAssigned] = useState(false);
   const [prospect, setProspect] = useState(null);
   const [filter, setFilter] = useState(null);
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchProspectAPI = useCallback(
     page => {
@@ -78,10 +75,10 @@ const ProspectsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ScannerAutocompleteSearch
+            <AutoCompleteSearch
               objectList={prospectList}
               value={prospect}
-              onChangeValue={item => setProspect(item)}
+              onChangeValue={setProspect}
               fetchData={fetchProspectFilter}
               placeholder={I18n.t('Crm_Prospects')}
               oneFilter={true}
@@ -117,6 +114,7 @@ const ProspectsListScreen = ({navigation}) => {
     </Screen>
   );
 };
+
 const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
