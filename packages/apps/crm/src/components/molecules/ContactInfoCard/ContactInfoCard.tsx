@@ -34,33 +34,35 @@ const ContactInfoCard = ({
   }, [Colors]);
 
   return (
-    data && (
-      <View style={[styles.container, style]}>
-        <LabelText
-          title={title}
-          iconName={headerIconName}
-          size={15}
-          textStyle={styles.textTitle}
-          FontAwesome5={FontAwesome5HeaderIcon}
-        />
-        <View style={styles.containerBody}>
-          <Text style={styles.textData}>{data}</Text>
-          <Icon
-            style={styles.rightIcon}
-            name={rightIconName}
-            touchable={true}
-            onPress={rightIconAction}
-            FontAwesome5={FontAwesome5RightIcon}
+    <View style={[styles.container, style]}>
+      {data && (
+        <View>
+          <LabelText
+            title={title}
+            iconName={headerIconName}
+            size={15}
+            textStyle={styles.textTitle}
+            FontAwesome5={FontAwesome5HeaderIcon}
           />
-          <Icon
-            name={'copy'}
-            touchable={true}
-            onPress={() => clipboardProvider.copyToClipboard(data)}
-          />
+          <View style={styles.containerBody}>
+            <Text style={styles.textData}>{data}</Text>
+            <Icon
+              style={styles.rightIcon}
+              name={rightIconName}
+              touchable={true}
+              onPress={rightIconAction}
+              FontAwesome5={FontAwesome5RightIcon}
+            />
+            <Icon
+              name={'copy'}
+              touchable={true}
+              onPress={() => clipboardProvider.copyToClipboard(data)}
+            />
+          </View>
+          {border && <View style={[styles.borderBottom, styleBorder]} />}
         </View>
-        {border && <View style={[styles.borderBottom, styleBorder]} />}
-      </View>
-    )
+      )}
+    </View>
   );
 };
 const getStyles = Colors =>
