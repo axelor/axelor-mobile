@@ -1,6 +1,7 @@
 import {Module} from '@aos-mobile/core';
 import LeadScreens from './screens/lead';
 import ProspectScreens from './screens/prospect';
+import OpportunityScreens from './screens/opportunity';
 import ClientScreens from './screens/client';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
@@ -21,6 +22,11 @@ export const CrmModule: Module = {
       icon: 'user-tie',
       screen: 'ProspectsListScreen',
     },
+    Opportunities: {
+      title: 'Crm_Opportunities',
+      icon: 'search-dollar',
+      screen: 'OpportunityListScreen',
+    },
     Clients: {
       title: 'Crm_Clients',
       icon: 'users',
@@ -30,6 +36,7 @@ export const CrmModule: Module = {
   screens: {
     ...LeadScreens,
     ...ProspectScreens,
+    ...OpportunityScreens,
     ...ClientScreens,
   },
   translations: {
@@ -46,4 +53,5 @@ export * from './features/asyncFunctions-index';
 
 export * from './screens/lead';
 export * from './screens/prospect';
+export * from './screens/opportunity';
 export * from './screens/client';
