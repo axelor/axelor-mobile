@@ -41,6 +41,8 @@
   "Base_AttachedFiles": "Attached Files",
   "Base_Question": "Question",
   "Base_Unfollow_Confirmation": "Are you sure to unfollow this document?",
+  "Base_NoConnection": "No internet connection",
+  "Base_Connected": "Connection is established",
   "Stopwatch_Status_Ready": "Ready",
   "Stopwatch_Status_InProgress": "InProgress",
   "Stopwatch_Status_Paused": "Paused",

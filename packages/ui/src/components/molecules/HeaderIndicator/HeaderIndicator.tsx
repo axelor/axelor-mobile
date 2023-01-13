@@ -8,9 +8,7 @@ const HeaderIndicator = () => {
   const Colors = useThemeColor();
   const {isHeaderIndicatorVisible, headerIndicatorState} = useConfig();
 
-  const translation = useRef(
-    new Animated.Value(isHeaderIndicatorVisible ? 0 : StatusBar.currentHeight),
-  ).current;
+  const translation = useRef(new Animated.Value(0)).current;
 
   const styles = useMemo(
     () =>
