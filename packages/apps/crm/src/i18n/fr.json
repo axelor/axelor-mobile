@@ -42,5 +42,9 @@
   "Crm_Event_Category_Note": "Note",
   "Crm_LastEvent": "Dernier événement",
   "Crm_NextEvent": "Prochain événement",
-  "Crm_NoEventPlanned": "Aucun événement planifié"
+  "Crm_NoEventPlanned": "Aucun événement planifié",
+  "Crm_Opportunities": "Opportunités",
+  "Crm_Opportunity": "Opportunité",
+  "Crm_Opportunity_Amount": "Montant",
+  "Crm_Opportunity_ExpectedCloseDate": "Date prévue clotûre"
 }

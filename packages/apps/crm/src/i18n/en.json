@@ -42,5 +42,9 @@
   "Crm_Event_Category_Note": "Note",
   "Crm_LastEvent": "Last event",
   "Crm_NextEvent": "Next event",
-  "Crm_NoEventPlanned": "No event planned"
+  "Crm_NoEventPlanned": "No event planned",
+  "Crm_Opportunities": "Opportunities",
+  "Crm_Opportunity": "Opportunity",
+  "Crm_Opportunity_Amount": "Amount",
+  "Crm_Opportunity_ExpectedCloseDate": "Expected close date"
 }
