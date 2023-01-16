@@ -7,8 +7,8 @@ import {
   Text,
   useThemeColor,
   StarScore,
-} from '@aos-mobile/ui';
-import {formatDate, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import {Opportunity} from '../../../types';
 
 interface OpportunityCardProps {

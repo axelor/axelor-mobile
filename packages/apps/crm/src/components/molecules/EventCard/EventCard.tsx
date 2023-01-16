@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Card, Icon, Text, useThemeColor, Badge} from '@aos-mobile/ui';
-import {useTranslator} from '@aos-mobile/core';
+import {Card, Icon, Text, useThemeColor, Badge} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import EventType from '../../../types/event-type';
 
 interface EventCardProps {

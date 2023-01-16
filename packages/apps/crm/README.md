@@ -1,1 +1,1 @@
-# @aos-mobile/app-crm
+# @axelor/aos-mobile-crm
