@@ -2,6 +2,7 @@ import {Module} from '@axelor/aos-mobile-core';
 import LeadScreens from './screens/lead';
 import ProspectScreens from './screens/prospect';
 import OpportunityScreens from './screens/opportunity';
+import ContactScreens from './screens/contact/';
 import ClientScreens from './screens/client';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
@@ -33,12 +34,18 @@ export const CrmModule: Module = {
       icon: 'users',
       screen: 'ClientsListScreen',
     },
+    Contact: {
+      title: 'Crm_Contacts',
+      icon: 'address-book',
+      screen: 'ContactListScreen',
+    },
   },
   screens: {
     ...LeadScreens,
     ...ProspectScreens,
     ...OpportunityScreens,
     ...ClientScreens,
+    ...ContactScreens,
   },
   translations: {
     en: enTranslations,
