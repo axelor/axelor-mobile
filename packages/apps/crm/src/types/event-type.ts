@@ -1,4 +1,5 @@
-import {Color, ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+
 class EventType {
   static status = {
     Planned: 1,

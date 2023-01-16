@@ -8,8 +8,8 @@ import {
   getCommonStyles,
   ToggleSwitch,
   AutoCompleteSearch,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchClients} from '../../features/clientSlice';
 import {PartnerCard} from '../../components';
 
