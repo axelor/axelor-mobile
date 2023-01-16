@@ -8,13 +8,13 @@ import {
   DropdownCardSwitch,
   NotesCard,
   LabelText,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {
   DropdownContactView,
   DropdownEventView,

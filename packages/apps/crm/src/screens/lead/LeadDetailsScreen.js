@@ -12,13 +12,13 @@ import {
   StarScore,
   DropdownCardSwitch,
   NotesCard,
-} from '@aos-mobile/ui';
+} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
-} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-core';
 import {Lead} from '../../types';
 import {DropdownContactView, DropdownEventView} from '../../components';
 import {searchEventById} from '../../features/eventSlice';

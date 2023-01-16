@@ -1,6 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text, useThemeColor, LabelText} from '@aos-mobile/ui';
+import {
+  Card,
+  Icon,
+  Text,
+  useThemeColor,
+  LabelText,
+} from '@axelor/aos-mobile-ui';
 
 interface LiteContactCardProps {
   style?: any;

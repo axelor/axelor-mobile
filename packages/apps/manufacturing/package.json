@@ -28,9 +28,9 @@
     "react-native-render-html": "^6.3.4"
   },
   "dependencies": {
-    "@axelor/aos-mobile-ui": "6.4.1",
     "@axelor/aos-mobile-core": "6.4.1",
     "@axelor/aos-mobile-stock": "6.4.1",
+    "@axelor/aos-mobile-ui": "6.4.1",
     "@reduxjs/toolkit": "^1.8.5"
   },
   "devDependencies": {

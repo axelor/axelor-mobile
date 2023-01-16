@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@aos-mobile/core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ContactInfoCard} from '../../molecules';
 
 interface DropdownContactViewProps {

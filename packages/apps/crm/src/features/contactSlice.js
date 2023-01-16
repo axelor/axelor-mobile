@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@aos-mobile/core';
+import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchContactWithIds} from '../api/contact-api';
 
 export const searchContactById = createAsyncThunk(
