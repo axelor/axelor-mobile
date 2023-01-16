@@ -3,10 +3,11 @@ import {Theme, Writing} from '@axelor/aos-mobile-ui';
 import {Module} from './Module';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
+import {authModule} from '../auth';
 
 interface ApplicationProps {
-  modules: [Module];
-  mainMenu: string;
+  modules: Module[];
+  mainMenu?: string;
   additionalsReducers?: any;
   version: string;
   themes?: Theme[];
@@ -27,7 +28,7 @@ const Application = ({
   defaultWritingTheme,
   showModulesSubtitle = false,
 }: ApplicationProps) => {
-  const modules = useRef(modulesProvided).current;
+  const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
   return (
     <ContextsProvider

@@ -28,7 +28,7 @@
   "Base_Cancel": "Cancel",
   "Base_Content": "Content",
   "Base_ViewAll": "View all",
-  "Base_Error_ConfigureStockApp": "Your stock app is not configured, please contact an administrator.",
+  "Base_NoAppConfigured": "No module configured on your application, please contact an administrator.",
   "Base_Unknown": "Unknown",
   "Base_Next": "Next",
   "Base_Estimated": "Estimated",

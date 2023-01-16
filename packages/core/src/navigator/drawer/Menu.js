@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text} from '@axelor/aos-mobile-ui';
@@ -7,9 +7,9 @@ import MenuItem from './MenuItem';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
-const MenuItemList = ({state, navigation}) => {
+const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
   const I18n = useTranslator();
-  const {activeModule, modulesMenus} = useContext(ModuleNavigatorContext);
+  const {modulesMenus} = useContext(ModuleNavigatorContext);
 
   return state.routes.map((route, i) => {
     if (activeModule.menus[route.name] == null) {
@@ -21,6 +21,8 @@ const MenuItemList = ({state, navigation}) => {
     const menu = modulesMenus[route.name];
 
     const onPress = () => {
+      onItemClick();
+
       const event = navigation.emit({
         type: 'drawerItemPress',
         target: route.key,
@@ -50,19 +52,40 @@ const MenuItemList = ({state, navigation}) => {
   });
 };
 
-const Menu = ({title, state, navigation}) => {
+const Menu = ({state, navigation, authMenu, activeModule, onItemClick}) => {
+  const I18n = useTranslator();
+
+  const title = useMemo(
+    () => getMenuTitle(activeModule, {I18n}),
+    [I18n, activeModule],
+  );
+
   return (
     <View style={styles.menuContainer}>
-      <View style={styles.menuTitleContainer}>
-        <Text style={styles.menuTitle}>{title}</Text>
+      <View style={styles.moduleMenuContainer}>
+        <View style={styles.menuTitleContainer}>
+          <Text style={styles.menuTitle}>{title}</Text>
+        </View>
+        <MenuItemList
+          state={state}
+          navigation={navigation}
+          activeModule={activeModule}
+          onItemClick={onItemClick}
+        />
       </View>
-      <MenuItemList state={state} navigation={navigation} />
+      <View style={styles.authMenuIcon}>{authMenu}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   menuContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+  moduleMenuContainer: {
+    flexDirection: 'column',
     paddingVertical: 8,
   },
   menuTitleContainer: {
@@ -72,6 +95,10 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 21,
     fontWeight: 'bold',
+  },
+  authMenuIcon: {
+    marginBottom: 12,
+    marginLeft: 12,
   },
 });
 

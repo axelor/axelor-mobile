@@ -1,4 +1,10 @@
-import React, {useRef, useState, useContext, useMemo} from 'react';
+import React, {
+  useRef,
+  useContext,
+  useMemo,
+  useEffect,
+  useCallback,
+} from 'react';
 import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
@@ -8,6 +14,9 @@ import Menu from './Menu';
 import {moduleHasMenus, numberOfModules} from '../module.helper';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
+import {authModule} from '../../auth';
+import {CommonActions, DrawerActions} from '@react-navigation/native';
+import AuthMenuIconButton from './AuthMenuIconButton';
 
 const DrawerContent = ({
   state,
@@ -18,52 +27,115 @@ const DrawerContent = ({
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const [secondaryMenusVisible, setSecondaryMenusVisible] = useState(false);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const innerMenuIsVisible = useMemo(
+    () => activeModule !== authModule,
+    [activeModule],
+  );
 
-  const openSecondaryMenu = () => {
+  const drawerModules = useMemo(
+    () =>
+      modules.filter(moduleHasMenus).filter(_module => _module !== authModule),
+    [modules],
+  );
+
+  const externalMenuIsVisible = useMemo(
+    () => numberOfModules(drawerModules) > 1,
+    [drawerModules],
+  );
+
+  useEffect(() => {
+    if (innerMenuIsVisible) {
+      openSecondaryMenu();
+    } else {
+      closeSecondaryMenu();
+    }
+  }, [closeSecondaryMenu, innerMenuIsVisible, openSecondaryMenu]);
+
+  const openSecondaryMenu = useCallback(() => {
     Animated.timing(secondaryMenusLeft, {
       toValue: 0,
       duration: 300,
       useNativeDriver: false,
     }).start();
-    setSecondaryMenusVisible(true);
-  };
+  }, [secondaryMenusLeft]);
 
-  const closeSecondaryMenu = () => {
+  const closeSecondaryMenu = useCallback(() => {
     Animated.timing(secondaryMenusLeft, {
       toValue: 100,
-      duration: 300,
+      duration: 0,
       useNativeDriver: false,
     }).start();
-    setSecondaryMenusVisible(false);
-  };
+  }, [secondaryMenusLeft]);
 
-  // Will be used later with menu improvements
-  // eslint-disable-next-line no-unused-vars
-  const toggleSecondaryMenusVisibility = () => {
-    if (!secondaryMenusVisible) {
-      openSecondaryMenu();
-    } else {
-      closeSecondaryMenu();
+  const innerMenuPosition = useMemo(
+    () =>
+      externalMenuIsVisible
+        ? secondaryMenusLeft.interpolate({
+            inputRange: [0, 100],
+            outputRange: ['0%', '100%'],
+          })
+        : 0,
+    [externalMenuIsVisible, secondaryMenusLeft],
+  );
+
+  const handleAuthModuleClick = () => {
+    onModuleClick(authModule.name);
+
+    const route = state.routes.find(
+      _route => (_route.name = Object.keys(authModule.menus)[0]),
+    );
+
+    const focused =
+      state.routes.indexOf(route) === state.index &&
+      Object.keys(activeModule.menus).includes(route.name);
+
+    const event = navigation.emit({
+      type: 'drawerItemPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
+
+    if (!event.defaultPrevented) {
+      navigation.dispatch({
+        ...(focused
+          ? DrawerActions.closeDrawer()
+          : CommonActions.navigate({name: route.name, merge: true})),
+        target: state.key,
+      });
     }
   };
 
-  const handleModuleClick = moduleName => {
-    onModuleClick(moduleName);
-    openSecondaryMenu();
-  };
+  if (numberOfModules(drawerModules) === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.iconsContainer}>
+          <View style={styles.otherIconsContainer}>
+            <AuthMenuIconButton
+              isActive={authModule === activeModule}
+              showModulesSubtitle={showModulesSubtitle}
+              onPress={handleAuthModuleClick}
+            />
+          </View>
+        </View>
+        <View style={styles.menusContainer}>
+          <Text style={styles.primaryMenuTitle}>
+            {I18n.t('Base_NoAppConfigured')}
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* TODO: after moving auth module use 1 instead of 2 : because we have by default auth module.*/}
-      {numberOfModules(modules) > 2 && (
+      {externalMenuIsVisible && (
         <View style={styles.iconsContainer}>
-          <View style={styles.appIconsContainer}>
-            {modules.filter(moduleHasMenus).map(_module => (
+          <View>
+            {drawerModules.map(_module => (
               <View key={_module.name} style={styles.menuItemContainer}>
                 <MenuIconButton
                   key={_module.title}
@@ -75,23 +147,27 @@ const DrawerContent = ({
                       ? Colors.primaryColor.background_light
                       : null
                   }
-                  onPress={() => handleModuleClick(_module.name)}
+                  onPress={() => onModuleClick(_module.name)}
                 />
               </View>
             ))}
           </View>
           <View style={styles.otherIconsContainer}>
-            {/* TODO: UserScreen */}
+            <AuthMenuIconButton
+              isActive={authModule === activeModule}
+              showModulesSubtitle={showModulesSubtitle}
+              onPress={handleAuthModuleClick}
+            />
           </View>
         </View>
       )}
       <View style={styles.menusContainer}>
-        <View style={styles.primaryMenusContainer}>
-          {modules.filter(moduleHasMenus).map(_module => (
+        <View>
+          {drawerModules.map(_module => (
             <TouchableOpacity
               key={_module.name}
               style={styles.menuItemContainer}
-              onPress={() => handleModuleClick(_module.name)}>
+              onPress={() => onModuleClick(_module.name)}>
               <Text style={styles.primaryMenuTitle}>
                 {getMenuTitle(_module, {I18n})}
               </Text>
@@ -102,16 +178,29 @@ const DrawerContent = ({
           style={[
             styles.secondaryMenusContainer,
             {
-              left: secondaryMenusLeft.interpolate({
-                inputRange: [0, 100],
-                outputRange: ['0%', '100%'],
-              }),
+              left: innerMenuPosition,
             },
           ]}>
           <Menu
-            title={getMenuTitle(activeModule, {I18n})}
+            activeModule={
+              externalMenuIsVisible ? activeModule : drawerModules[0]
+            }
             state={state}
             navigation={navigation}
+            authMenu={
+              !externalMenuIsVisible ? (
+                <AuthMenuIconButton
+                  isActive={authModule === activeModule}
+                  showModulesSubtitle={showModulesSubtitle}
+                  onPress={handleAuthModuleClick}
+                />
+              ) : null
+            }
+            onItemClick={
+              externalMenuIsVisible
+                ? () => {}
+                : () => onModuleClick(drawerModules[0]?.name)
+            }
           />
         </Animated.View>
       </View>
@@ -136,7 +225,7 @@ const getStyles = Colors =>
       marginHorizontal: 12,
     },
     otherIconsContainer: {
-      marginBottom: 8,
+      marginVertical: 8,
     },
     menuItemContainer: {
       height: 60,

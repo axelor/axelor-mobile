@@ -18,8 +18,8 @@ import ErrorScreen from '../screens/ErrorScreen';
 import {Camera, Scanner} from '../components';
 
 interface ContextedApplicationProps {
-  modules: [Module];
-  mainMenu: string;
+  modules: Module[];
+  mainMenu?: string;
   version: string;
   showModulesSubtitle: boolean;
 }

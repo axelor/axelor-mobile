@@ -8,6 +8,7 @@ import SupplierArrivalsScreens from './screens/supplierArrivals';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
+import UserScreen from './screens/auth/UserScreen';
 
 export const StockModule: Module = {
   name: 'app-stock',
@@ -53,6 +54,10 @@ export const StockModule: Module = {
     ...ProductsScreens,
     ...StockCorrectionScreens,
     ...SupplierArrivalsScreens,
+    UserScreen: {
+      component: UserScreen,
+      title: 'User_UserProfile',
+    },
   },
   translations: {
     en: enTranslations,

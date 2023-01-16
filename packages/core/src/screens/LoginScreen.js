@@ -5,6 +5,7 @@ import {
   CameraScanner,
   ErrorText,
   LoginButton,
+  LogoImage,
   PasswordInput,
   UrlInput,
   UsernameInput,
@@ -16,7 +17,6 @@ import {
   useScannedValueByKey,
   useScannerSelector,
 } from '../features/scannerSlice';
-import LogoImage from '../components/LogoImage/LogoImage';
 
 const urlScanKey = 'login_url';
 

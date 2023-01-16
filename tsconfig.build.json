@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "types": ["react-native"],
     "noEmitOnError": true,
+    "resolveJsonModule": true,
     "sourceMap": true
   }
 }

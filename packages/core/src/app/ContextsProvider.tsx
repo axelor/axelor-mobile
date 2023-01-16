@@ -17,7 +17,7 @@ import {configGlobalStore} from '../redux/store';
 const ApplicationContext = createContext(null);
 
 interface ContextsProviderProps {
-  modules: [Module];
+  modules: Module[];
   additionalsReducers?: any;
   themes?: Theme[];
   defaultTheme?: Theme;
