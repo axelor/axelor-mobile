@@ -14,6 +14,7 @@ interface PartnerCardProps {
   style?: any;
   partnerFullName: string;
   partnerReference: string;
+  partnerCompany?: string;
   partnerScoring?: number;
   partnerAdress: string;
   partnerMobilePhone?: string;
@@ -26,6 +27,7 @@ const PartnerCard = ({
   style,
   partnerFullName,
   partnerReference,
+  partnerCompany,
   partnerScoring,
   partnerAdress,
   partnerMobilePhone,
@@ -55,6 +57,7 @@ const PartnerCard = ({
             {partnerScoring != null && (
               <StarScore score={partnerScoring} showMissingStar={true} />
             )}
+            <LabelText iconName="building" title={partnerCompany} />
           </View>
         </View>
         <View style={styles.containerBody}>

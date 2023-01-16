@@ -46,5 +46,6 @@
   "Crm_Opportunities": "Opportunities",
   "Crm_Opportunity": "Opportunity",
   "Crm_Opportunity_Amount": "Amount",
-  "Crm_Opportunity_ExpectedCloseDate": "Expected close date"
+  "Crm_Opportunity_ExpectedCloseDate": "Expected close date",
+  "Crm_Contacts": "Contacts"
 }
