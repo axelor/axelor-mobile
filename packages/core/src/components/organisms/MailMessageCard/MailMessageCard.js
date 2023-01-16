@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Image, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDateTime} from '../../../utils/formatters';
-import {useTranslator} from '../../../i18n/hooks/use-translator';
+import useTranslator from '../../../i18n/hooks/use-translator';
 import {
   MailMessageCommentCard,
   MailMessageNotificationCard,
