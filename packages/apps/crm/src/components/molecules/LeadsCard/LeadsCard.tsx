@@ -8,8 +8,8 @@ import {
   useThemeColor,
   Image,
   StarScore,
-} from '@aos-mobile/ui';
-import {useSelector} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 import Lead from '../../../types/lead';
 
 interface LeadsCardProps {

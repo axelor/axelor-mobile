@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, LabelText, Text, useThemeColor} from '@aos-mobile/ui';
-import {clipboardProvider} from '@aos-mobile/core';
+import {Icon, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {clipboardProvider} from '@axelor/aos-mobile-core';
 
 interface ContactInfoCardProps {
   style?: any;

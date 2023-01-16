@@ -1,4 +1,4 @@
-import {Module} from '@aos-mobile/core';
+import {Module} from '@axelor/aos-mobile-core';
 import LeadScreens from './screens/lead';
 import ProspectScreens from './screens/prospect';
 import OpportunityScreens from './screens/opportunity';
@@ -10,6 +10,7 @@ import * as crmReducers from './features';
 export const CrmModule: Module = {
   name: 'Crm',
   title: 'Crm_Crm',
+  subtitle: 'Crm_Crm',
   icon: 'users',
   menus: {
     Leads: {

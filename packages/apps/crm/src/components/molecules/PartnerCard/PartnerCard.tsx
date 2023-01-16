@@ -7,8 +7,8 @@ import {
   Icon,
   useThemeColor,
   LabelText,
-} from '@aos-mobile/ui';
-import {AOSImage} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {AOSImage} from '@axelor/aos-mobile-core';
 
 interface PartnerCardProps {
   style?: any;

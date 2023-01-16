@@ -20,7 +20,7 @@ import React from 'react';
 import {Application} from '@axelor/aos-mobile-core';
 import {StockModule} from '@axelor/aos-mobile-stock';
 import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
-import {CrmModule} from '@aos-mobile/app-crm';
+import {CrmModule} from '@axelor/aos-mobile-crm';
 import application_properties from '../package.json';
 
 const App = () => {

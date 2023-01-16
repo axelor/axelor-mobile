@@ -10,8 +10,8 @@ import {
   useThemeColor,
   getCommonStyles,
   AutoCompleteSearch,
-} from '@aos-mobile/ui';
-import {useDispatch, useSelector, useTranslator} from '@aos-mobile/core';
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
 import {LeadsCard} from '../../components';
 import Lead from '../../types/lead';
