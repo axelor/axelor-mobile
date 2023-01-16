@@ -1,4 +1,4 @@
-import {Color, ThemeColors} from '@aos-mobile/ui';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class Lead {
   static getStatusColor = (index: number, Colors: ThemeColors): Color => {

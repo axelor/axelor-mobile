@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@aos-mobile/core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {EventCard} from '../../molecules';
-import {Text} from '@aos-mobile/ui';
+import {Text} from '@axelor/aos-mobile-ui';
 
 type Event = {
   startDateTime: string;
