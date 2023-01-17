@@ -15,7 +15,7 @@ import {PartnerCard} from '../../components';
 
 const CLientsListScreen = ({navigation}) => {
   const {userId} = useSelector(state => state.auth);
-  const {loadingClient, moreLoading, isListEnd, clientList} = useSelector(
+  const {loading, moreLoading, isListEnd, clientList} = useSelector(
     state => state.client,
   );
   const [filteredList, setFilteredList] = useState(clientList);
@@ -88,7 +88,7 @@ const CLientsListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loadingClient}
+        loadingList={loading}
         data={filteredList}
         renderItem={({item}) => (
           <PartnerCard

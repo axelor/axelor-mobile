@@ -25,9 +25,10 @@ const PERCENTAGE_WIDTH_NOTES = 0.95;
 interface NotesCardProps {
   title: string;
   data: string;
+  style?: any;
 }
 
-const NotesCard = ({title, data}: NotesCardProps) => {
+const NotesCard = ({title, data, style}: NotesCardProps) => {
   const [widthNotes, setWidthNotes] = useState<number>();
 
   if (data == null || data === '') {
@@ -36,7 +37,7 @@ const NotesCard = ({title, data}: NotesCardProps) => {
 
   return (
     <View
-      style={styles.description}
+      style={[styles.description, style]}
       onLayout={event => {
         const {width} = event.nativeEvent.layout;
         setWidthNotes(width);

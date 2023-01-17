@@ -157,7 +157,7 @@ const SelectionContainer = ({
 
   return (
     <View style={styles.flatListContainer}>
-      <ScrollView>
+      <ScrollView nestedScrollEnabled={true}>
         {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
       </ScrollView>
     </View>
