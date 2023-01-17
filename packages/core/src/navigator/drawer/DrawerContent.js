@@ -5,9 +5,9 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Text, Animated, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
@@ -168,7 +168,9 @@ const DrawerContent = ({
               key={_module.name}
               style={styles.menuItemContainer}
               onPress={() => onModuleClick(_module.name)}>
-              <Text style={styles.primaryMenuTitle}>
+              <Text
+                style={styles.primaryMenuTitle}
+                textColor={Colors.secondaryColor_dark.background}>
                 {getMenuTitle(_module, {I18n})}
               </Text>
             </TouchableOpacity>
