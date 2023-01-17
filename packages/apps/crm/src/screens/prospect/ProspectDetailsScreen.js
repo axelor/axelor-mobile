@@ -5,7 +5,6 @@ import {
   HeaderContainer,
   useThemeColor,
   Text,
-  ImageBubble,
   Badge,
   StarScore,
   DropdownCardSwitch,
@@ -17,6 +16,7 @@ import {
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
+  AOSImageBubble,
 } from '@axelor/aos-mobile-core';
 import {
   DropdownContactView,
@@ -34,7 +34,6 @@ const ProspectDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {mobileSettings} = useSelector(state => state.config);
-  const {baseUrl} = useSelector(state => state.auth);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
   const {partner} = useSelector(state => state.partner);
@@ -81,11 +80,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <View style={styles.headerContainerChildren}>
-              <ImageBubble
-                source={{
-                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${partner.picture?.id}/content/download?image=true&v=${partner.picture?.$version}&parentId=${partner.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
-                }}
-              />
+              <AOSImageBubble metaFileId={partner?.picture?.id} />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
                   {partner.simpleFullName}
