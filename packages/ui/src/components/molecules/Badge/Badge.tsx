@@ -54,8 +54,8 @@ const Badge = ({
 const getStyles = color =>
   StyleSheet.create({
     container: {
-      backgroundColor: color.background_light,
-      borderColor: color.background,
+      backgroundColor: color?.background_light,
+      borderColor: color?.background,
       borderWidth: 2,
       borderRadius: 7,
       margin: '1%',

@@ -4,6 +4,7 @@ import ProspectScreens from './screens/prospect';
 import OpportunityScreens from './screens/opportunity';
 import ContactScreens from './screens/contact/';
 import ClientScreens from './screens/client';
+import CatalogScreen from './screens/catalog';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
@@ -39,6 +40,11 @@ export const CrmModule: Module = {
       icon: 'address-book',
       screen: 'ContactListScreen',
     },
+    Catalog: {
+      title: 'Crm_Catalogs',
+      icon: 'swatchbook',
+      screen: 'CatalogListScreen',
+    },
   },
   screens: {
     ...LeadScreens,
@@ -46,6 +52,7 @@ export const CrmModule: Module = {
     ...OpportunityScreens,
     ...ClientScreens,
     ...ContactScreens,
+    ...CatalogScreen,
   },
   translations: {
     en: enTranslations,
