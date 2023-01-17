@@ -1,6 +1,7 @@
 export {default as BlockInteractionScreen} from './BlockInteractionScreen/BlockInteractionScreen';
 export {default as Card} from './Card/Card';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
+export {default as HtmlInput} from './HtmlInput/HtmlInput';
 export {default as DottedLine} from './DottedLine/DottedLine';
 export {default as Icon} from './Icon/Icon';
 export {default as Input} from './Input/Input';
