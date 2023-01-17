@@ -8,6 +8,11 @@ const contactFields = [
   'mainAddress',
   'partnerSeq',
   'picture',
+  'jobTitleFunction',
+  'description',
+  'webSite',
+  'language',
+  'mobilePhone',
 ];
 
 export async function searchContactWithIds(idList) {
