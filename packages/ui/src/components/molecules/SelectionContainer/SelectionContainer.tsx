@@ -12,7 +12,9 @@ interface SelectionItemProps {
 const SelectionItem = ({style, content, onPress}: SelectionItemProps) => {
   return content == null ? null : (
     <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
-      <Text style={itemStyles.text}>{content}</Text>
+      <Text style={itemStyles.text} numberOfLines={1}>
+        {content}
+      </Text>
     </TouchableOpacity>
   );
 };
