@@ -95,14 +95,14 @@ const ProspectsListScreen = ({navigation}) => {
             style={styles.item}
             partnerFullName={item.simpleFullName}
             partnerReference={item.partnerSeq}
-            partnerScoring={item.leadScoring || 0}
+            partnerScoring={item.leadScoringSelect || 0}
             partnerAdress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}
             onPress={() =>
               navigation.navigate('ProspectDetailsScreen', {
-                prospect: item,
+                idProspect: item.id,
               })
             }
           />

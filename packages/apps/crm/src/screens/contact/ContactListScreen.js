@@ -100,11 +100,11 @@ const ContactListScreen = ({navigation}) => {
             partnerEmail={item['emailAddress.address']}
             partnerPicture={item.picture}
             partnerCompany={item.mainPartner?.fullName}
-            //onPress={() =>
-            /*navigation.navigate('ClientDetailsScreen', {
-                client: item,
-              })*/
-            //}
+            onPress={() =>
+              navigation.navigate('ContactDetailsScreen', {
+                contact: item,
+              })
+            }
           />
         )}
         fetchData={fetchContactAPI}
