@@ -3,7 +3,6 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
-  ImageBubble,
   Text,
   LabelText,
   NotesCard,
@@ -14,6 +13,7 @@ import {
   HeaderOptionsMenu,
   useTranslator,
   useDispatch,
+  AOSImageBubble,
 } from '@axelor/aos-mobile-core';
 import {
   DropdownContactView,
@@ -29,7 +29,6 @@ const ContactDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const {mobileSettings} = useSelector(state => state.config);
-  const {baseUrl} = useSelector(state => state.auth);
   const {listEventContact} = useSelector(state => state.event);
   const {partner} = useSelector(state => state.partner);
 
@@ -70,11 +69,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <View style={styles.headerContainerChildren}>
-              <ImageBubble
-                source={{
-                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${contact.picture?.id}/content/download?image=true&v=${contact.picture?.$version}&parentId=${contact.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
-                }}
-              />
+              <AOSImageBubble metaFileId={contact?.picture?.id} />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
                   {contact.simpleFullName}
