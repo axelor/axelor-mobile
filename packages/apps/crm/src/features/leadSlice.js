@@ -3,7 +3,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchLeads, getLeadStatus} from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
-  'crm/Lead',
+  'lead/Lead',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchLeads,
@@ -16,7 +16,7 @@ export const fetchLeads = createAsyncThunk(
 );
 
 export const fetchLeadStatus = createAsyncThunk(
-  'crm/leadStatus',
+  'lead/leadStatus',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getLeadStatus,

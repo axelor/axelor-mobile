@@ -7,12 +7,12 @@ import {
 } from '../api/event-api';
 
 export const searchEventById = createAsyncThunk(
-  'crm/searchEventById',
+  'event/searchEventById',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: postEventBIdList,
       data,
-      action: 'filter evenr  by id',
+      action: 'filter event by id',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -20,7 +20,7 @@ export const searchEventById = createAsyncThunk(
 );
 
 export const fetchPartnerEventById = createAsyncThunk(
-  'crm/fetchPartnerEventById',
+  'event/fetchPartnerEventById',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: partnerEventById,
@@ -33,7 +33,7 @@ export const fetchPartnerEventById = createAsyncThunk(
 );
 
 export const fetchContactEventById = createAsyncThunk(
-  'crm/fetchContactEventById',
+  'event/fetchContactEventById',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: contactEventById,
@@ -52,8 +52,8 @@ const initialState = {
   listEventContact: [],
 };
 
-const eventtSlice = createSlice({
-  name: 'contact',
+const eventSlice = createSlice({
+  name: 'event',
   initialState,
   extraReducers: builder => {
     builder.addCase(searchEventById.pending, state => {
@@ -80,4 +80,4 @@ const eventtSlice = createSlice({
   },
 });
 
-export const eventReducer = eventtSlice.reducer;
+export const eventReducer = eventSlice.reducer;
