@@ -43,3 +43,21 @@ export async function partnerEventById(id) {
     },
   });
 }
+
+export async function contactEventById(id) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Event/search/',
+    data: {
+      data: {
+        criteria: [
+          {
+            fieldName: 'contactPartner.id',
+            operator: '=',
+            value: id,
+          },
+        ],
+      },
+      fields: eventFields,
+    },
+  });
+}

@@ -47,5 +47,6 @@
   "Crm_Opportunity": "Opportunité",
   "Crm_Opportunity_Amount": "Montant",
   "Crm_Opportunity_ExpectedCloseDate": "Date prévue clotûre",
-  "Crm_Contacts": "Contacts"
+  "Crm_Contacts": "Contacts",
+  "Crm_Language": "Langage"
 }

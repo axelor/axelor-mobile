@@ -26,9 +26,10 @@ import {
 import {searchContactById} from '../../features/contactSlice';
 import {fetchPartnerEventById} from '../../features/eventSlice';
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
+import {fetchPartner} from '../../features/partnerSlice';
 
 const ProspectDetailsScreen = ({navigation, route}) => {
-  const prospect = route.params.prospect;
+  const idProspect = route.params.idProspect;
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
   const {baseUrl} = useSelector(state => state.auth);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
+  const {partner} = useSelector(state => state.partner);
 
   const lastEventProspect = useMemo(() => {
     return getLastEvent(listEventPartner);
@@ -50,23 +52,27 @@ const ProspectDetailsScreen = ({navigation, route}) => {
       headerRight: () => (
         <HeaderOptionsMenu
           model="com.axelor.apps.base.db.Partner"
-          modelId={prospect?.id}
+          modelId={idProspect}
           navigation={navigation}
           disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={prospect?.simpleFullName}
+          attachedFileScreenTitle={partner?.simpleFullName}
         />
       ),
     });
-  }, [mobileSettings, navigation, prospect]);
+  }, [mobileSettings, navigation, idProspect, partner]);
 
   useEffect(() => {
-    const idList = prospect.contactPartnerSet.map(item => item.id);
+    dispatch(fetchPartner(idProspect));
+  }, [dispatch, idProspect]);
+
+  useEffect(() => {
+    const idList = partner.contactPartnerSet?.map(item => item.id);
     dispatch(searchContactById(idList));
-  }, [dispatch, prospect.contactPartnerSet]);
+  }, [dispatch, partner.contactPartnerSet]);
 
   useEffect(() => {
-    dispatch(fetchPartnerEventById(prospect.id));
-  }, [dispatch, prospect.id]);
+    dispatch(fetchPartnerEventById(idProspect));
+  }, [dispatch, idProspect]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -77,31 +83,31 @@ const ProspectDetailsScreen = ({navigation, route}) => {
             <View style={styles.headerContainerChildren}>
               <ImageBubble
                 source={{
-                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${prospect.picture?.id}/content/download?image=true&v=${prospect.picture?.$version}&parentId=${prospect.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
+                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${partner.picture?.id}/content/download?image=true&v=${partner.picture?.$version}&parentId=${partner.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
                 }}
               />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
-                  {prospect.simpleFullName}
+                  {partner.simpleFullName}
                 </Text>
                 <StarScore
                   style={styles.leadScoring}
-                  score={prospect.leadScoring}
+                  score={partner.leadScoringSelect}
                   showMissingStar={true}
                 />
               </View>
             </View>
             <View style={styles.headerBadge}>
-              {prospect.partnerCategory?.name && (
+              {partner.partnerCategory?.name && (
                 <Badge
                   color={Colors.progressColor}
-                  title={prospect.partnerCategory?.name}
+                  title={partner.partnerCategory?.name}
                 />
               )}
-              {prospect.industrySector?.name && (
+              {partner.industrySector?.name && (
                 <Badge
                   color={Colors.plannedColor}
-                  title={prospect.industrySector?.name}
+                  title={partner.industrySector?.name}
                 />
               )}
             </View>
@@ -109,7 +115,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
+        <NotesCard title={I18n.t('Crm_Notes')} data={partner.description} />
         <View style={styles.container}>
           <DropdownCardSwitch
             styleTitle={styles.textTitle}
@@ -119,10 +125,10 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                 key: 1,
                 childrenComp: (
                   <DropdownContactView
-                    address={prospect.mainAddress?.fullName}
-                    fixedPhone={prospect.fixedPhone}
-                    emailAddress={prospect['emailAddress.address']}
-                    webSite={prospect.webSite}
+                    address={partner.mainAddress?.fullName}
+                    fixedPhone={partner.fixedPhone}
+                    emailAddress={partner.emailAddress?.address}
+                    webSite={partner.webSite}
                   />
                 ),
               },
@@ -131,23 +137,23 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                 key: 2,
                 childrenComp: (
                   <View>
-                    {prospect.user?.fullName && (
+                    {partner.user?.fullName && (
                       <LabelText
                         title={I18n.t('Crm_AssignedTo')}
                         iconName={'user-tie'}
-                        value={prospect.user?.fullName}
+                        value={partner.user?.fullName}
                       />
                     )}
-                    {prospect.type?.name && (
+                    {partner.type?.name && (
                       <LabelText
                         title={I18n.t('Crm_Categorie')}
-                        value={prospect.partnerCategory?.name}
+                        value={partner.partnerCategory?.name}
                       />
                     )}
-                    {prospect.industrySector?.name && (
+                    {partner.industrySector?.name && (
                       <LabelText
                         title={I18n.t('Crm_Sector')}
-                        value={prospect.industrySector?.name}
+                        value={partner.industrySector?.name}
                       />
                     )}
                   </View>
