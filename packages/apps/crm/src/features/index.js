@@ -1,3 +1,4 @@
+export {catalogReducer as catalog} from './catalogSlice';
 export {clientReducer as client} from './clientSlice';
 export {contactReducer as contact} from './contactSlice';
 export {eventReducer as event} from './eventSlice';

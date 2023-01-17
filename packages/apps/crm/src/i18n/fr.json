@@ -52,5 +52,6 @@
   "Crm_Language": "Langage",
   "Crm_Opportunity_AssignedTo": "Assigné à",
   "Crm_Opportunity_RecurrentAmount": "Montant récurrent",
-  "Crm_Opportunity_Status": "Statut"
+  "Crm_Opportunity_Status": "Statut",
+  "Crm_Catalogs": "Catalogues"
 }
