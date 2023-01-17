@@ -18,7 +18,7 @@ const ProspectsListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {userId} = useSelector(state => state.auth);
-  const {loadingProspect, moreLoading, isListEnd, prospectList} = useSelector(
+  const {loading, moreLoading, isListEnd, prospectList} = useSelector(
     state => state.prospect,
   );
   const [filteredList, setFilteredList] = useState(prospectList);
@@ -88,7 +88,7 @@ const ProspectsListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loadingProspect}
+        loadingList={loading}
         data={filteredList}
         renderItem={({item}) => (
           <PartnerCard

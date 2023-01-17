@@ -26,7 +26,7 @@ const OpportunityListScreen = ({navigation}) => {
 
   const {userId} = useSelector(state => state.auth);
   const {
-    loadingOpportunity,
+    loading,
     moreLoading,
     isListEnd,
     opportunityList,
@@ -141,7 +141,7 @@ const OpportunityListScreen = ({navigation}) => {
         }
         chipComponent={
           <ChipSelect scrollable={true}>
-            {opportunityStatusList.map((status, index) => {
+            {opportunityStatusList?.map?.((status, index) => {
               return (
                 <Chip
                   key={index}
@@ -156,7 +156,7 @@ const OpportunityListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loadingOpportunity}
+        loadingList={loading}
         data={filteredList}
         renderItem={({item}) => (
           <OpportunityCard
@@ -168,7 +168,11 @@ const OpportunityListScreen = ({navigation}) => {
             allOpportunityStatus={opportunityStatusList}
             currencySymbol={item.currencySymbol}
             opportunityStatus={item.opportunityStatus}
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate('OpportunityDetailsScreen', {
+                opportunityId: item.id,
+              })
+            }
             style={styles.item}
           />
         )}

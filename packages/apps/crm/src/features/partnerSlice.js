@@ -3,7 +3,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {getPartner} from '../api/partner-api';
 
 export const fetchPartner = createAsyncThunk(
-  'crm/fetchPartner',
+  'partner/fetchPartner',
   async function (userId, {getState}) {
     return handlerApiCall({
       fetchFunction: getPartner,

@@ -28,6 +28,8 @@ import {
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 
+const ITEM_HEIGHT = 40;
+
 interface PickerProps {
   style?: any;
   pickerStyle?: any;
@@ -43,6 +45,7 @@ interface PickerProps {
   disabled?: boolean;
   disabledValue?: string;
   iconName?: string;
+  isScrollViewContainer?: boolean;
 }
 
 const Picker = ({
@@ -60,6 +63,7 @@ const Picker = ({
   disabled = false,
   disabledValue = null,
   iconName = null,
+  isScrollViewContainer = false,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -99,7 +103,23 @@ const Picker = ({
   };
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const marginBottom = useMemo(() => {
+    const listLength = listItems.length;
+
+    if (isScrollViewContainer && pickerIsOpen) {
+      return emptyValue
+        ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
+        : listLength * ITEM_HEIGHT + 5;
+    }
+
+    return null;
+  }, [emptyValue, isScrollViewContainer, listItems.length, pickerIsOpen]);
+
+  const styles = useMemo(
+    () => getStyles(Colors, marginBottom),
+    [Colors, marginBottom],
+  );
 
   return (
     <View ref={wrapperRef} style={style}>
@@ -128,7 +148,7 @@ const Picker = ({
           />
         </View>
       ) : (
-        <View>
+        <View style={styles.pickerContainerStyle}>
           <RightIconButton
             onPress={togglePicker}
             icon={
@@ -147,7 +167,7 @@ const Picker = ({
               pickerStyle,
             ]}
           />
-          {pickerIsOpen ? (
+          {pickerIsOpen && (
             <SelectionContainer
               emptyValue={emptyValue}
               objectList={listItems}
@@ -156,14 +176,14 @@ const Picker = ({
               handleSelect={handleValueChange}
               isPicker={true}
             />
-          ) : null}
+          )}
         </View>
       )}
     </View>
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors, marginBottom) =>
   StyleSheet.create({
     titleContainer: {
       marginHorizontal: 24,
@@ -179,6 +199,9 @@ const getStyles = Colors =>
     infosCard: {
       justifyContent: 'flex-start',
       width: Dimensions.get('window').width * 0.9,
+    },
+    pickerContainerStyle: {
+      marginBottom: marginBottom,
     },
   });
 

@@ -1,13 +1,16 @@
 import {axiosApiProvider} from '@axelor/aos-mobile-core';
 
 const opportunityFields = [
-  'opportunitySeq',
-  'name',
-  'expectedCloseDate',
-  'opportunityStatus',
   'amount',
   'currency.symbol',
+  'description',
+  'expectedCloseDate',
+  'name',
+  'opportunitySeq',
+  'opportunityStatus',
   'opportunityRating',
+  'partner',
+  'recurrentAmount',
   'user',
 ];
 
@@ -61,6 +64,47 @@ export async function getOpportunityStatus() {
     data: {
       fields: ['name', 'sequence'],
       sortBy: ['sequence'],
+    },
+  });
+}
+
+export async function getOpportunity({opportunityId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.crm.db.Opportunity/${opportunityId}/fetch`,
+    data: {
+      fields: opportunityFields,
+      related: {
+        currency: ['symbol'],
+        partner: [
+          'isCustomer',
+          'isProspect',
+          'partnerSeq',
+          'picture',
+          'simpleFullName',
+        ],
+        user: ['name'],
+      },
+    },
+  });
+}
+
+export async function updateOpportunityStatus({
+  opportunityId,
+  version,
+  opportunityStatusId,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
+    data: {
+      records: [
+        {
+          id: opportunityId,
+          version: version,
+          opportunityStatus: {
+            id: opportunityStatusId,
+          },
+        },
+      ],
     },
   });
 }
