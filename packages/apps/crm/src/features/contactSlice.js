@@ -3,7 +3,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchContactWithIds, searchContact} from '../api/contact-api';
 
 export const searchContactById = createAsyncThunk(
-  'crm/searchContactById',
+  'contact/searchContactById',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: searchContactWithIds,
@@ -16,7 +16,7 @@ export const searchContactById = createAsyncThunk(
 );
 
 export const fetchContact = createAsyncThunk(
-  'crm/Contact',
+  'contact/fetchContact',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchContact,
