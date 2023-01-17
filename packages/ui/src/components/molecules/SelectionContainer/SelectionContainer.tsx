@@ -83,11 +83,17 @@ const SelectionContainer = ({
   };
 
   const renderListItemContainer = () => {
-    if (objectList == null || objectList.length === 0) {
+    if (
+      objectList == null ||
+      objectList.length === 0 ||
+      !Array.isArray(objectList)
+    ) {
       return null;
     }
 
-    const visibleObjects = isPicker ? objectList : objectList.slice(0, 5);
+    const visibleObjects = isPicker
+      ? objectList
+      : objectList.slice(0, listLength);
 
     return visibleObjects.map((item, index) => (
       <View key={'item' + index}>
@@ -99,7 +105,8 @@ const SelectionContainer = ({
         <View
           key={'border' + index}
           style={
-            index + 1 === objectList.length || (!isPicker && index + 1 === 5)
+            index + 1 === objectList.length ||
+            (!isPicker && index + 1 === listLength)
               ? null
               : styles.border
           }
