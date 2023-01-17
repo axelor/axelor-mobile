@@ -101,7 +101,7 @@ const CLientsListScreen = ({navigation}) => {
             partnerPicture={item.picture}
             onPress={() =>
               navigation.navigate('ClientDetailsScreen', {
-                client: item,
+                idClient: item.id,
               })
             }
           />
