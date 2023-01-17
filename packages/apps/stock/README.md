@@ -1,4 +1,4 @@
-# @aos-mobile/stock
+# @axelor/aos-mobile-stock
 
 ## Required libraries
 

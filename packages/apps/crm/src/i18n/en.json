@@ -14,6 +14,7 @@
   "Crm_Email": "Mail address",
   "Crm_WebSite": "Web site",
   "Crm_GeneralInformation": "General informations",
+  "Crm_Informations": "Informations",
   "Crm_AssignedTo": "Assigned to",
   "Crm_Categorie": "Category",
   "Crm_Sector": "Sector",
@@ -48,5 +49,8 @@
   "Crm_Opportunity_Amount": "Amount",
   "Crm_Opportunity_ExpectedCloseDate": "Expected close date",
   "Crm_Contacts": "Contacts",
-  "Crm_Language": "Language"
+  "Crm_Language": "Language",
+  "Crm_Opportunity_AssignedTo": "Assigned to",
+  "Crm_Opportunity_RecurrentAmount": "Recurrent amount",
+  "Crm_Opportunity_Status": "Status"
 }

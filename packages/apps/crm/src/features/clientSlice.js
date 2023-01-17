@@ -3,7 +3,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchClient} from '../api/client-api';
 
 export const fetchClients = createAsyncThunk(
-  'crm/Client',
+  'client/fetchClients',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchClient,
@@ -16,7 +16,7 @@ export const fetchClients = createAsyncThunk(
 );
 
 const initialState = {
-  loadingClient: true,
+  loading: false,
   moreLoading: false,
   isListEnd: false,
   clientList: [],
@@ -28,13 +28,13 @@ const clientSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchClients.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
-        state.loadingClient = true;
+        state.loading = true;
       } else {
         state.moreLoading = true;
       }
     });
     builder.addCase(fetchClients.fulfilled, (state, action) => {
-      state.loadingClient = false;
+      state.loading = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
         state.clientList = action.payload;
