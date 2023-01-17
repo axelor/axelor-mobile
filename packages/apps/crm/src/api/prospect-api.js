@@ -8,7 +8,7 @@ const prospectFields = [
   'mainAddress',
   'fixedPhone',
   'mobilePhone',
-  'leadScoring',
+  'leadScoringSelect',
   'emailAddress',
   'emailAddress.address',
   'user',

@@ -57,7 +57,9 @@ const PartnerCard = ({
             {partnerScoring != null && (
               <StarScore score={partnerScoring} showMissingStar={true} />
             )}
-            <LabelText iconName="building" title={partnerCompany} />
+            {partnerCompany && (
+              <LabelText iconName="building" title={partnerCompany} />
+            )}
           </View>
         </View>
         <View style={styles.containerBody}>

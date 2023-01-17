@@ -23,15 +23,17 @@ import {
 import {searchContactById} from '../../features/contactSlice';
 import {fetchPartnerEventById} from '../../features/eventSlice';
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
+import {fetchPartner} from '../../features/partnerSlice';
 
 const ClientDetailsScreen = ({navigation, route}) => {
-  const client = route.params.client;
+  const idClient = route.params.idClient;
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const {mobileSettings} = useSelector(state => state.config);
   const {baseUrl} = useSelector(state => state.auth);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
+  const {partner} = useSelector(state => state.partner);
 
   const lastEventClient = useMemo(() => {
     return getLastEvent(listEventPartner);
@@ -46,23 +48,27 @@ const ClientDetailsScreen = ({navigation, route}) => {
       headerRight: () => (
         <HeaderOptionsMenu
           model="com.axelor.apps.base.db.Partner"
-          modelId={client?.id}
+          modelId={idClient}
           navigation={navigation}
           disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={client?.simpleFullName}
+          attachedFileScreenTitle={partner?.simpleFullName}
         />
       ),
     });
-  }, [mobileSettings, navigation, client]);
+  }, [mobileSettings, navigation, idClient, partner]);
 
   useEffect(() => {
-    const idList = client.contactPartnerSet.map(item => item.id);
+    dispatch(fetchPartner(idClient));
+  }, [dispatch, idClient]);
+
+  useEffect(() => {
+    const idList = partner.contactPartnerSet?.map(item => item.id);
     dispatch(searchContactById(idList));
-  }, [dispatch, client.contactPartnerSet]);
+  }, [dispatch, partner.contactPartnerSet]);
 
   useEffect(() => {
-    dispatch(fetchPartnerEventById(client.id));
-  }, [dispatch, client.id]);
+    dispatch(fetchPartnerEventById(idClient));
+  }, [dispatch, idClient]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -73,21 +79,21 @@ const ClientDetailsScreen = ({navigation, route}) => {
             <View style={styles.headerContainerChildren}>
               <ImageBubble
                 source={{
-                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${client.picture?.id}/content/download?image=true&v=${client.picture?.$version}&parentId=${client.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
+                  uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${partner.picture?.id}/content/download?image=true&v=${partner.picture?.$version}&parentId=${partner.picture?.id}&parentModel=com.axelor.meta.db.MetaFile`,
                 }}
               />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
-                  {client.simpleFullName}
+                  {partner.simpleFullName}
                 </Text>
-                <Text fontSize={14}>{client.partnerSeq}</Text>
+                <Text fontSize={14}>{partner.partnerSeq}</Text>
               </View>
             </View>
           </View>
         }
       />
       <ScrollView>
-        <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
+        <NotesCard title={I18n.t('Crm_Notes')} data={partner.description} />
         <View style={styles.container}>
           <DropdownCardSwitch
             styleTitle={styles.textTitle}
@@ -97,10 +103,10 @@ const ClientDetailsScreen = ({navigation, route}) => {
                 key: 1,
                 childrenComp: (
                   <DropdownContactView
-                    address={client.mainAddress?.fullName}
-                    fixedPhone={client.fixedPhone}
-                    emailAddress={client['emailAddress.address']}
-                    webSite={client.webSite}
+                    address={partner.mainAddress?.fullName}
+                    fixedPhone={partner.fixedPhone}
+                    emailAddress={partner.emailAddress?.address}
+                    webSite={partner.webSite}
                   />
                 ),
               },
@@ -109,29 +115,29 @@ const ClientDetailsScreen = ({navigation, route}) => {
                 key: 2,
                 childrenComp: (
                   <View>
-                    {client.user?.fullName && (
+                    {partner.user?.fullName && (
                       <LabelText
                         title={I18n.t('Crm_AssignedTo')}
                         iconName={'user-tie'}
-                        value={client.user?.fullName}
+                        value={partner.user?.fullName}
                       />
                     )}
-                    {client.type?.name && (
+                    {partner.type?.name && (
                       <LabelText
                         title={I18n.t('Crm_Categorie')}
-                        value={client.partnerCategory?.name}
+                        value={partner.partnerCategory?.name}
                       />
                     )}
-                    {client.industrySector?.name && (
+                    {partner.industrySector?.name && (
                       <LabelText
                         title={I18n.t('Crm_Sector')}
-                        value={client.industrySector?.name}
+                        value={partner.industrySector?.name}
                       />
                     )}
-                    {client.industrySector?.name && (
+                    {partner.industrySector?.name && (
                       <LabelText
                         title={I18n.t('Crm_PriceList')}
-                        value={client.salePartnerPriceList?.label}
+                        value={partner.salePartnerPriceList?.label}
                       />
                     )}
                   </View>
