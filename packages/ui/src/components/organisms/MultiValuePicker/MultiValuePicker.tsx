@@ -1,0 +1,168 @@
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {useThemeColor} from '../../../theme/ThemeContext';
+import {getCommonStyles} from '../../../utils/commons-styles';
+import {Text} from '../../atoms';
+import {
+  LabelText,
+  SelectionContainer,
+  MultiValuePickerButton,
+} from '../../molecules';
+import {getItemsFromList} from '../../../utils/list';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
+
+interface MultiValuePickerProps {
+  style?: any;
+  pickerStyle?: any;
+  styleTxt?: any;
+  title: string;
+  onValueChange?: (any) => void;
+  defaultValue?: any[];
+  listItems: any[];
+  labelField: string;
+  valueField: string;
+  disabled?: boolean;
+  disabledValue?: string;
+  iconName?: string;
+}
+
+const MultiValuePicker = ({
+  style,
+  pickerStyle,
+  styleTxt,
+  title,
+  onValueChange,
+  defaultValue = [],
+  listItems = [],
+  labelField,
+  valueField,
+  disabled = false,
+  disabledValue = '',
+  iconName = null,
+}: MultiValuePickerProps) => {
+  const [pickerIsOpen, setPickerIsOpen] = useState(false);
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: pickerIsOpen,
+  });
+  const Colors = useThemeColor();
+  const [selectedItem, setSelectedItem] = useState(
+    getItemsFromList(listItems, valueField, defaultValue),
+  );
+
+  useEffect(() => {
+    setSelectedItem(getItemsFromList(listItems, valueField, defaultValue));
+  }, [defaultValue, listItems, valueField]);
+
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
+      setPickerIsOpen(false);
+    }
+  }, [clickOutside, pickerIsOpen]);
+
+  const togglePicker = () => {
+    setPickerIsOpen(current => !current);
+  };
+
+  const handleValueChange = useCallback(
+    itemValue => {
+      if (itemValue != null) {
+        let newSelecteditems = [];
+        if (
+          selectedItem.some(item => item[valueField] === itemValue[valueField])
+        ) {
+          newSelecteditems = selectedItem.filter(
+            i => i[valueField] !== itemValue[valueField],
+          );
+        } else {
+          newSelecteditems = [...selectedItem, itemValue];
+        }
+        setSelectedItem(newSelecteditems);
+        onValueChange(newSelecteditems);
+      }
+    },
+    [onValueChange, selectedItem, valueField],
+  );
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  return (
+    <View ref={wrapperRef} style={style}>
+      {!disabled && (
+        <View style={styles.titleContainer}>
+          <Text style={styleTxt}>{title}</Text>
+        </View>
+      )}
+      {disabled ? (
+        <View
+          style={[
+            commonStyles.filter,
+            commonStyles.filterSize,
+            commonStyles.filterAlign,
+            styles.infosCard,
+            pickerStyle,
+          ]}>
+          {/* TODO : improve here */}
+          <LabelText
+            value={
+              disabledValue == null || disabledValue === ''
+                ? '-'
+                : disabledValue
+            }
+            title={`${title} :`}
+            iconName={iconName}
+          />
+        </View>
+      ) : (
+        <View>
+          <MultiValuePickerButton
+            onPress={togglePicker}
+            listItem={selectedItem}
+            labelField={labelField}
+            style={[
+              commonStyles.filter,
+              commonStyles.filterSize,
+              commonStyles.filterAlign,
+              styles.rightIconButton,
+              pickerStyle,
+            ]}
+            onPressItem={handleValueChange}
+          />
+          {pickerIsOpen ? (
+            <SelectionContainer
+              objectList={listItems}
+              keyField={valueField}
+              displayValue={item => item[labelField]}
+              handleSelect={handleValueChange}
+              isPicker={true}
+              selectedItem={selectedItem}
+            />
+          ) : null}
+        </View>
+      )}
+    </View>
+  );
+};
+
+const getStyles = Colors =>
+  StyleSheet.create({
+    titleContainer: {
+      marginHorizontal: 24,
+    },
+    rightIconButton: {
+      width: Dimensions.get('window').width * 0.9,
+      borderColor: Colors.secondaryColor.background,
+      borderWidth: 1,
+    },
+    infosCard: {
+      justifyContent: 'flex-start',
+      width: Dimensions.get('window').width * 0.9,
+    },
+  });
+
+export default MultiValuePicker;

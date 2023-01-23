@@ -1,20 +1,35 @@
 import React, {useMemo} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from '../../atoms';
+import {Icon, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface SelectionItemProps {
   style?: any;
   content: string;
   onPress: (any) => void;
+  isSelectedItem?: boolean;
 }
 
-const SelectionItem = ({style, content, onPress}: SelectionItemProps) => {
+const SelectionItem = ({
+  style,
+  content,
+  onPress,
+  isSelectedItem = false,
+}: SelectionItemProps) => {
+  const Colors = useThemeColor();
+
   return content == null ? null : (
     <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
       <Text style={itemStyles.text} numberOfLines={1}>
         {content}
       </Text>
+      {isSelectedItem && (
+        <Icon
+          style={itemStyles.icon}
+          name="check"
+          color={Colors.primaryColor.background}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -23,14 +38,18 @@ const itemStyles = StyleSheet.create({
   item: {
     height: 40,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     position: 'relative',
-    width: '104%',
+    width: '100%',
     zIndex: 50,
   },
   text: {
     marginTop: 10,
     marginLeft: 10,
     fontSize: 16,
+  },
+  icon: {
+    marginRight: 10,
   },
 });
 
@@ -41,6 +60,7 @@ interface SelectionContainerProps {
   keyField?: string;
   emptyValue?: boolean;
   isPicker?: boolean;
+  selectedItem?: any;
 }
 
 const SelectionContainer = ({
@@ -50,6 +70,7 @@ const SelectionContainer = ({
   keyField = 'id',
   emptyValue = false,
   isPicker = false,
+  selectedItem,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
   const listLength =
@@ -101,6 +122,7 @@ const SelectionContainer = ({
           key={item[keyField]?.toString()}
           content={displayValue(item)}
           onPress={() => handleSelect(item)}
+          isSelectedItem={selectedItem?.includes(item)}
         />
         <View
           key={'border' + index}
