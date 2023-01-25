@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "copy:assets": "cpx src/assets/** lib/assets"
+    "copy:assets": "cpx src/assets/** lib/assets",
+    "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "peerDependencies": {
     "react": "18.2.0"

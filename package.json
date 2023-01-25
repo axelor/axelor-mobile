@@ -21,7 +21,8 @@
     "format": "nx run-many --target=format",
     "format:check": "nx run-many --target=format:check",
     "start": "nx start example",
-    "android": "nx android example"
+    "android": "nx android example",
+    "license:add": "nx run-many --target=license:add"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",

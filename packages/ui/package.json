@@ -13,7 +13,8 @@
     "build": "npm run clean && npm run compile",
     "lint": "eslint .",
     "format": "prettier --write src/",
-    "format:check": "prettier --check src/"
+    "format:check": "prettier --check src/",
+    "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "peerDependencies": {
     "react": "*",

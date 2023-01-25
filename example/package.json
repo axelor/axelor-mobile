@@ -11,7 +11,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write src/ __tests__/",
     "format:check": "prettier --check src/ __tests__/",
-    "i18n": "i18n-parser --config=./i18n.json"
+    "i18n": "i18n-parser --config=./i18n.json",
+    "license:add": "npx add-copyright-header --generate --dir 'src'"
   },
   "dependencies": {
     "@axelor/aos-mobile-ui": "0.0.1",
