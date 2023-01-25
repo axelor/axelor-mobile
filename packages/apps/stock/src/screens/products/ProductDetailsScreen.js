@@ -57,7 +57,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
       ),
     });
   }, [I18n, mobileSettings, navigation, product]);
-  console.log(product.description);
   return (
     <Screen
       fixedItems={

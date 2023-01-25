@@ -18,10 +18,7 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Card from '../../atoms/Card/Card';
-import Text from '../../atoms/Text/Text';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import RenderHTML from 'react-native-render-html';
+import {Card, RenderHtml, Text} from '../../atoms';
 
 const PERCENTAGE_WIDTH_NOTES = 0.95;
 
@@ -32,11 +29,11 @@ interface NotesCardProps {
 
 const NotesCard = ({title, data}: NotesCardProps) => {
   const [widthNotes, setWidthNotes] = useState<number>();
-  const Colors = useThemeColor();
 
   if (data == null || data === '') {
     return null;
   }
+
   return (
     <View
       style={styles.description}
@@ -46,14 +43,11 @@ const NotesCard = ({title, data}: NotesCardProps) => {
       }}>
       <Text style={styles.title}>{title}</Text>
       <Card style={styles.note}>
-        <RenderHTML
-          source={{
-            html: data,
-          }}
-          contentWidth={
+        <RenderHtml
+          data={data}
+          widthNotes={
             widthNotes != null ? widthNotes * PERCENTAGE_WIDTH_NOTES : 100
           }
-          baseStyle={{color: Colors.text}}
         />
       </Card>
     </View>
