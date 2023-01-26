@@ -9,7 +9,7 @@ interface ContactInfoCardProps {
   title: string;
   data: string;
   rightIconName: string;
-  rightIconAction?: () => void;
+  rightIconAction?: () => any;
   FontAwesome5HeaderIcon?: boolean;
   FontAwesome5RightIcon?: boolean;
   border?: boolean;

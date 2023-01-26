@@ -12,7 +12,6 @@ const crmLeadsFields = [
   'emailAddress',
   'emailAddress.address',
   'primaryAddress',
-  'leadScoring',
   'simpleFullName',
   'user',
   'isDoNotSendEmail',
@@ -23,6 +22,7 @@ const crmLeadsFields = [
   'type',
   'industrySector',
   'eventList',
+  'leadScoringSelect',
 ];
 
 const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];
@@ -94,6 +94,15 @@ export async function searchLeads({searchValue, page = 0}) {
   });
 }
 
+export async function getLead({leadId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.crm.db.Lead/${leadId}/fetch`,
+    data: {
+      fields: crmLeadsFields,
+    },
+  });
+}
+
 export async function getLeadStatus() {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.LeadStatus/search',
@@ -106,6 +115,19 @@ export async function getLeadStatus() {
             value: true,
           },
         ],
+      },
+    },
+  });
+}
+
+export async function updateLeadScoring({leadId, leadVersion, newScore}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+    data: {
+      data: {
+        id: leadId,
+        version: leadVersion,
+        leadScoringSelect: newScore,
       },
     },
   });

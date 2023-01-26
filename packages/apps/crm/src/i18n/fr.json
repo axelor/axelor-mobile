@@ -1,5 +1,5 @@
 {
-  "Crm_Crm": "Crm",
+  "Crm_Crm": "CRM",
   "Crm_Leads": "Pistes",
   "Crm_Lead": "Piste",
   "Crm_AssignedToMe": "Assigné à moi",
@@ -53,5 +53,8 @@
   "Crm_Opportunity_AssignedTo": "Assigné à",
   "Crm_Opportunity_RecurrentAmount": "Montant récurrent",
   "Crm_Opportunity_Status": "Statut",
-  "Crm_Catalogs": "Catalogues"
+  "Crm_Catalogs": "Catalogues",
+  "Crm_NoContactAssociated": "Aucun contact associé",
+  "Crm_NoGeneralInformation": "Pas d'information générale",
+  "Crm_NoContactInformation": "Pas d'information sur le contact"
 }

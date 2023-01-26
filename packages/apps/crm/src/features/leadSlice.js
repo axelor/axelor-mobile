@@ -1,6 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchLeads, getLeadStatus} from '../api/leads-api';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  searchLeads,
+  getLeadStatus,
+  getLead,
+  updateLeadScoring,
+} from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
   'lead/Lead',
@@ -28,6 +33,40 @@ export const fetchLeadStatus = createAsyncThunk(
   },
 );
 
+export const fetchLeadById = createAsyncThunk(
+  'lead/getLead',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getLead,
+      data,
+      action: 'get crm lead by id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateLeadScore = createAsyncThunk(
+  'lead/updateLeadScore',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateLeadScoring,
+      data,
+      action: 'update crm lead score',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getLead,
+        data: {leadId: res?.id},
+        action: 'get lead by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingLead: true,
   loadingLeadStatus: true,
@@ -35,6 +74,7 @@ const initialState = {
   isListEnd: false,
   leadList: [],
   leadStatusList: [],
+  lead: {},
 };
 
 const leadSlice = createSlice({
@@ -69,6 +109,21 @@ const leadSlice = createSlice({
     builder.addCase(fetchLeadStatus.fulfilled, (state, action) => {
       state.loadingLeadStatus = false;
       state.leadStatusList = action.payload;
+    });
+    builder.addCase(fetchLeadById.pending, (state, action) => {
+      state.loadingLead = true;
+    });
+    builder.addCase(fetchLeadById.fulfilled, (state, action) => {
+      state.loadingLead = false;
+      state.lead = action.payload;
+    });
+    builder.addCase(updateLeadScore.pending, (state, action) => {
+      state.loadingLead = true;
+    });
+    builder.addCase(updateLeadScore.fulfilled, (state, action) => {
+      state.loadingLead = false;
+      state.lead = action.payload;
+      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
     });
   },
 });

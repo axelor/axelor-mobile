@@ -149,6 +149,7 @@ const OpportunityListScreen = ({navigation}) => {
                   title={status.name}
                   onPress={() => updateStatus(status)}
                   selectedColor={Opportunity.getStatusColor(index, Colors)}
+                  marginHorizontal={5}
                 />
               );
             })}

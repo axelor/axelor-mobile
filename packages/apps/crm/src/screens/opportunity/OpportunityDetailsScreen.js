@@ -9,6 +9,7 @@ import {
   StarScore,
   NotesCard,
   Picker,
+  formatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -123,11 +124,19 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
             onPress={navigateToPartnerDetails}
           />
           <OpportunityDropdownInfo
-            amount={opportunity.amount}
+            amount={formatNumber(
+              opportunity.amount,
+              I18n.t('Base_DecimalSpacer'),
+              I18n.t('Base_ThousandSpacer'),
+            )}
             assignedTo={opportunity.assignedTo}
             currencySymbol={opportunity.currency?.symbol}
             expectedCloseDate={opportunity.expectedCloseDate}
-            recurrentAmount={opportunity.recurrentAmount}
+            recurrentAmount={formatNumber(
+              opportunity.recurrentAmount,
+              I18n.t('Base_DecimalSpacer'),
+              I18n.t('Base_ThousandSpacer'),
+            )}
             style={styles.opportunityInfo}
           />
           <NotesCard

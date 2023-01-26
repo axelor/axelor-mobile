@@ -57,7 +57,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
   }, [mobileSettings, navigation, idClient, partner]);
 
   useEffect(() => {
-    dispatch(fetchPartner(idClient));
+    dispatch(fetchPartner({partnerId: idClient}));
   }, [dispatch, idClient]);
 
   useEffect(() => {
@@ -129,12 +129,20 @@ const ClientDetailsScreen = ({navigation, route}) => {
                         value={partner.industrySector?.name}
                       />
                     )}
-                    {partner.industrySector?.name && (
+                    {partner.salePartnerPriceList?.label && (
                       <LabelText
                         title={I18n.t('Crm_PriceList')}
                         value={partner.salePartnerPriceList?.label}
                       />
                     )}
+                    {!partner.user?.fullName &&
+                      !partner.type?.name &&
+                      !partner.industrySector?.name &&
+                      !partner.salePartnerPriceList?.label && (
+                        <View>
+                          <Text>{I18n.t('Crm_NoGeneralInformation')}</Text>
+                        </View>
+                      )}
                   </View>
                 ),
               },
@@ -142,18 +150,28 @@ const ClientDetailsScreen = ({navigation, route}) => {
                 title: I18n.t('Crm_Employees'),
                 key: 3,
                 childrenComp:
-                  listContactById.length > 0 &&
-                  listContactById.map((contact, index) => {
-                    return (
-                      <LiteContactCard
-                        key={index}
-                        contactFullname={contact.simpleFullName}
-                        fixedPhoneNumber={contact.fixedPhone}
-                        email={contact['emailAddress.address']}
-                        style={styles.item}
-                      />
-                    );
-                  }),
+                  listContactById.length > 0 ? (
+                    listContactById.map((contact, index) => {
+                      return (
+                        <LiteContactCard
+                          key={index}
+                          contactFullname={contact.simpleFullName}
+                          fixedPhoneNumber={contact.fixedPhone}
+                          email={contact['emailAddress.address']}
+                          style={styles.item}
+                          onPress={() =>
+                            navigation.navigate('ContactDetailsScreen', {
+                              contact: contact,
+                            })
+                          }
+                        />
+                      );
+                    })
+                  ) : (
+                    <View>
+                      <Text>{I18n.t('Crm_NoContactAssociated')}</Text>
+                    </View>
+                  ),
               },
               {
                 title: I18n.t('Crm_Events'),

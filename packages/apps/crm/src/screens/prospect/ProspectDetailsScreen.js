@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useCallback} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Screen,
@@ -26,7 +26,10 @@ import {
 import {searchContactById} from '../../features/contactSlice';
 import {fetchPartnerEventById} from '../../features/eventSlice';
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
-import {fetchPartner} from '../../features/partnerSlice';
+import {
+  fetchProspectById,
+  updateProspectScore,
+} from '../../features/prospectSlice';
 
 const ProspectDetailsScreen = ({navigation, route}) => {
   const idProspect = route.params.idProspect;
@@ -36,7 +39,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
   const {mobileSettings} = useSelector(state => state.config);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
-  const {partner} = useSelector(state => state.partner);
+  const {prospect} = useSelector(state => state.prospect);
 
   const lastEventProspect = useMemo(() => {
     return getLastEvent(listEventPartner);
@@ -54,24 +57,37 @@ const ProspectDetailsScreen = ({navigation, route}) => {
           modelId={idProspect}
           navigation={navigation}
           disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={partner?.simpleFullName}
+          attachedFileScreenTitle={prospect?.simpleFullName}
         />
       ),
     });
-  }, [mobileSettings, navigation, idProspect, partner]);
+  }, [mobileSettings, navigation, idProspect, prospect]);
 
   useEffect(() => {
-    dispatch(fetchPartner(idProspect));
+    dispatch(fetchProspectById({partnerId: idProspect}));
   }, [dispatch, idProspect]);
 
   useEffect(() => {
-    const idList = partner.contactPartnerSet?.map(item => item.id);
+    const idList = prospect.contactPartnerSet?.map(item => item.id);
     dispatch(searchContactById(idList));
-  }, [dispatch, partner.contactPartnerSet]);
+  }, [dispatch, prospect.contactPartnerSet]);
 
   useEffect(() => {
     dispatch(fetchPartnerEventById(idProspect));
   }, [dispatch, idProspect]);
+
+  const updateScoreProspectAPI = useCallback(
+    newScore => {
+      dispatch(
+        updateProspectScore({
+          partnerId: prospect.id,
+          partnerVersion: prospect.version,
+          newScore: newScore,
+        }),
+      );
+    },
+    [dispatch, prospect.id, prospect.version],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -80,29 +96,31 @@ const ProspectDetailsScreen = ({navigation, route}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <View style={styles.headerContainerChildren}>
-              <AOSImageBubble metaFileId={partner?.picture?.id} />
+              <AOSImageBubble metaFileId={prospect?.picture?.id} />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
-                  {partner.simpleFullName}
+                  {prospect.simpleFullName}
                 </Text>
                 <StarScore
                   style={styles.leadScoring}
-                  score={partner.leadScoringSelect}
+                  score={prospect.leadScoringSelect}
                   showMissingStar={true}
+                  onPress={updateScoreProspectAPI}
+                  editMode={true}
                 />
               </View>
             </View>
             <View style={styles.headerBadge}>
-              {partner.partnerCategory?.name && (
+              {prospect.partnerCategory?.name && (
                 <Badge
                   color={Colors.progressColor}
-                  title={partner.partnerCategory?.name}
+                  title={prospect.partnerCategory?.name}
                 />
               )}
-              {partner.industrySector?.name && (
+              {prospect.industrySector?.name && (
                 <Badge
                   color={Colors.plannedColor}
-                  title={partner.industrySector?.name}
+                  title={prospect.industrySector?.name}
                 />
               )}
             </View>
@@ -110,7 +128,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <NotesCard title={I18n.t('Crm_Notes')} data={partner.description} />
+        <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
         <View style={styles.container}>
           <DropdownCardSwitch
             styleTitle={styles.textTitle}
@@ -120,10 +138,10 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                 key: 1,
                 childrenComp: (
                   <DropdownContactView
-                    address={partner.mainAddress?.fullName}
-                    fixedPhone={partner.fixedPhone}
-                    emailAddress={partner.emailAddress?.address}
-                    webSite={partner.webSite}
+                    address={prospect.mainAddress?.fullName}
+                    fixedPhone={prospect.fixedPhone}
+                    emailAddress={prospect.emailAddress?.address}
+                    webSite={prospect.webSite}
                   />
                 ),
               },
@@ -132,25 +150,32 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                 key: 2,
                 childrenComp: (
                   <View>
-                    {partner.user?.fullName && (
+                    {prospect.user?.fullName && (
                       <LabelText
                         title={I18n.t('Crm_AssignedTo')}
                         iconName={'user-tie'}
-                        value={partner.user?.fullName}
+                        value={prospect.user?.fullName}
                       />
                     )}
-                    {partner.type?.name && (
+                    {prospect.type?.name && (
                       <LabelText
                         title={I18n.t('Crm_Categorie')}
-                        value={partner.partnerCategory?.name}
+                        value={prospect.partnerCategory?.name}
                       />
                     )}
-                    {partner.industrySector?.name && (
+                    {prospect.industrySector?.name && (
                       <LabelText
                         title={I18n.t('Crm_Sector')}
-                        value={partner.industrySector?.name}
+                        value={prospect.industrySector?.name}
                       />
                     )}
+                    {!prospect.user?.fullName &&
+                      !prospect.type?.name &&
+                      !prospect.industrySector?.name && (
+                        <View>
+                          <Text>{I18n.t('Crm_NoGeneralInformation')}</Text>
+                        </View>
+                      )}
                   </View>
                 ),
               },
@@ -158,16 +183,26 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                 title: I18n.t('Crm_Employees'),
                 key: 3,
                 childrenComp:
-                  listContactById.length > 0 &&
-                  listContactById.map((contact, index) => (
-                    <LiteContactCard
-                      key={index}
-                      contactFullname={contact.simpleFullName}
-                      fixedPhoneNumber={contact.fixedPhone}
-                      email={contact['emailAddress.address']}
-                      style={styles.item}
-                    />
-                  )),
+                  listContactById.length > 0 ? (
+                    listContactById.map((contact, index) => (
+                      <LiteContactCard
+                        key={index}
+                        contactFullname={contact.simpleFullName}
+                        fixedPhoneNumber={contact.fixedPhone}
+                        email={contact['emailAddress.address']}
+                        style={styles.item}
+                        onPress={() =>
+                          navigation.navigate('ContactDetailsScreen', {
+                            contact: contact,
+                          })
+                        }
+                      />
+                    ))
+                  ) : (
+                    <View>
+                      <Text>{I18n.t('Crm_NoContactAssociated')}</Text>
+                    </View>
+                  ),
               },
               {
                 title: I18n.t('Crm_Events'),

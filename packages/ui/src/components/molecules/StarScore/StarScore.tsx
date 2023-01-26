@@ -35,6 +35,8 @@ interface StarScoreProps {
   score: number;
   showHalfStar?: boolean;
   showMissingStar?: boolean;
+  onPress?: (any) => void;
+  editMode?: boolean;
 }
 
 const StarScore = ({
@@ -44,6 +46,8 @@ const StarScore = ({
   score,
   showHalfStar = false,
   showMissingStar = false,
+  onPress = () => {},
+  editMode = false,
 }: StarScoreProps) => {
   const Colors = useThemeColor();
 
@@ -58,6 +62,13 @@ const StarScore = ({
       return showHalfStar ? roundHalf(value) : roundInteger(value);
     },
     [showHalfStar],
+  );
+
+  const onPressStar = useCallback(
+    newScore => {
+      onPress(newScore === score ? 0 : newScore);
+    },
+    [onPress, score],
   );
 
   const renderStars = useCallback(
@@ -75,6 +86,8 @@ const StarScore = ({
             name="star"
             color={starColor}
             size={size}
+            touchable={editMode}
+            onPress={() => onPressStar(index)}
           />,
         );
       }
@@ -87,6 +100,8 @@ const StarScore = ({
             name={showMissingStar ? 'star-half-empty' : 'star-half'}
             color={starColor}
             size={size}
+            touchable={editMode}
+            onPress={() => onPress && onPressStar(fullStarsNb + 1)}
           />,
         );
       }
@@ -96,10 +111,12 @@ const StarScore = ({
           starList.push(
             <Icon
               key={index + 1}
+              onPress={() => onPress && onPressStar(index + 1)}
               FontAwesome5={false}
               name="star-o"
               color={starColor}
               size={size}
+              touchable={editMode}
             />,
           );
         }
@@ -107,7 +124,15 @@ const StarScore = ({
 
       return starList;
     },
-    [roundNbStar, showMissingStar, size, starColor],
+    [
+      roundNbStar,
+      showMissingStar,
+      size,
+      starColor,
+      onPress,
+      onPressStar,
+      editMode,
+    ],
   );
 
   const starScoring: React.ReactNode[] = useMemo(
