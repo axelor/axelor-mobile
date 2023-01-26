@@ -27,3 +27,4 @@ export {
   useClickOutside,
 } from './hooks/use-click-outside';
 export {animationUtil} from './tools/AnimationUtil';
+export {formatNumber} from './utils/formatters';

@@ -98,3 +98,28 @@ export async function searchProspect({searchValue, page = 0}) {
     },
   });
 }
+export async function getProspect({partnerId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.base.db.Partner/${partnerId}/fetch`,
+    data: {
+      fields: prospectFields,
+    },
+  });
+}
+
+export async function updateProspectScoring({
+  partnerId,
+  partnerVersion,
+  newScore,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.base.db.Partner',
+    data: {
+      data: {
+        id: partnerId,
+        version: partnerVersion,
+        leadScoringSelect: newScore,
+      },
+    },
+  });
+}
