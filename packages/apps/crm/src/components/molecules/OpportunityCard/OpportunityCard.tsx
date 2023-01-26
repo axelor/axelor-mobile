@@ -7,6 +7,7 @@ import {
   Text,
   useThemeColor,
   StarScore,
+  formatNumber,
 } from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import {Opportunity} from '../../../types';
@@ -60,7 +61,11 @@ const OpportunityCard = ({
           <Text style={styles.txtImportant}>{name}</Text>
           <LabelText
             title={I18n.t('Crm_Opportunity_Amount')}
-            value={`${amount} ${currencySymbol}`}
+            value={`${formatNumber(
+              amount,
+              I18n.t('Base_DecimalSpacer'),
+              I18n.t('Base_ThousandSpacer'),
+            )} ${currencySymbol}`}
           />
           <LabelText
             iconName="clock"

@@ -8,7 +8,6 @@ const partnerFields = [
   'mainAddress',
   'fixedPhone',
   'mobilePhone',
-  'leadScoring',
   'emailAddress',
   'emailAddress.address',
   'user',
@@ -17,16 +16,14 @@ const partnerFields = [
   'description',
   'webSite',
   'picture',
-  'leadScoring',
   'isCustomer',
   'isProspect',
   'salePartnerPriceList',
   'contactPartnerSet',
   'description',
-  'leadScoringSelect',
 ];
 
-export async function getPartner(partnerId) {
+export async function getPartner({partnerId}) {
   return axiosApiProvider.post({
     url: `/ws/rest/com.axelor.apps.base.db.Partner/${partnerId}/fetch`,
     data: {

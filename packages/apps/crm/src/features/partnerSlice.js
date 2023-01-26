@@ -4,10 +4,10 @@ import {getPartner} from '../api/partner-api';
 
 export const fetchPartner = createAsyncThunk(
   'partner/fetchPartner',
-  async function (userId, {getState}) {
+  async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getPartner,
-      data: userId,
+      data,
       action: 'fetch partner',
       getState,
       responseOptions: {isArrayResponse: false},

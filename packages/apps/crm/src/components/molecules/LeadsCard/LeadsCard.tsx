@@ -26,6 +26,8 @@ interface LeadsCardProps {
   allLeadStatus?: any;
   leadsStatus?: any;
   onPress: () => void;
+  isDoNotSendEmail: boolean;
+  isDoNotCall: boolean;
 }
 const LeadsCard = ({
   style,
@@ -41,6 +43,8 @@ const LeadsCard = ({
   allLeadStatus,
   leadsStatus,
   onPress,
+  isDoNotSendEmail,
+  isDoNotCall,
 }: LeadsCardProps) => {
   const Colors = useThemeColor();
   const {baseUrl} = useSelector((state: any) => state.auth);
@@ -72,23 +76,37 @@ const LeadsCard = ({
         />
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{leadsFullname}</Text>
-          <LabelText iconName="building" title={leadsCompany} />
+          {leadsCompany && (
+            <LabelText iconName="building" title={leadsCompany} />
+          )}
           {leadsAddress != null && (
             <LabelText iconName="map-marker-alt" title={leadsAddress} />
           )}
           {leadsPhoneNumber != null && (
             <LabelText
-              iconName="mobile-phone"
+              iconName={isDoNotCall ? 'phone-slash' : 'mobile-phone'}
               title={leadsPhoneNumber}
-              FontAwesome5={false}
-              size={18}
+              FontAwesome5={isDoNotCall}
+              color={isDoNotCall ? 'red' : null}
+              textStyle={isDoNotCall ? styles.txtRed : null}
+              size={isDoNotCall ? null : 18}
             />
           )}
           {leadsFixedPhone != null && (
-            <LabelText iconName="phone" title={leadsFixedPhone} />
+            <LabelText
+              iconName={isDoNotCall ? 'phone-slash' : 'phone'}
+              title={leadsFixedPhone}
+              color={isDoNotCall ? 'red' : null}
+              textStyle={isDoNotCall ? styles.txtRed : null}
+            />
           )}
           {leadsEmail != null && (
-            <LabelText iconName="envelope" title={leadsEmail} />
+            <LabelText
+              iconName={isDoNotSendEmail ? 'user-alt-slash' : 'envelope'}
+              title={leadsEmail}
+              color={isDoNotSendEmail ? 'red' : null}
+              textStyle={isDoNotSendEmail ? styles.txtRed : null}
+            />
           )}
         </View>
         <Icon
@@ -135,6 +153,9 @@ const styles = StyleSheet.create({
   imageSize: {
     height: 80,
     width: 80,
+  },
+  txtRed: {
+    color: 'red',
   },
 });
 

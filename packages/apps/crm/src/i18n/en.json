@@ -1,5 +1,5 @@
 {
-  "Crm_Crm": "Crm",
+  "Crm_Crm": "CRM",
   "Crm_Leads": "Leads",
   "Crm_Lead": "Lead",
   "Crm_AssignedToMe": "Assigned to me",
@@ -53,5 +53,8 @@
   "Crm_Opportunity_AssignedTo": "Assigned to",
   "Crm_Opportunity_RecurrentAmount": "Recurrent amount",
   "Crm_Opportunity_Status": "Status",
-  "Crm_Catalogs": "Catalogs"
+  "Crm_Catalogs": "Catalogs",
+  "Crm_NoContactAssociated": "No contact associated",
+  "Crm_NoGeneralInformation": "No general information",
+  "Crm_NoContactInformation": "No contact information"
 }
