@@ -1,6 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchProspect} from '../api/prospect-api';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  searchProspect,
+  getProspect,
+  updateProspectScoring,
+} from '../api/prospect-api';
 
 export const fetchProspects = createAsyncThunk(
   'prospect/fetchProspects',
@@ -15,11 +19,46 @@ export const fetchProspects = createAsyncThunk(
   },
 );
 
+export const fetchProspectById = createAsyncThunk(
+  'prospect/fetchProspectById',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getProspect,
+      data,
+      action: 'get  prospect by id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateProspectScore = createAsyncThunk(
+  'lead/updateProspectScore',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateProspectScoring,
+      data,
+      action: 'update crm prospect score',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getProspect,
+        data: {partnerId: res?.id},
+        action: 'get prospect by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
   prospectList: [],
+  prospect: {},
 };
 
 const prospectSlice = createSlice({
@@ -47,6 +86,23 @@ const prospectSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(fetchProspectById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchProspectById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.prospect = action.payload;
+    });
+    builder.addCase(updateProspectScore.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProspectScore.fulfilled, (state, action) => {
+      state.loading = false;
+      state.prospect = action.payload;
+      state.prospectList = updateAgendaItems(state.prospectList, [
+        action.payload,
+      ]);
     });
   },
 });

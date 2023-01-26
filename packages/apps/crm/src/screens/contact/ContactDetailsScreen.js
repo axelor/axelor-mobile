@@ -59,7 +59,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
   }, [dispatch, contact.id]);
 
   useEffect(() => {
-    dispatch(fetchPartner(contact.mainPartner?.id));
+    dispatch(fetchPartner({partnerId: contact.mainPartner?.id}));
   }, [dispatch, contact.mainPartner?.id]);
 
   return (
@@ -158,6 +158,11 @@ const ContactDetailsScreen = ({navigation, route}) => {
                         title={I18n.t('Crm_Language')}
                         value={contact.language?.name}
                       />
+                    )}
+                    {!contact.user?.fullName && !contact.language?.name && (
+                      <View>
+                        <Text>{I18n.t('Crm_NoGeneralInformation')}</Text>
+                      </View>
                     )}
                   </View>
                 ),
