@@ -109,6 +109,7 @@ const CatalogListScreen = ({navigation}) => {
                   title={status.name}
                   onPress={() => updateStatus(status)}
                   selectedColor={Catalog.getStatusColor(index, Colors)}
+                  marginHorizontal={5}
                 />
               );
             })}

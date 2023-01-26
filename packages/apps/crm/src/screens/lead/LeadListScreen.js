@@ -137,6 +137,7 @@ const LeadListScreen = ({navigation}) => {
                   title={status.name}
                   onPress={() => updateStatus(status)}
                   selectedColor={Lead.getStatusColor(index, Colors)}
+                  marginHorizontal={5}
                 />
               );
             })}
@@ -155,14 +156,17 @@ const LeadListScreen = ({navigation}) => {
             leadsFixedPhone={item.fixedPhone}
             leadsPhoneNumber={item.mobilePhone}
             leadsEmail={item['emailAddress.address']}
-            leadScoring={item.leadScoring}
+            leadScoring={item.leadScoringSelect}
             leadVersion={item.version}
             leadsId={item.id}
             leadsStatus={item.leadStatus}
             allLeadStatus={leadStatusList}
+            isDoNotSendEmail={item.isDoNotSendEmail}
+            isDoNotCall={item.isDoNotCall}
             onPress={() =>
               navigation.navigate('LeadDetailsScreen', {
-                lead: item,
+                idLead: item.id,
+                versionLead: item.version,
                 colorIndex: leadStatusList?.findIndex(
                   status => status.id === item.leadStatus.id,
                 ),

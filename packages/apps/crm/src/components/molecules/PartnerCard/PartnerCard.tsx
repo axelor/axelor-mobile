@@ -41,53 +41,55 @@ const PartnerCard = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
-        <View style={styles.containerHeader}>
-          <AOSImage
-            generalStyle={styles.imageIcon}
-            imageSize={styles.imageSize}
-            defaultIconSize={50}
-            metaFile={partnerPicture}
-            resizeMode="contain"
-          />
-          <View style={styles.containerTextHeader}>
-            <Text style={styles.textTitle} fontSize={14}>
-              {partnerFullName}
-            </Text>
-            <Text fontSize={14}>{partnerReference}</Text>
-            {partnerScoring != null && (
-              <StarScore score={partnerScoring} showMissingStar={true} />
-            )}
-            {partnerCompany && (
-              <LabelText iconName="building" title={partnerCompany} />
-            )}
+        <View style={styles.containerChild}>
+          <View style={styles.containerHeader}>
+            <AOSImage
+              generalStyle={styles.imageIcon}
+              imageSize={styles.imageSize}
+              defaultIconSize={50}
+              metaFile={partnerPicture}
+              resizeMode="contain"
+            />
+            <View style={styles.containerTextHeader}>
+              <Text style={styles.textTitle} fontSize={14}>
+                {partnerFullName}
+              </Text>
+              <Text fontSize={14}>{partnerReference}</Text>
+              {partnerScoring != null && (
+                <StarScore score={partnerScoring} showMissingStar={true} />
+              )}
+              {partnerCompany && (
+                <LabelText iconName="building" title={partnerCompany} />
+              )}
+            </View>
+          </View>
+          <View style={styles.containerBody}>
+            <View style={styles.containerTextBody}>
+              {partnerAdress && (
+                <LabelText iconName="map-marker-alt" title={partnerAdress} />
+              )}
+              {partnerMobilePhone && (
+                <LabelText
+                  iconName="mobile-phone"
+                  FontAwesome5={false}
+                  title={partnerMobilePhone}
+                  size={18}
+                />
+              )}
+              {partnerFixedPhone && (
+                <LabelText iconName="phone-alt" title={partnerFixedPhone} />
+              )}
+              {partnerEmail && (
+                <LabelText iconName="envelope" title={partnerEmail} />
+              )}
+            </View>
           </View>
         </View>
-        <View style={styles.containerBody}>
-          <View style={styles.containerTextBody}>
-            {partnerAdress && (
-              <LabelText iconName="map-marker-alt" title={partnerAdress} />
-            )}
-            {partnerMobilePhone && (
-              <LabelText
-                iconName="mobile-phone"
-                FontAwesome5={false}
-                title={partnerMobilePhone}
-                size={18}
-              />
-            )}
-            {partnerFixedPhone && (
-              <LabelText iconName="phone-alt" title={partnerFixedPhone} />
-            )}
-            {partnerEmail && (
-              <LabelText iconName="envelope" title={partnerEmail} />
-            )}
-          </View>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
+        <Icon
+          name="chevron-right"
+          color={Colors.secondaryColor.background_light}
+          size={20}
+        />
       </Card>
     </TouchableOpacity>
   );
@@ -95,6 +97,10 @@ const PartnerCard = ({
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  containerChild: {
     flexDirection: 'column',
   },
   containerHeader: {
