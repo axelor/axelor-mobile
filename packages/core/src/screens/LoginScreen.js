@@ -48,11 +48,9 @@ const LoginScreen = ({route}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState(
-    'http://wip-api-mobile-preview.cloud-sw1.axelor.io/',
-  );
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin');
+  const [url, setUrl] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
   useEffect(() => {
     if (scannedValue) {

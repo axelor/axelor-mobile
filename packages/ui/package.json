@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-ui",
-  "version": "0.0.1",
+  "version": "6.4.0",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
