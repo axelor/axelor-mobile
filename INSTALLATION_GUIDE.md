@@ -73,8 +73,8 @@ Next step is to create a virutal device with the **Virtual Device Manager** on *
 Once development environment set up, you can clone project with command:
 
 ```
-git clone git@git.axelor.com:abs/axelor-private/aos-mobile.git
-cd aos-mobile/
+git clone git@github.com:axelor/axelor-mobile.git
+cd axelor-mobile/
 ```
 
 This project is running with yarn. You can install it and check version with the following commands.

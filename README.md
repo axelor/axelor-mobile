@@ -1,38 +1,71 @@
-<center>
-    <img src="https://i.imgur.com/QrtTa9b.png" alt="drawing" width="200"/>
-    <h1> AOS Mobile</h1>
-</center>
+<h1 align="center">Axelor Open Mobile</h1>
 
-## 📋 Scripts
+<div align="center">
+    <img src="https://i.imgur.com/KJAAFlT.png" width="30%"/>
+    <br />
+    <br />
+    <b>ERP processes made easy from your phone</b>
+</div>
 
-### :rocket: Initialize repository with dependencies
+# Presentation
 
-```bash
-yarn
+This mobile app is based on [Axelor Open Suite (AOS)](https://github.com/axelor/axelor-open-suite).
+
+The objective is to enable ERP processes to be carried out directly from the phone thanks to simplified screens.
+
+Axelor Open Mobile is a redesign of the [Axelor Mobile](https://github.com/axelor/axelor-mobile-old) application, now obsolete, in React Native. This redesign also contains the addition of new features in addition to better ergonomics.
+
+Based on a modular architecture, the application can be dedicated to a single module or be multidisciplinary.
+
+This new application mobile includes at the moment the following modules with different AOS compatibility:
+
+- Stock management (AOS v6.4+)
+- Production (AOS v6.4+)
+- CRM (AOS v6.5+)
+
+Working on :
+
+- Human ressources (AOS v7.1+)
+- Offline management
+
+# Installation
+
+Please see [installation guide](https://github.com/axelor/axelor-mobile/blob/main/INSTALLATION_GUIDE.md) to get more informations about preriquisites.
+
+# Usage
+
+## Add or remove module for APK generation
+
+Modules can be enabled directly in file App.js from example folder or with settings module from AOS.
+
+To manage apps directly with the _Application_ component, you just need to add/remove Module objects from _modules_ props.
+
+```
+import React from 'react';
+import {Application} from '@axelor/aos-mobile-core';
+import {StockModule} from '@axelor/aos-mobile-stock';
+import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
+import application_properties from '../package.json';
+
+const App = () => {
+  return (
+    <Application
+      modules={[StockModule, ManufacturingModule]}
+      mainMenu="auth_menu_user"
+      version={application_properties.version}
+    />
+  );
+};
+
+export default App;
 ```
 
-### Build packages
+You can also activate/desactivate apps directly for the configuration module which will be available from AOS v7.0+.
 
-```bash
-yarn build
-```
+## Important commands
 
-### Development
-
-```bash
-yarn dev
-```
-
-### :ferris_wheel: Running AOS application (example)
-
-#### :station: Start Metro
-
-```bash
-yarn start
-```
-
-#### :rotating_light: Start application
-
-```bash
-yarn android
-```
+- Install dependencies : `yarn clean && yarn`
+- Build packages : `yarn build`
+- Install debug android APK : `yarn android`
+- Start Metro for development : `yarn start`
+- Create release AP : `cd example/android && ./gradlew app:assembleRelease`
