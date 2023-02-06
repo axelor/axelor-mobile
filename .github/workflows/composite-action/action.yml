@@ -1,0 +1,34 @@
+name: 'Install prerequisites'
+description: 'Install java, android tools, node and dependencies'
+runs:
+  using: 'composite'
+  steps:
+    # Update
+    - run: sudo apt-get --quiet update -y
+      shell: bash
+    # Install specified SDK tools version to build with
+    - run: |
+        wget --quiet --output-document=/tmp/command-line-tools-linux.zip https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
+        unzip -qq /tmp/command-line-tools-linux.zip -d .android
+        export ANDROID_HOME=$PWD/.android
+        export PATH=$PATH:$PWD/.android/platform-tools/
+        echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-31" >/dev/null
+        echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --install "cmake;3.18.1"
+      shell: bash
+    # Install Node 14
+    - run: |
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - 
+        sudo apt-get -y install nodejs
+      shell: bash
+    # Install yarn
+    - run: npm install -g yarn@latest
+      shell: bash
+    # Install React-Native CLI
+    - run: yarn global add react-native-cli
+      shell: bash
+    # Install packages node_modules
+    - run: yarn install
+      shell: bash
+    # Install packages node_modules
+    - run: yarn install
+      shell: bash
