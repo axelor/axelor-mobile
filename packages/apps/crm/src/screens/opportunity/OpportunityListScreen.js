@@ -134,20 +134,6 @@ const OpportunityListScreen = ({navigation}) => {
               };
             })}
           />
-          /*<ChipSelect scrollable={true}>
-            {opportunityStatusList?.map?.((status, index) => {
-              return (
-                <Chip
-                  key={index}
-                  selected={isSelected(status)}
-                  title={status.name}
-                  onPress={() => updateStatus(status)}
-                  selectedColor={Opportunity.getStatusColor(index, Colors)}
-                  marginHorizontal={5}
-                />
-              );
-            })}
-          </ChipSelect>*/
         }
       />
       <ScrollList
