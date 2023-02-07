@@ -23,9 +23,11 @@ interface InternalStorage {
   getString(key: string): string | undefined;
   contains(key: string): boolean;
   clearAll(): void;
+  getAllKeys(): string[];
+  delete(key: string): void;
 }
 
-class Storage {
+export class Storage {
   constructor(private storage: InternalStorage) {}
 
   contains(key: string): boolean {
@@ -50,8 +52,16 @@ class Storage {
     }
   }
 
+  getAllKeys() {
+    return this.storage.getAllKeys();
+  }
+
   clearAll() {
     this.storage.clearAll();
+  }
+
+  deleteItem(key: string) {
+    this.storage.delete(key);
   }
 }
 
