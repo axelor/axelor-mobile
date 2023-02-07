@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "@aos-mobile/*": ["*/src"]
+      "@axelor/*": ["*/src"]
     }
   }
 }

@@ -35,3 +35,31 @@ export function areObjectsEquals(object1, object2) {
 export const isEmpty = obj =>
   Object.keys(obj).length === 0 &&
   Object.getPrototypeOf(obj) === Object.prototype;
+
+export function fetchJsonField(object: any, fieldName: string) {
+  if (object == null) {
+    return undefined;
+  }
+
+  if (object[fieldName] != null || !fieldName.includes('.')) {
+    return object[fieldName];
+  }
+
+  const fieldParts: string[] = fieldName.split('.');
+  return fetchJsonField(object[fieldParts.shift()], fieldParts.join('.'));
+}
+
+export function pickFieldsOfObject(object, fields): any {
+  return fields.reduce(function (result, field) {
+    result[field] = fetchJsonField(object, field);
+    return result;
+  }, {});
+}
+
+export function filterObjectsFields(data: any[], fields: string[]): any[] {
+  if (fields == null || fields?.length === 0) {
+    return data;
+  }
+
+  return data.map(object => pickFieldsOfObject(object, fields));
+}
