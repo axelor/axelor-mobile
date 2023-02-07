@@ -31,6 +31,7 @@ import {configI18n} from '../i18n/i18n';
 import enTranslation from '../i18n/translations/en.json';
 import frTranslation from '../i18n/translations/fr.json';
 import {configGlobalStore} from '../redux/store';
+import {useBackgroundFunction} from '../hooks/use-background-function';
 
 const ApplicationContext = createContext(null);
 
@@ -57,13 +58,15 @@ const ContextsProvider = ({
 
   const appTranslations = useMemo(
     () =>
-      modules.reduce(
-        (translations, _module) => ({
-          en: {...translations.en, ..._module.translations?.en},
-          fr: {...translations.fr, ..._module.translations?.fr},
-        }),
-        {en: enTranslation, fr: frTranslation},
-      ),
+      modules
+        .filter(_module => _module.translations)
+        .reduce(
+          (translations, _module) => ({
+            en: {...translations.en, ..._module.translations?.en},
+            fr: {...translations.fr, ..._module.translations?.fr},
+          }),
+          {en: enTranslation, fr: frTranslation},
+        ),
     [modules],
   );
 
@@ -75,25 +78,32 @@ const ContextsProvider = ({
       ],
     });
     setLoading(false);
-    // I18n should be initialize only once
+    // NOTE: I18n should be initialize only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const externalsReducers = useMemo(
     () =>
-      modules.reduce(
-        (reducers, _module) => ({...reducers, ..._module.reducers}),
-        {
+      modules
+        .filter(_module => _module.reducers)
+        .reduce((reducers, _module) => ({...reducers, ..._module.reducers}), {
           ...additionalsReducers,
-        },
-      ),
+        }),
     [additionalsReducers, modules],
   );
+
+  const modulesBackgroundFunctions = useMemo(() => {
+    return modules
+      .filter(_module => _module.backgroundFunctions)
+      .flatMap(_module => _module.backgroundFunctions);
+  }, [modules]);
 
   const store = useMemo(
     () => configGlobalStore(externalsReducers),
     [externalsReducers],
   );
+
+  useBackgroundFunction(modulesBackgroundFunctions);
 
   if (loading) {
     return null;

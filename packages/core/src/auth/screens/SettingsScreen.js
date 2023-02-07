@@ -27,17 +27,18 @@ import {
   Icon,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {
-  getTranslations,
-  selectLanguage,
-  showToastMessage,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {getTranslations, selectLanguage, useTranslator} from '../../i18n';
+import {showToastMessage} from '../../utils';
+import {
+  disable,
+  enable,
+  useEffectOnline,
+  useOnline,
+} from '../../features/onlineSlice';
 
-const SettingsScreen = ({route}) => {
+const SettingsScreen = ({route, children}) => {
   const {message} = useSelector(state => state.config);
   const {
     showFilter,
@@ -50,6 +51,7 @@ const SettingsScreen = ({route}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const Theme = useTheme();
+  const online = useOnline();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,6 +61,19 @@ const SettingsScreen = ({route}) => {
       dispatch(clearMessage());
     }
   }, [message, dispatch, setActivityIndicator]);
+
+  const handleToggleConnection = useCallback(
+    state => {
+      if (state) {
+        dispatch(enable());
+      } else {
+        dispatch(disable());
+      }
+    },
+    [dispatch],
+  );
+
+  useEffectOnline();
 
   const handleToggleColorBlind = useCallback(
     state => {
@@ -93,8 +108,14 @@ const SettingsScreen = ({route}) => {
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
           defaultValue={Theme.isColorBlind}
-          onToggle={state => handleToggleColorBlind(state)}
+          onToggle={handleToggleColorBlind}
         />
+        <SwitchCard
+          title={I18n.t('User_BlockConnection')}
+          defaultValue={!online.isEnabled}
+          onToggle={handleToggleConnection}
+        />
+        {children}
         {route.params.user == null ||
         route.params.user.group.code !== 'admins' ? null : (
           <RightIconButton

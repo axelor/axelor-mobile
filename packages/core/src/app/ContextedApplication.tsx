@@ -55,7 +55,7 @@ const ContextedApplication = ({
   const [, setRefresh] = useState(false);
 
   const toastConfig = {
-    success: props => (
+    success: (props: any) => (
       <BaseToast
         {...props}
         style={[styles.success, styles.toast]}
@@ -65,7 +65,7 @@ const ContextedApplication = ({
         text2NumberOfLines={3}
       />
     ),
-    error: props => (
+    error: (props: any) => (
       <ErrorToast
         {...props}
         style={[styles.error, styles.toast]}

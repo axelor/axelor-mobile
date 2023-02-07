@@ -23,7 +23,13 @@ interface ApiCallProps {
   data?: any;
 }
 
-class AxiosApiProvider {
+export interface ApiProvider {
+  post({url, data}): Promise<any>;
+  put({url, data}): Promise<any>;
+  get({url}): Promise<any>;
+}
+
+class AxiosApiProvider implements ApiProvider {
   constructor() {}
 
   post({url, data}: ApiCallProps): Promise<any> {
