@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../axios/AxiosApi';
+import {axiosApiProvider} from '../apiProviders/AxiosProvider';
 import {getMobileConfigs} from './mobile-config-api';
 
 const MobileMenuFields = ['name', 'technicalName', 'authorizedRoles'];

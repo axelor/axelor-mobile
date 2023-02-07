@@ -17,6 +17,7 @@
  */
 
 import axios from 'axios';
+import {provider} from '../apiProviders';
 
 const loginPath = '/callback';
 
@@ -38,6 +39,9 @@ export async function loginApi(
         config.headers['x-csrf-token'] = token;
         return config;
       });
+
+      provider.getModelApi()?.init();
+
       return {token, jsessionId};
     });
 }
