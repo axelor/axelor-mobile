@@ -43,7 +43,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: () => initialState,
+    logout: state => ({...initialState, baseUrl: state.baseUrl}),
   },
   extraReducers: builder => {
     builder.addCase(login.pending, state => {
