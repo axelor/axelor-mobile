@@ -1,8 +1,5 @@
-import {
-  formatDate,
-  formatDateTime,
-  TranslatorProps,
-} from '@axelor/aos-mobile-core';
+import {formatDate, formatDateTime} from '../../../utils/formatters';
+import {TranslatorProps} from '../../../i18n/hooks/use-translator';
 import {formatTime} from '../../../utils/formatters';
 
 class DateInputUtils {

@@ -1,14 +1,16 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import useTranslator from '../../../i18n/hooks/use-translator';
+import {OUTSIDE_INDICATOR} from '@axelor/aos-mobile-ui';
 import {
-  OUTSIDE_INDICATOR,
+  Card,
+  getCommonStyles,
+  Icon,
+  RightIconButton,
+  Text,
   useClickOutside,
-} from '../../../hooks/use-click-outside';
-import {Icon, Card, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {RightIconButton} from '../../molecules';
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
 

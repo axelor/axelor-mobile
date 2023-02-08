@@ -18,8 +18,8 @@
 
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
-export {default as DateInput} from './DateInput/DateInput';
 export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSwitch';
+export {default as FloatingButton} from './FloatingButton/FloatingButton';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as ImageBubble} from './ImageBubble/ImageBubble';
 export {default as MultiValuePicker} from './MultiValuePicker/MultiValuePicker';

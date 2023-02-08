@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {default as NativeDatePicker} from 'react-native-date-picker';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface DatePickerProps {
   defaultDate: Date;

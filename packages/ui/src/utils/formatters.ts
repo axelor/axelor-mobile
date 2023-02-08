@@ -33,17 +33,6 @@ export function formatDate(inputDate: string, format: string): string {
   return format;
 }
 
-export const formatTime = (dateInput: string, format: string): string => {
-  const date = new Date(dateInput);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  format = format.replace('HH', hours.toString().padStart(2, '0'));
-  format = format.replace('mm', minutes.toString().padStart(2, '0'));
-
-  return format;
-};
-
 export function formatNumber(
   number: string,
   decimalSpacer: string = '.',
