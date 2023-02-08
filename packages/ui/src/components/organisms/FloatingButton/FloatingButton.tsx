@@ -15,8 +15,7 @@ interface FloatingButtonProps {
   iconName?: string;
   size?: number;
   style?: any;
-  useTranslator: any;
-  I18n: any;
+  translator: (translationKey: string) => string;
 }
 
 interface ActionProps {
@@ -38,7 +37,7 @@ const FloatingActionButton = ({
   size,
   disabled = false,
   onPress,
-  I18n,
+  translator,
 }: {
   actionKey: number;
   title: string;
@@ -46,10 +45,9 @@ const FloatingActionButton = ({
   size: number;
   disabled?: boolean;
   onPress: (actionKey: number) => void;
-  I18n: any;
+  translator: (translationKey: string) => string;
 }) => {
   const Colors = useThemeColor();
-
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleActionPress = useCallback(
@@ -67,7 +65,7 @@ const FloatingActionButton = ({
       />
       <View style={styles.actionTitleContainer}>
         <Text fontSize={16} style={styles.actionTitle}>
-          {I18n.t(title)}
+          {translator(title)}
         </Text>
       </View>
     </View>
@@ -79,10 +77,9 @@ const FloatingButton = ({
   iconName = 'plus',
   size = FLOATING_BUTTON_SIZE,
   style,
-  I18n,
+  translator,
 }: FloatingButtonProps) => {
   const Colors = useThemeColor();
-
   const [isOpen, setIsOpen] = useState(false);
 
   const wrapperRef = useRef(null);
@@ -121,10 +118,10 @@ const FloatingButton = ({
             size={actionSize}
             disabled={action.disabled}
             onPress={() => onActionPress(action.onPress)}
-            I18n={I18n}
+            translator={translator}
           />
         )),
-    [actions, actionSize, onActionPress, I18n],
+    [actions, actionSize, onActionPress, translator],
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);

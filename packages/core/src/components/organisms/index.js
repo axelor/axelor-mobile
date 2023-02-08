@@ -18,7 +18,7 @@
 
 export {default as AOSImage} from './AOSImage/AOSImage';
 export {default as AOSImageBubble} from './AOSImageBubble/AOSImageBubble';
-export {default as DataInput} from './DateInput/DateInput';
+export {default as DateInput} from './DateInput/DateInput';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
 export {default as LogoImage} from './LogoImage/LogoImage';
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
