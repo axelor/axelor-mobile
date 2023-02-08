@@ -23,6 +23,7 @@ export {default as CardIconButton} from './CardIconButton/CardIconButton';
 export {default as Checkbox} from './Checkbox/Checkbox';
 export {default as Chip} from './Chip/Chip';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
+export {default as DatePicker} from './DatePicker/DatePicker';
 export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
