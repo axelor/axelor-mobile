@@ -33,6 +33,7 @@ const RootNavigator = ({
   version,
   showModulesSubtitle = false,
   onRefresh,
+  debugEnv,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -93,7 +94,7 @@ const RootNavigator = ({
         <Screen
           name="LoginScreen"
           component={LoginScreen}
-          initialParams={{version}}
+          initialParams={{version, debugEnv}}
         />
       ) : (
         <Screen name="AppNavigator" component={AppNavigator} />
