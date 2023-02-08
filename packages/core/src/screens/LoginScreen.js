@@ -42,17 +42,24 @@ import {
 const urlScanKey = 'login_url';
 
 const LoginScreen = ({route}) => {
-  const {loading, error} = useSelector(state => state.auth);
+  const {loading, error, baseUrl} = useSelector(state => state.auth);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
   const appVersion = route?.params?.version;
+  const debugEnv = route?.params?.debugEnv;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const [url, setUrl] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [url, setUrl] = useState(
+    debugEnv ? debugEnv.defaultUrl || '' : baseUrl,
+  );
+  const [username, setUsername] = useState(
+    debugEnv ? debugEnv.defaultUsername : '',
+  );
+  const [password, setPassword] = useState(
+    debugEnv ? debugEnv.defaultPassword : '',
+  );
 
   useEffect(() => {
     if (scannedValue) {

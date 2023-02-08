@@ -35,11 +35,18 @@ import {getActiveUserId} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
 import {Camera, CameraScanner, Scanner} from '../components';
 
+interface proxy {
+  defaultUrl: string;
+  defaultUsername: string;
+  defaultPassword: string;
+}
+
 interface ContextedApplicationProps {
   modules: Module[];
   mainMenu?: string;
   version: string;
   showModulesSubtitle: boolean;
+  debugEnv?: proxy;
 }
 
 const ContextedApplication = ({
@@ -47,6 +54,7 @@ const ContextedApplication = ({
   mainMenu,
   version,
   showModulesSubtitle = false,
+  debugEnv,
 }: ContextedApplicationProps) => {
   const Colors = useThemeColor();
 
@@ -97,6 +105,7 @@ const ContextedApplication = ({
             mainMenu={mainMenu}
             version={version}
             showModulesSubtitle={showModulesSubtitle}
+            debugEnv={debugEnv}
           />
         </NavigationContainer>
       </ErrorBoundary>

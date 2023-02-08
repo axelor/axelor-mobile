@@ -23,6 +23,12 @@ import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
 
+interface proxy {
+  defaultUrl: string;
+  defaultUsername: string;
+  defaultPassword: string;
+}
+
 interface ApplicationProps {
   modules: Module[];
   mainMenu?: string;
@@ -32,7 +38,8 @@ interface ApplicationProps {
   defaultTheme?: Theme;
   writingThemes?: Writing[];
   defaultWritingTheme?: Writing;
-  showModulesSubtitle: boolean;
+  showModulesSubtitle?: boolean;
+  debugEnv?: proxy;
 }
 
 const Application = ({
@@ -45,6 +52,7 @@ const Application = ({
   writingThemes,
   defaultWritingTheme,
   showModulesSubtitle = false,
+  debugEnv,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
@@ -61,6 +69,7 @@ const Application = ({
         mainMenu={mainMenu}
         version={version}
         showModulesSubtitle={showModulesSubtitle}
+        debugEnv={__DEV__ ? debugEnv : null}
       />
     </ContextsProvider>
   );
