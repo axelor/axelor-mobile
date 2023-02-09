@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   Icon,
   HeaderContainer,
@@ -34,6 +33,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  filterChip,
 } from '@axelor/aos-mobile-core';
 import {StockCorrectionCard} from '../../components';
 import {fetchStockCorrections} from '../../features/stockCorrectionSlice';
@@ -54,52 +54,15 @@ const StockCorrectionListScreen = ({navigation}) => {
   const {user} = useSelector(state => state.user);
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
-  const [draftStatus, setDraftStatus] = useState(false);
-  const [validatedStatus, setValidatedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [filteredList, setFilteredList] = useState(stockCorrectionList);
   const dispatch = useDispatch();
 
-  const handleDraftFilter = () => {
-    if (!draftStatus && validatedStatus) {
-      setValidatedStatus(!validatedStatus);
-    }
-    setDraftStatus(!draftStatus);
-  };
-
-  const handleValidatedFilter = () => {
-    if (!validatedStatus && draftStatus) {
-      setDraftStatus(!draftStatus);
-    }
-    setValidatedStatus(!validatedStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (draftStatus) {
-          const draftStockCorrectionList = [];
-          list.forEach(item => {
-            if (item.statusSelect === 1) {
-              draftStockCorrectionList.push(item);
-            }
-          });
-          return draftStockCorrectionList;
-        } else if (validatedStatus) {
-          const validatedStockCorrectionList = [];
-          list.forEach(item => {
-            if (item.statusSelect === 2) {
-              validatedStockCorrectionList.push(item);
-            }
-          });
-          return validatedStockCorrectionList;
-        } else {
-          return list;
-        }
-      }
+      return filterChip(list, selectedStatus, 'statusSelect');
     },
-    [draftStatus, validatedStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -118,14 +81,7 @@ const StockCorrectionListScreen = ({navigation}) => {
         ),
       ),
     );
-  }, [
-    draftStatus,
-    validatedStatus,
-    stockCorrectionList,
-    stockLocation,
-    product,
-    filterOnStatus,
-  ]);
+  }, [stockCorrectionList, stockLocation, product, filterOnStatus]);
 
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
@@ -181,26 +137,28 @@ const StockCorrectionListScreen = ({navigation}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={draftStatus}
-              title={I18n.t('Stock_Status_Draft')}
-              onPress={handleDraftFilter}
-              selectedColor={StockCorrection.getStatusColor(
-                StockCorrection.status.Draft,
-                Colors,
-              )}
-            />
-            <Chip
-              selected={validatedStatus}
-              title={I18n.t('Stock_Status_Validated')}
-              onPress={handleValidatedFilter}
-              selectedColor={StockCorrection.getStatusColor(
-                StockCorrection.status.Validated,
-                Colors,
-              )}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Status_Draft'),
+                color: StockCorrection.getStatusColor(
+                  StockCorrection.status.Draft,
+                  Colors,
+                ),
+                key: StockCorrection.status.Draft,
+              },
+              {
+                title: I18n.t('Stock_Status_Validated'),
+                color: StockCorrection.getStatusColor(
+                  StockCorrection.status.Validated,
+                  Colors,
+                ),
+                key: StockCorrection.status.Validated,
+              },
+            ]}
+          />
         }>
         <ScannerAutocompleteSearch
           objectList={stockLocationList}
