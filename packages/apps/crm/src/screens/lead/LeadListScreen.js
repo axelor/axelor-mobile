@@ -6,7 +6,6 @@ import {
   ToggleSwitch,
   ScrollList,
   ChipSelect,
-  Chip,
   useThemeColor,
   getCommonStyles,
   AutoCompleteSearch,
@@ -46,23 +45,6 @@ const LeadListScreen = ({navigation}) => {
     [dispatch],
   );
 
-  const updateStatus = status => {
-    if (isSelected(status)) {
-      setSelectedStatus(
-        selectedStatus?.filter(activeStatus => activeStatus.id !== status.id),
-      );
-    } else {
-      setSelectedStatus([...selectedStatus, status]);
-    }
-  };
-
-  const isSelected = status => {
-    return (
-      selectedStatus?.find(activeStatus => activeStatus.id === status.id) !=
-      null
-    );
-  };
-
   const filterOnUserAssigned = useCallback(
     list => {
       if (list == null || list === []) {
@@ -85,7 +67,7 @@ const LeadListScreen = ({navigation}) => {
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
-            selectedStatus.find(status => item?.leadStatus?.id === status.id),
+            selectedStatus.find(status => item?.leadStatus?.id === status.key),
           );
         } else {
           return list;
@@ -128,20 +110,18 @@ const LeadListScreen = ({navigation}) => {
           </View>
         }
         chipComponent={
-          <ChipSelect scrollable={true}>
-            {leadStatusList.map((status, index) => {
-              return (
-                <Chip
-                  key={index}
-                  selected={isSelected(status)}
-                  title={status.name}
-                  onPress={() => updateStatus(status)}
-                  selectedColor={Lead.getStatusColor(index, Colors)}
-                  marginHorizontal={5}
-                />
-              );
+          <ChipSelect
+            mode="multi"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={5}
+            selectionItems={leadStatusList.map((status, index) => {
+              return {
+                title: status.name,
+                color: Lead.getStatusColor(index, Colors),
+                key: status.id,
+              };
             })}
-          </ChipSelect>
+          />
         }
       />
       <ScrollList
