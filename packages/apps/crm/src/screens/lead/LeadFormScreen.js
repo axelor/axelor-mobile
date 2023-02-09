@@ -27,6 +27,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [leadAdress, setLeadAdress] = useState(
     lead.primaryAddress !== null ? lead.primaryAddress : '',
   );
+  const [fixedPhone, setFixedPhone] = useState(
+    lead.fixedPhone !== null ? lead.fixedPhone : '',
+  );
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -50,6 +53,7 @@ const LeadFormScreen = ({navigation, route}) => {
         leadName: name,
         leadJob: leadJob,
         leadAdress: leadAdress,
+        leadFixedPhone: fixedPhone,
       }),
     );
   }, [
@@ -61,6 +65,7 @@ const LeadFormScreen = ({navigation, route}) => {
     name,
     leadJob,
     leadAdress,
+    fixedPhone,
   ]);
 
   return (
@@ -138,8 +143,8 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={{width: '90%'}}
             title={I18n.t('Crm_FixedPhone')}
-            onChange={e => console.log('fixedPhone', e)}
-            defaultValue={lead?.fixedPhone !== null ? lead?.fixedPhone : ''}
+            onChange={e => setFixedPhone(e)}
+            defaultValue={fixedPhone}
           />
           <FormInput
             style={{width: '90%'}}
