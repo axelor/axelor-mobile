@@ -25,6 +25,7 @@ export {ConfigProvider, useConfig} from './config/ConfigContext';
 export {
   OutsideAlerterProvider,
   useClickOutside,
+  OUTSIDE_INDICATOR,
 } from './hooks/use-click-outside';
 export {animationUtil} from './tools/AnimationUtil';
 export {formatNumber} from './utils/formatters';
