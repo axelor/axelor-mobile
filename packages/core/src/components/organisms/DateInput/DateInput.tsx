@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import useTranslator from '../../../i18n/hooks/use-translator';
-import {OUTSIDE_INDICATOR} from '@axelor/aos-mobile-ui';
 import {
   Card,
   getCommonStyles,
@@ -10,6 +9,7 @@ import {
   Text,
   useClickOutside,
   useThemeColor,
+  OUTSIDE_INDICATOR,
 } from '@axelor/aos-mobile-ui';
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
