@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DatePicker} from './DatePicker/DatePicker';
 export {default as ErrorText} from './ErrorText/ErrorText';
 export {default as HeaderOptionMenuItem} from './HeaderOptionsMenuItem/HeaderOptionMenuItem';
 export {default as IconSettings} from './IconSettings/IconSettings';
