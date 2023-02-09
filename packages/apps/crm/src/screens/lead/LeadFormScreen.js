@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchLeadById} from '../../features/leadSlice';
+import {fetchLeadById, updateLead} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 
 const LeadFormScreen = ({navigation, route}) => {
@@ -19,6 +19,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const {functionList} = useSelector(state => state.function);
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const [score, setScore] = useState(lead.leadScoringSelect);
+  const [civility, setCivility] = useState(Number(lead.titleSelect));
+
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
     dispatch(fetchFunction());
@@ -31,6 +34,16 @@ const LeadFormScreen = ({navigation, route}) => {
     {id: 4, name: 'Prof'},
   ];
 
+  const updateLeadAPI = useCallback(() => {
+    dispatch(
+      updateLead({
+        leadId: lead.id,
+        leadVersion: lead.version,
+        leadCivility: civility,
+      }),
+    );
+  }, [dispatch, lead.id, lead.version, civility]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <ScrollView>
@@ -40,22 +53,18 @@ const LeadFormScreen = ({navigation, route}) => {
               <Picker
                 pickerStyle={{width: '100%'}}
                 title={I18n.t('Crm_Civility')}
-                onValueChange={e => console.log('civility', e)}
+                onValueChange={e => setCivility(e)}
                 listItems={civilityList}
                 labelField="name"
                 valueField="id"
-                defaultValue={
-                  civilityList.find(
-                    civ => civ.id.toString() === lead.titleSelect.toString(),
-                  )?.id
-                }
+                defaultValue={civility}
               />
             </View>
             <View style={styles.checkBoxContainer}>
               <StarScore
                 score={lead.leadScoringSelect}
                 showMissingStar={true}
-                onPress={e => console.log('starScore', e)}
+                onPress={e => setScore(e)}
                 editMode={true}
               />
               <Checkbox
@@ -150,10 +159,7 @@ const LeadFormScreen = ({navigation, route}) => {
         />
       </ScrollView>
       <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={() => console.log('save')}
-        />
+        <Button title={I18n.t('Base_Save')} onPress={() => updateLeadAPI()} />
       </View>
     </Screen>
   );
