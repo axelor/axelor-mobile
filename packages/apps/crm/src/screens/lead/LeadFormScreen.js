@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Checkbox,
   FormInput,
+  NotesCard,
   Picker,
   Screen,
   StarScore,
@@ -90,7 +91,7 @@ const LeadFormScreen = ({navigation, route}) => {
           />
           <View style={{width: '100%'}}>
             <Picker
-              pickerStyle={{width: '100%'}}
+              //pickerStyle={{width: '100%'}}
               title={I18n.t('Crm_JobTitle')}
               onValueChange={e => console.log('job', e)}
               listItems={functionList}
@@ -103,7 +104,49 @@ const LeadFormScreen = ({navigation, route}) => {
               }
             />
           </View>
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_Address')}
+            onChange={e => console.log('Address', e)}
+            defaultValue={
+              lead?.primaryAddress !== null ? lead?.primaryAddress : ''
+            }
+          />
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_FixedPhone')}
+            onChange={e => console.log('fixedPhone', e)}
+            defaultValue={lead?.fixedPhone !== null ? lead?.fixedPhone : ''}
+          />
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_MobilePhone')}
+            onChange={e => console.log('mobilePhone', e)}
+            defaultValue={
+              lead?.mobilePhone !== null ? lead?.primamobilePhoneryAddress : ''
+            }
+          />
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_EmailAddress')}
+            onChange={e => console.log('emailAddress', e)}
+            defaultValue={
+              lead.emailAddress?.address !== null
+                ? lead.emailAddress?.address
+                : ''
+            }
+          />
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_WebSite')}
+            onChange={e => console.log('webSite', e)}
+            defaultValue={lead.webSite !== null ? lead.webSite : ''}
+          />
         </View>
+        <NotesCard
+          title={I18n.t('Crm_LeadNotes')}
+          data={lead.description !== null ? lead.description : ''}
+        />
       </ScrollView>
     </Screen>
   );
