@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   Screen,
   ScrollList,
@@ -27,7 +26,12 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  filterChip,
+} from '@axelor/aos-mobile-core';
 import {
   ManufacturingOrderHeader,
   ManufacturingOrderCard,
@@ -44,121 +48,17 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
     childrenManufOrders,
   } = useSelector(state => state.manufacturingOrder);
   const [filteredList, setFilteredList] = useState(childrenManufOrders);
-  const [draftStatus, setDraftStatus] = useState(false);
-  const [plannedStatus, setPlannedStatus] = useState(false);
-  const [progressStatus, setProgressStatus] = useState(false);
-  const [standByStatus, setStandByStatus] = useState(false);
-  const [finishedStatus, setFinishedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const desactivateChip = () => {
-    setDraftStatus(false);
-    setPlannedStatus(false);
-    setProgressStatus(false);
-    setStandByStatus(false);
-    setFinishedStatus(false);
-  };
-
-  const handleDraftStatus = () => {
-    if (plannedStatus && progressStatus && standByStatus && finishedStatus) {
-      desactivateChip();
-    } else {
-      setDraftStatus(!draftStatus);
-    }
-  };
-
-  const handlePlannedStatus = () => {
-    if (draftStatus && progressStatus && standByStatus && finishedStatus) {
-      desactivateChip();
-    } else {
-      setPlannedStatus(!plannedStatus);
-    }
-  };
-
-  const handleProgressStatus = () => {
-    if (plannedStatus && draftStatus && standByStatus && finishedStatus) {
-      desactivateChip();
-    } else {
-      setProgressStatus(!progressStatus);
-    }
-  };
-
-  const handleStandByStatus = () => {
-    if (plannedStatus && progressStatus && draftStatus && finishedStatus) {
-      desactivateChip();
-    } else {
-      setStandByStatus(!standByStatus);
-    }
-  };
-
-  const handleFinishedStatus = () => {
-    if (plannedStatus && progressStatus && standByStatus && draftStatus) {
-      desactivateChip();
-    } else {
-      setFinishedStatus(!finishedStatus);
-    }
-  };
-
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        const listFilter = [];
-        if (
-          draftStatus ||
-          plannedStatus ||
-          progressStatus ||
-          standByStatus ||
-          finishedStatus
-        ) {
-          if (draftStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.Draft) {
-                listFilter.push(item);
-              }
-            });
-          }
-          if (plannedStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.Planned) {
-                listFilter.push(item);
-              }
-            });
-          }
-          if (progressStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.InProgress) {
-                listFilter.push(item);
-              }
-            });
-          }
-          if (standByStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.StandBy) {
-                listFilter.push(item);
-              }
-            });
-          }
-          if (finishedStatus) {
-            list.forEach(item => {
-              if (item.statusSelect === ManufacturingOrder.status.Finished) {
-                listFilter.push(item);
-              }
-            });
-          }
-        } else {
-          return list;
-        }
-
-        return listFilter;
-      }
+      return filterChip(list, selectedStatus, 'statusSelect');
     },
-    [draftStatus, finishedStatus, plannedStatus, progressStatus, standByStatus],
+    [selectedStatus],
   );
-
   useEffect(() => {
     setFilteredList(filterOnStatus(childrenManufOrders));
   }, [filterOnStatus, childrenManufOrders]);
@@ -197,65 +97,54 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
           </>
         }
         chipComponent={
-          <ChipSelect>
-            <ChipSelect style={styles.chipContainer} scrollable={true}>
-              <Chip
-                selected={draftStatus}
-                title={I18n.t('Manufacturing_Status_Draft')}
-                onPress={handleDraftStatus}
-                selectedColor={ManufacturingOrder.getStatusColor(
+          <ChipSelect
+            mode="multi"
+            marginHorizontal={3}
+            width={Dimensions.get('window').width * 0.35}
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Manufacturing_Status_Draft'),
+                color: ManufacturingOrder.getStatusColor(
                   ManufacturingOrder.status.Draft,
                   Colors,
-                )}
-                width={Dimensions.get('window').width * 0.35}
-                marginHorizontal={3}
-              />
-              <Chip
-                selected={plannedStatus}
-                title={I18n.t('Manufacturing_Status_Planned')}
-                onPress={handlePlannedStatus}
-                selectedColor={ManufacturingOrder.getStatusColor(
+                ),
+                key: ManufacturingOrder.status.Draft,
+              },
+              {
+                title: I18n.t('Manufacturing_Status_Planned'),
+                color: ManufacturingOrder.getStatusColor(
                   ManufacturingOrder.status.Planned,
                   Colors,
-                )}
-                width={Dimensions.get('window').width * 0.35}
-                marginHorizontal={3}
-              />
-              <Chip
-                selected={progressStatus}
-                title={I18n.t('Manufacturing_Status_InProgress')}
-                onPress={handleProgressStatus}
-                selectedColor={ManufacturingOrder.getStatusColor(
+                ),
+                key: ManufacturingOrder.status.Planned,
+              },
+              {
+                title: I18n.t('Manufacturing_Status_InProgress'),
+                color: ManufacturingOrder.getStatusColor(
                   ManufacturingOrder.status.InProgress,
                   Colors,
-                )}
-                width={Dimensions.get('window').width * 0.35}
-                marginHorizontal={3}
-              />
-              <Chip
-                selected={standByStatus}
-                title={I18n.t('Manufacturing_Status_StandBy')}
-                onPress={handleStandByStatus}
-                selectedColor={ManufacturingOrder.getStatusColor(
+                ),
+                key: ManufacturingOrder.status.InProgress,
+              },
+              {
+                title: I18n.t('Manufacturing_Status_StandBy'),
+                color: ManufacturingOrder.getStatusColor(
                   ManufacturingOrder.status.StandBy,
                   Colors,
-                )}
-                width={Dimensions.get('window').width * 0.35}
-                marginHorizontal={3}
-              />
-              <Chip
-                selected={finishedStatus}
-                title={I18n.t('Manufacturing_Status_Finished')}
-                onPress={handleFinishedStatus}
-                selectedColor={ManufacturingOrder.getStatusColor(
+                ),
+                key: ManufacturingOrder.status.StandBy,
+              },
+              {
+                title: I18n.t('Manufacturing_Status_Finished'),
+                color: ManufacturingOrder.getStatusColor(
                   ManufacturingOrder.status.Finished,
                   Colors,
-                )}
-                width={Dimensions.get('window').width * 0.35}
-                marginHorizontal={3}
-              />
-            </ChipSelect>
-          </ChipSelect>
+                ),
+                key: ManufacturingOrder.status.Finished,
+              },
+            ]}
+          />
         }
       />
       <ScrollList

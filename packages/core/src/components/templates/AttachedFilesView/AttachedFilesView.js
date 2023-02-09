@@ -21,7 +21,6 @@ import {Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
-  Chip,
   ChipSelect,
   File,
   HeaderContainer,
@@ -51,8 +50,8 @@ function AttachedFilesView({
   const {loading, attachedFilesList} = useSelector(
     state => state.attachedFiles,
   );
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [extensionList, setExtensionList] = useState([]);
-  const [selectedExtension, setSelectedExtension] = useState();
 
   const dispatch = useDispatch();
 
@@ -78,30 +77,22 @@ function AttachedFilesView({
     );
   }, [dispatch, isStaticList, files, model, modelId]);
 
-  const desactivateChip = () => {
-    setSelectedExtension(null);
-  };
-
   const filterOnSelectExtension = useCallback(
     list => {
-      if (list == null || list === [] || !selectedExtension) {
+      if (list == null || list === []) {
         return list;
-      } else {
-        return list.filter(
-          item => File.getFileExtension(item.fileName) === selectedExtension,
+      } else if (selectedStatus.length > 0) {
+        return list.filter(item =>
+          selectedStatus.find(
+            status => File.getFileExtension(item.fileName) === status.key,
+          ),
         );
+      } else {
+        return list;
       }
     },
-    [selectedExtension],
+    [selectedStatus],
   );
-
-  const handleSelectExtension = ext => {
-    if (selectedExtension === ext) {
-      desactivateChip();
-    } else {
-      setSelectedExtension(ext);
-    }
-  };
 
   const filteredList = useMemo(
     () => filterOnSelectExtension(attachedFilesList),
@@ -131,23 +122,19 @@ function AttachedFilesView({
       <HeaderContainer
         expandableFilter={false}
         chipComponent={
-          <ChipSelect scrollable={true}>
-            {extensionList.map((ext, index) => (
-              <Chip
-                key={'chip' + index}
-                selected={selectedExtension === ext}
-                title={`${ext}`.toUpperCase()}
-                onPress={() => handleSelectExtension(ext)}
-                selectedColor={
-                  selectedExtension === ext
-                    ? Colors.primaryColor
-                    : Colors.secondaryColor
-                }
-                width={Dimensions.get('window').width * 0.25}
-                marginHorizontal={3}
-              />
-            ))}
-          </ChipSelect>
+          <ChipSelect
+            mode="multi"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={5}
+            width={Dimensions.get('window').width * 0.25}
+            selectionItems={extensionList.map(ext => {
+              return {
+                title: `${ext}`.toUpperCase(),
+                color: Colors.primaryColor,
+                key: ext,
+              };
+            })}
+          />
         }
       />
       <ScrollList
