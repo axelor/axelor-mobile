@@ -9,7 +9,6 @@ import {
   ToggleSwitch,
   AutoCompleteSearch,
   ChipSelect,
-  Chip,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {OpportunityCard} from '../../components';
@@ -56,23 +55,6 @@ const OpportunityListScreen = ({navigation}) => {
     [dispatch],
   );
 
-  const updateStatus = status => {
-    if (isSelected(status)) {
-      setSelectedStatus(
-        selectedStatus?.filter(activeStatus => activeStatus.id !== status.id),
-      );
-    } else {
-      setSelectedStatus([...selectedStatus, status]);
-    }
-  };
-
-  const isSelected = status => {
-    return (
-      selectedStatus?.find(activeStatus => activeStatus.id === status.id) !=
-      null
-    );
-  };
-
   const filterOnUserAssigned = useCallback(
     list => {
       if (list == null || list === []) {
@@ -96,7 +78,7 @@ const OpportunityListScreen = ({navigation}) => {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
             selectedStatus.find(
-              status => item?.opportunityStatus?.id === status.id,
+              status => item?.opportunityStatus?.id === status.key,
             ),
           );
         } else {
@@ -140,20 +122,18 @@ const OpportunityListScreen = ({navigation}) => {
           </View>
         }
         chipComponent={
-          <ChipSelect scrollable={true}>
-            {opportunityStatusList?.map?.((status, index) => {
-              return (
-                <Chip
-                  key={index}
-                  selected={isSelected(status)}
-                  title={status.name}
-                  onPress={() => updateStatus(status)}
-                  selectedColor={Opportunity.getStatusColor(index, Colors)}
-                  marginHorizontal={5}
-                />
-              );
+          <ChipSelect
+            mode="multi"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={5}
+            selectionItems={opportunityStatusList.map((status, index) => {
+              return {
+                title: status.name,
+                color: Opportunity.getStatusColor(index, Colors),
+                key: status.id,
+              };
             })}
-          </ChipSelect>
+          />
         }
       />
       <ScrollList

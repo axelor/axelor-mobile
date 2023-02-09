@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
-  Chip,
   ChipSelect,
   Icon,
   HeaderContainer,
@@ -35,6 +34,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  filterChip,
 } from '@axelor/aos-mobile-core';
 import {InternalMoveCard} from '../../components';
 import {
@@ -64,60 +64,16 @@ const InternalMoveListScreen = ({navigation}) => {
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
   const [filteredList, setFilteredList] = useState(internalMoveList);
-  const [draftStatus, setDraftStatus] = useState(false);
-  const [plannedStatus, setPlannedStatus] = useState(false);
-  const [realizedStatus, setRealizedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
 
-  const handleDraftFilter = () => {
-    if (!draftStatus && (realizedStatus || plannedStatus)) {
-      setPlannedStatus(false);
-      setRealizedStatus(false);
-    }
-    setDraftStatus(!draftStatus);
-  };
-
-  const handlePlannedFilter = () => {
-    if (!plannedStatus && (realizedStatus || draftStatus)) {
-      setDraftStatus(false);
-      setRealizedStatus(false);
-    }
-    setPlannedStatus(!plannedStatus);
-  };
-
-  const handleRealizedFilter = () => {
-    if (!realizedStatus && (plannedStatus || draftStatus)) {
-      setDraftStatus(false);
-      setPlannedStatus(false);
-    }
-    setRealizedStatus(!realizedStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (draftStatus) {
-          return list.filter(
-            item => item.statusSelect === StockMove.status.Draft,
-          );
-        } else if (plannedStatus) {
-          return list.filter(
-            item => item.statusSelect === StockMove.status.Planned,
-          );
-        } else if (realizedStatus) {
-          return list.filter(
-            item => item.statusSelect === StockMove.status.Realized,
-          );
-        } else {
-          return list;
-        }
-      }
+      return filterChip(list, selectedStatus, 'statusSelect');
     },
-    [draftStatus, plannedStatus, realizedStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -235,41 +191,35 @@ const InternalMoveListScreen = ({navigation}) => {
           />
         }
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={draftStatus}
-              title={I18n.t('Stock_Status_Draft')}
-              onPress={handleDraftFilter}
-              selectedColor={StockMove.getStatusColor(
-                StockMove.status.Draft,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={3}
-            />
-            <Chip
-              selected={plannedStatus}
-              title={I18n.t('Stock_Status_Planned')}
-              onPress={handlePlannedFilter}
-              selectedColor={StockMove.getStatusColor(
-                StockMove.status.Planned,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={3}
-            />
-            <Chip
-              selected={realizedStatus}
-              title={I18n.t('Stock_Status_Realized')}
-              onPress={handleRealizedFilter}
-              selectedColor={StockMove.getStatusColor(
-                StockMove.status.Realized,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={3}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            width={Dimensions.get('window').width * 0.3}
+            marginHorizontal={3}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Status_Draft'),
+                color: StockMove.getStatusColor(StockMove.status.Draft, Colors),
+                key: StockMove.status.Draft,
+              },
+              {
+                title: I18n.t('Stock_Status_Planned'),
+                color: StockMove.getStatusColor(
+                  StockMove.status.Planned,
+                  Colors,
+                ),
+                key: StockMove.status.Planned,
+              },
+              {
+                title: I18n.t('Stock_Status_Realized'),
+                color: StockMove.getStatusColor(
+                  StockMove.status.Realized,
+                  Colors,
+                ),
+                key: StockMove.status.Realized,
+              },
+            ]}
+          />
         }>
         <ScannerAutocompleteSearch
           objectList={stockLocationListFirstFilter}

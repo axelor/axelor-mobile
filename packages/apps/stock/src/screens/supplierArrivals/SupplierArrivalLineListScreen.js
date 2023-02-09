@@ -19,7 +19,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   HeaderContainer,
   Screen,
@@ -38,8 +37,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const {loadingSALines, moreLoading, isListEnd, supplierArrivalLineList} =
     useSelector(state => state.supplierArrivalLine);
   const [filteredList, setFilteredList] = useState(supplierArrivalLineList);
-  const [doneStatus, setDoneStatus] = useState(false);
-  const [undoneStatus, setUndoneStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
 
   const handleShowLine = item => {
@@ -68,41 +66,28 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
     [supplierArrival.id, dispatch],
   );
 
-  const handleDoneStatus = () => {
-    if (!doneStatus && undoneStatus) {
-      setUndoneStatus(!undoneStatus);
-    }
-    setDoneStatus(!doneStatus);
-  };
-
-  const handleUndoneStatus = () => {
-    if (!undoneStatus && doneStatus) {
-      setDoneStatus(!doneStatus);
-    }
-    setUndoneStatus(!undoneStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
       if (list == null || list === []) {
         return list;
-      } else {
-        if (doneStatus) {
-          return list.filter(
-            item => parseFloat(item.realQty) >= parseFloat(item.qty),
-          );
-        } else if (undoneStatus) {
-          return list.filter(
-            item =>
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter(item => {
+          if (selectedStatus[0].key === 'doneStatus') {
+            return parseFloat(item.realQty) >= parseFloat(item.qty);
+          } else if (selectedStatus[0].key === 'unDoneStatus') {
+            return (
               parseFloat(item.realQty) == null ||
-              parseFloat(item.realQty) < parseFloat(item.qty),
-          );
-        } else {
-          return list;
-        }
+              parseFloat(item.realQty) < parseFloat(item.qty)
+            );
+          } else {
+            return item;
+          }
+        });
+      } else {
+        return list;
       }
     },
-    [doneStatus, undoneStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -127,20 +112,22 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           />
         }
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={doneStatus}
-              title={I18n.t('Stock_Done')}
-              onPress={handleDoneStatus}
-              selectedColor={Colors.primaryColor}
-            />
-            <Chip
-              selected={undoneStatus}
-              title={I18n.t('Stock_NotDone')}
-              onPress={handleUndoneStatus}
-              selectedColor={Colors.cautionColor}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Done'),
+                color: Colors.primaryColor,
+                key: 'doneStatus',
+              },
+              {
+                title: I18n.t('Stock_NotDone'),
+                color: Colors.cautionColor,
+                key: 'unDoneStatus',
+              },
+            ]}
+          />
         }
       />
       <ScrollList

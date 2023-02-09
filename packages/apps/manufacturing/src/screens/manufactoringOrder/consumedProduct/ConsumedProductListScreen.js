@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   Icon,
   Screen,
@@ -55,10 +54,8 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   const {loadingConsumedProducts, consumedProductList} = useSelector(
     state => state.prodProducts,
   );
-  const [missingStatus, setMissingStatus] = useState(false);
-  const [partiallyStatus, setPartiallyStatus] = useState(false);
-  const [finishedStatus, setFinishedStatus] = useState(false);
   const [filteredList, setFilteredList] = useState(consumedProductList);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch();
 
@@ -87,47 +84,27 @@ const ConsumedProductListScreen = ({route, navigation}) => {
     [dispatch, manufOrder],
   );
 
-  const handleMissingStatus = () => {
-    if (!missingStatus && (partiallyStatus || finishedStatus)) {
-      setPartiallyStatus(false);
-      setFinishedStatus(false);
-    }
-    setMissingStatus(!missingStatus);
-  };
-
-  const handlePartiallyStatus = () => {
-    if (!partiallyStatus && (missingStatus || finishedStatus)) {
-      setMissingStatus(false);
-      setFinishedStatus(false);
-    }
-    setPartiallyStatus(!partiallyStatus);
-  };
-
-  const handleFinishedStatus = () => {
-    if (!finishedStatus && (missingStatus || partiallyStatus)) {
-      setMissingStatus(false);
-      setPartiallyStatus(false);
-    }
-    setFinishedStatus(!finishedStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
       if (list == null || list === []) {
         return list;
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter(item => {
+          if (selectedStatus[0].key === 'missingStatus') {
+            return item.missingQty > 0;
+          } else if (selectedStatus[0].key === 'partiallyStatus') {
+            return item.plannedQty > item.realQty;
+          } else if (selectedStatus[0].key === 'finishedStatus') {
+            return item.plannedQty <= item.realQty;
+          } else {
+            return item;
+          }
+        });
       } else {
-        if (missingStatus) {
-          return list.filter(item => item.missingQty > 0);
-        } else if (partiallyStatus) {
-          return list.filter(item => item.plannedQty > item.realQty);
-        } else if (finishedStatus) {
-          return list.filter(item => item.plannedQty <= item.realQty);
-        } else {
-          return list;
-        }
+        return list;
       }
     },
-    [missingStatus, partiallyStatus, finishedStatus],
+    [selectedStatus],
   );
 
   const filterOnProduct = useCallback((list, value) => {
@@ -211,32 +188,29 @@ const ConsumedProductListScreen = ({route, navigation}) => {
           </>
         }
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={missingStatus}
-              title={I18n.t('Manufacturing_Status_Missing')}
-              onPress={handleMissingStatus}
-              selectedColor={Colors.errorColor}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={2}
-            />
-            <Chip
-              selected={partiallyStatus}
-              title={I18n.t('Manufacturing_Status_Planned')}
-              onPress={handlePartiallyStatus}
-              selectedColor={Colors.plannedColor}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={2}
-            />
-            <Chip
-              selected={finishedStatus}
-              title={I18n.t('Manufacturing_Status_Finished')}
-              onPress={handleFinishedStatus}
-              selectedColor={Colors.primaryColor}
-              width={Dimensions.get('window').width * 0.3}
-              marginHorizontal={2}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            width={Dimensions.get('window').width * 0.3}
+            marginHorizontal={2}
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Manufacturing_Status_Missing'),
+                color: Colors.errorColor,
+                key: 'missingStatus',
+              },
+              {
+                title: I18n.t('Manufacturing_Status_Planned'),
+                color: Colors.plannedColor,
+                key: 'partiallyStatus',
+              },
+              {
+                title: I18n.t('Manufacturing_Status_Finished'),
+                color: Colors.primaryColor,
+                key: 'finishedStatus',
+              },
+            ]}
+          />
         }
       />
       <ScrollList

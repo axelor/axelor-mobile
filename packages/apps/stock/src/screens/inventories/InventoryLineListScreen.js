@@ -19,7 +19,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   HeaderContainer,
   Screen,
@@ -38,9 +37,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
   const [filteredList, setFilteredList] = useState(inventoryLineList);
-  const [doneStatus, setDoneStatus] = useState(false);
-  const [diffStatus, setDiffStatus] = useState(false);
-  const [undoneStatus, setUndoneStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
 
   const handleShowLine = item => {
@@ -69,49 +66,27 @@ const InventoryLineListScreen = ({route, navigation}) => {
     [inventory, dispatch],
   );
 
-  const handleDoneStatus = () => {
-    if (!doneStatus && (undoneStatus || diffStatus)) {
-      setUndoneStatus(false);
-      setDiffStatus(false);
-    }
-    setDoneStatus(!doneStatus);
-  };
-
-  const handleDiffStatus = () => {
-    if (!diffStatus && (undoneStatus || doneStatus)) {
-      setUndoneStatus(false);
-      setDoneStatus(false);
-    }
-    setDiffStatus(!diffStatus);
-  };
-
-  const handleUndoneStatus = () => {
-    if (!undoneStatus && (diffStatus || doneStatus)) {
-      setDoneStatus(false);
-      setDiffStatus(false);
-    }
-    setUndoneStatus(!undoneStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
       if (list == null || list === []) {
         return list;
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter(item => {
+          if (selectedStatus[0].key === 'doneStatus') {
+            return item.realQty === item.currentQty;
+          } else if (selectedStatus[0].key === 'diffStatus') {
+            return item.realQty != null && item.realQty !== item.currentQty;
+          } else if (selectedStatus[0].key === 'unDoneStatus') {
+            return item.realQty == null;
+          } else {
+            return item;
+          }
+        });
       } else {
-        if (doneStatus) {
-          return list.filter(item => item.realQty === item.currentQty);
-        } else if (diffStatus) {
-          return list.filter(
-            item => item.realQty != null && item.realQty !== item.currentQty,
-          );
-        } else if (undoneStatus) {
-          return list.filter(item => item.realQty == null);
-        } else {
-          return list;
-        }
+        return list;
       }
     },
-    [diffStatus, doneStatus, undoneStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -135,32 +110,29 @@ const InventoryLineListScreen = ({route, navigation}) => {
           />
         }
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={doneStatus}
-              title={I18n.t('Stock_Complete')}
-              onPress={handleDoneStatus}
-              selectedColor={Colors.primaryColor}
-              marginHorizontal={3}
-              width={Dimensions.get('window').width * 0.3}
-            />
-            <Chip
-              selected={diffStatus}
-              title={I18n.t('Stock_Difference')}
-              onPress={handleDiffStatus}
-              selectedColor={Colors.cautionColor}
-              marginHorizontal={3}
-              width={Dimensions.get('window').width * 0.3}
-            />
-            <Chip
-              selected={undoneStatus}
-              title={I18n.t('Stock_NotDone')}
-              onPress={handleUndoneStatus}
-              selectedColor={Colors.secondaryColor}
-              marginHorizontal={3}
-              width={Dimensions.get('window').width * 0.3}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={3}
+            width={Dimensions.get('window').width * 0.3}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Complete'),
+                color: Colors.primaryColor,
+                key: 'doneStatus',
+              },
+              {
+                title: I18n.t('Stock_Difference'),
+                color: Colors.cautionColor,
+                key: 'diffStatus',
+              },
+              {
+                title: I18n.t('Stock_NotDone'),
+                color: Colors.secondaryColor,
+                key: 'unDoneStatus',
+              },
+            ]}
+          />
         }
       />
       <ScrollList
