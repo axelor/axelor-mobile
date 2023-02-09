@@ -21,6 +21,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const I18n = useTranslator();
   const [score, setScore] = useState(lead.leadScoringSelect);
   const [civility, setCivility] = useState(Number(lead.titleSelect));
+  const [firstName, setFirstName] = useState(lead.firstName);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -40,9 +41,10 @@ const LeadFormScreen = ({navigation, route}) => {
         leadId: lead.id,
         leadVersion: lead.version,
         leadCivility: civility,
+        leadFirstname: firstName,
       }),
     );
-  }, [dispatch, lead.id, lead.version, civility]);
+  }, [dispatch, lead.id, lead.version, civility, firstName]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -82,8 +84,8 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={{width: '90%'}}
             title={I18n.t('Crm_FirstName')}
-            onChange={e => console.log('Firstname', e)}
-            defaultValue={lead?.firstName !== null ? lead?.firstName : ''}
+            onChange={e => setFirstName(e)}
+            defaultValue={firstName}
           />
           <FormInput
             style={{width: '90%'}}
