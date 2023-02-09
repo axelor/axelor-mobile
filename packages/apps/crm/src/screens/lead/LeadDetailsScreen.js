@@ -12,6 +12,7 @@ import {
   StarScore,
   DropdownCardSwitch,
   NotesCard,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -205,6 +206,16 @@ const LeadDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('LeadFormScreen', {
+              idLead: idLead,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -229,6 +240,14 @@ const styles = StyleSheet.create({
   },
   leadScoring: {
     marginTop: '10%',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 5,
   },
 });
 

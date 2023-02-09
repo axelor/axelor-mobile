@@ -23,6 +23,7 @@ const crmLeadsFields = [
   'industrySector',
   'eventList',
   'leadScoringSelect',
+  'name',
 ];
 
 const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];

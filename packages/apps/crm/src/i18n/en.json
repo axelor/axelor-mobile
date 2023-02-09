@@ -56,5 +56,6 @@
   "Crm_Catalogs": "Catalogs",
   "Crm_NoContactAssociated": "No contact associated",
   "Crm_NoGeneralInformation": "No general information",
-  "Crm_NoContactInformation": "No contact information"
+  "Crm_NoContactInformation": "No contact information",
+  "Crm_Civility": "Civility"
 }
