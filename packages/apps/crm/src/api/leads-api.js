@@ -24,6 +24,7 @@ const crmLeadsFields = [
   'eventList',
   'leadScoringSelect',
   'name',
+  'titleSelect',
 ];
 
 const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];

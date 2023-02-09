@@ -19,7 +19,12 @@ const LeadFormScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
   }, [dispatch, idLead]);
-
+  const civilityList = [
+    {id: 1, name: 'M.'},
+    {id: 2, name: 'Mme.'},
+    {id: 3, name: 'Dr'},
+    {id: 4, name: 'Prof'},
+  ];
   return (
     <Screen removeSpaceOnTop={true}>
       <ScrollView>
@@ -27,16 +32,17 @@ const LeadFormScreen = ({navigation, route}) => {
           <View style={styles.headerContainer}>
             <View style={{width: '50%'}}>
               <Picker
-                //style={{width: '50%'}}
                 pickerStyle={{width: '100%'}}
                 title={I18n.t('Crm_Civility')}
                 onValueChange={e => console.log('civility', e)}
-                listItems={[
-                  {id: 1, name: 'M.'},
-                  {id: 2, name: 'Mme.'},
-                ]}
+                listItems={civilityList}
                 labelField="name"
                 valueField="id"
+                defaultValue={
+                  civilityList.find(
+                    civ => civ.id.toString() === lead.titleSelect.toString(),
+                  )?.id
+                }
               />
             </View>
             <View style={styles.checkBoxContainer}>
@@ -69,6 +75,14 @@ const LeadFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Name')}
             onChange={e => console.log('name', e)}
             defaultValue={lead?.name !== null ? lead?.name : ''}
+          />
+          <FormInput
+            style={{width: '90%'}}
+            title={I18n.t('Crm_Company')}
+            onChange={e => console.log('company', e)}
+            defaultValue={
+              lead?.enterpriseName !== null ? lead?.enterpriseName : ''
+            }
           />
         </View>
       </ScrollView>
