@@ -30,6 +30,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [fixedPhone, setFixedPhone] = useState(
     lead.fixedPhone !== null ? lead.fixedPhone : '',
   );
+  const [mobilePhone, setMobilePhone] = useState(
+    lead?.mobilePhone !== null ? lead?.mobilePhone : '',
+  );
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -54,6 +57,7 @@ const LeadFormScreen = ({navigation, route}) => {
         leadJob: leadJob,
         leadAdress: leadAdress,
         leadFixedPhone: fixedPhone,
+        leadMobilePhone: mobilePhone,
       }),
     );
   }, [
@@ -66,6 +70,7 @@ const LeadFormScreen = ({navigation, route}) => {
     leadJob,
     leadAdress,
     fixedPhone,
+    mobilePhone,
   ]);
 
   return (
@@ -149,10 +154,8 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={{width: '90%'}}
             title={I18n.t('Crm_MobilePhone')}
-            onChange={e => console.log('mobilePhone', e)}
-            defaultValue={
-              lead?.mobilePhone !== null ? lead?.primamobilePhoneryAddress : ''
-            }
+            onChange={e => setMobilePhone(e)}
+            defaultValue={mobilePhone}
           />
           <FormInput
             style={{width: '90%'}}
