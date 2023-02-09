@@ -57,5 +57,9 @@
   "Crm_NoContactAssociated": "Aucun contact associé",
   "Crm_NoGeneralInformation": "Pas d'information générale",
   "Crm_NoContactInformation": "Pas d'information sur le contact",
-  "Crm_Civility": "Civilité"
+  "Crm_Civility": "Civilité",
+  "Crm_FirstName": "First name",
+  "Crm_Name": "Nom",
+  "Crm_NoEmail": "pas d'email",
+  "Crm_NoPhoneCall": "pas d'appel"
 }
