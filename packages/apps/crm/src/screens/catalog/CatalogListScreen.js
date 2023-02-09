@@ -4,7 +4,6 @@ import {
   Screen,
   HeaderContainer,
   ChipSelect,
-  Chip,
   AutoCompleteSearch,
   ScrollList,
   useThemeColor,
@@ -40,23 +39,6 @@ const CatalogListScreen = ({navigation}) => {
     [dispatch],
   );
 
-  const updateStatus = status => {
-    if (isSelected(status)) {
-      setSelectedStatus(
-        selectedStatus?.filter(activeStatus => activeStatus.id !== status.id),
-      );
-    } else {
-      setSelectedStatus([...selectedStatus, status]);
-    }
-  };
-
-  const isSelected = status => {
-    return (
-      selectedStatus?.find(activeStatus => activeStatus.id === status.id) !=
-      null
-    );
-  };
-
   const filterOnStatus = useCallback(
     list => {
       if (list == null || list === []) {
@@ -64,7 +46,7 @@ const CatalogListScreen = ({navigation}) => {
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
-            selectedStatus.find(status => item?.catalogType?.id === status.id),
+            selectedStatus.find(status => item?.catalogType?.id === status.key),
           );
         } else {
           return list;
@@ -100,20 +82,18 @@ const CatalogListScreen = ({navigation}) => {
           </View>
         }
         chipComponent={
-          <ChipSelect scrollable={true}>
-            {catalogTypeList.map((status, index) => {
-              return (
-                <Chip
-                  key={index}
-                  selected={isSelected(status)}
-                  title={status.name}
-                  onPress={() => updateStatus(status)}
-                  selectedColor={Catalog.getStatusColor(index, Colors)}
-                  marginHorizontal={5}
-                />
-              );
+          <ChipSelect
+            mode="multi"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={5}
+            selectionItems={catalogTypeList.map((status, index) => {
+              return {
+                title: status.name,
+                color: Catalog.getStatusColor(index, Colors),
+                key: status.id,
+              };
             })}
-          </ChipSelect>
+          />
         }
       />
       <ScrollList
