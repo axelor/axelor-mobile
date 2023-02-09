@@ -23,6 +23,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
+  const [leadJob, setLeadJob] = useState(lead.jobTitleFunction.id);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -44,9 +45,10 @@ const LeadFormScreen = ({navigation, route}) => {
         leadCivility: civility,
         leadFirstname: firstName,
         leadName: name,
+        leadJob: leadJob,
       }),
     );
-  }, [dispatch, lead.id, lead.version, civility, firstName, name]);
+  }, [dispatch, lead.id, lead.version, civility, firstName, name, leadJob]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -107,15 +109,11 @@ const LeadFormScreen = ({navigation, route}) => {
             <Picker
               //pickerStyle={{width: '100%'}}
               title={I18n.t('Crm_JobTitle')}
-              onValueChange={e => console.log('job', e)}
+              onValueChange={e => setLeadJob(e)}
               listItems={functionList}
               labelField="name"
               valueField="id"
-              defaultValue={
-                functionList.find(
-                  job => job.name === lead.jobTitleFunction.name,
-                )?.id
-              }
+              defaultValue={leadJob}
             />
           </View>
           <FormInput

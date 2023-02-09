@@ -164,7 +164,9 @@ export async function updateLead({
         isDoNotSendEmail: leadNoEmail,
         isDoNotCall: leadNoCall,
         enterpriseName: leadCompany,
-        jobTitleFunction: leadJob,
+        jobTitleFunction: {
+          id: leadJob,
+        },
         fixedPhone: leadFixedPhone,
         mobilePhone: leadMobilePhone,
         webSite: leadWebsite,
