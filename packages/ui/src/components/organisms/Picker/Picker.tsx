@@ -27,8 +27,7 @@ import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-
-const ITEM_HEIGHT = 40;
+import {ThemeColors} from '../../../theme';
 
 interface PickerProps {
   style?: any;
@@ -45,7 +44,7 @@ interface PickerProps {
   disabled?: boolean;
   disabledValue?: string;
   iconName?: string;
-  isScrollViewContainer?: boolean;
+  required?: boolean;
 }
 
 const Picker = ({
@@ -63,7 +62,7 @@ const Picker = ({
   disabled = false,
   disabledValue = null,
   iconName = null,
-  isScrollViewContainer = false,
+  required = false,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -102,23 +101,15 @@ const Picker = ({
       : onValueChange(itemValue);
   };
 
+  const _required = useMemo(
+    () => required && selectedItem == null,
+    [required, selectedItem],
+  );
+
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
-  const marginBottom = useMemo(() => {
-    const listLength = listItems.length;
-
-    if (isScrollViewContainer && pickerIsOpen) {
-      return emptyValue
-        ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
-        : listLength * ITEM_HEIGHT + 5;
-    }
-
-    return null;
-  }, [emptyValue, isScrollViewContainer, listItems.length, pickerIsOpen]);
-
   const styles = useMemo(
-    () => getStyles(Colors, marginBottom),
-    [Colors, marginBottom],
+    () => getStyles(Colors, _required),
+    [Colors, _required],
   );
 
   return (
@@ -148,7 +139,7 @@ const Picker = ({
           />
         </View>
       ) : (
-        <View style={styles.pickerContainerStyle}>
+        <View>
           <RightIconButton
             onPress={togglePicker}
             icon={
@@ -167,7 +158,7 @@ const Picker = ({
               pickerStyle,
             ]}
           />
-          {pickerIsOpen && (
+          {pickerIsOpen ? (
             <SelectionContainer
               emptyValue={emptyValue}
               objectList={listItems}
@@ -176,21 +167,23 @@ const Picker = ({
               handleSelect={handleValueChange}
               isPicker={true}
             />
-          )}
+          ) : null}
         </View>
       )}
     </View>
   );
 };
 
-const getStyles = (Colors, marginBottom) =>
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     titleContainer: {
       marginHorizontal: 24,
     },
     rightIconButton: {
       width: Dimensions.get('window').width * 0.9,
-      borderColor: Colors.secondaryColor.background,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
       borderWidth: 1,
     },
     styleTextButton: {
@@ -199,9 +192,6 @@ const getStyles = (Colors, marginBottom) =>
     infosCard: {
       justifyContent: 'flex-start',
       width: Dimensions.get('window').width * 0.9,
-    },
-    pickerContainerStyle: {
-      marginBottom: marginBottom,
     },
   });
 
