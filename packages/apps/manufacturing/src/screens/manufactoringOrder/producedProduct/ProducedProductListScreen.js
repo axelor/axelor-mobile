@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   Icon,
   Screen,
@@ -52,10 +51,9 @@ const ProducedProductListScreen = ({route, navigation}) => {
   const {loadingProducedProducts, producedProductList} = useSelector(
     state => state.prodProducts,
   );
-  const [plannedStatus, setPlannedStatus] = useState(false);
-  const [realizedStatus, setRealizedStatus] = useState(false);
   const [filteredList, setFilteredList] = useState(producedProductList);
   const [product, setProduct] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
 
   const fetchProducedProductsAPI = useCallback(() => {
@@ -67,35 +65,25 @@ const ProducedProductListScreen = ({route, navigation}) => {
     );
   }, [dispatch, manufOrder]);
 
-  const handlePlannedStatus = () => {
-    if (!plannedStatus && realizedStatus) {
-      setRealizedStatus(false);
-    }
-    setPlannedStatus(!plannedStatus);
-  };
-
-  const handleRealizedStatus = () => {
-    if (!realizedStatus && plannedStatus) {
-      setPlannedStatus(false);
-    }
-    setRealizedStatus(!realizedStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
       if (list == null || list === []) {
         return list;
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter(item => {
+          if (selectedStatus[0].key === 'plannedStatus') {
+            return item?.plannedQty > item?.realQty;
+          } else if (selectedStatus[0].key === 'realizedStatus') {
+            return item?.plannedQty <= item?.realQty;
+          } else {
+            return item;
+          }
+        });
       } else {
-        if (plannedStatus) {
-          return list.filter(item => item?.plannedQty > item?.realQty);
-        } else if (realizedStatus) {
-          return list.filter(item => item?.plannedQty <= item?.realQty);
-        } else {
-          return list;
-        }
+        return list;
       }
     },
-    [plannedStatus, realizedStatus],
+    [selectedStatus],
   );
 
   const filterOnProduct = useCallback((list, value) => {
@@ -184,20 +172,22 @@ const ProducedProductListScreen = ({route, navigation}) => {
           </>
         }
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={plannedStatus}
-              title={I18n.t('Manufacturing_Status_Planned')}
-              onPress={handlePlannedStatus}
-              selectedColor={Colors.plannedColor}
-            />
-            <Chip
-              selected={realizedStatus}
-              title={I18n.t('Manufacturing_Status_Realized')}
-              onPress={handleRealizedStatus}
-              selectedColor={Colors.primaryColor}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Manufacturing_Status_Planned'),
+                color: Colors.plannedColor,
+                key: 'plannedStatus',
+              },
+              {
+                title: I18n.t('Manufacturing_Status_Realized'),
+                color: Colors.primaryColor,
+                key: 'realizedStatus',
+              },
+            ]}
+          />
         }
       />
       <ScrollList

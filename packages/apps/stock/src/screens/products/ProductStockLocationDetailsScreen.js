@@ -19,7 +19,6 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Chip,
   ChipSelect,
   HeaderContainer,
   Screen,
@@ -47,8 +46,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
   );
   const {supplychainConfig} = useSelector(state => state.stockAppConfig);
   const [filteredList, setFilteredList] = useState(stockLocationLine);
-  const [availableStatus, setAvailableStatus] = useState(false);
-  const [unavailableStatus, setUnvailableStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -57,46 +55,25 @@ const ProductStockLocationDetailsScreen = ({route}) => {
     dispatch(fetchSupplychainConfigForStockApp());
   }, [dispatch]);
 
-  const handleAvailableStatus = () => {
-    if (!availableStatus && unavailableStatus) {
-      setUnvailableStatus(!unavailableStatus);
-    }
-    setAvailableStatus(!availableStatus);
-  };
-
-  const handleUnavailableStatus = () => {
-    if (!unavailableStatus && availableStatus) {
-      setAvailableStatus(!availableStatus);
-    }
-    setUnvailableStatus(!unavailableStatus);
-  };
-
   const filterOnStatus = useCallback(
     (list, availabilityList) => {
-      if (
-        list == null ||
-        list === [] ||
-        availabilityList == null ||
-        availabilityList === []
-      ) {
+      if (list == null || list === []) {
         return list;
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter((item, index) => {
+          if (selectedStatus[0].key === 'available') {
+            return parseFloat(availabilityList[index]?.availableStock) > 0;
+          } else if (selectedStatus[0].key === 'unavailable') {
+            parseFloat(availabilityList[index]?.availableStock) === 0;
+          } else {
+            return item;
+          }
+        });
       } else {
-        if (availableStatus) {
-          return list.filter(
-            (item, index) =>
-              parseFloat(availabilityList[index]?.availableStock) > 0,
-          );
-        } else if (unavailableStatus) {
-          return list.filter(
-            (item, index) =>
-              parseFloat(availabilityList[index]?.availableStock) === 0,
-          );
-        } else {
-          return list;
-        }
+        return list;
       }
     },
-    [availableStatus, unavailableStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -136,20 +113,22 @@ const ProductStockLocationDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<Text style={styles.title}>{product.fullName}</Text>}
         chipComponent={
-          <ChipSelect>
-            <Chip
-              selected={availableStatus}
-              title={I18n.t('Stock_Available')}
-              onPress={handleAvailableStatus}
-              selectedColor={Colors.primaryColor}
-            />
-            <Chip
-              selected={unavailableStatus}
-              title={I18n.t('Stock_Unavailable')}
-              onPress={handleUnavailableStatus}
-              selectedColor={Colors.errorColor}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Available'),
+                color: Colors.primaryColor,
+                key: 'available',
+              },
+              {
+                title: I18n.t('Stock_Unavailable'),
+                color: Colors.cautionColor,
+                key: 'unavailable',
+              },
+            ]}
+          />
         }
       />
       <ScrollList

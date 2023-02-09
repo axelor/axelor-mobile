@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
-  Chip,
   ChipSelect,
   HeaderContainer,
   Screen,
@@ -34,6 +33,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  filterChip,
 } from '@axelor/aos-mobile-core';
 import {InventoryCard} from '../../components/organisms';
 import {searchStockLocations} from '../../features/stockLocationSlice';
@@ -53,89 +53,16 @@ const InventoryListScreen = ({navigation}) => {
   );
   const {user} = useSelector(state => state.user);
   const [filteredList, setFilteredList] = useState(inventoryList);
-  const [plannedStatus, setPlannedStatus] = useState(false);
-  const [inProgressStatus, setInProgressStatus] = useState(false);
-  const [completedStatus, setCompletedStatus] = useState(false);
-  const [validatedStatus, setValidatedStatus] = useState(false);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
-
-  const handlePlanifiedFilter = () => {
-    if (
-      !plannedStatus &&
-      (completedStatus || inProgressStatus || validatedStatus)
-    ) {
-      setInProgressStatus(false);
-      setCompletedStatus(false);
-      setValidatedStatus(false);
-    }
-    setPlannedStatus(!plannedStatus);
-  };
-
-  const handleInProgressFilter = () => {
-    if (
-      !inProgressStatus &&
-      (completedStatus || plannedStatus || validatedStatus)
-    ) {
-      setPlannedStatus(false);
-      setCompletedStatus(false);
-      setValidatedStatus(false);
-    }
-    setInProgressStatus(!inProgressStatus);
-  };
-
-  const handleCompletedFilter = () => {
-    if (
-      !completedStatus &&
-      (inProgressStatus || plannedStatus || validatedStatus)
-    ) {
-      setPlannedStatus(false);
-      setInProgressStatus(false);
-      setValidatedStatus(false);
-    }
-    setCompletedStatus(!completedStatus);
-  };
-
-  const handleValidatedFilter = () => {
-    if (
-      !validatedStatus &&
-      (inProgressStatus || plannedStatus || completedStatus)
-    ) {
-      setPlannedStatus(false);
-      setInProgressStatus(false);
-      setCompletedStatus(false);
-    }
-    setValidatedStatus(!validatedStatus);
-  };
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (plannedStatus) {
-          return list.filter(
-            item => item.statusSelect === Inventory.status.Planned,
-          );
-        } else if (inProgressStatus) {
-          return list.filter(
-            item => item.statusSelect === Inventory.status.InProgress,
-          );
-        } else if (completedStatus) {
-          return list.filter(
-            item => item.statusSelect === Inventory.status.Completed,
-          );
-        } else if (validatedStatus) {
-          return list.filter(
-            item => item.statusSelect === Inventory.status.Validated,
-          );
-        } else {
-          return list;
-        }
-      }
+      return filterChip(list, selectedStatus, 'statusSelect');
     },
-    [plannedStatus, inProgressStatus, completedStatus, validatedStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -211,52 +138,46 @@ const InventoryListScreen = ({navigation}) => {
           />
         }
         chipComponent={
-          <ChipSelect scrollable={true}>
-            <Chip
-              selected={plannedStatus}
-              title={I18n.t('Stock_Status_Planned')}
-              onPress={handlePlanifiedFilter}
-              selectedColor={Inventory.getStatusColor(
-                Inventory.status.Planned,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.35}
-              marginHorizontal={3}
-            />
-            <Chip
-              selected={inProgressStatus}
-              title={I18n.t('Stock_Status_InProgress')}
-              onPress={handleInProgressFilter}
-              selectedColor={Inventory.getStatusColor(
-                Inventory.status.InProgress,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.35}
-              marginHorizontal={3}
-            />
-            <Chip
-              selected={completedStatus}
-              title={I18n.t('Stock_Status_Completed')}
-              onPress={handleCompletedFilter}
-              selectedColor={Inventory.getStatusColor(
-                Inventory.status.Completed,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.35}
-              marginHorizontal={3}
-            />
-            <Chip
-              selected={validatedStatus}
-              title={I18n.t('Stock_Status_Validated')}
-              onPress={handleValidatedFilter}
-              selectedColor={Inventory.getStatusColor(
-                Inventory.status.Validated,
-                Colors,
-              )}
-              width={Dimensions.get('window').width * 0.35}
-              marginHorizontal={3}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            marginHorizontal={3}
+            width={Dimensions.get('window').width * 0.35}
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                color: Inventory.getStatusColor(
+                  Inventory.status.Planned,
+                  Colors,
+                ),
+                title: I18n.t('Stock_Status_Planned'),
+                key: Inventory.status.Planned,
+              },
+              {
+                color: Inventory.getStatusColor(
+                  Inventory.status.InProgress,
+                  Colors,
+                ),
+                title: I18n.t('Stock_Status_InProgress'),
+                key: Inventory.status.InProgress,
+              },
+              {
+                color: Inventory.getStatusColor(
+                  Inventory.status.Completed,
+                  Colors,
+                ),
+                title: I18n.t('Stock_Status_Completed'),
+                key: Inventory.status.Completed,
+              },
+              {
+                color: Inventory.getStatusColor(
+                  Inventory.status.Validated,
+                  Colors,
+                ),
+                title: I18n.t('Stock_Status_Validated'),
+                key: Inventory.status.Validated,
+              },
+            ]}
+          />
         }>
         <ScannerAutocompleteSearch
           objectList={stockLocationList}

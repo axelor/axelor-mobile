@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   AutoCompleteSearch,
-  Chip,
   ChipSelect,
   Screen,
   HeaderContainer,
@@ -34,6 +33,7 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  filterChip,
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryCard} from '../../components';
 import {searchDeliveries} from '../../features/customerDeliverySlice';
@@ -56,45 +56,16 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
   const {user} = useSelector(state => state.user);
   const [filteredList, setFilteredList] = useState(deliveryList);
-  const [planifiedStatus, setplanifiedStatus] = useState(false);
-  const [validatedStatus, setValidatedStatus] = useState(false);
   const [filter, setFilter] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
   const dispatch = useDispatch();
 
-  const handlePlanifiedFilter = () => {
-    if (!planifiedStatus && validatedStatus) {
-      setValidatedStatus(!validatedStatus);
-    }
-    setplanifiedStatus(!planifiedStatus);
-  };
-
-  const handleValidatedFilter = () => {
-    if (!validatedStatus && planifiedStatus) {
-      setplanifiedStatus(!planifiedStatus);
-    }
-    setValidatedStatus(!validatedStatus);
-  };
-
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (planifiedStatus) {
-          return list.filter(
-            item => item.statusSelect === StockMove.status.Planned,
-          );
-        } else if (validatedStatus) {
-          return list.filter(
-            item => item.statusSelect === StockMove.status.Realized,
-          );
-        } else {
-          return list;
-        }
-      }
+      return filterChip(list, selectedStatus, 'statusSelect');
     },
-    [planifiedStatus, validatedStatus],
+    [selectedStatus],
   );
 
   useEffect(() => {
@@ -184,26 +155,28 @@ const CustomerDeliveryListScreen = ({navigation}) => {
           />
         }
         chipComponent={
-          <ChipSelect style={styles.chipContainer}>
-            <Chip
-              selected={planifiedStatus}
-              title={I18n.t('Stock_Status_Planned')}
-              onPress={handlePlanifiedFilter}
-              selectedColor={StockMove.getStatusColor(
-                StockMove.status.Planned,
-                Colors,
-              )}
-            />
-            <Chip
-              selected={validatedStatus}
-              title={I18n.t('Stock_Status_Realized')}
-              onPress={handleValidatedFilter}
-              selectedColor={StockMove.getStatusColor(
-                StockMove.status.Realized,
-                Colors,
-              )}
-            />
-          </ChipSelect>
+          <ChipSelect
+            mode="switch"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Stock_Status_Planned'),
+                color: StockMove.getStatusColor(
+                  StockMove.status.Planned,
+                  Colors,
+                ),
+                key: StockMove.status.Planned,
+              },
+              {
+                title: I18n.t('Stock_Status_Realized'),
+                color: StockMove.getStatusColor(
+                  StockMove.status.Realized,
+                  Colors,
+                ),
+                key: StockMove.status.Realized,
+              },
+            ]}
+          />
         }>
         <ScannerAutocompleteSearch
           objectList={stockLocationList}
