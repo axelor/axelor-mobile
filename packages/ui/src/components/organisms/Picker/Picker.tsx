@@ -27,6 +27,7 @@ import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
+import {ThemeColors} from '../../../theme';
 
 interface PickerProps {
   style?: any;
@@ -43,6 +44,7 @@ interface PickerProps {
   disabled?: boolean;
   disabledValue?: string;
   iconName?: string;
+  required?: boolean;
 }
 
 const Picker = ({
@@ -60,6 +62,7 @@ const Picker = ({
   disabled = false,
   disabledValue = null,
   iconName = null,
+  required = false,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -98,8 +101,16 @@ const Picker = ({
       : onValueChange(itemValue);
   };
 
+  const _required = useMemo(
+    () => required && selectedItem == null,
+    [required, selectedItem],
+  );
+
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   return (
     <View ref={wrapperRef} style={style}>
@@ -163,14 +174,16 @@ const Picker = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     titleContainer: {
       marginHorizontal: 24,
     },
     rightIconButton: {
       width: Dimensions.get('window').width * 0.9,
-      borderColor: Colors.secondaryColor.background,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
       borderWidth: 1,
     },
     styleTextButton: {

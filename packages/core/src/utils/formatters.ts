@@ -45,6 +45,17 @@ export const formatDateTime = (dateTime, format) => {
   return format;
 };
 
+export const formatTime = (dateInput: string, format: string): string => {
+  const date = new Date(dateInput);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  format = format.replace('HH', hours.toString().padStart(2, '0'));
+  format = format.replace('mm', minutes.toString().padStart(2, '0'));
+
+  return format;
+};
+
 export function formatDuration(duration: number, format: string): string {
   const _duration = moment.duration(duration);
 
