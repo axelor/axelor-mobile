@@ -24,6 +24,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
   const [leadJob, setLeadJob] = useState(lead.jobTitleFunction.id);
+  const [leadAdress, setLeadAdress] = useState(
+    lead.primaryAddress !== null ? lead.primaryAddress : '',
+  );
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -46,9 +49,19 @@ const LeadFormScreen = ({navigation, route}) => {
         leadFirstname: firstName,
         leadName: name,
         leadJob: leadJob,
+        leadAdress: leadAdress,
       }),
     );
-  }, [dispatch, lead.id, lead.version, civility, firstName, name, leadJob]);
+  }, [
+    dispatch,
+    lead.id,
+    lead.version,
+    civility,
+    firstName,
+    name,
+    leadJob,
+    leadAdress,
+  ]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -119,10 +132,8 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={{width: '90%'}}
             title={I18n.t('Crm_Address')}
-            onChange={e => console.log('Address', e)}
-            defaultValue={
-              lead?.primaryAddress !== null ? lead?.primaryAddress : ''
-            }
+            onChange={e => setLeadAdress(e)}
+            defaultValue={leadAdress}
           />
           <FormInput
             style={{width: '90%'}}
