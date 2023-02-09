@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
+  Button,
   Checkbox,
   FormInput,
   NotesCard,
@@ -148,6 +149,12 @@ const LeadFormScreen = ({navigation, route}) => {
           data={lead.description !== null ? lead.description : ''}
         />
       </ScrollView>
+      <View style={styles.button_container}>
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={() => console.log('save')}
+        />
+      </View>
     </Screen>
   );
 };
@@ -165,6 +172,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
+  },
+  button_container: {
+    marginVertical: '1%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
   },
 });
 
