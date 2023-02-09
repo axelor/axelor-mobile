@@ -18,6 +18,10 @@
 
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {View} from 'react-native';
+import {
+  useClickOutside,
+  OUTSIDE_INDICATOR,
+} from '../../../hooks/use-click-outside';
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
 
@@ -60,10 +64,19 @@ const AutoCompleteSearch = ({
   style,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
-  const [searchText, setSearchText] = useState(null);
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: displayList,
+  });
+
+  const [searchText, setSearchText] = useState(
+    value ? displayValue(value) : null,
+  );
   const [previousState, setPreviousState] = useState(null);
   const [newInterval, setNewInterval] = useState(0);
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(value ? true : false);
+
   let timeOutRequestCall = useRef<number>();
   let intervalRequestCall = useRef<number>();
 
@@ -78,22 +91,26 @@ const AutoCompleteSearch = ({
   }, [fetchData, searchText, selected]);
 
   useEffect(() => {
-    if (value) {
-      setSelected(true);
-      setSearchText(displayValue(value));
-    } else {
+    if (!selected) {
       handleAPICall();
     }
-  }, [displayValue, handleAPICall, value]);
+  }, [selected, handleAPICall]);
 
-  const handleSelect = item => {
-    setDisplayList(false);
-    setSelected(true);
-    if (changeScreenAfter) {
-      setSearchText('');
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR && displayList) {
+      setDisplayList(false);
     }
-    onChangeValue(item);
-  };
+  }, [clickOutside, displayList]);
+
+  const handleSelect = useCallback(
+    item => {
+      setDisplayList(false);
+      setSelected(true);
+      setSearchText(changeScreenAfter ? '' : displayValue(item));
+      onChangeValue(item);
+    },
+    [changeScreenAfter, displayValue, onChangeValue],
+  );
 
   useEffect(() => {
     if (navigate && oneFilter) {
@@ -156,51 +173,48 @@ const AutoCompleteSearch = ({
     }
   }, [handleTimeOut, searchText]);
 
-  useEffect(() => {
-    if (
-      objectList != null &&
-      searchText != null &&
-      searchText !== '' &&
-      !selected
-    ) {
-      if (objectList.length === 1 && selectLastItem === true) {
-        if (changeScreenAfter || oneFilter) {
-          setSearchText('');
+  const handleSearchValueChange = useCallback(
+    input => {
+      if (objectList != null && input != null && input !== '' && !selected) {
+        if (objectList.length === 1 && selectLastItem === true) {
+          if (changeScreenAfter || oneFilter) {
+            setSearchText('');
+          } else {
+            setSearchText(displayValue(objectList[0]));
+            setDisplayList(false);
+          }
+          stopInterval();
+          onChangeValue(objectList[0]);
         } else {
-          setSearchText(displayValue(objectList[0]));
-          setDisplayList(false);
+          setDisplayList(true);
         }
-        stopInterval();
-        onChangeValue(objectList[0]);
-      } else {
-        setDisplayList(true);
       }
-    }
-  }, [
-    changeScreenAfter,
-    displayValue,
-    objectList,
-    selectLastItem,
-    onChangeValue,
-    oneFilter,
-    searchText,
-    selected,
-    stopInterval,
-  ]);
+      setPreviousState(searchText);
+      setSearchText(input);
+    },
+    [
+      changeScreenAfter,
+      displayValue,
+      objectList,
+      selectLastItem,
+      onChangeValue,
+      oneFilter,
+      searchText,
+      selected,
+      stopInterval,
+    ],
+  );
 
   return (
-    <View>
+    <View ref={wrapperRef}>
       <SearchBar
         style={style}
         valueTxt={searchText}
         placeholder={placeholder}
         onClearPress={handleClear}
-        onChangeTxt={input => {
-          setPreviousState(searchText);
-          setSearchText(input);
-        }}
+        onChangeTxt={handleSearchValueChange}
         onSelection={onSelection}
-        onEndFocus={() => setDisplayList(false)}
+        onEndFocus={() => selected && setDisplayList(false)}
         isFocus={isFocus}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
