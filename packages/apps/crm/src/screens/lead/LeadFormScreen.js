@@ -22,6 +22,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const [score, setScore] = useState(lead.leadScoringSelect);
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
+  const [name, setName] = useState(lead.name);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -42,9 +43,10 @@ const LeadFormScreen = ({navigation, route}) => {
         leadVersion: lead.version,
         leadCivility: civility,
         leadFirstname: firstName,
+        leadName: name,
       }),
     );
-  }, [dispatch, lead.id, lead.version, civility, firstName]);
+  }, [dispatch, lead.id, lead.version, civility, firstName, name]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -90,8 +92,8 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={{width: '90%'}}
             title={I18n.t('Crm_Name')}
-            onChange={e => console.log('name', e)}
-            defaultValue={lead?.name !== null ? lead?.name : ''}
+            onChange={e => setName(e)}
+            defaultValue={name}
           />
           <FormInput
             style={{width: '90%'}}
