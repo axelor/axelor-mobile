@@ -7,7 +7,6 @@ import {
   ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-//import {useDispatch} from '@axelor/aos-mobile-core';
 import {stringNoAccent} from '../../../utils/string';
 import {useDispatch} from '../../../redux/hooks';
 
