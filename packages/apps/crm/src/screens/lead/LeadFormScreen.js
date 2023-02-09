@@ -56,8 +56,8 @@ const LeadFormScreen = ({navigation, route}) => {
         leadName: name,
         leadJob: leadJob,
         leadAdress: leadAdress,
-        leadFixedPhone: fixedPhone,
-        leadMobilePhone: mobilePhone,
+        leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
+        leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
       }),
     );
   }, [
