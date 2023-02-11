@@ -61,5 +61,7 @@
   "Crm_FirstName": "First name",
   "Crm_Name": "Nom",
   "Crm_NoEmail": "pas d'email",
-  "Crm_NoPhoneCall": "pas d'appel"
+  "Crm_NoPhoneCall": "pas d'appel",
+  "Crm_Company": "Entreprise",
+  "Crm_JobTitle": "Fonction"
 }

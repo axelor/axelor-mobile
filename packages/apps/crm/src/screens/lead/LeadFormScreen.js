@@ -1,16 +1,26 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {
   Button,
   Checkbox,
   FormInput,
-  NotesCard,
+  HtmlInput,
   Picker,
   Screen,
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchLeadById, updateLead} from '../../features/leadSlice';
+import {
+  fetchLeadById,
+  updateLead,
+  updateLeadScore,
+} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 
 const LeadFormScreen = ({navigation, route}) => {
@@ -19,7 +29,6 @@ const LeadFormScreen = ({navigation, route}) => {
   const {functionList} = useSelector(state => state.function);
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const [score, setScore] = useState(lead.leadScoringSelect);
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
@@ -33,6 +42,14 @@ const LeadFormScreen = ({navigation, route}) => {
   const [mobilePhone, setMobilePhone] = useState(
     lead?.mobilePhone !== null ? lead?.mobilePhone : '',
   );
+  const [email, setEmail] = useState(
+    lead.emailAddress?.address !== null ? lead.emailAddress?.address : '',
+  );
+  const [webSite, setWebSite] = useState(
+    lead.webSite !== null ? lead.webSite : '',
+  );
+  const [leadNoCall, setLeadNoCall] = useState(lead.isDoNotCall);
+  const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -46,6 +63,19 @@ const LeadFormScreen = ({navigation, route}) => {
     {id: 4, name: 'Prof'},
   ];
 
+  const updateScoreLeadAPI = useCallback(
+    newScore => {
+      dispatch(
+        updateLeadScore({
+          leadId: lead.id,
+          leadVersion: lead.version,
+          newScore: newScore,
+        }),
+      );
+    },
+    [dispatch, lead.id, lead.version],
+  );
+
   const updateLeadAPI = useCallback(() => {
     dispatch(
       updateLead({
@@ -58,6 +88,9 @@ const LeadFormScreen = ({navigation, route}) => {
         leadAdress: leadAdress,
         leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
         leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
+        leadWebsite: webSite,
+        leadNoCall: leadNoCall,
+        leadNoEmail: leadNoEmail,
       }),
     );
   }, [
@@ -71,114 +104,119 @@ const LeadFormScreen = ({navigation, route}) => {
     leadAdress,
     fixedPhone,
     mobilePhone,
+    webSite,
+    leadNoCall,
+    leadNoEmail,
   ]);
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <View style={{width: '50%'}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.containerKeyboard}
+        keyboardVerticalOffset={100}>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.headerContainer}>
+              <View style={{width: '50%'}}>
+                <Picker
+                  pickerStyle={{width: '100%'}}
+                  title={I18n.t('Crm_Civility')}
+                  onValueChange={e => setCivility(e)}
+                  listItems={civilityList}
+                  labelField="name"
+                  valueField="id"
+                  defaultValue={civility}
+                />
+              </View>
+              <View style={styles.checkBoxContainer}>
+                <StarScore
+                  score={lead.leadScoringSelect}
+                  showMissingStar={true}
+                  onPress={updateScoreLeadAPI}
+                  editMode={true}
+                />
+                <Checkbox
+                  title={I18n.t('Crm_NoEmail')}
+                  isDefaultChecked={leadNoEmail}
+                  onChange={e => setLeadNoEmail(e)}
+                />
+                <Checkbox
+                  title={I18n.t('Crm_NoPhoneCall')}
+                  isDefaultChecked={leadNoCall}
+                  onChange={e => setLeadNoCall(e)}
+                />
+              </View>
+            </View>
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_FirstName')}
+              onChange={e => setFirstName(e)}
+              defaultValue={firstName}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Name')}
+              onChange={e => setName(e)}
+              defaultValue={name}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Company')}
+              onChange={e => console.log('company', e)}
+              defaultValue={
+                lead?.enterpriseName !== null ? lead?.enterpriseName : ''
+              }
+            />
+            <View style={{width: '100%'}}>
               <Picker
-                pickerStyle={{width: '100%'}}
-                title={I18n.t('Crm_Civility')}
-                onValueChange={e => setCivility(e)}
-                listItems={civilityList}
+                //pickerStyle={{width: '100%'}}
+                title={I18n.t('Crm_JobTitle')}
+                onValueChange={e => setLeadJob(e)}
+                listItems={functionList}
                 labelField="name"
                 valueField="id"
-                defaultValue={civility}
+                defaultValue={leadJob}
               />
             </View>
-            <View style={styles.checkBoxContainer}>
-              <StarScore
-                score={lead.leadScoringSelect}
-                showMissingStar={true}
-                onPress={e => setScore(e)}
-                editMode={true}
-              />
-              <Checkbox
-                title={I18n.t('Crm_NoEmail')}
-                isDefaultChecked={lead.isDoNotSendEmail}
-                onChange={e => console.log('isDoNotSendEmail', e)}
-              />
-              <Checkbox
-                title={I18n.t('Crm_NoPhoneCall')}
-                isDefaultChecked={lead.isDoNotCall}
-                onChange={e => console.log('isDoNotCall', e)}
-              />
-            </View>
-          </View>
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_FirstName')}
-            onChange={e => setFirstName(e)}
-            defaultValue={firstName}
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_Name')}
-            onChange={e => setName(e)}
-            defaultValue={name}
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_Company')}
-            onChange={e => console.log('company', e)}
-            defaultValue={
-              lead?.enterpriseName !== null ? lead?.enterpriseName : ''
-            }
-          />
-          <View style={{width: '100%'}}>
-            <Picker
-              //pickerStyle={{width: '100%'}}
-              title={I18n.t('Crm_JobTitle')}
-              onValueChange={e => setLeadJob(e)}
-              listItems={functionList}
-              labelField="name"
-              valueField="id"
-              defaultValue={leadJob}
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Adress')}
+              onChange={e => setLeadAdress(e)}
+              defaultValue={leadAdress}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Phone')}
+              onChange={e => setFixedPhone(e)}
+              defaultValue={fixedPhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_MobilePhone')}
+              onChange={e => setMobilePhone(e)}
+              defaultValue={mobilePhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Email')}
+              onChange={e => setEmail(e)}
+              defaultValue={email}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_WebSite')}
+              onChange={e => setWebSite(e)}
+              defaultValue={webSite}
             />
           </View>
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_Address')}
-            onChange={e => setLeadAdress(e)}
-            defaultValue={leadAdress}
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_FixedPhone')}
-            onChange={e => setFixedPhone(e)}
-            defaultValue={fixedPhone}
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_MobilePhone')}
-            onChange={e => setMobilePhone(e)}
-            defaultValue={mobilePhone}
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_EmailAddress')}
-            onChange={e => console.log('emailAddress', e)}
-            defaultValue={
-              lead.emailAddress?.address !== null
-                ? lead.emailAddress?.address
-                : ''
-            }
-          />
-          <FormInput
-            style={{width: '90%'}}
-            title={I18n.t('Crm_WebSite')}
-            onChange={e => console.log('webSite', e)}
-            defaultValue={lead.webSite !== null ? lead.webSite : ''}
-          />
-        </View>
-        <NotesCard
-          title={I18n.t('Crm_LeadNotes')}
-          data={lead.description !== null ? lead.description : ''}
-        />
-      </ScrollView>
+          {/*<HtmlInput
+                title={I18n.t('Crm_LeadNotes')}
+                onChange={e => console.log('test', e)}
+                defaultInput={lead.description !== null ? lead.description : ''}
+              />*/}
+        </ScrollView>
+      </KeyboardAvoidingView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={() => updateLeadAPI()} />
       </View>
@@ -187,6 +225,9 @@ const LeadFormScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  containerKeyboard: {
+    flex: 1,
+  },
   container: {
     alignItems: 'center',
   },
@@ -206,6 +247,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
+  },
+  input: {
+    width: '90%',
   },
 });
 
