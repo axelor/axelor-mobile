@@ -27,7 +27,6 @@ const ProspectFormScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const [name, setName] = useState(prospect.name);
-  const [leadAdress, setLeadAdress] = useState(prospect.primaryAddress);
   const [fixedPhone, setFixedPhone] = useState(prospect.fixedPhone);
   const [mobilePhone, setMobilePhone] = useState(prospect.mobilePhone);
   const [email, setEmail] = useState(prospect.emailAddress?.address);
@@ -89,6 +88,7 @@ const ProspectFormScreen = ({navigation, route}) => {
         <ScrollView>
           <View style={styles.headerContainer}>
             <StarScore
+              style={styles.score}
               score={prospect.leadScoringSelect}
               showMissingStar={true}
               onPress={updateScoreProspectAPI}
@@ -101,12 +101,6 @@ const ProspectFormScreen = ({navigation, route}) => {
               title={I18n.t('Crm_Name')}
               onChange={setName}
               defaultValue={name}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Adress')}
-              onChange={setLeadAdress}
-              defaultValue={leadAdress}
             />
             <FormInput
               style={styles.input}
@@ -157,20 +151,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+  score: {marginRight: '10%'},
   headerContainer: {
     flexDirection: 'row-reverse',
-    marginVertical: 20,
   },
   checkBoxContainer: {
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
-  },
-  halfHeader: {
-    width: '50%',
-  },
-  picker: {
-    width: '100%',
   },
   button_container: {
     marginVertical: '1%',
