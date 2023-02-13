@@ -89,10 +89,10 @@ const LeadFormScreen = ({navigation, route}) => {
         emailVersion: lead.emailAddress.$version,
         leadDescription: description !== '' ? description : null,
       }),
-      navigation.navigate('LeadDetailsScreen', {
-        idLead: lead.id,
-      }),
     );
+    navigation.navigate('LeadDetailsScreen', {
+      idLead: lead.id,
+    });
   }, [
     dispatch,
     lead.id,
