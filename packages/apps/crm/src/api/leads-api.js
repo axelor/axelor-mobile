@@ -151,28 +151,43 @@ export async function updateLead({
   leadEmail,
   leadWebsite,
   leadDescription,
+  emailId,
+  emailVersion,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.Lead',
-    data: {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
       data: {
-        id: leadId,
-        version: leadVersion,
-        titleSelect: leadCivility,
-        firstName: leadFirstname,
-        name: leadName,
-        isDoNotSendEmail: leadNoEmail,
-        isDoNotCall: leadNoCall,
-        enterpriseName: leadCompany,
-        primaryAddress: leadAdress,
-        jobTitleFunction: {
-          id: leadJob,
+        data: {
+          id: emailId,
+          version: emailVersion,
+          address: leadEmail,
         },
-        fixedPhone: leadFixedPhone,
-        mobilePhone: leadMobilePhone,
-        webSite: leadWebsite,
-        description: leadDescription,
       },
-    },
-  });
+    })
+    .then(res =>
+      axiosApiProvider.post({
+        url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+        data: {
+          data: {
+            id: leadId,
+            version: leadVersion,
+            titleSelect: leadCivility,
+            firstName: leadFirstname,
+            name: leadName,
+            isDoNotSendEmail: leadNoEmail,
+            isDoNotCall: leadNoCall,
+            enterpriseName: leadCompany,
+            primaryAddress: leadAdress,
+            jobTitleFunction: {
+              id: leadJob,
+            },
+            fixedPhone: leadFixedPhone,
+            mobilePhone: leadMobilePhone,
+            webSite: leadWebsite,
+            description: leadDescription,
+          },
+        },
+      }),
+    );
 }

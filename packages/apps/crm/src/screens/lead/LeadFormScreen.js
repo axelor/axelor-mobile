@@ -10,7 +10,8 @@ import {
   Button,
   Checkbox,
   FormInput,
-  HtmlInput,
+  NotesCard,
+  //HtmlInput,
   Picker,
   Screen,
   StarScore,
@@ -50,6 +51,9 @@ const LeadFormScreen = ({navigation, route}) => {
   );
   const [leadNoCall, setLeadNoCall] = useState(lead.isDoNotCall);
   const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
+  const [leadCompany, setLeadCompany] = useState(
+    lead?.enterpriseName !== null ? lead?.enterpriseName : '',
+  );
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -91,6 +95,10 @@ const LeadFormScreen = ({navigation, route}) => {
         leadWebsite: webSite,
         leadNoCall: leadNoCall,
         leadNoEmail: leadNoEmail,
+        leadCompany: leadCompany,
+        leadEmail: email,
+        emailId: lead.emailAddress.id,
+        emailVersion: lead.emailAddress.$version,
       }),
     );
   }, [
@@ -107,6 +115,10 @@ const LeadFormScreen = ({navigation, route}) => {
     webSite,
     leadNoCall,
     leadNoEmail,
+    email,
+    leadCompany,
+    lead.emailAddress.id,
+    lead.emailAddress.$version,
   ]);
 
   return (
@@ -118,9 +130,9 @@ const LeadFormScreen = ({navigation, route}) => {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.headerContainer}>
-              <View style={{width: '50%'}}>
+              <View style={styles.halfHeader}>
                 <Picker
-                  pickerStyle={{width: '100%'}}
+                  pickerStyle={styles.picker}
                   title={I18n.t('Crm_Civility')}
                   onValueChange={e => setCivility(e)}
                   listItems={civilityList}
@@ -163,14 +175,11 @@ const LeadFormScreen = ({navigation, route}) => {
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Company')}
-              onChange={e => console.log('company', e)}
-              defaultValue={
-                lead?.enterpriseName !== null ? lead?.enterpriseName : ''
-              }
+              onChange={e => setLeadCompany(e)}
+              defaultValue={leadCompany}
             />
-            <View style={{width: '100%'}}>
+            <View style={styles.picker}>
               <Picker
-                //pickerStyle={{width: '100%'}}
                 title={I18n.t('Crm_JobTitle')}
                 onValueChange={e => setLeadJob(e)}
                 listItems={functionList}
@@ -210,11 +219,13 @@ const LeadFormScreen = ({navigation, route}) => {
               defaultValue={webSite}
             />
           </View>
+
+          <NotesCard title={I18n.t('Crm_LeadNotes')} data={lead.description} />
           {/*<HtmlInput
-                title={I18n.t('Crm_LeadNotes')}
-                onChange={e => console.log('test', e)}
-                defaultInput={lead.description !== null ? lead.description : ''}
-              />*/}
+            title={I18n.t('Crm_LeadNotes')}
+            onChange={e => console.log('test', e)}
+            defaultInput={lead.description !== null ? lead.description : ''}
+          />*/}
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
@@ -240,6 +251,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
+  },
+  halfHeader: {
+    width: '50%',
+  },
+  picker: {
+    width: '100%',
   },
   button_container: {
     marginVertical: '1%',
