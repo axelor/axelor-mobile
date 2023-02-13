@@ -50,6 +50,7 @@ const HtmlInput = ({
           <RichEditor
             ref={richText}
             androidHardwareAccelerationDisabled={true}
+            androidLayerType="software"
             initialContentHTML={defaultInput}
             onChange={onChange}
           />

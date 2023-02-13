@@ -56,5 +56,12 @@
   "Crm_Catalogs": "Catalogs",
   "Crm_NoContactAssociated": "No contact associated",
   "Crm_NoGeneralInformation": "No general information",
-  "Crm_NoContactInformation": "No contact information"
+  "Crm_NoContactInformation": "No contact information",
+  "Crm_Civility": "Civility",
+  "Crm_FirstName": "First name",
+  "Crm_Name": "Name",
+  "Crm_NoEmail": "No email",
+  "Crm_NoPhoneCall": "No phone call",
+  "Crm_Company": "Company",
+  "Crm_JobTitle": "Job"
 }
