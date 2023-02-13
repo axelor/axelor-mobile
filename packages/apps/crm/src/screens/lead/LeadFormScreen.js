@@ -131,7 +131,7 @@ const LeadFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={100}>
+        keyboardVerticalOffset={200}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.headerContainer}>
@@ -223,12 +223,12 @@ const LeadFormScreen = ({navigation, route}) => {
               onChange={e => setWebSite(e)}
               defaultValue={webSite}
             />
+            <HtmlInput
+              title={I18n.t('Crm_LeadNotes')}
+              onChange={e => setDescription(e)}
+              defaultInput={description}
+            />
           </View>
-          <HtmlInput
-            title={I18n.t('Crm_LeadNotes')}
-            onChange={e => setDescription(e)}
-            defaultInput={description}
-          />
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
