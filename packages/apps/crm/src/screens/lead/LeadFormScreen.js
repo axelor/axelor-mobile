@@ -5,13 +5,13 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Button,
   Checkbox,
   FormInput,
-  NotesCard,
-  //HtmlInput,
+  HtmlInput,
   Picker,
   Screen,
   StarScore,
@@ -53,6 +53,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
   const [leadCompany, setLeadCompany] = useState(
     lead?.enterpriseName !== null ? lead?.enterpriseName : '',
+  );
+  const [description, setDescription] = useState(
+    lead.description !== null ? lead.description : '',
   );
 
   useEffect(() => {
@@ -99,6 +102,7 @@ const LeadFormScreen = ({navigation, route}) => {
         leadEmail: email,
         emailId: lead.emailAddress.id,
         emailVersion: lead.emailAddress.$version,
+        leadDescription: description,
       }),
     );
   }, [
@@ -119,6 +123,7 @@ const LeadFormScreen = ({navigation, route}) => {
     leadCompany,
     lead.emailAddress.id,
     lead.emailAddress.$version,
+    description,
   ]);
 
   return (
@@ -219,13 +224,11 @@ const LeadFormScreen = ({navigation, route}) => {
               defaultValue={webSite}
             />
           </View>
-
-          <NotesCard title={I18n.t('Crm_LeadNotes')} data={lead.description} />
-          {/*<HtmlInput
+          <HtmlInput
             title={I18n.t('Crm_LeadNotes')}
-            onChange={e => console.log('test', e)}
-            defaultInput={lead.description !== null ? lead.description : ''}
-          />*/}
+            onChange={e => setDescription(e)}
+            defaultInput={description}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
