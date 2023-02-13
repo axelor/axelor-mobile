@@ -103,6 +103,9 @@ const LeadFormScreen = ({navigation, route}) => {
         emailVersion: lead.emailAddress.$version,
         leadDescription: description,
       }),
+      navigation.navigate('LeadDetailsScreen', {
+        idLead: lead.id,
+      }),
     );
   }, [
     dispatch,
@@ -123,6 +126,7 @@ const LeadFormScreen = ({navigation, route}) => {
     lead.emailAddress.id,
     lead.emailAddress.$version,
     description,
+    navigation,
   ]);
 
   return (

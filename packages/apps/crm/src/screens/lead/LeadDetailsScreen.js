@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 2,
-    marginBottom: 5,
+    marginBottom: 25,
   },
 });
 
