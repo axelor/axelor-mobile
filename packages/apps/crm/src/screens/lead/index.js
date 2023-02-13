@@ -1,5 +1,6 @@
 import LeadListScreen from './LeadListScreen';
 import LeadDetailsScreen from './LeadDetailsScreen';
+import LeadFormScreen from './LeadFormScreen';
 export default {
   LeadListScreen: {
     title: 'Crm_Leads',
@@ -11,6 +12,13 @@ export default {
   LeadDetailsScreen: {
     title: 'Crm_Lead',
     component: LeadDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  LeadFormScreen: {
+    title: 'Crm_Lead',
+    component: LeadFormScreen,
     options: {
       shadedHeader: false,
     },

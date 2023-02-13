@@ -5,6 +5,7 @@ import {
   getLeadStatus,
   getLead,
   updateLeadScoring,
+  updateLead as _updateLead,
 } from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
@@ -53,6 +54,27 @@ export const updateLeadScore = createAsyncThunk(
       fetchFunction: updateLeadScoring,
       data,
       action: 'update crm lead score',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getLead,
+        data: {leadId: res?.id},
+        action: 'get lead by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const updateLead = createAsyncThunk(
+  'lead/updateLead',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateLead,
+      data,
+      action: 'update crm lead ',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
@@ -121,6 +143,14 @@ const leadSlice = createSlice({
       state.loadingLead = true;
     });
     builder.addCase(updateLeadScore.fulfilled, (state, action) => {
+      state.loadingLead = false;
+      state.lead = action.payload;
+      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
+    });
+    builder.addCase(updateLead.pending, (state, action) => {
+      state.loadingLead = true;
+    });
+    builder.addCase(updateLead.fulfilled, (state, action) => {
       state.loadingLead = false;
       state.lead = action.payload;
       state.leadList = updateAgendaItems(state.leadList, [action.payload]);

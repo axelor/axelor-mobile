@@ -56,5 +56,12 @@
   "Crm_Catalogs": "Catalogues",
   "Crm_NoContactAssociated": "Aucun contact associé",
   "Crm_NoGeneralInformation": "Pas d'information générale",
-  "Crm_NoContactInformation": "Pas d'information sur le contact"
+  "Crm_NoContactInformation": "Pas d'information sur le contact",
+  "Crm_Civility": "Civilité",
+  "Crm_FirstName": "Prénom",
+  "Crm_Name": "Nom",
+  "Crm_NoEmail": "pas d'email",
+  "Crm_NoPhoneCall": "pas d'appel",
+  "Crm_Company": "Entreprise",
+  "Crm_JobTitle": "Fonction"
 }
