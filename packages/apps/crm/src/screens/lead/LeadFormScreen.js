@@ -94,7 +94,7 @@ const LeadFormScreen = ({navigation, route}) => {
         leadAdress: leadAdress,
         leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
         leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
-        leadWebsite: webSite,
+        leadWebsite: webSite !== '' ? webSite : null,
         leadNoCall: leadNoCall,
         leadNoEmail: leadNoEmail,
         leadCompany: leadCompany,
