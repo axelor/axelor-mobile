@@ -8,23 +8,22 @@ import {
 } from 'react-native';
 import {Button, FormInput, HtmlInput, Screen} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchPartner} from '../../features/partnerSlice';
+
+import {getClientbyId} from '../../features/clientSlice';
 
 const ClientFormScreen = ({navigation, route}) => {
   const idClient = route.params.idClient;
-  const {partner} = useSelector(state => state.partner);
-  const {functionList} = useSelector(state => state.function);
+  const {client} = useSelector(state => state.client);
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const [name, setName] = useState(partner.name);
-  const [fixedPhone, setFixedPhone] = useState(partner.fixedPhone);
-  const [mobilePhone, setMobilePhone] = useState(partner.mobilePhone);
-  const [email, setEmail] = useState(partner.emailAddress?.address);
-  const [webSite, setWebSite] = useState(partner.webSite);
-  const [description, setDescription] = useState(partner.description);
+  const [name, setName] = useState(client.name);
+  const [fixedPhone, setFixedPhone] = useState(client.fixedPhone);
+  const [email, setEmail] = useState(client.emailAddress?.address);
+  const [webSite, setWebSite] = useState(client.webSite);
+  const [description, setDescription] = useState(client.description);
 
   useEffect(() => {
-    dispatch(fetchPartner({partnerId: idClient}));
+    dispatch(getClientbyId({clientId: idClient}));
   }, [dispatch, idClient]);
 
   return (
@@ -46,12 +45,6 @@ const ClientFormScreen = ({navigation, route}) => {
               title={I18n.t('Crm_Phone')}
               onChange={setFixedPhone}
               defaultValue={fixedPhone}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_MobilePhone')}
-              onChange={setMobilePhone}
-              defaultValue={mobilePhone}
             />
             <FormInput
               style={styles.input}

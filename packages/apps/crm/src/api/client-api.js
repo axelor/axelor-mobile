@@ -99,3 +99,12 @@ export async function searchClient({searchValue, page = 0}) {
     },
   });
 }
+
+export async function getClient({clientId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.base.db.Partner/${clientId}/fetch`,
+    data: {
+      fields: clientFields,
+    },
+  });
+}
