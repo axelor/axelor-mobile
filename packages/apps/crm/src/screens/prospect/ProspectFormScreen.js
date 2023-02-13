@@ -65,6 +65,9 @@ const ProspectFormScreen = ({navigation, route}) => {
         prospectEmail: email,
       }),
     );
+    navigation.navigate('ProspectDetailsScreen', {
+      idProspect: idProspect,
+    });
   }, [
     dispatch,
     idProspect,
@@ -77,6 +80,7 @@ const ProspectFormScreen = ({navigation, route}) => {
     prospect.emailAddress.id,
     prospect.emailAddress.$version,
     email,
+    navigation,
   ]);
 
   return (
