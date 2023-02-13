@@ -18,6 +18,7 @@ import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProspectById,
   updateProspectScore,
+  updateProspect,
 } from '../../features/prospectSlice';
 
 const ProspectFormScreen = ({navigation, route}) => {
@@ -26,6 +27,12 @@ const ProspectFormScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const [name, setName] = useState(prospect.name);
+  const [leadAdress, setLeadAdress] = useState(prospect.primaryAddress);
+  const [fixedPhone, setFixedPhone] = useState(prospect.fixedPhone);
+  const [mobilePhone, setMobilePhone] = useState(prospect.mobilePhone);
+  const [email, setEmail] = useState(prospect.emailAddress?.address);
+  const [webSite, setWebSite] = useState(prospect.webSite);
+  const [description, setDescription] = useState(prospect.description);
 
   useEffect(() => {
     dispatch(fetchProspectById({partnerId: idProspect}));
@@ -44,6 +51,35 @@ const ProspectFormScreen = ({navigation, route}) => {
     [dispatch, prospect.id, prospect.version],
   );
 
+  const updateProspectAPI = useCallback(() => {
+    dispatch(
+      updateProspect({
+        prospectId: idProspect,
+        prospectVersion: prospect.version,
+        prospectName: name,
+        prospectFixedPhone: fixedPhone,
+        prospectMobilePhone: mobilePhone,
+        prospectWebsite: webSite,
+        prospectDescription: description,
+        emailId: prospect.emailAddress.id,
+        emailVersion: prospect.emailAddress.$version,
+        prospectEmail: email,
+      }),
+    );
+  }, [
+    dispatch,
+    idProspect,
+    prospect.version,
+    name,
+    fixedPhone,
+    mobilePhone,
+    webSite,
+    description,
+    prospect.emailAddress.id,
+    prospect.emailAddress.$version,
+    email,
+  ]);
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -51,26 +87,64 @@ const ProspectFormScreen = ({navigation, route}) => {
         style={styles.containerKeyboard}
         keyboardVerticalOffset={200}>
         <ScrollView>
+          <View style={styles.headerContainer}>
+            <StarScore
+              score={prospect.leadScoringSelect}
+              showMissingStar={true}
+              onPress={updateScoreProspectAPI}
+              editMode={true}
+            />
+          </View>
           <View style={styles.container}>
-            <View style={styles.headerContainer}>
-              <StarScore
-                score={prospect.leadScoringSelect}
-                showMissingStar={true}
-                onPress={updateScoreProspectAPI}
-                editMode={true}
-              />
-            </View>
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Name')}
               onChange={setName}
               defaultValue={name}
             />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Adress')}
+              onChange={setLeadAdress}
+              defaultValue={leadAdress}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Phone')}
+              onChange={setFixedPhone}
+              defaultValue={fixedPhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_MobilePhone')}
+              onChange={setMobilePhone}
+              defaultValue={mobilePhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Email')}
+              onChange={setEmail}
+              defaultValue={email}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_WebSite')}
+              onChange={setWebSite}
+              defaultValue={webSite}
+            />
+            <HtmlInput
+              title={I18n.t('Crm_LeadNotes')}
+              onChange={setDescription}
+              defaultInput={description}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => console.log('e')} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={() => updateProspectAPI()}
+        />
       </View>
     </Screen>
   );
@@ -84,9 +158,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '90%',
+    flexDirection: 'row-reverse',
+    marginVertical: 20,
   },
   checkBoxContainer: {
     flexDirection: 'column',
