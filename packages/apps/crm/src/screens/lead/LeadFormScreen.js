@@ -33,29 +33,15 @@ const LeadFormScreen = ({navigation, route}) => {
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
   const [leadJob, setLeadJob] = useState(lead.jobTitleFunction.id);
-  const [leadAdress, setLeadAdress] = useState(
-    lead.primaryAddress !== null ? lead.primaryAddress : '',
-  );
-  const [fixedPhone, setFixedPhone] = useState(
-    lead.fixedPhone !== null ? lead.fixedPhone : '',
-  );
-  const [mobilePhone, setMobilePhone] = useState(
-    lead?.mobilePhone !== null ? lead?.mobilePhone : '',
-  );
-  const [email, setEmail] = useState(
-    lead.emailAddress?.address !== null ? lead.emailAddress?.address : '',
-  );
-  const [webSite, setWebSite] = useState(
-    lead.webSite !== null ? lead.webSite : '',
-  );
+  const [leadAdress, setLeadAdress] = useState(lead.primaryAddress);
+  const [fixedPhone, setFixedPhone] = useState(lead.fixedPhone);
+  const [mobilePhone, setMobilePhone] = useState(lead.mobilePhone);
+  const [email, setEmail] = useState(lead.emailAddress?.address);
+  const [webSite, setWebSite] = useState(lead.webSite);
   const [leadNoCall, setLeadNoCall] = useState(lead.isDoNotCall);
   const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
-  const [leadCompany, setLeadCompany] = useState(
-    lead?.enterpriseName !== null ? lead?.enterpriseName : '',
-  );
-  const [description, setDescription] = useState(
-    lead.description !== null ? lead.description : '',
-  );
+  const [leadCompany, setLeadCompany] = useState(lead.enterpriseName);
+  const [description, setDescription] = useState(lead.description);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
@@ -91,17 +77,17 @@ const LeadFormScreen = ({navigation, route}) => {
         leadFirstname: firstName,
         leadName: name,
         leadJob: leadJob,
-        leadAdress: leadAdress,
+        leadAdress: leadAdress !== '' ? leadAdress : null,
         leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
         leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
         leadWebsite: webSite !== '' ? webSite : null,
         leadNoCall: leadNoCall,
         leadNoEmail: leadNoEmail,
         leadCompany: leadCompany,
-        leadEmail: email,
+        leadEmail: email !== '' ? email : null,
         emailId: lead.emailAddress.id,
         emailVersion: lead.emailAddress.$version,
-        leadDescription: description,
+        leadDescription: description !== '' ? description : null,
       }),
       navigation.navigate('LeadDetailsScreen', {
         idLead: lead.id,
@@ -130,7 +116,7 @@ const LeadFormScreen = ({navigation, route}) => {
   ]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
@@ -159,37 +145,37 @@ const LeadFormScreen = ({navigation, route}) => {
                 <Checkbox
                   title={I18n.t('Crm_NoEmail')}
                   isDefaultChecked={leadNoEmail}
-                  onChange={e => setLeadNoEmail(e)}
+                  onChange={setLeadNoEmail}
                 />
                 <Checkbox
                   title={I18n.t('Crm_NoPhoneCall')}
                   isDefaultChecked={leadNoCall}
-                  onChange={e => setLeadNoCall(e)}
+                  onChange={setLeadNoCall}
                 />
               </View>
             </View>
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_FirstName')}
-              onChange={e => setFirstName(e)}
+              onChange={setFirstName}
               defaultValue={firstName}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Name')}
-              onChange={e => setName(e)}
+              onChange={setName}
               defaultValue={name}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Company')}
-              onChange={e => setLeadCompany(e)}
+              onChange={setLeadCompany}
               defaultValue={leadCompany}
             />
             <View style={styles.picker}>
               <Picker
                 title={I18n.t('Crm_JobTitle')}
-                onValueChange={e => setLeadJob(e)}
+                onValueChange={setLeadJob}
                 listItems={functionList}
                 labelField="name"
                 valueField="id"
@@ -199,36 +185,36 @@ const LeadFormScreen = ({navigation, route}) => {
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Adress')}
-              onChange={e => setLeadAdress(e)}
+              onChange={setLeadAdress}
               defaultValue={leadAdress}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Phone')}
-              onChange={e => setFixedPhone(e)}
+              onChange={setFixedPhone}
               defaultValue={fixedPhone}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_MobilePhone')}
-              onChange={e => setMobilePhone(e)}
+              onChange={setMobilePhone}
               defaultValue={mobilePhone}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Email')}
-              onChange={e => setEmail(e)}
+              onChange={setEmail}
               defaultValue={email}
             />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_WebSite')}
-              onChange={e => setWebSite(e)}
+              onChange={setWebSite}
               defaultValue={webSite}
             />
             <HtmlInput
               title={I18n.t('Crm_LeadNotes')}
-              onChange={e => setDescription(e)}
+              onChange={setDescription}
               defaultInput={description}
             />
           </View>
