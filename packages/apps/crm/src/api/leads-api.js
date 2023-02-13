@@ -23,6 +23,8 @@ const crmLeadsFields = [
   'industrySector',
   'eventList',
   'leadScoringSelect',
+  'name',
+  'titleSelect',
 ];
 
 const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];
@@ -131,4 +133,61 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
       },
     },
   });
+}
+
+export async function updateLead({
+  leadId,
+  leadVersion,
+  leadCivility,
+  leadFirstname,
+  leadName,
+  leadNoCall,
+  leadNoEmail,
+  leadCompany,
+  leadJob,
+  leadAdress,
+  leadFixedPhone,
+  leadMobilePhone,
+  leadEmail,
+  leadWebsite,
+  leadDescription,
+  emailId,
+  emailVersion,
+}) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
+      data: {
+        data: {
+          id: emailId,
+          version: emailVersion,
+          address: leadEmail,
+        },
+      },
+    })
+    .then(res =>
+      axiosApiProvider.post({
+        url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+        data: {
+          data: {
+            id: leadId,
+            version: leadVersion,
+            titleSelect: leadCivility,
+            firstName: leadFirstname,
+            name: leadName,
+            isDoNotSendEmail: leadNoEmail,
+            isDoNotCall: leadNoCall,
+            enterpriseName: leadCompany,
+            primaryAddress: leadAdress,
+            jobTitleFunction: {
+              id: leadJob,
+            },
+            fixedPhone: leadFixedPhone,
+            mobilePhone: leadMobilePhone,
+            webSite: leadWebsite,
+            description: leadDescription,
+          },
+        },
+      }),
+    );
 }
