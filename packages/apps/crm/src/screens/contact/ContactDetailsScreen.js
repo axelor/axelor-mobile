@@ -7,6 +7,7 @@ import {
   LabelText,
   NotesCard,
   DropdownCardSwitch,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -181,6 +182,16 @@ const ContactDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('ContactFormScreen', {
+              contact: contact,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -208,6 +219,14 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 25,
   },
 });
 
