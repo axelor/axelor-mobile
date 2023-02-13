@@ -28,7 +28,6 @@ const ProspectFormScreen = ({navigation, route}) => {
   const I18n = useTranslator();
   const [name, setName] = useState(prospect.name);
   const [fixedPhone, setFixedPhone] = useState(prospect.fixedPhone);
-  const [mobilePhone, setMobilePhone] = useState(prospect.mobilePhone);
   const [email, setEmail] = useState(prospect.emailAddress?.address);
   const [webSite, setWebSite] = useState(prospect.webSite);
   const [description, setDescription] = useState(prospect.description);
@@ -57,7 +56,6 @@ const ProspectFormScreen = ({navigation, route}) => {
         prospectVersion: prospect.version,
         prospectName: name,
         prospectFixedPhone: fixedPhone,
-        prospectMobilePhone: mobilePhone,
         prospectWebsite: webSite,
         prospectDescription: description,
         emailId: prospect.emailAddress.id,
@@ -74,7 +72,6 @@ const ProspectFormScreen = ({navigation, route}) => {
     prospect.version,
     name,
     fixedPhone,
-    mobilePhone,
     webSite,
     description,
     prospect.emailAddress.id,
@@ -111,12 +108,6 @@ const ProspectFormScreen = ({navigation, route}) => {
               title={I18n.t('Crm_Phone')}
               onChange={setFixedPhone}
               defaultValue={fixedPhone}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_MobilePhone')}
-              onChange={setMobilePhone}
-              defaultValue={mobilePhone}
             />
             <FormInput
               style={styles.input}
