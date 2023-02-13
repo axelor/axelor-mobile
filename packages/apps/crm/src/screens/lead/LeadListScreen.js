@@ -135,7 +135,9 @@ const LeadListScreen = ({navigation}) => {
             leadsAddress={item.primaryAddress}
             leadsFixedPhone={item.fixedPhone}
             leadsPhoneNumber={item.mobilePhone}
-            leadsEmail={item['emailAddress.address']}
+            leadsEmail={
+              item['emailAddress.address'] || item.emailAddress?.address
+            }
             leadScoring={item.leadScoringSelect}
             leadVersion={item.version}
             leadsId={item.id}
