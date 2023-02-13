@@ -1,6 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchClient, getClient} from '../api/client-api';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  searchClient,
+  getClient,
+  updateClient as _updateClient,
+} from '../api/client-api';
 
 export const fetchClients = createAsyncThunk(
   'client/fetchClients',
@@ -24,6 +28,27 @@ export const getClientbyId = createAsyncThunk(
       action: 'fetch client by id',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateClient = createAsyncThunk(
+  'client/updateClient',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateClient,
+      data,
+      action: 'update crm client ',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getClient,
+        data: {clientId: res?.id},
+        action: 'get client by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -68,6 +93,14 @@ const clientSlice = createSlice({
     builder.addCase(getClientbyId.fulfilled, (state, action) => {
       state.loading = false;
       state.client = action.payload;
+    });
+    builder.addCase(updateClient.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateClient.fulfilled, (state, action) => {
+      state.loading = false;
+      state.client = action.payload;
+      state.clientList = updateAgendaItems(state.clientList, [action.payload]);
     });
   },
 });

@@ -9,7 +9,7 @@ import {
 import {Button, FormInput, HtmlInput, Screen} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 
-import {getClientbyId} from '../../features/clientSlice';
+import {getClientbyId, updateClient} from '../../features/clientSlice';
 
 const ClientFormScreen = ({navigation, route}) => {
   const idClient = route.params.idClient;
@@ -25,6 +25,37 @@ const ClientFormScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(getClientbyId({clientId: idClient}));
   }, [dispatch, idClient]);
+
+  const updateClientAPI = useCallback(() => {
+    dispatch(
+      updateClient({
+        clientId: client.id,
+        clientVersion: client.version,
+        clientName: name,
+        clientFixedPhone: fixedPhone,
+        clientWebsite: webSite,
+        clientEmail: email,
+        emailVersion: client.emailAddress.$version,
+        emailId: client.emailAddress.id,
+        clientDescription: description,
+      }),
+      navigation.navigate('ClientDetailsScreen', {
+        idClient: client.id,
+      }),
+    );
+  }, [
+    dispatch,
+    client.id,
+    client.version,
+    name,
+    fixedPhone,
+    webSite,
+    navigation,
+    email,
+    client.emailAddress.$version,
+    client.emailAddress.id,
+    description,
+  ]);
 
   return (
     <Screen>
@@ -67,7 +98,7 @@ const ClientFormScreen = ({navigation, route}) => {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => console.log('e')} />
+        <Button title={I18n.t('Base_Save')} onPress={() => updateClientAPI()} />
       </View>
     </Screen>
   );
