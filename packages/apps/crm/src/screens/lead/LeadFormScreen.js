@@ -5,7 +5,6 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Button,
