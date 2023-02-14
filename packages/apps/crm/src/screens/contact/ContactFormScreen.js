@@ -8,26 +8,46 @@ import {
 } from 'react-native';
 import {
   Button,
-  Checkbox,
   FormInput,
   HtmlInput,
   Picker,
   Screen,
-  StarScore,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  fetchLeadById,
-  updateLead,
-  updateLeadScore,
-} from '../../features/leadSlice';
-import {fetchFunction} from '../../features/functionSlice';
+  useSelector,
+  useDispatch,
+  useTranslator,
+  AutoCompleteSearchInput,
+} from '@axelor/aos-mobile-core';
+
+import {getContact} from '../../features/contactSlice';
 
 const ContactFormScreen = ({navigation, route}) => {
-  const ContactFormScreen = route.params.ContactFormScreen;
-  const {lead} = useSelector(state => state.lead);
+  const idContact = route.params.idContact;
+  const {contact} = useSelector(state => state.contact);
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const [civility, setCivility] = useState(Number(contact.titleSelect));
+  const [firstName, setFirstName] = useState(contact.firstName);
+  const [name, setName] = useState(contact.name);
+  const [fixedPhone, setFixedPhone] = useState(contact.fixedPhone);
+  const [mobilePhone, setMobilePhone] = useState(contact.mobilePhone);
+  const [email, setEmail] = useState(contact.emailAddress?.address);
+  const [webSite, setWebSite] = useState(contact.webSite);
+  const [description, setDescription] = useState(contact.description);
+  const [adress, setAdress] = useState(contact.mainAddress?.fullName);
+
+  useEffect(() => {
+    dispatch(getContact({contactId: idContact}));
+  }, [dispatch, idContact]);
+
+  const civilityList = [
+    {id: 1, name: 'M.'},
+    {id: 2, name: 'Mme.'},
+    {id: 3, name: 'Dr'},
+    {id: 4, name: 'Prof'},
+  ];
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -35,7 +55,73 @@ const ContactFormScreen = ({navigation, route}) => {
         style={styles.containerKeyboard}
         keyboardVerticalOffset={200}>
         <ScrollView>
-          <View style={styles.container}></View>
+          <View style={styles.container}>
+            <View style={styles.picker}>
+              <Picker
+                title={I18n.t('Crm_Civility')}
+                onValueChange={e => setCivility(e)}
+                listItems={civilityList}
+                labelField="name"
+                valueField="id"
+                defaultValue={civility}
+              />
+            </View>
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_FirstName')}
+              onChange={setFirstName}
+              defaultValue={firstName}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Name')}
+              onChange={setName}
+              defaultValue={name}
+            />
+
+            <View style={styles.picker}>
+              <AutoCompleteSearchInput
+                title={I18n.t('Crm_ClientProspect')}
+                objectList={[]}
+                onChangeValue={e => console.log(e)}
+              />
+            </View>
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Adress')}
+              onChange={setAdress}
+              defaultValue={adress}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Phone')}
+              onChange={setFixedPhone}
+              defaultValue={fixedPhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_MobilePhone')}
+              onChange={setMobilePhone}
+              defaultValue={mobilePhone}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_Email')}
+              onChange={setEmail}
+              defaultValue={email}
+            />
+            <FormInput
+              style={styles.input}
+              title={I18n.t('Crm_WebSite')}
+              onChange={setWebSite}
+              defaultValue={webSite}
+            />
+            <HtmlInput
+              title={I18n.t('Crm_LeadNotes')}
+              onChange={setDescription}
+              defaultInput={description}
+            />
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>

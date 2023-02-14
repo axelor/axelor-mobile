@@ -194,7 +194,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
           iconName="pen"
           onPress={() =>
             navigation.navigate('ContactFormScreen', {
-              contact: contact,
+              idContact: idContact,
             })
           }
         />

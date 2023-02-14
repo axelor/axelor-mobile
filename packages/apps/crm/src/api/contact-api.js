@@ -13,6 +13,9 @@ const contactFields = [
   'webSite',
   'language',
   'mobilePhone',
+  'titleSelect',
+  'firstName',
+  'name',
 ];
 
 export async function searchContactWithIds(idList) {
