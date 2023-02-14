@@ -116,3 +116,12 @@ export async function searchContact({searchValue, page = 0}) {
     },
   });
 }
+
+export async function getContact({contactId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.base.db.Partner/${contactId}/fetch`,
+    data: {
+      fields: contactFields,
+    },
+  });
+}

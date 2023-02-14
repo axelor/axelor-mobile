@@ -24,14 +24,17 @@ import {
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
 import {fetchContactEventById} from '../../features/eventSlice';
 import {fetchPartner} from '../../features/partnerSlice';
+import {getContact} from '../../features/contactSlice';
 
 const ContactDetailsScreen = ({navigation, route}) => {
-  const contact = route.params.contact;
+  const idContact = route.params.idContact;
+  const contactMainPartner = route.params.contactMainPartner;
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const {mobileSettings} = useSelector(state => state.config);
   const {listEventContact} = useSelector(state => state.event);
   const {partner} = useSelector(state => state.partner);
+  const {contact} = useSelector(state => state.contact);
 
   const lastEventClient = useMemo(() => {
     return getLastEvent(listEventContact);
@@ -56,12 +59,16 @@ const ContactDetailsScreen = ({navigation, route}) => {
   }, [mobileSettings, navigation, contact]);
 
   useEffect(() => {
-    dispatch(fetchContactEventById(contact.id));
-  }, [dispatch, contact.id]);
+    dispatch(getContact({contactId: idContact}));
+  }, [dispatch, idContact]);
 
   useEffect(() => {
-    dispatch(fetchPartner({partnerId: contact.mainPartner?.id}));
-  }, [dispatch, contact.mainPartner?.id]);
+    dispatch(fetchContactEventById(idContact));
+  }, [dispatch, idContact]);
+
+  useEffect(() => {
+    dispatch(fetchPartner({partnerId: contactMainPartner?.id}));
+  }, [dispatch, contactMainPartner?.id]);
 
   return (
     <Screen removeSpaceOnTop={true}>

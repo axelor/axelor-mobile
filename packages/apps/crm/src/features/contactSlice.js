@@ -1,6 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchContactWithIds, searchContact} from '../api/contact-api';
+import {
+  searchContactWithIds,
+  searchContact,
+  getContact as _getContact,
+} from '../api/contact-api';
 
 export const searchContactById = createAsyncThunk(
   'contact/searchContactById',
@@ -28,6 +32,19 @@ export const fetchContact = createAsyncThunk(
   },
 );
 
+export const getContact = createAsyncThunk(
+  'contact/getContact',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getContact,
+      data,
+      action: 'get contact by id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   listContactById: [],
@@ -35,6 +52,7 @@ const initialState = {
   loadingContact: false,
   isListEnd: false,
   contactList: [],
+  contact: {},
 };
 
 const contactSlice = createSlice({
@@ -69,6 +87,13 @@ const contactSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(getContact.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getContact.fulfilled, (state, action) => {
+      state.loading = false;
+      state.contact = action.payload;
     });
   },
 });
