@@ -3,6 +3,7 @@ import {axiosApiProvider} from '@axelor/aos-mobile-core';
 const contactFields = [
   'simpleFullName',
   'fixedPhone',
+  'emailAddress',
   'emailAddress.address',
   'mainPartner',
   'mainAddress',
@@ -16,6 +17,7 @@ const contactFields = [
   'titleSelect',
   'firstName',
   'name',
+  'firstName',
 ];
 
 export async function searchContactWithIds(idList) {
@@ -127,4 +129,52 @@ export async function getContact({contactId}) {
       fields: contactFields,
     },
   });
+}
+
+export async function updateContact({
+  contactId,
+  contactVersion,
+  contactCivility,
+  contactFirstname,
+  contactName,
+  contactAdress,
+  contactFixedPhone,
+  contactMobilePhone,
+  contactWebsite,
+  contactDescription,
+  mainPartnerId,
+  contactEmail,
+  emailId,
+  emailVersion,
+}) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
+      data: {
+        data: {
+          id: emailId,
+          version: emailVersion,
+          address: contactEmail,
+        },
+      },
+    })
+    .then(res =>
+      axiosApiProvider.post({
+        url: '/ws/rest/com.axelor.apps.base.db.Partner',
+        data: {
+          data: {
+            id: contactId,
+            version: contactVersion,
+            titleSelect: contactCivility,
+            firstName: contactFirstname,
+            name: contactName,
+            fixedPhone: contactFixedPhone,
+            mobilePhone: contactMobilePhone,
+            webSite: contactWebsite,
+            description: contactDescription,
+            mainPartner: {id: mainPartnerId},
+          },
+        },
+      }),
+    );
 }

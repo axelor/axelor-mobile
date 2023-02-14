@@ -7,7 +7,6 @@ import {
   Platform,
 } from 'react-native';
 import {
-  AutoCompleteSearch,
   Button,
   FormInput,
   HtmlInput,
@@ -23,6 +22,7 @@ import {
 
 import {getContact} from '../../features/contactSlice';
 import {fetchClientAndProspect} from '../../features/partnerSlice';
+import {updateContact} from '../../features/contactSlice';
 
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
@@ -52,6 +52,40 @@ const ContactFormScreen = ({navigation, route}) => {
     {id: 3, name: 'Dr'},
     {id: 4, name: 'Prof'},
   ];
+
+  const updateContactAPI = useCallback(() => {
+    dispatch(
+      updateContact({
+        contactId: contact.id,
+        contactVersion: contact.version,
+        contactCivility: civility,
+        contactFirstname: firstName,
+        contactName: name,
+        contactFixedPhone: fixedPhone,
+        contactMobilePhone: mobilePhone,
+        contactWebsite: webSite,
+        contactDescription: description,
+        mainPartnerId: clientAndProspect?.id,
+      }),
+    );
+    navigation.navigate('ContactDetailsScreen', {
+      idContact: contact.id,
+      contactMainPartner: clientAndProspect,
+    });
+  }, [
+    dispatch,
+    navigation,
+    clientAndProspect,
+    contact.id,
+    contact.version,
+    civility,
+    firstName,
+    name,
+    fixedPhone,
+    mobilePhone,
+    webSite,
+    description,
+  ]);
 
   return (
     <Screen>
@@ -92,7 +126,6 @@ const ContactFormScreen = ({navigation, route}) => {
                 searchField="fullName"
                 onChangeValue={setClientAndProspect}
                 searchAPI={fetchClientAndProspect}
-                selectLastItem={false}
               />
             </View>
             <FormInput
@@ -134,7 +167,10 @@ const ContactFormScreen = ({navigation, route}) => {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => console.log('e')} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={() => updateContactAPI()}
+        />
       </View>
     </Screen>
   );
