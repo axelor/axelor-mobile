@@ -21,6 +21,7 @@ interface AutoCompleteSearchInputProps {
   placeholder?: string;
   style?: any;
   required?: boolean;
+  selectLastItem?: boolean;
 }
 
 const AutoCompleteSearchInput = ({
@@ -34,6 +35,7 @@ const AutoCompleteSearchInput = ({
   placeholder,
   style,
   required = false,
+  selectLastItem = true,
 }: AutoCompleteSearchInputProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -84,6 +86,7 @@ const AutoCompleteSearchInput = ({
         fetchData={setSearchValue}
         placeholder={placeholder}
         displayValue={item => item[searchField]}
+        selectLastItem={selectLastItem}
       />
     </View>
   );

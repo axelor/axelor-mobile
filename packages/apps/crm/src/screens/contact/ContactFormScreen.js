@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import {
+  AutoCompleteSearch,
   Button,
   FormInput,
   HtmlInput,
@@ -21,10 +22,12 @@ import {
 } from '@axelor/aos-mobile-core';
 
 import {getContact} from '../../features/contactSlice';
+import {fetchClientAndProspect} from '../../features/partnerSlice';
 
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
   const {contact} = useSelector(state => state.contact);
+  const {clientAndProspectList} = useSelector(state => state.partner);
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const [civility, setCivility] = useState(Number(contact.titleSelect));
@@ -36,7 +39,9 @@ const ContactFormScreen = ({navigation, route}) => {
   const [webSite, setWebSite] = useState(contact.webSite);
   const [description, setDescription] = useState(contact.description);
   const [adress, setAdress] = useState(contact.mainAddress?.fullName);
-
+  const [clientAndProspect, setClientAndProspect] = useState(
+    contact.mainPartner,
+  );
   useEffect(() => {
     dispatch(getContact({contactId: idContact}));
   }, [dispatch, idContact]);
@@ -82,8 +87,12 @@ const ContactFormScreen = ({navigation, route}) => {
             <View style={styles.picker}>
               <AutoCompleteSearchInput
                 title={I18n.t('Crm_ClientProspect')}
-                objectList={[]}
-                onChangeValue={e => console.log(e)}
+                objectList={clientAndProspectList}
+                value={clientAndProspect}
+                searchField="fullName"
+                onChangeValue={setClientAndProspect}
+                searchAPI={fetchClientAndProspect}
+                selectLastItem={false}
               />
             </View>
             <FormInput
