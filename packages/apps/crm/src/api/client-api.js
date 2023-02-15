@@ -99,3 +99,51 @@ export async function searchClient({searchValue, page = 0}) {
     },
   });
 }
+
+export async function getClient({clientId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.base.db.Partner/${clientId}/fetch`,
+    data: {
+      fields: clientFields,
+    },
+  });
+}
+
+export async function updateClient({
+  clientId,
+  clientVersion,
+  clientName,
+  clientFixedPhone,
+  clientWebsite,
+  clientDescription,
+  clientEmail,
+  emailId,
+  emailVersion,
+}) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
+      data: {
+        data: {
+          id: emailId,
+          version: emailVersion,
+          address: clientEmail,
+        },
+      },
+    })
+    .then(res =>
+      axiosApiProvider.post({
+        url: '/ws/rest/com.axelor.apps.base.db.Partner',
+        data: {
+          data: {
+            id: clientId,
+            version: clientVersion,
+            name: clientName,
+            fixedPhone: clientFixedPhone,
+            webSite: clientWebsite,
+            description: clientDescription,
+          },
+        },
+      }),
+    );
+}
