@@ -19,8 +19,5 @@ export default {
   ProspectFormScreen: {
     title: 'Crm_Prospect',
     component: ProspectFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
