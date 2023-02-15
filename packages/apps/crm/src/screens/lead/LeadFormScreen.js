@@ -9,8 +9,8 @@ import {
 import {
   Button,
   Checkbox,
+  FormHtmlInput,
   FormInput,
-  HtmlInput,
   Picker,
   Screen,
   StarScore,
@@ -22,13 +22,16 @@ import {
   updateLeadScore,
 } from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
+import {useCivilityList} from '../../hooks/use-civility-list';
 
 const LeadFormScreen = ({navigation, route}) => {
   const idLead = route.params.idLead;
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
+  const {civilityList} = useCivilityList();
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
@@ -47,13 +50,6 @@ const LeadFormScreen = ({navigation, route}) => {
     dispatch(fetchLeadById({leadId: idLead}));
     dispatch(fetchFunction());
   }, [dispatch, idLead]);
-
-  const civilityList = [
-    {id: 1, name: 'M.'},
-    {id: 2, name: 'Mme.'},
-    {id: 3, name: 'Dr'},
-    {id: 4, name: 'Prof'},
-  ];
 
   const updateScoreLeadAPI = useCallback(
     newScore => {
@@ -90,6 +86,7 @@ const LeadFormScreen = ({navigation, route}) => {
         leadDescription: description !== '' ? description : null,
       }),
     );
+
     navigation.navigate('LeadDetailsScreen', {
       idLead: lead.id,
     });
@@ -120,15 +117,15 @@ const LeadFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={200}>
+        keyboardVerticalOffset={180}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.headerContainer}>
               <View style={styles.halfHeader}>
                 <Picker
-                  pickerStyle={styles.picker}
+                  pickerStyle={styles.civilityPicker}
                   title={I18n.t('Crm_Civility')}
-                  onValueChange={e => setCivility(e)}
+                  onValueChange={setCivility}
                   listItems={civilityList}
                   labelField="name"
                   valueField="id"
@@ -146,11 +143,13 @@ const LeadFormScreen = ({navigation, route}) => {
                   title={I18n.t('Crm_NoEmail')}
                   isDefaultChecked={leadNoEmail}
                   onChange={setLeadNoEmail}
+                  iconSize={20}
                 />
                 <Checkbox
                   title={I18n.t('Crm_NoPhoneCall')}
                   isDefaultChecked={leadNoCall}
                   onChange={setLeadNoCall}
+                  iconSize={20}
                 />
               </View>
             </View>
@@ -172,16 +171,16 @@ const LeadFormScreen = ({navigation, route}) => {
               onChange={setLeadCompany}
               defaultValue={leadCompany}
             />
-            <View style={styles.picker}>
-              <Picker
-                title={I18n.t('Crm_JobTitle')}
-                onValueChange={setLeadJob}
-                listItems={functionList}
-                labelField="name"
-                valueField="id"
-                defaultValue={leadJob}
-              />
-            </View>
+            <Picker
+              title={I18n.t('Crm_JobTitle')}
+              onValueChange={setLeadJob}
+              listItems={functionList}
+              labelField="name"
+              valueField="id"
+              defaultValue={leadJob}
+              style={styles.picker}
+              styleTxt={styles.pickerTitle}
+            />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Adress')}
@@ -212,16 +211,16 @@ const LeadFormScreen = ({navigation, route}) => {
               onChange={setWebSite}
               defaultValue={webSite}
             />
-            <HtmlInput
-              title={I18n.t('Crm_LeadNotes')}
+            <FormHtmlInput
+              title={I18n.t('Crm_Description')}
               onChange={setDescription}
-              defaultInput={description}
+              defaultValue={description}
             />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => updateLeadAPI()} />
+        <Button title={I18n.t('Base_Save')} onPress={updateLeadAPI} />
       </View>
     </Screen>
   );
@@ -239,16 +238,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '90%',
   },
+  halfHeader: {
+    width: '50%',
+  },
   checkBoxContainer: {
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
   },
-  halfHeader: {
-    width: '50%',
-  },
   picker: {
     width: '100%',
+    marginLeft: 5,
+  },
+  civilityPicker: {
+    width: '100%',
+    marginLeft: 12,
+  },
+  pickerTitle: {
+    marginLeft: 5,
+  },
+  input: {
+    width: '90%',
   },
   button_container: {
     marginVertical: '1%',
@@ -256,9 +266,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-  },
-  input: {
-    width: '90%',
   },
 });
 

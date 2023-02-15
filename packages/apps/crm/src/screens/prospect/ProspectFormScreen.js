@@ -8,13 +8,12 @@ import {
 } from 'react-native';
 import {
   Button,
+  FormHtmlInput,
   FormInput,
-  HtmlInput,
   Screen,
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-
 import {
   fetchProspectById,
   updateProspectScore,
@@ -85,7 +84,7 @@ const ProspectFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={200}>
+        keyboardVerticalOffset={180}>
         <ScrollView>
           <View style={styles.headerContainer}>
             <StarScore
@@ -121,19 +120,16 @@ const ProspectFormScreen = ({navigation, route}) => {
               onChange={setWebSite}
               defaultValue={webSite}
             />
-            <HtmlInput
-              title={I18n.t('Crm_LeadNotes')}
+            <FormHtmlInput
+              title={I18n.t('Crm_Notes')}
               onChange={setDescription}
-              defaultInput={description}
+              defaultValue={description}
             />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={() => updateProspectAPI()}
-        />
+        <Button title={I18n.t('Base_Save')} onPress={updateProspectAPI} />
       </View>
     </Screen>
   );
@@ -146,14 +142,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  score: {marginRight: '10%'},
+  score: {
+    marginRight: '10%',
+  },
   headerContainer: {
     flexDirection: 'row-reverse',
-  },
-  checkBoxContainer: {
-    flexDirection: 'column',
-    width: '50%',
-    marginLeft: '10%',
   },
   button_container: {
     marginVertical: '1%',

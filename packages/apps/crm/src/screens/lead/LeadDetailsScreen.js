@@ -140,7 +140,7 @@ const LeadDetailsScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <NotesCard title={I18n.t('Crm_LeadNotes')} data={lead.description} />
+        <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />
         <View style={styles.container}>
           <DropdownCardSwitch
             styleTitle={styles.textTitle}

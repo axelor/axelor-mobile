@@ -20,6 +20,7 @@ interface AutoCompleteSearchInputProps {
   searchAPI?: ({searchValue}: {searchValue: string}) => AnyAction;
   placeholder?: string;
   style?: any;
+  styleTxt?: any;
   required?: boolean;
   selectLastItem?: boolean;
 }
@@ -34,6 +35,7 @@ const AutoCompleteSearchInput = ({
   searchAPI,
   placeholder,
   style,
+  styleTxt,
   required = false,
   selectLastItem = true,
 }: AutoCompleteSearchInputProps) => {
@@ -72,13 +74,10 @@ const AutoCompleteSearchInput = ({
   }, [filterSearchList, searchValue]);
 
   return (
-    <View>
-      <Text style={styles.title}>{title}</Text>
+    <View style={style}>
+      <Text style={[styles.title, styleTxt]}>{title}</Text>
       <AutoCompleteSearch
-        style={[
-          style,
-          value == null && required ? styles.requiredBorder : null,
-        ]}
+        style={[value == null && required ? styles.requiredBorder : null]}
         value={value}
         objectList={filteredList}
         onChangeValue={onChangeValue}
