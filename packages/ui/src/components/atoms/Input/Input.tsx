@@ -23,7 +23,7 @@ import {useWritingType} from '../../../theme/writingTheme';
 import {useConfig} from '../../../config/ConfigContext';
 
 interface InputProps {
-  style: any;
+  style?: any;
   value: string;
   onChange: (any) => void;
   placeholder?: string;

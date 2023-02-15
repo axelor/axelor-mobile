@@ -9,7 +9,7 @@ import {
 import {
   Button,
   Screen,
-  HtmlInput,
+  FormHtmlInput,
   Picker,
   StarScore,
   MoreLessInput,
@@ -67,6 +67,9 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityCloseDate: date?.toISOString().split('T')[0],
       }),
     );
+    navigation.navigate('OpportunityDetailsScreen', {
+      opportunityId: opportunity.id,
+    });
   }, [
     dispatch,
     opportunity.id,
@@ -78,6 +81,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
     clientAndProspect?.id,
     score,
     date,
+    navigation,
   ]);
 
   return (
@@ -137,7 +141,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
                 isScrollViewContainer={true}
               />
             </View>
-            <HtmlInput
+            <FormHtmlInput
               title={I18n.t('Base_Description')}
               onChange={setDescription}
               defaultInput={description}

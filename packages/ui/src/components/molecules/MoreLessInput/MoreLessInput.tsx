@@ -78,7 +78,6 @@ const MoreLessInput = ({
           style={styles.container_icon}
         />
         <Input
-          style={styles.input}
           value={value}
           onChange={onValueChange}
           numberOfLines={null}
@@ -101,9 +100,6 @@ const getStyles = Colors =>
   StyleSheet.create({
     container: {
       width: '100%',
-    },
-    input: {
-      flex: 1,
     },
     title: {
       marginHorizontal: 24,
