@@ -6,6 +6,7 @@ import {
   getOpportunity as _getOpportunity,
   updateOpportunityStatus as _updateOpportunityStatus,
   updateOpportunity as _updateOpportunity,
+  updateOpportunityScoring as _updateOpportunityScoring,
 } from '../api/opportunities-api';
 import {Opportunity} from '../types';
 
@@ -66,6 +67,27 @@ export const updateOpportunityStatus = createAsyncThunk(
         responseOptions: {isArrayResponse: false},
       }),
     );
+  },
+);
+
+export const updateOpportunityScore = createAsyncThunk(
+  'opportunity/updateOpportunityScore',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateOpportunityScoring,
+      data,
+      action: 'update crm opportunity score',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _getOpportunity,
+        data: {opportunityId: res?.id},
+        action: 'get opportunity by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
   },
 );
 
@@ -157,6 +179,16 @@ const opportunitySlice = createSlice({
       state.loading = true;
     });
     builder.addCase(updateOpportunity.fulfilled, (state, action) => {
+      state.loading = false;
+      state.opportunity = action.payload;
+      state.opportunityList = updateAgendaItems(state.opportunityList, [
+        action.payload,
+      ]);
+    });
+    builder.addCase(updateOpportunityScore.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateOpportunityScore.fulfilled, (state, action) => {
       state.loading = false;
       state.opportunity = action.payload;
       state.opportunityList = updateAgendaItems(state.opportunityList, [

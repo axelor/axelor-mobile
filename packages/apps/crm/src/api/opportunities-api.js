@@ -88,6 +88,23 @@ export async function getOpportunity({opportunityId}) {
   });
 }
 
+export async function updateOpportunityScoring({
+  opportunityId,
+  opportunityVersion,
+  newScore,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
+    data: {
+      data: {
+        id: opportunityId,
+        version: opportunityVersion,
+        opportunityRating: newScore,
+      },
+    },
+  });
+}
+
 export async function updateOpportunityStatus({
   opportunityId,
   version,

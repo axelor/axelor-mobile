@@ -23,6 +23,7 @@ import {OpportunityDropdownInfo, PartnerInfoCard} from '../../components';
 import {
   getOpportunity,
   updateOpportunityStatus,
+  updateOpportunityScore,
 } from '../../features/opportunitySlice';
 
 const OpportunityDetailsScreen = ({navigation, route}) => {
@@ -41,6 +42,19 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
         status => status.id === opportunity.opportunityStatus?.id,
       ),
     [opportunityStatusList, opportunity.opportunityStatus],
+  );
+
+  const updateOpportunityAPI = useCallback(
+    newScore => {
+      dispatch(
+        updateOpportunityScore({
+          opportunityId: opportunity.id,
+          opportunityVersion: opportunity.version,
+          newScore: newScore,
+        }),
+      );
+    },
+    [dispatch, opportunity.id, opportunity.version],
   );
 
   React.useLayoutEffect(() => {
@@ -103,6 +117,8 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
               <StarScore
                 score={opportunity.opportunityRating}
                 showMissingStar={true}
+                onPress={updateOpportunityAPI}
+                editMode={true}
               />
             </View>
             <View>
