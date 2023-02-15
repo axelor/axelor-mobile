@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
@@ -27,58 +27,82 @@ import Text from '../Text/Text';
 interface HtmlInputProps {
   style?: any;
   styleToolbar?: any;
+  containerStyle?: any;
+  editorBackgroundColor?: string;
   title?: string;
+  placeholder?: string;
   onChange?: (value: string) => void;
   defaultInput?: string;
+  readonly?: boolean;
+  onHeightChange?: (height: number) => void;
 }
 
 const HtmlInput = ({
   style,
   styleToolbar,
-  title = '',
+  containerStyle,
+  editorBackgroundColor,
+  title,
+  placeholder = '',
   onChange = () => {},
   defaultInput = '',
+  readonly = false,
+  onHeightChange = () => {},
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
-  const richText = useRef();
+  const editor = useRef(null);
+
+  useEffect(() => {
+    if (defaultInput == null || defaultInput === '') {
+      editor.current.setContentHTML('');
+      if (editor.current.isKeyboardOpen) {
+        editor.current.dismissKeyboard();
+      }
+    }
+  }, [defaultInput]);
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={containerStyle}>
       <ScrollView style={[style]}>
         <View>
-          <Text>{title}</Text>
+          {title != null ? <Text>{title}</Text> : null}
           <RichEditor
-            ref={richText}
+            ref={editor}
+            placeholder={placeholder}
             androidHardwareAccelerationDisabled={true}
             androidLayerType="software"
             initialContentHTML={defaultInput}
             onChange={onChange}
+            disabled={readonly}
+            editorStyle={{
+              backgroundColor: editorBackgroundColor || Colors.backgroundColor,
+              color: Colors.text,
+              placeholderColor: Colors.placeholderTextColor,
+            }}
+            onHeightChange={onHeightChange}
           />
         </View>
       </ScrollView>
-      <RichToolbar
-        style={styleToolbar}
-        editor={richText}
-        selectedIconTint={Colors.primaryColor.background}
-        iconTint={Colors.primaryColor.foreground}
-        actions={[
-          actions.setBold,
-          actions.setItalic,
-          actions.insertBulletsList,
-          actions.insertOrderedList,
-          actions.insertLink,
-          actions.setStrikethrough,
-          actions.setUnderline,
-          actions.checkboxList,
-          actions.undo,
-          actions.redo,
-        ]}
-        iconMap={{
-          [actions.heading1]: ({tintColor}) => (
-            <Text style={[{color: tintColor}]}>H1</Text>
-          ),
-        }}
-      />
+      {!readonly && (
+        <RichToolbar
+          style={styleToolbar}
+          editor={editor}
+          selectedIconTint={Colors.primaryColor.background}
+          iconTint={Colors.primaryColor.foreground}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.insertBulletsList,
+            actions.insertOrderedList,
+            actions.insertLink,
+            actions.setStrikethrough,
+            actions.setUnderline,
+            actions.checkboxList,
+            actions.undo,
+            actions.redo,
+          ]}
+        />
+      )}
     </ScrollView>
   );
 };
