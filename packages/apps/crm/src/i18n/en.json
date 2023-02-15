@@ -63,5 +63,6 @@
   "Crm_NoEmail": "No email",
   "Crm_NoPhoneCall": "No phone call",
   "Crm_Company": "Company",
-  "Crm_JobTitle": "Job"
+  "Crm_JobTitle": "Job",
+  "Crm_ClientProspect": "Client / Prospect"
 }
