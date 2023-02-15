@@ -161,7 +161,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
                           style={styles.item}
                           onPress={() =>
                             navigation.navigate('ContactDetailsScreen', {
-                              contact: contact,
+                              idContact: contact.id,
                             })
                           }
                         />
