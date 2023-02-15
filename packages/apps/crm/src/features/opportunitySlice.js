@@ -1,10 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
 import {
   getOpportunityStatus,
   searchOpportunities,
   getOpportunity as _getOpportunity,
   updateOpportunityStatus as _updateOpportunityStatus,
+  updateOpportunity as _updateOpportunity,
 } from '../api/opportunities-api';
 import {Opportunity} from '../types';
 
@@ -65,6 +66,27 @@ export const updateOpportunityStatus = createAsyncThunk(
         responseOptions: {isArrayResponse: false},
       }),
     );
+  },
+);
+
+export const updateOpportunity = createAsyncThunk(
+  'opportunity/updateOpportunity',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateOpportunity,
+      data,
+      action: 'update crm opportunity ',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _getOpportunity,
+        data: {opportunityId: res?.id},
+        action: 'get opportunity by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
   },
 );
 
@@ -130,6 +152,16 @@ const opportunitySlice = createSlice({
     builder.addCase(updateOpportunityStatus.fulfilled, (state, action) => {
       state.loadingOpportunity = false;
       state.opportunity = action.payload;
+    });
+    builder.addCase(updateOpportunity.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateOpportunity.fulfilled, (state, action) => {
+      state.loading = false;
+      state.opportunity = action.payload;
+      state.opportunityList = updateAgendaItems(state.opportunityList, [
+        action.payload,
+      ]);
     });
   },
 });

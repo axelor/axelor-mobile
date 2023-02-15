@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -21,7 +21,10 @@ import {
   AutoCompleteSearchInput,
   DateInput,
 } from '@axelor/aos-mobile-core';
-import {getOpportunity} from '../../features/opportunitySlice';
+import {
+  getOpportunity,
+  updateOpportunity,
+} from '../../features/opportunitySlice';
 import {fetchClientAndProspect} from '../../features/partnerSlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
@@ -49,6 +52,29 @@ const OpportunityFormScreen = ({navigation, route}) => {
       }),
     );
   }, [dispatch, route.params.opportunityId]);
+
+  const updateOpportunityAPI = useCallback(() => {
+    dispatch(
+      updateOpportunity({
+        opportunityId: opportunity.id,
+        opportunityVersion: opportunity.version,
+        opportunityStatusId: status,
+        opportunityRecurrentAmount: recurrentAmount,
+        opportunityAmount: amount,
+        opportunityDescription: description,
+        idPartner: clientAndProspect?.id,
+      }),
+    );
+  }, [
+    dispatch,
+    opportunity.id,
+    opportunity.version,
+    status,
+    amount,
+    recurrentAmount,
+    description,
+    clientAndProspect?.id,
+  ]);
 
   return (
     <Screen>
@@ -116,10 +142,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={() => console.log('save')}
-        />
+        <Button title={I18n.t('Base_Save')} onPress={updateOpportunityAPI} />
       </View>
     </Screen>
   );
