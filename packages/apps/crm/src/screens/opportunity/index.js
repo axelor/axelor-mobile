@@ -1,5 +1,6 @@
 import OpportunityDetailsScreen from './OpportunityDetailsScreen';
 import OpportunityListScreen from './OpportunityListScreen';
+import OpportunityFormScreen from './OpportunityFormScreen';
 
 export default {
   OpportunityListScreen: {
@@ -12,6 +13,13 @@ export default {
   OpportunityDetailsScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityDetailsScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  OpportunityFormScreen: {
+    title: 'Crm_Opportunity',
+    component: OpportunityFormScreen,
     options: {
       shadedHeader: false,
     },
