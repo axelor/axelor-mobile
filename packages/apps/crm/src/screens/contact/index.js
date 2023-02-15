@@ -20,8 +20,5 @@ export default {
   ContactFormScreen: {
     title: 'Crm_Contact',
     component: ContactFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
