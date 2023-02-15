@@ -6,12 +6,19 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {Button, Screen} from '@axelor/aos-mobile-ui';
+import {
+  Button,
+  Screen,
+  HtmlInput,
+  Picker,
+  StarScore,
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useTranslator,
   useSelector,
   AutoCompleteSearchInput,
+  DateInput,
 } from '@axelor/aos-mobile-core';
 import {getOpportunity} from '../../features/opportunitySlice';
 import {fetchClientAndProspect} from '../../features/partnerSlice';
@@ -19,11 +26,17 @@ import {fetchClientAndProspect} from '../../features/partnerSlice';
 const OpportunityFormScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const {opportunity} = useSelector(state => state.opportunity);
+  const {opportunity, opportunityStatusList} = useSelector(
+    state => state.opportunity,
+  );
   const {clientAndProspectList} = useSelector(state => state.partner);
   const [clientAndProspect, setClientAndProspect] = useState(
     opportunity.partner,
   );
+  const [description, setDescription] = useState(opportunity.description);
+  const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
+  const [score, setScore] = useState(opportunity.opportunityRating);
+  const [date, setDate] = useState(new Date(opportunity.expectedCloseDate));
 
   useEffect(() => {
     dispatch(
@@ -40,6 +53,15 @@ const OpportunityFormScreen = ({navigation, route}) => {
         style={styles.containerKeyboard}
         keyboardVerticalOffset={200}>
         <ScrollView>
+          <View style={styles.headerContainer}>
+            <StarScore
+              style={styles.score}
+              score={score}
+              showMissingStar={true}
+              onPress={setScore}
+              editMode={true}
+            />
+          </View>
           <View style={styles.container}>
             <View style={styles.picker}>
               <AutoCompleteSearchInput
@@ -51,6 +73,31 @@ const OpportunityFormScreen = ({navigation, route}) => {
                 searchAPI={fetchClientAndProspect}
               />
             </View>
+            <View style={styles.input}>
+              <DateInput
+                title={I18n.t('Crm_ExpectedCloseDate')}
+                defaultDate={date}
+                onDateChange={setDate}
+              />
+            </View>
+            <View style={styles.picker}>
+              <Picker
+                title={I18n.t('Crm_Opportunity_Status')}
+                defaultValue={status}
+                listItems={opportunityStatusList}
+                labelField="name"
+                valueField="id"
+                emptyValue={false}
+                onValueChange={setStatus}
+                style={styles.picker}
+                isScrollViewContainer={true}
+              />
+            </View>
+            <HtmlInput
+              title={I18n.t('Base_Description')}
+              onChange={setDescription}
+              defaultInput={description}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -68,21 +115,17 @@ const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
   },
+  score: {marginRight: '10%'},
   container: {
     alignItems: 'center',
   },
   headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '90%',
+    flexDirection: 'row-reverse',
   },
   checkBoxContainer: {
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
-  },
-  halfHeader: {
-    width: '50%',
   },
   picker: {
     width: '100%',
