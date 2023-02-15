@@ -7,6 +7,7 @@ import {
   LabelText,
   NotesCard,
   DropdownCardSwitch,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -23,14 +24,16 @@ import {
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
 import {fetchContactEventById} from '../../features/eventSlice';
 import {fetchPartner} from '../../features/partnerSlice';
+import {getContact} from '../../features/contactSlice';
 
 const ContactDetailsScreen = ({navigation, route}) => {
-  const contact = route.params.contact;
+  const idContact = route.params.idContact;
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const {mobileSettings} = useSelector(state => state.config);
   const {listEventContact} = useSelector(state => state.event);
   const {partner} = useSelector(state => state.partner);
+  const {contact} = useSelector(state => state.contact);
 
   const lastEventClient = useMemo(() => {
     return getLastEvent(listEventContact);
@@ -55,12 +58,17 @@ const ContactDetailsScreen = ({navigation, route}) => {
   }, [mobileSettings, navigation, contact]);
 
   useEffect(() => {
-    dispatch(fetchContactEventById(contact.id));
-  }, [dispatch, contact.id]);
+    dispatch(getContact({contactId: idContact}));
+  }, [dispatch, idContact]);
 
   useEffect(() => {
-    dispatch(fetchPartner({partnerId: contact.mainPartner?.id}));
-  }, [dispatch, contact.mainPartner?.id]);
+    dispatch(fetchContactEventById(idContact));
+  }, [dispatch, idContact]);
+
+  useEffect(() => {
+    contact?.mainPartner &&
+      dispatch(fetchPartner({partnerId: contact?.mainPartner?.id}));
+  }, [dispatch, contact?.mainPartner?.id, contact?.mainPartner]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -136,7 +144,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
                     address={contact.mainAddress?.fullName}
                     fixedPhone={contact.fixedPhone}
                     mobilePhone={contact.mobilePhone}
-                    emailAddress={contact['emailAddress.address']}
+                    emailAddress={contact.emailAddress?.address}
                     webSite={contact.webSite}
                   />
                 ),
@@ -181,6 +189,16 @@ const ContactDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('ContactFormScreen', {
+              idContact: idContact,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -208,6 +226,14 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 25,
   },
 });
 
