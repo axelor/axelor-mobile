@@ -194,7 +194,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                         style={styles.item}
                         onPress={() =>
                           navigation.navigate('ContactDetailsScreen', {
-                            contact: contact,
+                            idContact: contact.id,
                           })
                         }
                       />
