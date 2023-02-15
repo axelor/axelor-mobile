@@ -19,8 +19,5 @@ export default {
   ClientFormScreen: {
     title: 'Crm_Clients',
     component: ClientFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };

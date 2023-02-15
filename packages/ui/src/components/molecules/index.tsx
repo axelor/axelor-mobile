@@ -28,6 +28,7 @@ export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as EditableInput} from './EditableInput/EditableInput';
+export {default as FormHtmlInput} from './FormHtmlInput/FormHtmlInput';
 export {default as FormInput} from './FormInput/FormInput';
 export {default as FromTo} from './FromTo/FromTo';
 export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';

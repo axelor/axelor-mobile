@@ -19,8 +19,5 @@ export default {
   LeadFormScreen: {
     title: 'Crm_Lead',
     component: LeadFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };
