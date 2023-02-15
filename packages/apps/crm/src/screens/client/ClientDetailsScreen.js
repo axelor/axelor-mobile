@@ -7,6 +7,7 @@ import {
   DropdownCardSwitch,
   NotesCard,
   LabelText,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -23,7 +24,7 @@ import {
 import {searchContactById} from '../../features/contactSlice';
 import {fetchPartnerEventById} from '../../features/eventSlice';
 import {getLastEvent, getNextEvent} from '../../utils/dateEvent';
-import {fetchPartner} from '../../features/partnerSlice';
+import {getClientbyId} from '../../features/clientSlice';
 
 const ClientDetailsScreen = ({navigation, route}) => {
   const idClient = route.params.idClient;
@@ -32,8 +33,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
   const {mobileSettings} = useSelector(state => state.config);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
-  const {partner} = useSelector(state => state.partner);
-
+  const {client} = useSelector(state => state.client);
   const lastEventClient = useMemo(() => {
     return getLastEvent(listEventPartner);
   }, [listEventPartner]);
@@ -50,20 +50,20 @@ const ClientDetailsScreen = ({navigation, route}) => {
           modelId={idClient}
           navigation={navigation}
           disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={partner?.simpleFullName}
+          attachedFileScreenTitle={client?.simpleFullName}
         />
       ),
     });
-  }, [mobileSettings, navigation, idClient, partner]);
+  }, [mobileSettings, navigation, idClient, client]);
 
   useEffect(() => {
-    dispatch(fetchPartner({partnerId: idClient}));
+    dispatch(getClientbyId({clientId: idClient}));
   }, [dispatch, idClient]);
 
   useEffect(() => {
-    const idList = partner.contactPartnerSet?.map(item => item.id);
+    const idList = client.contactPartnerSet?.map(item => item.id);
     dispatch(searchContactById(idList));
-  }, [dispatch, partner.contactPartnerSet]);
+  }, [dispatch, client.contactPartnerSet]);
 
   useEffect(() => {
     dispatch(fetchPartnerEventById(idClient));
@@ -76,19 +76,19 @@ const ClientDetailsScreen = ({navigation, route}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <View style={styles.headerContainerChildren}>
-              <AOSImageBubble metaFileId={partner?.picture?.id} />
+              <AOSImageBubble metaFileId={client?.picture?.id} />
               <View style={styles.headerInfo}>
                 <Text style={styles.textTitle} fontSize={16}>
-                  {partner.simpleFullName}
+                  {client.simpleFullName}
                 </Text>
-                <Text fontSize={14}>{partner.partnerSeq}</Text>
+                <Text fontSize={14}>{client.partnerSeq}</Text>
               </View>
             </View>
           </View>
         }
       />
       <ScrollView>
-        <NotesCard title={I18n.t('Crm_Notes')} data={partner.description} />
+        <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <View style={styles.container}>
           <DropdownCardSwitch
             styleTitle={styles.textTitle}
@@ -98,10 +98,10 @@ const ClientDetailsScreen = ({navigation, route}) => {
                 key: 1,
                 childrenComp: (
                   <DropdownContactView
-                    address={partner.mainAddress?.fullName}
-                    fixedPhone={partner.fixedPhone}
-                    emailAddress={partner.emailAddress?.address}
-                    webSite={partner.webSite}
+                    address={client.mainAddress?.fullName}
+                    fixedPhone={client.fixedPhone}
+                    emailAddress={client.emailAddress?.address}
+                    webSite={client.webSite}
                   />
                 ),
               },
@@ -110,35 +110,35 @@ const ClientDetailsScreen = ({navigation, route}) => {
                 key: 2,
                 childrenComp: (
                   <View>
-                    {partner.user?.fullName && (
+                    {client.user?.fullName && (
                       <LabelText
                         title={I18n.t('Crm_AssignedTo')}
                         iconName={'user-tie'}
-                        value={partner.user?.fullName}
+                        value={client.user?.fullName}
                       />
                     )}
-                    {partner.type?.name && (
+                    {client.type?.name && (
                       <LabelText
                         title={I18n.t('Crm_Categorie')}
-                        value={partner.partnerCategory?.name}
+                        value={client.partnerCategory?.name}
                       />
                     )}
-                    {partner.industrySector?.name && (
+                    {client.industrySector?.name && (
                       <LabelText
                         title={I18n.t('Crm_Sector')}
-                        value={partner.industrySector?.name}
+                        value={client.industrySector?.name}
                       />
                     )}
-                    {partner.salePartnerPriceList?.label && (
+                    {client.salePartnerPriceList?.label && (
                       <LabelText
                         title={I18n.t('Crm_PriceList')}
-                        value={partner.salePartnerPriceList?.label}
+                        value={client.salePartnerPriceList?.label}
                       />
                     )}
-                    {!partner.user?.fullName &&
-                      !partner.type?.name &&
-                      !partner.industrySector?.name &&
-                      !partner.salePartnerPriceList?.label && (
+                    {!client.user?.fullName &&
+                      !client.type?.name &&
+                      !client.industrySector?.name &&
+                      !client.salePartnerPriceList?.label && (
                         <View>
                           <Text>{I18n.t('Crm_NoGeneralInformation')}</Text>
                         </View>
@@ -161,7 +161,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
                           style={styles.item}
                           onPress={() =>
                             navigation.navigate('ContactDetailsScreen', {
-                              contact: contact,
+                              idContact: contact.id,
                             })
                           }
                         />
@@ -187,6 +187,16 @@ const ClientDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('ClientFormScreen', {
+              idClient: idClient,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -214,6 +224,14 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 25,
   },
 });
 
