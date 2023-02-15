@@ -13,6 +13,7 @@ import {
   Picker,
   StarScore,
   MoreLessInput,
+  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -59,8 +60,16 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrentAmount,
-        opportunityAmount: amount,
+        opportunityRecurrentAmount: unformatNumber(
+          recurrentAmount,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
+        opportunityAmount: unformatNumber(
+          amount,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
         opportunityDescription: description,
         idPartner: clientAndProspect?.id,
         opportunityRating: score,
@@ -82,6 +91,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
     score,
     date,
     navigation,
+    I18n,
   ]);
 
   return (
@@ -122,11 +132,15 @@ const OpportunityFormScreen = ({navigation, route}) => {
               title={I18n.t('Crm_Opportunity_Amount')}
               defaultValue={amount}
               onChange={setAmount}
+              decimalSpacer={I18n.t('Base_DecimalSpacer')}
+              thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
             <MoreLessInput
               title={I18n.t('Crm_Opportunity_RecurrentAmount')}
               defaultValue={recurrentAmount}
               onChange={setRecurrentAmount}
+              decimalSpacer={I18n.t('Base_DecimalSpacer')}
+              thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
             <View style={styles.picker}>
               <Picker

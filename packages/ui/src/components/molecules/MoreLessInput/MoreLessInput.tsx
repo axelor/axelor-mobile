@@ -19,8 +19,9 @@
 import React, {useMemo, useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
-import {Icon, Input, Text} from '../../atoms';
+import {Text} from '../../atoms';
 import {getCommonStyles} from '../../../utils/commons-styles';
+import Increment from '../Increment/Increment';
 
 interface MoreLessInputProps {
   style?: any;
@@ -28,13 +29,16 @@ interface MoreLessInputProps {
   readOnly?: boolean;
   defaultValue?: string;
   onChange: (value: any) => void;
+  decimalSpacer: string;
+  thousandSpacer: string;
 }
 
 const MoreLessInput = ({
   style,
   title,
-  readOnly,
   defaultValue = null,
+  decimalSpacer,
+  thousandSpacer,
   onChange,
 }: MoreLessInputProps) => {
   const Colors = useThemeColor();
@@ -48,19 +52,6 @@ const MoreLessInput = ({
     [onChange],
   );
 
-  const onMinus = () => {
-    let result = Number(value);
-    result = result - 1;
-    setValue(result.toString());
-    onChange(result.toString());
-  };
-  const onPlus = () => {
-    let result = Number(value);
-    result = result + 1;
-    setValue(result.toString());
-    onChange(result.toString());
-  };
-
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -69,27 +60,13 @@ const MoreLessInput = ({
       <Text style={styles.title}>{title}</Text>
       <View
         style={[commonStyles.filter, commonStyles.filterSize, styles.content]}>
-        <Icon
-          name="minus"
-          size={24}
-          color={Colors.primaryColor.background}
-          touchable={true}
-          onPress={() => onMinus()}
-          style={styles.container_icon}
-        />
-        <Input
+        <Increment
           value={value}
-          onChange={onValueChange}
-          numberOfLines={null}
-          readOnly={readOnly}
-        />
-        <Icon
-          name="plus"
-          size={24}
-          color={Colors.primaryColor.background}
-          touchable={true}
-          onPress={() => onPlus()}
-          style={styles.container_icon}
+          onValueChange={onValueChange}
+          style={styles.increment}
+          inputStyle={styles.containerInput}
+          decimalSpacer={decimalSpacer}
+          thousandSpacer={thousandSpacer}
         />
       </View>
     </View>
@@ -104,6 +81,11 @@ const getStyles = Colors =>
     title: {
       marginHorizontal: 24,
     },
+    increment: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
     content: {
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
@@ -117,17 +99,8 @@ const getStyles = Colors =>
       marginHorizontal: 20,
       marginVertical: 6,
     },
-    container_icon: {
-      backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 8,
-      padding: 2,
-      paddingHorizontal: 5,
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 0.5,
-      borderRadius: 10,
+    containerInput: {
+      fontSize: 15,
     },
   });
 

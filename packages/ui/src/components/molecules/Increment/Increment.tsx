@@ -18,11 +18,13 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {formatNumber} from '../../../utils/formatters';
+import {formatNumber, unformatNumber} from '../../../utils/formatters';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
 
 interface IncrementProps {
+  style?: any;
+  inputStyle?: any;
   value: string | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
@@ -30,6 +32,8 @@ interface IncrementProps {
 }
 
 const Increment = ({
+  style,
+  inputStyle,
   value,
   decimalSpacer,
   thousandSpacer,
@@ -41,16 +45,44 @@ const Increment = ({
   );
 
   const handlePlus = () => {
-    const newValue: number = parseFloat(valueQty) + parseFloat('1');
-    setValueQty(newValue.toFixed(2).toString());
-    onValueChange(newValue.toFixed(2));
+    const newValue: number =
+      parseFloat(unformatNumber(valueQty, decimalSpacer, thousandSpacer)) +
+      parseFloat('1');
+    setValueQty(
+      formatNumber(
+        newValue.toFixed(2).toString(),
+        decimalSpacer,
+        thousandSpacer,
+      ),
+    );
+    onValueChange(
+      formatNumber(
+        newValue.toFixed(2).toString(),
+        decimalSpacer,
+        thousandSpacer,
+      ),
+    );
   };
 
   const handleMinus = () => {
-    const newValue = parseFloat(valueQty) - parseFloat('1');
+    const newValue =
+      parseFloat(unformatNumber(valueQty, decimalSpacer, thousandSpacer)) -
+      parseFloat('1');
     if (newValue >= 0) {
-      setValueQty(newValue.toFixed(2).toString());
-      onValueChange(newValue.toFixed(2));
+      setValueQty(
+        formatNumber(
+          newValue.toFixed(2).toString(),
+          decimalSpacer,
+          thousandSpacer,
+        ),
+      );
+      onValueChange(
+        formatNumber(
+          newValue.toFixed(2).toString(),
+          decimalSpacer,
+          thousandSpacer,
+        ),
+      );
     }
   };
 
@@ -83,7 +115,7 @@ const Increment = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.container_increment}>
+    <View style={[styles.container_increment, style]}>
       <Icon
         name="minus"
         size={24}
@@ -94,7 +126,7 @@ const Increment = ({
       />
       <View style={styles.inputLine}>
         <Input
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           value={valueQty}
           onChange={input => setValueQty(input)}
           keyboardType="numeric"

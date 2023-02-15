@@ -60,3 +60,15 @@ export function formatNumber(
 
   return `${result}${decimalSpacer}${decimalPart ? decimalPart : '00'}`;
 }
+
+export function unformatNumber(
+  number: string,
+  decimalSpacer: string = '.',
+  thousandSpacer: string = ' ',
+): string {
+  if (checkNullString(number)) {
+    return `0${decimalSpacer}00`;
+  }
+  let result = number.replace(thousandSpacer, '');
+  return result.replace(decimalSpacer, '.');
+}
