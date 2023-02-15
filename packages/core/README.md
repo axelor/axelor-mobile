@@ -11,7 +11,6 @@
 - react-native-fs
 - react-native-gesture-handler
 - react-native-mmkv
-- react-native-render-html
 - react-native-safe-area-context
 - react-native-screens
 - react-native-static-safe-area-insets
