@@ -38,7 +38,6 @@ const ContactFormScreen = ({navigation, route}) => {
   const [email, setEmail] = useState(contact.emailAddress?.address);
   const [webSite, setWebSite] = useState(contact.webSite);
   const [description, setDescription] = useState(contact.description);
-  const [adress, setAdress] = useState(contact.mainAddress?.fullName);
   const [clientAndProspect, setClientAndProspect] = useState(
     contact.mainPartner,
   );
@@ -66,6 +65,9 @@ const ContactFormScreen = ({navigation, route}) => {
         contactWebsite: webSite,
         contactDescription: description,
         mainPartnerId: clientAndProspect?.id,
+        emailId: contact.emailAddress?.id,
+        emailVersion: contact.emailAddress?.$version,
+        contactEmail: email,
       }),
     );
     navigation.navigate('ContactDetailsScreen', {
@@ -85,6 +87,8 @@ const ContactFormScreen = ({navigation, route}) => {
     mobilePhone,
     webSite,
     description,
+    contact.emailAddress,
+    email,
   ]);
 
   return (
@@ -130,12 +134,6 @@ const ContactFormScreen = ({navigation, route}) => {
             </View>
             <FormInput
               style={styles.input}
-              title={I18n.t('Crm_Adress')}
-              onChange={setAdress}
-              defaultValue={adress}
-            />
-            <FormInput
-              style={styles.input}
               title={I18n.t('Crm_Phone')}
               onChange={setFixedPhone}
               defaultValue={fixedPhone}
@@ -159,7 +157,7 @@ const ContactFormScreen = ({navigation, route}) => {
               defaultValue={webSite}
             />
             <HtmlInput
-              title={I18n.t('Crm_LeadNotes')}
+              title={I18n.t('Crm_Notes')}
               onChange={setDescription}
               defaultInput={description}
             />

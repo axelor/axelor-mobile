@@ -137,7 +137,6 @@ export async function updateContact({
   contactCivility,
   contactFirstname,
   contactName,
-  contactAdress,
   contactFixedPhone,
   contactMobilePhone,
   contactWebsite,

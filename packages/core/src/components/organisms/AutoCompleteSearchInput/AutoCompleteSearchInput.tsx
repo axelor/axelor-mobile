@@ -95,7 +95,7 @@ const AutoCompleteSearchInput = ({
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     title: {
-      marginHorizontal: 10,
+      marginHorizontal: 24,
     },
     requiredBorder: {
       borderColor: Colors.errorColor.background,

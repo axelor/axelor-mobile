@@ -144,7 +144,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
                     address={contact.mainAddress?.fullName}
                     fixedPhone={contact.fixedPhone}
                     mobilePhone={contact.mobilePhone}
-                    emailAddress={contact['emailAddress.address']}
+                    emailAddress={contact.emailAddress?.address}
                     webSite={contact.webSite}
                   />
                 ),
