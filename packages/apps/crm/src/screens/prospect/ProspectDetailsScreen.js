@@ -10,6 +10,7 @@ import {
   DropdownCardSwitch,
   NotesCard,
   LabelText,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -193,7 +194,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                         style={styles.item}
                         onPress={() =>
                           navigation.navigate('ContactDetailsScreen', {
-                            contact: contact,
+                            idContact: contact.id,
                           })
                         }
                       />
@@ -218,6 +219,16 @@ const ProspectDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('ProspectFormScreen', {
+              idProspect: idProspect,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -251,6 +262,14 @@ const styles = StyleSheet.create({
   },
   leadScoring: {
     marginTop: '10%',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 25,
   },
 });
 
