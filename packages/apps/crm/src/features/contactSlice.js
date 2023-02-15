@@ -1,6 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchContactWithIds, searchContact} from '../api/contact-api';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  searchContactWithIds,
+  searchContact,
+  getContact as _getContact,
+  updateContact as _updateContact,
+} from '../api/contact-api';
 
 export const searchContactById = createAsyncThunk(
   'contact/searchContactById',
@@ -28,6 +33,40 @@ export const fetchContact = createAsyncThunk(
   },
 );
 
+export const getContact = createAsyncThunk(
+  'contact/getContact',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getContact,
+      data,
+      action: 'get contact by id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateContact = createAsyncThunk(
+  'contact/updateContact',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateContact,
+      data,
+      action: 'update crm contact ',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _getContact,
+        data: {contactId: res?.id},
+        action: 'get contact by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   listContactById: [],
@@ -35,6 +74,7 @@ const initialState = {
   loadingContact: false,
   isListEnd: false,
   contactList: [],
+  contact: {},
 };
 
 const contactSlice = createSlice({
@@ -69,6 +109,23 @@ const contactSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(getContact.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getContact.fulfilled, (state, action) => {
+      state.loading = false;
+      state.contact = action.payload;
+    });
+    builder.addCase(updateContact.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateContact.fulfilled, (state, action) => {
+      state.loading = false;
+      state.contact = action.payload;
+      state.contactList = updateAgendaItems(state.contactList, [
+        action.payload,
+      ]);
     });
   },
 });
