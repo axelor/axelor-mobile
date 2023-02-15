@@ -38,7 +38,10 @@ const OpportunityFormScreen = ({navigation, route}) => {
   const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
   const [score, setScore] = useState(opportunity.opportunityRating);
   const [date, setDate] = useState(new Date(opportunity.expectedCloseDate));
-
+  const [amount, setAmount] = useState(opportunity.amount);
+  const [recurrentAmount, setRecurrentAmount] = useState(
+    opportunity.recurrentAmount,
+  );
   useEffect(() => {
     dispatch(
       getOpportunity({
@@ -82,9 +85,14 @@ const OpportunityFormScreen = ({navigation, route}) => {
               />
             </View>
             <MoreLessInput
-              title={I18n.t('Crm_Amount')}
-              defaultValue={opportunity.amount}
-              onChange={e => console.log(e)}
+              title={I18n.t('Crm_Opportunity_Amount')}
+              defaultValue={amount}
+              onChange={setAmount}
+            />
+            <MoreLessInput
+              title={I18n.t('Crm_Opportunity_RecurrentAmount')}
+              defaultValue={recurrentAmount}
+              onChange={setRecurrentAmount}
             />
             <View style={styles.picker}>
               <Picker
