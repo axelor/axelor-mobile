@@ -6,7 +6,7 @@
 
 ## Presentation
 
-This package was developed for the [Axelor Open Mobile](https://github.com/axelor/axelor-mobile) application. 
+This package was developed for the [Axelor Open Mobile](https://github.com/axelor/axelor-mobile) application.
 
 The purpose of this package is to link with the manufacturing module of the [Axelor Open Suite (AOS)](https://github.com/axelor/axelor-open-suite) ERP. It provides a simplified version of a number of processes available on the webapp. This package is compatible with AOS from version 6.4.0.
 
@@ -20,7 +20,7 @@ yarn add @axelor/aos-mobile-manufacturing
 
 Compatibility with React v18.2.x and React Native v0.68.x.
 
-To add this package in your application, you need to add it the *modules* props of the component `Application` from @axelor/aos-mobile-core package. This package is dependent on the stock module, so both modules must be added to make it work.
+To add this package in your application, you need to add it the _modules_ props of the component `Application` from @axelor/aos-mobile-core package. This package is dependent on the stock module, so both modules must be added to make it work.
 
 ```typescript
 import React from 'react';

@@ -17,17 +17,17 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
   getCommonStyles,
+  HtmlInput,
   Icon,
   LabelText,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
-import RenderHTML from 'react-native-render-html';
 import {isHtml} from '../../../utils/string';
 import {MailMessageReadIcon} from '../../molecules';
 
@@ -67,9 +67,9 @@ const MailMessageCommentCard = ({
   }, []);
 
   const handleHtmlContainerLayout = useCallback(
-    event => {
+    height => {
       if (!htmlContentHeight) {
-        setHtmlContentHeight(event?.nativeEvent?.layout?.height);
+        setHtmlContentHeight(height);
       }
     },
     [htmlContentHeight],
@@ -114,14 +114,11 @@ const MailMessageCommentCard = ({
             )}
           </View>
           {isHtml(value) ? (
-            <View
-              style={styles.htmlContainer}
-              onLayout={!htmlContentHeight && handleHtmlContainerLayout}>
-              <RenderHTML
-                source={{
-                  html: `${value}`,
-                }}
-                contentWidth={Dimensions.get('window').width * 0.6}
+            <View style={styles.htmlContainer}>
+              <HtmlInput
+                defaultInput={`${value}`}
+                readonly={true}
+                onHeightChange={handleHtmlContainerLayout}
               />
             </View>
           ) : (

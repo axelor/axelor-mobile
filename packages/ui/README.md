@@ -9,6 +9,7 @@
 This package was developed for the [Axelor Open Mobile](https://github.com/axelor/axelor-mobile) application.
 
 It contains:
+
 - Basic components to create screens
 - Themes management system with basic light theme and a color blind theme
 - Writing themes management system with basic theme
@@ -90,7 +91,7 @@ export interface ThemeColors {
 }
 
 export interface Color {
-  background_light: string; // This color is a lighter variation of the main color 
+  background_light: string; // This color is a lighter variation of the main color
   foreground: string; // This color is mainly used for text to maintain a good contrast with the background color
   background: string; // This is the main color for this structure
 }
