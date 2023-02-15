@@ -4,6 +4,7 @@ import {
   searchProspect,
   getProspect,
   updateProspectScoring,
+  updateProspect as _updateProspect,
 } from '../api/prospect-api';
 
 export const fetchProspects = createAsyncThunk(
@@ -39,6 +40,27 @@ export const updateProspectScore = createAsyncThunk(
       fetchFunction: updateProspectScoring,
       data,
       action: 'update crm prospect score',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getProspect,
+        data: {partnerId: res?.id},
+        action: 'get prospect by id',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const updateProspect = createAsyncThunk(
+  'prospect/updateProspect',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateProspect,
+      data,
+      action: 'update crm prospect ',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
@@ -98,6 +120,16 @@ const prospectSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(updateProspectScore.fulfilled, (state, action) => {
+      state.loading = false;
+      state.prospect = action.payload;
+      state.prospectList = updateAgendaItems(state.prospectList, [
+        action.payload,
+      ]);
+    });
+    builder.addCase(updateProspect.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProspect.fulfilled, (state, action) => {
       state.loading = false;
       state.prospect = action.payload;
       state.prospectList = updateAgendaItems(state.prospectList, [
