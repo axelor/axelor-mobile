@@ -123,7 +123,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
             </View>
             <View style={styles.input}>
               <DateInput
-                title={I18n.t('Crm_ExpectedCloseDate')}
+                title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
                 defaultDate={date}
                 onDateChange={setDate}
               />
