@@ -12,6 +12,7 @@ import {
   HtmlInput,
   Picker,
   StarScore,
+  MoreLessInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -80,6 +81,11 @@ const OpportunityFormScreen = ({navigation, route}) => {
                 onDateChange={setDate}
               />
             </View>
+            <MoreLessInput
+              title={I18n.t('Crm_Amount')}
+              defaultValue={opportunity.amount}
+              onChange={e => console.log(e)}
+            />
             <View style={styles.picker}>
               <Picker
                 title={I18n.t('Crm_Opportunity_Status')}
@@ -121,11 +127,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row-reverse',
-  },
-  checkBoxContainer: {
-    flexDirection: 'column',
-    width: '50%',
-    marginLeft: '10%',
   },
   picker: {
     width: '100%',

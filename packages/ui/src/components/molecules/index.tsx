@@ -41,6 +41,7 @@ export {default as HeaderIndicator} from './HeaderIndicator/HeaderIndicator';
 export {default as LabelText} from './LabelText/LabelText';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
+export {default as MoreLessInput} from './MoreLessInput/MoreLessInput';
 export {default as MovementIndicationCard} from './MovementIndicationCard/MovementIndicationCard';
 export {default as MultiValuePickerButton} from './MultiValuePickerButton/MultiValuePickerButton';
 export {default as NotesCard} from './NotesCard/NotesCard';
