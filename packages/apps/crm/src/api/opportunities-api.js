@@ -118,6 +118,7 @@ export async function updateOpportunity({
   opportunityStatusId,
   idPartner,
   opportunityCloseDate,
+  opportunityRating,
 }) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
@@ -131,6 +132,7 @@ export async function updateOpportunity({
         description: opportunityDescription,
         partner: {id: idPartner},
         expectedCloseDate: opportunityCloseDate,
+        opportunityRating: opportunityRating,
       },
     },
   });

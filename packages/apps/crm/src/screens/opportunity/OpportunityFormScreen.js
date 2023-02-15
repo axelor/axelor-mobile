@@ -63,6 +63,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityAmount: amount,
         opportunityDescription: description,
         idPartner: clientAndProspect?.id,
+        opportunityRating: score,
+        opportunityCloseDate: date?.toISOString().split('T')[0],
       }),
     );
   }, [
@@ -74,6 +76,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
     recurrentAmount,
     description,
     clientAndProspect?.id,
+    score,
+    date,
   ]);
 
   return (
