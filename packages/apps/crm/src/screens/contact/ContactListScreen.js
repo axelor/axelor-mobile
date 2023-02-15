@@ -97,12 +97,14 @@ const ContactListScreen = ({navigation}) => {
             partnerReference={item.partnerSeq}
             partnerAdress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
-            partnerEmail={item['emailAddress.address']}
+            partnerEmail={
+              item['emailAddress.address'] || item.emailAddress?.address
+            }
             partnerPicture={item.picture}
             partnerCompany={item.mainPartner?.fullName}
             onPress={() =>
               navigation.navigate('ContactDetailsScreen', {
-                contact: item,
+                idContact: item.id,
               })
             }
           />
