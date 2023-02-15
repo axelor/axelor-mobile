@@ -18,9 +18,9 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, Input} from '../../atoms';
+import {HtmlInput, Icon} from '../../atoms';
 import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 
 interface MessageBoxProps {
   placeholder: string;
@@ -30,8 +30,7 @@ interface MessageBoxProps {
   onSend?: (any) => void;
 }
 
-const BOX_HEIGHT = 45;
-const BOX_MAX_HEIGHT = 85;
+const BOX_HEIGHT = 90;
 
 const MessageBox = ({
   placeholder,
@@ -46,12 +45,13 @@ const MessageBox = ({
 
   return (
     <View style={styles.container}>
-      <Input
-        style={[commonStyles.filter, styles.input]}
-        placeholder={placeholder}
-        value={value}
+      <HtmlInput
+        defaultInput={value}
         onChange={onChange}
-        multiline={true}
+        placeholder={placeholder}
+        containerStyle={[commonStyles.filter, styles.htlmInput]}
+        style={styles.input}
+        styleToolbar={styles.htmlToolBar}
       />
       <TouchableOpacity
         style={[commonStyles.filter, styles.action]}
@@ -73,19 +73,29 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   input: {
-    width: '78%',
-    minHeight: BOX_HEIGHT,
-    maxHeight: BOX_MAX_HEIGHT,
+    width: '100%',
     fontSize: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginRight: 5,
+    borderRadius: 13,
+  },
+  htlmInput: {
+    borderRadius: 13,
+    paddingHorizontal: 0,
+    marginHorizontal: 5,
+    marginVertical: 5,
+    paddingTop: 10,
+  },
+  htmlToolBar: {
+    backgroundColor: null,
+    marginLeft: -5,
   },
   action: {
-    width: '15%',
+    width: '10%',
     height: BOX_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 5,
+    paddingHorizontal: 0,
   },
 });
 

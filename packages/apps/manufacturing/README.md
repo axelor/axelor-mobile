@@ -3,4 +3,3 @@
 ## Required libraries
 
 - react-i18next
-- react-native-render-html
