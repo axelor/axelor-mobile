@@ -6,7 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {Button, FormInput, HtmlInput, Screen} from '@axelor/aos-mobile-ui';
+import {Button, FormHtmlInput, FormInput, Screen} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 
 import {getClientbyId, updateClient} from '../../features/clientSlice';
@@ -62,7 +62,7 @@ const ClientFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={200}>
+        keyboardVerticalOffset={180}>
         <ScrollView>
           <View style={styles.container}>
             <FormInput
@@ -89,16 +89,16 @@ const ClientFormScreen = ({navigation, route}) => {
               onChange={setWebSite}
               defaultValue={webSite}
             />
-            <HtmlInput
-              title={I18n.t('Crm_LeadNotes')}
+            <FormHtmlInput
+              title={I18n.t('Crm_Notes')}
               onChange={setDescription}
-              defaultInput={description}
+              defaultValue={description}
             />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => updateClientAPI()} />
+        <Button title={I18n.t('Base_Save')} onPress={updateClientAPI} />
       </View>
     </Screen>
   );
@@ -110,22 +110,6 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '90%',
-  },
-  checkBoxContainer: {
-    flexDirection: 'column',
-    width: '50%',
-    marginLeft: '10%',
-  },
-  halfHeader: {
-    width: '50%',
-  },
-  picker: {
-    width: '100%',
   },
   button_container: {
     marginVertical: '1%',

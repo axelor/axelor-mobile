@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import {
   Button,
+  FormHtmlInput,
   FormInput,
-  HtmlInput,
   Picker,
   Screen,
 } from '@axelor/aos-mobile-ui';
@@ -19,17 +19,19 @@ import {
   useTranslator,
   AutoCompleteSearchInput,
 } from '@axelor/aos-mobile-core';
-
 import {getContact} from '../../features/contactSlice';
 import {fetchClientAndProspect} from '../../features/partnerSlice';
 import {updateContact} from '../../features/contactSlice';
+import {useCivilityList} from '../../hooks/use-civility-list';
 
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
   const {contact} = useSelector(state => state.contact);
   const {clientAndProspectList} = useSelector(state => state.partner);
+  const {civilityList} = useCivilityList();
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
   const [civility, setCivility] = useState(Number(contact.titleSelect));
   const [firstName, setFirstName] = useState(contact.firstName);
   const [name, setName] = useState(contact.name);
@@ -44,13 +46,6 @@ const ContactFormScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(getContact({contactId: idContact}));
   }, [dispatch, idContact]);
-
-  const civilityList = [
-    {id: 1, name: 'M.'},
-    {id: 2, name: 'Mme.'},
-    {id: 3, name: 'Dr'},
-    {id: 4, name: 'Prof'},
-  ];
 
   const updateContactAPI = useCallback(() => {
     dispatch(
@@ -95,19 +90,19 @@ const ContactFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={200}>
+        keyboardVerticalOffset={180}>
         <ScrollView>
           <View style={styles.container}>
-            <View style={styles.picker}>
-              <Picker
-                title={I18n.t('Crm_Civility')}
-                onValueChange={e => setCivility(e)}
-                listItems={civilityList}
-                labelField="name"
-                valueField="id"
-                defaultValue={civility}
-              />
-            </View>
+            <Picker
+              style={[styles.picker, styles.marginPicker]}
+              styleTxt={styles.marginPicker}
+              title={I18n.t('Crm_Civility')}
+              onValueChange={setCivility}
+              listItems={civilityList}
+              labelField="name"
+              valueField="id"
+              defaultValue={civility}
+            />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_FirstName')}
@@ -120,16 +115,16 @@ const ContactFormScreen = ({navigation, route}) => {
               onChange={setName}
               defaultValue={name}
             />
-            <View style={styles.picker}>
-              <AutoCompleteSearchInput
-                title={I18n.t('Crm_ClientProspect')}
-                objectList={clientAndProspectList}
-                value={clientAndProspect}
-                searchField="fullName"
-                onChangeValue={setClientAndProspect}
-                searchAPI={fetchClientAndProspect}
-              />
-            </View>
+            <AutoCompleteSearchInput
+              style={[styles.picker, styles.marginPicker]}
+              styleTxt={styles.marginTitle}
+              title={I18n.t('Crm_ClientProspect')}
+              objectList={clientAndProspectList}
+              value={clientAndProspect}
+              searchField="fullName"
+              onChangeValue={setClientAndProspect}
+              searchAPI={fetchClientAndProspect}
+            />
             <FormInput
               style={styles.input}
               title={I18n.t('Crm_Phone')}
@@ -154,19 +149,16 @@ const ContactFormScreen = ({navigation, route}) => {
               onChange={setWebSite}
               defaultValue={webSite}
             />
-            <HtmlInput
+            <FormHtmlInput
               title={I18n.t('Crm_Notes')}
               onChange={setDescription}
-              defaultInput={description}
+              defaultValue={description}
             />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={() => updateContactAPI()}
-        />
+        <Button title={I18n.t('Base_Save')} onPress={updateContactAPI} />
       </View>
     </Screen>
   );
@@ -179,21 +171,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '90%',
-  },
-  checkBoxContainer: {
-    flexDirection: 'column',
-    width: '50%',
-    marginLeft: '10%',
-  },
-  halfHeader: {
-    width: '50%',
+  marginPicker: {
+    marginLeft: 5,
   },
   picker: {
     width: '100%',
+  },
+  marginTitle: {
+    marginLeft: 28,
   },
   button_container: {
     marginVertical: '1%',
