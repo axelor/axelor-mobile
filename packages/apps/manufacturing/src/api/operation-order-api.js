@@ -125,16 +125,12 @@ export async function getPlannedOperationOrder(date) {
               {
                 fieldName: 'plannedStartDateT',
                 operator: '>=',
-                value: `${startDate.getFullYear()}-${(startDate.getMonth() + 1)
-                  .toString()
-                  .padStart(2, '0')}-01T00:00:00.000Z`,
+                value: startDate.toISOString(),
               },
               {
-                fieldName: 'plannedStartDateT',
+                fieldName: 'plannedEndDateT',
                 operator: '<=',
-                value: `${endDate.getFullYear()}-${(endDate.getMonth() + 1)
-                  .toString()
-                  .padStart(2, '0')}-31T23:59:00.000Z`,
+                value: endDate.toISOString(),
               },
             ],
           },
