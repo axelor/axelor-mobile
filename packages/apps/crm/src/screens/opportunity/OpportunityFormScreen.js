@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,11 +7,32 @@ import {
   Platform,
 } from 'react-native';
 import {Button, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useTranslator,
+  useSelector,
+  AutoCompleteSearchInput,
+} from '@axelor/aos-mobile-core';
+import {getOpportunity} from '../../features/opportunitySlice';
+import {fetchClientAndProspect} from '../../features/partnerSlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const {opportunity} = useSelector(state => state.opportunity);
+  const {clientAndProspectList} = useSelector(state => state.partner);
+  const [clientAndProspect, setClientAndProspect] = useState(
+    opportunity.partner,
+  );
+
+  useEffect(() => {
+    dispatch(
+      getOpportunity({
+        opportunityId: route.params.opportunityId,
+      }),
+    );
+  }, [dispatch, route.params.opportunityId]);
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -19,7 +40,18 @@ const OpportunityFormScreen = ({navigation, route}) => {
         style={styles.containerKeyboard}
         keyboardVerticalOffset={200}>
         <ScrollView>
-          <View style={styles.container}></View>
+          <View style={styles.container}>
+            <View style={styles.picker}>
+              <AutoCompleteSearchInput
+                title={I18n.t('Crm_ClientProspect')}
+                objectList={clientAndProspectList}
+                value={clientAndProspect}
+                searchField="fullName"
+                onChangeValue={setClientAndProspect}
+                searchAPI={fetchClientAndProspect}
+              />
+            </View>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.button_container}>
