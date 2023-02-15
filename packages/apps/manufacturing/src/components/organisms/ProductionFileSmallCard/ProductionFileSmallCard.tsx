@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import RenderHTML from 'react-native-render-html';
 import {AOSImage} from '@axelor/aos-mobile-core';
-import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {HtmlInput, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface MetaFileProps {
   id: number;
@@ -38,10 +37,6 @@ function ProductionFileSmallCard({
 }: ProductionFileSmallCardProps) {
   const Colors = useThemeColor();
 
-  const source = {
-    html: `${description}`,
-  };
-
   return (
     <View style={styles.container}>
       <AOSImage
@@ -52,10 +47,10 @@ function ProductionFileSmallCard({
         enableImageViewer={true}
       />
       <View style={styles.description}>
-        <RenderHTML
-          source={source}
-          contentWidth={Dimensions.get('window').width * 0.7}
-          baseStyle={{color: Colors.text}}
+        <HtmlInput
+          defaultInput={description}
+          readonly={true}
+          editorBackgroundColor={Colors.screenBackgroundColor}
         />
       </View>
     </View>
@@ -75,7 +70,7 @@ const styles = StyleSheet.create({
   description: {
     padding: 10,
     maxHeight: Dimensions.get('window').height * 0.12,
-    maxWidth: Dimensions.get('window').width * 0.7,
+    width: Dimensions.get('window').width * 0.7,
   },
 });
 

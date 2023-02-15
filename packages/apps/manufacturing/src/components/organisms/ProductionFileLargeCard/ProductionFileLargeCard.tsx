@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import RenderHTML from 'react-native-render-html';
 import {AOSImage, useTranslator} from '@axelor/aos-mobile-core';
-import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {HtmlInput, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface MetaFileProps {
   id: number;
@@ -39,10 +38,6 @@ function ProductionFileLargeCard({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const source = {
-    html: `${description}`,
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -56,10 +51,10 @@ function ProductionFileLargeCard({
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.text}>{I18n.t('Base_Description')}</Text>
-        <RenderHTML
-          source={source}
-          contentWidth={Dimensions.get('window').width * 0.9}
-          baseStyle={{color: Colors.text}}
+        <HtmlInput
+          defaultInput={description}
+          readonly={true}
+          editorBackgroundColor={Colors.screenBackgroundColor}
         />
       </View>
     </View>
