@@ -123,3 +123,42 @@ export async function updateProspectScoring({
     },
   });
 }
+
+export async function updateProspect({
+  prospectId,
+  prospectVersion,
+  prospectName,
+  prospectFixedPhone,
+  prospectEmail,
+  prospectWebsite,
+  prospectDescription,
+  emailId,
+  emailVersion,
+}) {
+  return axiosApiProvider
+    .post({
+      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
+      data: {
+        data: {
+          id: emailId,
+          version: emailVersion,
+          address: prospectEmail,
+        },
+      },
+    })
+    .then(res =>
+      axiosApiProvider.post({
+        url: '/ws/rest/com.axelor.apps.base.db.Partner',
+        data: {
+          data: {
+            id: prospectId,
+            version: prospectVersion,
+            name: prospectName,
+            fixedPhone: prospectFixedPhone,
+            webSite: prospectWebsite,
+            description: prospectDescription,
+          },
+        },
+      }),
+    );
+}
