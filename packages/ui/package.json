@@ -43,7 +43,6 @@
     "react-native-webview": "11.26.0",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-pell-rich-editor": "1.8.8",
-    "react-native-render-html": "^6.3.4",
     "react-native-vector-icons": "^9.2.0"
   }
 }

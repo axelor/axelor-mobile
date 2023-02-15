@@ -16,39 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, RenderHtml, Text} from '../../atoms';
-
-const PERCENTAGE_WIDTH_NOTES = 0.95;
+import {Card, HtmlInput, Text} from '../../atoms';
 
 interface NotesCardProps {
   title: string;
   data: string;
+  style?: any;
 }
 
-const NotesCard = ({title, data}: NotesCardProps) => {
-  const [widthNotes, setWidthNotes] = useState<number>();
-
+const NotesCard = ({title, data, style}: NotesCardProps) => {
   if (data == null || data === '') {
     return null;
   }
 
   return (
-    <View
-      style={styles.description}
-      onLayout={event => {
-        const {width} = event.nativeEvent.layout;
-        setWidthNotes(width);
-      }}>
+    <View style={[styles.description, style]}>
       <Text style={styles.title}>{title}</Text>
       <Card style={styles.note}>
-        <RenderHtml
-          data={data}
-          widthNotes={
-            widthNotes != null ? widthNotes * PERCENTAGE_WIDTH_NOTES : 100
-          }
-        />
+        <HtmlInput defaultInput={data} readonly={true} />
       </Card>
     </View>
   );
@@ -56,19 +43,22 @@ const NotesCard = ({title, data}: NotesCardProps) => {
 
 const styles = StyleSheet.create({
   description: {
-    marginHorizontal: 16,
     flexDirection: 'column',
-    marginTop: 2,
+    marginTop: 10,
   },
   title: {
-    marginHorizontal: '5%',
+    marginHorizontal: 24,
   },
   note: {
     justifyContent: 'center',
+    width: '90%',
     elevation: 0,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 13,
     marginVertical: 8,
+    marginLeft: 20,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
   },
 });
 

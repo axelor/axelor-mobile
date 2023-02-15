@@ -111,7 +111,7 @@ const MailMessageView = ({model, modelId, navigation}) => {
   const handleSendMailMessageComment = useCallback(() => {
     dispatch(sendMailMessageComment({model, modelId, comment}));
     Keyboard.dismiss();
-    setComment();
+    setComment('');
   }, [dispatch, model, modelId, comment]);
 
   React.useLayoutEffect(() => {

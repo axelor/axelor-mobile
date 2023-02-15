@@ -6,17 +6,18 @@
 
 ## Presentation
 
-This package was developed for the [Axelor Open Mobile](https://github.com/axelor/axelor-mobile) application. 
+This package was developed for the [Axelor Open Mobile](https://github.com/axelor/axelor-mobile) application.
 
 It contains:
-* API providers
-* Auth module with login and user screens
-* Translations management system
-* Various helper tools : clipboard, file viewer, external app management
-* Management of MailMessages and attaches files on objects
-* AOS linked components or using external libraries : Camera, Scanner, PlanningView, Stopwatch, ...
-* Menu management
-* Storage management
+
+- API providers
+- Auth module with login and user screens
+- Translations management system
+- Various helper tools : clipboard, file viewer, external app management
+- Management of MailMessages and attaches files on objects
+- AOS linked components or using external libraries : Camera, Scanner, PlanningView, Stopwatch, ...
+- Menu management
+- Storage management
 
 ## Usage
 
@@ -29,6 +30,7 @@ yarn add @axelor/aos-mobile-core
 Compatibility with React v18.2.x and React Native v0.68.x.
 
 This package has a few required libraries as peer dependencies:
+
 - [@react-native-clipboard/clipboard](https://www.npmjs.com/package/@react-native-clipboard/clipboard)
 - [axios](https://www.npmjs.com/package/axios)
 - [i18next](https://www.npmjs.com/package/i18next)
@@ -46,7 +48,7 @@ This package has a few required libraries as peer dependencies:
 - [react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)
 - [vision-camera-code-scanner](https://www.npmjs.com/package/vision-camera-code-scanner)
 
-### Create an application 
+### Create an application
 
 The component Application enables you to create an application really simply :
 
@@ -99,7 +101,7 @@ interface Module {
 }
 ```
 
-### Perform request 
+### Perform request
 
 This package provides a tool for making HTTP requests. This tool is based on axios. To use it, simply import the provider and use the appropriate method:
 
@@ -179,7 +181,8 @@ const updateLanguage = useCallback(
 ### Helper tools
 
 This package provides several helpers such as:
-* Clipboard provider
+
+- Clipboard provider
 
 To copy something to the user's clipboard, just call the clipboardProvider.copyToClipboard with the string value of what you want to copy:
 
@@ -206,7 +209,7 @@ const Colors = useThemeColor();
 )}
 ```
 
-* Open a file in an external app
+- Open a file in an external app
 
 This package provides a tool to open files from the server, either MetaFile or DMSFile, in the application dedicated to the latter type on the phone.
 
@@ -214,7 +217,7 @@ To do this, simply use the openFileInExternalApp function of the package with th
 
 ```typescript
 import {openFileInExternalApp, useSelector, useTranslator} from '@axelor/aos-mobile-core';
- 
+
 ...
 
 const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
@@ -231,9 +234,10 @@ const handleShowFile = async item => {
 };
 ```
 
-* Open an external app with contact informations
+- Open an external app with contact informations
 
 To have the contact applications (call, email, maps, ...), just use the linkingProvider with the dedicated method:
+
 1. URL management: `openURL(url: string, error: {title: string; message: string})`
 2. Browser management: `openBrowser(url: string)`
 3. Call management: `openCallApp(tel: string)`
@@ -241,8 +245,8 @@ To have the contact applications (call, email, maps, ...), just use the linkingP
 5. Email management: `openMailApp(email: string, subject?: string, body?: string, to?: string, cc?: string, bcc?: string)`
 6. Maps management: `openMapApp(address?: string, destination?: string, latitude?: number, longitude?: number, transportType: string)`
 
-
 An example with maps app:
+
 ```typescript
 import {linkingProvider} from '@axelor/aos-mobile-core';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -267,11 +271,13 @@ const Colors = useThemeColor();
 ```
 
 ### Add MailMessages and attached files
-* Management of MailMessages and attaches files on objects
+
+- Management of MailMessages and attaches files on objects
 
 This package provides a component to add MailMessages and file attachments functionality to the header. This component also allows to display its children if there are any as a dropdown menu.
 
 For the first two functionalities of this component, it is necessary to provide in props the name of the object model ("com.axelor.apps.stock.db.StockCorrection" for the stock corrections for example), the id of the current object, and the navigation attribute to go on the dedicated screens:
+
 ```typescript
 import {HeaderOptionsMenu} from '@axelor/aos-mobile-core';
 import {DropdownMenuItem} from '@axelor/aos-mobile-ui';
@@ -303,7 +309,7 @@ An example of rendering:
 
 ### Components
 
-This package also provides a number of components linked to Axelor Open Suite (AOS) or requiring external libraries such as the camera, the calendar view or the stopwatch. 
+This package also provides a number of components linked to Axelor Open Suite (AOS) or requiring external libraries such as the camera, the calendar view or the stopwatch.
 
 ## Developpment
 
