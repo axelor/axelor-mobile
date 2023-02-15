@@ -72,7 +72,6 @@ const ContactFormScreen = ({navigation, route}) => {
     );
     navigation.navigate('ContactDetailsScreen', {
       idContact: contact.id,
-      contactMainPartner: clientAndProspect,
     });
   }, [
     dispatch,
@@ -121,7 +120,6 @@ const ContactFormScreen = ({navigation, route}) => {
               onChange={setName}
               defaultValue={name}
             />
-
             <View style={styles.picker}>
               <AutoCompleteSearchInput
                 title={I18n.t('Crm_ClientProspect')}

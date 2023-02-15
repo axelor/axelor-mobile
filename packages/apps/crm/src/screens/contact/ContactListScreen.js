@@ -105,7 +105,6 @@ const ContactListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ContactDetailsScreen', {
                 idContact: item.id,
-                contactMainPartner: item.mainPartner,
               })
             }
           />

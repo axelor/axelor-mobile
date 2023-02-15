@@ -28,7 +28,6 @@ import {getContact} from '../../features/contactSlice';
 
 const ContactDetailsScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
-  const contactMainPartner = route.params.contactMainPartner;
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const {mobileSettings} = useSelector(state => state.config);
@@ -67,8 +66,9 @@ const ContactDetailsScreen = ({navigation, route}) => {
   }, [dispatch, idContact]);
 
   useEffect(() => {
-    dispatch(fetchPartner({partnerId: contactMainPartner?.id}));
-  }, [dispatch, contactMainPartner?.id]);
+    contact?.mainPartner &&
+      dispatch(fetchPartner({partnerId: contact?.mainPartner?.id}));
+  }, [dispatch, contact?.mainPartner?.id, contact?.mainPartner]);
 
   return (
     <Screen removeSpaceOnTop={true}>
