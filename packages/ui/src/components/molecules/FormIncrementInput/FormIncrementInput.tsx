@@ -23,7 +23,7 @@ import {Text} from '../../atoms';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import Increment from '../Increment/Increment';
 
-interface MoreLessInputProps {
+interface FormIncrementInputProps {
   style?: any;
   title: string;
   readOnly?: boolean;
@@ -33,14 +33,14 @@ interface MoreLessInputProps {
   thousandSpacer: string;
 }
 
-const MoreLessInput = ({
+const FormIncrementInput = ({
   style,
   title,
   defaultValue = null,
   decimalSpacer,
   thousandSpacer,
   onChange,
-}: MoreLessInputProps) => {
+}: FormIncrementInputProps) => {
   const Colors = useThemeColor();
   const [value, setValue] = useState(defaultValue);
 
@@ -56,10 +56,15 @@ const MoreLessInput = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={style}>
       <Text style={styles.title}>{title}</Text>
       <View
-        style={[commonStyles.filter, commonStyles.filterSize, styles.content]}>
+        style={[
+          commonStyles.filter,
+          commonStyles.filterAlign,
+          commonStyles.filterSize,
+          styles.content,
+        ]}>
         <Increment
           value={value}
           onValueChange={onValueChange}
@@ -75,11 +80,8 @@ const MoreLessInput = ({
 
 const getStyles = Colors =>
   StyleSheet.create({
-    container: {
-      width: '100%',
-    },
     title: {
-      marginHorizontal: 24,
+      marginLeft: 28,
     },
     increment: {
       flexDirection: 'row',
@@ -89,19 +91,11 @@ const getStyles = Colors =>
     content: {
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
-      borderRadius: 13,
-      backgroundColor: Colors.backgroundColor,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingLeft: 5,
-      paddingRight: 8,
-      marginHorizontal: 20,
-      marginVertical: 6,
+      paddingHorizontal: 5,
     },
     containerInput: {
       fontSize: 15,
     },
   });
 
-export default MoreLessInput;
+export default FormIncrementInput;

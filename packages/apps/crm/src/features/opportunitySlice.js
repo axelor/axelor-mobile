@@ -174,6 +174,9 @@ const opportunitySlice = createSlice({
     builder.addCase(updateOpportunityStatus.fulfilled, (state, action) => {
       state.loadingOpportunity = false;
       state.opportunity = action.payload;
+      state.opportunityList = updateAgendaItems(state.opportunityList, [
+        action.payload,
+      ]);
     });
     builder.addCase(updateOpportunity.pending, (state, action) => {
       state.loading = true;

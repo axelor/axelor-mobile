@@ -1,26 +1,26 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   View,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import {
   Button,
-  Screen,
   FormHtmlInput,
+  FormIncrementInput,
   Picker,
+  Screen,
   StarScore,
-  MoreLessInput,
   unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
-  useDispatch,
-  useTranslator,
-  useSelector,
   AutoCompleteSearchInput,
   DateInput,
+  useDispatch,
+  useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
   getOpportunity,
@@ -29,30 +29,29 @@ import {
 import {fetchClientAndProspect} from '../../features/partnerSlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
+  const idOpportunity = route.params.opportunityId;
+  const {clientAndProspectList} = useSelector(state => state.partner);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
-  const {clientAndProspectList} = useSelector(state => state.partner);
-  const [clientAndProspect, setClientAndProspect] = useState(
-    opportunity.partner,
-  );
-  const [description, setDescription] = useState(opportunity.description);
-  const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
   const [score, setScore] = useState(opportunity.opportunityRating);
+  const [partner, setPartner] = useState(opportunity.partner);
   const [date, setDate] = useState(new Date(opportunity.expectedCloseDate));
   const [amount, setAmount] = useState(opportunity.amount);
-  const [recurrentAmount, setRecurrentAmount] = useState(
-    opportunity.recurrentAmount,
-  );
+  const [recurrent, setRecurrent] = useState(opportunity.recurrentAmount);
+  const [description, setDescription] = useState(opportunity.description);
+  const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
+
   useEffect(() => {
     dispatch(
       getOpportunity({
-        opportunityId: route.params.opportunityId,
+        opportunityId: idOpportunity,
       }),
     );
-  }, [dispatch, route.params.opportunityId]);
+  }, [dispatch, idOpportunity]);
 
   const updateOpportunityAPI = useCallback(() => {
     dispatch(
@@ -61,7 +60,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
         opportunityRecurrentAmount: unformatNumber(
-          recurrentAmount,
+          recurrent,
           I18n.t('Base_DecimalSpacer'),
           I18n.t('Base_ThousandSpacer'),
         ),
@@ -71,11 +70,12 @@ const OpportunityFormScreen = ({navigation, route}) => {
           I18n.t('Base_ThousandSpacer'),
         ),
         opportunityDescription: description,
-        idPartner: clientAndProspect?.id,
+        idPartner: partner?.id,
         opportunityRating: score,
         opportunityCloseDate: date?.toISOString().split('T')[0],
       }),
     );
+
     navigation.navigate('OpportunityDetailsScreen', {
       opportunityId: opportunity.id,
     });
@@ -85,9 +85,9 @@ const OpportunityFormScreen = ({navigation, route}) => {
     opportunity.version,
     status,
     amount,
-    recurrentAmount,
+    recurrent,
     description,
-    clientAndProspect?.id,
+    partner?.id,
     score,
     date,
     navigation,
@@ -99,7 +99,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={200}>
+        keyboardVerticalOffset={180}>
         <ScrollView>
           <View style={styles.headerContainer}>
             <StarScore
@@ -111,54 +111,52 @@ const OpportunityFormScreen = ({navigation, route}) => {
             />
           </View>
           <View style={styles.container}>
-            <View style={styles.picker}>
-              <AutoCompleteSearchInput
-                title={I18n.t('Crm_ClientProspect')}
-                objectList={clientAndProspectList}
-                value={clientAndProspect}
-                searchField="fullName"
-                onChangeValue={setClientAndProspect}
-                searchAPI={fetchClientAndProspect}
-              />
-            </View>
-            <View style={styles.input}>
-              <DateInput
-                title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
-                defaultDate={date}
-                onDateChange={setDate}
-              />
-            </View>
-            <MoreLessInput
+            <AutoCompleteSearchInput
+              style={[styles.picker, styles.marginPicker]}
+              styleTxt={styles.marginTitle}
+              title={I18n.t('Crm_ClientProspect')}
+              objectList={clientAndProspectList}
+              value={partner}
+              searchField="fullName"
+              onChangeValue={setPartner}
+              searchAPI={fetchClientAndProspect}
+            />
+            <DateInput
+              title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
+              defaultDate={date}
+              onDateChange={setDate}
+              style={styles.input}
+            />
+            <FormIncrementInput
               title={I18n.t('Crm_Opportunity_Amount')}
               defaultValue={amount}
               onChange={setAmount}
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
-            <MoreLessInput
+            <FormIncrementInput
               title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-              defaultValue={recurrentAmount}
-              onChange={setRecurrentAmount}
+              defaultValue={recurrent}
+              onChange={setRecurrent}
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
-            <View style={styles.picker}>
-              <Picker
-                title={I18n.t('Crm_Opportunity_Status')}
-                defaultValue={status}
-                listItems={opportunityStatusList}
-                labelField="name"
-                valueField="id"
-                emptyValue={false}
-                onValueChange={setStatus}
-                style={styles.picker}
-                isScrollViewContainer={true}
-              />
-            </View>
             <FormHtmlInput
               title={I18n.t('Base_Description')}
               onChange={setDescription}
-              defaultInput={description}
+              defaultValue={description}
+            />
+            <Picker
+              style={[styles.picker, styles.marginPicker]}
+              styleTxt={styles.marginPicker}
+              title={I18n.t('Crm_Opportunity_Status')}
+              defaultValue={status}
+              listItems={opportunityStatusList}
+              labelField="name"
+              valueField="id"
+              emptyValue={false}
+              onValueChange={setStatus}
+              isScrollViewContainer={true}
             />
           </View>
         </ScrollView>
@@ -174,15 +172,23 @@ const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
   },
-  score: {marginRight: '10%'},
+  score: {
+    marginRight: '10%',
+  },
   container: {
     alignItems: 'center',
   },
   headerContainer: {
     flexDirection: 'row-reverse',
   },
+  marginPicker: {
+    marginLeft: 5,
+  },
   picker: {
     width: '100%',
+  },
+  marginTitle: {
+    marginLeft: 28,
   },
   button_container: {
     marginVertical: '1%',

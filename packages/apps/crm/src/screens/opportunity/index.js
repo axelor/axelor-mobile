@@ -20,8 +20,5 @@ export default {
   OpportunityFormScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };

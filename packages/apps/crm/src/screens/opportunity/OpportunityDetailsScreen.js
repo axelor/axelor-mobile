@@ -205,10 +205,9 @@ const styles = StyleSheet.create({
   },
   opportunityDescription: {
     marginBottom: 10,
-    marginHorizontal: 5,
+    marginHorizontal: -12,
   },
   opportunityInfo: {
-    marginBottom: 10,
     marginLeft: 5,
   },
   picker: {

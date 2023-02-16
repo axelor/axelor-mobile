@@ -69,6 +69,11 @@ export function unformatNumber(
   if (checkNullString(number)) {
     return `0${decimalSpacer}00`;
   }
-  let result = number.replace(thousandSpacer, '');
-  return result.replace(decimalSpacer, '.');
+
+  const JS_THOUSAND_SPACER = '';
+  const JS_DECIMAL_SPACER = '.';
+
+  return number
+    .replaceAll(thousandSpacer, JS_THOUSAND_SPACER)
+    .replace(decimalSpacer, JS_DECIMAL_SPACER);
 }
