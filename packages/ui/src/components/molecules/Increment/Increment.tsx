@@ -30,6 +30,8 @@ const cutDecimalExcess = number => {
 };
 
 interface IncrementProps {
+  style?: any;
+  inputStyle?: any;
   value: string | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
@@ -37,6 +39,8 @@ interface IncrementProps {
 }
 
 const Increment = ({
+  style,
+  inputStyle,
   value,
   decimalSpacer,
   thousandSpacer,
@@ -98,7 +102,7 @@ const Increment = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.container_increment}>
+    <View style={[styles.container_increment, style]}>
       <Icon
         name="minus"
         size={24}
@@ -109,7 +113,7 @@ const Increment = ({
       />
       <View style={styles.inputLine}>
         <Input
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           value={valueQty}
           onChange={input => setValueQty(input)}
           keyboardType="numeric"

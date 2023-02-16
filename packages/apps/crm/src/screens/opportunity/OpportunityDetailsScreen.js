@@ -10,6 +10,7 @@ import {
   NotesCard,
   Picker,
   formatNumber,
+  CircleButton,
 } from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -22,6 +23,7 @@ import {OpportunityDropdownInfo, PartnerInfoCard} from '../../components';
 import {
   getOpportunity,
   updateOpportunityStatus,
+  updateOpportunityScore,
 } from '../../features/opportunitySlice';
 
 const OpportunityDetailsScreen = ({navigation, route}) => {
@@ -40,6 +42,19 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
         status => status.id === opportunity.opportunityStatus?.id,
       ),
     [opportunityStatusList, opportunity.opportunityStatus],
+  );
+
+  const updateOpportunityAPI = useCallback(
+    newScore => {
+      dispatch(
+        updateOpportunityScore({
+          opportunityId: opportunity.id,
+          opportunityVersion: opportunity.version,
+          newScore: newScore,
+        }),
+      );
+    },
+    [dispatch, opportunity.id, opportunity.version],
   );
 
   React.useLayoutEffect(() => {
@@ -102,6 +117,8 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
               <StarScore
                 score={opportunity.opportunityRating}
                 showMissingStar={true}
+                onPress={updateOpportunityAPI}
+                editMode={true}
               />
             </View>
             <View>
@@ -157,6 +174,16 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
           />
         </View>
       </ScrollView>
+      <View style={styles.bottomContainer}>
+        <CircleButton
+          iconName="pen"
+          onPress={() =>
+            navigation.navigate('OpportunityFormScreen', {
+              opportunityId: opportunity.id,
+            })
+          }
+        />
+      </View>
     </Screen>
   );
 };
@@ -178,10 +205,9 @@ const styles = StyleSheet.create({
   },
   opportunityDescription: {
     marginBottom: 10,
-    marginHorizontal: 5,
+    marginHorizontal: -12,
   },
   opportunityInfo: {
-    marginBottom: 10,
     marginLeft: 5,
   },
   picker: {
@@ -191,6 +217,14 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  bottomContainer: {
+    width: '90%',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 2,
+    marginBottom: 25,
   },
 });
 

@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   View,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import {
   Button,
@@ -16,11 +16,7 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  fetchLeadById,
-  updateLead,
-  updateLeadScore,
-} from '../../features/leadSlice';
+import {fetchLeadById, updateLead} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
 
@@ -32,6 +28,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
+  const [score, setScore] = useState(lead.leadScoringSelect);
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
@@ -51,24 +48,12 @@ const LeadFormScreen = ({navigation, route}) => {
     dispatch(fetchFunction());
   }, [dispatch, idLead]);
 
-  const updateScoreLeadAPI = useCallback(
-    newScore => {
-      dispatch(
-        updateLeadScore({
-          leadId: lead.id,
-          leadVersion: lead.version,
-          newScore: newScore,
-        }),
-      );
-    },
-    [dispatch, lead.id, lead.version],
-  );
-
   const updateLeadAPI = useCallback(() => {
     dispatch(
       updateLead({
         leadId: lead.id,
         leadVersion: lead.version,
+        leadScore: score,
         leadCivility: civility,
         leadFirstname: firstName,
         leadName: name,
@@ -81,8 +66,8 @@ const LeadFormScreen = ({navigation, route}) => {
         leadNoEmail: leadNoEmail,
         leadCompany: leadCompany,
         leadEmail: email !== '' ? email : null,
-        emailId: lead.emailAddress.id,
-        emailVersion: lead.emailAddress.$version,
+        emailId: lead.emailAddress?.id,
+        emailVersion: lead.emailAddress?.$version,
         leadDescription: description !== '' ? description : null,
       }),
     );
@@ -94,6 +79,9 @@ const LeadFormScreen = ({navigation, route}) => {
     dispatch,
     lead.id,
     lead.version,
+    lead.emailAddress?.id,
+    lead.emailAddress?.$version,
+    score,
     civility,
     firstName,
     name,
@@ -104,10 +92,8 @@ const LeadFormScreen = ({navigation, route}) => {
     webSite,
     leadNoCall,
     leadNoEmail,
-    email,
     leadCompany,
-    lead.emailAddress.id,
-    lead.emailAddress.$version,
+    email,
     description,
     navigation,
   ]);
@@ -134,9 +120,9 @@ const LeadFormScreen = ({navigation, route}) => {
               </View>
               <View style={styles.checkBoxContainer}>
                 <StarScore
-                  score={lead.leadScoringSelect}
+                  score={score}
                   showMissingStar={true}
-                  onPress={updateScoreLeadAPI}
+                  onPress={setScore}
                   editMode={true}
                 />
                 <Checkbox
