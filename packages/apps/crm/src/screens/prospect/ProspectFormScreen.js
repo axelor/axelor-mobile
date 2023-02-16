@@ -14,17 +14,15 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  fetchProspectById,
-  updateProspectScore,
-  updateProspect,
-} from '../../features/prospectSlice';
+import {fetchProspectById, updateProspect} from '../../features/prospectSlice';
 
 const ProspectFormScreen = ({navigation, route}) => {
   const idProspect = route.params.idProspect;
   const {prospect} = useSelector(state => state.prospect);
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
+  const [score, setScore] = useState(prospect.leadScoringSelect);
   const [name, setName] = useState(prospect.name);
   const [fixedPhone, setFixedPhone] = useState(prospect.fixedPhone);
   const [email, setEmail] = useState(prospect.emailAddress?.address);
@@ -35,24 +33,12 @@ const ProspectFormScreen = ({navigation, route}) => {
     dispatch(fetchProspectById({partnerId: idProspect}));
   }, [dispatch, idProspect]);
 
-  const updateScoreProspectAPI = useCallback(
-    newScore => {
-      dispatch(
-        updateProspectScore({
-          partnerId: prospect.id,
-          partnerVersion: prospect.version,
-          newScore: newScore,
-        }),
-      );
-    },
-    [dispatch, prospect.id, prospect.version],
-  );
-
   const updateProspectAPI = useCallback(() => {
     dispatch(
       updateProspect({
         prospectId: idProspect,
         prospectVersion: prospect.version,
+        prospectScore: score,
         prospectName: name,
         prospectFixedPhone: fixedPhone,
         prospectWebsite: webSite,
@@ -62,6 +48,7 @@ const ProspectFormScreen = ({navigation, route}) => {
         prospectEmail: email,
       }),
     );
+
     navigation.navigate('ProspectDetailsScreen', {
       idProspect: idProspect,
     });
@@ -69,12 +56,13 @@ const ProspectFormScreen = ({navigation, route}) => {
     dispatch,
     idProspect,
     prospect.version,
+    prospect.emailAddress?.id,
+    prospect.emailAddress?.$version,
+    score,
     name,
     fixedPhone,
     webSite,
     description,
-    prospect.emailAddress.id,
-    prospect.emailAddress.$version,
     email,
     navigation,
   ]);
@@ -89,9 +77,9 @@ const ProspectFormScreen = ({navigation, route}) => {
           <View style={styles.headerContainer}>
             <StarScore
               style={styles.score}
-              score={prospect.leadScoringSelect}
+              score={score}
               showMissingStar={true}
-              onPress={updateScoreProspectAPI}
+              onPress={setScore}
               editMode={true}
             />
           </View>
