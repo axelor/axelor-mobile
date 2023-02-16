@@ -88,6 +88,23 @@ export async function getOpportunity({opportunityId}) {
   });
 }
 
+export async function updateOpportunityScoring({
+  opportunityId,
+  opportunityVersion,
+  newScore,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
+    data: {
+      data: {
+        id: opportunityId,
+        version: opportunityVersion,
+        opportunityRating: newScore,
+      },
+    },
+  });
+}
+
 export async function updateOpportunityStatus({
   opportunityId,
   version,
@@ -105,6 +122,35 @@ export async function updateOpportunityStatus({
           },
         },
       ],
+    },
+  });
+}
+
+export async function updateOpportunity({
+  opportunityId,
+  opportunityVersion,
+  opportunityAmount,
+  opportunityRecurrentAmount,
+  opportunityDescription,
+  opportunityStatusId,
+  idPartner,
+  opportunityCloseDate,
+  opportunityRating,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
+    data: {
+      data: {
+        id: opportunityId,
+        version: opportunityVersion,
+        amount: opportunityAmount,
+        recurrentAmount: opportunityRecurrentAmount,
+        opportunityStatus: {id: opportunityStatusId},
+        description: opportunityDescription,
+        partner: {id: idPartner},
+        expectedCloseDate: opportunityCloseDate,
+        opportunityRating: opportunityRating,
+      },
     },
   });
 }

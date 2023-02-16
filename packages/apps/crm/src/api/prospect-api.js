@@ -127,6 +127,7 @@ export async function updateProspectScoring({
 export async function updateProspect({
   prospectId,
   prospectVersion,
+  prospectScore,
   prospectName,
   prospectFixedPhone,
   prospectEmail,
@@ -153,6 +154,7 @@ export async function updateProspect({
           data: {
             id: prospectId,
             version: prospectVersion,
+            leadScoringSelect: prospectScore,
             name: prospectName,
             fixedPhone: prospectFixedPhone,
             webSite: prospectWebsite,

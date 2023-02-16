@@ -193,7 +193,7 @@ const getStyles = Colors =>
       left: '-20%',
     },
     title: {
-      marginLeft: 5,
+      marginLeft: 10,
     },
   });
 

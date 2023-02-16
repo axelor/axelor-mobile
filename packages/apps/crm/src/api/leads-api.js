@@ -138,6 +138,7 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
 export async function updateLead({
   leadId,
   leadVersion,
+  leadScore,
   leadCivility,
   leadFirstname,
   leadName,
@@ -172,6 +173,7 @@ export async function updateLead({
           data: {
             id: leadId,
             version: leadVersion,
+            leadScoringSelect: leadScore,
             titleSelect: leadCivility,
             firstName: leadFirstname,
             name: leadName,

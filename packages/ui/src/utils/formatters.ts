@@ -60,3 +60,20 @@ export function formatNumber(
 
   return `${result}${decimalSpacer}${decimalPart ? decimalPart : '00'}`;
 }
+
+export function unformatNumber(
+  number: string,
+  decimalSpacer: string = '.',
+  thousandSpacer: string = ' ',
+): string {
+  if (checkNullString(number)) {
+    return `0${decimalSpacer}00`;
+  }
+
+  const JS_THOUSAND_SPACER = '';
+  const JS_DECIMAL_SPACER = '.';
+
+  return number
+    .replaceAll(thousandSpacer, JS_THOUSAND_SPACER)
+    .replace(decimalSpacer, JS_DECIMAL_SPACER);
+}
