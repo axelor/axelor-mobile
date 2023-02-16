@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {Agenda, AgendaEntry} from 'react-native-calendars';
+import {Agenda, AgendaEntry, DateData} from 'react-native-calendars';
 import {
   AgendaItem,
   createAgendaSchedule,
@@ -90,24 +90,27 @@ const PlanningView = ({
     }
   };
 
+  const handleLoadItemsForMonth = useCallback(
+    (date: DateData) => {
+      const _date = new Date(date.year, date.month, date.day);
+
+      setFetchDate(_date);
+      fetchbyMonth(_date);
+    },
+    [fetchbyMonth],
+  );
+
   return (
     <View style={styles.agendaContainer}>
       <Agenda
         items={agendaItems}
-        loadItemsForMonth={date => {
-          setFetchDate(date);
-          fetchbyMonth(date);
-        }}
+        loadItemsForMonth={handleLoadItemsForMonth}
         pastScrollRange={numberMonthsAroundToday}
         futureScrollRange={numberMonthsAroundToday}
         renderItem={renderDayItem}
         renderDay={renderDate}
         renderEmptyDate={renderEmptyDate}
-        onRefresh={() => {
-          console.log('refresh');
-          console.log(fetchDate);
-          fetchbyMonth(fetchDate);
-        }}
+        onRefresh={() => fetchbyMonth(fetchDate)}
         refreshing={loading}
         theme={{
           todayTextColor: Colors.text,

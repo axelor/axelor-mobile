@@ -112,12 +112,14 @@ export async function searchOperationOrderFilter({
 }
 
 export async function getPlannedOperationOrder(date) {
-  const startDate = getPreviousMonth(new Date(date.dateString));
-  const endDate = getNextMonth(new Date(date.dateString));
+  const startDate = getPreviousMonth(date).toISOString();
+  const endDate = getNextMonth(date).toISOString();
+
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.production.db.OperationOrder/search',
     data: {
       data: {
+        operator: 'or',
         criteria: [
           {
             operator: 'and',
@@ -125,12 +127,27 @@ export async function getPlannedOperationOrder(date) {
               {
                 fieldName: 'plannedStartDateT',
                 operator: '>=',
-                value: startDate.toISOString(),
+                value: startDate,
               },
               {
-                fieldName: 'plannedEndDateT',
+                fieldName: 'plannedStartDateT',
                 operator: '<=',
-                value: endDate.toISOString(),
+                value: endDate,
+              },
+            ],
+          },
+          {
+            operator: 'and',
+            criteria: [
+              {
+                fieldName: 'plannedEndDateT',
+                operator: '>=',
+                value: startDate,
+              },
+              {
+                fieldName: 'plannedStartDateT',
+                operator: '<=',
+                value: endDate,
               },
             ],
           },
