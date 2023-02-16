@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   Card,
   LabelText,
@@ -40,39 +40,11 @@ function OperationOrderPlanningScreen() {
     return getStyles(Colors);
   }, [Colors]);
 
-  const listItem = useMemo(() => {
-    if (
-      plannedOperationOrderList !== undefined &&
-      plannedOperationOrderList.length > 1
-    ) {
-      return plannedOperationOrderList.map(elt => {
-        const borderColor = OperationOrder.getStatusColor(
-          elt.statusSelect,
-          Colors,
-        );
-        const startDate = new Date(elt.plannedStartDateT);
-        const endDate = new Date(elt.plannedEndDateT);
-        return {
-          id: elt.id,
-          date: elt.plannedStartDateT,
-          name: elt.operationName,
-          ref: elt.manufOrder.manufOrderSeq,
-          workCenter: elt.workCenter.name,
-          startHour:
-            startDate.getHours() +
-            'h' +
-            (startDate.getMinutes() < 10 ? '0' : '') +
-            startDate.getMinutes(),
-          endHour:
-            endDate.getHours() +
-            'h' +
-            (endDate.getMinutes() < 10 ? '0' : '') +
-            +endDate.getMinutes(),
-          border: borderColor.background,
-        };
-      });
-    }
-  }, [Colors, plannedOperationOrderList]);
+  const listItem = useMemo(
+    () =>
+      OperationOrder.getCalendarListItems(plannedOperationOrderList, Colors),
+    [Colors, plannedOperationOrderList],
+  );
 
   const fetchItemsByMonth = useCallback(
     date => {
@@ -88,34 +60,26 @@ function OperationOrderPlanningScreen() {
     };
   };
 
-  const renderDayItem = (agendaItem, isFirst) => {
-    if (agendaItem) {
-      return (
-        <View
-          style={
-            isFirst ? styles.firstItemContainer : styles.containerListItem
-          }>
-          {isFirst ? <View style={styles.borderTop} /> : null}
-          <View style={styles.containerTime}>
-            <Text>{agendaItem.startHour}</Text>
-            <Text>{agendaItem.endHour}</Text>
-          </View>
-          <Card style={[styles.container, rendBorderColor(agendaItem.border)]}>
-            <Text style={styles.bold}>{agendaItem.ref}</Text>
-            <Text>{agendaItem.name}</Text>
-            <LabelText iconName="pallet" title={agendaItem.workCenter} />
-          </Card>
-          <View style={styles.borderBottom} />
-        </View>
-      );
+  const renderDayEvent = ({id, data: operationOrder}) => {
+    if (operationOrder == null) {
+      return null;
     }
+    return (
+      <Card
+        key={id}
+        style={[styles.container, rendBorderColor(operationOrder.border)]}>
+        <Text style={styles.bold}>{operationOrder.ref}</Text>
+        <Text>{operationOrder.name}</Text>
+        <LabelText iconName="pallet" title={operationOrder.workCenter} />
+      </Card>
+    );
   };
 
   return (
     <Screen removeSpaceOnTop={true}>
       <PlanningView
         itemList={listItem}
-        renderItem={renderDayItem}
+        renderItem={renderDayEvent}
         fetchbyMonth={fetchItemsByMonth}
         loading={loading}
       />
@@ -139,8 +103,7 @@ const getStyles = Colors =>
     },
     container: {
       alignSelf: 'center',
-      width: '80%',
-      marginHorizontal: 12,
+      width: '100%',
     },
     bold: {
       fontWeight: 'bold',

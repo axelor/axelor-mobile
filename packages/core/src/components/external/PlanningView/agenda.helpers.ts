@@ -17,18 +17,32 @@
  */
 
 import {AgendaEntry, AgendaSchedule} from 'react-native-calendars';
+import {TranslatorProps} from '../../../i18n';
+import {formatTime, diffDate, sameDate, incrementDate} from '../../../utils';
+
+export const EMPTY_TIME = '-';
+
+export interface AgendaEvent {
+  id: string;
+  startDate: string;
+  endDate: string;
+  data: object | string | number;
+}
 
 export interface AgendaItem {
-  id: number;
+  id: string;
   date: string | Date;
-  [objectKey: string]: object | string | number;
+  startHour?: string | Date;
+  endHour?: string | Date;
+  isFullDayEvent?: Boolean;
+  data: object | string | number;
 }
 
 export function mapEntryToItem(
   agendaItem: AgendaEntry,
   itemList: AgendaItem[],
 ): AgendaItem {
-  const itemId = parseInt(agendaItem.name, 10);
+  const itemId = agendaItem.name;
   return itemList.find((item: AgendaItem) => item.id === itemId);
 }
 
@@ -101,20 +115,86 @@ export function getShortName(date, lang) {
   return new Intl.DateTimeFormat(lang, {weekday: 'short'}).format(date);
 }
 
-function sameDate(date1: Date, date2: Date) {
-  if (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
 export function isToday(date) {
   const d = new Date(date);
   const today = new Date();
   return sameDate(d, today);
 }
+
+export const createAgendaItems = (
+  list: AgendaEvent[],
+  I18n: TranslatorProps,
+): any[] => {
+  if (list == null || list.length === 0) {
+    return [];
+  }
+
+  const agendaItems = [];
+
+  list.forEach(_e => {
+    const items = createAgendaItem(_e, I18n);
+    agendaItems.push(...items);
+  });
+
+  return agendaItems;
+};
+
+const createAgendaItem = (
+  event: AgendaEvent,
+  I18n: TranslatorProps,
+): AgendaItem[] => {
+  const _startDate = new Date(event.startDate);
+  const _endDate = new Date(event.endDate);
+
+  if (sameDate(_startDate, _endDate)) {
+    return [
+      {
+        id: event.id.toString(),
+        date: event.endDate,
+        startHour: formatTime(event.startDate, I18n.t('Base_TimeFormat')),
+        endHour: formatTime(event.endDate, I18n.t('Base_TimeFormat')),
+        data: event.data,
+      },
+    ];
+  }
+
+  return createMultiDayAgendaItems(event, _startDate, _endDate, I18n);
+};
+
+const createMultiDayAgendaItems = (
+  event: AgendaEvent,
+  startDate: Date,
+  endDate: Date,
+  I18n: TranslatorProps,
+): AgendaItem[] => {
+  const agendaItems = [];
+
+  agendaItems.push({
+    id: `${event.id}_${1}`,
+    date: event.startDate,
+    data: event.data,
+    startHour: formatTime(event.startDate, I18n.t('Base_TimeFormat')),
+    endHour: EMPTY_TIME,
+  });
+
+  const diffDays = diffDate(startDate, endDate);
+
+  for (let d = 1; d < diffDays; d++) {
+    agendaItems.push({
+      id: `${event.id}_${d + 1}`,
+      date: incrementDate(startDate, d).toISOString(),
+      isFullDayEvent: true,
+      data: event.data,
+    });
+  }
+
+  agendaItems.push({
+    id: `${event.id}_${diffDays + 1}`,
+    date: event.endDate,
+    data: event.data,
+    startHour: EMPTY_TIME,
+    endHour: formatTime(event.endDate, I18n.t('Base_TimeFormat')),
+  });
+
+  return agendaItems;
+};
