@@ -51,5 +51,6 @@
   "Stopwatch_TimerFormat": "mm:ss",
   "Base_Information": "Information",
   "Base_Refresh": "Refresh application",
-  "Base_Logout": "Log out"
+  "Base_Logout": "Log out",
+  "Base_TimeFormat": "HH:mm"
 }

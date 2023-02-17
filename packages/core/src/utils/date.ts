@@ -41,3 +41,25 @@ export const getPreviousMonth = (date: Date): Date => {
     return new Date(date.getFullYear(), date.getMonth() - 1, 1);
   }
 };
+
+export const sameDate = (date1: Date, date2: Date): boolean => {
+  if (
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const diffDate = (start: Date, end: Date): number => {
+  const _start = moment(start.toISOString());
+  const _end = moment(end.toISOString());
+  return _end.diff(_start, 'days') + 1;
+};
+
+export const incrementDate = (date: Date, days: number): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+};

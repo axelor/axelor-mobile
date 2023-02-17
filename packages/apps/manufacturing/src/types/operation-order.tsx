@@ -198,6 +198,26 @@ class OperationOrder {
     });
     return totalDuration;
   };
+
+  static getCalendarListItems = (list: any[], Colors: ThemeColors): any[] => {
+    if (list == null || list.length === 0) {
+      return [];
+    }
+
+    return list.map(_e => {
+      return {
+        id: _e.id,
+        startDate: _e.plannedStartDateT,
+        endDate: _e.plannedEndDateT,
+        data: {
+          name: _e.operationName,
+          ref: _e.manufOrder?.manufOrderSeq,
+          workCenter: _e.workCenter?.name,
+          border: this.getStatusColor(_e.statusSelect, Colors).background,
+        },
+      };
+    });
+  };
 }
 
 export default OperationOrder;

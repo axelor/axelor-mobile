@@ -17,9 +17,23 @@
  */
 
 export {updateAgendaItems} from './agenda';
-export {isDate, isDateTime, getNextMonth, getPreviousMonth} from './date';
+export {
+  isDate,
+  isDateTime,
+  getNextMonth,
+  getPreviousMonth,
+  diffDate,
+  sameDate,
+  incrementDate,
+} from './date';
 export {displayItemName} from './displayers';
-export {formatDate, formatDateTime, formatScan, formatURL} from './formatters';
+export {
+  formatDate,
+  formatDateTime,
+  formatTime,
+  formatScan,
+  formatURL,
+} from './formatters';
 export {filterList, filterListContain, getFromList} from './list';
 export {
   calculateDiff,
