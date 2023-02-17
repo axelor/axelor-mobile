@@ -153,6 +153,9 @@ export async function getPlannedOperationOrder(date) {
           },
         ],
       },
+      fields: operationOrderListFields,
+      sortBy: ['plannedStartDateT', 'manufOrder.manufOrderSeq', 'statusSelect'],
+      limit: null,
     },
   });
 }
