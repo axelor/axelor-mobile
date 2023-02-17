@@ -25,13 +25,12 @@ import {
   AgendaItem,
   createAgendaItems,
   createAgendaSchedule,
-  EMPTY_TIME,
   getShortName,
   isToday,
   mapEntryToItem,
+  shouldRenderDetailsCard,
 } from './agenda.helpers';
 import {useTranslator} from '../../../i18n';
-import {sameDate} from './../../../utils/date';
 
 interface PlanningProps {
   numberMonthsAroundToday?: number;
@@ -89,28 +88,17 @@ const PlanningView = ({
   };
 
   const renderDayItem = (item: AgendaEntry, isFirst: boolean) => {
-    const agendaItem = mapEntryToItem(item, _agendaItems);
+    const agendaItem: AgendaItem = mapEntryToItem(item, _agendaItems);
 
     if (agendaItem == null) {
       return null;
     }
 
-    const {id, date, startHour, endHour, isFullDayEvent} = agendaItem;
+    const {id, startHour, endHour, isFullDayEvent} = agendaItem;
 
-    const today = new Date();
-    const eventDate = new Date(date);
-    const isFirstItemOfEvent = startHour === EMPTY_TIME;
-    const isLastItemOfEvent = endHour === EMPTY_TIME;
-    const isDayEvent =
-      !isFullDayEvent && !isFirstItemOfEvent && !isLastItemOfEvent;
-
-    const showDetailsCard =
-      (sameDate(today, new Date(date)) && isFullDayEvent) ||
-      (eventDate <= today && isFirstItemOfEvent) ||
-      (eventDate >= today && isLastItemOfEvent) ||
-      isDayEvent;
-
-    const _renderComponent = showDetailsCard ? renderItem : renderFullDayItem;
+    const _renderComponent = shouldRenderDetailsCard(agendaItem)
+      ? renderItem
+      : renderFullDayItem;
 
     if (_renderComponent == null) {
       return (
@@ -128,7 +116,7 @@ const PlanningView = ({
             isFirst ? styles.firstItemContainer : styles.containerListItem
           }>
           <View style={styles.containerTime}>
-            {!agendaItem.isFullDayEvent && (
+            {!isFullDayEvent && (
               <>
                 <Text style={styles.centerText}>{startHour}</Text>
                 <Text style={styles.centerText}>{endHour}</Text>
@@ -139,7 +127,6 @@ const PlanningView = ({
             {_renderComponent(agendaItem)}
           </View>
         </View>
-        <HorizontalRule style={styles.horizontalRule} />
       </View>
     );
   };

@@ -179,7 +179,7 @@ const createMultiDayAgendaItems = (
 
   const diffDays = diffDate(startDate, endDate);
 
-  for (let d = 1; d < diffDays; d++) {
+  for (let d = 1; d < diffDays - 1; d++) {
     agendaItems.push({
       id: `${event.id}_${d + 1}`,
       date: incrementDate(startDate, d).toISOString(),
@@ -197,4 +197,22 @@ const createMultiDayAgendaItems = (
   });
 
   return agendaItems;
+};
+
+export const shouldRenderDetailsCard = (event: AgendaItem) => {
+  const {date, startHour, endHour, isFullDayEvent} = event;
+
+  const today = new Date();
+  const eventDate = new Date(date);
+  const isFirstItemOfEvent = startHour !== EMPTY_TIME && endHour === EMPTY_TIME;
+  const isLastItemOfEvent = startHour === EMPTY_TIME && endHour !== EMPTY_TIME;
+  const isDayEvent =
+    !isFullDayEvent && !isFirstItemOfEvent && !isLastItemOfEvent;
+
+  return (
+    sameDate(today, new Date(date)) ||
+    (isFirstItemOfEvent && eventDate >= today) ||
+    (isLastItemOfEvent && eventDate <= today) ||
+    isDayEvent
+  );
 };
