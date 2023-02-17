@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Card,
   LabelText,
@@ -29,7 +29,7 @@ import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 import OperationOrder from '../../types/operation-order';
 
-function OperationOrderPlanningScreen() {
+function OperationOrderPlanningScreen({navigation}) {
   const {plannedOperationOrderList, loading} = useSelector(
     state => state.operationOrder,
   );
@@ -40,39 +40,11 @@ function OperationOrderPlanningScreen() {
     return getStyles(Colors);
   }, [Colors]);
 
-  const listItem = useMemo(() => {
-    if (
-      plannedOperationOrderList !== undefined &&
-      plannedOperationOrderList.length > 1
-    ) {
-      return plannedOperationOrderList.map(elt => {
-        const borderColor = OperationOrder.getStatusColor(
-          elt.statusSelect,
-          Colors,
-        );
-        const startDate = new Date(elt.plannedStartDateT);
-        const endDate = new Date(elt.plannedEndDateT);
-        return {
-          id: elt.id,
-          date: elt.plannedStartDateT,
-          name: elt.operationName,
-          ref: elt.manufOrder.manufOrderSeq,
-          workCenter: elt.workCenter.name,
-          startHour:
-            startDate.getHours() +
-            'h' +
-            (startDate.getMinutes() < 10 ? '0' : '') +
-            startDate.getMinutes(),
-          endHour:
-            endDate.getHours() +
-            'h' +
-            (endDate.getMinutes() < 10 ? '0' : '') +
-            +endDate.getMinutes(),
-          border: borderColor.background,
-        };
-      });
-    }
-  }, [Colors, plannedOperationOrderList]);
+  const listItem = useMemo(
+    () =>
+      OperationOrder.getCalendarListItems(plannedOperationOrderList, Colors),
+    [Colors, plannedOperationOrderList],
+  );
 
   const fetchItemsByMonth = useCallback(
     date => {
@@ -81,6 +53,14 @@ function OperationOrderPlanningScreen() {
     [dispatch],
   );
 
+  const navigateToOperationOrder = id => {
+    if (id != null) {
+      navigation.navigate('OperationOrderDetailsScreen', {
+        operationOrderId: id,
+      });
+    }
+  };
+
   const rendBorderColor = borderColor => {
     return {
       borderLeftWidth: 7,
@@ -88,34 +68,54 @@ function OperationOrderPlanningScreen() {
     };
   };
 
-  const renderDayItem = (agendaItem, isFirst) => {
-    if (agendaItem) {
-      return (
-        <View
-          style={
-            isFirst ? styles.firstItemContainer : styles.containerListItem
-          }>
-          {isFirst ? <View style={styles.borderTop} /> : null}
-          <View style={styles.containerTime}>
-            <Text>{agendaItem.startHour}</Text>
-            <Text>{agendaItem.endHour}</Text>
-          </View>
-          <Card style={[styles.container, rendBorderColor(agendaItem.border)]}>
-            <Text style={styles.bold}>{agendaItem.ref}</Text>
-            <Text>{agendaItem.name}</Text>
-            <LabelText iconName="pallet" title={agendaItem.workCenter} />
-          </Card>
-          <View style={styles.borderBottom} />
-        </View>
-      );
+  const renderDayEventDetails = ({id, data: operationOrder}) => {
+    if (operationOrder == null) {
+      return null;
     }
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => navigateToOperationOrder(id)}>
+        <Card
+          key={id}
+          style={[
+            styles.containerDetails,
+            rendBorderColor(operationOrder.border),
+          ]}>
+          <Text style={styles.bold}>{operationOrder.ref}</Text>
+          <Text>{operationOrder.name}</Text>
+          <LabelText iconName="pallet" title={operationOrder.workCenter} />
+        </Card>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderDayEvent = ({id, data: operationOrder}) => {
+    if (operationOrder == null) {
+      return null;
+    }
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => navigateToOperationOrder(id)}>
+        <Card
+          key={id}
+          style={[styles.container, rendBorderColor(operationOrder.border)]}>
+          <Text style={styles.bold}>{operationOrder.ref}</Text>
+          <LabelText iconName="pallet" title={operationOrder.workCenter} />
+        </Card>
+      </TouchableOpacity>
+    );
   };
 
   return (
     <Screen removeSpaceOnTop={true}>
       <PlanningView
         itemList={listItem}
-        renderItem={renderDayItem}
+        renderItem={renderDayEventDetails}
+        renderFullDayItem={renderDayEvent}
         fetchbyMonth={fetchItemsByMonth}
         loading={loading}
       />
@@ -125,41 +125,19 @@ function OperationOrderPlanningScreen() {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    containerListItem: {
-      flexDirection: 'row',
-      marginVertical: '3%',
-    },
-    firstItemContainer: {
-      flexDirection: 'row',
-      marginTop: '5%',
-      marginBottom: '3%',
-    },
-    containerTime: {
-      flexDirection: 'column',
+    containerDetails: {
+      alignSelf: 'center',
+      width: '100%',
     },
     container: {
       alignSelf: 'center',
-      width: '80%',
-      marginHorizontal: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
     },
     bold: {
       fontWeight: 'bold',
-    },
-    borderBottom: {
-      position: 'absolute',
-      width: '80%',
-      borderBottomWidth: 1.5,
-      borderBottomColor: Colors.secondaryColor.background,
-      bottom: -10,
-      right: '10%',
-    },
-    borderTop: {
-      position: 'absolute',
-      width: '80%',
-      borderTopWidth: 1.5,
-      borderTopColor: Colors.secondaryColor.background,
-      top: -10,
-      right: '10%',
     },
   });
 
