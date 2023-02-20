@@ -21,7 +21,7 @@ import {Text as ReactNativeText, TextStyle} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {useWritingType} from '../../../theme/writingTheme';
 
-interface TextProps {
+export interface TextProps {
   style?: any;
   numberOfLines?: number;
   adjustsFontSizeToFit?: boolean;
@@ -43,7 +43,10 @@ const Text = ({
   writingType,
 }: TextProps) => {
   const Colors = useThemeColor();
-  const writingStyle = useWritingType(writingType);
+  const writingStyle = useMemo(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return writingType ? useWritingType(writingType) : {};
+  }, [writingType]);
 
   const defaultStyle: TextStyle = useMemo(() => {
     return {

@@ -10,44 +10,18 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@storybook/addon-knobs',
+    {
+      name: '@storybook/addon-react-native-web',
+    },
   ],
   framework: '@storybook/react',
-  webpack: (config, options) => {
-    if (!options.isServer) {
-      // We shim fs for things like the blog slugs component
-      // where we need fs access in the server-side part
-      config.node = {
-        fs: 'empty',
-      };
-    }
-
-    // react-native-web
+  webpackFinal: async config => {
     config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      // Transform all direct `react-native` imports to `react-native-web`
+      ...config.resolve.alias,
       'react-native$': 'react-native-web',
+      '@storybook/react-native': '@storybook/react',
     };
-    config.resolve.extensions = [
-      '.web.js',
-      '.web.ts',
-      '.web.tsx',
-      ...config.resolve.extensions,
-    ];
-
-    config.module.rules.push({
-      test: /\.ttf$/,
-      loader: 'url-loader',
-    });
-
-    // {
-    //   test: /\.bs\.js$/,
-    //   use: options.defaultLoaders.babel,
-    //   include: /node_modules/,
-    // },
-
-    // avoid duplicated react
-    // config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
-
     return config;
   },
 };

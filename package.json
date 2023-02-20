@@ -46,6 +46,8 @@
     "react-dom": "18.2.0",
     "react-native-web": "0.18.12",
     "babel-plugin-react-native-web": "0.18.12",
-    "@storybook/addon-react-native-web": "0.0.19"
+    "@storybook/addon-react-native-web": "0.0.19",
+    "@storybook/react-native": "5.3.27",
+    "@storybook/addon-knobs": "6.4.0"
   }
 }
