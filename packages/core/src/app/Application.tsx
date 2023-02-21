@@ -29,6 +29,17 @@ interface proxy {
   defaultPassword: string;
 }
 
+interface releaseConfig {
+  url: string;
+  showUrlInput: boolean;
+}
+
+interface appConfig {
+  testInstanceConfig: proxy;
+  releaseInstanceConfig: releaseConfig;
+  defaultLanguage: string;
+}
+
 interface ApplicationProps {
   modules: Module[];
   mainMenu?: string;
@@ -39,7 +50,7 @@ interface ApplicationProps {
   writingThemes?: Writing[];
   defaultWritingTheme?: Writing;
   showModulesSubtitle?: boolean;
-  debugEnv?: proxy;
+  configuration?: appConfig;
 }
 
 const Application = ({
@@ -52,7 +63,7 @@ const Application = ({
   writingThemes,
   defaultWritingTheme,
   showModulesSubtitle = false,
-  debugEnv,
+  configuration,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
@@ -63,13 +74,17 @@ const Application = ({
       defaultTheme={defaultTheme}
       themes={themes}
       defaultWritingTheme={defaultWritingTheme}
-      writingThemes={writingThemes}>
+      writingThemes={writingThemes}
+      defaultLanguage={configuration?.defaultLanguage}>
       <ContextedApplication
         modules={modules}
         mainMenu={mainMenu}
         version={version}
         showModulesSubtitle={showModulesSubtitle}
-        debugEnv={__DEV__ ? debugEnv : null}
+        configuration={{
+          testInstanceConfig: configuration?.testInstanceConfig,
+          releaseInstanceConfig: configuration?.releaseInstanceConfig,
+        }}
       />
     </ContextsProvider>
   );

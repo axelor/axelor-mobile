@@ -22,7 +22,7 @@ import {StockModule} from '@axelor/aos-mobile-stock';
 import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
 import {CrmModule} from '@axelor/aos-mobile-crm';
 import application_properties from '../package.json';
-import {defaultInstanceConfig} from '../env.config';
+import {app_config} from '../app.config';
 
 const App = () => {
   return (
@@ -30,7 +30,7 @@ const App = () => {
       modules={[StockModule, ManufacturingModule, CrmModule]}
       mainMenu="auth_menu_user"
       version={application_properties.version}
-      debugEnv={defaultInstanceConfig}
+      configuration={app_config}
     />
   );
 };
