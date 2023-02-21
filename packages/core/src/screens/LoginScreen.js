@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -55,18 +55,42 @@ const LoginScreen = ({route}) => {
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
   const appVersion = route?.params?.version;
-  const debugEnv = route?.params?.debugEnv;
+  const testInstanceConfig = route?.params?.testInstanceConfig;
+  const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const modeDebug = useMemo(() => __DEV__, []);
 
-  const [url, setUrl] = useState(
-    debugEnv ? debugEnv.defaultUrl || '' : baseUrl,
-  );
+  const showUrlInput = useMemo(() => {
+    if (modeDebug) {
+      return true;
+    } else {
+      return releaseInstanceConfig?.showUrlInput || true;
+    }
+  }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
+
+  const defaultUrl = useMemo(() => {
+    if (baseUrl != null) {
+      return baseUrl;
+    }
+    if (modeDebug) {
+      return testInstanceConfig?.defaultUrl;
+    }
+
+    return releaseInstanceConfig?.url;
+  }, [
+    baseUrl,
+    modeDebug,
+    releaseInstanceConfig?.url,
+    testInstanceConfig?.defaultUrl,
+  ]);
+
+  const [url, setUrl] = useState(defaultUrl || '');
   const [username, setUsername] = useState(
-    debugEnv ? debugEnv.defaultUsername : '',
+    modeDebug ? testInstanceConfig?.defaultUsername : '',
   );
   const [password, setPassword] = useState(
-    debugEnv ? debugEnv.defaultPassword : '',
+    modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
 
   useEffect(() => {
@@ -98,10 +122,27 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            <UrlInput
-              value={url}
-              onChange={setUrl}
+            {showUrlInput && (
+              <UrlInput
+                value={url}
+                onChange={setUrl}
+                readOnly={loading}
+                onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
+                onSelection={() => {
+                  dispatch(enableScan(urlScanKey));
+                }}
+                scanIconColor={
+                  isEnabled && scanKey === urlScanKey
+                    ? Colors.primaryColor.background
+                    : Colors.secondaryColor_dark.background
+                }
+              />
+            )}
+            <UsernameInput
+              value={username}
+              onChange={setUsername}
               readOnly={loading}
+              showScanIcon={!showUrlInput}
               onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
               onSelection={() => {
                 dispatch(enableScan(urlScanKey));
@@ -111,11 +152,6 @@ const LoginScreen = ({route}) => {
                   ? Colors.primaryColor.background
                   : Colors.secondaryColor_dark.background
               }
-            />
-            <UsernameInput
-              value={username}
-              onChange={setUsername}
-              readOnly={loading}
             />
             <PasswordInput
               value={password}

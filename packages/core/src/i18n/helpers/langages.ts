@@ -16,16 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {langagesResources} from '../i18n';
+import {resourcesBinding} from '../i18n';
 
-export const getSupportedLangages = ({resources}: langagesResources) => {
+interface translations {
+  resources: resourcesBinding[];
+}
+
+export const getSupportedLangages = ({resources}: translations) => {
   if (resources == null || resources.length === 0) {
     return [];
   }
   return resources.map(langageBundle => langageBundle.lng);
 };
 
-export const formatResources = ({resources}: langagesResources) => {
+export const formatResources = ({resources}: translations) => {
   if (resources == null || resources.length === 0) {
     return {};
   }

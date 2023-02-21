@@ -42,6 +42,7 @@ interface ContextsProviderProps {
   writingThemes?: Writing[];
   defaultWritingTheme?: Writing;
   children: React.ReactNode;
+  defaultLanguage: string;
 }
 
 const ContextsProvider = ({
@@ -52,6 +53,7 @@ const ContextsProvider = ({
   writingThemes,
   defaultWritingTheme,
   children,
+  defaultLanguage = 'en',
 }: ContextsProviderProps) => {
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +77,7 @@ const ContextsProvider = ({
         {lng: 'en', translationsObject: appTranslations.en},
         {lng: 'fr', translationsObject: appTranslations.fr},
       ],
+      defaultLanguage: defaultLanguage,
     });
     setLoading(false);
     // NOTE: I18n should be initialize only once
