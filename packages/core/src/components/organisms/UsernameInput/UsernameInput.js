@@ -18,10 +18,19 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, IconInput} from '@axelor/aos-mobile-ui';
+import {Icon, IconInput, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
-const UsernameInput = ({value, onChange, readOnly}) => {
+const UsernameInput = ({
+  value,
+  onChange,
+  readOnly,
+  showScanIcon = true,
+  onScanPress,
+  onSelection = () => {},
+  scanIconColor,
+}) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   return (
@@ -29,8 +38,28 @@ const UsernameInput = ({value, onChange, readOnly}) => {
       value={value}
       onChange={onChange}
       readOnly={readOnly}
+      onSelection={showScanIcon ? onSelection : () => {}}
       placeholder={I18n.t('Auth_Username')}
       leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
+      rightIconsList={
+        showScanIcon
+          ? [
+              <Icon
+                name="qrcode"
+                size={20}
+                color={
+                  scanIconColor == null
+                    ? Colors.secondaryColor_dark.background
+                    : scanIconColor
+                }
+                touchable={true}
+                style={styles.icon}
+                onPress={onScanPress}
+                FontAwesome5={false}
+              />,
+            ]
+          : []
+      }
     />
   );
 };

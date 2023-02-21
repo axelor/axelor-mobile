@@ -41,12 +41,22 @@ interface proxy {
   defaultPassword: string;
 }
 
+interface releaseConfig {
+  url: string;
+  showUrlInput: boolean;
+}
+
+interface instanceConfig {
+  testInstanceConfig: proxy;
+  releaseInstanceConfig: releaseConfig;
+}
+
 interface ContextedApplicationProps {
   modules: Module[];
   mainMenu?: string;
   version: string;
   showModulesSubtitle: boolean;
-  debugEnv?: proxy;
+  configuration?: instanceConfig;
 }
 
 const ContextedApplication = ({
@@ -54,7 +64,7 @@ const ContextedApplication = ({
   mainMenu,
   version,
   showModulesSubtitle = false,
-  debugEnv,
+  configuration,
 }: ContextedApplicationProps) => {
   const Colors = useThemeColor();
 
@@ -108,7 +118,7 @@ const ContextedApplication = ({
             version={version}
             showModulesSubtitle={showModulesSubtitle}
             onRefresh={() => setRefresh(_current => !_current)}
-            debugEnv={debugEnv}
+            configuration={configuration}
           />
         </NavigationContainer>
       </ErrorBoundary>

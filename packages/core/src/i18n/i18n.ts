@@ -27,6 +27,7 @@ export interface resourcesBinding {
 
 export interface langagesResources {
   resources: resourcesBinding[];
+  defaultLanguage: string;
 }
 
 class I18nProvider {
@@ -44,16 +45,16 @@ class I18nProvider {
     return this.i18next;
   }
 
-  configI18n({resources}: langagesResources) {
+  configI18n({resources, defaultLanguage}: langagesResources) {
     this.supportedLng = getSupportedLangages({resources});
     this.resources = formatResources({resources});
-    this.initI18n();
+    this.initI18n(defaultLanguage);
   }
 
-  initI18n = () => {
+  initI18n = defaultLanguage => {
     this.i18next.use(initReactI18next).init({
       compatibilityJSON: 'v3',
-      lng: 'en',
+      lng: defaultLanguage,
       fallbackLng: 'en',
       supportedLngs: this.supportedLng,
       resources: this.resources,
@@ -66,5 +67,7 @@ class I18nProvider {
 
 export const i18nProvider = new I18nProvider();
 
-export const configI18n = ({resources}: langagesResources) =>
-  i18nProvider.configI18n({resources});
+export const configI18n = ({
+  resources,
+  defaultLanguage = 'en',
+}: langagesResources) => i18nProvider.configI18n({resources, defaultLanguage});
