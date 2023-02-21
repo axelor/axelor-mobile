@@ -15,7 +15,7 @@ const secondary = {
 };
 const color = {primary, secondary};
 
-storiesOf('ui/molecule/Button', module).add(
+storiesOf('ui/molecules/Button', module).add(
   'Default',
   args => {
     return (

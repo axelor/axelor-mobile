@@ -90,11 +90,10 @@ const getStyles = (selectedColor, Colors) =>
     },
   });
 
-const getWidth = (width, margin) =>
-  StyleSheet.create({
-    width: width,
-    marginHorizontal: margin,
-  });
+const getWidth = (width, margin) => ({
+  width: width,
+  marginHorizontal: margin,
+});
 
 const styles = StyleSheet.create({
   container: {
