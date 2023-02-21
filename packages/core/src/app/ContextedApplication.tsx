@@ -33,7 +33,7 @@ import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserId} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
-import {Camera, Scanner} from '../components';
+import {Camera, CameraScanner, Scanner} from '../components';
 
 interface ContextedApplicationProps {
   modules: Module[];
@@ -82,6 +82,7 @@ const ContextedApplication = ({
   return (
     <>
       <Camera />
+      <CameraScanner />
       <Scanner />
       <Translator />
       <ErrorBoundary

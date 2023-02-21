@@ -137,7 +137,7 @@ const Camera = () => {
     }
 
     return () => setHasPermission(false);
-  }, [dispatch, isEnabled]);
+  }, [isEnabled]);
 
   if (!hasPermission && !isEnabled) {
     return null;

@@ -32,7 +32,10 @@ import {
   useScannedValueByKey,
   useScannerSelector,
 } from '../../../features/scannerSlice';
-import {CameraScanner} from '../../external';
+import {
+  enableCameraScanner,
+  useCameraScannerValueByKey,
+} from '../../../features/cameraScannerSlice';
 
 const InputBarCodeCard = ({
   style,
@@ -41,20 +44,17 @@ const InputBarCodeCard = ({
   onChange = () => {},
 }) => {
   const Colors = useThemeColor();
-  const [camScan, setCamScan] = useState(false);
-  const [scanData, setScanData] = useState(null);
-  const [viewCoordinate, setViewCoordinate] = useState(null);
   const [inputData, setInputData] = useState(null);
-  const {isEnabled, scanKey} = useScannerSelector();
+  const {isEnabled: scannerEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
+  const scanData = useCameraScannerValueByKey(scanKeySearch);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (scannedValue) {
       setInputData(scannedValue);
       onChange(scannedValue);
-    } else if (scanData != null && scanData.value != null) {
-      setCamScan(false);
+    } else if (scanData?.value != null) {
       setInputData(scanData.value);
       onChange(scanData.value);
     }
@@ -63,18 +63,7 @@ const InputBarCodeCard = ({
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   return (
-    <View
-      style={style}
-      onLayout={event => {
-        const {x, y} = event.nativeEvent.layout;
-        setViewCoordinate({x: x, y: y});
-      }}>
-      <CameraScanner
-        isActive={camScan}
-        onScan={setScanData}
-        coordinate={viewCoordinate}
-        onClose={() => setCamScan(false)}
-      />
+    <View style={style}>
       {title && (
         <View style={styles.titleContainer}>
           <Text style={styles.textImportant}>{title}</Text>
@@ -97,9 +86,13 @@ const InputBarCodeCard = ({
         <Icon
           name="qrcode"
           touchable={true}
-          onPress={() => setCamScan(true)}
+          onPress={() => {
+            scanKeySearch
+              ? dispatch(enableCameraScanner(scanKeySearch))
+              : undefined;
+          }}
           color={
-            isEnabled && scanKey === scanKeySearch
+            scannerEnabled && scanKey === scanKeySearch
               ? Colors.primaryColor.background
               : Colors.secondaryColor_dark.background
           }

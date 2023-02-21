@@ -20,7 +20,6 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
 import {useThemeColor, Text, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
-  CameraScanner,
   ErrorText,
   LoginButton,
   LogoImage,
@@ -35,15 +34,18 @@ import {
   useScannedValueByKey,
   useScannerSelector,
 } from '../features/scannerSlice';
+import {
+  enableCameraScanner,
+  useCameraScannerValueByKey,
+} from '../features/cameraScannerSlice';
 
 const urlScanKey = 'login_url';
 
 const LoginScreen = ({route}) => {
   const {loading, error} = useSelector(state => state.auth);
-  const [camScan, setCamScan] = useState(false);
-  const [scanData, setScanData] = useState(null);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
+  const scanData = useCameraScannerValueByKey(urlScanKey);
   const appVersion = route?.params?.version;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -61,15 +63,13 @@ const LoginScreen = ({route}) => {
       } else {
         setUrl(scannedValue);
       }
-    } else if (scanData != null && scanData.value != null) {
+    } else if (scanData?.value != null) {
       if (scanData.value.includes('username') === true) {
         const parseScannnedData = JSON.parse(scanData.value);
         setUrl(parseScannnedData.url);
         setUsername(parseScannnedData.username);
-        setCamScan(false);
       } else {
         setUrl(scanData.value);
-        setCamScan(false);
       }
     }
   }, [scanData, scannedValue]);
@@ -83,11 +83,6 @@ const LoginScreen = ({route}) => {
           <Text>{`Version ${appVersion}`}</Text>
         </View>
       }>
-      <CameraScanner
-        isActive={camScan}
-        onScan={setScanData}
-        onClose={() => setCamScan(false)}
-      />
       <ScrollView>
         <View style={styles.imageContainer}>
           <LogoImage url={url} />
@@ -96,7 +91,7 @@ const LoginScreen = ({route}) => {
           value={url}
           onChange={setUrl}
           readOnly={loading}
-          onScanPress={() => setCamScan(true)}
+          onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
           onSelection={() => {
             dispatch(enableScan(urlScanKey));
           }}
