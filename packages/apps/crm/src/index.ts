@@ -10,37 +10,37 @@ import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
 
 export const CrmModule: Module = {
-  name: 'Crm',
+  name: 'app-crm',
   title: 'Crm_Crm',
   subtitle: 'Crm_Crm',
   icon: 'users',
   menus: {
-    Leads: {
+    crm_menu_lead: {
       title: 'Crm_Leads',
       icon: 'address-card',
       screen: 'LeadListScreen',
     },
-    Prospects: {
+    crm_menu_prospect: {
       title: 'Crm_Prospects',
       icon: 'user-tie',
       screen: 'ProspectsListScreen',
     },
-    Opportunities: {
+    crm_menu_opportunity: {
       title: 'Crm_Opportunities',
       icon: 'search-dollar',
       screen: 'OpportunityListScreen',
     },
-    Clients: {
+    crm_menu_client: {
       title: 'Crm_Clients',
       icon: 'users',
       screen: 'ClientsListScreen',
     },
-    Contact: {
+    crm_menu_contact: {
       title: 'Crm_Contacts',
       icon: 'address-book',
       screen: 'ContactListScreen',
     },
-    Catalog: {
+    crm_menu_catalog: {
       title: 'Crm_Catalogs',
       icon: 'swatchbook',
       screen: 'CatalogListScreen',
