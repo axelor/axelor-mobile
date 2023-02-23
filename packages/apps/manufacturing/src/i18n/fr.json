@@ -34,6 +34,7 @@
   "Manufacturing_ConfirmWasteDeclaration": "Êtes-vous sûr de vouloir déclarer ces produits en tant que rebuts ? Cette action ne sera plus disponible ensuite.",
   "Manufacturing_RefOP": "Ordres de fabrication liés",
   "Manufacturing_OperationOrder": "Opération de fabrication",
+  "Manufacturing_PlannedOperationOrder": "Opérations planifiées",
   "Manufacturing_WorkCenter": "Poste de charge",
   "Manufacturing_Machine": "Machine",
   "Manufacturing_PlannedStartDate": "Début planifié",

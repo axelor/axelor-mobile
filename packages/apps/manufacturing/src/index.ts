@@ -24,23 +24,23 @@ import frTranslations from './i18n/fr.json';
 import * as manufacturingReducers from './features';
 
 export const ManufacturingModule: Module = {
-  name: 'Manufacturing',
+  name: 'app-manufacturing',
   title: 'Manufacturing_Manufacturing',
   subtitle: 'Manufacturing_Manufacturing',
   icon: 'cogs',
   menus: {
-    ManufacturingOrder: {
+    manufacturing_menu_manufacturing_order: {
       title: 'Manufacturing_ManufacturingOrder',
       icon: 'clipboard-list',
       screen: 'ManufacturingOrderListScreen',
     },
-    OperationOrder: {
+    manufacturing_menu_operation_order: {
       title: 'Manufacturing_OperationOrder',
       icon: 'dolly-flatbed',
       screen: 'OperationOrderListScreen',
     },
-    OperationOrderPlanning: {
-      title: 'Manufacturing_OperationOrder',
+    manufacturing_menu_operation_order_planning: {
+      title: 'Manufacturing_PlannedOperationOrder',
       icon: 'calendar-alt',
       screen: 'OperationOrderPlanningScreen',
     },

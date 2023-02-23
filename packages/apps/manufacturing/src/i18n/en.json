@@ -34,6 +34,7 @@
   "Manufacturing_ConfirmWasteDeclaration": "Are you sure you want to declare these products as waste? This action will no longer be available.",
   "Manufacturing_RefOP": "Linked manufacturing orders",
   "Manufacturing_OperationOrder": "Operation Order",
+  "Manufacturing_PlannedOperationOrder": "Planned operations",
   "Manufacturing_WorkCenter": "Work Center",
   "Manufacturing_Machine": "Machine",
   "Manufacturing_PlannedStartDate": "Planned Start Date",

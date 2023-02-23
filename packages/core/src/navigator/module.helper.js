@@ -20,7 +20,12 @@ import {isMenuEnabled} from './menu.helper';
 import {userHaveAccessToConfig} from './roles.helper';
 
 export function filterAuthorizedModules(modules, mobileConfigs, user) {
-  if (modules == null || mobileConfigs == null || mobileConfigs.length === 0) {
+  if (
+    modules == null ||
+    mobileConfigs == null ||
+    !Array.isArray(mobileConfigs) ||
+    mobileConfigs?.length === 0
+  ) {
     return modules;
   }
   const authorizedModules = [];
