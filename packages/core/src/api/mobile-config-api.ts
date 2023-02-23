@@ -24,9 +24,9 @@ export async function getMobileConfigs() {
       url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileConfig',
     })
     .then(res => {
-      if (res?.status !== 0) {
-        return {data: {data: []}};
+      if (res?.status === 0 || res?.status === 200) {
+        return res;
       }
-      return res;
+      return {data: {data: []}};
     });
 }
