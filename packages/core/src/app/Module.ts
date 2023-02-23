@@ -30,6 +30,7 @@ export interface Module {
       icon: string;
       screen: string;
       disabled?: boolean;
+      parent?: string;
     };
   };
   screens?: {
