@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Module} from '../app';
 import {isMenuEnabled} from './menu.helper';
 import {userHaveAccessToConfig} from './roles.helper';
 
@@ -54,6 +55,73 @@ export function filterAuthorizedModules(modules, mobileConfigs, user) {
   return authorizedModules;
 }
 
+export function findIndexAndObjectOfModule(
+  modules: Module[],
+  moduleName: string,
+) {
+  const index = modules.findIndex(_module => _module.name === moduleName);
+
+  if (index === -1) {
+    return {module: null, index: null};
+  }
+
+  return {module: modules[index], index: index};
+}
+
+export function removeMenusFromOverridingModule(menus, keyToRemove: string[]) {
+  const _menus = {...menus};
+  keyToRemove.forEach(_key => delete _menus[_key]);
+
+  return _menus;
+}
+
+export function manageOverridingMenus(modules: Module[]) {
+  if (modules == null) {
+    return modules;
+  }
+
+  let result: Module[] = [];
+
+  modules.forEach(_module => {
+    if (moduleHasMenus(_module)) {
+      const menusToRemove = [];
+
+      const menusNames = Object.keys(_module.menus);
+
+      menusNames.forEach(_menuKey => {
+        const menu = _module.menus[_menuKey];
+        const menuParentField = menu?.parent;
+
+        if (menuParentField != null && menuParentField !== _module.name) {
+          const {module: parentModule, index} = findIndexAndObjectOfModule(
+            result,
+            menuParentField,
+          );
+
+          if (index && parentModule) {
+            result[index] = {
+              ...parentModule,
+              menus: {...parentModule.menus, [_menuKey]: menu},
+            };
+          }
+
+          menusToRemove.push(_menuKey);
+        }
+      });
+
+      const clearedModule = {
+        ..._module,
+        menus: removeMenusFromOverridingModule(_module.menus, menusToRemove),
+      };
+      result.push(clearedModule);
+    } else {
+      result.push(_module);
+    }
+  });
+
+  return result;
+}
+
 export function moduleHasMenus(_module) {
   return _module.menus != null && Object.keys(_module.menus).length > 0;
 }
@@ -80,10 +148,6 @@ export function updateAccessibleMenus(_module, restrictedMenus, user) {
     ..._module,
     menus: filterEnabledMenus(_module, restrictedMenus, user),
   };
-}
-
-export function moduleInMenuFooter(_module) {
-  return !!_module?.options?.isInMenuFooter;
 }
 
 export function getDefaultModule(modules, mainMenu) {

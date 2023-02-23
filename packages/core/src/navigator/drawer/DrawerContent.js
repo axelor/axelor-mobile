@@ -60,7 +60,9 @@ const DrawerContent = ({
 
   const drawerModules = useMemo(
     () =>
-      modules.filter(moduleHasMenus).filter(_module => _module !== authModule),
+      modules
+        .filter(moduleHasMenus)
+        .filter(_module => _module.name !== authModule.name),
     [modules],
   );
 

@@ -31,6 +31,7 @@ import DrawerContent from './drawer/DrawerContent';
 import {
   filterAuthorizedModules,
   getDefaultModule,
+  manageOverridingMenus,
   moduleHasMenus,
   updateAccessibleMenus,
 } from './module.helper';
@@ -62,12 +63,21 @@ const Navigator = ({
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
-  const [activeModule, setActiveModule] = useState(
-    getDefaultModule(modules, mainMenu),
-  );
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const enabledModule = useMemo(
+    () =>
+      manageOverridingMenus(
+        filterAuthorizedModules(modules, mobileConfigs, user),
+      ),
+    [mobileConfigs, modules, user],
+  );
+
+  const [activeModule, setActiveModule] = useState(
+    getDefaultModule(enabledModule, mainMenu),
+  );
 
   useEffect(() => {
     dispatch(fetchMobileConfig());
@@ -78,14 +88,11 @@ const Navigator = ({
 
   const changeActiveModule = useCallback(
     moduleName => {
-      setActiveModule(modules.find(_module => _module.name === moduleName));
+      setActiveModule(
+        enabledModule.find(_module => _module.name === moduleName),
+      );
     },
-    [modules],
-  );
-
-  const enabledModule = useMemo(
-    () => filterAuthorizedModules(modules, mobileConfigs, user),
-    [mobileConfigs, modules, user],
+    [enabledModule],
   );
 
   const modulesMenus = useMemo(() => {
