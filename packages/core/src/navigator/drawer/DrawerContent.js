@@ -46,6 +46,28 @@ const DrawerContent = ({
   showModulesSubtitle = false,
   onRefresh,
 }) => {
+  useEffect(() => {
+    navigation.dispatch(_state => {
+      return CommonActions.reset({
+        ..._state,
+        routes: modules?.flatMap(_module => {
+          const moduleMenus = _module.menus;
+
+          return Object.entries(moduleMenus)
+            .map((item, index) => ({
+              ...item[1],
+              order: item[1]?.order != null ? item[1]?.order : index * 10,
+              key: item[0],
+            }))
+            .sort((a, b) => a.order - b.order)
+            .map(item =>
+              _state.routes.find(stateItem => stateItem.name === item.key),
+            );
+        }),
+      });
+    });
+  }, [modules, navigation]);
+
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,7 +76,7 @@ const DrawerContent = ({
   const {activeModule} = useContext(ModuleNavigatorContext);
 
   const innerMenuIsVisible = useMemo(
-    () => activeModule !== authModule,
+    () => activeModule.name !== authModule.name,
     [activeModule],
   );
 
@@ -184,7 +206,7 @@ const DrawerContent = ({
           </View>
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
-              isActive={authModule === activeModule}
+              isActive={authModule.name === activeModule.name}
               showModulesSubtitle={showModulesSubtitle}
               onPress={handleAuthModuleClick}
             />
@@ -222,7 +244,7 @@ const DrawerContent = ({
             authMenu={
               !externalMenuIsVisible ? (
                 <AuthMenuIconButton
-                  isActive={authModule === activeModule}
+                  isActive={authModule.name === activeModule.name}
                   showModulesSubtitle={showModulesSubtitle}
                   onPress={handleAuthModuleClick}
                 />
