@@ -112,7 +112,7 @@ class EventType {
           subject: _e.subject,
           contactPartner: _e.contactPartner?.fullName,
           location: _e.location,
-          border: this.getStatusBorderColor(_e.statusSelect, Colors),
+          border: this.getCategoryColor(_e.typeSelect, Colors).background,
         },
       };
     });
