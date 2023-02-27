@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState, useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
 import {
   Card,
   LabelText,
@@ -8,6 +8,9 @@ import {
   useThemeColor,
   HeaderContainer,
   ChipSelect,
+  AutoCompleteSearch,
+  ToggleSwitch,
+  getCommonStyles,
 } from '@axelor/aos-mobile-ui';
 import {
   PlanningView,
@@ -24,12 +27,16 @@ function EventPlanningScreen({navigation}) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const {eventList, loading} = useSelector(state => state.event);
+  const {userId} = useSelector(state => state.auth);
   const [filteredList, setFilteredList] = useState(eventList);
+  const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [plannedEvent, setPlannedEvent] = useState(null);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   useEffect(() => {
-    setFilteredList(filterOnStatus(eventList));
-  }, [filterOnStatus, eventList]);
+    setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
+  }, [filterOnUserAssigned, filterOnStatus, eventList]);
 
   const filterOnStatus = useCallback(
     list => {
@@ -105,9 +112,49 @@ function EventPlanningScreen({navigation}) {
     );
   };
 
+  const filterOnUserAssigned = useCallback(
+    list => {
+      if (list == null || list === []) {
+        return list;
+      } else {
+        if (assigned) {
+          return list?.filter(item => item?.user?.id === userId);
+        } else {
+          return list;
+        }
+      }
+    },
+    [assigned, userId],
+  );
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View>
+            <AutoCompleteSearch
+              objectList={eventList}
+              value={plannedEvent}
+              onChangeValue={setPlannedEvent}
+              //fetchData={fetchLeadFilter}
+              placeholder={I18n.t('Crm_Clients')}
+              oneFilter={true}
+              selectLastItem={false}
+            />
+            <ToggleSwitch
+              styleContainer={[
+                commonStyles.filter,
+                commonStyles.filterSize,
+                styles.toggleSwitchContainer,
+              ]}
+              styleToogle={styles.toggle}
+              leftTitle={I18n.t('Crm_All')}
+              rightTitle={I18n.t('Crm_AssignedToMe')}
+              onSwitch={() => setAssigned(!assigned)}
+            />
+          </View>
+        }
         chipComponent={
           <ChipSelect
             mode="multi"
@@ -192,6 +239,8 @@ const getStyles = Colors =>
     bold: {
       fontWeight: 'bold',
     },
+    toggleSwitchContainer: {width: '90%', marginLeft: '4%'},
+    toggle: {width: '54%', height: 38, borderRadius: 13},
   });
 
 export default EventPlanningScreen;
