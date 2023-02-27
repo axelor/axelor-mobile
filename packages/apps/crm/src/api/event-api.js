@@ -1,4 +1,8 @@
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  getNextMonth,
+  getPreviousMonth,
+} from '@axelor/aos-mobile-core';
 
 const eventFields = [
   'startDateTime',
@@ -6,6 +10,9 @@ const eventFields = [
   'statusSelect',
   'typeSelect',
   'subject',
+  'contactPartner',
+  'user',
+  'location',
 ];
 
 export async function postEventBIdList(idList) {
@@ -58,6 +65,60 @@ export async function contactEventById(id) {
         ],
       },
       fields: eventFields,
+    },
+  });
+}
+
+export async function getPlannedEvent(date) {
+  const startDate = getPreviousMonth(date).toISOString();
+  const endDate = getNextMonth(date).toISOString();
+
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Event/search',
+    data: {
+      data: {
+        operator: 'or',
+        criteria: [
+          {
+            operator: 'or',
+            criteria: [
+              {
+                operator: 'and',
+                criteria: [
+                  {
+                    fieldName: 'startDateTime',
+                    operator: '>=',
+                    value: startDate,
+                  },
+                  {
+                    fieldName: 'startDateTime',
+                    operator: '<=',
+                    value: endDate,
+                  },
+                ],
+              },
+              {
+                operator: 'and',
+                criteria: [
+                  {
+                    fieldName: 'endDateTime',
+                    operator: '>=',
+                    value: startDate,
+                  },
+                  {
+                    fieldName: 'startDateTime',
+                    operator: '<=',
+                    value: endDate,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      fields: eventFields,
+      sortBy: ['startDateTime'],
+      limit: null,
     },
   });
 }

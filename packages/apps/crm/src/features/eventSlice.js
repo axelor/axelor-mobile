@@ -4,6 +4,7 @@ import {
   postEventBIdList,
   partnerEventById,
   contactEventById,
+  getPlannedEvent,
 } from '../api/event-api';
 
 export const searchEventById = createAsyncThunk(
@@ -45,11 +46,25 @@ export const fetchContactEventById = createAsyncThunk(
   },
 );
 
+export const fetchPlannedEvent = createAsyncThunk(
+  'Event/fetchPlannedEvent',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getPlannedEvent,
+      data,
+      action: 'fetch planned event',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   listEventById: [],
   listEventPartner: [],
   listEventContact: [],
+  eventList: [],
 };
 
 const eventSlice = createSlice({
@@ -76,6 +91,13 @@ const eventSlice = createSlice({
     builder.addCase(fetchContactEventById.fulfilled, (state, action) => {
       state.loading = false;
       state.listEventContact = action.payload;
+    });
+    builder.addCase(fetchPlannedEvent.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(fetchPlannedEvent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.eventList = action.payload;
     });
   },
 });
