@@ -25,13 +25,7 @@ export interface Module {
   icon?: string;
   disabled?: boolean;
   menus?: {
-    [screenKey: string]: {
-      title: string;
-      icon: string;
-      screen: string;
-      disabled?: boolean;
-      parent?: string;
-    };
+    [screenKey: string]: Menu;
   };
   screens?: {
     [screenKey: string]:
@@ -48,4 +42,13 @@ export interface Module {
     [key: string]: Reducer;
   };
   backgroundFunctions?: Function[];
+}
+
+export interface Menu {
+  title: string;
+  icon: string;
+  screen: string;
+  disabled?: boolean;
+  parent?: string;
+  order?: number;
 }
