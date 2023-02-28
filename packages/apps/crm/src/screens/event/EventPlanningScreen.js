@@ -24,25 +24,18 @@ function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
   const {eventList, loading} = useSelector(state => state.event);
   const {userId} = useSelector(state => state.auth);
+
   const [filteredList, setFilteredList] = useState(eventList);
   const [filter, setFilter] = useState(null);
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [plannedEvent, setPlannedEvent] = useState(null);
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const [dateSave, setDateSave] = useState(null);
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
-  }, [
-    filterOnUserAssigned,
-    filterOnStatus,
-    eventList,
-    selectedStatus,
-    assigned,
-  ]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const listItem = useMemo(() => {
     return EventType.getCalendarListItems(filteredList, Colors);
@@ -61,6 +54,14 @@ function EventPlanningScreen({navigation}) {
     [dispatch, dateSave],
   );
 
+  const fetchItemsByMonth = useCallback(
+    date => {
+      dateSave === null && setDateSave(date);
+      dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
+    },
+    [dispatch, dateSave, filter],
+  );
+
   const filterOnStatus = useCallback(
     list => {
       return filterChip(list, selectedStatus, 'typeSelect');
@@ -68,16 +69,19 @@ function EventPlanningScreen({navigation}) {
     [selectedStatus],
   );
 
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
-
-  const fetchItemsByMonth = useCallback(
-    date => {
-      dateSave === null && setDateSave(date);
-      dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
+  const filterOnUserAssigned = useCallback(
+    list => {
+      if (list == null || list === []) {
+        return list;
+      } else {
+        if (assigned) {
+          return list?.filter(item => item?.user?.id === userId);
+        } else {
+          return list;
+        }
+      }
     },
-    [dispatch, dateSave, filter],
+    [assigned, userId],
   );
 
   const navigateToEvent = id => {
@@ -99,6 +103,7 @@ function EventPlanningScreen({navigation}) {
     if (event == null) {
       return null;
     }
+
     return (
       <PlanningEventCard
         style={rendBorderColor(event.border)}
@@ -126,20 +131,9 @@ function EventPlanningScreen({navigation}) {
     );
   };
 
-  const filterOnUserAssigned = useCallback(
-    list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (assigned) {
-          return list?.filter(item => item?.user?.id === userId);
-        } else {
-          return list;
-        }
-      }
-    },
-    [assigned, userId],
-  );
+  useEffect(() => {
+    setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
+  }, [filterOnUserAssigned, filterOnStatus, eventList]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -237,10 +231,16 @@ function EventPlanningScreen({navigation}) {
   );
 }
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    toggleSwitchContainer: {width: '90%', marginLeft: '4%'},
-    toggle: {width: '54%', height: 38, borderRadius: 13},
-  });
+const styles = StyleSheet.create({
+  toggleSwitchContainer: {
+    width: '90%',
+    marginLeft: '4%',
+  },
+  toggle: {
+    width: '54%',
+    height: 38,
+    borderRadius: 13,
+  },
+});
 
 export default EventPlanningScreen;
