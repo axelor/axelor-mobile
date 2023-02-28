@@ -29,6 +29,7 @@ function EventPlanningScreen({navigation}) {
   const {eventList, loading} = useSelector(state => state.event);
   const {userId} = useSelector(state => state.auth);
   const [filteredList, setFilteredList] = useState(eventList);
+  const [filter, setFilter] = useState(null);
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [plannedEvent, setPlannedEvent] = useState(null);
@@ -51,6 +52,7 @@ function EventPlanningScreen({navigation}) {
 
   const fetchEventFilter = useCallback(
     searchValue => {
+      setFilter(searchValue);
       dispatch(fetchPlannedEvent({date: dateSave, searchValue: searchValue}));
     },
     [dispatch, dateSave],
@@ -70,9 +72,9 @@ function EventPlanningScreen({navigation}) {
   const fetchItemsByMonth = useCallback(
     date => {
       dateSave === null && setDateSave(date);
-      dispatch(fetchPlannedEvent({date: date}));
+      dispatch(fetchPlannedEvent({date: date, searchValue: filter}));
     },
-    [dispatch, dateSave],
+    [dispatch, dateSave, filter],
   );
 
   const navigateToEvent = id => {
