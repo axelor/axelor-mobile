@@ -1,10 +1,7 @@
 import React, {useCallback, useMemo, useState, useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {
-  Card,
-  LabelText,
   Screen,
-  Text,
   useThemeColor,
   HeaderContainer,
   ChipSelect,
@@ -21,6 +18,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedEvent} from '../../features/eventSlice';
 import EventType from '../../types/event-type';
+import {PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
@@ -97,19 +95,14 @@ function EventPlanningScreen({navigation}) {
       return null;
     }
     return (
-      <TouchableOpacity activeOpacity={0.9} onPress={() => navigateToEvent(id)}>
-        <Card
-          key={id}
-          style={[styles.container, rendBorderColor(event.border)]}>
-          <Text style={styles.bold}>{event.subject}</Text>
-          {event.contactPartner && (
-            <LabelText iconName="map-pin" title={event.contactPartner} />
-          )}
-          {event.location && (
-            <LabelText iconName="map-pin" title={event.location} />
-          )}
-        </Card>
-      </TouchableOpacity>
+      <PlanningEventCard
+        style={rendBorderColor(event.border)}
+        onPress={() => navigateToEvent(id)}
+        id={id}
+        subject={event.subject}
+        contactPartner={event.contactPartner}
+        location={event.location}
+      />
     );
   };
 
@@ -119,13 +112,12 @@ function EventPlanningScreen({navigation}) {
     }
 
     return (
-      <TouchableOpacity activeOpacity={0.9} onPress={() => navigateToEvent(id)}>
-        <Card
-          key={id}
-          style={[styles.container, rendBorderColor(event.border)]}>
-          <Text style={styles.bold}>{event.subject}</Text>
-        </Card>
-      </TouchableOpacity>
+      <PlanningEventCard
+        style={rendBorderColor(event.border)}
+        onPress={() => navigateToEvent(id)}
+        id={id}
+        subject={event.subject}
+      />
     );
   };
 
@@ -242,18 +234,6 @@ function EventPlanningScreen({navigation}) {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    containerDetails: {
-      alignSelf: 'center',
-      width: '100%',
-    },
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-    },
-    bold: {
-      fontWeight: 'bold',
-    },
     toggleSwitchContainer: {width: '90%', marginLeft: '4%'},
     toggle: {width: '54%', height: 38, borderRadius: 13},
   });
