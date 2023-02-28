@@ -37,7 +37,13 @@ function EventPlanningScreen({navigation}) {
 
   useEffect(() => {
     setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
-  }, [filterOnUserAssigned, filterOnStatus, eventList]);
+  }, [
+    filterOnUserAssigned,
+    filterOnStatus,
+    eventList,
+    selectedStatus,
+    assigned,
+  ]);
 
   const listItem = useMemo(() => {
     return EventType.getCalendarListItems(filteredList, Colors);
