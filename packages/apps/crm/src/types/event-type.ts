@@ -97,6 +97,26 @@ class EventType {
         return Colors.warningColor;
     }
   };
+
+  static getCalendarListItems = (list: any[], Colors: ThemeColors): any[] => {
+    if (list == null || list.length === 0) {
+      return [];
+    }
+
+    return list.map(_e => {
+      return {
+        id: _e.id,
+        startDate: _e.startDateTime,
+        endDate: _e.endDateTime,
+        data: {
+          subject: _e.subject,
+          contactPartner: _e.contactPartner?.fullName,
+          location: _e.location,
+          border: this.getCategoryColor(_e.typeSelect, Colors).background,
+        },
+      };
+    });
+  };
 }
 
 export default EventType;

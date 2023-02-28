@@ -6,3 +6,4 @@ export {default as LiteContactCard} from './LiteContactCard/LiteContactCard';
 export {default as OpportunityCard} from './OpportunityCard/OpportunityCard';
 export {default as PartnerCard} from './PartnerCard/PartnerCard';
 export {default as PartnerInfoCard} from './PartnerInfoCard/PartnerInfoCard';
+export {default as PlanningEventCard} from './PlanningEventCard/PlanningEventCard';
