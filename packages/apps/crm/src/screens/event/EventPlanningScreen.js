@@ -148,6 +148,62 @@ function EventPlanningScreen({navigation}) {
         expandableFilter={false}
         fixedItems={
           <View>
+            <ChipSelect
+              mode="multi"
+              marginHorizontal={3}
+              width={Dimensions.get('window').width * 0.3}
+              onChangeValue={chiplist => setSelectedStatus(chiplist)}
+              selectionItems={[
+                {
+                  title: I18n.t('Crm_Event_Category_Event'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Event,
+                    Colors,
+                  ),
+                  key: EventType.category.Event,
+                },
+                {
+                  title: I18n.t('Crm_Event_Category_Call'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Call,
+                    Colors,
+                  ),
+                  key: EventType.category.Call,
+                },
+                {
+                  title: I18n.t('Crm_Event_Category_Meeting'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Meeting,
+                    Colors,
+                  ),
+                  key: EventType.category.Meeting,
+                },
+                {
+                  title: I18n.t('Crm_Event_Category_Task'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Task,
+                    Colors,
+                  ),
+                  key: EventType.category.Task,
+                },
+                {
+                  title: I18n.t('Crm_Event_Category_Leave'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Leave,
+                    Colors,
+                  ),
+                  key: EventType.category.Leave,
+                },
+                {
+                  title: I18n.t('Crm_Event_Category_Note'),
+                  color: EventType.getCategoryColor(
+                    EventType.category.Note,
+                    Colors,
+                  ),
+                  key: EventType.category.Note,
+                },
+              ]}
+            />
             <AutoCompleteSearch
               objectList={eventList}
               value={plannedEvent}
@@ -169,64 +225,6 @@ function EventPlanningScreen({navigation}) {
               onSwitch={() => setAssigned(!assigned)}
             />
           </View>
-        }
-        chipComponent={
-          <ChipSelect
-            mode="multi"
-            marginHorizontal={3}
-            width={Dimensions.get('window').width * 0.3}
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Crm_Event_Category_Event'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Event,
-                  Colors,
-                ),
-                key: EventType.category.Event,
-              },
-              {
-                title: I18n.t('Crm_Event_Category_Call'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Call,
-                  Colors,
-                ),
-                key: EventType.category.Call,
-              },
-              {
-                title: I18n.t('Crm_Event_Category_Meeting'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Meeting,
-                  Colors,
-                ),
-                key: EventType.category.Meeting,
-              },
-              {
-                title: I18n.t('Crm_Event_Category_Task'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Task,
-                  Colors,
-                ),
-                key: EventType.category.Task,
-              },
-              {
-                title: I18n.t('Crm_Event_Category_Leave'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Leave,
-                  Colors,
-                ),
-                key: EventType.category.Leave,
-              },
-              {
-                title: I18n.t('Crm_Event_Category_Note'),
-                color: EventType.getCategoryColor(
-                  EventType.category.Note,
-                  Colors,
-                ),
-                key: EventType.category.Note,
-              },
-            ]}
-          />
         }
       />
       <PlanningView
