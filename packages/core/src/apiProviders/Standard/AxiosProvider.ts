@@ -27,6 +27,7 @@ export interface ApiProvider {
   post({url, data}): Promise<any>;
   put({url, data}): Promise<any>;
   get({url}): Promise<any>;
+  delete({url}): Promise<any>;
 }
 
 class AxiosApiProvider implements ApiProvider {
@@ -42,6 +43,10 @@ class AxiosApiProvider implements ApiProvider {
 
   get({url}: ApiCallProps): Promise<any> {
     return axios.get(url);
+  }
+
+  delete({url}: ApiCallProps): Promise<any> {
+    return axios.delete(url);
   }
 }
 

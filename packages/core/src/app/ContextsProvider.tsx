@@ -32,6 +32,8 @@ import enTranslation from '../i18n/translations/en.json';
 import frTranslation from '../i18n/translations/fr.json';
 import {configGlobalStore} from '../redux/store';
 import {useBackgroundFunction} from '../hooks/use-background-function';
+import {addModuleObjectFields} from './context.helper';
+import {objectFieldsProvider} from '../apiProviders';
 
 const ApplicationContext = createContext(null);
 
@@ -107,6 +109,18 @@ const ContextsProvider = ({
   );
 
   useBackgroundFunction(modulesBackgroundFunctions);
+
+  const requestFieldsByObject = useMemo(
+    () =>
+      modules
+        .filter(_module => _module.objectFields)
+        .reduce(addModuleObjectFields, {}),
+    [modules],
+  );
+
+  useEffect(() => {
+    objectFieldsProvider.init(requestFieldsByObject);
+  }, [requestFieldsByObject]);
 
   if (loading) {
     return null;
