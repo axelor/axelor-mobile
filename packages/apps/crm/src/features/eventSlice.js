@@ -48,7 +48,7 @@ export const fetchContactEventById = createAsyncThunk(
 
 export const fetchPlannedEvent = createAsyncThunk(
   'Event/fetchPlannedEvent',
-  async function (data, {getState}) {
+  async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getPlannedEvent,
       data,
@@ -64,6 +64,9 @@ const initialState = {
   listEventById: [],
   listEventPartner: [],
   listEventContact: [],
+  loadingEvent: true,
+  moreLoading: false,
+  isListEnd: false,
   eventList: [],
 };
 
@@ -92,12 +95,27 @@ const eventSlice = createSlice({
       state.loading = false;
       state.listEventContact = action.payload;
     });
-    builder.addCase(fetchPlannedEvent.pending, state => {
-      state.loading = true;
+    builder.addCase(fetchPlannedEvent.pending, (state, action) => {
+      if (action.meta.arg.page === 0) {
+        state.loadingEvent = true;
+      } else {
+        state.moreLoading = true;
+      }
     });
     builder.addCase(fetchPlannedEvent.fulfilled, (state, action) => {
-      state.loading = false;
-      state.eventList = action.payload;
+      state.loadingEvent = false;
+      state.moreLoading = false;
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.eventList = action.payload;
+        state.isListEnd = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEnd = false;
+          state.eventList = [...state.eventList, ...action.payload];
+        } else {
+          state.isListEnd = true;
+        }
+      }
     });
   },
 });

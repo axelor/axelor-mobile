@@ -33,10 +33,23 @@ function EventPlanningScreen({navigation}) {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [plannedEvent, setPlannedEvent] = useState(null);
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
+  const [datetest, setDateTest] = useState(null);
+  //console.log('test');
+  //console.log(eventList);
   useEffect(() => {
     setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
   }, [filterOnUserAssigned, filterOnStatus, eventList]);
+
+  const listItem = useMemo(() => {
+    return EventType.getCalendarListItems(filteredList, Colors);
+  }, [Colors, filteredList]);
+
+  const fetchEventFilter = useCallback(
+    searchValue => {
+      dispatch(fetchPlannedEvent({date: datetest, searchValue: searchValue}));
+    },
+    [dispatch, datetest],
+  );
 
   const filterOnStatus = useCallback(
     list => {
@@ -44,20 +57,36 @@ function EventPlanningScreen({navigation}) {
     },
     [selectedStatus],
   );
+  /*
+     const filterOnStatus = useCallback(
+    list => {
+      if (list == null) {
+        return list;
+      } else if (selectedStatus !== null && selectedStatus.length > 0) {
+        return list.filter(item => {
+          return selectedStatus.find(
+            chip => chip?.key === item.data?.typeSelect,
+          );
+        });
+      } else {
+        return list;
+      }
+    },
+    [selectedStatus],
+  );
+
+   */
 
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
 
-  const listItem = useMemo(() => {
-    return EventType.getCalendarListItems(filteredList, Colors);
-  }, [Colors, filteredList]);
-
   const fetchItemsByMonth = useCallback(
     date => {
-      dispatch(fetchPlannedEvent(date));
+      datetest === null ? setDateTest(date) : null;
+      dispatch(fetchPlannedEvent({date: date}));
     },
-    [dispatch],
+    [dispatch, datetest],
   );
 
   const navigateToEvent = id => {
@@ -137,7 +166,7 @@ function EventPlanningScreen({navigation}) {
               objectList={eventList}
               value={plannedEvent}
               onChangeValue={setPlannedEvent}
-              //fetchData={fetchLeadFilter}
+              fetchData={fetchEventFilter}
               placeholder={I18n.t('Crm_Clients')}
               oneFilter={true}
               selectLastItem={false}
