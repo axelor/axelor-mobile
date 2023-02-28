@@ -16,30 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 import Inventory from '../types/inventory';
-
-const inventoryFields = [
-  'id',
-  'stockLocation',
-  'company',
-  'inventorySeq',
-  'inventoryTitle',
-  'createdOn',
-  'updatedOn',
-  'plannedStartDateT',
-  'plannedEndDateT',
-  'validatedOn',
-  'typeSelect',
-  'statusSelect',
-  'product',
-  'description',
-  'version',
-  'fromRack',
-  'toRack',
-  'productCategory',
-  'productFamily',
-];
 
 const sortByFields = [
   'statusSelect',
@@ -78,7 +56,7 @@ export async function fetchInventory({inventoryId}) {
   return axiosApiProvider.post({
     url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}/fetch`,
     data: {
-      fields: inventoryFields,
+      fields: getObjectFields('stock_inventory'),
     },
   });
 }
@@ -95,7 +73,7 @@ export async function searchInventoryFilter({searchValue, page = 0}) {
           },
         ],
       },
-      fields: inventoryFields,
+      fields: getObjectFields('stock_inventory'),
       sortBy: sortByFields,
       limit: 10,
       offset: 10 * page,

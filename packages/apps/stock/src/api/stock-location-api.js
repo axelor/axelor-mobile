@@ -20,15 +20,9 @@ import {
   axiosApiProvider,
   getApiResponseData,
   getFirstData,
+  getObjectFields,
 } from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
-
-const stockLocationFields = [
-  'name',
-  'id',
-  'serialNumber',
-  'stockLocationLineList',
-];
 
 const createSearchCriteria = ({
   companyId,
@@ -106,7 +100,7 @@ export async function searchStockLocationsFilter({
           },
         ],
       },
-      fields: stockLocationFields,
+      fields: getObjectFields('stock_stockLocation'),
       sortBy: ['id', 'name'],
       limit: 10,
       offset: 10 * page,
@@ -128,7 +122,7 @@ export async function searchStockLocationBySerialNumber(serialNumber) {
             },
           ],
         },
-        fields: stockLocationFields,
+        fields: getObjectFields('stock_stockLocation'),
         limit: 1,
         offset: 0,
       },

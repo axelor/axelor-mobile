@@ -16,19 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
-
-const stockLocationLineFields = [
-  'id',
-  'rack',
-  'stockLocation',
-  'product',
-  'currentQty',
-  'futureQty',
-  'reservedQty',
-  'unit',
-];
 
 export async function searchStockLocationLine({
   stockId,
@@ -60,7 +49,7 @@ export async function searchStockLocationLine({
                 },
               ],
             },
-            fields: stockLocationLineFields,
+            fields: getObjectFields('stock_stockLocationLine'),
             limit: 10,
             offset: 10 * page,
           }
@@ -85,7 +74,7 @@ export async function searchStockLocationLine({
                 },
               ],
             },
-            fields: stockLocationLineFields,
+            fields: getObjectFields('stock_stockLocationLine'),
             limit: 10,
             offset: 10 * page,
           }
@@ -114,7 +103,7 @@ export async function searchStockLocationLine({
                 },
               ],
             },
-            fields: stockLocationLineFields,
+            fields: getObjectFields('stock_stockLocationLine'),
             limit: 10,
             offset: 10 * page,
           },

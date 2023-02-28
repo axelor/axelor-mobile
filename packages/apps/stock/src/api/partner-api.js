@@ -16,16 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const partnerFields = [
-  'id',
-  'partnerSeq',
-  'fullName',
-  'name',
-  'firstName',
-  'simpleFullName',
-];
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 
 export async function searchSuppliersFilter({searchValue, page = 0}) {
   return axiosApiProvider.post({
@@ -80,7 +71,7 @@ export async function searchSuppliersFilter({searchValue, page = 0}) {
           },
         ],
       },
-      fields: partnerFields,
+      fields: getObjectFields('stock_partner'),
       limit: 10,
       offset: 10 * page,
     },
@@ -150,7 +141,7 @@ export async function searchClientsFilter({searchValue, page = 0}) {
           },
         ],
       },
-      fields: partnerFields,
+      fields: getObjectFields('stock_partner'),
       limit: 10,
       offset: 10 * page,
     },

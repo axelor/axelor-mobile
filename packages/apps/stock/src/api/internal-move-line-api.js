@@ -16,17 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const internalMoveLineFields = [
-  'id',
-  'product',
-  'availableStatusSelect',
-  'trackingNumber',
-  'unit',
-  'qty',
-  'realQty',
-];
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {
   return axiosApiProvider.post({
@@ -46,7 +36,7 @@ export async function searchInternalMoveLines({internalMoveId, page = 0}) {
           },
         ],
       },
-      fields: internalMoveLineFields,
+      fields: getObjectFields('stock_internalMoveLine'),
       sortBy: ['id'],
       limit: 10,
       offset: 10 * page,

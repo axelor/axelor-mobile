@@ -16,20 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const customerDeliveryLineFields = [
-  'id',
-  'product',
-  'availableStatusSelect',
-  'trackingNumber',
-  'unit',
-  'qty',
-  'realQty',
-  'locker',
-  'name',
-  'saleOrderLine.pickingOrderInfo',
-];
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 
 export async function searchCustomerDeliveryLines({
   page = 0,
@@ -52,7 +39,7 @@ export async function searchCustomerDeliveryLines({
           },
         ],
       },
-      fields: customerDeliveryLineFields,
+      fields: getObjectFields('stock_customerDeliveryLine'),
       sortBy: ['id'],
       limit: 10,
       offset: 10 * page,

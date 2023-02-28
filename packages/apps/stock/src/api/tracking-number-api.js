@@ -16,13 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  axiosApiProvider,
-  getApiResponseData,
-  getFirstData,
-} from '@axelor/aos-mobile-core';
-
-const trackingNumberFields = ['id', 'trackingNumberSeq', 'serialNumber'];
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 
 export async function searchTrackingNumberFilter({
   productId,
@@ -61,36 +55,12 @@ export async function searchTrackingNumberFilter({
           },
         ],
       },
-      fields: trackingNumberFields,
-      sortBy: ['id', 'trackingNumberSeq'],
+      fields: getObjectFields('stock_trackingNumber'),
+      sortBy: ['trackingNumberSeq'],
       limit: 10,
       offset: 10 * page,
     },
   });
-}
-
-export function searchTrackingNumberBySerialNumber(serialNumber) {
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.apps.stock.db.TrackingNumber/search',
-      data: {
-        data: {
-          criteria: [
-            {
-              fieldName: 'serialNumber',
-              operator: '=',
-              value: serialNumber,
-            },
-          ],
-        },
-        fields: trackingNumberFields,
-        sortBy: ['id', 'trackingNumberSeq'],
-        limit: 1,
-        offset: 0,
-      },
-    })
-    .then(getApiResponseData)
-    .then(getFirstData);
 }
 
 export async function createTrackingNumber({qty, product, trackingNumberSeq}) {

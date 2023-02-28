@@ -20,35 +20,8 @@ import {
   axiosApiProvider,
   getApiResponseData,
   getFirstData,
+  getObjectFields,
 } from '@axelor/aos-mobile-core';
-
-const productFields = [
-  'name',
-  'code',
-  'fullName',
-  'picture',
-  'trackingNumberConfiguration',
-  'unit',
-  'salesUnit',
-  'purchasesUnit',
-  'length',
-  'height',
-  'width',
-  'lengthUnit',
-  'description',
-  'netMass',
-  'grossMass',
-  'massUnit',
-  'productCategory',
-  'procurementMethodSelect',
-  'isUnrenewed',
-  'isPrototype',
-  'picture',
-  'serialNumber',
-  'trackingNumberConfiguration',
-  'parentProduct',
-  'productVariant',
-];
 
 const sortByFields = ['name'];
 
@@ -114,7 +87,7 @@ export async function searchProductsFilter({searchValue, page = 0}) {
           },
         ],
       },
-      fields: productFields,
+      fields: getObjectFields('stock_product'),
       sortBy: sortByFields,
       limit: 10,
       offset: 10 * page,
@@ -126,7 +99,7 @@ export async function searchProductWithId(productId) {
   return axiosApiProvider.post({
     url: `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
     data: {
-      fields: productFields,
+      fields: getObjectFields('stock_product'),
     },
   });
 }
@@ -145,7 +118,7 @@ export function searchProductBySerialNumber(serialNumber) {
             },
           ],
         },
-        fields: productFields,
+        fields: getObjectFields('stock_product'),
         limit: 1,
         offset: 0,
       },
@@ -188,7 +161,7 @@ export async function fetchVariants({productVariantParentId, page = 0}) {
           },
         ],
       },
-      fields: productFields,
+      fields: getObjectFields('stock_product'),
       limit: 10,
       offset: 10 * page,
     },

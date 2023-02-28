@@ -16,31 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
-
-const deliveryFields = [
-  'id',
-  'availableStatusSelect',
-  'filterOnAvailableProducts',
-  'name',
-  'stockMoveLineList',
-  'stockMoveSeq',
-  'fromStockLocation',
-  'toAddress',
-  'toAddressStr',
-  'company',
-  'originId',
-  'origin',
-  'createdOn',
-  'estimatedDate',
-  'realDate',
-  'partner',
-  'statusSelect',
-  'pickingOrderComments',
-  'deliveryCondition',
-  'isIspmRequired',
-];
 
 const sortByFields = [
   'statusSelect',
@@ -101,7 +78,7 @@ export async function searchDeliveryFilter({searchValue = null, page = 0}) {
           },
         ],
       },
-      fields: deliveryFields,
+      fields: getObjectFields('stock_customerDelivery'),
       sortBy: sortByFields,
       limit: 10,
       offset: 10 * page,

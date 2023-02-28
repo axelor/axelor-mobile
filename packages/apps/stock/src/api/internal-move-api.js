@@ -16,25 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
 import StockMove from '../types/stock-move';
-
-const internalMoveFields = [
-  'name',
-  'stockMoveSeq',
-  'statusSelect',
-  'availableStatusSelect',
-  'fromStockLocation',
-  'toStockLocation',
-  'origin',
-  'createdOn',
-  'realDate',
-  'estimatedDate',
-  'stockMoveLineList',
-  'note',
-  'pickingOrderComments',
-];
 
 const sortByFields = [
   'statusSelect',
@@ -83,7 +67,7 @@ export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
           },
         ],
       },
-      fields: internalMoveFields,
+      fields: getObjectFields('stock_internalMove'),
       sortBy: sortByFields,
       limit: 10,
       offset: 10 * page,

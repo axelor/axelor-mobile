@@ -5,7 +5,7 @@ export default {
     title: 'Crm_Catalogs',
     component: CatalogListScreen,
     options: {
-      shadeHeader: false,
+      shadedHeader: false,
     },
   },
 };

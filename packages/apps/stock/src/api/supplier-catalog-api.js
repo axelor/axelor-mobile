@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
 
 export async function searchSupplierProduct({supplierId, productId}) {
   return axiosApiProvider.post({
@@ -41,7 +41,7 @@ export async function searchSupplierProduct({supplierId, productId}) {
           },
         ],
       },
-      fields: ['id', 'productSupplierName', 'productSupplierCode'],
+      fields: getObjectFields('stock_supplierCatalog'),
       sortBy: ['id'],
       limit: 1,
       offset: 0,
