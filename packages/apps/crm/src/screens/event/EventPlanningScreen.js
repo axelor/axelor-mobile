@@ -33,9 +33,8 @@ function EventPlanningScreen({navigation}) {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [plannedEvent, setPlannedEvent] = useState(null);
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const [datetest, setDateTest] = useState(null);
-  //console.log('test');
-  //console.log(eventList);
+  const [dateSave, setDateSave] = useState(null);
+
   useEffect(() => {
     setFilteredList(filterOnUserAssigned(filterOnStatus(eventList)));
   }, [filterOnUserAssigned, filterOnStatus, eventList]);
@@ -46,9 +45,9 @@ function EventPlanningScreen({navigation}) {
 
   const fetchEventFilter = useCallback(
     searchValue => {
-      dispatch(fetchPlannedEvent({date: datetest, searchValue: searchValue}));
+      dispatch(fetchPlannedEvent({date: dateSave, searchValue: searchValue}));
     },
-    [dispatch, datetest],
+    [dispatch, dateSave],
   );
 
   const filterOnStatus = useCallback(
@@ -57,25 +56,6 @@ function EventPlanningScreen({navigation}) {
     },
     [selectedStatus],
   );
-  /*
-     const filterOnStatus = useCallback(
-    list => {
-      if (list == null) {
-        return list;
-      } else if (selectedStatus !== null && selectedStatus.length > 0) {
-        return list.filter(item => {
-          return selectedStatus.find(
-            chip => chip?.key === item.data?.typeSelect,
-          );
-        });
-      } else {
-        return list;
-      }
-    },
-    [selectedStatus],
-  );
-
-   */
 
   const styles = useMemo(() => {
     return getStyles(Colors);
@@ -83,10 +63,10 @@ function EventPlanningScreen({navigation}) {
 
   const fetchItemsByMonth = useCallback(
     date => {
-      datetest === null ? setDateTest(date) : null;
+      dateSave === null && setDateSave(date);
       dispatch(fetchPlannedEvent({date: date}));
     },
-    [dispatch, datetest],
+    [dispatch, dateSave],
   );
 
   const navigateToEvent = id => {
