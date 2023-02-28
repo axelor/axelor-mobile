@@ -52,7 +52,7 @@ function EventPlanningScreen({navigation}) {
 
   const fetchEventFilter = useCallback(
     searchValue => {
-      setFilter(searchValue);
+      setFilter(searchValue === '' ? null : searchValue);
       dispatch(fetchPlannedEvent({date: dateSave, searchValue: searchValue}));
     },
     [dispatch, dateSave],
