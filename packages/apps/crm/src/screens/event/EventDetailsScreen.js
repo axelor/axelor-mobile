@@ -12,7 +12,9 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
+import {fetchLeadById, fetchLeadStatus} from '../../features/leadSlice';
 import EventType from '../../types/event-type';
+import {LeadsCard} from '../../components';
 
 function EventDetailsScreen({navigation, route}) {
   const eventId = route.params.eventId;
@@ -20,10 +22,16 @@ function EventDetailsScreen({navigation, route}) {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {event} = useSelector(state => state.event);
+  const {lead, leadStatusList} = useSelector(state => state.lead);
 
   useEffect(() => {
     dispatch(fetchEventById({eventId: eventId}));
   }, [dispatch, eventId]);
+
+  useEffect(() => {
+    event.lead && dispatch(fetchLeadById({leadId: event.lead.id}));
+    event.lead && dispatch(fetchLeadStatus());
+  }, [dispatch, event.lead]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -49,29 +57,65 @@ function EventDetailsScreen({navigation, route}) {
           </View>
         }
       />
-      <FromTo
-        fromComponent={
-          <TitledValue
-            title={I18n.t('Crm_Start')}
-            value={event.startDateTime}
+      <View style={styles.contentContainer}>
+        <FromTo
+          style={styles.detailsContainer}
+          fromComponent={
+            <TitledValue
+              title={I18n.t('Crm_Start')}
+              value={event.startDateTime}
+            />
+          }
+          toComponent={
+            <TitledValue title={I18n.t('Crm_End')} value={event.endDateTime} />
+          }
+        />
+        {event.location && (
+          <LabelText
+            style={styles.detailsContainer}
+            iconName="map-pin"
+            title={event.location}
           />
-        }
-        toComponent={
-          <TitledValue title={I18n.t('Crm_End')} value={event.endDateTime} />
-        }
-      />
-      {event.location && (
-        <LabelText iconName="map-pin" title={event.location} />
-      )}
-      {event.user?.fullName && (
-        <Text>
-          {I18n.t('Crm_AssignedTo')} : {event.user?.fullName}
-        </Text>
-      )}
-      {event.organizer && (
-        <Text>
-          {I18n.t('Crm_Organisator')} : {event.organizer}
-        </Text>
+        )}
+        {event.user?.fullName && (
+          <Text style={styles.detailsContainer}>
+            {I18n.t('Crm_AssignedTo')} : {event.user?.fullName}
+          </Text>
+        )}
+        {event.organizer && (
+          <Text style={styles.detailsContainer}>
+            {I18n.t('Crm_Organisator')} : {event.organizer}
+          </Text>
+        )}
+      </View>
+      {event.lead && (
+        <LeadsCard
+          style={styles.item}
+          leadsFullname={lead.simpleFullName}
+          leadsCompany={lead.enterpriseName}
+          leadsAddress={lead.primaryAddress}
+          leadsFixedPhone={lead.fixedPhone}
+          leadsPhoneNumber={lead.mobilePhone}
+          leadsEmail={
+            lead['emailAddress.address'] || lead.emailAddress?.address
+          }
+          leadScoring={lead.leadScoringSelect}
+          leadVersion={lead.version}
+          leadsId={lead.id}
+          leadsStatus={lead.leadStatus}
+          allLeadStatus={leadStatusList}
+          isDoNotSendEmail={lead.isDoNotSendEmail}
+          isDoNotCall={lead.isDoNotCall}
+          onPress={() =>
+            navigation.navigate('LeadDetailsScreen', {
+              idLead: lead.id,
+              versionLead: lead.version,
+              colorIndex: leadStatusList?.findIndex(
+                status => status.id === lead.leadStatus.id,
+              ),
+            })
+          }
+        />
       )}
     </Screen>
   );
@@ -90,6 +134,16 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold',
+  },
+  contentContainer: {
+    padding: 10,
+  },
+  detailsContainer: {
+    marginVertical: 5,
+  },
+  item: {
+    marginHorizontal: 12,
+    marginVertical: 4,
   },
 });
 
