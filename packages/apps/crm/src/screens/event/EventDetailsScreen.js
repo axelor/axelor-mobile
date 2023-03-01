@@ -11,7 +11,12 @@ import {
   LabelText,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useSelector,
+  formatDateTime,
+} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
 import {fetchLeadById, fetchLeadStatus} from '../../features/leadSlice';
 import {fetchPartner} from '../../features/partnerSlice';
@@ -78,11 +83,20 @@ function EventDetailsScreen({navigation, route}) {
           fromComponent={
             <TitledValue
               title={I18n.t('Crm_Start')}
-              value={event.startDateTime}
+              value={formatDateTime(
+                event.startDateTime,
+                I18n.t('Base_DateTimeFormat'),
+              )}
             />
           }
           toComponent={
-            <TitledValue title={I18n.t('Crm_End')} value={event.endDateTime} />
+            <TitledValue
+              title={I18n.t('Crm_End')}
+              value={formatDateTime(
+                event.endDateTime,
+                I18n.t('Base_DateTimeFormat'),
+              )}
+            />
           }
         />
         {event.location && (
