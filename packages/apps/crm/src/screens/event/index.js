@@ -9,7 +9,7 @@ export default {
     },
   },
   EventDetailsScreen: {
-    title: 'Crm_Events',
+    title: 'Crm_Event',
     component: EventDetailsScreen,
     options: {
       shadedHeader: false,

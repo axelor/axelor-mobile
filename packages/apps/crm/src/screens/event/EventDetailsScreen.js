@@ -1,12 +1,22 @@
 import React, {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {Screen, Text, FromTo, TitledValue} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+import {
+  Screen,
+  Text,
+  FromTo,
+  TitledValue,
+  HeaderContainer,
+  Badge,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
+import EventType from '../../types/event-type';
 
 function EventDetailsScreen({navigation, route}) {
   const eventId = route.params.eventId;
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {event} = useSelector(state => state.event);
 
@@ -14,16 +24,39 @@ function EventDetailsScreen({navigation, route}) {
     dispatch(fetchEventById({eventId: eventId}));
   }, [dispatch, eventId]);
 
-  console.log(event);
-
   return (
-    <Screen>
+    <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        fixedItems={
+          <View style={styles.headerContainer}>
+            <View style={styles.halfContainer}>
+              <Text style={styles.bold} numberOfLines={2}>
+                {event.subject}
+              </Text>
+            </View>
+            <View style={styles.halfContainer}>
+              {event.statusSelect && (
+                <Badge title={EventType.getStatus(event.statusSelect, I18n)} />
+              )}
+              {event.typeSelect && (
+                <Badge
+                  title={EventType.getCategory(event.typeSelect, I18n)}
+                  color={Colors.plannedColor}
+                />
+              )}
+            </View>
+          </View>
+        }
+      />
       <FromTo
         fromComponent={
-          <TitledValue title={I18n.t('Base_Start')} value={'startDate'} />
+          <TitledValue
+            title={I18n.t('Base_Start')}
+            value={event.startDateTime}
+          />
         }
         toComponent={
-          <TitledValue title={I18n.t('Base_end')} value={'endDate'} />
+          <TitledValue title={I18n.t('Base_end')} value={event.endDateTime} />
         }
       />
       <Text>Test</Text>
@@ -32,14 +65,18 @@ function EventDetailsScreen({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  toggleSwitchContainer: {
-    width: '90%',
-    marginLeft: '4%',
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    padding: 10,
   },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
+  halfContainer: {
+    flexDirection: 'row',
+    width: '50%',
+  },
+  bold: {
+    fontWeight: 'bold',
   },
 });
 

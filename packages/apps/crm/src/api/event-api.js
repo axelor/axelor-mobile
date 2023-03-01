@@ -13,6 +13,9 @@ const eventFields = [
   'contactPartner',
   'user',
   'location',
+  'organizer',
+  'description',
+  'lead',
 ];
 
 const createEventCriteria = (searchValue, startDate, endDate) => {
