@@ -16,62 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
 import StockMove from '../types/stock-move';
 
-const sortByFields = [
-  'statusSelect',
-  '-realDate',
-  'estimatedDate',
-  'stockMoveSeq',
-];
-
 const createSearchCriteria = searchValue => {
-  const criteria = [];
-  criteria.push({
-    fieldName: 'fromStockLocation.typeSelect',
-    operator: '=',
-    value: StockLocation.type.internal,
-  });
-  criteria.push({
-    fieldName: 'toStockLocation.typeSelect',
-    operator: '=',
-    value: StockLocation.type.internal,
-  });
-  criteria.push({
-    fieldName: 'typeSelect',
-    operator: '=',
-    value: StockMove.type.internal,
-  });
-
-  if (searchValue != null) {
-    criteria.push({
-      fieldName: 'stockMoveSeq',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
-  return criteria;
+  return [
+    {
+      fieldName: 'fromStockLocation.typeSelect',
+      operator: '=',
+      value: StockLocation.type.internal,
+    },
+    {
+      fieldName: 'toStockLocation.typeSelect',
+      operator: '=',
+      value: StockLocation.type.internal,
+    },
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: StockMove.type.internal,
+    },
+    getSearchCriterias('stock_internalMove', searchValue),
+  ];
 };
 
 export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockMove/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createSearchCriteria(searchValue),
-          },
-        ],
-      },
-      fields: getObjectFields('stock_internalMove'),
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    criteria: createSearchCriteria(searchValue),
+    fieldKey: 'stock_internalMove',
+    sortKey: 'stock_internalMove',
+    page,
   });
 }
 

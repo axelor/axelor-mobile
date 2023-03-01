@@ -16,35 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchSupplierProduct({supplierId, productId}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.purchase.db.SupplierCatalog/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'supplierPartner.id',
-                operator: '=',
-                value: supplierId,
-              },
-              {
-                fieldName: 'product.id',
-                operator: '=',
-                value: productId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.purchase.db.SupplierCatalog',
+    criteria: [
+      {
+        fieldName: 'supplierPartner.id',
+        operator: '=',
+        value: supplierId,
       },
-      fields: getObjectFields('stock_supplierCatalog'),
-      sortBy: ['id'],
-      limit: 1,
-      offset: 0,
-    },
+      {
+        fieldName: 'product.id',
+        operator: '=',
+        value: productId,
+      },
+    ],
+    fieldKey: 'stock_supplierCatalog',
+    page: 0,
+    numberElementsByPage: 1,
   });
 }

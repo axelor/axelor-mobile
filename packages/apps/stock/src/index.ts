@@ -27,7 +27,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
 import UserScreen from './screens/auth/UserScreen';
-import {stock_modelAPI} from './models/stock';
+import {stock_modelAPI, stock_searchFields, stock_sortFields} from './models';
 
 export const StockModule: Module = {
   name: 'app-stock',
@@ -85,8 +85,10 @@ export const StockModule: Module = {
   reducers: {
     ...stockReducers,
   },
-  objectFields: {
-    ...stock_modelAPI,
+  models: {
+    objectFields: {...stock_modelAPI},
+    sortFields: {...stock_sortFields},
+    searchFields: {...stock_searchFields},
   },
 };
 

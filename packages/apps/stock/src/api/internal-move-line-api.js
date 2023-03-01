@@ -16,30 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, getObjectFields} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'stockMove.id',
-                operator: '=',
-                value: internalMoveId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMoveLine',
+    criteria: [
+      {
+        fieldName: 'stockMove.id',
+        operator: '=',
+        value: internalMoveId,
       },
-      fields: getObjectFields('stock_internalMoveLine'),
-      sortBy: ['id'],
-      limit: 10,
-      offset: 10 * page,
-    },
+    ],
+    fieldKey: 'stock_internalMoveLine',
+    page,
   });
 }
