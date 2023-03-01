@@ -14,8 +14,9 @@ import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
 import {fetchLeadById, fetchLeadStatus} from '../../features/leadSlice';
 import {fetchPartner} from '../../features/partnerSlice';
+import {getContact} from '../../features/contactSlice';
 import EventType from '../../types/event-type';
-import {LeadsCard, PartnerCard} from '../../components';
+import {LeadsCard, LiteContactCard, PartnerCard} from '../../components';
 
 function EventDetailsScreen({navigation, route}) {
   const eventId = route.params.eventId;
@@ -25,6 +26,7 @@ function EventDetailsScreen({navigation, route}) {
   const {event} = useSelector(state => state.event);
   const {lead, leadStatusList} = useSelector(state => state.lead);
   const {partner} = useSelector(state => state.partner);
+  const {contact} = useSelector(state => state.contact);
 
   useEffect(() => {
     dispatch(fetchEventById({eventId: eventId}));
@@ -38,6 +40,11 @@ function EventDetailsScreen({navigation, route}) {
   useEffect(() => {
     event?.partner && dispatch(fetchPartner({partnerId: event?.partner?.id}));
   }, [dispatch, event?.partner]);
+
+  useEffect(() => {
+    event?.contactPartner &&
+      dispatch(getContact({contactId: event?.contactPartner.id}));
+  }, [dispatch, event?.contactPartner]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -161,6 +168,20 @@ function EventDetailsScreen({navigation, route}) {
             }
           />
         )}
+
+      {event?.contactPartner && (
+        <LiteContactCard
+          contactFullname={contact.simpleFullName}
+          fixedPhoneNumber={contact.fixedPhone}
+          email={contact['emailAddress.address']}
+          style={styles.item}
+          onPress={() =>
+            navigation.navigate('ContactDetailsScreen', {
+              idContact: contact.id,
+            })
+          }
+        />
+      )}
     </Screen>
   );
 }
