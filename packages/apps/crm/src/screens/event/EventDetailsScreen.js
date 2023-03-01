@@ -9,6 +9,7 @@ import {
   Badge,
   useThemeColor,
   LabelText,
+  NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
@@ -181,6 +182,9 @@ function EventDetailsScreen({navigation, route}) {
             })
           }
         />
+      )}
+      {event.description && (
+        <NotesCard title={I18n.t('Crm_Description')} data={event.description} />
       )}
     </Screen>
   );

@@ -86,7 +86,6 @@ function EventPlanningScreen({navigation}) {
 
   const navigateToEvent = id => {
     if (id != null) {
-      console.log(id);
       navigation.navigate('EventDetailsScreen', {
         eventId: id,
       });
