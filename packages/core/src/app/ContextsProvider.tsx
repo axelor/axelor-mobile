@@ -26,14 +26,15 @@ import {
   Theme,
   Writing,
 } from '@axelor/aos-mobile-ui';
-import {Module} from './Module';
+import {Models, Module} from './Module';
 import {configI18n} from '../i18n/i18n';
 import enTranslation from '../i18n/translations/en.json';
 import frTranslation from '../i18n/translations/fr.json';
 import {configGlobalStore} from '../redux/store';
 import {useBackgroundFunction} from '../hooks/use-background-function';
-import {addModuleObjectFields} from './context.helper';
+import {addModuleModels} from './context.helper';
 import {objectFieldsProvider} from '../apiProviders';
+import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 
 const ApplicationContext = createContext(null);
 
@@ -46,6 +47,7 @@ interface ContextsProviderProps {
   defaultWritingTheme?: Writing;
   children: React.ReactNode;
   defaultLanguage: string;
+  defaultRequestLimit: number;
 }
 
 const ContextsProvider = ({
@@ -57,6 +59,7 @@ const ContextsProvider = ({
   defaultWritingTheme,
   children,
   defaultLanguage = 'en',
+  defaultRequestLimit = 10,
 }: ContextsProviderProps) => {
   const [loading, setLoading] = useState(true);
 
@@ -110,17 +113,22 @@ const ContextsProvider = ({
 
   useBackgroundFunction(modulesBackgroundFunctions);
 
-  const requestFieldsByObject = useMemo(
+  const modulesObjectFields: Models = useMemo(
     () =>
       modules
-        .filter(_module => _module.objectFields)
-        .reduce(addModuleObjectFields, {}),
+        .filter(_module => _module.models)
+        .reduce(addModuleModels, {
+          objectFields: {},
+          sortFields: {},
+          searchFields: {},
+        }),
     [modules],
   );
 
   useEffect(() => {
-    objectFieldsProvider.init(requestFieldsByObject);
-  }, [requestFieldsByObject]);
+    objectFieldsProvider.init(modulesObjectFields);
+    requestBuilder.init(defaultRequestLimit);
+  }, [defaultRequestLimit, modulesObjectFields]);
 
   if (loading) {
     return null;

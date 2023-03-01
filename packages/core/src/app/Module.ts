@@ -42,6 +42,20 @@ export interface ObjectFields {
   [objectKey: string]: Schema;
 }
 
+export type SearchFields = FieldsList;
+
+export type SortFields = FieldsList;
+
+export interface FieldsList {
+  [objectKey: string]: string[];
+}
+
+export interface Models {
+  objectFields?: ObjectFields;
+  sortFields?: SortFields;
+  searchFields?: SearchFields;
+}
+
 export interface Module {
   name: string;
   title?: string;
@@ -61,5 +75,5 @@ export interface Module {
     [key: string]: Reducer;
   };
   backgroundFunctions?: Function[];
-  objectFields?: ObjectFields;
+  models?: Models;
 }

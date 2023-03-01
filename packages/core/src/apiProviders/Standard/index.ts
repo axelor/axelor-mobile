@@ -1,2 +1,8 @@
 export {ApiProvider, axiosApiProvider} from './AxiosProvider';
-export {getObjectFields, objectFieldsProvider} from './ObjectFieldsProvider';
+export {
+  getObjectFields,
+  getSearchCriterias,
+  getSortFields,
+  objectFieldsProvider,
+} from './ObjectFieldsProvider';
+export {createStandardSearch, createStandardFetch} from './requests.helper';
