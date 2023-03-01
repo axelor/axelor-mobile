@@ -20,7 +20,9 @@
     "lint": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "license:add": "npx add-copyright-header --generate --dir 'src'"
+    "license:add": "npx add-copyright-header --generate --dir 'src'",
+    "icons:clean": "rm -rf src/icons", 
+    "icons:build": "npm run icons:clean && node scripts/icons-build.js"
   },
   "peerDependencies": {
     "react": "*",
@@ -28,7 +30,9 @@
     "react-native-pell-rich-editor": "1.8.8",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-render-html": "^6.3.4"
+    "react-native-render-html": "^6.3.4",
+    "bootstrap-icons": "^1.10.3",
+    "react-native-svg": "^13.8.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
@@ -43,6 +47,15 @@
     "react-native-webview": "11.26.0",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-pell-rich-editor": "1.8.8",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "@svgr/core": "^6.5.1",
+    "@svgr/plugin-jsx": "^6.5.1",
+    "@svgr/plugin-prettier": "^6.5.1",
+    "@svgr/plugin-svgo": "^6.5.1",
+    "glob": "^8.1.0"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.10.3",
+    "react-native-svg": "^13.8.0"
   }
 }

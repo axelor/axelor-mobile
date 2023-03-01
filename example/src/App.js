@@ -23,16 +23,33 @@ import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
 import {CrmModule} from '@axelor/aos-mobile-crm';
 import application_properties from '../package.json';
 import {app_config} from '../app.config';
+import {BootstrapIcon} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
 
 const App = () => {
+  // return (
+  //   <Application
+  //     modules={[StockModule, ManufacturingModule, CrmModule]}
+  //     mainMenu="auth_menu_user"
+  //     version={application_properties.version}
+  //     configuration={app_config}
+  //   />
+  // );
+
+  // TODO: clean this component after test :)
   return (
-    <Application
-      modules={[StockModule, ManufacturingModule, CrmModule]}
-      mainMenu="auth_menu_user"
-      version={application_properties.version}
-      configuration={app_config}
-    />
+    <View style={styles.container}>
+      <BootstrapIcon name="apple" size={190} color="red" />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default App;
