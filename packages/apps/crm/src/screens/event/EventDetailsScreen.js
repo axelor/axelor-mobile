@@ -8,6 +8,7 @@ import {
   HeaderContainer,
   Badge,
   useThemeColor,
+  LabelText,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
@@ -51,15 +52,27 @@ function EventDetailsScreen({navigation, route}) {
       <FromTo
         fromComponent={
           <TitledValue
-            title={I18n.t('Base_Start')}
+            title={I18n.t('Crm_Start')}
             value={event.startDateTime}
           />
         }
         toComponent={
-          <TitledValue title={I18n.t('Base_end')} value={event.endDateTime} />
+          <TitledValue title={I18n.t('Crm_End')} value={event.endDateTime} />
         }
       />
-      <Text>Test</Text>
+      {event.location && (
+        <LabelText iconName="map-pin" title={event.location} />
+      )}
+      {event.user?.fullName && (
+        <Text>
+          {I18n.t('Crm_AssignedTo')} : {event.user?.fullName}
+        </Text>
+      )}
+      {event.organizer && (
+        <Text>
+          {I18n.t('Crm_Organisator')} : {event.organizer}
+        </Text>
+      )}
     </Screen>
   );
 }

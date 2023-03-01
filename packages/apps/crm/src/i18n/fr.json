@@ -69,5 +69,8 @@
   "Crm_NoPhoneCall": "pas d'appel",
   "Crm_Company": "Entreprise",
   "Crm_JobTitle": "Fonction",
-  "Crm_ClientProspect": "Client / Prospect"
+  "Crm_ClientProspect": "Client / Prospect",
+  "Crm_Organisator": "Organisateur",
+  "Crm_Start": "Début",
+  "Crm_End": "Fin"
 }
