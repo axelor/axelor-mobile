@@ -13,8 +13,9 @@ import {
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
 import {fetchLeadById, fetchLeadStatus} from '../../features/leadSlice';
+import {fetchPartner} from '../../features/partnerSlice';
 import EventType from '../../types/event-type';
-import {LeadsCard} from '../../components';
+import {LeadsCard, PartnerCard} from '../../components';
 
 function EventDetailsScreen({navigation, route}) {
   const eventId = route.params.eventId;
@@ -23,6 +24,7 @@ function EventDetailsScreen({navigation, route}) {
   const dispatch = useDispatch();
   const {event} = useSelector(state => state.event);
   const {lead, leadStatusList} = useSelector(state => state.lead);
+  const {partner} = useSelector(state => state.partner);
 
   useEffect(() => {
     dispatch(fetchEventById({eventId: eventId}));
@@ -33,9 +35,14 @@ function EventDetailsScreen({navigation, route}) {
     event.lead && dispatch(fetchLeadStatus());
   }, [dispatch, event.lead]);
 
+  useEffect(() => {
+    event?.partner && dispatch(fetchPartner({partnerId: event?.partner?.id}));
+  }, [dispatch, event?.partner]);
+
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
+        expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
             <View style={styles.halfContainer}>
@@ -84,7 +91,7 @@ function EventDetailsScreen({navigation, route}) {
         )}
         {event.organizer && (
           <Text style={styles.detailsContainer}>
-            {I18n.t('Crm_Organisator')} : {event.organizer}
+            {I18n.t('Crm_Organisator')} : {event.organizer?.name}
           </Text>
         )}
       </View>
@@ -117,6 +124,43 @@ function EventDetailsScreen({navigation, route}) {
           }
         />
       )}
+      {event.partner &&
+        partner?.isCustomer === true &&
+        partner?.isProspect === false && (
+          <PartnerCard
+            style={styles.item}
+            partnerFullName={partner.simpleFullName}
+            partnerReference={partner.partnerSeq}
+            partnerAdress={partner.mainAddress?.fullName}
+            partnerFixedPhone={partner.fixedPhone}
+            partnerEmail={partner.emailAddress?.address}
+            partnerPicture={partner.picture}
+            onPress={() =>
+              navigation.navigate('ClientDetailsScreen', {
+                idClient: partner.id,
+              })
+            }
+          />
+        )}
+      {event.partner &&
+        partner?.isCustomer === false &&
+        partner?.isProspect === true && (
+          <PartnerCard
+            style={styles.item}
+            partnerFullName={partner.simpleFullName}
+            partnerReference={partner.partnerSeq}
+            partnerScoring={partner.leadScoringSelect || 0}
+            partnerAdress={partner.mainAddress?.fullName}
+            partnerFixedPhone={partner.fixedPhone}
+            partnerEmail={partner.emailAddress?.address}
+            partnerPicture={partner.picture}
+            onPress={() =>
+              navigation.navigate('ProspectDetailsScreen', {
+                idProspect: partner.id,
+              })
+            }
+          />
+        )}
     </Screen>
   );
 }
