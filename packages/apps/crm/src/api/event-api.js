@@ -147,3 +147,12 @@ export async function getPlannedEvent({date, searchValue = null}) {
     },
   });
 }
+
+export async function getEvent({eventId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.crm.db.Event/${eventId}/fetch`,
+    data: {
+      fields: eventFields,
+    },
+  });
+}

@@ -86,6 +86,7 @@ function EventPlanningScreen({navigation}) {
 
   const navigateToEvent = id => {
     if (id != null) {
+      console.log(id);
       navigation.navigate('EventDetailsScreen', {
         eventId: id,
       });
@@ -107,7 +108,7 @@ function EventPlanningScreen({navigation}) {
     return (
       <PlanningEventCard
         style={rendBorderColor(event.border)}
-        onPress={() => navigateToEvent(id)}
+        onPress={() => navigateToEvent(event.id)}
         id={id}
         subject={event.subject}
         contactPartner={event.contactPartner}
@@ -124,7 +125,7 @@ function EventPlanningScreen({navigation}) {
     return (
       <PlanningEventCard
         style={rendBorderColor(event.border)}
-        onPress={() => navigateToEvent(id)}
+        onPress={() => navigateToEvent(event.id)}
         id={id}
         subject={event.subject}
       />
