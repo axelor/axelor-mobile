@@ -2,18 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {View, StyleSheet} from 'react-native';
 import {default as IconButton} from './IconButton';
-
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#FFFFFF',
-  background: '#3ECF8E',
-};
-const caution = {
-  background_light: '#EE9B67',
-  foreground: '#FFFFFF',
-  background: '#F27B30',
-};
-const color = {primary, caution};
+import {lightTheme} from '../../../theme/themes';
 
 storiesOf('ui/molecules/IconButton', module).add(
   'Default',
@@ -24,7 +13,7 @@ storiesOf('ui/molecules/IconButton', module).add(
           title="Press me"
           iconName="check-circle"
           onPress={console.log}
-          color={primary}
+          color={lightTheme.colors.primaryColor}
           {...args}
         />
       </View>
@@ -54,8 +43,8 @@ storiesOf('ui/molecules/IconButton', module).add(
         defaultValue: false,
       },
       color: {
-        options: Object.keys(color),
-        mapping: color,
+        options: Object.keys(lightTheme.colors),
+        mapping: lightTheme.colors,
         control: {
           type: 'select',
           labels: {
