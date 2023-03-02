@@ -14,7 +14,7 @@ const defaultArgs = {
   scanIconColor: null,
 };
 
-storiesOf('ui/molecules/SearchBar', module).add(
+storiesOf('ui/organisms/SearchBar', module).add(
   'Default',
   args => {
     const props = {...defaultArgs, ...args};
