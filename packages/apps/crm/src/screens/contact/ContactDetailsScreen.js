@@ -182,6 +182,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
                   <DropdownEventView
                     lastEvent={lastEventClient}
                     nextEvent={nextEventClient}
+                    navigation={navigation}
                   />
                 ),
               },

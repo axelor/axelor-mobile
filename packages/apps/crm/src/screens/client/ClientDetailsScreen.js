@@ -180,6 +180,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
                   <DropdownEventView
                     lastEvent={lastEventClient}
                     nextEvent={nextEventClient}
+                    navigation={navigation}
                   />
                 ),
               },

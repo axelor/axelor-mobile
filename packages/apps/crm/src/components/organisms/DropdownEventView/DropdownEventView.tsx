@@ -5,6 +5,7 @@ import {EventCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
 
 type Event = {
+  id: number;
   startDateTime: string;
   endDateTime: string;
   statusSelect: number;
@@ -15,9 +16,14 @@ type Event = {
 interface DropdownEventViewProps {
   lastEvent: Event;
   nextEvent: Event;
+  navigation: any;
 }
 
-const DropdownEventView = ({lastEvent, nextEvent}: DropdownEventViewProps) => {
+const DropdownEventView = ({
+  lastEvent,
+  nextEvent,
+  navigation,
+}: DropdownEventViewProps) => {
   const I18n = useTranslator();
 
   if (lastEvent == null && nextEvent == null) {
@@ -40,7 +46,11 @@ const DropdownEventView = ({lastEvent, nextEvent}: DropdownEventViewProps) => {
             status={lastEvent?.statusSelect}
             category={lastEvent?.typeSelect}
             eventName={lastEvent?.subject}
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate('EventDetailsScreen', {
+                eventId: lastEvent.id,
+              })
+            }
           />
         </View>
       )}
@@ -54,7 +64,11 @@ const DropdownEventView = ({lastEvent, nextEvent}: DropdownEventViewProps) => {
             status={nextEvent?.statusSelect}
             category={nextEvent?.typeSelect}
             eventName={nextEvent?.subject}
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate('EventDetailsScreen', {
+                eventId: nextEvent.id,
+              })
+            }
           />
         </View>
       )}

@@ -107,7 +107,7 @@ function EventPlanningScreen({navigation}) {
     return (
       <PlanningEventCard
         style={rendBorderColor(event.border)}
-        onPress={() => navigateToEvent(id)}
+        onPress={() => navigateToEvent(event.id)}
         id={id}
         subject={event.subject}
         contactPartner={event.contactPartner}
@@ -124,7 +124,7 @@ function EventPlanningScreen({navigation}) {
     return (
       <PlanningEventCard
         style={rendBorderColor(event.border)}
-        onPress={() => navigateToEvent(id)}
+        onPress={() => navigateToEvent(event.id)}
         id={id}
         subject={event.subject}
       />

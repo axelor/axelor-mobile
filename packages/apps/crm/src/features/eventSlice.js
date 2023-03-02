@@ -5,6 +5,7 @@ import {
   partnerEventById,
   contactEventById,
   getPlannedEvent,
+  getEvent,
 } from '../api/event-api';
 
 export const searchEventById = createAsyncThunk(
@@ -59,6 +60,19 @@ export const fetchPlannedEvent = createAsyncThunk(
   },
 );
 
+export const fetchEventById = createAsyncThunk(
+  'event/fetchEventById',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getEvent,
+      data,
+      action: 'get crm event by id',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   listEventById: [],
@@ -68,6 +82,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   eventList: [],
+  event: {},
 };
 
 const eventSlice = createSlice({
@@ -116,6 +131,13 @@ const eventSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(fetchEventById.pending, (state, action) => {
+      state.loadingEvent = true;
+    });
+    builder.addCase(fetchEventById.fulfilled, (state, action) => {
+      state.loadingEvent = false;
+      state.event = action.payload;
     });
   },
 });

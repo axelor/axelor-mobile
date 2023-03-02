@@ -22,6 +22,7 @@
   "Crm_Prospect": "Prospect",
   "Crm_Notes": "Notes",
   "Crm_Events": "Événements",
+  "Crm_Event": "Événement",
   "Crm_Clients": "Clients",
   "Crm_PriceList": "Liste de prix",
   "Crm_Employees": "Employés",
@@ -68,5 +69,8 @@
   "Crm_NoPhoneCall": "pas d'appel",
   "Crm_Company": "Entreprise",
   "Crm_JobTitle": "Fonction",
-  "Crm_ClientProspect": "Client / Prospect"
+  "Crm_ClientProspect": "Client / Prospect",
+  "Crm_Organisator": "Organisateur",
+  "Crm_Start": "Début",
+  "Crm_End": "Fin"
 }
