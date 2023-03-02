@@ -27,6 +27,7 @@
     "@react-navigation/stack": "6.2.1",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1",
+    "bootstrap-icons": "^1.10.3",
     "i18n-parser": "^1.0.0",
     "i18next": "^21.8.3",
     "react": "18.2.0",
@@ -45,14 +46,13 @@
     "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "3.13.1",
     "react-native-static-safe-area-insets": "^2.2.0",
+    "react-native-svg": "^13.8.0",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.1.0",
     "react-native-vision-camera": "^2.13.5",
     "react-native-webview": "11.26.0",
-    "vision-camera-code-scanner": "^0.2.0",
-    "react-native-svg": "^13.8.0",
-    "bootstrap-icons": "^1.10.3"
+    "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

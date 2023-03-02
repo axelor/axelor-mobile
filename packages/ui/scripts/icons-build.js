@@ -33,7 +33,9 @@ const config = {
 function getFilepaths() {
   return new Promise((resolve, reject) => {
     glob('../../node_modules/bootstrap-icons/icons/*.svg', (err, files) => {
-      if (err) reject(err);
+      if (err) {
+        reject(err);
+      }
       resolve(files);
     });
   });
