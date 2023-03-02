@@ -2,33 +2,23 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {default as ChipSelect} from './ChipSelect';
-
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#000000',
-  background: '#3ECF8E',
-};
-const caution = {
-  background_light: '#EE9B67',
-  foreground: '#000000',
-  background: '#F27B30',
-};
+import {lightTheme} from '../../../theme/themes';
 
 const items = [
   {
     title: 'Option 1',
-    color: primary,
+    color: lightTheme.colors.primaryColor,
     key: 'option1',
   },
   {
     title: 'Option 2',
-    color: caution,
+    color: lightTheme.colors.cautionColor,
     key: 'option2',
     isActive: true,
   },
   {
     title: 'Option 3',
-    color: caution,
+    color: lightTheme.colors.infoColor,
     key: 'option3',
   },
 ];

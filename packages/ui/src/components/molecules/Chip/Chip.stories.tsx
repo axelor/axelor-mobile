@@ -2,18 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {View, StyleSheet} from 'react-native';
 import {default as Chip} from './Chip';
-
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#000000',
-  background: '#3ECF8E',
-};
-const caution = {
-  background_light: '#EE9B67',
-  foreground: '#000000',
-  background: '#F27B30',
-};
-const color = {primary, caution};
+import {lightTheme} from '../../../theme/themes';
 
 storiesOf('ui/molecules/Chip', module).add(
   'Default',
@@ -24,7 +13,7 @@ storiesOf('ui/molecules/Chip', module).add(
           title="Press me"
           selected={false}
           onPress={console.log}
-          selectedColor={primary}
+          selectedColor={lightTheme.colors.primaryColor}
           {...args}
         />
       </View>
@@ -45,8 +34,8 @@ storiesOf('ui/molecules/Chip', module).add(
         defaultValue: false,
       },
       selectedColor: {
-        options: Object.keys(color),
-        mapping: color,
+        options: Object.keys(lightTheme.colors),
+        mapping: lightTheme.colors,
         control: {
           type: 'select',
           labels: {
