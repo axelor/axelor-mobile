@@ -2,18 +2,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {View, StyleSheet} from 'react-native';
 import {default as Button} from './Button';
-
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#000000',
-  background: '#3ECF8E',
-};
-const secondary = {
-  background_light: '#DDDDDD',
-  foreground: '#000000',
-  background: '#CECECE',
-};
-const color = {primary, secondary};
+import {lightTheme} from '../../../theme/themes';
 
 storiesOf('ui/molecules/Button', module).add(
   'Default',
@@ -32,8 +21,8 @@ storiesOf('ui/molecules/Button', module).add(
         control: {type: 'text'},
       },
       color: {
-        options: Object.keys(color),
-        mapping: color,
+        options: Object.keys(lightTheme.colors),
+        mapping: lightTheme.colors,
         control: {
           type: 'select',
           labels: {
