@@ -16,35 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const machineFields = ['code', 'name'];
-
-const createMachineCriteria = searchValue => {
-  let criterias = [];
-  if (searchValue != null) {
-    criterias.push({
-      fieldName: 'name',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
-  return criterias;
-};
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 export async function searchMachineFilter({searchValue = null}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.production.db.Machine/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createMachineCriteria(searchValue),
-          },
-        ],
-      },
-      fields: machineFields,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.Machine',
+    criteria: [getSearchCriterias('manufacturing_machine', searchValue)],
+    fieldKey: 'manufacturing_machine',
+    page: 0,
   });
 }

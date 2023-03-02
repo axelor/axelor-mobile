@@ -16,35 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const workCenterFields = ['code', 'name'];
-
-const createWorkCenterCriteria = searchValue => {
-  let criterias = [];
-  if (searchValue != null) {
-    criterias.push({
-      fieldName: 'name',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
-  return criterias;
-};
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 export async function searchWorkCenterFilter({searchValue = null}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.production.db.WorkCenter/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createWorkCenterCriteria(searchValue),
-          },
-        ],
-      },
-      fields: workCenterFields,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.WorkCenter',
+    criteria: [getSearchCriterias('manufacturing_workCenter', searchValue)],
+    fieldKey: 'manufacturing_workCenter',
+    page: 0,
   });
 }
