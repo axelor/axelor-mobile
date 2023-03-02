@@ -51,11 +51,15 @@ const Input = ({
   keyboardType,
   onEndFocus = () => {},
   isFocus = false,
-  writingType = null,
+  writingType,
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
-  const writingStyle = useWritingType(writingType);
+
+  const writingStyle = useMemo(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return writingType ? useWritingType(writingType) : {};
+  }, [writingType]);
 
   const defaultStyle: TextStyle = useMemo(() => {
     return {
