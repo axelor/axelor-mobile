@@ -199,6 +199,7 @@ const LeadDetailsScreen = ({navigation, route}) => {
                   <DropdownEventView
                     lastEvent={lastEventLead}
                     nextEvent={nextEventLead}
+                    navigation={navigation}
                   />
                 ),
               },

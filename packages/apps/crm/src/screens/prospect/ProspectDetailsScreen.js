@@ -212,6 +212,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
                   <DropdownEventView
                     lastEvent={lastEventProspect}
                     nextEvent={nextEventProspect}
+                    navigation={navigation}
                   />
                 ),
               },

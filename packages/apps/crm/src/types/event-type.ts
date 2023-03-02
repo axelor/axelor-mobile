@@ -109,6 +109,7 @@ class EventType {
         startDate: _e.startDateTime,
         endDate: _e.endDateTime,
         data: {
+          id: _e.id,
           subject: _e.subject,
           contactPartner: _e.contactPartner?.fullName,
           location: _e.location,

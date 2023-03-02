@@ -13,6 +13,10 @@ const eventFields = [
   'contactPartner',
   'user',
   'location',
+  'organizer',
+  'description',
+  'lead',
+  'partner',
 ];
 
 const createEventCriteria = (searchValue, startDate, endDate) => {
@@ -144,6 +148,15 @@ export async function getPlannedEvent({date, searchValue = null}) {
       fields: eventFields,
       sortBy: ['startDateTime'],
       limit: null,
+    },
+  });
+}
+
+export async function getEvent({eventId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.crm.db.Event/${eventId}/fetch`,
+    data: {
+      fields: eventFields,
     },
   });
 }

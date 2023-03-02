@@ -109,14 +109,17 @@ const styles = StyleSheet.create({
   containerLeft: {
     flexDirection: 'column',
     alignItems: 'center',
+    flex: 1,
   },
   containerMid: {
     flexDirection: 'column',
     alignItems: 'center',
     marginHorizontal: '7%',
+    flex: 1,
   },
   containerRight: {
     flexDirection: 'column',
+    flex: 4,
   },
   textNumber: {
     fontSize: 25,
