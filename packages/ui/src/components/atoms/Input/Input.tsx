@@ -55,11 +55,7 @@ const Input = ({
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
-
-  const writingStyle = useMemo(() => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return writingType ? useWritingType(writingType) : {};
-  }, [writingType]);
+  const writingStyle = useWritingType(writingType);
 
   const defaultStyle: TextStyle = useMemo(() => {
     return {

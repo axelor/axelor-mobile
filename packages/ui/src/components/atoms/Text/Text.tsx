@@ -43,10 +43,7 @@ const Text = ({
   writingType,
 }: TextProps) => {
   const Colors = useThemeColor();
-  const writingStyle = useMemo(() => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return writingType ? useWritingType(writingType) : {};
-  }, [writingType]);
+  const writingStyle = useWritingType(writingType);
 
   const defaultStyle: TextStyle = useMemo(() => {
     return {
