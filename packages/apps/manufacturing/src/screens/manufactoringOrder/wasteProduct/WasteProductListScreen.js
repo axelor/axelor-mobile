@@ -30,12 +30,12 @@ import {
   useConfig,
 } from '@axelor/aos-mobile-ui';
 import {
+  filterList,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {filterList} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   WasteProductCard,

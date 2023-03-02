@@ -36,7 +36,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {ProductCardInfo} from '@axelor/aos-mobile-stock';
+import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
@@ -50,27 +50,22 @@ import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
-  const {mobileSettings} = useSelector(state => state.config);
-  const {operationOrderList} = useSelector(state => state.operationOrder);
-  const {loadingOrder, manufOrder, linkedManufOrders} = useSelector(
-    state => state.manufacturingOrder,
-  );
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const handleUpdateStatus = useCallback(
-    targetStatus => {
-      dispatch(
-        updateStatusOfManufOrder({
-          manufOrderId: manufOrder.id,
-          manufOrderVersion: manufOrder.version,
-          targetStatus,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
+  const {mobileSettings} = useSelector(state => state.config);
+  const {operationOrderList} = useSelector(state => state.operationOrder);
+  const {productFromId: product} = useSelector(state => state.product);
+  const {loadingOrder, manufOrder, linkedManufOrders} = useSelector(
+    state => state.manufacturingOrder,
   );
+
+  useEffect(() => {
+    if (manufOrder?.product != null) {
+      dispatch(fetchProductWithId(manufOrder.product.id));
+    }
+  }, [manufOrder, dispatch]);
 
   useEffect(() => {
     dispatch(
@@ -93,7 +88,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: manufOrder.product,
+      product: product,
     });
   };
 
@@ -145,6 +140,19 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       ),
     });
   }, [I18n, mobileSettings, navigation, manufOrder]);
+
+  const handleUpdateStatus = useCallback(
+    targetStatus => {
+      dispatch(
+        updateStatusOfManufOrder({
+          manufOrderId: manufOrder.id,
+          manufOrderVersion: manufOrder.version,
+          targetStatus,
+        }),
+      );
+    },
+    [dispatch, manufOrder],
+  );
 
   return (
     <Screen
@@ -205,9 +213,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductCardInfo
           onPress={handleShowProduct}
-          picture={manufOrder.product?.picture}
-          code={manufOrder.product?.code}
-          name={manufOrder.product?.name}
+          picture={product?.picture}
+          code={product?.code}
+          name={product?.name}
         />
         {manufOrder.saleOrderSet != null &&
           manufOrder.saleOrderSet.length > 0 && (
