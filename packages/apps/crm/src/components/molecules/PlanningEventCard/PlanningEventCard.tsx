@@ -22,9 +22,7 @@ const PlanningEventCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card key={id} style={[styles.container, style]}>
         <Text style={styles.bold}>{subject}</Text>
-        {contactPartner && (
-          <LabelText iconName="map-pin" title={contactPartner} />
-        )}
+        {contactPartner && <LabelText iconName="user" title={contactPartner} />}
         {location && <LabelText iconName="map-pin" title={location} />}
       </Card>
     </TouchableOpacity>

@@ -29,6 +29,7 @@ function EventDetailsScreen({navigation, route}) {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
   const {event} = useSelector(state => state.event);
   const {lead, leadStatusList} = useSelector(state => state.lead);
   const {partner} = useSelector(state => state.partner);
@@ -51,6 +52,10 @@ function EventDetailsScreen({navigation, route}) {
     event?.contactPartner &&
       dispatch(getContact({contactId: event?.contactPartner.id}));
   }, [dispatch, event?.contactPartner]);
+
+  if (event?.id !== eventId) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -78,27 +83,29 @@ function EventDetailsScreen({navigation, route}) {
         }
       />
       <View style={styles.contentContainer}>
-        <FromTo
-          style={styles.detailsContainer}
-          fromComponent={
-            <TitledValue
-              title={I18n.t('Crm_Start')}
-              value={formatDateTime(
-                event.startDateTime,
-                I18n.t('Base_DateTimeFormat'),
-              )}
-            />
-          }
-          toComponent={
-            <TitledValue
-              title={I18n.t('Crm_End')}
-              value={formatDateTime(
-                event.endDateTime,
-                I18n.t('Base_DateTimeFormat'),
-              )}
-            />
-          }
-        />
+        {(event.startDateTime || event.endDateTime) && (
+          <FromTo
+            style={styles.detailsContainer}
+            fromComponent={
+              <TitledValue
+                title={I18n.t('Crm_Start')}
+                value={formatDateTime(
+                  event.startDateTime,
+                  I18n.t('Base_DateTimeFormat'),
+                )}
+              />
+            }
+            toComponent={
+              <TitledValue
+                title={I18n.t('Crm_End')}
+                value={formatDateTime(
+                  event.endDateTime,
+                  I18n.t('Base_DateTimeFormat'),
+                )}
+              />
+            }
+          />
+        )}
         {event.location && (
           <LabelText
             style={styles.detailsContainer}
@@ -108,12 +115,12 @@ function EventDetailsScreen({navigation, route}) {
         )}
         {event.user?.fullName && (
           <Text style={styles.detailsContainer}>
-            {I18n.t('Crm_AssignedTo')} : {event.user?.fullName}
+            {I18n.t('Crm_AssignedTo')}: {event.user?.fullName}
           </Text>
         )}
         {event.organizer && (
           <Text style={styles.detailsContainer}>
-            {I18n.t('Crm_Organisator')} : {event.organizer?.name}
+            {I18n.t('Crm_Organisator')}: {event.organizer?.name?.split(' [')[0]}
           </Text>
         )}
       </View>
@@ -183,7 +190,6 @@ function EventDetailsScreen({navigation, route}) {
             }
           />
         )}
-
       {event?.contactPartner && (
         <LiteContactCard
           contactFullname={contact.simpleFullName}
@@ -220,6 +226,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 10,
+    marginHorizontal: 10,
   },
   detailsContainer: {
     marginVertical: 5,

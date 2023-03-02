@@ -86,13 +86,17 @@ const CatalogListScreen = ({navigation}) => {
             mode="multi"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             marginHorizontal={5}
-            selectionItems={catalogTypeList.map((status, index) => {
-              return {
-                title: status.name,
-                color: Catalog.getStatusColor(index, Colors),
-                key: status.id,
-              };
-            })}
+            selectionItems={
+              catalogTypeList
+                ? catalogTypeList.map((status, index) => {
+                    return {
+                      title: status.name,
+                      color: Catalog.getStatusColor(index, Colors),
+                      key: status.id,
+                    };
+                  })
+                : []
+            }
           />
         }
       />
