@@ -19,6 +19,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
+    "react-native-pell-rich-editor": "1.8.8",
     "react-native-system-navigation-bar": "^2.0.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-render-html": "^6.3.4"
