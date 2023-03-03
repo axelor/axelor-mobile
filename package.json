@@ -16,6 +16,7 @@
     "clean": "find . -type d -name node_modules | xargs rm -rf && rm -rf yarn.lock && find . -type d -name lib | xargs rm -rf",
     "dev": "nx run-many --target=dev",
     "build": "nx run-many --target=build",
+    "release": "nx run-many --target=npm-publish --verbose",
     "test": "nx test example",
     "lint": "nx run-many --target=lint",
     "format": "nx run-many --target=format",

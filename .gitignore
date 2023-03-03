@@ -59,5 +59,3 @@ buck-out/
 /ios/Pods/
 /vendor/bundle/
 *.tgz
-
-yarn.lock

@@ -16,11 +16,12 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK 1.11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.11
+          distribution: 'zulu'
+          java-version: '11'
       - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
@@ -36,11 +37,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: format
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK 1.11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.11
+          distribution: 'zulu'
+          java-version: '11'
       - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
@@ -59,12 +61,16 @@ jobs:
     needs: [format, build]
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm publish
+      - name: Install dependencies
+        run: yarn install
+      - name: Check packages
+        run: yarn build
+      - name: Publish packages
+        run: yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

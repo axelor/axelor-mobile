@@ -1,6 +1,11 @@
 {
   "name": "@axelor/aos-mobile-error",
   "version": "6.4.0",
+  "author": "Axelor",
+  "license": "AGPL-3.0-only",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
@@ -11,6 +16,7 @@
     "compile": "tsc -p tsconfig.build.json",
     "dev": "npm run compile -- --watch",
     "build": "npm run clean && npm run compile && npm run copy:assets",
+    "npm-publish": "npm publish",
     "lint": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
