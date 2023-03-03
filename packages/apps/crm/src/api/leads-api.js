@@ -1,124 +1,52 @@
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const crmLeadsFields = [
-  'enterpriseName',
-  'fullName',
-  'fixedPhone',
-  'firstName',
-  'leadStatus',
-  'mobilePhone',
-  'fixedPhone',
-  'primaryPostalCode',
-  'emailAddress',
-  'emailAddress.address',
-  'primaryAddress',
-  'simpleFullName',
-  'user',
-  'isDoNotSendEmail',
-  'isDoNotCall',
-  'jobTitleFunction',
-  'description',
-  'webSite',
-  'type',
-  'industrySector',
-  'eventList',
-  'leadScoringSelect',
-  'name',
-  'titleSelect',
-];
-
-const sortByFields = ['leadStatus', 'enterpriseName', 'createdOn'];
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 const createLeadCriteria = searchValue => {
-  let criterias = [];
-  criterias.push({
-    fieldName: 'leadStatus.isOpen',
-    operator: '=',
-    value: true,
-  });
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'simpleFullName',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'enterpriseName',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'primaryAddress',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'mobilePhone',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'fixedPhone',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'emailAddress.name',
-          operator: 'like',
-          value: searchValue,
-        },
-      ],
-    });
-  }
-  return criterias;
+  return [
+    {
+      fieldName: 'leadStatus.isOpen',
+      operator: '=',
+      value: true,
+    },
+    getSearchCriterias('crm_lead', searchValue),
+  ];
 };
 
 export async function searchLeads({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.Lead/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createLeadCriteria(searchValue),
-          },
-        ],
-      },
-      fields: crmLeadsFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.Lead',
+    criteria: createLeadCriteria(searchValue),
+    fieldKey: 'crm_lead',
+    sortKey: 'crm_lead',
+    page,
   });
 }
 
 export async function getLead({leadId}) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.crm.db.Lead/${leadId}/fetch`,
-    data: {
-      fields: crmLeadsFields,
-    },
+  return createStandardFetch({
+    model: 'com.axelor.apps.crm.db.Lead',
+    id: leadId,
+    fieldKey: 'crm_lead',
   });
 }
 
 export async function getLeadStatus() {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.LeadStatus/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            fieldName: 'isOpen',
-            operator: '=',
-            value: true,
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.LeadStatus',
+    criteria: [
+      {
+        fieldName: 'isOpen',
+        operator: '=',
+        value: true,
       },
-    },
+    ],
+    fieldKey: 'crm_leadStatus',
+    numberElementsByPage: null,
+    page: 0,
   });
 }
 

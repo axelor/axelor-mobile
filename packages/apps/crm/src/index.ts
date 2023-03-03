@@ -9,6 +9,7 @@ import EventScreen from './screens/event';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
+import {crm_modelAPI, crm_searchFields, crm_sortFields} from './models';
 
 export const CrmModule: Module = {
   name: 'app-crm',
@@ -66,6 +67,11 @@ export const CrmModule: Module = {
     fr: frTranslations,
   },
   reducers: {...crmReducers},
+  models: {
+    objectFields: {...crm_modelAPI},
+    sortFields: {...crm_sortFields},
+    searchFields: {...crm_searchFields},
+  },
 };
 
 export * from './types';

@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
-  postEventBIdList,
+  searchEventsByIds,
   partnerEventById,
   contactEventById,
   getPlannedEvent,
@@ -12,7 +12,7 @@ export const searchEventById = createAsyncThunk(
   'event/searchEventById',
   async function (data = {}, {getState}) {
     return handlerApiCall({
-      fetchFunction: postEventBIdList,
+      fetchFunction: searchEventsByIds,
       data,
       action: 'filter event by id',
       getState,

@@ -45,7 +45,10 @@ class RequestBuilder {
       return null;
     }
 
-    const limit = numberElementsByPage || this.requestLimit;
+    const limit =
+      numberElementsByPage !== undefined
+        ? numberElementsByPage
+        : this.requestLimit;
 
     let data: any = {
       criteria: [

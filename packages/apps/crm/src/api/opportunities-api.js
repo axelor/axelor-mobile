@@ -1,89 +1,49 @@
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const opportunityFields = [
-  'amount',
-  'currency.symbol',
-  'description',
-  'expectedCloseDate',
-  'name',
-  'opportunitySeq',
-  'opportunityStatus',
-  'opportunityRating',
-  'partner',
-  'recurrentAmount',
-  'user',
-];
-
-const sortByFields = ['opportunityStatus.sequence', 'expectedCloseDate'];
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 const createOpportunityCriteria = searchValue => {
-  let criterias = [];
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'opportunitySeq',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'name',
-          operator: 'like',
-          value: searchValue,
-        },
-      ],
-    });
-  }
-  return criterias;
+  return [getSearchCriterias('crm_opportunity', searchValue)];
 };
 
 export async function searchOpportunities({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity/search/',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createOpportunityCriteria(searchValue),
-          },
-        ],
-      },
-      fields: opportunityFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.Opportunity',
+    criteria: createOpportunityCriteria(searchValue),
+    fieldKey: 'crm_opportunity',
+    sortKey: 'crm_opportunity',
+    page,
   });
 }
 
 export async function getOpportunityStatus() {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.OpportunityStatus/search',
-    data: {
-      fields: ['name', 'sequence'],
-      sortBy: ['sequence'],
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.OpportunityStatus',
+    fieldKey: 'crm_opportunityStatus',
+    sortKey: 'crm_opportunityStatus',
+    numberElementsByPage: null,
+    page: 0,
   });
 }
 
 export async function getOpportunity({opportunityId}) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.crm.db.Opportunity/${opportunityId}/fetch`,
-    data: {
-      fields: opportunityFields,
-      related: {
-        currency: ['symbol'],
-        partner: [
-          'isCustomer',
-          'isProspect',
-          'partnerSeq',
-          'picture',
-          'simpleFullName',
-        ],
-        user: ['name'],
-      },
+  return createStandardFetch({
+    model: 'com.axelor.apps.crm.db.Opportunity',
+    id: opportunityId,
+    fieldKey: 'crm_opportunityStatus',
+    relatedFields: {
+      currency: ['symbol'],
+      partner: [
+        'isCustomer',
+        'isProspect',
+        'partnerSeq',
+        'picture',
+        'simpleFullName',
+      ],
+      user: ['name'],
     },
   });
 }

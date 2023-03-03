@@ -1,109 +1,46 @@
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const prospectFields = [
-  'simpleFullName',
-  'name',
-  'fullName',
-  'partnerSeq',
-  'mainAddress',
-  'fixedPhone',
-  'mobilePhone',
-  'leadScoringSelect',
-  'emailAddress',
-  'emailAddress.address',
-  'user',
-  'industrySector',
-  'partnerCategory',
-  'description',
-  'webSite',
-  'contactPartnerSet',
-  'picture',
-];
-
-const sortByFields = ['name', 'partnerSeq', 'createdOn'];
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 const createProspectCriteria = searchValue => {
-  let criterias = [];
-  criterias.push({
-    operator: 'and',
-    criteria: [
-      {
-        fieldName: 'isContact',
-        operator: '=',
-        value: false,
-      },
-      {
-        fieldName: 'isProspect',
-        operator: '=',
-        value: true,
-      },
-    ],
-  });
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
+  return [
+    {
+      operator: 'and',
       criteria: [
         {
-          fieldName: 'simpleFullName',
-          operator: 'like',
-          value: searchValue,
+          fieldName: 'isContact',
+          operator: '=',
+          value: false,
         },
         {
-          fieldName: 'partnerSeq',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'mainAddress.fullName',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'mobilePhone',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'fixedPhone',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'emailAddress.name',
-          operator: 'like',
-          value: searchValue,
+          fieldName: 'isProspect',
+          operator: '=',
+          value: true,
         },
       ],
-    });
-  }
-  return criterias;
+    },
+    getSearchCriterias('crm_prospect', searchValue),
+  ];
 };
 
 export async function searchProspect({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.base.db.Partner/search/',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createProspectCriteria(searchValue),
-          },
-        ],
-      },
-      fields: prospectFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createProspectCriteria(searchValue),
+    fieldKey: 'crm_prospect',
+    sortKey: 'crm_prospect',
+    page,
   });
 }
+
 export async function getProspect({partnerId}) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.base.db.Partner/${partnerId}/fetch`,
-    data: {
-      fields: prospectFields,
-    },
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Partner',
+    id: partnerId,
+    fieldKey: 'crm_prospect',
   });
 }
 
