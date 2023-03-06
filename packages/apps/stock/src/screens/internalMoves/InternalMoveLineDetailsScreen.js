@@ -17,7 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, ActivityIndicator} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import {
   Button,
   Card,
@@ -25,7 +33,6 @@ import {
   Input,
   Picker,
   Screen,
-  ScrollView,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -300,96 +307,108 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         </>
       }
       loading={loading || loadingProductFromId}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <StockMoveHeader
-            reference={route.params.internalMove?.stockMoveSeq}
-            status={status}
-            date={
-              route.params.internalMove?.statusSelect === StockMove.status.Draft
-                ? route.params.internalMove?.createdOn
-                : route.params.internalMove?.statusSelect ===
-                  StockMove.status.Planned
-                ? route.params.internalMove?.estimatedDate
-                : route.params.internalMove?.realDate
-            }
-            availability={availability}
-          />
-        }
-      />
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <ScrollView>
-          <ProductCardInfo
-            name={stockProduct.name}
-            code={stockProduct.code}
-            picture={stockProduct.picture}
-            trackingNumber={
-              stockProduct.trackingNumberConfiguration == null ||
-              trackingNumber == null
-                ? null
-                : trackingNumber.trackingNumberSeq
-            }
-            locker={null}
-            onPress={handleShowProduct}
-          />
-          <QuantityCard
-            labelQty={I18n.t('Stock_MovedQty')}
-            defaultValue={parseFloat(movedQty).toFixed(2)}
-            onValueChange={handleQtyChange}
-            editable={
-              status === StockMove.status.Draft ||
-              status === StockMove.status.Planned
-            }
-            actionQty={
-              status === StockMove.status.Draft ||
-              status === StockMove.status.Planned
-            }
-            onPressActionQty={handleCreateCorrection}>
-            <Text style={styles.text}>
-              {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
-                plannedQty,
-              ).toFixed(2)} ${stockProduct.unit?.name}`}
-            </Text>
-          </QuantityCard>
-          <Picker
-            styleTxt={unit?.id === null ? styles.picker_empty : null}
-            title={I18n.t('Stock_Unit')}
-            onValueChange={handleUnitChange}
-            defaultValue={unit?.id}
-            listItems={unitList}
-            labelField="name"
-            valueField="id"
-            disabled={
-              status === StockMove.status.Realized ||
-              status === StockMove.status.Canceled
-            }
-            disabledValue={unit?.name}
-          />
-          {status === StockMove.status.Draft && notes != null && (
-            <View>
-              <View style={styles.reasonTitle}>
-                <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-              </View>
-              <Card style={styles.infosCard}>
-                {status === StockMove.status.Planned ||
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.containerKeyboard}
+        keyboardVerticalOffset={180}>
+        <HeaderContainer
+          expandableFilter={false}
+          fixedItems={
+            <StockMoveHeader
+              reference={route.params.internalMove?.stockMoveSeq}
+              status={status}
+              date={
+                route.params.internalMove?.statusSelect ===
+                StockMove.status.Draft
+                  ? route.params.internalMove?.createdOn
+                  : route.params.internalMove?.statusSelect ===
+                    StockMove.status.Planned
+                  ? route.params.internalMove?.estimatedDate
+                  : route.params.internalMove?.realDate
+              }
+              availability={availability}
+            />
+          }
+        />
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <ScrollView>
+            <ProductCardInfo
+              name={stockProduct.name}
+              code={stockProduct.code}
+              picture={stockProduct.picture}
+              trackingNumber={
+                stockProduct.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.trackingNumberSeq
+              }
+              locker={null}
+              onPress={handleShowProduct}
+            />
+            <QuantityCard
+              labelQty={I18n.t('Stock_MovedQty')}
+              defaultValue={parseFloat(movedQty).toFixed(2)}
+              onValueChange={handleQtyChange}
+              editable={
+                status === StockMove.status.Draft ||
+                status === StockMove.status.Planned
+              }
+              actionQty={
+                status === StockMove.status.Draft ||
+                status === StockMove.status.Planned
+              }
+              onPressActionQty={handleCreateCorrection}>
+              <Text style={styles.text}>
+                {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
+                  plannedQty,
+                ).toFixed(2)} ${stockProduct.unit?.name}`}
+              </Text>
+            </QuantityCard>
+            <Picker
+              styleTxt={unit?.id === null ? styles.picker_empty : null}
+              title={I18n.t('Stock_Unit')}
+              onValueChange={handleUnitChange}
+              defaultValue={unit?.id}
+              listItems={unitList}
+              labelField="name"
+              valueField="id"
+              disabled={
                 status === StockMove.status.Realized ||
-                status === StockMove.status.Canceled ? (
-                  <Text numberOfLines={3}>{notes}</Text>
-                ) : (
+                status === StockMove.status.Canceled
+              }
+              disabledValue={unit?.name}
+            />
+            {status === StockMove.status.Draft && (
+              <View>
+                <View style={styles.reasonTitle}>
+                  <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
+                </View>
+                <Card style={styles.infosCard}>
                   <Input
                     value={notes}
                     onChange={handleNotesChange}
                     multiline={true}
                   />
-                )}
-              </Card>
-            </View>
-          )}
-        </ScrollView>
-      )}
+                </Card>
+              </View>
+            )}
+            {status === StockMove.status.Planned ||
+              status === StockMove.status.Realized ||
+              (status === StockMove.status.Canceled && (
+                <View>
+                  <View style={styles.reasonTitle}>
+                    <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
+                  </View>
+                  <Card style={styles.infosCard}>
+                    <Text numberOfLines={3}>{notes}</Text>
+                  </Card>
+                </View>
+              ))}
+          </ScrollView>
+        )}
+      </KeyboardAvoidingView>
     </Screen>
   );
 };
@@ -424,6 +443,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+  },
+  containerKeyboard: {
+    flex: 1,
   },
 });
 
