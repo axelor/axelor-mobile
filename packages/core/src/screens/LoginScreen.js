@@ -17,8 +17,15 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
-import {useThemeColor, Text, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {useThemeColor, Text, Screen} from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
   LoginButton,
@@ -75,63 +82,66 @@ const LoginScreen = ({route}) => {
   }, [scanData, scannedValue]);
 
   return (
-    <Screen
-      style={styles.container}
-      fixedItems={
-        <View style={styles.copyright}>
-          <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-          <Text>{`Version ${appVersion}`}</Text>
+    <Screen>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.containerKeyboard}
+        keyboardVerticalOffset={180}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <LogoImage url={url} />
+          </View>
+          <UrlInput
+            value={url}
+            onChange={setUrl}
+            readOnly={loading}
+            onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
+            onSelection={() => {
+              dispatch(enableScan(urlScanKey));
+            }}
+            scanIconColor={
+              isEnabled && scanKey === urlScanKey
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+          />
+          <UsernameInput
+            value={username}
+            onChange={setUsername}
+            readOnly={loading}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            readOnly={loading}
+          />
+          <View>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <LoginButton
+                onPress={() => dispatch(login({url, username, password}))}
+                disabled={loading}
+              />
+            )}
+          </View>
+          <View>{error && <ErrorText message={error.message} />}</View>
         </View>
-      }>
-      <ScrollView>
-        <View style={styles.imageContainer}>
-          <LogoImage url={url} />
-        </View>
-        <UrlInput
-          value={url}
-          onChange={setUrl}
-          readOnly={loading}
-          onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
-          onSelection={() => {
-            dispatch(enableScan(urlScanKey));
-          }}
-          scanIconColor={
-            isEnabled && scanKey === urlScanKey
-              ? Colors.primaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-        />
-        <UsernameInput
-          value={username}
-          onChange={setUsername}
-          readOnly={loading}
-        />
-        <PasswordInput
-          value={password}
-          onChange={setPassword}
-          readOnly={loading}
-        />
-        <View style={styles.buttonContainer}>
-          {loading ? (
-            <ActivityIndicator size="large" />
-          ) : (
-            <LoginButton
-              onPress={() => dispatch(login({url, username, password}))}
-              disabled={loading}
-            />
-          )}
-        </View>
-        <View style={styles.errorContainer}>
-          {error && <ErrorText message={error.message} />}
-        </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
+      <View style={styles.copyright}>
+        <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
+        <Text>{`Version ${appVersion}`}</Text>
+      </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  containerKeyboard: {
+    flex: 1,
+  },
   container: {
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: {
     alignItems: 'center',
@@ -140,19 +150,10 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get('window').height < 500 ? '25%' : '50%',
     marginBottom: '10%',
   },
-  imageSize: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-  errorContainer: {
-    flex: 1,
-  },
   copyright: {
-    alignSelf: 'center',
-    alignItems: 'center',
     position: 'absolute',
+    alignItems: 'center',
+    width: '100%',
     bottom: 10,
   },
 });
