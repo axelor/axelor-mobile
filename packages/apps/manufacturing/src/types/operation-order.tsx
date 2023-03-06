@@ -93,21 +93,25 @@ class OperationOrder {
     realEndDate: string,
     I18n: TranslatorProps,
   ): {title?: string; value?: string}[] => {
+    const formatDate = date => {
+      if (date == null) {
+        return '';
+      }
+
+      return formatDateTime(date, I18n.t('Base_DateTimeFormat'));
+    };
+
     switch (status) {
       case OperationOrder.status.Draft:
       case OperationOrder.status.Planned:
         return [
           {
             title: I18n.t('Manufacturing_PlannedStartDate') + ':',
-            value: plannedStartDate
-              ? formatDateTime(plannedStartDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(plannedStartDate),
           },
           {
             title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: plannedEndDate
-              ? formatDateTime(plannedEndDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(plannedEndDate),
           },
         ];
       case OperationOrder.status.InProgress:
@@ -115,30 +119,22 @@ class OperationOrder {
         return [
           {
             title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: realStartDate
-              ? formatDateTime(realStartDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(realStartDate),
           },
           {
             title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: plannedEndDate
-              ? formatDateTime(plannedEndDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(plannedEndDate),
           },
         ];
       case OperationOrder.status.Finished:
         return [
           {
             title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: plannedStartDate
-              ? formatDateTime(plannedStartDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(realStartDate),
           },
           {
             title: I18n.t('Manufacturing_RealEndDate') + ':',
-            value: realEndDate
-              ? formatDateTime(realEndDate, I18n.t('Base_DateTimeFormat'))
-              : '',
+            value: formatDate(realEndDate),
           },
         ];
       default:

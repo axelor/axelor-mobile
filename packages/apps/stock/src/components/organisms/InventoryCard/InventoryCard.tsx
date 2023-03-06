@@ -47,6 +47,43 @@ const InventoryCard = ({
       ?.border;
   }, [Colors, status]);
 
+  const _formatDate = useMemo(() => {
+    if (date == null) {
+      return null;
+    }
+    const _date = formatDate(date, I18n.t('Base_DateFormat'));
+
+    if (status === Inventory.status.Planned) {
+      return (
+        <Text style={[styles.txtDetails, styles.creationDate]}>
+          {`${I18n.t('Base_PlannedFor')} ${_date}`}
+        </Text>
+      );
+    }
+
+    if (status === Inventory.status.Planned) {
+      return (
+        <Text style={[styles.txtDetails, styles.creationDate]}>
+          {`${I18n.t('Base_PlannedFor')} ${_date}`}
+        </Text>
+      );
+    }
+
+    if (status === Inventory.status.Completed) {
+      return (
+        <Text style={styles.txtDetails}>
+          {`${I18n.t('Base_CompletedOn')} ${_date}`}
+        </Text>
+      );
+    }
+
+    return (
+      <Text style={styles.txtDetails}>
+        {`${I18n.t('Base_ValidatedOn')} ${_date}`}
+      </Text>
+    );
+  }, [I18n, date, status]);
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
@@ -55,38 +92,7 @@ const InventoryCard = ({
           {stockLocation != null && (
             <Text style={styles.txtDetails}>{stockLocation}</Text>
           )}
-          {status === Inventory.status.Planned && (
-            <Text style={[styles.txtDetails, styles.creationDate]}>
-              {`${I18n.t('Base_PlannedFor')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          )}
-          {status === Inventory.status.InProgress && (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_StartedOn')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          )}
-          {status === Inventory.status.Completed && (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_CompletedOn')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          )}
-          {status === Inventory.status.Validated && (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_ValidatedOn')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          )}
+          {_formatDate}
         </View>
         <Icon
           name="chevron-right"

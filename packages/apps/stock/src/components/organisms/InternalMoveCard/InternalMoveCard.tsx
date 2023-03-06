@@ -47,10 +47,40 @@ const InternalMoveCard = ({
 }: InternalMoveCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
   const borderStyle = useMemo(() => {
     return getStyles(StockMove.getStatusColor(status, Colors).background)
       ?.border;
   }, [Colors, status]);
+
+  const _formatDate = useMemo(() => {
+    if (date == null) {
+      return null;
+    }
+    const _date = formatDate(date, I18n.t('Base_DateFormat'));
+
+    if (status === StockMove.status.Draft) {
+      return (
+        <Text style={[styles.txtDetails, styles.creationDate]}>
+          {`${I18n.t('Base_CreatedOn')} ${_date}`}
+        </Text>
+      );
+    }
+
+    if (status === StockMove.status.Planned) {
+      return (
+        <Text style={[styles.txtDetails, styles.creationDate]}>
+          {`${I18n.t('Base_PlannedFor')} ${_date}`}
+        </Text>
+      );
+    }
+
+    return (
+      <Text style={styles.txtDetails}>
+        {`${I18n.t('Base_ValidatedOn')} ${_date}`}
+      </Text>
+    );
+  }, [I18n, date, status]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
@@ -65,28 +95,7 @@ const InternalMoveCard = ({
               <Text style={styles.txtDetails}>{origin}</Text>
             </View>
           )}
-          {status === StockMove.status.Draft ? (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_CreatedOn')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          ) : status === StockMove.status.Planned ? (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_PlannedFor')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          ) : (
-            <Text style={styles.txtDetails}>
-              {`${I18n.t('Base_ValidatedOn')} ${formatDate(
-                date,
-                I18n.t('Base_DateFormat'),
-              )}`}
-            </Text>
-          )}
+          {_formatDate}
         </View>
         <View style={styles.rightContainer}>
           {availability != null && (

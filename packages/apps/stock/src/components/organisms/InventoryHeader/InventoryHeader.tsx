@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Badge, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import Inventory from '../../../types/inventory';
 
@@ -38,20 +38,22 @@ const InventoryHeader = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const _formatDate = useMemo(() => {
+    if (date == null) {
+      return null;
+    }
+    const _date = formatDate(date, I18n.t('Base_DateFormat'));
+
+    return <Text style={styles.text_secondary}>{_date}</Text>;
+  }, [I18n, date]);
+
   return (
     <View style={styles.infoContainer}>
       <View style={styles.refContainer}>
         <Text style={styles.text_important}>{reference}</Text>
-        {date != null && (
-          <Text style={styles.text_secondary}>
-            {formatDate(date, 'MM/DD/YYYY')}
-          </Text>
-        )}
+        {_formatDate}
         {stockLocation && (
-          <View style={styles.iconText}>
-            <Icon name="warehouse" size={12} style={styles.icon} />
-            <Text style={styles.text_secondary}>{stockLocation}</Text>
-          </View>
+          <LabelText iconName="warehouse" title={stockLocation} />
         )}
       </View>
       <View style={styles.badgeContainer}>
