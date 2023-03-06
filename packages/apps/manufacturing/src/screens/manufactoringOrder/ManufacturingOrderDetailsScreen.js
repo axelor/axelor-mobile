@@ -21,7 +21,6 @@ import {StyleSheet, View} from 'react-native';
 import {
   Badge,
   HalfLabelCard,
-  IconButton,
   Screen,
   ScrollView,
   HeaderContainer,
@@ -40,6 +39,7 @@ import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
+  ManufacturingOrderIconButtonList,
 } from '../../components/organisms';
 import {
   fetchLinkedManufOrders,
@@ -47,7 +47,6 @@ import {
   updateStatusOfManufOrder,
 } from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
-import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
@@ -158,45 +157,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <>
-          {manufOrder.statusSelect === ManufacturingOrder.status.Planned && (
-            <IconButton
-              title={I18n.t('Base_Start')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.InProgress)
-              }
-              iconName="play"
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
-            <IconButton
-              title={I18n.t('Base_Pause')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.StandBy)
-              }
-              iconName="pause"
-              color={Colors.secondaryColor}
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.StandBy && (
-            <IconButton
-              title={I18n.t('Base_Continue')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.InProgress)
-              }
-              iconName="step-forward"
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
-            <IconButton
-              title={I18n.t('Base_Finish')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.Finished)
-              }
-              iconName="power-off"
-            />
-          )}
-        </>
+        <ManufacturingOrderIconButtonList
+          statusSelect={manufOrder.statusSelect}
+          onPress={handleUpdateStatus}
+        />
       }
       loading={loadingOrder}>
       <HeaderContainer
