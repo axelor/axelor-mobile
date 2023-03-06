@@ -19,14 +19,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Badge,
   HalfLabelCard,
   Screen,
   ScrollView,
   HeaderContainer,
   ViewAllContainer,
-  useThemeColor,
-  Text,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -41,6 +38,7 @@ import {
   OperationOrderCard,
   ManufacturingOrderIconButtonList,
   ManufacturingOrderOrderSetList,
+  ManufacturingOrderHalfLabelCardList,
 } from '../../components/organisms';
 import {
   fetchLinkedManufOrders,
@@ -51,7 +49,6 @@ import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
@@ -188,18 +185,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           onPressSaleOrder={handleViewSaleOrderRefs}
           onPressViewProduction={handleViewProductionOrderRefs}
         />
-        <View style={styles.cardsContainer}>
-          <HalfLabelCard
-            iconName="dolly"
-            title={I18n.t('Manufacturing_ConsumedProduct')}
-            onPress={handleShowConsumedProduct}
-          />
-          <HalfLabelCard
-            iconName="cogs"
-            title={I18n.t('Manufacturing_ProducedProduct')}
-            onPress={handleShowProducedProduct}
-          />
-        </View>
+        <ManufacturingOrderHalfLabelCardList
+          onPressConsumedProduct={handleShowConsumedProduct}
+          onPressProducedProduct={handleShowProducedProduct}
+        />
         {operationOrderList != null && operationOrderList?.length > 0 && (
           <ViewAllContainer
             onViewPress={handleViewAll}
