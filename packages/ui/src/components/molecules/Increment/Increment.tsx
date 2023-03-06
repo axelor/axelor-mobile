@@ -16,11 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {formatNumber} from '../../../utils/formatters';
+import {
+  formatNumber as _format,
+  unformatNumber as _unformat,
+} from '../../../utils/formatters';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
+
+const cutDecimalExcess = number => {
+  return number.toFixed(2).toString();
+};
 
 interface IncrementProps {
   value: string | undefined;
@@ -35,22 +42,36 @@ const Increment = ({
   thousandSpacer,
   onValueChange,
 }: IncrementProps) => {
-  const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState(
-    formatNumber(value, decimalSpacer, thousandSpacer),
+  const format = useCallback(
+    number => {
+      return _format(number, decimalSpacer, thousandSpacer);
+    },
+    [decimalSpacer, thousandSpacer],
   );
 
+  const unformat = useCallback(
+    number => {
+      return _unformat(number, decimalSpacer, thousandSpacer);
+    },
+    [decimalSpacer, thousandSpacer],
+  );
+
+  const Colors = useThemeColor();
+  const [valueQty, setValueQty] = useState(format(value));
+
   const handlePlus = () => {
-    const newValue: number = parseFloat(valueQty) + parseFloat('1');
-    setValueQty(newValue.toFixed(2).toString());
-    onValueChange(newValue.toFixed(2));
+    const unformatedValue = unformat(valueQty);
+    const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
+    setValueQty(format(cutDecimalExcess(newValue)));
+    onValueChange(format(cutDecimalExcess(newValue)));
   };
 
   const handleMinus = () => {
-    const newValue = parseFloat(valueQty) - parseFloat('1');
+    const unformatedValue = unformat(valueQty);
+    const newValue = parseFloat(unformatedValue) - parseFloat('1');
     if (newValue >= 0) {
-      setValueQty(newValue.toFixed(2).toString());
-      onValueChange(newValue.toFixed(2));
+      setValueQty(format(cutDecimalExcess(newValue)));
+      onValueChange(format(cutDecimalExcess(newValue)));
     }
   };
 
@@ -65,13 +86,7 @@ const Increment = ({
     } else {
       const newValue: number = parseFloat(valueQty);
       if (newValue >= 0) {
-        setValueQty(
-          formatNumber(
-            newValue.toFixed(2).toString(),
-            decimalSpacer,
-            thousandSpacer,
-          ),
-        );
+        setValueQty(format(cutDecimalExcess(newValue)));
         onValueChange(newValue.toFixed(2));
       } else {
         setValueQty(`0${decimalSpacer}00`);
