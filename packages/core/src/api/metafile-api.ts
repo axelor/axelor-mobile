@@ -16,46 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders/AxiosProvider';
+import {createStandardSearch, Criteria} from '../apiProviders';
 
-const MetaFileFields = ['id', 'fileName', 'createdOn'];
+const createCriteria = (listFiles): Criteria[] => {
+  if (Array.isArray(listFiles)) {
+    return [
+      {
+        operator: 'or',
+        criteria: listFiles.map(item => {
+          const criteria: Criteria = {
+            fieldName: 'id',
+            operator: '=',
+            value: item.id,
+          };
 
-const createCriteria = listFiles => {
-  if (listFiles != null) {
-    let criterias = [];
-    listFiles.forEach(item => {
-      criterias.push({fieldName: 'id', operator: '=', value: item.id});
-    });
-    return criterias;
+          return criteria;
+        }),
+      },
+    ];
   }
+
+  return [];
 };
 
-interface fetchFileDetailsProps {
-  listFiles: [any];
-  isMetaFile?: boolean;
-}
-
-export async function fetchFileDetails({
-  listFiles,
-  isMetaFile,
-}: fetchFileDetailsProps) {
+export async function fetchFileDetails({listFiles, isMetaFile}) {
   const model = isMetaFile
     ? 'com.axelor.meta.db.MetaFile'
     : 'com.axelor.dms.db.DMSFile';
-  return axiosApiProvider.post({
-    url: `/ws/rest/${model}/search`,
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'or',
-            criteria: createCriteria(listFiles),
-          },
-        ],
-      },
-      fields: MetaFileFields,
-      limit: null,
-      offset: 0,
-    },
+
+  return createStandardSearch({
+    model: model,
+    criteria: createCriteria(listFiles),
+    fieldKey: 'core_metaFile',
+    numberElementsByPage: null,
+    page: 0,
   });
 }

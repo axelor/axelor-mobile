@@ -16,17 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 import {fetchManufacturingOrder} from './manufacturing-order-api';
 
 const createWasteProductCriteria = wasteProdProductList => {
-  let criterias = [];
-  if (wasteProdProductList != null && wasteProdProductList.length > 0) {
-    wasteProdProductList.forEach(proProduct => {
-      criterias.push({fieldName: 'id', operator: '=', value: proProduct?.id});
-    });
+  if (Array.isArray(wasteProdProductList) && wasteProdProductList.length > 0) {
+    return [
+      {
+        operator: 'or',
+        criteria: wasteProdProductList.map(prodProduct => ({
+          fieldName: 'id',
+          operator: '=',
+          value: prodProduct?.id,
+        })),
+      },
+    ];
   }
-  return criterias;
+
+  return [];
 };
 
 export async function fetchManufacturingOrderWasteProducts({
@@ -44,23 +51,11 @@ export async function fetchManufacturingOrderWasteProducts({
         manufOrder.wasteProdProductList != null &&
         manufOrder.wasteProdProductList.length > 0
       ) {
-        return axiosApiProvider.post({
-          url: '/ws/rest/com.axelor.apps.production.db.ProdProduct/search',
-          data: {
-            data: {
-              criteria: [
-                {
-                  operator: 'or',
-                  criteria: createWasteProductCriteria(
-                    manufOrder.wasteProdProductList,
-                  ),
-                },
-              ],
-            },
-            fields: ['id', 'product', 'qty', 'unit'],
-            limit: 10,
-            offset: 10 * page,
-          },
+        return createStandardSearch({
+          model: 'com.axelor.apps.production.db.ProdProduct',
+          criteria: createWasteProductCriteria(manufOrder.wasteProdProductList),
+          fieldKey: 'manufacturing_prodProduct',
+          page,
         });
       } else {
         return {data: {data: []}};

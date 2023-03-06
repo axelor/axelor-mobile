@@ -17,32 +17,7 @@
  */
 
 import {Reducer} from '@reduxjs/toolkit';
-
-export interface Module {
-  name: string;
-  title?: string;
-  subtitle?: string;
-  icon?: string;
-  disabled?: boolean;
-  menus?: {
-    [screenKey: string]: Menu;
-  };
-  screens?: {
-    [screenKey: string]:
-      | React.FC<any>
-      | {
-          component: React.FC<any>;
-          title: string;
-        };
-  };
-  translations?: {
-    [languageKey: string]: any;
-  };
-  reducers?: {
-    [key: string]: Reducer;
-  };
-  backgroundFunctions?: Function[];
-}
+import {Schema} from 'yup';
 
 export interface Menu {
   title: string;
@@ -51,4 +26,54 @@ export interface Menu {
   disabled?: boolean;
   parent?: string;
   order?: number;
+}
+
+interface ScreenOptions {
+  shadedHeader: boolean;
+}
+
+export interface Screen {
+  component: React.FC<any>;
+  title: string;
+  options?: ScreenOptions;
+}
+
+export interface ObjectFields {
+  [objectKey: string]: Schema;
+}
+
+export type SearchFields = FieldsList;
+
+export type SortFields = FieldsList;
+
+export interface FieldsList {
+  [objectKey: string]: string[];
+}
+
+export interface Models {
+  objectFields?: ObjectFields;
+  sortFields?: SortFields;
+  searchFields?: SearchFields;
+}
+
+export interface Module {
+  name: string;
+  title?: string;
+  subtitle?: string;
+  icon?: string;
+  disabled?: boolean;
+  menus?: {
+    [menuKey: string]: Menu;
+  };
+  screens?: {
+    [screenKey: string]: Screen;
+  };
+  translations?: {
+    [languageKey: string]: any;
+  };
+  reducers?: {
+    [key: string]: Reducer;
+  };
+  backgroundFunctions?: Function[];
+  models?: Models;
 }

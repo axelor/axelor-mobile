@@ -17,30 +17,25 @@
  */
 
 import {
-  axiosApiProvider,
-  getApiResponseData,
-  getFirstData,
+  createStandardSearch,
+  getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
-
-const stockLocationFields = [
-  'name',
-  'id',
-  'serialNumber',
-  'stockLocationLineList',
-];
 
 const createSearchCriteria = ({
   companyId,
   searchValue,
   defaultStockLocation,
 }) => {
-  let criterias = [];
-  criterias.push({
-    fieldName: 'typeSelect',
-    operator: '=',
-    value: StockLocation.type.internal,
-  });
+  let criterias = [
+    {
+      fieldName: 'typeSelect',
+      operator: '=',
+      value: StockLocation.type.internal,
+    },
+    getSearchCriterias('stock_stockLocation', searchValue),
+  ];
+
   if (companyId != null) {
     criterias.push({
       fieldName: 'company.id',
@@ -48,23 +43,7 @@ const createSearchCriteria = ({
       value: companyId,
     });
   }
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'name',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'serialNumber',
-          operator: 'like',
-          value: searchValue,
-        },
-      ],
-    });
-  }
+
   if (defaultStockLocation != null) {
     criterias.push({
       operator: 'or',
@@ -82,6 +61,7 @@ const createSearchCriteria = ({
       ],
     });
   }
+
   return criterias;
 };
 
@@ -91,48 +71,14 @@ export async function searchStockLocationsFilter({
   defaultStockLocation = null,
   page = 0,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockLocation/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createSearchCriteria({
-              companyId: companyId,
-              searchValue: searchValue,
-              defaultStockLocation: defaultStockLocation,
-            }),
-          },
-        ],
-      },
-      fields: stockLocationFields,
-      sortBy: ['id', 'name'],
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockLocation',
+    criteria: createSearchCriteria({
+      companyId: companyId,
+      searchValue: searchValue,
+      defaultStockLocation: defaultStockLocation,
+    }),
+    fieldKey: 'stock_stockLocation',
+    page,
   });
-}
-
-export async function searchStockLocationBySerialNumber(serialNumber) {
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.apps.stock.db.StockLocation/search',
-      data: {
-        data: {
-          criteria: [
-            {
-              fieldName: 'serialNumber',
-              operator: '=',
-              value: serialNumber,
-            },
-          ],
-        },
-        fields: stockLocationFields,
-        limit: 1,
-        offset: 0,
-      },
-    })
-    .then(getApiResponseData)
-    .then(getFirstData);
 }

@@ -16,39 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const stockCorrectionFields = [
-  'statusSelect',
-  'product',
-  'stockLocation',
-  'createdOn',
-  'validationDateT',
-  'trackingNumber',
-  'realQty',
-  'baseQty',
-  'stockCorrectionReason',
-];
-
-const sortByFields = ['statusSelect', '-validationDateT', 'createdOn'];
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchStockCorrection({page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockCorrection/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [],
-          },
-        ],
-      },
-      fields: stockCorrectionFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockCorrection',
+    criteria: [],
+    fieldKey: 'stock_stockCorrection',
+    sortKey: 'stock_stockCorrection',
+    page,
   });
 }
 

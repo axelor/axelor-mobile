@@ -16,41 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const inventoryLineFields = [
-  'id',
-  'product',
-  'currentQty',
-  'realQty',
-  'unit',
-  'rack',
-  'trackingNumber',
-  'description',
-];
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 
 export async function searchInventoryLines({inventoryId, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.InventoryLine/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'inventory.id',
-                operator: '=',
-                value: inventoryId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.InventoryLine',
+    criteria: [
+      {
+        fieldName: 'inventory.id',
+        operator: '=',
+        value: inventoryId,
       },
-      fields: inventoryLineFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+    ],
+    fieldKey: 'stock_inventoryLine',
+    page,
   });
 }
 

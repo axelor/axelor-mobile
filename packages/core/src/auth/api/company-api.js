@@ -16,18 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const companyFields = ['code', 'name', 'id'];
+import {createStandardSearch} from '../../apiProviders';
 
 export async function searchCompany() {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.base.db.Company/search',
-    data: {
-      data: null,
-      fields: companyFields,
-      limit: null,
-      offset: 0,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Company',
+    criteria: [],
+    fieldKey: 'auth_company',
+    numberElementsByPage: null,
+    page: 0,
   });
 }

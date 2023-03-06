@@ -16,42 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
 
-const deliveryFields = [
-  'id',
-  'availableStatusSelect',
-  'filterOnAvailableProducts',
-  'name',
-  'stockMoveLineList',
-  'stockMoveSeq',
-  'fromStockLocation',
-  'toAddress',
-  'toAddressStr',
-  'company',
-  'originId',
-  'origin',
-  'createdOn',
-  'estimatedDate',
-  'realDate',
-  'partner',
-  'statusSelect',
-  'pickingOrderComments',
-  'deliveryCondition',
-  'isIspmRequired',
-];
-
-const sortByFields = [
-  'statusSelect',
-  '-realDate',
-  'estimatedDate',
-  'stockMoveSeq',
-];
-
 const createSearchCriteria = searchValue => {
-  const criteria = [];
-  criteria.push(
+  return [
     {
       fieldName: 'isReversion',
       operator: '=',
@@ -77,35 +50,17 @@ const createSearchCriteria = searchValue => {
         },
       ],
     },
-  );
-
-  if (searchValue) {
-    criteria.push({
-      fieldName: 'stockMoveSeq',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
-  return criteria;
+    getSearchCriterias('stock_customerDelivery', searchValue),
+  ];
 };
 
 export async function searchDeliveryFilter({searchValue = null, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockMove/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createSearchCriteria(searchValue),
-          },
-        ],
-      },
-      fields: deliveryFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    criteria: createSearchCriteria(searchValue),
+    fieldKey: 'stock_customerDelivery',
+    sortKey: 'stock_customerDelivery',
+    page,
   });
 }
 

@@ -16,19 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
 
-const stockLocationLineFields = [
-  'id',
-  'rack',
-  'stockLocation',
-  'product',
-  'currentQty',
-  'futureQty',
-  'reservedQty',
-  'unit',
-];
+const createSearchCriteria = ({productId, companyId, stockLocationId}) => {
+  let criterias = [
+    {
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    },
+  ];
+
+  if (stockLocationId != null) {
+    criterias.push({
+      fieldName: 'stockLocation.id',
+      operator: '=',
+      value: stockLocationId,
+    });
+  } else {
+    criterias.push({
+      fieldName: 'stockLocation.typeSelect',
+      operator: '=',
+      value: StockLocation.type.internal,
+    });
+
+    if (companyId != null) {
+      criterias.push({
+        fieldName: 'stockLocation.company.id',
+        operator: '=',
+        value: companyId,
+      });
+    }
+  }
+
+  return criterias;
+};
 
 export async function searchStockLocationLine({
   stockId,
@@ -36,87 +59,14 @@ export async function searchStockLocationLine({
   companyId,
   page = 0,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockLocationLine/search',
-    data:
-      stockId != null
-        ? {
-            data: {
-              criteria: [
-                {
-                  operator: 'and',
-                  criteria: [
-                    {
-                      fieldName: 'product.id',
-                      operator: '=',
-                      value: productId,
-                    },
-                    {
-                      fieldName: 'stockLocation.id',
-                      operator: '=',
-                      value: stockId,
-                    },
-                  ],
-                },
-              ],
-            },
-            fields: stockLocationLineFields,
-            limit: 10,
-            offset: 10 * page,
-          }
-        : companyId == null
-        ? {
-            data: {
-              criteria: [
-                {
-                  operator: 'and',
-                  criteria: [
-                    {
-                      fieldName: 'product.id',
-                      operator: '=',
-                      value: productId,
-                    },
-                    {
-                      fieldName: 'stockLocation.typeSelect',
-                      operator: '=',
-                      value: StockLocation.type.internal,
-                    },
-                  ],
-                },
-              ],
-            },
-            fields: stockLocationLineFields,
-            limit: 10,
-            offset: 10 * page,
-          }
-        : {
-            data: {
-              criteria: [
-                {
-                  operator: 'and',
-                  criteria: [
-                    {
-                      fieldName: 'product.id',
-                      operator: '=',
-                      value: productId,
-                    },
-                    {
-                      fieldName: 'stockLocation.typeSelect',
-                      operator: '=',
-                      value: StockLocation.type.internal,
-                    },
-                    {
-                      fieldName: 'stockLocation.company.id',
-                      operator: '=',
-                      value: companyId,
-                    },
-                  ],
-                },
-              ],
-            },
-            fields: stockLocationLineFields,
-            limit: 10,
-            offset: 10 * page,
-          },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockLocationLine',
+    criteria: createSearchCriteria({
+      companyId: companyId,
+      productId: productId,
+      stockLocationId: stockId,
+    }),
+    fieldKey: 'stock_stockLocationLine',
+    page,
   });
 }

@@ -26,4 +26,11 @@ export const app_config = {
    * once logged in if the latter is set.
    */
   defaultLanguage: 'en',
+
+  /*
+   * This setting is used to define the default request limit used is createStandardSearch
+   * function (that is to say the number of elements per page on list screens). This value
+   * can be rewritten for any request using props numberElementsByPage
+   */
+  defaultRequestLimit: 10,
 };

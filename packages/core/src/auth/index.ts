@@ -21,6 +21,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';
 import {SettingsScreen, UserScreen} from './screens';
+import {auth_modelAPI} from './models';
 
 export const authModule: Module = {
   name: 'Auth',
@@ -50,6 +51,9 @@ export const authModule: Module = {
   },
   reducers: {
     ...authReducers,
+  },
+  models: {
+    objectFields: {...auth_modelAPI},
   },
 };
 

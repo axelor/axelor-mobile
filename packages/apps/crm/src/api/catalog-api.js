@@ -1,48 +1,20 @@
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
-
-const catalogFields = ['name', 'pdfFile', 'description', 'catalogType'];
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
 const createCatalogCriteria = searchValue => {
-  let criterias = [];
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'name',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'catalogType.name',
-          operator: 'like',
-          value: searchValue,
-        },
-      ],
-    });
-  }
-  return criterias;
+  return [getSearchCriterias('crm_catalog', searchValue)];
 };
 
-const sortByFields = ['name', 'catalogType.name', 'createdOn'];
-
 export async function searchCatalog({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.crm.db.Catalog/search/',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createCatalogCriteria(searchValue),
-          },
-        ],
-      },
-      fields: catalogFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.Catalog',
+    criteria: createCatalogCriteria(searchValue),
+    fieldKey: 'crm_catalog',
+    sortKey: 'crm_catalog',
+    page,
   });
 }
 

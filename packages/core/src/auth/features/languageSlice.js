@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '../../api/utils';
+import {handlerApiCall} from '../../apiProviders/utils';
 import {searchLanguage} from '../api/language-api';
 
 export const fetchLanguages = createAsyncThunk(

@@ -18,43 +18,13 @@
 
 import {
   axiosApiProvider,
-  getApiResponseData,
-  getFirstData,
+  createStandardSearch,
+  createStandardFetch,
+  getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const productFields = [
-  'name',
-  'code',
-  'fullName',
-  'picture',
-  'trackingNumberConfiguration',
-  'unit',
-  'salesUnit',
-  'purchasesUnit',
-  'length',
-  'height',
-  'width',
-  'lengthUnit',
-  'description',
-  'netMass',
-  'grossMass',
-  'massUnit',
-  'productCategory',
-  'procurementMethodSelect',
-  'isUnrenewed',
-  'isPrototype',
-  'picture',
-  'serialNumber',
-  'trackingNumberConfiguration',
-  'parentProduct',
-  'productVariant',
-];
-
-const sortByFields = ['name'];
-
 const createProductCriteria = searchValue => {
-  let criterias = [];
-  criterias.push(
+  return [
     {
       fieldName: 'isModel',
       operator: '=',
@@ -75,83 +45,26 @@ const createProductCriteria = searchValue => {
       operator: '=',
       value: 'Product',
     },
-  );
-
-  if (searchValue != null) {
-    criterias.push({
-      operator: 'or',
-      criteria: [
-        {
-          fieldName: 'name',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'code',
-          operator: 'like',
-          value: searchValue,
-        },
-        {
-          fieldName: 'serialNumber',
-          operator: 'like',
-          value: searchValue,
-        },
-      ],
-    });
-  }
-  return criterias;
+    getSearchCriterias('stock_product', searchValue),
+  ];
 };
 
 export async function searchProductsFilter({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.base.db.Product/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createProductCriteria(searchValue),
-          },
-        ],
-      },
-      fields: productFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: createProductCriteria(searchValue),
+    fieldKey: 'stock_product',
+    sortKey: 'stock_product',
+    page,
   });
 }
 
 export async function searchProductWithId(productId) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.base.db.Product/${productId}/fetch`,
-    data: {
-      fields: productFields,
-    },
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Product',
+    id: productId,
+    fieldKey: 'stock_product',
   });
-}
-
-export function searchProductBySerialNumber(serialNumber) {
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.apps.base.db.Product/search',
-      data: {
-        data: {
-          criteria: [
-            {
-              fieldName: 'serialNumber',
-              operator: '=',
-              value: serialNumber,
-            },
-          ],
-        },
-        fields: productFields,
-        limit: 1,
-        offset: 0,
-      },
-    })
-    .then(getApiResponseData)
-    .then(getFirstData);
 }
 
 export async function updateLocker({
@@ -171,27 +84,17 @@ export async function updateLocker({
 }
 
 export async function fetchVariants({productVariantParentId, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.base.db.Product/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'parentProduct.id',
-                operator: '=',
-                value: productVariantParentId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Product',
+    criteria: [
+      {
+        fieldName: 'parentProduct.id',
+        operator: '=',
+        value: productVariantParentId,
       },
-      fields: productFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+    ],
+    fieldKey: 'stock_product',
+    page,
   });
 }
 

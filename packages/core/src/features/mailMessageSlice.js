@@ -27,7 +27,7 @@ import {
   unsubscribeRequest,
   countUnreadMessages,
 } from '../api/mail-message-api';
-import {handlerApiCall} from '../api/utils';
+import {handlerApiCall} from '../apiProviders/utils';
 
 export const getMailMessages = createAsyncThunk(
   'mailMessages/getMailMessages',
