@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Button,
   Picker,
   Screen,
   ScrollView,
@@ -32,7 +31,10 @@ import {
   ProductCardInfo,
   QuantityCard,
 } from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
+import {
+  ManufacturingOrderHeader,
+  WasteProductFixedItems,
+} from '../../../components/organisms';
 import {ManufacturingOrder} from '../../../types';
 import {
   addWasteProductToManufOrder,
@@ -100,19 +102,12 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
-        manufOrder?.wasteStockMove == null &&
-        (wasteProduct ? (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleUpdateWasteProduct}
-          />
-        ) : (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleCreateWasteProduct}
-          />
-        ))
+        <WasteProductFixedItems
+          manufOrder={manufOrder}
+          wasteProduct={wasteProduct}
+          onPressUpdateWasteProduct={handleCreateWasteProduct}
+          onPressCreateWasteProduct={handleUpdateWasteProduct}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}

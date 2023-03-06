@@ -32,3 +32,4 @@ export {default as ManufacturingOrderOrderSetList} from './ManufacturingOrderOrd
 export {default as ManufacturingOrderHalfLabelCardList} from './ManufacturingOrderHalfLabelCardList/ManufacturingOrderHalfLabelCardList';
 export {default as ManufacturingOrderNotesCardList} from './ManufacturingOrderNotesCardList/ManufacturingOrderNotesCardList';
 export {default as OperationOrderLabelTextList} from './OperationOrderLabelTextList/OperationOrderLabelTextList';
+export {default as WasteProductFixedItems} from './WasteProductFixedItems/WasteProductFixedItems';
