@@ -4,20 +4,20 @@ import {getObjectFields, getSortFields} from './ObjectFieldsProvider';
 
 interface SearchProps {
   model: string;
-  criteria: Criteria[];
-  domain: string;
-  domainContext: any;
+  criteria?: Criteria[];
+  domain?: string;
+  domainContext?: any;
   fieldKey: string;
-  sortKey: string;
+  sortKey?: string;
   page: number;
-  numberElementsByPage: number;
+  numberElementsByPage?: number;
 }
 
 interface FetchProps {
   model: string;
   fieldKey: string;
   id: number;
-  relatedFields: any;
+  relatedFields?: any;
 }
 
 class RequestBuilder {

@@ -17,7 +17,7 @@
  */
 
 import Toast from 'react-native-toast-message';
-import {traceError} from './traceback-api';
+import {traceError} from '../api/traceback-api';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
