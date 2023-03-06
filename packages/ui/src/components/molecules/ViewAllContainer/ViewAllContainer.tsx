@@ -23,14 +23,14 @@ import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {
   style?: any;
-  title: string;
-  data: any[];
-  disabled: boolean;
+  title?: string;
+  data?: any[];
+  disabled?: boolean;
   children: any;
   isHeaderExist?: boolean;
   onNewIcon?: () => void;
   onViewPress: () => void;
-  renderFirstTwoItems: (item: any, index: number) => any;
+  renderFirstTwoItems?: (item: any, index: number) => any;
   translator?: (any) => void | undefined;
 }
 

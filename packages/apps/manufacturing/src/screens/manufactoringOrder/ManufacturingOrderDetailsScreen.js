@@ -40,6 +40,7 @@ import {
   ManufacturingOrderHeader,
   OperationOrderCard,
   ManufacturingOrderIconButtonList,
+  ManufacturingOrderOrderSetList,
 } from '../../components/organisms';
 import {
   fetchLinkedManufOrders,
@@ -181,50 +182,12 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
         />
-        {manufOrder.saleOrderSet != null &&
-          manufOrder.saleOrderSet.length > 0 && (
-            <ViewAllContainer
-              onPress={handleViewSaleOrderRefs}
-              disabled={manufOrder.saleOrderSet.length < 3}>
-              <View style={styles.orderTitle}>
-                <Text>{I18n.t('Manufacturing_RefClient')}</Text>
-              </View>
-              <View style={styles.orderSetContainer}>
-                {manufOrder.saleOrderSet.slice(0, 3).map(item => (
-                  <Badge
-                    style={styles.orderBadge}
-                    title={item.fullName}
-                    key={item.id}
-                    color={Colors.priorityColor}
-                    numberOfLines={null}
-                  />
-                ))}
-              </View>
-            </ViewAllContainer>
-          )}
-        {manufOrder.productionOrderSet != null &&
-          manufOrder.productionOrderSet?.length > 0 &&
-          linkedManufOrders != null &&
-          linkedManufOrders.length > 0 && (
-            <ViewAllContainer
-              onPress={handleViewProductionOrderRefs}
-              disabled={linkedManufOrders.length === 0}>
-              <View style={styles.orderTitle}>
-                <Text>{I18n.t('Manufacturing_RefOP')}</Text>
-              </View>
-              <View style={styles.orderSetContainer}>
-                {linkedManufOrders.slice(0, 3).map(item => (
-                  <Badge
-                    style={styles.orderBadge}
-                    title={item.manufOrderSeq}
-                    key={item.id}
-                    color={Colors.priorityColor}
-                    numberOfLines={null}
-                  />
-                ))}
-              </View>
-            </ViewAllContainer>
-          )}
+        <ManufacturingOrderOrderSetList
+          manufOrder={manufOrder}
+          linkedManufOrders={linkedManufOrders}
+          onPressSaleOrder={handleViewSaleOrderRefs}
+          onPressViewProduction={handleViewProductionOrderRefs}
+        />
         <View style={styles.cardsContainer}>
           <HalfLabelCard
             iconName="dolly"

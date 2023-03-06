@@ -28,3 +28,4 @@ export {default as ProductionFileLargeCard} from './ProductionFileLargeCard/Prod
 export {default as ProductionFileSmallCard} from './ProductionFileSmallCard/ProductionFileSmallCard';
 export {default as WasteProductCard} from './WasteProductCard/WasteProductCard';
 export {default as ManufacturingOrderIconButtonList} from './ManufacturingOrderIconButtonList/ManufacturingOrderIconButtonList';
+export {default as ManufacturingOrderOrderSetList} from './ManufacturingOrderOrderSetList/ManufacturingOrderOrderSetList';
