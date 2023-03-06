@@ -30,3 +30,4 @@ export {default as WasteProductCard} from './WasteProductCard/WasteProductCard';
 export {default as ManufacturingOrderIconButtonList} from './ManufacturingOrderIconButtonList/ManufacturingOrderIconButtonList';
 export {default as ManufacturingOrderOrderSetList} from './ManufacturingOrderOrderSetList/ManufacturingOrderOrderSetList';
 export {default as ManufacturingOrderHalfLabelCardList} from './ManufacturingOrderHalfLabelCardList/ManufacturingOrderHalfLabelCardList';
+export {default as ManufacturingOrderNotesCardList} from './ManufacturingOrderNotesCardList/ManufacturingOrderNotesCardList';

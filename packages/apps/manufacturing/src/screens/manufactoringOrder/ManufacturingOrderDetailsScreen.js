@@ -17,14 +17,12 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
-  HalfLabelCard,
   Screen,
   ScrollView,
   HeaderContainer,
   ViewAllContainer,
-  NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -39,6 +37,7 @@ import {
   ManufacturingOrderIconButtonList,
   ManufacturingOrderOrderSetList,
   ManufacturingOrderHalfLabelCardList,
+  ManufacturingOrderNotesCardList,
 } from '../../components/organisms';
 import {
   fetchLinkedManufOrders,
@@ -206,18 +205,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
             )}
           />
         )}
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.note}
-        />
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.moCommentFromSaleOrder}
-        />
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.moCommentFromSaleOrderLine}
-        />
+        <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
       </ScrollView>
     </Screen>
   );
