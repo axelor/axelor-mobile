@@ -18,14 +18,8 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {DropdownMenuItem, HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
-  DropdownMenuItem,
-  HeaderContainer,
-  LabelText,
-  Screen,
-} from '@axelor/aos-mobile-ui';
-import {
-  formatDuration,
   HeaderOptionsMenu,
   isEmpty,
   Stopwatch,
@@ -35,7 +29,10 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {OperationOrderDatesCard} from '../../components/molecules';
-import {OperationOrderHeader} from '../../components/organisms';
+import {
+  OperationOrderHeader,
+  OperationOrderLabelTextList,
+} from '../../components/organisms';
 import OperationOrder from '../../types/operation-order';
 import {
   fetchOperationOrderById,
@@ -135,30 +132,7 @@ function OperationOrderDetailsScreen({route, navigation}) {
           startDate={startDate?.value}
           endDate={endDate?.value}
         />
-        <View style={styles.detailsContainer}>
-          <LabelText
-            iconName="stopwatch"
-            size={20}
-            title={I18n.t('Manufacturing_PlannedDuration') + ':'}
-            value={formatDuration(operationOrder?.plannedDuration)}
-          />
-          {operationOrder?.workCenter && (
-            <LabelText
-              iconName="warehouse"
-              size={15}
-              title={I18n.t('Manufacturing_WorkCenter') + ':'}
-              value={operationOrder?.workCenter?.name}
-            />
-          )}
-          {operationOrder?.machine && (
-            <LabelText
-              iconName="tools"
-              size={18}
-              title={I18n.t('Manufacturing_Machine') + ':'}
-              value={operationOrder?.machine?.name}
-            />
-          )}
-        </View>
+        <OperationOrderLabelTextList operationOrder={operationOrder} />
         <Stopwatch
           startTime={time}
           status={timerStatus}
@@ -182,10 +156,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
 const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 10,
-  },
-  detailsContainer: {
-    marginHorizontal: 20,
-    marginVertical: 15,
   },
 });
 

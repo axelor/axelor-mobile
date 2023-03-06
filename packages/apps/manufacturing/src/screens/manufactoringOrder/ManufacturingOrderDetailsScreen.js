@@ -216,25 +216,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 4,
   },
-  cardsContainer: {
-    flexDirection: 'row',
-  },
-  orderClientContainer: {
-    marginHorizontal: 12,
-    flexDirection: 'column',
-  },
-  orderSetContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  orderBadge: {
-    paddingHorizontal: 10,
-    width: null,
-  },
-  orderTitle: {
-    marginHorizontal: 8,
-  },
 });
 
 export default ManufacturingOrderDetailsScreen;

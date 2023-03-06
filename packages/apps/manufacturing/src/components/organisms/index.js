@@ -31,3 +31,4 @@ export {default as ManufacturingOrderIconButtonList} from './ManufacturingOrderI
 export {default as ManufacturingOrderOrderSetList} from './ManufacturingOrderOrderSetList/ManufacturingOrderOrderSetList';
 export {default as ManufacturingOrderHalfLabelCardList} from './ManufacturingOrderHalfLabelCardList/ManufacturingOrderHalfLabelCardList';
 export {default as ManufacturingOrderNotesCardList} from './ManufacturingOrderNotesCardList/ManufacturingOrderNotesCardList';
+export {default as OperationOrderLabelTextList} from './OperationOrderLabelTextList/OperationOrderLabelTextList';
