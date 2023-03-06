@@ -22,14 +22,8 @@ export {configGlobalStore} from './redux/store';
 export {storage, Storage, useStorage} from './storage/Storage';
 export {traceError} from './api/traceback-api';
 export {useEffectDebugger} from './hooks/use-effect-debugger';
-export {logout} from './features/authSlice';
+export {login, logout} from './features/authSlice';
 export * from './apiProviders';
-export {
-  getApiResponseData,
-  getFirstData,
-  handlerApiCall,
-  handlerError,
-} from './api/utils';
 export {
   useScannedValueByKey,
   useScannerSelector,

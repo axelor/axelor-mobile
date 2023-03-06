@@ -18,7 +18,7 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getMobileConfigs} from '../api/mobile-config-api';
-import {handlerApiCall} from '../api/utils';
+import {handlerApiCall} from '../apiProviders/utils';
 
 export const fetchMobileConfig = createAsyncThunk(
   'mobileConfig/fetchMobileConfig',

@@ -16,40 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../types/manufacturing-order';
 
-const manufacturingOrderFields = [
-  'id',
-  'manufOrderSeq',
-  'statusSelect',
-  'prioritySelect',
-  'product',
-  'qty',
-  'unit',
-  'clientPartner',
-  'saleOrderSet',
-  'toConsumeProdProductList',
-  'note',
-  'moCommentFromSaleOrder',
-  'moCommentFromSaleOrderLine',
-  'parentMO',
-  'wasteProdProductList',
-  'wasteStockMove',
-  'productionOrderSet',
-  'company',
-];
-
-const sortByFields = [
-  'statusSelect',
-  '-realStartDateT',
-  'plannedStartDateT',
-  'manufOrderSeq',
-];
-
 const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
-  let criterias = [];
-  criterias.push(
+  let criterias = [
     {
       fieldName: 'typeSelect',
       operator: '=',
@@ -80,7 +56,9 @@ const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
         },
       ],
     },
-  );
+    getSearchCriterias('manufacturing_manufacturingOrder', searchValue),
+  ];
+
   if (companyId != null) {
     criterias.push({
       fieldName: 'company.id',
@@ -88,13 +66,7 @@ const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
       value: companyId,
     });
   }
-  if (searchValue != null) {
-    criterias.push({
-      fieldName: 'manufOrderSeq',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
+
   if (workshopId != null) {
     criterias.push({
       operator: 'or',
@@ -112,6 +84,7 @@ const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
       ],
     });
   }
+
   return criterias;
 };
 
@@ -121,36 +94,21 @@ export async function searchManufacturingOrderFilter({
   searchValue = null,
   page = 0,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.production.db.ManufOrder/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createManufOrderCriteria(
-              companyId,
-              workshopId,
-              searchValue,
-            ),
-          },
-        ],
-      },
-      fields: manufacturingOrderFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    criteria: createManufOrderCriteria(companyId, workshopId, searchValue),
+    fieldKey: 'manufacturing_manufacturingOrder',
+    sortKey: 'manufacturing_manufacturingOrder',
+    page,
   });
 }
 
 export async function fetchManufacturingOrder({manufOrderId}) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.production.db.ManufOrder/${manufOrderId}/fetch`,
-    data: {
-      fields: manufacturingOrderFields,
-      related: {product: ['name', 'code', 'picture']},
-    },
+  return createStandardFetch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    id: manufOrderId,
+    fieldKey: 'manufacturing_manufacturingOrder',
+    relatedFields: {product: ['name', 'code', 'picture']},
   });
 }
 
@@ -162,38 +120,26 @@ export async function fetchManufacturingOrderOfProductionOrder({
     return null;
   }
 
-  return axiosApiProvider
-    .post({
-      url: '/ws/rest/com.axelor.apps.production.db.ProductionOrder/search',
-      data: {
-        data: {
-          _domain: 'self.id IN :productionOrderIds',
-          _domainContext: {
-            productionOrderIds: productionOrderList.map(
-              productionOrder => productionOrder.id,
-            ),
-          },
-        },
-        fields: ['id', 'manufOrderSet'],
-      },
-    })
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ProductionOrder',
+    domain: 'self.id IN :productionOrderIds',
+    domainContext: {
+      productionOrderIds: productionOrderList.map(
+        productionOrder => productionOrder.id,
+      ),
+    },
+    fieldKey: 'manufacturing_productionOrder',
+    page: 0,
+    limit: null,
+  })
     .then(res => {
       const result = res?.data?.data;
 
-      const manufOrderList = result
-        ?.map(productionOrder => productionOrder?.manufOrderSet)
-        ?.flat(1);
+      const manufOrderList = result?.flatMap(
+        productionOrder => productionOrder?.manufOrderSet,
+      );
 
-      if (manufOrderList == null) {
-        return null;
-      }
-
-      const manufOrderIds = [];
-      manufOrderList.forEach(manufOrder => {
-        manufOrderIds.push(manufOrder.id);
-      });
-
-      return manufOrderIds;
+      return manufOrderList?.map(manufOrder => manufOrder.id);
     })
     .then(manufOrderIds => fetchManufacturingOrderByIds({manufOrderIds, page}));
 }
@@ -203,20 +149,15 @@ async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
     return null;
   }
 
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.production.db.ManufOrder/search',
-    data: {
-      data: {
-        _domain: 'self.id IN :manufOrderIds',
-        _domainContext: {
-          manufOrderIds: manufOrderIds,
-        },
-      },
-      fields: ['id', 'manufOrderSeq', 'statusSelect'],
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    domain: 'self.id IN :manufOrderIds',
+    domainContext: {
+      manufOrderIds: manufOrderIds,
     },
+    fieldKey: 'manufacturing_manufacturingOrderShort',
+    sortKey: 'manufacturing_manufacturingOrder',
+    page,
   });
 }
 
@@ -224,28 +165,18 @@ export async function fetchChildrenManufacturingOrders({
   parentManufOrderId,
   page = 0,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.production.db.ManufOrder/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'parentMO.id',
-                operator: '=',
-                value: parentManufOrderId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    criteria: [
+      {
+        fieldName: 'parentMO.id',
+        operator: '=',
+        value: parentManufOrderId,
       },
-      fields: manufacturingOrderFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+    ],
+    fieldKey: 'manufacturing_manufacturingOrder',
+    sortKey: 'manufacturing_manufacturingOrder',
+    page,
   });
 }
 

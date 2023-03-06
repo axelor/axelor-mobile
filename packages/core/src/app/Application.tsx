@@ -38,6 +38,7 @@ interface appConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
   defaultLanguage: string;
+  defaultRequestLimit: number;
 }
 
 interface ApplicationProps {
@@ -75,7 +76,8 @@ const Application = ({
       themes={themes}
       defaultWritingTheme={defaultWritingTheme}
       writingThemes={writingThemes}
-      defaultLanguage={configuration?.defaultLanguage}>
+      defaultLanguage={configuration?.defaultLanguage}
+      defaultRequestLimit={configuration?.defaultRequestLimit}>
       <ContextedApplication
         modules={modules}
         mainMenu={mainMenu}

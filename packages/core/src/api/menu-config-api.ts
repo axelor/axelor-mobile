@@ -16,44 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders/AxiosProvider';
+import {createStandardSearch, Criteria} from '../apiProviders';
 import {getMobileConfigs} from './mobile-config-api';
 
-const MobileMenuFields = ['name', 'technicalName', 'authorizedRoles'];
+const createCriteria = (listMenus): Criteria[] => {
+  if (Array.isArray(listMenus)) {
+    return [
+      {
+        operator: 'or',
+        criteria: listMenus.map(item => {
+          const criteria: Criteria = {
+            fieldName: 'id',
+            operator: '=',
+            value: item.id,
+          };
 
-const createCriteria = listMenus => {
-  if (listMenus != null) {
-    let criterias = [];
-    listMenus.forEach(item => {
-      criterias.push({fieldName: 'id', operator: '=', value: item.id});
-    });
-    return criterias;
+          return criteria;
+        }),
+      },
+    ];
   }
+
+  return [];
 };
 
 async function searchMenu({listMenus}) {
   if (listMenus == null || listMenus?.length === 0) {
     return [];
-  } else {
-    return axiosApiProvider
-      .post({
-        url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileMenu/search',
-        data: {
-          data: {
-            criteria: [
-              {
-                operator: 'or',
-                criteria: createCriteria(listMenus),
-              },
-            ],
-          },
-          fields: MobileMenuFields,
-          limit: null,
-          offset: 0,
-        },
-      })
-      .then(res => res?.data?.data);
   }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.mobilesettings.db.MobileMenu',
+    criteria: createCriteria(listMenus),
+    fieldKey: 'core_mobileMenu',
+    numberElementsByPage: null,
+    page: 0,
+  }).then(res => res?.data?.data);
 }
 
 export async function getModulesConfig() {

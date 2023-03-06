@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '../api/utils';
+import {handlerApiCall} from '../apiProviders/utils';
 import {countAttachments, fetchAttachedFiles} from '../api/attached-files-api';
 import {fetchFileDetails} from '../api/metafile-api';
 

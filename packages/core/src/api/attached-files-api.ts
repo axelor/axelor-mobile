@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../apiProviders/AxiosProvider';
+import {axiosApiProvider} from '../apiProviders';
 import {fetchFileDetails} from './metafile-api';
 
 export async function fetchAttachedFiles({

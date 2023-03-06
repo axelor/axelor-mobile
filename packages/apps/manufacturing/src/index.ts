@@ -22,6 +22,11 @@ import OperationOrderScreens from './screens/operationOrder';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as manufacturingReducers from './features';
+import {
+  manufacturing_modelAPI,
+  manufacturing_searchFields,
+  manufacturing_sortFields,
+} from './models';
 
 export const ManufacturingModule: Module = {
   name: 'app-manufacturing',
@@ -55,6 +60,11 @@ export const ManufacturingModule: Module = {
   },
   reducers: {
     ...manufacturingReducers,
+  },
+  models: {
+    objectFields: {...manufacturing_modelAPI},
+    sortFields: {...manufacturing_sortFields},
+    searchFields: {...manufacturing_searchFields},
   },
 };
 

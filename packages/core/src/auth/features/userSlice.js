@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '../../api/utils';
+import {handlerApiCall} from '../../apiProviders/utils';
 import {getLoggedUser, postUser} from '../api/user-api';
 
 export const fetchActiveUser = createAsyncThunk(

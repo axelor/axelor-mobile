@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '../api/utils';
+import {handlerApiCall} from '../apiProviders/utils';
 import {fetchFileDetails} from '../api/metafile-api';
 
 export const getFileDetails = createAsyncThunk(

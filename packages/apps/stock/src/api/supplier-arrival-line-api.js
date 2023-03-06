@@ -16,48 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
 import StockMove from '../types/stock-move';
-
-const supplierArrivalLineFields = [
-  'id',
-  'product',
-  'availableStatusSelect',
-  'trackingNumber',
-  'unit',
-  'qty',
-  'realQty',
-  'locker',
-  'name',
-  'conformitySelect',
-];
 
 export async function searchSupplierArrivalLines({
   supplierArrivalId,
   page = 0,
 }) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.StockMoveLine/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: [
-              {
-                fieldName: 'stockMove.id',
-                operator: '=',
-                value: supplierArrivalId,
-              },
-            ],
-          },
-        ],
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockMoveLine',
+    criteria: [
+      {
+        fieldName: 'stockMove.id',
+        operator: '=',
+        value: supplierArrivalId,
       },
-      fields: supplierArrivalLineFields,
-      sortBy: ['id'],
-      limit: 10,
-      offset: 10 * page,
-    },
+    ],
+    fieldKey: 'stock_supplierArrivalLine',
+    page,
   });
 }
 

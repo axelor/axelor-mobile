@@ -18,7 +18,7 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getModulesConfig} from '../api/menu-config-api';
-import {handlerApiCall} from '../api/utils';
+import {handlerApiCall} from '../apiProviders/utils';
 
 export const fetchMenuConfig = createAsyncThunk(
   'menuConfig/fetchMenuConfig',

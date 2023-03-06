@@ -16,41 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import Inventory from '../types/inventory';
 
-const inventoryFields = [
-  'id',
-  'stockLocation',
-  'company',
-  'inventorySeq',
-  'inventoryTitle',
-  'createdOn',
-  'updatedOn',
-  'plannedStartDateT',
-  'plannedEndDateT',
-  'validatedOn',
-  'typeSelect',
-  'statusSelect',
-  'product',
-  'description',
-  'version',
-  'fromRack',
-  'toRack',
-  'productCategory',
-  'productFamily',
-];
-
-const sortByFields = [
-  'statusSelect',
-  '-validatedOn',
-  'plannedStartDateT',
-  'inventorySeq',
-];
-
 const createSearchCriteria = searchValue => {
-  const criteria = [];
-  criteria.push(
+  return [
     {
       fieldName: 'statusSelect',
       operator: '!=',
@@ -61,45 +36,25 @@ const createSearchCriteria = searchValue => {
       operator: '!=',
       value: Inventory.status.Canceled,
     },
-  );
-
-  if (searchValue != null) {
-    criteria.push({
-      fieldName: 'inventorySeq',
-      operator: 'like',
-      value: searchValue,
-    });
-  }
-
-  return criteria;
+    getSearchCriterias('stock_inventory', searchValue),
+  ];
 };
 
 export async function fetchInventory({inventoryId}) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.stock.db.Inventory/${inventoryId}/fetch`,
-    data: {
-      fields: inventoryFields,
-    },
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.Inventory',
+    id: inventoryId,
+    fieldKey: 'stock_inventory',
   });
 }
 
 export async function searchInventoryFilter({searchValue, page = 0}) {
-  return axiosApiProvider.post({
-    url: '/ws/rest/com.axelor.apps.stock.db.Inventory/search',
-    data: {
-      data: {
-        criteria: [
-          {
-            operator: 'and',
-            criteria: createSearchCriteria(searchValue),
-          },
-        ],
-      },
-      fields: inventoryFields,
-      sortBy: sortByFields,
-      limit: 10,
-      offset: 10 * page,
-    },
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.Inventory',
+    criteria: createSearchCriteria(searchValue),
+    fieldKey: 'stock_inventory',
+    sortKey: 'stock_inventory',
+    page,
   });
 }
 
