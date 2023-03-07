@@ -48,5 +48,8 @@
   "Stopwatch_Status_Paused": "Paused",
   "Stopwatch_Status_Finished": "Finished",
   "Stopwatch_Status_Canceled": "Canceled",
-  "Stopwatch_TimerFormat": "mm:ss"
+  "Stopwatch_TimerFormat": "mm:ss",
+  "Base_Information": "Information",
+  "Base_Refresh": "Refresh application",
+  "Base_Logout": "Log out"
 }

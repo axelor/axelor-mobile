@@ -32,6 +32,7 @@ const RootNavigator = ({
   mainMenu,
   version,
   showModulesSubtitle = false,
+  onRefresh,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -48,9 +49,10 @@ const RootNavigator = ({
         modules={modules}
         mainMenu={mainMenu}
         showModulesSubtitle={showModulesSubtitle}
+        onRefresh={onRefresh}
       />
     ),
-    [modules, mainMenu, showModulesSubtitle],
+    [modules, mainMenu, showModulesSubtitle, onRefresh],
   );
 
   const checkInternetConnection = useCallback(async () => {

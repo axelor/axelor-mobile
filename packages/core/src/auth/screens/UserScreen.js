@@ -142,7 +142,7 @@ const UserScreen = ({children, navigation}) => {
           />
           <Text style={styles.textUser}>{user.name}</Text>
         </View>
-        {baseConfig.enableMultiCompany && (
+        {baseConfig?.enableMultiCompany && (
           <Picker
             title={I18n.t('User_ActiveCompany')}
             listItems={companyList}

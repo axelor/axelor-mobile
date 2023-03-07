@@ -97,7 +97,7 @@ export function getDefaultModule(modules, mainMenu) {
 }
 
 export function numberOfModules(modules) {
-  return modules.filter(moduleHasMenus).length;
+  return modules.filter(authModuleFilter).filter(moduleHasMenus).length;
 }
 
 function modulesContainsMenu(modules, menuKey) {
@@ -116,4 +116,8 @@ function firstModulesWithMenus(modules) {
   return modules
     .filter(_module => _module.menus)
     .find(_module => Object.keys(_module.menus).length > 0);
+}
+
+export function authModuleFilter(_module) {
+  return _module.name !== 'Auth';
 }

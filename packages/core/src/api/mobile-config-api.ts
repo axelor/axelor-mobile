@@ -18,15 +18,43 @@
 
 import {axiosApiProvider} from '../axios/AxiosApi';
 
+function emptyResponse() {
+  return {data: {data: []}};
+}
+
 export async function getMobileConfigs() {
   return axiosApiProvider
-    .get({
-      url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileConfig',
+    .post({
+      url: '/ws/rest/com.axelor.studio.db.App/search',
+      data: {
+        data: {
+          criteria: [
+            {
+              fieldName: 'code',
+              operator: '=',
+              value: 'mobile-settings',
+            },
+          ],
+        },
+        fields: ['active'],
+      },
     })
     .then(res => {
-      if (res?.status === 0 || res?.status === 200) {
-        return res;
+      if (
+        (res?.status === 0 || res?.status === 200) &&
+        res?.data?.data?.[0].active
+      ) {
+        return axiosApiProvider
+          .get({
+            url: '/ws/rest/com.axelor.apps.mobilesettings.db.MobileConfig',
+          })
+          .then(_res => {
+            if (_res?.status === 0 || _res?.status === 200) {
+              return _res;
+            }
+            return emptyResponse();
+          });
       }
-      return {data: {data: []}};
+      return emptyResponse();
     });
 }
