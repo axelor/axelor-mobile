@@ -24,6 +24,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import {useThemeColor, Text, Screen} from '@axelor/aos-mobile-ui';
 import {
@@ -85,76 +86,77 @@ const LoginScreen = ({route}) => {
     <Screen>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}
-        keyboardVerticalOffset={180}>
-        <View style={styles.container}>
-          <View style={styles.imageContainer}>
-            <LogoImage url={url} />
+        //keyboardVerticalOffset={180}
+      >
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.imageContainer}>
+              <LogoImage url={url} />
+            </View>
+            <UrlInput
+              value={url}
+              onChange={setUrl}
+              readOnly={loading}
+              onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
+              onSelection={() => {
+                dispatch(enableScan(urlScanKey));
+              }}
+              scanIconColor={
+                isEnabled && scanKey === urlScanKey
+                  ? Colors.primaryColor.background
+                  : Colors.secondaryColor_dark.background
+              }
+            />
+            <UsernameInput
+              value={username}
+              onChange={setUsername}
+              readOnly={loading}
+            />
+            <PasswordInput
+              value={password}
+              onChange={setPassword}
+              readOnly={loading}
+            />
+            <View>
+              {loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <LoginButton
+                  onPress={() => dispatch(login({url, username, password}))}
+                  disabled={loading}
+                />
+              )}
+            </View>
+            <View>{error && <ErrorText message={error.message} />}</View>
+            <View style={styles.copyright}>
+              <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
+              <Text>{`Version ${appVersion}`}</Text>
+            </View>
           </View>
-          <UrlInput
-            value={url}
-            onChange={setUrl}
-            readOnly={loading}
-            onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
-            onSelection={() => {
-              dispatch(enableScan(urlScanKey));
-            }}
-            scanIconColor={
-              isEnabled && scanKey === urlScanKey
-                ? Colors.primaryColor.background
-                : Colors.secondaryColor_dark.background
-            }
-          />
-          <UsernameInput
-            value={username}
-            onChange={setUsername}
-            readOnly={loading}
-          />
-          <PasswordInput
-            value={password}
-            onChange={setPassword}
-            readOnly={loading}
-          />
-          <View>
-            {loading ? (
-              <ActivityIndicator size="large" />
-            ) : (
-              <LoginButton
-                onPress={() => dispatch(login({url, username, password}))}
-                disabled={loading}
-              />
-            )}
-          </View>
-          <View>{error && <ErrorText message={error.message} />}</View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
-      <View style={styles.copyright}>
-        <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-        <Text>{`Version ${appVersion}`}</Text>
-      </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
   container: {
+    marginTop: '15%',
     alignItems: 'center',
+    height: Dimensions.get('window').height,
   },
   imageContainer: {
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginTop: Dimensions.get('window').height < 500 ? '25%' : '50%',
+    marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
     marginBottom: '10%',
   },
   copyright: {
     position: 'absolute',
     alignItems: 'center',
     width: '100%',
-    bottom: 10,
+    bottom: 0,
   },
 });
 
