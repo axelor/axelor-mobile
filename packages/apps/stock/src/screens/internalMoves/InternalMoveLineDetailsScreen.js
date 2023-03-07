@@ -310,7 +310,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
-        keyboardVerticalOffset={180}>
+        keyboardVerticalOffset={160}>
         <HeaderContainer
           expandableFilter={false}
           fixedItems={
