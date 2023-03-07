@@ -25,7 +25,7 @@ import React, {
 } from 'react';
 import {StyleSheet, View, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {IconButton, PopUp, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
@@ -35,6 +35,8 @@ import useTranslator from '../../i18n/hooks/use-translator';
 import {authModule} from '../../auth';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import AuthMenuIconButton from './AuthMenuIconButton';
+import {useDispatch} from '../../redux/hooks';
+import {logout} from '../../features/authSlice';
 
 const DrawerContent = ({
   state,
@@ -42,9 +44,11 @@ const DrawerContent = ({
   navigation,
   onModuleClick,
   showModulesSubtitle = false,
+  onRefresh,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
@@ -129,22 +133,28 @@ const DrawerContent = ({
 
   if (numberOfModules(drawerModules) === 0) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.iconsContainer}>
-          <View style={styles.otherIconsContainer}>
-            <AuthMenuIconButton
-              isActive={authModule === activeModule}
-              showModulesSubtitle={showModulesSubtitle}
-              onPress={handleAuthModuleClick}
-            />
-          </View>
+      <PopUp
+        visible={true}
+        title={I18n.t('Base_Information')}
+        data={I18n.t('Base_NoAppConfigured')}>
+        <View style={styles.btnContainer}>
+          <IconButton
+            title={I18n.t('Base_Refresh')}
+            iconName="refresh"
+            FontAwesome5={false}
+            color={Colors.secondaryColor}
+            onPress={onRefresh}
+            style={styles.btn}
+          />
+          <IconButton
+            title={I18n.t('Base_Logout')}
+            iconName="power-off"
+            color={Colors.errorColor}
+            onPress={() => dispatch(logout())}
+            style={styles.btn}
+          />
         </View>
-        <View style={styles.menusContainer}>
-          <Text style={styles.primaryMenuTitle}>
-            {I18n.t('Base_NoAppConfigured')}
-          </Text>
-        </View>
-      </SafeAreaView>
+      </PopUp>
     );
   }
 
@@ -268,6 +278,14 @@ const getStyles = Colors =>
     },
     subMenuContainer: {
       padding: 8,
+    },
+    btnContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    btn: {
+      width: '100%',
     },
   });
 

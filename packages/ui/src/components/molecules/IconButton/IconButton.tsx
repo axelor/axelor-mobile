@@ -28,6 +28,7 @@ interface IconButtonProps {
   color?: Color;
   title: string;
   iconName: string;
+  FontAwesome5: boolean;
   onPress: (any) => void;
   disabled?: boolean;
 }
@@ -37,6 +38,7 @@ const IconButton = ({
   color,
   title,
   iconName,
+  FontAwesome5 = true,
   onPress = () => {},
   disabled = false,
 }: IconButtonProps) => {
@@ -57,7 +59,12 @@ const IconButton = ({
       style={[styles.container, commonStyle.button, style]}
       onPress={onPress}
       disabled={disabled}>
-      <Icon name={iconName} size={15} color={buttonColor.foreground} />
+      <Icon
+        name={iconName}
+        FontAwesome5={FontAwesome5}
+        size={15}
+        color={buttonColor.foreground}
+      />
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );

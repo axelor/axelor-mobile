@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
@@ -51,6 +51,8 @@ const ContextedApplication = ({
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const [, setRefresh] = useState(false);
 
   const toastConfig = {
     success: props => (
@@ -97,6 +99,7 @@ const ContextedApplication = ({
             mainMenu={mainMenu}
             version={version}
             showModulesSubtitle={showModulesSubtitle}
+            onRefresh={() => setRefresh(_current => !_current)}
           />
         </NavigationContainer>
       </ErrorBoundary>
