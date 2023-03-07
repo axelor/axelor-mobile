@@ -25,7 +25,7 @@ function emptyResponse() {
 export async function getMobileConfigs() {
   return axiosApiProvider
     .post({
-      url: '/ws/rest/com.axelor.studio.db.App/search',
+      url: '/ws/rest/com.axelor.apps.base.db.App/search',
       data: {
         data: {
           criteria: [
