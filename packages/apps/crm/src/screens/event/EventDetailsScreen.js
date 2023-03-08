@@ -35,7 +35,6 @@ function EventDetailsScreen({navigation, route}) {
   if (event?.id !== eventId) {
     return null;
   }
-  console.log(event);
 
   return (
     <Screen removeSpaceOnTop={true}>
