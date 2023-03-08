@@ -23,6 +23,7 @@ import {
   DropdownContactView,
   DropdownEventView,
   LiteContactCard,
+  ProspectHeader,
 } from '../../components';
 import {searchContactById} from '../../features/contactSlice';
 import {fetchPartnerEventById} from '../../features/eventSlice';
@@ -94,39 +95,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <View style={styles.headerContainerChildren}>
-              <AOSImageBubble metaFileId={prospect?.picture?.id} />
-              <View style={styles.headerInfo}>
-                <Text style={styles.textTitle} fontSize={16}>
-                  {prospect.simpleFullName}
-                </Text>
-                <StarScore
-                  style={styles.leadScoring}
-                  score={prospect.leadScoringSelect}
-                  showMissingStar={true}
-                  onPress={updateScoreProspectAPI}
-                  editMode={true}
-                />
-              </View>
-            </View>
-            <View style={styles.headerBadge}>
-              {prospect.partnerCategory?.name && (
-                <Badge
-                  color={Colors.progressColor}
-                  title={prospect.partnerCategory?.name}
-                />
-              )}
-              {prospect.industrySector?.name && (
-                <Badge
-                  color={Colors.plannedColor}
-                  title={prospect.industrySector?.name}
-                />
-              )}
-            </View>
-          </View>
-        }
+        fixedItems={<ProspectHeader />}
       />
       <ScrollView>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
