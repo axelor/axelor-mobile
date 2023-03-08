@@ -13,8 +13,9 @@ import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Lead} from '../../../types';
 import {updateLeadScore} from '../../../features/leadSlice';
 
-const LeadHeader = ({lead, idLead, versionLead, colorIndex}) => {
+const LeadHeader = ({idLead, versionLead, colorIndex}) => {
   const {baseUrl} = useSelector(state => state.auth);
+  const {lead} = useSelector(state => state.lead);
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
