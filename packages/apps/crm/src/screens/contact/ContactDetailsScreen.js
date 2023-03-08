@@ -14,9 +14,9 @@ import {
   HeaderOptionsMenu,
   useTranslator,
   useDispatch,
-  AOSImageBubble,
 } from '@axelor/aos-mobile-core';
 import {
+  ContactHeader,
   DropdownContactView,
   DropdownEventView,
   PartnerCard,
@@ -74,28 +74,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <View style={styles.headerContainerChildren}>
-              <AOSImageBubble metaFileId={contact?.picture?.id} />
-              <View style={styles.headerInfo}>
-                <Text style={styles.textTitle} fontSize={16}>
-                  {contact.simpleFullName}
-                </Text>
-                <LabelText
-                  iconName="building"
-                  title={contact.mainPartner?.fullName}
-                />
-                {contact.jobTitleFunction && (
-                  <LabelText
-                    iconName="suitcase"
-                    title={contact.jobTitleFunction?.name}
-                  />
-                )}
-              </View>
-            </View>
-          </View>
-        }
+        fixedItems={<ContactHeader />}
       />
       <ScrollView>
         {partner?.isCustomer === true && partner?.isProspect === false && (
