@@ -11,3 +11,4 @@ export {default as OpportunityHeader} from './OpportunityHeader/OpportunityHeade
 export {default as OpportunityBody} from './OpportunityBody/OpportunityBody';
 export {default as OpportunityBottom} from './OpportunityBottom/OpportunityBottom';
 export {default as ClientHeader} from './ClientHeader/ClientHeader';
+export {default as ClientBody} from './ClientBody/ClientBody';
