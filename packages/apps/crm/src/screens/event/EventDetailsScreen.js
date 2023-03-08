@@ -6,8 +6,6 @@ import {
   FromTo,
   TitledValue,
   HeaderContainer,
-  Badge,
-  useThemeColor,
   LabelText,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
@@ -21,13 +19,16 @@ import {fetchEventById} from '../../features/eventSlice';
 import {fetchLeadById, fetchLeadStatus} from '../../features/leadSlice';
 import {fetchPartner} from '../../features/partnerSlice';
 import {getContact} from '../../features/contactSlice';
-import EventType from '../../types/event-type';
-import {LeadsCard, LiteContactCard, PartnerCard} from '../../components';
+import {
+  EventHeader,
+  LeadsCard,
+  LiteContactCard,
+  PartnerCard,
+} from '../../components';
 
 function EventDetailsScreen({navigation, route}) {
   const eventId = route.params.eventId;
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {event} = useSelector(state => state.event);
@@ -59,29 +60,7 @@ function EventDetailsScreen({navigation, route}) {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <View style={styles.halfContainer}>
-              <Text style={styles.bold} numberOfLines={2}>
-                {event.subject}
-              </Text>
-            </View>
-            <View style={styles.halfContainer}>
-              {event.statusSelect && (
-                <Badge title={EventType.getStatus(event.statusSelect, I18n)} />
-              )}
-              {event.typeSelect && (
-                <Badge
-                  title={EventType.getCategory(event.typeSelect, I18n)}
-                  color={Colors.plannedColor}
-                />
-              )}
-            </View>
-          </View>
-        }
-      />
+      <HeaderContainer expandableFilter={false} fixedItems={<EventHeader />} />
       <ScrollView>
         <View style={styles.contentContainer}>
           {(event.startDateTime || event.endDateTime) && (
