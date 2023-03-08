@@ -33,7 +33,7 @@ export async function getOpportunity({opportunityId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.crm.db.Opportunity',
     id: opportunityId,
-    fieldKey: 'crm_opportunityStatus',
+    fieldKey: 'crm_opportunity',
     relatedFields: {
       currency: ['symbol'],
       partner: [

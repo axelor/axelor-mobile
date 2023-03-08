@@ -19,7 +19,11 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {Opportunity} from '../../types';
-import {OpportunityDropdownInfo, PartnerInfoCard} from '../../components';
+import {
+  OpportunityDropdownInfo,
+  OpportunityHeader,
+  PartnerInfoCard,
+} from '../../components';
 import {
   getOpportunity,
   updateOpportunityStatus,
@@ -109,28 +113,7 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
     <Screen removeSpaceOnTop={true} loading={loadingOpportunity}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <View style={styles.headerInfo}>
-              <Text style={styles.textTitle}>{opportunity.name}</Text>
-              <Text fontSize={16}>{opportunity.opportunitySeq}</Text>
-              <StarScore
-                score={opportunity.opportunityRating}
-                showMissingStar={true}
-                onPress={updateOpportunityAPI}
-                editMode={true}
-              />
-            </View>
-            <View>
-              {opportunity.opportunityStatus && (
-                <Badge
-                  color={Opportunity.getStatusColor(colorIndex, Colors)}
-                  title={opportunity.opportunityStatus.name}
-                />
-              )}
-            </View>
-          </View>
-        }
+        fixedItems={<OpportunityHeader />}
       />
       <ScrollView nestedScrollEnabled={true}>
         <View style={styles.container}>
