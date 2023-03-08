@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
@@ -42,7 +42,6 @@ import {
 import {
   fetchLinkedManufOrders,
   fetchManufOrder,
-  updateStatusOfManufOrder,
 } from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
@@ -137,28 +136,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     });
   }, [I18n, mobileSettings, navigation, manufOrder]);
 
-  const handleUpdateStatus = useCallback(
-    targetStatus => {
-      dispatch(
-        updateStatusOfManufOrder({
-          manufOrderId: manufOrder.id,
-          manufOrderVersion: manufOrder.version,
-          targetStatus,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
-  );
-
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        <ManufacturingOrderIconButtonList
-          statusSelect={manufOrder.statusSelect}
-          onPress={handleUpdateStatus}
-        />
-      }
+      fixedItems={<ManufacturingOrderIconButtonList />}
       loading={loadingOrder}>
       <HeaderContainer
         fixedItems={
