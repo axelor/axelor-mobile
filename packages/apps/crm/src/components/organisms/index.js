@@ -15,3 +15,4 @@ export {default as ClientBody} from './ClientBody/ClientBody';
 export {default as ClientBottom} from './ClientBottom/ClientBottom';
 export {default as ContactHeader} from './ContactHeader/ContactHeader';
 export {default as ContactBody} from './ContactBody/ContactBody';
+export {default as ContactBottom} from './ContactBottom/ContactBottom';
