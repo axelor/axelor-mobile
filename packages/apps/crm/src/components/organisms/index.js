@@ -17,3 +17,4 @@ export {default as ContactHeader} from './ContactHeader/ContactHeader';
 export {default as ContactBody} from './ContactBody/ContactBody';
 export {default as ContactBottom} from './ContactBottom/ContactBottom';
 export {default as EventHeader} from './EventHeader/EventHeader';
+export {default as EventBody} from './EventBody/EventBody';
