@@ -18,28 +18,23 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Button,
-  Screen,
-  ScrollView,
-  Text,
-  NotesCard,
-} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollView, Text, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {ProductCharacteristics, SmallPropertyCard} from '../../components';
+import {
+  ProductCharacteristics,
+  ProductFixedItems,
+  SmallPropertyCard,
+} from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const product = route.params.product;
   const {mobileSettings} = useSelector(state => state.config);
 
-  const showProductVariables = () => {
-    navigation.navigate('ProductListVariantScreen', {product: product});
-  };
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
   };
@@ -60,12 +55,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       fixedItems={
-        product.productVariant != null && (
-          <Button
-            onPress={() => showProductVariables()}
-            title={I18n.t('Stock_Variants')}
-          />
-        )
+        <ProductFixedItems navigation={navigation} product={product} />
       }>
       <ScrollView>
         <ProductCharacteristics
