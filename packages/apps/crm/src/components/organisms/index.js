@@ -10,3 +10,4 @@ export {default as ProspectBottom} from './ProspectBottom/ProspectBottom';
 export {default as OpportunityHeader} from './OpportunityHeader/OpportunityHeader';
 export {default as OpportunityBody} from './OpportunityBody/OpportunityBody';
 export {default as OpportunityBottom} from './OpportunityBottom/OpportunityBottom';
+export {default as ClientHeader} from './ClientHeader/ClientHeader';

@@ -14,9 +14,9 @@ import {
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
-  AOSImageBubble,
 } from '@axelor/aos-mobile-core';
 import {
+  ClientHeader,
   DropdownContactView,
   DropdownEventView,
   LiteContactCard,
@@ -71,22 +71,7 @@ const ClientDetailsScreen = ({navigation, route}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={
-          <View style={styles.headerContainer}>
-            <View style={styles.headerContainerChildren}>
-              <AOSImageBubble metaFileId={client?.picture?.id} />
-              <View style={styles.headerInfo}>
-                <Text style={styles.textTitle} fontSize={16}>
-                  {client.simpleFullName}
-                </Text>
-                <Text fontSize={14}>{client.partnerSeq}</Text>
-              </View>
-            </View>
-          </View>
-        }
-      />
+      <HeaderContainer expandableFilter={false} fixedItems={<ClientHeader />} />
       <ScrollView>
         <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <View style={styles.container}>
