@@ -1,64 +1,20 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
+import {Screen, HeaderContainer, CircleButton} from '@axelor/aos-mobile-ui';
 import {
-  Screen,
-  HeaderContainer,
-  useThemeColor,
-  Text,
-  Badge,
-  StarScore,
-  NotesCard,
-  Picker,
-  formatNumber,
-  CircleButton,
-} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
 } from '@axelor/aos-mobile-core';
-import {Opportunity} from '../../types';
-import {
-  OpportunityDropdownInfo,
-  OpportunityHeader,
-  PartnerInfoCard,
-} from '../../components';
-import {
-  getOpportunity,
-  updateOpportunityStatus,
-  updateOpportunityScore,
-} from '../../features/opportunitySlice';
+import {OpportunityBody, OpportunityHeader} from '../../components';
+import {getOpportunity} from '../../features/opportunitySlice';
 
 const OpportunityDetailsScreen = ({navigation, route}) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
-  const {loadingOpportunity, opportunity, opportunityStatusList} = useSelector(
+  const {loadingOpportunity, opportunity} = useSelector(
     state => state.opportunity,
-  );
-
-  const colorIndex = useMemo(
-    () =>
-      opportunityStatusList?.findIndex(
-        status => status.id === opportunity.opportunityStatus?.id,
-      ),
-    [opportunityStatusList, opportunity.opportunityStatus],
-  );
-
-  const updateOpportunityAPI = useCallback(
-    newScore => {
-      dispatch(
-        updateOpportunityScore({
-          opportunityId: opportunity.id,
-          opportunityVersion: opportunity.version,
-          newScore: newScore,
-        }),
-      );
-    },
-    [dispatch, opportunity.id, opportunity.version],
   );
 
   React.useLayoutEffect(() => {
@@ -83,32 +39,6 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
     );
   }, [dispatch, route.params.opportunityId]);
 
-  const navigateToPartnerDetails = useCallback(() => {
-    if (opportunity?.partner?.isProspect) {
-      return navigation.navigate('ProspectDetailsScreen', {
-        idProspect: opportunity.partner.id,
-      });
-    }
-
-    if (opportunity?.partner?.isCustomer) {
-      return navigation.navigate('ClientDetailsScreen', {
-        idClient: opportunity.partner.id,
-      });
-    }
-  }, [navigation, opportunity?.partner]);
-
-  const updateOpportunityStatusAPI = useCallback(
-    selectedStatusId =>
-      dispatch(
-        updateOpportunityStatus({
-          opportunityId: opportunity.id,
-          version: opportunity.version,
-          opportunityStatusId: selectedStatusId,
-        }),
-      ),
-    [dispatch, opportunity.id, opportunity.version],
-  );
-
   return (
     <Screen removeSpaceOnTop={true} loading={loadingOpportunity}>
       <HeaderContainer
@@ -116,46 +46,7 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
         fixedItems={<OpportunityHeader />}
       />
       <ScrollView nestedScrollEnabled={true}>
-        <View style={styles.container}>
-          <PartnerInfoCard
-            fullName={opportunity.partner?.simpleFullName}
-            partnerSeq={opportunity.partner?.partnerSeq}
-            picture={opportunity.partner?.picture}
-            onPress={navigateToPartnerDetails}
-          />
-          <OpportunityDropdownInfo
-            amount={formatNumber(
-              opportunity.amount,
-              I18n.t('Base_DecimalSpacer'),
-              I18n.t('Base_ThousandSpacer'),
-            )}
-            assignedTo={opportunity.assignedTo}
-            currencySymbol={opportunity.currency?.symbol}
-            expectedCloseDate={opportunity.expectedCloseDate}
-            recurrentAmount={formatNumber(
-              opportunity.recurrentAmount,
-              I18n.t('Base_DecimalSpacer'),
-              I18n.t('Base_ThousandSpacer'),
-            )}
-            style={styles.opportunityInfo}
-          />
-          <NotesCard
-            title={I18n.t('Base_Description')}
-            data={opportunity.description}
-            style={styles.opportunityDescription}
-          />
-          <Picker
-            title={I18n.t('Crm_Opportunity_Status')}
-            defaultValue={opportunity.opportunityStatus?.id}
-            listItems={opportunityStatusList}
-            labelField="name"
-            valueField="id"
-            emptyValue={false}
-            onValueChange={updateOpportunityStatusAPI}
-            style={styles.picker}
-            isScrollViewContainer={true}
-          />
-        </View>
+        <OpportunityBody navigation={navigation} />
       </ScrollView>
       <View style={styles.bottomContainer}>
         <CircleButton

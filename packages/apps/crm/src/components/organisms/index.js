@@ -8,3 +8,4 @@ export {default as ProspectHeader} from './ProspectHeader/ProspectHeader';
 export {default as ProspectBody} from './ProspectBody/ProspectBody';
 export {default as ProspectBottom} from './ProspectBottom/ProspectBottom';
 export {default as OpportunityHeader} from './OpportunityHeader/OpportunityHeader';
+export {default as OpportunityBody} from './OpportunityBody/OpportunityBody';
