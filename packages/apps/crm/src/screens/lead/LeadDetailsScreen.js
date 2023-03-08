@@ -1,14 +1,14 @@
-import React, {useEffect, useMemo, useCallback} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {Screen, HeaderContainer, CircleButton} from '@axelor/aos-mobile-ui';
+import React, {useEffect} from 'react';
+import {ScrollView} from 'react-native';
+import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
 } from '@axelor/aos-mobile-core';
-import {LeadHeader, LeadBody} from '../../components';
+import {LeadHeader, LeadBody, LeadBottom} from '../../components';
 import {searchEventById} from '../../features/eventSlice';
-import {fetchLeadById, updateLeadScore} from '../../features/leadSlice';
+import {fetchLeadById} from '../../features/leadSlice';
 
 const LeadDetailsScreen = ({navigation, route}) => {
   const idLead = route.params.idLead;
@@ -41,19 +41,6 @@ const LeadDetailsScreen = ({navigation, route}) => {
     dispatch(searchEventById(idList));
   }, [dispatch, lead.eventList]);
 
-  const updateScoreLeadAPI = useCallback(
-    newScore => {
-      dispatch(
-        updateLeadScore({
-          leadId: lead.id,
-          leadVersion: lead.version,
-          newScore: newScore,
-        }),
-      );
-    },
-    [dispatch, lead.id, lead.version],
-  );
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -63,36 +50,15 @@ const LeadDetailsScreen = ({navigation, route}) => {
             colorIndex={colorIndex}
             idLead={idLead}
             versionLead={versionLead}
-            onPress={updateScoreLeadAPI}
           />
         }
       />
       <ScrollView>
         <LeadBody navigation={navigation} />
       </ScrollView>
-      <View style={styles.bottomContainer}>
-        <CircleButton
-          iconName="pen"
-          onPress={() =>
-            navigation.navigate('LeadFormScreen', {
-              idLead: idLead,
-            })
-          }
-        />
-      </View>
+      <LeadBottom idLead={idLead} navigation={navigation} />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  bottomContainer: {
-    width: '90%',
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 2,
-    marginBottom: 25,
-  },
-});
 
 export default LeadDetailsScreen;
