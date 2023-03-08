@@ -5,3 +5,4 @@ export {default as LeadHeader} from './LeadHeader/LeadHeader';
 export {default as LeadBody} from './LeadBody/LeadBody';
 export {default as LeadBottom} from './LeadBottom/LeadBottom';
 export {default as ProspectHeader} from './ProspectHeader/ProspectHeader';
+export {default as ProspectBody} from './ProspectBody/ProspectBody';
