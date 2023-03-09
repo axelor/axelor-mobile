@@ -17,15 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {
   Button,
   HeaderContainer,
-  Picker,
   PopUpOneButton,
   Screen,
   ScrollView,
-  Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -35,11 +33,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {
-  QuantityCard,
-  ProductCardInfo,
-  StockCorrectionHeader,
-} from '../../components';
+import {StockCorrectionHeader, StockCorrectionBody} from '../../components';
 import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {
@@ -141,12 +135,6 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     initVariables();
   }, [initVariables]);
-
-  const handleShowProduct = () => {
-    navigation.navigate('ProductStockDetailsScreen', {
-      product: stockProduct,
-    });
-  };
 
   const handleQtyChange = value => {
     setRealQty(value);
@@ -322,72 +310,21 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             btnTitle={I18n.t('Auth_Close')}
             onPress={() => setPopUp(!popUp)}
           />
-          <View>
-            <ProductCardInfo
-              name={stockProduct?.name}
-              code={stockProduct?.code}
-              picture={stockProduct?.picture}
-              trackingNumber={
-                stockProduct?.trackingNumberConfiguration == null ||
-                trackingNumber == null
-                  ? null
-                  : trackingNumber.trackingNumberSeq
-              }
-              locker={null}
-              onPress={handleShowProduct}
-            />
-          </View>
-          <QuantityCard
-            labelQty={I18n.t('Stock_RealQty')}
-            defaultValue={parseFloat(realQty).toFixed(2)}
-            onValueChange={handleQtyChange}
-            editable={status === StockCorrection.status.Draft}>
-            <Text style={styles.text}>
-              {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(
-                databaseQty,
-              ).toFixed(2)} ${stockProduct?.unit?.name}`}
-            </Text>
-          </QuantityCard>
-          <Picker
-            styleTxt={reason?.id === null ? styles.picker_empty : null}
-            title={I18n.t('Stock_Reason')}
-            onValueChange={handleReasonChange}
-            defaultValue={reason?.id}
-            listItems={stockCorrectionReasonList}
-            labelField="name"
-            valueField="id"
-            disabled={status === StockCorrection.status.Validated}
-            disabledValue={reason?.name}
+          <StockCorrectionBody
+            databaseQty={databaseQty}
+            handleQtyChange={handleQtyChange}
+            handleReasonChange={handleReasonChange}
+            navigation={navigation}
+            realQty={realQty}
+            reason={reason}
+            status={status}
+            stockProduct={stockProduct}
+            trackingNumber={trackingNumber}
           />
         </ScrollView>
       )}
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  content: {
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flex: 2,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  picker_empty: {
-    color: 'red',
-  },
-  text: {
-    fontSize: 16,
-  },
-});
 
 export default StockCorrectionDetailsScreen;
