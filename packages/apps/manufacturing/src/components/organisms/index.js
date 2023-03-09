@@ -29,6 +29,7 @@ export {default as OperationOrderCard} from './OperationOrderCard/OperationOrder
 export {default as OperationOrderDetailsCard} from './OperationOrderDetailsCard/OperationOrderDetailsCard';
 export {default as OperationOrderHeader} from './OperationOrderHeader/OperationOrderHeader';
 export {default as OperationOrderLabelTextList} from './OperationOrderLabelTextList/OperationOrderLabelTextList';
+export {default as OperationOrderStopwatch} from './OperationOrderStopwatch/OperationOrderStopwatch';
 export {default as ProdProductFixedItems} from './ProdProductFixedItems/ProdProductFixedItems';
 export {default as ProducedProductCard} from './ProducedProductCard/ProducedProductCard';
 export {default as ProductionFileLargeCard} from './ProductionFileLargeCard/ProductionFileLargeCard';

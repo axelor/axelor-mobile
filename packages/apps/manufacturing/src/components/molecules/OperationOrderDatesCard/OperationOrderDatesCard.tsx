@@ -16,45 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
-interface OperationOrderDatesCardProps {
-  status: number;
-  startDate: string;
-  endDate: string;
-}
-
-function OperationOrderDatesCard({
-  status,
-  startDate,
-  endDate,
-}: OperationOrderDatesCardProps) {
+function OperationOrderDatesCard({}) {
   const I18n = useTranslator();
+
+  const {operationOrder} = useSelector((state: any) => state.operationOrder);
+
+  const [startDate, endDate] = useMemo(() => {
+    if (!isEmpty(operationOrder)) {
+      return OperationOrder.getDates(
+        operationOrder?.statusSelect,
+        operationOrder?.plannedStartDateT,
+        operationOrder?.plannedEndDateT,
+        operationOrder?.realStartDateT,
+        operationOrder?.realEndDateT,
+        I18n,
+      );
+    }
+    return [];
+  }, [I18n, operationOrder]);
 
   return (
     <FromTo
       fromComponent={
         <TitledValue
           title={
-            status === OperationOrder.status.Draft ||
-            status === OperationOrder.status.Planned
+            operationOrder?.statusSelect === OperationOrder.status.Draft ||
+            operationOrder?.statusSelect === OperationOrder.status.Planned
               ? I18n.t('Base_Estimated')
               : I18n.t('Base_Real')
           }
-          value={startDate}
+          value={startDate?.value}
         />
       }
       toComponent={
         <TitledValue
           title={
-            status === OperationOrder.status.Finished
+            operationOrder?.statusSelect === OperationOrder.status.Finished
               ? I18n.t('Base_Real')
               : I18n.t('Base_Estimated')
           }
-          value={endDate}
+          value={endDate?.value}
         />
       }
     />

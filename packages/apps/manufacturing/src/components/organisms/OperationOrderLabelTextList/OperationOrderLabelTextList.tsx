@@ -1,26 +1,40 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {LabelText} from '@axelor/aos-mobile-ui';
-import {useTranslator, formatDuration} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  formatDuration,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {View, StyleSheet} from 'react-native';
 
 interface OperationOrderLabelTextListProps {
-  operationOrder: any;
+  showDuration?: boolean;
+  showWorkCenter?: boolean;
+  showMachine?: boolean;
+  children: ReactNode;
 }
 
 const OperationOrderLabelTextList = ({
-  operationOrder,
+  showDuration = true,
+  showWorkCenter = true,
+  showMachine = true,
+  children,
 }: OperationOrderLabelTextListProps) => {
   const I18n = useTranslator();
 
+  const {operationOrder} = useSelector((state: any) => state.operationOrder);
+
   return (
     <View style={styles.detailsContainer}>
-      <LabelText
-        iconName="stopwatch"
-        size={20}
-        title={I18n.t('Manufacturing_PlannedDuration') + ':'}
-        value={formatDuration(operationOrder?.plannedDuration)}
-      />
-      {operationOrder?.workCenter && (
+      {showDuration && (
+        <LabelText
+          iconName="stopwatch"
+          size={20}
+          title={I18n.t('Manufacturing_PlannedDuration') + ':'}
+          value={formatDuration(operationOrder?.plannedDuration)}
+        />
+      )}
+      {showWorkCenter && operationOrder?.workCenter && (
         <LabelText
           iconName="warehouse"
           size={15}
@@ -28,7 +42,7 @@ const OperationOrderLabelTextList = ({
           value={operationOrder?.workCenter?.name}
         />
       )}
-      {operationOrder?.machine && (
+      {showMachine && operationOrder?.machine && (
         <LabelText
           iconName="tools"
           size={18}
@@ -36,6 +50,7 @@ const OperationOrderLabelTextList = ({
           value={operationOrder?.machine?.name}
         />
       )}
+      {children}
     </View>
   );
 };
