@@ -34,7 +34,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  AOSImage,
   displayItemName,
   ScannerAutocompleteSearch,
   useSelector,
@@ -42,7 +41,7 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {CardStockIndicator, ProductCardDetails} from '../../components';
+import {CardStockIndicator, ProductStockHeader} from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';
@@ -147,31 +146,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   return (
     <Screen>
       <ScrollView>
-        <View style={styles.infoContainer}>
-          <TouchableOpacity
-            style={styles.imageContainer}
-            onPress={navigateToImageProduct}
-            activeOpacity={0.9}>
-            <AOSImage
-              generalStyle={styles.imageStyle}
-              imageSize={styles.imageSize}
-              resizeMode="contain"
-              metaFile={product?.picture}
-              defaultIconSize={60}
-            />
-          </TouchableOpacity>
-          <ProductCardDetails
-            style={styles.productContainer}
-            name={product.name}
-            code={product.code}
-            onPress={showProductDetails}>
-            <Text style={styles.text_important}>{product.name}</Text>
-            <Text style={styles.text_secondary}>{product.code}</Text>
-            <Text style={styles.text_secondary}>
-              {`${I18n.t('Stock_StockUnit')} : ${product.unit?.name}`}
-            </Text>
-          </ProductCardDetails>
-        </View>
+        <ProductStockHeader
+          product={product}
+          navigateToImageProduct={navigateToImageProduct}
+          showProductDetails={showProductDetails}
+        />
         <View style={styles.lineStyle} />
         {baseConfig.enableMultiCompany && canModifyCompany && (
           <View style={styles.picker}>
