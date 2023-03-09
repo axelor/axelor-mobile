@@ -27,6 +27,7 @@ import {
 import {
   ProductCharacteristics,
   ProductFixedItems,
+  ProductSmallPropertyCardList,
   SmallPropertyCard,
 } from '../../components';
 
@@ -72,31 +73,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
         <View style={styles.lineContainer}>
           <View style={styles.lineStyle} />
         </View>
-        {product.unit ? (
-          <View style={styles.stock}>
-            <SmallPropertyCard
-              style={styles.stockCard}
-              title={I18n.t('Stock_Stock')}
-              value={product.unit?.name}
-            />
-            <SmallPropertyCard
-              style={styles.stockCard}
-              title={I18n.t('Sale_Sale')}
-              value={
-                product.salesUnit ? product.salesUnit?.name : product.unit?.name
-              }
-            />
-            <SmallPropertyCard
-              style={styles.stockCard}
-              title={I18n.t('Purchase_Purchase')}
-              value={
-                product.purchasesUnit
-                  ? product.purchasesUnit?.name
-                  : product.unit?.name
-              }
-            />
-          </View>
-        ) : null}
+        <ProductSmallPropertyCardList product={product} />
         <View style={styles.containerPack}>
           <Text style={styles.titles}>PACKING</Text>
           <View style={styles.packing}>
