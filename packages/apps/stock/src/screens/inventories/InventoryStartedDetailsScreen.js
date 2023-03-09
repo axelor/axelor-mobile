@@ -17,13 +17,12 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   Button,
   HeaderContainer,
   Screen,
   ScrollView,
-  Text,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -33,7 +32,6 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InventoryHeader,
   InventoryLineCard,
   InventoryStartedHeader,
   LocationsMoveCard,
