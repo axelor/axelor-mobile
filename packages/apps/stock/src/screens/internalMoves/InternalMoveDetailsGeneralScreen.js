@@ -35,7 +35,7 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InternalGeneralFixedItems,
+  InternalMoveGeneralFixedItems,
   InternalMoveLineCard,
   StockMoveHeader,
 } from '../../components';
@@ -107,7 +107,9 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     <Screen
       removeSpaceOnTop={true}
       loading={loadingIMLines}
-      fixedItems={<InternalGeneralFixedItems internalMove={internalMove} />}>
+      fixedItems={
+        <InternalMoveGeneralFixedItems internalMove={internalMove} />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
