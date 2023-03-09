@@ -43,4 +43,4 @@ export {default as ProductCardStockIndicatorList} from './ProductCardStockIndica
 export {default as StockCorrectionHeader} from './StockCorrectionHeader/StockCorrectionHeader';
 export {default as StockCorrectionBody} from './StockCorrectionBody/StockCorrectionBody';
 export {default as StockCorrectionFixedItems} from './StockCorrectionFixedItems/StockCorrectionFixedItems';
-export {default as InternalGeneralFixedItems} from './InternalGeneralFixedItems/InternalGeneralFixedItems';
+export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFixedItems/InternalMoveGeneralFixedItems';

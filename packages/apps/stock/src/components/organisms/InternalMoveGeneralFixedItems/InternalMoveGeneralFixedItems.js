@@ -4,7 +4,7 @@ import {Button} from '@axelor/aos-mobile-ui';
 import {updateInternalMove} from '../../../features/internalMoveSlice';
 import StockMove from '../../../types/stock-move';
 
-const InternalGeneralFixedItems = ({internalMove}) => {
+const InternalMoveGeneralFixedItems = ({internalMove}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -25,4 +25,4 @@ const InternalGeneralFixedItems = ({internalMove}) => {
   );
 };
 
-export default InternalGeneralFixedItems;
+export default InternalMoveGeneralFixedItems;
