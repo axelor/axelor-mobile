@@ -17,13 +17,7 @@
  */
 
 import React, {useEffect, useCallback, useState} from 'react';
-import {
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-  View,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
 import {
   EditableInput,
   Icon,
@@ -42,7 +36,6 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  CardStockIndicator,
   ProductCardStockIndicatorList,
   ProductStockHeader,
 } from '../../components';
@@ -61,9 +54,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {loadingProductIndicators, productIndicators} = useSelector(
-    state => state.productIndicators,
-  );
+  const {productIndicators} = useSelector(state => state.productIndicators);
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
   const {baseConfig, mobileSettings} = useSelector(state => state.config);
