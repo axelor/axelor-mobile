@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
 import {Picker, Text} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../types/stock-corrrection';
 import ProductCardInfo from '../ProductCardInfo/ProductCardInfo';
@@ -14,8 +14,9 @@ const StockCorrectionBody = ({
   realQty,
   databaseQty,
   reason,
-  handleQtyChange,
-  handleReasonChange,
+  setRealQty,
+  setSaveStatus,
+  setReason,
 }) => {
   const I18n = useTranslator();
   const {stockCorrectionReasonList} = useSelector(
@@ -26,6 +27,20 @@ const StockCorrectionBody = ({
     navigation.navigate('ProductStockDetailsScreen', {
       product: stockProduct,
     });
+  };
+
+  const handleQtyChange = value => {
+    setRealQty(value);
+    setSaveStatus(false);
+  };
+
+  const handleReasonChange = reasonId => {
+    if (reasonId === null) {
+      setReason({name: '', id: null});
+    } else {
+      setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
+    }
+    setSaveStatus(false);
   };
 
   return (
