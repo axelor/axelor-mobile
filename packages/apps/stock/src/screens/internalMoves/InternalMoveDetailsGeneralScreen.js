@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Button,
   HeaderContainer,
   Icon,
   MovementIndicationCard,
@@ -35,10 +34,13 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {InternalMoveLineCard, StockMoveHeader} from '../../components';
+import {
+  InternalGeneralFixedItems,
+  InternalMoveLineCard,
+  StockMoveHeader,
+} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {getRacks} from '../../features/racksListSlice';
-import {updateInternalMove} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
@@ -89,16 +91,6 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     }
   };
 
-  const handleRealizeStockMove = useCallback(() => {
-    dispatch(
-      updateInternalMove({
-        internalMoveId: internalMove.id,
-        version: internalMove.version,
-        status: StockMove.status.Realized,
-      }),
-    );
-  }, [dispatch, internalMove]);
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -116,14 +108,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
     <Screen
       removeSpaceOnTop={true}
       loading={loadingIMLines}
-      fixedItems={
-        internalMove.statusSelect === StockMove.status.Planned && (
-          <Button
-            title={I18n.t('Base_Realize')}
-            onPress={handleRealizeStockMove}
-          />
-        )
-      }>
+      fixedItems={<InternalGeneralFixedItems internalMove={internalMove} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
