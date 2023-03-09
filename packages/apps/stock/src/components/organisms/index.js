@@ -41,3 +41,4 @@ export {default as ProductPacking} from './ProductPacking/ProductPacking';
 export {default as ProductStockHeader} from './ProductStockHeader/ProductStockHeader';
 export {default as ProductCardStockIndicatorList} from './ProductCardStockIndicatorList/ProductCardStockIndicatorList';
 export {default as StockCorrectionHeader} from './StockCorrectionHeader/StockCorrectionHeader';
+export {default as StockCorrectionBody} from './StockCorrectionBody/StockCorrectionBody';
