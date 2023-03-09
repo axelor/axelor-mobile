@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Screen, ScrollView, Text, NotesCard} from '@axelor/aos-mobile-ui';
+import {Screen, ScrollView, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
@@ -27,8 +27,8 @@ import {
 import {
   ProductCharacteristics,
   ProductFixedItems,
+  ProductPacking,
   ProductSmallPropertyCardList,
-  SmallPropertyCard,
 } from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {
@@ -74,66 +74,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
           <View style={styles.lineStyle} />
         </View>
         <ProductSmallPropertyCardList product={product} />
-        <View style={styles.containerPack}>
-          <Text style={styles.titles}>PACKING</Text>
-          <View style={styles.packing}>
-            <SmallPropertyCard
-              style={styles.packingCard}
-              title={I18n.t('Stock_Length')}
-              value={product.length}
-              unit={
-                product.lengthUnit == null
-                  ? I18n.t('Stock_Meters')
-                  : product.lengthUnit?.name
-              }
-              interactive={true}
-            />
-            <SmallPropertyCard
-              style={styles.packingCard}
-              title={I18n.t('Stock_Width')}
-              value={product.width}
-              unit={
-                product.lengthUnit == null
-                  ? I18n.t('Stock_Meters')
-                  : product.lengthUnit?.name
-              }
-              interactive={true}
-            />
-            <SmallPropertyCard
-              style={styles.packingCard}
-              title={I18n.t('Stock_Height')}
-              value={product.height}
-              unit={
-                product.lengthUnit == null
-                  ? I18n.t('Stock_Meters')
-                  : product.lengthUnit?.name
-              }
-              interactive={true}
-            />
-            <SmallPropertyCard
-              style={styles.packingCard}
-              title={I18n.t('Stock_NetMass')}
-              value={product.netMass}
-              unit={
-                product.massUnit == null
-                  ? I18n.t('Stock_Kilograms')
-                  : product.massUnit?.name
-              }
-              interactive={true}
-            />
-            <SmallPropertyCard
-              style={styles.packingCard}
-              title={I18n.t('Stock_GrossMass')}
-              value={product.grossMass}
-              unit={
-                product.massUnit == null
-                  ? I18n.t('Stock_Kilograms')
-                  : product.massUnit?.name
-              }
-              interactive={true}
-            />
-          </View>
-        </View>
+        <ProductPacking product={product} />
         <NotesCard
           title={I18n.t('Base_Description')}
           data={product.description}
@@ -144,51 +85,11 @@ const ProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    alignContent: 'center',
-    height: '100%',
-  },
-  containerPack: {
-    marginHorizontal: '5%',
-    marginTop: 18,
-  },
-  stockCard: {
-    marginHorizontal: '1.5%',
-    minWidth: '20%',
-  },
   description: {
     width: '90%',
     marginHorizontal: '5%',
     flexDirection: 'column',
     marginTop: '2%',
-  },
-  notes: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 8,
-  },
-  titles: {
-    marginHorizontal: '5%',
-  },
-  packingCard: {
-    marginHorizontal: '2%',
-    marginTop: 5,
-    minWidth: '28%',
-    marginBottom: '2%',
-  },
-  packing: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  stock: {
-    marginTop: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
   },
   item: {
     borderRadius: 0,

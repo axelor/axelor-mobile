@@ -37,3 +37,4 @@ export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArri
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as ProductFixedItems} from './ProductFixedItems/ProductFixedItems';
 export {default as ProductSmallPropertyCardList} from './ProductSmallPropertyCardList/ProductSmallPropertyCardList';
+export {default as ProductPacking} from './ProductPacking/ProductPacking';
