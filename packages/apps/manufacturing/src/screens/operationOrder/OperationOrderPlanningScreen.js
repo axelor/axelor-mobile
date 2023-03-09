@@ -36,10 +36,6 @@ function OperationOrderPlanningScreen({navigation}) {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
-
   const listItem = useMemo(
     () =>
       OperationOrder.getCalendarListItems(plannedOperationOrderList, Colors),
@@ -123,22 +119,21 @@ function OperationOrderPlanningScreen({navigation}) {
   );
 }
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    containerDetails: {
-      alignSelf: 'center',
-      width: '100%',
-    },
-    container: {
-      alignSelf: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-    },
-    bold: {
-      fontWeight: 'bold',
-    },
-  });
+const styles = StyleSheet.create({
+  containerDetails: {
+    alignSelf: 'center',
+    width: '100%',
+  },
+  container: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+});
 
 export default OperationOrderPlanningScreen;

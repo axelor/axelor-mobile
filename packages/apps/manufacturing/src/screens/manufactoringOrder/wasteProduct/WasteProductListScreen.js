@@ -189,6 +189,7 @@ const WasteProductListScreen = ({route, navigation}) => {
         fetchData={fetchWasteProductsAPI}
         isListEnd={isListEnd}
         moreLoading={moreLoading}
+        translator={I18n.t}
       />
     </Screen>
   );

@@ -17,20 +17,17 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Button,
-  Screen,
-  ScrollView,
-  HeaderContainer,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Screen, ScrollView, Text} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
   QuantityCard,
   ProductCardInfo,
 } from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
+import {
+  ManufacturingOrderHeader,
+  ProdProductFixedItems,
+} from '../../../components/organisms';
 import {
   addProdProductToManufOrder,
   updateProdProductOfManufOrder,
@@ -38,18 +35,19 @@ import {
 import {ManufacturingOrder} from '../../../types';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
-  const I18n = useTranslator();
   const manufOrder = route.params.manufOrder;
   const consumedProduct = route.params.consumedProduct;
+  const trackingNumber = route.params.trackingNumber;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
   const product = consumedProduct ? productFromId : route.params.product;
-  const trackingNumber = route.params.trackingNumber;
   const [consumedQty, setConsumedQty] = useState(
     consumedProduct ? consumedProduct.realQty : 0,
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (consumedProduct != null) {
@@ -114,18 +112,14 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
-        (consumedProduct ? (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleUpdateConsumedProduct}
-          />
-        ) : (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleCreateConsumedProduct}
-          />
-        ))
+        <ProdProductFixedItems
+          show={
+            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
+          }
+          prodProduct={consumedProduct}
+          onPressCreate={handleCreateConsumedProduct}
+          onPressUpdate={handleUpdateConsumedProduct}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}
