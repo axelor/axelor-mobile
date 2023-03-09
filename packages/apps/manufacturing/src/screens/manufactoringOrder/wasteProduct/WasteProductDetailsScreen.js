@@ -33,7 +33,7 @@ import {
 } from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
-  WasteProductFixedItems,
+  ProdProductFixedItems,
 } from '../../../components/organisms';
 import {ManufacturingOrder} from '../../../types';
 import {
@@ -102,11 +102,14 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <WasteProductFixedItems
-          manufOrder={manufOrder}
-          wasteProduct={wasteProduct}
-          onPressUpdateWasteProduct={handleCreateWasteProduct}
-          onPressCreateWasteProduct={handleUpdateWasteProduct}
+        <ProdProductFixedItems
+          show={
+            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+            manufOrder?.wasteStockMove == null
+          }
+          prodProduct={wasteProduct}
+          onPressCreate={handleCreateWasteProduct}
+          onPressUpdate={handleUpdateWasteProduct}
         />
       }>
       <HeaderContainer
@@ -140,7 +143,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
         />
         <Picker
           style={styles.picker}
-          styleTxt={unit?.id === null ? styles.picker_empty : null}
           title={I18n.t('Stock_Unit')}
           onValueChange={setUnit}
           defaultValue={unit?.id}
@@ -151,6 +153,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder.statusSelect >= ManufacturingOrder.status.Finished
           }
           disabledValue={unit?.name}
+          required={true}
         />
       </ScrollView>
     </Screen>
@@ -158,19 +161,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  reasonTitle: {
-    marginHorizontal: 20,
-  },
   picker: {
-    marginHorizontal: 12,
     marginBottom: '2%',
-  },
-  picker_empty: {
-    color: 'red',
   },
 });
 
