@@ -36,3 +36,4 @@ export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
 export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArrivalCard';
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as ProductFixedItems} from './ProductFixedItems/ProductFixedItems';
+export {default as ProductSmallPropertyCardList} from './ProductSmallPropertyCardList/ProductSmallPropertyCardList';
