@@ -16,31 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {DropdownMenuItem, HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {
-  DropdownMenuItem,
-  HeaderContainer,
-  LabelText,
-  Screen,
-} from '@axelor/aos-mobile-ui';
-import {
-  formatDuration,
   HeaderOptionsMenu,
-  isEmpty,
-  Stopwatch,
-  StopwatchType,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {OperationOrderDatesCard} from '../../components/molecules';
-import {OperationOrderHeader} from '../../components/organisms';
-import OperationOrder from '../../types/operation-order';
 import {
-  fetchOperationOrderById,
-  updateOperationOrder,
-} from '../../features/operationOrderSlice';
+  OperationOrderHeader,
+  OperationOrderLabelTextList,
+  OperationOrderStopwatch,
+} from '../../components/organisms';
+import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route, navigation}) {
   const I18n = useTranslator();
@@ -50,41 +41,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
-
-  const updateStatus = useCallback(
-    status => {
-      dispatch(
-        updateOperationOrder({
-          operationOrderId: operationOrder?.id,
-          version: operationOrder?.version,
-          status,
-        }),
-      );
-    },
-    [dispatch, operationOrder],
-  );
-
-  const [startDate, endDate] = useMemo(() => {
-    if (!isEmpty(operationOrder)) {
-      return OperationOrder.getDates(
-        operationOrder?.statusSelect,
-        operationOrder?.plannedStartDateT,
-        operationOrder?.plannedEndDateT,
-        operationOrder?.realStartDateT,
-        operationOrder?.realEndDateT,
-        I18n,
-        false,
-      );
-    }
-    return [];
-  }, [I18n, operationOrder]);
-
-  const {status: timerStatus, time} = useMemo(() => {
-    if (!isEmpty(operationOrder)) {
-      return OperationOrder.getTimerState(operationOrder);
-    }
-    return {status: StopwatchType.status.Ready, time: 0};
-  }, [operationOrder]);
 
   useEffect(() => {
     dispatch(
@@ -130,50 +86,9 @@ function OperationOrderDetailsScreen({route, navigation}) {
         expandableFilter={false}
       />
       <View style={styles.contentContainer}>
-        <OperationOrderDatesCard
-          status={operationOrder?.statusSelect}
-          startDate={startDate?.value}
-          endDate={endDate?.value}
-        />
-        <View style={styles.detailsContainer}>
-          <LabelText
-            iconName="stopwatch"
-            size={20}
-            title={I18n.t('Manufacturing_PlannedDuration') + ':'}
-            value={formatDuration(operationOrder?.plannedDuration)}
-          />
-          {operationOrder?.workCenter && (
-            <LabelText
-              iconName="warehouse"
-              size={15}
-              title={I18n.t('Manufacturing_WorkCenter') + ':'}
-              value={operationOrder?.workCenter?.name}
-            />
-          )}
-          {operationOrder?.machine && (
-            <LabelText
-              iconName="tools"
-              size={18}
-              title={I18n.t('Manufacturing_Machine') + ':'}
-              value={operationOrder?.machine?.name}
-            />
-          )}
-        </View>
-        <Stopwatch
-          startTime={time}
-          status={timerStatus}
-          timerFormat={I18n.t('Stopwatch_TimerFormat')}
-          onPlay={() => updateStatus(OperationOrder.status.InProgress)}
-          onPause={() => updateStatus(OperationOrder.status.StandBy)}
-          onStop={() => updateStatus(OperationOrder.status.Finished)}
-          disableStop={
-            operationOrder?.statusSelect === OperationOrder.status.StandBy
-          }
-          disableCancel={
-            operationOrder?.statusSelect === OperationOrder.status.Finished
-          }
-          hideCancel={true}
-        />
+        <OperationOrderDatesCard />
+        <OperationOrderLabelTextList />
+        <OperationOrderStopwatch />
       </View>
     </Screen>
   );
@@ -182,10 +97,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
 const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 10,
-  },
-  detailsContainer: {
-    marginHorizontal: 20,
-    marginVertical: 15,
   },
 });
 

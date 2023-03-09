@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Button,
   Picker,
   Screen,
   ScrollView,
@@ -32,7 +31,10 @@ import {
   ProductCardInfo,
   QuantityCard,
 } from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
+import {
+  ManufacturingOrderHeader,
+  ProdProductFixedItems,
+} from '../../../components/organisms';
 import {ManufacturingOrder} from '../../../types';
 import {
   addWasteProductToManufOrder,
@@ -100,19 +102,15 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
-        manufOrder?.wasteStockMove == null &&
-        (wasteProduct ? (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleUpdateWasteProduct}
-          />
-        ) : (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleCreateWasteProduct}
-          />
-        ))
+        <ProdProductFixedItems
+          show={
+            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+            manufOrder?.wasteStockMove == null
+          }
+          prodProduct={wasteProduct}
+          onPressCreate={handleCreateWasteProduct}
+          onPressUpdate={handleUpdateWasteProduct}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}
@@ -145,7 +143,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
         />
         <Picker
           style={styles.picker}
-          styleTxt={unit?.id === null ? styles.picker_empty : null}
           title={I18n.t('Stock_Unit')}
           onValueChange={setUnit}
           defaultValue={unit?.id}
@@ -156,6 +153,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder.statusSelect >= ManufacturingOrder.status.Finished
           }
           disabledValue={unit?.name}
+          required={true}
         />
       </ScrollView>
     </Screen>
@@ -163,19 +161,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  reasonTitle: {
-    marginHorizontal: 20,
-  },
   picker: {
-    marginHorizontal: 12,
     marginBottom: '2%',
-  },
-  picker_empty: {
-    color: 'red',
   },
 });
 

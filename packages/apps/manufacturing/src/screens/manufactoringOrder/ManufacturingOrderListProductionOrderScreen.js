@@ -95,6 +95,7 @@ const ManufacturingOrderListProductionOrderScreen = ({route, navigation}) => {
         fetchData={fetchManufOrderAPI}
         moreLoading={moreLoadingLinkMO}
         isListEnd={isListEndLinkMO}
+        translator={I18n.t}
       />
     </Screen>
   );

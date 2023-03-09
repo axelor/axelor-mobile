@@ -166,6 +166,7 @@ const ChildrenManufOrderListScreen = ({route, navigation}) => {
         fetchData={fetchManufOrdersAPI}
         isListEnd={isListEndChildrenMO}
         filter={moreLoadingChildrenMO}
+        translator={I18n.t}
       />
     </Screen>
   );

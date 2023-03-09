@@ -210,6 +210,7 @@ const MailMessageView = ({model, modelId, navigation}) => {
             filter={false}
             moreLoading={moreLoading}
             isListEnd={isListEnd}
+            translator={I18n.t}
           />
         </View>
         <View style={styles.commentContainer}>

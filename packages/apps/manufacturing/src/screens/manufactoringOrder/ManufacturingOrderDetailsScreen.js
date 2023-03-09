@@ -16,19 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {
-  Badge,
-  HalfLabelCard,
-  IconButton,
   Screen,
   ScrollView,
   HeaderContainer,
   ViewAllContainer,
-  useThemeColor,
-  Text,
-  NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
@@ -40,24 +34,23 @@ import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
+  ManufacturingOrderIconButtonList,
+  ManufacturingOrderProductionOrderSetView,
+  ManufacturingOrderSaleOrderSetView,
+  ManufacturingOrderHalfLabelCardList,
+  ManufacturingOrderNotesCardList,
 } from '../../components/organisms';
-import {
-  fetchLinkedManufOrders,
-  fetchManufOrder,
-  updateStatusOfManufOrder,
-} from '../../features/manufacturingOrderSlice';
+import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
-import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
-  const {loadingOrder, manufOrder, linkedManufOrders} = useSelector(
+  const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
   );
 
@@ -75,16 +68,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
     );
   }, [dispatch, route.params.manufacturingOrderId]);
-
-  useEffect(() => {
-    if (manufOrder != null) {
-      dispatch(
-        fetchLinkedManufOrders({
-          productionOrderList: manufOrder.productionOrderSet,
-        }),
-      );
-    }
-  }, [dispatch, manufOrder]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -141,63 +124,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     });
   }, [I18n, mobileSettings, navigation, manufOrder]);
 
-  const handleUpdateStatus = useCallback(
-    targetStatus => {
-      dispatch(
-        updateStatusOfManufOrder({
-          manufOrderId: manufOrder.id,
-          manufOrderVersion: manufOrder.version,
-          targetStatus,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
-  );
-
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        <>
-          {manufOrder.statusSelect === ManufacturingOrder.status.Planned && (
-            <IconButton
-              title={I18n.t('Base_Start')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.InProgress)
-              }
-              iconName="play"
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
-            <IconButton
-              title={I18n.t('Base_Pause')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.StandBy)
-              }
-              iconName="pause"
-              color={Colors.secondaryColor}
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.StandBy && (
-            <IconButton
-              title={I18n.t('Base_Continue')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.InProgress)
-              }
-              iconName="step-forward"
-            />
-          )}
-          {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
-            <IconButton
-              title={I18n.t('Base_Finish')}
-              onPress={() =>
-                handleUpdateStatus(ManufacturingOrder.status.Finished)
-              }
-              iconName="power-off"
-            />
-          )}
-        </>
-      }
+      fixedItems={<ManufacturingOrderIconButtonList />}
       loading={loadingOrder}>
       <HeaderContainer
         fixedItems={
@@ -217,66 +147,21 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
         />
-        {manufOrder.saleOrderSet != null &&
-          manufOrder.saleOrderSet.length > 0 && (
-            <ViewAllContainer
-              onPress={handleViewSaleOrderRefs}
-              disabled={manufOrder.saleOrderSet.length < 3}>
-              <View style={styles.orderTitle}>
-                <Text>{I18n.t('Manufacturing_RefClient')}</Text>
-              </View>
-              <View style={styles.orderSetContainer}>
-                {manufOrder.saleOrderSet.slice(0, 3).map(item => (
-                  <Badge
-                    style={styles.orderBadge}
-                    title={item.fullName}
-                    key={item.id}
-                    color={Colors.priorityColor}
-                    numberOfLines={null}
-                  />
-                ))}
-              </View>
-            </ViewAllContainer>
-          )}
-        {manufOrder.productionOrderSet != null &&
-          manufOrder.productionOrderSet?.length > 0 &&
-          linkedManufOrders != null &&
-          linkedManufOrders.length > 0 && (
-            <ViewAllContainer
-              onPress={handleViewProductionOrderRefs}
-              disabled={linkedManufOrders.length === 0}>
-              <View style={styles.orderTitle}>
-                <Text>{I18n.t('Manufacturing_RefOP')}</Text>
-              </View>
-              <View style={styles.orderSetContainer}>
-                {linkedManufOrders.slice(0, 3).map(item => (
-                  <Badge
-                    style={styles.orderBadge}
-                    title={item.manufOrderSeq}
-                    key={item.id}
-                    color={Colors.priorityColor}
-                    numberOfLines={null}
-                  />
-                ))}
-              </View>
-            </ViewAllContainer>
-          )}
-        <View style={styles.cardsContainer}>
-          <HalfLabelCard
-            iconName="dolly"
-            title={I18n.t('Manufacturing_ConsumedProduct')}
-            onPress={handleShowConsumedProduct}
-          />
-          <HalfLabelCard
-            iconName="cogs"
-            title={I18n.t('Manufacturing_ProducedProduct')}
-            onPress={handleShowProducedProduct}
-          />
-        </View>
+        <ManufacturingOrderSaleOrderSetView
+          onPressSaleOrder={handleViewSaleOrderRefs}
+        />
+        <ManufacturingOrderProductionOrderSetView
+          onPressViewProduction={handleViewProductionOrderRefs}
+        />
+        <ManufacturingOrderHalfLabelCardList
+          onPressConsumedProduct={handleShowConsumedProduct}
+          onPressProducedProduct={handleShowProducedProduct}
+        />
         {operationOrderList != null && operationOrderList?.length > 0 && (
           <ViewAllContainer
             onViewPress={handleViewAll}
             data={operationOrderList}
+            translator={I18n.t}
             renderFirstTwoItems={item => (
               <OperationOrderCard
                 style={styles.item}
@@ -290,18 +175,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
             )}
           />
         )}
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.note}
-        />
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.moCommentFromSaleOrder}
-        />
-        <NotesCard
-          title={I18n.t('Manufacturing_Notes')}
-          data={manufOrder.moCommentFromSaleOrderLine}
-        />
+        <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
       </ScrollView>
     </Screen>
   );
@@ -311,25 +185,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
-  },
-  cardsContainer: {
-    flexDirection: 'row',
-  },
-  orderClientContainer: {
-    marginHorizontal: 12,
-    flexDirection: 'column',
-  },
-  orderSetContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  orderBadge: {
-    paddingHorizontal: 10,
-    width: null,
-  },
-  orderTitle: {
-    marginHorizontal: 8,
   },
 });
 

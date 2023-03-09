@@ -17,20 +17,17 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Screen,
-  Text,
-  Button,
-  ScrollView,
-  HeaderContainer,
-} from '@axelor/aos-mobile-ui';
+import {Screen, Text, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
   QuantityCard,
   ProductCardInfo,
 } from '@axelor/aos-mobile-stock';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
+import {
+  ManufacturingOrderHeader,
+  ProdProductFixedItems,
+} from '../../../components/organisms';
 import {
   addProdProductToManufOrder,
   updateProdProductOfManufOrder,
@@ -114,18 +111,14 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
-        (producedProduct ? (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleUpdateProducedProduct}
-          />
-        ) : (
-          <Button
-            title={I18n.t('Base_Save')}
-            onPress={handleCreateProducedProduct}
-          />
-        ))
+        <ProdProductFixedItems
+          show={
+            manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
+          }
+          prodProduct={producedProduct}
+          onPressCreate={handleCreateProducedProduct}
+          onPressUpdate={handleUpdateProducedProduct}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}

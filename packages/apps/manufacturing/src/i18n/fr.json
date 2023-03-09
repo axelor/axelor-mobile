@@ -42,5 +42,6 @@
   "Manufacturing_RealStartDate": "Début réel",
   "Manufacturing_RealEndDate": "Fin réelle",
   "Manufacturing_ProductionFile": "Dossier de production",
-  "Manufacturing_AttachedFiles": "Fichiers attachés"
+  "Manufacturing_AttachedFiles": "Fichiers attachés",
+  "Manufacturing_ChildrenMO": "OF enfants"
 }
