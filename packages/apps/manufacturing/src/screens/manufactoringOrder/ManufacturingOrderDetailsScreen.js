@@ -161,6 +161,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           <ViewAllContainer
             onViewPress={handleViewAll}
             data={operationOrderList}
+            translator={I18n.t}
             renderFirstTwoItems={item => (
               <OperationOrderCard
                 style={styles.item}

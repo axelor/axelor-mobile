@@ -225,6 +225,7 @@ function OperationOrderListScreen({navigation}) {
         fetchData={fetchOperationOrderAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

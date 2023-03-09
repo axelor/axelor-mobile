@@ -84,6 +84,7 @@ const ProductionFileScreen = ({route, navigation}) => {
         fetchData={fetchProductionFileAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

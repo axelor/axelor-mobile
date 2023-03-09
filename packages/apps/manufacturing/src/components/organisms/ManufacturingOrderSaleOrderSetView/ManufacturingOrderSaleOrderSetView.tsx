@@ -28,7 +28,8 @@ const ManufacturingOrderSaleOrderSetView = ({onPressSaleOrder}: Props) => {
   return (
     <ViewAllContainer
       onViewPress={onPressSaleOrder}
-      disabled={manufOrder.saleOrderSet.length < 3}>
+      disabled={manufOrder.saleOrderSet.length < 3}
+      translator={I18n.t}>
       <View style={styles.orderTitle}>
         <Text>{I18n.t('Manufacturing_RefClient')}</Text>
       </View>

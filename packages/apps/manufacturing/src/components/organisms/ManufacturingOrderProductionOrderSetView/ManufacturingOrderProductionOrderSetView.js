@@ -40,7 +40,8 @@ const ManufacturingOrderProductionOrderSetView = ({onPressViewProduction}) => {
   return (
     <ViewAllContainer
       onViewPress={onPressViewProduction}
-      disabled={linkedManufOrders.length === 0}>
+      disabled={linkedManufOrders.length === 0}
+      translator={I18n.t}>
       <View style={styles.orderTitle}>
         <Text>{I18n.t('Manufacturing_RefOP')}</Text>
       </View>

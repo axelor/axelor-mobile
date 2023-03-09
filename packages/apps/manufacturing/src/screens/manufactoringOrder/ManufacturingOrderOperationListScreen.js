@@ -153,6 +153,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
         fetchData={fetchOperationOrdersAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );
