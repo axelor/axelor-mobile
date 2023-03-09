@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {
-  Badge,
   Button,
   HeaderContainer,
   Picker,
@@ -36,7 +35,11 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {QuantityCard, ProductCardInfo} from '../../components';
+import {
+  QuantityCard,
+  ProductCardInfo,
+  StockCorrectionHeader,
+} from '../../components';
 import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {
@@ -302,17 +305,10 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View style={styles.content}>
-            <View style={styles.textContainer}>
-              <Text style={styles.text_important}>{stockLocation?.name}</Text>
-            </View>
-            {status && (
-              <Badge
-                color={StockCorrection.getStatusColor(status, Colors)}
-                title={StockCorrection.getStatus(status, I18n)}
-              />
-            )}
-          </View>
+          <StockCorrectionHeader
+            status={status}
+            stockLocation={stockLocation}
+          />
         }
       />
       {loading ? (
