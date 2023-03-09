@@ -35,6 +35,7 @@ import {
 import {
   InventoryHeader,
   InventoryLineCard,
+  InventoryStartedHeader,
   LocationsMoveCard,
 } from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
@@ -142,32 +143,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
       loading={loadingInventoryLines || loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View>
-            <InventoryHeader
-              reference={inventory?.inventorySeq}
-              status={inventory?.statusSelect}
-              date={
-                inventory?.statusSelect === Inventory.status.Planned
-                  ? inventory?.plannedStartDateT
-                  : inventory?.plannedEndDateT
-              }
-              stockLocation={inventory?.stockLocation?.name}
-            />
-            <View style={styles.marginHorizontal}>
-              {inventory?.productFamily != null && (
-                <Text>{`${I18n.t('Stock_ProductFamily')} : ${
-                  inventory?.productFamily?.name
-                }`}</Text>
-              )}
-              {inventory?.productCategory != null && (
-                <Text>{`${I18n.t('Stock_ProductCategory')} : ${
-                  inventory?.productCategory?.name
-                }`}</Text>
-              )}
-            </View>
-          </View>
-        }
+        fixedItems={<InventoryStartedHeader inventory={inventory} />}
       />
       <ScrollView>
         {inventory?.fromRack && (
