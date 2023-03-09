@@ -39,3 +39,4 @@ export {default as ProductFixedItems} from './ProductFixedItems/ProductFixedItem
 export {default as ProductSmallPropertyCardList} from './ProductSmallPropertyCardList/ProductSmallPropertyCardList';
 export {default as ProductPacking} from './ProductPacking/ProductPacking';
 export {default as ProductStockHeader} from './ProductStockHeader/ProductStockHeader';
+export {default as ProductCardStockIndicatorList} from './ProductCardStockIndicatorList/ProductCardStockIndicatorList';
