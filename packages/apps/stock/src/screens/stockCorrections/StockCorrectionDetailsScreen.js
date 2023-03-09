@@ -27,7 +27,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  getFromList,
   useDispatch,
   useSelector,
   useTranslator,
@@ -46,9 +45,6 @@ import StockCorrection from '../../types/stock-corrrection';
 const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {stockCorrectionReasonList} = useSelector(
-    state => state.stockCorrectionReason,
-  );
   const {loadingProduct, productFromId} = useSelector(state => state.product);
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
@@ -135,20 +131,6 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     initVariables();
   }, [initVariables]);
-
-  const handleQtyChange = value => {
-    setRealQty(value);
-    setSaveStatus(false);
-  };
-
-  const handleReasonChange = reasonId => {
-    if (reasonId === null) {
-      setReason({name: '', id: null});
-    } else {
-      setReason(getFromList(stockCorrectionReasonList, 'id', reasonId));
-    }
-    setSaveStatus(false);
-  };
 
   const handleSave = () => {
     if (reason.id === null) {
@@ -312,8 +294,9 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
           />
           <StockCorrectionBody
             databaseQty={databaseQty}
-            handleQtyChange={handleQtyChange}
-            handleReasonChange={handleReasonChange}
+            setRealQty={setRealQty}
+            setSaveStatus={setSaveStatus}
+            setReason={setReason}
             navigation={navigation}
             realQty={realQty}
             reason={reason}
