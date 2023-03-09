@@ -35,14 +35,12 @@ import {
   ManufacturingOrderHeader,
   OperationOrderCard,
   ManufacturingOrderIconButtonList,
-  ManufacturingOrderOrderSetList,
+  ManufacturingOrderProductionOrderSetView,
+  ManufacturingOrderSaleOrderSetView,
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
 } from '../../components/organisms';
-import {
-  fetchLinkedManufOrders,
-  fetchManufOrder,
-} from '../../features/manufacturingOrderSlice';
+import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
 const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
@@ -52,7 +50,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const {mobileSettings} = useSelector(state => state.config);
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
-  const {loadingOrder, manufOrder, linkedManufOrders} = useSelector(
+  const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
   );
 
@@ -70,16 +68,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
     );
   }, [dispatch, route.params.manufacturingOrderId]);
-
-  useEffect(() => {
-    if (manufOrder != null) {
-      dispatch(
-        fetchLinkedManufOrders({
-          productionOrderList: manufOrder.productionOrderSet,
-        }),
-      );
-    }
-  }, [dispatch, manufOrder]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -159,10 +147,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           code={product?.code}
           name={product?.name}
         />
-        <ManufacturingOrderOrderSetList
-          manufOrder={manufOrder}
-          linkedManufOrders={linkedManufOrders}
+        <ManufacturingOrderSaleOrderSetView
           onPressSaleOrder={handleViewSaleOrderRefs}
+        />
+        <ManufacturingOrderProductionOrderSetView
           onPressViewProduction={handleViewProductionOrderRefs}
         />
         <ManufacturingOrderHalfLabelCardList

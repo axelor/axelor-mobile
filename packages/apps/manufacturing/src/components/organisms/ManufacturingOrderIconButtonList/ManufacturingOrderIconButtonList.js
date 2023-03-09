@@ -8,6 +8,7 @@ const ManufacturingOrderIconButtonList = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
   const handleUpdateStatus = useCallback(
@@ -23,43 +24,45 @@ const ManufacturingOrderIconButtonList = ({}) => {
     [dispatch, manufOrder],
   );
 
-  return (
-    <>
-      {manufOrder.statusSelect === ManufacturingOrder.status.Planned && (
-        <IconButton
-          title={I18n.t('Base_Start')}
-          onPress={() =>
-            handleUpdateStatus(ManufacturingOrder.status.InProgress)
-          }
-          iconName="play"
-        />
-      )}
-      {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
+  if (manufOrder.statusSelect === ManufacturingOrder.status.Planned) {
+    return (
+      <IconButton
+        title={I18n.t('Base_Start')}
+        onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
+        iconName="play"
+      />
+    );
+  }
+
+  if (manufOrder.statusSelect === ManufacturingOrder.status.InProgress) {
+    return (
+      <>
         <IconButton
           title={I18n.t('Base_Pause')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.StandBy)}
           iconName="pause"
           color={Colors.secondaryColor}
         />
-      )}
-      {manufOrder.statusSelect === ManufacturingOrder.status.StandBy && (
-        <IconButton
-          title={I18n.t('Base_Continue')}
-          onPress={() =>
-            handleUpdateStatus(ManufacturingOrder.status.InProgress)
-          }
-          iconName="step-forward"
-        />
-      )}
-      {manufOrder.statusSelect === ManufacturingOrder.status.InProgress && (
         <IconButton
           title={I18n.t('Base_Finish')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.Finished)}
           iconName="power-off"
         />
-      )}
-    </>
-  );
+      </>
+    );
+  }
+
+  if (manufOrder.statusSelect === ManufacturingOrder.status.StandBy) {
+    return (
+      <IconButton
+        title={I18n.t('Base_Continue')}
+        onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
+        iconName="step-forward"
+      />
+    );
+  }
+
+  return null;
 };
 
 export default ManufacturingOrderIconButtonList;
