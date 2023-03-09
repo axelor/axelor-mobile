@@ -240,6 +240,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
         fetchData={fetchConsumedProductsAPI}
         isListEnd={!IS_INFINITE_SCROLL_ENABLED}
         filter={IS_INFINITE_SCROLL_ENABLED}
+        translator={I18n.t}
       />
     </Screen>
   );

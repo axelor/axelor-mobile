@@ -16,6 +16,7 @@
     "compile": "tsc -p tsconfig.build.json",
     "dev": "npm run compile -- --watch",
     "build": "npm run clean && npm run compile",
+    "i18n": "i18n-parser --config=./i18n.json",
     "npm-publish": "npm publish",
     "lint": "eslint .",
     "format": "prettier --write src/",
@@ -39,6 +40,7 @@
     "@types/react-native": "0.68.1",
     "cpx2": "^4.2.0",
     "eslint": "^7.32.0",
+    "i18n-parser": "^1.0.0",
     "prettier": "^2.7.1",
     "react": "18.2.0",
     "react-native": "0.68.1"

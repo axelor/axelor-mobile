@@ -207,6 +207,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
         fetchData={fetchProducedProductsAPI}
         isListEnd={!IS_INFINITE_SCROLL_ENABLED}
         filter={IS_INFINITE_SCROLL_ENABLED}
+        translator={I18n.t}
       />
     </Screen>
   );
