@@ -14,17 +14,19 @@ import {fetchContact} from '../../features/contactSlice';
 import {PartnerCard} from '../../components';
 
 const ContactListScreen = ({navigation}) => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {userId} = useSelector(state => state.auth);
   const {loadingContact, moreLoading, isListEnd, contactList} = useSelector(
     state => state.contact,
   );
+
   const [filteredList, setFilteredList] = useState(contactList);
   const [assigned, setAssigned] = useState(false);
   const [contact, setContact] = useState(null);
   const [filter, setFilter] = useState(null);
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -112,6 +114,7 @@ const ContactListScreen = ({navigation}) => {
         fetchData={fetchContactAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );
