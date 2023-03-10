@@ -1,19 +1,23 @@
 import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
-  OpportunityBody,
   OpportunityBottom,
+  OpportunityDropdownInfo,
   OpportunityHeader,
+  OpportunityPartnerCard,
+  OpportunityUpdateStatusPicker,
 } from '../../components';
 import {getOpportunity} from '../../features/opportunitySlice';
 
 const OpportunityDetailsScreen = ({navigation, route}) => {
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
@@ -50,9 +54,18 @@ const OpportunityDetailsScreen = ({navigation, route}) => {
         fixedItems={<OpportunityHeader />}
       />
       <ScrollView nestedScrollEnabled={true}>
-        <OpportunityBody navigation={navigation} />
+        <OpportunityPartnerCard navigation={navigation} />
+        <OpportunityDropdownInfo />
+        <NotesCard
+          title={I18n.t('Base_Description')}
+          data={opportunity.description}
+        />
+        <OpportunityUpdateStatusPicker />
       </ScrollView>
-      <OpportunityBottom navigation={navigation} />
+      <OpportunityBottom
+        navigation={navigation}
+        opportunityId={opportunity.id}
+      />
     </Screen>
   );
 };

@@ -2,8 +2,8 @@ import React, {useMemo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, Badge, StarScore, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import {Opportunity} from '../../../types';
-import {updateOpportunityScore} from '../../../features/opportunitySlice';
+import {Opportunity} from '../../../../types';
+import {updateOpportunityScore} from '../../../../features/opportunitySlice';
 
 const OpportunityHeader = ({}) => {
   const Colors = useThemeColor();
