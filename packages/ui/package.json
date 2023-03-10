@@ -20,12 +20,16 @@
     "lint": "eslint .",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "license:add": "npx add-copyright-header --generate --dir 'src' && npx add-copyright-header --generate --dir 'stories'"
+    "license:add": "npx add-copyright-header --generate --dir 'src' && npx add-copyright-header --generate --dir 'stories'",
+    "icons:clean": "rm -rf src/icons",
+    "icons:build": "npm run icons:clean && node scripts/icons-build.js"
   },
   "peerDependencies": {
+    "bootstrap-icons": "^1.10.3",
     "react": "*",
     "react-native": "*",
     "react-native-pell-rich-editor": "1.8.8",
+    "react-native-svg": "^13.8.0",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-vector-icons": "^9.2.0"
   },
@@ -34,15 +38,22 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "18.2.0",
     "@types/react-native": "0.68.1",
+    "bootstrap-icons": "^1.10.3",
     "eslint": "^7.32.0",
     "metro-react-native-babel-preset": "^0.72.3",
     "prettier": "^2.7.1",
     "react": "18.2.0",
     "react-native": "0.68.1",
     "react-native-webview": "11.26.0",
+    "react-native-svg": "^13.8.0",
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-pell-rich-editor": "1.8.8",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "@svgr/core": "^6.5.1",
+    "@svgr/plugin-jsx": "^6.5.1",
+    "@svgr/plugin-prettier": "^6.5.1",
+    "@svgr/plugin-svgo": "^6.5.1",
+    "glob": "^8.1.0"
   },
   "resolutions": {
     "@types/react": "18.2.0"
