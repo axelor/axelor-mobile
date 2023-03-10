@@ -7,7 +7,11 @@ import {
   useDispatch,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {ProspectBody, ProspectBottom, ProspectHeader} from '../../components';
+import {
+  ProspectBottom,
+  ProspectDropdownCards,
+  ProspectHeader,
+} from '../../components';
 import {fetchProspectById} from '../../features/prospectSlice';
 
 const ProspectDetailsScreen = ({navigation, route}) => {
@@ -44,7 +48,7 @@ const ProspectDetailsScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
-        <ProspectBody navigation={navigation} />
+        <ProspectDropdownCards navigation={navigation} />
       </ScrollView>
       <ProspectBottom idProspect={idProspect} navigation={navigation} />
     </Screen>
