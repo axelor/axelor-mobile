@@ -23,6 +23,7 @@ import {Icon} from '@axelor/aos-mobile-ui';
 
 const BackIcon = ({tintColor}) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       onPress={() => navigation.dispatch(StackActions.pop())}
@@ -34,7 +35,8 @@ const BackIcon = ({tintColor}) => {
 
 const styles = StyleSheet.create({
   icon: {
-    paddingHorizontal: 14,
+    paddingLeft: 14,
+    paddingRight: 28,
   },
 });
 

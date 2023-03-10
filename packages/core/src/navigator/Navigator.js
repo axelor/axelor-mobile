@@ -23,9 +23,10 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useThemeColor, getHeaderStyles} from '@axelor/aos-mobile-ui';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerContent from './drawer/DrawerContent';
 import {
   filterAuthorizedModules,
@@ -42,7 +43,6 @@ import {fetchMenuConfig} from '../features/menuConfigSlice';
 import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import AttachedFilesScreen from '../screens/AttachedFilesScreen';
 import MailMessageScreen from '../screens/MailMessageScreen';
-import {Dimensions} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -200,5 +200,21 @@ const Navigator = ({
     </ModuleNavigatorContext.Provider>
   );
 };
+
+const getHeaderStyles = Colors =>
+  StyleSheet.create({
+    headerTitle: {
+      color: Colors.text,
+      marginLeft: -14,
+    },
+    headerColor: {
+      backgroundColor: Colors.backgroundColor,
+      elevation: 3,
+    },
+    listScreenHeaderStyle: {
+      backgroundColor: Colors.backgroundColor,
+      elevation: 0,
+    },
+  });
 
 export default Navigator;
