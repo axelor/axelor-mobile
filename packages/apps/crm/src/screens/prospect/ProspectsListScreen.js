@@ -17,10 +17,12 @@ const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
   const {userId} = useSelector(state => state.auth);
   const {loading, moreLoading, isListEnd, prospectList} = useSelector(
     state => state.prospect,
   );
+
   const [filteredList, setFilteredList] = useState(prospectList);
   const [assigned, setAssigned] = useState(false);
   const [prospect, setProspect] = useState(null);
@@ -110,6 +112,7 @@ const ProspectsListScreen = ({navigation}) => {
         fetchData={fetchProspectAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

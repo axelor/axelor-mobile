@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {EventCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
+import {getLastEvent, getNextEvent} from '../../../utils/dateEvent';
 
 type Event = {
   id: number;
@@ -14,17 +15,20 @@ type Event = {
 };
 
 interface DropdownEventViewProps {
-  lastEvent: Event;
-  nextEvent: Event;
+  eventList: Event[];
   navigation: any;
 }
 
-const DropdownEventView = ({
-  lastEvent,
-  nextEvent,
-  navigation,
-}: DropdownEventViewProps) => {
+const DropdownEventView = ({eventList, navigation}: DropdownEventViewProps) => {
   const I18n = useTranslator();
+
+  const lastEvent = useMemo(() => {
+    return getLastEvent(eventList);
+  }, [eventList]);
+
+  const nextEvent = useMemo(() => {
+    return getNextEvent(eventList);
+  }, [eventList]);
 
   if (lastEvent == null && nextEvent == null) {
     return (

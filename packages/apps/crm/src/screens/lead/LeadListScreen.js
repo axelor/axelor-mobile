@@ -19,9 +19,11 @@ const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
   const {loadingLead, moreLoading, isListEnd, leadList, leadStatusList} =
     useSelector(state => state.lead);
   const {userId} = useSelector(state => state.auth);
+
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filteredList, setFilteredList] = useState(leadList);
   const [assigned, setAssigned] = useState(false);
@@ -159,6 +161,7 @@ const LeadListScreen = ({navigation}) => {
         fetchData={fetchLeadsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

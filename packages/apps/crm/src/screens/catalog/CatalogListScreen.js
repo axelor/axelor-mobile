@@ -15,10 +15,12 @@ import Catalog from '../../types/catalog';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
+
   const [filteredList, setFilteredList] = useState(catalogList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
@@ -119,6 +121,7 @@ const CatalogListScreen = ({navigation}) => {
         fetchData={fetchCatalogAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );
