@@ -33,7 +33,7 @@ export async function getOpportunity({opportunityId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.crm.db.Opportunity',
     id: opportunityId,
-    fieldKey: 'crm_opportunityStatus',
+    fieldKey: 'crm_opportunity',
     relatedFields: {
       currency: ['symbol'],
       partner: [
@@ -73,15 +73,13 @@ export async function updateOpportunityStatus({
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     data: {
-      records: [
-        {
-          id: opportunityId,
-          version: version,
-          opportunityStatus: {
-            id: opportunityStatusId,
-          },
+      data: {
+        id: opportunityId,
+        version: version,
+        opportunityStatus: {
+          id: opportunityStatusId,
         },
-      ],
+      },
     },
   });
 }
@@ -107,7 +105,7 @@ export async function updateOpportunity({
         recurrentAmount: opportunityRecurrentAmount,
         opportunityStatus: {id: opportunityStatusId},
         description: opportunityDescription,
-        partner: {id: idPartner},
+        partner: idPartner ? {id: idPartner} : null,
         expectedCloseDate: opportunityCloseDate,
         opportunityRating: opportunityRating,
       },

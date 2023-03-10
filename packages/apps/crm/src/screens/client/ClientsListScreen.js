@@ -14,17 +14,19 @@ import {fetchClients} from '../../features/clientSlice';
 import {PartnerCard} from '../../components';
 
 const CLientsListScreen = ({navigation}) => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {userId} = useSelector(state => state.auth);
   const {loading, moreLoading, isListEnd, clientList} = useSelector(
     state => state.client,
   );
+
   const [filteredList, setFilteredList] = useState(clientList);
   const [assigned, setAssigned] = useState(false);
   const [client, setClient] = useState(null);
   const [filter, setFilter] = useState(null);
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -109,6 +111,7 @@ const CLientsListScreen = ({navigation}) => {
         fetchData={fetchClientAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

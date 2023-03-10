@@ -160,6 +160,7 @@ const OpportunityListScreen = ({navigation}) => {
         fetchData={fetchOpportunityAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

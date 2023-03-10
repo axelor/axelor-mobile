@@ -61,7 +61,7 @@ export const updateOpportunityStatus = createAsyncThunk(
     }).then(res =>
       handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: res?.id},
+        data: {opportunityId: data?.opportunityId},
         action: 'get crm opportunity',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -82,7 +82,7 @@ export const updateOpportunityScore = createAsyncThunk(
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: res?.id},
+        data: {opportunityId: data?.opportunityId},
         action: 'get opportunity by id',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -103,7 +103,7 @@ export const updateOpportunity = createAsyncThunk(
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: res?.id},
+        data: {opportunityId: data?.opportunityId},
         action: 'get opportunity by id',
         getState,
         responseOptions: {isArrayResponse: false},
