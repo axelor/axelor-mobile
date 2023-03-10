@@ -1,22 +1,24 @@
 import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
   HeaderOptionsMenu,
   useDispatch,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {LeadHeader, LeadBody, LeadBottom} from '../../components';
-import {searchEventById} from '../../features/eventSlice';
+import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
 const LeadDetailsScreen = ({navigation, route}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const idLead = route.params.idLead;
   const versionLead = route.params.versionLead;
   const colorIndex = route.params.colorIndex;
   const {mobileSettings} = useSelector(state => state.config);
   const {lead} = useSelector(state => state.lead);
-  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,11 +38,6 @@ const LeadDetailsScreen = ({navigation, route}) => {
     dispatch(fetchLeadById({leadId: idLead}));
   }, [dispatch, idLead]);
 
-  useEffect(() => {
-    const idList = lead.eventList?.map(item => item.id);
-    dispatch(searchEventById(idList));
-  }, [dispatch, lead.eventList]);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -54,7 +51,8 @@ const LeadDetailsScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <LeadBody navigation={navigation} />
+        <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />
+        <LeadDropdownCards navigation={navigation} />
       </ScrollView>
       <LeadBottom idLead={idLead} navigation={navigation} />
     </Screen>

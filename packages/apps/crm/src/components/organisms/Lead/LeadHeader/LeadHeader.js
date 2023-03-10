@@ -10,15 +10,16 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import {Lead} from '../../../types';
-import {updateLeadScore} from '../../../features/leadSlice';
+import {Lead} from '../../../../types';
+import {updateLeadScore} from '../../../../features/leadSlice';
 
 const LeadHeader = ({idLead, versionLead, colorIndex}) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {baseUrl} = useSelector(state => state.auth);
   const {lead} = useSelector(state => state.lead);
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const updateScoreLeadAPI = useCallback(
     newScore => {
