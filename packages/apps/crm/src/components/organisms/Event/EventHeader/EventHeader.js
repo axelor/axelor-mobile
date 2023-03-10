@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import EventType from '../../../types/event-type';
+import EventType from '../../../../types/event-type';
 
 const EventHeader = ({}) => {
   const I18n = useTranslator();
