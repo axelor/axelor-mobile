@@ -6,12 +6,13 @@ import {
   AOSImageBubble,
   useDispatch,
 } from '@axelor/aos-mobile-core';
-import {updateProspectScore} from '../../../features/prospectSlice';
+import {updateProspectScore} from '../../../../features/prospectSlice';
 
 const ProspectHeader = ({}) => {
-  const {prospect} = useSelector(state => state.prospect);
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const {prospect} = useSelector(state => state.prospect);
 
   const updateScoreProspectAPI = useCallback(
     newScore => {
