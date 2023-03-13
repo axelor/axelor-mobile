@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-core",
-  "version": "6.4.0",
+  "version": "6.4.1",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -76,8 +76,8 @@
     "vision-camera-code-scanner": "^0.2.0"
   },
   "dependencies": {
-    "@axelor/aos-mobile-error": "6.4.0",
-    "@axelor/aos-mobile-ui": "6.4.0",
+    "@axelor/aos-mobile-error": "6.4.1",
+    "@axelor/aos-mobile-ui": "6.4.1",
     "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.10",
     "@react-navigation/native-stack": "6.6.1",
