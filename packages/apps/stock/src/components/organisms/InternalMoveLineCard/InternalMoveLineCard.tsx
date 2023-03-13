@@ -106,6 +106,7 @@ const InternalMoveLineCard = ({
         </View>
         <View style={rightStyle}>
           {availability == null ||
+          availability === 0 ||
           internalMoveStatus === StockMove.status.Realized ? null : (
             <Badge
               color={StockMove.getAvailabilityColor(availability, Colors)}
