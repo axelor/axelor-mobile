@@ -69,6 +69,8 @@ const Picker = ({
   isScrollViewContainer = false,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
@@ -86,15 +88,20 @@ const Picker = ({
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
       setPickerIsOpen(false);
+      setIsFocused(false);
     }
   }, [clickOutside, pickerIsOpen]);
 
+  const toggleValue = current => !current;
+
   const togglePicker = () => {
-    setPickerIsOpen(current => !current);
+    setPickerIsOpen(toggleValue);
+    setIsFocused(toggleValue);
   };
 
   const handleValueChange = itemValue => {
     setPickerIsOpen(false);
+    setIsFocused(false);
     setSelectedItem(itemValue);
     itemValue
       ? onValueChange(
@@ -122,7 +129,10 @@ const Picker = ({
     return null;
   }, [emptyValue, isScrollViewContainer, listItems.length, pickerIsOpen]);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
   const styles = useMemo(
     () => getStyles(Colors, _required, marginBottom),
     [Colors, _required, marginBottom],
@@ -171,6 +181,7 @@ const Picker = ({
               commonStyles.filterSize,
               commonStyles.filterAlign,
               styles.rightIconButton,
+              isFocused && commonStyles.inputFocused,
               pickerStyle,
             ]}
           />

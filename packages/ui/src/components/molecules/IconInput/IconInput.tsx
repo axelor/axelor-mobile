@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
+import {ThemeColors} from '../../../theme';
+import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Input} from '../../atoms';
 
@@ -49,7 +51,7 @@ const IconInput = ({
   multiline,
   numberOfLines,
   keyboardType,
-  onEndFocus,
+  onEndFocus = () => {},
   isFocus,
   leftIconsList = [],
   rightIconsList = [],
@@ -57,8 +59,23 @@ const IconInput = ({
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  const handleSelection = () => {
+    setIsFocused(true);
+    onSelection();
+  };
+
+  const handleEndFocus = () => {
+    setIsFocused(false);
+    onEndFocus();
+  };
+
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[styles.container, isFocused && commonStyles.inputFocused, style]}>
       {leftIconsList.map((iconComponent, index) =>
         React.cloneElement(iconComponent, {key: index}),
       )}
@@ -69,11 +86,11 @@ const IconInput = ({
         placeholder={placeholder}
         readOnly={readOnly}
         secureTextEntry={secureTextEntry}
-        onSelection={onSelection}
+        onSelection={handleSelection}
         multiline={multiline}
         numberOfLines={numberOfLines}
         keyboardType={keyboardType}
-        onEndFocus={onEndFocus}
+        onEndFocus={handleEndFocus}
         isFocus={isFocus}
       />
       {rightIconsList.map((iconComponent, index) =>
@@ -83,7 +100,7 @@ const IconInput = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       borderColor: Colors.secondaryColor.background,

@@ -43,6 +43,7 @@ const FormIncrementInput = ({
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
   const [value, setValue] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
 
   const onValueChange = useCallback(
     _value => {
@@ -55,6 +56,14 @@ const FormIncrementInput = ({
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   return (
     <View style={style}>
       <Text style={styles.title}>{title}</Text>
@@ -64,6 +73,7 @@ const FormIncrementInput = ({
           commonStyles.filterAlign,
           commonStyles.filterSize,
           styles.content,
+          isFocused && commonStyles.inputFocused,
         ]}>
         <Increment
           value={value}
@@ -72,6 +82,8 @@ const FormIncrementInput = ({
           inputStyle={styles.containerInput}
           decimalSpacer={decimalSpacer}
           thousandSpacer={thousandSpacer}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
     </View>

@@ -40,11 +40,12 @@ const FormInput = ({
   style,
   required = false,
   onChange = () => {},
-  onSelection,
+  onSelection = () => {},
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
   const [value, setValue] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
 
   const _required = useMemo(
     () => required && (value == null || value === ''),
@@ -59,22 +60,40 @@ const FormInput = ({
     [onChange],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, required),
+    [Colors, required],
+  );
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
   );
 
+  const handleSelection = () => {
+    setIsFocused(true);
+    onSelection();
+  };
+
+  const handleEndFocus = () => {
+    setIsFocused(false);
+  };
+
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
-        style={[commonStyles.filter, commonStyles.filterSize, styles.content]}>
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          styles.content,
+          isFocused && commonStyles.inputFocused,
+        ]}>
         <Input
           style={styles.input}
           value={value}
           onChange={onValueChange}
-          onSelection={onSelection}
+          onSelection={handleSelection}
+          onEndFocus={handleEndFocus}
           numberOfLines={null}
           readOnly={readOnly}
         />

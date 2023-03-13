@@ -16,12 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
 import {HtmlInput, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
 import {getCommonStyles} from '../../../utils/commons-styles';
+import {
+  OUTSIDE_INDICATOR,
+  useClickOutside,
+} from '../../../hooks/use-click-outside';
 
 interface FormHtmlInputProps {
   title: string;
@@ -45,6 +49,13 @@ const FormHtmlInput = ({
   const Colors = useThemeColor();
 
   const [value, setValue] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: isFocused,
+  });
 
   const _required = useMemo(
     () => required && (value == null || value === ''),
@@ -65,19 +76,33 @@ const FormHtmlInput = ({
     [Colors, _required],
   );
 
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR) {
+      setIsFocused(false);
+    }
+  }, [clickOutside]);
+
   return (
     <View style={style}>
       <Text style={styles.title}>{title}</Text>
-      <View style={[commonStyles.filter, styles.content]}>
-        <HtmlInput
-          defaultInput={value}
-          onChange={onValueChange}
-          placeholder={placeholder}
-          readonly={readonly}
-          style={styles.input}
-          styleToolbar={styles.htmlToolBar}
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={() => setIsFocused(true)}>
+        <View
+          ref={wrapperRef}
+          style={[
+            commonStyles.filter,
+            styles.content,
+            isFocused && commonStyles.inputFocused,
+          ]}>
+          <HtmlInput
+            defaultInput={value}
+            onChange={onValueChange}
+            placeholder={placeholder}
+            readonly={readonly}
+            style={styles.input}
+            styleToolbar={styles.htmlToolBar}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
