@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: '15%',
     alignItems: 'center',
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height * 0.95,
   },
   imageContainer: {
     alignItems: 'center',
