@@ -18,14 +18,20 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getActiveUserId, loginApi} from '../api/login-api';
+import {testUrl} from '../utils/api';
 import {formatURL} from '../utils/formatters';
 
 export const login = createAsyncThunk(
   'auth/login',
   async ({url, username, password}) => {
-    const {token, jsessionId} = await loginApi(url, username, password);
+    const urlWithProtocol = await testUrl(url);
+    const {token, jsessionId} = await loginApi(
+      urlWithProtocol,
+      username,
+      password,
+    );
     const userId = await getActiveUserId();
-    return {url, token, jsessionId, userId};
+    return {url: urlWithProtocol, token, jsessionId, userId};
   },
 );
 
