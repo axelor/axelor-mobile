@@ -1,3 +1,8 @@
+---
+title: Manufacturing
+tags: Readme
+---
+
 <h1 align="center">@axelor/aos-mobile-manufacturing</h1>
 
 <div align="center">

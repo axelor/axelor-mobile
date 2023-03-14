@@ -1,3 +1,8 @@
+---
+title: UI
+tags: Readme
+---
+
 <h1 align="center">@axelor/aos-mobile-ui</h1>
 
 <div align="center">

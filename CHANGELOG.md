@@ -1,119 +1,140 @@
-## [6.4.1] (2023-03-13)
+---
+title: 6.5.0
+tags: Changelog
+---
 
-#### Features
+## [6.5.0] (2023-03-14)
 
-- Android configuration : add bundle release configuration
+### New package : @axelor/aos-mobile-crm
+
+This package is compatible with AOS CRM module from version 6.5.0
+It contains the following functionnalities
+
+- _Leads_: search from database, view details with possibility to contact directly through phone apps, modify
+- _Clients_: search from database, view details with possibility to contact directly through phone apps, modify
+- _Contacts_: search from database, view details with possibility to contact directly through phone apps, modify
+- _Opportunities_: view, modify
+- _Prospect_: search from database, view details with possibility to contact directly through phone apps, modify
+- _Event_: planning view with multiples search possibilities, view event details
+- _Catalog_: search from database, open pdf in your phone
+
+### @axelor/aos-mobile-manufacturing
 
 #### Changes
 
-- CameraScanner : simplify integration with a slice
-- App management : add pop-up to inform user that the app has not been configured
-- Menus: rename menus to match AOS module axelor-mobile-settings configuration
+- Simplification of screen composition: addition of empowered components.
+- Implementation of new functionalities of CORE package : API fields and planning view improvements.
+- Implementation of new functionalities of UI package : ChipSelect refactor, replace uses of RenderHtml by HtmlInput.
 
-#### Fixed
+### @axelor/aos-mobile-stock
 
-- AutoCompleteSearch : fixed component to restore possiblity to select an item
-- Navigation : increase touchable zone of header buttons
-- Keyboard : manage screen position when keyboard is open to avoid hiding input
-- Operation orders planning view : fixed fetch request
-- Manufacturing order details view : add missing product request
-- Increment : fix format logic
-- Stock/Manufacturing modules : add null dates management
-- Dependencies : set react-native-system-navigation-bar version to fix android build
+#### Changes
 
-## [6.4.0] (2023-02-01)
+- Implementation of new functionalities of CORE package : API fields.
+- Implementation of new functionalities of UI package : ChipSelect refactor.
 
-This is the first version of the Axelor Open Mobile application.
-This new application is based on a modular architecture.
+### @axelor/aos-mobile-core
 
-Several packages provide the basic functionality of an application :
+#### Features
 
-- Package **@axelor/aos-mobile-error** provides an error boundary system.
+- Create configuration templates to define API fields and sorting rules.
+    <Details>
+    This new features enables you to define three types of API fields:
+    
+    * The object fields needed in API calls by associating a key to a [YUP](https://www.npmjs.com/package/yup?activeTab=readme) schema.
+    * Search fields with a json structure where each object key is associated with a list of strings.
+    * Sorting rules with the same structure as search fields.
+    * Few helper functions were added : 
+        * request builder functions _createStandardFetch_ and _createStandardSearch_
+        * helpers to fetch fields configuration for object _getObjectFields_, _getSortFields_ and _getSearchCriterias_.
+    </Details>
 
-- Package **@axelor/aos-mobile-ui** provides :
+- Menu overload management
+    <Details>
+    Two new features on menus to help overload : 
+    
+    * Add a menu from one module to another through the 'parent' attribute.
+    * Define the order of this menu in the list via the 'order' attribute.
+    </Details>
 
-  - basic components to create screens
-  - themes management system with basic light theme and a color blind theme
-  - writing themes management system with basic theme
-  - useOutsideClick hook to notify components when user clicked outside of itself
-  - basic animation tools
+- Define in each module a list of bakground functions.
+- Switch between multiple api providers
+    <Details>
+    Define multiple api providers in a gateway to use the first available provider. There are two types of providers : one to perform actions and one to retrieve data to be displayed to the user.
+    </Details>
 
-- Package **@axelor/aos-mobile-core** provides the core of the application, such as :
-  - API providers
-  - Auth module with login and user screens
-  - Translations management system
-  - Various helper tools : clipboard, file viewer, external app management
-  - Management of MailMessages and attaches files on objects
-  - AOS linked components or using external libraries : Camera, Scanner, PlanningView, Stopwatch, ...
-  - Menu management
-  - Storage management
+- New components : _CodeHighlighter_ to display code blocks, _AutoCompleteSearchInput_, _DatePicker_ and _DateInput_.
+- Add multiday event management on PlanningView.
+- Pick a file from phone storage with FilePicker.
+- Configurations management to customise the application.
+    <Details>
+    There are for the moment four configurations available that can be transmitted to the Application component through 'configuration' props :
 
-The component Application enables you to create an application really simply :
+  - test instance configuration
+  - release instance configuration
+  - default language
+  - default request limit
 
-```typescript
-interface Application {
-  modules: Module[]; // Functionnal packages
-  mainMenu?: string; // Main menu when openning app
-  additionalsReducers?: any;
-  version: string; // App version to be display on login screen
-  themes?: Theme[]; // Additionnals themes
-  defaultTheme?: Theme; // Default theme for all users
-  writingThemes?: Writing[]; // Additionnals writing themes
-  defaultWritingTheme?: Writing; // Default writing theme for all users
-  showModulesSubtitle: boolean; // Option to show subtitles of modules in the drawer menu
-}
-```
+  Here is an example of configuration file :
 
-Each module is based on the same interface and has the following attributes :
+  ```javascript
+  export const app_config = {
+    /*
+     * This configuration is used to fill in the url,
+     * username and/or password fields automatically
+     * when the application is running in debug mode
+     */
+    testInstanceConfig: {
+      defaultUrl: '',
+      defaultUsername: '',
+      defaultPassword: '',
+    },
 
-```typescript
-interface Module {
-  name: string; // Module name
-  title: string; // Module title in the drawer
-  subtitle: string; // Module subtitle in the drawer
-  icon: string; // Module icon in the drawer
-  disabled?: boolean;
-  menus: {
-    // List of menus of the module
-    [screenKey: string]: {
-      title: string;
-      icon: string;
-      screen: string;
-      disabled?: boolean;
-    };
+    /*
+     * This configuration is used to fill in the url field
+     * automatically when the application is running in release mode.
+     * It is also possible to hide the url input if needed to prevent users from changing it.
+     */
+    releaseInstanceConfig: {
+      url: '',
+      showUrlInput: true,
+    },
+
+    /*
+     * This setting is used to define the default language of the application.
+     * This value is automatically overwritten by the user's default language
+     * once logged in if the latter is set.
+     */
+    defaultLanguage: 'en',
+
+    /*
+     * This setting is used to define the default request limit used is createStandardSearch
+     * function (that is to say the number of elements per page on list screens). This value
+     * can be rewritten for any request using props numberElementsByPage
+     */
+    defaultRequestLimit: 10,
   };
-  screens: {
-    // List of screens of the module
-    [screenKey: string]:
-      | React.FC<any>
-      | {
-          component: React.FC<any>;
-          title: string;
-        };
-  };
-  translations?: {
-    // All translations of the module
-    [languageKey: string]: any;
-  };
-  reducers?: any; // Reducers of the module
-}
-```
+  ```
 
-There are two functional packages available for Axelor Open Mobile.
+    </Details>
 
-- Package **@axelor/aos-mobile-stock** provides functionnalities of AOS stock module :
+### @axelor/aos-mobile-ui
 
-  - _Product_: view products with stock indicators, characteristics
-  - _Stock_ correction: viewing, validation, creation
-  - _Internal_ move: view, complete, validate, create
-  - _Customer_ delivery: view, complete, validate
-  - _Supplier_ arrival: view, complete, validate
-  - _Inventory_: view, complete, validate
+#### Features
 
-- Package **@axelor/aos-mobile-manufacturing** provides functionnalities of AOS manufacturing module :
-  - _Manufacturing order_: view (with information on links to customer orders or related orders), management of consumed, manufactured and scrap products, status update
-  - _Operation order_: view, change of status with management of the stopwatch, view of the production file
-  - _Planning vision_ of operation orders
+- New components : _Checkbox_, _CricleButton_, _FloatingButton_, _FormHtmlInput_, _FormIncrementInput_, _FormInput_, _MultiSelectValue_ and _PanelTabs_.
+- Add new props on Picker and MultiValuePicker to know if value is required.
+- Add HTML keyboard on MessageBox component
 
-[6.4.1]: https://github.com/axelor/axelor-mobile/compare/v6.4.0...v6.4.1
-[6.4.0]: https://github.com/axelor/axelor-mobile/commits/6.4.0
+#### Changes
+
+- Simplify ChipSelect integration
+    <Details>
+    Transform children chip components into a list of objects with the following props : isActive, color, title and key. Two available behaviours: 'mutli' or 'switch'. 
+    </Details>
+
+#### Removes
+
+- Replace RenderHTML by HtmlInput
+
+[6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.1...6.5.0

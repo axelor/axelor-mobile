@@ -1,3 +1,8 @@
+---
+title: Core
+tags: Readme
+---
+
 <h1 align="center">@axelor/aos-mobile-core</h1>
 
 <div align="center">
@@ -35,8 +40,10 @@ This package has a few required libraries as peer dependencies:
 - [axios](https://www.npmjs.com/package/axios)
 - [i18next](https://www.npmjs.com/package/i18next)
 - [react-i18next](https://www.npmjs.com/package/react-i18next)
+- [react-native-date-picker](https://www.npmjs.com/package/react-native-date-picker)
 - [react-native-datawedge-intents](https://www.npmjs.com/package/react-native-datawedge-intents)
 - [react-native-device-info](https://www.npmjs.com/package/react-native-device-info)
+- [react-native-document-picker](https://www.npmjs.com/package/react-native-document-picker)
 - [react-native-file-viewer](https://www.npmjs.com/package/react-native-file-viewer)
 - [react-native-fs](https://www.npmjs.com/package/react-native-fs)
 - [react-native-gesture-handler](https://www.npmjs.com/package/react-native-gesture-handler)
@@ -63,6 +70,7 @@ interface Application {
   writingThemes?: Writing[]; // Additionnals writing themes
   defaultWritingTheme?: Writing; // Default writing theme for all users
   showModulesSubtitle: boolean; // Option to show subtitles of modules in the drawer menu
+  configuration?: appConfig; // Configuration to customize application
 }
 ```
 
@@ -71,33 +79,40 @@ Each module is based on the same interface and has the following attributes :
 ```typescript
 interface Module {
   name: string; // Module name
-  title: string; // Module title in the drawer
-  subtitle: string; // Module subtitle in the drawer
-  icon: string; // Module icon in the drawer
+  title?: string; // Module title in the drawer
+  subtitle?: string; // Module subtitle in the drawer
+  icon?: string; // Module icon in the drawer
   disabled?: boolean;
   menus: {
     // List of menus of the module
     [screenKey: string]: {
       title: string;
       icon: string;
-      screen: string;
+      screen: string; // Name of the main screen of this menu
       disabled?: boolean;
+      parent?: string; // Option to add menu in another module
+      order?: number; // Option to change order of menu (default: index * 10)
     };
   };
   screens: {
     // List of screens of the module
-    [screenKey: string]:
-      | React.FC<any>
-      | {
-          component: React.FC<any>;
-          title: string;
-        };
+    [screenKey: string]: {
+      component: React.FC<any>;
+      title: string;
+      options?: ScreenOptions; // screen options to activate or not shadedHeader
+    };
   };
   translations?: {
     // All translations of the module
     [languageKey: string]: any;
   };
   reducers?: any; // Reducers of the module
+  backgroundFunctions?: Function[]; // List of function that should be executed in the background, interval is 5 minutes
+  models?: {
+    objectFields?: ObjectFields; // Fields of object for API calls structured on YUP schemas
+    sortFields?: SortFields; // Sort rules for API calls
+    searchFields?: SearchFields; // List of fields of object for searchs
+  };
 }
 ```
 
@@ -111,6 +126,28 @@ import {axiosApiProvider} from '@axelor/aos-mobile-core';
 ...
 
 axiosApiProvider.post({url: '...', data: {...}});
+```
+
+You can also create standard requests with the functions createStandardSearch and createStandardFetch.
+
+```typescript
+createStandardSearch = ({
+  model: string; // Full name of the model
+  criteria?: Criteria[]; // List of criterias
+  domain?: string;
+  domainContext?: any;
+  fieldKey: string; // Key of the API fields configuration given in models props of module
+  sortKey?: string; // Key of the sort rules configuration given in models props of module
+  page: number; // Current page in search
+  numberElementsByPage?: number; // Number of elements that should be fetched, default is 10 and can be adjusted in app configuration file
+}): Promise<any>;
+
+createStandardFetch = ({
+  model: string; // Full name of the model
+  fieldKey: string; // Key of the API fields configuration given in models props of module
+  id: number; // Id of the object that should be fetched
+  relatedFields?: any; // Additional fields of the relational objects
+}): Promise<any>;
 ```
 
 ### Translations system
@@ -178,6 +215,8 @@ const updateLanguage = useCallback(
 );
 ```
 
+Default language of the application is 'en' but this can be modified in the application configuration file under defaultLanguage props.
+
 ### Helper tools
 
 This package provides several helpers such as:
@@ -231,6 +270,22 @@ const handleShowFile = async item => {
       {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
       I18n,
     );
+};
+```
+
+- Pick a file for phone data
+
+This package provides a tool to pick an image from phone storage.
+
+To do this, simply use the handleDocumentSelection function of the package with the necessary information:
+
+```typescript
+import {handleDocumentSelection} from '@axelor/aos-mobile-core';
+
+...
+
+const handlePickFile = async () => {
+    await handleDocumentSelection(console.log);
 };
 ```
 

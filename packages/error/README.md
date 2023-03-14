@@ -1,3 +1,8 @@
+---
+title: Error
+tags: Readme
+---
+
 <h1 align="center">@axelor/aos-mobile-error</h1>
 
 <div align="center">
@@ -20,16 +25,22 @@ yarn add @axelor/aos-mobile-error
 
 All you have to do here is to wrap your application component with the ErrorBoundary component. It will catch all render errors and display the errorScreen provided to allow user to reload the application.
 
-The component needs the following props: 
-* errorScreen : screen to be displayed when an error is detected
+The component needs the following props:
+
+- errorScreen : screen to be displayed when an error is detected
+
 ```typescript
 errorScreen: ({errorMessage, onReloadPress}) => React.ReactNode;
 ```
-* userIdfetcher : function to fetch user information
+
+- userIdfetcher : function to fetch user information
+
 ```typescript
 userIdfetcher: () => Promise<any>;
 ```
-* putMethod : function to perform a PUT request to the server in order to inform it of the error
+
+- putMethod : function to perform a PUT request to the server in order to inform it of the error
+
 ```typescript
 putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
 ```

@@ -1,3 +1,8 @@
+---
+title: Stock
+tags: Readme
+---
+
 <h1 align="center">@axelor/aos-mobile-stock</h1>
 
 <div align="center">
