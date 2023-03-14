@@ -1,6 +1,6 @@
 {
   "name": "@axelor/aos-mobile-ui",
-  "version": "6.4.1",
+  "version": "6.5.0",
   "author": "Axelor",
   "license": "AGPL-3.0-only",
   "publishConfig": {
@@ -27,8 +27,7 @@
     "react-native": "*",
     "react-native-pell-rich-editor": "1.8.8",
     "react-native-system-navigation-bar": "2.2.0",
-    "react-native-vector-icons": "^9.2.0",
-    "react-native-render-html": "^6.3.4"
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",

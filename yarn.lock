@@ -10,33 +10,6 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@axelor/aos-mobile-core@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/@axelor/aos-mobile-core/-/aos-mobile-core-6.4.0.tgz#555cad1e648ce2bac3ee8fbcdade7436ad72b9e6"
-  integrity sha512-bsFSFY+LNgouc3XaNU40MqI/GQpu29F6WkrWnEfdF9xQFyyDnj8r358itHJRrYR8KcBea75se20RRwNh9v2oFw==
-  dependencies:
-    "@axelor/aos-mobile-error" "6.4.0"
-    "@axelor/aos-mobile-ui" "6.4.0"
-    "@react-navigation/drawer" "6.4.1"
-    "@react-navigation/native" "6.0.10"
-    "@react-navigation/native-stack" "6.6.1"
-    "@react-navigation/stack" "6.2.1"
-    "@reduxjs/toolkit" "^1.8.5"
-    moment "^2.29.4"
-    react-native-calendars "1.1284"
-    react-native-reanimated "2.10.0"
-    react-redux "^7.2.8"
-
-"@axelor/aos-mobile-error@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/@axelor/aos-mobile-error/-/aos-mobile-error-6.4.0.tgz#8e6549a78301df5db6ef25c2a2117eaae8f4df1e"
-  integrity sha512-3ITkeNsC5Luu2wDpJbslzCzS7Uk1UQZWoEGwDJcXUGbJYn9MDoB4xmR1fjDog/vs+2CL4URJ/oHupbBhF5Jwuw==
-
-"@axelor/aos-mobile-ui@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/@axelor/aos-mobile-ui/-/aos-mobile-ui-6.4.0.tgz#0100ca1d39a43828d062aac7d7f43e25e73fad48"
-  integrity sha512-rrVqKWrooEUXaJgHrfjEwT8OB1URA6h3fJxLMouB1axEO9N+UaoWmlsjDCuBnBO3JC/uc+dTQJ3PjFW1NiniQw==
-
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
