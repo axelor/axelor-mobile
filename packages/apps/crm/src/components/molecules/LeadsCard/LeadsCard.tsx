@@ -47,6 +47,7 @@ const LeadsCard = ({
   isDoNotCall,
 }: LeadsCardProps) => {
   const Colors = useThemeColor();
+
   const {baseUrl} = useSelector((state: any) => state.auth);
 
   const borderStyle = useMemo(() => {
@@ -60,20 +61,18 @@ const LeadsCard = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
-        <StarScore
-          style={styles.leadScoring}
-          score={leadScoring}
-          showMissingStar={true}
-        />
-        <Image
-          generalStyle={styles.imageIcon}
-          imageSize={styles.imageSize}
-          resizeMode="contain"
-          defaultIconSize={70}
-          source={{
-            uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${leadsId}/picture/download?v=${leadVersion}&parentId=${leadsId}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
-          }}
-        />
+        <View style={styles.leftContainer}>
+          <StarScore score={leadScoring} showMissingStar={true} />
+          <Image
+            generalStyle={styles.imageSize}
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            defaultIconSize={70}
+            source={{
+              uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${leadsId}/picture/download?v=${leadVersion}&parentId=${leadsId}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
+            }}
+          />
+        </View>
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{leadsFullname}</Text>
           {leadsCompany && (
@@ -121,7 +120,10 @@ const LeadsCard = ({
 
 const getStyles = color =>
   StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
   });
 
 const styles = StyleSheet.create({
@@ -131,11 +133,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 15,
   },
-  leadScoring: {
-    position: 'absolute',
-    flexDirection: 'row',
-    top: '10%',
-    left: '5%',
+  leftContainer: {
+    width: '20%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   textContainer: {
     width: '60%',
@@ -145,10 +147,6 @@ const styles = StyleSheet.create({
   txtImportant: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  imageIcon: {
-    height: 80,
-    width: 80,
   },
   imageSize: {
     height: 80,
