@@ -87,21 +87,37 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   };
 
   const handleShowLine = (item, index) => {
-    item = {
+    const locker = !loadingRacks && (racksList?.[index]?.[0]?.rack ?? '');
+
+    const updatedItem = {
       ...item,
-      locker:
-        !loadingRacks && racksList != null && racksList[index] != null
-          ? racksList[index][0]?.rack
-          : '',
+      locker,
+      product: {
+        ...item.product,
+        name: item['product.name'],
+        trackingNumberConfiguration:
+          item['product.trackingNumberConfiguration'],
+      },
     };
+
+    const {product, trackingNumber} = updatedItem;
+
+    const {trackingNumberConfiguration} = product;
+
     if (customerDelivery.statusSelect === StockMove.status.Realized) {
       navigation.navigate('CustomerDeliveryLineDetailScreen', {
-        customerDeliveryLine: item,
-        customerDelivery: customerDelivery,
+        customerDeliveryLine: updatedItem,
+        customerDelivery,
+      });
+    } else if (trackingNumberConfiguration && trackingNumber != null) {
+      navigation.navigate('CustomerDeliverySelectTrackingScreen', {
+        customerDeliveryLine: updatedItem,
+        customerDelivery,
+        product,
       });
     } else {
       navigation.navigate('CustomerDeliverySelectProductScreen', {
-        customerDeliveryLine: item,
+        customerDeliveryLine: updatedItem,
         customerDelivery: customerDelivery,
       });
     }

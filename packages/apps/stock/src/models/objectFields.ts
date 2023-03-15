@@ -50,6 +50,9 @@ export const stock_modelAPI: ObjectFields = {
     locker: schemaContructor.string(),
     name: schemaContructor.string(),
     'saleOrderLine.pickingOrderInfo': schemaContructor.string(),
+    'product.name': schemaContructor.string(),
+    'product.trackingNumberConfiguration':
+      schemaContructor.subObject('fullName'),
   }),
   stock_internalMove: schemaContructor.object({
     name: schemaContructor.string(),
@@ -75,6 +78,9 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
+    'product.name': schemaContructor.string(),
+    'product.trackingNumberConfiguration':
+      schemaContructor.subObject('fullName'),
   }),
   stock_inventory: schemaContructor.object({
     inventoryTitle: schemaContructor.string(),
@@ -103,6 +109,9 @@ export const stock_modelAPI: ObjectFields = {
     realQty: schemaContructor.number(),
     description: schemaContructor.string(),
     rack: schemaContructor.string(),
+    'product.name': schemaContructor.string(),
+    'product.trackingNumberConfiguration':
+      schemaContructor.subObject('fullName'),
   }),
   stock_partner: schemaContructor.object({
     partnerSeq: schemaContructor.string(),
@@ -189,6 +198,9 @@ export const stock_modelAPI: ObjectFields = {
     locker: schemaContructor.string(),
     name: schemaContructor.string(),
     conformitySelect: schemaContructor.number(),
+    'product.name': schemaContructor.string(),
+    'product.trackingNumberConfiguration':
+      schemaContructor.subObject('fullName'),
   }),
   stock_supplierCatalog: schemaContructor.object({
     productSupplierName: schemaContructor.string(),

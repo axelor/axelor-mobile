@@ -76,15 +76,35 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   };
 
   const handleShowLine = item => {
+    const updatedItem = {
+      ...item,
+      product: {
+        ...item.product,
+        name: item['product.name'],
+        trackingNumberConfiguration:
+          item['product.trackingNumberConfiguration'],
+      },
+    };
+
+    const {product, trackingNumber} = updatedItem;
+
+    const {trackingNumberConfiguration} = product;
+
     if (internalMove.statusSelect === StockMove.status.Realized) {
       navigation.navigate('InternalMoveLineDetailsScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
+        internalMoveLine: updatedItem,
+        internalMove,
+      });
+    } else if (trackingNumberConfiguration && trackingNumber != null) {
+      navigation.navigate('InternalMoveSelectTrackingScreen', {
+        internalMoveLine: updatedItem,
+        stockProduct: product,
+        internalMove,
       });
     } else {
       navigation.navigate('InternalMoveSelectProductScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
+        internalMoveLine: updatedItem,
+        internalMove,
       });
     }
   };

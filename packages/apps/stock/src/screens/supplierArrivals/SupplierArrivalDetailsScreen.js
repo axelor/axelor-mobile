@@ -80,15 +80,35 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   };
 
   const handleShowLine = item => {
+    const updatedItem = {
+      ...item,
+      product: {
+        ...item.product,
+        name: item['product.name'],
+        trackingNumberConfiguration:
+          item['product.trackingNumberConfiguration'],
+      },
+    };
+
+    const {product, trackingNumber} = updatedItem;
+
+    const {trackingNumberConfiguration} = product;
+
     if (supplierArrival.statusSelect === StockMove.status.Realized) {
       navigation.navigate('SupplierArrivalLineDetailScreen', {
-        supplierArrivalLine: item,
-        supplierArrival: supplierArrival,
+        supplierArrivalLine: updatedItem,
+        supplierArrival,
+      });
+    } else if (trackingNumberConfiguration && trackingNumber != null) {
+      navigation.navigate('SupplierArrivalSelectTrackingScreen', {
+        supplierArrivalLine: updatedItem,
+        supplierArrival,
+        product,
       });
     } else {
       navigation.navigate('SupplierArrivalSelectProductScreen', {
-        supplierArrivalLine: item,
-        supplierArrival: supplierArrival,
+        supplierArrivalLine: updatedItem,
+        supplierArrival,
       });
     }
   };

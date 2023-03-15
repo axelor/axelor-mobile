@@ -60,15 +60,35 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   }, [dispatch, inventoryId]);
 
   const handleShowLine = item => {
+    const updatedItem = {
+      ...item,
+      product: {
+        ...item.product,
+        name: item['product.name'],
+        trackingNumberConfiguration:
+          item['product.trackingNumberConfiguration'],
+      },
+    };
+
+    const {product, trackingNumber} = updatedItem;
+
+    const {trackingNumberConfiguration} = product;
+
     if (inventory.statusSelect === Inventory.status.Validated) {
       navigation.navigate('InventoryLineDetailsScreen', {
-        inventoryLine: item,
-        inventory: inventory,
+        inventoryLine: updatedItem,
+        inventory,
+      });
+    } else if (trackingNumberConfiguration && trackingNumber != null) {
+      navigation.navigate('InventorySelectTrackingScreen', {
+        inventoryLine: updatedItem,
+        inventory,
+        product,
       });
     } else {
       navigation.navigate('InventorySelectProductScreen', {
-        inventoryLine: item,
-        inventory: inventory,
+        inventoryLine: updatedItem,
+        inventory,
       });
     }
   };
