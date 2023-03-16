@@ -25,7 +25,7 @@ export async function loginApi(
   url: string,
   username: string,
   password: string,
-): Promise<{token: string; jsessionId: string}> {
+): Promise<{token: string; jsessionId: string; interceptorId: number}> {
   return axios
     .post(`${url}${loginPath}`, {username, password})
     .then(response => {
@@ -34,7 +34,8 @@ export async function loginApi(
       if (token == null) {
         throw new Error('X-CSRF-Token is not exposed in remote header');
       }
-      axios.interceptors.request.use(config => {
+
+      const interceptorId = axios.interceptors.request.use(config => {
         config.baseURL = url;
         config.headers['x-csrf-token'] = token;
         return config;
@@ -42,7 +43,7 @@ export async function loginApi(
 
       provider.getModelApi()?.init();
 
-      return {token, jsessionId};
+      return {token, jsessionId, interceptorId};
     });
 }
 
