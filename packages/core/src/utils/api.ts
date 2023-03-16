@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const PREFIX_REGEX = /^https?:\/\//;
+
 export function testUrl(url: string): Promise<string | null> {
   return new Promise(async (resolve, reject) => {
     if (!url || typeof url !== 'string') {
@@ -23,13 +25,10 @@ export function testUrl(url: string): Promise<string | null> {
       return;
     }
 
-    if (isHttpUrl(url)) {
-      resolve(url);
-      return;
-    }
+    const formatUrl = isHttpUrl(url) ? url.replace(PREFIX_REGEX, '') : url;
 
     const urlsWithProtocol = ['https', 'http'].map(
-      protocol => `${protocol}://${url}`,
+      protocol => `${protocol}://${formatUrl}`,
     );
 
     for (const urlWithProtocol of urlsWithProtocol) {
@@ -49,6 +48,5 @@ export function testUrl(url: string): Promise<string | null> {
 }
 
 export function isHttpUrl(url: string) {
-  const regex = /^https?:\/\//;
-  return regex.test(url);
+  return PREFIX_REGEX.test(url);
 }
