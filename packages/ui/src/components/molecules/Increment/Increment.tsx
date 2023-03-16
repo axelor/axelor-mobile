@@ -34,6 +34,8 @@ interface IncrementProps {
   decimalSpacer?: string;
   thousandSpacer?: string;
   onValueChange: (any) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const Increment = ({
@@ -41,6 +43,8 @@ const Increment = ({
   decimalSpacer,
   thousandSpacer,
   onValueChange,
+  onFocus = () => {},
+  onBlur = () => {},
 }: IncrementProps) => {
   const format = useCallback(
     number => {
@@ -93,6 +97,7 @@ const Increment = ({
         onValueChange(0.0);
       }
     }
+    onBlur();
   };
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -113,6 +118,7 @@ const Increment = ({
           value={valueQty}
           onChange={input => setValueQty(input)}
           keyboardType="numeric"
+          onSelection={onFocus}
           onEndFocus={handleEndInput}
         />
       </View>

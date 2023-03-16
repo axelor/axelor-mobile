@@ -1,29 +1,47 @@
+/*
+ * Axelor Business Solutions
+ *
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
+ *
+ * This program is free software: you can redistribute it and/or  modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Input, Text} from '../../atoms';
+import {HtmlInput, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
 import {getCommonStyles} from '../../../utils/commons-styles';
 
-interface FormInputProps {
+interface FormHtmlInputProps {
   title: string;
+  placeholder?: string;
   defaultValue?: string;
-  readOnly?: boolean;
+  readonly?: boolean;
   style?: any;
   required?: boolean;
   onChange?: (any: any) => void;
-  onSelection?: () => void;
 }
 
-const FormInput = ({
+const FormHtmlInput = ({
   title,
+  placeholder = '',
   defaultValue = null,
-  readOnly,
+  readonly = false,
   style,
   required = false,
   onChange = () => {},
-  onSelection = () => {},
-}: FormInputProps) => {
+}: FormHtmlInputProps) => {
   const Colors = useThemeColor();
 
   const [value, setValue] = useState(defaultValue);
@@ -52,33 +70,32 @@ const FormInput = ({
     [Colors, _required],
   );
 
-  const handleSelection = () => {
+  const handleFocus = () => {
     setIsFocused(true);
-    onSelection();
   };
 
-  const handleEndFocus = () => {
+  const handleBlur = () => {
     setIsFocused(false);
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={style}>
       <Text style={styles.title}>{title}</Text>
       <View
         style={[
           commonStyles.filter,
-          commonStyles.filterSize,
           styles.content,
           isFocused && commonStyles.inputFocused,
         ]}>
-        <Input
-          style={styles.input}
-          value={value}
+        <HtmlInput
+          defaultInput={value}
           onChange={onValueChange}
-          onSelection={handleSelection}
-          onEndFocus={handleEndFocus}
-          numberOfLines={null}
-          readOnly={readOnly}
+          placeholder={placeholder}
+          readonly={readonly}
+          style={styles.input}
+          styleToolbar={styles.htmlToolBar}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
     </View>
@@ -87,15 +104,16 @@ const FormInput = ({
 
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
-    container: {
-      width: '100%',
-    },
     content: {
-      width: '100%',
+      width: '90%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+    },
+    htmlToolBar: {
+      backgroundColor: null,
+      marginLeft: -5,
     },
     input: {
       width: '100%',
@@ -105,4 +123,4 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     },
   });
 
-export default FormInput;
+export default FormHtmlInput;

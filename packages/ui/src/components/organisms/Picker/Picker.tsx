@@ -29,6 +29,8 @@ import {
 } from '../../../hooks/use-click-outside';
 import {ThemeColors} from '../../../theme';
 
+const ITEM_HEIGHT = 40;
+
 interface PickerProps {
   style?: any;
   pickerStyle?: any;
@@ -45,6 +47,7 @@ interface PickerProps {
   disabledValue?: string;
   iconName?: string;
   required?: boolean;
+  isScrollViewContainer?: boolean;
 }
 
 const Picker = ({
@@ -63,8 +66,11 @@ const Picker = ({
   disabledValue = null,
   iconName = null,
   required = false,
+  isScrollViewContainer = false,
 }: PickerProps) => {
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
@@ -82,15 +88,20 @@ const Picker = ({
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
       setPickerIsOpen(false);
+      setIsFocused(false);
     }
   }, [clickOutside, pickerIsOpen]);
 
+  const toggleValue = current => !current;
+
   const togglePicker = () => {
-    setPickerIsOpen(current => !current);
+    setPickerIsOpen(toggleValue);
+    setIsFocused(toggleValue);
   };
 
   const handleValueChange = itemValue => {
     setPickerIsOpen(false);
+    setIsFocused(false);
     setSelectedItem(itemValue);
     itemValue
       ? onValueChange(
@@ -106,10 +117,26 @@ const Picker = ({
     [required, selectedItem],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(
-    () => getStyles(Colors, _required),
+  const marginBottom = useMemo(() => {
+    const listLength = listItems.length;
+
+    if (isScrollViewContainer && pickerIsOpen) {
+      return emptyValue
+        ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
+        : listLength * ITEM_HEIGHT + 5;
+    }
+
+    return null;
+  }, [emptyValue, isScrollViewContainer, listItems.length, pickerIsOpen]);
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
     [Colors, _required],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, _required, marginBottom),
+    [Colors, _required, marginBottom],
   );
 
   return (
@@ -139,7 +166,7 @@ const Picker = ({
           />
         </View>
       ) : (
-        <View>
+        <View style={styles.pickerContainerStyle}>
           <RightIconButton
             onPress={togglePicker}
             icon={
@@ -155,6 +182,7 @@ const Picker = ({
               commonStyles.filterSize,
               commonStyles.filterAlign,
               styles.rightIconButton,
+              isFocused && commonStyles.inputFocused,
               pickerStyle,
             ]}
           />
@@ -174,7 +202,7 @@ const Picker = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
+const getStyles = (Colors: ThemeColors, _required: boolean, marginBottom) =>
   StyleSheet.create({
     titleContainer: {
       marginHorizontal: 24,
@@ -192,6 +220,9 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     infosCard: {
       justifyContent: 'flex-start',
       width: Dimensions.get('window').width * 0.9,
+    },
+    pickerContainerStyle: {
+      marginBottom: marginBottom,
     },
   });
 

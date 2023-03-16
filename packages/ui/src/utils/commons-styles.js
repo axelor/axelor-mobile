@@ -17,8 +17,9 @@
  */
 
 import {Dimensions, StyleSheet} from 'react-native';
+import {hexToRgb} from './commons-utlis';
 
-export const getCommonStyles = Colors =>
+export const getCommonStyles = (Colors, _required = false) =>
   StyleSheet.create({
     filter: {
       backgroundColor: Colors.backgroundColor,
@@ -51,5 +52,16 @@ export const getCommonStyles = Colors =>
       height: Dimensions.get('window').height * 0.07,
       minHeight: 30,
       maxHeight: 40,
+    },
+    inputFocused: {
+      borderWidth: 1,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.primaryColor.background,
+      shadowColor: `rgba(${hexToRgb(Colors.primaryColor.background)}, 0.25)`,
+      shadowOffset: {width: 0, height: 0},
+      shadowOpacity: 1,
+      shadowRadius: 5,
+      elevation: 2,
     },
   });

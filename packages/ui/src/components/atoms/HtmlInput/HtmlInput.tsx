@@ -35,6 +35,8 @@ interface HtmlInputProps {
   defaultInput?: string;
   readonly?: boolean;
   onHeightChange?: (height: number) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const HtmlInput = ({
@@ -48,6 +50,8 @@ const HtmlInput = ({
   defaultInput = '',
   readonly = false,
   onHeightChange = () => {},
+  onFocus = () => {},
+  onBlur = () => {},
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
   const editor = useRef(null);
@@ -79,6 +83,8 @@ const HtmlInput = ({
               placeholderColor: Colors.placeholderTextColor,
             }}
             onHeightChange={onHeightChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </View>
       </ScrollView>

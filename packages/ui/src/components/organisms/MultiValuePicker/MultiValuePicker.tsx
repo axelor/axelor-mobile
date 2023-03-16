@@ -21,17 +21,14 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {Text} from '../../atoms';
-import {
-  LabelText,
-  SelectionContainer,
-  MultiValuePickerButton,
-} from '../../molecules';
+import {SelectionContainer, MultiValuePickerButton} from '../../molecules';
 import {getItemsFromList} from '../../../utils/list';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {ThemeColors} from '../../../theme';
+import MultiSelectValue from '../MultiSelectValue/MultiSelectValue';
 
 interface MultiValuePickerProps {
   style?: any;
@@ -44,8 +41,7 @@ interface MultiValuePickerProps {
   labelField: string;
   valueField: string;
   disabled?: boolean;
-  disabledValue?: string;
-  iconName?: string;
+  disabledValue?: string[];
   required?: boolean;
 }
 
@@ -60,17 +56,20 @@ const MultiValuePicker = ({
   labelField,
   valueField,
   disabled = false,
-  disabledValue = '',
-  iconName = null,
+  disabledValue = [],
   required = false,
 }: MultiValuePickerProps) => {
+  const Colors = useThemeColor();
+
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
     visible: pickerIsOpen,
   });
-  const Colors = useThemeColor();
+
   const [selectedItem, setSelectedItem] = useState(
     getItemsFromList(listItems, valueField, defaultValue),
   );
@@ -82,11 +81,13 @@ const MultiValuePicker = ({
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
       setPickerIsOpen(false);
+      setIsFocused(false);
     }
   }, [clickOutside, pickerIsOpen]);
 
   const togglePicker = () => {
     setPickerIsOpen(current => !current);
+    setIsFocused(current => !current);
   };
 
   const handleValueChange = useCallback(
@@ -114,7 +115,11 @@ const MultiValuePicker = ({
     [required, selectedItem],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
@@ -136,16 +141,7 @@ const MultiValuePicker = ({
             styles.infosCard,
             pickerStyle,
           ]}>
-          {/* TODO : improve here */}
-          <LabelText
-            value={
-              disabledValue == null || disabledValue === ''
-                ? '-'
-                : disabledValue
-            }
-            title={`${title} :`}
-            iconName={iconName}
-          />
+          <MultiSelectValue itemList={disabledValue} title={`${title} :`} />
         </View>
       ) : (
         <View>
@@ -158,6 +154,7 @@ const MultiValuePicker = ({
               commonStyles.filterSize,
               commonStyles.filterAlign,
               styles.rightIconButton,
+              isFocused && commonStyles.inputFocused,
               pickerStyle,
             ]}
             onPressItem={handleValueChange}
