@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -28,6 +28,8 @@ interface HeaderOptionMenuItemProps {
   onPress: () => void;
 }
 
+const BADGE_SIZE = 16;
+
 const HeaderOptionMenuItem = ({
   icon,
   indicator = 0,
@@ -36,7 +38,6 @@ const HeaderOptionMenuItem = ({
   onPress,
 }: HeaderOptionMenuItemProps) => {
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(16), []);
 
   if (hideIf) {
     return null;
@@ -64,25 +65,24 @@ const HeaderOptionMenuItem = ({
   );
 };
 
-const getStyles = badgeSize =>
-  StyleSheet.create({
-    badge: {
-      width: badgeSize,
-      height: badgeSize,
-      borderRadius: Math.ceil(badgeSize / 2),
-      position: 'absolute',
-      top: -4,
-      right: -8,
-      zIndex: 10,
-    },
-    badgeText: {
-      fontSize: Math.ceil(badgeSize / 2),
-    },
-    container: {
-      marginRight: 5,
-      marginLeft: 15,
-      flexDirection: 'row',
-    },
-  });
+const styles = StyleSheet.create({
+  badge: {
+    width: BADGE_SIZE,
+    height: BADGE_SIZE,
+    borderRadius: Math.ceil(BADGE_SIZE / 2),
+    position: 'absolute',
+    top: -4,
+    right: -8,
+    zIndex: 10,
+  },
+  badgeText: {
+    fontSize: Math.ceil(BADGE_SIZE / 2),
+  },
+  container: {
+    marginRight: 5,
+    marginLeft: 15,
+    flexDirection: 'row',
+  },
+});
 
 export default HeaderOptionMenuItem;

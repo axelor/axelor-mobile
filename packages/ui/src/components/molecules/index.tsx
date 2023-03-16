@@ -26,7 +26,6 @@ export {default as CircleButton} from './CircleButton/CircleButton';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
 export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
-export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as EditableInput} from './EditableInput/EditableInput';
 export {default as FormHtmlInput} from './FormHtmlInput/FormHtmlInput';
 export {default as FormIncrementInput} from './FormIncrementInput/FormIncrementInput';
