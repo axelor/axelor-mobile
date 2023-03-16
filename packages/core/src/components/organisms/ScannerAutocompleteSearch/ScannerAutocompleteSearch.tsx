@@ -17,17 +17,16 @@
  */
 
 import React, {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
 import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  enableScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '../../../features/scannerSlice';
+import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {
-  enableCameraScanner,
-  useCameraScannerValueByKey,
-} from '../../../features/cameraScannerSlice';
+  useScanActivator,
+  useScannerDeviceActivator,
+} from '../../../hooks/use-scan-activator';
 
 interface AutocompleteSearchProps {
   objectList: any[];
@@ -62,7 +61,8 @@ const ScannerAutocompleteSearch = ({
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
   const scanData = useCameraScannerValueByKey(scanKeySearch);
-  const dispatch = useDispatch();
+  const {enable: onScanPress} = useScanActivator(scanKeySearch);
+  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
 
   useEffect(() => {
     if (scannedValue) {
@@ -90,14 +90,8 @@ const ScannerAutocompleteSearch = ({
       changeScreenAfter={changeScreenAfter}
       navigate={navigate}
       oneFilter={oneFilter}
-      onSelection={() => {
-        scanKeySearch ? dispatch(enableScan(scanKeySearch)) : undefined;
-      }}
-      onScanPress={() => {
-        scanKeySearch
-          ? dispatch(enableCameraScanner(scanKeySearch))
-          : undefined;
-      }}
+      onSelection={enableScanner}
+      onScanPress={onScanPress}
       scanIconColor={
         isEnabled && scanKey === scanKeySearch
           ? Colors.primaryColor.background
