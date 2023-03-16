@@ -45,6 +45,7 @@ const FormHtmlInput = ({
   const Colors = useThemeColor();
 
   const [value, setValue] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
 
   const _required = useMemo(
     () => required && (value == null || value === ''),
@@ -59,16 +60,33 @@ const FormHtmlInput = ({
     [onChange],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
   );
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   return (
     <View style={style}>
       <Text style={styles.title}>{title}</Text>
-      <View style={[commonStyles.filter, styles.content]}>
+      <View
+        style={[
+          commonStyles.filter,
+          styles.content,
+          isFocused && commonStyles.inputFocused,
+        ]}>
         <HtmlInput
           defaultInput={value}
           onChange={onValueChange}
@@ -76,6 +94,8 @@ const FormHtmlInput = ({
           readonly={readonly}
           style={styles.input}
           styleToolbar={styles.htmlToolBar}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </View>
     </View>

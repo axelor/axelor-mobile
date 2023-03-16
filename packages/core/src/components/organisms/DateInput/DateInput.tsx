@@ -61,6 +61,7 @@ const DateInput = ({
   const [pickerWidth, setPickerWidth] = useState<number>();
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(defaultDate);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     if (defaultDate) {
@@ -77,12 +78,14 @@ const DateInput = ({
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
       setPickerIsOpen(false);
+      setIsFocused(false);
     }
   }, [clickOutside, pickerIsOpen]);
 
   const togglePicker = () => {
     if (!readonly) {
       setPickerIsOpen(current => !current);
+      setIsFocused(current => !current);
     }
   };
 
@@ -129,6 +132,7 @@ const DateInput = ({
           commonStyles.filterSize,
           commonStyles.filterAlign,
           styles.rightIconButton,
+          isFocused && commonStyles.inputFocused,
         ]}
       />
       <View>

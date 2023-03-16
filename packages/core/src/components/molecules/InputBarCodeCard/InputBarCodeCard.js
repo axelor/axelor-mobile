@@ -16,17 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {
-  Card,
-  getCommonStyles,
-  Icon,
-  Input,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Icon, IconInput, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   enableScan,
   useScannedValueByKey,
@@ -41,14 +34,18 @@ const InputBarCodeCard = ({
   style,
   scanKeySearch,
   title,
+  defaultValue,
+  readOnly = false,
   onChange = () => {},
 }) => {
   const Colors = useThemeColor();
-  const [inputData, setInputData] = useState(null);
+  const dispatch = useDispatch();
+
+  const [inputData, setInputData] = useState(defaultValue);
+
   const {isEnabled: scannerEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
   const scanData = useCameraScannerValueByKey(scanKeySearch);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (scannedValue) {
@@ -60,8 +57,6 @@ const InputBarCodeCard = ({
     }
   }, [onChange, scanData, scannedValue]);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
   return (
     <View style={style}>
       {title && (
@@ -69,53 +64,44 @@ const InputBarCodeCard = ({
           <Text style={styles.textImportant}>{title}</Text>
         </View>
       )}
-      <Card
-        style={[
-          commonStyles.filter,
-          commonStyles.filterAlign,
-          styles.container,
-        ]}>
-        <Input
-          style={styles.inputField}
-          value={inputData}
-          onChange={onChange}
-          onSelection={() => {
-            scanKeySearch ? dispatch(enableScan(scanKeySearch)) : undefined;
-          }}
-        />
-        <Icon
-          name="qrcode"
-          touchable={true}
-          onPress={() => {
-            scanKeySearch
-              ? dispatch(enableCameraScanner(scanKeySearch))
-              : undefined;
-          }}
-          color={
-            scannerEnabled && scanKey === scanKeySearch
-              ? Colors.primaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-        />
-      </Card>
+      <IconInput
+        style={style}
+        value={inputData}
+        onChange={onChange}
+        readOnly={readOnly}
+        onSelection={() => {
+          dispatch(enableScan(scanKeySearch));
+        }}
+        rightIconsList={[
+          <Icon
+            name="qrcode"
+            size={20}
+            color={
+              scannerEnabled && scanKey === scanKeySearch
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+            touchable={true}
+            style={styles.icon}
+            onPress={() => dispatch(enableCameraScanner(scanKeySearch))}
+            FontAwesome5={false}
+          />,
+        ]}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 16,
-    paddingRight: 15,
-    marginBottom: '3%',
-  },
-  inputField: {
-    width: '90%',
-  },
   titleContainer: {
     marginHorizontal: 16,
   },
   textImportant: {
     fontWeight: 'bold',
+  },
+  icon: {
+    width: '7%',
+    margin: 3,
   },
 });
 
