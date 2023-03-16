@@ -80,7 +80,7 @@ const InventoryListScreen = ({navigation}) => {
 
   const navigateToInventoryDetail = item => {
     if (item != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate(
         item.statusSelect === Inventory.status.Planned
           ? 'InventoryPlannedDetailsScreen'

@@ -75,7 +75,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
 
   const navigateToManufOrder = item => {
     if (item != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate('ManufacturingOrderDetailsScreen', {
         manufacturingOrderId: item.id,
       });

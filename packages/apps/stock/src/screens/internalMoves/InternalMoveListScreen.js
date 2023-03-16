@@ -101,7 +101,7 @@ const InternalMoveListScreen = ({navigation}) => {
 
   const showInternalMoveDetails = internalMove => {
     if (internalMove != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate('InternalMoveDetailsGeneralScreen', {
         internalMove: internalMove,
       });
