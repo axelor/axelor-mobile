@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {HtmlInput, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
@@ -81,25 +81,23 @@ const FormHtmlInput = ({
   return (
     <View style={style}>
       <Text style={styles.title}>{title}</Text>
-      <TouchableWithoutFeedback onPress={() => setIsFocused(true)}>
-        <View
-          style={[
-            commonStyles.filter,
-            styles.content,
-            isFocused && commonStyles.inputFocused,
-          ]}>
-          <HtmlInput
-            defaultInput={value}
-            onChange={onValueChange}
-            placeholder={placeholder}
-            readonly={readonly}
-            style={styles.input}
-            styleToolbar={styles.htmlToolBar}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      <View
+        style={[
+          commonStyles.filter,
+          styles.content,
+          isFocused && commonStyles.inputFocused,
+        ]}>
+        <HtmlInput
+          defaultInput={value}
+          onChange={onValueChange}
+          placeholder={placeholder}
+          readonly={readonly}
+          style={styles.input}
+          styleToolbar={styles.htmlToolBar}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </View>
     </View>
   );
 };
