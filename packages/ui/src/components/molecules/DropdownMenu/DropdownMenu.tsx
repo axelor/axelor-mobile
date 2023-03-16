@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
@@ -44,16 +44,17 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
 
   return (
     <View ref={wrapperRef}>
-      <Icon
-        name="ellipsis-v"
-        color={Colors.primaryColor.background}
-        size={22}
+      <TouchableOpacity
         style={styles.action}
-        touchable={true}
         onPress={() => {
           setVisible(!visible);
-        }}
-      />
+        }}>
+        <Icon
+          name="ellipsis-v"
+          color={Colors.primaryColor.background}
+          size={22}
+        />
+      </TouchableOpacity>
       {visible && <Card style={styles.menuContainer}>{children}</Card>}
     </View>
   );
@@ -71,8 +72,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   action: {
-    marginRight: 5,
-    marginLeft: 15,
+    padding: 5,
+    paddingLeft: 15,
   },
 });
 
