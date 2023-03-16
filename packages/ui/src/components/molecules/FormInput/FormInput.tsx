@@ -61,9 +61,10 @@ const FormInput = ({
   );
 
   const commonStyles = useMemo(
-    () => getCommonStyles(Colors, required),
-    [Colors, required],
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
   );
+
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
