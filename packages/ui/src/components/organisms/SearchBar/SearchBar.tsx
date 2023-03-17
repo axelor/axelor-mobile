@@ -34,6 +34,7 @@ interface SearchBarProps {
   isFocus?: boolean;
   onScanPress?: () => void;
   scanIconColor?: string;
+  onSearchPress?: () => void;
 }
 
 const SearchBar = ({
@@ -47,6 +48,7 @@ const SearchBar = ({
   isFocus = false,
   onScanPress = () => {},
   scanIconColor = null,
+  onSearchPress = () => {},
 }: SearchBarProps) => {
   const Colors = useThemeColor();
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -79,6 +81,8 @@ const SearchBar = ({
           style={styles.action}
           name="search"
           color={Colors.secondaryColor_dark.background}
+          onPress={onSearchPress}
+          touchable={true}
           size={20}
         />,
         <Icon

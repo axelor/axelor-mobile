@@ -61,7 +61,7 @@ const AutoCompleteSearch = ({
   changeScreenAfter = false,
   navigate = false,
   oneFilter = false,
-  onSelection,
+  onSelection = () => {},
   onScanPress,
   scanIconColor = null,
   selectLastItem = true,
@@ -191,6 +191,15 @@ const AutoCompleteSearch = ({
     ],
   );
 
+  const handleFocus = useCallback(() => {
+    setDisplayList(true);
+    onSelection();
+  }, [onSelection]);
+
+  const handleSearchPress = useCallback(() => {
+    setDisplayList(true);
+  }, []);
+
   useEffect(() => {
     if (isValidString(value)) {
       handleSearchValueChange(value);
@@ -205,7 +214,8 @@ const AutoCompleteSearch = ({
         placeholder={placeholder}
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
-        onSelection={onSelection}
+        onSelection={handleFocus}
+        onSearchPress={handleSearchPress}
         onEndFocus={() => selected && setDisplayList(false)}
         isFocus={isFocus}
         onScanPress={onScanPress}
