@@ -43,7 +43,10 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
   const product = route.params.product;
-  const trackingNumber = route.params.trackingNumber;
+  const trackingNumber =
+    inventoryLine != null
+      ? inventoryLine.trackingNumber
+      : route.params.trackingNumber;
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );

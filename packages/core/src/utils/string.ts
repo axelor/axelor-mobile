@@ -47,7 +47,7 @@ export function stringNoAccent(message) {
 
 export function checkNullString(message) {
   if (message == null) {
-    return message;
+    return true;
   } else {
     let newMessage = message.replace(/\s/g, '');
     return newMessage == null || newMessage === '';
