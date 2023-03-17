@@ -67,7 +67,7 @@ const ProductListScreen = ({navigation}) => {
   const showProductDetails = useCallback(
     product => {
       if (product != null) {
-        setNavigate(true);
+        setNavigate(current => !current);
         navigation.navigate('ProductStockDetailsScreen', {product: product});
       }
     },

@@ -38,14 +38,14 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../features/authSlice';
 import {
-  enableScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '../features/scannerSlice';
+import {useCameraScannerValueByKey} from '../features/cameraScannerSlice';
 import {
-  enableCameraScanner,
-  useCameraScannerValueByKey,
-} from '../features/cameraScannerSlice';
+  useScanActivator,
+  useScannerDeviceActivator,
+} from '../hooks/use-scan-activator';
 
 const urlScanKey = 'login_url';
 
@@ -54,11 +54,16 @@ const LoginScreen = ({route}) => {
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
+  const {enable: onScanPress} = useScanActivator(urlScanKey);
+  const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
+
   const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
+
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
   const modeDebug = useMemo(() => __DEV__, []);
 
   const showUrlInput = useMemo(() => {
@@ -127,10 +132,8 @@ const LoginScreen = ({route}) => {
                 value={url}
                 onChange={setUrl}
                 readOnly={loading}
-                onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
-                onSelection={() => {
-                  dispatch(enableScan(urlScanKey));
-                }}
+                onScanPress={onScanPress}
+                onSelection={enableScanner}
                 scanIconColor={
                   isEnabled && scanKey === urlScanKey
                     ? Colors.primaryColor.background
@@ -143,10 +146,8 @@ const LoginScreen = ({route}) => {
               onChange={setUsername}
               readOnly={loading}
               showScanIcon={!showUrlInput}
-              onScanPress={() => dispatch(enableCameraScanner(urlScanKey))}
-              onSelection={() => {
-                dispatch(enableScan(urlScanKey));
-              }}
+              onScanPress={onScanPress}
+              onSelection={enableScanner}
               scanIconColor={
                 isEnabled && scanKey === urlScanKey
                   ? Colors.primaryColor.background

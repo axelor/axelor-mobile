@@ -82,7 +82,7 @@ function OperationOrderListScreen({navigation}) {
 
   const navigateToOperationOrder = item => {
     if (item != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate('OperationOrderDetailsScreen', {
         operationOrderId: item.id,
       });

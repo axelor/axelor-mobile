@@ -24,6 +24,14 @@ import {scanValue, useScannerSelector} from '../../../features/scannerSlice';
 
 const ean13LabelType = 'LABEL-TYPE-EAN13';
 
+function formatScan(barcodeValue, barcodeType) {
+  if (barcodeType === ean13LabelType) {
+    return barcodeValue.slice(0, -1);
+  } else {
+    return barcodeValue;
+  }
+}
+
 const KEYS = {
   LABEL_TYPE: 'com.symbol.datawedge.label_type',
   DATA_DISPATCH_TIME: 'com.symbol.datawedge.data_dispatch_time',
@@ -58,11 +66,9 @@ const Scanner = () => {
         'datawedge_broadcast_intent',
         intent => {
           const {labelType, value} = castIntent(intent);
-          if (labelType === ean13LabelType) {
-            dispatch(scanValue(value.slice(0, -1)));
-          } else {
-            dispatch(scanValue(value));
-          }
+          const formattedValue = formatScan(value, labelType);
+
+          dispatch(scanValue(formattedValue));
         },
       );
 

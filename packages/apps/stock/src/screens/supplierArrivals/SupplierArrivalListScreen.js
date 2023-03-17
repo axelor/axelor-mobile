@@ -88,7 +88,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
 
   const navigateToSupplierDetail = item => {
     if (item != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate('SupplierArrivalDetailsScreen', {
         supplierArrival: item,
       });
