@@ -25,7 +25,11 @@ import {
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
 
-const TIME_WITHOUT_INPUT = 1000;
+const isValidString = (string: String) => {
+  return typeof string === 'string' && string !== '';
+};
+
+const TIME_WITHOUT_INPUT = 2000;
 const TIME_BETWEEN_CALL = 1000;
 
 interface AutocompleteSearchProps {
@@ -64,21 +68,25 @@ const AutoCompleteSearch = ({
   style,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
+  const [previousState, setPreviousState] = useState(null);
+  const [selected, setSelected] = useState(value ? true : false);
+  const [searchText, setSearchText] = useState(
+    value ? displayValue(value) : null,
+  );
+  let timeOutRequestCall = useRef<number>();
+  let intervalRequestCall = useRef<number>();
+
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
     visible: displayList,
   });
 
-  const [searchText, setSearchText] = useState(
-    value ? displayValue(value) : null,
-  );
-  const [previousState, setPreviousState] = useState(null);
-  const [newInterval, setNewInterval] = useState(0);
-  const [selected, setSelected] = useState(value ? true : false);
-
-  let timeOutRequestCall = useRef<number>();
-  let intervalRequestCall = useRef<number>();
+  useEffect(() => {
+    if (clickOutside === OUTSIDE_INDICATOR && displayList) {
+      setDisplayList(false);
+    }
+  }, [clickOutside, displayList]);
 
   const handleAPICall = useCallback(() => {
     if (!selected) {
@@ -91,16 +99,8 @@ const AutoCompleteSearch = ({
   }, [fetchData, searchText, selected]);
 
   useEffect(() => {
-    if (!selected) {
-      handleAPICall();
-    }
-  }, [selected, handleAPICall]);
-
-  useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && displayList) {
-      setDisplayList(false);
-    }
-  }, [clickOutside, displayList]);
+    handleAPICall();
+  }, [handleAPICall]);
 
   const handleSelect = useCallback(
     item => {
@@ -113,7 +113,7 @@ const AutoCompleteSearch = ({
   );
 
   useEffect(() => {
-    if (navigate && oneFilter) {
+    if (oneFilter && navigate != null) {
       setSearchText('');
     }
   }, [navigate, oneFilter]);
@@ -126,44 +126,32 @@ const AutoCompleteSearch = ({
     onChangeValue(null);
   };
 
-  useEffect(() => {
-    if (
-      (previousState === '' || previousState == null) &&
-      searchText != null &&
-      searchText !== ''
-    ) {
-      const id = setInterval(
-        () => setNewInterval(state => state + 1),
-        TIME_BETWEEN_CALL,
-      );
-      intervalRequestCall.current = id;
-    }
-  }, [previousState, searchText]);
-
   const stopInterval = useCallback(() => {
     clearInterval(intervalRequestCall.current);
-    setNewInterval(0);
   }, []);
 
-  useEffect(() => {
-    if (newInterval > 0) {
-      handleAPICall();
-    }
-  }, [handleAPICall, newInterval]);
+  const handleInterval = useCallback(() => {
+    handleAPICall();
+  }, [handleAPICall]);
 
   const handleTimeOut = useCallback(() => {
     stopInterval();
-    if (!selected) {
-      if (searchText == null && searchText === '') {
-        fetchData(null);
-      } else {
-        fetchData(searchText);
-      }
-    }
-  }, [fetchData, searchText, selected, stopInterval]);
+    handleAPICall();
+  }, [handleAPICall, stopInterval]);
 
   useEffect(() => {
-    if (searchText != null) {
+    if (!isValidString(previousState) && isValidString(searchText)) {
+      const id = setInterval(handleInterval, TIME_BETWEEN_CALL);
+      intervalRequestCall.current = id;
+
+      return () => {
+        stopInterval();
+      };
+    }
+  }, [handleInterval, previousState, searchText, stopInterval]);
+
+  useEffect(() => {
+    if (isValidString(searchText)) {
       const id: number = setTimeout(handleTimeOut, TIME_WITHOUT_INPUT);
       timeOutRequestCall.current = id;
 
@@ -175,14 +163,12 @@ const AutoCompleteSearch = ({
 
   const handleSearchValueChange = useCallback(
     input => {
-      if (objectList != null && input != null && input !== '' && !selected) {
-        if (objectList.length === 1 && selectLastItem === true) {
-          if (changeScreenAfter || oneFilter) {
-            setSearchText('');
-          } else {
-            setSearchText(displayValue(objectList[0]));
-            setDisplayList(false);
-          }
+      if (Array.isArray(objectList) && isValidString(input) && !selected) {
+        if (objectList.length === 1 && selectLastItem) {
+          setSearchText(
+            changeScreenAfter || oneFilter ? '' : displayValue(objectList[0]),
+          );
+          setDisplayList(false);
           stopInterval();
           onChangeValue(objectList[0]);
         } else {
@@ -204,6 +190,12 @@ const AutoCompleteSearch = ({
       stopInterval,
     ],
   );
+
+  useEffect(() => {
+    if (isValidString(value)) {
+      handleSearchValueChange(value);
+    }
+  }, [displayValue, handleSearchValueChange, value]);
 
   return (
     <View ref={wrapperRef}>

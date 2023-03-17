@@ -88,7 +88,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
 
   const navigateToCustomerDelivery = item => {
     if (item != null) {
-      setNavigate(true);
+      setNavigate(current => !current);
       navigation.navigate('CustomerDeliveryDetailScreen', {
         customerDelivery: item,
       });

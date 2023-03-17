@@ -18,17 +18,16 @@
 
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch} from 'react-redux';
 import {Icon, IconInput, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  enableScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '../../../features/scannerSlice';
+import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {
-  enableCameraScanner,
-  useCameraScannerValueByKey,
-} from '../../../features/cameraScannerSlice';
+  useScanActivator,
+  useScannerDeviceActivator,
+} from '../../../hooks/use-scan-activator';
 
 const InputBarCodeCard = ({
   style,
@@ -39,13 +38,14 @@ const InputBarCodeCard = ({
   onChange = () => {},
 }) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   const [inputData, setInputData] = useState(defaultValue);
 
   const {isEnabled: scannerEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
   const scanData = useCameraScannerValueByKey(scanKeySearch);
+  const {enable: onScanPress} = useScanActivator(scanKeySearch);
+  const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch);
 
   useEffect(() => {
     if (scannedValue) {
@@ -69,9 +69,7 @@ const InputBarCodeCard = ({
         value={inputData}
         onChange={onChange}
         readOnly={readOnly}
-        onSelection={() => {
-          dispatch(enableScan(scanKeySearch));
-        }}
+        onSelection={enableScanner}
         rightIconsList={[
           <Icon
             name="qrcode"
@@ -83,7 +81,7 @@ const InputBarCodeCard = ({
             }
             touchable={true}
             style={styles.icon}
-            onPress={() => dispatch(enableCameraScanner(scanKeySearch))}
+            onPress={onScanPress}
             FontAwesome5={false}
           />,
         ]}
