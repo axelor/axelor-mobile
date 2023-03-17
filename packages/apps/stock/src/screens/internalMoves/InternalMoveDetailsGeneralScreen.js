@@ -40,6 +40,7 @@ import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {updateInternalMove} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
@@ -76,37 +77,15 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   };
 
   const handleShowLine = item => {
-    const updatedItem = {
-      ...item,
-      product: {
-        ...item.product,
-        name: item['product.name'],
-        trackingNumberConfiguration:
-          item['product.trackingNumberConfiguration'],
-      },
-    };
-
-    const {product, trackingNumber} = updatedItem;
-
-    const {trackingNumberConfiguration} = product;
-
-    if (internalMove.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('InternalMoveLineDetailsScreen', {
-        internalMoveLine: updatedItem,
-        internalMove,
-      });
-    } else if (trackingNumberConfiguration && trackingNumber != null) {
-      navigation.navigate('InternalMoveSelectTrackingScreen', {
-        internalMoveLine: updatedItem,
-        stockProduct: product,
-        internalMove,
-      });
-    } else {
-      navigation.navigate('InternalMoveSelectProductScreen', {
-        internalMoveLine: updatedItem,
-        internalMove,
-      });
-    }
+    showLine({
+      item: {name: 'internalMove', data: internalMove},
+      itemLine: {name: 'internalMoveLine', data: item},
+      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
+      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
+      selectProductScreen: 'InternalMoveSelectProductScreen',
+      productKey: 'stockProduct',
+      navigation,
+    });
   };
 
   const handleRealizeStockMove = useCallback(() => {

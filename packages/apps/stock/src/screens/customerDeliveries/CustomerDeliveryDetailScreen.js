@@ -43,6 +43,7 @@ import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSli
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -92,35 +93,16 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     const updatedItem = {
       ...item,
       locker,
-      product: {
-        ...item.product,
-        name: item['product.name'],
-        trackingNumberConfiguration:
-          item['product.trackingNumberConfiguration'],
-      },
     };
 
-    const {product, trackingNumber} = updatedItem;
-
-    const {trackingNumberConfiguration} = product;
-
-    if (customerDelivery.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('CustomerDeliveryLineDetailScreen', {
-        customerDeliveryLine: updatedItem,
-        customerDelivery,
-      });
-    } else if (trackingNumberConfiguration && trackingNumber != null) {
-      navigation.navigate('CustomerDeliverySelectTrackingScreen', {
-        customerDeliveryLine: updatedItem,
-        customerDelivery,
-        product,
-      });
-    } else {
-      navigation.navigate('CustomerDeliverySelectProductScreen', {
-        customerDeliveryLine: updatedItem,
-        customerDelivery: customerDelivery,
-      });
-    }
+    showLine({
+      item: {name: 'customerDelivery', data: customerDelivery},
+      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
+      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
+      selectProductScreen: 'CustomerDeliverySelectProductScreen',
+      navigation,
+    });
   };
 
   const handleRealize = () => {

@@ -41,6 +41,7 @@ import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice
 import {getRacks} from '../../features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
@@ -80,37 +81,14 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   };
 
   const handleShowLine = item => {
-    const updatedItem = {
-      ...item,
-      product: {
-        ...item.product,
-        name: item['product.name'],
-        trackingNumberConfiguration:
-          item['product.trackingNumberConfiguration'],
-      },
-    };
-
-    const {product, trackingNumber} = updatedItem;
-
-    const {trackingNumberConfiguration} = product;
-
-    if (supplierArrival.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('SupplierArrivalLineDetailScreen', {
-        supplierArrivalLine: updatedItem,
-        supplierArrival,
-      });
-    } else if (trackingNumberConfiguration && trackingNumber != null) {
-      navigation.navigate('SupplierArrivalSelectTrackingScreen', {
-        supplierArrivalLine: updatedItem,
-        supplierArrival,
-        product,
-      });
-    } else {
-      navigation.navigate('SupplierArrivalSelectProductScreen', {
-        supplierArrivalLine: updatedItem,
-        supplierArrival,
-      });
-    }
+    showLine({
+      item: {name: 'supplierArrival', data: supplierArrival},
+      itemLine: {name: 'supplierArrivalLine', data: item},
+      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
+      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
+      selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      navigation,
+    });
   };
 
   const handleRealize = () => {

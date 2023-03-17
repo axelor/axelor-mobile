@@ -43,6 +43,7 @@ import {
   updateInventory,
 } from '../../features/inventorySlice';
 import Inventory from '../../types/inventory';
+import {showLine} from '../../utils/line-navigation';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const inventoryId = route.params.inventoryId;
@@ -60,37 +61,15 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   }, [dispatch, inventoryId]);
 
   const handleShowLine = item => {
-    const updatedItem = {
-      ...item,
-      product: {
-        ...item.product,
-        name: item['product.name'],
-        trackingNumberConfiguration:
-          item['product.trackingNumberConfiguration'],
-      },
-    };
-
-    const {product, trackingNumber} = updatedItem;
-
-    const {trackingNumberConfiguration} = product;
-
-    if (inventory.statusSelect === Inventory.status.Validated) {
-      navigation.navigate('InventoryLineDetailsScreen', {
-        inventoryLine: updatedItem,
-        inventory,
-      });
-    } else if (trackingNumberConfiguration && trackingNumber != null) {
-      navigation.navigate('InventorySelectTrackingScreen', {
-        inventoryLine: updatedItem,
-        inventory,
-        product,
-      });
-    } else {
-      navigation.navigate('InventorySelectProductScreen', {
-        inventoryLine: updatedItem,
-        inventory,
-      });
-    }
+    showLine({
+      item: {name: 'inventory', data: inventory},
+      itemLine: {name: 'inventoryLine', data: item},
+      lineDetailsScreen: 'InventoryLineDetailsScreen',
+      selectTrackingScreen: 'InventorySelectTrackingScreen',
+      selectProductScreen: 'InventorySelectProductScreen',
+      detailStatus: Inventory.status.Validated,
+      navigation,
+    });
   };
 
   const handleViewAll = () => {

@@ -29,6 +29,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -42,24 +43,21 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const handleShowLine = (item, index) => {
-    item = {
+    const locker = racksList?.[index]?.[0]?.rack ?? '';
+
+    const updatedItem = {
       ...item,
-      locker:
-        racksList != null && racksList[index] != null
-          ? racksList[index][0]?.rack
-          : '',
+      locker,
     };
-    if (customerDelivery.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('CustomerDeliveryLineDetailScreen', {
-        customerDeliveryLine: item,
-        customerDelivery: customerDelivery,
-      });
-    } else {
-      navigation.navigate('CustomerDeliverySelectProductScreen', {
-        customerDeliveryLine: item,
-        customerDelivery: customerDelivery,
-      });
-    }
+
+    showLine({
+      item: {name: 'customerDelivery', data: customerDelivery},
+      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
+      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
+      selectProductScreen: 'CustomerDeliverySelectProductScreen',
+      navigation,
+    });
   };
 
   const fetchDeliveryLinesAPI = useCallback(
