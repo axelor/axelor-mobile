@@ -17,16 +17,8 @@
  */
 
 import React, {useEffect, useCallback, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
-import {
-  EditableInput,
-  Icon,
-  Picker,
-  Screen,
-  ScrollView,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -37,6 +29,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
+  ProductSeeDistributionStocksLocation,
   ProductStockHeader,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -47,14 +40,12 @@ import {updateProductLocker} from '../../features/productSlice';
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const product = route.params.product;
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {productIndicators} = useSelector(state => state.productIndicators);
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
   const {baseConfig, mobileSettings} = useSelector(state => state.config);
@@ -89,13 +80,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
-  };
-
-  const navigateStockLocationDetails = () => {
-    navigation.navigate('ProductStockLocationDetailsScreen', {
-      product: product,
-      companyId: companyId,
-    });
   };
 
   const handleLockerChange = input => {
@@ -148,32 +132,21 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         />
         <View style={styles.lineStyle} />
         {baseConfig.enableMultiCompany && canModifyCompany && (
-          <View style={styles.picker}>
-            <Picker
-              title={I18n.t('User_Company')}
-              defaultValue={companyId}
-              listItems={companyList}
-              labelField="name"
-              valueField="id"
-              onValueChange={item => setCompany(item)}
-            />
-          </View>
+          <Picker
+            styles={styles.picker}
+            title={I18n.t('User_Company')}
+            defaultValue={companyId}
+            listItems={companyList}
+            labelField="name"
+            valueField="id"
+            onValueChange={item => setCompany(item)}
+          />
         )}
-        {productIndicators?.realQty != null &&
-          parseInt(productIndicators?.realQty, 10) !== 0 &&
-          parseInt(productIndicators?.futureQty, 10) !== 0 && (
-            <TouchableOpacity onPress={navigateStockLocationDetails}>
-              <View style={styles.arrowContainer}>
-                <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-                <Icon
-                  name="angle-right"
-                  size={24}
-                  color={Colors.primaryColor.background}
-                  style={styles.arrowIcon}
-                />
-              </View>
-            </TouchableOpacity>
-          )}
+        <ProductSeeDistributionStocksLocation
+          companyId={companyId}
+          navigation={navigation}
+          product={product}
+        />
         <ScannerAutocompleteSearch
           objectList={stockLocationList}
           value={stockLocation}
@@ -199,17 +172,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  arrowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    width: '80%',
-  },
-  arrowIcon: {
-    marginRight: -6,
-    marginLeft: 5,
-  },
   picker: {
     alignItems: 'center',
   },
