@@ -50,3 +50,4 @@ export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDe
 export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';
 export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';
 export {default as CustomerDeliveryLineDetailFixedItems} from './CustomerDeliveryLineDetailFixedItems/CustomerDeliveryLineDetailFixedItems';
+export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
