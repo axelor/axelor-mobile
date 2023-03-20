@@ -26,6 +26,8 @@ const internalMoveLineFields = [
   'unit',
   'qty',
   'realQty',
+  'product.name',
+  'product.trackingNumberConfiguration',
 ];
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {

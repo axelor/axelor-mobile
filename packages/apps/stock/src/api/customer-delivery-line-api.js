@@ -29,6 +29,8 @@ const customerDeliveryLineFields = [
   'locker',
   'name',
   'saleOrderLine.pickingOrderInfo',
+  'product.name',
+  'product.trackingNumberConfiguration',
 ];
 
 export async function searchCustomerDeliveryLines({

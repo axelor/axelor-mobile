@@ -39,7 +39,10 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
   const customerDelivery = route.params.customerDelivery;
   const customerDeliveryLine = route.params.customerDeliveryLine;
-  const trackingNumber = route.params.trackingNumber;
+  const trackingNumber =
+    customerDeliveryLine != null
+      ? customerDeliveryLine.trackingNumber
+      : route.params.trackingNumber;
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );

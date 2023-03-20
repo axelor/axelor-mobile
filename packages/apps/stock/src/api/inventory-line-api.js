@@ -27,6 +27,8 @@ const inventoryLineFields = [
   'rack',
   'trackingNumber',
   'description',
+  'product.name',
+  'product.trackingNumberConfiguration',
 ];
 
 export async function searchInventoryLines({inventoryId, page = 0}) {

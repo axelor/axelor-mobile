@@ -30,6 +30,8 @@ const supplierArrivalLineFields = [
   'locker',
   'name',
   'conformitySelect',
+  'product.name',
+  'product.trackingNumberConfiguration',
 ];
 
 export async function searchSupplierArrivalLines({

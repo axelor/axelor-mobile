@@ -29,6 +29,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -41,17 +42,14 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const handleShowLine = item => {
-    if (supplierArrival.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('SupplierArrivalLineDetailScreen', {
-        supplierArrivalLine: item,
-        supplierArrival: supplierArrival,
-      });
-    } else {
-      navigation.navigate('SupplierArrivalSelectProductScreen', {
-        supplierArrivalLine: item,
-        supplierArrival: supplierArrival,
-      });
-    }
+    showLine({
+      item: {name: 'supplierArrival', data: supplierArrival},
+      itemLine: {name: 'supplierArrivalLine', data: item},
+      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
+      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
+      selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      navigation,
+    });
   };
 
   const fetchSupplierLinesAPI = useCallback(

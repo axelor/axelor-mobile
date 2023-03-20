@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
-import {AOSImage} from '@axelor/aos-mobile-core';
+import {AOSImage, checkNullString} from '@axelor/aos-mobile-core';
 import {ProductCardDetails} from '../../molecules';
 
 interface ProductCardInfoProps {
@@ -51,7 +51,7 @@ const ProductCardInfo = ({
       <ProductCardDetails style={styles.textContainer} onPress={onPress}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.code}>{code}</Text>
-        {trackingNumber && (
+        {!checkNullString(trackingNumber) && (
           <View style={styles.labelText}>
             <Icon
               name="qrcode"
@@ -62,7 +62,7 @@ const ProductCardInfo = ({
             <Text style={styles.code}>{trackingNumber}</Text>
           </View>
         )}
-        {locker && (
+        {!checkNullString(locker) && (
           <View style={styles.labelText}>
             <Icon name="map-marker-alt" size={15} style={styles.picto} />
             <Text style={styles.code}>{locker}</Text>

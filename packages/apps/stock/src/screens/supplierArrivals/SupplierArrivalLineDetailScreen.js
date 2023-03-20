@@ -42,7 +42,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
-  const trackingNumber = route.params.trackingNumber;
+  const trackingNumber =
+    supplierArrivalLine != null
+      ? supplierArrivalLine.trackingNumber
+      : route.params.trackingNumber;
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );

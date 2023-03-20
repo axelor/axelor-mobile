@@ -29,6 +29,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import Inventory from '../../types/inventory';
+import {showLine} from '../../utils/line-navigation';
 
 const InventoryLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -41,17 +42,15 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const handleShowLine = item => {
-    if (inventory.statusSelect === Inventory.status.Validated) {
-      navigation.navigate('InventoryLineDetailsScreen', {
-        inventoryLine: item,
-        inventory: inventory,
-      });
-    } else {
-      navigation.navigate('InventorySelectProductScreen', {
-        inventoryLine: item,
-        inventory: inventory,
-      });
-    }
+    showLine({
+      item: {name: 'inventory', data: inventory},
+      itemLine: {name: 'inventoryLine', data: item},
+      lineDetailsScreen: 'InventoryLineDetailsScreen',
+      selectTrackingScreen: 'InventorySelectTrackingScreen',
+      selectProductScreen: 'InventorySelectProductScreen',
+      detailStatus: Inventory.status.Validated,
+      navigation,
+    });
   };
 
   const fetchInventoryLinesAPI = useCallback(
