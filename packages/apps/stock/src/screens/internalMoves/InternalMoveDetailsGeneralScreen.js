@@ -40,6 +40,7 @@ import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {updateInternalMove} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
@@ -76,17 +77,15 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   };
 
   const handleShowLine = item => {
-    if (internalMove.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('InternalMoveLineDetailsScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
-      });
-    } else {
-      navigation.navigate('InternalMoveSelectProductScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
-      });
-    }
+    showLine({
+      item: {name: 'internalMove', data: internalMove},
+      itemLine: {name: 'internalMoveLine', data: item},
+      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
+      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
+      selectProductScreen: 'InternalMoveSelectProductScreen',
+      productKey: 'stockProduct',
+      navigation,
+    });
   };
 
   const handleRealizeStockMove = useCallback(() => {

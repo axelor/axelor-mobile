@@ -29,6 +29,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import StockMove from '../../types/stock-move';
+import {showLine} from '../../utils/line-navigation';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
   const Colors = useThemeColor();
@@ -41,17 +42,15 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const handleShowLine = item => {
-    if (internalMove.statusSelect === StockMove.status.Realized) {
-      navigation.navigate('InternalMoveLineDetailsScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
-      });
-    } else {
-      navigation.navigate('InternalMoveSelectProductScreen', {
-        internalMove: internalMove,
-        internalMoveLine: item,
-      });
-    }
+    showLine({
+      item: {name: 'internalMove', data: internalMove},
+      itemLine: {name: 'internalMoveLine', data: item},
+      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
+      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
+      selectProductScreen: 'InternalMoveSelectProductScreen',
+      productKey: 'stockProduct',
+      navigation,
+    });
   };
 
   const fetchInternalLinesAPI = useCallback(

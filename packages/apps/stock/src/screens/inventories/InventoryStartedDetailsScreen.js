@@ -43,6 +43,7 @@ import {
   updateInventory,
 } from '../../features/inventorySlice';
 import Inventory from '../../types/inventory';
+import {showLine} from '../../utils/line-navigation';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const inventoryId = route.params.inventoryId;
@@ -60,17 +61,15 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   }, [dispatch, inventoryId]);
 
   const handleShowLine = item => {
-    if (inventory.statusSelect === Inventory.status.Validated) {
-      navigation.navigate('InventoryLineDetailsScreen', {
-        inventoryLine: item,
-        inventory: inventory,
-      });
-    } else {
-      navigation.navigate('InventorySelectProductScreen', {
-        inventoryLine: item,
-        inventory: inventory,
-      });
-    }
+    showLine({
+      item: {name: 'inventory', data: inventory},
+      itemLine: {name: 'inventoryLine', data: item},
+      lineDetailsScreen: 'InventoryLineDetailsScreen',
+      selectTrackingScreen: 'InventorySelectTrackingScreen',
+      selectProductScreen: 'InventorySelectProductScreen',
+      detailStatus: Inventory.status.Validated,
+      navigation,
+    });
   };
 
   const handleViewAll = () => {
