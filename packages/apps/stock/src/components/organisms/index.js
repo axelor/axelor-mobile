@@ -48,3 +48,4 @@ export {default as InternalMoveGeneralBody} from './InternalMoveGeneralBody/Inte
 export {default as InventoryStartedHeader} from './InventoryStartedHeader/InventoryStartedHeader';
 export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDetailsFixedItems/InternalMoveLineDetailsFixedItems';
 export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';
+export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';

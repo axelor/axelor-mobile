@@ -17,11 +17,9 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
-  Badge,
   Button,
-  LabelText,
   PopUpOneButton,
   Screen,
   ScrollView,
@@ -38,7 +36,10 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
+import {
+  CustomerDeliveryDetailHeader,
+  CustomerDeliveryLineCard,
+} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
@@ -146,40 +147,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View>
-            <StockMoveHeader
-              reference={customerDelivery.stockMoveSeq}
-              status={customerDelivery.statusSelect}
-              date={
-                customerDelivery.statusSelect === StockMove.status.Draft
-                  ? customerDelivery.createdOn
-                  : customerDelivery.statusSelect === StockMove.status.Planned
-                  ? customerDelivery.estimatedDate
-                  : customerDelivery.realDate
-              }
-              availability={customerDelivery.availableStatusSelect}
-            />
-            <View style={styles.generalInfoContainer}>
-              <View style={styles.clientInfos}>
-                <LabelText
-                  iconName="user"
-                  title={customerDelivery.partner?.fullName}
-                />
-                {customerDelivery?.origin && (
-                  <LabelText iconName="tag" title={customerDelivery?.origin} />
-                )}
-              </View>
-              <View style={styles.ispmInfos}>
-                {customerDelivery?.isIspmRequired && (
-                  <Badge
-                    color={Colors.errorColor}
-                    title={I18n.t('Stock_StandardISPM')}
-                    style={styles.ispmBadge}
-                  />
-                )}
-              </View>
-            </View>
-          </View>
+          <CustomerDeliveryDetailHeader customerDelivery={customerDelivery} />
         }
       />
       <ScrollView>
@@ -247,21 +215,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  generalInfoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 24,
-  },
-  clientInfos: {
-    flex: 3,
-  },
-  ispmInfos: {
-    flex: 2,
-    flexDirection: 'row-reverse',
-  },
-  ispmBadge: {
-    width: '90%',
-  },
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
