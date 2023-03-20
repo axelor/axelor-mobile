@@ -23,14 +23,13 @@ import {
   HeaderContainer,
   Screen,
   ScrollView,
-  Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  QuantityCard,
   DescriptionCard,
   InventoryHeader,
   ProductCardInfo,
+  InventoryLineDetailsQuantityCard,
 } from '../../components';
 import {
   createNewInventoryLine,
@@ -152,23 +151,11 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
-        <QuantityCard
-          labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
-          defaultValue={parseFloat(realQty).toFixed(2)}
-          onValueChange={setRealQty}
-          editable={inventory.statusSelect !== Inventory.status.Validated}>
-          {inventoryLine == null ? (
-            <Text>
-              {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}
-            </Text>
-          ) : (
-            <Text>
-              {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
-                inventoryLine.currentQty,
-              ).toFixed(2)} ${inventoryLine.unit.name}`}
-            </Text>
-          )}
-        </QuantityCard>
+        <InventoryLineDetailsQuantityCard
+          inventoryLine={inventoryLine}
+          realQty={realQty}
+          setRealQty={setRealQty}
+        />
         <DescriptionCard
           onChange={input => setDescription(input)}
           description={description}
