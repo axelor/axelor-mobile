@@ -47,3 +47,4 @@ export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFix
 export {default as InternalMoveGeneralBody} from './InternalMoveGeneralBody/InternalMoveGeneralBody';
 export {default as InventoryStartedHeader} from './InventoryStartedHeader/InventoryStartedHeader';
 export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDetailsFixedItems/InternalMoveLineDetailsFixedItems';
+export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';

@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Button,
   HeaderContainer,
   Screen,
   ScrollView,
@@ -33,14 +32,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   InventoryLineCard,
+  InventoryStartedFixedItems,
   InventoryStartedHeader,
   LocationsMoveCard,
 } from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
-import {
-  fetchInventoryById,
-  updateInventory,
-} from '../../features/inventorySlice';
+import {fetchInventoryById} from '../../features/inventorySlice';
 import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
 
@@ -77,30 +74,6 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
     });
   };
 
-  const handleCompleteInventory = useCallback(() => {
-    dispatch(
-      updateInventory({
-        inventoryId: inventory.id,
-        version: inventory.version,
-        status: Inventory.status.Completed,
-        userId: null,
-      }),
-    );
-    navigation.popToTop();
-  }, [dispatch, inventory, navigation]);
-
-  const handleValidateInventory = useCallback(() => {
-    dispatch(
-      updateInventory({
-        inventoryId: inventory.id,
-        version: inventory.version,
-        status: Inventory.status.Validated,
-        userId: null,
-      }),
-    );
-    navigation.popToTop();
-  }, [dispatch, inventory, navigation]);
-
   const handleNewLine = useCallback(() => {
     navigation.navigate('InventorySelectProductScreen', {
       inventoryLine: null,
@@ -124,19 +97,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        inventory?.statusSelect === Inventory.status.InProgress ? (
-          <Button
-            title={I18n.t('Base_Complete')}
-            onPress={handleCompleteInventory}
-          />
-        ) : inventory?.statusSelect === Inventory.status.Completed ? (
-          <Button
-            title={I18n.t('Base_Validate')}
-            onPress={handleValidateInventory}
-          />
-        ) : null
-      }
+      fixedItems={<InventoryStartedFixedItems navigation={navigation} />}
       loading={loadingInventoryLines || loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
