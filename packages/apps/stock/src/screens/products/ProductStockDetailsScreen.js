@@ -175,48 +175,12 @@ const styles = StyleSheet.create({
   picker: {
     alignItems: 'center',
   },
-  cardStock: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: Dimensions.get('window').width,
-  },
-  productContainer: {
-    width: '95%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoContainer: {
-    width: '90%',
-    marginHorizontal: '5%',
-    marginVertical: '4%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  text_important: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  text_secondary: {
-    fontSize: 16,
-  },
   lineStyle: {
     borderWidth: 0.5,
     width: Dimensions.get('window').width * 0.8,
     borderColor: 'black',
     marginHorizontal: '10%',
     marginBottom: '1%',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  imageSize: {
-    height: 60,
-    width: 60,
   },
 });
 

@@ -116,9 +116,6 @@ const styles = StyleSheet.create({
   stockView: {
     marginTop: '2%',
   },
-  text_secondary: {
-    fontSize: 14,
-  },
 });
 
 export default SupplierArrivalSelectProductScreen;

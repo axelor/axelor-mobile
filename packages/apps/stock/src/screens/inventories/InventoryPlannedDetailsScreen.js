@@ -123,9 +123,6 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  marginHorizontal: {
-    marginHorizontal: 24,
-  },
   title: {
     marginHorizontal: 16,
     marginTop: 10,

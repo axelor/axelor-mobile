@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
-  Dimensions,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -292,22 +291,12 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    height: Dimensions.get('window').height * 0.75,
-  },
   content: {
     marginTop: '3%',
     marginHorizontal: 32,
     marginBottom: '3%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  reasonTitle: {
-    marginHorizontal: 20,
   },
   picker_empty: {
     color: 'red',

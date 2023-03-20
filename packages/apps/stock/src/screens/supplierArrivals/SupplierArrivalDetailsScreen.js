@@ -184,11 +184,6 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  clientContainer: {
-    marginHorizontal: 24,
-    marginVertical: 6,
-    flexDirection: 'column',
-  },
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
