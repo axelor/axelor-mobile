@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   ChipSelect,
@@ -25,11 +25,19 @@ import {
   ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
+
+const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
 const InventoryLineListScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
@@ -40,10 +48,10 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
-  const [filteredList, setFilteredList] = useState(inventoryLineList);
+  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = item => {
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'inventory', data: inventory},
       itemLine: {name: 'inventoryLine', data: item},
@@ -51,20 +59,45 @@ const InventoryLineListScreen = ({route, navigation}) => {
       selectTrackingScreen: 'InventorySelectTrackingScreen',
       selectProductScreen: 'InventorySelectProductScreen',
       detailStatus: Inventory.status.Validated,
+      skipVerification,
       navigation,
     });
   };
 
+  const handleLineSearch = item => {
+    handleShowLine(item, true);
+  };
+
   const fetchInventoryLinesAPI = useCallback(
-    page => {
-      dispatch(
-        fetchInventoryLines({
-          inventoryId: inventory?.id,
-          page: page,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (!checkNullString(searchValue)) {
+        setFilter(searchValue);
+        dispatch(
+          fetchInventoryLines({
+            inventoryId: inventory?.id,
+            searchValue: searchValue,
+            page: 0,
+          }),
+        );
+      } else {
+        dispatch(
+          fetchInventoryLines({
+            inventoryId: inventory?.id,
+            page: page,
+          }),
+        );
+      }
     },
-    [inventory, dispatch],
+    [dispatch, inventory?.id],
+  );
+
+  const filterLinesAPI = useCallback(
+    value => fetchInventoryLinesAPI({searchValue: value}),
+    [fetchInventoryLinesAPI],
+  );
+  const scrollLinesAPI = useCallback(
+    page => fetchInventoryLinesAPI({page}),
+    [fetchInventoryLinesAPI],
   );
 
   const filterOnStatus = useCallback(
@@ -90,14 +123,14 @@ const InventoryLineListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(inventoryLineList));
-  }, [inventoryLineList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(inventoryLineList),
+    [filterOnStatus, inventoryLineList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
-        expandableFilter={false}
         fixedItems={
           <InventoryHeader
             reference={inventory.inventorySeq}
@@ -134,8 +167,18 @@ const InventoryLineListScreen = ({route, navigation}) => {
               },
             ]}
           />
-        }
-      />
+        }>
+        <ScannerAutocompleteSearch
+          objectList={filteredList}
+          onChangeValue={handleLineSearch}
+          fetchData={filterLinesAPI}
+          displayValue={item => item.product?.fullName}
+          scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_Product')}
+          isFocus={true}
+          oneFilter={true}
+        />
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingInventoryLines}
         data={filteredList}
@@ -151,9 +194,10 @@ const InventoryLineListScreen = ({route, navigation}) => {
             onPress={() => handleShowLine(item)}
           />
         )}
-        fetchData={fetchInventoryLinesAPI}
+        fetchData={scrollLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>
