@@ -55,3 +55,4 @@ export {default as SupplierArrivalDetailsHeader} from './SupplierArrivalDetailsH
 export {default as SupplierArrivalLineDetailFixedItems} from './SupplierArrivalLineDetailFixedItems/SupplierArrivalLineDetailFixedItems';
 export {default as SupplierArrivalLineDetailQuantityCard} from './SupplierArrivalLineDetailQuantityCard/SupplierArrivalLineDetailQuantityCard';
 export {default as SupplierProductInfo} from './SupplierProductInfo/SupplierProductInfo';
+export {default as SupplierArrivalAddTracking} from './SupplierArrivalAddTracking/SupplierArrivalAddTracking';
