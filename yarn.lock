@@ -1580,9 +1580,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^29.0.0":
-  version "29.4.4"
-  resolved "https://registry.npmjs.org/@types/jest/-/jest-29.4.4.tgz#ba257bd7b1876dec9e0b4fb82fa60eec5505e5f1"
-  integrity sha512-qezb65VIH7X1wobSnd6Lvdve7PXSyQRa3dljTkhTtDhi603RvHQCshSlJcuyMLHJpeHgY3NKwvDJWxMOOHxGDQ==
+  version "29.5.0"
+  resolved "https://registry.npmjs.org/@types/jest/-/jest-29.5.0.tgz#337b90bbcfe42158f39c2fb5619ad044bbb518ac"
+  integrity sha512-3Emr5VOl/aoBwnWcH/EFQvlSAmjV+XtV9GGu5mwdYew5vhQh0IUZx/60x0TzHDu09Bi7HMx10t/namdJw5QIcg==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
@@ -3969,9 +3969,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.284:
-  version "1.4.331"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.331.tgz#c8ea823968563ef2cbb3495233e9e16c48c54a4a"
-  integrity sha512-tdtr9y9oJl8VDiS+HeB6e/JDJqdDGjIk3yRfEMHm5rDnWQ/D5SbafybAayInxolbfbH6pouV5g7ZUAwE/WVtHw==
+  version "1.4.333"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.333.tgz#ebb21f860f8a29923717b06ec0cb54e77ed34c04"
+  integrity sha512-YyE8+GKyGtPEP1/kpvqsdhD6rA/TP1DUFDN4uiU/YI52NzDxmwHkEb3qjId8hLBa5siJvG0sfC3O66501jMruQ==
 
 emittery@^0.7.1:
   version "0.7.2"
