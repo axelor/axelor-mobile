@@ -18,7 +18,6 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
   StyleSheet,
   Dimensions,
   ActivityIndicator,
@@ -26,14 +25,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {
-  Card,
-  HeaderContainer,
-  Input,
-  Picker,
-  Screen,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Picker, Screen, Text} from '@axelor/aos-mobile-ui';
 import {
   getFromList,
   useDispatch,
@@ -45,6 +37,7 @@ import {
   ProductCardInfo,
   StockMoveHeader,
   InternalMoveLineDetailsFixedItems,
+  InternalMoveLineNotes,
 } from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -177,11 +170,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     setSaveStatus(false);
   };
 
-  const handleNotesChange = value => {
-    setNotes(value);
-    setSaveStatus(false);
-  };
-
   const handleUnitChange = unitId => {
     if (unitId === null) {
       setUnit({name: '', id: null});
@@ -290,32 +278,12 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               }
               disabledValue={unit?.name}
             />
-            {status === StockMove.status.Draft && (
-              <View>
-                <View style={styles.reasonTitle}>
-                  <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-                </View>
-                <Card style={styles.infosCard}>
-                  <Input
-                    value={notes}
-                    onChange={handleNotesChange}
-                    multiline={true}
-                  />
-                </Card>
-              </View>
-            )}
-            {status === StockMove.status.Planned ||
-              status === StockMove.status.Realized ||
-              (status === StockMove.status.Canceled && (
-                <View>
-                  <View style={styles.reasonTitle}>
-                    <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-                  </View>
-                  <Card style={styles.infosCard}>
-                    <Text numberOfLines={3}>{notes}</Text>
-                  </Card>
-                </View>
-              ))}
+            <InternalMoveLineNotes
+              notes={notes}
+              setNotes={setNotes}
+              setSaveStatus={setSaveStatus}
+              status={status}
+            />
           </ScrollView>
         )}
       </KeyboardAvoidingView>
