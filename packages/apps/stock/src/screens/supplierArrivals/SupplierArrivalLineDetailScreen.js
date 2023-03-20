@@ -19,28 +19,25 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  Badge,
   HeaderContainer,
   Icon,
   Picker,
   Screen,
   ScrollView,
   Text,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  QuantityCard,
   StockMoveHeader,
   ProductCardInfo,
   SupplierArrivalLineDetailFixedItems,
+  SupplierArrivalLineDetailQuantityCard,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import StockMove from '../../types/stock-move';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
@@ -89,10 +86,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       }),
     );
   }, [dispatch, route.params.product, supplierArrival, supplierArrivalLine]);
-
-  const handleQtyChange = value => {
-    setRealQty(value);
-  };
 
   const handleConformityChange = item => {
     if (item === null) {
@@ -167,41 +160,12 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             </View>
           </View>
         )}
-        <QuantityCard
-          labelQty={I18n.t('Stock_ReceivedQty')}
-          defaultValue={parseFloat(realQty).toFixed(2)}
-          onValueChange={handleQtyChange}
-          editable={supplierArrival.statusSelect !== StockMove.status.Realized}>
-          <View style={styles.headerQuantityCard}>
-            <Text style={styles.text}>
-              {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
-                supplierArrivalLine != null ? supplierArrivalLine.qty : 0,
-              ).toFixed(2)} ${
-                supplierArrivalLine != null
-                  ? supplierArrivalLine?.unit?.name
-                  : product?.unit?.name
-              }`}
-            </Text>
-            {supplierArrivalLine != null && (
-              <View>
-                {parseFloat(supplierArrivalLine.qty) !==
-                  parseFloat(supplierArrivalLine.realQty) && (
-                  <Badge
-                    title={I18n.t('Stock_Status_Incomplete')}
-                    color={Colors.cautionColor}
-                  />
-                )}
-                {parseFloat(supplierArrivalLine.qty) ===
-                  parseFloat(supplierArrivalLine.realQty) && (
-                  <Badge
-                    title={I18n.t('Stock_Status_Complete')}
-                    color={Colors.primaryColor}
-                  />
-                )}
-              </View>
-            )}
-          </View>
-        </QuantityCard>
+        <SupplierArrivalLineDetailQuantityCard
+          realQty={realQty}
+          setRealQty={setRealQty}
+          supplierArrival={supplierArrival}
+          supplierArrivalLine={supplierArrivalLine}
+        />
         <Picker
           title={I18n.t('Stock_Conformity')}
           onValueChange={item => handleConformityChange(item)}
