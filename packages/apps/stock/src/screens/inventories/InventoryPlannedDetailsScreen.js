@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   Button,
   EditableInput,
@@ -32,7 +32,10 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, LocationsMoveCard} from '../../components';
+import {
+  InventoryPlannedDetailsHeader,
+  LocationsMoveCard,
+} from '../../components';
 import {
   fetchInventoryById,
   modifyDescription,
@@ -96,28 +99,7 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
       loading={loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={
-          <View>
-            <InventoryHeader
-              reference={inventory?.inventorySeq}
-              status={inventory?.statusSelect}
-              date={inventory?.plannedStartDateT}
-              stockLocation={inventory?.stockLocation?.name}
-            />
-            <View style={styles.marginHorizontal}>
-              {inventory?.productFamily != null && (
-                <Text>{`${I18n.t('Stock_ProductFamily')} : ${
-                  inventory?.productFamily?.name
-                }`}</Text>
-              )}
-              {inventory?.productCategory != null && (
-                <Text>{`${I18n.t('Stock_ProductCategory')} : ${
-                  inventory?.productCategory?.name
-                }`}</Text>
-              )}
-            </View>
-          </View>
-        }
+        fixedItems={<InventoryPlannedDetailsHeader />}
       />
       <ScrollView>
         {inventory?.fromRack && (

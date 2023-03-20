@@ -57,3 +57,4 @@ export {default as SupplierArrivalLineDetailQuantityCard} from './SupplierArriva
 export {default as SupplierProductInfo} from './SupplierProductInfo/SupplierProductInfo';
 export {default as SupplierArrivalAddTracking} from './SupplierArrivalAddTracking/SupplierArrivalAddTracking';
 export {default as ProductSeeDistributionStocksLocation} from './ProductSeeDistributionStocksLocation/ProductSeeDistributionStocksLocation';
+export {default as InventoryPlannedDetailsHeader} from './InventoryPlannedDetailsHeader/InventoryPlannedDetailsHeader';
