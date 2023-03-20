@@ -17,14 +17,11 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
 import {
   HeaderContainer,
-  Icon,
   Picker,
   Screen,
   ScrollView,
-  Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -32,6 +29,7 @@ import {
   ProductCardInfo,
   SupplierArrivalLineDetailFixedItems,
   SupplierArrivalLineDetailQuantityCard,
+  SupplierProductInfo,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
@@ -48,9 +46,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );
-  const {loadingSupplierCatalog, supplierProductInfo} = useSelector(
-    state => state.supplierCatalog,
-  );
+  const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
   const [realQty, setRealQty] = useState(
     supplierArrivalLine != null ? supplierArrivalLine.realQty : 0,
   );
@@ -143,23 +139,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           name={product?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
-        {supplierProductInfo == null ||
-        Object.keys(supplierProductInfo).length === 0 ? null : (
-          <View style={styles.supplierInfoContainer}>
-            <Icon name="info-circle" size={20} />
-            <View style={styles.supplierInfo}>
-              <Text style={styles.text_important}>
-                {I18n.t('Stock_SupplierCatalog')}
-              </Text>
-              <Text>{`${I18n.t('Stock_Name')} : ${
-                supplierProductInfo?.productSupplierName
-              }`}</Text>
-              <Text>{`${I18n.t('Stock_Code')} : ${
-                supplierProductInfo?.productSupplierCode
-              }`}</Text>
-            </View>
-          </View>
-        )}
+        <SupplierProductInfo />
         <SupplierArrivalLineDetailQuantityCard
           realQty={realQty}
           setRealQty={setRealQty}
@@ -180,26 +160,5 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  supplierInfoContainer: {
-    marginVertical: '1%',
-    marginHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  supplierInfo: {
-    marginLeft: '3%',
-    flexDirection: 'column',
-  },
-  headerQuantityCard: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  text_important: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default SupplierArrivalLineDetailScreen;
