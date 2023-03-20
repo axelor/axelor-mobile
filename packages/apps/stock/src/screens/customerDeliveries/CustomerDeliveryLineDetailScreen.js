@@ -20,7 +20,6 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   Badge,
-  Button,
   HeaderContainer,
   Screen,
   ScrollView,
@@ -29,10 +28,13 @@ import {
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
+import {
+  QuantityCard,
+  ProductCardInfo,
+  StockMoveHeader,
+  CustomerDeliveryLineDetailFixedItems,
+} from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
-import {updateCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
-import {addNewLine} from '../../features/customerDeliverySlice';
 import StockMove from '../../types/stock-move';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
@@ -66,65 +68,23 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     setRealQty(value);
   };
 
-  const handleValidate = () => {
-    dispatch(
-      updateCustomerDeliveryLine({
-        stockMoveLineId: customerDeliveryLine.id,
-        version: customerDeliveryLine.version,
-        realQty: realQty,
-      }),
-    );
-
-    if (customerDelivery.statusSelect !== StockMove.status.Realized) {
-      navigation.pop();
-      if (product.trackingNumberConfiguration != null) {
-        navigation.pop();
-      }
-    }
-    navigation.pop();
-  };
-
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
       product: product,
     });
   };
 
-  const handleAddLine = () => {
-    dispatch(
-      addNewLine({
-        stockMoveId: customerDelivery.id,
-        productId: product.id,
-        unitId: product.unit.id,
-        trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
-        expectedQty: 0,
-        realQty: realQty,
-      }),
-    );
-    navigation.pop();
-    if (product.trackingNumberConfiguration != null) {
-      navigation.pop();
-    }
-    navigation.pop();
-  };
-
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <>
-          {customerDeliveryLine != null &&
-            customerDelivery.statusSelect !== StockMove.status.Realized && (
-              <Button
-                title={I18n.t('Base_Validate')}
-                onPress={handleValidate}
-              />
-            )}
-          {customerDeliveryLine == null &&
-            customerDelivery.statusSelect !== StockMove.status.Realized && (
-              <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />
-            )}
-        </>
+        <CustomerDeliveryLineDetailFixedItems
+          customerDelivery={customerDelivery}
+          customerDeliveryLine={customerDeliveryLine}
+          navigation={navigation}
+          realQty={realQty}
+          trackingNumber={trackingNumber}
+        />
       }
       loading={loadingProductFromId}>
       <HeaderContainer
