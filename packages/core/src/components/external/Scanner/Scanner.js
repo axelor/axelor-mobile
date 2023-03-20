@@ -17,7 +17,7 @@
  */
 
 import {useEffect} from 'react';
-import {DeviceEventEmitter} from 'react-native';
+import {DeviceEventEmitter, Platform} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {registerBroadcastReceiver} from 'react-native-datawedge-intents';
 import {scanValue, useScannerSelector} from '../../../features/scannerSlice';
@@ -51,30 +51,34 @@ const Scanner = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    registerBroadcastReceiver({
-      filterActions: [
-        'com.aosmobile.zebra.ACTION',
-        'com.symbol.datawedge.api.RESULT_ACTION',
-      ],
-      filterCategories: ['android.intent.category.DEFAULT'],
-    });
+    if (Platform.OS !== 'ios') {
+      registerBroadcastReceiver({
+        filterActions: [
+          'com.aosmobile.zebra.ACTION',
+          'com.symbol.datawedge.api.RESULT_ACTION',
+        ],
+        filterCategories: ['android.intent.category.DEFAULT'],
+      });
+    }
   }, []);
 
   useEffect(() => {
-    if (isEnabled) {
-      const listener = DeviceEventEmitter.addListener(
-        'datawedge_broadcast_intent',
-        intent => {
-          const {labelType, value} = castIntent(intent);
-          const formattedValue = formatScan(value, labelType);
+    if (Platform.OS !== 'ios') {
+      if (isEnabled) {
+        const listener = DeviceEventEmitter.addListener(
+          'datawedge_broadcast_intent',
+          intent => {
+            const {labelType, value} = castIntent(intent);
+            const formattedValue = formatScan(value, labelType);
 
-          dispatch(scanValue(formattedValue));
-        },
-      );
+            dispatch(scanValue(formattedValue));
+          },
+        );
 
-      return () => {
-        listener.remove();
-      };
+        return () => {
+          listener.remove();
+        };
+      }
     }
   }, [dispatch, isEnabled]);
 
