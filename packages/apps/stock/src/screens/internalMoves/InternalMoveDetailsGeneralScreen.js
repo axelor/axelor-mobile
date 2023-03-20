@@ -17,7 +17,12 @@
  */
 
 import React, {useEffect} from 'react';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  Screen,
+  ScrollView,
+  NotesCard,
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
@@ -100,6 +105,14 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
         <InternalMoveGeneralBody
           internalMove={internalMove}
           navigation={navigation}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesOnPreparation')}
+          data={internalMove.pickingOrderComments}
+        />
+        <NotesCard
+          title={I18n.t('Stock_NotesOnStockMove')}
+          data={internalMove.note}
         />
       </ScrollView>
     </Screen>

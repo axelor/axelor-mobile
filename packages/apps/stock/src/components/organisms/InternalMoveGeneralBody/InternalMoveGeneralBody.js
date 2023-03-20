@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {
   MovementIndicationCard,
-  NotesCard,
   ViewAllContainer,
   useThemeColor,
   Icon,
@@ -15,7 +14,6 @@ const InternalMoveGeneralBody = ({internalMove, navigation}) => {
   const Colors = useThemeColor();
   const {internalMoveLineList} = useSelector(state => state.internalMoveLine);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
-  const I18n = useTranslator();
 
   const handleViewAll = () => {
     navigation.navigate('InternalMoveLineListScreen', {
@@ -71,14 +69,6 @@ const InternalMoveGeneralBody = ({internalMove, navigation}) => {
           />
         )}
         onViewPress={handleViewAll}
-      />
-      <NotesCard
-        title={I18n.t('Stock_NotesOnPreparation')}
-        data={internalMove.pickingOrderComments}
-      />
-      <NotesCard
-        title={I18n.t('Stock_NotesOnStockMove')}
-        data={internalMove.note}
       />
     </>
   );

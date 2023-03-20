@@ -42,7 +42,12 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
+import {
+  QuantityCard,
+  ProductCardInfo,
+  StockMoveHeader,
+  InternalMoveLineDetailsFixedItems,
+} from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
@@ -286,6 +291,17 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       removeSpaceOnTop={true}
       fixedItems={
         <>
+          <InternalMoveLineDetailsFixedItems
+            destinationStockLocation={destinationStockLocation}
+            movedQty={movedQty}
+            navigation={navigation}
+            originalStockLocation={originalStockLocation}
+            route={route}
+            saveStatus={saveStatus}
+            stockProduct={stockProduct}
+            trackingNumber={trackingNumber}
+            unit={unit}
+          />
           {!saveStatus && route.params.internalMove == null && (
             <View style={styles.button_container}>
               <Button
