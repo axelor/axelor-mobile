@@ -51,3 +51,4 @@ export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItem
 export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';
 export {default as CustomerDeliveryLineDetailFixedItems} from './CustomerDeliveryLineDetailFixedItems/CustomerDeliveryLineDetailFixedItems';
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
+export {default as SupplierArrivalDetailsHeader} from './SupplierArrivalDetailsHeader/SupplierArrivalDetailsHeader';

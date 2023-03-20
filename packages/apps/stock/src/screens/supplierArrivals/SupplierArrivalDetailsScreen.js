@@ -17,12 +17,11 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   Button,
   HeaderContainer,
   Icon,
-  LabelText,
   MovementIndicationCard,
   PopUpOneButton,
   Screen,
@@ -36,7 +35,10 @@ import {
   useTranslator,
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
-import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
+import {
+  SupplierArrivalLineCard,
+  SupplierArrivalDetailsHeader,
+} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeSupplierArrival} from '../../features/supplierArrivalSlice';
@@ -132,34 +134,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View>
-            <StockMoveHeader
-              reference={supplierArrival.stockMoveSeq}
-              status={supplierArrival.statusSelect}
-              date={
-                supplierArrival.statusSelect === StockMove.status.Draft
-                  ? supplierArrival.createdOn
-                  : supplierArrival.statusSelect === StockMove.status.Planned
-                  ? supplierArrival.estimatedDate
-                  : supplierArrival.realDate
-              }
-            />
-            <View style={styles.clientContainer}>
-              <LabelText
-                iconName="user"
-                title={supplierArrival.partner?.fullName}
-              />
-              {supplierArrival.origin == null ? null : (
-                <LabelText iconName="tag" title={supplierArrival.origin} />
-              )}
-              {supplierArrival.supplierShipmentRef == null ? null : (
-                <LabelText
-                  iconName="user-tag"
-                  title={supplierArrival.supplierShipmentRef}
-                />
-              )}
-            </View>
-          </View>
+          <SupplierArrivalDetailsHeader supplierArrival={supplierArrival} />
         }
       />
       <ScrollView>
