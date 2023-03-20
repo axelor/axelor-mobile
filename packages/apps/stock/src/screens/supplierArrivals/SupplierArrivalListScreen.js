@@ -49,7 +49,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const [stockLocation, setStockLocation] = useState(null);
-  const {supplierList} = useSelector(state => state.partner);
+  const {supplierList} = useSelector(state => state.stock_partner);
   const {user} = useSelector(state => state.user);
   const [partner, setPartner] = useState(null);
   const {loading, moreLoading, isListEnd, supplierArrivalsList} = useSelector(

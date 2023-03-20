@@ -21,7 +21,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchClientsFilter, searchSuppliersFilter} from '../api/partner-api';
 
 export const filterClients = createAsyncThunk(
-  'partners/filterClients',
+  'stock_partner/filterClients',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchClientsFilter,
@@ -34,7 +34,7 @@ export const filterClients = createAsyncThunk(
 );
 
 export const filterSuppliers = createAsyncThunk(
-  'partners/filterSuppliers',
+  'stock_partner/filterSuppliers',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSuppliersFilter,
@@ -53,7 +53,7 @@ const initialState = {
 };
 
 const partnerSlice = createSlice({
-  name: 'partners',
+  name: 'stock_partner',
   initialState,
   extraReducers: builder => {
     builder.addCase(filterClients.pending, state => {

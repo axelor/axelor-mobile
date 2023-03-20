@@ -21,7 +21,7 @@ export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSli
 export {internalMoveReducer as internalMove} from './internalMoveSlice';
 export {inventoryReducer as inventory} from './inventorySlice';
 export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
-export {partnerReducer as partner} from './partnerSlice';
+export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';

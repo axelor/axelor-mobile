@@ -50,7 +50,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   const [stockLocation, setStockLocation] = useState(null);
   const [customer, setCustomer] = useState(null);
   const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {clientList} = useSelector(state => state.partner);
+  const {clientList} = useSelector(state => state.stock_partner);
   const {loading, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
   );
