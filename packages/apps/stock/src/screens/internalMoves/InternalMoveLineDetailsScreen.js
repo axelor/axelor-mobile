@@ -27,14 +27,12 @@ import {
   ScrollView,
 } from 'react-native';
 import {
-  Button,
   Card,
   HeaderContainer,
   Input,
   Picker,
   Screen,
   Text,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   getFromList,
@@ -52,14 +50,9 @@ import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {
-  createInternalMove,
-  updateInternalMove,
-} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
@@ -198,85 +191,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     setSaveStatus(false);
   };
 
-  const handleRealize = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
-    navigation.popToTop();
-  };
-
-  const handleValidate = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
-    navigation.navigate('InternalMoveSelectProductScreen', {
-      fromStockLocation: originalStockLocation,
-      toStockLocation: destinationStockLocation,
-    });
-  };
-
-  const handleSave = () => {
-    dispatch(
-      updateInternalMove({
-        internalMoveId: route.params.internalMove.id,
-        version: route.params.internalMove.$version,
-        movedQty: movedQty,
-        unitId: unit.id,
-      }),
-    );
-    navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: route.params.internalMove,
-    });
-  };
-
   const handleCreateCorrection = () => {
     navigation.navigate('StockCorrectionDetailsScreen', {
       stockLocation: originalStockLocation,
@@ -290,37 +204,17 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <>
-          <InternalMoveLineDetailsFixedItems
-            destinationStockLocation={destinationStockLocation}
-            movedQty={movedQty}
-            navigation={navigation}
-            originalStockLocation={originalStockLocation}
-            route={route}
-            saveStatus={saveStatus}
-            stockProduct={stockProduct}
-            trackingNumber={trackingNumber}
-            unit={unit}
-          />
-          {!saveStatus && route.params.internalMove == null && (
-            <View style={styles.button_container}>
-              <Button
-                title={I18n.t('Base_Realize')}
-                color={Colors.secondaryColor}
-                onPress={handleRealize}
-              />
-              <Button
-                title={I18n.t('Base_RealizeContinue')}
-                onPress={handleValidate}
-              />
-            </View>
-          )}
-          {!saveStatus && route.params.internalMove != null && (
-            <View style={styles.button_container}>
-              <Button title={I18n.t('Base_Save')} onPress={handleSave} />
-            </View>
-          )}
-        </>
+        <InternalMoveLineDetailsFixedItems
+          destinationStockLocation={destinationStockLocation}
+          movedQty={movedQty}
+          navigation={navigation}
+          originalStockLocation={originalStockLocation}
+          route={route}
+          saveStatus={saveStatus}
+          stockProduct={stockProduct}
+          trackingNumber={trackingNumber}
+          unit={unit}
+        />
       }
       loading={loading || loadingProductFromId}>
       <KeyboardAvoidingView
@@ -449,13 +343,6 @@ const styles = StyleSheet.create({
   },
   picker_empty: {
     color: 'red',
-  },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
   },
   text: {
     fontSize: 16,
