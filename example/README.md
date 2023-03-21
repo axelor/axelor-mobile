@@ -4,7 +4,7 @@ AOS Mobile is a React Native application for using AOS in Android and iOS device
 
 ## Requirements
 
-- [Node.js](https://nodejs.org) v14.x
+- [Node.js](https://nodejs.org) v16.x
 - npm (normally come with Node.js)
 - Java 11 for Android building
 
