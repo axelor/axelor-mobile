@@ -8,6 +8,7 @@
   "Stock_StockCorrection": "Stock correction",
   "Stock_NewInternalMove": "New internal move",
   "Stock_InternalMove": "Internal move",
+  "Stock_InternalMoveLines": "Internal move lines",
   "Stock_CustomerDelivery": "Customer delivery",
   "Stock_SupplierArrival": "Supplier arrival",
   "Stock_Inventory": "Inventory",
@@ -102,5 +103,6 @@
   "Stock_StandardISPM": "ISPM standard",
   "Stock_LineComment": "Line comment",
   "Sale_Sale": "Sale",
-  "Purchase_Purchase": "Purchase"
+  "Purchase_Purchase": "Purchase",
+  "Stock_SearchLine": "Search line"
 }

@@ -8,6 +8,7 @@
   "Stock_StockCorrection": "Correction de stock",
   "Stock_NewInternalMove": "Nouveau mouvement interne",
   "Stock_InternalMove": "Mouvement interne",
+  "Stock_InternalMoveLines": "Lignes de mouvement interne",
   "Stock_CustomerDelivery": "Livraison client",
   "Stock_SupplierArrival": "Réception fournisseur",
   "Stock_Inventory": "Inventaire",
@@ -102,5 +103,6 @@
   "Stock_StandardISPM": "Norme NIMP15",
   "Stock_LineComment": "Commentaire de la ligne",
   "Sale_Sale": "Vente",
-  "Purchase_Purchase": "Achat"
+  "Purchase_Purchase": "Achat",
+  "Stock_SearchLine": "Rechercher une ligne"
 }

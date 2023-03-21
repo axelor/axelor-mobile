@@ -29,6 +29,7 @@ import {
 } from '../../../hooks/use-scan-activator';
 
 interface AutocompleteSearchProps {
+  style?: any;
   objectList: any[];
   value?: string;
   onChangeValue?: (value: any) => void;
@@ -44,6 +45,7 @@ interface AutocompleteSearchProps {
 }
 
 const ScannerAutocompleteSearch = ({
+  style,
   objectList,
   value,
   onChangeValue,
@@ -74,8 +76,15 @@ const ScannerAutocompleteSearch = ({
 
   const Colors = useThemeColor();
 
+  useEffect(() => {
+    if (isFocus) {
+      enableScanner();
+    }
+  }, [enableScanner, isFocus]);
+
   return (
     <AutoCompleteSearch
+      style={style}
       selectLastItem={selectLastItem}
       objectList={objectList}
       value={searchText}
@@ -86,7 +95,6 @@ const ScannerAutocompleteSearch = ({
       fetchData={fetchData}
       displayValue={displayValue}
       placeholder={placeholder}
-      isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
       navigate={navigate}
       oneFilter={oneFilter}

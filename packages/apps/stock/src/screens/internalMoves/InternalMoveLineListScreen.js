@@ -36,6 +36,7 @@ import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
@@ -168,9 +169,9 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
           objectList={filteredList}
           onChangeValue={handleLineSearch}
           fetchData={filterLinesAPI}
-          displayValue={item => item.product?.fullName}
+          displayValue={displayLine}
           scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_Product')}
+          placeholder={I18n.t('Stock_SearchLine')}
           isFocus={true}
           oneFilter={true}
         />
