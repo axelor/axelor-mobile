@@ -18,7 +18,7 @@ storiesOf('ui/atoms/Text', module).add(
         control: {
           type: 'object',
         },
-        defaultValue: {fontWeight: 'bold', textAlign: 'center'},
+        defaultValue: {textAlign: 'center'},
       },
       numberOfLines: {
         control: {
