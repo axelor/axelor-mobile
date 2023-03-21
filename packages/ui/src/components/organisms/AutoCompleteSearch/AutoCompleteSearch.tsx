@@ -139,7 +139,7 @@ const AutoCompleteSearch = ({
 
   useEffect(() => {
     if (!isValidString(previousState) && isValidString(searchText)) {
-      const id = setInterval(handleInterval, TIME_BETWEEN_CALL);
+      const id: any = setInterval(handleInterval, TIME_BETWEEN_CALL);
       intervalRequestCall.current = id;
 
       return () => {
@@ -150,7 +150,7 @@ const AutoCompleteSearch = ({
 
   useEffect(() => {
     if (isValidString(searchText)) {
-      const id: number = setTimeout(handleTimeOut, TIME_WITHOUT_INPUT);
+      const id: any = setTimeout(handleTimeOut, TIME_WITHOUT_INPUT);
       timeOutRequestCall.current = id;
 
       return () => {

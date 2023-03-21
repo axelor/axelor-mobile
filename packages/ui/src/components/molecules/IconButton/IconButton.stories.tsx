@@ -10,6 +10,7 @@ storiesOf('ui/molecules/IconButton', module).add(
     return (
       <View style={styles.container}>
         <IconButton
+          FontAwesome5={true}
           title="Press me"
           iconName="check-circle"
           onPress={console.log}
