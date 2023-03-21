@@ -1,7 +1,7 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as LoadingIndicator} from './LoadingIndicator';
-import {useConfig} from '@axelor/aos-mobile-ui';
+import {useConfig} from '../../../config/ConfigContext';
 
 storiesOf('ui/molecules/LoadingIndicator', module).add('custom', () => {
   const {setActivityIndicator} = useConfig();
