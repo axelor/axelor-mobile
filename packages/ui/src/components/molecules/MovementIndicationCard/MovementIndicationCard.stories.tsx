@@ -22,46 +22,59 @@ import {default as MovementIndicationCard} from './MovementIndicationCard';
 import {Icon} from '../../atoms';
 import {lightTheme} from '../../../theme/themes';
 import {action} from '@storybook/addon-actions';
+import {View, StyleSheet} from 'react-native';
 
-storiesOf('ui/molecules/MovementIndicationCard', module).add(
-  'custom',
-  args => (
-    <MovementIndicationCard
-      titleTop={'titleTop'}
-      iconTop={
-        <Icon
-          name="warehouse"
-          color={lightTheme.colors.primaryColor.background}
-        />
-      }
-      titleDown={'titleDown'}
-      iconDown={<Icon name="map-marker-alt" />}
-      disabledDown={false}
-      onPressTitleTop={() => action('onPressTitleTop')}
-      onPressTitleDown={() => action('onPressTitleDown')}
-      {...args}
-    />
-  ),
-  {
-    argTypes: {
-      style: {
-        control: {
-          type: 'object',
+storiesOf('ui/molecules/MovementIndicationCard', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
+  .add(
+    'custom',
+    args => (
+      <MovementIndicationCard
+        titleTop={'titleTop'}
+        iconTop={
+          <Icon
+            name="warehouse"
+            color={lightTheme.colors.primaryColor.background}
+          />
+        }
+        titleDown={'titleDown'}
+        iconDown={<Icon name="map-marker-alt" />}
+        disabledDown={false}
+        onPressTitleTop={() => action('onPressTitleTop')}
+        onPressTitleDown={() => action('onPressTitleDown')}
+        {...args}
+      />
+    ),
+    {
+      argTypes: {
+        style: {
+          control: {
+            type: 'object',
+          },
+          defaultValue: {
+            marginHorizontal: 20,
+          },
         },
-        defaultValue: {
-          marginHorizontal: 20,
+        titleTop: {
+          control: 'text',
+          defaultValue: 'titleTop',
         },
+        titleDown: {
+          control: 'text',
+          defaultValue: 'titleDown',
+        },
+        disabledTop: {control: 'boolean', defaultValue: false},
+        disabledDown: {control: 'boolean', defaultValue: false},
       },
-      titleTop: {
-        control: 'text',
-        defaultValue: 'titleTop',
-      },
-      titleDown: {
-        control: 'text',
-        defaultValue: 'titleDown',
-      },
-      disabledTop: {control: 'boolean', defaultValue: false},
-      disabledDown: {control: 'boolean', defaultValue: false},
     },
+  );
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginLeft: '15%',
   },
-);
+});

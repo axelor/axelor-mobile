@@ -19,10 +19,11 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as MessageBox} from './MessageBox';
-storiesOf('ui/molecules/MessageBox', module).add(
-  'Default',
-  args => <MessageBox placeholder="placeholder" {...args} />,
-  {
+import {View, StyleSheet} from 'react-native';
+
+storiesOf('ui/molecules/MessageBox', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
+  .add('Default', args => <MessageBox placeholder="placeholder" {...args} />, {
     argTypes: {
       disabled: {
         control: {
@@ -31,5 +32,14 @@ storiesOf('ui/molecules/MessageBox', module).add(
         defaultValue: false,
       },
     },
+  });
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginLeft: '15%',
   },
-);
+});

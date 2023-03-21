@@ -65,6 +65,9 @@ storiesOf('ui/molecules/Increment', module)
   );
 const styles = StyleSheet.create({
   decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
 });

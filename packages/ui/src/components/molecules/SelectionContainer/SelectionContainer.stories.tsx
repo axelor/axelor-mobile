@@ -19,6 +19,7 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as SelectionContainer} from './SelectionContainer';
+import {View, StyleSheet} from 'react-native';
 
 const objectList = [
   {id: 1, name: 'Option 1'},
@@ -34,6 +35,7 @@ const handleSelect = item =>
   console.log(`Selected item: ${JSON.stringify(item)}`);
 
 storiesOf('ui/molecules/SelectionContainer', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('Default', () => (
     <SelectionContainer
       objectList={objectList}
@@ -65,3 +67,13 @@ storiesOf('ui/molecules/SelectionContainer', module)
       isPicker
     />
   ));
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginLeft: '15%',
+  },
+});

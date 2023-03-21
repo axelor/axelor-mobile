@@ -20,9 +20,22 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as LoadingIndicator} from './LoadingIndicator';
 import {useConfig} from '../../../config/ConfigContext';
+import {View, StyleSheet} from 'react-native';
 
-storiesOf('ui/molecules/LoadingIndicator', module).add('custom', () => {
-  const {setActivityIndicator} = useConfig();
-  setActivityIndicator(true);
-  return <LoadingIndicator />;
+storiesOf('ui/molecules/LoadingIndicator', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
+  .add('custom', () => {
+    const {setActivityIndicator} = useConfig();
+    setActivityIndicator(true);
+    return <LoadingIndicator />;
+  });
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginLeft: '15%',
+  },
 });

@@ -19,7 +19,7 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as InfoBubble} from './InfoBubble';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 const primary = {
   background_light: '#84DCB7',
@@ -28,7 +28,7 @@ const primary = {
 };
 
 storiesOf('ui/molecules/InfoBubble', module)
-  .addDecorator(story => <View>{story()}</View>)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('Default', () => (
     <InfoBubble
       iconName="info"
@@ -36,3 +36,13 @@ storiesOf('ui/molecules/InfoBubble', module)
       indication="This is some information."
     />
   ));
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginLeft: '15%',
+  },
+});
