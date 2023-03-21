@@ -20,8 +20,10 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {default as DropdownMenuItem} from './DropdownMenuItem';
+import {View, StyleSheet} from 'react-native';
 
 storiesOf('ui/organisms/DropdownMenuItem', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('default', () => (
     <DropdownMenuItem
       icon="paperclip"
@@ -45,3 +47,12 @@ storiesOf('ui/organisms/DropdownMenuItem', module)
       onPress={action('onPress')}
     />
   ));
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+});

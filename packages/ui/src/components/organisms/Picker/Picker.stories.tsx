@@ -20,6 +20,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as Picker} from './Picker';
 import {action} from '@storybook/addon-actions';
+import {View, StyleSheet} from 'react-native';
 
 const listItems = [
   {id: '1', label: 'Item 1'},
@@ -27,13 +28,26 @@ const listItems = [
   {id: '3', label: 'Item 3'},
 ];
 
-storiesOf('ui/organisms/Picker', module).add('Default', () => (
-  <Picker
-    title="Select an item"
-    onValueChange={action('onValueChange')}
-    defaultValue="1"
-    listItems={listItems}
-    labelField="label"
-    valueField="id"
-  />
-));
+storiesOf('ui/organisms/Picker', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
+  .add('Default', () => (
+    <Picker
+      title="Select an item"
+      onValueChange={action('onValueChange')}
+      defaultValue="1"
+      listItems={listItems}
+      labelField="label"
+      valueField="id"
+    />
+  ));
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    width: '15%',
+    marginLeft: '50%',
+  },
+});

@@ -20,6 +20,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as MultiValuePicker} from './MultiValuePicker';
 import {action} from '@storybook/addon-actions';
+import {View, StyleSheet} from 'react-native';
 
 const items = [
   {id: 1, label: 'Option 1', value: 'option1'},
@@ -29,6 +30,7 @@ const items = [
 ];
 
 storiesOf('ui/organisms/MultiValuePicker', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('Default', () => (
     <MultiValuePicker
       title="Select options"
@@ -50,3 +52,14 @@ storiesOf('ui/organisms/MultiValuePicker', module)
       disabledValue={['Option 2', 'Option 4']}
     />
   ));
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    width: '15%',
+    marginLeft: '50%',
+  },
+});

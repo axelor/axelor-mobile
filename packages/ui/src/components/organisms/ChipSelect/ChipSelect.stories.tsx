@@ -21,6 +21,7 @@ import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {default as ChipSelect} from './ChipSelect';
 import {lightTheme} from '../../../theme/themes';
+import {View, StyleSheet} from 'react-native';
 
 const items = [
   {
@@ -42,6 +43,7 @@ const items = [
 ];
 
 storiesOf('ui/organisms/ChipSelect', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('multi-select', () => (
     <ChipSelect
       selectionItems={items}
@@ -95,3 +97,12 @@ storiesOf('ui/organisms/ChipSelect', module)
       },
     },
   );
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+});

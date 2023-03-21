@@ -19,6 +19,7 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {default as SearchBar} from './SearchBar';
+import {View, StyleSheet} from 'react-native';
 
 const defaultArgs = {
   valueTxt: '',
@@ -32,41 +33,54 @@ const defaultArgs = {
   scanIconColor: null,
 };
 
-storiesOf('ui/organisms/SearchBar', module).add(
-  'Default',
-  args => {
-    const props = {...defaultArgs, ...args};
-    return <SearchBar {...props} />;
-  },
-  {
-    argTypes: {
-      valueTxt: {control: {type: 'text'}, defaultValue: defaultArgs.valueTxt},
-      placeholder: {
-        control: {type: 'text'},
-        defaultValue: defaultArgs.placeholder,
-      },
-      onClearPress: {action: 'onClearPress'},
-      onChangeTxt: {action: 'onPress'},
-      onSelection: {
-        action: 'onSelection',
-      },
-      onEndFocus: {
-        action: 'onEndFocus',
-      },
-      isFocus: {
-        control: {
-          type: 'boolean',
+storiesOf('ui/organisms/SearchBar', module)
+  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
+  .add(
+    'Default',
+    args => {
+      const props = {...defaultArgs, ...args};
+      return <SearchBar {...props} />;
+    },
+    {
+      argTypes: {
+        valueTxt: {control: {type: 'text'}, defaultValue: defaultArgs.valueTxt},
+        placeholder: {
+          control: {type: 'text'},
+          defaultValue: defaultArgs.placeholder,
         },
-        defaultValue: false,
-      },
-      onScanPress: {
-        action: 'onScanPress',
-      },
-      scanIconColor: {
-        control: {
-          type: 'color',
+        onClearPress: {action: 'onClearPress'},
+        onChangeTxt: {action: 'onPress'},
+        onSelection: {
+          action: 'onSelection',
+        },
+        onEndFocus: {
+          action: 'onEndFocus',
+        },
+        isFocus: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: false,
+        },
+        onScanPress: {
+          action: 'onScanPress',
+        },
+        scanIconColor: {
+          control: {
+            type: 'color',
+          },
         },
       },
     },
+  );
+
+const styles = StyleSheet.create({
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    width: '50%',
+    marginLeft: '20%',
   },
-);
+});

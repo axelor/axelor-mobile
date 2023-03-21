@@ -30,5 +30,10 @@ storiesOf('ui/organisms/MultiSelectValue', module)
     />
   ));
 const styles = StyleSheet.create({
-  decorator: {padding: 20},
+  decorator: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
 });
