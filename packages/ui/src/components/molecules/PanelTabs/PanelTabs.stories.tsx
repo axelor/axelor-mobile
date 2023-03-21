@@ -20,7 +20,7 @@ storiesOf('ui/molecules/PanelTabs', module).add('custom', () => {
           title: 'Page2',
           isActive: false,
           translator: I18n,
-          component: <Text>page2</Text>,
+          component: <Text>Page2</Text>,
         },
       ]}
     />
