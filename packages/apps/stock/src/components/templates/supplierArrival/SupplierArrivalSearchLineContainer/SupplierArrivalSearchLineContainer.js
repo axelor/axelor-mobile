@@ -69,7 +69,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     handleShowLine(item, true);
   };
 
-  const fetchInternalLinesAPI = useCallback(
+  const fetchSupplierLinesAPI = useCallback(
     searchValue => {
       dispatch(
         fetchSupplierArrivalLines({
@@ -91,11 +91,11 @@ const SupplierArrivalSearchLineContainer = ({}) => {
 
   return (
     <SearchLineContainer
-      title={I18n.t('Stock_InternalMoveLines')}
+      title={I18n.t('Stock_SupplierArrivalLines')}
       numberOfItems={totalNumberLines}
       objectList={supplierArrivalLineList}
       handleSelect={handleLineSearch}
-      handleSearch={fetchInternalLinesAPI}
+      handleSearch={fetchSupplierLinesAPI}
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}

@@ -38,7 +38,8 @@ const InternalMoveSearchLineContainer = ({}) => {
   const dispatch = useDispatch();
 
   const {internalMove} = useSelector(state => state.internalMove);
-  const {internalMoveLineList, totalNumberLines} = useInternalLinesWithRacks();
+  const {internalMoveLineList, totalNumberLines} =
+    useInternalLinesWithRacks(internalMove);
 
   const handleViewAll = () => {
     navigation.navigate('InternalMoveLineListScreen', {

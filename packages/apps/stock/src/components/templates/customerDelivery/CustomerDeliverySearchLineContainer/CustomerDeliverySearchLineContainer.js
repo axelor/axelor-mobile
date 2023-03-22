@@ -70,7 +70,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     handleShowLine(item, true);
   };
 
-  const fetchInternalLinesAPI = useCallback(
+  const fetchCustomerLinesAPI = useCallback(
     searchValue => {
       dispatch(
         fetchCustomerDeliveryLines({
@@ -96,7 +96,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
       numberOfItems={totalNumberLines}
       objectList={customerDeliveryLineList}
       handleSelect={handleLineSearch}
-      handleSearch={fetchInternalLinesAPI}
+      handleSearch={fetchCustomerLinesAPI}
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}

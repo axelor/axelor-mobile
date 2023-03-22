@@ -21,7 +21,7 @@ import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   InventoryLocationsMoveCard,
-  InventoryViewAllContainer,
+  InventorySearchLineContainer,
   InventoryButtons,
   InventoryDetailsHeader,
 } from '../../components';
@@ -52,7 +52,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView>
         <InventoryLocationsMoveCard />
-        <InventoryViewAllContainer />
+        <InventorySearchLineContainer />
       </ScrollView>
     </Screen>
   );
