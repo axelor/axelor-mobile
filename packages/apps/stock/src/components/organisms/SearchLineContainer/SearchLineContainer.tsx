@@ -30,6 +30,8 @@ interface Props {
   style?: any;
   title: string;
   numberOfItems: number;
+  showAction?: boolean;
+  onAction?: () => void;
   objectList: any[];
   handleSelect: (item: any) => void;
   handleSearch: (value: string) => void;
@@ -43,6 +45,8 @@ const SearchLineContainer = ({
   style,
   title,
   numberOfItems,
+  showAction = false,
+  onAction,
   objectList,
   handleSelect,
   handleSearch,
@@ -75,7 +79,19 @@ const SearchLineContainer = ({
     <Card style={[styles.container, style]}>
       <View style={styles.header}>
         <Text>{title}</Text>
-        <Indicator indicator={numberOfItems} />
+        <View style={styles.headerIcons}>
+          <Indicator indicator={numberOfItems} />
+          {showAction && (
+            <Icon
+              style={styles.icon}
+              name="plus"
+              color={Colors.primaryColor.background}
+              size={20}
+              touchable={true}
+              onPress={onAction}
+            />
+          )}
+        </View>
       </View>
       <ScannerAutocompleteSearch
         style={styles.searchBar}
@@ -124,6 +140,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     marginVertical: 2,
     width: '100%',
+  },
+  headerIcons: {
+    flexDirection: 'row',
+  },
+  icon: {
+    marginLeft: 10,
   },
   searchBar: {
     width: '100%',

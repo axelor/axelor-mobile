@@ -10,6 +10,7 @@
   "Stock_InternalMove": "Mouvement interne",
   "Stock_InternalMoveLines": "Lignes de mouvement interne",
   "Stock_CustomerDelivery": "Livraison client",
+  "Stock_CustomerDeliveryLines": "Lignes de livraison client",
   "Stock_SupplierArrival": "Réception fournisseur",
   "Stock_Inventory": "Inventaire",
   "Stock_QuantityStockLocation": "Distribution par emplacement de stock",

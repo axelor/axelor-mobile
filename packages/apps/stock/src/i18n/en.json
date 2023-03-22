@@ -10,6 +10,7 @@
   "Stock_InternalMove": "Internal move",
   "Stock_InternalMoveLines": "Internal move lines",
   "Stock_CustomerDelivery": "Customer delivery",
+  "Stock_CustomerDeliveryLines": "Customer delivery lines",
   "Stock_SupplierArrival": "Supplier arrival",
   "Stock_Inventory": "Inventory",
   "Stock_QuantityStockLocation": "Quantity per stock location",
