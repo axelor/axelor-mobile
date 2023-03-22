@@ -36,6 +36,8 @@ import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {useCustomerLinesWithRacks} from '../../hooks';
+import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 
@@ -45,24 +47,19 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {racksList} = useSelector(state => state.rack);
-  const {loadingCDLines, moreLoading, isListEnd, customerDeliveryLineList} =
-    useSelector(state => state.customerDeliveryLine);
+  const {customerDeliveryLineList} =
+    useCustomerLinesWithRacks(customerDelivery);
+  const {loadingCDLines, moreLoading, isListEnd} = useSelector(
+    state => state.customerDeliveryLine,
+  );
 
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, index, skipVerification = false) => {
-    const locker = racksList?.[index]?.[0]?.rack ?? '';
-
-    const updatedItem = {
-      ...item,
-      locker,
-    };
-
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      itemLine: {name: 'customerDeliveryLine', data: item},
       lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
       selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
       selectProductScreen: 'CustomerDeliverySelectProductScreen',
@@ -175,9 +172,9 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
           objectList={filteredList}
           onChangeValue={handleLineSearch}
           fetchData={filterLinesAPI}
-          displayValue={item => item.product?.fullName}
+          displayValue={displayLine}
           scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_Product')}
+          placeholder={I18n.t('Stock_SearchLine')}
           isFocus={true}
           oneFilter={true}
         />
@@ -191,17 +188,13 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             productName={item.product.fullName}
             pickedQty={item.realQty}
             askedQty={item.qty}
-            locker={
-              racksList != null && racksList[index] != null
-                ? racksList[index][0]?.rack
-                : ''
-            }
+            trackingNumber={item?.trackingNumber}
+            locker={item.locker}
             availability={
               customerDelivery.statusSelect === StockMove.status.Realized
                 ? null
                 : item.availableStatusSelect
             }
-            trackingNumber={item?.trackingNumber}
             onPress={() => handleShowLine(item, index)}
           />
         )}

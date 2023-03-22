@@ -36,6 +36,8 @@ import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {useSupplierLinesWithRacks} from '../../hooks';
+import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
 
@@ -45,8 +47,10 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingSALines, moreLoading, isListEnd, supplierArrivalLineList} =
-    useSelector(state => state.supplierArrivalLine);
+  const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
+  const {loadingSALines, moreLoading, isListEnd} = useSelector(
+    state => state.supplierArrivalLine,
+  );
 
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -166,9 +170,9 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           objectList={filteredList}
           onChangeValue={handleLineSearch}
           fetchData={filterLinesAPI}
-          displayValue={item => item.product?.fullName}
+          displayValue={displayLine}
           scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_Product')}
+          placeholder={I18n.t('Stock_SearchLine')}
           isFocus={true}
           oneFilter={true}
         />
@@ -183,6 +187,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             deliveredQty={item?.realQty}
             askedQty={item?.qty}
             trackingNumber={item?.trackingNumber}
+            locker={item?.locker}
             onPress={() => {
               handleShowLine(item);
             }}

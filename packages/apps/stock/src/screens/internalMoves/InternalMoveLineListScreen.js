@@ -37,6 +37,7 @@ import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
+import {useInternalLinesWithRacks} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
@@ -46,8 +47,10 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingIMLines, moreLoading, isListEnd, internalMoveLineList} =
-    useSelector(state => state.internalMoveLine);
+  const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
+  const {loadingIMLines, moreLoading, isListEnd} = useSelector(
+    state => state.internalMoveLine,
+  );
 
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -190,6 +193,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
                 : item.availableStatusSelect
             }
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
+            locker={item.locker}
             expectedQty={item.qty}
             movedQty={item.realQty}
             onPress={() => handleShowLine(item)}

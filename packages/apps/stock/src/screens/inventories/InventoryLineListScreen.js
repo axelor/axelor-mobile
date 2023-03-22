@@ -36,6 +36,7 @@ import {InventoryHeader, InventoryLineCard} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
+import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
@@ -172,9 +173,9 @@ const InventoryLineListScreen = ({route, navigation}) => {
           objectList={filteredList}
           onChangeValue={handleLineSearch}
           fetchData={filterLinesAPI}
-          displayValue={item => item.product?.fullName}
+          displayValue={displayLine}
           scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_Product')}
+          placeholder={I18n.t('Stock_SearchLine')}
           isFocus={true}
           oneFilter={true}
         />

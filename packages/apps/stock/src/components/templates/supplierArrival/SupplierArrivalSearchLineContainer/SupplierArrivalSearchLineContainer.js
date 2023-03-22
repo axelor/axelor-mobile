@@ -24,7 +24,8 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer, SupplierArrivalLineCard} from '../../../organisms';
+import {SearchLineContainer} from '../../../organisms';
+import {SupplierArrivalLineCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
 import {StockMove} from '../../../../types';
