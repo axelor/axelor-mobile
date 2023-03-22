@@ -24,36 +24,42 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {SearchLineContainer} from '../../../organisms';
-import {InternalMoveLineCard} from '../../../templates';
-import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
+import {SearchLineContainer, SupplierArrivalLineCard} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
-import {useInternalLinesWithRacks} from '../../../../hooks';
+import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
+import {StockMove} from '../../../../types';
+import {useSupplierLinesWithRacks} from '../../../../hooks';
 
-const scanKey = 'trackingNumber-or-product_internal-move-details';
+const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
 
-const InternalMoveSearchLineContainer = ({}) => {
+const SupplierArrivalSearchLineContainer = ({}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {internalMove} = useSelector(state => state.internalMove);
-  const {internalMoveLineList, totalNumberLines} = useInternalLinesWithRacks();
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
+  const {supplierArrivalLineList, totalNumberLines} =
+    useSupplierLinesWithRacks(supplierArrival);
+
+  const handleNewLine = () => {
+    navigation.navigate('SupplierArrivalSelectProductScreen', {
+      supplierArrival: supplierArrival,
+    });
+  };
 
   const handleViewAll = () => {
-    navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: internalMove,
+    navigation.navigate('SupplierArrivalLineListScreen', {
+      supplierArrival: supplierArrival,
     });
   };
 
   const handleShowLine = (item, skipVerification = false) => {
     showLine({
-      item: {name: 'internalMove', data: internalMove},
-      itemLine: {name: 'internalMoveLine', data: item},
-      lineDetailsScreen: 'InternalMoveLineDetailsScreen',
-      selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
-      selectProductScreen: 'InternalMoveSelectProductScreen',
-      productKey: 'stockProduct',
+      item: {name: 'supplierArrival', data: supplierArrival},
+      itemLine: {name: 'supplierArrivalLine', data: item},
+      lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
+      selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
+      selectProductScreen: 'SupplierArrivalSelectProductScreen',
       skipVerification,
       navigation,
     });
@@ -66,14 +72,14 @@ const InternalMoveSearchLineContainer = ({}) => {
   const fetchInternalLinesAPI = useCallback(
     searchValue => {
       dispatch(
-        fetchInternalMoveLines({
-          internalMoveId: internalMove?.id,
-          searchValue: searchValue,
+        fetchSupplierArrivalLines({
+          supplierArrivalId: supplierArrival.id,
+          searchValue,
           page: 0,
         }),
       );
     },
-    [dispatch, internalMove],
+    [dispatch, supplierArrival],
   );
 
   const filterLine = useCallback(item => {
@@ -87,26 +93,22 @@ const InternalMoveSearchLineContainer = ({}) => {
     <SearchLineContainer
       title={I18n.t('Stock_InternalMoveLines')}
       numberOfItems={totalNumberLines}
-      objectList={internalMoveLineList}
+      objectList={supplierArrivalLineList}
       handleSelect={handleLineSearch}
       handleSearch={fetchInternalLinesAPI}
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}
+      showAction={supplierArrival.statusSelect !== StockMove.status.Realized}
+      onAction={handleNewLine}
       renderItem={item => (
-        <InternalMoveLineCard
+        <SupplierArrivalLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          internalMoveStatus={internalMove.statusSelect}
-          expectedQty={item.qty}
-          movedQty={item.realQty}
+          deliveredQty={item.realQty}
+          askedQty={item.qty}
+          trackingNumber={item.trackingNumber}
           locker={item.locker}
-          trackingNumber={item.trackingNumber?.trackingNumberSeq}
-          availability={
-            item.availableStatusSelect != null
-              ? item.availableStatusSelect
-              : null
-          }
           onPress={() => handleShowLine(item)}
         />
       )}
@@ -121,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveSearchLineContainer;
+export default SupplierArrivalSearchLineContainer;

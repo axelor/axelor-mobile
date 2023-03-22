@@ -24,20 +24,20 @@ import {
 } from '../api/supplier-arrival-line-api';
 
 export const fetchSupplierArrivalLines = createAsyncThunk(
-  'SupplierLines/fetchSupplierLine',
+  'supplierArrivalLine/fetchSupplierLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalLines,
       data,
       action: 'fetch supplier arrival lines',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
 
 export const updateSupplierArrivalLine = createAsyncThunk(
-  'SupplierLines/updateSupplierArrivalLine',
+  'supplierArrivalLine/updateSupplierArrivalLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: updateLine,
@@ -54,6 +54,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   supplierArrivalLineList: [],
+  totalNumberLines: 0,
   updateLineResponse: {},
 };
 
@@ -71,15 +72,16 @@ const supplierArrivalLineSlice = createSlice({
     builder.addCase(fetchSupplierArrivalLines.fulfilled, (state, action) => {
       state.loadingSALines = false;
       state.moreLoading = false;
+      state.totalNumberLines = action.payload?.total;
       if (action.meta.arg.page === 0) {
-        state.supplierArrivalLineList = action.payload;
+        state.supplierArrivalLineList = action.payload?.data;
         state.isListEnd = false;
       } else {
-        if (action.payload != null) {
+        if (action.payload?.data != null) {
           state.isListEnd = false;
           state.supplierArrivalLineList = [
             ...state.supplierArrivalLineList,
-            ...action.payload,
+            ...action.payload?.data,
           ];
         } else {
           state.isListEnd = true;

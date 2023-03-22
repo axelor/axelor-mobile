@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -24,14 +24,12 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  CustomerDeliveryLineCard,
-  SearchLineContainer,
-} from '../../../../components';
-import {getRacks} from '../../../../features/racksListSlice';
+import {CustomerDeliveryLineCard} from '../../../templates';
+import {SearchLineContainer} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
 import StockMove from '../../../../types/stock-move';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
+import {useCustomerLinesWithRacks} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
 
@@ -41,10 +39,8 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   const dispatch = useDispatch();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
-  const {customerDeliveryLineList, totalNumberLines} = useSelector(
-    state => state.customerDeliveryLine,
-  );
-  const {loadingRacks, racksList} = useSelector(state => state.rack);
+  const {customerDeliveryLineList, totalNumberLines} =
+    useCustomerLinesWithRacks(customerDelivery);
 
   const handleNewLine = () => {
     navigation.navigate('CustomerDeliverySelectProductScreen', {
@@ -58,17 +54,10 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (item, index, skipVerification = false) => {
-    const locker = !loadingRacks && (racksList?.[index]?.[0]?.rack ?? '');
-
-    const updatedItem = {
-      ...item,
-      locker,
-    };
-
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      itemLine: {name: 'customerDeliveryLine', data: item},
       lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
       selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
       selectProductScreen: 'CustomerDeliverySelectProductScreen',
@@ -78,10 +67,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   };
 
   const handleLineSearch = item => {
-    const itemIndex = customerDeliveryLineList.findIndex(
-      _item => _item.id === item.id,
-    );
-    handleShowLine(item, itemIndex, true);
+    handleShowLine(item, true);
   };
 
   const fetchInternalLinesAPI = useCallback(
@@ -96,19 +82,6 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     },
     [dispatch, customerDelivery],
   );
-
-  useEffect(() => {
-    dispatch(
-      getRacks({
-        stockId: customerDelivery?.fromStockLocation?.id,
-        LineList: customerDeliveryLineList,
-      }),
-    );
-  }, [
-    dispatch,
-    customerDeliveryLineList,
-    customerDelivery?.fromStockLocation?.id,
-  ]);
 
   const filterLine = useCallback(item => {
     return (
@@ -129,24 +102,20 @@ const CustomerDeliverySearchLineContainer = ({}) => {
       filterLine={filterLine}
       showAction={customerDelivery.statusSelect !== StockMove.status.Realized}
       onAction={handleNewLine}
-      renderItem={(item, index) => (
+      renderItem={item => (
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item?.realQty}
-          askedQty={item?.qty}
-          locker={
-            !loadingRacks && racksList != null && racksList[index] != null
-              ? racksList[index][0]?.rack
-              : ''
-          }
+          pickedQty={item.realQty}
+          askedQty={item.qty}
+          trackingNumber={item.trackingNumber}
+          locker={item.locker}
           availability={
             customerDelivery.statusSelect !== StockMove.status.Realized
-              ? item?.availableStatusSelect
+              ? item.availableStatusSelect
               : null
           }
-          trackingNumber={item?.trackingNumber}
-          onPress={() => handleShowLine(item, index)}
+          onPress={() => handleShowLine(item)}
         />
       )}
     />
