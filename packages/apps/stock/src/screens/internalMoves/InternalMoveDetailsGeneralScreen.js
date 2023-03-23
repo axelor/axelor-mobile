@@ -30,7 +30,8 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InternalMoveGeneralBody,
+  InternalMoveDetailsGeneralMovementIndicationCard,
+  InternalMoveDetailsGeneralViewAllContainer,
   InternalMoveGeneralFixedItems,
   StockMoveHeader,
 } from '../../components';
@@ -102,7 +103,10 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <InternalMoveGeneralBody
+        <InternalMoveDetailsGeneralMovementIndicationCard
+          internalMove={internalMove}
+        />
+        <InternalMoveDetailsGeneralViewAllContainer
           internalMove={internalMove}
           navigation={navigation}
         />

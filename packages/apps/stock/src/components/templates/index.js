@@ -24,7 +24,8 @@ export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/Cu
 export {default as CustomerDeliveryLineDetailFixedItems} from './CustomerDeliveryLineDetailFixedItems/CustomerDeliveryLineDetailFixedItems';
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
 export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
-export {default as InternalMoveGeneralBody} from './InternalMoveGeneralBody/InternalMoveGeneralBody';
+export {default as InternalMoveDetailsGeneralMovementIndicationCard} from './InternalMoveDetailsGeneralMovementIndicationCard/InternalMoveDetailsGeneralMovementIndicationCard';
+export {default as InternalMoveDetailsGeneralViewAllContainer} from './InternalMoveDetailsGeneralViewAllContainer/InternalMoveDetailsGeneralViewAllContainer';
 export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFixedItems/InternalMoveGeneralFixedItems';
 export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
 export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDetailsFixedItems/InternalMoveLineDetailsFixedItems';

@@ -18,18 +18,15 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
-import {
-  MovementIndicationCard,
-  ViewAllContainer,
-  useThemeColor,
-  Icon,
-} from '@axelor/aos-mobile-ui';
-import InternalMoveLineCard from '../InternalMoveLineCard/InternalMoveLineCard';
 import {showLine} from '../../../utils/line-navigation';
+import InternalMoveLineCard from '../InternalMoveLineCard/InternalMoveLineCard';
 
-const InternalMoveGeneralBody = ({internalMove, navigation}) => {
-  const Colors = useThemeColor();
+const InternalMoveDetailsGeneralViewAllContainer = ({
+  internalMove,
+  navigation,
+}) => {
   const {internalMoveLineList} = useSelector(state => state.internalMoveLine);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
 
@@ -52,43 +49,31 @@ const InternalMoveGeneralBody = ({internalMove, navigation}) => {
   };
 
   return (
-    <>
-      <MovementIndicationCard
-        titleTop={internalMove.fromStockLocation.name}
-        iconTop={
-          <Icon name="warehouse" color={Colors.primaryColor.background} />
-        }
-        titleDown={internalMove.toStockLocation.name}
-        iconDown={
-          <Icon name="warehouse" color={Colors.primaryColor.background} />
-        }
-      />
-      <ViewAllContainer
-        data={internalMoveLineList}
-        renderFirstTwoItems={(item, index) => (
-          <InternalMoveLineCard
-            style={styles.item}
-            productName={item.product?.fullName}
-            internalMoveStatus={internalMove.statusSelect}
-            availability={
-              item.availableStatusSelect != null
-                ? item.availableStatusSelect
-                : null
-            }
-            locker={
-              !loadingRacks && racksList != null && racksList[index] != null
-                ? racksList[index][0]?.rack
-                : ''
-            }
-            trackingNumber={item.trackingNumber?.trackingNumberSeq}
-            expectedQty={item.qty}
-            movedQty={item.realQty}
-            onPress={() => handleShowLine(item)}
-          />
-        )}
-        onViewPress={handleViewAll}
-      />
-    </>
+    <ViewAllContainer
+      data={internalMoveLineList}
+      renderFirstTwoItems={(item, index) => (
+        <InternalMoveLineCard
+          style={styles.item}
+          productName={item.product?.fullName}
+          internalMoveStatus={internalMove.statusSelect}
+          availability={
+            item.availableStatusSelect != null
+              ? item.availableStatusSelect
+              : null
+          }
+          locker={
+            !loadingRacks && racksList != null && racksList[index] != null
+              ? racksList[index][0]?.rack
+              : ''
+          }
+          trackingNumber={item.trackingNumber?.trackingNumberSeq}
+          expectedQty={item.qty}
+          movedQty={item.realQty}
+          onPress={() => handleShowLine(item)}
+        />
+      )}
+      onViewPress={handleViewAll}
+    />
   );
 };
 
@@ -99,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveGeneralBody;
+export default InternalMoveDetailsGeneralViewAllContainer;
