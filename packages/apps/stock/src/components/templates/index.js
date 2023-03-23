@@ -29,6 +29,7 @@ export {default as InternalMoveDetailsGeneralViewAllContainer} from './InternalM
 export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFixedItems/InternalMoveGeneralFixedItems';
 export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
 export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDetailsFixedItems/InternalMoveLineDetailsFixedItems';
+export {default as InternalMoveLineDetailsQuantityCard} from './InternalMoveLineDetailsQuantityCard/InternalMoveLineDetailsQuantityCard';
 export {default as InternalMoveLineNotes} from './InternalMoveLineNotes/InternalMoveLineNotes';
 export {default as InventoryCard} from './InventoryCard/InventoryCard';
 export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';

@@ -24,7 +24,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {HeaderContainer, Picker, Screen, Text} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, Picker, Screen} from '@axelor/aos-mobile-ui';
 import {
   getFromList,
   useDispatch,
@@ -32,11 +32,11 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
-  QuantityCard,
   ProductCardInfo,
   StockMoveHeader,
   InternalMoveLineDetailsFixedItems,
   InternalMoveLineNotes,
+  InternalMoveLineDetailsQuantityCard,
 } from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -164,11 +164,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     });
   };
 
-  const handleQtyChange = value => {
-    setMovedQty(value);
-    setSaveStatus(false);
-  };
-
   const handleUnitChange = unitId => {
     if (unitId === null) {
       setUnit({name: '', id: null});
@@ -176,15 +171,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setUnit(getFromList(unitList, 'id', unitId));
     }
     setSaveStatus(false);
-  };
-
-  const handleCreateCorrection = () => {
-    navigation.navigate('StockCorrectionDetailsScreen', {
-      stockLocation: originalStockLocation,
-      stockProduct: stockProduct,
-      trackingNumber: trackingNumber,
-      externeNavigation: true,
-    });
   };
 
   return (
@@ -244,25 +230,17 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               locker={null}
               onPress={handleShowProduct}
             />
-            <QuantityCard
-              labelQty={I18n.t('Stock_MovedQty')}
-              defaultValue={parseFloat(movedQty).toFixed(2)}
-              onValueChange={handleQtyChange}
-              editable={
-                status === StockMove.status.Draft ||
-                status === StockMove.status.Planned
-              }
-              actionQty={
-                status === StockMove.status.Draft ||
-                status === StockMove.status.Planned
-              }
-              onPressActionQty={handleCreateCorrection}>
-              <Text style={styles.text}>
-                {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
-                  plannedQty,
-                ).toFixed(2)} ${stockProduct.unit?.name}`}
-              </Text>
-            </QuantityCard>
+            <InternalMoveLineDetailsQuantityCard
+              movedQty={movedQty}
+              navigation={navigation}
+              originalStockLocation={originalStockLocation}
+              plannedQty={plannedQty}
+              setMovedQty={setMovedQty}
+              setSaveStatus={setSaveStatus}
+              status={status}
+              stockProduct={stockProduct}
+              trackingNumber={trackingNumber}
+            />
             <Picker
               styleTxt={unit?.id === null ? styles.picker_empty : null}
               title={I18n.t('Stock_Unit')}
