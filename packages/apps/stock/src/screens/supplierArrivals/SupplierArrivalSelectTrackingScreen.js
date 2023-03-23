@@ -19,7 +19,11 @@
 import React, {useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {StockMoveHeader, SupplierArrivalAddTracking} from '../../components';
+import {
+  StockMoveHeader,
+  SupplierArrivalAddTracking,
+  SupplierArrivalProductName,
+} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
@@ -48,6 +52,7 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
           />
         }
       />
+      <SupplierArrivalProductName product={product} />
       <SupplierArrivalAddTracking
         navigation={navigation}
         product={product}

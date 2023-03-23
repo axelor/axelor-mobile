@@ -65,4 +65,5 @@ export {default as SupplierArrivalDetailsHeader} from './SupplierArrivalDetailsH
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as SupplierArrivalLineDetailFixedItems} from './SupplierArrivalLineDetailFixedItems/SupplierArrivalLineDetailFixedItems';
 export {default as SupplierArrivalLineDetailQuantityCard} from './SupplierArrivalLineDetailQuantityCard/SupplierArrivalLineDetailQuantityCard';
+export {default as SupplierArrivalProductName} from './SupplierArrivalProductName/SupplierArrivalProductName';
 export {default as SupplierProductInfo} from './SupplierProductInfo/SupplierProductInfo';

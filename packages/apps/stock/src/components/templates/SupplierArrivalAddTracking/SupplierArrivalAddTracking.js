@@ -24,7 +24,7 @@ import {
   ScannerAutocompleteSearch,
   useDispatch,
 } from '@axelor/aos-mobile-core';
-import {Text, Card, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 import {filterTrackingNumber} from '../../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../../utils/displayers';
 
@@ -78,10 +78,7 @@ const SupplierArrivalAddTracking = ({
   );
 
   return (
-    <View style={styles.stockView}>
-      <Card style={styles.cardProductInfo}>
-        <Text>{product?.name}</Text>
-      </Card>
+    <View>
       <View style={styles.trackingNumber}>
         <Text style={styles.text_secondary}>
           {I18n.t('Stock_AddTrackingNumber')}
@@ -110,19 +107,12 @@ const SupplierArrivalAddTracking = ({
 };
 
 const styles = StyleSheet.create({
-  cardProductInfo: {
-    marginVertical: '2%',
-    marginHorizontal: 16,
-  },
   trackingNumber: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     marginRight: 16,
     marginBottom: 5,
-  },
-  stockView: {
-    marginTop: '2%',
   },
   text_secondary: {
     fontSize: 14,
