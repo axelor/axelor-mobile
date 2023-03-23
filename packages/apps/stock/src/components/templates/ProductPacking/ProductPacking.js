@@ -20,7 +20,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import SmallPropertyCard from '../SmallPropertyCard/SmallPropertyCard';
+import {SmallPropertyCard} from '../../organisms';
 
 const ProductPacking = ({product}) => {
   const I18n = useTranslator();

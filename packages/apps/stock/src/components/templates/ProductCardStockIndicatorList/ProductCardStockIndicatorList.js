@@ -19,7 +19,7 @@
 import React from 'react';
 import {View, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
-import CardStockIndicator from '../CardStockIndicator/CardStockIndicator';
+import CardStockIndicator from '../../organisms/CardStockIndicator/CardStockIndicator';
 
 const ProductCardStockIndicatorList = ({}) => {
   const {loadingProductIndicators, productIndicators} = useSelector(

@@ -20,7 +20,7 @@ import React from 'react';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../types/inventory';
-import QuantityCard from '../QuantityCard/QuantityCard';
+import {QuantityCard} from '../../organisms';
 
 const InventoryLineDetailsQuantityCard = ({
   realQty,

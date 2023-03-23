@@ -21,7 +21,7 @@ import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import {View, StyleSheet} from 'react-native';
 import StockMove from '../../../types/stock-move';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import QuantityCard from '../QuantityCard/QuantityCard';
+import {QuantityCard} from '../../organisms';
 
 const SupplierArrivalLineDetailQuantityCard = ({
   supplierArrival,

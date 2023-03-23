@@ -22,7 +22,7 @@ import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
 import {Picker, Text} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../types/stock-corrrection';
 import ProductCardInfo from '../ProductCardInfo/ProductCardInfo';
-import QuantityCard from '../QuantityCard/QuantityCard';
+import {QuantityCard} from '../../organisms';
 
 const StockCorrectionBody = ({
   stockProduct,

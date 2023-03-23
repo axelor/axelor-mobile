@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../types/stock-move';
-import QuantityCard from '../QuantityCard/QuantityCard';
+import {QuantityCard} from '../../organisms';
 
 const CustomerDeliveryLineQuantityCard = ({
   customerDelivery,
