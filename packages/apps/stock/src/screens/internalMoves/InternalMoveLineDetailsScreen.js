@@ -24,19 +24,15 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {HeaderContainer, Picker, Screen} from '@axelor/aos-mobile-ui';
-import {
-  getFromList,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   StockMoveHeader,
   InternalMoveLineDetailsFixedItems,
   InternalMoveLineNotes,
   InternalMoveLineDetailsQuantityCard,
+  InternalMoveLineDetailsPicker,
 } from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -45,11 +41,9 @@ import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const I18n = useTranslator();
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
-  const {unitList} = useSelector(state => state.unit);
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
 
@@ -164,15 +158,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     });
   };
 
-  const handleUnitChange = unitId => {
-    if (unitId === null) {
-      setUnit({name: '', id: null});
-    } else {
-      setUnit(getFromList(unitList, 'id', unitId));
-    }
-    setSaveStatus(false);
-  };
-
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -241,19 +226,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               stockProduct={stockProduct}
               trackingNumber={trackingNumber}
             />
-            <Picker
-              styleTxt={unit?.id === null ? styles.picker_empty : null}
-              title={I18n.t('Stock_Unit')}
-              onValueChange={handleUnitChange}
-              defaultValue={unit?.id}
-              listItems={unitList}
-              labelField="name"
-              valueField="id"
-              disabled={
-                status === StockMove.status.Realized ||
-                status === StockMove.status.Canceled
-              }
-              disabledValue={unit?.name}
+            <InternalMoveLineDetailsPicker
+              setSaveStatus={setSaveStatus}
+              setUnit={setUnit}
+              status={status}
+              unit={unit}
             />
             <InternalMoveLineNotes
               notes={notes}
@@ -275,12 +252,6 @@ const styles = StyleSheet.create({
     marginBottom: '3%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  picker_empty: {
-    color: 'red',
-  },
-  text: {
-    fontSize: 16,
   },
   containerKeyboard: {
     flex: 1,

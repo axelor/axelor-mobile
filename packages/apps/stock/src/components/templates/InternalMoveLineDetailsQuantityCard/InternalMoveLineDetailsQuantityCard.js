@@ -72,9 +72,8 @@ const InternalMoveLineDetailsQuantityCard = ({
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
+  text: {
+    fontSize: 16,
   },
 });
 
