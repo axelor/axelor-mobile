@@ -35,6 +35,7 @@ export {default as InternalMoveLineNotes} from './InternalMoveLineNotes/Internal
 export {default as InventoryCard} from './InventoryCard/InventoryCard';
 export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';
 export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCard';
+export {default as InventoryLineDetailsFixedItems} from './InventoryLineDetailsFixedItems/InventoryLineDetailsFixedItems';
 export {default as InventoryLineDetailsQuantityCard} from './InventoryLineDetailsQuantityCard/InventoryLineDetailsQuantityCard';
 export {default as InventoryPlannedDetailsHeader} from './InventoryPlannedDetailsHeader/InventoryPlannedDetailsHeader';
 export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';

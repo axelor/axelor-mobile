@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Button,
   EditableInput,
   HeaderContainer,
   Screen,
@@ -30,11 +29,8 @@ import {
   InventoryHeader,
   ProductCardInfo,
   InventoryLineDetailsQuantityCard,
+  InventoryLineDetailsFixedItems,
 } from '../../components';
-import {
-  createNewInventoryLine,
-  updateInventoryLine,
-} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import Inventory from '../../types/inventory';
 
@@ -71,60 +67,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     });
   };
 
-  const handleNewLine = useCallback(() => {
-    dispatch(
-      createNewInventoryLine({
-        inventoryId: inventory.id,
-        inventoryVersion: inventory.version,
-        productId: productFromId?.id,
-        trackingNumberId: trackingNumber?.id,
-        rack: rack == null || rack === '' ? null : rack,
-        realQty: realQty,
-      }),
-    );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [
-    dispatch,
-    inventory,
-    navigation,
-    productFromId,
-    rack,
-    realQty,
-    trackingNumber,
-  ]);
-
-  const handleUpdateLine = useCallback(() => {
-    dispatch(
-      updateInventoryLine({
-        inventoryLineId: inventoryLine.id,
-        version: inventoryLine.version,
-        realQty: realQty,
-        description: description,
-      }),
-    );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [description, dispatch, inventory, inventoryLine, navigation, realQty]);
-
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        inventoryLine == null ? (
-          <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />
-        ) : inventory?.statusSelect !== Inventory.status.Validated ? (
-          <Button
-            title={
-              inventory.statusSelect <= Inventory.status.InProgress
-                ? I18n.t('Base_Save')
-                : I18n.t('Base_Check')
-            }
-            onPress={handleUpdateLine}
-          />
-        ) : null
+        <InventoryLineDetailsFixedItems
+          description={description}
+          inventory={inventory}
+          inventoryLine={inventoryLine}
+          navigation={navigation}
+          rack={rack}
+          realQty={realQty}
+          trackingNumber={trackingNumber}
+        />
       }
       loading={loadingProductFromId}>
       <HeaderContainer
