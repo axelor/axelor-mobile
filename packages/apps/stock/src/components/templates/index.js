@@ -53,9 +53,11 @@ export {default as ProductSmallPropertyCardList} from './ProductSmallPropertyCar
 export {default as ProductStockHeader} from './ProductStockHeader/ProductStockHeader';
 export {default as ProductStockLocationCard} from './ProductStockLocationCard/ProductStockLocationCard';
 export {default as ProductVariantCard} from './ProductVariantCard/ProductVariantCard';
-export {default as StockCorrectionBody} from './StockCorrectionBody/StockCorrectionBody';
 export {default as StockCorrectionFixedItems} from './StockCorrectionFixedItems/StockCorrectionFixedItems';
 export {default as StockCorrectionHeader} from './StockCorrectionHeader/StockCorrectionHeader';
+export {default as StockCorrectionPicker} from './StockCorrectionPicker/StockCorrectionPicker';
+export {default as StockCorrectionProductCardInfo} from './StockCorrectionProductCardInfo/StockCorrectionProductCardInfo';
+export {default as StockCorrectionQuantityCard} from './StockCorrectionQuantityCard/StockCorrectionQuantityCard';
 export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
 export {default as SupplierArrivalAddTracking} from './SupplierArrivalAddTracking/SupplierArrivalAddTracking';
 export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArrivalCard';

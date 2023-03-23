@@ -32,8 +32,10 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
-  StockCorrectionBody,
   StockCorrectionFixedItems,
+  StockCorrectionProductCardInfo,
+  StockCorrectionQuantityCard,
+  StockCorrectionPicker,
 } from '../../components';
 import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -182,17 +184,24 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             btnTitle={I18n.t('Auth_Close')}
             onPress={() => setPopUp(!popUp)}
           />
-          <StockCorrectionBody
-            databaseQty={databaseQty}
-            setRealQty={setRealQty}
-            setSaveStatus={setSaveStatus}
-            setReason={setReason}
+          <StockCorrectionProductCardInfo
             navigation={navigation}
-            realQty={realQty}
-            reason={reason}
-            status={status}
             stockProduct={stockProduct}
             trackingNumber={trackingNumber}
+          />
+          <StockCorrectionQuantityCard
+            databaseQty={databaseQty}
+            realQty={realQty}
+            setRealQty={setRealQty}
+            setSaveStatus={setSaveStatus}
+            status={status}
+            stockProduct={stockProduct}
+          />
+          <StockCorrectionPicker
+            reason={reason}
+            setReason={setReason}
+            setSaveStatus={setSaveStatus}
+            status={status}
           />
         </ScrollView>
       )}
