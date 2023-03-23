@@ -37,25 +37,27 @@ const ProductSeeDistributionStocksLocation = ({
     });
   };
 
-  return (
-    <>
-      {productIndicators?.realQty != null &&
-      parseInt(productIndicators?.realQty, 10) !== 0 &&
-      parseInt(productIndicators?.futureQty, 10) !== 0 ? (
-        <TouchableOpacity onPress={navigateStockLocationDetails}>
-          <View style={styles.arrowContainer}>
-            <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-            <Icon
-              name="angle-right"
-              size={24}
-              color={Colors.primaryColor.background}
-              style={styles.arrowIcon}
-            />
-          </View>
-        </TouchableOpacity>
-      ) : null}
-    </>
-  );
+  if (
+    productIndicators?.realQty != null &&
+    parseInt(productIndicators?.realQty, 10) !== 0 &&
+    parseInt(productIndicators?.futureQty, 10) !== 0
+  ) {
+    return (
+      <TouchableOpacity onPress={navigateStockLocationDetails}>
+        <View style={styles.arrowContainer}>
+          <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+          <Icon
+            name="angle-right"
+            size={24}
+            color={Colors.primaryColor.background}
+            style={styles.arrowIcon}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  } else {
+    return null;
+  }
 };
 
 const styles = StyleSheet.create({

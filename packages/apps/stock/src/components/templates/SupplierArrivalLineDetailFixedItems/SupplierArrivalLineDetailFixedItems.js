@@ -68,19 +68,19 @@ const SupplierArrivalLineDetailFixedItems = ({
     }
     navigation.pop();
   };
-
-  return (
-    <>
-      {supplierArrivalLine != null &&
-        supplierArrival.statusSelect !== StockMove.status.Realized && (
-          <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
-        )}
-      {supplierArrivalLine == null &&
-        supplierArrival.statusSelect !== StockMove.status.Realized && (
-          <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />
-        )}
-    </>
-  );
+  if (
+    supplierArrivalLine != null &&
+    supplierArrival.statusSelect !== StockMove.status.Realized
+  ) {
+    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
+  } else if (
+    supplierArrivalLine == null &&
+    supplierArrival.statusSelect !== StockMove.status.Realized
+  ) {
+    return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
+  } else {
+    return null;
+  }
 };
 
 export default SupplierArrivalLineDetailFixedItems;

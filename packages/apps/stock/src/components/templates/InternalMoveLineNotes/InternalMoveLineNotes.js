@@ -30,36 +30,35 @@ const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
     setSaveStatus(false);
   };
 
-  return (
-    <>
-      {status === StockMove.status.Draft && (
-        <View>
-          <View style={styles.reasonTitle}>
-            <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-          </View>
-          <Card style={styles.infosCard}>
-            <Input
-              value={notes}
-              onChange={handleNotesChange}
-              multiline={true}
-            />
-          </Card>
+  if (status === StockMove.status.Draft) {
+    return (
+      <View>
+        <View style={styles.reasonTitle}>
+          <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
         </View>
-      )}
-      {status === StockMove.status.Planned ||
-        status === StockMove.status.Realized ||
-        (status === StockMove.status.Canceled && (
-          <View>
-            <View style={styles.reasonTitle}>
-              <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-            </View>
-            <Card style={styles.infosCard}>
-              <Text numberOfLines={3}>{notes}</Text>
-            </Card>
-          </View>
-        ))}
-    </>
-  );
+        <Card style={styles.infosCard}>
+          <Input value={notes} onChange={handleNotesChange} multiline={true} />
+        </Card>
+      </View>
+    );
+  } else if (
+    status === StockMove.status.Planned ||
+    status === StockMove.status.Realized ||
+    status === StockMove.status.Canceled
+  ) {
+    return (
+      <View>
+        <View style={styles.reasonTitle}>
+          <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
+        </View>
+        <Card style={styles.infosCard}>
+          <Text numberOfLines={3}>{notes}</Text>
+        </Card>
+      </View>
+    );
+  } else {
+    return null;
+  }
 };
 
 const styles = StyleSheet.create({

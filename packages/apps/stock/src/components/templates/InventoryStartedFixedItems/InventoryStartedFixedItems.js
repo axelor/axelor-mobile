@@ -51,21 +51,23 @@ const InventoryStartedFixedItems = ({navigation}) => {
     navigation.popToTop();
   }, [dispatch, inventory, navigation]);
 
-  return (
-    <>
-      {inventory?.statusSelect === Inventory.status.InProgress ? (
-        <Button
-          title={I18n.t('Base_Complete')}
-          onPress={handleCompleteInventory}
-        />
-      ) : inventory?.statusSelect === Inventory.status.Completed ? (
-        <Button
-          title={I18n.t('Base_Validate')}
-          onPress={handleValidateInventory}
-        />
-      ) : null}
-    </>
-  );
+  if (inventory?.statusSelect === Inventory.status.InProgress) {
+    return (
+      <Button
+        title={I18n.t('Base_Complete')}
+        onPress={handleCompleteInventory}
+      />
+    );
+  } else if (inventory?.statusSelect === Inventory.status.Completed) {
+    return (
+      <Button
+        title={I18n.t('Base_Validate')}
+        onPress={handleValidateInventory}
+      />
+    );
+  } else {
+    return null;
+  }
 };
 
 export default InventoryStartedFixedItems;

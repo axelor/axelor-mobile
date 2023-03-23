@@ -23,35 +23,36 @@ import {SmallPropertyCard} from '../../organisms';
 
 const ProductSmallPropertyCardList = ({product}) => {
   const I18n = useTranslator();
-  return (
-    <>
-      {product.unit ? (
-        <View style={styles.stock}>
-          <SmallPropertyCard
-            style={styles.stockCard}
-            title={I18n.t('Stock_Stock')}
-            value={product.unit?.name}
-          />
-          <SmallPropertyCard
-            style={styles.stockCard}
-            title={I18n.t('Sale_Sale')}
-            value={
-              product.salesUnit ? product.salesUnit?.name : product.unit?.name
-            }
-          />
-          <SmallPropertyCard
-            style={styles.stockCard}
-            title={I18n.t('Purchase_Purchase')}
-            value={
-              product.purchasesUnit
-                ? product.purchasesUnit?.name
-                : product.unit?.name
-            }
-          />
-        </View>
-      ) : null}
-    </>
-  );
+
+  if (product.unit) {
+    return (
+      <View style={styles.stock}>
+        <SmallPropertyCard
+          style={styles.stockCard}
+          title={I18n.t('Stock_Stock')}
+          value={product.unit?.name}
+        />
+        <SmallPropertyCard
+          style={styles.stockCard}
+          title={I18n.t('Sale_Sale')}
+          value={
+            product.salesUnit ? product.salesUnit?.name : product.unit?.name
+          }
+        />
+        <SmallPropertyCard
+          style={styles.stockCard}
+          title={I18n.t('Purchase_Purchase')}
+          value={
+            product.purchasesUnit
+              ? product.purchasesUnit?.name
+              : product.unit?.name
+          }
+        />
+      </View>
+    );
+  } else {
+    return null;
+  }
 };
 
 const styles = StyleSheet.create({

@@ -27,14 +27,16 @@ const ProductFixedItems = ({product, navigation}) => {
     navigation.navigate('ProductListVariantScreen', {product: product});
   };
 
-  return (
-    product.productVariant != null && (
+  if (product.productVariant != null) {
+    return (
       <Button
         onPress={() => showProductVariables()}
         title={I18n.t('Stock_Variants')}
       />
-    )
-  );
+    );
+  } else {
+    return null;
+  }
 };
 
 export default ProductFixedItems;

@@ -118,29 +118,29 @@ const InternalMoveLineDetailsFixedItems = ({
       internalMove: route.params.internalMove,
     });
   };
-
-  return (
-    <>
-      {!saveStatus && route.params.internalMove == null && (
-        <View style={styles.button_container}>
-          <Button
-            title={I18n.t('Base_Realize')}
-            color={Colors.secondaryColor}
-            onPress={handleRealize}
-          />
-          <Button
-            title={I18n.t('Base_RealizeContinue')}
-            onPress={handleValidate}
-          />
-        </View>
-      )}
-      {!saveStatus && route.params.internalMove != null && (
-        <View style={styles.button_container}>
-          <Button title={I18n.t('Base_Save')} onPress={handleSave} />
-        </View>
-      )}
-    </>
-  );
+  if (!saveStatus && route.params.internalMove == null) {
+    return (
+      <View style={styles.button_container}>
+        <Button
+          title={I18n.t('Base_Realize')}
+          color={Colors.secondaryColor}
+          onPress={handleRealize}
+        />
+        <Button
+          title={I18n.t('Base_RealizeContinue')}
+          onPress={handleValidate}
+        />
+      </View>
+    );
+  } else if (!saveStatus && route.params.internalMove != null) {
+    return (
+      <View style={styles.button_container}>
+        <Button title={I18n.t('Base_Save')} onPress={handleSave} />
+      </View>
+    );
+  } else {
+    return null;
+  }
 };
 
 const styles = StyleSheet.create({
