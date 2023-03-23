@@ -25,27 +25,29 @@ const SupplierProductInfo = ({}) => {
   const I18n = useTranslator();
   const {supplierProductInfo} = useSelector(state => state.supplierCatalog);
 
-  return (
-    <>
-      {supplierProductInfo == null ||
-      Object.keys(supplierProductInfo).length === 0 ? null : (
-        <View style={styles.supplierInfoContainer}>
-          <Icon name="info-circle" size={20} />
-          <View style={styles.supplierInfo}>
-            <Text style={styles.text_important}>
-              {I18n.t('Stock_SupplierCatalog')}
-            </Text>
-            <Text>{`${I18n.t('Stock_Name')} : ${
-              supplierProductInfo?.productSupplierName
-            }`}</Text>
-            <Text>{`${I18n.t('Stock_Code')} : ${
-              supplierProductInfo?.productSupplierCode
-            }`}</Text>
-          </View>
+  if (
+    supplierProductInfo == null ||
+    Object.keys(supplierProductInfo).length === 0
+  ) {
+    return null;
+  } else {
+    return (
+      <View style={styles.supplierInfoContainer}>
+        <Icon name="info-circle" size={20} />
+        <View style={styles.supplierInfo}>
+          <Text style={styles.text_important}>
+            {I18n.t('Stock_SupplierCatalog')}
+          </Text>
+          <Text>{`${I18n.t('Stock_Name')} : ${
+            supplierProductInfo?.productSupplierName
+          }`}</Text>
+          <Text>{`${I18n.t('Stock_Code')} : ${
+            supplierProductInfo?.productSupplierCode
+          }`}</Text>
         </View>
-      )}
-    </>
-  );
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

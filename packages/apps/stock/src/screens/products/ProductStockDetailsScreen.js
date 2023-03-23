@@ -70,18 +70,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
     }
   }, [companyId, dispatch, product, stockLocation]);
 
-  const showProductDetails = () => {
-    navigation.navigate('ProductDetailsScreen', {
-      product: product,
-      companyID: companyId,
-      stockLocationId: stockLocation?.id,
-    });
-  };
-
-  const navigateToImageProduct = () => {
-    navigation.navigate('ProductImageScreen', {product: product});
-  };
-
   const handleLockerChange = input => {
     if (stockLocation != null) {
       dispatch(
@@ -127,8 +115,9 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductStockHeader
           product={product}
-          navigateToImageProduct={navigateToImageProduct}
-          showProductDetails={showProductDetails}
+          navigation={navigation}
+          companyId={companyId}
+          stockLocation={stockLocation}
         />
         <View style={styles.lineStyle} />
         {baseConfig.enableMultiCompany && canModifyCompany && (

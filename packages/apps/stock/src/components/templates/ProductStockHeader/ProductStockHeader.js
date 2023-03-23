@@ -24,10 +24,23 @@ import {ProductCardDetails} from '../../molecules';
 
 const ProductStockHeader = ({
   product,
-  navigateToImageProduct,
-  showProductDetails,
+  navigation,
+  companyId,
+  stockLocation,
 }) => {
   const I18n = useTranslator();
+
+  const showProductDetails = () => {
+    navigation.navigate('ProductDetailsScreen', {
+      product: product,
+      companyID: companyId,
+      stockLocationId: stockLocation?.id,
+    });
+  };
+
+  const navigateToImageProduct = () => {
+    navigation.navigate('ProductImageScreen', {product: product});
+  };
 
   return (
     <View style={styles.infoContainer}>
