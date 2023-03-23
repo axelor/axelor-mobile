@@ -23,11 +23,8 @@ import {
   PopUpOneButton,
   Screen,
   ScrollView,
-  useThemeColor,
   ViewAllContainer,
   HeaderContainer,
-  MovementIndicationCard,
-  Icon,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -45,6 +42,7 @@ import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import CustomerDeliveryDetailMovementIndicationCard from '../../components/templates/CustomerDeliveryDetailMovementIndicationCard/CustomerDeliveryDetailMovementIndicationCard';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -55,7 +53,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const {mobileSettings} = useSelector(state => state.config);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -151,18 +148,9 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
-        <MovementIndicationCard
-          titleTop={customerDelivery.fromStockLocation?.name}
-          iconTop={
-            <Icon name="warehouse" color={Colors.primaryColor.background} />
-          }
-          titleDown={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
-          iconDown={<Icon name="map-marker-alt" />}
-          disabledDown={false}
-          onPressTitleDown={() => setVisiblePopup(true)}
+        <CustomerDeliveryDetailMovementIndicationCard
+          customerDelivery={customerDelivery}
+          setVisiblePopup={setVisiblePopup}
         />
         <ViewAllContainer
           isHeaderExist={

@@ -17,10 +17,11 @@
  */
 
 export {default as CustomerDeliveryCard} from './CustomerDeliveryCard/CustomerDeliveryCard';
+export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';
+export {default as CustomerDeliveryDetailMovementIndicationCard} from './CustomerDeliveryDetailMovementIndicationCard/CustomerDeliveryDetailMovementIndicationCard';
 export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 export {default as CustomerDeliveryLineDetailFixedItems} from './CustomerDeliveryLineDetailFixedItems/CustomerDeliveryLineDetailFixedItems';
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
-export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';
 export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
 export {default as InternalMoveGeneralBody} from './InternalMoveGeneralBody/InternalMoveGeneralBody';
 export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFixedItems/InternalMoveGeneralFixedItems';
