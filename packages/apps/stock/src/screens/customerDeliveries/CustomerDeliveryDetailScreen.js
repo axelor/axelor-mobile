@@ -17,13 +17,11 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   Button,
   PopUpOneButton,
   Screen,
   ScrollView,
-  ViewAllContainer,
   HeaderContainer,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
@@ -35,13 +33,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryDetailHeader,
-  CustomerDeliveryLineCard,
+  CustomerDeliveryDetailViewAllContainer,
 } from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../features/racksListSlice';
 import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
 import StockMove from '../../types/stock-move';
-import {showLine} from '../../utils/line-navigation';
 import CustomerDeliveryDetailMovementIndicationCard from '../../components/templates/CustomerDeliveryDetailMovementIndicationCard/CustomerDeliveryDetailMovementIndicationCard';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
@@ -49,7 +46,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const {loadingCDLines, customerDeliveryLineList} = useSelector(
     state => state.customerDeliveryLine,
   );
-  const {loadingRacks, racksList} = useSelector(state => state.rack);
   const {mobileSettings} = useSelector(state => state.config);
   const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
@@ -79,30 +75,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     customerDelivery?.fromStockLocation?.id,
   ]);
 
-  const handleViewAll = () => {
-    navigation.navigate('CustomerDeliveryLineListScreen', {
-      customerDelivery: customerDelivery,
-    });
-  };
-
-  const handleShowLine = (item, index) => {
-    const locker = !loadingRacks && (racksList?.[index]?.[0]?.rack ?? '');
-
-    const updatedItem = {
-      ...item,
-      locker,
-    };
-
-    showLine({
-      item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
-      lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
-      selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
-      selectProductScreen: 'CustomerDeliverySelectProductScreen',
-      navigation,
-    });
-  };
-
   const handleRealize = () => {
     dispatch(
       realizeCustomerDelivery({
@@ -111,12 +83,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       }),
     );
     navigation.popToTop();
-  };
-
-  const handleNewLine = () => {
-    navigation.navigate('CustomerDeliverySelectProductScreen', {
-      customerDelivery: customerDelivery,
-    });
   };
 
   React.useLayoutEffect(() => {
@@ -152,33 +118,9 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           customerDelivery={customerDelivery}
           setVisiblePopup={setVisiblePopup}
         />
-        <ViewAllContainer
-          isHeaderExist={
-            customerDelivery.statusSelect !== StockMove.status.Realized
-          }
-          onNewIcon={handleNewLine}
-          data={customerDeliveryLineList}
-          renderFirstTwoItems={(item, index) => (
-            <CustomerDeliveryLineCard
-              style={styles.item}
-              productName={item.product?.fullName}
-              pickedQty={item?.realQty}
-              askedQty={item?.qty}
-              locker={
-                !loadingRacks && racksList != null && racksList[index] != null
-                  ? racksList[index][0]?.rack
-                  : ''
-              }
-              availability={
-                customerDelivery.statusSelect !== StockMove.status.Realized
-                  ? item?.availableStatusSelect
-                  : null
-              }
-              trackingNumber={item?.trackingNumber}
-              onPress={() => handleShowLine(item, index)}
-            />
-          )}
-          onViewPress={handleViewAll}
+        <CustomerDeliveryDetailViewAllContainer
+          customerDelivery={customerDelivery}
+          navigation={navigation}
         />
         <NotesCard
           title={I18n.t('Stock_NotesClient')}
@@ -201,12 +143,5 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 1,
-    marginVertical: 4,
-  },
-});
 
 export default CustomerDeliveryDetailScreen;
