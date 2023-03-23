@@ -32,6 +32,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   InventoryLineCard,
+  InventoryStartedDetailsLocationsMoveCard,
   InventoryStartedFixedItems,
   InventoryStartedHeader,
   LocationsMoveCard,
@@ -104,6 +105,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
         fixedItems={<InventoryStartedHeader inventory={inventory} />}
       />
       <ScrollView>
+        <InventoryStartedDetailsLocationsMoveCard />
         {inventory?.fromRack && (
           <LocationsMoveCard
             style={styles.moveCard}
