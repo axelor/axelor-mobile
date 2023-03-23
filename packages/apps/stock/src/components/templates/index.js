@@ -39,6 +39,7 @@ export {default as InventoryLineDetailsFixedItems} from './InventoryLineDetailsF
 export {default as InventoryLineDetailsQuantityCard} from './InventoryLineDetailsQuantityCard/InventoryLineDetailsQuantityCard';
 export {default as InventoryPlannedDetailsHeader} from './InventoryPlannedDetailsHeader/InventoryPlannedDetailsHeader';
 export {default as InventoryStartedDetailsLocationsMoveCard} from './InventoryStartedDetailsLocationsMoveCard/InventoryStartedDetailsLocationsMoveCard';
+export {default as InventoryStartedDetailsViewAllContainer} from './InventoryStartedDetailsViewAllContainer/InventoryStartedDetailsViewAllContainer';
 export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';
 export {default as InventoryStartedHeader} from './InventoryStartedHeader/InventoryStartedHeader';
 export {default as ProductCard} from './ProductCard/ProductCard';

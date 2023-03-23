@@ -16,14 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  HeaderContainer,
-  Screen,
-  ScrollView,
-  ViewAllContainer,
-} from '@axelor/aos-mobile-ui';
+import React, {useEffect} from 'react';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
@@ -31,23 +25,18 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InventoryLineCard,
   InventoryStartedDetailsLocationsMoveCard,
+  InventoryStartedDetailsViewAllContainer,
   InventoryStartedFixedItems,
   InventoryStartedHeader,
-  LocationsMoveCard,
 } from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {fetchInventoryById} from '../../features/inventorySlice';
-import Inventory from '../../types/inventory';
-import {showLine} from '../../utils/line-navigation';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const inventoryId = route.params.inventoryId;
   const {loading, inventory} = useSelector(state => state.inventory);
-  const {loadingInventoryLines, inventoryLineList} = useSelector(
-    state => state.inventoryLine,
-  );
+  const {loadingInventoryLines} = useSelector(state => state.inventoryLine);
   const {mobileSettings} = useSelector(state => state.config);
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -56,31 +45,6 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
     dispatch(fetchInventoryById({inventoryId: inventoryId}));
     dispatch(fetchInventoryLines({inventoryId: inventoryId, page: 0}));
   }, [dispatch, inventoryId]);
-
-  const handleShowLine = item => {
-    showLine({
-      item: {name: 'inventory', data: inventory},
-      itemLine: {name: 'inventoryLine', data: item},
-      lineDetailsScreen: 'InventoryLineDetailsScreen',
-      selectTrackingScreen: 'InventorySelectTrackingScreen',
-      selectProductScreen: 'InventorySelectProductScreen',
-      detailStatus: Inventory.status.Validated,
-      navigation,
-    });
-  };
-
-  const handleViewAll = () => {
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  };
-
-  const handleNewLine = useCallback(() => {
-    navigation.navigate('InventorySelectProductScreen', {
-      inventoryLine: null,
-      inventory: inventory,
-    });
-  }, [inventory, navigation]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -106,44 +70,10 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView>
         <InventoryStartedDetailsLocationsMoveCard />
-        {inventory?.fromRack && (
-          <LocationsMoveCard
-            style={styles.moveCard}
-            isLockerCard={true}
-            fromStockLocation={inventory?.fromRack}
-            toStockLocation={inventory?.toRack}
-          />
-        )}
-        <ViewAllContainer
-          isHeaderExist={inventory?.statusSelect !== Inventory.status.Completed}
-          onNewIcon={handleNewLine}
-          data={inventoryLineList}
-          renderFirstTwoItems={item => (
-            <InventoryLineCard
-              style={styles.item}
-              productName={item.product?.fullName}
-              currentQty={item.currentQty}
-              realQty={item.realQty}
-              unit={item.unit?.name}
-              locker={item.rack}
-              trackingNumber={item.trackingNumber}
-              onPress={() => handleShowLine(item)}
-            />
-          )}
-          onViewPress={handleViewAll}
-        />
+        <InventoryStartedDetailsViewAllContainer navigation={navigation} />
       </ScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  moveCard: {
-    marginVertical: 10,
-  },
-  marginHorizontal: {
-    marginHorizontal: 16,
-  },
-});
 
 export default InventoryStartedDetailsScreen;
