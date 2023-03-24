@@ -69,19 +69,19 @@ const CustomerDeliveryLineDetailFixedItems = ({
     }
     navigation.pop();
   };
-
-  return (
-    <>
-      {customerDeliveryLine != null &&
-        customerDelivery.statusSelect !== StockMove.status.Realized && (
-          <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
-        )}
-      {customerDeliveryLine == null &&
-        customerDelivery.statusSelect !== StockMove.status.Realized && (
-          <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />
-        )}
-    </>
-  );
+  if (
+    customerDeliveryLine != null &&
+    customerDelivery.statusSelect !== StockMove.status.Realized
+  ) {
+    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
+  } else if (
+    customerDeliveryLine == null &&
+    customerDelivery.statusSelect !== StockMove.status.Realized
+  ) {
+    return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
+  } else {
+    return null;
+  }
 };
 
 export default CustomerDeliveryLineDetailFixedItems;

@@ -246,13 +246,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  content: {
-    marginTop: '3%',
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
   containerKeyboard: {
     flex: 1,
   },

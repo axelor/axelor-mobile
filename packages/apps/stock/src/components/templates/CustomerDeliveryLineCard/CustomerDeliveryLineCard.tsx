@@ -131,12 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  rightContainer: {
-    width: '30%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
   badgeContainer: {
     marginLeft: 10,
   },
