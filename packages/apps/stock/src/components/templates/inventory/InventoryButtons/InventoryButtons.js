@@ -19,13 +19,29 @@
 import React, {useCallback} from 'react';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import Inventory from '../../../types/inventory';
-import {updateInventory} from '../../../features/inventorySlice';
+import Inventory from '../../../../types/inventory';
+import {updateInventory} from '../../../../features/inventorySlice';
 
-const InventoryStartedFixedItems = ({navigation}) => {
-  const {inventory} = useSelector(state => state.inventory);
+const InventoryButtons = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {inventory} = useSelector(state => state.inventory);
+
+  const handleStartInventory = useCallback(() => {
+    dispatch(
+      updateInventory({
+        inventoryId: inventory?.id,
+        version: inventory?.version,
+        status: Inventory.status.InProgress,
+        userId: null,
+      }),
+    );
+
+    navigation.navigate('InventoryStartedDetailsScreen', {
+      inventoryId: inventory?.id,
+    });
+  }, [dispatch, inventory, navigation]);
 
   const handleCompleteInventory = useCallback(() => {
     dispatch(
@@ -51,6 +67,12 @@ const InventoryStartedFixedItems = ({navigation}) => {
     navigation.popToTop();
   }, [dispatch, inventory, navigation]);
 
+  if (inventory?.statusSelect === Inventory.status.Planned) {
+    return (
+      <Button title={I18n.t('Base_Start')} onPress={handleStartInventory} />
+    );
+  }
+
   if (inventory?.statusSelect === Inventory.status.InProgress) {
     return (
       <Button
@@ -58,16 +80,18 @@ const InventoryStartedFixedItems = ({navigation}) => {
         onPress={handleCompleteInventory}
       />
     );
-  } else if (inventory?.statusSelect === Inventory.status.Completed) {
+  }
+
+  if (inventory?.statusSelect === Inventory.status.Completed) {
     return (
       <Button
         title={I18n.t('Base_Validate')}
         onPress={handleValidateInventory}
       />
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
-export default InventoryStartedFixedItems;
+export default InventoryButtons;

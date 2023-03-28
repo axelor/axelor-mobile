@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Badge, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import Inventory from '../../../types/inventory';
+import Inventory from '../../../../types/inventory';
 
 interface InventoryHeaderProps {
   reference: string;

@@ -18,11 +18,12 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {LocationsMoveCard} from '../../molecules';
 import {useSelector} from '@axelor/aos-mobile-core';
+import {LocationsMoveCard} from '../../../molecules';
 
-const InventoryStartedDetailsLocationsMoveCard = ({}) => {
-  const {inventory} = useSelector(state => state.inventory);
+const InventoryLocationsMoveCard = ({}) => {
+  const {inventory} = useSelector((state: any) => state.inventory);
+
   if (inventory?.fromRack) {
     return (
       <LocationsMoveCard
@@ -32,9 +33,9 @@ const InventoryStartedDetailsLocationsMoveCard = ({}) => {
         toStockLocation={inventory?.toRack}
       />
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 const styles = StyleSheet.create({
@@ -43,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InventoryStartedDetailsLocationsMoveCard;
+export default InventoryLocationsMoveCard;

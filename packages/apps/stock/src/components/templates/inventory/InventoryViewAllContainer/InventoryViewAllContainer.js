@@ -20,11 +20,11 @@ import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
-import {showLine} from '../../../utils/line-navigation';
-import Inventory from '../../../types/inventory';
-import InventoryLineCard from '../InventoryLineCard/InventoryLineCard';
+import {showLine} from '../../../../utils/line-navigation';
+import Inventory from '../../../../types/inventory';
+import {InventoryLineCard} from '../../../templates';
 
-const InventoryStartedDetailsViewAllContainer = ({navigation}) => {
+const InventoryViewAllContainer = ({navigation}) => {
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList} = useSelector(state => state.inventoryLine);
 
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InventoryStartedDetailsViewAllContainer;
+export default InventoryViewAllContainer;

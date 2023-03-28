@@ -16,16 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  Button,
-  EditableInput,
-  HeaderContainer,
-  Screen,
-  ScrollView,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import React, {useEffect} from 'react';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
@@ -33,15 +25,12 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
+  InventoryLocationsMoveCard,
   InventoryPlannedDetailsHeader,
-  LocationsMoveCard,
+  InventoryButtons,
+  InventoryDescription,
 } from '../../components';
-import {
-  fetchInventoryById,
-  modifyDescription,
-  updateInventory,
-} from '../../features/inventorySlice';
-import Inventory from '../../types/inventory';
+import {fetchInventoryById} from '../../features/inventorySlice';
 
 const InventoryPlannedDetailsScreen = ({route, navigation}) => {
   const {loading, inventory} = useSelector(state => state.inventory);
@@ -52,30 +41,6 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
   useEffect(() => {
     dispatch(fetchInventoryById({inventoryId: route.params.inventoryId}));
   }, [dispatch, route.params.inventoryId]);
-
-  const handleDescriptionChange = input => {
-    dispatch(
-      modifyDescription({
-        inventoryId: inventory?.id,
-        description: input.toString(),
-        version: inventory?.version,
-      }),
-    );
-  };
-
-  const handleStartInventory = useCallback(() => {
-    dispatch(
-      updateInventory({
-        inventoryId: inventory?.id,
-        version: inventory?.version,
-        status: Inventory.status.InProgress,
-        userId: null,
-      }),
-    );
-    navigation.navigate('InventoryStartedDetailsScreen', {
-      inventoryId: inventory?.id,
-    });
-  }, [dispatch, inventory, navigation]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -93,40 +58,18 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        <Button title={I18n.t('Base_Start')} onPress={handleStartInventory} />
-      }
+      fixedItems={<InventoryButtons navigation={navigation} />}
       loading={loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InventoryPlannedDetailsHeader />}
       />
       <ScrollView>
-        {inventory?.fromRack && (
-          <LocationsMoveCard
-            fromStockLocation={inventory?.fromRack}
-            toStockLocation={inventory?.toRack}
-            isLockerCard={true}
-          />
-        )}
-        <Text style={styles.title}>{I18n.t('Base_Description')}</Text>
-        <EditableInput
-          defaultValue={inventory?.description}
-          placeholder={I18n.t('Base_Description')}
-          onValidate={input => handleDescriptionChange(input)}
-          multiline={true}
-          numberOfLines={5}
-        />
+        <InventoryLocationsMoveCard />
+        <InventoryDescription />
       </ScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    marginHorizontal: 16,
-    marginTop: 10,
-  },
-});
 
 export default InventoryPlannedDetailsScreen;

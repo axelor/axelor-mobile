@@ -25,9 +25,9 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InventoryStartedDetailsLocationsMoveCard,
-  InventoryStartedDetailsViewAllContainer,
-  InventoryStartedFixedItems,
+  InventoryLocationsMoveCard,
+  InventoryViewAllContainer,
+  InventoryButtons,
   InventoryStartedHeader,
 } from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
@@ -62,15 +62,15 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<InventoryStartedFixedItems navigation={navigation} />}
+      fixedItems={<InventoryButtons navigation={navigation} />}
       loading={loadingInventoryLines || loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InventoryStartedHeader inventory={inventory} />}
       />
       <ScrollView>
-        <InventoryStartedDetailsLocationsMoveCard />
-        <InventoryStartedDetailsViewAllContainer navigation={navigation} />
+        <InventoryLocationsMoveCard />
+        <InventoryViewAllContainer navigation={navigation} />
       </ScrollView>
     </Screen>
   );

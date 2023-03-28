@@ -18,16 +18,7 @@
 
 export * from './customerDelivery';
 export * from './internalMove';
-export {default as InventoryCard} from './InventoryCard/InventoryCard';
-export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';
-export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCard';
-export {default as InventoryLineDetailsFixedItems} from './InventoryLineDetailsFixedItems/InventoryLineDetailsFixedItems';
-export {default as InventoryLineDetailsQuantityCard} from './InventoryLineDetailsQuantityCard/InventoryLineDetailsQuantityCard';
-export {default as InventoryPlannedDetailsHeader} from './InventoryPlannedDetailsHeader/InventoryPlannedDetailsHeader';
-export {default as InventoryStartedDetailsLocationsMoveCard} from './InventoryStartedDetailsLocationsMoveCard/InventoryStartedDetailsLocationsMoveCard';
-export {default as InventoryStartedDetailsViewAllContainer} from './InventoryStartedDetailsViewAllContainer/InventoryStartedDetailsViewAllContainer';
-export {default as InventoryStartedFixedItems} from './InventoryStartedFixedItems/InventoryStartedFixedItems';
-export {default as InventoryStartedHeader} from './InventoryStartedHeader/InventoryStartedHeader';
+export * from './inventory';
 export {default as ProductCard} from './ProductCard/ProductCard';
 export {default as ProductCardInfo} from './ProductCardInfo/ProductCardInfo';
 export {default as ProductCardStockIndicatorList} from './ProductCardStockIndicatorList/ProductCardStockIndicatorList';

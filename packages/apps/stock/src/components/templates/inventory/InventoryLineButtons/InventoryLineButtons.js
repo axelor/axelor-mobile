@@ -19,13 +19,13 @@
 import React, {useCallback} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import Inventory from '../../../types/inventory';
+import Inventory from '../../../../types/inventory';
 import {
   createNewInventoryLine,
   updateInventoryLine,
-} from '../../../features/inventoryLineSlice';
+} from '../../../../features/inventoryLineSlice';
 
-const InventoryLineDetailsFixedItems = ({
+const InventoryLineButtons = ({
   inventoryLine,
   inventory,
   trackingNumber,
@@ -36,7 +36,14 @@ const InventoryLineDetailsFixedItems = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
   const {productFromId} = useSelector(state => state.product);
+
+  const navigateBackToList = useCallback(() => {
+    navigation.navigate('InventoryLineListScreen', {
+      inventory: inventory,
+    });
+  }, [inventory, navigation]);
 
   const handleNewLine = useCallback(() => {
     dispatch(
@@ -49,13 +56,12 @@ const InventoryLineDetailsFixedItems = ({
         realQty: realQty,
       }),
     );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
+
+    navigateBackToList();
   }, [
     dispatch,
     inventory,
-    navigation,
+    navigateBackToList,
     productFromId,
     rack,
     realQty,
@@ -71,14 +77,15 @@ const InventoryLineDetailsFixedItems = ({
         description: description,
       }),
     );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [description, dispatch, inventory, inventoryLine, navigation, realQty]);
+
+    navigateBackToList();
+  }, [description, dispatch, inventoryLine, navigateBackToList, realQty]);
 
   if (inventoryLine == null) {
     return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
-  } else if (inventory?.statusSelect !== Inventory.status.Validated) {
+  }
+
+  if (inventory?.statusSelect !== Inventory.status.Validated) {
     return (
       <Button
         title={
@@ -89,9 +96,9 @@ const InventoryLineDetailsFixedItems = ({
         onPress={handleUpdateLine}
       />
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
-export default InventoryLineDetailsFixedItems;
+export default InventoryLineButtons;

@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import Inventory from '../../../types/inventory';
+import Inventory from '../../../../types/inventory';
 
 interface InventoryCardProps {
   style?: any;

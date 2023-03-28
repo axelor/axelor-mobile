@@ -28,8 +28,8 @@ import {
   DescriptionCard,
   InventoryHeader,
   ProductCardInfo,
-  InventoryLineDetailsQuantityCard,
-  InventoryLineDetailsFixedItems,
+  InventoryLineQuantityCard,
+  InventoryLineButtons,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import Inventory from '../../types/inventory';
@@ -42,16 +42,18 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     inventoryLine != null
       ? inventoryLine.trackingNumber
       : route.params.trackingNumber;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
+
   const [rack, setRack] = useState(null);
   const [realQty, setRealQty] = useState(
     inventoryLine?.realQty == null ? 0 : inventoryLine.realQty,
   );
   const [description, setDescription] = useState(inventoryLine?.description);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
@@ -71,7 +73,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <InventoryLineDetailsFixedItems
+        <InventoryLineButtons
           description={description}
           inventory={inventory}
           inventoryLine={inventoryLine}
@@ -106,7 +108,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
-        <InventoryLineDetailsQuantityCard
+        <InventoryLineQuantityCard
           inventoryLine={inventoryLine}
           realQty={realQty}
           setRealQty={setRealQty}

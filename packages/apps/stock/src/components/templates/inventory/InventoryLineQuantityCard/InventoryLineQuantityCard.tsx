@@ -19,16 +19,13 @@
 import React from 'react';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import Inventory from '../../../types/inventory';
-import {QuantityCard} from '../../organisms';
+import Inventory from '../../../../types/inventory';
+import {QuantityCard} from '../../../organisms';
 
-const InventoryLineDetailsQuantityCard = ({
-  realQty,
-  setRealQty,
-  inventoryLine,
-}) => {
+const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
   const I18n = useTranslator();
-  const {inventory} = useSelector(state => state.inventory);
+
+  const {inventory} = useSelector((state: any) => state.inventory);
 
   return (
     <QuantityCard
@@ -51,4 +48,4 @@ const InventoryLineDetailsQuantityCard = ({
   );
 };
 
-export default InventoryLineDetailsQuantityCard;
+export default InventoryLineQuantityCard;
