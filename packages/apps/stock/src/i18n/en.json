@@ -42,6 +42,7 @@
   "Stock_PhysicalQty": "Physical quantity",
   "Stock_ReceivedQty": "Received quantity",
   "Stock_AttachedFiles": "See attached files",
+  "Stock_Packing": "Packing",
   "Stock_Length": "Length",
   "Stock_Width": "Width",
   "Stock_Height": "Height",

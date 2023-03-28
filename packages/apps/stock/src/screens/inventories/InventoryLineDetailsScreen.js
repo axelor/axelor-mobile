@@ -16,26 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Button,
   EditableInput,
   HeaderContainer,
   Screen,
   ScrollView,
-  Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  QuantityCard,
   DescriptionCard,
   InventoryHeader,
   ProductCardInfo,
+  InventoryLineQuantityCard,
+  InventoryLineButtons,
 } from '../../components';
-import {
-  createNewInventoryLine,
-  updateInventoryLine,
-} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import Inventory from '../../types/inventory';
 
@@ -47,16 +42,18 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     inventoryLine != null
       ? inventoryLine.trackingNumber
       : route.params.trackingNumber;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
+
   const [rack, setRack] = useState(null);
   const [realQty, setRealQty] = useState(
     inventoryLine?.realQty == null ? 0 : inventoryLine.realQty,
   );
   const [description, setDescription] = useState(inventoryLine?.description);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
@@ -72,60 +69,19 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     });
   };
 
-  const handleNewLine = useCallback(() => {
-    dispatch(
-      createNewInventoryLine({
-        inventoryId: inventory.id,
-        inventoryVersion: inventory.version,
-        productId: productFromId?.id,
-        trackingNumberId: trackingNumber?.id,
-        rack: rack == null || rack === '' ? null : rack,
-        realQty: realQty,
-      }),
-    );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [
-    dispatch,
-    inventory,
-    navigation,
-    productFromId,
-    rack,
-    realQty,
-    trackingNumber,
-  ]);
-
-  const handleUpdateLine = useCallback(() => {
-    dispatch(
-      updateInventoryLine({
-        inventoryLineId: inventoryLine.id,
-        version: inventoryLine.version,
-        realQty: realQty,
-        description: description,
-      }),
-    );
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [description, dispatch, inventory, inventoryLine, navigation, realQty]);
-
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        inventoryLine == null ? (
-          <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />
-        ) : inventory?.statusSelect !== Inventory.status.Validated ? (
-          <Button
-            title={
-              inventory.statusSelect <= Inventory.status.InProgress
-                ? I18n.t('Base_Save')
-                : I18n.t('Base_Check')
-            }
-            onPress={handleUpdateLine}
-          />
-        ) : null
+        <InventoryLineButtons
+          description={description}
+          inventory={inventory}
+          inventoryLine={inventoryLine}
+          navigation={navigation}
+          rack={rack}
+          realQty={realQty}
+          trackingNumber={trackingNumber}
+        />
       }
       loading={loadingProductFromId}>
       <HeaderContainer
@@ -152,23 +108,11 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
         />
-        <QuantityCard
-          labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
-          defaultValue={parseFloat(realQty).toFixed(2)}
-          onValueChange={setRealQty}
-          editable={inventory.statusSelect !== Inventory.status.Validated}>
-          {inventoryLine == null ? (
-            <Text>
-              {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}
-            </Text>
-          ) : (
-            <Text>
-              {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
-                inventoryLine.currentQty,
-              ).toFixed(2)} ${inventoryLine.unit.name}`}
-            </Text>
-          )}
-        </QuantityCard>
+        <InventoryLineQuantityCard
+          inventoryLine={inventoryLine}
+          realQty={realQty}
+          setRealQty={setRealQty}
+        />
         <DescriptionCard
           onChange={input => setDescription(input)}
           description={description}

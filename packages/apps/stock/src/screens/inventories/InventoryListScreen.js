@@ -35,7 +35,7 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {InventoryCard} from '../../components/organisms';
+import {InventoryCard} from '../../components';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import {searchInventories} from '../../features/inventorySlice';
 import {displayInventorySeq} from '../../utils/displayers';

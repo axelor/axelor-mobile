@@ -18,48 +18,32 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
   StyleSheet,
-  Dimensions,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from 'react-native';
+import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
-  Button,
-  Card,
-  HeaderContainer,
-  Input,
-  Picker,
-  Screen,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  getFromList,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {QuantityCard, ProductCardInfo, StockMoveHeader} from '../../components';
+  ProductCardInfo,
+  StockMoveHeader,
+  InternalMoveLineButtons,
+  InternalMoveLineNotes,
+  InternalMoveLineQuantityCard,
+  InternalMoveLinePicker,
+} from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {
-  createInternalMove,
-  updateInternalMove,
-} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
-  const {unitList} = useSelector(state => state.unit);
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
 
@@ -174,137 +158,21 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     });
   };
 
-  const handleQtyChange = value => {
-    setMovedQty(value);
-    setSaveStatus(false);
-  };
-
-  const handleNotesChange = value => {
-    setNotes(value);
-    setSaveStatus(false);
-  };
-
-  const handleUnitChange = unitId => {
-    if (unitId === null) {
-      setUnit({name: '', id: null});
-    } else {
-      setUnit(getFromList(unitList, 'id', unitId));
-    }
-    setSaveStatus(false);
-  };
-
-  const handleRealize = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
-    navigation.popToTop();
-  };
-
-  const handleValidate = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
-    navigation.navigate('InternalMoveSelectProductScreen', {
-      fromStockLocation: originalStockLocation,
-      toStockLocation: destinationStockLocation,
-    });
-  };
-
-  const handleSave = () => {
-    dispatch(
-      updateInternalMove({
-        internalMoveId: route.params.internalMove.id,
-        version: route.params.internalMove.$version,
-        movedQty: movedQty,
-        unitId: unit.id,
-      }),
-    );
-    navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: route.params.internalMove,
-    });
-  };
-
-  const handleCreateCorrection = () => {
-    navigation.navigate('StockCorrectionDetailsScreen', {
-      stockLocation: originalStockLocation,
-      stockProduct: stockProduct,
-      trackingNumber: trackingNumber,
-      externeNavigation: true,
-    });
-  };
-
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <>
-          {!saveStatus && route.params.internalMove == null && (
-            <View style={styles.button_container}>
-              <Button
-                title={I18n.t('Base_Realize')}
-                color={Colors.secondaryColor}
-                onPress={handleRealize}
-              />
-              <Button
-                title={I18n.t('Base_RealizeContinue')}
-                onPress={handleValidate}
-              />
-            </View>
-          )}
-          {!saveStatus && route.params.internalMove != null && (
-            <View style={styles.button_container}>
-              <Button title={I18n.t('Base_Save')} onPress={handleSave} />
-            </View>
-          )}
-        </>
+        <InternalMoveLineButtons
+          destinationStockLocation={destinationStockLocation}
+          movedQty={movedQty}
+          navigation={navigation}
+          originalStockLocation={originalStockLocation}
+          internalMove={route.params.internalMove}
+          saveStatus={saveStatus}
+          stockProduct={stockProduct}
+          trackingNumber={trackingNumber}
+          unit={unit}
+        />
       }
       loading={loading || loadingProductFromId}>
       <KeyboardAvoidingView
@@ -347,65 +215,29 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               locker={null}
               onPress={handleShowProduct}
             />
-            <QuantityCard
-              labelQty={I18n.t('Stock_MovedQty')}
-              defaultValue={parseFloat(movedQty).toFixed(2)}
-              onValueChange={handleQtyChange}
-              editable={
-                status === StockMove.status.Draft ||
-                status === StockMove.status.Planned
-              }
-              actionQty={
-                status === StockMove.status.Draft ||
-                status === StockMove.status.Planned
-              }
-              onPressActionQty={handleCreateCorrection}>
-              <Text style={styles.text}>
-                {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(
-                  plannedQty,
-                ).toFixed(2)} ${stockProduct.unit?.name}`}
-              </Text>
-            </QuantityCard>
-            <Picker
-              styleTxt={unit?.id === null ? styles.picker_empty : null}
-              title={I18n.t('Stock_Unit')}
-              onValueChange={handleUnitChange}
-              defaultValue={unit?.id}
-              listItems={unitList}
-              labelField="name"
-              valueField="id"
-              disabled={
-                status === StockMove.status.Realized ||
-                status === StockMove.status.Canceled
-              }
-              disabledValue={unit?.name}
+            <InternalMoveLineQuantityCard
+              movedQty={movedQty}
+              navigation={navigation}
+              originalStockLocation={originalStockLocation}
+              plannedQty={plannedQty}
+              setMovedQty={setMovedQty}
+              setSaveStatus={setSaveStatus}
+              status={status}
+              stockProduct={stockProduct}
+              trackingNumber={trackingNumber}
             />
-            {status === StockMove.status.Draft && (
-              <View>
-                <View style={styles.reasonTitle}>
-                  <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-                </View>
-                <Card style={styles.infosCard}>
-                  <Input
-                    value={notes}
-                    onChange={handleNotesChange}
-                    multiline={true}
-                  />
-                </Card>
-              </View>
-            )}
-            {status === StockMove.status.Planned ||
-              status === StockMove.status.Realized ||
-              (status === StockMove.status.Canceled && (
-                <View>
-                  <View style={styles.reasonTitle}>
-                    <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-                  </View>
-                  <Card style={styles.infosCard}>
-                    <Text numberOfLines={3}>{notes}</Text>
-                  </Card>
-                </View>
-              ))}
+            <InternalMoveLinePicker
+              setSaveStatus={setSaveStatus}
+              setUnit={setUnit}
+              status={status}
+              unit={unit}
+            />
+            <InternalMoveLineNotes
+              notes={notes}
+              setNotes={setNotes}
+              setSaveStatus={setSaveStatus}
+              status={status}
+            />
           </ScrollView>
         )}
       </KeyboardAvoidingView>
@@ -414,36 +246,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    height: Dimensions.get('window').height * 0.75,
-  },
-  content: {
-    marginTop: '3%',
-    marginHorizontal: 32,
-    marginBottom: '3%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-  infosCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  reasonTitle: {
-    marginHorizontal: 20,
-  },
-  picker_empty: {
-    color: 'red',
-  },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  text: {
-    fontSize: 16,
-  },
   containerKeyboard: {
     flex: 1,
   },

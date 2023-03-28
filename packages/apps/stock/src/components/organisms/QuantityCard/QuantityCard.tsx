@@ -35,8 +35,8 @@ interface QuantityCardProps {
   defaultValue: number;
   onValueChange: (value: number) => void;
   editable: boolean;
-  actionQty: boolean;
-  onPressActionQty: () => void;
+  actionQty?: boolean;
+  onPressActionQty?: () => void;
 }
 
 const QuantityCard = ({
@@ -54,17 +54,24 @@ const QuantityCard = ({
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
+  const _defaultValue = useMemo(
+    () => parseFloat(defaultValue.toString()).toFixed(2),
+    [defaultValue],
+  );
+
   if (children == null || children.length === 0) {
     return (
       <Card style={[styles.noChildrenContainer, style]}>
         <Text style={styles.noChildrenTextField}>{labelQty}</Text>
         {editable ? (
           <Increment
-            value={defaultValue.toString()}
+            value={_defaultValue.toString()}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
           />
         ) : (
-          <Text style={styles.noChildrenTextValue}>{defaultValue}</Text>
+          <Text style={styles.noChildrenTextValue}>{_defaultValue}</Text>
         )}
       </Card>
     );
@@ -91,13 +98,13 @@ const QuantityCard = ({
         <Text style={styles.textField}>{labelQty}</Text>
         {editable ? (
           <Increment
-            value={defaultValue.toString()}
+            value={_defaultValue.toString()}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
           />
         ) : (
-          <Text style={styles.textValue}>{defaultValue}</Text>
+          <Text style={styles.textValue}>{_defaultValue}</Text>
         )}
       </View>
     </Card>

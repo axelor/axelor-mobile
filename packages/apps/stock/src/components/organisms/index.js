@@ -17,21 +17,7 @@
  */
 
 export {default as CardStockIndicator} from './CardStockIndicator/CardStockIndicator';
-export {default as CustomerDeliveryCard} from './CustomerDeliveryCard/CustomerDeliveryCard';
-export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
 export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
-export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
-export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
-export {default as InventoryCard} from './InventoryCard/InventoryCard';
-export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';
-export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCard';
-export {default as ProductCard} from './ProductCard/ProductCard';
-export {default as ProductCardInfo} from './ProductCardInfo/ProductCardInfo';
-export {default as ProductCharacteristics} from './ProductCharacteristics/ProductCharacteristics';
-export {default as ProductStockLocationCard} from './ProductStockLocationCard/ProductStockLocationCard';
-export {default as ProductVariantCard} from './ProductVariantCard/ProductVariantCard';
 export {default as QuantityCard} from './QuantityCard/QuantityCard';
 export {default as SmallPropertyCard} from './SmallPropertyCard/SmallPropertyCard';
 export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
-export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArrivalCard';
-export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';

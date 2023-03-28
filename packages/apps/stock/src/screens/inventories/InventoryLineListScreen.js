@@ -161,13 +161,6 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
   },
-  moveCard: {
-    marginVertical: 10,
-  },
-  detailsCard: {
-    marginHorizontal: 16,
-    marginBottom: 5,
-  },
 });
 
 export default InventoryLineListScreen;

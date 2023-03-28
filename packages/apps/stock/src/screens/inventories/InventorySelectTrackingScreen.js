@@ -31,7 +31,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader} from '../../components/organisms';
+import {InventoryHeader} from '../../components';
 import {filterTrackingNumber} from '../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';
 import Inventory from '../../types/inventory';
