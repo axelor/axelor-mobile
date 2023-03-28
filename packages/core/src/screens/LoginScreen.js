@@ -47,8 +47,8 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
-import {storage} from '../storage/Storage';
 import useTranslator from '../i18n/hooks/use-translator';
+import {sessionStorage} from '../utils/session';
 
 const urlScanKey = 'login_url';
 
@@ -66,9 +66,7 @@ const LoginScreen = ({route}) => {
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
 
-  const session = enableConnectionSessions
-    ? storage.getItem('ConnectionSession')
-    : null;
+  const session = enableConnectionSessions ? sessionStorage.getItem() : null;
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -137,12 +135,15 @@ const LoginScreen = ({route}) => {
     dispatch(login({url, username, password}));
     savesSession &&
       enableConnectionSessions &&
-      storage.setItem('ConnectionSession', {
-        id: 1,
-        url: url,
-        username: username,
-        name: sessionName,
+      sessionStorage.insert({
+        data: {
+          id: 1,
+          url: url,
+          username: username,
+          name: sessionName,
+        },
       });
+    sessionStorage.recrypt({modelName: 'my-encryption-key!'});
   };
 
   return (
