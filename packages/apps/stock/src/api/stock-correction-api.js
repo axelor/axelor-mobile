@@ -54,6 +54,7 @@ export async function updateStockCorrection({
   version,
   realQty,
   status,
+  reasonId,
 }) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-correction/${stockCorrectionId}`,
@@ -61,6 +62,7 @@ export async function updateStockCorrection({
       version: version,
       realQty: realQty,
       status: status,
+      reasonId: reasonId,
     },
   });
 }
