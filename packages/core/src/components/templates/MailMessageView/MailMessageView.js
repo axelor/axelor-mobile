@@ -30,11 +30,10 @@ import {
   ScrollList,
   Screen,
   MessageBox,
-  Icon,
   PopUpTwoButton,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {MailMessageCard, MailMessageReadIcon} from '../../../components';
+import {MailMessageCard} from '../../../components';
 import {
   getMailMessages,
   getModelSubscribers,
@@ -43,6 +42,8 @@ import {
   sendMailMessageComment,
 } from '../../../features/mailMessageSlice';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {headerActionsProvider} from '../../../header';
+import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
@@ -50,6 +51,8 @@ const MailMessageView = ({model, modelId, navigation}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
+
+  const handleMarkAll = useMarkAllMailMessages({model, modelId});
 
   const [comment, setComment] = useState();
   const [subscribe, setSubscribe] = useState(false);
@@ -114,42 +117,40 @@ const MailMessageView = ({model, modelId, navigation}) => {
     setComment('');
   }, [dispatch, model, modelId, comment]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <View style={styles.headerOptionsContainer}>
-          <MailMessageReadIcon
-            allMessagesRead={unreadMessages === 0}
-            model={model}
-            modelId={modelId}
-          />
-          <Icon
-            name={subscribe ? 'star' : 'star-o'}
-            color={
-              subscribe
-                ? Colors.primaryColor.background
-                : Colors.secondaryColor_dark.background
-            }
-            size={22}
-            style={styles.action}
-            FontAwesome5={false}
-            touchable={true}
-            onPress={subscribe ? () => setPopUp(true) : handleSubscribe}
-          />
-        </View>
-      ),
+  useEffect(() => {
+    headerActionsProvider.registerModel('core_mailMessage_details', {
+      actions: [
+        {
+          key: 'readMessages',
+          order: 10,
+          showInHeader: true,
+          iconName: 'check-double',
+          iconColor:
+            unreadMessages === 0
+              ? Colors.primaryColor.background
+              : Colors.secondaryColor.background,
+          title: I18n.t('Base_MailMessages_MarkAllAsRead'),
+          onPress: handleMarkAll,
+        },
+        {
+          key: 'subscribe',
+          order: 20,
+          showInHeader: true,
+          iconName: subscribe ? 'star' : 'star-o',
+          iconColor: subscribe
+            ? Colors.primaryColor.background
+            : Colors.secondaryColor_dark.background,
+          FontAwesome5: false,
+          title: I18n.t(
+            subscribe
+              ? 'Base_MailMessages_Unsubscribe'
+              : 'Base_MailMessages_Subscribe',
+          ),
+          onPress: subscribe ? () => setPopUp(true) : handleSubscribe,
+        },
+      ],
     });
-  }, [
-    navigation,
-    Colors,
-    subscribe,
-    unreadMessages,
-    handleSubscribe,
-    handleUnsubscribe,
-    mailMessagesList,
-    model,
-    modelId,
-  ]);
+  }, [Colors, subscribe, unreadMessages, handleSubscribe, I18n, handleMarkAll]);
 
   useEffect(() => {
     fetchModelFollowersAPI();
@@ -240,11 +241,11 @@ const styles = StyleSheet.create({
   },
   headerOptionsContainer: {
     flexDirection: 'row',
-    width: '50%',
     margin: 15,
   },
   action: {
     flex: 1,
+    marginHorizontal: 5,
   },
   scrollListContainer: {
     flex: 1,

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
@@ -24,6 +24,7 @@ import {default as CoreNavigator} from '../navigator/Navigator';
 import {useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getNetInfo} from '../api/net-info-utils';
 import useTranslator from '../i18n/hooks/use-translator';
+import {useHeaderRegisters} from '../hooks/use-header-registers';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -43,6 +44,14 @@ const RootNavigator = ({
     setHeaderIndicatorState,
   } = useConfig();
   const {logged} = useSelector(state => state.auth);
+
+  const modulesHeaderRegisters = useMemo(() => {
+    return modules
+      .filter(_module => _module.models?.headerRegisters)
+      .map(_module => _module.models.headerRegisters);
+  }, [modules]);
+
+  useHeaderRegisters(modulesHeaderRegisters);
 
   const AppNavigator = useCallback(
     () => (

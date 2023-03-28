@@ -23,7 +23,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
@@ -37,13 +37,12 @@ import {
 } from './module.helper';
 import {getMenuTitle} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
-import DrawerToggleButton from './drawer/DrawerToggleButton';
-import BackIcon from './drawer/BackIcon';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMenuConfig} from '../features/menuConfigSlice';
 import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import AttachedFilesScreen from '../screens/AttachedFilesScreen';
 import MailMessageScreen from '../screens/MailMessageScreen';
+import Header from './drawer/Header';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -84,8 +83,6 @@ const Navigator = ({
     dispatch(fetchMenuConfig());
   }, [dispatch]);
 
-  const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
-
   const changeActiveModule = useCallback(
     moduleName => {
       setActiveModule(
@@ -115,6 +112,7 @@ const Navigator = ({
         MailMessageScreen: {
           title: 'Base_MailMessages',
           component: MailMessageScreen,
+          actionID: 'core_mailMessage_details',
           options: {
             shadedHeader: false,
           },
@@ -127,41 +125,35 @@ const Navigator = ({
     ({initialRouteName, ...rest}) => (
       <Stack.Navigator {...rest} initialRouteName={initialRouteName}>
         {Object.entries(modulesScreens).map(
-          ([key, {component, title, options = {shadedHeader: true}}]) => {
-            const screenOptions = {
-              headerTintColor: Colors.primaryColor.background,
-              headerStyle: options?.shadedHeader
-                ? styles.headerColor
-                : styles.listScreenHeaderStyle,
-              headerTitle: I18n.t(title),
-              headerTitleStyle: styles.headerTitle,
-            };
-
-            if (initialRouteName === key) {
-              screenOptions.headerLeft = () => (
-                <DrawerToggleButton
-                  tintColor={Colors.primaryColor.background}
-                />
-              );
-            } else {
-              screenOptions.headerLeft = () => (
-                <BackIcon tintColor={Colors.primaryColor.background} />
-              );
-            }
-
+          ([
+            key,
+            {component, title, actionID, options = {shadedHeader: true}},
+          ]) => {
             return (
               <Stack.Screen
                 key={key}
                 name={key}
                 component={component}
-                options={screenOptions}
+                options={{
+                  headerLeft: () => null,
+                  headerRight: () => null,
+                  headerTitleStyle: {width: '100%'},
+                  headerTitle: () => (
+                    <Header
+                      mainScreen={initialRouteName === key}
+                      title={title}
+                      actionID={actionID}
+                      shadedHeader={options?.shadedHeader}
+                    />
+                  ),
+                }}
               />
             );
           },
         )}
       </Stack.Navigator>
     ),
-    [Colors, I18n, modulesScreens, styles],
+    [modulesScreens],
   );
 
   const windowWidth = Dimensions.get('window').width;
@@ -207,21 +199,5 @@ const Navigator = ({
     </ModuleNavigatorContext.Provider>
   );
 };
-
-const getHeaderStyles = Colors =>
-  StyleSheet.create({
-    headerTitle: {
-      color: Colors.text,
-      marginLeft: -14,
-    },
-    headerColor: {
-      backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-    },
-    listScreenHeaderStyle: {
-      backgroundColor: Colors.backgroundColor,
-      elevation: 0,
-    },
-  });
 
 export default Navigator;

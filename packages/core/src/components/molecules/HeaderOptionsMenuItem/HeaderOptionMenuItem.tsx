@@ -22,6 +22,7 @@ import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface HeaderOptionMenuItemProps {
   icon: string;
+  color?: string;
   FontAwesome5?: boolean;
   indicator?: number;
   hideIf: boolean;
@@ -32,6 +33,7 @@ const BADGE_SIZE = 16;
 
 const HeaderOptionMenuItem = ({
   icon,
+  color,
   indicator = 0,
   FontAwesome5 = true,
   hideIf = false,
@@ -48,7 +50,12 @@ const HeaderOptionMenuItem = ({
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.7}>
-      <Icon name={icon} FontAwesome5={FontAwesome5} size={22} />
+      <Icon
+        name={icon}
+        color={color || Colors.secondaryColor_dark.background}
+        FontAwesome5={FontAwesome5}
+        size={22}
+      />
       {indicator > 0 && (
         <Badge
           style={styles.badge}

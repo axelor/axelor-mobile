@@ -35,6 +35,7 @@ interface ScreenOptions {
 export interface Screen {
   component: React.FC<any>;
   title: string;
+  actionID?: string;
   options?: ScreenOptions;
 }
 
@@ -54,6 +55,7 @@ export interface Models {
   objectFields?: ObjectFields;
   sortFields?: SortFields;
   searchFields?: SearchFields;
+  headerRegisters?: Function;
 }
 
 export interface Module {

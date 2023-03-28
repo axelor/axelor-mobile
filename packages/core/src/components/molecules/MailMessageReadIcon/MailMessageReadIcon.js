@@ -25,6 +25,19 @@ import {
   markMailMessageAsRead,
 } from '../../../features/mailMessageSlice';
 
+export const useMarkAllMailMessages = ({model, modelId}) => {
+  const dispatch = useDispatch();
+
+  return useCallback(() => {
+    dispatch(
+      markAllMailMessageAsRead({
+        modelId,
+        model,
+      }),
+    );
+  }, [dispatch, model, modelId]);
+};
+
 const MailMessageReadIcon = ({
   allMessagesRead = false,
   mailMessageFlag,
@@ -37,6 +50,8 @@ const MailMessageReadIcon = ({
   const isRead =
     mailMessageFlag != null ? mailMessageFlag?.isRead : allMessagesRead;
 
+  const handleMarkAll = useMarkAllMailMessages({model, modelId});
+
   const handleMarkAsRead = useCallback(() => {
     dispatch(
       markMailMessageAsRead({
@@ -46,15 +61,6 @@ const MailMessageReadIcon = ({
       }),
     );
   }, [dispatch, mailMessageFlag, model, modelId]);
-
-  const handleMarkAll = useCallback(() => {
-    dispatch(
-      markAllMailMessageAsRead({
-        modelId,
-        model,
-      }),
-    );
-  }, [dispatch, model, modelId]);
 
   return (
     <Icon
