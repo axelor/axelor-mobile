@@ -18,13 +18,15 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import {InventoryHeader} from '../../../templates';
-import Inventory from '../../../../types/inventory';
+import {InventoryHeader} from '..';
+import {Inventory} from '../../../../types';
 
-const InventoryStartedHeader = ({inventory}) => {
+const InventoryDetailsHeader = ({}) => {
   const I18n = useTranslator();
+
+  const {inventory} = useSelector((state: any) => state.inventory);
 
   return (
     <View>
@@ -56,8 +58,8 @@ const InventoryStartedHeader = ({inventory}) => {
 
 const styles = StyleSheet.create({
   marginHorizontal: {
-    marginHorizontal: 16,
+    marginHorizontal: 24,
   },
 });
 
-export default InventoryStartedHeader;
+export default InventoryDetailsHeader;

@@ -28,7 +28,7 @@ import {
   InventoryLocationsMoveCard,
   InventoryViewAllContainer,
   InventoryButtons,
-  InventoryStartedHeader,
+  InventoryDetailsHeader,
 } from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {fetchInventoryById} from '../../features/inventorySlice';
@@ -66,7 +66,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
       loading={loadingInventoryLines || loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<InventoryStartedHeader inventory={inventory} />}
+        fixedItems={<InventoryDetailsHeader />}
       />
       <ScrollView>
         <InventoryLocationsMoveCard />

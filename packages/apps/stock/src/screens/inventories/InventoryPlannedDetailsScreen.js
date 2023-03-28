@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   InventoryLocationsMoveCard,
-  InventoryPlannedDetailsHeader,
+  InventoryDetailsHeader,
   InventoryButtons,
   InventoryDescription,
 } from '../../components';
@@ -62,7 +62,7 @@ const InventoryPlannedDetailsScreen = ({route, navigation}) => {
       loading={loading || inventory == null}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<InventoryPlannedDetailsHeader />}
+        fixedItems={<InventoryDetailsHeader />}
       />
       <ScrollView>
         <InventoryLocationsMoveCard />
