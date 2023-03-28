@@ -21,7 +21,7 @@ import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   StockMoveHeader,
-  SupplierArrivalAddTracking,
+  SupplierArrivalTrackingNumberSelect,
   SupplierArrivalProductName,
 } from '../../components';
 import StockMove from '../../types/stock-move';
@@ -53,7 +53,7 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
         }
       />
       <SupplierArrivalProductName product={product} />
-      <SupplierArrivalAddTracking
+      <SupplierArrivalTrackingNumberSelect
         navigation={navigation}
         product={product}
         setVisible={setVisible}

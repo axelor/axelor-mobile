@@ -19,10 +19,10 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {LabelText} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../types/stock-move';
-import {StockMoveHeader} from '../../organisms';
+import StockMove from '../../../../types/stock-move';
+import {StockMoveHeader} from '../../../organisms';
 
-const SupplierArrivalDetailsHeader = ({supplierArrival}) => {
+const SupplierArrivalHeader = ({supplierArrival}) => {
   return (
     <View>
       <StockMoveHeader
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SupplierArrivalDetailsHeader;
+export default SupplierArrivalHeader;

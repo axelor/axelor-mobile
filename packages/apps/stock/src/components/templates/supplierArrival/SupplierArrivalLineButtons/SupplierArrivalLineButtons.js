@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../types/stock-move';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {addNewLine} from '../../../features/supplierArrivalSlice';
-import {updateSupplierArrivalLine} from '../../../features/supplierArrivalLineSlice';
+import StockMove from '../../../../types/stock-move';
+import {addNewLine} from '../../../../features/supplierArrivalSlice';
+import {updateSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
 
-const SupplierArrivalLineDetailFixedItems = ({
+const SupplierArrivalLineButtons = ({
   supplierArrival,
   supplierArrivalLine,
   realQty,
@@ -33,9 +33,16 @@ const SupplierArrivalLineDetailFixedItems = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
   const {productFromId: product} = useSelector(state => state.product);
 
-  const handleValidate = () => {
+  const navigateBackToDetails = useCallback(() => {
+    navigation.navigate('SupplierArrivalDetailsScreen', {
+      supplierArrival: supplierArrival,
+    });
+  }, [supplierArrival, navigation]);
+
+  const handleValidate = useCallback(() => {
     dispatch(
       updateSupplierArrivalLine({
         stockMoveLineId: supplierArrivalLine.id,
@@ -45,12 +52,16 @@ const SupplierArrivalLineDetailFixedItems = ({
       }),
     );
 
-    navigation.navigate('SupplierArrivalLineListScreen', {
-      supplierArrival: supplierArrival,
-    });
-  };
+    navigateBackToDetails();
+  }, [
+    conformity,
+    dispatch,
+    navigateBackToDetails,
+    realQty,
+    supplierArrivalLine,
+  ]);
 
-  const handleAddLine = () => {
+  const handleAddLine = useCallback(() => {
     dispatch(
       addNewLine({
         stockMoveId: supplierArrival.id,
@@ -62,25 +73,31 @@ const SupplierArrivalLineDetailFixedItems = ({
         conformity: conformity.id,
       }),
     );
-    navigation.pop();
-    if (product.trackingNumberConfiguration != null) {
-      navigation.pop();
-    }
-    navigation.pop();
-  };
-  if (
-    supplierArrivalLine != null &&
-    supplierArrival.statusSelect !== StockMove.status.Realized
-  ) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
-  } else if (
-    supplierArrivalLine == null &&
-    supplierArrival.statusSelect !== StockMove.status.Realized
-  ) {
-    return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
-  } else {
-    return null;
+
+    navigateBackToDetails();
+  }, [
+    conformity,
+    dispatch,
+    navigateBackToDetails,
+    product,
+    realQty,
+    supplierArrival,
+    trackingNumber,
+  ]);
+
+  const buttonProps = useMemo(
+    () =>
+      supplierArrival != null
+        ? {action: handleValidate, title: I18n.t('Base_Validate')}
+        : {action: handleAddLine, title: I18n.t('Base_Add')},
+    [I18n, supplierArrival, handleAddLine, handleValidate],
+  );
+
+  if (supplierArrival.statusSelect !== StockMove.status.Realized) {
+    return <Button title={buttonProps.title} onPress={buttonProps.action} />;
   }
+
+  return null;
 };
 
-export default SupplierArrivalLineDetailFixedItems;
+export default SupplierArrivalLineButtons;

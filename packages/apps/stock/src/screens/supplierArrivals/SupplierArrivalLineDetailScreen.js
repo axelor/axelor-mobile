@@ -27,8 +27,8 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   StockMoveHeader,
   ProductCardInfo,
-  SupplierArrivalLineDetailFixedItems,
-  SupplierArrivalLineDetailQuantityCard,
+  SupplierArrivalLineButtons,
+  SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -104,7 +104,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <SupplierArrivalLineDetailFixedItems
+        <SupplierArrivalLineButtons
           conformity={conformity}
           navigation={navigation}
           realQty={realQty}
@@ -140,7 +140,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
         />
         <SupplierProductInfo />
-        <SupplierArrivalLineDetailQuantityCard
+        <SupplierArrivalLineQuantityCard
           realQty={realQty}
           setRealQty={setRealQty}
           supplierArrival={supplierArrival}

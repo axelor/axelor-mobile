@@ -26,8 +26,8 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const CustomerDeliveryDetailMovementIndicationCard = ({
-  customerDelivery,
+const SupplierArrivalMovementIndicationCard = ({
+  supplierArrival,
   showPopupOnCLick = true,
 }) => {
   const Colors = useThemeColor();
@@ -35,34 +35,33 @@ const CustomerDeliveryDetailMovementIndicationCard = ({
 
   const [isPopupVisible, setVisiblePopup] = useState(false);
 
+  if (supplierArrival == null) {
+    return;
+  }
+
   return (
     <View>
       {showPopupOnCLick && (
         <PopUpOneButton
-          title={I18n.t('Stock_DestinationAdress')}
-          data={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
+          title={I18n.t('Stock_OriginalAdress')}
           visible={isPopupVisible}
+          data={supplierArrival.fromAddress?.fullName}
           btnTitle={I18n.t('Base_OK')}
           onPress={() => setVisiblePopup(false)}
         />
       )}
       <MovementIndicationCard
-        titleTop={customerDelivery.fromStockLocation?.name}
-        iconTop={
+        titleTop={supplierArrival.fromAddress?.fullName}
+        iconTop={<Icon name="map-marker-alt" />}
+        titleDown={supplierArrival.toStockLocation?.name}
+        iconDown={
           <Icon name="warehouse" color={Colors.primaryColor.background} />
         }
-        titleDown={
-          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
-        }
-        iconDown={<Icon name="map-marker-alt" />}
-        disabledDown={!showPopupOnCLick}
-        onPressTitleDown={() => setVisiblePopup(true)}
+        disabledTop={!showPopupOnCLick}
+        onPressTitleTop={() => setVisiblePopup(true)}
       />
     </View>
   );
 };
 
-export default CustomerDeliveryDetailMovementIndicationCard;
+export default SupplierArrivalMovementIndicationCard;

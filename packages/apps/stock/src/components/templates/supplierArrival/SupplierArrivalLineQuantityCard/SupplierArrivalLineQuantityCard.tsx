@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import StockMove from '../../../types/stock-move';
+import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {QuantityCard} from '../../organisms';
+import StockMove from '../../../../types/stock-move';
+import {QuantityCard} from '../../../organisms';
 
-const SupplierArrivalLineDetailQuantityCard = ({
+const SupplierArrivalLineQuantityCard = ({
   supplierArrival,
   supplierArrivalLine,
   realQty,
@@ -31,44 +31,42 @@ const SupplierArrivalLineDetailQuantityCard = ({
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const {productFromId: product} = useSelector(state => state.product);
+
+  const {productFromId: product} = useSelector((state: any) => state.product);
 
   const handleQtyChange = value => {
     setRealQty(value);
   };
 
+  const indicatorBadge = useMemo(
+    () =>
+      Number(supplierArrivalLine.qty) !== Number(supplierArrivalLine.realQty)
+        ? {title: I18n.t('Stock_Status_Incomplete'), color: Colors.cautionColor}
+        : {title: I18n.t('Stock_Status_Complete'), color: Colors.primaryColor},
+    [Colors, I18n, supplierArrivalLine],
+  );
+
+  const askedQty = useMemo(
+    () =>
+      supplierArrivalLine != null
+        ? `${parseFloat(supplierArrivalLine.qty).toFixed(2)} ${
+            supplierArrivalLine.unit?.name
+          }`
+        : `${parseFloat('0').toFixed(2)} ${product?.unit?.name}`,
+    [supplierArrivalLine, product?.unit?.name],
+  );
+
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_ReceivedQty')}
-      defaultValue={parseFloat(realQty).toFixed(2)}
+      defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={supplierArrival.statusSelect !== StockMove.status.Realized}>
       <View style={styles.headerQuantityCard}>
-        <Text style={styles.text}>
-          {`${I18n.t('Stock_AskedQty')} : ${parseFloat(
-            supplierArrivalLine != null ? supplierArrivalLine.qty : 0,
-          ).toFixed(2)} ${
-            supplierArrivalLine != null
-              ? supplierArrivalLine?.unit?.name
-              : product?.unit?.name
-          }`}
-        </Text>
+        <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>
         {supplierArrivalLine != null && (
           <View>
-            {parseFloat(supplierArrivalLine.qty) !==
-              parseFloat(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Incomplete')}
-                color={Colors.cautionColor}
-              />
-            )}
-            {parseFloat(supplierArrivalLine.qty) ===
-              parseFloat(supplierArrivalLine.realQty) && (
-              <Badge
-                title={I18n.t('Stock_Status_Complete')}
-                color={Colors.primaryColor}
-              />
-            )}
+            <Badge title={indicatorBadge.title} color={indicatorBadge.color} />
           </View>
         )}
       </View>
@@ -83,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SupplierArrivalLineDetailQuantityCard;
+export default SupplierArrivalLineQuantityCard;

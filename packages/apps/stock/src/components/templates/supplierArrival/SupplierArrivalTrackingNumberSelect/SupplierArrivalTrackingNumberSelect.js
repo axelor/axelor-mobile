@@ -25,12 +25,12 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
-import {filterTrackingNumber} from '../../../features/trackingNumberSlice';
-import {displayItemTrackingNumber} from '../../../utils/displayers';
+import {filterTrackingNumber} from '../../../../features/trackingNumberSlice';
+import {displayItemTrackingNumber} from '../../../../utils/displayers';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
-const SupplierArrivalAddTracking = ({
+const SupplierArrivalTrackingNumberSelect = ({
   product,
   supplierArrivalLine,
   supplierArrival,
@@ -40,6 +40,7 @@ const SupplierArrivalAddTracking = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
 
   const handleAddTrackingNumber = () => {
@@ -122,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SupplierArrivalAddTracking;
+export default SupplierArrivalTrackingNumberSelect;

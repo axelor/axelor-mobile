@@ -40,13 +40,15 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
   const supplierArrival = route.params.supplierArrival;
   const supplierArrivalLine = route.params.supplierArrivalLine;
   const product = route.params.product;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const [sequence, setSequence] = useState(null);
   const [trackingQty, setTrackingQty] = useState(0);
+
   const {loading, createdTrackingNumber} = useSelector(
     state => state.trackingNumber,
   );
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const handleCreateTrackingNumber = useCallback(() => {
     dispatch(
