@@ -39,6 +39,7 @@ interface appConfig {
   releaseInstanceConfig: releaseConfig;
   defaultLanguage: string;
   defaultRequestLimit: number;
+  enableConnectionSessions: boolean;
 }
 
 interface ApplicationProps {
@@ -86,6 +87,7 @@ const Application = ({
         configuration={{
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
+          enableConnectionSessions: configuration?.enableConnectionSessions,
         }}
       />
     </ContextsProvider>

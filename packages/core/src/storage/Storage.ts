@@ -25,6 +25,7 @@ interface InternalStorage {
   clearAll(): void;
   getAllKeys(): string[];
   delete(key: string): void;
+  recrypt(key: string | undefined): void;
 }
 
 export class Storage {
@@ -62,6 +63,10 @@ export class Storage {
 
   deleteItem(key: string) {
     this.storage.delete(key);
+  }
+
+  recrypt(key: string | undefined) {
+    this.storage.recrypt(key);
   }
 }
 
