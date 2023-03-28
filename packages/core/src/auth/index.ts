@@ -22,6 +22,7 @@ import frTranslations from './i18n/fr.json';
 import * as authReducers from './features';
 import {SettingsScreen, UserScreen} from './screens';
 import {auth_modelAPI} from './models';
+import {useAuthHeaders} from './hooks/use-auth-headers';
 
 export const authModule: Module = {
   name: 'Auth',
@@ -39,6 +40,7 @@ export const authModule: Module = {
     UserScreen: {
       title: 'User_UserProfile',
       component: UserScreen,
+      actionID: 'auth_user_profile',
     },
     SettingsScreen: {
       title: 'User_Settings',
@@ -54,6 +56,7 @@ export const authModule: Module = {
   },
   models: {
     objectFields: {...auth_modelAPI},
+    headerRegisters: useAuthHeaders,
   },
 };
 
