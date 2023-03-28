@@ -35,7 +35,8 @@ export const app_config = {
   defaultRequestLimit: 10,
 
   /*
-   * This setting is used to define the default mode of session connection
+   * This configuration allows you to activate or not the connection sessions.
+   * If enabled, the user will be able to save sessions on their device for later use.
    */
   enableConnectionSessions: true,
 };

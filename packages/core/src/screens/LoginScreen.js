@@ -66,7 +66,7 @@ const LoginScreen = ({route}) => {
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
 
-  const session = enableConnectionSessions ? sessionStorage.getItem() : null;
+  const session = enableConnectionSessions ? sessionStorage.getSession() : null;
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -135,7 +135,7 @@ const LoginScreen = ({route}) => {
     dispatch(login({url, username, password}));
     savesSession &&
       enableConnectionSessions &&
-      sessionStorage.insert({
+      sessionStorage.addSession({
         data: {
           id: 1,
           url: url,
@@ -143,7 +143,6 @@ const LoginScreen = ({route}) => {
           name: sessionName,
         },
       });
-    sessionStorage.recrypt({modelName: 'my-encryption-key!'});
   };
 
   return (

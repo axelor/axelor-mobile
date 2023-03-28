@@ -1,5 +1,12 @@
 import {storage, Storage} from '../storage/Storage';
 
+interface Session {
+  id: number;
+  url: string;
+  username: string;
+  name: string;
+}
+
 class SessionStorage {
   private key: string;
 
@@ -8,10 +15,10 @@ class SessionStorage {
     this.recrypt();
   }
 
-  insert({data}: {data: any}) {
+  addSession({data}: {data: Session}) {
     this.localStorage.setItem(this.key, data);
   }
-  getItem() {
+  getSession() {
     const item = this.localStorage.getItem(this.key);
     return item;
   }
