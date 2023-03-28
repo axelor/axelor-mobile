@@ -20,10 +20,10 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {QuantityCard} from '../../organisms';
-import StockMove from '../../../types/stock-move';
+import {QuantityCard} from '../../../organisms';
+import StockMove from '../../../../types/stock-move';
 
-const InternalMoveLineDetailsQuantityCard = ({
+const InternalMoveLineQuantityCard = ({
   status,
   movedQty,
   plannedQty,
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveLineDetailsQuantityCard;
+export default InternalMoveLineQuantityCard;

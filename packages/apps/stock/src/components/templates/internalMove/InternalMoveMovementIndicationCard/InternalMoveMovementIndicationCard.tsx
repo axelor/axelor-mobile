@@ -23,7 +23,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-const InternalMoveDetailsGeneralMovementIndicationCard = ({internalMove}) => {
+const InternalMoveMovementIndicationCard = ({internalMove}) => {
   const Colors = useThemeColor();
 
   return (
@@ -38,4 +38,4 @@ const InternalMoveDetailsGeneralMovementIndicationCard = ({internalMove}) => {
   );
 };
 
-export default InternalMoveDetailsGeneralMovementIndicationCard;
+export default InternalMoveMovementIndicationCard;

@@ -29,10 +29,10 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   StockMoveHeader,
-  InternalMoveLineDetailsFixedItems,
+  InternalMoveLineButtons,
   InternalMoveLineNotes,
-  InternalMoveLineDetailsQuantityCard,
-  InternalMoveLineDetailsPicker,
+  InternalMoveLineQuantityCard,
+  InternalMoveLinePicker,
 } from '../../components';
 import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -162,12 +162,12 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <InternalMoveLineDetailsFixedItems
+        <InternalMoveLineButtons
           destinationStockLocation={destinationStockLocation}
           movedQty={movedQty}
           navigation={navigation}
           originalStockLocation={originalStockLocation}
-          route={route}
+          internalMove={route.params.internalMove}
           saveStatus={saveStatus}
           stockProduct={stockProduct}
           trackingNumber={trackingNumber}
@@ -215,7 +215,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               locker={null}
               onPress={handleShowProduct}
             />
-            <InternalMoveLineDetailsQuantityCard
+            <InternalMoveLineQuantityCard
               movedQty={movedQty}
               navigation={navigation}
               originalStockLocation={originalStockLocation}
@@ -226,7 +226,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
               stockProduct={stockProduct}
               trackingNumber={trackingNumber}
             />
-            <InternalMoveLineDetailsPicker
+            <InternalMoveLinePicker
               setSaveStatus={setSaveStatus}
               setUnit={setUnit}
               status={status}

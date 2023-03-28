@@ -30,9 +30,9 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  InternalMoveDetailsGeneralMovementIndicationCard,
-  InternalMoveDetailsGeneralViewAllContainer,
-  InternalMoveGeneralFixedItems,
+  InternalMoveMovementIndicationCard,
+  InternalMoveViewAllContainer,
+  InternalMoveRealizeButton,
   StockMoveHeader,
 } from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
@@ -41,12 +41,13 @@ import StockMove from '../../types/stock-move';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector(state => state.config);
   const {loadingIMLines, internalMoveLineList} = useSelector(
     state => state.internalMoveLine,
   );
-  const {mobileSettings} = useSelector(state => state.config);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (internalMove != null) {
@@ -83,7 +84,10 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
       removeSpaceOnTop={true}
       loading={loadingIMLines}
       fixedItems={
-        <InternalMoveGeneralFixedItems internalMove={internalMove} />
+        <InternalMoveRealizeButton
+          internalMove={internalMove}
+          navigation={navigation}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}
@@ -103,10 +107,8 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
         }
       />
       <ScrollView>
-        <InternalMoveDetailsGeneralMovementIndicationCard
-          internalMove={internalMove}
-        />
-        <InternalMoveDetailsGeneralViewAllContainer
+        <InternalMoveMovementIndicationCard internalMove={internalMove} />
+        <InternalMoveViewAllContainer
           internalMove={internalMove}
           navigation={navigation}
         />

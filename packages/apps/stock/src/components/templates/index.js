@@ -17,15 +17,7 @@
  */
 
 export * from './customerDelivery';
-export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
-export {default as InternalMoveDetailsGeneralMovementIndicationCard} from './InternalMoveDetailsGeneralMovementIndicationCard/InternalMoveDetailsGeneralMovementIndicationCard';
-export {default as InternalMoveDetailsGeneralViewAllContainer} from './InternalMoveDetailsGeneralViewAllContainer/InternalMoveDetailsGeneralViewAllContainer';
-export {default as InternalMoveGeneralFixedItems} from './InternalMoveGeneralFixedItems/InternalMoveGeneralFixedItems';
-export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
-export {default as InternalMoveLineDetailsFixedItems} from './InternalMoveLineDetailsFixedItems/InternalMoveLineDetailsFixedItems';
-export {default as InternalMoveLineDetailsQuantityCard} from './InternalMoveLineDetailsQuantityCard/InternalMoveLineDetailsQuantityCard';
-export {default as InternalMoveLineDetailsPicker} from './InternalMoveLineDetailsPicker/InternalMoveLineDetailsPicker';
-export {default as InternalMoveLineNotes} from './InternalMoveLineNotes/InternalMoveLineNotes';
+export * from './internalMove';
 export {default as InventoryCard} from './InventoryCard/InventoryCard';
 export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';
 export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCard';

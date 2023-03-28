@@ -20,14 +20,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
-import StockMove from '../../../types/stock-move';
+import StockMove from '../../../../types/stock-move';
 
-const InternalMoveLineDetailsPicker = ({
-  unit,
-  status,
-  setUnit,
-  setSaveStatus,
-}) => {
+const InternalMoveLinePicker = ({unit, status, setUnit, setSaveStatus}) => {
   const I18n = useTranslator();
   const {unitList} = useSelector(state => state.unit);
 
@@ -64,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveLineDetailsPicker;
+export default InternalMoveLinePicker;

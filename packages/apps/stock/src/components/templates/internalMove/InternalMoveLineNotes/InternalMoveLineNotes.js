@@ -19,7 +19,7 @@
 import React from 'react';
 import {Text, Card, Input} from '@axelor/aos-mobile-ui';
 import {View, StyleSheet} from 'react-native';
-import StockMove from '../../../types/stock-move';
+import StockMove from '../../../../types/stock-move';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
@@ -33,40 +33,42 @@ const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
   if (status === StockMove.status.Draft) {
     return (
       <View>
-        <View style={styles.reasonTitle}>
+        <View style={styles.title}>
           <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
         </View>
-        <Card style={styles.infosCard}>
+        <Card style={styles.notesCard}>
           <Input value={notes} onChange={handleNotesChange} multiline={true} />
         </Card>
       </View>
     );
-  } else if (
+  }
+
+  if (
     status === StockMove.status.Planned ||
     status === StockMove.status.Realized ||
     status === StockMove.status.Canceled
   ) {
     return (
       <View>
-        <View style={styles.reasonTitle}>
+        <View style={styles.title}>
           <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
         </View>
-        <Card style={styles.infosCard}>
+        <Card style={styles.notesCard}>
           <Text numberOfLines={3}>{notes}</Text>
         </Card>
       </View>
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 const styles = StyleSheet.create({
-  infosCard: {
+  notesCard: {
     marginHorizontal: 12,
     marginBottom: '2%',
   },
-  reasonTitle: {
+  title: {
     marginHorizontal: 20,
   },
 });

@@ -20,13 +20,10 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
-import {showLine} from '../../../utils/line-navigation';
-import InternalMoveLineCard from '../InternalMoveLineCard/InternalMoveLineCard';
+import {showLine} from '../../../../utils/line-navigation';
+import {InternalMoveLineCard} from '../../internalMove';
 
-const InternalMoveDetailsGeneralViewAllContainer = ({
-  internalMove,
-  navigation,
-}) => {
+const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
   const {internalMoveLineList} = useSelector(state => state.internalMoveLine);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
 
@@ -84,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveDetailsGeneralViewAllContainer;
+export default InternalMoveViewAllContainer;

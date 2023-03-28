@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   createInternalMove,
   updateInternalMove,
-} from '../../../features/internalMoveSlice';
+} from '../../../../features/internalMoveSlice';
 
-const InternalMoveLineDetailsFixedItems = ({
+const InternalMoveLineButtons = ({
   saveStatus,
-  route,
+  internalMove,
   stockProduct,
   trackingNumber,
   navigation,
@@ -40,65 +40,39 @@ const InternalMoveLineDetailsFixedItems = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const createInternalMoveAPI = useCallback(() => {
+    dispatch(
+      createInternalMove({
+        productId: stockProduct.id,
+        companyId: 1,
+        originStockLocationId: originalStockLocation.id,
+        destStockLocationId: destinationStockLocation.id,
+        unitId: unit.id,
+        trackingNumberId:
+          stockProduct.trackingNumberConfiguration == null ||
+          trackingNumber == null
+            ? null
+            : trackingNumber.id,
+        movedQty: movedQty,
+      }),
+    );
+  }, [
+    destinationStockLocation,
+    dispatch,
+    movedQty,
+    originalStockLocation,
+    stockProduct,
+    trackingNumber,
+    unit,
+  ]);
+
   const handleRealize = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
+    createInternalMoveAPI();
     navigation.popToTop();
   };
 
   const handleValidate = () => {
-    if (
-      stockProduct.trackingNumberConfiguration == null ||
-      trackingNumber == null
-    ) {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    } else {
-      dispatch(
-        createInternalMove({
-          productId: stockProduct.id,
-          companyId: 1,
-          originStockLocationId: originalStockLocation.id,
-          destStockLocationId: destinationStockLocation.id,
-          trackingNumberId: trackingNumber.id,
-          unitId: unit.id,
-          movedQty: movedQty,
-        }),
-      );
-    }
+    createInternalMoveAPI();
     navigation.navigate('InternalMoveSelectProductScreen', {
       fromStockLocation: originalStockLocation,
       toStockLocation: destinationStockLocation,
@@ -108,17 +82,23 @@ const InternalMoveLineDetailsFixedItems = ({
   const handleSave = () => {
     dispatch(
       updateInternalMove({
-        internalMoveId: route.params.internalMove.id,
-        version: route.params.internalMove.$version,
+        internalMoveId: internalMove.id,
+        version: internalMove.$version,
         movedQty: movedQty,
         unitId: unit.id,
       }),
     );
+
     navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: route.params.internalMove,
+      internalMove: internalMove,
     });
   };
-  if (!saveStatus && route.params.internalMove == null) {
+
+  if (saveStatus) {
+    return null;
+  }
+
+  if (internalMove == null) {
     return (
       <View style={styles.button_container}>
         <Button
@@ -132,15 +112,13 @@ const InternalMoveLineDetailsFixedItems = ({
         />
       </View>
     );
-  } else if (!saveStatus && route.params.internalMove != null) {
-    return (
-      <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={handleSave} />
-      </View>
-    );
-  } else {
-    return null;
   }
+
+  return (
+    <View style={styles.button_container}>
+      <Button title={I18n.t('Base_Save')} onPress={handleSave} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -153,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InternalMoveLineDetailsFixedItems;
+export default InternalMoveLineButtons;
