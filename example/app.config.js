@@ -33,4 +33,10 @@ export const app_config = {
    * can be rewritten for any request using props numberElementsByPage
    */
   defaultRequestLimit: 10,
+
+  /*
+   * This configuration allows you to activate or not the connection sessions.
+   * If enabled, the user will be able to save sessions on their device for later use.
+   */
+  enableConnectionSessions: true,
 };

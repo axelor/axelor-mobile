@@ -49,6 +49,7 @@ interface releaseConfig {
 interface instanceConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
+  enableConnectionSessions: boolean;
 }
 
 interface ContextedApplicationProps {
