@@ -29,3 +29,4 @@ export {default as PasswordInput} from './PasswordInput/PasswordInput';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
 export {default as UrlInput} from './UrlInput/UrlInput';
 export {default as UsernameInput} from './UsernameInput/UsernameInput';
+export {default as SessionInput} from './SessionInput/SessionInput';

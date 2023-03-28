@@ -33,4 +33,9 @@ export const app_config = {
    * can be rewritten for any request using props numberElementsByPage
    */
   defaultRequestLimit: 10,
+
+  /*
+   * This setting is used to define the default mode of session connection
+   */
+  enableConnectionSessions: true,
 };

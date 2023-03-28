@@ -26,7 +26,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {useThemeColor, Text, Screen} from '@axelor/aos-mobile-ui';
+import {useThemeColor, Text, Screen, Checkbox} from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
   LoginButton,
@@ -34,6 +34,7 @@ import {
   PasswordInput,
   UrlInput,
   UsernameInput,
+  SessionInput,
 } from '../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../features/authSlice';
@@ -46,6 +47,8 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
+import {storage} from '../storage/Storage';
+import useTranslator from '../i18n/hooks/use-translator';
 
 const urlScanKey = 'login_url';
 
@@ -56,10 +59,16 @@ const LoginScreen = ({route}) => {
   const scanData = useCameraScannerValueByKey(urlScanKey);
   const {enable: onScanPress} = useScanActivator(urlScanKey);
   const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
+  const I18n = useTranslator();
 
   const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
+  const enableConnectionSessions = route?.params?.enableConnectionSessions;
+
+  const session = enableConnectionSessions
+    ? storage.getItem('ConnectionSession')
+    : null;
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -90,13 +99,19 @@ const LoginScreen = ({route}) => {
     testInstanceConfig?.defaultUrl,
   ]);
 
-  const [url, setUrl] = useState(defaultUrl || '');
+  const [url, setUrl] = useState(session ? session.url : defaultUrl || '');
   const [username, setUsername] = useState(
-    modeDebug ? testInstanceConfig?.defaultUsername : '',
+    session
+      ? session.username
+      : modeDebug
+      ? testInstanceConfig?.defaultUsername
+      : '',
   );
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
+  const [savesSession, setSaveSession] = useState(false);
+  const [sessionName, setSessionName] = useState('');
 
   useEffect(() => {
     if (scannedValue) {
@@ -118,6 +133,18 @@ const LoginScreen = ({route}) => {
     }
   }, [scanData, scannedValue]);
 
+  const onPressLogin = () => {
+    dispatch(login({url, username, password}));
+    savesSession &&
+      enableConnectionSessions &&
+      storage.setItem('ConnectionSession', {
+        id: 1,
+        url: url,
+        username: username,
+        name: sessionName,
+      });
+  };
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -127,6 +154,7 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
+            {session && <Text>{session.name}</Text>}
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -159,14 +187,24 @@ const LoginScreen = ({route}) => {
               onChange={setPassword}
               readOnly={loading}
             />
+            {enableConnectionSessions && (
+              <Checkbox
+                title={I18n.t('Auth_Save_Session')}
+                onChange={setSaveSession}
+              />
+            )}
+            {savesSession && (
+              <SessionInput
+                value={sessionName}
+                onChange={setSessionName}
+                readOnly={loading}
+              />
+            )}
             <View>
               {loading ? (
                 <ActivityIndicator size="large" />
               ) : (
-                <LoginButton
-                  onPress={() => dispatch(login({url, username, password}))}
-                  disabled={loading}
-                />
+                <LoginButton onPress={onPressLogin} disabled={loading} />
               )}
             </View>
             <View>{error && <ErrorText message={error.message} />}</View>

@@ -8,6 +8,8 @@
   "Auth_Warning": "Warning",
   "Auth_CannotOpenFile": "Cannot open file",
   "Auth_Close": "Close",
+  "Auth_Session_Name": "Session Name",
+  "Auth_Save_Session": "Save session",
   "User_User": "User",
   "User_VirtualKeyboardConfig": "Hide virtual keyboard",
   "User_ShowFilter": "Show filter",
