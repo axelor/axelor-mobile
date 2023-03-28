@@ -19,18 +19,19 @@
 import React from 'react';
 import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../types/stock-corrrection';
+import StockCorrection from '../../../../types/stock-corrrection';
 import {
   createCorrection,
   updateCorrection,
-} from '../../../features/stockCorrectionSlice';
+} from '../../../../features/stockCorrectionSlice';
 
-const StockCorrectionFixedItems = ({
+const StockCorrectionButtons = ({
   saveStatus,
   reason,
   setPopUp,
   navigation,
-  route,
+  stockCorrection,
+  externeNavigation = false,
   stockProduct,
   trackingNumber,
   stockLocation,
@@ -49,39 +50,28 @@ const StockCorrectionFixedItems = ({
     }
 
     // Request AOS API
-    if (route.params.stockCorrection == null) {
+    if (stockCorrection == null) {
       // Stock correction doesn't exsist yet : creation
-      if (
-        stockProduct?.trackingNumberConfiguration == null ||
-        trackingNumber == null
-      ) {
-        dispatch(
-          createCorrection({
-            productId: stockProduct.id,
-            stockLocationId: stockLocation.id,
-            reasonId: reason.id,
-            status: StockCorrection.status.Draft,
-            realQty: realQty,
-          }),
-        );
-      } else {
-        dispatch(
-          createCorrection({
-            productId: stockProduct.id,
-            stockLocationId: stockLocation.id,
-            reasonId: reason.id,
-            trackingNumberId: trackingNumber.id,
-            status: StockCorrection.status.Draft,
-            realQty: realQty,
-          }),
-        );
-      }
+      dispatch(
+        createCorrection({
+          productId: stockProduct.id,
+          stockLocationId: stockLocation.id,
+          reasonId: reason.id,
+          trackingNumberId:
+            stockProduct?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.id,
+          status: StockCorrection.status.Draft,
+          realQty: realQty,
+        }),
+      );
     } else {
       // Stock correction already exists : update qty or reason
       dispatch(
         updateCorrection({
-          version: route.params.stockCorrection.version,
-          stockCorrectionId: route.params.stockCorrection.id,
+          version: stockCorrection.version,
+          stockCorrectionId: stockCorrection.id,
           realQty: realQty,
           reasonId: reason.id,
         }),
@@ -98,39 +88,28 @@ const StockCorrectionFixedItems = ({
     }
 
     // Request AOS API
-    if (route.params.stockCorrection == null) {
+    if (stockCorrection == null) {
       // Stock correction doesn't exsist yet : creation
-      if (
-        stockProduct?.trackingNumberConfiguration == null ||
-        trackingNumber == null
-      ) {
-        dispatch(
-          createCorrection({
-            productId: stockProduct.id,
-            stockLocationId: stockLocation.id,
-            reasonId: reason.id,
-            status: StockCorrection.status.Validated,
-            realQty: realQty,
-          }),
-        );
-      } else {
-        dispatch(
-          createCorrection({
-            productId: stockProduct.id,
-            stockLocationId: stockLocation.id,
-            reasonId: reason.id,
-            trackingNumberId: trackingNumber.id,
-            status: StockCorrection.status.Validated,
-            realQty: realQty,
-          }),
-        );
-      }
+      dispatch(
+        createCorrection({
+          productId: stockProduct.id,
+          stockLocationId: stockLocation.id,
+          reasonId: reason.id,
+          trackingNumberId:
+            stockProduct?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.id,
+          status: StockCorrection.status.Validated,
+          realQty: realQty,
+        }),
+      );
     } else {
       // Stock correction already exists : update qty or reason
       dispatch(
         updateCorrection({
-          version: route.params.stockCorrection.version,
-          stockCorrectionId: route.params.stockCorrection.id,
+          version: stockCorrection.version,
+          stockCorrectionId: stockCorrection.id,
           realQty: saveStatus ? null : realQty,
           reasonId: saveStatus ? null : reason.id,
           status: StockCorrection.status.Validated,
@@ -141,7 +120,7 @@ const StockCorrectionFixedItems = ({
   };
 
   const handleNavigation = () => {
-    if (route.params.externeNavigation === true) {
+    if (externeNavigation === true) {
       navigation.pop();
     } else {
       navigation.popToTop();
@@ -164,4 +143,4 @@ const StockCorrectionFixedItems = ({
   );
 };
 
-export default StockCorrectionFixedItems;
+export default StockCorrectionButtons;

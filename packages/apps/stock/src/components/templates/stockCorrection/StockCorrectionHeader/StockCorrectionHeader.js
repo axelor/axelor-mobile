@@ -20,7 +20,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../types/stock-corrrection';
+import StockCorrection from '../../../../types/stock-corrrection';
 
 const StockCorrectionHeader = ({stockLocation, status}) => {
   const I18n = useTranslator();

@@ -20,8 +20,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../types/stock-corrrection';
-import {QuantityCard} from '../../organisms';
+import StockCorrection from '../../../../types/stock-corrrection';
+import {QuantityCard} from '../../../organisms';
 
 const StockCorrectionQuantityCard = ({
   stockProduct,

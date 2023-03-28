@@ -32,10 +32,10 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
-  StockCorrectionFixedItems,
+  StockCorrectionButtons,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
-  StockCorrectionPicker,
+  StockCorrectionReasonPicker,
 } from '../../components';
 import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -150,11 +150,12 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <StockCorrectionFixedItems
+        <StockCorrectionButtons
           navigation={navigation}
           realQty={realQty}
           reason={reason}
-          route={route}
+          stockCorrection={route.params.stockCorrection}
+          externeNavigation={route.params.externeNavigation}
           saveStatus={saveStatus}
           setPopUp={setPopUp}
           status={status}
@@ -197,7 +198,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
             status={status}
             stockProduct={stockProduct}
           />
-          <StockCorrectionPicker
+          <StockCorrectionReasonPicker
             reason={reason}
             setReason={setReason}
             setSaveStatus={setSaveStatus}

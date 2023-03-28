@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {View} from 'react-native';
-import {ProductCardInfo} from '../../templates';
+import {ProductCardInfo} from '../../../templates';
 
 const StockCorrectionProductCardInfo = ({
   stockProduct,

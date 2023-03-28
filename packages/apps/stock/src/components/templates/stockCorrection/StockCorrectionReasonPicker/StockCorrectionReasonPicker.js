@@ -17,13 +17,18 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
-import StockCorrection from '../../../types/stock-corrrection';
+import StockCorrection from '../../../../types/stock-corrrection';
 
-const StockCorrectionPicker = ({status, reason, setSaveStatus, setReason}) => {
+const StockCorrectionReasonPicker = ({
+  status,
+  reason,
+  setSaveStatus,
+  setReason,
+}) => {
   const I18n = useTranslator();
+
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
@@ -39,23 +44,18 @@ const StockCorrectionPicker = ({status, reason, setSaveStatus, setReason}) => {
 
   return (
     <Picker
-      styleTxt={reason?.id === null ? styles.picker_empty : null}
       title={I18n.t('Stock_Reason')}
       onValueChange={handleReasonChange}
       defaultValue={reason?.id}
       listItems={stockCorrectionReasonList}
       labelField="name"
       valueField="id"
+      required={true}
       disabled={status === StockCorrection.status.Validated}
       disabledValue={reason?.name}
+      isScrollViewContainer={true}
     />
   );
 };
 
-const styles = StyleSheet.create({
-  picker_empty: {
-    color: 'red',
-  },
-});
-
-export default StockCorrectionPicker;
+export default StockCorrectionReasonPicker;
