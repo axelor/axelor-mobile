@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../types/stock-move';
-import {updateCustomerDeliveryLine} from '../../../features/customerDeliveryLineSlice';
-import {addNewLine} from '../../../features/customerDeliverySlice';
+import StockMove from '../../../../types/stock-move';
+import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
+import {addNewLine} from '../../../../features/customerDeliverySlice';
 
 const CustomerDeliveryLineDetailFixedItems = ({
   customerDeliveryLine,
@@ -32,9 +32,16 @@ const CustomerDeliveryLineDetailFixedItems = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
   const {productFromId: product} = useSelector(state => state.product);
 
-  const handleValidate = () => {
+  const navigateBackToDetails = useCallback(() => {
+    navigation.navigate('CustomerDeliveryDetailScreen', {
+      customerDelivery: customerDelivery,
+    });
+  }, [customerDelivery, navigation]);
+
+  const handleValidate = useCallback(() => {
     dispatch(
       updateCustomerDeliveryLine({
         stockMoveLineId: customerDeliveryLine.id,
@@ -43,16 +50,10 @@ const CustomerDeliveryLineDetailFixedItems = ({
       }),
     );
 
-    if (customerDelivery.statusSelect !== StockMove.status.Realized) {
-      navigation.pop();
-      if (product.trackingNumberConfiguration != null) {
-        navigation.pop();
-      }
-    }
-    navigation.pop();
-  };
+    navigateBackToDetails();
+  }, [customerDeliveryLine, dispatch, navigateBackToDetails, realQty]);
 
-  const handleAddLine = () => {
+  const handleAddLine = useCallback(() => {
     dispatch(
       addNewLine({
         stockMoveId: customerDelivery.id,
@@ -63,25 +64,30 @@ const CustomerDeliveryLineDetailFixedItems = ({
         realQty: realQty,
       }),
     );
-    navigation.pop();
-    if (product.trackingNumberConfiguration != null) {
-      navigation.pop();
-    }
-    navigation.pop();
-  };
-  if (
-    customerDeliveryLine != null &&
-    customerDelivery.statusSelect !== StockMove.status.Realized
-  ) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
-  } else if (
-    customerDeliveryLine == null &&
-    customerDelivery.statusSelect !== StockMove.status.Realized
-  ) {
-    return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
-  } else {
-    return null;
+
+    navigateBackToDetails();
+  }, [
+    customerDelivery,
+    dispatch,
+    navigateBackToDetails,
+    product,
+    realQty,
+    trackingNumber,
+  ]);
+
+  const buttonProps = useMemo(
+    () =>
+      customerDeliveryLine != null
+        ? {action: handleValidate, title: I18n.t('Base_Validate')}
+        : {action: handleAddLine, title: I18n.t('Base_Add')},
+    [I18n, customerDeliveryLine, handleAddLine, handleValidate],
+  );
+
+  if (customerDelivery.statusSelect !== StockMove.status.Realized) {
+    return <Button title={buttonProps.title} onPress={buttonProps.action} />;
   }
+
+  return null;
 };
 
 export default CustomerDeliveryLineDetailFixedItems;

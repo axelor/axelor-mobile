@@ -20,7 +20,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {LabelText} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../types/stock-move';
-import StockMoveHeader from '../StockMoveHeader/StockMoveHeader';
+import {StockMoveHeader} from '../../organisms';
 
 const SupplierArrivalDetailsHeader = ({supplierArrival}) => {
   return (

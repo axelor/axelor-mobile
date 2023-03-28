@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
-  Button,
-  PopUpOneButton,
   Screen,
   ScrollView,
   HeaderContainer,
@@ -34,22 +32,21 @@ import {
 import {
   CustomerDeliveryDetailHeader,
   CustomerDeliveryDetailViewAllContainer,
+  CustomerDeliveryDetailMovementIndicationCard,
+  CustomerDeliveryRealizeButton,
 } from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../features/racksListSlice';
-import {realizeCustomerDelivery} from '../../features/customerDeliverySlice';
-import StockMove from '../../types/stock-move';
-import CustomerDeliveryDetailMovementIndicationCard from '../../components/templates/CustomerDeliveryDetailMovementIndicationCard/CustomerDeliveryDetailMovementIndicationCard';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
-  const {loadingCDLines, customerDeliveryLineList} = useSelector(
-    state => state.customerDeliveryLine,
-  );
-  const {mobileSettings} = useSelector(state => state.config);
-  const [isPopupVisible, setVisiblePopup] = useState(false);
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {mobileSettings} = useSelector(state => state.config);
+  const {customerDeliveryLineList} = useSelector(
+    state => state.customerDeliveryLine,
+  );
 
   useEffect(() => {
     if (customerDelivery != null) {
@@ -75,16 +72,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     customerDelivery?.fromStockLocation?.id,
   ]);
 
-  const handleRealize = () => {
-    dispatch(
-      realizeCustomerDelivery({
-        version: customerDelivery.version,
-        stockMoveId: customerDelivery.id,
-      }),
-    );
-    navigation.popToTop();
-  };
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -102,11 +89,11 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        customerDelivery.statusSelect !== StockMove.status.Realized && (
-          <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />
-        )
-      }
-      loading={loadingCDLines}>
+        <CustomerDeliveryRealizeButton
+          customerDelivery={customerDelivery}
+          navigation={navigation}
+        />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -116,7 +103,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       <ScrollView>
         <CustomerDeliveryDetailMovementIndicationCard
           customerDelivery={customerDelivery}
-          setVisiblePopup={setVisiblePopup}
         />
         <CustomerDeliveryDetailViewAllContainer
           customerDelivery={customerDelivery}
@@ -131,15 +117,6 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           data={customerDelivery.deliveryCondition}
         />
       </ScrollView>
-      <PopUpOneButton
-        title={I18n.t('Stock_DestinationAdress')}
-        data={
-          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
-        }
-        visible={isPopupVisible}
-        btnTitle={I18n.t('Base_OK')}
-        onPress={() => setVisiblePopup(false)}
-      />
     </Screen>
   );
 };

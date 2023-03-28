@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Badge, Card, Text, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
-import StockMove from '../../../types/stock-move';
+import StockMove from '../../../../types/stock-move';
 
 interface CustomerDeliveryCardProps {
   style?: any;

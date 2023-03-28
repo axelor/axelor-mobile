@@ -20,8 +20,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {LabelText, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
-import StockMoveHeader from '../StockMoveHeader/StockMoveHeader';
-import StockMove from '../../../types/stock-move';
+import {StockMoveHeader} from '../../../organisms';
+import StockMove from '../../../../types/stock-move';
 
 const CustomerDeliveryDetailHeader = ({customerDelivery}) => {
   const I18n = useTranslator();
@@ -43,10 +43,12 @@ const CustomerDeliveryDetailHeader = ({customerDelivery}) => {
       />
       <View style={styles.generalInfoContainer}>
         <View style={styles.clientInfos}>
-          <LabelText
-            iconName="user"
-            title={customerDelivery.partner?.fullName}
-          />
+          {customerDelivery.partner?.fullName && (
+            <LabelText
+              iconName="user"
+              title={customerDelivery.partner?.fullName}
+            />
+          )}
           {customerDelivery?.origin && (
             <LabelText iconName="tag" title={customerDelivery?.origin} />
           )}

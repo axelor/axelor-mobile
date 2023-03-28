@@ -16,13 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CustomerDeliveryCard} from './CustomerDeliveryCard/CustomerDeliveryCard';
-export {default as CustomerDeliveryDetailHeader} from './CustomerDeliveryDetailHeader/CustomerDeliveryDetailHeader';
-export {default as CustomerDeliveryDetailMovementIndicationCard} from './CustomerDeliveryDetailMovementIndicationCard/CustomerDeliveryDetailMovementIndicationCard';
-export {default as CustomerDeliveryDetailViewAllContainer} from './CustomerDeliveryDetailViewAllContainer/CustomerDeliveryDetailViewAllContainer';
-export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
-export {default as CustomerDeliveryLineDetailFixedItems} from './CustomerDeliveryLineDetailFixedItems/CustomerDeliveryLineDetailFixedItems';
-export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
+export * from './customerDelivery';
 export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
 export {default as InternalMoveDetailsGeneralMovementIndicationCard} from './InternalMoveDetailsGeneralMovementIndicationCard/InternalMoveDetailsGeneralMovementIndicationCard';
 export {default as InternalMoveDetailsGeneralViewAllContainer} from './InternalMoveDetailsGeneralViewAllContainer/InternalMoveDetailsGeneralViewAllContainer';
@@ -58,7 +52,6 @@ export {default as StockCorrectionHeader} from './StockCorrectionHeader/StockCor
 export {default as StockCorrectionPicker} from './StockCorrectionPicker/StockCorrectionPicker';
 export {default as StockCorrectionProductCardInfo} from './StockCorrectionProductCardInfo/StockCorrectionProductCardInfo';
 export {default as StockCorrectionQuantityCard} from './StockCorrectionQuantityCard/StockCorrectionQuantityCard';
-export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
 export {default as SupplierArrivalAddTracking} from './SupplierArrivalAddTracking/SupplierArrivalAddTracking';
 export {default as SupplierArrivalCard} from './SupplierArrivalCard/SupplierArrivalCard';
 export {default as SupplierArrivalDetailsHeader} from './SupplierArrivalDetailsHeader/SupplierArrivalDetailsHeader';

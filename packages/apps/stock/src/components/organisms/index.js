@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CardStockIndicator} from './CardStockIndicator/CardStockIndicator';
 export {default as DescriptionCard} from './DescriptionCard/DescriptionCard';
 export {default as QuantityCard} from './QuantityCard/QuantityCard';
 export {default as SmallPropertyCard} from './SmallPropertyCard/SmallPropertyCard';
+export {default as StockMoveHeader} from './StockMoveHeader/StockMoveHeader';
