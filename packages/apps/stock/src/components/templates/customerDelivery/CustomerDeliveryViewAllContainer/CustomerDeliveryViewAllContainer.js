@@ -21,13 +21,10 @@ import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
-import {CustomerDeliveryLineCard} from '../../customerDelivery';
+import {CustomerDeliveryLineCard} from '..';
 import {showLine} from '../../../../utils/line-navigation';
 
-const CustomerDeliveryDetailViewAllContainer = ({
-  customerDelivery,
-  navigation,
-}) => {
+const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const {customerDeliveryLineList} = useSelector(
     state => state.customerDeliveryLine,
@@ -102,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomerDeliveryDetailViewAllContainer;
+export default CustomerDeliveryViewAllContainer;

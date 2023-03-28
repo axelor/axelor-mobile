@@ -26,7 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const CustomerDeliveryDetailMovementIndicationCard = ({
+const CustomerDeliveryMovementIndicationCard = ({
   customerDelivery,
   showPopupOnCLick = true,
 }) => {
@@ -65,4 +65,4 @@ const CustomerDeliveryDetailMovementIndicationCard = ({
   );
 };
 
-export default CustomerDeliveryDetailMovementIndicationCard;
+export default CustomerDeliveryMovementIndicationCard;

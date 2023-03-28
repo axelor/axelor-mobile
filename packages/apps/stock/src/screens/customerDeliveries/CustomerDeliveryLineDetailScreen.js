@@ -27,7 +27,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
   StockMoveHeader,
-  CustomerDeliveryLineDetailFixedItems,
+  CustomerDeliveryLineButtons,
   CustomerDeliveryLineQuantityCard,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
@@ -69,7 +69,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <CustomerDeliveryLineDetailFixedItems
+        <CustomerDeliveryLineButtons
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
           navigation={navigation}

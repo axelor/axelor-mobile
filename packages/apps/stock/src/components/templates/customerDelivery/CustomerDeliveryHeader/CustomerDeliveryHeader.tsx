@@ -23,7 +23,7 @@ import {LabelText, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
 import {StockMoveHeader} from '../../../organisms';
 import StockMove from '../../../../types/stock-move';
 
-const CustomerDeliveryDetailHeader = ({customerDelivery}) => {
+const CustomerDeliveryHeader = ({customerDelivery}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomerDeliveryDetailHeader;
+export default CustomerDeliveryHeader;

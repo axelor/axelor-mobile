@@ -23,7 +23,7 @@ import StockMove from '../../../../types/stock-move';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 import {addNewLine} from '../../../../features/customerDeliverySlice';
 
-const CustomerDeliveryLineDetailFixedItems = ({
+const CustomerDeliveryLineButtons = ({
   customerDeliveryLine,
   customerDelivery,
   realQty,
@@ -90,4 +90,4 @@ const CustomerDeliveryLineDetailFixedItems = ({
   return null;
 };
 
-export default CustomerDeliveryLineDetailFixedItems;
+export default CustomerDeliveryLineButtons;

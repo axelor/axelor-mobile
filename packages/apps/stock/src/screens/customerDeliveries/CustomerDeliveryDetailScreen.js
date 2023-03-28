@@ -30,9 +30,9 @@ import {
   HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
-  CustomerDeliveryDetailHeader,
-  CustomerDeliveryDetailViewAllContainer,
-  CustomerDeliveryDetailMovementIndicationCard,
+  CustomerDeliveryHeader,
+  CustomerDeliveryViewAllContainer,
+  CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
 } from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
@@ -97,14 +97,14 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <CustomerDeliveryDetailHeader customerDelivery={customerDelivery} />
+          <CustomerDeliveryHeader customerDelivery={customerDelivery} />
         }
       />
       <ScrollView>
-        <CustomerDeliveryDetailMovementIndicationCard
+        <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
-        <CustomerDeliveryDetailViewAllContainer
+        <CustomerDeliveryViewAllContainer
           customerDelivery={customerDelivery}
           navigation={navigation}
         />
