@@ -21,13 +21,14 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 
-const ProductSeeDistributionStocksLocation = ({
+const ProductSeeStockLocationDistribution = ({
   navigation,
   product,
   companyId,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+
   const {productIndicators} = useSelector(state => state.productIndicators);
 
   const navigateStockLocationDetails = () => {
@@ -55,9 +56,9 @@ const ProductSeeDistributionStocksLocation = ({
         </View>
       </TouchableOpacity>
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 const styles = StyleSheet.create({
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductSeeDistributionStocksLocation;
+export default ProductSeeStockLocationDistribution;

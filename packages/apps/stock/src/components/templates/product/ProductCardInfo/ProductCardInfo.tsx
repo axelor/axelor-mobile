@@ -20,7 +20,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, Text} from '@axelor/aos-mobile-ui';
 import {AOSImage, checkNullString} from '@axelor/aos-mobile-core';
-import {ProductCardDetails} from '../../molecules';
+import {ProductCardDetails} from '../../../molecules';
 
 interface ProductCardInfoProps {
   name: string;

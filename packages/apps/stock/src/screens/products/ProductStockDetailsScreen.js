@@ -29,7 +29,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
-  ProductSeeDistributionStocksLocation,
+  ProductSeeStockLocationDistribution,
   ProductStockHeader,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -131,7 +131,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
             onValueChange={item => setCompany(item)}
           />
         )}
-        <ProductSeeDistributionStocksLocation
+        <ProductSeeStockLocationDistribution
           companyId={companyId}
           navigation={navigation}
           product={product}

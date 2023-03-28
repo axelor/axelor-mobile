@@ -19,12 +19,12 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {SmallPropertyCard} from '../../organisms';
+import {SmallPropertyCard} from '../../../organisms';
 
-const ProductSmallPropertyCardList = ({product}) => {
+const ProductUnitInformations = ({product}) => {
   const I18n = useTranslator();
 
-  if (product.unit) {
+  if (product.unit != null) {
     return (
       <View style={styles.stock}>
         <SmallPropertyCard
@@ -50,9 +50,9 @@ const ProductSmallPropertyCardList = ({product}) => {
         />
       </View>
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 const styles = StyleSheet.create({
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductSmallPropertyCardList;
+export default ProductUnitInformations;

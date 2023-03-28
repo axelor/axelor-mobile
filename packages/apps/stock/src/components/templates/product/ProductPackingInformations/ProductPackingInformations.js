@@ -20,13 +20,14 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import {SmallPropertyCard} from '../../organisms';
+import {SmallPropertyCard} from '../../../organisms';
 
-const ProductPacking = ({product}) => {
+const ProductPackingInformations = ({product}) => {
   const I18n = useTranslator();
+
   return (
     <View style={styles.containerPack}>
-      <Text style={styles.titles}>PACKING</Text>
+      <Text style={styles.titles}>{I18n.t('Stock_Packing')}</Text>
       <View style={styles.packing}>
         <SmallPropertyCard
           style={styles.packingCard}
@@ -109,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductPacking;
+export default ProductPackingInformations;

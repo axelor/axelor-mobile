@@ -26,9 +26,9 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   ProductCharacteristics,
-  ProductFixedItems,
-  ProductPacking,
-  ProductSmallPropertyCardList,
+  ProductVariantButton,
+  ProductPackingInformations,
+  ProductUnitInformations,
 } from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {
@@ -56,7 +56,7 @@ const ProductDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       fixedItems={
-        <ProductFixedItems navigation={navigation} product={product} />
+        <ProductVariantButton navigation={navigation} product={product} />
       }>
       <ScrollView>
         <ProductCharacteristics
@@ -73,8 +73,8 @@ const ProductDetailsScreen = ({route, navigation}) => {
         <View style={styles.lineContainer}>
           <View style={styles.lineStyle} />
         </View>
-        <ProductSmallPropertyCardList product={product} />
-        <ProductPacking product={product} />
+        <ProductUnitInformations product={product} />
+        <ProductPackingInformations product={product} />
         <NotesCard
           title={I18n.t('Base_Description')}
           data={product.description}
@@ -85,12 +85,6 @@ const ProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  description: {
-    width: '90%',
-    marginHorizontal: '5%',
-    flexDirection: 'column',
-    marginTop: '2%',
-  },
   item: {
     borderRadius: 0,
     elevation: 0,

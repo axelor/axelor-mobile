@@ -20,7 +20,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useTranslator, AOSImage} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
-import {ProductCardDetails} from '../../molecules';
+import {ProductCardDetails} from '../../../molecules';
 
 const ProductStockHeader = ({
   product,

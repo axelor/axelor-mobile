@@ -33,15 +33,17 @@ import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 const productScanKey = 'product_product-list';
 
 const ProductListScreen = ({navigation}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {activeCompany} = useSelector(state => state.user.user);
+  const {listAvailabilty} = useSelector(state => state.productIndicators);
   const {loadingProduct, moreLoading, isListEnd, productList} = useSelector(
     state => state.product,
   );
-  const {activeCompany} = useSelector(state => state.user.user);
-  const {listAvailabilty} = useSelector(state => state.productIndicators);
+
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
     ({page = 0, searchValue}) => {

@@ -30,7 +30,7 @@ const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
   return (
     <QuantityCard
       labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
-      defaultValue={parseFloat(realQty).toFixed(2)}
+      defaultValue={realQty}
       onValueChange={setRealQty}
       editable={inventory.statusSelect !== Inventory.status.Validated}>
       {inventoryLine == null ? (
