@@ -47,7 +47,7 @@ import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMe
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
-const MailMessageView = ({model, modelId, navigation}) => {
+const MailMessageView = ({model, modelId}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -202,7 +202,6 @@ const MailMessageView = ({model, modelId, navigation}) => {
                 title={item.subject}
                 type={item.type}
                 flags={item.$flags}
-                navigation={navigation}
                 relatedId={modelId}
                 relatedModel={model}
               />

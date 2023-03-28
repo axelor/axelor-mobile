@@ -34,6 +34,7 @@ import {
   getAttachedFilesDetails,
 } from '../../../features/attachedFilesSlice';
 import {openFileInExternalApp} from '../../../tools/FileViewer';
+import {useNavigation} from '../../../hooks/use-navigation';
 
 function AttachedFilesView({
   files,
@@ -42,18 +43,19 @@ function AttachedFilesView({
   isStaticList = false,
   isMetaFile = false,
   screenTitle,
-  navigation,
 }) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
   const {loading, attachedFilesList} = useSelector(
     state => state.attachedFiles,
   );
+
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [extensionList, setExtensionList] = useState([]);
-
-  const dispatch = useDispatch();
 
   const handleShowFile = async item => {
     await openFileInExternalApp(

@@ -44,7 +44,6 @@ const MailMessageCard = ({
   title,
   type,
   flags,
-  navigation,
   relatedId,
   relatedModel,
 }) => {
@@ -80,7 +79,6 @@ const MailMessageCard = ({
             files={files}
             value={body}
             flags={flags}
-            navigation={navigation}
             relatedId={relatedId}
             relatedModel={relatedModel}
           />
