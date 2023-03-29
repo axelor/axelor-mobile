@@ -32,6 +32,7 @@ export default {
   OperationOrderDetailsScreen: {
     title: 'Manufacturing_OperationOrder',
     component: OperationOrderDetailsScreen,
+    actionID: 'manufacturing_operationOrder_details',
     options: {
       shadedHeader: false,
     },

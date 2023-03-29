@@ -18,13 +18,8 @@
 
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DropdownMenuItem, HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
-import {
-  HeaderOptionsMenu,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {OperationOrderDatesCard} from '../../components/molecules';
 import {
   OperationOrderHeader,
@@ -34,10 +29,8 @@ import {
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
 function OperationOrderDetailsScreen({route, navigation}) {
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
   const {loadingOrder, operationOrder} = useSelector(
     state => state.operationOrder,
   );
@@ -49,28 +42,6 @@ function OperationOrderDetailsScreen({route, navigation}) {
       }),
     );
   }, [dispatch, route.params.operationOrderId]);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.production.db.OperationOrder"
-          modelId={operationOrder?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}>
-          <DropdownMenuItem
-            icon="folder-open"
-            placeholder={I18n.t('Manufacturing_ProductionFile')}
-            onPress={() =>
-              navigation.navigate('ProductionFileScreen', {
-                prodProcessLineId: operationOrder?.prodProcessLine?.id,
-              })
-            }
-          />
-        </HeaderOptionsMenu>
-      ),
-    });
-  }, [I18n, navigation, mobileSettings, operationOrder]);
 
   return (
     <Screen removeSpaceOnTop={true} loading={loadingOrder}>

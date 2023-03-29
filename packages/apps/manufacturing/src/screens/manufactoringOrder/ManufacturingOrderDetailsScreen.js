@@ -24,12 +24,7 @@ import {
   HeaderContainer,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
@@ -47,7 +42,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
   const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
   const {loadingOrder, manufOrder} = useSelector(
@@ -110,19 +104,6 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.production.db.ManufOrder"
-          modelId={manufOrder?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, manufOrder]);
 
   return (
     <Screen

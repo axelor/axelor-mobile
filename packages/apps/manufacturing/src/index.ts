@@ -27,6 +27,7 @@ import {
   manufacturing_searchFields,
   manufacturing_sortFields,
 } from './models';
+import {useManufacturingHeaders} from './hooks/use-manufacturing-headers';
 
 export const ManufacturingModule: Module = {
   name: 'app-manufacturing',
@@ -65,6 +66,7 @@ export const ManufacturingModule: Module = {
     objectFields: {...manufacturing_modelAPI},
     sortFields: {...manufacturing_sortFields},
     searchFields: {...manufacturing_searchFields},
+    headerRegisters: useManufacturingHeaders,
   },
 };
 

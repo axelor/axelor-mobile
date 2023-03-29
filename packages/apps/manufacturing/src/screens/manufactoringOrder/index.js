@@ -36,6 +36,7 @@ export default {
   ManufacturingOrderDetailsScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ManufacturingOrderDetailsScreen,
+    actionID: 'manufacturing_manufacturingOrder_details',
     options: {
       shadedHeader: false,
     },

@@ -25,6 +25,7 @@ export default {
   ProducedProductListScreen: {
     title: 'Manufacturing_ManufacturingOrder',
     component: ProducedProductListScreen,
+    actionID: 'manufacturing_producedProduct_list',
     options: {
       shadedHeader: false,
     },
