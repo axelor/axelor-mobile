@@ -34,6 +34,10 @@ class HeaderActionsProvider {
       this.updateState();
     }
   }
+
+  getHeaderActions(): HeaderActions {
+    return this.headerActions;
+  }
 }
 
 export const headerActionsProvider = new HeaderActionsProvider();
@@ -42,23 +46,27 @@ export const useHeaderOptions = (modelKey: string) => {
   const [header, setHeader] = useState({});
 
   useEffect(() => {
+    setHeader(headerActionsProvider.getHeaderActions());
     headerActionsProvider.register(setHeader);
   }, []);
 
-  const getHeaderOptionsOfModel = useCallback(() => {
-    if (checkNullString(modelKey)) {
-      return null;
-    }
+  const getHeaderOptionsOfModel = useCallback(
+    key => {
+      if (checkNullString(key)) {
+        return null;
+      }
 
-    if (!Object.keys(header).includes(modelKey)) {
-      return null;
-    }
+      if (!Object.keys(header).includes(key)) {
+        return null;
+      }
 
-    return header[modelKey];
-  }, [header, modelKey]);
+      return header[key];
+    },
+    [header],
+  );
 
   return useMemo(
-    () => ({options: getHeaderOptionsOfModel()}),
-    [getHeaderOptionsOfModel],
+    () => ({options: getHeaderOptionsOfModel(modelKey)}),
+    [getHeaderOptionsOfModel, modelKey],
   );
 };

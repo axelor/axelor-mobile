@@ -135,6 +135,7 @@ const Navigator = ({
                 name={key}
                 component={component}
                 options={{
+                  headerStyle: {elevation: 0},
                   headerLeft: () => null,
                   headerRight: () => null,
                   headerTitleStyle: {width: '100%'},
