@@ -231,6 +231,11 @@ const LoginScreen = ({route}) => {
     });
   };
 
+  const delSession = sessionNameparam => {
+    const test = session.filter(sesion => sesion.name !== sessionNameparam);
+    setSession(test);
+  };
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -305,6 +310,9 @@ const LoginScreen = ({route}) => {
                       <TouchableOpacity
                         onPress={() => activeSession(sesion.name)}>
                         <Text>{sesion.name}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => delSession(sesion.name)}>
+                        <Text>SUPP</Text>
                       </TouchableOpacity>
                       <Text>{sesion.isActive ? 'true' : 'false'}</Text>
                     </View>
