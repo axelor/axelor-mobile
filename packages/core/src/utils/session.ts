@@ -19,26 +19,31 @@
 import {storage, Storage} from '../storage/Storage';
 
 interface Session {
-  id: number;
+  id: string;
   url: string;
   username: string;
   name: string;
+  isActive: true;
 }
 
 class SessionStorage {
   private key: string;
 
   constructor(private localStorage: Storage) {
-    this.key = 'test';
+    this.key = 'users';
     this.recrypt();
   }
 
-  addSession({data}: {data: Session}) {
+  addSession({data}: {data: Session[]}) {
     this.localStorage.setItem(this.key, data);
   }
-  getSession() {
+  getSession(): Session[] {
     const item = this.localStorage.getItem(this.key);
+    console.log('item', item);
     return item;
+  }
+  getAllKeys() {
+    return this.localStorage.getAllKeys();
   }
   recrypt() {
     this.localStorage.recrypt(this.key);

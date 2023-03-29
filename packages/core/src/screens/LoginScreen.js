@@ -25,8 +25,16 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import {useThemeColor, Text, Screen, Checkbox} from '@axelor/aos-mobile-ui';
+import {
+  useThemeColor,
+  Text,
+  Screen,
+  Checkbox,
+  Icon,
+  PopUp,
+} from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
   LoginButton,
@@ -49,6 +57,7 @@ import {
 } from '../hooks/use-scan-activator';
 import useTranslator from '../i18n/hooks/use-translator';
 import {sessionStorage} from '../utils/session';
+import {storage} from '../storage/Storage';
 
 const urlScanKey = 'login_url';
 
@@ -66,7 +75,9 @@ const LoginScreen = ({route}) => {
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
 
-  const session = enableConnectionSessions ? sessionStorage.getSession() : null;
+  const [session, setSession] = useState(
+    enableConnectionSessions ? sessionStorage.getSession() : [],
+  );
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -96,11 +107,16 @@ const LoginScreen = ({route}) => {
     releaseInstanceConfig?.url,
     testInstanceConfig?.defaultUrl,
   ]);
+  const [sessionActive, setSessionActive] = useState(
+    session?.length > 0 ? session.find(ses => ses.isActive === true) : null,
+  );
 
-  const [url, setUrl] = useState(session ? session.url : defaultUrl || '');
+  const [url, setUrl] = useState(
+    session?.length > 0 ? sessionActive?.url : defaultUrl || '',
+  );
   const [username, setUsername] = useState(
-    session
-      ? session.username
+    session?.length > 0
+      ? sessionActive?.username
       : modeDebug
       ? testInstanceConfig?.defaultUsername
       : '',
@@ -110,6 +126,10 @@ const LoginScreen = ({route}) => {
   );
   const [savesSession, setSaveSession] = useState(false);
   const [sessionName, setSessionName] = useState('');
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
+
+  console.log('sessionActive', sessionActive);
+  console.log('sessionList', session);
 
   useEffect(() => {
     if (scannedValue) {
@@ -132,17 +152,83 @@ const LoginScreen = ({route}) => {
   }, [scanData, scannedValue]);
 
   const onPressLogin = () => {
-    dispatch(login({url, username, password}));
-    savesSession &&
-      enableConnectionSessions &&
-      sessionStorage.addSession({
-        data: {
-          id: 1,
+    //dispatch(login({url, username, password}));
+    if (savesSession && enableConnectionSessions) {
+      if (session?.length > 0) {
+        session.push({
+          id: sessionName,
           url: url,
           username: username,
           name: sessionName,
-        },
-      });
+          isActive: true,
+        });
+        sessionStorage.addSession({
+          data: session,
+        });
+        setSession(session);
+        activeSession(sessionName);
+        setSessionActive(session.find(ses => ses.isActive === true));
+      } else {
+        sessionStorage.addSession({
+          data: [
+            {
+              id: sessionName,
+              url: url,
+              username: username,
+              name: sessionName,
+              isActive: true,
+            },
+          ],
+        });
+        setSession([
+          {
+            id: sessionName,
+            url: url,
+            username: username,
+            name: sessionName,
+            isActive: true,
+          },
+        ]);
+        setSessionActive({
+          id: sessionName,
+          url: url,
+          username: username,
+          name: sessionName,
+          isActive: true,
+        });
+      }
+    }
+  };
+  console.log(storage.getAllKeys());
+  console.log('session', session);
+
+  const activeSession = sessionNameparam => {
+    const tempSession = session;
+    session?.forEach((sesion, index) => {
+      if (sessionNameparam === sesion.name) {
+        tempSession[index] = {
+          id: sesion.name,
+          url: sesion.url,
+          username: sesion.username,
+          name: sesion.name,
+          isActive: true,
+        };
+        setSessionActive(sesion);
+        setUrl(sesion.url);
+        setUsername(sesion.username);
+      } else {
+        tempSession[index] = {
+          id: sesion.name,
+          url: sesion.url,
+          username: sesion.username,
+          name: sesion.name,
+          isActive: false,
+        };
+      }
+    });
+    sessionStorage.addSession({
+      data: tempSession,
+    });
   };
 
   return (
@@ -154,7 +240,7 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {session && <Text>{session.name}</Text>}
+            {session?.length > 0 && <Text>{sessionActive?.name}</Text>}
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -200,6 +286,35 @@ const LoginScreen = ({route}) => {
                 readOnly={loading}
               />
             )}
+            <TouchableOpacity onPress={() => setPopupIsOpen(true)}>
+              <View style={styles.arrowContainer}>
+                <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
+                <Icon
+                  name="angle-right"
+                  size={24}
+                  color={Colors.primaryColor.background}
+                  style={styles.arrowIcon}
+                />
+              </View>
+            </TouchableOpacity>
+            <PopUp visible={popupIsOpen} title={'Saved Sessions'}>
+              <View style={{flexDirection: 'column'}}>
+                {session?.map((sesion, index) => {
+                  return (
+                    <View key={index} style={{flexDirection: 'column'}}>
+                      <TouchableOpacity
+                        onPress={() => activeSession(sesion.name)}>
+                        <Text>{sesion.name}</Text>
+                      </TouchableOpacity>
+                      <Text>{sesion.isActive ? 'true' : 'false'}</Text>
+                    </View>
+                  );
+                })}
+                <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
+                  <Text>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </PopUp>
             <View>
               {loading ? (
                 <ActivityIndicator size="large" />
@@ -237,6 +352,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     bottom: 0,
+  },
+  arrowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginHorizontal: 32,
+    width: '80%',
+  },
+  arrowIcon: {
+    marginRight: -6,
+    marginLeft: 5,
   },
 });
 
