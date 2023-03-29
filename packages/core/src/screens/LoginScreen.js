@@ -33,7 +33,6 @@ import {
   Screen,
   Checkbox,
   Icon,
-  PopUp,
 } from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
@@ -43,6 +42,7 @@ import {
   UrlInput,
   UsernameInput,
   SessionInput,
+  PopupSession,
 } from '../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../features/authSlice';
@@ -80,7 +80,6 @@ const LoginScreen = ({route}) => {
   );
 
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
   const dispatch = useDispatch();
 
   const modeDebug = useMemo(() => __DEV__, []);
@@ -303,39 +302,13 @@ const LoginScreen = ({route}) => {
                 />
               </View>
             </TouchableOpacity>
-            <PopUp visible={popupIsOpen} title={'Saved Sessions'}>
-              <View style={styles.popupContainer}>
-                {session?.map((sesion, index) => {
-                  return (
-                    <View
-                      key={index}
-                      style={
-                        sesion.isActive
-                          ? styles.popupItemContainerActive
-                          : styles.popupItemContainer
-                      }>
-                      <View style={styles.popupItemChildren}>
-                        <TouchableOpacity
-                          onPress={() => activeSession(sesion.name)}>
-                          <Text>{sesion.name}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => delSession(sesion.name)}>
-                          <Icon name="close" color="red" FontAwesome5={false} />
-                        </TouchableOpacity>
-                      </View>
-                      <Text>{sesion.url}</Text>
-                      <View style={styles.lineContainer}>
-                        <View style={styles.lineStyle} />
-                      </View>
-                    </View>
-                  );
-                })}
-                <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
-                  <Text>Close</Text>
-                </TouchableOpacity>
-              </View>
-            </PopUp>
+            <PopupSession
+              activeSession={activeSession}
+              delSession={delSession}
+              popupIsOpen={popupIsOpen}
+              sessionList={session}
+              setPopupIsOpen={setPopupIsOpen}
+            />
             <View>
               {loading ? (
                 <ActivityIndicator size="large" />
@@ -355,58 +328,43 @@ const LoginScreen = ({route}) => {
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      marginTop: '15%',
-      alignItems: 'center',
-      height: Dimensions.get('window').height * 0.95,
-    },
-    imageContainer: {
-      alignItems: 'center',
-      width: '100%',
-      height: '15%',
-      marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
-      marginBottom: '10%',
-    },
-    copyright: {
-      position: 'absolute',
-      alignItems: 'center',
-      width: '100%',
-      bottom: 0,
-    },
-    arrowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      marginHorizontal: 32,
-      width: '80%',
-    },
-    arrowIcon: {
-      marginRight: -6,
-      marginLeft: 5,
-    },
-    lineContainer: {
-      alignItems: 'center',
-    },
-    lineStyle: {
-      borderWidth: 0.7,
-      width: 280,
-    },
-    popupContainer: {
-      flexDirection: 'column',
-    },
-    popupItemContainerActive: {
-      flexDirection: 'column',
-      backgroundColor: Colors.primaryColor.background_light,
-    },
-    popupItemContainer: {
-      flexDirection: 'column',
-    },
-    popupItemChildren: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    marginTop: '15%',
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.95,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    width: '100%',
+    height: '15%',
+    marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
+    marginBottom: '10%',
+  },
+  copyright: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: '100%',
+    bottom: 0,
+  },
+  arrowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginHorizontal: 32,
+    width: '80%',
+  },
+  arrowIcon: {
+    marginRight: -6,
+    marginLeft: 5,
+  },
+  lineContainer: {
+    alignItems: 'center',
+  },
+  lineStyle: {
+    borderWidth: 0.7,
+    width: 280,
+  },
+});
 
 export default LoginScreen;
