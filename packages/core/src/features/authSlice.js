@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {getActiveUserId, loginApi} from '../api/login-api';
 import {testUrl} from '../utils/api';
-import {formatURL} from '../utils/formatters';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -72,7 +71,7 @@ export const authSlice = createSlice({
       state.logged = token != null;
       state.loading = false;
       state.userId = userId;
-      state.baseUrl = formatURL(url);
+      state.baseUrl = url;
       state.token = token;
       state.jsessionId = jsessionId;
       state.error = null;
