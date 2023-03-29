@@ -31,6 +31,7 @@ export default {
   OpportunityDetailsScreen: {
     title: 'Crm_Opportunity',
     component: OpportunityDetailsScreen,
+    actionID: 'crm_opportunity_details',
     options: {
       shadedHeader: false,
     },

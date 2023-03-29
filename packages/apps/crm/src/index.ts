@@ -28,6 +28,7 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
 import {crm_modelAPI, crm_searchFields, crm_sortFields} from './models';
+import {useCRMHeaders} from './hooks/use-crm-header-actions';
 
 export const CrmModule: Module = {
   name: 'app-crm',
@@ -89,6 +90,7 @@ export const CrmModule: Module = {
     objectFields: {...crm_modelAPI},
     sortFields: {...crm_sortFields},
     searchFields: {...crm_searchFields},
+    headerRegisters: useCRMHeaders,
   },
 };
 

@@ -19,6 +19,7 @@
 import LeadListScreen from './LeadListScreen';
 import LeadDetailsScreen from './LeadDetailsScreen';
 import LeadFormScreen from './LeadFormScreen';
+
 export default {
   LeadListScreen: {
     title: 'Crm_Leads',
@@ -30,6 +31,7 @@ export default {
   LeadDetailsScreen: {
     title: 'Crm_Lead',
     component: LeadDetailsScreen,
+    actionID: 'crm_lead_details',
     options: {
       shadedHeader: false,
     },

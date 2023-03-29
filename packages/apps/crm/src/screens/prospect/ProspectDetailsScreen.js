@@ -19,12 +19,7 @@
 import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
-import {
-  useSelector,
-  HeaderOptionsMenu,
-  useDispatch,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProspectBottom,
   ProspectDropdownCards,
@@ -32,27 +27,12 @@ import {
 } from '../../components';
 import {fetchProspectById} from '../../features/prospectSlice';
 
-const ProspectDetailsScreen = ({navigation, route}) => {
+const ProspectDetailsScreen = ({route}) => {
   const idProspect = route.params.idProspect;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
   const {prospect} = useSelector(state => state.prospect);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.base.db.Partner"
-          modelId={idProspect}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={prospect?.simpleFullName}
-        />
-      ),
-    });
-  }, [mobileSettings, navigation, idProspect, prospect]);
 
   useEffect(() => {
     dispatch(fetchProspectById({partnerId: idProspect}));
@@ -66,9 +46,9 @@ const ProspectDetailsScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
-        <ProspectDropdownCards navigation={navigation} />
+        <ProspectDropdownCards />
       </ScrollView>
-      <ProspectBottom idProspect={idProspect} navigation={navigation} />
+      <ProspectBottom idProspect={idProspect} />
     </Screen>
   );
 };

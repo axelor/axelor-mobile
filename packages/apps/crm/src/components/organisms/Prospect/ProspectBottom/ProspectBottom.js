@@ -17,9 +17,12 @@
  */
 
 import React from 'react';
+import {useNavigation} from '@axelor/aos-mobile-core';
 import {EditButton} from '../../../organisms';
 
-const ProspectBottom = ({idProspect, navigation}) => {
+const ProspectBottom = ({idProspect}) => {
+  const navigation = useNavigation();
+
   return (
     <EditButton
       onPress={() =>

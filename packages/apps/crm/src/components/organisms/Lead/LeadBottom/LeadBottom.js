@@ -17,9 +17,11 @@
  */
 
 import React from 'react';
+import {useNavigation} from '@axelor/aos-mobile-core';
 import {EditButton} from '../../../organisms';
 
-const LeadBottom = ({idLead, navigation}) => {
+const LeadBottom = ({idLead}) => {
+  const navigation = useNavigation();
   return (
     <EditButton
       onPress={() =>

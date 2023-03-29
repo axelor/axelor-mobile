@@ -18,12 +18,13 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {LeadsCard} from '../../../molecules';
 import {fetchLeadById, fetchLeadStatus} from '../../../../features/leadSlice';
 
-const EventLeadCard = ({navigation}) => {
+const EventLeadCard = ({}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {event} = useSelector(state => state.event);
   const {lead, leadStatusList} = useSelector(state => state.lead);

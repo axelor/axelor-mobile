@@ -51,9 +51,9 @@ function EventDetailsScreen({navigation, route}) {
       <ScrollView>
         <EventDatesCard />
         <EventLabelsCard />
-        <EventLeadCard navigation={navigation} />
-        <EventPartnerCard navigation={navigation} />
-        <EventContactCard navigation={navigation} />
+        <EventLeadCard />
+        <EventPartnerCard />
+        <EventContactCard />
         <NotesCard title={I18n.t('Crm_Description')} data={event.description} />
       </ScrollView>
     </Screen>

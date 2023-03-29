@@ -19,6 +19,7 @@
 import ClientsListScreen from './ClientsListScreen';
 import ClientDetailsScreen from './ClientDetailsScreen';
 import ClientFormScreen from './ClientFormScreen';
+
 export default {
   ClientsListScreen: {
     title: 'Crm_Clients',
@@ -30,6 +31,7 @@ export default {
   ClientDetailsScreen: {
     title: 'Crm_Clients',
     component: ClientDetailsScreen,
+    actionID: 'crm_client_details',
     options: {
       shadedHeader: false,
     },
