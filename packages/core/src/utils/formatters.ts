@@ -17,6 +17,7 @@
  */
 
 import moment from 'moment';
+import {checkNullString} from './string';
 
 export function formatDate(inputDate, format) {
   // Format must contains three parts : MM for the month, DD for the day and YYYY for the year
@@ -90,7 +91,26 @@ export function formatScan(barcodeValue, barcodeType, config = true) {
   }
 }
 
+const REGEX_END_SYMBOL = /\/#/g;
+const REGEX_LOGINJSP_END_SYMBOL = /\/login.jsp#/g;
+const REGEX_LOGINJSP = /\/login.jsp/g;
+const REGEX_URL_END = /\/{2,}/g;
+
 export function formatURL(url: String): String {
+  if (checkNullString(url)) {
+    return '';
+  }
+
+  const cleanURL = url
+    .replaceAll(REGEX_END_SYMBOL, '')
+    .replaceAll(REGEX_LOGINJSP_END_SYMBOL, '')
+    .replaceAll(REGEX_LOGINJSP, '')
+    .replaceAll(REGEX_URL_END, '/');
+
+  return addEndSlash(cleanURL);
+}
+
+function addEndSlash(url: String): String {
   if (url.slice(-1) === '/') {
     return url;
   }

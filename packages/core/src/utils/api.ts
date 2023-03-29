@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {formatURL as _formatURL} from './formatters';
+
 const PREFIX_REGEX = /^https?:\/\//;
 
 export function testUrl(url: string): Promise<string | null> {
@@ -25,7 +27,9 @@ export function testUrl(url: string): Promise<string | null> {
       return;
     }
 
-    const formatUrl = isHttpUrl(url) ? url.replace(PREFIX_REGEX, '') : url;
+    const formatUrl = _formatURL(
+      isHttpUrl(url) ? url.replace(PREFIX_REGEX, '') : url,
+    );
 
     const urlsWithProtocol = ['https', 'http'].map(
       protocol => `${protocol}://${formatUrl}`,
