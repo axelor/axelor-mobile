@@ -19,12 +19,7 @@
 import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
-import {
-  useSelector,
-  HeaderOptionsMenu,
-  useDispatch,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ContactBottom,
   ContactDropdownCards,
@@ -38,22 +33,7 @@ const ContactDetailsScreen = ({navigation, route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
   const {contact} = useSelector(state => state.contact);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.base.db.Partner"
-          modelId={contact?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnCrmApp}
-          attachedFileScreenTitle={contact?.simpleFullName}
-        />
-      ),
-    });
-  }, [mobileSettings, navigation, contact]);
 
   useEffect(() => {
     dispatch(getContact({contactId: idContact}));
@@ -66,11 +46,11 @@ const ContactDetailsScreen = ({navigation, route}) => {
         fixedItems={<ContactHeader />}
       />
       <ScrollView>
-        <ContactPartnerCard navigation={navigation} />
+        <ContactPartnerCard />
         <NotesCard title={I18n.t('Crm_Notes')} data={contact.description} />
-        <ContactDropdownCards navigation={navigation} />
+        <ContactDropdownCards />
       </ScrollView>
-      <ContactBottom idContact={idContact} navigation={navigation} />
+      <ContactBottom idContact={idContact} />
     </Screen>
   );
 };

@@ -43,15 +43,6 @@ export async function getMobileSettings() {
           },
         };
       }
-      return {
-        data: {
-          data: [
-            {
-              isTrackerMessageOnCrmApp: true,
-              ...res?.data?.data[0],
-            },
-          ],
-        },
-      };
+      return res;
     });
 }

@@ -19,13 +19,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
+  fetchSupplierArrival as _fetchSupplierArrival,
   addLineStockMove,
   realizeSockMove,
   searchSupplierArrivalFilter,
 } from '../api/supplier-arrival-api';
 
 export const searchSupplierArrivals = createAsyncThunk(
-  'arrivals/searchSupplierArrivals',
+  'supplierArrivals/searchSupplierArrivals',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalFilter,
@@ -37,8 +38,21 @@ export const searchSupplierArrivals = createAsyncThunk(
   },
 );
 
+export const fetchSupplierArrival = createAsyncThunk(
+  'supplierArrivals/fetchSupplierArrival',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchSupplierArrival,
+      data,
+      action: 'fetch supplier arrival',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const addNewLine = createAsyncThunk(
-  'arrivals/addNewLine',
+  'supplierArrivals/addNewLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: addLineStockMove,
@@ -51,7 +65,7 @@ export const addNewLine = createAsyncThunk(
 );
 
 export const realizeSupplierArrival = createAsyncThunk(
-  'arrivals/realizeSupplierArrival',
+  'supplierArrivals/realizeSupplierArrival',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: realizeSockMove,
@@ -68,8 +82,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   supplierArrivalsList: [],
-  newLineResponse: {},
-  realizeResponse: {},
+  supplierArrival: null,
 };
 
 const supplierArrivalSlice = createSlice({
@@ -101,19 +114,12 @@ const supplierArrivalSlice = createSlice({
         }
       }
     });
-    builder.addCase(addNewLine.pending, state => {
+    builder.addCase(fetchSupplierArrival.pending, state => {
       state.loading = true;
     });
-    builder.addCase(addNewLine.fulfilled, (state, action) => {
+    builder.addCase(fetchSupplierArrival.fulfilled, (state, action) => {
       state.loading = false;
-      state.newLineResponse = action.payload;
-    });
-    builder.addCase(realizeSupplierArrival.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(realizeSupplierArrival.fulfilled, (state, action) => {
-      state.loading = false;
-      state.realizeResponse = action.payload;
+      state.supplierArrival = action.payload;
     });
   },
 });

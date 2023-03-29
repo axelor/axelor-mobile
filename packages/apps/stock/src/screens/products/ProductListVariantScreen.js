@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductVariantCard} from '../../components';
 import {
   fetchProductsAttributes,
@@ -43,6 +43,7 @@ const ProductListVariantScreen = ({route, navigation}) => {
     listProductsAttributes,
   } = useSelector(state => state.productVariant);
   const {listAvailabilty} = useSelector(state => state.productIndicators);
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const fetchVariantsAPI = useCallback(
@@ -100,6 +101,7 @@ const ProductListVariantScreen = ({route, navigation}) => {
         fetchData={fetchVariantsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

@@ -17,14 +17,20 @@
  */
 
 import React, {useCallback} from 'react';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
 import {updateInventory} from '../../../../features/inventorySlice';
 
-const InventoryButtons = ({navigation}) => {
+const InventoryButtons = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {inventory} = useSelector(state => state.inventory);
 

@@ -23,76 +23,35 @@ import {
   HeaderContainer,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryHeader,
   CustomerDeliveryViewAllContainer,
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
 } from '../../components';
-import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import {getRacks} from '../../features/racksListSlice';
+import {fetchCustomerDelivery} from '../../features/customerDeliverySlice';
 
 const CustomerDeliveryDetailScreen = ({route, navigation}) => {
-  const customerDelivery = route.params.customerDelivery;
+  const customerDeliveryId = route.params.customerDeliveryId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
-  const {customerDeliveryLineList} = useSelector(
-    state => state.customerDeliveryLine,
-  );
+  const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
-    if (customerDelivery != null) {
-      dispatch(
-        fetchCustomerDeliveryLines({
-          customerDeliveryId: customerDelivery.id,
-          page: 0,
-        }),
-      );
-    }
-  }, [customerDelivery, dispatch]);
+    dispatch(fetchCustomerDelivery({customerDeliveryId: customerDeliveryId}));
+  }, [customerDeliveryId, dispatch]);
 
-  useEffect(() => {
-    dispatch(
-      getRacks({
-        stockId: customerDelivery?.fromStockLocation?.id,
-        LineList: customerDeliveryLineList,
-      }),
-    );
-  }, [
-    dispatch,
-    customerDeliveryLineList,
-    customerDelivery?.fromStockLocation?.id,
-  ]);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.StockMove"
-          modelId={customerDelivery?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, customerDelivery]);
+  if (customerDelivery?.id !== customerDeliveryId) {
+    return null;
+  }
 
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        <CustomerDeliveryRealizeButton
-          customerDelivery={customerDelivery}
-          navigation={navigation}
-        />
+        <CustomerDeliveryRealizeButton customerDelivery={customerDelivery} />
       }>
       <HeaderContainer
         expandableFilter={false}
@@ -104,17 +63,14 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
-        <CustomerDeliveryViewAllContainer
-          customerDelivery={customerDelivery}
-          navigation={navigation}
-        />
+        <CustomerDeliveryViewAllContainer customerDelivery={customerDelivery} />
         <NotesCard
           title={I18n.t('Stock_NotesClient')}
-          data={customerDelivery.pickingOrderComments}
+          data={customerDelivery?.pickingOrderComments}
         />
         <NotesCard
           title={I18n.t('Stock_DeliveryCondition')}
-          data={customerDelivery.deliveryCondition}
+          data={customerDelivery?.deliveryCondition}
         />
       </ScrollView>
     </Screen>

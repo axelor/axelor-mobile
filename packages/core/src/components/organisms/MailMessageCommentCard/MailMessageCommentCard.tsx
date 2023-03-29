@@ -30,6 +30,7 @@ import {
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {isHtml} from '../../../utils/string';
 import {MailMessageReadIcon} from '../../molecules';
+import {useNavigation} from '../../../hooks/use-navigation';
 
 interface MailMessageCommentCardProps {
   relatedModel: string;
@@ -53,10 +54,10 @@ const MailMessageCommentCard = ({
   value,
   flags,
   style,
-  navigation,
 }: MailMessageCommentCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const [more, setMore] = useState(false);
   const [numOfLines, setNumOfLines] = useState(MAX_TEXT_LINES);

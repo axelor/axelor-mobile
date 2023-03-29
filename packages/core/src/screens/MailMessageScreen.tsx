@@ -19,11 +19,9 @@
 import React from 'react';
 import {MailMessageView} from '../components';
 
-const MailMessageScreen = ({route, navigation}) => {
+const MailMessageScreen = ({route}) => {
   const {model, modelId} = route.params;
-  return (
-    <MailMessageView model={model} modelId={modelId} navigation={navigation} />
-  );
+  return <MailMessageView model={model} modelId={modelId} />;
 };
 
 export default MailMessageScreen;

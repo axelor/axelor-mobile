@@ -31,7 +31,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {logout, useDispatch, useSelector, useTranslator} from '../../index';
-import {IconSettings} from '../../components';
 import {fetchCompanies} from '../features/companySlice';
 import {fetchLanguages} from '../features/languageSlice';
 import {
@@ -62,16 +61,6 @@ const UserScreen = ({children, navigation}) => {
     dispatch(fetchBaseConfig());
     dispatch(fetchMobileSettings());
   }, [dispatch, userId]);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <IconSettings
-          onPress={() => navigation.navigate('SettingsScreen', {user: user})}
-        />
-      ),
-    });
-  }, [navigation, user]);
 
   useEffect(() => {
     const SMALL_SCREEN_HEIGHT = 500;

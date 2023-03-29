@@ -31,6 +31,7 @@ export default {
   ContactDetailsScreen: {
     title: 'Crm_Contact',
     component: ContactDetailsScreen,
+    actionID: 'crm_contact_details',
     options: {
       shadedHeader: false,
     },

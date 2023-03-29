@@ -77,7 +77,6 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           description={description}
           inventory={inventory}
           inventoryLine={inventoryLine}
-          navigation={navigation}
           rack={rack}
           realQty={realQty}
           trackingNumber={trackingNumber}

@@ -18,17 +18,13 @@
 
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {useTranslator, AOSImage} from '@axelor/aos-mobile-core';
+import {useTranslator, AOSImage, useNavigation} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import {ProductCardDetails} from '../../../molecules';
 
-const ProductStockHeader = ({
-  product,
-  navigation,
-  companyId,
-  stockLocation,
-}) => {
+const ProductStockHeader = ({product, companyId, stockLocation}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const showProductDetails = () => {
     navigation.navigate('ProductDetailsScreen', {

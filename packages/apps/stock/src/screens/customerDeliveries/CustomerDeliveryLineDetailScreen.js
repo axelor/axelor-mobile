@@ -72,7 +72,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         <CustomerDeliveryLineButtons
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
-          navigation={navigation}
           realQty={realQty}
           trackingNumber={trackingNumber}
         />

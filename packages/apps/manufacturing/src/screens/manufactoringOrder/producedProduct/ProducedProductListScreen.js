@@ -117,25 +117,6 @@ const ProducedProductListScreen = ({route, navigation}) => {
     });
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name="trash"
-          color={Colors.primaryColor.background}
-          size={24}
-          style={styles.action}
-          touchable={true}
-          onPress={() => {
-            navigation.navigate('WasteProductListScreen', {
-              manufOrder: manufOrder,
-            });
-          }}
-        />
-      ),
-    });
-  }, [Colors, manufOrder, navigation]);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer

@@ -18,6 +18,7 @@
 
 import EventPlanningScreen from './EventPlanningScreen';
 import EventDetailsScreen from './EventDetailsScreen';
+
 export default {
   EventPlanningScreen: {
     title: 'Crm_Events',
@@ -29,6 +30,7 @@ export default {
   EventDetailsScreen: {
     title: 'Crm_Event',
     component: EventDetailsScreen,
+    actionID: 'crm_event_details',
     options: {
       shadedHeader: false,
     },

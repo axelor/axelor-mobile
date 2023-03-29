@@ -18,7 +18,11 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   createInternalMove,
@@ -30,7 +34,6 @@ const InternalMoveLineButtons = ({
   internalMove,
   stockProduct,
   trackingNumber,
-  navigation,
   originalStockLocation,
   unit,
   destinationStockLocation,
@@ -39,6 +42,7 @@ const InternalMoveLineButtons = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const createInternalMoveAPI = useCallback(() => {
     dispatch(

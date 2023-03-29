@@ -17,15 +17,13 @@
  */
 
 import React, {useCallback} from 'react';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {PartnerInfoCard} from '../../../molecules';
 import {StyleSheet} from 'react-native';
 
-interface Props {
-  navigation: any;
-}
+const OpportunityPartnerCard = ({}) => {
+  const navigation = useNavigation();
 
-const OpportunityPartnerCard = ({navigation}: Props) => {
   const {opportunity} = useSelector((state: any) => state.opportunity);
 
   const navigateToPartnerDetails = useCallback(() => {

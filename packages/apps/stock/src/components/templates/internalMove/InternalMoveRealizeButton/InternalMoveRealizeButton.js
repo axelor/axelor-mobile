@@ -17,14 +17,19 @@
  */
 
 import React, {useCallback} from 'react';
-import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {updateInternalMove} from '../../../../features/internalMoveSlice';
 import StockMove from '../../../../types/stock-move';
 
-const InternalMoveRealizeButton = ({internalMove, navigation}) => {
+const InternalMoveRealizeButton = ({internalMove}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleRealizeStockMove = useCallback(() => {
     dispatch(

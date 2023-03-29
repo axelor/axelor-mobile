@@ -32,14 +32,16 @@ import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
 
 const InventoryLineListScreen = ({route, navigation}) => {
+  const inventory = route.params.inventory;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const inventory = route.params.inventory;
+  const dispatch = useDispatch();
+
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
+
   const [filteredList, setFilteredList] = useState(inventoryLineList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const dispatch = useDispatch();
 
   const handleShowLine = item => {
     showLine({
@@ -152,6 +154,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
         fetchData={fetchInventoryLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

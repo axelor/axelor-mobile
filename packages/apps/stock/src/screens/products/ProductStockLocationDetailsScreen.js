@@ -154,6 +154,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
         fetchData={fetchStockLines}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

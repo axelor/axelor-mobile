@@ -24,6 +24,7 @@ import {Badge} from '../../molecules';
 
 interface DropdownMenuItemProps {
   icon?: string;
+  color?: string;
   placeholder: string;
   FontAwesome5?: boolean;
   indicator?: number;
@@ -35,6 +36,7 @@ const BADGE_SIZE = 12;
 
 const DropdownMenuItem = ({
   icon = 'paperclip',
+  color,
   placeholder,
   indicator = 0,
   FontAwesome5 = true,
@@ -50,7 +52,12 @@ const DropdownMenuItem = ({
   return (
     <TouchableOpacity onPress={onPress} style={styles.menuItem}>
       <View style={styles.iconContainer}>
-        <Icon name={icon} FontAwesome5={FontAwesome5} size={15} />
+        <Icon
+          name={icon}
+          color={color || Colors.secondaryColor_dark.background}
+          FontAwesome5={FontAwesome5}
+          size={15}
+        />
         {indicator > 0 && (
           <Badge
             style={styles.badge}

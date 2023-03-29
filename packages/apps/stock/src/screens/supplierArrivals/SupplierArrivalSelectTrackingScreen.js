@@ -54,7 +54,6 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
       />
       <SupplierArrivalProductName product={product} />
       <SupplierArrivalTrackingNumberSelect
-        navigation={navigation}
         product={product}
         setVisible={setVisible}
         supplierArrival={supplierArrival}

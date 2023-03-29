@@ -27,7 +27,7 @@ import {
 } from '../../../organisms';
 import {fetchContactEventById} from '../../../../features/eventSlice';
 
-const ContactDropdownCards = ({navigation}) => {
+const ContactDropdownCards = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -69,12 +69,7 @@ const ContactDropdownCards = ({navigation}) => {
           {
             title: I18n.t('Crm_Events'),
             key: 20,
-            childrenComp: (
-              <DropdownEventView
-                eventList={listEventContact}
-                navigation={navigation}
-              />
-            ),
+            childrenComp: <DropdownEventView eventList={listEventContact} />,
           },
         ]}
       />

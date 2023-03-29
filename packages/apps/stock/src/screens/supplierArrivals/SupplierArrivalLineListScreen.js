@@ -146,6 +146,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         fetchData={fetchSupplierLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

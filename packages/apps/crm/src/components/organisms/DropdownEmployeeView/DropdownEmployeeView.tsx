@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import {LiteContactCard} from '../../molecules';
 
@@ -31,14 +31,11 @@ type Contact = {
 
 interface DropdownEmployeeViewProps {
   contactList?: Contact[];
-  navigation?: any;
 }
 
-const DropdownEmployeeView = ({
-  contactList,
-  navigation,
-}: DropdownEmployeeViewProps) => {
+const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   if (!Array.isArray(contactList) || contactList.length === 0) {
     return (

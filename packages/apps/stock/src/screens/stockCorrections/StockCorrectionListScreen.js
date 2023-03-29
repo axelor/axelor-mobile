@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
-  Icon,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -36,7 +35,7 @@ import {
   filterChip,
 } from '@axelor/aos-mobile-core';
 import {StockCorrectionCard} from '../../components';
-import {fetchStockCorrections} from '../../features/stockCorrectionSlice';
+import {searchStockCorrections} from '../../features/stockCorrectionSlice';
 import {searchProducts} from '../../features/productSlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';
 import StockCorrection from '../../types/stock-corrrection';
@@ -47,16 +46,18 @@ const productScanKey = 'product_stock-correction-list';
 const StockCorrectionListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
   const {user} = useSelector(state => state.user);
+
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filteredList, setFilteredList] = useState(stockCorrectionList);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {
@@ -85,30 +86,13 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
-      stockCorrection: stockCorrection,
+      stockCorrectionId: stockCorrection?.id,
     });
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name="plus"
-          color={Colors.primaryColor.background}
-          size={24}
-          style={styles.action}
-          touchable={true}
-          onPress={() => {
-            navigation.navigate('StockCorrectionNewLocationScreen', {});
-          }}
-        />
-      ),
-    });
-  }, [navigation, Colors]);
-
-  const fetchStockCorrectionsAPI = useCallback(
+  const searchStockCorrectionsAPI = useCallback(
     page => {
-      dispatch(fetchStockCorrections({page: page}));
+      dispatch(searchStockCorrections({page: page}));
     },
     [dispatch],
   );
@@ -198,9 +182,10 @@ const StockCorrectionListScreen = ({navigation}) => {
             onPress={() => showStockCorrectionDetails(item)}
           />
         )}
-        fetchData={fetchStockCorrectionsAPI}
+        fetchData={searchStockCorrectionsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

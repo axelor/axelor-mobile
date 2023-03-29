@@ -19,6 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
+  fetchInternalMove as _fetchInternalMove,
   searchInternalMoveFilter,
   createInternalStockMove,
   updateInternalStockMove,
@@ -33,6 +34,19 @@ export const searchInternalMoves = createAsyncThunk(
       action: 'filter internal moves',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchInternalMove = createAsyncThunk(
+  'internalMove/fetchInternalMove',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInternalMove,
+      data,
+      action: 'fetch internal moves',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -68,8 +82,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   internalMoveList: [],
-  createResponse: {},
-  updateResponse: {},
+  internalMove: null,
 };
 
 const internalMoveSlice = createSlice({
@@ -101,19 +114,12 @@ const internalMoveSlice = createSlice({
         }
       }
     });
-    builder.addCase(createInternalMove.pending, state => {
+    builder.addCase(fetchInternalMove.pending, state => {
       state.loadingInternalMove = true;
     });
-    builder.addCase(createInternalMove.fulfilled, (state, action) => {
+    builder.addCase(fetchInternalMove.fulfilled, (state, action) => {
       state.loadingInternalMove = false;
-      state.createResponse = action.payload;
-    });
-    builder.addCase(updateInternalMove.pending, state => {
-      state.loadingInternalMove = true;
-    });
-    builder.addCase(updateInternalMove.fulfilled, (state, action) => {
-      state.loadingInternalMove = false;
-      state.updateResponse = action.payload;
+      state.internalMove = action.payload;
     });
   },
 });

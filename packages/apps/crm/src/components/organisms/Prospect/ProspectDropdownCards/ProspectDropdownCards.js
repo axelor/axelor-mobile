@@ -29,7 +29,7 @@ import {
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
 
-const ProspectDropdownCards = ({navigation}) => {
+const ProspectDropdownCards = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -78,21 +78,13 @@ const ProspectDropdownCards = ({navigation}) => {
             title: I18n.t('Crm_Employees'),
             key: 3,
             childrenComp: (
-              <DropdownEmployeeView
-                contactList={listContactById}
-                navigation={navigation}
-              />
+              <DropdownEmployeeView contactList={listContactById} />
             ),
           },
           {
             title: I18n.t('Crm_Events'),
             key: 4,
-            childrenComp: (
-              <DropdownEventView
-                eventList={listEventPartner}
-                navigation={navigation}
-              />
-            ),
+            childrenComp: <DropdownEventView eventList={listEventPartner} />,
           },
         ]}
       />

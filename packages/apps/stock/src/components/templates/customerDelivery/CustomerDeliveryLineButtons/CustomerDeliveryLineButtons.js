@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useSelector,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
@@ -27,11 +32,11 @@ const CustomerDeliveryLineButtons = ({
   customerDeliveryLine,
   customerDelivery,
   realQty,
-  navigation,
   trackingNumber,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {productFromId: product} = useSelector(state => state.product);
 

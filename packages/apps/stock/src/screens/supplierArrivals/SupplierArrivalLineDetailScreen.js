@@ -106,7 +106,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
       fixedItems={
         <SupplierArrivalLineButtons
           conformity={conformity}
-          navigation={navigation}
           realQty={realQty}
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}

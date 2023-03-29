@@ -18,12 +18,13 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../../molecules';
 import {fetchPartner} from '../../../../features/partnerSlice';
 
-const ContactPartnerCard = ({navigation}) => {
+const ContactPartnerCard = ({}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {partner} = useSelector(state => state.partner);
   const {contact} = useSelector(state => state.contact);

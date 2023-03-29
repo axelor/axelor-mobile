@@ -61,7 +61,7 @@ export {getRacks} from './racksListSlice';
 export {fetchSupplychainConfigForStockApp} from './stockAppConfigSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
-  fetchStockCorrections,
+  searchStockCorrections,
   createCorrection,
   updateCorrection,
 } from './stockCorrectionSlice';

@@ -16,51 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
 import {HeaderOptionMenuItem} from '../../molecules';
-import {countAttachmentFiles} from '../../../features/attachedFilesSlice';
-import {countUnreadMailMessages} from '../../../features/mailMessageSlice';
+import {useBasicActions} from '../../../header';
 
 const SMALLEST_WINDOW_WIDTH = 400;
 
 const HeaderOptionsMenu = ({
   model,
   modelId,
-  children,
-  navigation,
+  actions = [],
   disableMailMessages,
   attachedFileScreenTitle,
 }) => {
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
-
-  const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
-  const {attachments} = useSelector(state => state.attachedFiles);
-  const {unreadMessages} = useSelector(state => state.mailMessages);
-
-  const countUnreadMessagesAPI = useCallback(() => {
-    dispatch(countUnreadMailMessages({model, modelId}));
-  }, [dispatch, model, modelId]);
-
-  const countAttachmentsAPI = useCallback(() => {
-    dispatch(countAttachmentFiles({model, modelId}));
-  }, [dispatch, model, modelId]);
-
-  useEffect(() => {
-    countUnreadMessagesAPI();
-  }, [countUnreadMessagesAPI]);
-
-  useEffect(() => {
-    countAttachmentsAPI();
-  }, [countAttachmentsAPI]);
-
-  useEffect(() => {
-    setDisableAttachementFiles(attachments === 0);
-  }, [attachments]);
+  const {mailMessagesAction, attachedFilesAction} = useBasicActions({
+    model,
+    modelId,
+    disableMailMessages,
+    attachedFileScreenTitle,
+  });
 
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
@@ -72,62 +48,76 @@ const HeaderOptionsMenu = ({
     [collapseMenuItems],
   );
 
-  const MenuItemList = useMemo(
-    () => [
-      <MenuItem
-        key={1}
-        icon="bell"
-        placeholder={I18n.t('Base_MailMessages')}
-        FontAwesome5={false}
-        indicator={unreadMessages}
-        hideIf={disableMailMessages}
-        onPress={() =>
-          navigation.navigate('MailMessageScreen', {
-            model,
-            modelId,
-          })
-        }
-      />,
-      <MenuItem
-        key={2}
-        icon="paperclip"
-        placeholder={I18n.t('Base_AttachedFiles')}
-        indicator={attachments}
-        hideIf={disableAttachementFiles}
-        onPress={() =>
-          navigation.navigate('AttachedFilesScreen', {
-            model,
-            modelId,
-            screenTitle: attachedFileScreenTitle,
-          })
-        }
-      />,
-    ],
-    [
-      I18n,
-      attachedFileScreenTitle,
-      attachments,
-      disableAttachementFiles,
-      disableMailMessages,
-      model,
-      modelId,
-      navigation,
-      unreadMessages,
-    ],
+  const allActions = useMemo(
+    () =>
+      [attachedFilesAction, mailMessagesAction, ...actions]
+        .filter(_action => !_action.hideIf)
+        .sort((a, b) => a.order - b.order),
+    [actions, attachedFilesAction, mailMessagesAction],
   );
+
+  const headerActions = useMemo(
+    () => allActions.filter(_action => _action.showInHeader).slice(0, 2),
+    [allActions],
+  );
+
+  const menuActions = useMemo(
+    () =>
+      allActions.filter(
+        _action => !headerActions.some(_header => _header.key === _action.key),
+      ),
+    [allActions, headerActions],
+  );
+
+  const HeaderItemList = useMemo(
+    () =>
+      headerActions.map((_action, index) => (
+        <MenuItem
+          key={_action.key + index}
+          icon={_action.iconName}
+          color={_action.iconColor}
+          indicator={_action.indicator}
+          placeholder={_action.title}
+          FontAwesome5={_action.FontAwesome5}
+          hideIf={_action.hideIf}
+          onPress={_action.onPress}
+        />
+      )),
+    [headerActions],
+  );
+
+  const MenuItemList = useMemo(
+    () =>
+      menuActions.map((_action, index) => (
+        <DropdownMenuItem
+          key={_action.key + index}
+          icon={_action.iconName}
+          indicator={_action.indicator}
+          placeholder={_action.title}
+          FontAwesome5={_action.FontAwesome5}
+          hideIf={_action.hideIf}
+          onPress={_action.onPress}
+        />
+      )),
+    [menuActions],
+  );
+
+  if (allActions.length === 0) {
+    return null;
+  }
 
   if (collapseMenuItems) {
     return (
       <View style={styles.container}>
-        <DropdownMenu>{[MenuItemList, children]}</DropdownMenu>
+        <DropdownMenu>{[...HeaderItemList, ...MenuItemList]}</DropdownMenu>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      {MenuItemList}
-      {children && <DropdownMenu>{children}</DropdownMenu>}
+      {HeaderItemList}
+      {menuActions.length !== 0 && <DropdownMenu>{MenuItemList}</DropdownMenu>}
     </View>
   );
 };

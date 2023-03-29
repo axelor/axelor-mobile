@@ -16,17 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {showLine} from '../../../../utils/line-navigation';
 import Inventory from '../../../../types/inventory';
 import {InventoryLineCard} from '../../../templates';
+import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 
-const InventoryViewAllContainer = ({navigation}) => {
+const InventoryViewAllContainer = ({}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList} = useSelector(state => state.inventoryLine);
+
+  useEffect(() => {
+    if (inventory != null) {
+      dispatch(fetchInventoryLines({inventoryId: inventory?.id, page: 0}));
+    }
+  }, [dispatch, inventory]);
 
   const handleNewLine = useCallback(() => {
     navigation.navigate('InventorySelectProductScreen', {
@@ -58,6 +74,7 @@ const InventoryViewAllContainer = ({navigation}) => {
       isHeaderExist={inventory?.statusSelect !== Inventory.status.Completed}
       onNewIcon={handleNewLine}
       data={inventoryLineList}
+      translator={I18n.t}
       renderFirstTwoItems={item => (
         <InventoryLineCard
           style={styles.item}

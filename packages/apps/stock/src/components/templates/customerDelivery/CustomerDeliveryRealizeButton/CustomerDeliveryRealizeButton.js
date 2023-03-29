@@ -17,14 +17,19 @@
  */
 
 import React from 'react';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {realizeCustomerDelivery} from '../../../../features/customerDeliverySlice';
 
-const CustomerDeliveryRealizeButton = ({customerDelivery, navigation}) => {
+const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleRealize = () => {
     dispatch(

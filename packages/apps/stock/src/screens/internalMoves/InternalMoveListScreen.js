@@ -21,7 +21,6 @@ import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
-  Icon,
   HeaderContainer,
   Screen,
   ScrollList,
@@ -53,6 +52,8 @@ const stockDestinationLocationScanKey =
 const InternalMoveListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingInternalMove, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
   const {
@@ -60,6 +61,7 @@ const InternalMoveListScreen = ({navigation}) => {
     stockLocationListMultiFilter: stockLocationListSecondFilter,
   } = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
+
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
@@ -67,7 +69,6 @@ const InternalMoveListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {
@@ -103,27 +104,10 @@ const InternalMoveListScreen = ({navigation}) => {
     if (internalMove != null) {
       setNavigate(current => !current);
       navigation.navigate('InternalMoveDetailsGeneralScreen', {
-        internalMove: internalMove,
+        internalMoveId: internalMove?.id,
       });
     }
   };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name="plus"
-          color={Colors.primaryColor.background}
-          size={24}
-          style={styles.action}
-          touchable={true}
-          onPress={() => {
-            navigation.navigate('InternalMoveSelectFromLocationScreen', {});
-          }}
-        />
-      ),
-    });
-  }, [Colors, navigation]);
 
   const fetchInternalMovesAPI = useCallback(
     page => {
@@ -271,6 +255,7 @@ const InternalMoveListScreen = ({navigation}) => {
         fetchData={fetchInternalMovesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

@@ -18,13 +18,18 @@
 
 import React from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 import {realizeSupplierArrival} from '../../../../features/supplierArrivalSlice';
 
-const SupplierArrivalButtons = ({supplierArrival, navigation}) => {
+const SupplierArrivalButtons = ({supplierArrival}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleRealize = () => {
     dispatch(

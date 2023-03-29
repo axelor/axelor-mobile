@@ -35,6 +35,7 @@ export default {
   InventoryPlannedDetailsScreen: {
     title: 'Stock_Inventory',
     component: InventoryPlannedDetailsScreen,
+    actionID: 'stock_inventory_plannedDetails',
     options: {
       shadedHeader: false,
     },
@@ -42,6 +43,7 @@ export default {
   InventoryStartedDetailsScreen: {
     title: 'Stock_Inventory',
     component: InventoryStartedDetailsScreen,
+    actionID: 'stock_inventory_startedDetails',
     options: {
       shadedHeader: false,
     },

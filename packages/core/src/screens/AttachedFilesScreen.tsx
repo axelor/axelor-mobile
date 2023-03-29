@@ -19,7 +19,7 @@
 import React from 'react';
 import {AttachedFilesView} from '../components';
 
-const AttachedFilesScreen = ({route, navigation}) => {
+const AttachedFilesScreen = ({route}) => {
   const {files, model, modelId, screenTitle} = route.params;
   const isStatic = files && files.length > 0;
 
@@ -29,7 +29,6 @@ const AttachedFilesScreen = ({route, navigation}) => {
       model={model}
       modelId={modelId}
       screenTitle={screenTitle}
-      navigation={navigation}
       isStaticList={isStatic}
       isMetaFile={isStatic}
     />

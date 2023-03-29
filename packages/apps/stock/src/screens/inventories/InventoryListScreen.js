@@ -46,16 +46,18 @@ const stockLocationScanKey = 'stock-location_inventory-list';
 const InventoryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {stockLocationList} = useSelector(state => state.stockLocation);
-  const [stockLocation, setStockLocation] = useState(null);
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
   const {user} = useSelector(state => state.user);
+
+  const [stockLocation, setStockLocation] = useState(null);
   const [filteredList, setFilteredList] = useState(inventoryList);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const filterOnStatus = useCallback(
@@ -206,6 +208,7 @@ const InventoryListScreen = ({navigation}) => {
         fetchData={fetchInventoriesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

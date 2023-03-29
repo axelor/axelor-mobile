@@ -18,12 +18,7 @@
 
 import React, {useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   InventoryLocationsMoveCard,
   InventoryDetailsHeader,
@@ -33,33 +28,24 @@ import {
 import {fetchInventoryById} from '../../features/inventorySlice';
 
 const InventoryPlannedDetailsScreen = ({route, navigation}) => {
-  const {loading, inventory} = useSelector(state => state.inventory);
-  const {mobileSettings} = useSelector(state => state.config);
-  const I18n = useTranslator();
+  const inventoryId = route.params.inventoryId;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchInventoryById({inventoryId: route.params.inventoryId}));
-  }, [dispatch, route.params.inventoryId]);
+  const {loading, inventory} = useSelector(state => state.inventory);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.Inventory"
-          modelId={inventory?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, inventory]);
+  useEffect(() => {
+    dispatch(fetchInventoryById({inventoryId: inventoryId}));
+  }, [dispatch, inventoryId]);
+
+  if (inventory?.id !== inventoryId) {
+    return null;
+  }
 
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<InventoryButtons navigation={navigation} />}
-      loading={loading || inventory == null}>
+      fixedItems={<InventoryButtons />}
+      loading={loading}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InventoryDetailsHeader />}

@@ -29,6 +29,7 @@ export default {
   InternalMoveListScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveListScreen,
+    actionID: 'stock_internalMove_list',
     options: {
       shadedHeader: false,
     },
@@ -36,6 +37,7 @@ export default {
   InternalMoveDetailsGeneralScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveDetailsGeneralScreen,
+    actionID: 'stock_internalMove_details',
     options: {
       shadedHeader: false,
     },

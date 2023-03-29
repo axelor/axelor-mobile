@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {EventCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
 import {getLastEvent, getNextEvent} from '../../../utils/dateEvent';
@@ -34,11 +34,11 @@ type Event = {
 
 interface DropdownEventViewProps {
   eventList: Event[];
-  navigation: any;
 }
 
-const DropdownEventView = ({eventList, navigation}: DropdownEventViewProps) => {
+const DropdownEventView = ({eventList}: DropdownEventViewProps) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const lastEvent = useMemo(() => {
     return getLastEvent(eventList);

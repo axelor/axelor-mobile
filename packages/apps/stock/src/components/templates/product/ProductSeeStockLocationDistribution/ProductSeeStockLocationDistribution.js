@@ -18,16 +18,17 @@
 
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 
-const ProductSeeStockLocationDistribution = ({
-  navigation,
-  product,
-  companyId,
-}) => {
+const ProductSeeStockLocationDistribution = ({product, companyId}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
 
   const {productIndicators} = useSelector(state => state.productIndicators);
 

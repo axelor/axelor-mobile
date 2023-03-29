@@ -27,7 +27,7 @@ import {
 } from '../../../organisms';
 import {searchEventById} from '../../../../features/eventSlice';
 
-const LeadDropdownCards = ({navigation}) => {
+const LeadDropdownCards = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -71,12 +71,7 @@ const LeadDropdownCards = ({navigation}) => {
           {
             title: I18n.t('Crm_Events'),
             key: 3,
-            childrenComp: (
-              <DropdownEventView
-                eventList={listEventById}
-                navigation={navigation}
-              />
-            ),
+            childrenComp: <DropdownEventView eventList={listEventById} />,
           },
         ]}
       />

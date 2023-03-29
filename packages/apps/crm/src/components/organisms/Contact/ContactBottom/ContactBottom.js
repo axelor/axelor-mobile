@@ -17,9 +17,12 @@
  */
 
 import React from 'react';
+import {useNavigation} from '@axelor/aos-mobile-core';
 import EditButton from '../../EditButton/EditButton';
 
-const ContactBottom = ({navigation, idContact}) => {
+const ContactBottom = ({idContact}) => {
+  const navigation = useNavigation();
+
   return (
     <EditButton
       onPress={() =>

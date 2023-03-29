@@ -34,6 +34,7 @@ export default {
   ProductStockDetailsScreen: {
     title: 'Stock_Product',
     component: ProductStockDetailsScreen,
+    actionID: 'stock_product_stockDetails',
   },
   ProductStockLocationDetailsScreen: {
     title: 'Stock_QuantityStockLocation',
@@ -45,6 +46,7 @@ export default {
   ProductDetailsScreen: {
     title: 'Stock_ProductDetails',
     component: ProductDetailsScreen,
+    actionID: 'stock_product_details',
   },
   ProductImageScreen: {
     title: 'Stock_Product',
