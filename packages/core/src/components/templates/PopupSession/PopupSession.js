@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Text, PopUp, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  PopUp,
+  useThemeColor,
+  Icon,
+  LabelText,
+} from '@axelor/aos-mobile-ui';
 
 const PopupSession = ({
   popupIsOpen,
@@ -43,13 +49,13 @@ const PopupSession = ({
               }>
               <View style={styles.popupItemChildren}>
                 <TouchableOpacity onPress={() => activeSession(sesion.name)}>
-                  <Text>{sesion.name}</Text>
+                  <LabelText iconName="tag" title={sesion.name} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => delSession(sesion.name)}>
                   <Icon name="close" color="red" FontAwesome5={false} />
                 </TouchableOpacity>
               </View>
-              <Text>{sesion.url}</Text>
+              <LabelText iconName="link" title={sesion.url} />
               <View style={styles.lineContainer}>
                 <View style={styles.lineStyle} />
               </View>
@@ -79,6 +85,13 @@ const getStyles = Colors =>
     popupItemChildren: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+    },
+    lineContainer: {
+      alignItems: 'center',
+    },
+    lineStyle: {
+      borderWidth: 0.7,
+      width: 280,
     },
   });
 

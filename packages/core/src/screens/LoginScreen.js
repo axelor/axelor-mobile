@@ -75,7 +75,7 @@ const LoginScreen = ({route}) => {
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
 
-  const [session, setSession] = useState(
+  const [sessionList, setSessionList] = useState(
     enableConnectionSessions ? sessionStorage.getSession() : [],
   );
 
@@ -108,14 +108,16 @@ const LoginScreen = ({route}) => {
     testInstanceConfig?.defaultUrl,
   ]);
   const [sessionActive, setSessionActive] = useState(
-    session?.length > 0 ? session.find(ses => ses.isActive === true) : null,
+    sessionList?.length > 0
+      ? sessionList.find(ses => ses.isActive === true)
+      : null,
   );
 
   const [url, setUrl] = useState(
-    session?.length > 0 ? sessionActive?.url : defaultUrl || '',
+    sessionList?.length > 0 ? sessionActive?.url : defaultUrl || '',
   );
   const [username, setUsername] = useState(
-    session?.length > 0
+    sessionList?.length > 0
       ? sessionActive?.username
       : modeDebug
       ? testInstanceConfig?.defaultUsername
@@ -129,7 +131,7 @@ const LoginScreen = ({route}) => {
   const [popupIsOpen, setPopupIsOpen] = useState(false);
 
   console.log('sessionActive', sessionActive);
-  console.log('sessionList', session);
+  console.log('sessionList', sessionList);
 
   useEffect(() => {
     if (scannedValue) {
@@ -154,8 +156,8 @@ const LoginScreen = ({route}) => {
   const onPressLogin = () => {
     //dispatch(login({url, username, password}));
     if (savesSession && enableConnectionSessions) {
-      if (session?.length > 0) {
-        session.push({
+      if (sessionList?.length > 0) {
+        sessionList.push({
           id: sessionName,
           url: url,
           username: username,
@@ -163,11 +165,11 @@ const LoginScreen = ({route}) => {
           isActive: true,
         });
         sessionStorage.addSession({
-          data: session,
+          data: sessionList,
         });
-        setSession(session);
+        setSessionList(sessionList);
         activeSession(sessionName);
-        setSessionActive(session.find(ses => ses.isActive === true));
+        setSessionActive(sessionList.find(ses => ses.isActive === true));
       } else {
         sessionStorage.addSession({
           data: [
@@ -180,7 +182,7 @@ const LoginScreen = ({route}) => {
             },
           ],
         });
-        setSession([
+        setSessionList([
           {
             id: sessionName,
             url: url,
@@ -199,14 +201,12 @@ const LoginScreen = ({route}) => {
       }
     }
   };
-  console.log(storage.getAllKeys());
-  console.log('session', session);
 
   const activeSession = sessionNameparam => {
-    const tempSession = session;
-    session?.forEach((sesion, index) => {
+    const tempSessionList = sessionList;
+    sessionList?.forEach((sesion, index) => {
       if (sessionNameparam === sesion.name) {
-        tempSession[index] = {
+        tempSessionList[index] = {
           id: sesion.name,
           url: sesion.url,
           username: sesion.username,
@@ -217,7 +217,7 @@ const LoginScreen = ({route}) => {
         setUrl(sesion.url);
         setUsername(sesion.username);
       } else {
-        tempSession[index] = {
+        tempSessionList[index] = {
           id: sesion.name,
           url: sesion.url,
           username: sesion.username,
@@ -227,13 +227,15 @@ const LoginScreen = ({route}) => {
       }
     });
     sessionStorage.addSession({
-      data: tempSession,
+      data: tempSessionList,
     });
   };
 
   const delSession = sessionNameparam => {
-    const test = session.filter(sesion => sesion.name !== sessionNameparam);
-    setSession(test);
+    const sessionToDel = sessionList.filter(
+      sesion => sesion.name !== sessionNameparam,
+    );
+    setSessionList(sessionToDel);
   };
 
   return (
@@ -245,7 +247,7 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {session?.length > 0 && <Text>{sessionActive?.name}</Text>}
+            {sessionList?.length > 0 && <Text>{sessionActive?.name}</Text>}
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -306,7 +308,7 @@ const LoginScreen = ({route}) => {
               activeSession={activeSession}
               delSession={delSession}
               popupIsOpen={popupIsOpen}
-              sessionList={session}
+              sessionList={sessionList}
               setPopupIsOpen={setPopupIsOpen}
             />
             <View>
@@ -357,13 +359,6 @@ const styles = StyleSheet.create({
   arrowIcon: {
     marginRight: -6,
     marginLeft: 5,
-  },
-  lineContainer: {
-    alignItems: 'center',
-  },
-  lineStyle: {
-    borderWidth: 0.7,
-    width: 280,
   },
 });
 
