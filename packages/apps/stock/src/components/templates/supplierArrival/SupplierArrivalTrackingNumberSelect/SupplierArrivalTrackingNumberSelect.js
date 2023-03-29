@@ -23,6 +23,7 @@ import {
   useSelector,
   ScannerAutocompleteSearch,
   useDispatch,
+  useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 import {filterTrackingNumber} from '../../../../features/trackingNumberSlice';
@@ -34,12 +35,12 @@ const SupplierArrivalTrackingNumberSelect = ({
   product,
   supplierArrivalLine,
   supplierArrival,
-  navigation,
   setVisible,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
 

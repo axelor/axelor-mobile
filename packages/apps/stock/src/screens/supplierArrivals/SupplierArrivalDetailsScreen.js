@@ -16,48 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {
   SupplierArrivalHeader,
   SupplierArrivalButtons,
   SupplierArrivalMovementIndicationCard,
   SupplierArrivalViewAllContainer,
 } from '../../components';
+import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 
 const SupplierArrivalDetailsScreen = ({route, navigation}) => {
-  const supplierArrival = route.params.supplierArrival;
-  const I18n = useTranslator();
+  const supplierArrivalId = route.params.supplierArrivalId;
+  const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.StockMove"
-          modelId={supplierArrival?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, supplierArrival]);
+  useEffect(() => {
+    dispatch(fetchSupplierArrival({supplierArrivalId: supplierArrivalId}));
+  }, [supplierArrivalId, dispatch]);
+
+  if (supplierArrival !== supplierArrivalId) {
+    return null;
+  }
 
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        <SupplierArrivalButtons
-          supplierArrival={supplierArrival}
-          navigation={navigation}
-        />
-      }>
+      fixedItems={<SupplierArrivalButtons supplierArrival={supplierArrival} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<SupplierArrivalHeader supplierArrival={supplierArrival} />}
@@ -66,10 +53,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />
-        <SupplierArrivalViewAllContainer
-          supplierArrival={supplierArrival}
-          navigation={navigation}
-        />
+        <SupplierArrivalViewAllContainer />
       </ScrollView>
     </Screen>
   );

@@ -26,6 +26,7 @@ export default {
   StockCorrectionListScreen: {
     title: 'Stock_StockCorrection',
     component: StockCorrectionListScreen,
+    actionID: 'stock_stockCorrection_list',
     options: {
       shadedHeader: false,
     },
@@ -33,6 +34,7 @@ export default {
   StockCorrectionDetailsScreen: {
     title: 'Stock_StockCorrection',
     component: StockCorrectionDetailsScreen,
+    actionID: 'stock_stockCorrection_details',
     options: {
       shadedHeader: false,
     },

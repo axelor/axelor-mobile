@@ -23,72 +23,35 @@ import {
   ScrollView,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   InternalMoveMovementIndicationCard,
   InternalMoveViewAllContainer,
   InternalMoveRealizeButton,
   StockMoveHeader,
 } from '../../components';
-import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
-import {getRacks} from '../../features/racksListSlice';
+import {fetchInternalMove} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
-  const internalMove = route.params.internalMove;
+  const internalMoveId = route.params.internalMoveId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
-  const {loadingIMLines, internalMoveLineList} = useSelector(
-    state => state.internalMoveLine,
-  );
+  const {internalMove} = useSelector(state => state.internalMove);
 
   useEffect(() => {
-    if (internalMove != null) {
-      dispatch(
-        fetchInternalMoveLines({internalMoveId: internalMove.id, page: 0}),
-      );
-    }
-  }, [dispatch, internalMove]);
+    dispatch(fetchInternalMove({internalMoveId: internalMoveId}));
+  }, [internalMoveId, dispatch]);
 
-  useEffect(() => {
-    dispatch(
-      getRacks({
-        stockId: internalMove?.fromStockLocation?.id,
-        LineList: internalMoveLineList,
-      }),
-    );
-  }, [dispatch, internalMove, internalMoveLineList]);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.StockMove"
-          modelId={internalMove?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, internalMove]);
+  if (internalMove?.id !== internalMoveId) {
+    return null;
+  }
 
   return (
     <Screen
       removeSpaceOnTop={true}
-      loading={loadingIMLines}
-      fixedItems={
-        <InternalMoveRealizeButton
-          internalMove={internalMove}
-          navigation={navigation}
-        />
-      }>
+      fixedItems={<InternalMoveRealizeButton internalMove={internalMove} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -108,10 +71,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <InternalMoveMovementIndicationCard internalMove={internalMove} />
-        <InternalMoveViewAllContainer
-          internalMove={internalMove}
-          navigation={navigation}
-        />
+        <InternalMoveViewAllContainer />
         <NotesCard
           title={I18n.t('Stock_NotesOnPreparation')}
           data={internalMove.pickingOrderComments}

@@ -18,10 +18,11 @@
 
 import React from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 
-const ProductVariantButton = ({product, navigation}) => {
+const ProductVariantButton = ({product}) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const showProductVariables = () => {
     navigation.navigate('ProductListVariantScreen', {product: product});

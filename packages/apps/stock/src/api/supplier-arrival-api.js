@@ -18,6 +18,7 @@
 
 import {
   axiosApiProvider,
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -61,6 +62,14 @@ export async function searchSupplierArrivalFilter({searchValue, page = 0}) {
     fieldKey: 'stock_supplierArrival',
     sortKey: 'stock_supplierArrival',
     page,
+  });
+}
+
+export async function fetchSupplierArrival({supplierArrivalId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    id: supplierArrivalId,
+    fieldKey: 'stock_supplierArrival',
   });
 }
 

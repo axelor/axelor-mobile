@@ -32,14 +32,16 @@ import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
+  const internalMove = route.params.internalMove;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const internalMove = route.params.internalMove;
+  const dispatch = useDispatch();
+
   const {loadingIMLines, moreLoading, isListEnd, internalMoveLineList} =
     useSelector(state => state.internalMoveLine);
+
   const [filteredList, setFilteredList] = useState(internalMoveLineList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const dispatch = useDispatch();
 
   const handleShowLine = item => {
     showLine({
@@ -152,6 +154,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         fetchData={fetchInternalLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

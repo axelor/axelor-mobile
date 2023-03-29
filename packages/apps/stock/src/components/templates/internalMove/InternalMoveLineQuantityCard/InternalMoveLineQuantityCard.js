@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {QuantityCard} from '../../../organisms';
 import StockMove from '../../../../types/stock-move';
 
@@ -30,11 +30,11 @@ const InternalMoveLineQuantityCard = ({
   stockProduct,
   setMovedQty,
   setSaveStatus,
-  navigation,
   originalStockLocation,
   trackingNumber,
 }) => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   const handleQtyChange = value => {
     setMovedQty(value);

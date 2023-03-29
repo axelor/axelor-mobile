@@ -18,59 +18,41 @@
 
 import React, {useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   InventoryLocationsMoveCard,
   InventoryViewAllContainer,
   InventoryButtons,
   InventoryDetailsHeader,
 } from '../../components';
-import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import {fetchInventoryById} from '../../features/inventorySlice';
 
 const InventoryStartedDetailsScreen = ({route, navigation}) => {
   const inventoryId = route.params.inventoryId;
-  const {loading, inventory} = useSelector(state => state.inventory);
-  const {loadingInventoryLines} = useSelector(state => state.inventoryLine);
-  const {mobileSettings} = useSelector(state => state.config);
-  const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {loading, inventory} = useSelector(state => state.inventory);
 
   useEffect(() => {
     dispatch(fetchInventoryById({inventoryId: inventoryId}));
-    dispatch(fetchInventoryLines({inventoryId: inventoryId, page: 0}));
   }, [dispatch, inventoryId]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.Inventory"
-          modelId={inventory?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, inventory]);
+  if (inventory?.id !== inventoryId) {
+    return null;
+  }
 
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<InventoryButtons navigation={navigation} />}
-      loading={loadingInventoryLines || loading || inventory == null}>
+      fixedItems={<InventoryButtons />}
+      loading={loading}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<InventoryDetailsHeader />}
       />
       <ScrollView>
         <InventoryLocationsMoveCard />
-        <InventoryViewAllContainer navigation={navigation} />
+        <InventoryViewAllContainer />
       </ScrollView>
     </Screen>
   );

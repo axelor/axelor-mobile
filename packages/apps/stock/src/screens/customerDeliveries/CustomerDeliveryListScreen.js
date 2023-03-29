@@ -47,19 +47,21 @@ const stockLocationScanKey = 'stock-location_customer-delivery-list';
 const CustomerDeliveryListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const [stockLocation, setStockLocation] = useState(null);
-  const [customer, setCustomer] = useState(null);
+  const dispatch = useDispatch();
+
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {clientList} = useSelector(state => state.stock_partner);
   const {loading, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
   );
   const {user} = useSelector(state => state.user);
+
+  const [stockLocation, setStockLocation] = useState(null);
+  const [customer, setCustomer] = useState(null);
   const [filteredList, setFilteredList] = useState(deliveryList);
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {
@@ -90,7 +92,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
     if (item != null) {
       setNavigate(current => !current);
       navigation.navigate('CustomerDeliveryDetailScreen', {
-        customerDelivery: item,
+        customerDeliveryId: item?.id,
       });
     }
   };
@@ -224,6 +226,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         fetchData={fetchDeliveriesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

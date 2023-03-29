@@ -19,20 +19,34 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
+  fetchStockCorrection as _fetchStockCorrection,
   searchStockCorrection,
   createStockCorrection,
   updateStockCorrection,
 } from '../api/stock-correction-api';
 
-export const fetchStockCorrections = createAsyncThunk(
-  'stockCorrection/fetchStockCorrection',
+export const searchStockCorrections = createAsyncThunk(
+  'stockCorrection/searchStockCorrections',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchStockCorrection,
       data,
-      action: 'fetch stock corrections',
+      action: 'search stock corrections',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchStockCorrection = createAsyncThunk(
+  'stockCorrection/fetchStockCorrection',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchStockCorrection,
+      data,
+      action: 'fetch stock correction',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -68,22 +82,26 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   stockCorrectionList: [],
-  createResponse: {},
-  updateResponse: {},
+  stockCorrection: null,
 };
 
 const stockCorrectionSlice = createSlice({
   name: 'stockCorrection',
   initialState,
+  reducers: {
+    clearStockCorrection: state => {
+      state.stockCorrection = null;
+    },
+  },
   extraReducers: builder => {
-    builder.addCase(fetchStockCorrections.pending, (state, action) => {
+    builder.addCase(searchStockCorrections.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
         state.loadingStockCorrection = true;
       } else {
         state.moreLoading = true;
       }
     });
-    builder.addCase(fetchStockCorrections.fulfilled, (state, action) => {
+    builder.addCase(searchStockCorrections.fulfilled, (state, action) => {
       state.loadingStockCorrection = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
@@ -101,21 +119,16 @@ const stockCorrectionSlice = createSlice({
         }
       }
     });
-    builder.addCase(createCorrection.pending, state => {
+    builder.addCase(fetchStockCorrection.pending, (state, action) => {
       state.loadingStockCorrection = true;
     });
-    builder.addCase(createCorrection.fulfilled, (state, action) => {
+    builder.addCase(fetchStockCorrection.fulfilled, (state, action) => {
       state.loadingStockCorrection = false;
-      state.createResponse = action.payload;
-    });
-    builder.addCase(updateCorrection.pending, state => {
-      state.loadingStockCorrection = true;
-    });
-    builder.addCase(updateCorrection.fulfilled, (state, action) => {
-      state.loadingStockCorrection = false;
-      state.updateResponse = action.payload;
+      state.stockCorrection = action.payload;
     });
   },
 });
+
+export const {clearStockCorrection} = stockCorrectionSlice.actions;
 
 export const stockCorrectionReducer = stockCorrectionSlice.reducer;

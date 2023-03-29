@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
 
 export async function searchStockCorrection({page = 0}) {
   return createStandardSearch({
@@ -25,6 +29,14 @@ export async function searchStockCorrection({page = 0}) {
     fieldKey: 'stock_stockCorrection',
     sortKey: 'stock_stockCorrection',
     page,
+  });
+}
+
+export async function fetchStockCorrection({id}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.StockCorrection',
+    id: id,
+    fieldKey: 'stock_stockCorrection',
   });
 }
 

@@ -16,16 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {showLine} from '../../../../utils/line-navigation';
 import {InternalMoveLineCard} from '../../internalMove';
+import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
+import {getRacks} from '../../../../features/racksListSlice';
 
-const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
+const InternalMoveViewAllContainer = ({}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const {internalMove} = useSelector(state => state.internalMove);
+
   const {internalMoveLineList} = useSelector(state => state.internalMoveLine);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
+
+  useEffect(() => {
+    if (internalMove != null) {
+      dispatch(
+        fetchInternalMoveLines({internalMoveId: internalMove?.id, page: 0}),
+      );
+    }
+  }, [dispatch, internalMove]);
+
+  useEffect(() => {
+    dispatch(
+      getRacks({
+        stockId: internalMove?.fromStockLocation?.id,
+        LineList: internalMoveLineList,
+      }),
+    );
+  }, [dispatch, internalMove, internalMoveLineList]);
 
   const handleViewAll = () => {
     navigation.navigate('InternalMoveLineListScreen', {
@@ -48,6 +78,7 @@ const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
   return (
     <ViewAllContainer
       data={internalMoveLineList}
+      translator={I18n.t}
       renderFirstTwoItems={(item, index) => (
         <InternalMoveLineCard
           style={styles.item}

@@ -32,15 +32,17 @@ import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
-  const Colors = useThemeColor();
   const customerDelivery = route.params.customerDelivery;
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingCDLines, moreLoading, isListEnd, customerDeliveryLineList} =
     useSelector(state => state.customerDeliveryLine);
   const {racksList} = useSelector(state => state.rack);
+
   const [filteredList, setFilteredList] = useState(customerDeliveryLineList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const handleShowLine = (item, index) => {
     const locker = racksList?.[index]?.[0]?.rack ?? '';
@@ -163,6 +165,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
         fetchData={fetchDeliveryLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        translator={I18n.t}
       />
     </Screen>
   );

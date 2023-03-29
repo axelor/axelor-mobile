@@ -16,19 +16,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 import {CustomerDeliveryLineCard} from '..';
 import {showLine} from '../../../../utils/line-navigation';
+import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
+import {getRacks} from '../../../../features/racksListSlice';
 
-const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
+const CustomerDeliveryViewAllContainer = ({}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const {customerDelivery} = useSelector(state => state.customerDelivery);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const {customerDeliveryLineList} = useSelector(
     state => state.customerDeliveryLine,
   );
+
+  useEffect(() => {
+    if (customerDelivery != null) {
+      dispatch(
+        fetchCustomerDeliveryLines({
+          customerDeliveryId: customerDelivery?.id,
+          page: 0,
+        }),
+      );
+    }
+  }, [customerDelivery, dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      getRacks({
+        stockId: customerDelivery?.fromStockLocation?.id,
+        LineList: customerDeliveryLineList,
+      }),
+    );
+  }, [
+    dispatch,
+    customerDeliveryLineList,
+    customerDelivery?.fromStockLocation?.id,
+  ]);
 
   const handleNewLine = () => {
     navigation.navigate('CustomerDeliverySelectProductScreen', {
@@ -67,6 +103,7 @@ const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
       }
       onNewIcon={handleNewLine}
       data={customerDeliveryLineList}
+      translator={I18n.t}
       renderFirstTwoItems={(item, index) => (
         <CustomerDeliveryLineCard
           style={styles.item}

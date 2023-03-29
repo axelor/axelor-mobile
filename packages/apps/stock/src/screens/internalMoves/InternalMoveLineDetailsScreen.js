@@ -165,7 +165,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         <InternalMoveLineButtons
           destinationStockLocation={destinationStockLocation}
           movedQty={movedQty}
-          navigation={navigation}
           originalStockLocation={originalStockLocation}
           internalMove={route.params.internalMove}
           saveStatus={saveStatus}
@@ -217,7 +216,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
             />
             <InternalMoveLineQuantityCard
               movedQty={movedQty}
-              navigation={navigation}
               originalStockLocation={originalStockLocation}
               plannedQty={plannedQty}
               setMovedQty={setMovedQty}

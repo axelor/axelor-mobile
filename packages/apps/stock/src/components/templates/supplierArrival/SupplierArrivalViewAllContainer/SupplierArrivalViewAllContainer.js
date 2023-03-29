@@ -19,20 +19,48 @@
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {SupplierArrivalLineCard} from '../../supplierArrival';
 import {showLine} from '../../../../utils/line-navigation';
 import {getRacks} from '../../../../features/racksListSlice';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
 import StockMove from '../../../../types/stock-move';
 
-const SupplierArrivalViewAllContainer = ({supplierArrival, navigation}) => {
+const SupplierArrivalViewAllContainer = ({}) => {
+  const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
   const {loadingRacks, racksList} = useSelector(state => state.rack);
   const {supplierArrivalLineList} = useSelector(
     state => state.supplierArrivalLine,
   );
+
+  useEffect(() => {
+    if (supplierArrival != null) {
+      dispatch(
+        fetchSupplierArrivalLines({
+          supplierArrivalId: supplierArrival?.id,
+          page: 0,
+        }),
+      );
+    }
+  }, [dispatch, supplierArrival]);
+
+  useEffect(() => {
+    dispatch(
+      getRacks({
+        stockId: supplierArrival?.toStockLocation?.id,
+        LineList: supplierArrivalLineList,
+      }),
+    );
+  }, [dispatch, supplierArrival?.toStockLocation?.id, supplierArrivalLineList]);
 
   const handleViewAll = () => {
     navigation.navigate('SupplierArrivalLineListScreen', {
@@ -89,6 +117,7 @@ const SupplierArrivalViewAllContainer = ({supplierArrival, navigation}) => {
       isHeaderExist={supplierArrival.statusSelect !== StockMove.status.Realized}
       onNewIcon={handleNewLine}
       data={supplierArrivalLineList}
+      translator={I18n.t}
       renderFirstTwoItems={(item, index) => (
         <SupplierArrivalLineCard
           style={styles.item}

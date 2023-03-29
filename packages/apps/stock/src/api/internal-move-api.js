@@ -18,6 +18,7 @@
 
 import {
   axiosApiProvider,
+  createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -52,6 +53,14 @@ export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
     fieldKey: 'stock_internalMove',
     sortKey: 'stock_internalMove',
     page,
+  });
+}
+
+export async function fetchInternalMove({internalMoveId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.StockMove',
+    id: internalMoveId,
+    fieldKey: 'stock_internalMove',
   });
 }
 

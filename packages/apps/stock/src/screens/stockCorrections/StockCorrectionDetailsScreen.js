@@ -16,20 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator} from 'react-native';
-import {
-  HeaderContainer,
-  PopUpOneButton,
-  Screen,
-  ScrollView,
-} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
   StockCorrectionButtons,
@@ -41,39 +31,77 @@ import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonS
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
+import {
+  clearStockCorrection,
+  fetchStockCorrection,
+} from '../../features/stockCorrectionSlice';
 
-const StockCorrectionDetailsScreen = ({navigation, route}) => {
-  const I18n = useTranslator();
+const CREATION_MODE = 'creation';
+const VISUALISATION_MODE = 'visualisation';
+
+const StockCorrectionDetailsScreen = ({route}) => {
+  const stockCorrectionId = route.params.stockCorrectionId;
+  const routeProduct = route.params.stockProduct;
+  const routeLocation = route.params.stockLocation;
+  const routeTrackingNumber = route.params.trackingNumber || null;
+  const dispatch = useDispatch();
+
+  const mode = useMemo(
+    () =>
+      route.params.stockCorrectionId != null
+        ? VISUALISATION_MODE
+        : CREATION_MODE,
+    [route.params.stockCorrectionId],
+  );
+
+  const {stockCorrection} = useSelector(state => state.stockCorrection);
   const {loadingProduct, productFromId} = useSelector(state => state.product);
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {mobileSettings} = useSelector(state => state.config);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchStockCorrectionReasons());
-    if (route.params.stockCorrection != null) {
-      dispatch(fetchProductWithId(route.params.stockCorrection.product.id));
+    if (stockCorrectionId != null) {
+      dispatch(fetchStockCorrection({id: stockCorrectionId}));
+    } else {
+      dispatch(clearStockCorrection());
+    }
+  }, [dispatch, stockCorrectionId]);
+
+  useEffect(() => {
+    if (stockCorrection != null) {
+      dispatch(fetchProductWithId(stockCorrection.product.id));
     }
 
-    dispatch(
-      fetchProductIndicators({
-        version:
-          route.params.stockCorrection != null
-            ? route.params.stockCorrection.product.$version
-            : route.params.stockProduct.version,
-        productId:
-          route.params.stockCorrection != null
-            ? route.params.stockCorrection.product.id
-            : route.params.stockProduct.id,
-        companyId: activeCompany?.id,
-        stockLocationId:
-          route.params.stockCorrection != null
-            ? route.params.stockCorrection.stockLocation.id
-            : route.params.stockLocation.id,
-      }),
-    );
-  }, [dispatch, activeCompany?.id, route.params]);
+    if (stockCorrectionId != null) {
+      if (stockCorrection != null) {
+        dispatch(
+          fetchProductIndicators({
+            version: stockCorrection.product.$version,
+            productId: stockCorrection.product.id,
+            companyId: activeCompany?.id,
+            stockLocationId: stockCorrection.stockLocation.id,
+          }),
+        );
+      }
+    } else {
+      dispatch(
+        fetchProductIndicators({
+          version: routeProduct.version,
+          productId: routeProduct.id,
+          companyId: activeCompany?.id,
+          stockLocationId: routeLocation.id,
+        }),
+      );
+    }
+  }, [
+    dispatch,
+    activeCompany,
+    stockCorrection,
+    routeProduct,
+    routeLocation,
+    stockCorrectionId,
+  ]);
 
   const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
   const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
@@ -87,16 +115,12 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
   const [reason, setReason] = useState();
 
   const initVariables = useCallback(() => {
-    if (route.params.stockCorrection == null) {
+    if (mode === CREATION_MODE) {
       setStatus(StockCorrection.status.Draft);
-      setStockLocation(route.params.stockLocation);
-      setStockProduct(route.params.stockProduct);
-      setTrackingNumber(
-        route.params.trackingNumber == null
-          ? null
-          : route.params.trackingNumber,
-      );
-      if (productIndicators.id !== route.params.stockProduct.id) {
+      setStockLocation(routeLocation);
+      setStockProduct(routeProduct);
+      setTrackingNumber(routeTrackingNumber);
+      if (productIndicators.id !== routeProduct.id) {
         setLoading(true);
         return;
       } else {
@@ -107,7 +131,11 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
 
       setSaveStatus(false);
     } else {
-      const stockCorrection = route.params.stockCorrection;
+      if (stockCorrection == null) {
+        setLoading(true);
+        return;
+      }
+
       setStatus(stockCorrection.statusSelect);
       setStockLocation(stockCorrection.stockLocation);
       setStockProduct(productFromId);
@@ -125,39 +153,30 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
       setSaveStatus(true);
     }
     setLoading(false);
-  }, [productFromId, productIndicators, route.params]);
+  }, [
+    mode,
+    productFromId,
+    productIndicators,
+    routeTrackingNumber,
+    routeLocation,
+    routeProduct,
+    stockCorrection,
+  ]);
 
   useEffect(() => {
     initVariables();
   }, [initVariables]);
-
-  const [popUp, setPopUp] = useState(false);
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.stock.db.StockCorrection"
-          modelId={route.params.stockCorrection?.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, route.params.stockCorrection]);
 
   return (
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
         <StockCorrectionButtons
-          navigation={navigation}
           realQty={realQty}
           reason={reason}
-          stockCorrection={route.params.stockCorrection}
+          stockCorrection={stockCorrection}
           externeNavigation={route.params.externeNavigation}
           saveStatus={saveStatus}
-          setPopUp={setPopUp}
           status={status}
           stockLocation={stockLocation}
           stockProduct={stockProduct}
@@ -178,15 +197,7 @@ const StockCorrectionDetailsScreen = ({navigation, route}) => {
         <ActivityIndicator size="large" />
       ) : (
         <ScrollView>
-          <PopUpOneButton
-            visible={popUp}
-            title={I18n.t('Auth_Warning')}
-            data={I18n.t('Stock_ReasonRequired')}
-            btnTitle={I18n.t('Auth_Close')}
-            onPress={() => setPopUp(!popUp)}
-          />
           <StockCorrectionProductCardInfo
-            navigation={navigation}
             stockProduct={stockProduct}
             trackingNumber={trackingNumber}
           />

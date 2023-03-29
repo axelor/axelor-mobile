@@ -19,6 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
+  fetchCustomerDelivery as _fetchCustomerDelivery,
   addLineStockMove,
   realizeSockMove,
   searchDeliveryFilter,
@@ -33,6 +34,19 @@ export const searchDeliveries = createAsyncThunk(
       action: 'filter customer deliveries',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchCustomerDelivery = createAsyncThunk(
+  'deliveries/fetchCustomerDelivery',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchCustomerDelivery,
+      data,
+      action: 'fetch customer delivery',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -68,8 +82,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   deliveryList: [],
-  newLineResponse: {},
-  realizeResponse: {},
+  customerDelivery: null,
 };
 
 const customerDeliverySlice = createSlice({
@@ -98,19 +111,12 @@ const customerDeliverySlice = createSlice({
         }
       }
     });
-    builder.addCase(addNewLine.pending, state => {
+    builder.addCase(fetchCustomerDelivery.pending, state => {
       state.loading = true;
     });
-    builder.addCase(addNewLine.fulfilled, (state, action) => {
+    builder.addCase(fetchCustomerDelivery.fulfilled, (state, action) => {
       state.loading = false;
-      state.newLineResponse = action.payload;
-    });
-    builder.addCase(realizeCustomerDelivery.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(realizeCustomerDelivery.fulfilled, (state, action) => {
-      state.loading = false;
-      state.realizeResponse = action.payload;
+      state.customerDelivery = action.payload;
     });
   },
 });

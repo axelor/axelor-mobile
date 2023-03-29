@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import React, {useState} from 'react';
+import {
+  useTranslator,
+  useDispatch,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
+import {Button, PopUpOneButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
 import {
   createCorrection,
@@ -28,8 +32,6 @@ import {
 const StockCorrectionButtons = ({
   saveStatus,
   reason,
-  setPopUp,
-  navigation,
   stockCorrection,
   externeNavigation = false,
   stockProduct,
@@ -41,6 +43,9 @@ const StockCorrectionButtons = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const [popUp, setPopUp] = useState(false);
 
   const handleSave = () => {
     if (reason.id === null) {
@@ -129,6 +134,13 @@ const StockCorrectionButtons = ({
 
   return (
     <>
+      <PopUpOneButton
+        visible={popUp}
+        title={I18n.t('Auth_Warning')}
+        data={I18n.t('Stock_ReasonRequired')}
+        btnTitle={I18n.t('Auth_Close')}
+        onPress={() => setPopUp(!popUp)}
+      />
       {saveStatus ? null : (
         <Button
           title={I18n.t('Base_Save')}

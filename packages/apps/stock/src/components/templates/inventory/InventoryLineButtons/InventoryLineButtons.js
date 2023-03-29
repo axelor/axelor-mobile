@@ -18,7 +18,12 @@
 
 import React, {useCallback} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useDispatch,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import Inventory from '../../../../types/inventory';
 import {
   createNewInventoryLine,
@@ -30,12 +35,12 @@ const InventoryLineButtons = ({
   inventory,
   trackingNumber,
   rack,
-  navigation,
   realQty,
   description,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {productFromId} = useSelector(state => state.product);
 

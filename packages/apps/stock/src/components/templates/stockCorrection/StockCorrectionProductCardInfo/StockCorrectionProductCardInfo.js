@@ -18,13 +18,12 @@
 
 import React from 'react';
 import {View} from 'react-native';
+import {useNavigation} from '@axelor/aos-mobile-core';
 import {ProductCardInfo} from '../../../templates';
 
-const StockCorrectionProductCardInfo = ({
-  stockProduct,
-  trackingNumber,
-  navigation,
-}) => {
+const StockCorrectionProductCardInfo = ({stockProduct, trackingNumber}) => {
+  const navigation = useNavigation();
+
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
       product: stockProduct,

@@ -19,11 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Screen, ScrollView, NotesCard} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
-  useSelector,
-  HeaderOptionsMenu,
-} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProductCharacteristics,
   ProductVariantButton,
@@ -32,32 +28,15 @@ import {
 } from '../../components';
 
 const ProductDetailsScreen = ({route, navigation}) => {
-  const I18n = useTranslator();
   const product = route.params.product;
-  const {mobileSettings} = useSelector(state => state.config);
+  const I18n = useTranslator();
 
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.base.db.Product"
-          modelId={product.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-          attachedFileScreenTitle={product.name}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, product]);
   return (
-    <Screen
-      fixedItems={
-        <ProductVariantButton navigation={navigation} product={product} />
-      }>
+    <Screen fixedItems={<ProductVariantButton product={product} />}>
       <ScrollView>
         <ProductCharacteristics
           onPressImage={() => navigateToImageProduct()}

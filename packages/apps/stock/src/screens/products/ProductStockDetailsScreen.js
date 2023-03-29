@@ -25,7 +25,6 @@ import {
   useSelector,
   useDispatch,
   useTranslator,
-  HeaderOptionsMenu,
 } from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
@@ -35,27 +34,37 @@ import {
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
 import {searchStockLocations} from '../../features/stockLocationSlice';
-import {updateProductLocker} from '../../features/productSlice';
+import {
+  fetchProductWithId,
+  updateProductLocker,
+} from '../../features/productSlice';
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route, navigation}) => {
+  const routeProduct = route.params.product;
   const I18n = useTranslator();
-  const product = route.params.product;
+
+  const {productFromId: product} = useSelector(state => state.product);
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
+  const {baseConfig} = useSelector(state => state.config);
+
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
-  const {baseConfig, mobileSettings} = useSelector(state => state.config);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProductWithId(routeProduct.id));
+  }, [dispatch, routeProduct]);
 
   useEffect(() => {
     dispatch(
       fetchProductIndicators({
-        version: product.version,
-        productId: product.id,
+        version: routeProduct.version,
+        productId: routeProduct.id,
         companyId: companyId,
         stockLocationId: stockLocation?.id,
       }),
@@ -64,11 +73,11 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       dispatch(
         fetchStockLocationLine({
           stockId: stockLocation.id,
-          productId: product.id,
+          productId: routeProduct.id,
         }),
       );
     }
-  }, [companyId, dispatch, product, stockLocation]);
+  }, [companyId, dispatch, routeProduct, stockLocation]);
 
   const handleLockerChange = input => {
     if (stockLocation != null) {
@@ -82,20 +91,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       );
     }
   };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderOptionsMenu
-          model="com.axelor.apps.base.db.Product"
-          modelId={product.id}
-          navigation={navigation}
-          disableMailMessages={!mobileSettings?.isTrackerMessageOnStockApp}
-          attachedFileScreenTitle={product.name}
-        />
-      ),
-    });
-  }, [I18n, mobileSettings, navigation, product]);
 
   const fetchStockLocationsAPI = useCallback(
     filterValue => {
@@ -115,7 +110,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
       <ScrollView>
         <ProductStockHeader
           product={product}
-          navigation={navigation}
           companyId={companyId}
           stockLocation={stockLocation}
         />
@@ -133,7 +127,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         )}
         <ProductSeeStockLocationDistribution
           companyId={companyId}
-          navigation={navigation}
           product={product}
         />
         <ScannerAutocompleteSearch
