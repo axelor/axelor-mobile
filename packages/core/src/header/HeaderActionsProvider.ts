@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {checkNullString} from '../utils';
 import {HeaderActions, HeaderOptions} from './types';
-import {mergeActions} from './utils';
+import {fetchOptionsOfHeaderKey, mergeActions} from './utils';
 
 class HeaderActionsProvider {
   private headerActions: HeaderActions;
@@ -35,33 +34,22 @@ class HeaderActionsProvider {
     }
   }
 
-  getHeaderActions(): HeaderActions {
-    return this.headerActions;
+  getHeaderOptions(key: string): HeaderOptions {
+    return fetchOptionsOfHeaderKey(this.headerActions, key);
   }
 }
 
 export const headerActionsProvider = new HeaderActionsProvider();
 
 export const useHeaderOptions = (modelKey: string) => {
-  const [header, setHeader] = useState({});
+  const [header, setHeader] = useState();
 
   useEffect(() => {
-    setHeader(headerActionsProvider.getHeaderActions());
     headerActionsProvider.register(setHeader);
   }, []);
 
   const getHeaderOptionsOfModel = useCallback(
-    key => {
-      if (checkNullString(key)) {
-        return null;
-      }
-
-      if (!Object.keys(header).includes(key)) {
-        return null;
-      }
-
-      return header[key];
-    },
+    key => fetchOptionsOfHeaderKey(header, key),
     [header],
   );
 

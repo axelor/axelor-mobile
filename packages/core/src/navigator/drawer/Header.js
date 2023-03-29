@@ -5,13 +5,18 @@ import DrawerToggleButton from './DrawerToggleButton';
 import BackIcon from './BackIcon';
 import {useTranslator} from '../../i18n';
 import {HeaderOptionsMenu} from '../../components';
-import {useHeaderOptions} from '../../header';
+import {headerActionsProvider, useHeaderOptions} from '../../header';
 
 const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
-  const {options} = useHeaderOptions(actionID);
-
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
+  const {options} = useHeaderOptions(actionID);
+
+  const headerOptions = useMemo(
+    () => options || headerActionsProvider.getHeaderOptions(actionID),
+    [actionID, options],
+  );
 
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
@@ -29,13 +34,13 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
           </Text>
         </View>
       </View>
-      {options != null ? (
+      {headerOptions != null ? (
         <HeaderOptionsMenu
-          model={options.model}
-          modelId={options.modelId}
-          actions={options.actions}
-          attachedFileScreenTitle={options.attachedFileScreenTitle}
-          disableMailMessages={options.disableMailMessages}
+          model={headerOptions.model}
+          modelId={headerOptions.modelId}
+          actions={headerOptions.actions}
+          attachedFileScreenTitle={headerOptions.attachedFileScreenTitle}
+          disableMailMessages={headerOptions.disableMailMessages}
         />
       ) : null}
     </View>

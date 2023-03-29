@@ -1,4 +1,5 @@
-import {ActionType} from './types';
+import {checkNullString} from '../utils';
+import {ActionType, HeaderActions, HeaderOptions} from './types';
 
 export const mergeActions = (
   currentActions: ActionType[],
@@ -34,4 +35,19 @@ export const mergeActions = (
   });
 
   return actionsWithOrder.sort((a, b) => a.order - b.order);
+};
+
+export const fetchOptionsOfHeaderKey = (
+  headerActions: HeaderActions = {},
+  key: string,
+): HeaderOptions => {
+  if (checkNullString(key)) {
+    return null;
+  }
+
+  if (!Object.keys(headerActions).includes(key)) {
+    return null;
+  }
+
+  return headerActions[key];
 };
