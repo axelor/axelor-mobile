@@ -160,15 +160,16 @@ const LoginScreen = ({route}) => {
   }, [scanData, scannedValue]);
 
   const onPressLogin = () => {
-    //dispatch(login({url, username, password}));
+    dispatch(login({url, username, password}));
     if (savesSession && enableConnectionSessions) {
+      const sessionObject = {
+        id: sessionName,
+        url: url,
+        username: username,
+        isActive: true,
+      };
       if (sessionList?.length > 0) {
-        sessionList.push({
-          id: sessionName,
-          url: url,
-          username: username,
-          isActive: true,
-        });
+        sessionList.push(sessionObject);
         sessionStorage.addSession({
           data: sessionList,
         });
@@ -177,29 +178,10 @@ const LoginScreen = ({route}) => {
         setSessionActive(sessionList.find(ses => ses.isActive === true));
       } else {
         sessionStorage.addSession({
-          data: [
-            {
-              id: sessionName,
-              url: url,
-              username: username,
-              isActive: true,
-            },
-          ],
+          data: [sessionObject],
         });
-        setSessionList([
-          {
-            id: sessionName,
-            url: url,
-            username: username,
-            isActive: true,
-          },
-        ]);
-        setSessionActive({
-          id: sessionName,
-          url: url,
-          username: username,
-          isActive: true,
-        });
+        setSessionList([sessionObject]);
+        setSessionActive(sessionObject);
       }
     }
   };
