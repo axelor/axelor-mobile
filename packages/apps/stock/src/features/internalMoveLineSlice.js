@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchInternalMoveLines} from '../api/internal-move-line-api';
+import {
+  searchInternalMoveLines,
+  searchProductTrackingNumber as _searchProductTrackingNumber,
+} from '../api/internal-move-line-api';
 
 export const fetchInternalMoveLines = createAsyncThunk(
   'internalMoveLine/fetchInternalMoveLine',
@@ -33,11 +36,25 @@ export const fetchInternalMoveLines = createAsyncThunk(
   },
 );
 
+export const searchProductTrackingNumber = createAsyncThunk(
+  'internalMoveLine/searchProductTrackingNumber',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProductTrackingNumber,
+      data,
+      action: 'search product or tracking number for internal move',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingIMLines: false,
   moreLoading: false,
   isListEnd: false,
   internalMoveLineList: [],
+  productTrackingNumberList: [],
 };
 
 const internalMoveLineSlice = createSlice({
@@ -68,6 +85,9 @@ const internalMoveLineSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(searchProductTrackingNumber.fulfilled, (state, action) => {
+      state.productTrackingNumberList = action.payload;
     });
   },
 });

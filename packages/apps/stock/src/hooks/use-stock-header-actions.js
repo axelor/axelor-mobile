@@ -79,7 +79,7 @@ const useInternalMoveListActions = () => {
           title: I18n.t('Stock_NewInternalMove'),
           iconColor: Colors.primaryColor.background,
           onPress: () =>
-            navigation.navigate('InternalMoveSelectFromLocationScreen', {}),
+            navigation.navigate('InternalMoveLineCreationScreen', {}),
           showInHeader: true,
         },
       ],

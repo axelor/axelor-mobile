@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginHorizontal: 16,
-    marginBottom: 10,
+    marginVertical: 10,
   },
   imageSize: {
     height: 60,

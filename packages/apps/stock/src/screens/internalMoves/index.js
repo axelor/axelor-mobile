@@ -17,12 +17,11 @@
  */
 
 import InternalMoveDetailsGeneralScreen from './InternalMoveDetailsGeneralScreen';
+import InternalMoveLineCreationScreen from './InternalMoveLineCreationScreen';
 import InternalMoveLineDetailsScreen from './InternalMoveLineDetailsScreen';
 import InternalMoveLineListScreen from './InternalMoveLineListScreen';
 import InternalMoveListScreen from './InternalMoveListScreen';
-import InternalMoveSelectFromLocationScreen from './InternalMoveSelectFromLocationScreen';
 import InternalMoveSelectProductScreen from './InternalMoveSelectProductScreen';
-import InternalMoveSelectToLocationScreen from './InternalMoveSelectToLocationScreen';
 import InternalMoveSelectTrackingScreen from './InternalMoveSelectTrackingScreen';
 
 export default {
@@ -42,6 +41,10 @@ export default {
       shadedHeader: false,
     },
   },
+  InternalMoveLineCreationScreen: {
+    title: 'Stock_InternalMove',
+    component: InternalMoveLineCreationScreen,
+  },
   InternalMoveLineDetailsScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveLineDetailsScreen,
@@ -56,20 +59,12 @@ export default {
       shadedHeader: false,
     },
   },
-  InternalMoveSelectFromLocationScreen: {
-    title: 'Stock_InternalMove',
-    component: InternalMoveSelectFromLocationScreen,
-  },
   InternalMoveSelectProductScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveSelectProductScreen,
     options: {
       shadedHeader: false,
     },
-  },
-  InternalMoveSelectToLocationScreen: {
-    title: 'Stock_InternalMove',
-    component: InternalMoveSelectToLocationScreen,
   },
   InternalMoveSelectTrackingScreen: {
     title: 'Stock_InternalMove',

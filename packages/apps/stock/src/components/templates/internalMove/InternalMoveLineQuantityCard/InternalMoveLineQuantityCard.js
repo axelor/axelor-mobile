@@ -29,7 +29,7 @@ const InternalMoveLineQuantityCard = ({
   plannedQty,
   stockProduct,
   setMovedQty,
-  setSaveStatus,
+  setSaveStatus = () => {},
   originalStockLocation,
   trackingNumber,
 }) => {

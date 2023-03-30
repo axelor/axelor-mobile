@@ -93,6 +93,7 @@ export async function updateInternalStockMove({
   movedQty,
   unitId,
   status,
+  notes,
 }) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-move/internal/${internalMoveId}`,
@@ -101,6 +102,23 @@ export async function updateInternalStockMove({
       movedQty: movedQty,
       unitId: unitId,
       status: status,
+      notes: notes,
+    },
+  });
+}
+
+export async function modifyInternalMoveNotes({
+  internalMoveId,
+  version,
+  notes,
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
+    data: {
+      data: {
+        version: version,
+        note: notes,
+      },
     },
   });
 }

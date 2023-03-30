@@ -17,6 +17,8 @@
  */
 
 import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {searchProductsFilter} from './product-api';
+import {searchTrackingNumberFilter} from './tracking-number-api';
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {
   return createStandardSearch({
@@ -30,5 +32,19 @@ export async function searchInternalMoveLines({internalMoveId, page = 0}) {
     ],
     fieldKey: 'stock_internalMoveLine',
     page,
+  });
+}
+
+export async function searchProductTrackingNumber({searchValue}) {
+  const productResult = await searchProductsFilter({searchValue}).then(
+    res => res?.data?.data || [],
+  );
+
+  const trackingNumberResult = await searchTrackingNumberFilter({
+    searchValue,
+  }).then(res => res?.data?.data || []);
+
+  return new Promise(async resolve => {
+    resolve({data: {data: [...productResult, ...trackingNumberResult]}});
   });
 }

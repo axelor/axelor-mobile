@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   StyleSheet,
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -34,127 +33,56 @@ import {
   InternalMoveLineQuantityCard,
   InternalMoveLinePicker,
 } from '../../components';
-import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
-import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockMove from '../../types/stock-move';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
-  );
-  const {activeCompany} = useSelector(state => state.user.user);
-  const {productIndicators} = useSelector(state => state.productIndicators);
-
+  const internalMove = route.params.internalMove;
+  const internalMoveLine = route.params.internalMoveLine;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchUnit());
-    if (
-      route.params.internalMove != null &&
-      route.params.internalMoveLine != null
-    ) {
-      dispatch(fetchInternalMoveLines(route.params.internalMove.id));
-      dispatch(fetchProductWithId(route.params.internalMoveLine.product.id));
-    }
-  }, [dispatch, route.params]);
+  const {activeCompany} = useSelector(state => state.user.user);
+  const {productIndicators} = useSelector(state => state.productIndicators);
+  const {loadingProductFromId, productFromId: product} = useSelector(
+    state => state.product,
+  );
 
-  useEffect(() => {
-    if (
-      route.params.internalMove != null &&
-      route.params.internalMoveLine != null
-    ) {
-      dispatch(
-        fetchProductIndicators({
-          version: route.params.internalMoveLine.product.$version,
-          productId: route.params.internalMoveLine.product.id,
-          companyId: activeCompany?.id,
-          stockLocationId: route.params.internalMove.fromStockLocation.id,
-        }),
-      );
-    } else if (route.params.internalMove == null) {
-      dispatch(
-        fetchProductIndicators({
-          version: route.params.stockProduct.version,
-          productId: route.params.stockProduct.id,
-          companyId: activeCompany?.id,
-          stockLocationId: route.params.fromStockLocation.id,
-        }),
-      );
-    }
-  }, [activeCompany?.id, dispatch, route.params]);
+  const [saveStatus, setSaveStatus] = useState(true);
+  const [movedQty, setMovedQty] = useState(internalMoveLine.realQty);
+  const [unit, setUnit] = useState(internalMoveLine.unit);
+  const [notes, setNotes] = useState(internalMove.note);
 
-  const [loading, setLoading] = useState(true); // Indicator for initialisation of variables
-  const [saveStatus, setSaveStatus] = useState(); // Inidicator for changes
-
-  const [status, setStatus] = useState();
-  const [availability, setAvailabilty] = useState();
-  const [originalStockLocation, setOriginalStockLocation] = useState();
-  const [destinationStockLocation, setDestinationStockLocation] = useState();
-  const [stockProduct, setStockProduct] = useState();
-  const [trackingNumber, setTrackingNumber] = useState();
-  const [plannedQty, setPlannedQty] = useState();
-  const [movedQty, setMovedQty] = useState();
-  const [unit, setUnit] = useState();
-  const [notes, setNotes] = useState();
-
-  useEffect(() => {
-    initVariables();
-  }, [route.params, productFromId, productIndicators, initVariables]);
-
-  const initVariables = useCallback(() => {
-    if (route.params.internalMove == null) {
-      setStatus(StockMove.status.Draft);
-      setAvailabilty(null);
-      setOriginalStockLocation(route.params.fromStockLocation);
-      setDestinationStockLocation(route.params.toStockLocation);
-      setStockProduct(route.params.stockProduct);
-      setTrackingNumber(
-        route.params.trackingNumber == null
-          ? null
-          : route.params.trackingNumber,
-      );
-      if (productIndicators.id !== route.params.stockProduct.id) {
-        return;
-      } else {
-        setPlannedQty(productIndicators?.availableStock);
-        setMovedQty(0);
-      }
-      setUnit(route.params.stockProduct.unit);
-      setNotes('');
-      setSaveStatus(false);
-      setLoading(false);
+  const plannedQty = useMemo(() => {
+    if (internalMove.statusSelect === StockMove.status.Realized) {
+      return internalMoveLine.realQty;
     } else {
-      setStatus(route.params.internalMove.statusSelect);
-      setAvailabilty(route.params.internalMove.availableStatusSelect);
-      setOriginalStockLocation(route.params.internalMove.fromStockLocation);
-      setDestinationStockLocation(route.params.internalMove.toStockLocation);
-      setNotes(route.params.internalMove.note);
-      if (productFromId == null || productFromId === {}) {
-        setLoading(true);
-      } else {
-        const internalMoveLine = route.params.internalMoveLine;
-        setStockProduct(productFromId);
-        setTrackingNumber(internalMoveLine.trackingNumber);
-        if (
-          route.params.internalMove.statusSelect === StockMove.status.Realized
-        ) {
-          setPlannedQty(internalMoveLine.realQty);
-        } else {
-          setPlannedQty(productIndicators?.availableStock);
-        }
-        setMovedQty(internalMoveLine.realQty);
-        setUnit(internalMoveLine.unit);
-        setLoading(false);
-      }
-      setSaveStatus(true);
+      return productIndicators?.availableStock;
     }
-  }, [productIndicators, productFromId, route.params]);
+  }, [
+    internalMove.statusSelect,
+    internalMoveLine.realQty,
+    productIndicators?.availableStock,
+  ]);
+
+  useEffect(() => {
+    dispatch(fetchProductWithId(internalMoveLine.product.id));
+  }, [dispatch, internalMove, internalMoveLine]);
+
+  useEffect(() => {
+    dispatch(
+      fetchProductIndicators({
+        version: internalMoveLine.product.$version,
+        productId: internalMoveLine.product.id,
+        companyId: activeCompany?.id,
+        stockLocationId: internalMove.fromStockLocation.id,
+      }),
+    );
+  }, [activeCompany?.id, dispatch, internalMove, internalMoveLine]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: stockProduct,
+      product: product,
     });
   };
 
@@ -163,17 +91,13 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       removeSpaceOnTop={true}
       fixedItems={
         <InternalMoveLineButtons
-          destinationStockLocation={destinationStockLocation}
-          movedQty={movedQty}
-          originalStockLocation={originalStockLocation}
-          internalMove={route.params.internalMove}
+          internalMove={internalMove}
           saveStatus={saveStatus}
-          stockProduct={stockProduct}
-          trackingNumber={trackingNumber}
+          movedQty={movedQty}
           unit={unit}
         />
       }
-      loading={loading || loadingProductFromId}>
+      loading={loadingProductFromId}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.containerKeyboard}
@@ -182,62 +106,54 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           expandableFilter={false}
           fixedItems={
             <StockMoveHeader
-              reference={route.params.internalMove?.stockMoveSeq}
-              status={status}
+              reference={internalMove.stockMoveSeq}
+              status={internalMove.statusSelect}
               date={
-                route.params.internalMove?.statusSelect ===
-                StockMove.status.Draft
-                  ? route.params.internalMove?.createdOn
-                  : route.params.internalMove?.statusSelect ===
-                    StockMove.status.Planned
-                  ? route.params.internalMove?.estimatedDate
-                  : route.params.internalMove?.realDate
+                internalMove.statusSelect === StockMove.status.Draft
+                  ? internalMove.createdOn
+                  : internalMove.statusSelect === StockMove.status.Planned
+                  ? internalMove.estimatedDate
+                  : internalMove.realDate
               }
-              availability={availability}
+              availability={internalMove.availableStatusSelect}
             />
           }
         />
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <ScrollView>
-            <ProductCardInfo
-              name={stockProduct.name}
-              code={stockProduct.code}
-              picture={stockProduct.picture}
-              trackingNumber={
-                stockProduct.trackingNumberConfiguration == null ||
-                trackingNumber == null
-                  ? null
-                  : trackingNumber.trackingNumberSeq
-              }
-              locker={null}
-              onPress={handleShowProduct}
-            />
-            <InternalMoveLineQuantityCard
-              movedQty={movedQty}
-              originalStockLocation={originalStockLocation}
-              plannedQty={plannedQty}
-              setMovedQty={setMovedQty}
-              setSaveStatus={setSaveStatus}
-              status={status}
-              stockProduct={stockProduct}
-              trackingNumber={trackingNumber}
-            />
-            <InternalMoveLinePicker
-              setSaveStatus={setSaveStatus}
-              setUnit={setUnit}
-              status={status}
-              unit={unit}
-            />
-            <InternalMoveLineNotes
-              notes={notes}
-              setNotes={setNotes}
-              setSaveStatus={setSaveStatus}
-              status={status}
-            />
-          </ScrollView>
-        )}
+        <ScrollView>
+          <ProductCardInfo
+            name={product?.name}
+            code={product?.code}
+            picture={product?.picture}
+            trackingNumber={
+              product?.trackingNumberConfiguration == null
+                ? null
+                : internalMoveLine.trackingNumber?.trackingNumberSeq
+            }
+            onPress={handleShowProduct}
+          />
+          <InternalMoveLineQuantityCard
+            movedQty={movedQty}
+            originalStockLocation={internalMove.fromStockLocation}
+            plannedQty={plannedQty}
+            setMovedQty={setMovedQty}
+            setSaveStatus={setSaveStatus}
+            status={internalMove.statusSelect}
+            stockProduct={product}
+            trackingNumber={internalMoveLine.trackingNumber}
+          />
+          <InternalMoveLinePicker
+            setSaveStatus={setSaveStatus}
+            setUnit={setUnit}
+            status={internalMove.statusSelect}
+            unit={unit}
+          />
+          <InternalMoveLineNotes
+            notes={notes}
+            setNotes={setNotes}
+            setSaveStatus={setSaveStatus}
+            status={internalMove.statusSelect}
+          />
+        </ScrollView>
       </KeyboardAvoidingView>
     </Screen>
   );

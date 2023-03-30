@@ -101,6 +101,7 @@
   "Stock_TrackingQty": "Quantité du nouveau n° de suivi",
   "Stock_StandardISPM": "Norme NIMP15",
   "Stock_LineComment": "Commentaire de la ligne",
+  "Stock_ProductTrackingNumber": "Produit / Numéro de suivi",
   "Sale_Sale": "Vente",
   "Purchase_Purchase": "Achat"
 }
