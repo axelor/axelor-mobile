@@ -22,7 +22,6 @@ interface Session {
   id: string;
   url: string;
   username: string;
-  name: string;
   isActive: true;
 }
 
@@ -39,7 +38,6 @@ class SessionStorage {
   }
   getSession(): Session[] {
     const item = this.localStorage.getItem(this.key);
-    console.log('item', item);
     return item;
   }
   getAllKeys() {

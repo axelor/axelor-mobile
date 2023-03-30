@@ -57,7 +57,6 @@ import {
 } from '../hooks/use-scan-activator';
 import useTranslator from '../i18n/hooks/use-translator';
 import {sessionStorage} from '../utils/session';
-import {storage} from '../storage/Storage';
 
 const urlScanKey = 'login_url';
 
@@ -130,8 +129,15 @@ const LoginScreen = ({route}) => {
   const [sessionName, setSessionName] = useState('');
   const [popupIsOpen, setPopupIsOpen] = useState(false);
 
-  console.log('sessionActive', sessionActive);
-  console.log('sessionList', sessionList);
+  const nameSessionAlreadyExist = useMemo(() => {
+    let isExist = false;
+    sessionList?.forEach(ses => {
+      if (ses.id === sessionName) {
+        isExist = true;
+      }
+    });
+    return isExist;
+  }, [sessionList, sessionName]);
 
   useEffect(() => {
     if (scannedValue) {
@@ -161,7 +167,6 @@ const LoginScreen = ({route}) => {
           id: sessionName,
           url: url,
           username: username,
-          name: sessionName,
           isActive: true,
         });
         sessionStorage.addSession({
@@ -177,7 +182,6 @@ const LoginScreen = ({route}) => {
               id: sessionName,
               url: url,
               username: username,
-              name: sessionName,
               isActive: true,
             },
           ],
@@ -187,7 +191,6 @@ const LoginScreen = ({route}) => {
             id: sessionName,
             url: url,
             username: username,
-            name: sessionName,
             isActive: true,
           },
         ]);
@@ -195,7 +198,6 @@ const LoginScreen = ({route}) => {
           id: sessionName,
           url: url,
           username: username,
-          name: sessionName,
           isActive: true,
         });
       }
@@ -205,12 +207,11 @@ const LoginScreen = ({route}) => {
   const activeSession = sessionNameparam => {
     const tempSessionList = sessionList;
     sessionList?.forEach((sesion, index) => {
-      if (sessionNameparam === sesion.name) {
+      if (sessionNameparam === sesion.id) {
         tempSessionList[index] = {
-          id: sesion.name,
+          id: sesion.id,
           url: sesion.url,
           username: sesion.username,
-          name: sesion.name,
           isActive: true,
         };
         setSessionActive(sesion);
@@ -218,10 +219,9 @@ const LoginScreen = ({route}) => {
         setUsername(sesion.username);
       } else {
         tempSessionList[index] = {
-          id: sesion.name,
+          id: sesion.id,
           url: sesion.url,
           username: sesion.username,
-          name: sesion.name,
           isActive: false,
         };
       }
@@ -233,7 +233,7 @@ const LoginScreen = ({route}) => {
 
   const delSession = sessionNameparam => {
     const sessionToDel = sessionList.filter(
-      sesion => sesion.name !== sessionNameparam,
+      sesion => sesion.id !== sessionNameparam,
     );
     setSessionList(sessionToDel);
   };
@@ -247,7 +247,7 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {sessionList?.length > 0 && <Text>{sessionActive?.name}</Text>}
+            {sessionList?.length > 0 && <Text>{sessionActive?.id}</Text>}
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -293,17 +293,24 @@ const LoginScreen = ({route}) => {
                 readOnly={loading}
               />
             )}
-            <TouchableOpacity onPress={() => setPopupIsOpen(true)}>
-              <View style={styles.arrowContainer}>
-                <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
-                <Icon
-                  name="angle-right"
-                  size={24}
-                  color={Colors.primaryColor.background}
-                  style={styles.arrowIcon}
-                />
-              </View>
-            </TouchableOpacity>
+            <View>
+              {nameSessionAlreadyExist && (
+                <ErrorText message={I18n.t('Auth_Session_Name_Aleary_Exist')} />
+              )}
+            </View>
+            {enableConnectionSessions && (
+              <TouchableOpacity onPress={() => setPopupIsOpen(true)}>
+                <View style={styles.arrowContainer}>
+                  <Text>{I18n.t('Auth_Change_Session')}</Text>
+                  <Icon
+                    name="angle-right"
+                    size={24}
+                    color={Colors.primaryColor.background}
+                    style={styles.arrowIcon}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
             <PopupSession
               activeSession={activeSession}
               delSession={delSession}
@@ -315,7 +322,10 @@ const LoginScreen = ({route}) => {
               {loading ? (
                 <ActivityIndicator size="large" />
               ) : (
-                <LoginButton onPress={onPressLogin} disabled={loading} />
+                <LoginButton
+                  onPress={onPressLogin}
+                  disabled={loading || nameSessionAlreadyExist}
+                />
               )}
             </View>
             <View>{error && <ErrorText message={error.message} />}</View>

@@ -25,6 +25,7 @@ import {
   Icon,
   LabelText,
 } from '@axelor/aos-mobile-ui';
+import useTranslator from '../../../i18n/hooks/use-translator';
 
 const PopupSession = ({
   popupIsOpen,
@@ -35,8 +36,9 @@ const PopupSession = ({
 }) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const I18n = useTranslator();
   return (
-    <PopUp visible={popupIsOpen} title={'Saved Sessions'}>
+    <PopUp visible={popupIsOpen} title={I18n.t('Auth_Save_Session')}>
       <View style={styles.popupContainer}>
         {sessionList?.map((sesion, index) => {
           return (
@@ -48,10 +50,10 @@ const PopupSession = ({
                   : styles.popupItemContainer
               }>
               <View style={styles.popupItemChildren}>
-                <TouchableOpacity onPress={() => activeSession(sesion.name)}>
-                  <LabelText iconName="tag" title={sesion.name} />
+                <TouchableOpacity onPress={() => activeSession(sesion.id)}>
+                  <LabelText iconName="tag" title={sesion.id} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => delSession(sesion.name)}>
+                <TouchableOpacity onPress={() => delSession(sesion.id)}>
                   <Icon name="close" color="red" FontAwesome5={false} />
                 </TouchableOpacity>
               </View>

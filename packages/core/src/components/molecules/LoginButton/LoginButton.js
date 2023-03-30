@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {Button} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
-const LoginButton = ({onPress}) => {
+const LoginButton = ({onPress, disabled}) => {
   const I18n = useTranslator();
 
   return (
@@ -30,6 +30,7 @@ const LoginButton = ({onPress}) => {
         style={styles.button}
         title={I18n.t('Auth_LOGIN')}
         onPress={onPress}
+        disabled={disabled}
       />
     </View>
   );
