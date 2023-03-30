@@ -19,6 +19,7 @@
 export * from './components';
 export * from './theme';
 export {getCommonStyles} from './utils/commons-styles';
+export {sliceString} from './utils/strings';
 export {default as File} from './types/file';
 export {ConfigProvider, useConfig} from './config/ConfigContext';
 export {

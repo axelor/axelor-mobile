@@ -24,6 +24,7 @@ import {
   useThemeColor,
   Icon,
   LabelText,
+  sliceString,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
@@ -52,15 +53,18 @@ const PopupSession = ({
               <View style={styles.popupItemChildren}>
                 <TouchableOpacity onPress={() => activeSession(sesion.id)}>
                   <LabelText iconName="tag" title={sesion.id} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => delSession(sesion.id)}>
-                  <Icon name="close" color="red" FontAwesome5={false} />
+                  <LabelText
+                    iconName="link"
+                    title={sliceString(sesion.url, 23)}
+                  />
+                  <View style={styles.lineContainer}>
+                    <View style={styles.lineStyle} />
+                  </View>
                 </TouchableOpacity>
               </View>
-              <LabelText iconName="link" title={sesion.url} />
-              <View style={styles.lineContainer}>
-                <View style={styles.lineStyle} />
-              </View>
+              <TouchableOpacity onPress={() => delSession(sesion.id)}>
+                <Icon name="close" color="red" FontAwesome5={false} />
+              </TouchableOpacity>
             </View>
           );
         })}
@@ -78,14 +82,16 @@ const getStyles = Colors =>
       flexDirection: 'column',
     },
     popupItemContainerActive: {
-      flexDirection: 'column',
+      flexDirection: 'row',
       backgroundColor: Colors.primaryColor.background_light,
+      alignItems: 'center',
     },
     popupItemContainer: {
-      flexDirection: 'column',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     popupItemChildren: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       justifyContent: 'space-between',
     },
     lineContainer: {
