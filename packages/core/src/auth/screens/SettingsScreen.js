@@ -27,6 +27,7 @@ import {
   RightIconButton,
   Icon,
   useThemeColor,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
 import {getTranslations, selectLanguage, useTranslator} from '../../i18n';
@@ -42,6 +43,7 @@ const SettingsScreen = ({route, children}) => {
     toggleVirtualKeyboardConfig,
   } = useConfig();
   const language = useSelector(selectLanguage);
+  const {baseUrl} = useSelector(state => state.auth);
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const Theme = useTheme();
@@ -106,6 +108,10 @@ const SettingsScreen = ({route, children}) => {
           />
         )}
       </View>
+      <View style={styles.footerContainer}>
+        <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
+        <Text numberOfLines={1}>{baseUrl}</Text>
+      </View>
     </Screen>
   );
 };
@@ -116,8 +122,9 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 15,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    flex: 1,
   },
   RightIconButton: {
     width: Dimensions.get('window').width * 0.9,
@@ -125,6 +132,11 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     paddingRight: 50,
     paddingLeft: 10,
+  },
+  footerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
 });
 
