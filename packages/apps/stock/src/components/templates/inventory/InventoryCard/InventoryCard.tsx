@@ -61,10 +61,10 @@ const InventoryCard = ({
       );
     }
 
-    if (status === Inventory.status.Planned) {
+    if (status === Inventory.status.InProgress) {
       return (
         <Text style={[styles.txtDetails, styles.creationDate]}>
-          {`${I18n.t('Base_PlannedFor')} ${_date}`}
+          {`${I18n.t('Base_StartedOn')} ${_date}`}
         </Text>
       );
     }
