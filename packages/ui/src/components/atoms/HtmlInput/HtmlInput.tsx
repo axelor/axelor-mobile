@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {actions, RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
@@ -54,7 +54,13 @@ const HtmlInput = ({
   onBlur = () => {},
 }: HtmlInputProps) => {
   const Colors = useThemeColor();
+  const [editorAttached, setEditorAttached] = useState(false);
+
   const editor = useRef(null);
+
+  const editorInitializedCallback = () => {
+    setEditorAttached(true);
+  };
 
   useEffect(() => {
     if (defaultInput == null || defaultInput === '') {
@@ -86,10 +92,11 @@ const HtmlInput = ({
             onHeightChange={onHeightChange}
             onFocus={onFocus}
             onBlur={onBlur}
+            editorInitializedCallback={editorInitializedCallback}
           />
         </View>
       </ScrollView>
-      {!readonly && (
+      {!readonly && editorAttached && (
         <RichToolbar
           style={styleToolbar}
           editor={editor}

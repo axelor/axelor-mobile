@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
@@ -67,11 +67,15 @@ const Increment = ({
   const Colors = useThemeColor();
   const [valueQty, setValueQty] = useState(format(value));
 
+  useEffect(() => {
+    setValueQty(format(value));
+  }, [format, value]);
+
   const handlePlus = () => {
     const unformatedValue = unformat(valueQty);
     const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
     setValueQty(format(cutDecimalExcess(newValue)));
-    onValueChange(format(cutDecimalExcess(newValue)));
+    onValueChange(unformat(cutDecimalExcess(newValue)));
   };
 
   const handleMinus = () => {
@@ -79,7 +83,7 @@ const Increment = ({
     const newValue = parseFloat(unformatedValue) - parseFloat('1');
     if (newValue >= 0) {
       setValueQty(format(cutDecimalExcess(newValue)));
-      onValueChange(format(cutDecimalExcess(newValue)));
+      onValueChange(unformat(cutDecimalExcess(newValue)));
     }
   };
 
