@@ -43,7 +43,7 @@ const SupplierArrivalLineButtons = ({
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('SupplierArrivalDetailsScreen', {
-      supplierArrival: supplierArrival,
+      supplierArrivalId: supplierArrival?.id,
     });
   }, [supplierArrival, navigation]);
 

@@ -37,7 +37,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
     dispatch(fetchSupplierArrival({supplierArrivalId: supplierArrivalId}));
   }, [supplierArrivalId, dispatch]);
 
-  if (supplierArrival !== supplierArrivalId) {
+  if (supplierArrival?.id !== supplierArrivalId) {
     return null;
   }
 

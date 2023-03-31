@@ -90,7 +90,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
     if (item != null) {
       setNavigate(current => !current);
       navigation.navigate('SupplierArrivalDetailsScreen', {
-        supplierArrival: item,
+        supplierArrivalId: item?.id,
       });
     }
   };
