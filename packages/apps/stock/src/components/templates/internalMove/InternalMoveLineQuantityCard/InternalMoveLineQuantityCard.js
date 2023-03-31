@@ -42,11 +42,10 @@ const InternalMoveLineQuantityCard = ({
   };
 
   const handleCreateCorrection = () => {
-    navigation.navigate('StockCorrectionDetailsScreen', {
+    navigation.navigate('StockCorrectionCreationScreen', {
       stockLocation: originalStockLocation,
-      stockProduct: stockProduct,
+      product: stockProduct,
       trackingNumber: trackingNumber,
-      externeNavigation: true,
     });
   };
 

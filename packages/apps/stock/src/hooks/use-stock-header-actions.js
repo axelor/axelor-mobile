@@ -156,7 +156,7 @@ const useStockCorrectionListActions = () => {
           title: I18n.t('Stock_NewStockCorrection'),
           iconColor: Colors.primaryColor.background,
           onPress: () =>
-            navigation.navigate('StockCorrectionNewLocationScreen', {}),
+            navigation.navigate('StockCorrectionCreationScreen', {}),
           showInHeader: true,
         },
       ],

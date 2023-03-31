@@ -67,7 +67,6 @@
   "Stock_Status_InProgress": "En cours",
   "Stock_Status_Completed": "Complété",
   "Stock_Status_Canceled": "Annulé",
-  "Stock_ReasonRequired": "Le motif de cette correction de stock est obligatoire, veuillez compléter le formulaire.",
   "Stock_Reason": "Motif",
   "Stock_NotesOnPreparation": "Notes sur la préparation",
   "Stock_NotesOnStockMove": "Notes sur le mouvement de stock",

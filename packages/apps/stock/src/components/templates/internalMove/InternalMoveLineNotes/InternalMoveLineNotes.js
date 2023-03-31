@@ -66,6 +66,7 @@ const InternalMoveLineNotes = ({
 const styles = StyleSheet.create({
   container: {
     marginLeft: 18,
+    width: '100%',
   },
 });
 

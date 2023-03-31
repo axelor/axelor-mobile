@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
@@ -29,7 +29,7 @@ const StockCorrectionQuantityCard = ({
   realQty,
   databaseQty,
   setRealQty,
-  setSaveStatus,
+  setSaveStatus = () => {},
 }) => {
   const I18n = useTranslator();
 
@@ -38,10 +38,12 @@ const StockCorrectionQuantityCard = ({
     setSaveStatus(false);
   };
 
+  const qty = useMemo(() => parseFloat(realQty).toFixed(2), [realQty]);
+
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_RealQty')}
-      defaultValue={parseFloat(realQty).toFixed(2)}
+      defaultValue={qty}
       onValueChange={handleQtyChange}
       editable={status === StockCorrection.status.Draft}>
       <Text style={styles.text}>

@@ -67,7 +67,6 @@
   "Stock_Status_InProgress": "In progress",
   "Stock_Status_Completed": "Completed",
   "Stock_Status_Canceled": "Canceled",
-  "Stock_ReasonRequired": "Stock correction reason is required, please complete the form.",
   "Stock_Reason": "Reason",
   "Stock_NotesOnPreparation": "Notes on preparation",
   "Stock_NotesOnStockMove": "Notes on stock move",

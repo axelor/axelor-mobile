@@ -24,7 +24,7 @@ import StockCorrection from '../../../../types/stock-corrrection';
 const StockCorrectionReasonPicker = ({
   status,
   reason,
-  setSaveStatus,
+  setSaveStatus = () => {},
   setReason,
 }) => {
   const I18n = useTranslator();

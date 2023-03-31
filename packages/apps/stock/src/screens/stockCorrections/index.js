@@ -16,11 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import StockCorrectionCreationScreen from './StockCorrectionCreationScreen';
 import StockCorrectionDetailsScreen from './StockCorrectionDetailsScreen';
 import StockCorrectionListScreen from './StockCorrectionListScreen';
-import StockCorrectionNewLocationScreen from './StockCorrectionNewLocationScreen';
-import StockCorrectionNewProductScreen from './StockCorrectionNewProductScreen';
-import StockCorrectionNewTrackingScreen from './StockCorrectionNewTrackingScreen';
 
 export default {
   StockCorrectionListScreen: {
@@ -39,16 +37,8 @@ export default {
       shadedHeader: false,
     },
   },
-  StockCorrectionNewLocationScreen: {
+  StockCorrectionCreationScreen: {
     title: 'Stock_StockCorrection',
-    component: StockCorrectionNewLocationScreen,
-  },
-  StockCorrectionNewProductScreen: {
-    title: 'Stock_StockCorrection',
-    component: StockCorrectionNewProductScreen,
-  },
-  StockCorrectionNewTrackingScreen: {
-    title: 'Stock_StockCorrection',
-    component: StockCorrectionNewTrackingScreen,
+    component: StockCorrectionCreationScreen,
   },
 };
