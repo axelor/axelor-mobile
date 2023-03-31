@@ -61,5 +61,6 @@
   "Base_Information": "Information",
   "Base_Refresh": "Refresh application",
   "Base_Logout": "Log out",
-  "Base_TimeFormat": "HH:mm"
+  "Base_TimeFormat": "HH:mm",
+  "Base_ConnectedOn": "Connected on"
 }
