@@ -39,7 +39,7 @@ import {
 import {StockMove} from '../../types';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {displayItemTrackingNumber} from '../../utils/displayers';
-import {searchProductTrackingNumber} from '../../features/internalMoveLineSlice';
+import {searchProductTrackingNumber} from '../../features/productTrackingNumberSlice';
 
 const originalStockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -69,7 +69,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     stockLocationListMultiFilter: stockLocationListSecondFilter,
   } = useSelector(state => state.stockLocation);
   const {productTrackingNumberList} = useSelector(
-    state => state.internalMoveLine,
+    state => state.productTrackingNumber,
   );
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
