@@ -21,6 +21,7 @@ import {
   createStandardFetch,
   createStandardSearch,
   getSearchCriterias,
+  RouterProvider,
 } from '@axelor/aos-mobile-core';
 
 const createLeadCriteria = searchValue => {
@@ -103,7 +104,7 @@ export async function updateLead({
 }) {
   return axiosApiProvider
     .post({
-      url: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
+      url: RouterProvider.get('EmailAddress'),
       data: {
         data: {
           id: emailId,

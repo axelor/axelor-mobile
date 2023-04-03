@@ -144,7 +144,7 @@ const UserScreen = ({children, navigation}) => {
           />
         )}
         {children}
-        {languageList.length > 1 && (
+        {languageList?.length > 1 && (
           <Picker
             title={I18n.t('User_Language')}
             defaultValue={user.language}
