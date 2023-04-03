@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
+import React, {useEffect} from 'react';
+import {
+  useTranslator,
+  useSelector,
+  useDispatch,
+  getFromList,
+} from '@axelor/aos-mobile-core';
 import {Picker} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
+import {fetchStockCorrectionReasons} from '../../../../features/stockCorrectionReasonSlice';
 
 const StockCorrectionReasonPicker = ({
   status,
@@ -28,10 +34,15 @@ const StockCorrectionReasonPicker = ({
   setReason,
 }) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {stockCorrectionReasonList} = useSelector(
     state => state.stockCorrectionReason,
   );
+
+  useEffect(() => {
+    dispatch(fetchStockCorrectionReasons());
+  }, [dispatch]);
 
   const handleReasonChange = reasonId => {
     if (reasonId === null) {

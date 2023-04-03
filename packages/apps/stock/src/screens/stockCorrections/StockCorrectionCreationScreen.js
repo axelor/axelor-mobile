@@ -31,7 +31,6 @@ import {
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
 } from '../../components';
-import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
 import {displayItemTrackingNumber} from '../../utils/displayers';
@@ -96,10 +95,6 @@ const StockCorrectionCreationScreen = ({route}) => {
       return CREATION_STEP.stockLocation;
     });
   }, [routeLocation, routeProduct, routeTrackingNumber]);
-
-  useEffect(() => {
-    dispatch(fetchStockCorrectionReasons());
-  }, [dispatch]);
 
   const handleStockLocationChange = useCallback(
     _value => {

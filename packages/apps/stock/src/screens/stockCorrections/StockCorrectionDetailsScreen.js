@@ -26,7 +26,6 @@ import {
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
 } from '../../components';
-import {fetchStockCorrectionReasons} from '../../features/stockCorrectionReasonSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
@@ -54,7 +53,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   }, [productIndicators?.realQty, stockCorrection]);
 
   useEffect(() => {
-    dispatch(fetchStockCorrectionReasons());
     dispatch(fetchStockCorrection({id: stockCorrectionId}));
   }, [dispatch, stockCorrectionId]);
 
