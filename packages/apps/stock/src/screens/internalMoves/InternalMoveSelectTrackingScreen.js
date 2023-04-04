@@ -20,7 +20,6 @@ import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Card,
-  ClearableCard,
   HeaderContainer,
   PopUpOneButton,
   Screen,
@@ -40,18 +39,13 @@ import StockMove from '../../types/stock-move';
 const trackingNumberScanKey = 'tracking-number_internal-move-new';
 
 const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
-  const {
-    internalMove,
-    internalMoveLine,
-    product,
-    fromStockLocation,
-    toStockLocation,
-  } = route.params;
-
-  const {trackingNumberList} = useSelector(state => state.trackingNumber);
-  const [isVisible, setVisible] = useState(false);
+  const {internalMove, internalMoveLine, product} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {trackingNumberList} = useSelector(state => state.trackingNumber);
+
+  const [isVisible, setVisible] = useState(false);
 
   const fetchTrackingAPI = useCallback(
     filter => {
@@ -62,98 +56,43 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
     [dispatch, product.id],
   );
 
-  const handleClearOriginalLocation = () => {
-    navigation.navigate('InternalMoveSelectFromLocationScreen');
-  };
-
-  const handleClearDestinationLocation = () => {
-    navigation.navigate('InternalMoveSelectToLocationScreen', {
-      fromStockLocation: fromStockLocation,
-    });
-  };
-
-  const handleClearProduct = () => {
-    navigation.navigate('InternalMoveSelectProductScreen', {
-      fromStockLocation: fromStockLocation,
-      toStockLocation: toStockLocation,
-    });
-  };
-
   const handleTrackingNumberSelection = useCallback(
     trackingNumber => {
       if (trackingNumber != null) {
-        if (internalMove == null) {
-          navigation.navigate('InternalMoveLineDetailsScreen', {
-            fromStockLocation: fromStockLocation,
-            toStockLocation: toStockLocation,
-            productId: product?.id,
-            trackingNumber: trackingNumber,
-          });
+        if (trackingNumber?.id !== internalMoveLine.trackingNumber?.id) {
+          setVisible(true);
         } else {
-          if (trackingNumber?.id !== internalMoveLine.trackingNumber?.id) {
-            setVisible(true);
-          } else {
-            navigation.navigate('InternalMoveLineDetailsScreen', {
-              internalMove: internalMove,
-              internalMoveLineId: internalMoveLine?.id,
-              productId: product?.id,
-            });
-          }
+          navigation.navigate('InternalMoveLineDetailsScreen', {
+            internalMove: internalMove,
+            internalMoveLineId: internalMoveLine?.id,
+          });
         }
       }
     },
-    [
-      internalMove,
-      internalMoveLine,
-      navigation,
-      product,
-      fromStockLocation,
-      toStockLocation,
-    ],
+    [internalMove, internalMoveLine, navigation],
   );
 
   return (
     <Screen removeSpaceOnTop={internalMove != null ? true : false}>
-      {internalMove != null ? (
-        <View>
-          <HeaderContainer
-            expandableFilter={false}
-            fixedItems={
-              <StockMoveHeader
-                reference={internalMove.stockMoveSeq}
-                status={internalMove.statusSelect}
-                date={
-                  internalMove
-                    ? StockMove.getStockMoveDate(
-                        internalMove.statusSelect,
-                        internalMove,
-                      )
-                    : null
-                }
-                availability={internalMove.availableStatusSelect}
-              />
-            }
-          />
-          <Card style={styles.cardProductInfo}>
-            <Text>{internalMoveLine.product?.fullName}</Text>
-          </Card>
-        </View>
-      ) : (
-        <View>
-          <ClearableCard
-            valueTxt={fromStockLocation.name}
-            onClearPress={handleClearOriginalLocation}
-          />
-          <ClearableCard
-            valueTxt={toStockLocation.name}
-            onClearPress={handleClearDestinationLocation}
-          />
-          <ClearableCard
-            valueTxt={product.name}
-            onClearPress={handleClearProduct}
-          />
-        </View>
-      )}
+      <View>
+        <HeaderContainer
+          expandableFilter={false}
+          fixedItems={
+            <StockMoveHeader
+              reference={internalMove.stockMoveSeq}
+              status={internalMove.statusSelect}
+              date={StockMove.getStockMoveDate(
+                internalMove.statusSelect,
+                internalMove,
+              )}
+              availability={internalMove.availableStatusSelect}
+            />
+          }
+        />
+        <Card style={styles.cardProductInfo}>
+          <Text>{internalMoveLine.product?.fullName}</Text>
+        </Card>
+      </View>
       <ScannerAutocompleteSearch
         objectList={trackingNumberList}
         onChangeValue={item => handleTrackingNumberSelection(item)}

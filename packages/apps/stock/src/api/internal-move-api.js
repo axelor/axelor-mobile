@@ -95,3 +95,19 @@ export async function realizeInternalMove({stockMoveId, version}) {
     },
   });
 }
+
+export async function modifyInternalMoveNotes({
+  internalMoveId,
+  version,
+  notes,
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
+    data: {
+      data: {
+        version: version,
+        note: notes,
+      },
+    },
+  });
+}

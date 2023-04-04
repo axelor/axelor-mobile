@@ -22,21 +22,28 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
+const createSearchCriteria = (productId, searchValue) => {
+  const criteria = [getSearchCriterias('stock_trackingNumber', searchValue)];
+
+  if (productId != null) {
+    criteria.push({
+      fieldName: 'product.id',
+      operator: '=',
+      value: productId,
+    });
+  }
+
+  return criteria;
+};
+
 export async function searchTrackingNumberFilter({
-  productId,
+  productId = null,
   searchValue,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.TrackingNumber',
-    criteria: [
-      {
-        fieldName: 'product.id',
-        operator: '=',
-        value: productId,
-      },
-      getSearchCriterias('stock_trackingNumber', searchValue),
-    ],
+    criteria: createSearchCriteria(productId, searchValue),
     fieldKey: 'stock_trackingNumber',
     sortKey: 'stock_trackingNumber',
     page,
