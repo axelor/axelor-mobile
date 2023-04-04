@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
@@ -25,43 +25,82 @@ import {
   ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {useSupplierLinesWithRacks} from '../../hooks';
+import {displayLine} from '../../utils/displayers';
+
+const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
 
 const SupplierArrivalLineListScreen = ({route, navigation}) => {
+  const supplierArrival = route.params.supplierArrival;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const supplierArrival = route.params.supplierArrival;
-  const {loadingSALines, moreLoading, isListEnd, supplierArrivalLineList} =
-    useSelector(state => state.supplierArrivalLine);
-  const [filteredList, setFilteredList] = useState(supplierArrivalLineList);
-  const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
 
-  const handleShowLine = item => {
+  const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
+  const {loadingSALines, moreLoading, isListEnd} = useSelector(
+    state => state.supplierArrivalLine,
+  );
+
+  const [filter, setFilter] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'supplierArrival', data: supplierArrival},
       itemLine: {name: 'supplierArrivalLine', data: item},
       lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      skipVerification,
       navigation,
     });
   };
 
+  const handleLineSearch = item => {
+    handleShowLine(item, true);
+  };
+
   const fetchSupplierLinesAPI = useCallback(
-    page => {
-      dispatch(
-        fetchSupplierArrivalLines({
-          supplierArrivalId: supplierArrival.id,
-          page: page,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (!checkNullString(searchValue)) {
+        setFilter(searchValue);
+        dispatch(
+          fetchSupplierArrivalLines({
+            supplierArrivalId: supplierArrival.id,
+            searchValue: searchValue,
+            page: 0,
+          }),
+        );
+      } else {
+        dispatch(
+          fetchSupplierArrivalLines({
+            supplierArrivalId: supplierArrival.id,
+            page: page,
+          }),
+        );
+      }
     },
-    [supplierArrival.id, dispatch],
+    [dispatch, supplierArrival.id],
+  );
+
+  const filterLinesAPI = useCallback(
+    value => fetchSupplierLinesAPI({searchValue: value}),
+    [fetchSupplierLinesAPI],
+  );
+  const scrollLinesAPI = useCallback(
+    page => fetchSupplierLinesAPI({page}),
+    [fetchSupplierLinesAPI],
   );
 
   const filterOnStatus = useCallback(
@@ -92,14 +131,14 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(supplierArrivalLineList));
-  }, [supplierArrivalLineList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(supplierArrivalLineList),
+    [filterOnStatus, supplierArrivalLineList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
-        expandableFilter={false}
         fixedItems={
           <StockMoveHeader
             reference={supplierArrival.stockMoveSeq}
@@ -130,8 +169,18 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
               },
             ]}
           />
-        }
-      />
+        }>
+        <ScannerAutocompleteSearch
+          objectList={filteredList}
+          onChangeValue={handleLineSearch}
+          fetchData={filterLinesAPI}
+          displayValue={displayLine}
+          scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_SearchLine')}
+          isFocus={true}
+          oneFilter={true}
+        />
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingSALines}
         data={filteredList}
@@ -144,14 +193,16 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             }
             askedQty={item?.qty}
             trackingNumber={item?.trackingNumber}
+            locker={item?.locker}
             onPress={() => {
               handleShowLine(item);
             }}
           />
         )}
-        fetchData={fetchSupplierLinesAPI}
+        fetchData={scrollLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>

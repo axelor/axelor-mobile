@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
@@ -25,11 +25,21 @@ import {
   ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {useCustomerLinesWithRacks} from '../../hooks';
+import {displayLine} from '../../utils/displayers';
+
+const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -37,41 +47,61 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingCDLines, moreLoading, isListEnd, customerDeliveryLineList} =
-    useSelector(state => state.customerDeliveryLine);
-  const {racksList} = useSelector(state => state.rack);
+  const {customerDeliveryLineList} =
+    useCustomerLinesWithRacks(customerDelivery);
+  const {loadingCDLines, moreLoading, isListEnd} = useSelector(
+    state => state.customerDeliveryLine,
+  );
 
-  const [filteredList, setFilteredList] = useState(customerDeliveryLineList);
+  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, index) => {
-    const locker = racksList?.[index]?.[0]?.rack ?? '';
-
-    const updatedItem = {
-      ...item,
-      locker,
-    };
-
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      itemLine: {name: 'customerDeliveryLine', data: item},
       lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
       selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
       selectProductScreen: 'CustomerDeliverySelectProductScreen',
+      skipVerification,
       navigation,
     });
   };
 
+  const handleLineSearch = item => {
+    handleShowLine(item, 0, true);
+  };
+
   const fetchDeliveryLinesAPI = useCallback(
-    page => {
-      dispatch(
-        fetchCustomerDeliveryLines({
-          customerDeliveryId: customerDelivery.id,
-          page: page,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (!checkNullString(searchValue)) {
+        setFilter(searchValue);
+        dispatch(
+          fetchCustomerDeliveryLines({
+            customerDeliveryId: customerDelivery.id,
+            searchValue: searchValue,
+            page: 0,
+          }),
+        );
+      } else {
+        dispatch(
+          fetchCustomerDeliveryLines({
+            customerDeliveryId: customerDelivery.id,
+            page: page,
+          }),
+        );
+      }
     },
-    [customerDelivery.id, dispatch],
+    [dispatch, customerDelivery.id],
+  );
+
+  const filterLinesAPI = useCallback(
+    value => fetchDeliveryLinesAPI({searchValue: value}),
+    [fetchDeliveryLinesAPI],
+  );
+  const scrollLinesAPI = useCallback(
+    page => fetchDeliveryLinesAPI({page}),
+    [fetchDeliveryLinesAPI],
   );
 
   const filterOnStatus = useCallback(
@@ -102,14 +132,14 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(customerDeliveryLineList));
-  }, [customerDeliveryLineList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(customerDeliveryLineList),
+    [filterOnStatus, customerDeliveryLineList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
-        expandableFilter={false}
         fixedItems={
           <StockMoveHeader
             reference={customerDelivery.stockMoveSeq}
@@ -141,8 +171,18 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
               },
             ]}
           />
-        }
-      />
+        }>
+        <ScannerAutocompleteSearch
+          objectList={filteredList}
+          onChangeValue={handleLineSearch}
+          fetchData={filterLinesAPI}
+          displayValue={displayLine}
+          scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_SearchLine')}
+          isFocus={true}
+          oneFilter={true}
+        />
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingCDLines}
         data={filteredList}
@@ -154,23 +194,20 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
               item.isRealQtyModifiedByUser === false ? 0 : item.realQty
             }
             askedQty={item.qty}
-            locker={
-              racksList != null && racksList[index] != null
-                ? racksList[index][0]?.rack
-                : ''
-            }
+            trackingNumber={item?.trackingNumber}
+            locker={item.locker}
             availability={
               customerDelivery.statusSelect === StockMove.status.Realized
                 ? null
                 : item.availableStatusSelect
             }
-            trackingNumber={item?.trackingNumber}
             onPress={() => handleShowLine(item, index)}
           />
         )}
-        fetchData={fetchDeliveryLinesAPI}
+        fetchData={scrollLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>

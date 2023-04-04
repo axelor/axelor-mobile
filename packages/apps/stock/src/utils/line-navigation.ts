@@ -25,6 +25,7 @@ export const showLine = ({
   selectTrackingScreen,
   selectProductScreen,
   detailStatus = StockMove.status.Realized,
+  skipVerification = false,
   productKey = 'product',
   navigation,
 }: {
@@ -34,9 +35,14 @@ export const showLine = ({
   selectTrackingScreen: string;
   selectProductScreen: string;
   detailStatus?: any;
+  skipVerification?: boolean;
   productKey?: string;
   navigation: any;
 }) => {
+  if (itemLine?.data == null) {
+    return;
+  }
+
   const updatedItemLine = {
     ...itemLine.data,
     product: {
@@ -51,7 +57,7 @@ export const showLine = ({
 
   const {trackingNumberConfiguration} = product;
 
-  if (item?.data?.statusSelect === detailStatus) {
+  if (item?.data?.statusSelect === detailStatus || skipVerification) {
     navigation.navigate(lineDetailsScreen, {
       [itemLine.name]: updatedItemLine,
       [item.name]: item.data,

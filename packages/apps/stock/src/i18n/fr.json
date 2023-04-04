@@ -8,9 +8,13 @@
   "Stock_StockCorrection": "Correction de stock",
   "Stock_NewInternalMove": "Nouveau mouvement interne",
   "Stock_InternalMove": "Mouvement interne",
+  "Stock_InternalMoveLines": "Lignes de mouvement interne",
   "Stock_CustomerDelivery": "Livraison client",
+  "Stock_CustomerDeliveryLines": "Lignes de livraison client",
   "Stock_SupplierArrival": "Réception fournisseur",
+  "Stock_SupplierArrivalLines": "Lignes de réception fournisseur",
   "Stock_Inventory": "Inventaire",
+  "Stock_InventoryLines": "Lignes d'inventaire",
   "Stock_QuantityStockLocation": "Distribution par emplacement de stock",
   "Stock_SeeDistributionStockLocation": "Voir la répartition par emplacement de stock",
   "Stock_Variants": "Variantes",
@@ -102,5 +106,6 @@
   "Stock_LineComment": "Commentaire de la ligne",
   "Stock_ProductTrackingNumber": "Produit / Numéro de suivi",
   "Sale_Sale": "Vente",
-  "Purchase_Purchase": "Achat"
+  "Purchase_Purchase": "Achat",
+  "Stock_SearchLine": "Rechercher une ligne"
 }

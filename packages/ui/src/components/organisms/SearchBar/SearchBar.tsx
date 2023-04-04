@@ -31,7 +31,6 @@ interface SearchBarProps {
   onChangeTxt: (any) => void;
   onSelection?: () => void;
   onEndFocus: () => void;
-  isFocus?: boolean;
   onScanPress?: () => void;
   scanIconColor?: string;
   onSearchPress?: () => void;
@@ -45,7 +44,6 @@ const SearchBar = ({
   onChangeTxt,
   onSelection = () => {},
   onEndFocus = () => {},
-  isFocus = false,
   onScanPress = () => {},
   scanIconColor = null,
   onSearchPress = () => {},
@@ -66,7 +64,6 @@ const SearchBar = ({
       onChange={onChangeTxt}
       onSelection={onSelection}
       onEndFocus={onEndFocus}
-      isFocus={isFocus}
       rightIconsList={[
         <Icon
           style={styles.action}

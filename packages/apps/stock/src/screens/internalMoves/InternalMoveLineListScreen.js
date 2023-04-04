@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
@@ -25,11 +25,21 @@ import {
   ScrollList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {displayLine} from '../../utils/displayers';
+import {useInternalLinesWithRacks} from '../../hooks';
+
+const scanKey = 'trackingNumber-or-product_internal-move-line-list';
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
   const internalMove = route.params.internalMove;
@@ -37,34 +47,61 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingIMLines, moreLoading, isListEnd, internalMoveLineList} =
-    useSelector(state => state.internalMoveLine);
+  const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
+  const {loadingIMLines, moreLoading, isListEnd} = useSelector(
+    state => state.internalMoveLine,
+  );
 
-  const [filteredList, setFilteredList] = useState(internalMoveLineList);
+  const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = item => {
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'internalMove', data: internalMove},
       itemLine: {name: 'internalMoveLine', data: item},
       lineDetailsScreen: 'InternalMoveLineDetailsScreen',
       selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
       selectProductScreen: 'InternalMoveSelectProductScreen',
+      skipVerification,
       productKey: 'stockProduct',
       navigation,
     });
   };
 
+  const handleLineSearch = item => {
+    handleShowLine(item, true);
+  };
+
   const fetchInternalLinesAPI = useCallback(
-    page => {
-      dispatch(
-        fetchInternalMoveLines({
-          internalMoveId: internalMove.id,
-          page: page,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (!checkNullString(searchValue)) {
+        setFilter(searchValue);
+        dispatch(
+          fetchInternalMoveLines({
+            internalMoveId: internalMove.id,
+            searchValue: searchValue,
+            page: 0,
+          }),
+        );
+      } else {
+        dispatch(
+          fetchInternalMoveLines({
+            internalMoveId: internalMove.id,
+            page: page,
+          }),
+        );
+      }
     },
-    [internalMove.id, dispatch],
+    [dispatch, internalMove.id],
+  );
+
+  const filterLinesAPI = useCallback(
+    value => fetchInternalLinesAPI({searchValue: value}),
+    [fetchInternalLinesAPI],
+  );
+  const scrollLinesAPI = useCallback(
+    page => fetchInternalLinesAPI({page}),
+    [fetchInternalLinesAPI],
   );
 
   const filterOnStatus = useCallback(
@@ -95,14 +132,14 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(internalMoveLineList));
-  }, [internalMoveLineList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(internalMoveLineList),
+    [filterOnStatus, internalMoveLineList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
-        expandableFilter={false}
         fixedItems={
           <StockMoveHeader
             reference={internalMove.stockMoveSeq}
@@ -134,8 +171,18 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
               },
             ]}
           />
-        }
-      />
+        }>
+        <ScannerAutocompleteSearch
+          objectList={filteredList}
+          onChangeValue={handleLineSearch}
+          fetchData={filterLinesAPI}
+          displayValue={displayLine}
+          scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_SearchLine')}
+          isFocus={true}
+          oneFilter={true}
+        />
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingIMLines}
         data={filteredList}
@@ -150,14 +197,16 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
                 : item.availableStatusSelect
             }
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
+            locker={item.locker}
             expectedQty={item.qty}
             movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
             onPress={() => handleShowLine(item)}
           />
         )}
-        fetchData={fetchInternalLinesAPI}
+        fetchData={scrollLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
+        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>

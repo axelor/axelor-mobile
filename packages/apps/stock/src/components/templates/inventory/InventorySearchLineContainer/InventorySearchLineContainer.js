@@ -16,40 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {showLine} from '../../../../utils/line-navigation';
-import Inventory from '../../../../types/inventory';
+import {SearchLineContainer} from '../../../organisms';
 import {InventoryLineCard} from '../../../templates';
+import {showLine} from '../../../../utils/line-navigation';
+import {Inventory} from '../../../../types';
 import {fetchInventoryLines} from '../../../../features/inventoryLineSlice';
 
-const InventoryViewAllContainer = ({}) => {
+const scanKey = 'trackingNumber-or-product_inventory-details';
+
+const InventorySearchLineContainer = ({}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {inventory} = useSelector(state => state.inventory);
-  const {inventoryLineList} = useSelector(state => state.inventoryLine);
-
-  useEffect(() => {
-    if (inventory != null) {
-      dispatch(fetchInventoryLines({inventoryId: inventory?.id, page: 0}));
-    }
-  }, [dispatch, inventory]);
+  const {inventoryLineList, totalNumberLines} = useSelector(
+    state => state.inventoryLine,
+  );
 
   const handleNewLine = useCallback(() => {
     navigation.navigate('InventorySelectProductScreen', {
-      inventoryLine: null,
       inventory: inventory,
     });
   }, [inventory, navigation]);
+
+  const handleViewAll = () => {
+    navigation.navigate('InventoryLineListScreen', {
+      inventory: inventory,
+    });
+  };
 
   const handleShowLine = item => {
     showLine({
@@ -63,19 +66,36 @@ const InventoryViewAllContainer = ({}) => {
     });
   };
 
-  const handleViewAll = () => {
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
+  const handleLineSearch = item => {
+    handleShowLine(item, true);
   };
 
+  const fetchInventoryLinesAPI = useCallback(
+    searchValue => {
+      dispatch(
+        fetchInventoryLines({inventoryId: inventory?.id, searchValue, page: 0}),
+      );
+    },
+    [dispatch, inventory],
+  );
+
+  const filterLine = useCallback(item => {
+    return item.realQty == null;
+  }, []);
+
   return (
-    <ViewAllContainer
-      isHeaderExist={inventory?.statusSelect !== Inventory.status.Completed}
-      onNewIcon={handleNewLine}
-      data={inventoryLineList}
-      translator={I18n.t}
-      renderFirstTwoItems={item => (
+    <SearchLineContainer
+      title={I18n.t('Stock_InventoryLines')}
+      numberOfItems={totalNumberLines}
+      objectList={inventoryLineList}
+      handleSelect={handleLineSearch}
+      handleSearch={fetchInventoryLinesAPI}
+      scanKey={scanKey}
+      onViewPress={handleViewAll}
+      filterLine={filterLine}
+      showAction={inventory?.statusSelect < Inventory.status.Completed}
+      onAction={handleNewLine}
+      renderItem={item => (
         <InventoryLineCard
           style={styles.item}
           productName={item.product?.fullName}
@@ -87,7 +107,6 @@ const InventoryViewAllContainer = ({}) => {
           onPress={() => handleShowLine(item)}
         />
       )}
-      onViewPress={handleViewAll}
     />
   );
 };
@@ -99,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InventoryViewAllContainer;
+export default InventorySearchLineContainer;

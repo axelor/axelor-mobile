@@ -26,7 +26,7 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   CustomerDeliveryHeader,
-  CustomerDeliveryViewAllContainer,
+  CustomerDeliverySearchLineContainer,
   CustomerDeliveryMovementIndicationCard,
   CustomerDeliveryRealizeButton,
 } from '../../components';
@@ -63,7 +63,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
-        <CustomerDeliveryViewAllContainer customerDelivery={customerDelivery} />
+        <CustomerDeliverySearchLineContainer />
         <NotesCard
           title={I18n.t('Stock_NotesClient')}
           data={customerDelivery?.pickingOrderComments}
