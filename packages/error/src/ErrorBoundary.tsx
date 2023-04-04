@@ -32,6 +32,7 @@ interface ErrorBoundaryProps {
   }) => React.ReactNode;
   putMethod: (fetchOptions: {additionalURL: string; data: any}) => Promise<any>;
   userIdfetcher: () => Promise<any>;
+  additionalURL: string;
 }
 
 interface ErrorBoundaryState {
@@ -58,7 +59,7 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error, errorInfo) {
-    const {putMethod, userIdfetcher} = this.props;
+    const {putMethod, userIdfetcher, additionalURL} = this.props;
     userIdfetcher().then(userId => {
       this.setState(state => ({
         ...state,
@@ -67,7 +68,7 @@ class ErrorBoundary extends React.Component<
       }));
 
       putMethod({
-        additionalURL: '/ws/rest/com.axelor.exception.db.TraceBack',
+        additionalURL,
         data: {
           origin: 'mobile app',
           typeSelect: TECHNICAL_ABNORMALITY,

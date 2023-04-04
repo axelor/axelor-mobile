@@ -22,6 +22,7 @@ import {Module} from './Module';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
+import {RouterProvider} from '../config';
 
 interface proxy {
   defaultUrl: string;
@@ -40,6 +41,7 @@ interface appConfig {
   defaultLanguage: string;
   defaultRequestLimit: number;
   enableConnectionSessions: boolean;
+  retrocompatibilityAOS6: boolean;
 }
 
 interface ApplicationProps {
@@ -68,6 +70,8 @@ const Application = ({
   configuration,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
+
+  RouterProvider.retrocompatibilityAOS6 = configuration?.retrocompatibilityAOS6;
 
   return (
     <ContextsProvider
