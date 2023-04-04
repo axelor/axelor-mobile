@@ -16,55 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
-import {CustomerDeliveryLineCard} from '..';
+import {CustomerDeliveryLineCard} from '../../../templates';
+import {SearchLineContainer} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
+import StockMove from '../../../../types/stock-move';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
-import {getRacks} from '../../../../features/racksListSlice';
+import {useCustomerLinesWithRacks} from '../../../../hooks';
 
-const CustomerDeliveryViewAllContainer = ({}) => {
+const scanKey = 'trackingNumber-or-product_dustomer-delivery-details';
+
+const CustomerDeliverySearchLineContainer = ({}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {customerDelivery} = useSelector(state => state.customerDelivery);
-  const {loadingRacks, racksList} = useSelector(state => state.rack);
-  const {customerDeliveryLineList} = useSelector(
-    state => state.customerDeliveryLine,
-  );
-
-  useEffect(() => {
-    if (customerDelivery != null) {
-      dispatch(
-        fetchCustomerDeliveryLines({
-          customerDeliveryId: customerDelivery?.id,
-          page: 0,
-        }),
-      );
-    }
-  }, [customerDelivery, dispatch]);
-
-  useEffect(() => {
-    dispatch(
-      getRacks({
-        stockId: customerDelivery?.fromStockLocation?.id,
-        LineList: customerDeliveryLineList,
-      }),
-    );
-  }, [
-    dispatch,
-    customerDeliveryLineList,
-    customerDelivery?.fromStockLocation?.id,
-  ]);
+  const {customerDeliveryLineList, totalNumberLines} =
+    useCustomerLinesWithRacks(customerDelivery);
 
   const handleNewLine = () => {
     navigation.navigate('CustomerDeliverySelectProductScreen', {
@@ -78,53 +54,70 @@ const CustomerDeliveryViewAllContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (item, index) => {
-    const locker = !loadingRacks && (racksList?.[index]?.[0]?.rack ?? '');
-
-    const updatedItem = {
-      ...item,
-      locker,
-    };
-
+  const handleShowLine = (item, skipVerification = false) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
-      itemLine: {name: 'customerDeliveryLine', data: updatedItem},
+      itemLine: {name: 'customerDeliveryLine', data: item},
       lineDetailsScreen: 'CustomerDeliveryLineDetailScreen',
       selectTrackingScreen: 'CustomerDeliverySelectTrackingScreen',
       selectProductScreen: 'CustomerDeliverySelectProductScreen',
+      skipVerification,
       navigation,
     });
   };
 
+  const handleLineSearch = item => {
+    handleShowLine(item, true);
+  };
+
+  const fetchCustomerLinesAPI = useCallback(
+    searchValue => {
+      dispatch(
+        fetchCustomerDeliveryLines({
+          customerDeliveryId: customerDelivery.id,
+          searchValue,
+          page: 0,
+        }),
+      );
+    },
+    [dispatch, customerDelivery],
+  );
+
+  const filterLine = useCallback(item => {
+    return (
+      parseFloat(item.realQty) == null ||
+      parseFloat(item.realQty) < parseFloat(item.qty)
+    );
+  }, []);
+
   return (
-    <ViewAllContainer
-      isHeaderExist={
-        customerDelivery.statusSelect !== StockMove.status.Realized
-      }
-      onNewIcon={handleNewLine}
-      data={customerDeliveryLineList}
-      translator={I18n.t}
-      renderFirstTwoItems={(item, index) => (
+    <SearchLineContainer
+      title={I18n.t('Stock_CustomerDeliveryLines')}
+      numberOfItems={totalNumberLines}
+      objectList={customerDeliveryLineList}
+      handleSelect={handleLineSearch}
+      handleSearch={fetchCustomerLinesAPI}
+      scanKey={scanKey}
+      onViewPress={handleViewAll}
+      filterLine={filterLine}
+      showAction={customerDelivery.statusSelect !== StockMove.status.Realized}
+      onAction={handleNewLine}
+      renderItem={item => (
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
           pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
-          askedQty={item?.qty}
-          locker={
-            !loadingRacks && racksList != null && racksList[index] != null
-              ? racksList[index][0]?.rack
-              : ''
-          }
+          askedQty={item.qty}
+          trackingNumber={item.trackingNumber}
+          locker={item.locker}
           availability={
             customerDelivery.statusSelect !== StockMove.status.Realized
-              ? item?.availableStatusSelect
+              ? item.availableStatusSelect
               : null
           }
-          trackingNumber={item?.trackingNumber}
-          onPress={() => handleShowLine(item, index)}
+          onPress={() => handleShowLine(item)}
         />
       )}
-      onViewPress={handleViewAll}
     />
   );
 };
@@ -136,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomerDeliveryViewAllContainer;
+export default CustomerDeliverySearchLineContainer;

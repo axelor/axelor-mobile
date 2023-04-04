@@ -93,7 +93,12 @@ export const handlerError = (
 const manageSucess = (
   response,
   action,
-  {showToast = false, isArrayResponse, returnTotal = false},
+  {
+    showToast = false,
+    isArrayResponse,
+    returnTotal = false,
+    resturnTotalWithData = false,
+  },
 ) => {
   const data = getApiResponseData(response, {isArrayResponse});
   const message = getApiResponseMessage(response);
@@ -109,12 +114,28 @@ const manageSucess = (
     });
   }
 
-  return returnTotal ? total : data;
+  if (resturnTotalWithData) {
+    return {total, data};
+  }
+
+  if (returnTotal) {
+    return total;
+  }
+
+  return data;
 };
 
-const handlerSuccess = (action, {showToast, isArrayResponse, returnTotal}) => {
+const handlerSuccess = (
+  action,
+  {showToast, isArrayResponse, returnTotal, resturnTotalWithData},
+) => {
   return response =>
-    manageSucess(response, action, {showToast, isArrayResponse, returnTotal});
+    manageSucess(response, action, {
+      showToast,
+      isArrayResponse,
+      returnTotal,
+      resturnTotalWithData,
+    });
 };
 
 interface ApiHandlerProps {
@@ -126,6 +147,7 @@ interface ApiHandlerProps {
     showToast?: boolean;
     isArrayResponse?: boolean;
     returnTotal?: boolean;
+    resturnTotalWithData?: boolean;
   };
   errorOptions?: errorOptionsProps;
 }
@@ -144,10 +166,18 @@ export const handlerApiCall = ({
     showToast = false,
     isArrayResponse = false,
     returnTotal = false,
+    resturnTotalWithData = false,
   },
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess(action, {showToast, isArrayResponse, returnTotal}));
+    .then(
+      handlerSuccess(action, {
+        showToast,
+        isArrayResponse,
+        returnTotal,
+        resturnTotalWithData,
+      }),
+    );
 };

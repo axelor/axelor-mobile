@@ -26,7 +26,7 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   InternalMoveMovementIndicationCard,
-  InternalMoveViewAllContainer,
+  InternalMoveSearchLineContainer,
   InternalMoveRealizeButton,
   StockMoveHeader,
 } from '../../components';
@@ -72,7 +72,7 @@ const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <InternalMoveMovementIndicationCard internalMove={internalMove} />
-        <InternalMoveViewAllContainer />
+        <InternalMoveSearchLineContainer />
         <NotesCard
           title={I18n.t('Stock_NotesOnPreparation')}
           data={internalMove.pickingOrderComments}

@@ -20,21 +20,28 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+
+const createSearchCriteria = (customerDeliveryId, searchValue) => {
+  return [
+    {
+      fieldName: 'stockMove.id',
+      operator: '=',
+      value: customerDeliveryId,
+    },
+    getSearchCriterias('stock_customerDeliveryLine', searchValue),
+  ];
+};
 
 export async function searchCustomerDeliveryLines({
   page = 0,
+  searchValue,
   customerDeliveryId,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: [
-      {
-        fieldName: 'stockMove.id',
-        operator: '=',
-        value: customerDeliveryId,
-      },
-    ],
+    criteria: createSearchCriteria(customerDeliveryId, searchValue),
     fieldKey: 'stock_customerDeliveryLine',
     page,
   });

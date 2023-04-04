@@ -18,12 +18,12 @@
 
 export {default as InventoryButtons} from './InventoryButtons/InventoryButtons';
 export {default as InventoryCard} from './InventoryCard/InventoryCard';
-export {default as InventoryDetailsHeader} from './InventoryDetailsHeader/InventoryDetailsHeader';
 export {default as InventoryDescription} from './InventoryDescription/InventoryDescription';
+export {default as InventoryDetailsHeader} from './InventoryDetailsHeader/InventoryDetailsHeader';
 export {default as InventoryHeader} from './InventoryHeader/InventoryHeader';
 export {default as InventoryLineButtons} from './InventoryLineButtons/InventoryLineButtons';
 export {default as InventoryLineCard} from './InventoryLineCard/InventoryLineCard';
 export {default as InventoryLineQuantityCard} from './InventoryLineQuantityCard/InventoryLineQuantityCard';
 export {default as InventoryLineTrackingNumberSelect} from './InventoryLineTrackingNumberSelect/InventoryLineTrackingNumberSelect';
 export {default as InventoryLocationsMoveCard} from './InventoryLocationsMoveCard/InventoryLocationsMoveCard';
-export {default as InventoryViewAllContainer} from './InventoryViewAllContainer/InventoryViewAllContainer';
+export {default as InventorySearchLineContainer} from './InventorySearchLineContainer/InventorySearchLineContainer';

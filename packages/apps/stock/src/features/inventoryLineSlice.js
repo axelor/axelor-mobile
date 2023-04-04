@@ -34,7 +34,7 @@ export const fetchInventoryLines = createAsyncThunk(
       data,
       action: 'Stock_SliceAction_FetchInventoryLines',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
@@ -104,6 +104,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   inventoryLineList: [],
+  totalNumberLines: 0,
   updateResponse: null,
   createResponse: null,
   loadingInventoryLine: false,
@@ -124,15 +125,16 @@ const inventoryLineSlice = createSlice({
     builder.addCase(fetchInventoryLines.fulfilled, (state, action) => {
       state.loadingInventoryLines = false;
       state.moreLoading = false;
+      state.totalNumberLines = action.payload?.total;
       if (action.meta.arg.page === 0) {
-        state.inventoryLineList = action.payload;
+        state.inventoryLineList = action.payload?.data;
         state.isListEnd = false;
       } else {
-        if (action.payload != null) {
+        if (action.payload?.data != null) {
           state.isListEnd = false;
           state.inventoryLineList = [
             ...state.inventoryLineList,
-            ...action.payload,
+            ...action.payload?.data,
           ];
         } else {
           state.isListEnd = true;

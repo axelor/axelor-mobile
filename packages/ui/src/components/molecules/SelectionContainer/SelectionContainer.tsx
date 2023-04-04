@@ -62,6 +62,7 @@ const itemStyles = StyleSheet.create({
     zIndex: 50,
   },
   text: {
+    width: '100%',
     marginTop: 10,
     marginLeft: 10,
     fontSize: 16,
@@ -72,6 +73,7 @@ const itemStyles = StyleSheet.create({
 });
 
 interface SelectionContainerProps {
+  style?: any;
   objectList: any[];
   displayValue?: (any) => string;
   handleSelect?: (any) => void;
@@ -82,6 +84,7 @@ interface SelectionContainerProps {
 }
 
 const SelectionContainer = ({
+  style,
   objectList,
   displayValue,
   handleSelect,
@@ -156,7 +159,7 @@ const SelectionContainer = ({
   };
 
   return (
-    <View style={styles.flatListContainer}>
+    <View style={[styles.flatListContainer, style]}>
       <ScrollView nestedScrollEnabled={true}>
         {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
       </ScrollView>

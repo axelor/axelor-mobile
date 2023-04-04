@@ -33,7 +33,7 @@ export const fetchInternalMoveLines = createAsyncThunk(
       data,
       action: 'Stock_SliceAction_FetchInternalMoveLines',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
@@ -92,6 +92,7 @@ const initialState = {
   internalMoveLineList: [],
   loadingInternalMoveLine: false,
   internalMoveLine: {},
+  totalNumberLines: 0,
 };
 
 const internalMoveLineSlice = createSlice({
@@ -108,15 +109,16 @@ const internalMoveLineSlice = createSlice({
     builder.addCase(fetchInternalMoveLines.fulfilled, (state, action) => {
       state.loadingIMLines = false;
       state.moreLoading = false;
+      state.totalNumberLines = action.payload?.total;
       if (action.meta.arg.page === 0) {
-        state.internalMoveLineList = action.payload;
+        state.internalMoveLineList = action.payload?.data;
         state.isListEnd = false;
       } else {
-        if (action.payload != null) {
+        if (action.payload?.data != null) {
           state.isListEnd = false;
           state.internalMoveLineList = [
             ...state.internalMoveLineList,
-            ...action.payload,
+            ...action.payload?.data,
           ];
         } else {
           state.isListEnd = true;
