@@ -18,6 +18,7 @@
 
 const routes = {
   AOS6: {
+    App: '/ws/rest/com.axelor.apps.base.db.App',
     AppBase: '/ws/rest/com.axelor.apps.base.db.AppBase',
     TraceBack: '/ws/rest/com.axelor.exception.db.TraceBack',
     AppSupplychain: '/ws/rest/com.axelor.apps.base.db.AppSupplychain',
@@ -25,6 +26,7 @@ const routes = {
     AppMobileSettings: '/ws/rest/com.axelor.apps.base.db.AppMobileSettings',
   },
   AOS7: {
+    App: '/ws/rest/com.axelor.studio.db.App',
     AppBase: '/ws/rest/com.axelor.studio.db.AppBase',
     TraceBack: '/ws/rest/com.axelor.apps.base.db.TraceBack',
     AppSupplychain: ' /ws/rest/com.axelor.studio.db.AppSupplychain',
