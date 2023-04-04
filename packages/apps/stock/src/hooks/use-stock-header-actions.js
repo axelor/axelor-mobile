@@ -79,7 +79,7 @@ const useInternalMoveListActions = () => {
           title: I18n.t('Stock_NewInternalMove'),
           iconColor: Colors.primaryColor.background,
           onPress: () =>
-            navigation.navigate('InternalMoveSelectFromLocationScreen', {}),
+            navigation.navigate('InternalMoveLineCreationScreen', {}),
           showInHeader: true,
         },
       ],
@@ -156,7 +156,7 @@ const useStockCorrectionListActions = () => {
           title: I18n.t('Stock_NewStockCorrection'),
           iconColor: Colors.primaryColor.background,
           onPress: () =>
-            navigation.navigate('StockCorrectionNewLocationScreen', {}),
+            navigation.navigate('StockCorrectionCreationScreen', {}),
           showInHeader: true,
         },
       ],

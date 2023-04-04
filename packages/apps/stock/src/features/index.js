@@ -24,6 +24,7 @@ export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
 export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
+export {productTrackingNumberReducer as productTrackingNumber} from './productTrackingNumberSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';
 export {stockAppConfigReducer as stockAppConfig} from './stockAppConfigSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';

@@ -17,13 +17,7 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
-import {
-  ClearableCard,
-  HeaderContainer,
-  PopUpOneButton,
-  Screen,
-} from '@axelor/aos-mobile-ui';
+import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -40,10 +34,12 @@ const productScanKey = 'product_internal-move-select';
 const InternalMoveSelectProductScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
   const internalMoveLine = route.params.internalMoveLine;
-  const {productList} = useSelector(state => state.product);
-  const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {productList} = useSelector(state => state.product);
+
+  const [isVisible, setVisible] = useState(false);
 
   const fetchProductsAPI = useCallback(
     filter => {
@@ -52,90 +48,49 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
     [dispatch],
   );
 
-  const handleClearOriginalLocation = () => {
-    navigation.navigate('InternalMoveSelectFromLocationScreen');
-  };
-
-  const handleClearDestinationLocation = () => {
-    navigation.navigate('InternalMoveSelectToLocationScreen', {
-      fromStockLocation: route.params.fromStockLocation,
-    });
-  };
-
   const handleNavigate = useCallback(
     product => {
       if (product != null) {
-        if (internalMove == null) {
+        if (product.id !== internalMoveLine?.product.id) {
+          setVisible(true);
+        } else {
           if (product.trackingNumberConfiguration == null) {
             navigation.navigate('InternalMoveLineDetailsScreen', {
-              fromStockLocation: route.params.fromStockLocation,
-              toStockLocation: route.params.toStockLocation,
-              stockProduct: product,
+              internalMove: internalMove,
+              internalMoveLine: internalMoveLine,
             });
           } else {
             navigation.navigate('InternalMoveSelectTrackingScreen', {
-              fromStockLocation: route.params.fromStockLocation,
-              toStockLocation: route.params.toStockLocation,
+              internalMove: internalMove,
+              internalMoveLine: internalMoveLine,
               stockProduct: product,
             });
-          }
-        } else {
-          if (product.id !== internalMoveLine?.product.id) {
-            setVisible(true);
-          } else {
-            if (product.trackingNumberConfiguration == null) {
-              navigation.navigate('InternalMoveLineDetailsScreen', {
-                internalMove: internalMove,
-                internalMoveLine: internalMoveLine,
-              });
-            } else {
-              navigation.navigate('InternalMoveSelectTrackingScreen', {
-                internalMove: internalMove,
-                internalMoveLine: internalMoveLine,
-                stockProduct: product,
-              });
-            }
           }
         }
       }
     },
-    [internalMove, internalMoveLine, navigation, route.params],
+    [internalMove, internalMoveLine, navigation],
   );
 
   return (
     <Screen removeSpaceOnTop={internalMove != null ? true : false}>
-      {internalMove != null ? (
-        <HeaderContainer
-          expandableFilter={false}
-          fixedItems={
-            internalMove != null ? (
-              <StockMoveHeader
-                reference={internalMove.stockMoveSeq}
-                status={internalMove.statusSelect}
-                date={
-                  internalMove.statusSelect === StockMove.status.Draft
-                    ? internalMove.createdOn
-                    : internalMove.statusSelect === StockMove.status.Planned
-                    ? internalMove.estimatedDate
-                    : internalMove.realDate
-                }
-                availability={internalMove.availableStatusSelect}
-              />
-            ) : null
-          }
-        />
-      ) : (
-        <View>
-          <ClearableCard
-            valueTxt={route.params.fromStockLocation.name}
-            onClearPress={handleClearOriginalLocation}
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={internalMove.stockMoveSeq}
+            status={internalMove.statusSelect}
+            date={
+              internalMove.statusSelect === StockMove.status.Draft
+                ? internalMove.createdOn
+                : internalMove.statusSelect === StockMove.status.Planned
+                ? internalMove.estimatedDate
+                : internalMove.realDate
+            }
+            availability={internalMove.availableStatusSelect}
           />
-          <ClearableCard
-            valueTxt={route.params.toStockLocation.name}
-            onClearPress={handleClearDestinationLocation}
-          />
-        </View>
-      )}
+        }
+      />
       <ScannerAutocompleteSearch
         objectList={productList}
         onChangeValue={item => handleNavigate(item)}

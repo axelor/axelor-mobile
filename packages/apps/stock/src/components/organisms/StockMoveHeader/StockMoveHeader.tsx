@@ -65,7 +65,7 @@ const StockMoveHeader = ({
           color={StockMove.getStatusColor(status, Colors)}
           title={StockMove.getStatus(status, I18n)}
         />
-        {availability == null ? (
+        {availability == null || availability === 0 ? (
           <View style={styles.refContainer} />
         ) : (
           <Badge

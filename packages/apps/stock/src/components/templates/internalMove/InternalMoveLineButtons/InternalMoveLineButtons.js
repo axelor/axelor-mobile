@@ -16,71 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React from 'react';
 import {
   useDispatch,
   useNavigation,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {createInternalMove} from '../../../../features/internalMoveSlice';
+import {Button} from '@axelor/aos-mobile-ui';
 import {updateInternalMoveLine} from '../../../../features/internalMoveLineSlice';
 
 const InternalMoveLineButtons = ({
   saveStatus,
   internalMove,
   internalMoveLine,
-  stockProduct,
-  trackingNumber,
-  originalStockLocation,
   unit,
-  destinationStockLocation,
   movedQty,
 }) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const createInternalMoveAPI = useCallback(() => {
-    dispatch(
-      createInternalMove({
-        productId: stockProduct.id,
-        companyId: 1,
-        originStockLocationId: originalStockLocation.id,
-        destStockLocationId: destinationStockLocation.id,
-        unitId: unit.id,
-        trackingNumberId:
-          stockProduct.trackingNumberConfiguration == null ||
-          trackingNumber == null
-            ? null
-            : trackingNumber.id,
-        movedQty: movedQty,
-      }),
-    );
-  }, [
-    destinationStockLocation,
-    dispatch,
-    movedQty,
-    originalStockLocation,
-    stockProduct,
-    trackingNumber,
-    unit,
-  ]);
-
-  const handleRealize = () => {
-    createInternalMoveAPI();
-    navigation.popToTop();
-  };
-
-  const handleValidate = () => {
-    createInternalMoveAPI();
-    navigation.navigate('InternalMoveSelectProductScreen', {
-      fromStockLocation: originalStockLocation,
-      toStockLocation: destinationStockLocation,
-    });
-  };
 
   const handleSave = () => {
     dispatch(
@@ -101,37 +55,7 @@ const InternalMoveLineButtons = ({
     return null;
   }
 
-  if (internalMove == null) {
-    return (
-      <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Realize')}
-          color={Colors.secondaryColor}
-          onPress={handleRealize}
-        />
-        <Button
-          title={I18n.t('Base_RealizeContinue')}
-          onPress={handleValidate}
-        />
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.button_container}>
-      <Button title={I18n.t('Base_Save')} onPress={handleSave} />
-    </View>
-  );
+  return <Button title={I18n.t('Base_Save')} onPress={handleSave} />;
 };
-
-const styles = StyleSheet.create({
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-});
 
 export default InternalMoveLineButtons;
