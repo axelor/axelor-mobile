@@ -24,14 +24,14 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
-import {updateCorrection} from '../../../../features/stockCorrectionSlice';
+import {createCorrection} from '../../../../features/stockCorrectionSlice';
 
-const StockCorrectionButtons = ({
-  saveStatus,
+const StockCorrectionCreationButton = ({
   reason,
-  stockCorrection,
+  product,
+  trackingNumber,
+  stockLocation,
   realQty,
-  status,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -39,20 +39,34 @@ const StockCorrectionButtons = ({
   const dispatch = useDispatch();
 
   const handleAPI = useCallback(
-    (_status = StockCorrection.status.Draft) => {
+    status => {
       dispatch(
-        updateCorrection({
-          version: stockCorrection.version,
-          stockCorrectionId: stockCorrection.id,
-          realQty: saveStatus ? null : realQty,
-          reasonId: saveStatus ? null : reason?.id,
-          status: _status,
+        createCorrection({
+          productId: product.id,
+          stockLocationId: stockLocation.id,
+          reasonId: reason.id,
+          trackingNumberId:
+            product?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.id,
+          status: status,
+          realQty: realQty,
         }),
       );
 
       navigation.pop();
     },
-    [dispatch, navigation, realQty, reason, saveStatus, stockCorrection],
+    [
+      dispatch,
+      navigation,
+      product.id,
+      product?.trackingNumberConfiguration,
+      realQty,
+      reason.id,
+      stockLocation.id,
+      trackingNumber,
+    ],
   );
 
   const handleSave = useCallback(
@@ -65,20 +79,20 @@ const StockCorrectionButtons = ({
     [handleAPI],
   );
 
+  if (reason?.id == null) {
+    return null;
+  }
+
   return (
     <>
-      {saveStatus ? null : (
-        <Button
-          title={I18n.t('Base_Save')}
-          color={Colors.secondaryColor}
-          onPress={handleSave}
-        />
-      )}
-      {status === StockCorrection.status.Validated ? null : (
-        <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
-      )}
+      <Button
+        title={I18n.t('Base_Save')}
+        color={Colors.secondaryColor}
+        onPress={handleSave}
+      />
+      <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
     </>
   );
 };
 
-export default StockCorrectionButtons;
+export default StockCorrectionCreationButton;

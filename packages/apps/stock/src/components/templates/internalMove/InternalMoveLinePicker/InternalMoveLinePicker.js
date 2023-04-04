@@ -16,14 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
+import {useDispatch} from '@axelor/aos-mobile-core';
 import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
+import {fetchUnit} from '../../../../features/unitSlice';
 
-const InternalMoveLinePicker = ({unit, status, setUnit, setSaveStatus}) => {
+const InternalMoveLinePicker = ({
+  unit,
+  status,
+  setUnit,
+  setSaveStatus = () => {},
+}) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {unitList} = useSelector(state => state.unit);
 
   const handleUnitChange = unitId => {
@@ -35,9 +43,12 @@ const InternalMoveLinePicker = ({unit, status, setUnit, setSaveStatus}) => {
     setSaveStatus(false);
   };
 
+  useEffect(() => {
+    dispatch(fetchUnit());
+  }, [dispatch]);
+
   return (
     <Picker
-      styleTxt={unit?.id === null ? styles.picker_empty : null}
       title={I18n.t('Stock_Unit')}
       onValueChange={handleUnitChange}
       defaultValue={unit?.id}
@@ -49,14 +60,9 @@ const InternalMoveLinePicker = ({unit, status, setUnit, setSaveStatus}) => {
         status === StockMove.status.Canceled
       }
       disabledValue={unit?.name}
+      required={true}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  picker_empty: {
-    color: 'red',
-  },
-});
 
 export default InternalMoveLinePicker;

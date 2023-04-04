@@ -17,12 +17,13 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {checkNullString, handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   fetchInternalMove as _fetchInternalMove,
   searchInternalMoveFilter,
   createInternalStockMove,
   realizeInternalMove as _realizeInternalMove,
+  modifyInternalMoveNotes,
 } from '../api/internal-move-api';
 
 export const searchInternalMoves = createAsyncThunk(
@@ -59,7 +60,23 @@ export const createInternalMove = createAsyncThunk(
       data,
       action: 'Stock_SliceAction_CreateInternalMove',
       getState,
-      responseOptions: {showToast: true},
+      responseOptions: {showToast: true, isArrayResponse: false},
+    }).then(res => {
+      if (checkNullString(data.notes)) {
+        return res;
+      }
+
+      return handlerApiCall({
+        fetchFunction: modifyInternalMoveNotes,
+        data: {
+          internalMoveId: res,
+          notes: data.notes,
+          version: res.version,
+        },
+        action: 'modify internal move notes',
+        getState,
+        responseOptions: {showToast: false},
+      });
     });
   },
 );

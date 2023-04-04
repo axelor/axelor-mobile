@@ -17,12 +17,17 @@
  */
 
 import React from 'react';
-import {Text, Card, Input} from '@axelor/aos-mobile-ui';
-import {View, StyleSheet} from 'react-native';
+import {FormHtmlInput} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {useTranslator} from '@axelor/aos-mobile-core';
+import {StyleSheet, View} from 'react-native';
 
-const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
+const InternalMoveLineNotes = ({
+  status,
+  notes,
+  setNotes = () => {},
+  setSaveStatus = () => {},
+}) => {
   const I18n = useTranslator();
 
   const handleNotesChange = value => {
@@ -32,30 +37,25 @@ const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
 
   if (status === StockMove.status.Draft) {
     return (
-      <View>
-        <View style={styles.title}>
-          <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-        </View>
-        <Card style={styles.notesCard}>
-          <Input value={notes} onChange={handleNotesChange} multiline={true} />
-        </Card>
+      <View style={styles.container}>
+        <FormHtmlInput
+          title={I18n.t('Stock_NotesOnStockMove')}
+          onChange={handleNotesChange}
+          defaultValue={notes}
+        />
       </View>
     );
   }
 
-  if (
-    status === StockMove.status.Planned ||
-    status === StockMove.status.Realized ||
-    status === StockMove.status.Canceled
-  ) {
+  if (notes != null) {
     return (
-      <View>
-        <View style={styles.title}>
-          <Text>{I18n.t('Stock_NotesOnStockMove')}</Text>
-        </View>
-        <Card style={styles.notesCard}>
-          <Text numberOfLines={3}>{notes}</Text>
-        </Card>
+      <View style={styles.container}>
+        <FormHtmlInput
+          title={I18n.t('Stock_NotesOnStockMove')}
+          onChange={handleNotesChange}
+          defaultValue={notes}
+          readonly={true}
+        />
       </View>
     );
   }
@@ -64,12 +64,9 @@ const InternalMoveLineNotes = ({status, notes, setNotes, setSaveStatus}) => {
 };
 
 const styles = StyleSheet.create({
-  notesCard: {
-    marginHorizontal: 12,
-    marginBottom: '2%',
-  },
-  title: {
-    marginHorizontal: 20,
+  container: {
+    marginLeft: 18,
+    width: '100%',
   },
 });
 
