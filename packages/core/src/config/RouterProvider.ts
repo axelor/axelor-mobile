@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from 'axios';
-import {RouterProvider} from '../config';
+import routes from './routes';
 
-const TECHNICAL_ABNORMALITY = 0;
-const CONFIGURATION_PROBLEM = 4;
+class RouterProvider {
+  private static instance: RouterProvider;
+  private _retrocompatibilityAOS6: boolean = true;
 
-interface traceErrorProps {
-  message: string;
-  cause: string;
-  userId: number;
+  private constructor() {}
+
+  public static getInstance() {
+    if (!RouterProvider.instance) {
+      RouterProvider.instance = new RouterProvider();
+    }
+    return RouterProvider.instance;
+  }
+
+  public set retrocompatibilityAOS6(value: boolean) {
+    this._retrocompatibilityAOS6 = value;
+  }
+
+  public get(resource: string): string {
+    return routes[this._retrocompatibilityAOS6 ? 'AOS6' : 'AOS7'][resource];
+  }
 }
 
-export const traceError = ({message, cause, userId}: traceErrorProps) => {
-  return axios.put(RouterProvider.get('TraceBack'), {
-    data: {
-      origin: 'mobile app',
-      typeSelect: TECHNICAL_ABNORMALITY,
-      categorySelect: CONFIGURATION_PROBLEM,
-      date: new Date(),
-      exception: message,
-      message: message,
-      cause: JSON.stringify(cause),
-      internalUser: {id: userId},
-    },
-  });
-};
+const routerProvider = RouterProvider.getInstance();
+
+export default routerProvider;

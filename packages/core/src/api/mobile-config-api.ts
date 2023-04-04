@@ -17,6 +17,7 @@
  */
 
 import {axiosApiProvider} from '../apiProviders';
+import {RouterProvider} from '../config';
 
 function emptyResponse() {
   return {data: {data: []}};
@@ -25,7 +26,7 @@ function emptyResponse() {
 export async function getMobileConfigs() {
   return axiosApiProvider
     .post({
-      url: '/ws/rest/com.axelor.apps.base.db.App/search',
+      url: `${RouterProvider.get('App')}/search`,
       data: {
         data: {
           criteria: [

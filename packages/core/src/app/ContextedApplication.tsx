@@ -34,6 +34,7 @@ import Translator from '../i18n/component/Translator';
 import {getActiveUserId} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
 import {Camera, CameraScanner, Scanner} from '../components';
+import {RouterProvider} from '../config';
 
 interface proxy {
   defaultUrl: string;
@@ -109,7 +110,8 @@ const ContextedApplication = ({
       <ErrorBoundary
         errorScreen={ErrorScreen}
         userIdfetcher={getActiveUserId}
-        putMethod={traceBackPutMethod}>
+        putMethod={traceBackPutMethod}
+        additionalURL={RouterProvider.get('TraceBack')}>
         <NavigationContainer>
           <HeaderIndicator />
           <LoadingIndicator />
