@@ -23,7 +23,7 @@ import {
   SupplierArrivalHeader,
   SupplierArrivalButtons,
   SupplierArrivalMovementIndicationCard,
-  SupplierArrivalViewAllContainer,
+  SupplierArrivalSearchLineContainer,
 } from '../../components';
 import {fetchSupplierArrival} from '../../features/supplierArrivalSlice';
 
@@ -53,7 +53,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />
-        <SupplierArrivalViewAllContainer />
+        <SupplierArrivalSearchLineContainer />
       </ScrollView>
     </Screen>
   );

@@ -33,7 +33,7 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
       data,
       action: 'Stock_SliceAction_FetchCustomerDeliveryLines',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
@@ -90,6 +90,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   customerDeliveryLineList: [],
+  totalNumberLines: 0,
   updateLineResponse: {},
   loadingCustomerDeliveryLine: false,
   customerDeliveryLine: {},
@@ -109,15 +110,16 @@ const CustomerDeliveryLineSlice = createSlice({
     builder.addCase(fetchCustomerDeliveryLines.fulfilled, (state, action) => {
       state.loadingCDLines = false;
       state.moreLoading = false;
+      state.totalNumberLines = action.payload?.total;
       if (action.meta.arg.page === 0) {
-        state.customerDeliveryLineList = action.payload;
+        state.customerDeliveryLineList = action.payload?.data;
         state.isListEnd = false;
       } else {
-        if (action.payload != null) {
+        if (action.payload?.data != null) {
           state.isListEnd = false;
           state.customerDeliveryLineList = [
             ...state.customerDeliveryLineList,
-            ...action.payload,
+            ...action.payload?.data,
           ];
         } else {
           state.isListEnd = true;

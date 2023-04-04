@@ -37,7 +37,7 @@ interface IconInputProps {
   numberOfLines?: number;
   keyboardType?: KeyboardTypeOptions;
   onEndFocus: () => void;
-  isFocus: boolean;
+  isFocus?: boolean;
   leftIconsList?: any[];
   rightIconsList?: any[];
 }
@@ -55,7 +55,7 @@ const IconInput = ({
   numberOfLines,
   keyboardType,
   onEndFocus = () => {},
-  isFocus,
+  isFocus = false,
   leftIconsList = [],
   rightIconsList = [],
 }: IconInputProps) => {

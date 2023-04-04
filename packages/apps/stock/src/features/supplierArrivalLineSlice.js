@@ -25,14 +25,14 @@ import {
 } from '../api/supplier-arrival-line-api';
 
 export const fetchSupplierArrivalLines = createAsyncThunk(
-  'supplierLines/fetchSupplierArrivalLines',
+  'supplierLine/fetchSupplierArrivalLines',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalLines,
       data,
       action: 'Stock_SliceAction_FetchSupplierArrivalLines',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
@@ -68,6 +68,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   supplierArrivalLineList: [],
+  totalNumberLines: 0,
   updateLineResponse: {},
   loadingSupplierArrivalLine: false,
   supplierArrivalLine: {},
@@ -87,15 +88,16 @@ const supplierArrivalLineSlice = createSlice({
     builder.addCase(fetchSupplierArrivalLines.fulfilled, (state, action) => {
       state.loadingSALines = false;
       state.moreLoading = false;
+      state.totalNumberLines = action.payload?.total;
       if (action.meta.arg.page === 0) {
-        state.supplierArrivalLineList = action.payload;
+        state.supplierArrivalLineList = action.payload?.data;
         state.isListEnd = false;
       } else {
-        if (action.payload != null) {
+        if (action.payload?.data != null) {
           state.isListEnd = false;
           state.supplierArrivalLineList = [
             ...state.supplierArrivalLineList,
-            ...action.payload,
+            ...action.payload?.data,
           ];
         } else {
           state.isListEnd = true;

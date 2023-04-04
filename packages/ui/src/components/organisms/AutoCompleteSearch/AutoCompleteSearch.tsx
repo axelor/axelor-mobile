@@ -39,7 +39,6 @@ interface AutocompleteSearchProps {
   fetchData?: (any) => void;
   displayValue?: (any) => string;
   placeholder?: string;
-  isFocus?: boolean;
   changeScreenAfter?: boolean;
   navigate?: boolean;
   oneFilter?: boolean;
@@ -57,7 +56,6 @@ const AutoCompleteSearch = ({
   fetchData = () => {},
   displayValue,
   placeholder,
-  isFocus = false,
   changeScreenAfter = false,
   navigate = false,
   oneFilter = false,
@@ -217,12 +215,12 @@ const AutoCompleteSearch = ({
         onSelection={handleFocus}
         onSearchPress={handleSearchPress}
         onEndFocus={() => selected && setDisplayList(false)}
-        isFocus={isFocus}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
       />
       {displayList && !oneFilter && (
         <SelectionContainer
+          style={style}
           objectList={objectList}
           displayValue={displayValue}
           handleSelect={handleSelect}

@@ -26,4 +26,4 @@ export {default as InternalMoveLineQuantityCard} from './InternalMoveLineQuantit
 export {default as InternalMoveLineTrackingNumberSelect} from './InternalMoveLineTrackingNumberSelect/InternalMoveLineTrackingNumberSelect';
 export {default as InternalMoveMovementIndicationCard} from './InternalMoveMovementIndicationCard/InternalMoveMovementIndicationCard';
 export {default as InternalMoveRealizeButton} from './InternalMoveRealizeButton/InternalMoveRealizeButton';
-export {default as InternalMoveViewAllContainer} from './InternalMoveViewAllContainer/InternalMoveViewAllContainer';
+export {default as InternalMoveSearchLineContainer} from './InternalMoveSearchLineContainer/InternalMoveSearchLineContainer';

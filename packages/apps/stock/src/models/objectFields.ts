@@ -49,6 +49,7 @@ export const stock_modelAPI: ObjectFields = {
     realQty: schemaContructor.number(),
     locker: schemaContructor.string(),
     name: schemaContructor.string(),
+    productName: schemaContructor.string(),
     'saleOrderLine.pickingOrderInfo': schemaContructor.string(),
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
@@ -79,6 +80,7 @@ export const stock_modelAPI: ObjectFields = {
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
+    productName: schemaContructor.string(),
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
       schemaContructor.subObject('fullName'),
@@ -200,6 +202,7 @@ export const stock_modelAPI: ObjectFields = {
     locker: schemaContructor.string(),
     name: schemaContructor.string(),
     conformitySelect: schemaContructor.number(),
+    productName: schemaContructor.string(),
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
       schemaContructor.subObject('fullName'),

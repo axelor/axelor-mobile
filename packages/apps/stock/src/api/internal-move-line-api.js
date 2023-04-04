@@ -20,18 +20,28 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-export async function searchInternalMoveLines({internalMoveId, page = 0}) {
+const createSearchCriteria = (internalMoveId, searchValue) => {
+  return [
+    {
+      fieldName: 'stockMove.id',
+      operator: '=',
+      value: internalMoveId,
+    },
+    getSearchCriterias('stock_internalMoveLine', searchValue),
+  ];
+};
+
+export async function searchInternalMoveLines({
+  internalMoveId,
+  searchValue,
+  page = 0,
+}) {
   return createStandardSearch({
     model: 'com.axelor.apps.stock.db.StockMoveLine',
-    criteria: [
-      {
-        fieldName: 'stockMove.id',
-        operator: '=',
-        value: internalMoveId,
-      },
-    ],
+    criteria: createSearchCriteria(internalMoveId, searchValue),
     fieldKey: 'stock_internalMoveLine',
     page,
   });

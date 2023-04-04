@@ -76,6 +76,12 @@ const ScannerAutocompleteSearch = ({
 
   const Colors = useThemeColor();
 
+  useEffect(() => {
+    if (isFocus) {
+      enableScanner();
+    }
+  }, [enableScanner, isFocus]);
+
   return (
     <AutoCompleteSearch
       selectLastItem={selectLastItem}
@@ -88,7 +94,6 @@ const ScannerAutocompleteSearch = ({
       fetchData={fetchData}
       displayValue={displayValue}
       placeholder={placeholder}
-      isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
       navigate={navigate}
       oneFilter={oneFilter}
