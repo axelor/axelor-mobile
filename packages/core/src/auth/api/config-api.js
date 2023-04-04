@@ -17,17 +17,18 @@
  */
 
 import {axiosApiProvider} from '../../apiProviders';
+import {RouterProvider} from '../../config';
 
 export async function getBaseConfig() {
   return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.base.db.AppBase/',
+    url: RouterProvider.get('AppBase'),
   });
 }
 
 export async function getMobileSettings() {
   return axiosApiProvider
     .get({
-      url: '/ws/rest/com.axelor.apps.base.db.AppMobileSettings/',
+      url: RouterProvider.get('AppMobileSettings'),
     })
     .then(res => {
       if (res?.data?.status !== 0) {
