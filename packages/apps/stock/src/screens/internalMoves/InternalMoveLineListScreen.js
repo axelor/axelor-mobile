@@ -139,27 +139,22 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       <ScrollList
         loadingList={loadingIMLines}
         data={filteredList}
-        renderItem={({item}) => {
-          console.log(item.isRealQtyModifiedByUser);
-          return (
-            <InternalMoveLineCard
-              style={styles.item}
-              productName={item.product?.fullName}
-              internalMoveStatus={internalMove.statusSelect}
-              availability={
-                item.availableStatusSelect == null
-                  ? null
-                  : item.availableStatusSelect
-              }
-              trackingNumber={item.trackingNumber?.trackingNumberSeq}
-              expectedQty={item.qty}
-              movedQty={
-                item.isRealQtyModifiedByUser === false ? 0 : item.realQty
-              }
-              onPress={() => handleShowLine(item)}
-            />
-          );
-        }}
+        renderItem={({item}) => (
+          <InternalMoveLineCard
+            style={styles.item}
+            productName={item.product?.fullName}
+            internalMoveStatus={internalMove.statusSelect}
+            availability={
+              item.availableStatusSelect == null
+                ? null
+                : item.availableStatusSelect
+            }
+            trackingNumber={item.trackingNumber?.trackingNumberSeq}
+            expectedQty={item.qty}
+            movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+            onPress={() => handleShowLine(item)}
+          />
+        )}
         fetchData={fetchInternalLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
