@@ -144,7 +144,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         } else {
           setPlannedQty(productIndicators?.availableStock);
         }
-        setMovedQty(internalMoveLine.realQty);
+        setMovedQty(
+          internalMoveLine.isRealQtyModifiedByUser === false
+            ? 0
+            : internalMoveLine.realQty,
+        );
         setUnit(internalMoveLine.unit);
         setLoading(false);
       }

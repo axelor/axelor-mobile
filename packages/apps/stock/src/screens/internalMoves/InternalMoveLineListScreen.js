@@ -74,9 +74,13 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
           if (selectedStatus[0].key === 'doneStatus') {
-            return parseFloat(item.realQty) >= parseFloat(item.qty);
+            return (
+              item.isRealQtyModifiedByUser !== false &&
+              parseFloat(item.realQty) >= parseFloat(item.qty)
+            );
           } else if (selectedStatus[0].key === 'unDoneStatus') {
             return (
+              item.isRealQtyModifiedByUser === false ||
               parseFloat(item.realQty) == null ||
               parseFloat(item.realQty) < parseFloat(item.qty)
             );
@@ -147,7 +151,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             }
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
             expectedQty={item.qty}
-            movedQty={item.realQty}
+            movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
             onPress={() => handleShowLine(item)}
           />
         )}

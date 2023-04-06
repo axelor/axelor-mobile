@@ -25,13 +25,26 @@ export {
   searchCustomerDeliveryLines,
   updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
-export * from './internal-move-api';
-export * from './internal-move-line-api';
+export {
+  fetchInternalMove as fetchInternalMoveApi,
+  searchInternalMoveFilter,
+  realizeInternalMove as realizeInternalMoveApi,
+  createInternalStockMove,
+} from './internal-move-api';
+export {
+  searchInternalMoveLines,
+  updateInternalMoveLine as updateInternalMoveLineApi,
+} from './internal-move-line-api';
 export * from './inventory-api';
-export * from './internal-move-line-api';
+export * from './inventory-line-api';
 export * from './partner-api';
 export * from './product-api';
-export * from './stock-correction-api';
+export {
+  fetchStockCorrection as fetchStockCorrectionApi,
+  createStockCorrection,
+  updateStockCorrection,
+  searchStockCorrection,
+} from './stock-correction-api';
 export * from './stock-correction-reason-api';
 export * from './stock-location-api';
 export * from './stock-location-line-api';

@@ -87,20 +87,11 @@ export async function createInternalStockMove({
   });
 }
 
-export async function updateInternalStockMove({
-  internalMoveId,
-  version,
-  movedQty,
-  unitId,
-  status,
-}) {
+export async function realizeInternalMove({stockMoveId, version}) {
   return axiosApiProvider.put({
-    url: `/ws/aos/stock-move/internal/${internalMoveId}`,
+    url: `/ws/aos/stock-move/realize/${stockMoveId}`,
     data: {
       version: version,
-      movedQty: movedQty,
-      unitId: unitId,
-      status: status,
     },
   });
 }

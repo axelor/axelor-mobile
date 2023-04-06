@@ -122,7 +122,9 @@ const SupplierArrivalViewAllContainer = ({}) => {
         <SupplierArrivalLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          deliveredQty={item?.realQty}
+          deliveredQty={
+            item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+          }
           askedQty={item.qty}
           trackingNumber={item?.trackingNumber}
           locker={

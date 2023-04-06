@@ -53,6 +53,7 @@ export const stock_modelAPI: ObjectFields = {
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
       schemaContructor.subObject('fullName'),
+    isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
   stock_internalMove: schemaContructor.object({
     name: schemaContructor.string(),
@@ -81,6 +82,7 @@ export const stock_modelAPI: ObjectFields = {
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
       schemaContructor.subObject('fullName'),
+    isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
   stock_inventory: schemaContructor.object({
     inventoryTitle: schemaContructor.string(),
@@ -201,6 +203,7 @@ export const stock_modelAPI: ObjectFields = {
     'product.name': schemaContructor.string(),
     'product.trackingNumberConfiguration':
       schemaContructor.subObject('fullName'),
+    isRealQtyModifiedByUser: schemaContructor.boolean(),
   }),
   stock_supplierCatalog: schemaContructor.object({
     productSupplierName: schemaContructor.string(),
