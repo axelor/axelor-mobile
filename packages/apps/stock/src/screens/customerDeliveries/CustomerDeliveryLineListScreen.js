@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -40,6 +40,29 @@ import {useCustomerLinesWithRacks} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
+
+const DONE_STATUS_KEY = 'done';
+const PARTIALLY_DONE_STATUS_KEY = 'partially_done';
+const NOT_DONE_STATUS_KEY = 'not_done';
+
+const getitemStatus = item => {
+  const _realQty = parseFloat(item.realQty);
+  const _qty = parseFloat(item.qty);
+
+  if (
+    item.isRealQtyModifiedByUser === false ||
+    _realQty == null ||
+    _realQty === 0
+  ) {
+    return NOT_DONE_STATUS_KEY;
+  }
+
+  if (_realQty < _qty) {
+    return PARTIALLY_DONE_STATUS_KEY;
+  }
+
+  return DONE_STATUS_KEY;
+};
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -106,28 +129,19 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else if (selectedStatus !== null && selectedStatus.length > 0) {
-        return list.filter(item => {
-          if (selectedStatus[0].key === 'doneStatus') {
-            return (
-              item.isRealQtyModifiedByUser !== false &&
-              parseFloat(item.realQty) >= parseFloat(item.qty)
-            );
-          } else if (selectedStatus[0].key === 'unDoneStatus') {
-            return (
-              item.isRealQtyModifiedByUser === false ||
-              parseFloat(item.realQty) == null ||
-              parseFloat(item.realQty) < parseFloat(item.qty)
-            );
-          } else {
-            return item;
-          }
-        });
-      } else {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      }
+
+      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0) {
         return list;
       }
+
+      return list.filter(item => {
+        return selectedStatus.find(
+          _status => _status?.key === getitemStatus(item),
+        );
+      });
     },
     [selectedStatus],
   );
@@ -159,16 +173,23 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={3}
+            width={Dimensions.get('window').width * 0.3}
             selectionItems={[
               {
                 title: I18n.t('Stock_Done'),
                 color: Colors.primaryColor,
-                key: 'doneStatus',
+                key: DONE_STATUS_KEY,
+              },
+              {
+                title: I18n.t('Stock_PartiallyDone'),
+                color: Colors.cautionColor,
+                key: PARTIALLY_DONE_STATUS_KEY,
               },
               {
                 title: I18n.t('Stock_NotDone'),
-                color: Colors.cautionColor,
-                key: 'unDoneStatus',
+                color: Colors.secondaryColor,
+                key: NOT_DONE_STATUS_KEY,
               },
             ]}
           />

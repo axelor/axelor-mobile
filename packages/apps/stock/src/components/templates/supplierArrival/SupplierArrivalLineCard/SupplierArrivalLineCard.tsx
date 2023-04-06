@@ -49,13 +49,21 @@ const SupplierArrivalLineCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const borderStyle = useMemo(() => {
-    if (askedQty <= deliveredQty) {
-      return getStyles(Colors.primaryColor.background)?.border;
-    } else {
-      return getStyles(Colors.cautionColor.background)?.border;
+  const borderColor = useMemo(() => {
+    if (deliveredQty === 0 || deliveredQty == null) {
+      return Colors.secondaryColor.background;
     }
+
+    if (deliveredQty < askedQty) {
+      return Colors.cautionColor.background;
+    }
+
+    return Colors.primaryColor.background;
   }, [Colors, askedQty, deliveredQty]);
+
+  const borderStyle = useMemo(() => {
+    return getStyles(borderColor)?.border;
+  }, [borderColor]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>

@@ -30,13 +30,15 @@ export function filterChip(
   listSelectedChip: Chip[],
   objectParam: string,
 ) {
-  if (listToFilter == null) {
-    return listToFilter;
-  } else if (listSelectedChip !== null && listSelectedChip.length > 0) {
-    return listToFilter.filter(item => {
-      return listSelectedChip.find(chip => chip?.key === item[objectParam]);
-    });
-  } else {
+  if (!Array.isArray(listToFilter) || listToFilter.length === 0) {
+    return [];
+  }
+
+  if (!Array.isArray(listSelectedChip) || listSelectedChip.length === 0) {
     return listToFilter;
   }
+
+  return listToFilter.filter(item => {
+    return listSelectedChip.find(chip => chip?.key === item[objectParam]);
+  });
 }
