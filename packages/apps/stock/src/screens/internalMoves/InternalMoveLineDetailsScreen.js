@@ -167,6 +167,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       removeSpaceOnTop={true}
       fixedItems={
         <InternalMoveLineButtons
+          internalMoveLine={route.params.internalMoveLine}
           destinationStockLocation={destinationStockLocation}
           movedQty={movedQty}
           originalStockLocation={originalStockLocation}
