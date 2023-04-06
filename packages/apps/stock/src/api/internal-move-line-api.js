@@ -28,6 +28,7 @@ const internalMoveLineFields = [
   'realQty',
   'product.name',
   'product.trackingNumberConfiguration',
+  'isRealQtyModifiedByUser',
 ];
 
 export async function searchInternalMoveLines({internalMoveId, page = 0}) {
@@ -52,6 +53,22 @@ export async function searchInternalMoveLines({internalMoveId, page = 0}) {
       sortBy: ['id'],
       limit: 10,
       offset: 10 * page,
+    },
+  });
+}
+
+export async function updateInternalMoveLine({
+  stockMoveLineId,
+  version,
+  realQty,
+  unitId,
+}) {
+  return axiosApiProvider.put({
+    url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
+    data: {
+      version: version,
+      realQty: realQty,
+      unitId: unitId,
     },
   });
 }

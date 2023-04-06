@@ -71,9 +71,13 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
           if (selectedStatus[0].key === 'doneStatus') {
-            return parseFloat(item.realQty) >= parseFloat(item.qty);
+            return (
+              item.isRealQtyModifiedByUser !== false &&
+              parseFloat(item.realQty) >= parseFloat(item.qty)
+            );
           } else if (selectedStatus[0].key === 'unDoneStatus') {
             return (
+              item.isRealQtyModifiedByUser === false ||
               parseFloat(item.realQty) == null ||
               parseFloat(item.realQty) < parseFloat(item.qty)
             );
@@ -135,7 +139,9 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           <SupplierArrivalLineCard
             style={styles.item}
             productName={item.product?.fullName}
-            deliveredQty={item?.realQty}
+            deliveredQty={
+              item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+            }
             askedQty={item?.qty}
             trackingNumber={item?.trackingNumber}
             onPress={() => {

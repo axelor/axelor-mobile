@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchInternalMoveLines} from '../api/internal-move-line-api';
+import {
+  searchInternalMoveLines,
+  updateInternalMoveLine as _updateInternalMoveLine,
+} from '../api/internal-move-line-api';
 
 export const fetchInternalMoveLines = createAsyncThunk(
   'internalMoveLine/fetchInternalMoveLine',
@@ -29,6 +32,19 @@ export const fetchInternalMoveLines = createAsyncThunk(
       action: 'fetch internal move lines',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateInternalMoveLine = createAsyncThunk(
+  'internalMoveLine/updateInternalMoveLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateInternalMoveLine,
+      data,
+      action: 'update internal move line',
+      getState,
+      responseOptions: {showToast: true},
     });
   },
 );

@@ -32,6 +32,7 @@ const supplierArrivalLineFields = [
   'conformitySelect',
   'product.name',
   'product.trackingNumberConfiguration',
+  'isRealQtyModifiedByUser',
 ];
 
 export async function searchSupplierArrivalLines({

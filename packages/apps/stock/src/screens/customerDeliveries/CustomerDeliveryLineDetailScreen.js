@@ -44,7 +44,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     state => state.product,
   );
   const [realQty, setRealQty] = useState(
-    customerDeliveryLine != null ? customerDeliveryLine.realQty : 0,
+    customerDeliveryLine?.isRealQtyModifiedByUser === false
+      ? 0
+      : customerDeliveryLine?.realQty || 0,
   );
   const I18n = useTranslator();
   const dispatch = useDispatch();

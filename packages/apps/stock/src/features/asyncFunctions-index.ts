@@ -24,12 +24,17 @@ export {
   addNewLine as addNewCustomerDeliveryLine,
   realizeCustomerDelivery,
   searchDeliveries,
+  fetchCustomerDelivery,
 } from './customerDeliverySlice';
-export {fetchInternalMoveLines} from './internalMoveLineSlice';
+export {
+  fetchInternalMoveLines,
+  updateInternalMoveLine,
+} from './internalMoveLineSlice';
 export {
   searchInternalMoves,
   createInternalMove,
-  updateInternalMove,
+  realizeInternalMove,
+  fetchInternalMove,
 } from './internalMoveSlice';
 export {
   createNewInventoryLine,
@@ -64,6 +69,7 @@ export {
   fetchStockCorrections,
   createCorrection,
   updateCorrection,
+  fetchStockCorrection,
 } from './stockCorrectionSlice';
 export {fetchStockLocationLine} from './stockLocationLineSlice';
 export {
@@ -78,6 +84,7 @@ export {
   searchSupplierArrivals,
   addNewLine as addNewSupplierArrivalLine,
   realizeSupplierArrival,
+  fetchSupplierArrival,
 } from './supplierArrivalSlice';
 export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {

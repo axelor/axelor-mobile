@@ -71,7 +71,7 @@ const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item?.realQty}
+          pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
           askedQty={item?.qty}
           locker={
             !loadingRacks && racksList != null && racksList[index] != null

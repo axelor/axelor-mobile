@@ -31,6 +31,7 @@ const customerDeliveryLineFields = [
   'saleOrderLine.pickingOrderInfo',
   'product.name',
   'product.trackingNumberConfiguration',
+  'isRealQtyModifiedByUser',
 ];
 
 export async function searchCustomerDeliveryLines({

@@ -21,7 +21,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   searchInternalMoveFilter,
   createInternalStockMove,
-  updateInternalStockMove,
+  realizeInternalMove as _realizeInternalMove,
 } from '../api/internal-move-api';
 
 export const searchInternalMoves = createAsyncThunk(
@@ -50,13 +50,13 @@ export const createInternalMove = createAsyncThunk(
   },
 );
 
-export const updateInternalMove = createAsyncThunk(
-  'internalMove/updateInternalMove',
+export const realizeInternalMove = createAsyncThunk(
+  'internalMove/realizeInternalMove',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: updateInternalStockMove,
+      fetchFunction: _realizeInternalMove,
       data,
-      action: 'update internal move',
+      action: 'realize internal move',
       getState,
       responseOptions: {showToast: true},
     });

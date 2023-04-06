@@ -19,7 +19,7 @@
 import React, {useCallback} from 'react';
 import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import {updateInternalMove} from '../../../../features/internalMoveSlice';
+import {realizeInternalMove} from '../../../../features/internalMoveSlice';
 import StockMove from '../../../../types/stock-move';
 
 const InternalMoveRealizeButton = ({internalMove, navigation}) => {
@@ -28,10 +28,9 @@ const InternalMoveRealizeButton = ({internalMove, navigation}) => {
 
   const handleRealizeStockMove = useCallback(() => {
     dispatch(
-      updateInternalMove({
-        internalMoveId: internalMove.id,
+      realizeInternalMove({
+        stockMoveId: internalMove.id,
         version: internalMove.version,
-        status: StockMove.status.Realized,
       }),
     );
 
