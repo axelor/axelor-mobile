@@ -92,8 +92,8 @@ const InternalMoveLineButtons = ({
       }),
     );
 
-    navigation.navigate('InternalMoveLineListScreen', {
-      internalMove: internalMove,
+    navigation.navigate('InternalMoveDetailsGeneralScreen', {
+      internalMoveId: internalMove.id,
     });
   };
 
