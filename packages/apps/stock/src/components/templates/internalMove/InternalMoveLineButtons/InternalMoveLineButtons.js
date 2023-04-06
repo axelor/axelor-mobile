@@ -26,6 +26,7 @@ import {updateInternalMoveLine} from '../../../../features/internalMoveLineSlice
 const InternalMoveLineButtons = ({
   saveStatus,
   internalMove,
+  internalMoveLine,
   stockProduct,
   trackingNumber,
   navigation,
@@ -80,8 +81,8 @@ const InternalMoveLineButtons = ({
   const handleSave = () => {
     dispatch(
       updateInternalMoveLine({
-        stockMoveLineId: internalMove.id,
-        version: internalMove.$version,
+        stockMoveLineId: internalMoveLine.id,
+        version: internalMoveLine.version,
         realQty: movedQty,
         unitId: unit.id,
       }),
