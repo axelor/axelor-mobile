@@ -55,13 +55,21 @@ const InternalMoveLineCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const borderStyle = useMemo(() => {
-    if (expectedQty <= movedQty) {
-      return getStyles(Colors.primaryColor.background).border;
-    } else {
-      return getStyles(Colors.cautionColor.background).border;
+  const borderColor = useMemo(() => {
+    if (movedQty === 0 || movedQty == null) {
+      return Colors.secondaryColor.background;
     }
+
+    if (movedQty < expectedQty) {
+      return Colors.cautionColor.background;
+    }
+
+    return Colors.primaryColor.background;
   }, [Colors, expectedQty, movedQty]);
+
+  const borderStyle = useMemo(() => {
+    return getStyles(borderColor)?.border;
+  }, [borderColor]);
 
   const rightStyle = useMemo(() => {
     return internalMoveStatus === StockMove.status.Realized
