@@ -96,7 +96,7 @@ const InternalMoveViewAllContainer = ({}) => {
           }
           trackingNumber={item.trackingNumber?.trackingNumberSeq}
           expectedQty={item.qty}
-          movedQty={item.realQty}
+          movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
           onPress={() => handleShowLine(item)}
         />
       )}

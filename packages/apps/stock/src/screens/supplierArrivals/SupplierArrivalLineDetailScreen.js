@@ -48,7 +48,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   );
   const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
   const [realQty, setRealQty] = useState(
-    supplierArrivalLine != null ? supplierArrivalLine.realQty : 0,
+    supplierArrivalLine?.isRealQtyModifiedByUser === false
+      ? 0
+      : supplierArrivalLine?.realQty || 0,
   );
   const [conformity, setConformity] = useState({
     name: StockMove.getConformity(

@@ -74,9 +74,13 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
           if (selectedStatus[0].key === 'doneStatus') {
-            return parseFloat(item.realQty) >= parseFloat(item.qty);
+            return (
+              item.isRealQtyModifiedByUser !== false &&
+              parseFloat(item.realQty) >= parseFloat(item.qty)
+            );
           } else if (selectedStatus[0].key === 'unDoneStatus') {
             return (
+              item.isRealQtyModifiedByUser === false ||
               parseFloat(item.realQty) == null ||
               parseFloat(item.realQty) < parseFloat(item.qty)
             );
@@ -135,22 +139,27 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       <ScrollList
         loadingList={loadingIMLines}
         data={filteredList}
-        renderItem={({item}) => (
-          <InternalMoveLineCard
-            style={styles.item}
-            productName={item.product?.fullName}
-            internalMoveStatus={internalMove.statusSelect}
-            availability={
-              item.availableStatusSelect == null
-                ? null
-                : item.availableStatusSelect
-            }
-            trackingNumber={item.trackingNumber?.trackingNumberSeq}
-            expectedQty={item.qty}
-            movedQty={item.realQty}
-            onPress={() => handleShowLine(item)}
-          />
-        )}
+        renderItem={({item}) => {
+          console.log(item.isRealQtyModifiedByUser);
+          return (
+            <InternalMoveLineCard
+              style={styles.item}
+              productName={item.product?.fullName}
+              internalMoveStatus={internalMove.statusSelect}
+              availability={
+                item.availableStatusSelect == null
+                  ? null
+                  : item.availableStatusSelect
+              }
+              trackingNumber={item.trackingNumber?.trackingNumberSeq}
+              expectedQty={item.qty}
+              movedQty={
+                item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+              }
+              onPress={() => handleShowLine(item)}
+            />
+          );
+        }}
         fetchData={fetchInternalLinesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
