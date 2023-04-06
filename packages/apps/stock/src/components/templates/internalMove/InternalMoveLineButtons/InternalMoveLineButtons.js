@@ -24,10 +24,8 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {
-  createInternalMove,
-  updateInternalMove,
-} from '../../../../features/internalMoveSlice';
+import {createInternalMove} from '../../../../features/internalMoveSlice';
+import {updateInternalMoveLine} from '../../../../features/internalMoveLineSlice';
 
 const InternalMoveLineButtons = ({
   saveStatus,
@@ -85,10 +83,10 @@ const InternalMoveLineButtons = ({
 
   const handleSave = () => {
     dispatch(
-      updateInternalMove({
-        internalMoveId: internalMove.id,
+      updateInternalMoveLine({
+        stockMoveLineId: internalMove.id,
         version: internalMove.$version,
-        movedQty: movedQty,
+        realQty: movedQty,
         unitId: unit.id,
       }),
     );
