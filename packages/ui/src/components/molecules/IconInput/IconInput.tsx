@@ -22,6 +22,7 @@ import {ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Input} from '../../atoms';
+import {checkNullString} from '../../../utils/strings';
 
 interface IconInputProps {
   style?: any;
@@ -29,6 +30,7 @@ interface IconInputProps {
   onChange: (value: any) => void;
   placeholder: string;
   readOnly?: boolean;
+  required?: boolean;
   secureTextEntry?: boolean;
   onSelection?: () => void;
   multiline?: boolean;
@@ -46,6 +48,7 @@ const IconInput = ({
   onChange,
   placeholder,
   readOnly,
+  required = false,
   secureTextEntry,
   onSelection = () => {},
   multiline,
@@ -61,7 +64,15 @@ const IconInput = ({
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const _required = useMemo(
+    () => required && checkNullString(value),
+    [required, value],
+  );
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   const handleSelection = () => {
     setIsFocused(true);

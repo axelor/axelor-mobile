@@ -31,6 +31,7 @@ const PasswordInput = ({style, value, onChange, readOnly}) => {
       value={value}
       onChange={onChange}
       readOnly={readOnly}
+      required={true}
       secureTextEntry={!visible}
       placeholder={I18n.t('Auth_Password')}
       leftIconsList={[<Icon name="key" size={17} style={styles.icon} />]}

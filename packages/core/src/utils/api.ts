@@ -19,11 +19,12 @@
 import {formatURL as _formatURL} from './formatters';
 
 const PREFIX_REGEX = /^https?:\/\//;
+const INVALID_URL_CODE = 999;
 
 export function testUrl(url: string): Promise<string | null> {
   return new Promise(async (resolve, reject) => {
     if (!url || typeof url !== 'string') {
-      reject(new Error(`Invalid URL: ${url}`));
+      reject(new Error(`Invalid URL: "${url}" ${INVALID_URL_CODE}`));
       return;
     }
 
@@ -47,7 +48,7 @@ export function testUrl(url: string): Promise<string | null> {
       }
     }
 
-    reject(new Error(`Could not fetch URL: ${url}`));
+    reject(new Error(`Could not fetch URL: "${url}" ${INVALID_URL_CODE}`));
   });
 }
 

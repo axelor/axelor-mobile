@@ -46,6 +46,7 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
+import {checkNullString} from '../utils';
 
 const urlScanKey = 'login_url';
 
@@ -98,6 +99,15 @@ const LoginScreen = ({route}) => {
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
 
+  const disabledLogin = useMemo(
+    () =>
+      checkNullString(url) ||
+      checkNullString(username) ||
+      checkNullString(password) ||
+      loading,
+    [loading, password, url, username],
+  );
+
   useEffect(() => {
     if (scannedValue) {
       if (scannedValue.includes('username') === true) {
@@ -127,6 +137,7 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
+            <ErrorText error={error} />
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -165,11 +176,10 @@ const LoginScreen = ({route}) => {
               ) : (
                 <LoginButton
                   onPress={() => dispatch(login({url, username, password}))}
-                  disabled={loading}
+                  disabled={disabledLogin}
                 />
               )}
             </View>
-            <View>{error && <ErrorText message={error.message} />}</View>
             <View style={styles.copyright}>
               <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
               <Text>{`Version ${appVersion}`}</Text>

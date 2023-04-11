@@ -24,7 +24,7 @@ export function splitInTwo(value: string, spacer = '.'): Array<string> {
 }
 
 export function checkNullString(message) {
-  if (message == null) {
+  if (typeof message !== 'string') {
     return true;
   } else {
     let newMessage = message.replace(/\s/g, '');

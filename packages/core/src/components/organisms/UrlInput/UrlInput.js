@@ -39,6 +39,7 @@ const UrlInput = ({
       value={value}
       onChange={onChange}
       readOnly={readOnly}
+      required={true}
       onSelection={onSelection}
       placeholder={I18n.t('Auth_URL')}
       leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
