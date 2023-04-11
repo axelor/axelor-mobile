@@ -229,7 +229,9 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {sessionList?.length > 0 && <Text>{sessionActive?.id}</Text>}
+            {sessionList?.length > 0 && (
+              <Text>Session : {sessionActive?.id}</Text>
+            )}
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -264,6 +266,8 @@ const LoginScreen = ({route}) => {
             />
             {enableConnectionSessions && (
               <Checkbox
+                style={styles.checkbox}
+                styleTxt={styles.text}
                 title={I18n.t('Auth_Save_Session')}
                 onChange={setSaveSession}
               />
@@ -351,6 +355,13 @@ const styles = StyleSheet.create({
   arrowIcon: {
     marginRight: -6,
     marginLeft: 5,
+  },
+  text: {
+    fontSize: 14,
+    fontWeight: 'normal',
+  },
+  checkbox: {
+    marginLeft: '-60%',
   },
 });
 

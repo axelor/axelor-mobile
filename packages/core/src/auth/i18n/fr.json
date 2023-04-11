@@ -11,6 +11,7 @@
   "Auth_Session_Name": "Nom de la session",
   "Auth_Save_Session": "Sauvergarder la session",
   "Auth_Change_Session": "Changer de session",
+  "Auth_Saved_Sessions": "Saved sessions",
   "Auth_Session_Name_Aleary_Exist": "Ce nom de session existe déjà",
   "User_User": "Utilisateur",
   "User_VirtualKeyboardConfig": "Cacher le clavier virtuel",

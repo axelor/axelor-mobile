@@ -39,7 +39,7 @@ const PopupSession = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const I18n = useTranslator();
   return (
-    <PopUp visible={popupIsOpen} title={I18n.t('Auth_Save_Session')}>
+    <PopUp visible={popupIsOpen} title={I18n.t('Auth_Saved_Sessions')}>
       <View style={styles.popupContainer}>
         {sessionList?.map((sesion, index) => {
           return (
@@ -52,10 +52,14 @@ const PopupSession = ({
               }>
               <View style={styles.popupItemChildren}>
                 <TouchableOpacity onPress={() => activeSession(sesion.id)}>
-                  <LabelText iconName="tag" title={sesion.id} />
+                  <LabelText
+                    iconName="tag"
+                    title={sesion.id}
+                    textStyle={styles.textTitle}
+                  />
                   <LabelText
                     iconName="link"
-                    title={sliceString(sesion.url, 23)}
+                    title={sliceString(sesion.url, 40)}
                   />
                   <View style={styles.lineContainer}>
                     <View style={styles.lineStyle} />
@@ -80,11 +84,15 @@ const getStyles = Colors =>
   StyleSheet.create({
     popupContainer: {
       flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
     },
     popupItemContainerActive: {
       flexDirection: 'row',
-      backgroundColor: Colors.primaryColor.background_light,
+      borderLeftWidth: 7,
+      borderLeftColor: Colors.primaryColor.background_light,
       alignItems: 'center',
+      marginLeft: '-4%',
     },
     popupItemContainer: {
       flexDirection: 'row',
@@ -93,6 +101,7 @@ const getStyles = Colors =>
     popupItemChildren: {
       flexDirection: 'column',
       justifyContent: 'space-between',
+      marginLeft: '5%',
     },
     lineContainer: {
       alignItems: 'center',
@@ -100,6 +109,10 @@ const getStyles = Colors =>
     lineStyle: {
       borderWidth: 0.7,
       width: 280,
+    },
+    textTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
     },
   });
 
