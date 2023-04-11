@@ -17,8 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 
 const ERROR_CODE_REGEX = /\d{3}$/g;
@@ -27,11 +26,6 @@ const URL_ERROR = 999;
 
 const ErrorText = ({error}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => {
-    return getStyles(Colors.errorColor);
-  }, [Colors.errorColor]);
 
   const errorCode = useMemo(() => {
     if (error?.message == null) {
@@ -59,39 +53,7 @@ const ErrorText = ({error}) => {
     return null;
   }
 
-  return (
-    <View style={styles.container}>
-      <Icon
-        name="warning"
-        FontAwesome5={false}
-        color={Colors.errorColor.foreground}
-      />
-      <Text style={styles.text}>{errorMessage}</Text>
-    </View>
-  );
+  return <WarningCard errorMessage={errorMessage} />;
 };
-
-const getStyles = color =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      borderColor: color.background_light,
-      borderWidth: 1,
-      borderRadius: 13,
-      backgroundColor: '#f79696',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      marginVertical: 10,
-      marginHorizontal: 20,
-      paddingVertical: 10,
-      paddingHorizontal: 10,
-    },
-    text: {
-      marginLeft: 10,
-      color: color.foreground,
-      alignSelf: 'center',
-    },
-  });
 
 export default ErrorText;

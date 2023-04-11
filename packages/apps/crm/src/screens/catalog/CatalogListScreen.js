@@ -25,7 +25,7 @@ import {
   AutoCompleteSearch,
   ScrollList,
   useThemeColor,
-  Text,
+  WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
@@ -151,10 +151,15 @@ const CatalogListScreen = ({navigation}) => {
         </>
       ) : (
         <View>
-          <Text>{I18n.t('Crm_Catalogues_Disabled')}</Text>
-          {user?.group?.code === 'admins' && (
-            <Text>{I18n.t('Crm_Catalogues_Disabled_Admin')}</Text>
-          )}
+          <WarningCard
+            errorMessage={
+              user?.group?.code === 'admins'
+                ? I18n.t('Crm_Catalogues_Disabled') +
+                  '\n' +
+                  I18n.t('Crm_Catalogues_Disabled_Admin')
+                : I18n.t('Crm_Catalogues_Disabled')
+            }
+          />
         </View>
       )}
     </Screen>
