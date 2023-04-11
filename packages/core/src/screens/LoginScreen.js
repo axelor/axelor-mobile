@@ -56,7 +56,7 @@ import {
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
 import useTranslator from '../i18n/hooks/use-translator';
-import {sessionStorage, useSessions} from '../utils/session';
+import {sessionStorage, useSessions} from '../sessions';
 
 const urlScanKey = 'login_url';
 
@@ -256,7 +256,7 @@ const LoginScreen = ({route}) => {
               />
             )}
             <View>
-              {nameSessionAlreadyExist && (
+              {!loading && nameSessionAlreadyExist && (
                 <ErrorText message={I18n.t('Auth_Session_Name_Aleary_Exist')} />
               )}
             </View>
