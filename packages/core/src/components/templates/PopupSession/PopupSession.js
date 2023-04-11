@@ -43,13 +43,8 @@ const PopupSession = ({
       <View style={styles.popupContainer}>
         {sessionList?.map((sesion, index) => {
           return (
-            <View
-              key={index}
-              style={
-                sesion.isActive
-                  ? styles.popupItemContainerActive
-                  : styles.popupItemContainer
-              }>
+            <View key={index} style={styles.popupItemContainer}>
+              <View style={sesion.isActive ? styles.itemActive : styles.item} />
               <View style={styles.popupItemChildren}>
                 <TouchableOpacity onPress={() => activeSession(sesion.id)}>
                   <LabelText
@@ -89,16 +84,11 @@ const getStyles = Colors =>
       alignItems: 'center',
       width: '100%',
     },
-    popupItemContainerActive: {
-      flexDirection: 'row',
-      borderLeftWidth: 7,
-      borderLeftColor: Colors.primaryColor.background_light,
-      alignItems: 'center',
-      marginLeft: '-4%',
-    },
     popupItemContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginLeft: '-4%',
+      marginVertical: '2%',
     },
     popupItemChildren: {
       flexDirection: 'column',
@@ -118,6 +108,20 @@ const getStyles = Colors =>
     },
     closeBtn: {
       marginTop: '5%',
+    },
+    itemActive: {
+      width: 7,
+      height: 40,
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+      backgroundColor: Colors.primaryColor.background_light,
+    },
+    item: {
+      width: 7,
+      height: 40,
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+      backgroundColor: Colors.backgroundColor,
     },
   });
 
