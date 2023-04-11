@@ -16,19 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {formatDate, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  formatDate,
+  useSelector,
+  useTranslator,
+  useDispatch,
+} from '@axelor/aos-mobile-core';
 import {
   DropdownCardSwitch,
   formatNumber,
   LabelText,
 } from '@axelor/aos-mobile-ui';
+import {fetchCrmConfigApi} from '../../../../features/crmConfigSlice';
 
 const OpportunityDropdownInfo = ({}) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
-  const {opportunity} = useSelector((state: any) => state.opportunity);
+  const {opportunity} = useSelector(state => state.opportunity);
+  const {crmConfig} = useSelector(state => state.crmConfig);
 
   const _formatNumber = useCallback(
     number =>
@@ -40,6 +48,10 @@ const OpportunityDropdownInfo = ({}) => {
     [I18n],
   );
 
+  useEffect(() => {
+    dispatch(fetchCrmConfigApi());
+  }, [dispatch]);
+
   const _expectedCloseDate = useMemo(
     () =>
       opportunity.expectedCloseDate
@@ -48,7 +60,7 @@ const OpportunityDropdownInfo = ({}) => {
     [opportunity.expectedCloseDate, I18n],
   );
 
-  const displayAmount = (_amount: string) =>
+  const displayAmount = _amount =>
     `${_formatNumber(_amount)} ${opportunity.currency?.symbol}`;
 
   return (
@@ -80,12 +92,13 @@ const OpportunityDropdownInfo = ({}) => {
                     value={displayAmount(opportunity.amount)}
                   />
                 )}
-                {opportunity.recurrentAmount && (
-                  <LabelText
-                    title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-                    value={displayAmount(opportunity.recurrentAmount)}
-                  />
-                )}
+                {crmConfig?.isManageRecurrent &&
+                  opportunity.recurrentAmount && (
+                    <LabelText
+                      title={I18n.t('Crm_Opportunity_RecurrentAmount')}
+                      value={displayAmount(opportunity.recurrentAmount)}
+                    />
+                  )}
               </>
             ),
           },
