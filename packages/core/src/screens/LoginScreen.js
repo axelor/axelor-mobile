@@ -185,12 +185,20 @@ const LoginScreen = ({route}) => {
   }, []);
 
   useEffect(() => {
-    if (sessionActive) {
+    if (sessionActive != null) {
       setUrl(sessionActive.url);
       setUsername(sessionActive.username);
       setPassword('');
     }
   }, [sessionActive]);
+
+  const showSessionName = useMemo(() => {
+    if (sessionActive == null) {
+      return false;
+    }
+
+    return username === sessionActive.username && url === sessionActive.url;
+  }, [sessionActive, url, username]);
 
   return (
     <Screen>
@@ -201,13 +209,9 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {sessionList?.length > 0 &&
-              username === sessionActive.username &&
-              url === sessionActive.url && (
-                <Text>{`${I18n.t('Auth_Session')} : ${
-                  sessionActive?.id
-                }`}</Text>
-              )}
+            {showSessionName && (
+              <Text>{`${I18n.t('Auth_Session')} : ${sessionActive?.id}`}</Text>
+            )}
             {showUrlInput && (
               <UrlInput
                 value={url}
