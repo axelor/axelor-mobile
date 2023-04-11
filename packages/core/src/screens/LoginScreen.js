@@ -229,9 +229,11 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {sessionList?.length > 0 && (
-              <Text>Session : {sessionActive?.id}</Text>
-            )}
+            {sessionList?.length > 0 &&
+              username === sessionActive.username &&
+              url === sessionActive.url && (
+                <Text>Session : {sessionActive?.id}</Text>
+              )}
             {showUrlInput && (
               <UrlInput
                 value={url}

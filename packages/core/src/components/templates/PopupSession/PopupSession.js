@@ -72,9 +72,11 @@ const PopupSession = ({
             </View>
           );
         })}
-        <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
-          <Text>Close</Text>
-        </TouchableOpacity>
+        <View style={styles.closeBtn}>
+          <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
+            <Text>Close</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </PopUp>
   );
@@ -113,6 +115,9 @@ const getStyles = Colors =>
     textTitle: {
       fontSize: 16,
       fontWeight: 'bold',
+    },
+    closeBtn: {
+      marginTop: '5%',
     },
   });
 
