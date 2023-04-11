@@ -72,5 +72,7 @@
   "Crm_ClientProspect": "Client / Prospect",
   "Crm_Organisator": "Organisateur",
   "Crm_Start": "Début",
-  "Crm_End": "Fin"
+  "Crm_End": "Fin",
+  "Crm_Catalogues_Disabled": "Les catalogues sont désactivés sur cette instance, merci de contacter votre administrateur.",
+  "Crm_Catalogues_Disabled_Admin": "Cette entrée de menue peut être retiré pour tous les utilisateurs depuis la configuration de l'application \"Axelor Mobiles settings\" sur le web."
 }
