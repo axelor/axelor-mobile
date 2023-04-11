@@ -79,7 +79,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error;
+      state.error = {...action.error, url: action.meta?.arg?.url};
     });
     builder.addCase(logout.fulfilled, state => {
       state.logged = false;

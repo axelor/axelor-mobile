@@ -62,5 +62,7 @@
   "Base_Refresh": "Actualiser l'application",
   "Base_Logout": "Déconnexion",
   "Base_TimeFormat": "HH:mm",
-  "Base_ConnectedOn": "Connecté à"
+  "Base_ConnectedOn": "Connecté à",
+  "Auth_WrongPasswordOrUserName": "Mauvais nom d'utilisateur ou mot de passe",
+  "Auth_InvalidUrl": "Url non valide"
 }

@@ -38,6 +38,7 @@ const UsernameInput = ({
       value={value}
       onChange={onChange}
       readOnly={readOnly}
+      required={true}
       onSelection={showScanIcon ? onSelection : () => {}}
       placeholder={I18n.t('Auth_Username')}
       leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
