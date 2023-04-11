@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -56,30 +56,27 @@ import {
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
 import useTranslator from '../i18n/hooks/use-translator';
-import {sessionStorage} from '../utils/session';
+import {sessionStorage, useSessions} from '../utils/session';
 
 const urlScanKey = 'login_url';
 
 const LoginScreen = ({route}) => {
+  const appVersion = route?.params?.version;
+  const testInstanceConfig = route?.params?.testInstanceConfig;
+  const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
+  const enableConnectionSessions = route?.params?.enableConnectionSessions;
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {loading, error, baseUrl} = useSelector(state => state.auth);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
   const {enable: onScanPress} = useScanActivator(urlScanKey);
   const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
-  const I18n = useTranslator();
 
-  const appVersion = route?.params?.version;
-  const testInstanceConfig = route?.params?.testInstanceConfig;
-  const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
-  const enableConnectionSessions = route?.params?.enableConnectionSessions;
-
-  const [sessionList, setSessionList] = useState(
-    enableConnectionSessions ? sessionStorage.getSession() : [],
-  );
-
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
+  const {sessionList, sessionActive} = useSessions(enableConnectionSessions);
 
   const modeDebug = useMemo(() => __DEV__, []);
 
@@ -92,6 +89,10 @@ const LoginScreen = ({route}) => {
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
   const defaultUrl = useMemo(() => {
+    if (sessionList?.length > 0) {
+      return sessionActive?.url;
+    }
+
     if (baseUrl != null) {
       return baseUrl;
     }
@@ -104,17 +105,12 @@ const LoginScreen = ({route}) => {
     baseUrl,
     modeDebug,
     releaseInstanceConfig?.url,
+    sessionActive?.url,
+    sessionList,
     testInstanceConfig?.defaultUrl,
   ]);
-  const [sessionActive, setSessionActive] = useState(
-    sessionList?.length > 0
-      ? sessionList.find(ses => ses.isActive === true)
-      : null,
-  );
 
-  const [url, setUrl] = useState(
-    sessionList?.length > 0 ? sessionActive?.url : defaultUrl || '',
-  );
+  const [url, setUrl] = useState(defaultUrl || '');
   const [username, setUsername] = useState(
     sessionList?.length > 0
       ? sessionActive?.username
@@ -125,100 +121,76 @@ const LoginScreen = ({route}) => {
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
-  const [savesSession, setSaveSession] = useState(false);
+  const [saveCurrentSession, setSaveSession] = useState(false);
   const [sessionName, setSessionName] = useState('');
   const [popupIsOpen, setPopupIsOpen] = useState(false);
 
   const nameSessionAlreadyExist = useMemo(() => {
-    let isExist = false;
-    sessionList?.forEach(ses => {
-      if (ses.id === sessionName) {
-        isExist = true;
-      }
-    });
-    return isExist;
+    if (!Array.isArray(sessionList) || sessionList?.length === 0) {
+      return false;
+    }
+
+    return sessionList.some(_session => _session.id === sessionName);
   }, [sessionList, sessionName]);
+
+  const parseQrCode = useCallback(scanValue => {
+    if (scanValue.includes('username') === true) {
+      const parseScannnedData = JSON.parse(scanValue);
+      setUrl(parseScannnedData.url);
+      setUsername(parseScannnedData.username);
+    } else {
+      setUrl(scanValue);
+    }
+  }, []);
 
   useEffect(() => {
     if (scannedValue) {
-      if (scannedValue.includes('username') === true) {
-        const parseScannnedData = JSON.parse(scannedValue);
-        setUrl(parseScannnedData.url);
-        setUsername(parseScannnedData.username);
-      } else {
-        setUrl(scannedValue);
-      }
+      parseQrCode(scannedValue);
     } else if (scanData?.value != null) {
-      if (scanData.value.includes('username') === true) {
-        const parseScannnedData = JSON.parse(scanData.value);
-        setUrl(parseScannnedData.url);
-        setUsername(parseScannnedData.username);
-      } else {
-        setUrl(scanData.value);
-      }
+      parseQrCode(scanData?.value);
     }
-  }, [scanData, scannedValue]);
+  }, [parseQrCode, scanData, scannedValue]);
 
-  const onPressLogin = () => {
+  const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
-    if (savesSession && enableConnectionSessions) {
-      const sessionObject = {
-        id: sessionName,
-        url: url,
-        username: username,
-        isActive: true,
-      };
-      if (sessionList?.length > 0) {
-        sessionList.push(sessionObject);
-        sessionStorage.addSession({
-          data: sessionList,
-        });
-        setSessionList(sessionList);
-        activeSession(sessionName);
-        setSessionActive(sessionList.find(ses => ses.isActive === true));
-      } else {
-        sessionStorage.addSession({
-          data: [sessionObject],
-        });
-        setSessionList([sessionObject]);
-        setSessionActive(sessionObject);
-      }
-    }
-  };
 
-  const activeSession = sessionNameparam => {
-    const tempSessionList = sessionList;
-    sessionList?.forEach((sesion, index) => {
-      if (sessionNameparam === sesion.id) {
-        tempSessionList[index] = {
-          id: sesion.id,
-          url: sesion.url,
-          username: sesion.username,
+    if (saveCurrentSession && enableConnectionSessions) {
+      sessionStorage.addSession({
+        session: {
+          id: sessionName,
+          url: url,
+          username: username,
           isActive: true,
-        };
-        setSessionActive(sesion);
-        setUrl(sesion.url);
-        setUsername(sesion.username);
-      } else {
-        tempSessionList[index] = {
-          id: sesion.id,
-          url: sesion.url,
-          username: sesion.username,
-          isActive: false,
-        };
-      }
-    });
-    sessionStorage.addSession({
-      data: tempSessionList,
-    });
-  };
+        },
+      });
+    }
+  }, [
+    dispatch,
+    enableConnectionSessions,
+    password,
+    saveCurrentSession,
+    sessionName,
+    url,
+    username,
+  ]);
 
-  const delSession = sessionNameparam => {
-    const sessionToDel = sessionList.filter(
-      sesion => sesion.id !== sessionNameparam,
-    );
-    setSessionList(sessionToDel);
-  };
+  const changeActiveSession = useCallback(sessionId => {
+    sessionStorage.changeActiveSession({sessionId});
+    setPopupIsOpen(false);
+  }, []);
+
+  const removeSession = useCallback(sessionId => {
+    sessionStorage.removeSession({sessionId});
+    setPopupIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (sessionActive) {
+      setUrl(sessionActive.url);
+      setUsername(sessionActive.username);
+      setPassword('');
+    }
+  }, [sessionActive]);
 
   return (
     <Screen>
@@ -232,7 +204,9 @@ const LoginScreen = ({route}) => {
             {sessionList?.length > 0 &&
               username === sessionActive.username &&
               url === sessionActive.url && (
-                <Text>Session : {sessionActive?.id}</Text>
+                <Text>{`${I18n.t('Auth_Session')} : ${
+                  sessionActive?.id
+                }`}</Text>
               )}
             {showUrlInput && (
               <UrlInput
@@ -274,7 +248,7 @@ const LoginScreen = ({route}) => {
                 onChange={setSaveSession}
               />
             )}
-            {savesSession && (
+            {saveCurrentSession && (
               <SessionInput
                 value={sessionName}
                 onChange={setSessionName}
@@ -300,10 +274,10 @@ const LoginScreen = ({route}) => {
               </TouchableOpacity>
             )}
             <PopupSession
-              activeSession={activeSession}
-              delSession={delSession}
-              popupIsOpen={popupIsOpen}
+              changeActiveSession={changeActiveSession}
+              removeSession={removeSession}
               sessionList={sessionList}
+              popupIsOpen={popupIsOpen}
               setPopupIsOpen={setPopupIsOpen}
             />
             <View>

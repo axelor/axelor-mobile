@@ -23,53 +23,58 @@ import {
   PopUp,
   useThemeColor,
   Icon,
-  LabelText,
-  sliceString,
+  HorizontalRule,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
 const PopupSession = ({
   popupIsOpen,
-  sessionList,
   setPopupIsOpen,
-  activeSession,
-  delSession,
+  sessionList,
+  changeActiveSession = () => {},
+  removeSession = () => {},
 }) => {
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
   const I18n = useTranslator();
+
+  const sessions = useMemo(() => sessionList, [sessionList]);
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  if (!Array.isArray(sessions) || sessions?.length === 0) {
+    return null;
+  }
+
   return (
     <PopUp visible={popupIsOpen} title={I18n.t('Auth_Saved_Sessions')}>
       <View style={styles.popupContainer}>
-        {sessionList?.map((sesion, index) => {
+        {sessions.map((_session, index) => {
           return (
             <View key={index} style={styles.popupItemContainer}>
-              <View style={sesion.isActive ? styles.itemActive : styles.item} />
+              <View
+                style={_session.isActive ? styles.itemActive : styles.item}
+              />
               <View style={styles.popupItemChildren}>
-                <TouchableOpacity onPress={() => activeSession(sesion.id)}>
-                  <LabelText
-                    iconName="tag"
-                    title={sesion.id}
-                    textStyle={styles.textTitle}
-                  />
-                  <LabelText
-                    iconName="link"
-                    title={sliceString(sesion.url, 40)}
-                  />
-                  <View style={styles.lineContainer}>
-                    <View style={styles.lineStyle} />
-                  </View>
+                <TouchableOpacity
+                  onPress={() => changeActiveSession(_session.id)}>
+                  <Text style={styles.textTitle}>{_session.id}</Text>
+                  <Text numberOfLines={1}>{_session.url}</Text>
+                  <HorizontalRule style={styles.line} />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={() => delSession(sesion.id)}>
-                <Icon name="close" color="red" FontAwesome5={false} />
-              </TouchableOpacity>
+              <Icon
+                name="close"
+                color="red"
+                FontAwesome5={false}
+                touchable={true}
+                onPress={() => removeSession(_session.id)}
+              />
             </View>
           );
         })}
         <View style={styles.closeBtn}>
           <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
-            <Text>Close</Text>
+            <Text>{I18n.t('Auth_Close')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -93,18 +98,16 @@ const getStyles = Colors =>
     popupItemChildren: {
       flexDirection: 'column',
       justifyContent: 'space-between',
+      width: '120%',
       marginLeft: '5%',
     },
-    lineContainer: {
-      alignItems: 'center',
-    },
-    lineStyle: {
-      borderWidth: 0.7,
-      width: 280,
-    },
     textTitle: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    line: {
+      marginTop: 5,
     },
     closeBtn: {
       marginTop: '5%',
