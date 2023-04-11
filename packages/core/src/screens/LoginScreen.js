@@ -284,7 +284,7 @@ const LoginScreen = ({route}) => {
                 <ErrorText message={I18n.t('Auth_Session_Name_Aleary_Exist')} />
               )}
             </View>
-            {enableConnectionSessions && (
+            {enableConnectionSessions && sessionList?.length > 0 && (
               <TouchableOpacity onPress={() => setPopupIsOpen(true)}>
                 <View style={styles.arrowContainer}>
                   <Text>{I18n.t('Auth_Change_Session')}</Text>
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
   },
   checkbox: {
-    marginLeft: '-60%',
+    width: '88%',
   },
 });
 
