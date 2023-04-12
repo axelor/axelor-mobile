@@ -89,79 +89,79 @@ const CatalogListScreen = ({navigation}) => {
     setFilteredList(filterOnStatus(catalogList));
   }, [catalogList, filterOnStatus]);
 
+  if (!crmConfig?.isManageCatalogs) {
+    return (
+      <View>
+        <WarningCard
+          errorMessage={
+            user?.group?.code === 'admins'
+              ? I18n.t('Crm_Catalogs_Disabled') +
+                '\n' +
+                I18n.t('Crm_Catalogs_Disabled_Admin')
+              : I18n.t('Crm_Catalogs_Disabled')
+          }
+        />
+      </View>
+    );
+  }
+
   return (
     <Screen removeSpaceOnTop={true}>
-      {crmConfig?.isManageCatalogs ? (
-        <>
-          <HeaderContainer
-            expandableFilter={false}
-            fixedItems={
-              <View style={styles.headerContainer}>
-                <AutoCompleteSearch
-                  objectList={catalogList}
-                  value={catalog}
-                  onChangeValue={setCatalog}
-                  fetchData={fetchCatalogFilter}
-                  placeholder={I18n.t('Crm_Catalogs')}
-                  oneFilter={true}
-                  selectLastItem={false}
-                />
-              </View>
-            }
-            chipComponent={
-              <ChipSelect
-                mode="multi"
-                onChangeValue={chiplist => setSelectedStatus(chiplist)}
-                marginHorizontal={5}
-                selectionItems={
-                  catalogTypeList
-                    ? catalogTypeList.map((status, index) => {
-                        return {
-                          title: status.name,
-                          color: Catalog.getStatusColor(index, Colors),
-                          key: status.id,
-                        };
-                      })
-                    : []
-                }
-              />
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <View style={styles.headerContainer}>
+            <AutoCompleteSearch
+              objectList={catalogList}
+              value={catalog}
+              onChangeValue={setCatalog}
+              fetchData={fetchCatalogFilter}
+              placeholder={I18n.t('Crm_Catalogs')}
+              oneFilter={true}
+              selectLastItem={false}
+            />
+          </View>
+        }
+        chipComponent={
+          <ChipSelect
+            mode="multi"
+            onChangeValue={chiplist => setSelectedStatus(chiplist)}
+            marginHorizontal={5}
+            selectionItems={
+              catalogTypeList
+                ? catalogTypeList.map((status, index) => {
+                    return {
+                      title: status.name,
+                      color: Catalog.getStatusColor(index, Colors),
+                      key: status.id,
+                    };
+                  })
+                : []
             }
           />
-          <ScrollList
-            loadingList={loadingCatalog}
-            data={filteredList}
-            renderItem={({item}) => (
-              <CatalogCard
-                style={styles.item}
-                id={item.id}
-                version={item.version}
-                description={item.description}
-                name={item.name}
-                category={item.catalogType?.name}
-                catalogueType={item.catalogType}
-                allCatalogType={catalogTypeList}
-                pdfFile={item.pdfFile}
-              />
-            )}
-            fetchData={fetchCatalogAPI}
-            moreLoading={moreLoading}
-            isListEnd={isListEnd}
-            translator={I18n.t}
+        }
+      />
+      <ScrollList
+        loadingList={loadingCatalog}
+        data={filteredList}
+        renderItem={({item}) => (
+          <CatalogCard
+            style={styles.item}
+            id={item.id}
+            version={item.version}
+            description={item.description}
+            name={item.name}
+            category={item.catalogType?.name}
+            catalogueType={item.catalogType}
+            allCatalogType={catalogTypeList}
+            pdfFile={item.pdfFile}
           />
-        </>
-      ) : (
-        <View>
-          <WarningCard
-            errorMessage={
-              user?.group?.code === 'admins'
-                ? I18n.t('Crm_Catalogues_Disabled') +
-                  '\n' +
-                  I18n.t('Crm_Catalogues_Disabled_Admin')
-                : I18n.t('Crm_Catalogues_Disabled')
-            }
-          />
-        </View>
-      )}
+        )}
+        fetchData={fetchCatalogAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };
