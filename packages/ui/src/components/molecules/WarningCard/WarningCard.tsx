@@ -64,6 +64,7 @@ const getStyles = color =>
       marginLeft: 10,
       color: color.foreground,
       alignSelf: 'center',
+      width: '90%',
     },
   });
 
