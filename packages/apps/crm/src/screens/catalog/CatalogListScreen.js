@@ -25,14 +25,18 @@ import {
   AutoCompleteSearch,
   ScrollList,
   useThemeColor,
+  WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
 import {CatalogCard} from '../../components';
 import Catalog from '../../types/catalog';
+import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
+  const {crmConfig} = useSelector(state => state.crmConfig);
+  const {user} = useSelector(state => state.user);
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -77,12 +81,29 @@ const CatalogListScreen = ({navigation}) => {
   );
 
   useEffect(() => {
+    dispatch(fetchCrmConfigApi());
     dispatch(fetchCatalogType());
   }, [dispatch]);
 
   useEffect(() => {
     setFilteredList(filterOnStatus(catalogList));
   }, [catalogList, filterOnStatus]);
+
+  if (!crmConfig?.isManageCatalogs) {
+    return (
+      <View>
+        <WarningCard
+          errorMessage={
+            user?.group?.code === 'admins'
+              ? I18n.t('Crm_Catalogs_Disabled') +
+                '\n' +
+                I18n.t('Crm_Catalogs_Disabled_Admin')
+              : I18n.t('Crm_Catalogs_Disabled')
+          }
+        />
+      </View>
+    );
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>

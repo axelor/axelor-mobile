@@ -54,3 +54,4 @@ export {default as TitledValue} from './TitledValue/TitledValue';
 export {default as ToggleSwitch} from './ToggleSwitch/ToggleSwitch';
 export {default as UnorderedList} from './UnorderedList/UnorderedList';
 export {default as ViewAllContainer} from './ViewAllContainer/ViewAllContainer';
+export {default as WarningCard} from './WarningCard/WarningCard';

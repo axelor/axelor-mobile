@@ -45,10 +45,12 @@ import {
   updateOpportunity,
 } from '../../features/opportunitySlice';
 import {fetchClientAndProspect} from '../../features/partnerSlice';
+import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
   const {clientAndProspectList} = useSelector(state => state.partner);
+  const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
@@ -69,6 +71,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: idOpportunity,
       }),
     );
+    dispatch(fetchCrmConfigApi());
   }, [dispatch, idOpportunity]);
 
   const updateOpportunityAPI = useCallback(() => {
@@ -152,13 +155,15 @@ const OpportunityFormScreen = ({navigation, route}) => {
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
-            <FormIncrementInput
-              title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-              defaultValue={recurrent}
-              onChange={setRecurrent}
-              decimalSpacer={I18n.t('Base_DecimalSpacer')}
-              thousandSpacer={I18n.t('Base_ThousandSpacer')}
-            />
+            {crmConfig?.isManageRecurrent && (
+              <FormIncrementInput
+                title={I18n.t('Crm_Opportunity_RecurrentAmount')}
+                defaultValue={recurrent}
+                onChange={setRecurrent}
+                decimalSpacer={I18n.t('Base_DecimalSpacer')}
+                thousandSpacer={I18n.t('Base_ThousandSpacer')}
+              />
+            )}
             <FormHtmlInput
               title={I18n.t('Base_Description')}
               onChange={setDescription}
