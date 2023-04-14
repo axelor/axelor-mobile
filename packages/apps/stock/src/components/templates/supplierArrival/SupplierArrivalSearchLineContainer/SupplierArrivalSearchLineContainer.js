@@ -38,6 +38,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
   const {supplierArrivalLineList, totalNumberLines} =
     useSupplierLinesWithRacks(supplierArrival);
@@ -54,7 +55,10 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
+  ) => {
     showLine({
       item: {name: 'supplierArrival', data: supplierArrival},
       itemLine: {name: 'supplierArrivalLine', data: item},

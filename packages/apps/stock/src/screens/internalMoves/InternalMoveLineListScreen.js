@@ -70,6 +70,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
   const {loadingIMLines, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,
@@ -78,7 +79,10 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
+  ) => {
     showLine({
       item: {name: 'internalMove', data: internalMove},
       itemLine: {name: 'internalMoveLine', data: item},

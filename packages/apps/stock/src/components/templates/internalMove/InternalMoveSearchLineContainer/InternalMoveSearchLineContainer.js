@@ -37,6 +37,7 @@ const InternalMoveSearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {internalMove} = useSelector(state => state.internalMove);
   const {internalMoveLineList, totalNumberLines} =
     useInternalLinesWithRacks(internalMove);
@@ -47,7 +48,10 @@ const InternalMoveSearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyInternalMoveLineEnabled,
+  ) => {
     showLine({
       item: {name: 'internalMove', data: internalMove},
       itemLine: {name: 'internalMoveLine', data: item},

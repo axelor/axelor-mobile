@@ -46,13 +46,17 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
+  ) => {
     showLine({
       item: {name: 'inventory', data: inventory},
       itemLine: {name: 'inventoryLine', data: item},
