@@ -70,6 +70,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
   const {loadingSALines, moreLoading, isListEnd} = useSelector(
     state => state.supplierArrivalLine,
@@ -78,7 +79,10 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifySupplierArrivalLineEnabled,
+  ) => {
     showLine({
       item: {name: 'supplierArrival', data: supplierArrival},
       itemLine: {name: 'supplierArrivalLine', data: item},

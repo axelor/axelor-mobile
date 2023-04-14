@@ -38,6 +38,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
   const {customerDeliveryLineList, totalNumberLines} =
     useCustomerLinesWithRacks(customerDelivery);
@@ -54,7 +55,10 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
+  ) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
       itemLine: {name: 'customerDeliveryLine', data: item},
