@@ -37,6 +37,7 @@ const InventorySearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList, totalNumberLines} = useSelector(
     state => state.inventoryLine,
@@ -54,7 +55,10 @@ const InventorySearchLineContainer = ({}) => {
     });
   };
 
-  const handleShowLine = item => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyInventoryLineEnabled,
+  ) => {
     showLine({
       item: {name: 'inventory', data: inventory},
       itemLine: {name: 'inventoryLine', data: item},
@@ -62,6 +66,7 @@ const InventorySearchLineContainer = ({}) => {
       selectTrackingScreen: 'InventorySelectTrackingScreen',
       selectProductScreen: 'InventorySelectProductScreen',
       detailStatus: Inventory.status.Validated,
+      skipVerification,
       navigation,
     });
   };

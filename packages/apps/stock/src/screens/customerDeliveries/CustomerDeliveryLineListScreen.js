@@ -70,6 +70,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {mobileSettings} = useSelector(state => state.config);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
   const {loadingCDLines, moreLoading, isListEnd} = useSelector(
@@ -79,7 +80,10 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const handleShowLine = (item, skipVerification = false) => {
+  const handleShowLine = (
+    item,
+    skipVerification = !mobileSettings?.isVerifyCustomerDeliveryLineEnabled,
+  ) => {
     showLine({
       item: {name: 'customerDelivery', data: customerDelivery},
       itemLine: {name: 'customerDeliveryLine', data: item},
