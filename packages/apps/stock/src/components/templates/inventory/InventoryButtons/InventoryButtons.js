@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   useSelector,
   useDispatch,
   useTranslator,
   useNavigation,
+  fetchMobileSettings,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
@@ -33,6 +34,11 @@ const InventoryButtons = ({}) => {
   const navigation = useNavigation();
 
   const {inventory} = useSelector(state => state.inventory);
+  const {mobileSettings} = useSelector(state => state.config);
+
+  useEffect(() => {
+    dispatch(fetchMobileSettings());
+  }, [dispatch]);
 
   const handleStartInventory = useCallback(() => {
     dispatch(
@@ -88,7 +94,10 @@ const InventoryButtons = ({}) => {
     );
   }
 
-  if (inventory?.statusSelect === Inventory.status.Completed) {
+  if (
+    inventory?.statusSelect === Inventory.status.Completed &&
+    mobileSettings?.isInventoryValidationEnable === true
+  ) {
     return (
       <Button
         title={I18n.t('Base_Validate')}

@@ -18,11 +18,7 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  fetchMobileSettings,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
   StockCorrectionButtons,
@@ -43,7 +39,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
-  const {mobileSettings} = useSelector(state => state.config);
 
   const [saveStatus, setSaveStatus] = useState(true);
   const [realQty, setRealQty] = useState();
@@ -60,10 +55,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   useEffect(() => {
     dispatch(fetchStockCorrection({id: stockCorrectionId}));
   }, [dispatch, stockCorrectionId]);
-
-  useEffect(() => {
-    dispatch(fetchMobileSettings());
-  }, [dispatch]);
 
   useEffect(() => {
     if (stockCorrection != null) {
@@ -98,15 +89,13 @@ const StockCorrectionDetailsScreen = ({route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        mobileSettings?.isStockCorrectionValidationEnable && (
-          <StockCorrectionButtons
-            realQty={realQty}
-            reason={reason}
-            stockCorrection={stockCorrection}
-            saveStatus={saveStatus}
-            status={stockCorrection.statusSelect}
-          />
-        )
+        <StockCorrectionButtons
+          realQty={realQty}
+          reason={reason}
+          stockCorrection={stockCorrection}
+          saveStatus={saveStatus}
+          status={stockCorrection.statusSelect}
+        />
       }>
       <HeaderContainer
         expandableFilter={false}

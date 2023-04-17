@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   useTranslator,
   useDispatch,
   useNavigation,
+  fetchMobileSettings,
+  useSelector,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
@@ -37,6 +39,11 @@ const StockCorrectionButtons = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {mobileSettings} = useSelector(state => state.config);
+
+  useEffect(() => {
+    dispatch(fetchMobileSettings());
+  }, [dispatch]);
 
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
@@ -74,7 +81,8 @@ const StockCorrectionButtons = ({
           onPress={handleSave}
         />
       )}
-      {status === StockCorrection.status.Validated ? null : (
+      {status === StockCorrection.status.Validated ||
+      mobileSettings?.isStockCorrectionValidationEnable === false ? null : (
         <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
       )}
     </>
