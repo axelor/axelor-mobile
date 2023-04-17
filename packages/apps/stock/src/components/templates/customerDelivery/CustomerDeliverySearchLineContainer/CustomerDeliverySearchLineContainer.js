@@ -104,7 +104,10 @@ const CustomerDeliverySearchLineContainer = ({}) => {
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}
-      showAction={customerDelivery.statusSelect !== StockMove.status.Realized}
+      showAction={
+        customerDelivery.statusSelect !== StockMove.status.Realized &&
+        mobileSettings?.isCustomerDeliveryLineAdditionEnabled
+      }
       onAction={handleNewLine}
       renderItem={item => (
         <CustomerDeliveryLineCard

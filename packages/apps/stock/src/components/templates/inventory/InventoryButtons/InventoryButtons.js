@@ -96,7 +96,7 @@ const InventoryButtons = ({}) => {
 
   if (
     inventory?.statusSelect === Inventory.status.Completed &&
-    mobileSettings?.isInventoryValidationEnable === true
+    mobileSettings?.isInventoryValidationEnabled === true
   ) {
     return (
       <Button

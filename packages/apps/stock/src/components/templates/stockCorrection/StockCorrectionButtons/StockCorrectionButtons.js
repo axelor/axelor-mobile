@@ -82,7 +82,7 @@ const StockCorrectionButtons = ({
         />
       )}
       {status === StockCorrection.status.Validated ||
-      mobileSettings?.isStockCorrectionValidationEnable === false ? null : (
+      mobileSettings?.isStockCorrectionValidationEnabled === false ? null : (
         <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
       )}
     </>

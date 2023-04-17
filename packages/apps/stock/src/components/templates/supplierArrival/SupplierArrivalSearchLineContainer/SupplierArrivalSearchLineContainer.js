@@ -104,7 +104,10 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}
-      showAction={supplierArrival.statusSelect !== StockMove.status.Realized}
+      showAction={
+        supplierArrival.statusSelect !== StockMove.status.Realized &&
+        mobileSettings?.isSupplierArrivalLineAdditionEnabled
+      }
       onAction={handleNewLine}
       renderItem={item => (
         <SupplierArrivalLineCard
