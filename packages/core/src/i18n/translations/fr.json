@@ -63,6 +63,10 @@
   "Base_Logout": "Déconnexion",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connecté à",
+  "Base_Error": "Erreur",
+  "Base_Success": "Succès",
+  "Base_Request_Successful": "Requête réussie",
+  "Base_Failed_To": "N'a pas réussi à",
   "Auth_WrongPasswordOrUserName": "Mauvais nom d'utilisateur ou mot de passe",
   "Auth_InvalidUrl": "Url non valide"
 }
