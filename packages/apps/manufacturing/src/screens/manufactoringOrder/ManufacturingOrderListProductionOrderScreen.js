@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Badge,
   Card,
@@ -28,7 +28,12 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  clipboardProvider,
+} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../components/organisms';
 import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
@@ -76,20 +81,25 @@ const ManufacturingOrderListProductionOrderScreen = ({route, navigation}) => {
         data={linkedManufOrders}
         renderItem={({item}) => {
           return (
-            <Card style={styles.itemContainer}>
-              <LabelText
-                style={styles.itemTitle}
-                title={item.manufOrderSeq}
-                iconName="tag"
-              />
-              <Badge
-                title={ManufacturingOrder.getStatus(item.statusSelect, I18n)}
-                color={ManufacturingOrder.getStatusColor(
-                  item.statusSelect,
-                  Colors,
-                )}
-              />
-            </Card>
+            <TouchableOpacity
+              onPress={() =>
+                clipboardProvider.copyToClipboard(item?.manufOrderSeq)
+              }>
+              <Card style={styles.itemContainer}>
+                <LabelText
+                  style={styles.itemTitle}
+                  title={item.manufOrderSeq}
+                  iconName="tag"
+                />
+                <Badge
+                  title={ManufacturingOrder.getStatus(item.statusSelect, I18n)}
+                  color={ManufacturingOrder.getStatusColor(
+                    item.statusSelect,
+                    Colors,
+                  )}
+                />
+              </Card>
+            </TouchableOpacity>
           );
         }}
         fetchData={fetchManufOrderAPI}
