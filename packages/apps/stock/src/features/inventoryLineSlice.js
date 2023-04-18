@@ -30,7 +30,7 @@ export const fetchInventoryLines = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchInventoryLines,
       data,
-      action: 'fetch inventory lines',
+      action: 'Stock_Fetch_Inventory_Lines',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const updateInventoryLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateInventoryLineDetails,
       data,
-      action: 'update inventory line details',
+      action: 'Stock_Update_Inventory_Line',
       getState,
       responseOptions: {showToast: true},
     });
@@ -56,7 +56,7 @@ export const createNewInventoryLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createInventoryLine,
       data,
-      action: 'create inventory line',
+      action: 'Stock_Create_Inventory_Line',
       getState,
       responseOptions: {showToast: true},
     });

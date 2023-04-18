@@ -26,7 +26,7 @@ export const fetchProductVariants = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchVariants,
       data: productVariantId,
-      action: 'fetch product variants',
+      action: 'Stock_Fetch_Product_Variants',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,7 +37,7 @@ var getProductAttributes = async (data, {getState}) => {
   return handlerApiCall({
     fetchFunction: fetchVariantAttributes,
     data,
-    action: 'fetch product variants attributes',
+    action: 'Stock_Fetch_Product_Variants_Attributes',
     getState,
     responseOptions: {isArrayResponse: true},
   });

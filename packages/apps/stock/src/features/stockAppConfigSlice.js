@@ -26,7 +26,7 @@ export const fetchSupplychainConfigForStockApp = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchSupplychainConfig,
       data,
-      action: 'fetch supplychain config',
+      action: 'Stock_Fetch_Supplychain_Config',
       getState,
       responseOptions: {isArrayResponse: false},
       errorOptions: {showErrorToast: false, errorTracing: false},

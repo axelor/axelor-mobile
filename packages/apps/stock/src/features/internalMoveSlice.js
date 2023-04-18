@@ -31,7 +31,7 @@ export const searchInternalMoves = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchInternalMoveFilter,
       data,
-      action: 'filter internal moves',
+      action: 'Stock_Filter_Internal_Moves',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchInternalMove = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchInternalMove,
       data,
-      action: 'fetch internal moves',
+      action: 'Stock_Fetch_Internal_Moves',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -57,7 +57,7 @@ export const createInternalMove = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createInternalStockMove,
       data,
-      action: 'create internal move',
+      action: 'Stock_Create_Internal_Moves',
       getState,
       responseOptions: {showToast: true},
     });
@@ -70,7 +70,7 @@ export const realizeInternalMove = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _realizeInternalMove,
       data,
-      action: 'realize internal move',
+      action: 'Stock_Realize_Internal_Moves',
       getState,
       responseOptions: {showToast: true},
     });

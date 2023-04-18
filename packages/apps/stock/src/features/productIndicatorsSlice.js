@@ -26,7 +26,7 @@ export const fetchProductIndicators = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getProductStockIndicators,
       data,
-      action: 'fetch product stock indicators',
+      action: 'Stock_Fetch_Product_Stock_Indicators',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -37,7 +37,7 @@ var getProductAvailabilty = async (data, {getState}) => {
   return handlerApiCall({
     fetchFunction: getProductStockIndicators,
     data,
-    action: 'fetch product stock indicators',
+    action: 'Stock_Fetch_Product_Stock_Indicators',
     getState,
     responseOptions: {isArrayResponse: false},
   });

@@ -26,7 +26,7 @@ export const filterClients = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchClientsFilter,
       data,
-      action: 'filter clients',
+      action: 'Stock_Filter_Client',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -39,7 +39,7 @@ export const filterSuppliers = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchSuppliersFilter,
       data,
-      action: 'filter suppliers',
+      action: 'Stock_Filter_Suppliers',
       getState,
       responseOptions: {isArrayResponse: true},
     });

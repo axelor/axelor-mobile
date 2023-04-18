@@ -29,7 +29,7 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchCustomerDeliveryLines,
       data,
-      action: 'fetch customer delivery line',
+      action: 'Stock_Fetch_Customer_Delivery_Line',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -42,7 +42,7 @@ export const updateCustomerDeliveryLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateLine,
       data,
-      action: 'update customer delivery line',
+      action: 'Stock_Update_Customer_Delivery_Line',
       getState,
       responseOptions: {showToast: true},
     });
