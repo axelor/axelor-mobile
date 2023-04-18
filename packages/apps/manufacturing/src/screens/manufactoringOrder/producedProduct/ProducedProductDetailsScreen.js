@@ -148,7 +148,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
         )}
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ProducedQty')}
-          defaultValue={parseFloat(producedQty).toFixed(2)}
+          defaultValue={producedQty}
           onValueChange={setProducedQty}
           editable={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress

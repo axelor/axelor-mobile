@@ -53,7 +53,7 @@ const InternalMoveLineQuantityCard = ({
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_MovedQty')}
-      defaultValue={parseFloat(movedQty).toFixed(2)}
+      defaultValue={movedQty}
       onValueChange={handleQtyChange}
       editable={
         status === StockMove.status.Draft || status === StockMove.status.Planned

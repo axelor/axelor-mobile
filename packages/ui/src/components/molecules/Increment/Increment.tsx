@@ -65,7 +65,7 @@ const Increment = ({
   );
 
   const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState(format(value));
+  const [valueQty, setValueQty] = useState<string>();
 
   useEffect(() => {
     setValueQty(format(value));
@@ -75,7 +75,7 @@ const Increment = ({
     const unformatedValue = unformat(valueQty);
     const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
     setValueQty(format(cutDecimalExcess(newValue)));
-    onValueChange(unformat(cutDecimalExcess(newValue)));
+    onValueChange(newValue);
   };
 
   const handleMinus = () => {
@@ -83,7 +83,7 @@ const Increment = ({
     const newValue = parseFloat(unformatedValue) - parseFloat('1');
     if (newValue >= 0) {
       setValueQty(format(cutDecimalExcess(newValue)));
-      onValueChange(unformat(cutDecimalExcess(newValue)));
+      onValueChange(newValue);
     }
   };
 
