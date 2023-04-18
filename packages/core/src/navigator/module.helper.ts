@@ -38,7 +38,7 @@ export function filterAuthorizedModules(modules, mobileConfigs, user) {
 
     if (mobileConfigForModule == null || mobileConfigForModule.length === 0) {
       authorizedModules.push(_module);
-    } else if (mobileConfigForModule[0].isAppEnable) {
+    } else if (mobileConfigForModule[0].isAppEnabled) {
       if (
         mobileConfigForModule[0].authorizedRoles == null ||
         mobileConfigForModule[0].authorizedRoles.length === 0

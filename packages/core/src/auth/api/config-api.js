@@ -36,9 +36,7 @@ export async function getMobileSettings() {
           data: {
             data: [
               {
-                isTrackerMessageOnStockApp: true,
-                isTrackerMessageOnProductionApp: true,
-                isTrackerMessageOnCrmApp: true,
+                isTrackerMessageEnabled: true,
                 isVerifyCustomerDeliveryLineEnabled: false,
                 isVerifyInventoryLineEnabled: false,
                 isVerifySupplierArrivalLineEnabled: false,
