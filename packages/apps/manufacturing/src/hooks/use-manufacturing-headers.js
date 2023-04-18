@@ -41,7 +41,7 @@ const useManufacturingOrderActions = () => {
       {
         model: 'com.axelor.apps.production.db.ManufOrder',
         modelId: manufOrder?.id,
-        disableMailMessages: !mobileSettings?.isTrackerMessageOnProductionApp,
+        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       },
     );
   }, [mobileSettings, manufOrder]);
@@ -87,7 +87,7 @@ const useOperationOrderDetailsActions = () => {
       {
         model: 'com.axelor.apps.production.db.OperationOrder',
         modelId: operationOrder?.id,
-        disableMailMessages: !mobileSettings?.isTrackerMessageOnProductionApp,
+        disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
         actions: [
           {
             key: 'productionFile',

@@ -27,7 +27,7 @@ const useClientDetailsActions = () => {
     headerActionsProvider.registerModel('crm_client_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: client?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: client?.simpleFullName,
     });
   }, [mobileSettings, client]);
@@ -41,7 +41,7 @@ const useContactDetailsActions = () => {
     headerActionsProvider.registerModel('crm_contact_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: contact?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: contact?.simpleFullName,
     });
   }, [mobileSettings, contact]);
@@ -55,7 +55,7 @@ const useLeadDetailsActions = () => {
     headerActionsProvider.registerModel('crm_lead_details', {
       model: 'com.axelor.apps.crm.db.Lead',
       modelId: lead?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: lead?.simpleFullName,
     });
   }, [mobileSettings, lead]);
@@ -69,7 +69,7 @@ const useOpportunityDetailsActions = () => {
     headerActionsProvider.registerModel('crm_opportunity_details', {
       model: 'com.axelor.apps.crm.db.Opportunity',
       modelId: opportunity?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: opportunity?.name,
     });
   }, [mobileSettings, opportunity]);
@@ -83,7 +83,7 @@ const useProspectDetailsActions = () => {
     headerActionsProvider.registerModel('crm_prospect_details', {
       model: 'com.axelor.apps.base.db.Partner',
       modelId: prospect?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: prospect?.simpleFullName,
     });
   }, [mobileSettings, prospect]);
@@ -97,7 +97,7 @@ const useEventDetailsActions = () => {
     headerActionsProvider.registerModel('crm_event_details', {
       model: 'com.axelor.apps.crm.db.Event',
       modelId: event?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnCrmApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, event]);
 };

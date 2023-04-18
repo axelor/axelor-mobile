@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   useDispatch,
@@ -94,6 +94,18 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     );
   }, []);
 
+  const showLineAdditionIcon = useMemo(() => {
+    if (supplierArrival.statusSelect >= StockMove.status.Realized) {
+      return false;
+    }
+
+    if (mobileSettings?.isSupplierArrivalLineAdditionEnabled == null) {
+      return true;
+    }
+
+    return mobileSettings.isSupplierArrivalLineAdditionEnabled;
+  }, [supplierArrival, mobileSettings]);
+
   return (
     <SearchLineContainer
       title={I18n.t('Stock_SupplierArrivalLines')}
@@ -104,7 +116,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
       scanKey={scanKey}
       onViewPress={handleViewAll}
       filterLine={filterLine}
-      showAction={supplierArrival.statusSelect !== StockMove.status.Realized}
+      showAction={showLineAdditionIcon}
       onAction={handleNewLine}
       renderItem={item => (
         <SupplierArrivalLineCard

@@ -46,7 +46,7 @@ const useCustomerDeliveryDetailsActions = () => {
     headerActionsProvider.registerModel('stock_customerDelivery_details', {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: customerDelivery?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, customerDelivery]);
 };
@@ -59,7 +59,7 @@ const useInternalMoveDetailsActions = () => {
     headerActionsProvider.registerModel('stock_internalMove_details', {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: internalMove?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, internalMove]);
 };
@@ -95,7 +95,7 @@ const useInventoryPlannedDetailsActions = () => {
     headerActionsProvider.registerModel('stock_inventory_plannedDetails', {
       model: 'com.axelor.apps.stock.db.Inventory',
       modelId: inventory?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, inventory]);
 };
@@ -108,7 +108,7 @@ const useInventoryStartedDetailsActions = () => {
     headerActionsProvider.registerModel('stock_inventory_startedDetails', {
       model: 'com.axelor.apps.stock.db.Inventory',
       modelId: inventory?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, inventory]);
 };
@@ -121,7 +121,7 @@ const useProductDetailsActions = () => {
     headerActionsProvider.registerModel('stock_product_details', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: product.name,
     });
   }, [mobileSettings, product]);
@@ -135,7 +135,7 @@ const useProductStockDetailsActions = () => {
     headerActionsProvider.registerModel('stock_product_stockDetails', {
       model: 'com.axelor.apps.base.db.Product',
       modelId: product?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: product.name,
     });
   }, [mobileSettings, product]);
@@ -172,7 +172,7 @@ const useStockCorrectionDetailsActions = () => {
     headerActionsProvider.registerModel('stock_stockCorrection_details', {
       model: 'com.axelor.apps.stock.db.StockCorrection',
       modelId: stockCorrection?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, stockCorrection]);
 };
@@ -185,7 +185,7 @@ const useSupplierArrivalDetailsActions = () => {
     headerActionsProvider.registerModel('stock_supplierArrival_details', {
       model: 'com.axelor.apps.stock.db.StockMove',
       modelId: supplierArrival?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageOnStockApp,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, supplierArrival]);
 };

@@ -21,6 +21,7 @@ import {
   useTranslator,
   useDispatch,
   useNavigation,
+  useSelector,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
@@ -37,6 +38,7 @@ const StockCorrectionButtons = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {mobileSettings} = useSelector(state => state.config);
 
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
@@ -74,7 +76,8 @@ const StockCorrectionButtons = ({
           onPress={handleSave}
         />
       )}
-      {status === StockCorrection.status.Validated ? null : (
+      {status === StockCorrection.status.Validated ||
+      mobileSettings?.isStockCorrectionValidationEnabled === false ? null : (
         <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
       )}
     </>

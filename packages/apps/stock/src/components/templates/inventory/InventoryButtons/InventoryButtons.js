@@ -33,6 +33,7 @@ const InventoryButtons = ({}) => {
   const navigation = useNavigation();
 
   const {inventory} = useSelector(state => state.inventory);
+  const {mobileSettings} = useSelector(state => state.config);
 
   const handleStartInventory = useCallback(() => {
     dispatch(
@@ -88,7 +89,10 @@ const InventoryButtons = ({}) => {
     );
   }
 
-  if (inventory?.statusSelect === Inventory.status.Completed) {
+  if (
+    inventory?.statusSelect === Inventory.status.Completed &&
+    mobileSettings?.isInventoryValidationEnabled !== false
+  ) {
     return (
       <Button
         title={I18n.t('Base_Validate')}
