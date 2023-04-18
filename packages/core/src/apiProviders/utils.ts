@@ -107,7 +107,9 @@ const manageSucess = (
       text2: `${
         message
           ? message
-          : `${i18nProvider.i18n.t('Base_Request_Successful')} ${action}`
+          : `${i18nProvider.i18n.t(
+              'Base_Request_Successful',
+            )} ${i18nProvider.i18n.t(action)}`
       }.`,
     });
   }
