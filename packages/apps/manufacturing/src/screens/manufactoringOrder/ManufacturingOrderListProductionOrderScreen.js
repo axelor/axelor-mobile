@@ -17,34 +17,22 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Screen, ScrollList, HeaderContainer, Text} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  Badge,
-  Card,
-  LabelText,
-  Screen,
-  ScrollList,
-  HeaderContainer,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  clipboardProvider,
-} from '@axelor/aos-mobile-core';
-import {ManufacturingOrderHeader} from '../../components/organisms';
+  LinkedManufacturingOrderCard,
+  ManufacturingOrderHeader,
+} from '../../components/organisms';
 import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
-import ManufacturingOrder from '../../types/manufacturing-order';
 
-const ManufacturingOrderListProductionOrderScreen = ({route, navigation}) => {
+const ManufacturingOrderListProductionOrderScreen = ({route}) => {
   const manufOrder = route.params.manufOrder;
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loadingLinkMO, moreLoadingLinkMO, isListEndLinkMO, linkedManufOrders} =
     useSelector(state => state.manufacturingOrder);
-  const dispatch = useDispatch();
 
   const fetchManufOrderAPI = useCallback(
     (page = 0) => {
@@ -79,29 +67,12 @@ const ManufacturingOrderListProductionOrderScreen = ({route, navigation}) => {
       <ScrollList
         loadingList={loadingLinkMO}
         data={linkedManufOrders}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() =>
-                clipboardProvider.copyToClipboard(item?.manufOrderSeq)
-              }>
-              <Card style={styles.itemContainer}>
-                <LabelText
-                  style={styles.itemTitle}
-                  title={item.manufOrderSeq}
-                  iconName="tag"
-                />
-                <Badge
-                  title={ManufacturingOrder.getStatus(item.statusSelect, I18n)}
-                  color={ManufacturingOrder.getStatusColor(
-                    item.statusSelect,
-                    Colors,
-                  )}
-                />
-              </Card>
-            </TouchableOpacity>
-          );
-        }}
+        renderItem={({item}) => (
+          <LinkedManufacturingOrderCard
+            manufOrderSeq={item.manufOrderSeq}
+            statusSelect={item.statusSelect}
+          />
+        )}
         fetchData={fetchManufOrderAPI}
         moreLoading={moreLoadingLinkMO}
         isListEnd={isListEndLinkMO}
@@ -117,17 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginHorizontal: 8,
-  },
-  itemContainer: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: '10%',
-  },
-  itemTitle: {
-    fontWeight: 'bold',
   },
 });
 
