@@ -47,6 +47,7 @@ interface AutocompleteSearchProps {
   scanIconColor?: string;
   selectLastItem?: boolean;
   style?: any;
+  navigation?: any;
 }
 
 const AutoCompleteSearch = ({
@@ -64,6 +65,7 @@ const AutoCompleteSearch = ({
   scanIconColor = null,
   selectLastItem = true,
   style,
+  navigation,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
@@ -196,7 +198,11 @@ const AutoCompleteSearch = ({
 
   const handleSearchPress = useCallback(() => {
     setDisplayList(true);
-  }, []);
+    console.log('ici');
+    navigation.navigate('SearchBarListScreen', {
+      objectList: objectList,
+    });
+  }, [objectList, navigation]);
 
   useEffect(() => {
     if (isValidString(value)) {
