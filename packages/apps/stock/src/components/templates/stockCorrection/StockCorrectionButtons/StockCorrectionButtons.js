@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {
   useTranslator,
   useDispatch,
   useNavigation,
-  fetchMobileSettings,
   useSelector,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -40,10 +39,6 @@ const StockCorrectionButtons = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {mobileSettings} = useSelector(state => state.config);
-
-  useEffect(() => {
-    dispatch(fetchMobileSettings());
-  }, [dispatch]);
 
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
