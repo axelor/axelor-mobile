@@ -136,5 +136,18 @@
   "Stock_Search_StockCorrection": "recherche corrections de stock",
   "Stock_Fetch_StockCorrection": "fetch corrections de stock",
   "Stock_Create_StockCorrection": "creation de corrections de stock",
-  "Stock_Update_StockCorrection": "mis à jour des corrections de stock"
+  "Stock_Update_StockCorrection": "mis à jour des corrections de stock",
+  "Stock_Fetch_Location_Line": "fetch ligne d'emplacement de stock",
+  "Stock_Filter_Location": "filtre emplacement de stock",
+  "Stock_Fetch_Supplier_Arrival_Lines": "fetch lignes de réception fournisseur",
+  "Stock_Update_Supplier_Arrival_Line": "mise à jour de la ligne de réception fournisseur",
+  "Stock_Filter_Supplier_Arrival": "filtre réception fournisseur",
+  "Stock_Fetch_Supplier_Arrival": "fetch réception fournisseur",
+  "Stock_Add_Line_Supplier_Arrival": "ajout d'une ligne de réception fournisseur",
+  "Stock_Realize_Supplier_Arrival": "réalisation réception fournisseur",
+  "Stock_Supplier_Catalog": "fetch catalogue information  produit fournisseur",
+  "Stock_Filter_Product_Traking_Numbers": "filtre numéros de suivi produit",
+  "Stock_Create_Sequence_Traking_Numbers": "création de la séquence du numéro de suivie",
+  "Stock_Update_Supplier_Arrival_With_Tracking_Number": "mis à jour d'une ligne de réception fournisseur avec un nouveau numéro de suivie",
+  "Stock_Fetch_Units": "fetch unités"
 }

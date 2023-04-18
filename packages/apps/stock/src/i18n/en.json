@@ -136,5 +136,18 @@
   "Stock_Search_StockCorrection": "search stock corrections",
   "Stock_Fetch_StockCorrection": "fetch stock corrections",
   "Stock_Create_StockCorrection": "create stock corrections",
-  "Stock_Update_StockCorrection": "update stock correction"
+  "Stock_Update_StockCorrection": "update stock correction",
+  "Stock_Fetch_Location_Line": "fetch stock location line",
+  "Stock_Filter_Location": "filter stock locations",
+  "Stock_Fetch_Supplier_Arrival_Lines": "fetch supplier arrival lines",
+  "Stock_Update_Supplier_Arrival_Line": "update supplier arrival line",
+  "Stock_Filter_Supplier_Arrival": "filter supplier arrival",
+  "Stock_Fetch_Supplier_Arrival": "fetch supplier arrival",
+  "Stock_Add_Line_Supplier_Arrival": "add new line to supplier arrival",
+  "Stock_Realize_Supplier_Arrival": "realize supplier arrival",
+  "Stock_Supplier_Catalog": "fetch supplier catalog product informations",
+  "Stock_Filter_Product_Traking_Numbers": "filter product tracking numbers",
+  "Stock_Create_Sequence_Traking_Numbers": "create tracking number sequence",
+  "Stock_Update_Supplier_Arrival_With_Tracking_Number": "update supplier arrival line with new tracking number",
+  "Stock_Fetch_Units": "fetch units"
 }

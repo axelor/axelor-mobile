@@ -30,7 +30,7 @@ export const filterTrackingNumber = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchTrackingNumberFilter,
       data,
-      action: 'filter product tracking numbers',
+      action: 'Stock_Filter_Product_Traking_Numbers',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const createTrackingNumberSeq = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createTrackingNumber,
       data,
-      action: 'create tracking number sequence',
+      action: 'Stock_Create_Sequence_Traking_Numbers',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     });
@@ -58,7 +58,7 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createTrackingNumber,
       data,
-      action: 'create tracking number sequence',
+      action: 'Stock_Create_Sequence_Traking_Numbers',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(trackingNumber => {
@@ -69,7 +69,7 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
           stockMoveLineVersion: stockMoveLineVersion,
           trackingNumber: trackingNumber,
         },
-        action: 'update supplier arrival line with new tracking number',
+        action: 'Stock_Update_Supplier_Arrival_With_Tracking_Number',
         getState,
         responseOptions: {isArrayResponse: false, showToast: true},
       });
