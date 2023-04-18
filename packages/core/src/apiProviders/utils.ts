@@ -54,7 +54,7 @@ const manageError = (
   if (error.response) {
     const message =
       error?.response?.data?.messageStatus || error?.response?.statusText;
-
+    const code = error.response?.data?.codeStatus || error?.response?.status;
     if (errorTracing) {
       traceError({
         message: 'API request',
@@ -68,7 +68,7 @@ const manageError = (
         type: 'error',
         position: 'bottom',
         bottomOffset: 20,
-        text1: i18nProvider.i18n.t('Base_Error'),
+        text1: `Error ${code}`,
         text2: ` ${i18nProvider.i18n.t(
           'Base_Failed_To',
         )} ${action}: ${message}.`,
@@ -91,6 +91,7 @@ export const handlerError = (
 
 const manageSucess = (
   response,
+  action,
   {showToast = false, isArrayResponse, returnTotal = false},
 ) => {
   const data = getApiResponseData(response, {isArrayResponse});
@@ -104,7 +105,9 @@ const manageSucess = (
       bottomOffset: 20,
       text1: i18nProvider.i18n.t('Base_Success'),
       text2: `${
-        message ? message : i18nProvider.i18n.t('Base_Request_Successful')
+        message
+          ? message
+          : `${i18nProvider.i18n.t('Base_Request_Successful')} ${action}`
       }.`,
     });
   }
@@ -112,9 +115,9 @@ const manageSucess = (
   return returnTotal ? total : data;
 };
 
-const handlerSuccess = ({showToast, isArrayResponse, returnTotal}) => {
+const handlerSuccess = (action, {showToast, isArrayResponse, returnTotal}) => {
   return response =>
-    manageSucess(response, {showToast, isArrayResponse, returnTotal});
+    manageSucess(response, action, {showToast, isArrayResponse, returnTotal});
 };
 
 interface ApiHandlerProps {
@@ -149,5 +152,5 @@ export const handlerApiCall = ({
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess({showToast, isArrayResponse, returnTotal}));
+    .then(handlerSuccess(action, {showToast, isArrayResponse, returnTotal}));
 };
