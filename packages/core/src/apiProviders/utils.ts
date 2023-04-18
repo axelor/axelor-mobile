@@ -69,9 +69,9 @@ const manageError = (
         position: 'bottom',
         bottomOffset: 20,
         text1: `Error ${code}`,
-        text2: ` ${i18nProvider.i18n.t(
-          'Base_Failed_To',
-        )} ${action}: ${message}.`,
+        text2: ` ${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
+          action,
+        )}: ${message}.`,
       });
     }
   }
