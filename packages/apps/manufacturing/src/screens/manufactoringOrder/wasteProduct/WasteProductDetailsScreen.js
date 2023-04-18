@@ -134,7 +134,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
         )}
         <QuantityCard
           labelQty={I18n.t('Manufacturing_WasteQty')}
-          defaultValue={parseFloat(wasteQty).toFixed(2).toString()}
+          defaultValue={wasteQty}
           editable={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
             manufOrder?.wasteStockMove == null

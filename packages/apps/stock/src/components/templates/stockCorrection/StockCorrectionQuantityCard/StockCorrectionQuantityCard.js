@@ -41,7 +41,7 @@ const StockCorrectionQuantityCard = ({
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_RealQty')}
-      defaultValue={parseFloat(realQty).toFixed(2)}
+      defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={status === StockCorrection.status.Draft}>
       <Text style={styles.text}>
