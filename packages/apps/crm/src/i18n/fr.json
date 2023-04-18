@@ -74,5 +74,10 @@
   "Crm_Start": "Début",
   "Crm_End": "Fin",
   "Crm_Catalogs_Disabled": "Les catalogues sont désactivés sur cette instance, merci de contacter votre administrateur.",
-  "Crm_Catalogs_Disabled_Admin": "Cette entrée de menu peut être retirée pour tous les utilisateurs depuis la configuration de l'application \"Axelor Mobile Settings\" sur le web."
+  "Crm_Catalogs_Disabled_Admin": "Cette entrée de menu peut être retirée pour tous les utilisateurs depuis la configuration de l'application \"Axelor Mobile Settings\" sur le web.",
+  "Crm_Fetch_Catalog": "fetch catalogue",
+  "Crm_Fetch_Catalog_Type": "fetch types de catalogue",
+  "Crm_Fetch_Client": "fetch clients",
+  "Crm_Fetch_Client_ById": "fetch client par id",
+  "Crm_Update_Client": "mis à jour du client"
 }

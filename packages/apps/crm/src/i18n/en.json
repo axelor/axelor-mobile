@@ -74,5 +74,10 @@
   "Crm_Start": "Start",
   "Crm_End": "End",
   "Crm_Catalogs_Disabled": "Catalogs are disabled on this instance, please contact your administrator.",
-  "Crm_Catalogs_Disabled_Admin": "This menu entry can be removed for all users from the configuration of the \"Axelor Mobile settings\" application on the web."
+  "Crm_Catalogs_Disabled_Admin": "This menu entry can be removed for all users from the configuration of the \"Axelor Mobile settings\" application on the web.",
+  "Crm_Fetch_Catalog": "fetch catalog",
+  "Crm_Fetch_Catalog_Type": "fetch catalog type",
+  "Crm_Fetch_Client": "fetch clients",
+  "Crm_Fetch_Client_ById": "fetch client by id",
+  "Crm_Update_Client": "update client"
 }
