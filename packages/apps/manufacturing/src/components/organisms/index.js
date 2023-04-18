@@ -18,6 +18,7 @@
 
 export {default as ConsumedProductCard} from './ConsumedProductCard/ConsumedProductCard';
 export {default as ConsumedProductGlobalCard} from './ConsumedProductGlobalCard/ConsumedProductGlobalCard';
+export {default as LinkedManufacturingOrderCard} from './LinkedManufacturingOrderCard/LinkedManufacturingOrderCard';
 export {default as ManufacturingOrderCard} from './ManufacturingOrderCard/ManufacturingOrderCard';
 export {default as ManufacturingOrderHalfLabelCardList} from './ManufacturingOrderHalfLabelCardList/ManufacturingOrderHalfLabelCardList';
 export {default as ManufacturingOrderHeader} from './ManufacturingOrderHeader/ManufacturingOrderHeader';
