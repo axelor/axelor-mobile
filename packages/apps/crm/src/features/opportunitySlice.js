@@ -34,7 +34,7 @@ export const fetchOpportunities = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchOpportunities,
       data,
-      action: 'fetch crm opportunites',
+      action: 'Crm_Fetch_Opportunities',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -47,7 +47,7 @@ export const fetchOpportunityStatus = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getOpportunityStatus,
       data,
-      action: 'fetch crm opportunity status',
+      action: 'Crm_Fetch_Opportunities_Status',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -60,7 +60,7 @@ export const getOpportunity = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _getOpportunity,
       data,
-      action: 'get crm opportunity',
+      action: 'Crm_Get_Opportunities',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -73,14 +73,14 @@ export const updateOpportunityStatus = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateOpportunityStatus,
       data,
-      action: 'update crm opportunity status',
+      action: 'Crm_Update_Opportunities_Status',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res =>
       handlerApiCall({
         fetchFunction: _getOpportunity,
         data: {opportunityId: data?.opportunityId},
-        action: 'get crm opportunity',
+        action: 'Crm_Get_Opportunities',
         getState,
         responseOptions: {isArrayResponse: false},
       }),
@@ -94,14 +94,14 @@ export const updateOpportunityScore = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateOpportunityScoring,
       data,
-      action: 'update crm opportunity score',
+      action: 'Crm_Update_Opportunities_Score',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
         data: {opportunityId: data?.opportunityId},
-        action: 'get opportunity by id',
+        action: 'Crm_Get_Opportunities',
         getState,
         responseOptions: {isArrayResponse: false},
       });
@@ -115,14 +115,14 @@ export const updateOpportunity = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateOpportunity,
       data,
-      action: 'update crm opportunity ',
+      action: 'Crm_Update_Opportunity',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
         data: {opportunityId: data?.opportunityId},
-        action: 'get opportunity by id',
+        action: 'Crm_Get_Opportunities',
         getState,
         responseOptions: {isArrayResponse: false},
       });

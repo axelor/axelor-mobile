@@ -26,7 +26,7 @@ export const fetchFunction = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getFunction,
       data,
-      action: 'fetch function',
+      action: 'Crm_Fetch_Function',
       getState,
       responseOptions: {isArrayResponse: true},
     });
