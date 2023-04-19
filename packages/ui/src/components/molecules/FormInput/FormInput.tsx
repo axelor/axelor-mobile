@@ -86,6 +86,7 @@ const FormInput = ({
         style={[
           commonStyles.filter,
           commonStyles.filterSize,
+          commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
         ]}>
@@ -114,6 +115,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+      marginHorizontal: 0,
     },
     input: {
       width: '100%',
