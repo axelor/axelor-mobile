@@ -17,13 +17,16 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
 } from '../../../hooks/use-click-outside';
-import {SelectionContainer} from '../../molecules';
+import {Card, Icon, Text} from '../../atoms';
+import {PopUp, SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
+import ScrollList from '../ScrollList/ScrollList';
+import {useThemeColor} from '../../../theme/ThemeContext';
 
 const isValidString = (string: String) => {
   return typeof string === 'string' && string !== '';
@@ -47,6 +50,13 @@ interface AutocompleteSearchProps {
   scanIconColor?: string;
   selectLastItem?: boolean;
   style?: any;
+  popupOnSearchPress?: boolean;
+  loadingList?: boolean;
+  moreLoading?: boolean;
+  isListEnd?: boolean;
+  filter?: boolean;
+  translator?: (translationKey: string) => string;
+  fetchScroll?: (any) => void;
 }
 
 const AutoCompleteSearch = ({
@@ -64,10 +74,19 @@ const AutoCompleteSearch = ({
   scanIconColor = null,
   selectLastItem = true,
   style,
+  popupOnSearchPress = false,
+  loadingList,
+  moreLoading,
+  isListEnd,
+  filter,
+  translator,
+  fetchScroll,
 }: AutocompleteSearchProps) => {
+  const Colors = useThemeColor();
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
   const [selected, setSelected] = useState(value ? true : false);
+  const [popupIsVisible, setPopupIsVisible] = useState(false);
   const [searchText, setSearchText] = useState(
     value ? displayValue(value) : null,
   );
@@ -195,9 +214,8 @@ const AutoCompleteSearch = ({
   }, [onSelection]);
 
   const handleSearchPress = useCallback(() => {
-    setDisplayList(true);
-    console.log('ici');
-  }, []);
+    popupOnSearchPress ? setPopupIsVisible(true) : setDisplayList(true);
+  }, [popupOnSearchPress]);
 
   useEffect(() => {
     if (isValidString(value)) {
@@ -208,7 +226,7 @@ const AutoCompleteSearch = ({
   const styles = useMemo(() => getStyles(displayList), [displayList]);
 
   return (
-    <View ref={wrapperRef} style={styles.container}>
+    <View ref={wrapperRef} style={styles.searchBarContainer}>
       <SearchBar
         style={style}
         valueTxt={searchText}
@@ -228,14 +246,81 @@ const AutoCompleteSearch = ({
           handleSelect={handleSelect}
         />
       )}
+      <PopUp visible={popupIsVisible}>
+        <View style={styles.popupContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setPopupIsVisible(false);
+            }}>
+            <Text>Close</Text>
+          </TouchableOpacity>
+          <SearchBar
+            style={style}
+            valueTxt={searchText}
+            placeholder={placeholder}
+            onClearPress={handleClear}
+            onChangeTxt={handleSearchValueChange}
+            onSelection={handleFocus}
+            onSearchPress={() => {}}
+            onEndFocus={() => selected && setDisplayList(false)}
+            onScanPress={onScanPress}
+            scanIconColor={scanIconColor}
+          />
+          <ScrollList
+            loadingList={loadingList}
+            data={objectList}
+            renderItem={({item}) => (
+              <Card style={styles.container}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.txtImportant}>{displayValue(item)}</Text>
+                  <Text style={styles.txtDetails}>{displayValue(item)}</Text>
+                </View>
+                <Icon
+                  name="chevron-right"
+                  color={Colors.secondaryColor.background_light}
+                  size={20}
+                />
+              </Card>
+            )}
+            fetchData={fetchScroll}
+            moreLoading={moreLoading}
+            isListEnd={isListEnd}
+            translator={translator}
+            filter={filter}
+          />
+        </View>
+      </PopUp>
     </View>
   );
 };
 
 const getStyles = displayList =>
   StyleSheet.create({
-    container: {
+    searchBarContainer: {
       zIndex: displayList ? 45 : 0,
+    },
+    popupContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      height: '50%',
+    },
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingRight: 15,
+    },
+    textContainer: {
+      width: '90%',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    txtImportant: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    txtDetails: {
+      fontSize: 14,
     },
   });
 

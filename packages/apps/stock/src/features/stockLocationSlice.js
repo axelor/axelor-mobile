@@ -48,6 +48,9 @@ export const filterSecondStockLocations = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  loadingStockLoaction: false,
+  moreLoadingStockLoaction: false,
+  isListEndStockLoaction: false,
   stockLocationList: [],
   stockLocationListMultiFilter: [],
 };
@@ -56,12 +59,30 @@ const stockLocationSlice = createSlice({
   name: 'stockLocation',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchStockLocations.pending, state => {
-      state.loading = true;
+    builder.addCase(searchStockLocations.pending, (state, action) => {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.loadingStockLoaction = true;
+      } else {
+        state.moreLoadingStockLoaction = true;
+      }
     });
     builder.addCase(searchStockLocations.fulfilled, (state, action) => {
-      state.loading = false;
-      state.stockLocationList = action.payload;
+      state.loadingStockLoaction = false;
+      state.moreLoadingStockLoaction = false;
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.stockLocationList = action.payload;
+        state.isListEndStockLoaction = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEndStockLoaction = false;
+          state.stockLocationList = [
+            ...state.stockLocationList,
+            ...action.payload,
+          ];
+        } else {
+          state.isListEndStockLoaction = true;
+        }
+      }
     });
     builder.addCase(filterSecondStockLocations.pending, state => {
       state.loading = true;

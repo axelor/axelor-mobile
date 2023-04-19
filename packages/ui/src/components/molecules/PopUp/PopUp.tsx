@@ -23,8 +23,8 @@ import {Card, Text} from '../../atoms';
 interface PopUpProps {
   style?: any;
   visible: boolean;
-  title: string;
-  data: string;
+  title?: string;
+  data?: string;
   children: any;
 }
 

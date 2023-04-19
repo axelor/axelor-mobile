@@ -50,9 +50,15 @@ const StockCorrectionListScreen = ({navigation}) => {
 
   const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
     useSelector(state => state.stockCorrection);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
+  const {
+    stockLocationList,
+    loadingStockLoaction,
+    moreLoadingStockLoaction,
+    isListEndStockLoaction,
+  } = useSelector(state => state.stockLocation);
   const {productList} = useSelector(state => state.product);
   const {user} = useSelector(state => state.user);
+  const [filterStockLoaction, setFilterStockLoaction] = useState(null);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
@@ -105,16 +111,29 @@ const StockCorrectionListScreen = ({navigation}) => {
   );
 
   const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (searchValue != null && searchValue !== '') {
+        setFilterStockLoaction(searchValue);
+        dispatch(
+          searchStockLocations({
+            searchValue: searchValue,
+            companyId: user.activeCompany?.id,
+            defaultStockLocation: user.workshopStockLocation,
+          }),
+        );
+      } else {
+        dispatch(searchStockLocations({page: page}));
+      }
     },
     [dispatch, user],
+  );
+  const filterStockLocationsAPI = useCallback(
+    value => fetchStockLocationsAPI({searchValue: value}),
+    [fetchStockLocationsAPI],
+  );
+  const scrollStockLocationsAPI = useCallback(
+    page => fetchStockLocationsAPI({page}),
+    [fetchStockLocationsAPI],
   );
 
   return (
@@ -148,11 +167,18 @@ const StockCorrectionListScreen = ({navigation}) => {
           objectList={stockLocationList}
           value={stockLocation}
           onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
+          fetchData={filterStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
           searchBarKey={1}
+          popupOnSearchPress={true}
+          translator={I18n.t}
+          loadingList={loadingStockLoaction}
+          moreLoading={moreLoadingStockLoaction}
+          isListEnd={isListEndStockLoaction}
+          filter={filterStockLoaction != null && filterStockLoaction !== ''}
+          fetchScroll={scrollStockLocationsAPI}
         />
         <ScannerAutocompleteSearch
           objectList={productList}
@@ -163,6 +189,8 @@ const StockCorrectionListScreen = ({navigation}) => {
           scanKeySearch={productScanKey}
           placeholder={I18n.t('Stock_Product')}
           searchBarKey={2}
+          popupOnSearchPress={true}
+          translator={I18n.t}
         />
       </HeaderContainer>
       <ScrollList
