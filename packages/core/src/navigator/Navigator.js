@@ -105,6 +105,7 @@ const Navigator = ({
         AttachedFilesScreen: {
           title: 'Base_AttachedFiles',
           component: AttachedFilesScreen,
+          actionID: 'core_attachedFiles_details',
           options: {
             shadedHeader: false,
           },

@@ -48,7 +48,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
         )}
         <View>
           <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
-            {I18n.t(title)}
+            {headerOptions?.headerTitle || I18n.t(title)}
           </Text>
         </View>
       </View>
