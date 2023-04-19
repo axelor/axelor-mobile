@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     margin: 2,
     elevation: 0,
+    shadowOpacity: 0,
   },
   topContainer: {
     flexDirection: 'row',

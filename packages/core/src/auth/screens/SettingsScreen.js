@@ -118,8 +118,7 @@ const SettingsScreen = ({route, children}) => {
           onToggle={handleToggleConnection}
         />
         {children}
-        {route.params.user == null ||
-        route.params.user.group.code !== 'admins' ? null : (
+        {route.params.user?.group?.code !== 'admins' ? null : (
           <RightIconButton
             icon={
               <Icon

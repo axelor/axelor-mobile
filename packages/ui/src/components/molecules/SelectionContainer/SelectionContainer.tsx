@@ -18,8 +18,8 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
-import {Color, useThemeColor} from '../../../theme';
 
 interface SelectionItemProps {
   style?: any;
@@ -219,7 +219,11 @@ const SelectionContainer = ({
   );
 };
 
-const getStyles = (Colors, listLength, emptyValue) =>
+const getStyles = (
+  Colors: ThemeColors,
+  listLength: number,
+  emptyValue: boolean,
+) =>
   StyleSheet.create({
     flatListContainer: {
       height: emptyValue ? listLength * 40 + 45 : listLength * 40 + 5,
@@ -233,6 +237,9 @@ const getStyles = (Colors, listLength, emptyValue) =>
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       elevation: 2,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     border: {
       borderBottomColor: Colors.secondaryColor.background,

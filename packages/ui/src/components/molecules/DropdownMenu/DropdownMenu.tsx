@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon} from '../../atoms';
 
 interface DropdownMenuProps {
@@ -35,6 +35,8 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
 
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({wrapperRef, visible});
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && visible) {
@@ -60,21 +62,25 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  menuContainer: {
-    width: 255,
-    top: 30,
-    right: -12,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    position: 'absolute',
-    elevation: 6,
-  },
-  action: {
-    padding: 5,
-    paddingLeft: 15,
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    menuContainer: {
+      width: 255,
+      top: 30,
+      right: -12,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      position: 'absolute',
+      elevation: 6,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+    },
+    action: {
+      padding: 5,
+      paddingLeft: 15,
+    },
+  });
 
 export default DropdownMenu;

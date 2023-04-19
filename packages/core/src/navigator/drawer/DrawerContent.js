@@ -301,6 +301,9 @@ const getStyles = Colors =>
       width: '100%',
       height: '100%',
       elevation: 4,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     subMenuContainer: {
       padding: 8,

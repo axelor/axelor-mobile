@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Button, PopUp} from '../../molecules';
 
 interface PopUpTwoButtonProps {
@@ -42,6 +42,8 @@ const PopUpTwoButton = ({
 }: PopUpTwoButtonProps) => {
   const Colors = useThemeColor();
 
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   return (
     <PopUp visible={visible} title={title} data={data}>
       <Button
@@ -60,13 +62,17 @@ const PopUpTwoButton = ({
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    marginHorizontal: 4,
-    marginTop: 15,
-    elevation: 5,
-    width: '40%',
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    button: {
+      marginHorizontal: 4,
+      marginTop: 15,
+      elevation: 5,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+      width: '40%',
+    },
+  });
 
 export default PopUpTwoButton;

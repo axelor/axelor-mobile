@@ -17,18 +17,13 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Button,
   Checkbox,
   FormHtmlInput,
   FormInput,
+  KeyboardAvoidingScrollView,
   Picker,
   Screen,
   StarScore,
@@ -118,111 +113,106 @@ const LeadFormScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}
-        keyboardVerticalOffset={180}>
-        <ScrollView>
-          <View style={styles.container}>
-            <View style={styles.headerContainer}>
-              <View style={styles.halfHeader}>
-                <Picker
-                  pickerStyle={styles.civilityPicker}
-                  title={I18n.t('Crm_Civility')}
-                  onValueChange={setCivility}
-                  listItems={civilityList}
-                  labelField="name"
-                  valueField="id"
-                  defaultValue={civility}
-                />
-              </View>
-              <View style={styles.checkBoxContainer}>
-                <StarScore
-                  score={score}
-                  showMissingStar={true}
-                  onPress={setScore}
-                  editMode={true}
-                />
-                <Checkbox
-                  title={I18n.t('Crm_NoEmail')}
-                  isDefaultChecked={leadNoEmail}
-                  onChange={setLeadNoEmail}
-                  iconSize={20}
-                />
-                <Checkbox
-                  title={I18n.t('Crm_NoPhoneCall')}
-                  isDefaultChecked={leadNoCall}
-                  onChange={setLeadNoCall}
-                  iconSize={20}
-                />
-              </View>
+      <KeyboardAvoidingScrollView>
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <View style={styles.halfHeader}>
+              <Picker
+                pickerStyle={styles.civilityPicker}
+                title={I18n.t('Crm_Civility')}
+                onValueChange={setCivility}
+                listItems={civilityList}
+                labelField="name"
+                valueField="id"
+                defaultValue={civility}
+              />
             </View>
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_FirstName')}
-              onChange={setFirstName}
-              defaultValue={firstName}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Name')}
-              onChange={setName}
-              defaultValue={name}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Company')}
-              onChange={setLeadCompany}
-              defaultValue={leadCompany}
-            />
-            <Picker
-              title={I18n.t('Crm_JobTitle')}
-              onValueChange={setLeadJob}
-              listItems={functionList}
-              labelField="name"
-              valueField="id"
-              defaultValue={leadJob}
-              style={styles.picker}
-              styleTxt={styles.pickerTitle}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Adress')}
-              onChange={setLeadAdress}
-              defaultValue={leadAdress}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Phone')}
-              onChange={setFixedPhone}
-              defaultValue={fixedPhone}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_MobilePhone')}
-              onChange={setMobilePhone}
-              defaultValue={mobilePhone}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Email')}
-              onChange={setEmail}
-              defaultValue={email}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_WebSite')}
-              onChange={setWebSite}
-              defaultValue={webSite}
-            />
-            <FormHtmlInput
-              title={I18n.t('Crm_Description')}
-              onChange={setDescription}
-              defaultValue={description}
-            />
+            <View style={styles.checkBoxContainer}>
+              <StarScore
+                score={score}
+                showMissingStar={true}
+                onPress={setScore}
+                editMode={true}
+              />
+              <Checkbox
+                title={I18n.t('Crm_NoEmail')}
+                isDefaultChecked={leadNoEmail}
+                onChange={setLeadNoEmail}
+                iconSize={20}
+              />
+              <Checkbox
+                title={I18n.t('Crm_NoPhoneCall')}
+                isDefaultChecked={leadNoCall}
+                onChange={setLeadNoCall}
+                iconSize={20}
+              />
+            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_FirstName')}
+            onChange={setFirstName}
+            defaultValue={firstName}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Name')}
+            onChange={setName}
+            defaultValue={name}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Company')}
+            onChange={setLeadCompany}
+            defaultValue={leadCompany}
+          />
+          <Picker
+            title={I18n.t('Crm_JobTitle')}
+            onValueChange={setLeadJob}
+            listItems={functionList}
+            labelField="name"
+            valueField="id"
+            defaultValue={leadJob}
+            style={styles.picker}
+            styleTxt={styles.pickerTitle}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Adress')}
+            onChange={setLeadAdress}
+            defaultValue={leadAdress}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Phone')}
+            onChange={setFixedPhone}
+            defaultValue={fixedPhone}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_MobilePhone')}
+            onChange={setMobilePhone}
+            defaultValue={mobilePhone}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Email')}
+            onChange={setEmail}
+            defaultValue={email}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_WebSite')}
+            onChange={setWebSite}
+            defaultValue={webSite}
+          />
+          <FormHtmlInput
+            title={I18n.t('Crm_Description')}
+            onChange={setDescription}
+            defaultValue={description}
+          />
+        </View>
+      </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={updateLeadAPI} />
       </View>
@@ -231,9 +221,6 @@ const LeadFormScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
   container: {
     alignItems: 'center',
   },

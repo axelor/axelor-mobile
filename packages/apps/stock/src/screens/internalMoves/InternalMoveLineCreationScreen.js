@@ -17,8 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
-import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -241,84 +240,72 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
           notes={notes}
         />
       }>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}>
-        <ScrollView>
+      <KeyboardAvoidingScrollView>
+        <ScannerAutocompleteSearch
+          value={originalStockLocation}
+          objectList={stockLocationListFirstFilter}
+          onChangeValue={handleFromStockLocationChange}
+          fetchData={fetchOriginalStockLocationsAPI}
+          displayValue={displayItemName}
+          scanKeySearch={originalStockLocationScanKey}
+          placeholder={I18n.t('Stock_OriginalStockLocation')}
+          isFocus={currentStep === CREATION_STEP.original_stockLocation}
+        />
+        {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ScannerAutocompleteSearch
-            value={originalStockLocation}
-            objectList={stockLocationListFirstFilter}
-            onChangeValue={handleFromStockLocationChange}
-            fetchData={fetchOriginalStockLocationsAPI}
-            displayValue={displayItemName}
-            scanKeySearch={originalStockLocationScanKey}
-            placeholder={I18n.t('Stock_OriginalStockLocation')}
-            isFocus={currentStep === CREATION_STEP.original_stockLocation}
+            value={trackingNumber || product}
+            objectList={productTrackingNumberList}
+            onChangeValue={handleToProductTrackingNumberChange}
+            fetchData={searchProductTrackingNumberAPI}
+            displayValue={displayItem}
+            scanKeySearch={itemScanKey}
+            placeholder={I18n.t('Stock_ProductTrackingNumber')}
+            isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
-          {currentStep >= CREATION_STEP.product_trackingNumber ? (
-            <ScannerAutocompleteSearch
-              value={trackingNumber || product}
-              objectList={productTrackingNumberList}
-              onChangeValue={handleToProductTrackingNumberChange}
-              fetchData={searchProductTrackingNumberAPI}
-              displayValue={displayItem}
-              scanKeySearch={itemScanKey}
-              placeholder={I18n.t('Stock_ProductTrackingNumber')}
-              isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+        ) : null}
+        {currentStep >= CREATION_STEP.destination_stockLocation ? (
+          <>
+            <ProductCardInfo
+              name={product.name}
+              code={product.code}
+              picture={product.picture}
+              trackingNumber={
+                product.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.trackingNumberSeq
+              }
+              onPress={handleShowProduct}
             />
-          ) : null}
-          {currentStep >= CREATION_STEP.destination_stockLocation ? (
-            <>
-              <ProductCardInfo
-                name={product.name}
-                code={product.code}
-                picture={product.picture}
-                trackingNumber={
-                  product.trackingNumberConfiguration == null ||
-                  trackingNumber == null
-                    ? null
-                    : trackingNumber.trackingNumberSeq
-                }
-                onPress={handleShowProduct}
-              />
-              <InternalMoveLineQuantityCard
-                originalStockLocation={originalStockLocation}
-                stockProduct={product}
-                trackingNumber={trackingNumber}
-                movedQty={movedQty}
-                setMovedQty={setMovedQty}
-                plannedQty={plannedQty}
-                status={StockMove.status.Draft}
-              />
-              <ScannerAutocompleteSearch
-                value={destinationStockLocation}
-                objectList={stockLocationListSecondFilter}
-                onChangeValue={handleToStockLocationChange}
-                fetchData={fetchDestinationStockLocationsAPI}
-                displayValue={displayItemName}
-                scanKeySearch={destinationStockLocationScanKey}
-                placeholder={I18n.t('Stock_DestinationStockLocation')}
-                isFocus={
-                  currentStep === CREATION_STEP.destination_stockLocation
-                }
-              />
-              <InternalMoveLineNotes
-                notes={notes}
-                setNotes={setNotes}
-                status={StockMove.status.Draft}
-              />
-            </>
-          ) : null}
-        </ScrollView>
-      </KeyboardAvoidingView>
+            <InternalMoveLineQuantityCard
+              originalStockLocation={originalStockLocation}
+              stockProduct={product}
+              trackingNumber={trackingNumber}
+              movedQty={movedQty}
+              setMovedQty={setMovedQty}
+              plannedQty={plannedQty}
+              status={StockMove.status.Draft}
+            />
+            <ScannerAutocompleteSearch
+              value={destinationStockLocation}
+              objectList={stockLocationListSecondFilter}
+              onChangeValue={handleToStockLocationChange}
+              fetchData={fetchDestinationStockLocationsAPI}
+              displayValue={displayItemName}
+              scanKeySearch={destinationStockLocationScanKey}
+              placeholder={I18n.t('Stock_DestinationStockLocation')}
+              isFocus={currentStep === CREATION_STEP.destination_stockLocation}
+            />
+            <InternalMoveLineNotes
+              notes={notes}
+              setNotes={setNotes}
+              status={StockMove.status.Draft}
+            />
+          </>
+        ) : null}
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
-});
 
 export default InternalMoveLineCreationScreen;

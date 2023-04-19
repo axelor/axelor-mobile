@@ -17,12 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
 } from '../../../utils/formatters';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Input} from '../../atoms';
 
 const cutDecimalExcess = number => {
@@ -149,7 +149,7 @@ const Increment = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container_increment: {
       flexDirection: 'row',
@@ -158,6 +158,9 @@ const getStyles = Colors =>
     container_icon: {
       backgroundColor: Colors.backgroundColor,
       elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: 8,
@@ -173,7 +176,7 @@ const getStyles = Colors =>
       paddingBottom: 0,
     },
     inputLine: {
-      borderStyle: 'dashed',
+      borderStyle: Platform.OS === 'ios' ? 'solid' : 'dashed',
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,

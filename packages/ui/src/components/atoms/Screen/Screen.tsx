@@ -94,6 +94,7 @@ const getStyles = Colors =>
       borderRightColor: 'rgba(0,0,0,0.2)',
       borderLeftColor: 'rgba(0,0,0,0.1)',
       elevation: 24,
+      shadowOpacity: 24,
     },
     marginTop: {
       paddingTop: '1.5%',

@@ -55,6 +55,7 @@ const getStyles = Colors =>
       width: '90%',
       borderRadius: 8,
       alignSelf: 'center',
+      shadowOpacity: 0,
       elevation: 0,
       justifyContent: 'center',
       backgroundColor: Colors.backgroundColor,

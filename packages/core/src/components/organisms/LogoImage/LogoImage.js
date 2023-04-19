@@ -18,8 +18,8 @@
 
 import axios from 'axios';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Image} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
+import {checkNullString} from '../../../utils';
 
 const axelorLogoPath = '../../../assets/Logo_Axelor.png';
 
@@ -33,7 +33,7 @@ const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
   );
 
   const urlLogoSource = useMemo(
-    () => (url ? generateImageSourceWithUrl(url) : null),
+    () => (checkNullString(url) ? generateImageSourceWithUrl(url) : null),
     [generateImageSourceWithUrl, url],
   );
 
@@ -48,6 +48,7 @@ const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
         })
         .catch(() => setSource(companyLogoFile));
     }
+    setSource(companyLogoFile);
   }, [companyLogoFile, urlLogoSource]);
 
   return (

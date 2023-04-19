@@ -17,14 +17,14 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
-  ScrollView,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import {Button, FormHtmlInput, FormInput, Screen} from '@axelor/aos-mobile-ui';
+  Button,
+  FormHtmlInput,
+  FormInput,
+  KeyboardAvoidingScrollView,
+  Screen,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 
 import {getClientbyId, updateClient} from '../../features/clientSlice';
@@ -77,44 +77,39 @@ const ClientFormScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}
-        keyboardVerticalOffset={180}>
-        <ScrollView>
-          <View style={styles.container}>
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Name')}
-              onChange={setName}
-              defaultValue={name}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Phone')}
-              onChange={setFixedPhone}
-              defaultValue={fixedPhone}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_Email')}
-              onChange={setEmail}
-              defaultValue={email}
-            />
-            <FormInput
-              style={styles.input}
-              title={I18n.t('Crm_WebSite')}
-              onChange={setWebSite}
-              defaultValue={webSite}
-            />
-            <FormHtmlInput
-              title={I18n.t('Crm_Notes')}
-              onChange={setDescription}
-              defaultValue={description}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <KeyboardAvoidingScrollView>
+        <View style={styles.container}>
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Name')}
+            onChange={setName}
+            defaultValue={name}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Phone')}
+            onChange={setFixedPhone}
+            defaultValue={fixedPhone}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_Email')}
+            onChange={setEmail}
+            defaultValue={email}
+          />
+          <FormInput
+            style={styles.input}
+            title={I18n.t('Crm_WebSite')}
+            onChange={setWebSite}
+            defaultValue={webSite}
+          />
+          <FormHtmlInput
+            title={I18n.t('Crm_Notes')}
+            onChange={setDescription}
+            defaultValue={description}
+          />
+        </View>
+      </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={updateClientAPI} />
       </View>
@@ -123,9 +118,6 @@ const ClientFormScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
   container: {
     alignItems: 'center',
   },

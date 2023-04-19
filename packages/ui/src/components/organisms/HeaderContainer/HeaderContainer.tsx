@@ -20,8 +20,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {animationUtil} from '../../../tools/AnimationUtil';
 import {useConfig} from '../../../config/ConfigContext';
-import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
+import {ThemeColors, useThemeColor} from '../../../theme';
 
 interface HeaderContainerProps {
   style?: any;
@@ -73,13 +73,14 @@ const HeaderContainer = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       flexDirection: 'column',
       justifyContent: 'center',
       backgroundColor: Colors.backgroundColor,
       elevation: 3,
+      shadowOpacity: 3,
       zIndex: 2,
       paddingBottom: 5,
       borderBottomEndRadius: 10,

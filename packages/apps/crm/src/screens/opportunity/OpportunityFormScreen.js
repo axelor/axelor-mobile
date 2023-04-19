@@ -17,17 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Button,
   FormHtmlInput,
   FormIncrementInput,
+  KeyboardAvoidingScrollView,
   Picker,
   Screen,
   StarScore,
@@ -124,74 +119,69 @@ const OpportunityFormScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}
-        keyboardVerticalOffset={180}>
-        <ScrollView>
-          <View style={styles.headerContainer}>
-            <StarScore
-              style={styles.score}
-              score={score}
-              showMissingStar={true}
-              onPress={setScore}
-              editMode={true}
-            />
-          </View>
-          <View style={styles.container}>
-            <AutoCompleteSearchInput
-              style={[styles.picker, styles.marginPicker]}
-              styleTxt={styles.marginTitle}
-              title={I18n.t('Crm_ClientProspect')}
-              objectList={clientAndProspectList}
-              value={partner}
-              searchField="fullName"
-              onChangeValue={setPartner}
-              searchAPI={searchClientAndProspectAPI}
-              locallyFilteredList={false}
-            />
-            <DateInput
-              title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
-              defaultDate={date}
-              onDateChange={setDate}
-              style={styles.input}
-            />
+      <KeyboardAvoidingScrollView>
+        <View style={styles.headerContainer}>
+          <StarScore
+            style={styles.score}
+            score={score}
+            showMissingStar={true}
+            onPress={setScore}
+            editMode={true}
+          />
+        </View>
+        <View style={styles.container}>
+          <AutoCompleteSearchInput
+            style={[styles.picker, styles.marginPicker]}
+            styleTxt={styles.marginTitle}
+            title={I18n.t('Crm_ClientProspect')}
+            objectList={clientAndProspectList}
+            value={partner}
+            searchField="fullName"
+            onChangeValue={setPartner}
+            searchAPI={searchClientAndProspectAPI}
+            locallyFilteredList={false}
+          />
+          <DateInput
+            title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
+            defaultDate={date}
+            onDateChange={setDate}
+            style={styles.input}
+          />
+          <FormIncrementInput
+            title={I18n.t('Crm_Opportunity_Amount')}
+            defaultValue={amount}
+            onChange={setAmount}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
+          />
+          {crmConfig?.isManageRecurrent && (
             <FormIncrementInput
-              title={I18n.t('Crm_Opportunity_Amount')}
-              defaultValue={amount}
-              onChange={setAmount}
+              title={I18n.t('Crm_Opportunity_RecurrentAmount')}
+              defaultValue={recurrent}
+              onChange={setRecurrent}
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
-            {crmConfig?.isManageRecurrent && (
-              <FormIncrementInput
-                title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-                defaultValue={recurrent}
-                onChange={setRecurrent}
-                decimalSpacer={I18n.t('Base_DecimalSpacer')}
-                thousandSpacer={I18n.t('Base_ThousandSpacer')}
-              />
-            )}
-            <FormHtmlInput
-              title={I18n.t('Base_Description')}
-              onChange={setDescription}
-              defaultValue={description}
-            />
-            <Picker
-              style={[styles.picker, styles.marginPicker]}
-              styleTxt={styles.marginPicker}
-              title={I18n.t('Crm_Opportunity_Status')}
-              defaultValue={status}
-              listItems={opportunityStatusList}
-              labelField="name"
-              valueField="id"
-              emptyValue={false}
-              onValueChange={setStatus}
-              isScrollViewContainer={true}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          )}
+          <FormHtmlInput
+            title={I18n.t('Base_Description')}
+            onChange={setDescription}
+            defaultValue={description}
+          />
+          <Picker
+            style={[styles.picker, styles.marginPicker]}
+            styleTxt={styles.marginPicker}
+            title={I18n.t('Crm_Opportunity_Status')}
+            defaultValue={status}
+            listItems={opportunityStatusList}
+            labelField="name"
+            valueField="id"
+            emptyValue={false}
+            onValueChange={setStatus}
+            isScrollViewContainer={true}
+          />
+        </View>
+      </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={updateOpportunityAPI} />
       </View>
