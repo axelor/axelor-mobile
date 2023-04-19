@@ -153,7 +153,6 @@ const StockCorrectionListScreen = ({navigation}) => {
           scanKeySearch={stockLocationScanKey}
           placeholder={I18n.t('Stock_StockLocation')}
           searchBarKey={1}
-          navigation={navigation}
         />
         <ScannerAutocompleteSearch
           objectList={productList}
@@ -164,7 +163,6 @@ const StockCorrectionListScreen = ({navigation}) => {
           scanKeySearch={productScanKey}
           placeholder={I18n.t('Stock_Product')}
           searchBarKey={2}
-          navigation={navigation}
         />
       </HeaderContainer>
       <ScrollList
