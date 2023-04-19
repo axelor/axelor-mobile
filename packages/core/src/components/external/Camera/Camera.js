@@ -213,18 +213,21 @@ const Camera = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    zIndex: 10,
+  },
   captureButton: {
     position: 'absolute',
     top: Dimensions.get('window').height - SAFE_AREA_PADDING.paddingBottom * 2,
     left: Dimensions.get('window').width / 2 - SAFE_AREA_PADDING.paddingLeft,
-    zIndex: 20,
+    zIndex: 30,
   },
   camera: {
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     position: 'absolute',
     top: 0,
-    zIndex: 10,
+    zIndex: 20,
   },
   button: {
     marginBottom: CONTENT_SPACING,
