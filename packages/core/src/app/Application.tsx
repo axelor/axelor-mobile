@@ -74,6 +74,7 @@ const Application = ({
   defaultTheme,
   writingThemes,
   defaultWritingTheme,
+  showModulesSubtitle = false,
   configuration,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
@@ -96,7 +97,9 @@ const Application = ({
         modules={modules}
         mainMenu={mainMenu}
         version={version}
-        showModulesSubtitle={configuration?.showModulesSubtitle}
+        showModulesSubtitle={
+          configuration?.showModulesSubtitle ?? showModulesSubtitle
+        }
         configuration={{
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,

@@ -49,15 +49,13 @@ export const app_config = {
 
   /*
    * This configuration allows you to activate or not the subtitles under app icons in the drawer.
-   * If enabled, subtitles will be displayed under app icons to provide additional
-   * context to the user.
+   * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
    */
   //showModulesSubtitle: false,
 
   /*
    * This configuration allows you to customize the colors used in the application.
-   * You can use the `ThemeColors` object to specify primary, secondary, error, and
-   * other color values.
+   * You can use the `ThemeColors` object to specify primary, secondary, error, and other color values.
    */
   themeColorsConfig: {
     primaryColor: {
@@ -79,8 +77,7 @@ export const app_config = {
 
   /*
    * This configuration allows you to customize the writing styles used in the application.
-   * You can use the `WritingStyles` object to specify defaultSize, title, subTitle, and
-   * other text styles.
+   * You can use the `WritingStyles` object to specify defaultSize, title, subTitle, and other text styles.
    */
   //writingStylesConfig: {},
 };
