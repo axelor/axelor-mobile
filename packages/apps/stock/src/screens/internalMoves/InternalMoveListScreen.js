@@ -59,6 +59,12 @@ const InternalMoveListScreen = ({navigation}) => {
   const {
     stockLocationList: stockLocationListFirstFilter,
     stockLocationListMultiFilter: stockLocationListSecondFilter,
+    loadingStockLoaction: loadingStockLoactionFirstFilter,
+    moreLoadingStockLoaction: moreLoadingStockLocationFirstFilter,
+    isListEndStockLoaction: isListEndStockLoactionFrstFilter,
+    loadingStockLoactionMultiFilter: loadingStockLoactionSecondFilter,
+    moreLoadingStockLoactionMultiFilter: moreLoadingStockLoactionSecondFilter,
+    isListEndStockLoactionMultiFilter: isListEndStockLoactionSecondFilter,
   } = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
 
@@ -69,6 +75,10 @@ const InternalMoveListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
+  const [filterOriginalStockLoaction, setFilterOriginalStockLoaction] =
+    useState(null);
+  const [filterDestinationStockLoaction, setFilterDestinationStockLoaction] =
+    useState(null);
 
   const filterOnStatus = useCallback(
     list => {
@@ -135,29 +145,55 @@ const InternalMoveListScreen = ({navigation}) => {
   );
 
   const fetchOriginalStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (searchValue != null && searchValue !== '') {
+        setFilterOriginalStockLoaction(searchValue);
+        dispatch(
+          searchStockLocations({
+            searchValue: searchValue,
+            companyId: user.activeCompany?.id,
+            defaultStockLocation: user.workshopStockLocation,
+          }),
+        );
+      } else {
+        dispatch(searchStockLocations({page: page}));
+      }
     },
     [dispatch, user],
   );
+  const filterOriginalStockLocationsAPI = useCallback(
+    value => fetchOriginalStockLocationsAPI({searchValue: value}),
+    [fetchOriginalStockLocationsAPI],
+  );
+  const scrollOriginalStockLocationsAPI = useCallback(
+    page => fetchOriginalStockLocationsAPI({page}),
+    [fetchOriginalStockLocationsAPI],
+  );
 
   const fetchDestinationStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        filterSecondStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
+    ({page = 0, searchValue}) => {
+      if (searchValue != null && searchValue !== '') {
+        setFilterDestinationStockLoaction(searchValue);
+        dispatch(
+          filterSecondStockLocations({
+            searchValue: searchValue,
+            companyId: user.activeCompany?.id,
+            defaultStockLocation: user.workshopStockLocation,
+          }),
+        );
+      } else {
+        dispatch(filterSecondStockLocations({page: page}));
+      }
     },
     [dispatch, user],
+  );
+  const filterDestinationStockLocationsAPI = useCallback(
+    value => fetchDestinationStockLocationsAPI({searchValue: value}),
+    [fetchDestinationStockLocationsAPI],
+  );
+  const scrollDestinationStockLocationsAPI = useCallback(
+    page => fetchDestinationStockLocationsAPI({page}),
+    [fetchDestinationStockLocationsAPI],
   );
 
   return (
@@ -209,21 +245,41 @@ const InternalMoveListScreen = ({navigation}) => {
           objectList={stockLocationListFirstFilter}
           value={originalStockLocation}
           onChangeValue={item => setOriginalStockLocation(item)}
-          fetchData={fetchOriginalStockLocationsAPI}
+          fetchData={filterOriginalStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockOriginalLocationScanKey}
           placeholder={I18n.t('Stock_OriginalStockLocation')}
           searchBarKey={1}
+          popupOnSearchPress={true}
+          translator={I18n.t}
+          loadingList={loadingStockLoactionFirstFilter}
+          moreLoading={moreLoadingStockLocationFirstFilter}
+          isListEnd={isListEndStockLoactionFrstFilter}
+          filter={
+            filterOriginalStockLoaction != null &&
+            filterOriginalStockLoaction !== ''
+          }
+          fetchScroll={scrollOriginalStockLocationsAPI}
         />
         <ScannerAutocompleteSearch
           objectList={stockLocationListSecondFilter}
           value={destinationStockLocation}
           onChangeValue={item => setDestinationStockLocation(item)}
-          fetchData={fetchDestinationStockLocationsAPI}
+          fetchData={filterDestinationStockLocationsAPI}
           displayValue={displayItemName}
           scanKeySearch={stockDestinationLocationScanKey}
           placeholder={I18n.t('Stock_DestinationStockLocation')}
           searchBarKey={2}
+          popupOnSearchPress={true}
+          translator={I18n.t}
+          loadingList={loadingStockLoactionSecondFilter}
+          moreLoading={moreLoadingStockLoactionSecondFilter}
+          isListEnd={isListEndStockLoactionSecondFilter}
+          filter={
+            filterDestinationStockLoaction != null &&
+            filterDestinationStockLoaction !== ''
+          }
+          fetchScroll={scrollDestinationStockLocationsAPI}
         />
       </HeaderContainer>
       <ScrollList

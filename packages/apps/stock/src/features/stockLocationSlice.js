@@ -47,12 +47,14 @@ export const filterSecondStockLocations = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
   loadingStockLoaction: false,
   moreLoadingStockLoaction: false,
   isListEndStockLoaction: false,
   stockLocationList: [],
   stockLocationListMultiFilter: [],
+  loadingStockLoactionMultiFilter: false,
+  moreLoadingStockLoactionMultiFilter: false,
+  isListEndStockLoactionMultiFilter: false,
 };
 
 const stockLocationSlice = createSlice({
@@ -84,12 +86,30 @@ const stockLocationSlice = createSlice({
         }
       }
     });
-    builder.addCase(filterSecondStockLocations.pending, state => {
-      state.loading = true;
+    builder.addCase(filterSecondStockLocations.pending, (state, action) => {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.loadingStockLoactionMultiFilter = true;
+      } else {
+        state.moreLoadingStockLoactionMultiFilter = true;
+      }
     });
     builder.addCase(filterSecondStockLocations.fulfilled, (state, action) => {
-      state.loading = false;
-      state.stockLocationListMultiFilter = action.payload;
+      state.loadingStockLoactionMultiFilter = false;
+      state.moreLoadingStockLoactionMultiFilter = false;
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.stockLocationListMultiFilter = action.payload;
+        state.isListEndStockLoactionMultiFilter = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEndStockLoactionMultiFilter = false;
+          state.stockLocationListMultiFilter = [
+            ...state.stockLocationListMultiFilter,
+            ...action.payload,
+          ];
+        } else {
+          state.isListEndStockLoactionMultiFilter = true;
+        }
+      }
     });
   },
 });
