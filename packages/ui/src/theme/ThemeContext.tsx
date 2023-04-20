@@ -24,7 +24,8 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
-import {Theme, lightTheme, colorBlindTheme} from './themes';
+import {Theme, lightTheme, colorBlindTheme, ThemeColors} from './themes';
+import {getActiveTheme} from './theme-context.helper';
 
 const DEFAULT_THEME = lightTheme;
 const COLORBLIND_THEME = colorBlindTheme;
@@ -63,10 +64,11 @@ const defaultThemeContext = {
 const getInitialThemeState = (
   additionalThemes: Theme[] = [],
   defaultTheme: Theme = DEFAULT_THEME,
+  themeColorsConfig: ThemeColors,
 ) => {
   return {
     ...defaultThemeContext,
-    activeTheme: defaultTheme,
+    activeTheme: getActiveTheme(defaultTheme, themeColorsConfig),
     themes: [...defaultThemeContext.themes, ...additionalThemes],
   };
 };
@@ -130,6 +132,7 @@ const actions = {
 interface ThemeProviderProps {
   themes?: Theme[];
   defaultTheme?: Theme;
+  themeColorsConfig?: ThemeColors;
   children?: ReactNode;
 }
 
@@ -137,10 +140,11 @@ export const ThemeProvider = ({
   children,
   themes,
   defaultTheme,
+  themeColorsConfig,
 }: ThemeProviderProps) => {
   const [state, dispatch] = useReducer(
     themeReducer,
-    getInitialThemeState(themes, defaultTheme),
+    getInitialThemeState(themes, defaultTheme, themeColorsConfig),
   );
   const changeTheme = useCallback(
     themeKey => dispatch(actions.changeTheme(themeKey)),

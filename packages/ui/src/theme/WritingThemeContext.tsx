@@ -24,7 +24,8 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
-import {Writing, writingDefaultTheme} from './writingTheme';
+import {Writing, writingDefaultTheme, WritingStyles} from './writingTheme';
+import {getActiveWritingTheme} from './writing-theme-context.helper';
 
 const DEFAULT_WRITING_THEME = writingDefaultTheme;
 
@@ -50,10 +51,14 @@ const defaultWritingThemeContext = {
 const getInitialWritingThemeState = (
   additionalWritingThemes: Writing[] = [],
   defaultWritingTheme: Writing = DEFAULT_WRITING_THEME,
+  writingStylesConfig: WritingStyles,
 ) => {
   return {
     ...defaultWritingThemeContext,
-    activeWritingTheme: defaultWritingTheme,
+    activeWritingTheme: getActiveWritingTheme(
+      defaultWritingTheme,
+      writingStylesConfig,
+    ),
     themes: [
       ...defaultWritingThemeContext.WritingThemes,
       ...additionalWritingThemes,
@@ -99,6 +104,7 @@ const writingActions = {
 interface WritingThemeProviderProps {
   themes?: Writing[];
   defaultTheme?: Writing;
+  writingStylesConfig?: WritingStyles;
   children?: ReactNode;
 }
 
@@ -106,10 +112,11 @@ export const WritingThemeProvider = ({
   children,
   themes,
   defaultTheme,
+  writingStylesConfig,
 }: WritingThemeProviderProps) => {
   const [state, dispatch] = useReducer(
     themeWritingReducer,
-    getInitialWritingThemeState(themes, defaultTheme),
+    getInitialWritingThemeState(themes, defaultTheme, writingStylesConfig),
   );
   const changeWritingTheme = useCallback(
     themeKey => dispatch(writingActions.changeWritingTheme(themeKey)),
