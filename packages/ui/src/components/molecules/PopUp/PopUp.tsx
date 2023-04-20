@@ -26,9 +26,17 @@ interface PopUpProps {
   title?: string;
   data?: string;
   children: any;
+  childrenStyle?: any;
 }
 
-const PopUp = ({style, visible, title, data, children}: PopUpProps) => {
+const PopUp = ({
+  style,
+  visible,
+  title,
+  data,
+  children,
+  childrenStyle,
+}: PopUpProps) => {
   return (
     <Modal
       visible={visible}
@@ -45,7 +53,9 @@ const PopUp = ({style, visible, title, data, children}: PopUpProps) => {
               <Text style={styles.text}>{data}</Text>
             </View>
           )}
-          <View style={styles.buttonContainer}>{children}</View>
+          <View style={[styles.buttonContainer, childrenStyle]}>
+            {children}
+          </View>
         </Card>
       </View>
     </Modal>

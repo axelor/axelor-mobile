@@ -124,6 +124,7 @@ const AutoCompleteSearch = ({
       setDisplayList(false);
       setSelected(true);
       setSearchText(changeScreenAfter ? '' : displayValue(item));
+      setPopupIsVisible(false);
       onChangeValue(item);
     },
     [changeScreenAfter, displayValue, onChangeValue],
@@ -246,7 +247,9 @@ const AutoCompleteSearch = ({
           handleSelect={handleSelect}
         />
       )}
-      <PopUp visible={popupIsVisible}>
+      <PopUp
+        visible={popupIsVisible}
+        childrenStyle={styles.popupContainerChildren}>
         <View style={styles.popupContainer}>
           <TouchableOpacity
             onPress={() => {
@@ -270,17 +273,20 @@ const AutoCompleteSearch = ({
             loadingList={loadingList}
             data={objectList}
             renderItem={({item}) => (
-              <Card style={styles.container}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.txtImportant}>{displayValue(item)}</Text>
-                  <Text style={styles.txtDetails}>{displayValue(item)}</Text>
-                </View>
-                <Icon
-                  name="chevron-right"
-                  color={Colors.secondaryColor.background_light}
-                  size={20}
-                />
-              </Card>
+              <TouchableOpacity onPress={() => handleSelect(item)}>
+                <Card style={styles.container}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.txtImportant}>
+                      {displayValue(item)}
+                    </Text>
+                  </View>
+                  <Icon
+                    name="chevron-right"
+                    color={Colors.secondaryColor.background_light}
+                    size={20}
+                  />
+                </Card>
+              </TouchableOpacity>
             )}
             fetchData={fetchScroll}
             moreLoading={moreLoading}
@@ -302,13 +308,14 @@ const getStyles = displayList =>
     popupContainer: {
       flexDirection: 'column',
       alignItems: 'center',
-      height: '50%',
     },
     container: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingRight: 15,
+      marginHorizontal: 12,
+      marginVertical: 4,
     },
     textContainer: {
       width: '90%',
@@ -321,6 +328,15 @@ const getStyles = displayList =>
     },
     txtDetails: {
       fontSize: 14,
+    },
+    item: {
+      marginHorizontal: 12,
+      marginVertical: 4,
+    },
+    popupContainerChildren: {
+      alignItems: 'flex-start',
+      width: '80%',
+      height: '90%',
     },
   });
 
