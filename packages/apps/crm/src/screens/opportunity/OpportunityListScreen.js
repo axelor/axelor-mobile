@@ -26,7 +26,7 @@ import {
   getCommonStyles,
   ToggleSwitch,
   AutoCompleteSearch,
-  ChipSelect,
+  MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {OpportunityCard} from '../../components';
@@ -57,6 +57,18 @@ const OpportunityListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  const opportunityStatusListItems = useMemo(() => {
+    return opportunityStatusList
+      ? opportunityStatusList.map((status, index) => {
+          return {
+            title: status.name,
+            color: Opportunity.getStatusColor(index, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [opportunityStatusList, Colors]);
 
   const fetchOpportunityAPI = useCallback(
     page => {
@@ -140,17 +152,10 @@ const OpportunityListScreen = ({navigation}) => {
           </View>
         }
         chipComponent={
-          <ChipSelect
-            mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={5}
-            selectionItems={opportunityStatusList.map((status, index) => {
-              return {
-                title: status.name,
-                color: Opportunity.getStatusColor(index, Colors),
-                key: status.id,
-              };
-            })}
+          <MultiValuePicker
+            listItems={opportunityStatusListItems}
+            title={I18n.t('Base_Status')}
+            onValueChange={statusList => setSelectedStatus(statusList)}
           />
         }
       />

@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
-  ChipSelect,
   AutoCompleteSearch,
   ScrollList,
+  MultiValuePicker,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -33,8 +33,8 @@ import Catalog from '../../types/catalog';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
@@ -43,6 +43,18 @@ const CatalogListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [catalog, setCatalog] = useState(null);
+
+  const catalogTypeListItems = useMemo(() => {
+    return catalogTypeList
+      ? catalogTypeList.map((status, index) => {
+          return {
+            title: status.name,
+            color: Catalog.getStatusColor(index, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [catalogTypeList, Colors]);
 
   const fetchCatalogAPI = useCallback(
     page => {
@@ -102,21 +114,10 @@ const CatalogListScreen = ({navigation}) => {
           </View>
         }
         chipComponent={
-          <ChipSelect
-            mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={5}
-            selectionItems={
-              catalogTypeList
-                ? catalogTypeList.map((status, index) => {
-                    return {
-                      title: status.name,
-                      color: Catalog.getStatusColor(index, Colors),
-                      key: status.id,
-                    };
-                  })
-                : []
-            }
+          <MultiValuePicker
+            listItems={catalogTypeListItems}
+            title={I18n.t('Base_Status')}
+            onValueChange={statusList => setSelectedStatus(statusList)}
           />
         }
       />

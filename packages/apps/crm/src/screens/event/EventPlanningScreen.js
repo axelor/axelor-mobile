@@ -17,15 +17,15 @@
  */
 
 import React, {useCallback, useMemo, useState, useEffect} from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   useThemeColor,
   HeaderContainer,
-  ChipSelect,
   AutoCompleteSearch,
   ToggleSwitch,
   getCommonStyles,
+  MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {
   PlanningView,
@@ -58,6 +58,42 @@ function EventPlanningScreen({navigation}) {
   const listItem = useMemo(() => {
     return EventType.getCalendarListItems(filteredList, Colors);
   }, [Colors, filteredList]);
+
+  const eventCategoryList = useMemo(
+    () => [
+      {
+        title: I18n.t('Crm_Event_Category_Event'),
+        color: EventType.getCategoryColor(EventType.category.Event, Colors),
+        key: EventType.category.Event,
+      },
+      {
+        title: I18n.t('Crm_Event_Category_Call'),
+        color: EventType.getCategoryColor(EventType.category.Call, Colors),
+        key: EventType.category.Call,
+      },
+      {
+        title: I18n.t('Crm_Event_Category_Meeting'),
+        color: EventType.getCategoryColor(EventType.category.Meeting, Colors),
+        key: EventType.category.Meeting,
+      },
+      {
+        title: I18n.t('Crm_Event_Category_Task'),
+        color: EventType.getCategoryColor(EventType.category.Task, Colors),
+        key: EventType.category.Task,
+      },
+      {
+        title: I18n.t('Crm_Event_Category_Leave'),
+        color: EventType.getCategoryColor(EventType.category.Leave, Colors),
+        key: EventType.category.Leave,
+      },
+      {
+        title: I18n.t('Crm_Event_Category_Note'),
+        color: EventType.getCategoryColor(EventType.category.Note, Colors),
+        key: EventType.category.Note,
+      },
+    ],
+    [I18n, Colors],
+  );
 
   const fetchEventFilter = useCallback(
     searchValue => {
@@ -159,61 +195,10 @@ function EventPlanningScreen({navigation}) {
         expandableFilter={false}
         fixedItems={
           <View>
-            <ChipSelect
-              mode="multi"
-              marginHorizontal={3}
-              width={Dimensions.get('window').width * 0.3}
-              onChangeValue={chiplist => setSelectedStatus(chiplist)}
-              selectionItems={[
-                {
-                  title: I18n.t('Crm_Event_Category_Event'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Event,
-                    Colors,
-                  ),
-                  key: EventType.category.Event,
-                },
-                {
-                  title: I18n.t('Crm_Event_Category_Call'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Call,
-                    Colors,
-                  ),
-                  key: EventType.category.Call,
-                },
-                {
-                  title: I18n.t('Crm_Event_Category_Meeting'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Meeting,
-                    Colors,
-                  ),
-                  key: EventType.category.Meeting,
-                },
-                {
-                  title: I18n.t('Crm_Event_Category_Task'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Task,
-                    Colors,
-                  ),
-                  key: EventType.category.Task,
-                },
-                {
-                  title: I18n.t('Crm_Event_Category_Leave'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Leave,
-                    Colors,
-                  ),
-                  key: EventType.category.Leave,
-                },
-                {
-                  title: I18n.t('Crm_Event_Category_Note'),
-                  color: EventType.getCategoryColor(
-                    EventType.category.Note,
-                    Colors,
-                  ),
-                  key: EventType.category.Note,
-                },
-              ]}
+            <MultiValuePicker
+              listItems={eventCategoryList}
+              title={I18n.t('Base_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
             />
             <AutoCompleteSearch
               objectList={eventList}
