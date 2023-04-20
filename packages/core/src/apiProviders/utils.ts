@@ -55,6 +55,7 @@ const manageError = (
     const message =
       error?.response?.data?.messageStatus || error?.response?.statusText;
     const code = error.response?.data?.codeStatus || error?.response?.status;
+
     if (errorTracing) {
       traceError({
         message: 'API request',
@@ -69,7 +70,7 @@ const manageError = (
         position: 'bottom',
         bottomOffset: 20,
         text1: `Error ${code}`,
-        text2: ` ${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
+        text2: `${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
           action,
         )}: ${message}.`,
       });
@@ -104,13 +105,7 @@ const manageSucess = (
       position: 'bottom',
       bottomOffset: 20,
       text1: i18nProvider.i18n.t('Base_Success'),
-      text2: `${
-        message
-          ? message
-          : `${i18nProvider.i18n.t(
-              'Base_Request_Successful',
-            )} ${i18nProvider.i18n.t(action)}`
-      }.`,
+      text2: `${message ? message : i18nProvider.i18n.t(action)}.`,
     });
   }
 

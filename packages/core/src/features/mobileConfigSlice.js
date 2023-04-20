@@ -26,7 +26,7 @@ export const fetchMobileConfig = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getMobileConfigs,
       data,
-      action: 'Base_Fetch_Mobile_Configs',
+      action: 'Base_SliceAction_FetchMobileConfig',
       getState,
       responseOptions: {isArrayResponse: true},
       errorOptions: {showErrorToast: false, errorTracing: false},

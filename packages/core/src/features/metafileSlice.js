@@ -26,7 +26,7 @@ export const getFileDetails = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchFileDetails,
       data: metafileId,
-      action: 'Base_Fetch_Metafiles_Details',
+      action: 'Base_SliceAction_FetchFilesDetails',
       getState,
       responseOptions: {isArrayResponse: true},
     });

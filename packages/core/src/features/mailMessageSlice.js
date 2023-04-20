@@ -35,7 +35,7 @@ export const getMailMessages = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchMailMessages,
       data: data,
-      action: 'Base_Fetch_Mail_Messages',
+      action: 'Base_SliceAction_FetchMailMessages',
       getState: getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -48,7 +48,7 @@ export const sendMailMessageComment = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: postMailMessageComment,
       data: data,
-      action: 'Base_Post_Mail_Messages',
+      action: 'Base_SliceAction_PostMailMessageComment',
       getState: getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -61,7 +61,7 @@ export const getModelSubscribers = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchModelSubscribers,
       data: data,
-      action: 'Base_Fetch_Model_Subscribers',
+      action: 'Base_SliceAction_FetchModelSubscribers',
       getState: getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -74,7 +74,7 @@ export const modelSubscribeRequest = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: subscribeRequest,
       data: data,
-      action: 'Base_Request_Model_Subscribers',
+      action: 'Base_SliceAction_SubscribeToModel',
       getState: getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -87,7 +87,7 @@ export const modelUnsubscribeRequest = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: unsubscribeRequest,
       data: data,
-      action: 'Base_Request_Model_Unsubscribe',
+      action: 'Base_SliceAction_UnsubscribeFromModel',
       getState: getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -100,7 +100,7 @@ export const countUnreadMailMessages = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: countUnreadMessages,
       data: data,
-      action: 'Base_Count_Unread_Mail_Message',
+      action: 'Base_SliceAction_CountUnreadMailMessages',
       getState: getState,
       responseOptions: {isArrayResponse: true, returnTotal: true},
     });
@@ -114,7 +114,7 @@ export const markMailMessageAsRead = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: readMailMessage,
       data: data,
-      action: 'Base_Mark_Mail_Message_Read',
+      action: 'Base_SliceAction_MarkMailMessageAsRead',
       getState: getState,
       responseOptions: {returnTotal: true},
     }).then(result => {
@@ -126,7 +126,7 @@ export const markMailMessageAsRead = createAsyncThunk(
           modelId: fetchMailMessageData.modelId,
           page: 0,
         },
-        action: 'Base_Fetch_Mail_Messages',
+        action: 'Base_SliceAction_FetchMailMessages',
         getState: getState,
         responseOptions: {isArrayResponse: true},
       }).then(mailMessages => ({
@@ -144,7 +144,7 @@ export const markAllMailMessageAsRead = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: realAllMailMessages,
       data: data,
-      action: 'Base_Mark_Mail_Message_Read',
+      action: 'Base_SliceAction_MarkAllMailMessageAsRead',
       getState: getState,
       responseOptions: {returnTotal: true},
     }).then(result => {
@@ -156,7 +156,7 @@ export const markAllMailMessageAsRead = createAsyncThunk(
           modelId: fetchMailMessageData.modelId,
           page: 0,
         },
-        action: 'Base_Fetch_Mail_Messages',
+        action: 'Base_SliceAction_FetchMailMessages',
         getState: getState,
         responseOptions: {isArrayResponse: true},
       }).then(mailMessages => ({

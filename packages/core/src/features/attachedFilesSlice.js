@@ -27,7 +27,7 @@ export const getAttachedFiles = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchAttachedFiles,
       data: data,
-      action: 'Base_Fetch_Attached_Files',
+      action: 'Base_SliceAction_FetchAttachedFiles',
       getState: getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -40,7 +40,7 @@ export const getAttachedFilesDetails = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchFileDetails,
       data: data,
-      action: 'Base_Fetch_Attached_Files_Details',
+      action: 'Base_SliceAction_FetchFilesDetails',
       getState: getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -53,7 +53,7 @@ export const countAttachmentFiles = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: countAttachments,
       data: data,
-      action: 'Base_Count_Attached_Files',
+      action: 'Base_SliceAction_CountAttachedFiles',
       getState: getState,
       responseOptions: {isArrayResponse: true, returnTotal: true},
     });
