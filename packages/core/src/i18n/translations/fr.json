@@ -68,5 +68,18 @@
   "Base_Request_Successful": "Requête réussie",
   "Base_Failed_To": "N'a pas réussi à",
   "Auth_WrongPasswordOrUserName": "Mauvais nom d'utilisateur ou mot de passe",
-  "Auth_InvalidUrl": "Url non valide"
+  "Auth_InvalidUrl": "Url non valide",
+  "Base_Fetch_Attached_Files": "fetch fichiers joints",
+  "Base_Fetch_Attached_Files_Details": "fetch details des fichiers joints",
+  "Base_Count_Attached_Files": "compter les fichiers joints",
+  "Base_Fetch_Mail_Messages": "fetch mail",
+  "Base_Post_Mail_Messages": "envoie commentaire mail",
+  "Base_Fetch_Model_Subscribers": "fetch modèle d'abonnement",
+  "Base_Request_Model_Subscribers": "requête modèle d'abonnement",
+  "Base_Request_Model_Unsubscribe": "requête modèle de désabonnement",
+  "Base_Count_Unread_Mail_Message": "compter les e-mails non lus",
+  "Base_Mark_Mail_Message_Read": "marquer le message comme lu",
+  "Base_Fetch_Menu_Config": "fetch configuration du menu",
+  "Base_Fetch_Metafiles_Details": "fetch details des métafichiers",
+  "Base_Fetch_Mobile_Configs": "fetch configurations du mobile"
 }

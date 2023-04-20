@@ -68,5 +68,18 @@
   "Base_Request_Successful": "Request successful",
   "Base_Failed_To": "Failed to",
   "Auth_WrongPasswordOrUserName": "Wrong username or password",
-  "Auth_InvalidUrl": "Invalid url"
+  "Auth_InvalidUrl": "Invalid url",
+  "Base_Fetch_Attached_Files": "fetch attached files",
+  "Base_Fetch_Attached_Files_Details": "fetch attached files details",
+  "Base_Count_Attached_Files": "count attachment files",
+  "Base_Fetch_Mail_Messages": "fetch mail messages",
+  "Base_Post_Mail_Messages": "post mail message comment",
+  "Base_Fetch_Model_Subscribers": "fetch model subscribers",
+  "Base_Request_Model_Subscribers": "model subscribe request",
+  "Base_Request_Model_Unsubscribe": "model unsubscribe request",
+  "Base_Count_Unread_Mail_Message": "model unsubscribe request",
+  "Base_Mark_Mail_Message_Read": "mark mail message as read",
+  "Base_Fetch_Menu_Config": "fetch menu config",
+  "Base_Fetch_Metafiles_Details": "fetch metafile details",
+  "Base_Fetch_Mobile_Configs": "fetch mobile configs"
 }
