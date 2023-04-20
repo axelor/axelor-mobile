@@ -48,8 +48,12 @@ const StockCorrectionListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
-    useSelector(state => state.stockCorrection);
+  const {
+    loadingStockCorrection,
+    moreLoadingStockCorrection,
+    isListEndStockCorrection,
+    stockCorrectionList,
+  } = useSelector(state => state.stockCorrection);
   const {
     stockLocationList,
     loadingStockLoaction,
@@ -211,8 +215,8 @@ const StockCorrectionListScreen = ({navigation}) => {
           />
         )}
         fetchData={searchStockCorrectionsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
+        moreLoading={moreLoadingStockCorrection}
+        isListEnd={isListEndStockCorrection}
         translator={I18n.t}
       />
     </Screen>

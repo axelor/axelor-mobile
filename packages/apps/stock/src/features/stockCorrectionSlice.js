@@ -79,8 +79,8 @@ export const updateCorrection = createAsyncThunk(
 
 const initialState = {
   loadingStockCorrection: true,
-  moreLoading: false,
-  isListEnd: false,
+  moreLoadingStockCorrection: false,
+  isListEndStockCorrection: false,
   stockCorrectionList: [],
   stockCorrection: null,
 };
@@ -98,24 +98,24 @@ const stockCorrectionSlice = createSlice({
       if (action.meta.arg.page === 0) {
         state.loadingStockCorrection = true;
       } else {
-        state.moreLoading = true;
+        state.moreLoadingStockCorrection = true;
       }
     });
     builder.addCase(searchStockCorrections.fulfilled, (state, action) => {
       state.loadingStockCorrection = false;
-      state.moreLoading = false;
+      state.moreLoadingStockCorrection = false;
       if (action.meta.arg.page === 0) {
         state.stockCorrectionList = action.payload;
-        state.isListEnd = false;
+        state.isListEndStockCorrection = false;
       } else {
         if (action.payload != null) {
-          state.isListEnd = false;
+          state.isListEndStockCorrection = false;
           state.stockCorrectionList = [
             ...state.stockCorrectionList,
             ...action.payload,
           ];
         } else {
-          state.isListEnd = true;
+          state.isListEndStockCorrection = true;
         }
       }
     });
