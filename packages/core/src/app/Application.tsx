@@ -17,7 +17,12 @@
  */
 
 import React, {useRef} from 'react';
-import {Theme, Writing} from '@axelor/aos-mobile-ui';
+import {
+  Theme,
+  ThemeColors,
+  Writing,
+  WritingStyles,
+} from '@axelor/aos-mobile-ui';
 import {Module} from './Module';
 import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
@@ -42,6 +47,9 @@ interface appConfig {
   defaultRequestLimit: number;
   enableConnectionSessions: boolean;
   retrocompatibilityAOS6: boolean;
+  showModulesSubtitle: boolean;
+  themeColorsConfig: ThemeColors;
+  writingStylesConfig: WritingStyles;
 }
 
 interface ApplicationProps {
@@ -82,12 +90,16 @@ const Application = ({
       defaultWritingTheme={defaultWritingTheme}
       writingThemes={writingThemes}
       defaultLanguage={configuration?.defaultLanguage}
-      defaultRequestLimit={configuration?.defaultRequestLimit}>
+      defaultRequestLimit={configuration?.defaultRequestLimit}
+      themeColorsConfig={configuration?.themeColorsConfig}
+      writingStylesConfig={configuration?.writingStylesConfig}>
       <ContextedApplication
         modules={modules}
         mainMenu={mainMenu}
         version={version}
-        showModulesSubtitle={showModulesSubtitle}
+        showModulesSubtitle={
+          configuration?.showModulesSubtitle ?? showModulesSubtitle
+        }
         configuration={{
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,

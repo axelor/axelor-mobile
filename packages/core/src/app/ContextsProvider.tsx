@@ -25,6 +25,8 @@ import {
   WritingThemeProvider,
   Theme,
   Writing,
+  ThemeColors,
+  WritingStyles,
 } from '@axelor/aos-mobile-ui';
 import {Models, Module} from './Module';
 import {configI18n} from '../i18n/i18n';
@@ -49,6 +51,8 @@ interface ContextsProviderProps {
   children: React.ReactNode;
   defaultLanguage: string;
   defaultRequestLimit: number;
+  themeColorsConfig?: ThemeColors;
+  writingStylesConfig?: WritingStyles;
 }
 
 const ContextsProvider = ({
@@ -61,6 +65,8 @@ const ContextsProvider = ({
   children,
   defaultLanguage = 'en',
   defaultRequestLimit = 10,
+  themeColorsConfig,
+  writingStylesConfig,
 }: ContextsProviderProps) => {
   const [loading, setLoading] = useState(true);
 
@@ -139,10 +145,14 @@ const ContextsProvider = ({
     <ApplicationContext.Provider value={{}}>
       <Provider store={store}>
         <OutsideAlerterProvider>
-          <ThemeProvider themes={themes} defaultTheme={defaultTheme}>
+          <ThemeProvider
+            themes={themes}
+            defaultTheme={defaultTheme}
+            themeColorsConfig={themeColorsConfig}>
             <WritingThemeProvider
               themes={writingThemes}
-              defaultTheme={defaultWritingTheme}>
+              defaultTheme={defaultWritingTheme}
+              writingStylesConfig={writingStylesConfig}>
               <ConfigProvider>{children}</ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>
