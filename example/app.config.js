@@ -46,4 +46,38 @@ export const app_config = {
    * However, it's important to note that enabling this feature may limit access to certain advanced features that are only available on higher versions of Axelor Open Suite.
    */
   retrocompatibilityAOS6: true,
+
+  /*
+   * This configuration allows you to activate or not the subtitles under app icons in the drawer.
+   * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
+   */
+  //showModulesSubtitle: false,
+
+  /*
+   * This configuration allows you to customize the colors used in the application.
+   * You can use the `ThemeColors` object to specify primary, secondary, error, and other color values.
+   */
+  themeColorsConfig: {
+    primaryColor: {
+      background_light: '#84DCB7',
+      foreground: '#000000',
+      background: '#3ECF8E',
+    },
+    secondaryColor: {
+      background_light: '#DDDDDD',
+      foreground: '#000000',
+      background: '#CECECE',
+    },
+    secondaryColor_dark: {
+      background_light: '#606060',
+      foreground: '#FFFFFF',
+      background: '#424242',
+    },
+  },
+
+  /*
+   * This configuration allows you to customize the writing styles used in the application.
+   * You can use the `WritingStyles` object to specify defaultSize, title, subTitle, and other text styles.
+   */
+  //writingStylesConfig: {},
 };
