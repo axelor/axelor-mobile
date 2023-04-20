@@ -38,9 +38,8 @@ const ProductListScreen = ({navigation}) => {
 
   const {activeCompany} = useSelector(state => state.user.user);
   const {listAvailabilty} = useSelector(state => state.productIndicators);
-  const {loadingProduct, moreLoading, isListEnd, productList} = useSelector(
-    state => state.product,
-  );
+  const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
+    useSelector(state => state.product);
 
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
@@ -123,8 +122,8 @@ const ProductListScreen = ({navigation}) => {
           />
         )}
         fetchData={scrollProductsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
+        moreLoading={moreLoadingProduct}
+        isListEnd={isListEndProduct}
         filter={filter != null && filter !== ''}
         translator={I18n.t}
       />

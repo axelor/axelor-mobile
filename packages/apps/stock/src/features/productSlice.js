@@ -65,8 +65,8 @@ export const updateProductLocker = createAsyncThunk(
 
 const initialState = {
   loadingProduct: false,
-  moreLoading: false,
-  isListEnd: false,
+  moreLoadingProduct: false,
+  isListEndProduct: false,
   productList: [],
   loadingProductFromId: false,
   productFromId: {},
@@ -81,21 +81,21 @@ const productSlice = createSlice({
       if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
         state.loadingProduct = true;
       } else {
-        state.moreLoading = true;
+        state.moreLoadingProduct = true;
       }
     });
     builder.addCase(searchProducts.fulfilled, (state, action) => {
       state.loadingProduct = false;
-      state.moreLoading = false;
+      state.moreLoadingProduct = false;
       if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
         state.productList = action.payload;
-        state.isListEnd = false;
+        state.isListEndProduct = false;
       } else {
         if (action.payload != null) {
-          state.isListEnd = false;
+          state.isListEndProduct = false;
           state.productList = [...state.productList, ...action.payload];
         } else {
-          state.isListEnd = true;
+          state.isListEndProduct = true;
         }
       }
     });

@@ -60,9 +60,11 @@ const StockCorrectionListScreen = ({navigation}) => {
     moreLoadingStockLoaction,
     isListEndStockLoaction,
   } = useSelector(state => state.stockLocation);
-  const {productList} = useSelector(state => state.product);
+  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
+    useSelector(state => state.product);
   const {user} = useSelector(state => state.user);
   const [filterStockLoaction, setFilterStockLoaction] = useState(null);
+  const [filterProduct, setFilterProduct] = useState(null);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
@@ -107,12 +109,12 @@ const StockCorrectionListScreen = ({navigation}) => {
     [dispatch],
   );
 
-  const fetchProductsAPI = useCallback(
+  /*const fetchProductsAPI = useCallback(
     filter => {
       dispatch(searchProducts({searchValue: filter}));
     },
     [dispatch],
-  );
+  );*/
 
   const fetchStockLocationsAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -138,6 +140,31 @@ const StockCorrectionListScreen = ({navigation}) => {
   const scrollStockLocationsAPI = useCallback(
     page => fetchStockLocationsAPI({page}),
     [fetchStockLocationsAPI],
+  );
+
+  const fetchProductsAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      if (searchValue != null && searchValue !== '') {
+        setFilterProduct(searchValue);
+        dispatch(
+          searchProducts({
+            searchValue: searchValue,
+          }),
+        );
+      } else {
+        dispatch(searchProducts({page: page}));
+      }
+    },
+    [dispatch],
+  );
+
+  const filterProductsAPI = useCallback(
+    value => fetchProductsAPI({searchValue: value}),
+    [fetchProductsAPI],
+  );
+  const scrollProductsAPI = useCallback(
+    page => fetchProductsAPI({page}),
+    [fetchProductsAPI],
   );
 
   return (
@@ -188,13 +215,18 @@ const StockCorrectionListScreen = ({navigation}) => {
           objectList={productList}
           value={product}
           onChangeValue={item => setProduct(item)}
-          fetchData={fetchProductsAPI}
+          fetchData={filterProductsAPI}
           displayValue={displayItemName}
           scanKeySearch={productScanKey}
           placeholder={I18n.t('Stock_Product')}
           searchBarKey={2}
           popupOnSearchPress={true}
           translator={I18n.t}
+          loadingList={loadingProduct}
+          moreLoading={moreLoadingProduct}
+          isListEnd={isListEndProduct}
+          filter={filterProduct != null && filterProduct !== ''}
+          fetchScroll={scrollProductsAPI}
         />
       </HeaderContainer>
       <ScrollList
