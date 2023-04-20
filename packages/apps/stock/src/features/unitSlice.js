@@ -26,7 +26,7 @@ export const fetchUnit = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchUnit,
       data,
-      action: 'Stock_Fetch_Units',
+      action: 'Stock_SliceAction_FetchUnits',
       getState,
       responseOptions: {isArrayResponse: true},
     });

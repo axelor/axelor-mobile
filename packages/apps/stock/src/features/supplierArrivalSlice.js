@@ -31,7 +31,7 @@ export const searchSupplierArrivals = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalFilter,
       data,
-      action: 'Stock_Filter_Supplier_Arrival',
+      action: 'Stock_SliceAction_FilterSupplierArrival',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchSupplierArrival = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchSupplierArrival,
       data,
-      action: 'Stock_Fetch_Supplier_Arrival',
+      action: 'Stock_SliceAction_FetchSupplierArrival',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -57,7 +57,7 @@ export const addNewLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: addLineStockMove,
       data,
-      action: 'Stock_Add_Line_Supplier_Arrival',
+      action: 'Stock_SliceAction_CreateLineSupplierArrival',
       getState,
       responseOptions: {showToast: true},
     });
@@ -70,7 +70,7 @@ export const realizeSupplierArrival = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: realizeSockMove,
       data,
-      action: 'Stock_Realize_Supplier_Arrival',
+      action: 'Stock_SliceAction_RealizeSupplierArrival',
       getState,
       responseOptions: {showToast: true},
     });

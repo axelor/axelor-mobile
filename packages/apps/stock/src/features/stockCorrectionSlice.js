@@ -31,7 +31,7 @@ export const searchStockCorrections = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchStockCorrection,
       data,
-      action: 'Stock_Search_StockCorrection',
+      action: 'Stock_SliceAction_SearchStockCorrections',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchStockCorrection = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchStockCorrection,
       data,
-      action: 'Stock_Fetch_StockCorrection',
+      action: 'Stock_SliceAction_FetchStockCorrection',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -57,7 +57,7 @@ export const createCorrection = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createStockCorrection,
       data,
-      action: 'Stock_Create_StockCorrection',
+      action: 'Stock_SliceAction_CreateStockCorrection',
       getState,
       responseOptions: {showToast: true},
     });
@@ -70,7 +70,7 @@ export const updateCorrection = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateStockCorrection,
       data,
-      action: 'Stock_Update_StockCorrection',
+      action: 'Stock_SliceAction_UpdateStockCorrection',
       getState,
       responseOptions: {showToast: true},
     });

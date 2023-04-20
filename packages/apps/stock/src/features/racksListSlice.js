@@ -40,7 +40,7 @@ var getRack = async (stockId, productId, {getState}) => {
       stockId: stockId,
       productId: productId,
     },
-    action: 'Stock_Fetch_Rack',
+    action: 'Stock_SliceAction_FetchRacks',
     getState,
     responseOptions: {isArrayResponse: true},
   });

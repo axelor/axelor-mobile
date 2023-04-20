@@ -26,7 +26,7 @@ export const fetchStockLocationLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchStockLocationLine,
       data,
-      action: 'Stock_Fetch_Location_Line',
+      action: 'Stock_SliceAction_FetchStockLocationLines',
       getState,
       responseOptions: {isArrayResponse: true},
     });

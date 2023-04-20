@@ -26,7 +26,7 @@ export const searchStockLocations = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchStockLocationsFilter,
       data,
-      action: 'Stock_Filter_Location',
+      action: 'Stock_SliceAction_FilterStockLocations',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -39,7 +39,7 @@ export const filterSecondStockLocations = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchStockLocationsFilter,
       data,
-      action: 'Stock_Filter_Location',
+      action: 'Stock_SliceAction_FilterStockLocations',
       getState,
       responseOptions: {isArrayResponse: true},
     });
