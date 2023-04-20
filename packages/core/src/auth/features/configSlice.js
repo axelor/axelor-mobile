@@ -27,7 +27,7 @@ export const fetchBaseConfig = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getBaseConfig,
       data,
-      action: 'fetch base config',
+      action: 'Auth_SliceAction_FetchBaseConfig',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -47,7 +47,7 @@ export const fetchMobileSettings = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getMobileSettings,
       data,
-      action: 'fetch app mobile settings',
+      action: 'Auth_SliceAction_FetchAppMobileSettings',
       getState,
       responseOptions: {isArrayResponse: false},
     });

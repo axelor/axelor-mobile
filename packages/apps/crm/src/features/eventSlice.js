@@ -32,7 +32,7 @@ export const searchEventById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchEventsByIds,
       data,
-      action: 'filter event by id',
+      action: 'Crm_SliceAction_FilterEventById',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -45,7 +45,7 @@ export const fetchPartnerEventById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: partnerEventById,
       data,
-      action: 'fetch crm partnerEvent',
+      action: 'Crm_SliceAction_FetchPartnerEvent',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -58,7 +58,7 @@ export const fetchContactEventById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: contactEventById,
       data,
-      action: 'fetch crm contactEvent',
+      action: 'Crm_SliceAction_FetchContactEvent',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -71,7 +71,7 @@ export const fetchPlannedEvent = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getPlannedEvent,
       data,
-      action: 'fetch planned event',
+      action: 'Crm_SliceAction_FetchPlannedEvent',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -84,7 +84,7 @@ export const fetchEventById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getEvent,
       data,
-      action: 'get crm event by id',
+      action: 'Crm_SliceAction_FetchEventById',
       getState,
       responseOptions: {isArrayResponse: false},
     });

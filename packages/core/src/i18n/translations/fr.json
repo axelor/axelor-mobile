@@ -63,6 +63,22 @@
   "Base_Logout": "Déconnexion",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connecté à",
+  "Base_Error": "Erreur",
+  "Base_Success": "Succès",
+  "Base_Failed_To": "N'a pas réussi à effectuer l'action :",
   "Auth_WrongPasswordOrUserName": "Mauvais nom d'utilisateur ou mot de passe",
-  "Auth_InvalidUrl": "Url non valide"
+  "Auth_InvalidUrl": "Url non valide",
+  "Base_SliceAction_FetchAttachedFiles": "récupération des fichiers joints",
+  "Base_SliceAction_FetchFilesDetails": "récupération des détails du fichier",
+  "Base_SliceAction_CountAttachedFiles": "comptage des fichiers joints",
+  "Base_SliceAction_FetchMailMessages": "récupération des mail messages",
+  "Base_SliceAction_PostMailMessageComment": "ajout d'un mail message",
+  "Base_SliceAction_FetchModelSubscribers": "récupération des abonnés du modèle",
+  "Base_SliceAction_SubscribeToModel": "abonnement au modèle",
+  "Base_SliceAction_UnsubscribeFromModel": "désabonnement au modèle",
+  "Base_SliceAction_CountUnreadMailMessages": "comptage des mail messages non lus",
+  "Base_SliceAction_MarkMailMessageAsRead": "marquer le message comme lu",
+  "Base_SliceAction_MarkAllMailMessageAsRead": "marquer tous les messages comme lus",
+  "Base_SliceAction_FetchMenuConfig": "récupération des configs de menus",
+  "Base_SliceAction_FetchMobileConfig": "récupération des configs mobile"
 }

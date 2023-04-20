@@ -31,7 +31,7 @@ export const searchDeliveries = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchDeliveryFilter,
       data,
-      action: 'filter customer deliveries',
+      action: 'Stock_SliceAction_FilterCustomerDeliveries',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchCustomerDelivery = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchCustomerDelivery,
       data,
-      action: 'fetch customer delivery',
+      action: 'Stock_SliceAction_FetchCustomerDeliveryById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -57,7 +57,7 @@ export const addNewLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: addLineStockMove,
       data,
-      action: 'add new line to customer delivery',
+      action: 'Stock_SliceAction_CreateLineCustomerDelivery',
       getState,
       responseOptions: {showToast: true},
     });
@@ -70,7 +70,7 @@ export const realizeCustomerDelivery = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: realizeSockMove,
       data,
-      action: 'realize customer delivery',
+      action: 'Stock_SliceAction_RealizeCustomerDelivery',
       getState,
       responseOptions: {showToast: true},
     });

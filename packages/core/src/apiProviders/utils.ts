@@ -18,6 +18,7 @@
 
 import Toast from 'react-native-toast-message';
 import {traceError} from '../api/traceback-api';
+import {i18nProvider} from '../i18n';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -27,9 +28,6 @@ export const getApiResponseData = (response, {isArrayResponse = true}) => {
     ? response?.data?.data
     : getFirstData(response?.data?.data);
 };
-
-const getApiResponseCode = response =>
-  response?.data?.codeStatus || response?.status;
 
 const getApiResponseMessage = response =>
   response?.data?.messageStatus || response?.statusTxt;
@@ -72,7 +70,9 @@ const manageError = (
         position: 'bottom',
         bottomOffset: 20,
         text1: `Error ${code}`,
-        text2: `Failed to ${action}: ${message}.`,
+        text2: `${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
+          action,
+        )}: ${message}.`,
       });
     }
   }
@@ -92,10 +92,10 @@ export const handlerError = (
 
 const manageSucess = (
   response,
+  action,
   {showToast = false, isArrayResponse, returnTotal = false},
 ) => {
   const data = getApiResponseData(response, {isArrayResponse});
-  const code = getApiResponseCode(response);
   const message = getApiResponseMessage(response);
   const total = getApiResponseTotal(response);
 
@@ -104,17 +104,17 @@ const manageSucess = (
       type: 'success',
       position: 'bottom',
       bottomOffset: 20,
-      text1: `Success ${code}`,
-      text2: `${message ? message : 'Request successful'}.`,
+      text1: i18nProvider.i18n.t('Base_Success'),
+      text2: `${message ? message : i18nProvider.i18n.t(action)}.`,
     });
   }
 
   return returnTotal ? total : data;
 };
 
-const handlerSuccess = ({showToast, isArrayResponse, returnTotal}) => {
+const handlerSuccess = (action, {showToast, isArrayResponse, returnTotal}) => {
   return response =>
-    manageSucess(response, {showToast, isArrayResponse, returnTotal});
+    manageSucess(response, action, {showToast, isArrayResponse, returnTotal});
 };
 
 interface ApiHandlerProps {
@@ -149,5 +149,5 @@ export const handlerApiCall = ({
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess({showToast, isArrayResponse, returnTotal}));
+    .then(handlerSuccess(action, {showToast, isArrayResponse, returnTotal}));
 };

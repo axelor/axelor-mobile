@@ -32,7 +32,7 @@ export const fetchLeads = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchLeads,
       data,
-      action: 'fetch crm lead',
+      action: 'Crm_SliceAction_FetchLead',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -45,7 +45,7 @@ export const fetchLeadStatus = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getLeadStatus,
       data,
-      action: 'fetch crm leadStatus',
+      action: 'Crm_SliceAction_FetchLeadStatus',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -58,7 +58,7 @@ export const fetchLeadById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getLead,
       data,
-      action: 'get crm lead by id',
+      action: 'Crm_SliceAction_FetchLeadById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -71,14 +71,14 @@ export const updateLeadScore = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateLeadScoring,
       data,
-      action: 'update crm lead score',
+      action: 'Crm_SliceAction_UpdateLeadScore',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getLead,
         data: {leadId: res?.id},
-        action: 'get lead by id',
+        action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
       });
@@ -92,14 +92,14 @@ export const updateLead = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateLead,
       data,
-      action: 'update crm lead ',
+      action: 'Crm_SliceAction_UpdateLead',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getLead,
         data: {leadId: res?.id},
-        action: 'get lead by id',
+        action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

@@ -26,7 +26,7 @@ export const fetchStockCorrectionReasons = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchStockCorrectionReason,
       data,
-      action: 'fetch stock correction reasons',
+      action: 'Stock_SliceAction_FetchStockCorrectionReasons',
       getState,
       responseOptions: {isArrayResponse: true},
     });

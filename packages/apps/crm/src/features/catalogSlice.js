@@ -26,7 +26,7 @@ export const fetchCatalog = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchCatalog,
       data,
-      action: 'fetch catalog',
+      action: 'Crm_SliceAction_FetchCatalog',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -39,7 +39,7 @@ export const fetchCatalogType = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getCatalogType,
       data,
-      action: 'fetch catalog CatalogType',
+      action: 'Crm_SliceAction_FetchCatalogType',
       getState,
       responseOptions: {isArrayResponse: true},
     });

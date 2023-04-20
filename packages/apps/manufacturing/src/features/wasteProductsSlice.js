@@ -31,7 +31,7 @@ export const fetchWasteProducts = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchManufacturingOrderWasteProducts,
       data,
-      action: 'fetch manufacturing order waste products',
+      action: 'Manufacturing_SliceAction_FetchWasteProducts',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const addWasteProductToManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createManufacturingOrderWasteProduct,
       data,
-      action: 'create new waste product on manufacturing order',
+      action: 'Manufacturing_SliceAction_CreateWasteProduct',
       getState,
       responseOptions: {showToast: true},
     });
@@ -57,14 +57,14 @@ export const updateWasteProductOfManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateManufacturingOrderWasteProduct,
       data,
-      action: 'update waste product qty of manufacturing order',
+      action: 'Manufacturing_SliceAction_UpdateWasteProductQty',
       getState,
       responseOptions: {showToast: true},
     }).then(() =>
       handlerApiCall({
         fetchFunction: fetchManufacturingOrderWasteProducts,
         data,
-        action: 'fetch manufacturing order waste products',
+        action: 'Manufacturing_SliceAction_FetchWasteProducts',
         getState,
         responseOptions: {isArrayResponse: true},
       }),
@@ -78,7 +78,7 @@ export const declareWasteProductsOfManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: declareManufacturingOrderWasteProduct,
       data,
-      action: 'declare waste products of manufacturing order',
+      action: 'Manufacturing_SliceAction_DeclareWasteProducts',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     });

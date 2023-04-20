@@ -63,6 +63,22 @@
   "Base_Logout": "Log out",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connected on",
+  "Base_Error": "Error",
+  "Base_Success": "Success",
+  "Base_Failed_To": "Failed to",
   "Auth_WrongPasswordOrUserName": "Wrong username or password",
-  "Auth_InvalidUrl": "Invalid url"
+  "Auth_InvalidUrl": "Invalid url",
+  "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
+  "Base_SliceAction_FetchFilesDetails": "fetch file details",
+  "Base_SliceAction_CountAttachedFiles": "count attachment files",
+  "Base_SliceAction_FetchMailMessages": "fetch mail messages",
+  "Base_SliceAction_PostMailMessageComment": "post mail message comment",
+  "Base_SliceAction_FetchModelSubscribers": "fetch model subscribers",
+  "Base_SliceAction_SubscribeToModel": "subscribe to model",
+  "Base_SliceAction_UnsubscribeFromModel": "unsubscribe from model",
+  "Base_SliceAction_CountUnreadMailMessages": "count unread mail messages",
+  "Base_SliceAction_MarkMailMessageAsRead": "mark mail message as read",
+  "Base_SliceAction_MarkAllMailMessageAsRead": "mark all mail messages as read",
+  "Base_SliceAction_FetchMenuConfig": "fetch menu config",
+  "Base_SliceAction_FetchMobileConfig": "fetch mobile config"
 }
