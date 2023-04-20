@@ -251,12 +251,14 @@ const AutoCompleteSearch = ({
         visible={popupIsVisible}
         childrenStyle={styles.popupContainerChildren}>
         <View style={styles.popupContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setPopupIsVisible(false);
-            }}>
-            <Text>Close</Text>
-          </TouchableOpacity>
+          <View style={styles.closePopupButton}>
+            <TouchableOpacity
+              onPress={() => {
+                setPopupIsVisible(false);
+              }}>
+              <Icon name="times" />
+            </TouchableOpacity>
+          </View>
           <SearchBar
             style={style}
             valueTxt={searchText}
@@ -337,6 +339,11 @@ const getStyles = displayList =>
       alignItems: 'flex-start',
       width: '80%',
       height: '90%',
+    },
+    closePopupButton: {
+      position: 'absolute',
+      right: '0%',
+      top: '-5%',
     },
   });
 
