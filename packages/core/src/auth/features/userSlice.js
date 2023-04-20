@@ -26,7 +26,7 @@ export const fetchActiveUser = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getLoggedUser,
       data: userId,
-      action: 'fetch active user',
+      action: 'Auth_SliceAction_FetchActiveUser',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -39,7 +39,7 @@ export const updateActiveUser = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: postUser,
       data: user,
-      action: 'update active user',
+      action: 'Auth_SliceAction_UpdateActiveUser',
       getState,
       responseOptions: {isArrayResponse: false},
     });
