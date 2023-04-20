@@ -32,7 +32,7 @@ export const fetchManufacturingOrders = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchManufacturingOrderFilter,
       data,
-      action: 'Manufacturing_Fetch_Order',
+      action: 'Manufacturing_SliceAction_FetchManufacturingOrders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -45,7 +45,7 @@ export const fetchManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchManufacturingOrder,
       data,
-      action: 'Manufacturing_Fetch_Order_FromId',
+      action: 'Manufacturing_SliceAction_FetchManufacturingOrderFromId',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -58,7 +58,7 @@ export const fetchLinkedManufOrders = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchManufacturingOrderOfProductionOrder,
       data,
-      action: 'Manufacturing_Fetch_Linked_Orders',
+      action: 'Manufacturing_SliceAction_FetchLinkedManufacturingOrders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -71,7 +71,7 @@ export const fetchChildrenOfManufacturingOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchChildrenManufacturingOrders,
       data,
-      action: 'Manufacturing_Fetch_Children_Order',
+      action: 'Manufacturing_SliceAction_FetchChildrenManufacturingOrders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -84,14 +84,14 @@ export const updateStatusOfManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateManufacturingOrderStatus,
       data,
-      action: 'Manufacturing_Update_Status_Order',
+      action: 'Manufacturing_SliceAction_UpdateManufacturingOrderStatus',
       getState,
       responseOptions: {showToast: true},
     }).then(() =>
       handlerApiCall({
         fetchFunction: fetchManufacturingOrder,
         data: {manufOrderId: data?.manufOrderId},
-        action: 'Manufacturing_Fetch_Order_FromId',
+        action: 'Manufacturing_SliceAction_FetchManufacturingOrderFromId',
         getState,
         responseOptions: {isArrayResponse: false},
       }),

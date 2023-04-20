@@ -31,7 +31,7 @@ export const fetchOperationOrders = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchOperationOrderFilter,
       data,
-      action: 'Manufacturing_Fetch_Operation_Orders',
+      action: 'Manufacturing_SliceAction_FetchOperationOrders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchPlannedOperationOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getPlannedOperationOrder,
       data,
-      action: 'Manufacturing_Fetch_Planned_Operation_Orders',
+      action: 'Manufacturing_SliceAction_FetchPlannedOperationOrders',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -57,7 +57,7 @@ export const fetchOperationOrderById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchOperationOrder,
       data,
-      action: 'Manufacturing_Fetch_Operation_Orders_ById',
+      action: 'Manufacturing_SliceAction_FetchOperationOrderById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -70,14 +70,14 @@ export const updateOperationOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateOperationOrderStatus,
       data: data,
-      action: 'Manufacturing_Update_Operation_Status_Order',
+      action: 'Manufacturing_SliceAction_UpdateOperationOrderStatus',
       getState: getState,
       responseOptions: {showToast: false},
     }).then(object =>
       handlerApiCall({
         fetchFunction: fetchOperationOrder,
         data: {operationOrderId: object.id},
-        action: 'Manufacturing_Fetch_Operation_Orders_ById',
+        action: 'Manufacturing_SliceAction_FetchOperationOrderById',
         getState: getState,
         responseOptions: {isArrayResponse: false},
       }),

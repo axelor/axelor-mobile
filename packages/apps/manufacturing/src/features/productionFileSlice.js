@@ -26,7 +26,7 @@ export const fetchProductionFile = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductionFile,
       data: data,
-      action: 'Manufacturing_Fetch_Production_File',
+      action: 'Manufacturing_SliceAction_FetchProductionFile',
       getState: getState,
       responseOptions: {isArrayResponse: true},
     });

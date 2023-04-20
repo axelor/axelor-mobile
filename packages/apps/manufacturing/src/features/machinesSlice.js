@@ -26,7 +26,7 @@ export const searchMachines = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchMachineFilter,
       data,
-      action: 'Manufacturing_Filter_Machines',
+      action: 'Manufacturing_SliceAction_FilterMachines',
       getState,
       responseOptions: {isArrayResponse: true},
     });

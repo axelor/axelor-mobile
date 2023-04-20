@@ -26,7 +26,7 @@ export const searchWorkCenters = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchWorkCenterFilter,
       data,
-      action: 'Manufacturing_Filter_Work_Center',
+      action: 'Manufacturing_SliceAction_FilterWorkCenter',
       getState,
       responseOptions: {isArrayResponse: true},
     });
