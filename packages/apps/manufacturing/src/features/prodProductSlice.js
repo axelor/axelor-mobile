@@ -34,7 +34,7 @@ export const fetchConsumedProducts = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchManufacturingOrderConsumedProducts,
       data,
-      action: 'fetch manufacturing order consumed products',
+      action: 'Manufacturing_SliceAction_FetchComsumedProducts',
       getState,
       responseOptions: {},
     });
@@ -47,7 +47,7 @@ export const fetchProducedProducts = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchManufacturingOrderProducedProducts,
       data,
-      action: 'fetch manufacturing order produced products',
+      action: 'Manufacturing_SliceAction_FetchProducedProducts',
       getState,
       responseOptions: {},
     });
@@ -60,7 +60,7 @@ export const addProdProductToManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createProdProduct,
       data,
-      action: 'create new prodProduct on manufacturing order',
+      action: 'Manufacturing_SliceAction_CreateProdProduct',
       getState,
       responseOptions: {showToast: true},
     });
@@ -74,7 +74,7 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateProdProduct,
       data,
-      action: 'update prodProduct qty on manufacturing order',
+      action: 'Manufacturing_SliceAction_UpdateProdProductQty',
       getState,
       responseOptions: {showToast: true},
     }).then(() => {
@@ -82,7 +82,7 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
         return handlerApiCall({
           fetchFunction: fetchManufacturingOrderConsumedProducts,
           data,
-          action: 'fetch manufacturing order consumed products',
+          action: 'Manufacturing_SliceAction_FetchComsumedProducts',
           getState,
           responseOptions: {},
         });
@@ -90,7 +90,7 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
         return handlerApiCall({
           fetchFunction: fetchManufacturingOrderProducedProducts,
           data,
-          action: 'fetch manufacturing order produced products',
+          action: 'Manufacturing_SliceAction_FetchProducedProducts',
           getState,
           responseOptions: {},
         });

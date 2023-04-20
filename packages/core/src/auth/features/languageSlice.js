@@ -26,7 +26,7 @@ export const fetchLanguages = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchLanguage,
       data,
-      action: 'fetch languages',
+      action: 'Auth_SliceAction_FetchLanguages',
       getState,
       responseOptions: {isArrayResponse: true},
     });

@@ -31,7 +31,7 @@ export const searchInventories = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchInventoryFilter,
       data,
-      action: 'filter inventories',
+      action: 'Stock_SliceAction_FilterInventory',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,14 +44,14 @@ export const modifyDescription = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: modifyDescriptionInventory,
       data,
-      action: 'modify inventory description',
+      action: 'Stock_SliceAction_ModifyInventoryDescritption',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(object =>
       handlerApiCall({
         fetchFunction: fetchInventory,
         data: {inventoryId: object.id},
-        action: 'fetch Inventory by id',
+        action: 'Stock_SliceAction_FetchInventoryById',
         getState,
         responseOptions: {isArrayResponse: false},
       }),
@@ -65,14 +65,14 @@ export const updateInventory = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateInventoryStatus,
       data,
-      action: 'update inventory status',
+      action: 'Stock_SliceAction_UpdateInventoryStatus',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
     }).then(object =>
       handlerApiCall({
         fetchFunction: fetchInventory,
         data: {inventoryId: object.inventoryId},
-        action: 'fetch Inventory by id',
+        action: 'Stock_SliceAction_FetchInventoryById',
         getState,
         responseOptions: {isArrayResponse: false},
       }),
@@ -86,7 +86,7 @@ export const fetchInventoryById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchInventory,
       data,
-      action: 'fetch Inventory by id',
+      action: 'Stock_SliceAction_FetchInventoryById',
       getState,
       responseOptions: {isArrayResponse: false},
     });

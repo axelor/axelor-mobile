@@ -30,7 +30,7 @@ export const searchDeliveries = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchDeliveryFilter,
       data,
-      action: 'filter customer deliveries',
+      action: 'Stock_SliceAction_FilterCustomerDeliveries',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const addNewLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: addLineStockMove,
       data,
-      action: 'add new line to customer delivery',
+      action: 'Stock_SliceAction_CreateLineCustomerDelivery',
       getState,
       responseOptions: {showToast: true},
     });
@@ -56,7 +56,7 @@ export const realizeCustomerDelivery = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: realizeSockMove,
       data,
-      action: 'realize customer delivery',
+      action: 'Stock_SliceAction_RealizeCustomerDelivery',
       getState,
       responseOptions: {showToast: true},
     });
@@ -68,8 +68,6 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   deliveryList: [],
-  newLineResponse: {},
-  realizeResponse: {},
 };
 
 const customerDeliverySlice = createSlice({
@@ -97,20 +95,6 @@ const customerDeliverySlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(addNewLine.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(addNewLine.fulfilled, (state, action) => {
-      state.loading = false;
-      state.newLineResponse = action.payload;
-    });
-    builder.addCase(realizeCustomerDelivery.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(realizeCustomerDelivery.fulfilled, (state, action) => {
-      state.loading = false;
-      state.realizeResponse = action.payload;
     });
   },
 });

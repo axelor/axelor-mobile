@@ -26,7 +26,7 @@ export const fetchProductForSupplier = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchSupplierProduct,
       data,
-      action: 'fetch supplier catalog product informations',
+      action: 'Stock_SliceAction_FetchSupplierCatalogForProduct',
       getState,
       responseOptions: {isArrayResponse: false},
     });

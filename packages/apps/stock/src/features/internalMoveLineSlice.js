@@ -29,7 +29,7 @@ export const fetchInternalMoveLines = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchInternalMoveLines,
       data,
-      action: 'fetch internal move lines',
+      action: 'Stock_SliceAction_FetchInternalMoveLines',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -42,7 +42,7 @@ export const updateInternalMoveLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateInternalMoveLine,
       data,
-      action: 'update internal move line',
+      action: 'Stock_SliceAction_UpdateInternalMoveLine',
       getState,
       responseOptions: {showToast: true},
     });

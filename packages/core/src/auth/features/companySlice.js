@@ -26,7 +26,7 @@ export const fetchCompanies = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchCompany,
       data,
-      action: 'fetch companies',
+      action: 'Auth_SliceAction_FetchCompanies',
       getState,
       responseOptions: {isArrayResponse: true},
     });

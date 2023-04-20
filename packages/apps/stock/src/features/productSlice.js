@@ -30,7 +30,7 @@ export const searchProducts = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductsFilter,
       data,
-      action: 'filter products',
+      action: 'Stock_SliceAction_FilterProducts',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const fetchProductWithId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductWithId,
       data: productId,
-      action: 'fetch product from id',
+      action: 'Stock_SliceAction_FetchProductFromId',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -56,7 +56,7 @@ export const updateProductLocker = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateLocker,
       data,
-      action: 'update product locker',
+      action: 'Stock_SliceAction_UpdateProductLocker',
       getState,
       responseOptions: {showToast: true},
     });

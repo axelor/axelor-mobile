@@ -30,7 +30,7 @@ export const searchInternalMoves = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchInternalMoveFilter,
       data,
-      action: 'filter internal moves',
+      action: 'Stock_SliceAction_FilterInternalMoves',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const createInternalMove = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: createInternalStockMove,
       data,
-      action: 'create internal move',
+      action: 'Stock_SliceAction_CreateInternalMove',
       getState,
       responseOptions: {showToast: true},
     });
@@ -56,7 +56,7 @@ export const realizeInternalMove = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _realizeInternalMove,
       data,
-      action: 'realize internal move',
+      action: 'Stock_SliceAction_RealizeInternalMove',
       getState,
       responseOptions: {showToast: true},
     });
@@ -68,8 +68,6 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   internalMoveList: [],
-  createResponse: {},
-  updateResponse: {},
 };
 
 const internalMoveSlice = createSlice({
@@ -100,20 +98,6 @@ const internalMoveSlice = createSlice({
           state.isListEnd = true;
         }
       }
-    });
-    builder.addCase(createInternalMove.pending, state => {
-      state.loadingInternalMove = true;
-    });
-    builder.addCase(createInternalMove.fulfilled, (state, action) => {
-      state.loadingInternalMove = false;
-      state.createResponse = action.payload;
-    });
-    builder.addCase(updateInternalMove.pending, state => {
-      state.loadingInternalMove = true;
-    });
-    builder.addCase(updateInternalMove.fulfilled, (state, action) => {
-      state.loadingInternalMove = false;
-      state.updateResponse = action.payload;
     });
   },
 });

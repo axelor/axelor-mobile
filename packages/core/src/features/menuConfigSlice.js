@@ -26,7 +26,7 @@ export const fetchMenuConfig = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getModulesConfig,
       data,
-      action: 'fetch menu config',
+      action: 'Base_SliceAction_FetchMenuConfig',
       getState,
       responseOptions: {isArrayResponse: true},
     });
