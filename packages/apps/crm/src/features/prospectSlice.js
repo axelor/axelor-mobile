@@ -31,7 +31,7 @@ export const fetchProspects = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProspect,
       data,
-      action: 'Crm_Fetch_Prospect',
+      action: 'Crm_SliceAction_FetchProspect',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchProspectById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getProspect,
       data,
-      action: 'Crm_Fetch_Prospect_ById',
+      action: 'Crm_SliceAction_FetchProspectById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -57,14 +57,14 @@ export const updateProspectScore = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateProspectScoring,
       data,
-      action: 'Crm_Update_Prospect_Score',
+      action: 'Crm_SliceAction_UpdateProspectScore',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getProspect,
         data: {partnerId: res?.id},
-        action: 'Crm_Fetch_Prospect_ById',
+        action: 'Crm_SliceAction_FetchProspectById',
         getState,
         responseOptions: {isArrayResponse: false},
       });
@@ -78,14 +78,14 @@ export const updateProspect = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateProspect,
       data,
-      action: 'Crm_Update_Prospect',
+      action: 'Crm_SliceAction_UpdateProspect',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getProspect,
         data: {partnerId: res?.id},
-        action: 'Crm_Fetch_Prospect_ById',
+        action: 'Crm_SliceAction_FetchProspectById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

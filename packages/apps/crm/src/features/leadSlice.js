@@ -32,7 +32,7 @@ export const fetchLeads = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchLeads,
       data,
-      action: 'Crm_Fetch_Lead',
+      action: 'Crm_SliceAction_FetchLead',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -45,7 +45,7 @@ export const fetchLeadStatus = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getLeadStatus,
       data,
-      action: 'Crm_Fetch_LeadStatus',
+      action: 'Crm_SliceAction_FetchLeadStatus',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -58,7 +58,7 @@ export const fetchLeadById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getLead,
       data,
-      action: 'Crm_Fetch_Lead_ById',
+      action: 'Crm_SliceAction_FetchLeadById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -71,14 +71,14 @@ export const updateLeadScore = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateLeadScoring,
       data,
-      action: 'Crm_Update_Lead_Score',
+      action: 'Crm_SliceAction_UpdateLeadScore',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getLead,
         data: {leadId: res?.id},
-        action: 'Crm_Fetch_Lead_ById',
+        action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
       });
@@ -92,14 +92,14 @@ export const updateLead = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateLead,
       data,
-      action: 'Crm_Update_Lead',
+      action: 'Crm_SliceAction_UpdateLead',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getLead,
         data: {leadId: res?.id},
-        action: 'Crm_Fetch_Lead_ById',
+        action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

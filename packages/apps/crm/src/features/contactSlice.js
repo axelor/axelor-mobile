@@ -31,7 +31,7 @@ export const searchContactById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchContactWithIds,
       data,
-      action: 'Crm_Filter_Contact_ById',
+      action: 'Crm_SliceAction_FilterContactById',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -44,7 +44,7 @@ export const fetchContact = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchContact,
       data,
-      action: 'Crm_Fetch_Contact',
+      action: 'Crm_SliceAction_FetchContact',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -57,7 +57,7 @@ export const getContact = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _getContact,
       data,
-      action: 'Crm_Get_Contact_ById',
+      action: 'Crm_SliceAction_GetContactById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -70,14 +70,14 @@ export const updateContact = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateContact,
       data,
-      action: 'Crm_Update_Contact',
+      action: 'Crm_SliceAction_UpdateContact',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getContact,
         data: {contactId: res?.id},
-        action: 'Crm_Get_Contact_ById',
+        action: 'Crm_SliceAction_GetContactById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

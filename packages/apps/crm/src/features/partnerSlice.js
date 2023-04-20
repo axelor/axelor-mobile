@@ -26,7 +26,7 @@ export const fetchPartner = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getPartner,
       data,
-      action: 'Crm_Fetch_Partner',
+      action: 'Crm_SliceAction_FetchPartner',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -39,7 +39,7 @@ export const fetchClientAndProspect = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchClientAndProspect,
       data,
-      action: 'Crm_Fetch_Client_Prospect',
+      action: 'Crm_SliceAction_FetchClientProspect',
       getState,
       responseOptions: {isArrayResponse: true},
     });

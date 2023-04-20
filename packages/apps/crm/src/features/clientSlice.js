@@ -30,7 +30,7 @@ export const fetchClients = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchClient,
       data,
-      action: 'Crm_Fetch_Client',
+      action: 'Crm_SliceAction_FetchClient',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -43,7 +43,7 @@ export const getClientbyId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getClient,
       data,
-      action: 'Crm_Fetch_Client_ById',
+      action: 'Crm_SliceAction_FetchClientById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -56,14 +56,14 @@ export const updateClient = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateClient,
       data,
-      action: 'Crm_Update_Client',
+      action: 'Crm_SliceAction_UpdateClient',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
         fetchFunction: getClient,
         data: {clientId: res?.id},
-        action: 'Crm_Fetch_Client_ById',
+        action: 'Crm_SliceAction_FetchClientById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

@@ -26,7 +26,7 @@ export const fetchCrmConfigApi = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: fetchCrmConfig,
       data,
-      action: 'Crm_Fetch_CrmConfig',
+      action: 'Crm_SliceAction_FetchCrmConfig',
       getState,
       responseOptions: {isArrayResponse: false},
       errorOptions: {showErrorToast: false, errorTracing: false},
