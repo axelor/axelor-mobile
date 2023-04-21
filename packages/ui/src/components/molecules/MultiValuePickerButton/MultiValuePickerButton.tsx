@@ -37,7 +37,6 @@ interface MultiValuePickerButtonProps {
   onPress: (any) => void;
   listItem: Item[];
   onPressItem?: (any) => void;
-  color?: Color;
 }
 
 const MultiValuePickerButton = ({

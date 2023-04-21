@@ -16,15 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {Color, useThemeColor} from '../../../theme';
 
 interface SelectionItemProps {
   style?: any;
   content: string;
   onPress: (any) => void;
+  isPicker?: boolean;
+  itemColor?: Color;
   isSelectedItem?: boolean;
 }
 
@@ -32,45 +34,80 @@ const SelectionItem = ({
   style,
   content,
   onPress,
+  isPicker = false,
+  itemColor,
   isSelectedItem = false,
 }: SelectionItemProps) => {
   const Colors = useThemeColor();
 
+  const _itemColor = useMemo(
+    () => itemColor ?? Colors.primaryColor,
+    [Colors.primaryColor, itemColor],
+  );
+
+  const indicatorStyles = useMemo(
+    () => getIndicatorColor(_itemColor.background),
+    [_itemColor],
+  );
+
+  const itemStyles = useMemo(() => getItemStyles(isPicker), [isPicker]);
+
   return content == null ? null : (
     <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
+      {itemColor != null && <View style={indicatorStyles.selectedItem} />}
       <Text style={itemStyles.text} numberOfLines={1}>
         {content}
       </Text>
-      {isSelectedItem && (
-        <Icon
-          style={itemStyles.icon}
-          name="check"
-          color={Colors.primaryColor.background}
-        />
-      )}
+      {isPicker &&
+        (isSelectedItem ? (
+          <Icon
+            style={itemStyles.icon}
+            name="check"
+            color={_itemColor.background}
+          />
+        ) : (
+          <View style={itemStyles.notSelected} />
+        ))}
     </TouchableOpacity>
   );
 };
 
-const itemStyles = StyleSheet.create({
-  item: {
-    height: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'relative',
-    width: '100%',
-    zIndex: 50,
-  },
-  text: {
-    width: '100%',
-    marginTop: 10,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  icon: {
-    marginRight: 10,
-  },
-});
+const getIndicatorColor = color => {
+  return StyleSheet.create({
+    selectedItem: {
+      backgroundColor: color,
+      width: 7,
+      height: 32,
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+    },
+  });
+};
+
+const getItemStyles = isPicker =>
+  StyleSheet.create({
+    item: {
+      height: 40,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      position: 'relative',
+      width: '100%',
+      zIndex: 50,
+    },
+    text: {
+      width: isPicker ? '85%' : '100%',
+      marginTop: 10,
+      marginLeft: 10,
+      fontSize: 16,
+    },
+    icon: {
+      marginRight: 10,
+    },
+    notSelected: {
+      width: '10%',
+    },
+  });
 
 interface SelectionContainerProps {
   style?: any;
@@ -80,7 +117,7 @@ interface SelectionContainerProps {
   keyField?: string;
   emptyValue?: boolean;
   isPicker?: boolean;
-  selectedItem?: any;
+  selectedItem?: any[];
 }
 
 const SelectionContainer = ({
@@ -91,40 +128,27 @@ const SelectionContainer = ({
   keyField = 'id',
   emptyValue = false,
   isPicker = false,
-  selectedItem,
+  selectedItem = [],
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
-  const listLength =
-    objectList != null && (objectList.length <= 5 ? objectList.length : 5);
+
+  const listLength = useMemo(
+    () =>
+      objectList != null && (objectList.length <= 5 ? objectList.length : 5),
+    [objectList],
+  );
 
   const styles = useMemo(
     () => getStyles(Colors, listLength, emptyValue),
     [Colors, listLength, emptyValue],
   );
 
-  if (objectList == null || objectList.length === 0) {
-    return null;
-  }
+  const selectedKeys = useMemo(
+    () => selectedItem.map(_item => _item[keyField]),
+    [keyField, selectedItem],
+  );
 
-  const renderListItemContainerPicker = () => {
-    return (
-      <View>
-        {emptyValue ? (
-          <View>
-            <SelectionItem
-              key={'null'}
-              content={''}
-              onPress={() => handleSelect(null)}
-            />
-            <View style={styles.border} />
-          </View>
-        ) : null}
-        {renderListItemContainer()}
-      </View>
-    );
-  };
-
-  const renderListItemContainer = () => {
+  const renderListItemContainer = useCallback(() => {
     if (
       objectList == null ||
       objectList.length === 0 ||
@@ -143,7 +167,9 @@ const SelectionContainer = ({
           key={item[keyField]?.toString()}
           content={displayValue(item)}
           onPress={() => handleSelect(item)}
-          isSelectedItem={selectedItem?.includes(item)}
+          itemColor={item?.color}
+          isPicker={isPicker}
+          isSelectedItem={selectedKeys.includes(item[keyField])}
         />
         <View
           key={'border' + index}
@@ -156,7 +182,38 @@ const SelectionContainer = ({
         />
       </View>
     ));
-  };
+  }, [
+    displayValue,
+    handleSelect,
+    isPicker,
+    keyField,
+    listLength,
+    objectList,
+    selectedKeys,
+    styles.border,
+  ]);
+
+  const renderListItemContainerPicker = useCallback(() => {
+    return (
+      <View>
+        {emptyValue ? (
+          <View>
+            <SelectionItem
+              key={'null'}
+              content={''}
+              onPress={() => handleSelect(null)}
+            />
+            <View style={styles.border} />
+          </View>
+        ) : null}
+        {renderListItemContainer()}
+      </View>
+    );
+  }, [emptyValue, handleSelect, renderListItemContainer, styles.border]);
+
+  if (objectList == null || objectList.length === 0) {
+    return null;
+  }
 
   return (
     <View style={[styles.flatListContainer, style]}>

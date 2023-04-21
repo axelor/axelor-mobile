@@ -44,8 +44,6 @@ interface MultiValuePickerProps {
   onValueChange?: (any) => void;
   defaultItems?: Item[];
   listItems: Item[];
-  labelField: string;
-  valueField: string;
   disabled?: boolean;
   disabledValue?: string[];
   required?: boolean;
