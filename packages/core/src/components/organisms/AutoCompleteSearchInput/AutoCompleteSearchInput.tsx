@@ -116,6 +116,9 @@ const AutoCompleteSearchInput = ({
 
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
+    container: {
+      zIndex: 41,
+    },
     title: {
       marginHorizontal: 24,
     },
