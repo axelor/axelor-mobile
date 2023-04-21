@@ -28,8 +28,8 @@ import {
 } from '../../components';
 import {getContact} from '../../features/contactSlice';
 
-const ContactDetailsScreen = ({navigation, route}) => {
-  const idContact = route.params.idContact;
+const ContactDetailsScreen = ({route}) => {
+  const {idContact} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -38,6 +38,10 @@ const ContactDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(getContact({contactId: idContact}));
   }, [dispatch, idContact]);
+
+  if (contact?.id !== idContact) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>

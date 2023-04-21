@@ -28,7 +28,7 @@ import {
 import {fetchProspectById} from '../../features/prospectSlice';
 
 const ProspectDetailsScreen = ({route}) => {
-  const idProspect = route.params.idProspect;
+  const {idProspect} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -37,6 +37,10 @@ const ProspectDetailsScreen = ({route}) => {
   useEffect(() => {
     dispatch(fetchProspectById({partnerId: idProspect}));
   }, [dispatch, idProspect]);
+
+  if (prospect?.id !== idProspect) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>

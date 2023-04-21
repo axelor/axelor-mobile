@@ -26,7 +26,6 @@ import {
   Picker,
   Screen,
   StarScore,
-  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   AutoCompleteSearchInput,
@@ -44,13 +43,14 @@ import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
   const {clientAndProspectList} = useSelector(state => state.partner);
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
 
   const [score, setScore] = useState(opportunity.opportunityRating);
   const [partner, setPartner] = useState(opportunity.partner);
@@ -75,16 +75,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: unformatNumber(
-          recurrent,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
-        opportunityAmount: unformatNumber(
-          amount,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
+        opportunityRecurrentAmount: recurrent,
+        opportunityAmount: amount,
         opportunityDescription: description,
         idPartner: partner?.id,
         opportunityRating: score,
@@ -107,7 +99,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
     score,
     date,
     navigation,
-    I18n,
   ]);
 
   const searchClientAndProspectAPI = useCallback(

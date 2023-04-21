@@ -28,7 +28,7 @@ import {
 import {getClientbyId} from '../../features/clientSlice';
 
 const ClientDetailsScreen = ({route}) => {
-  const idClient = route.params.idClient;
+  const {idClient} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -37,6 +37,10 @@ const ClientDetailsScreen = ({route}) => {
   useEffect(() => {
     dispatch(getClientbyId({clientId: idClient}));
   }, [dispatch, idClient]);
+
+  if (client?.id !== idClient) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>

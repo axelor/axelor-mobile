@@ -30,8 +30,8 @@ import {
   EventPartnerCard,
 } from '../../components';
 
-function EventDetailsScreen({navigation, route}) {
-  const eventId = route.params.eventId;
+function EventDetailsScreen({route}) {
+  const {eventId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
