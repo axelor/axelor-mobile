@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {View} from 'react-native';
+import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
@@ -204,8 +204,10 @@ const AutoCompleteSearch = ({
     }
   }, [displayValue, handleSearchValueChange, value]);
 
+  const styles = useMemo(() => getStyles(displayList), [displayList]);
+
   return (
-    <View ref={wrapperRef}>
+    <View ref={wrapperRef} style={styles.container}>
       <SearchBar
         style={style}
         valueTxt={searchText}
@@ -229,5 +231,12 @@ const AutoCompleteSearch = ({
     </View>
   );
 };
+
+const getStyles = displayList =>
+  StyleSheet.create({
+    container: {
+      zIndex: displayList ? 45 : 0,
+    },
+  });
 
 export default AutoCompleteSearch;

@@ -181,14 +181,12 @@ const OpportunityFormScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
   score: {
     marginRight: '10%',
   },
   container: {
     alignItems: 'center',
+    zIndex: 40,
   },
   headerContainer: {
     flexDirection: 'row-reverse',

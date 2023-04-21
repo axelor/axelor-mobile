@@ -183,6 +183,7 @@ const ContactFormScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    zIndex: 40,
   },
   marginPicker: {
     marginLeft: 5,

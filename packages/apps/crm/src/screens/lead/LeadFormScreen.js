@@ -223,14 +223,17 @@ const LeadFormScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    zIndex: 30,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '90%',
+    zIndex: 35,
   },
   halfHeader: {
     width: '50%',
+    zIndex: 40,
   },
   checkBoxContainer: {
     flexDirection: 'column',

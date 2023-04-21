@@ -28,6 +28,7 @@ import {
   useClickOutside,
   useThemeColor,
   OUTSIDE_INDICATOR,
+  ThemeColors,
 } from '@axelor/aos-mobile-ui';
 import {DatePicker} from '../../molecules';
 import DateInputUtils from './date-input.helper';
@@ -106,7 +107,10 @@ const DateInput = ({
   }, []);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(
+    () => getStyles(Colors, pickerIsOpen),
+    [Colors, pickerIsOpen],
+  );
 
   return (
     <View ref={wrapperRef} style={[styles.container, style]}>
@@ -135,7 +139,7 @@ const DateInput = ({
           isFocused && commonStyles.inputFocused,
         ]}
       />
-      <View>
+      <View style={styles.dropdownContainer}>
         {pickerIsOpen ? (
           <Card style={styles.selectionContainer}>
             <View
@@ -180,7 +184,7 @@ const DateInput = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
   StyleSheet.create({
     actionButton: {
       marginLeft: 10,
@@ -192,6 +196,7 @@ const getStyles = Colors =>
     },
     container: {
       width: '100%',
+      zIndex: pickerIsOpen ? 45 : 0,
     },
     datePickerContainer: {
       flex: 1,
@@ -202,6 +207,9 @@ const getStyles = Colors =>
       marginLeft: 0,
       width: '100%',
     },
+    dropdownContainer: {
+      zIndex: pickerIsOpen ? 50 : 0,
+    },
     selectionContainer: {
       paddingHorizontal: 5,
       paddingVertical: 10,
@@ -209,7 +217,7 @@ const getStyles = Colors =>
       position: 'absolute',
       height: 240,
       width: '100%',
-      zIndex: 999,
+      zIndex: 60,
     },
     styleTextButton: {
       left: '-20%',

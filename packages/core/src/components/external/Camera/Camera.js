@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: SAFE_AREA_PADDING.paddingRight,
     top: SAFE_AREA_PADDING.paddingTop,
-    zIndex: 15,
+    zIndex: 25,
   },
 });
 

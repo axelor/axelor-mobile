@@ -154,6 +154,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           }
           disabledValue={unit?.name}
           required={true}
+          isScrollViewContainer={true}
         />
       </ScrollView>
     </Screen>
