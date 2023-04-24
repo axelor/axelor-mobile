@@ -63,6 +63,7 @@
   "Base_Logout": "Log out",
   "Base_TimeFormat": "HH:mm",
   "Base_ConnectedOn": "Connected on",
+  "Base_Status": "Status",
   "Base_Error": "Error",
   "Base_Success": "Success",
   "Base_Failed_To": "Failed to",

@@ -23,15 +23,15 @@ import {
   HeaderContainer,
   ToggleSwitch,
   ScrollList,
-  ChipSelect,
   useThemeColor,
   getCommonStyles,
   AutoCompleteSearch,
+  MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
 import {LeadsCard} from '../../components';
-import Lead from '../../types/lead';
+import {Lead} from '../../types';
 
 const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -47,6 +47,18 @@ const LeadListScreen = ({navigation}) => {
   const [assigned, setAssigned] = useState(false);
   const [lead, setLead] = useState(null);
   const [filter, setFilter] = useState(null);
+
+  const leadStatusListItems = useMemo(() => {
+    return leadStatusList
+      ? leadStatusList.map((status, index) => {
+          return {
+            title: status.name,
+            color: Lead.getStatusColor(index, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [leadStatusList, Colors]);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -127,21 +139,12 @@ const LeadListScreen = ({navigation}) => {
               oneFilter={true}
               selectLastItem={false}
             />
+            <MultiValuePicker
+              listItems={leadStatusListItems}
+              title={I18n.t('Base_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
+            />
           </View>
-        }
-        chipComponent={
-          <ChipSelect
-            mode="multi"
-            onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={5}
-            selectionItems={leadStatusList.map((status, index) => {
-              return {
-                title: status.name,
-                color: Lead.getStatusColor(index, Colors),
-                key: status.id,
-              };
-            })}
-          />
         }
       />
       <ScrollList
