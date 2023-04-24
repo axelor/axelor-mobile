@@ -16,30 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {storage, Storage} from '../storage/Storage';
-
-interface Session {
-  id: number;
-  url: string;
-  username: string;
-  name: string;
-}
-
-class SessionStorage {
-  private key: string;
-
-  constructor(private localStorage: Storage) {
-    this.key = 'test';
-  }
-
-  addSession({data}: {data: Session}) {
-    this.localStorage.setItem(this.key, data);
-  }
-
-  getSession() {
-    const item = this.localStorage.getItem(this.key);
-    return item;
-  }
-}
-
-export const sessionStorage = new SessionStorage(storage);
+export {useSessions} from './hook';
+export {Session, URL_STORAGE_KEY} from './type';
+export {sessionStorage} from './SessionStorage';
+export {setActiveSession, getStorageUrl, saveUrlInStorage} from './utils';

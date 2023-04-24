@@ -18,6 +18,7 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {checkNullString} from '../../../utils/strings';
 import {Icon, Text} from '../../atoms';
 
 interface LabelTextProps {
@@ -56,7 +57,7 @@ const LabelText = ({
           FontAwesome5={FontAwesome5}
         />
       )}
-      {title && (
+      {!checkNullString(title) && (
         <Text
           style={textStyle}
           fontSize={14}
@@ -64,7 +65,7 @@ const LabelText = ({
           {title}
         </Text>
       )}
-      {value && (
+      {!checkNullString(value) && (
         <Text
           style={[styles.txtDetails, textStyle]}
           fontSize={14}

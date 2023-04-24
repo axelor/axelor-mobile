@@ -16,16 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './theme';
-export {getCommonStyles} from './utils/commons-styles';
-export {sliceString} from './utils/strings';
-export {default as File} from './types/file';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
-export {formatNumber, unformatNumber} from './utils/formatters';
+import {storage} from '../storage/Storage';
+import {URL_STORAGE_KEY} from './type';
+import {Session} from './type';
+
+export const setActiveSession = (
+  sessionList: Session[],
+  activeSessionId: string,
+): Session[] => {
+  return sessionList.map(_session => {
+    if (_session.id === activeSessionId) {
+      return {..._session, isActive: true};
+    }
+
+    return {..._session, isActive: false};
+  });
+};
+
+export const getStorageUrl = (): string => {
+  return storage.getItem(URL_STORAGE_KEY);
+};
+
+export const saveUrlInStorage = (url: string): void => {
+  storage.setItem(URL_STORAGE_KEY, url);
+};
