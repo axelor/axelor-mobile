@@ -27,8 +27,14 @@ import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {ThemeColors} from '../../../theme';
+import {Color, ThemeColors} from '../../../theme';
 import MultiSelectValue from '../MultiSelectValue/MultiSelectValue';
+
+interface Item {
+  color: Color;
+  title: string;
+  key: string | number;
+}
 
 interface MultiValuePickerProps {
   style?: any;
@@ -36,10 +42,8 @@ interface MultiValuePickerProps {
   styleTxt?: any;
   title: string;
   onValueChange?: (any) => void;
-  defaultValue?: any[];
-  listItems: any[];
-  labelField: string;
-  valueField: string;
+  defaultItems?: Item[];
+  listItems: Item[];
   disabled?: boolean;
   disabledValue?: string[];
   required?: boolean;
@@ -51,10 +55,8 @@ const MultiValuePicker = ({
   styleTxt,
   title,
   onValueChange,
-  defaultValue = [],
+  defaultItems = [],
   listItems = [],
-  labelField,
-  valueField,
   disabled = false,
   disabledValue = [],
   required = false,
@@ -70,13 +72,9 @@ const MultiValuePicker = ({
     visible: pickerIsOpen,
   });
 
-  const [selectedItem, setSelectedItem] = useState(
-    getItemsFromList(listItems, valueField, defaultValue),
+  const [selectedItemList, setSelectedItemList] = useState(
+    getItemsFromList(listItems, 'key', defaultItems),
   );
-
-  useEffect(() => {
-    setSelectedItem(getItemsFromList(listItems, valueField, defaultValue));
-  }, [defaultValue, listItems, valueField]);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
@@ -91,28 +89,29 @@ const MultiValuePicker = ({
   };
 
   const handleValueChange = useCallback(
-    itemValue => {
-      if (itemValue != null) {
-        let newSelecteditems = [];
-        if (
-          selectedItem.some(item => item[valueField] === itemValue[valueField])
-        ) {
-          newSelecteditems = selectedItem.filter(
-            i => i[valueField] !== itemValue[valueField],
-          );
-        } else {
-          newSelecteditems = [...selectedItem, itemValue];
-        }
-        setSelectedItem(newSelecteditems);
-        onValueChange(newSelecteditems);
+    (itemValue: Item) => {
+      if (itemValue == null) {
+        return null;
       }
+
+      let newSelectedItemList = [];
+      if (selectedItemList.some((item: Item) => item.key === itemValue.key)) {
+        newSelectedItemList = selectedItemList.filter(
+          (i: Item) => i.key !== itemValue.key,
+        );
+      } else {
+        newSelectedItemList = [...selectedItemList, itemValue];
+      }
+      setSelectedItemList(newSelectedItemList);
+      onValueChange(newSelectedItemList);
     },
-    [onValueChange, selectedItem, valueField],
+    [onValueChange, selectedItemList],
   );
 
   const _required = useMemo(
-    () => required && (selectedItem == null || selectedItem?.length === 0),
-    [required, selectedItem],
+    () =>
+      required && (selectedItemList == null || selectedItemList?.length === 0),
+    [required, selectedItemList],
   );
 
   const commonStyles = useMemo(
@@ -147,8 +146,7 @@ const MultiValuePicker = ({
         <View>
           <MultiValuePickerButton
             onPress={togglePicker}
-            listItem={selectedItem}
-            labelField={labelField}
+            listItem={selectedItemList}
             style={[
               commonStyles.filter,
               commonStyles.filterSize,
@@ -162,11 +160,11 @@ const MultiValuePicker = ({
           {pickerIsOpen ? (
             <SelectionContainer
               objectList={listItems}
-              keyField={valueField}
-              displayValue={item => item[labelField]}
+              keyField="key"
+              displayValue={(item: Item) => item.title}
               handleSelect={handleValueChange}
               isPicker={true}
-              selectedItem={selectedItem}
+              selectedItem={selectedItemList}
             />
           ) : null}
         </View>
