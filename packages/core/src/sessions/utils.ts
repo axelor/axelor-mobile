@@ -16,33 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {storage, Storage} from '../storage/Storage';
+import {Session} from './type';
 
-interface Session {
-  id: number;
-  url: string;
-  username: string;
-  name: string;
-}
+export const setActiveSession = (
+  sessionList: Session[],
+  activeSessionId: string,
+): Session[] => {
+  return sessionList.map(_session => {
+    if (_session.id === activeSessionId) {
+      return {..._session, isActive: true};
+    }
 
-class SessionStorage {
-  private key: string;
-
-  constructor(private localStorage: Storage) {
-    this.key = 'test';
-    this.recrypt();
-  }
-
-  addSession({data}: {data: Session}) {
-    this.localStorage.setItem(this.key, data);
-  }
-  getSession() {
-    const item = this.localStorage.getItem(this.key);
-    return item;
-  }
-  recrypt() {
-    this.localStorage.recrypt(this.key);
-  }
-}
-
-export const sessionStorage = new SessionStorage(storage);
+    return {..._session, isActive: false};
+  });
+};
