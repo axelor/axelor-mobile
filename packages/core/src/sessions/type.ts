@@ -16,4 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export interface Session {
+  id: string;
+  url: string;
+  username: string;
+  isActive: boolean;
+}
+
 export const URL_STORAGE_KEY = 'LastConnectionUrl';
