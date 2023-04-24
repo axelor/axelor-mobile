@@ -65,9 +65,9 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
   useEffect(() => {
     if (!loading && createdTrackingNumber != null) {
       navigation.navigate('SupplierArrivalLineDetailScreen', {
-        supplierArrivalLine: supplierArrivalLine,
+        supplierArrivalLineId: supplierArrivalLine?.id,
         supplierArrival: supplierArrival,
-        product: product,
+        productId: product?.id,
         trackingNumber: createdTrackingNumber,
       });
     }
@@ -102,11 +102,12 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
             lineRef={supplierArrivalLine?.name}
             status={supplierArrival.statusSelect}
             date={
-              supplierArrival.statusSelect === StockMove.status.Draft
-                ? supplierArrival.createdOn
-                : supplierArrival.statusSelect === StockMove.status.Planned
-                ? supplierArrival.estimatedDate
-                : supplierArrival.realDate
+              supplierArrival
+                ? StockMove.getStockMoveDate(
+                    supplierArrival.statusSelect,
+                    supplierArrival,
+                  )
+                : null
             }
           />
         }

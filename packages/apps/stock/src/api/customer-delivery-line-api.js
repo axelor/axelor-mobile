@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
 
 export async function searchCustomerDeliveryLines({
   page = 0,
@@ -43,5 +47,13 @@ export async function updateLine({stockMoveLineId, version, realQty}) {
       version: version,
       realQty: realQty,
     },
+  });
+}
+
+export async function fetchCustomerDeliveryLine({customerDeliveryLineId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.StockMoveLine',
+    id: customerDeliveryLineId,
+    fieldKey: 'stock_customerDeliveryLine',
   });
 }

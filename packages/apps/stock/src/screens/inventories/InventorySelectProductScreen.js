@@ -59,9 +59,9 @@ const InventorySelectProductScreen = ({route, navigation}) => {
           });
         } else {
           navigation.navigate('InventoryLineDetailsScreen', {
-            inventoryLine: inventoryLine,
+            inventoryLineId: inventoryLine?.id,
             inventory: inventory,
-            product: item,
+            productId: item?.id,
           });
         }
       } else {
@@ -75,7 +75,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
           navigation.navigate('InventoryLineDetailsScreen', {
             inventoryLine: null,
             inventory: inventory,
-            product: item,
+            productId: item?.id,
           });
         }
       }

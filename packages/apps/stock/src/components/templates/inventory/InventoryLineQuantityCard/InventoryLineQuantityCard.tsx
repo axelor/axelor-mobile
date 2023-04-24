@@ -40,8 +40,8 @@ const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
       ) : (
         <Text>
           {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
-            inventoryLine.currentQty,
-          ).toFixed(2)} ${inventoryLine.unit.name}`}
+            inventoryLine?.currentQty,
+          ).toFixed(2)} ${inventoryLine?.unit?.name}`}
         </Text>
       )}
     </QuantityCard>

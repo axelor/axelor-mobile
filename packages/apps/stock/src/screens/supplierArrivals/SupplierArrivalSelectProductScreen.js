@@ -33,12 +33,13 @@ import StockMove from '../../types/stock-move';
 const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
+  const {supplierArrival, supplierArrivalLine} = route.params;
+
   const I18n = useTranslator();
-  const supplierArrival = route.params.supplierArrival;
-  const supplierArrivalLine = route.params.supplierArrivalLine;
+  const dispatch = useDispatch();
+
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
-  const dispatch = useDispatch();
 
   const fetchProductsAPI = useCallback(
     filter => {
@@ -62,9 +63,9 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
         });
       } else {
         navigation.navigate('SupplierArrivalLineDetailScreen', {
-          supplierArrivalLine: supplierArrivalLine,
+          supplierArrivalLineId: supplierArrivalLine?.id,
           supplierArrival: supplierArrival,
-          product: item,
+          productId: item?.id,
         });
       }
     }
@@ -76,15 +77,16 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
         expandableFilter={false}
         fixedItems={
           <StockMoveHeader
-            reference={supplierArrival.stockMoveSeq}
+            reference={supplierArrival?.stockMoveSeq}
             lineRef={supplierArrivalLine?.name}
-            status={supplierArrival.statusSelect}
+            status={supplierArrival?.statusSelect}
             date={
-              supplierArrival.statusSelect === StockMove.status.Draft
-                ? supplierArrival.createdOn
-                : supplierArrival.statusSelect === StockMove.status.Planned
-                ? supplierArrival.estimatedDate
-                : supplierArrival.realDate
+              supplierArrival
+                ? StockMove.getStockMoveDate(
+                    supplierArrival.statusSelect,
+                    supplierArrival,
+                  )
+                : null
             }
           />
         }

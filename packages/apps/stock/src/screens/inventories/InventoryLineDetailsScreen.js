@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   EditableInput,
   HeaderContainer,
@@ -30,44 +30,68 @@ import {
   ProductCardInfo,
   InventoryLineQuantityCard,
   InventoryLineButtons,
+  InventoryLineTrackingNumberSelect,
 } from '../../components';
+import {fetchInventoryLine} from '../../features/inventoryLineSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import Inventory from '../../types/inventory';
 
 const InventoryLineDetailsScreen = ({route, navigation}) => {
-  const inventory = route.params.inventory;
-  const inventoryLine = route.params.inventoryLine;
-  const product = route.params.product;
-  const trackingNumber =
-    inventoryLine != null
-      ? inventoryLine.trackingNumber
-      : route.params.trackingNumber;
+  const {inventory, inventoryLineId, productId} = route.params;
+
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
-
-  const [rack, setRack] = useState(null);
-  const [realQty, setRealQty] = useState(
-    inventoryLine?.realQty == null ? 0 : inventoryLine.realQty,
+  const {inventoryLine, loadingInventoryLine} = useSelector(
+    state => state.inventoryLine,
   );
-  const [description, setDescription] = useState(inventoryLine?.description);
+
+  const [loading, setLoading] = useState(true);
+  const [rack, setRack] = useState(null);
+  const [realQty, setRealQty] = useState(0);
+  const [description, setDescription] = useState();
+
+  const trackingNumber = useMemo(
+    () => inventoryLine?.trackingNumber ?? route.params.trackingNumber,
+    [inventoryLine, route.params.trackingNumber],
+  );
+
+  const isTrackingNumberSelectVisible = useMemo(
+    () =>
+      Inventory.isTrackingNumberSelectVisible(
+        inventory?.statusSelect,
+        productFromId,
+        trackingNumber,
+      ),
+    [inventory, productFromId, trackingNumber],
+  );
 
   useEffect(() => {
-    dispatch(
-      fetchProductWithId(
-        product != null ? product.id : inventoryLine?.product?.id,
-      ),
-    );
-  }, [dispatch, inventoryLine, product]);
+    setRealQty(inventoryLine?.realQty ?? 0);
+    setDescription(inventoryLine?.description);
+    setLoading(false);
+  }, [inventoryLine]);
+
+  useEffect(() => {
+    if (productFromId?.id !== productId) {
+      dispatch(fetchProductWithId(productId ?? inventoryLine?.product?.id));
+    }
+  }, [dispatch, productId, inventoryLine, productFromId]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
       product: productFromId,
     });
   };
+
+  useEffect(() => {
+    if (inventoryLineId && inventoryLine?.id !== inventoryLineId) {
+      dispatch(fetchInventoryLine({inventoryLineId}));
+    }
+  }, [dispatch, inventoryLine, inventoryLineId]);
 
   return (
     <Screen
@@ -80,9 +104,10 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           rack={rack}
           realQty={realQty}
           trackingNumber={trackingNumber}
+          visible={!isTrackingNumberSelectVisible}
         />
       }
-      loading={loadingProductFromId}>
+      loading={loading || loadingProductFromId || loadingInventoryLine}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -106,6 +131,11 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           name={productFromId?.name}
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={inventoryLine?.rack}
+        />
+        <InventoryLineTrackingNumberSelect
+          product={productFromId}
+          inventoryLine={inventoryLine}
+          visible={isTrackingNumberSelectVisible}
         />
         <InventoryLineQuantityCard
           inventoryLine={inventoryLine}

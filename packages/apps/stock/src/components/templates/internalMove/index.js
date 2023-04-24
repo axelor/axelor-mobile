@@ -22,6 +22,7 @@ export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMo
 export {default as InternalMoveLineNotes} from './InternalMoveLineNotes/InternalMoveLineNotes';
 export {default as InternalMoveLinePicker} from './InternalMoveLinePicker/InternalMoveLinePicker';
 export {default as InternalMoveLineQuantityCard} from './InternalMoveLineQuantityCard/InternalMoveLineQuantityCard';
+export {default as InternalMoveLineTrackingNumberSelect} from './InternalMoveLineTrackingNumberSelect/InternalMoveLineTrackingNumberSelect';
 export {default as InternalMoveMovementIndicationCard} from './InternalMoveMovementIndicationCard/InternalMoveMovementIndicationCard';
 export {default as InternalMoveRealizeButton} from './InternalMoveRealizeButton/InternalMoveRealizeButton';
 export {default as InternalMoveViewAllContainer} from './InternalMoveViewAllContainer/InternalMoveViewAllContainer';

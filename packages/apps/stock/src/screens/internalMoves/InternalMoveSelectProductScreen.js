@@ -38,8 +38,9 @@ import StockMove from '../../types/stock-move';
 const productScanKey = 'product_internal-move-select';
 
 const InternalMoveSelectProductScreen = ({navigation, route}) => {
-  const internalMove = route.params.internalMove;
-  const internalMoveLine = route.params.internalMoveLine;
+  const {internalMove, internalMoveLine, fromStockLocation, toStockLocation} =
+    route.params;
+
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
@@ -58,7 +59,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
 
   const handleClearDestinationLocation = () => {
     navigation.navigate('InternalMoveSelectToLocationScreen', {
-      fromStockLocation: route.params.fromStockLocation,
+      fromStockLocation: fromStockLocation,
     });
   };
 
@@ -68,15 +69,15 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
         if (internalMove == null) {
           if (product.trackingNumberConfiguration == null) {
             navigation.navigate('InternalMoveLineDetailsScreen', {
-              fromStockLocation: route.params.fromStockLocation,
-              toStockLocation: route.params.toStockLocation,
-              stockProduct: product,
+              fromStockLocation: fromStockLocation,
+              toStockLocation: toStockLocation,
+              productId: product?.id,
             });
           } else {
             navigation.navigate('InternalMoveSelectTrackingScreen', {
-              fromStockLocation: route.params.fromStockLocation,
-              toStockLocation: route.params.toStockLocation,
-              stockProduct: product,
+              fromStockLocation: fromStockLocation,
+              toStockLocation: toStockLocation,
+              product: product,
             });
           }
         } else {
@@ -86,20 +87,27 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
             if (product.trackingNumberConfiguration == null) {
               navigation.navigate('InternalMoveLineDetailsScreen', {
                 internalMove: internalMove,
-                internalMoveLine: internalMoveLine,
+                internalMoveLineId: internalMoveLine?.id,
+                productId: product?.id,
               });
             } else {
               navigation.navigate('InternalMoveSelectTrackingScreen', {
                 internalMove: internalMove,
                 internalMoveLine: internalMoveLine,
-                stockProduct: product,
+                product: product,
               });
             }
           }
         }
       }
     },
-    [internalMove, internalMoveLine, navigation, route.params],
+    [
+      internalMove,
+      internalMoveLine,
+      navigation,
+      fromStockLocation,
+      toStockLocation,
+    ],
   );
 
   return (
@@ -113,11 +121,12 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
                 reference={internalMove.stockMoveSeq}
                 status={internalMove.statusSelect}
                 date={
-                  internalMove.statusSelect === StockMove.status.Draft
-                    ? internalMove.createdOn
-                    : internalMove.statusSelect === StockMove.status.Planned
-                    ? internalMove.estimatedDate
-                    : internalMove.realDate
+                  internalMove
+                    ? StockMove.getStockMoveDate(
+                        internalMove.statusSelect,
+                        internalMove,
+                      )
+                    : null
                 }
                 availability={internalMove.availableStatusSelect}
               />

@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  createStandardFetch,
+} from '@axelor/aos-mobile-core';
 
 export async function searchInventoryLines({inventoryId, page = 0}) {
   return createStandardSearch({
@@ -67,5 +71,30 @@ export async function createInventoryLine({
       rack: rack,
       realQty: realQty,
     },
+  });
+}
+
+export async function addTrackingNumber({
+  inventoryLineId,
+  version,
+  trackingNumber,
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}`,
+    data: {
+      data: {
+        id: inventoryLineId,
+        version,
+        trackingNumber,
+      },
+    },
+  });
+}
+
+export async function fetchInventoryLine({inventoryLineId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.stock.db.InventoryLine',
+    id: inventoryLineId,
+    fieldKey: 'stock_inventoryLine',
   });
 }

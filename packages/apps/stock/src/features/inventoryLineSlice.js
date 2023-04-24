@@ -22,6 +22,8 @@ import {
   createInventoryLine,
   searchInventoryLines,
   updateInventoryLineDetails,
+  addTrackingNumber as _addTrackingNumber,
+  fetchInventoryLine as _fetchInventoryLine,
 } from '../api/inventory-line-api';
 
 export const fetchInventoryLines = createAsyncThunk(
@@ -63,6 +65,40 @@ export const createNewInventoryLine = createAsyncThunk(
   },
 );
 
+export const addTrackingNumber = createAsyncThunk(
+  'inventoryLines/addTrackingNumber',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _addTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_AddTrackingNumberToInventoryLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchInventoryLine,
+        data: {inventoryLineId: res?.id},
+        action: 'Stock_SliceAction_FetchInventoryLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const fetchInventoryLine = createAsyncThunk(
+  'inventoryLines/fetchInventoryLine',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInventoryLine,
+      data,
+      action: 'Stock_SliceAction_FetchInventoryLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingInventoryLines: false,
   moreLoading: false,
@@ -70,6 +106,8 @@ const initialState = {
   inventoryLineList: [],
   updateResponse: null,
   createResponse: null,
+  loadingInventoryLine: false,
+  inventoryLine: {},
 };
 
 const inventoryLineSlice = createSlice({
@@ -114,6 +152,23 @@ const inventoryLineSlice = createSlice({
     builder.addCase(createNewInventoryLine.fulfilled, (state, action) => {
       state.loadingInventoryLines = false;
       state.createResponse = action.payload;
+    });
+    builder.addCase(addTrackingNumber.pending, state => {
+      state.loadingInventoryLine = true;
+    });
+    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
+      state.loadingInventoryLine = false;
+      state.inventoryLine = action.payload;
+    });
+    builder.addCase(addTrackingNumber.rejected, (state, action) => {
+      state.loadingInventoryLine = false;
+    });
+    builder.addCase(fetchInventoryLine.pending, state => {
+      state.loadingInventoryLine = true;
+    });
+    builder.addCase(fetchInventoryLine.fulfilled, (state, action) => {
+      state.loadingInventoryLine = false;
+      state.inventoryLine = action.payload;
     });
   },
 });

@@ -147,6 +147,36 @@ class StockMove {
         return null;
     }
   };
+
+  static getStockMoveDate = (status: number, stockMove: any) => {
+    switch (status) {
+      case this.status.Draft:
+        return stockMove?.createdOn;
+      case this.status.Planned:
+        return stockMove?.estimatedDate;
+      case this.status.Realized:
+        return stockMove?.realDate;
+      case this.status.Canceled:
+        return stockMove?.realDate;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by stock move`,
+        );
+        return null;
+    }
+  };
+
+  static isTrackingNumberSelectVisible = (
+    status: number,
+    product: any,
+    trackingNumber: any,
+  ) => {
+    return (
+      product?.trackingNumberConfiguration != null &&
+      trackingNumber == null &&
+      status !== this.status.Planned
+    );
+  };
 }
 
 export default StockMove;

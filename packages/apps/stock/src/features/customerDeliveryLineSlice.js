@@ -21,15 +21,17 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   searchCustomerDeliveryLines,
   updateLine,
+  fetchCustomerDeliveryLine as _fetchCustomerDeliveryLine,
 } from '../api/customer-delivery-line-api';
+import {updateStockMoveLineTrackingNumber} from '../api/tracking-number-api';
 
 export const fetchCustomerDeliveryLines = createAsyncThunk(
-  'CustomerDeliveryLines/fetchCustomerDeliveryLine',
+  'customerDeliveryLine/fetchCustomerDeliveryLines',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchCustomerDeliveryLines,
       data,
-      action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
+      action: 'Stock_SliceAction_FetchCustomerDeliveryLines',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,7 +39,7 @@ export const fetchCustomerDeliveryLines = createAsyncThunk(
 );
 
 export const updateCustomerDeliveryLine = createAsyncThunk(
-  'CustomerDeliveryLines/updateCustomerDeliveryLine',
+  'customerDeliveryLine/updateCustomerDeliveryLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: updateLine,
@@ -49,12 +51,48 @@ export const updateCustomerDeliveryLine = createAsyncThunk(
   },
 );
 
+export const fetchCustomerDeliveryLine = createAsyncThunk(
+  'customerDeliveryLine/fetchCustomerDeliveryLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchCustomerDeliveryLine,
+      data,
+      action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const addTrackingNumber = createAsyncThunk(
+  'customerDeliveryLine/addTrackingNumber',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateStockMoveLineTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_AddTrackingNumberToCustomerDeliveryLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchCustomerDeliveryLine,
+        data: {customerDeliveryLineId: res?.id},
+        action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingCDLines: false,
   moreLoading: false,
   isListEnd: false,
   customerDeliveryLineList: [],
   updateLineResponse: {},
+  loadingCustomerDeliveryLine: false,
+  customerDeliveryLine: {},
 };
 
 const CustomerDeliveryLineSlice = createSlice({
@@ -92,6 +130,20 @@ const CustomerDeliveryLineSlice = createSlice({
     builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
       state.loadingCDLines = false;
       state.updateLineResponse = action.payload;
+    });
+    builder.addCase(fetchCustomerDeliveryLine.pending, state => {
+      state.loadingCustomerDeliveryLine = true;
+    });
+    builder.addCase(fetchCustomerDeliveryLine.fulfilled, (state, action) => {
+      state.loadingCustomerDeliveryLine = false;
+      state.customerDeliveryLine = action.payload;
+    });
+    builder.addCase(addTrackingNumber.pending, state => {
+      state.loadingCustomerDeliveryLine = true;
+    });
+    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
+      state.loadingCustomerDeliveryLine = false;
+      state.customerDeliveryLine = action.payload;
     });
   },
 });

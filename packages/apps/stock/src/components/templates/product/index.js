@@ -25,5 +25,6 @@ export {default as ProductSeeStockLocationDistribution} from './ProductSeeStockL
 export {default as ProductUnitInformations} from './ProductUnitInformations/ProductUnitInformations';
 export {default as ProductStockHeader} from './ProductStockHeader/ProductStockHeader';
 export {default as ProductStockLocationCard} from './ProductStockLocationCard/ProductStockLocationCard';
+export {default as ProductTrackingNumberSelect} from './ProductTrackingNumberSelect/ProductTrackingNumberSelect';
 export {default as ProductVariantButton} from './ProductVariantButton/ProductVariantButton';
 export {default as ProductVariantCard} from './ProductVariantCard/ProductVariantCard';

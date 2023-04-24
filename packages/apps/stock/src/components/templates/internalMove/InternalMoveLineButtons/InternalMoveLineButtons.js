@@ -37,6 +37,7 @@ const InternalMoveLineButtons = ({
   unit,
   destinationStockLocation,
   movedQty,
+  visible = true,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -97,7 +98,7 @@ const InternalMoveLineButtons = ({
     });
   };
 
-  if (saveStatus) {
+  if (!visible || saveStatus) {
     return null;
   }
 

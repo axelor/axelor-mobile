@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Picker,
@@ -33,57 +33,74 @@ import {
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
+import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import StockMove from '../../types/stock-move';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
+  const {supplierArrival, supplierArrivalLineId, productId} = route.params;
+
   const I18n = useTranslator();
-  const supplierArrival = route.params.supplierArrival;
-  const supplierArrivalLine = route.params.supplierArrivalLine;
-  const trackingNumber =
-    supplierArrivalLine != null
-      ? supplierArrivalLine.trackingNumber
-      : route.params.trackingNumber;
+  const dispatch = useDispatch();
+
+  const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
+  const {loadingSupplierArrivalLine, supplierArrivalLine} = useSelector(
+    state => state.supplierArrivalLine,
+  );
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );
-  const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
-  const [realQty, setRealQty] = useState(
-    supplierArrivalLine?.isRealQtyModifiedByUser === false
-      ? 0
-      : supplierArrivalLine?.realQty || 0,
+
+  const trackingNumber = useMemo(
+    () =>
+      supplierArrivalLine != null
+        ? supplierArrivalLine.trackingNumber
+        : route.params.trackingNumber,
+    [supplierArrivalLine, route.params.trackingNumber],
   );
+
+  const [realQty, setRealQty] = useState(0);
   const [conformity, setConformity] = useState({
-    name: StockMove.getConformity(
-      supplierArrivalLine != null
-        ? supplierArrivalLine.conformitySelect
-        : StockMove.conformity.None,
-      I18n,
-    ),
-    id:
-      supplierArrivalLine != null
-        ? supplierArrivalLine.conformitySelect
-        : StockMove.conformity.None,
+    name: StockMove.getConformity(StockMove.conformity.None, I18n),
+    id: StockMove.conformity.None,
   });
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      fetchProductWithId(
-        supplierArrivalLine != null
-          ? supplierArrivalLine.product?.id
-          : route.params.product.id,
-      ),
+    setRealQty(
+      supplierArrivalLine?.isRealQtyModifiedByUser === false
+        ? 0
+        : supplierArrivalLine?.realQty || 0,
     );
+    setConformity({
+      name: StockMove.getConformity(
+        supplierArrivalLine?.conformitySelect ?? StockMove.conformity.None,
+        I18n,
+      ),
+      id:
+        supplierArrivalLine != null
+          ? supplierArrivalLine.conformitySelect
+          : StockMove.conformity.None,
+    });
+  }, [supplierArrivalLine, I18n]);
+
+  useEffect(() => {
+    dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));
     dispatch(
       fetchProductForSupplier({
         supplierId: supplierArrival?.partner?.id,
-        productId:
-          supplierArrivalLine != null
-            ? supplierArrivalLine.product?.id
-            : route.params.product.id,
+        productId: supplierArrivalLine.product?.id ?? productId,
       }),
     );
-  }, [dispatch, route.params.product, supplierArrival, supplierArrivalLine]);
+  }, [dispatch, productId, supplierArrival, supplierArrivalLine]);
+
+  useEffect(() => {
+    if (supplierArrivalLineId) {
+      dispatch(
+        fetchSupplierArrivalLine({
+          supplierArrivalLineId: supplierArrivalLineId,
+        }),
+      );
+    }
+  }, [dispatch, supplierArrivalLineId]);
 
   const handleConformityChange = item => {
     if (item === null) {
@@ -114,7 +131,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber}
         />
       }
-      loading={loadingProductFromId || loadingSupplierCatalog}>
+      loading={
+        loadingProductFromId ||
+        loadingSupplierCatalog ||
+        loadingSupplierArrivalLine
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -123,11 +144,12 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             status={supplierArrival.statusSelect}
             lineRef={supplierArrivalLine?.name}
             date={
-              supplierArrival.statusSelect === StockMove.status.Draft
-                ? supplierArrival.createdOn
-                : supplierArrival.statusSelect === StockMove.status.Planned
-                ? supplierArrival.estimatedDate
-                : supplierArrival.realDate
+              supplierArrival
+                ? StockMove.getStockMoveDate(
+                    supplierArrival.statusSelect,
+                    supplierArrival,
+                  )
+                : null
             }
           />
         }
