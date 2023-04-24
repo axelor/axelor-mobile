@@ -194,7 +194,7 @@ function EventPlanningScreen({navigation}) {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View>
+          <View style={styles.headerContainer}>
             <MultiValuePicker
               listItems={eventCategoryList}
               title={I18n.t('Base_Status')}
@@ -235,6 +235,9 @@ function EventPlanningScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    alignItems: 'center',
+  },
   toggleSwitchContainer: {
     width: '90%',
     marginLeft: '4%',

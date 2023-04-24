@@ -54,20 +54,18 @@ const SelectionItem = ({
 
   return content == null ? null : (
     <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
-      {itemColor != null && <View style={indicatorStyles.selectedItem} />}
+      {isPicker && (
+        <Icon
+          style={itemStyles.icon}
+          FontAwesome5={false}
+          name={isSelectedItem ? 'check-square' : 'square-o'}
+          color={Colors.secondaryColor_dark.background}
+        />
+      )}
       <Text style={itemStyles.text} numberOfLines={1}>
         {content}
       </Text>
-      {isPicker &&
-        (isSelectedItem ? (
-          <Icon
-            style={itemStyles.icon}
-            name="check"
-            color={_itemColor.background}
-          />
-        ) : (
-          <View style={itemStyles.notSelected} />
-        ))}
+      {itemColor != null && <View style={indicatorStyles.selectedItem} />}
     </TouchableOpacity>
   );
 };
@@ -78,8 +76,8 @@ const getIndicatorColor = color => {
       backgroundColor: color,
       width: 7,
       height: 32,
-      borderTopRightRadius: 8,
-      borderBottomRightRadius: 8,
+      borderTopLeftRadius: 8,
+      borderBottomLeftRadius: 8,
     },
   });
 };
@@ -97,15 +95,12 @@ const getItemStyles = isPicker =>
     },
     text: {
       width: isPicker ? '85%' : '100%',
-      marginTop: 10,
-      marginLeft: 10,
+      marginVertical: 5,
+      marginLeft: isPicker ? 0 : 10,
       fontSize: 16,
     },
     icon: {
-      marginRight: 10,
-    },
-    notSelected: {
-      width: '10%',
+      margin: 10,
     },
   });
 

@@ -17,14 +17,8 @@
  */
 
 import React from 'react';
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import {Color} from '../../../theme/themes';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Color, useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
 interface Item {
@@ -50,7 +44,7 @@ const MultiValuePickerButton = ({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
-        <ScrollView horizontal={true} style={styles.listItemContainer}>
+        <View style={styles.listItemContainer}>
           {listItem &&
             listItem.map((item, index) => (
               <TouchableOpacity
@@ -70,7 +64,7 @@ const MultiValuePickerButton = ({
                 <Icon name={'times'} color={item.color.foreground} size={14} />
               </TouchableOpacity>
             ))}
-        </ScrollView>
+        </View>
         <Icon
           name="chevron-down"
           color={Colors.secondaryColor_dark.background}
@@ -92,11 +86,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 20,
+    paddingLeft: 10,
     paddingRight: 15,
     paddingVertical: 5,
     marginVertical: 4,
-    marginRight: 16,
+    marginRight: 18,
   },
   text: {
     textAlign: 'center',
@@ -105,6 +99,8 @@ const styles = StyleSheet.create({
   listItemContainer: {
     flexDirection: 'row',
     marginLeft: -5,
+    overflow: 'hidden',
+    width: '90%',
   },
   cardItem: {
     flexDirection: 'row',
@@ -117,7 +113,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     paddingHorizontal: 7,
     height: 22,
-    maxWidth: 100,
+    maxWidth: 110,
     width: null,
   },
 });

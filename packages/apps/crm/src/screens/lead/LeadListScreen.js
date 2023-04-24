@@ -139,14 +139,12 @@ const LeadListScreen = ({navigation}) => {
               oneFilter={true}
               selectLastItem={false}
             />
+            <MultiValuePicker
+              listItems={leadStatusListItems}
+              title={I18n.t('Base_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
+            />
           </View>
-        }
-        chipComponent={
-          <MultiValuePicker
-            listItems={leadStatusListItems}
-            title={I18n.t('Base_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
-          />
         }
       />
       <ScrollList

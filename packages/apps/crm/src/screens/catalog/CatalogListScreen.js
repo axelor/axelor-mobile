@@ -111,14 +111,12 @@ const CatalogListScreen = ({navigation}) => {
               oneFilter={true}
               selectLastItem={false}
             />
+            <MultiValuePicker
+              listItems={catalogTypeListItems}
+              title={I18n.t('Base_Status')}
+              onValueChange={statusList => setSelectedStatus(statusList)}
+            />
           </View>
-        }
-        chipComponent={
-          <MultiValuePicker
-            listItems={catalogTypeListItems}
-            title={I18n.t('Base_Status')}
-            onValueChange={statusList => setSelectedStatus(statusList)}
-          />
         }
       />
       <ScrollList
