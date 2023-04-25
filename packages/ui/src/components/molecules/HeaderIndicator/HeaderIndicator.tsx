@@ -46,6 +46,10 @@ const HeaderIndicator = () => {
     }).start();
   }, [translation, isHeaderIndicatorVisible]);
 
+  if (!isHeaderIndicatorVisible) {
+    return null;
+  }
+
   return (
     <Animated.View style={styles.container}>
       <Text numberOfLines={1} style={styles.text}>

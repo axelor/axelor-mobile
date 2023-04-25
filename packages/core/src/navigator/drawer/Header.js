@@ -85,7 +85,9 @@ const getHeaderStyles = Colors =>
     },
     shadedHeader: {
       elevation: 3,
-      shadowOpacity: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 2},
     },
     options: {
       flexDirection: 'row',
