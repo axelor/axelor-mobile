@@ -21,7 +21,7 @@ import {Text as ReactNativeText, TextStyle} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {useWritingType} from '../../../theme/writingTheme';
 
-interface TextProps {
+export interface TextProps {
   style?: any;
   numberOfLines?: number;
   adjustsFontSizeToFit?: boolean;
