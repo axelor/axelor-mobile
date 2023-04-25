@@ -51,7 +51,7 @@ const Input = ({
   keyboardType,
   onEndFocus = () => {},
   isFocus = false,
-  writingType = null,
+  writingType,
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
