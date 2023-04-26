@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
@@ -26,18 +26,18 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {StockCorrectionCard} from '../../components';
+import {
+  ProductSearchBar,
+  StockCorrectionCard,
+  StockLocationSearchBar,
+} from '../../components';
 import {searchStockCorrections} from '../../features/stockCorrectionSlice';
-import {searchProducts} from '../../features/productSlice';
-import {searchStockLocations} from '../../features/stockLocationSlice';
 import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
@@ -48,28 +48,13 @@ const StockCorrectionListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {
-    loadingStockCorrection,
-    moreLoadingStockCorrection,
-    isListEndStockCorrection,
-    stockCorrectionList,
-  } = useSelector(state => state.stockCorrection);
-  const {
-    stockLocationList,
-    loadingStockLoaction,
-    moreLoadingStockLoaction,
-    isListEndStockLoaction,
-  } = useSelector(state => state.stockLocation);
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
-  const {user} = useSelector(state => state.user);
-  const [filterStockLoaction, setFilterStockLoaction] = useState(null);
-  const [filterProduct, setFilterProduct] = useState(null);
+  const {loading, moreLoading, isListEnd, stockCorrectionList} = useSelector(
+    state => state.stockCorrection,
+  );
 
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filteredList, setFilteredList] = useState(stockCorrectionList);
 
   const filterOnStatus = useCallback(
     list => {
@@ -78,8 +63,8 @@ const StockCorrectionListScreen = ({navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           filterList(
@@ -93,8 +78,8 @@ const StockCorrectionListScreen = ({navigation}) => {
           product?.id ?? '',
         ),
       ),
-    );
-  }, [stockCorrectionList, stockLocation, product, filterOnStatus]);
+    [stockCorrectionList, stockLocation, product, filterOnStatus],
+  );
 
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
@@ -107,64 +92,6 @@ const StockCorrectionListScreen = ({navigation}) => {
       dispatch(searchStockCorrections({page: page}));
     },
     [dispatch],
-  );
-
-  /*const fetchProductsAPI = useCallback(
-    filter => {
-      dispatch(searchProducts({searchValue: filter}));
-    },
-    [dispatch],
-  );*/
-
-  const fetchStockLocationsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (searchValue != null && searchValue !== '') {
-        setFilterStockLoaction(searchValue);
-        dispatch(
-          searchStockLocations({
-            searchValue: searchValue,
-            companyId: user.activeCompany?.id,
-            defaultStockLocation: user.workshopStockLocation,
-          }),
-        );
-      } else {
-        dispatch(searchStockLocations({page: page}));
-      }
-    },
-    [dispatch, user],
-  );
-  const filterStockLocationsAPI = useCallback(
-    value => fetchStockLocationsAPI({searchValue: value}),
-    [fetchStockLocationsAPI],
-  );
-  const scrollStockLocationsAPI = useCallback(
-    page => fetchStockLocationsAPI({page}),
-    [fetchStockLocationsAPI],
-  );
-
-  const fetchProductsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (searchValue != null && searchValue !== '') {
-        setFilterProduct(searchValue);
-        dispatch(
-          searchProducts({
-            searchValue: searchValue,
-          }),
-        );
-      } else {
-        dispatch(searchProducts({page: page}));
-      }
-    },
-    [dispatch],
-  );
-
-  const filterProductsAPI = useCallback(
-    value => fetchProductsAPI({searchValue: value}),
-    [fetchProductsAPI],
-  );
-  const scrollProductsAPI = useCallback(
-    page => fetchProductsAPI({page}),
-    [fetchProductsAPI],
   );
 
   return (
@@ -194,43 +121,19 @@ const StockCorrectionListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={filterStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
-          searchBarKey={1}
-          popupOnSearchPress={true}
-          translator={I18n.t}
-          loadingList={loadingStockLoaction}
-          moreLoading={moreLoadingStockLoaction}
-          isListEnd={isListEndStockLoaction}
-          filter={filterStockLoaction != null && filterStockLoaction !== ''}
-          fetchScroll={scrollStockLocationsAPI}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          onChange={setStockLocation}
+          defaultValue={stockLocation}
         />
-        <ScannerAutocompleteSearch
-          objectList={productList}
-          value={product}
-          onChangeValue={item => setProduct(item)}
-          fetchData={filterProductsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={productScanKey}
-          placeholder={I18n.t('Stock_Product')}
-          searchBarKey={2}
-          popupOnSearchPress={true}
-          translator={I18n.t}
-          loadingList={loadingProduct}
-          moreLoading={moreLoadingProduct}
-          isListEnd={isListEndProduct}
-          filter={filterProduct != null && filterProduct !== ''}
-          fetchScroll={scrollProductsAPI}
+        <ProductSearchBar
+          scanKey={productScanKey}
+          onChange={setProduct}
+          defaultValue={product}
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingStockCorrection}
+        loadingList={loading}
         data={filteredList}
         renderItem={({item}) => (
           <StockCorrectionCard
@@ -247,8 +150,8 @@ const StockCorrectionListScreen = ({navigation}) => {
           />
         )}
         fetchData={searchStockCorrectionsAPI}
-        moreLoading={moreLoadingStockCorrection}
-        isListEnd={isListEndStockCorrection}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
         translator={I18n.t}
       />
     </Screen>

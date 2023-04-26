@@ -19,14 +19,8 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {ProductCard} from '../../components';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {ProductCard, ProductSearchBar} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
 
@@ -41,28 +35,13 @@ const ProductListScreen = ({navigation}) => {
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
 
-  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
 
   const fetchProductsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      if (searchValue != null && searchValue !== '') {
-        setFilter(searchValue);
-        dispatch(searchProducts({searchValue: searchValue, page: 0}));
-      } else {
-        dispatch(searchProducts({page: page}));
-      }
+    (page = 0) => {
+      dispatch(searchProducts({page: page}));
     },
     [dispatch],
-  );
-
-  const filterProductsAPI = useCallback(
-    value => fetchProductsAPI({searchValue: value}),
-    [fetchProductsAPI],
-  );
-  const scrollProductsAPI = useCallback(
-    page => fetchProductsAPI({page}),
-    [fetchProductsAPI],
   );
 
   const showProductDetails = useCallback(
@@ -92,16 +71,13 @@ const ProductListScreen = ({navigation}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <ScannerAutocompleteSearch
-            objectList={productList}
-            onChangeValue={item => showProductDetails(item)}
-            fetchData={filterProductsAPI}
-            displayValue={displayItemName}
-            scanKeySearch={productScanKey}
-            placeholder={I18n.t('Stock_Product')}
-            isFocus={true}
-            oneFilter={true}
+          <ProductSearchBar
+            scanKey={productScanKey}
+            onChange={showProductDetails}
+            showDetailsPopup={false}
             navigate={navigate}
+            oneFilter={true}
+            isFocus={true}
           />
         }
       />
@@ -121,10 +97,9 @@ const ProductListScreen = ({navigation}) => {
             onPress={() => showProductDetails(item)}
           />
         )}
-        fetchData={scrollProductsAPI}
+        fetchData={fetchProductsAPI}
         moreLoading={moreLoadingProduct}
         isListEnd={isListEndProduct}
-        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>

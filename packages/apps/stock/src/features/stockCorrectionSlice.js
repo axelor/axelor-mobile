@@ -78,9 +78,9 @@ export const updateCorrection = createAsyncThunk(
 );
 
 const initialState = {
-  loadingStockCorrection: true,
-  moreLoadingStockCorrection: false,
-  isListEndStockCorrection: false,
+  loading: false,
+  moreLoading: false,
+  isListEnd: false,
   stockCorrectionList: [],
   stockCorrection: null,
 };
@@ -96,34 +96,34 @@ const stockCorrectionSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(searchStockCorrections.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
-        state.loadingStockCorrection = true;
+        state.loading = true;
       } else {
-        state.moreLoadingStockCorrection = true;
+        state.moreLoading = true;
       }
     });
     builder.addCase(searchStockCorrections.fulfilled, (state, action) => {
-      state.loadingStockCorrection = false;
-      state.moreLoadingStockCorrection = false;
+      state.loading = false;
+      state.moreLoading = false;
       if (action.meta.arg.page === 0) {
         state.stockCorrectionList = action.payload;
-        state.isListEndStockCorrection = false;
+        state.isListEnd = false;
       } else {
         if (action.payload != null) {
-          state.isListEndStockCorrection = false;
+          state.isListEnd = false;
           state.stockCorrectionList = [
             ...state.stockCorrectionList,
             ...action.payload,
           ];
         } else {
-          state.isListEndStockCorrection = true;
+          state.isListEnd = true;
         }
       }
     });
     builder.addCase(fetchStockCorrection.pending, (state, action) => {
-      state.loadingStockCorrection = true;
+      state.loading = true;
     });
     builder.addCase(fetchStockCorrection.fulfilled, (state, action) => {
-      state.loadingStockCorrection = false;
+      state.loading = false;
       state.stockCorrection = action.payload;
     });
   },
