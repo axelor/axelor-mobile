@@ -18,6 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
+import {checkNullString} from '../../../utils/strings';
 import {Card, Text} from '../../atoms';
 
 interface PopUpProps {
@@ -45,10 +46,12 @@ const PopUp = ({
       onRequestClose={() => console.log('closed')}>
       <View style={styles.modalBackground}>
         <Card style={[styles.container, style]}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>{title}</Text>
-          </View>
-          {data != null && (
+          {!checkNullString(title) && (
+            <View style={styles.headerContainer}>
+              <Text style={styles.header}>{title}</Text>
+            </View>
+          )}
+          {!checkNullString(data) && (
             <View style={styles.contentContainer}>
               <Text style={styles.text}>{data}</Text>
             </View>

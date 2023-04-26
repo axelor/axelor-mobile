@@ -17,16 +17,14 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
 } from '../../../hooks/use-click-outside';
-import {Card, Icon, Text} from '../../atoms';
-import {PopUp, SelectionContainer} from '../../molecules';
+import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
-import ScrollList from '../ScrollList/ScrollList';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import SearchDetailsPopUp from './SearchDetailsPopUp';
 
 const isValidString = (string: String) => {
   return typeof string === 'string' && string !== '';
@@ -38,9 +36,15 @@ const TIME_BETWEEN_CALL = 1000;
 interface AutocompleteSearchProps {
   objectList: any[];
   value?: any;
-  onChangeValue?: (any) => void;
-  fetchData?: (any) => void;
-  displayValue?: (any) => string;
+  onChangeValue?: (item: any) => void;
+  fetchData?: ({
+    page,
+    searchValue,
+  }: {
+    page: number;
+    searchValue: string;
+  }) => void;
+  displayValue?: (item: any) => string;
   placeholder?: string;
   changeScreenAfter?: boolean;
   navigate?: boolean;
@@ -50,13 +54,11 @@ interface AutocompleteSearchProps {
   scanIconColor?: string;
   selectLastItem?: boolean;
   style?: any;
-  popupOnSearchPress?: boolean;
+  showDetailsPopup?: boolean;
   loadingList?: boolean;
   moreLoading?: boolean;
   isListEnd?: boolean;
-  filter?: boolean;
   translator?: (translationKey: string) => string;
-  fetchScroll?: (any) => void;
 }
 
 const AutoCompleteSearch = ({
@@ -74,19 +76,16 @@ const AutoCompleteSearch = ({
   scanIconColor = null,
   selectLastItem = true,
   style,
-  popupOnSearchPress = false,
+  showDetailsPopup = false,
   loadingList,
   moreLoading,
   isListEnd,
-  filter,
   translator,
-  fetchScroll,
 }: AutocompleteSearchProps) => {
-  const Colors = useThemeColor();
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
   const [selected, setSelected] = useState(value ? true : false);
-  const [popupIsVisible, setPopupIsVisible] = useState(false);
+  const [isPopupVisible, setPopupIsVisible] = useState(false);
   const [searchText, setSearchText] = useState(
     value ? displayValue(value) : null,
   );
@@ -105,15 +104,20 @@ const AutoCompleteSearch = ({
     }
   }, [clickOutside, displayList]);
 
+  const fetchDataAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      fetchData({page, searchValue});
+    },
+    [fetchData],
+  );
+
   const handleAPICall = useCallback(() => {
     if (!selected) {
-      if (searchText == null && searchText === '') {
-        fetchData(null);
-      } else {
-        fetchData(searchText);
-      }
+      fetchDataAPI({
+        searchValue: isValidString(searchText) ? searchText : null,
+      });
     }
-  }, [fetchData, searchText, selected]);
+  }, [fetchDataAPI, searchText, selected]);
 
   useEffect(() => {
     handleAPICall();
@@ -214,10 +218,6 @@ const AutoCompleteSearch = ({
     onSelection();
   }, [onSelection]);
 
-  const handleSearchPress = useCallback(() => {
-    popupOnSearchPress ? setPopupIsVisible(true) : setDisplayList(true);
-  }, [popupOnSearchPress]);
-
   useEffect(() => {
     if (isValidString(value)) {
       handleSearchValueChange(value);
@@ -235,7 +235,8 @@ const AutoCompleteSearch = ({
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}
-        onSearchPress={handleSearchPress}
+        onSearchPress={() => setPopupIsVisible(true)}
+        disableSearchPress={!showDetailsPopup}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
       />
@@ -247,57 +248,20 @@ const AutoCompleteSearch = ({
           handleSelect={handleSelect}
         />
       )}
-      <PopUp
-        visible={popupIsVisible}
-        childrenStyle={styles.popupContainerChildren}>
-        <View style={styles.popupContainer}>
-          <View style={styles.closePopupButton}>
-            <TouchableOpacity
-              onPress={() => {
-                setPopupIsVisible(false);
-              }}>
-              <Icon name="times" />
-            </TouchableOpacity>
-          </View>
-          <SearchBar
-            style={style}
-            valueTxt={searchText}
-            placeholder={placeholder}
-            onClearPress={handleClear}
-            onChangeTxt={handleSearchValueChange}
-            onSelection={handleFocus}
-            onSearchPress={() => {}}
-            onEndFocus={() => selected && setDisplayList(false)}
-            onScanPress={onScanPress}
-            scanIconColor={scanIconColor}
-          />
-          <ScrollList
-            loadingList={loadingList}
-            data={objectList}
-            renderItem={({item}) => (
-              <TouchableOpacity onPress={() => handleSelect(item)}>
-                <Card style={styles.container}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.txtImportant}>
-                      {displayValue(item)}
-                    </Text>
-                  </View>
-                  <Icon
-                    name="chevron-right"
-                    color={Colors.secondaryColor.background_light}
-                    size={20}
-                  />
-                </Card>
-              </TouchableOpacity>
-            )}
-            fetchData={fetchScroll}
-            moreLoading={moreLoading}
-            isListEnd={isListEnd}
-            translator={translator}
-            filter={filter}
-          />
-        </View>
-      </PopUp>
+      <SearchDetailsPopUp
+        isVisible={isPopupVisible}
+        objectList={objectList}
+        value={searchText}
+        placeholder={placeholder}
+        displayValue={displayValue}
+        onClose={() => setPopupIsVisible(false)}
+        onSelect={handleSelect}
+        fetchData={fetchData}
+        loadingList={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={translator}
+      />
     </View>
   );
 };
@@ -306,44 +270,6 @@ const getStyles = displayList =>
   StyleSheet.create({
     searchBarContainer: {
       zIndex: displayList ? 45 : 0,
-    },
-    popupContainer: {
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingRight: 15,
-      marginHorizontal: 12,
-      marginVertical: 4,
-    },
-    textContainer: {
-      width: '90%',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-    txtImportant: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    txtDetails: {
-      fontSize: 14,
-    },
-    item: {
-      marginHorizontal: 12,
-      marginVertical: 4,
-    },
-    popupContainerChildren: {
-      alignItems: 'flex-start',
-      width: '80%',
-      height: '90%',
-    },
-    closePopupButton: {
-      position: 'absolute',
-      right: '0%',
-      top: '-5%',
     },
   });
 

@@ -27,6 +27,7 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
+import {useTranslator} from '../../../i18n';
 
 interface AutocompleteSearchProps {
   objectList: any[];
@@ -34,7 +35,6 @@ interface AutocompleteSearchProps {
   onChangeValue?: (value: any) => void;
   fetchData?: (value: any) => void;
   displayValue?: (value: any) => string;
-  fetchScroll?: (value: any) => void;
   placeholder?: string;
   scanKeySearch?: string;
   isFocus?: boolean;
@@ -43,12 +43,10 @@ interface AutocompleteSearchProps {
   oneFilter?: boolean;
   selectLastItem?: boolean;
   style?: any;
-  popupOnSearchPress?: boolean;
-  translator?: (translationKey: string) => string;
+  showDetailsPopup?: boolean;
   loadingList?: boolean;
   moreLoading?: boolean;
   isListEnd?: boolean;
-  filter?: boolean;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -65,14 +63,13 @@ const ScannerAutocompleteSearch = ({
   oneFilter = false,
   selectLastItem = true,
   style,
-  popupOnSearchPress = false,
-  translator,
+  showDetailsPopup = false,
   loadingList,
   moreLoading,
   isListEnd,
-  filter,
-  fetchScroll,
 }: AutocompleteSearchProps) => {
+  const I18n = useTranslator();
+
   const [searchText, setSearchText] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
@@ -119,13 +116,11 @@ const ScannerAutocompleteSearch = ({
           : Colors.secondaryColor_dark.background
       }
       style={style}
-      popupOnSearchPress={popupOnSearchPress}
-      translator={translator}
+      showDetailsPopup={showDetailsPopup}
+      translator={I18n.t}
       loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
-      filter={filter}
-      fetchScroll={fetchScroll}
     />
   );
 };
