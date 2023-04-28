@@ -38,6 +38,7 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
+import {useHeaderBands} from '../../header';
 
 const SettingsScreen = ({route, children}) => {
   const {message} = useSelector(state => state.config);
@@ -52,11 +53,14 @@ const SettingsScreen = ({route, children}) => {
   } = useConfig();
   const language = useSelector(selectLanguage);
   const {baseUrl} = useSelector(state => state.auth);
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
+
   const Theme = useTheme();
   const online = useOnline();
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
+
+  const {addHeaderBand} = useHeaderBands();
 
   useEffect(() => {
     if (message) {
@@ -65,6 +69,12 @@ const SettingsScreen = ({route, children}) => {
       dispatch(clearMessage());
     }
   }, [message, dispatch, setActivityIndicator]);
+
+  addHeaderBand({
+    text: 'setting',
+    color: Colors.infoColor,
+    showIf: true,
+  });
 
   const handleToggleConnection = useCallback(
     state => {

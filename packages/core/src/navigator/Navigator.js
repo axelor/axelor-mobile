@@ -57,6 +57,7 @@ const Navigator = ({modules, mainMenu, onRefresh}) => {
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
+
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();

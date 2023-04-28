@@ -30,7 +30,13 @@ import {
   useTheme,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {logout, useDispatch, useSelector, useTranslator} from '../../index';
+import {
+  logout,
+  useDispatch,
+  useHeaderBands,
+  useSelector,
+  useTranslator,
+} from '../../index';
 import {fetchCompanies} from '../features/companySlice';
 import {fetchLanguages} from '../features/languageSlice';
 import {
@@ -53,6 +59,13 @@ const UserScreen = ({children}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+  const {addHeaderBand} = useHeaderBands();
+
+  addHeaderBand({
+    text: 'dev',
+    color: Colors.errorColor,
+    showIf: true,
+  });
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));

@@ -17,7 +17,15 @@
  */
 
 import {checkNullString} from '../utils';
-import {ActionType, HeaderActions, HeaderOptions} from './types';
+import {
+  ActionType,
+  HeaderActions,
+  HeaderBandItem,
+  HeaderOptions,
+} from './types';
+
+const HEADER_DEFAULT_HEIGHT = 56;
+const HEADER_BAND_HEIGHT = 34;
 
 export const mergeActions = (
   currentActions: ActionType[],
@@ -68,4 +76,18 @@ export const fetchOptionsOfHeaderKey = (
   }
 
   return headerActions[key];
+};
+
+export const fetchFilteredHeaderBands = (
+  headerBands: HeaderBandItem[],
+): HeaderBandItem[] => {
+  return headerBands
+    .filter(band => band.showIf)
+    .sort((a, b) => a.order - b.order);
+};
+
+export const getHeaderHeight = (filteredHeaderBands: HeaderBandItem[]) => {
+  return (
+    HEADER_DEFAULT_HEIGHT + filteredHeaderBands.length * HEADER_BAND_HEIGHT
+  );
 };

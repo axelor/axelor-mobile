@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Color} from '@axelor/aos-mobile-ui';
+
 export interface HeaderActions {
   [key: string]: HeaderOptions;
 }
@@ -41,4 +43,12 @@ export interface ActionType {
   disableIf?: boolean;
   onPress: () => void;
   showInHeader?: boolean;
+}
+
+export interface HeaderBandItem {
+  key?: string;
+  color: Color;
+  text: string;
+  showIf?: boolean;
+  order?: number;
 }

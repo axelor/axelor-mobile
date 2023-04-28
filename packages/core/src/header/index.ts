@@ -17,5 +17,11 @@
  */
 
 export {headerActionsProvider, useHeaderOptions} from './HeaderActionsProvider';
+export {headerBandProvider, useHeaderBands} from './HeaderBandProvider';
 export {useBasicActions} from './hooks';
-export {HeaderActions, HeaderOptions, ActionType} from './types';
+export {
+  HeaderActions,
+  HeaderOptions,
+  ActionType,
+  HeaderBandItem,
+} from './types';
