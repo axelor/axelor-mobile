@@ -21,11 +21,12 @@ import {StyleSheet} from 'react-native';
 import {Icon, IconInput} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
-const SessionInput = ({value, onChange, readOnly}) => {
+const SessionInput = ({style, value, onChange, readOnly}) => {
   const I18n = useTranslator();
 
   return (
     <IconInput
+      style={style}
       value={value}
       onChange={onChange}
       readOnly={readOnly}

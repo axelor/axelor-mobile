@@ -18,4 +18,5 @@
 
 export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
+export {default as PopupCreateSession} from './PopupCreateSession/PopupCreateSession';
 export {default as PopupSession} from './PopupSession/PopupSession';

@@ -29,12 +29,14 @@ const UsernameInput = ({
   onScanPress,
   onSelection = () => {},
   scanIconColor,
+  style,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
   return (
     <IconInput
+      style={style}
       value={value}
       onChange={onChange}
       readOnly={readOnly}

@@ -18,7 +18,6 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   Dimensions,
@@ -38,16 +37,15 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
-  LoginButton,
   LogoImage,
   PasswordInput,
   UrlInput,
   UsernameInput,
   SessionInput,
   PopupSession,
+  PopupCreateSession,
 } from '../components';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../features/authSlice';
+import {useSelector} from 'react-redux';
 import {
   useScannedValueByKey,
   useScannerSelector,
@@ -69,7 +67,6 @@ const LoginScreen = ({route}) => {
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   const {loading, error, baseUrl} = useSelector(state => state.auth);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -126,6 +123,8 @@ const LoginScreen = ({route}) => {
   const [saveCurrentSession, setSaveSession] = useState(false);
   const [sessionName, setSessionName] = useState('');
   const [popupIsOpen, setPopupIsOpen] = useState(false);
+  const [popupCreateSessionIsOpen, setPopupCreateSessionIsOpen] =
+    useState(false);
 
   const nameSessionAlreadyExist = useMemo(() => {
     if (!Array.isArray(sessionList) || sessionList?.length === 0) {
@@ -152,29 +151,6 @@ const LoginScreen = ({route}) => {
       parseQrCode(scanData?.value);
     }
   }, [parseQrCode, scanData, scannedValue]);
-
-  const onPressLogin = useCallback(() => {
-    dispatch(login({url, username, password}));
-
-    if (saveCurrentSession && enableConnectionSessions) {
-      sessionStorage.addSession({
-        session: {
-          id: sessionName,
-          url: url,
-          username: username,
-          isActive: true,
-        },
-      });
-    }
-  }, [
-    dispatch,
-    enableConnectionSessions,
-    password,
-    saveCurrentSession,
-    sessionName,
-    url,
-    username,
-  ]);
 
   const changeActiveSession = useCallback(sessionId => {
     sessionStorage.changeActiveSession({sessionId});
@@ -225,6 +201,7 @@ const LoginScreen = ({route}) => {
               <Button
                 title={I18n.t('Auth_Create_Session')}
                 style={styles.button}
+                onPress={() => setPopupCreateSessionIsOpen(true)}
               />
             </View>
             {showUrlInput && (
@@ -299,16 +276,17 @@ const LoginScreen = ({route}) => {
               popupIsOpen={popupIsOpen}
               setPopupIsOpen={setPopupIsOpen}
             />
-            <View>
-              {loading ? (
-                <ActivityIndicator size="large" />
-              ) : (
-                <LoginButton
-                  onPress={onPressLogin}
-                  disabled={loading || nameSessionAlreadyExist}
-                />
-              )}
-            </View>
+            <PopupCreateSession
+              defaultUrl={defaultUrl}
+              modeDebug={modeDebug}
+              popupIsOpen={popupCreateSessionIsOpen}
+              setPopupIsOpen={setPopupCreateSessionIsOpen}
+              showUrlInput={showUrlInput}
+              testInstanceConfig={testInstanceConfig}
+              nameSessionAlreadyExist={nameSessionAlreadyExist}
+              enableConnectionSessions={enableConnectionSessions}
+              error={error}
+            />
             <View>{error && <ErrorText message={error.message} />}</View>
             <View style={styles.copyright}>
               <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
