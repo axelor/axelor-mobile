@@ -24,37 +24,24 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import {
   useThemeColor,
   Text,
   Screen,
-  Checkbox,
-  Icon,
   Button,
   InfoBubble,
 } from '@axelor/aos-mobile-ui';
 import {
-  ErrorText,
   LogoImage,
-  PasswordInput,
-  UrlInput,
-  UsernameInput,
-  SessionInput,
-  PopupSession,
+  PopupSessionList,
   PopupCreateSession,
+  PopupSession,
 } from '../components';
 import {useSelector} from 'react-redux';
-import {
-  useScannedValueByKey,
-  useScannerSelector,
-} from '../features/scannerSlice';
+import {useScannedValueByKey} from '../features/scannerSlice';
 import {useCameraScannerValueByKey} from '../features/cameraScannerSlice';
-import {
-  useScanActivator,
-  useScannerDeviceActivator,
-} from '../hooks/use-scan-activator';
+
 import useTranslator from '../i18n/hooks/use-translator';
 import {sessionStorage, useSessions} from '../sessions';
 
@@ -68,12 +55,9 @@ const LoginScreen = ({route}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const {loading, error, baseUrl} = useSelector(state => state.auth);
-  const {isEnabled, scanKey} = useScannerSelector();
+  const {error, baseUrl} = useSelector(state => state.auth);
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
-  const {enable: onScanPress} = useScanActivator(urlScanKey);
-  const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
 
   const {sessionList, sessionActive} = useSessions(enableConnectionSessions);
 
@@ -117,22 +101,11 @@ const LoginScreen = ({route}) => {
       ? testInstanceConfig?.defaultUsername
       : '',
   );
-  const [password, setPassword] = useState(
-    modeDebug ? testInstanceConfig?.defaultPassword : '',
-  );
-  const [saveCurrentSession, setSaveSession] = useState(false);
-  const [sessionName, setSessionName] = useState('');
-  const [popupIsOpen, setPopupIsOpen] = useState(false);
+
   const [popupCreateSessionIsOpen, setPopupCreateSessionIsOpen] =
     useState(false);
-
-  const nameSessionAlreadyExist = useMemo(() => {
-    if (!Array.isArray(sessionList) || sessionList?.length === 0) {
-      return false;
-    }
-
-    return sessionList.some(_session => _session.id === sessionName);
-  }, [sessionList, sessionName]);
+  const [popupSessionIsOpen, setPopupSessionIsOpen] = useState(false);
+  const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
 
   const parseQrCode = useCallback(scanValue => {
     if (scanValue.includes('username') === true) {
@@ -154,21 +127,12 @@ const LoginScreen = ({route}) => {
 
   const changeActiveSession = useCallback(sessionId => {
     sessionStorage.changeActiveSession({sessionId});
-    setPopupIsOpen(false);
+    setPopupSessionListIsOpen(false);
   }, []);
 
   const removeSession = useCallback(sessionId => {
     sessionStorage.removeSession({sessionId});
-    setPopupIsOpen(false);
   }, []);
-
-  useEffect(() => {
-    if (sessionActive != null) {
-      setUrl(sessionActive.url);
-      setUsername(sessionActive.username);
-      setPassword('');
-    }
-  }, [sessionActive]);
 
   const showSessionName = useMemo(() => {
     if (sessionActive == null) {
@@ -190,6 +154,30 @@ const LoginScreen = ({route}) => {
             {showSessionName && (
               <Text>{`${I18n.t('Auth_Session')} : ${sessionActive?.id}`}</Text>
             )}
+            {sessionActive && (
+              <Button
+                title={sessionActive.id}
+                onPress={() => {
+                  setPopupSessionIsOpen(true);
+                }}
+                style={styles.button}
+              />
+            )}
+            {sessionList?.length > 1 && (
+              <View style={styles.row}>
+                <View style={styles.bubble}>
+                  <Text>{sessionList.length}</Text>
+                </View>
+
+                <Button
+                  title={I18n.t('Auth_Change_Session')}
+                  onPress={() => {
+                    setPopupSessionListIsOpen(true);
+                  }}
+                  style={styles.button}
+                />
+              </View>
+            )}
             <View style={styles.row}>
               <InfoBubble
                 indication={I18n.t('Auth_InfoSession')}
@@ -204,90 +192,31 @@ const LoginScreen = ({route}) => {
                 onPress={() => setPopupCreateSessionIsOpen(true)}
               />
             </View>
-            {showUrlInput && (
-              <UrlInput
-                value={url}
-                onChange={setUrl}
-                readOnly={loading}
-                onScanPress={onScanPress}
-                onSelection={enableScanner}
-                scanIconColor={
-                  isEnabled && scanKey === urlScanKey
-                    ? Colors.primaryColor.background
-                    : Colors.secondaryColor_dark.background
-                }
-              />
-            )}
-            <UsernameInput
-              value={username}
-              onChange={setUsername}
-              readOnly={loading}
-              showScanIcon={!showUrlInput}
-              onScanPress={onScanPress}
-              onSelection={enableScanner}
-              scanIconColor={
-                isEnabled && scanKey === urlScanKey
-                  ? Colors.primaryColor.background
-                  : Colors.secondaryColor_dark.background
-              }
-            />
-            <PasswordInput
-              value={password}
-              onChange={setPassword}
-              readOnly={loading}
-            />
-            {enableConnectionSessions && (
-              <Checkbox
-                style={styles.checkbox}
-                styleTxt={styles.text}
-                title={I18n.t('Auth_Save_Session')}
-                onChange={setSaveSession}
-              />
-            )}
-            {saveCurrentSession && (
-              <SessionInput
-                value={sessionName}
-                onChange={setSessionName}
-                readOnly={loading}
-              />
-            )}
-            <View>
-              {!loading && nameSessionAlreadyExist && (
-                <ErrorText message={I18n.t('Auth_Session_Name_Aleary_Exist')} />
-              )}
-            </View>
-            {enableConnectionSessions && sessionList?.length > 0 && (
-              <TouchableOpacity onPress={() => setPopupIsOpen(true)}>
-                <View style={styles.arrowContainer}>
-                  <Text>{I18n.t('Auth_Change_Session')}</Text>
-                  <Icon
-                    name="angle-right"
-                    size={24}
-                    color={Colors.primaryColor.background}
-                    style={styles.arrowIcon}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-            <PopupSession
-              changeActiveSession={changeActiveSession}
-              removeSession={removeSession}
-              sessionList={sessionList}
-              popupIsOpen={popupIsOpen}
-              setPopupIsOpen={setPopupIsOpen}
-            />
             <PopupCreateSession
-              defaultUrl={defaultUrl}
               modeDebug={modeDebug}
               popupIsOpen={popupCreateSessionIsOpen}
               setPopupIsOpen={setPopupCreateSessionIsOpen}
               showUrlInput={showUrlInput}
               testInstanceConfig={testInstanceConfig}
-              nameSessionAlreadyExist={nameSessionAlreadyExist}
               enableConnectionSessions={enableConnectionSessions}
-              error={error}
+              releaseInstanceConfig={releaseInstanceConfig}
             />
-            <View>{error && <ErrorText message={error.message} />}</View>
+            <PopupSession
+              defaultUrl={defaultUrl}
+              enableConnectionSessions={enableConnectionSessions}
+              sessionActive={sessionActive}
+              error={error}
+              popupIsOpen={popupSessionIsOpen}
+              setPopupIsOpen={setPopupSessionIsOpen}
+              showUrlInput={showUrlInput}
+            />
+            <PopupSessionList
+              changeActiveSession={changeActiveSession}
+              removeSession={removeSession}
+              sessionList={sessionList}
+              popupIsOpen={popupSessionListIsOpen}
+              setPopupIsOpen={setPopupSessionListIsOpen}
+            />
             <View style={styles.copyright}>
               <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
               <Text>{`Version ${appVersion}`}</Text>
@@ -344,10 +273,26 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   infoBubble: {
-    marginRight: '3%',
+    position: 'absolute',
+    left: '-10%',
+    top: '15%',
   },
   textIndicationStyle: {
     width: Dimensions.get('window').height * 0.3,
+  },
+  bubble: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+    borderWidth: 2,
+    borderColor: 'green',
+    borderRadius: Dimensions.get('window').width * 0.07,
+    width: Dimensions.get('window').width * 0.07,
+    height: Dimensions.get('window').width * 0.07,
+    position: 'absolute',
+    left: '-10%',
+    top: '25%',
   },
 });
 

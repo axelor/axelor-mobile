@@ -16,67 +16,110 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Text,
-  PopUp,
-  useThemeColor,
-  Icon,
-  HorizontalRule,
-} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {Icon, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {PasswordInput, UrlInput, UsernameInput} from '../../organisms';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  useScanActivator,
+  useScannerDeviceActivator,
+} from '../../../hooks/use-scan-activator';
+import {useScannerSelector} from '../../../features/scannerSlice';
+import {login} from '../../../features/authSlice';
+import {ErrorText, LoginButton} from '../../molecules';
+
+const urlScanKey = 'login_url';
 
 const PopupSession = ({
   popupIsOpen,
   setPopupIsOpen,
-  sessionList,
-  changeActiveSession = () => {},
-  removeSession = () => {},
+  showUrlInput,
+  error,
+  sessionActive,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-
-  const sessions = useMemo(() => sessionList, [sessionList]);
+  const dispatch = useDispatch();
+  const {loading} = useSelector(state => state.auth);
+  const {enable: onScanPress} = useScanActivator(urlScanKey);
+  const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
+  const {isEnabled, scanKey} = useScannerSelector();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  if (!Array.isArray(sessions) || sessions?.length === 0) {
-    return null;
-  }
+  const [url, setUrl] = useState(sessionActive?.url);
+  const [username, setUsername] = useState(sessionActive?.username);
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (sessionActive != null) {
+      setUrl(sessionActive.url);
+      setUsername(sessionActive.username);
+      setPassword('');
+    }
+  }, [sessionActive]);
+
+  const onPressLogin = useCallback(() => {
+    dispatch(login({url, username, password}));
+  }, [dispatch, password, url, username]);
 
   return (
-    <PopUp visible={popupIsOpen} title={I18n.t('Auth_Saved_Sessions')}>
+    <PopUp
+      visible={popupIsOpen}
+      title={I18n.t('Auth_Create_Session')}
+      style={styles.popup}>
       <View style={styles.popupContainer}>
-        {sessions.map((_session, index) => {
-          return (
-            <View key={index} style={styles.popupItemContainer}>
-              <View
-                style={_session.isActive ? styles.itemActive : styles.item}
-              />
-              <View style={styles.popupItemChildren}>
-                <TouchableOpacity
-                  onPress={() => changeActiveSession(_session.id)}>
-                  <Text style={styles.textTitle}>{_session.id}</Text>
-                  <Text numberOfLines={1}>{_session.url}</Text>
-                  <HorizontalRule style={styles.line} />
-                </TouchableOpacity>
-              </View>
-              <Icon
-                name="close"
-                color="red"
-                FontAwesome5={false}
-                touchable={true}
-                onPress={() => removeSession(_session.id)}
-              />
-            </View>
-          );
-        })}
-        <View style={styles.closeBtn}>
-          <TouchableOpacity onPress={() => setPopupIsOpen(false)}>
-            <Text>{I18n.t('Auth_Close')}</Text>
-          </TouchableOpacity>
-        </View>
+        <Icon
+          name="times"
+          size={20}
+          touchable={true}
+          onPress={() => setPopupIsOpen(false)}
+          style={styles.closeIcon}
+        />
+        <View>{error && <ErrorText message={error.message} />}</View>
+
+        {showUrlInput && (
+          <UrlInput
+            value={url}
+            onChange={setUrl}
+            readOnly={loading}
+            onScanPress={onScanPress}
+            onSelection={enableScanner}
+            scanIconColor={
+              isEnabled && scanKey === urlScanKey
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+            style={styles.input}
+          />
+        )}
+        <UsernameInput
+          value={username}
+          onChange={setUsername}
+          readOnly={loading}
+          showScanIcon={!showUrlInput}
+          onScanPress={onScanPress}
+          onSelection={enableScanner}
+          scanIconColor={
+            isEnabled && scanKey === urlScanKey
+              ? Colors.primaryColor.background
+              : Colors.secondaryColor_dark.background
+          }
+          style={styles.input}
+        />
+        <PasswordInput
+          value={password}
+          onChange={setPassword}
+          readOnly={loading}
+          style={styles.input}
+        />
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <LoginButton onPress={onPressLogin} disabled={loading} />
+        )}
       </View>
     </PopUp>
   );
@@ -89,43 +132,15 @@ const getStyles = Colors =>
       alignItems: 'center',
       width: '100%',
     },
-    popupItemContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginLeft: '-4%',
-      marginVertical: '2%',
+    closeIcon: {
+      position: 'absolute',
+      right: '-10%',
+      top: '-10%',
     },
-    popupItemChildren: {
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '120%',
-      marginLeft: '5%',
+    popup: {
+      width: '90%',
     },
-    textTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom: 5,
-    },
-    line: {
-      marginTop: 5,
-    },
-    closeBtn: {
-      marginTop: '5%',
-    },
-    itemActive: {
-      width: 7,
-      height: 40,
-      borderTopRightRadius: 8,
-      borderBottomRightRadius: 8,
-      backgroundColor: Colors.primaryColor.background_light,
-    },
-    item: {
-      width: 7,
-      height: 40,
-      borderTopRightRadius: 8,
-      borderBottomRightRadius: 8,
-      backgroundColor: Colors.backgroundColor,
-    },
+    input: {width: '100%'},
   });
 
 export default PopupSession;

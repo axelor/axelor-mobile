@@ -34,7 +34,7 @@ import {
 import {useScannerSelector} from '../../../features/scannerSlice';
 import {login} from '../../../features/authSlice';
 import {ErrorText, LoginButton} from '../../molecules';
-import {sessionStorage} from '../../../sessions';
+import {sessionStorage, useSessions} from '../../../sessions';
 
 const urlScanKey = 'login_url';
 
@@ -42,19 +42,16 @@ const PopupCreateSession = ({
   popupIsOpen,
   setPopupIsOpen,
   showUrlInput,
-  defaultUrl,
   modeDebug,
   testInstanceConfig,
-  nameSessionAlreadyExist,
   enableConnectionSessions,
-  error,
+  releaseInstanceConfig,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const [sessionName, setSessionName] = useState('');
-  const [url, setUrl] = useState(defaultUrl || '');
-  const {loading} = useSelector(state => state.auth);
+  const {loading, error, baseUrl} = useSelector(state => state.auth);
   const {enable: onScanPress} = useScanActivator(urlScanKey);
   const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -64,8 +61,35 @@ const PopupCreateSession = ({
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
+  const {sessionList} = useSessions(enableConnectionSessions);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const defaultUrl = useMemo(() => {
+    if (baseUrl != null) {
+      return baseUrl;
+    }
+    if (modeDebug) {
+      return testInstanceConfig?.defaultUrl;
+    }
+
+    return releaseInstanceConfig?.url;
+  }, [
+    baseUrl,
+    modeDebug,
+    releaseInstanceConfig?.url,
+    testInstanceConfig?.defaultUrl,
+  ]);
+
+  const [url, setUrl] = useState(defaultUrl || '');
+
+  const nameSessionAlreadyExist = useMemo(() => {
+    if (!Array.isArray(sessionList) || sessionList?.length === 0) {
+      return false;
+    }
+
+    return sessionList.some(_session => _session.id === sessionName);
+  }, [sessionList, sessionName]);
 
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
@@ -152,6 +176,11 @@ const PopupCreateSession = ({
             disabled={loading || nameSessionAlreadyExist}
           />
         )}
+        <View>
+          {!loading && nameSessionAlreadyExist && (
+            <ErrorText message={I18n.t('Auth_Session_Name_Aleary_Exist')} />
+          )}
+        </View>
       </View>
     </PopUp>
   );
