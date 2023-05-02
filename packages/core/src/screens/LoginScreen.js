@@ -54,6 +54,7 @@ const LoginScreen = ({route}) => {
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const {error, baseUrl} = useSelector(state => state.auth);
   const scannedValue = useScannedValueByKey(urlScanKey);
@@ -174,7 +175,7 @@ const LoginScreen = ({route}) => {
                   onPress={() => {
                     setPopupSessionListIsOpen(true);
                   }}
-                  style={styles.button}
+                  style={styles.buttonChangeSession}
                 />
               </View>
             )}
@@ -188,7 +189,11 @@ const LoginScreen = ({route}) => {
               />
               <Button
                 title={I18n.t('Auth_Create_Session')}
-                style={styles.button}
+                style={
+                  sessionList?.length > 0
+                    ? styles.buttonCreateSession
+                    : styles.button
+                }
                 onPress={() => setPopupCreateSessionIsOpen(true)}
               />
             </View>
@@ -228,72 +233,83 @@ const LoginScreen = ({route}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: '15%',
-    alignItems: 'center',
-    height: Dimensions.get('window').height * 0.95,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    width: '100%',
-    height: '15%',
-    marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
-    marginBottom: '10%',
-  },
-  copyright: {
-    position: 'absolute',
-    alignItems: 'center',
-    width: '100%',
-    bottom: 0,
-  },
-  arrowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginHorizontal: 32,
-    width: '80%',
-  },
-  arrowIcon: {
-    marginRight: -6,
-    marginLeft: 5,
-  },
-  text: {
-    fontSize: 14,
-    fontWeight: 'normal',
-  },
-  checkbox: {
-    width: '88%',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  button: {
-    width: '50%',
-  },
-  infoBubble: {
-    position: 'absolute',
-    left: '-10%',
-    top: '15%',
-  },
-  textIndicationStyle: {
-    width: Dimensions.get('window').height * 0.3,
-  },
-  bubble: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
-    borderWidth: 2,
-    borderColor: 'green',
-    borderRadius: Dimensions.get('window').width * 0.07,
-    width: Dimensions.get('window').width * 0.07,
-    height: Dimensions.get('window').width * 0.07,
-    position: 'absolute',
-    left: '-10%',
-    top: '25%',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      marginTop: '15%',
+      alignItems: 'center',
+      height: Dimensions.get('window').height * 0.95,
+    },
+    imageContainer: {
+      alignItems: 'center',
+      width: '100%',
+      height: '15%',
+      marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
+      marginBottom: '10%',
+    },
+    copyright: {
+      position: 'absolute',
+      alignItems: 'center',
+      width: '100%',
+      bottom: 0,
+    },
+    arrowContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      marginHorizontal: 32,
+      width: '80%',
+    },
+    arrowIcon: {
+      marginRight: -6,
+      marginLeft: 5,
+    },
+    text: {
+      fontSize: 14,
+      fontWeight: 'normal',
+    },
+    checkbox: {
+      width: '88%',
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+    },
+    button: {
+      width: '50%',
+    },
+    buttonCreateSession: {
+      width: '50%',
+      borderWidth: 1,
+      borderColor: Colors.primaryColor.background,
+      backgroundColor: Colors.secondaryColor_dark.foreground,
+    },
+    buttonChangeSession: {
+      width: '50%',
+      backgroundColor: Colors.infoColor.background_light,
+    },
+    infoBubble: {
+      position: 'absolute',
+      left: '-10%',
+      top: '15%',
+    },
+    textIndicationStyle: {
+      width: Dimensions.get('window').height * 0.3,
+    },
+    bubble: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: Colors.secondaryColor_dark.foreground,
+      borderWidth: 2,
+      borderColor: Colors.infoColor.background_light,
+      borderRadius: Dimensions.get('window').width * 0.07,
+      width: Dimensions.get('window').width * 0.07,
+      height: Dimensions.get('window').width * 0.07,
+      position: 'absolute',
+      left: '-10%',
+      top: '25%',
+    },
+  });
 
 export default LoginScreen;
