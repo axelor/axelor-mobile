@@ -33,6 +33,8 @@ import {
   Screen,
   Checkbox,
   Icon,
+  Button,
+  InfoBubble,
 } from '@axelor/aos-mobile-ui';
 import {
   ErrorText,
@@ -212,6 +214,19 @@ const LoginScreen = ({route}) => {
             {showSessionName && (
               <Text>{`${I18n.t('Auth_Session')} : ${sessionActive?.id}`}</Text>
             )}
+            <View style={styles.row}>
+              <InfoBubble
+                indication={I18n.t('Auth_InfoSession')}
+                iconName="info"
+                badgeColor={Colors.cautionColor}
+                style={styles.infoBubble}
+                textIndicationStyle={styles.textIndicationStyle}
+              />
+              <Button
+                title={I18n.t('Auth_Create_Session')}
+                style={styles.button}
+              />
+            </View>
             {showUrlInput && (
               <UrlInput
                 value={url}
@@ -342,6 +357,19 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     width: '88%',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  button: {
+    width: '50%',
+  },
+  infoBubble: {
+    marginRight: '3%',
+  },
+  textIndicationStyle: {
+    width: Dimensions.get('window').height * 0.3,
   },
 });
 
