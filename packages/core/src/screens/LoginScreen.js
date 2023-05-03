@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -39,13 +39,8 @@ import {
   PopupSession,
 } from '../components';
 import {useSelector} from 'react-redux';
-import {useScannedValueByKey} from '../features/scannerSlice';
-import {useCameraScannerValueByKey} from '../features/cameraScannerSlice';
-
 import useTranslator from '../i18n/hooks/use-translator';
 import {sessionStorage, useSessions} from '../sessions';
-
-const urlScanKey = 'login_url';
 
 const LoginScreen = ({route}) => {
   const appVersion = route?.params?.version;
@@ -56,9 +51,7 @@ const LoginScreen = ({route}) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const {error, baseUrl} = useSelector(state => state.auth);
-  const scannedValue = useScannedValueByKey(urlScanKey);
-  const scanData = useCameraScannerValueByKey(urlScanKey);
+  const {error} = useSelector(state => state.auth);
 
   const {sessionList, sessionActive} = useSessions(enableConnectionSessions);
 
@@ -72,59 +65,12 @@ const LoginScreen = ({route}) => {
     }
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
-  const defaultUrl = useMemo(() => {
-    if (sessionList?.length > 0) {
-      return sessionActive?.url;
-    }
-
-    if (baseUrl != null) {
-      return baseUrl;
-    }
-    if (modeDebug) {
-      return testInstanceConfig?.defaultUrl;
-    }
-
-    return releaseInstanceConfig?.url;
-  }, [
-    baseUrl,
-    modeDebug,
-    releaseInstanceConfig?.url,
-    sessionActive?.url,
-    sessionList,
-    testInstanceConfig?.defaultUrl,
-  ]);
-
-  const [url, setUrl] = useState(defaultUrl || '');
-  const [username, setUsername] = useState(
-    sessionList?.length > 0
-      ? sessionActive?.username
-      : modeDebug
-      ? testInstanceConfig?.defaultUsername
-      : '',
-  );
+  const [url] = useState('');
 
   const [popupCreateSessionIsOpen, setPopupCreateSessionIsOpen] =
     useState(false);
   const [popupSessionIsOpen, setPopupSessionIsOpen] = useState(false);
   const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
-
-  const parseQrCode = useCallback(scanValue => {
-    if (scanValue.includes('username') === true) {
-      const parseScannnedData = JSON.parse(scanValue);
-      setUrl(parseScannnedData.url);
-      setUsername(parseScannnedData.username);
-    } else {
-      setUrl(scanValue);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (scannedValue) {
-      parseQrCode(scannedValue);
-    } else if (scanData?.value != null) {
-      parseQrCode(scanData?.value);
-    }
-  }, [parseQrCode, scanData, scannedValue]);
 
   const changeActiveSession = useCallback(sessionId => {
     sessionStorage.changeActiveSession({sessionId});
@@ -135,13 +81,28 @@ const LoginScreen = ({route}) => {
     sessionStorage.removeSession({sessionId});
   }, []);
 
-  const showSessionName = useMemo(() => {
-    if (sessionActive == null) {
-      return false;
-    }
+  const renderChangeSessionButton = () => {
+    if (
+      (!sessionActive && sessionList?.length === 1) ||
+      sessionList?.length > 1
+    ) {
+      return (
+        <View style={styles.row}>
+          <View style={styles.bubble}>
+            <Text>{sessionList.length}</Text>
+          </View>
 
-    return username === sessionActive.username && url === sessionActive.url;
-  }, [sessionActive, url, username]);
+          <Button
+            title={I18n.t('Auth_Change_Session')}
+            onPress={() => {
+              setPopupSessionListIsOpen(true);
+            }}
+            style={styles.buttonChangeSession}
+          />
+        </View>
+      );
+    }
+  };
 
   return (
     <Screen>
@@ -152,9 +113,6 @@ const LoginScreen = ({route}) => {
             <View style={styles.imageContainer}>
               <LogoImage url={url} />
             </View>
-            {showSessionName && (
-              <Text>{`${I18n.t('Auth_Session')} : ${sessionActive?.id}`}</Text>
-            )}
             {sessionActive && (
               <Button
                 title={sessionActive.id}
@@ -164,21 +122,15 @@ const LoginScreen = ({route}) => {
                 style={styles.button}
               />
             )}
-            {sessionList?.length > 1 && (
-              <View style={styles.row}>
-                <View style={styles.bubble}>
-                  <Text>{sessionList.length}</Text>
-                </View>
-
-                <Button
-                  title={I18n.t('Auth_Change_Session')}
-                  onPress={() => {
-                    setPopupSessionListIsOpen(true);
-                  }}
-                  style={styles.buttonChangeSession}
-                />
-              </View>
+            {!sessionActive && sessionList?.length > 1 && (
+              <Button
+                title={I18n.t('Auth_No_Active_Session')}
+                onPress={() => {}}
+                style={styles.buttonDisabled}
+                disabled={true}
+              />
             )}
+            {renderChangeSessionButton()}
             <View style={styles.row}>
               <InfoBubble
                 indication={I18n.t('Auth_InfoSession')}
@@ -207,7 +159,6 @@ const LoginScreen = ({route}) => {
               releaseInstanceConfig={releaseInstanceConfig}
             />
             <PopupSession
-              defaultUrl={defaultUrl}
               enableConnectionSessions={enableConnectionSessions}
               sessionActive={sessionActive}
               error={error}
@@ -309,6 +260,10 @@ const getStyles = Colors =>
       position: 'absolute',
       left: '-10%',
       top: '25%',
+    },
+    buttonDisabled: {
+      width: '50%',
+      backgroundColor: Colors.secondaryColor.background_light,
     },
   });
 

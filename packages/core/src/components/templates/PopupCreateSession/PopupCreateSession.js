@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Icon, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
@@ -35,6 +35,8 @@ import {useScannerSelector} from '../../../features/scannerSlice';
 import {login} from '../../../features/authSlice';
 import {ErrorText, LoginButton} from '../../molecules';
 import {sessionStorage, useSessions} from '../../../sessions';
+import {useScannedValueByKey} from '../../../features/scannerSlice';
+import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 
 const urlScanKey = 'login_url';
 
@@ -61,6 +63,8 @@ const PopupCreateSession = ({
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
+  const scannedValue = useScannedValueByKey(urlScanKey);
+  const scanData = useCameraScannerValueByKey(urlScanKey);
   const {sessionList} = useSessions(enableConnectionSessions);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -82,6 +86,24 @@ const PopupCreateSession = ({
   ]);
 
   const [url, setUrl] = useState(defaultUrl || '');
+
+  const parseQrCode = useCallback(scanValue => {
+    if (scanValue.includes('username') === true) {
+      const parseScannnedData = JSON.parse(scanValue);
+      setUrl(parseScannnedData.url);
+      setUsername(parseScannnedData.username);
+    } else {
+      setUrl(scanValue);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (scannedValue) {
+      parseQrCode(scannedValue);
+    } else if (scanData?.value != null) {
+      parseQrCode(scanData?.value);
+    }
+  }, [parseQrCode, scanData, scannedValue]);
 
   const nameSessionAlreadyExist = useMemo(() => {
     if (!Array.isArray(sessionList) || sessionList?.length === 0) {
