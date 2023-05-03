@@ -116,7 +116,7 @@ const PopupCreateSession = ({
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
 
-    if (enableConnectionSessions) {
+    if (enableConnectionSessions && error === null) {
       sessionStorage.addSession({
         session: {
           id: sessionName,
@@ -133,6 +133,7 @@ const PopupCreateSession = ({
     sessionName,
     url,
     username,
+    error,
   ]);
 
   return (

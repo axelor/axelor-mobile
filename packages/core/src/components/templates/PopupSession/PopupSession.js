@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {Icon, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, PopUp, useThemeColor, Button} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {PasswordInput, UrlInput, UsernameInput} from '../../organisms';
 import {useDispatch, useSelector} from 'react-redux';
@@ -38,6 +38,7 @@ const PopupSession = ({
   showUrlInput,
   error,
   sessionActive,
+  removeSession,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -64,6 +65,11 @@ const PopupSession = ({
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
   }, [dispatch, password, url, username]);
+
+  const onPressDelSession = () => {
+    removeSession(sessionActive?.id);
+    setPopupIsOpen(false);
+  };
 
   return (
     <PopUp
@@ -120,6 +126,11 @@ const PopupSession = ({
         ) : (
           <LoginButton onPress={onPressLogin} disabled={loading} />
         )}
+        <Button
+          style={styles.delButton}
+          title={I18n.t('Auth_Delete_Session')}
+          onPress={onPressDelSession}
+        />
       </View>
     </PopUp>
   );
@@ -141,6 +152,13 @@ const getStyles = Colors =>
       width: '90%',
     },
     input: {width: '100%'},
+    delButton: {
+      backgroundColor: Colors.secondaryColor.background_light,
+      marginTop: 15,
+      width: 150,
+      height: 30,
+      elevation: 5,
+    },
   });
 
 export default PopupSession;

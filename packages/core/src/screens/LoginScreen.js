@@ -165,6 +165,7 @@ const LoginScreen = ({route}) => {
               popupIsOpen={popupSessionIsOpen}
               setPopupIsOpen={setPopupSessionIsOpen}
               showUrlInput={showUrlInput}
+              removeSession={removeSession}
             />
             <PopupSessionList
               changeActiveSession={changeActiveSession}

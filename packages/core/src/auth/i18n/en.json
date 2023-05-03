@@ -16,6 +16,7 @@
   "Auth_Session_Name_Aleary_Exist": "Session name already exists",
   "Auth_Create_Session": "Create a session",
   "Auth_No_Active_Session": "No active session",
+  "Auth_Delete_Session": "Delete session",
   "Auth_InfoSession": "To connect to the mobile application, you must create a session by entering the url of your instance and your username and password. Once you have created your first session, you will be able to log in more easily by entering only the password. You can also manage a set of sessions.",
   "User_User": "User",
   "User_VirtualKeyboardConfig": "Hide virtual keyboard",
