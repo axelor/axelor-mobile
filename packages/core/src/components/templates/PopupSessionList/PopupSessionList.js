@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {
   Text,
@@ -26,20 +26,27 @@ import {
   HorizontalRule,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {sessionStorage} from '../../../sessions';
 
-const PopupSessionList = ({
-  popupIsOpen,
-  setPopupIsOpen,
-  sessionList,
-  changeActiveSession = () => {},
-  removeSession = () => {},
-}) => {
+const PopupSessionList = ({popupIsOpen, setPopupIsOpen, sessionList}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const sessions = useMemo(() => sessionList, [sessionList]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const changeActiveSession = useCallback(
+    sessionId => {
+      sessionStorage.changeActiveSession({sessionId});
+      setPopupIsOpen(false);
+    },
+    [setPopupIsOpen],
+  );
+
+  const removeSession = useCallback(sessionId => {
+    sessionStorage.removeSession({sessionId});
+  }, []);
 
   if (!Array.isArray(sessions) || sessions?.length === 0) {
     return null;

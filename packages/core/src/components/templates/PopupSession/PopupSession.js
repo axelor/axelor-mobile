@@ -29,6 +29,7 @@ import {
 import {useScannerSelector} from '../../../features/scannerSlice';
 import {login} from '../../../features/authSlice';
 import {ErrorText, LoginButton} from '../../molecules';
+import {sessionStorage} from '../../../sessions';
 
 const urlScanKey = 'login_url';
 
@@ -38,7 +39,6 @@ const PopupSession = ({
   showUrlInput,
   error,
   sessionActive,
-  removeSession,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -65,6 +65,10 @@ const PopupSession = ({
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
   }, [dispatch, password, url, username]);
+
+  const removeSession = useCallback(sessionId => {
+    sessionStorage.removeSession({sessionId});
+  }, []);
 
   const onPressDelSession = () => {
     removeSession(sessionActive?.id);

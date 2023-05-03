@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -40,7 +40,7 @@ import {
 } from '../components';
 import {useSelector} from 'react-redux';
 import useTranslator from '../i18n/hooks/use-translator';
-import {sessionStorage, useSessions} from '../sessions';
+import {useSessions} from '../sessions';
 
 const LoginScreen = ({route}) => {
   const appVersion = route?.params?.version;
@@ -71,15 +71,6 @@ const LoginScreen = ({route}) => {
     useState(false);
   const [popupSessionIsOpen, setPopupSessionIsOpen] = useState(false);
   const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
-
-  const changeActiveSession = useCallback(sessionId => {
-    sessionStorage.changeActiveSession({sessionId});
-    setPopupSessionListIsOpen(false);
-  }, []);
-
-  const removeSession = useCallback(sessionId => {
-    sessionStorage.removeSession({sessionId});
-  }, []);
 
   const renderChangeSessionButton = () => {
     if (
@@ -165,11 +156,8 @@ const LoginScreen = ({route}) => {
               popupIsOpen={popupSessionIsOpen}
               setPopupIsOpen={setPopupSessionIsOpen}
               showUrlInput={showUrlInput}
-              removeSession={removeSession}
             />
             <PopupSessionList
-              changeActiveSession={changeActiveSession}
-              removeSession={removeSession}
               sessionList={sessionList}
               popupIsOpen={popupSessionListIsOpen}
               setPopupIsOpen={setPopupSessionListIsOpen}
