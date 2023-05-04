@@ -73,7 +73,20 @@ const InternalMoveListScreen = ({navigation}) => {
   };
 
   const fetchInternalMovesAPI = useCallback(
+    page => {
+      dispatch(
+        searchInternalMoves({
+          searchValue: filter,
+          page: page,
+        }),
+      );
+    },
+    [dispatch, filter],
+  );
+
+  const searchInternalMovesAPI = useCallback(
     ({page = 0, searchValue}) => {
+      setFilter(searchValue);
       dispatch(
         searchInternalMoves({
           searchValue: searchValue,
@@ -82,27 +95,6 @@ const InternalMoveListScreen = ({navigation}) => {
       );
     },
     [dispatch],
-  );
-
-  const scrollInternalMovesAPI = useCallback(
-    page => {
-      fetchInternalMovesAPI({
-        searchValue: filter,
-        page: page,
-      });
-    },
-    [fetchInternalMovesAPI, filter],
-  );
-
-  const searchInternalMovesAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      setFilter(searchValue);
-      fetchInternalMovesAPI({
-        searchValue: searchValue,
-        page: page,
-      });
-    },
-    [fetchInternalMovesAPI],
   );
 
   const filteredList = useMemo(
@@ -209,7 +201,7 @@ const InternalMoveListScreen = ({navigation}) => {
             onPress={() => showInternalMoveDetails(item)}
           />
         )}
-        fetchData={scrollInternalMovesAPI}
+        fetchData={fetchInternalMovesAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
