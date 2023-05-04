@@ -23,11 +23,11 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchWorkCenters} from '../../../features/workCentersSlice';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {searchMachines} from '../../../features/machinesSlice';
 
-const WorkCenterSearchBar = ({
-  placeholderKey = 'Manufacturing_WorkCenter',
+const MachineSearchBar = ({
+  placeholderKey = 'Manufacturing_Machine',
   defaultValue,
   onChange,
   scanKey,
@@ -39,24 +39,23 @@ const WorkCenterSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {workCenterList, loading, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.workCenters);
+  const {machineList, loading, moreLoadingProduct, isListEndProduct} =
+    useSelector(state => state.machines);
 
-  const fetchWorkCenterAPI = useCallback(
+  const fetchMachineAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchWorkCenters({page, searchValue}));
+      dispatch(searchMachines({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
-      objectList={workCenterList}
+      objectList={machineList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchWorkCenterAPI}
+      fetchData={fetchMachineAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loading}
@@ -69,4 +68,4 @@ const WorkCenterSearchBar = ({
   );
 };
 
-export default WorkCenterSearchBar;
+export default MachineSearchBar;

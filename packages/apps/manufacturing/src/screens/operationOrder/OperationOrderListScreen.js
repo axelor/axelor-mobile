@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {
-  AutoCompleteSearch,
   ChipSelect,
   HeaderContainer,
   Screen,
@@ -27,7 +26,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
   ScannerAutocompleteSearch,
   useDispatch,
@@ -39,8 +37,10 @@ import OperationOrder from '../../types/operation-order';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import {displayManufOrderSeq} from '../../utils/displayers';
 import {OperationOrderDetailsCard} from '../../components/organisms';
-import {searchMachines} from '../../features/machinesSlice';
-import {WorkCenterSearchBar} from '../../components/templates';
+import {
+  MachineSearchBar,
+  WorkCenterSearchBar,
+} from '../../components/templates';
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
@@ -51,9 +51,8 @@ function OperationOrderListScreen({navigation}) {
     state => state.operationOrder,
   );
   const {workCenterList} = useSelector(state => state.workCenters);
-  const {machineList} = useSelector(state => state.machines);
   const [workCenter, setWorkCenter] = useState(null);
-  const [machine, setMachine] = useState(null);
+  const [machine] = useState(null);
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
@@ -110,13 +109,6 @@ function OperationOrderListScreen({navigation}) {
           page: page,
         }),
       );
-    },
-    [dispatch],
-  );
-
-  const fetchMachinesAPI = useCallback(
-    searchValue => {
-      dispatch(searchMachines({searchValue: searchValue}));
     },
     [dispatch],
   );
@@ -178,25 +170,13 @@ function OperationOrderListScreen({navigation}) {
             ]}
           />
         }>
-        {/*<AutoCompleteSearch
-          objectList={workCenterList}
-          value={workCenter}
-          onChangeValue={item => setWorkCenter(item)}
-          fetchData={fetchWorkCentersAPI}
-          displayValue={displayItemName}
-          placeholder={I18n.t('Manufacturing_WorkCenter')}
-        />*/}
         <WorkCenterSearchBar
           onChange={setWorkCenter}
           defaultValue={workCenterList}
         />
-        <AutoCompleteSearch
-          objectList={machineList}
-          value={machine}
-          onChangeValue={item => setMachine(item)}
-          fetchData={fetchMachinesAPI}
-          displayValue={displayItemName}
-          placeholder={I18n.t('Manufacturing_Machine')}
+        <MachineSearchBar
+          onChange={setWorkCenter}
+          defaultValue={workCenterList}
         />
       </HeaderContainer>
       <ScrollList
