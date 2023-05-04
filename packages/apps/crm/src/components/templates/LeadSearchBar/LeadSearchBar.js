@@ -23,14 +23,13 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchWorkCenters} from '../../../features/workCentersSlice';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {fetchLeads} from '../../../features/leadSlice';
 
-const WorkCenterSearchBar = ({
-  placeholderKey = 'Manufacturing_WorkCenter',
+const LeadSearchBar = ({
+  placeholderKey = 'Crm_Leads',
   defaultValue,
   onChange,
-  scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
@@ -39,35 +38,35 @@ const WorkCenterSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {workCenterList, loading, moreLoading, isListEnd} = useSelector(
-    state => state.workCenters,
+  const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
+    state => state.lead,
   );
 
-  const fetchWorkCenterAPI = useCallback(
+  const fetLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchWorkCenters({page, searchValue}));
+      dispatch(fetchLeads({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
-      objectList={workCenterList}
+      objectList={leadList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchWorkCenterAPI}
+      fetchData={fetLeadSearchBarAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
+      loadingList={loadingLead}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      scanKeySearch={'czecz'}
     />
   );
 };
 
-export default WorkCenterSearchBar;
+export default LeadSearchBar;

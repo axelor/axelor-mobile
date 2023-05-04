@@ -39,8 +39,9 @@ const MachineSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {machineList, loading, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.machines);
+  const {machineList, loading, moreLoading, isListEnd} = useSelector(
+    state => state.machines,
+  );
 
   const fetchMachineAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -59,8 +60,8 @@ const MachineSearchBar = ({
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loading}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
