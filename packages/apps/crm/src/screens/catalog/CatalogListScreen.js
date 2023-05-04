@@ -21,7 +21,6 @@ import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
-  AutoCompleteSearch,
   ScrollList,
   MultiValuePicker,
   useThemeColor,
@@ -32,6 +31,7 @@ import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
 import {CatalogCard} from '../../components';
 import Catalog from '../../types/catalog';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
+import {CatalogsSearchBar} from '../../components/templates';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -45,8 +45,6 @@ const CatalogListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(catalogList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filter, setFilter] = useState(null);
-  const [catalog, setCatalog] = useState(null);
 
   const catalogTypeListItems = useMemo(() => {
     return catalogTypeList
@@ -62,15 +60,7 @@ const CatalogListScreen = ({navigation}) => {
 
   const fetchCatalogAPI = useCallback(
     page => {
-      dispatch(fetchCatalog({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchCatalogFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchCatalog({searchValue: searchValue, page: 0}));
+      dispatch(fetchCatalog({page: page}));
     },
     [dispatch],
   );
@@ -123,14 +113,11 @@ const CatalogListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            <AutoCompleteSearch
-              objectList={catalogList}
-              value={catalog}
-              onChangeValue={setCatalog}
-              fetchData={fetchCatalogFilter}
-              placeholder={I18n.t('Crm_Catalogs')}
+            <CatalogsSearchBar
+              onChange={() => {}}
+              defaultValue={catalogList}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
             <MultiValuePicker
               listItems={catalogTypeListItems}
