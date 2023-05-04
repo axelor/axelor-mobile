@@ -25,11 +25,11 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchContact} from '../../features/contactSlice';
 import {PartnerCard} from '../../components';
+import {ContactSearchBar} from '../../components/templates';
 
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,22 +43,12 @@ const ContactListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(contactList);
   const [assigned, setAssigned] = useState(false);
-  const [contact, setContact] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchContactAPI = useCallback(
     page => {
-      dispatch(fetchContact({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchContactFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchContact({searchValue: searchValue, page: 0}));
+      dispatch(fetchContact({page: page}));
     },
     [dispatch],
   );
@@ -95,14 +85,11 @@ const ContactListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={contactList}
-              value={contact}
-              onChangeValue={setContact}
-              fetchData={fetchContactFilter}
-              placeholder={I18n.t('Crm_Contacts')}
+            <ContactSearchBar
+              onChange={() => {}}
+              defaultValue={contactList}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
           </View>
         }
