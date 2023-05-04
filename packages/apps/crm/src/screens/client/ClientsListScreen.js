@@ -25,11 +25,11 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchClients} from '../../features/clientSlice';
 import {PartnerCard} from '../../components';
+import {ClientSearchBar} from '../../components/templates';
 
 const CLientsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,22 +43,12 @@ const CLientsListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(clientList);
   const [assigned, setAssigned] = useState(false);
-  const [client, setClient] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchClientAPI = useCallback(
     page => {
-      dispatch(fetchClients({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchClientFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchClients({searchValue: searchValue, page: 0}));
+      dispatch(fetchClients({page: page}));
     },
     [dispatch],
   );
@@ -95,14 +85,11 @@ const CLientsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={clientList}
-              value={client}
-              onChangeValue={setClient}
-              fetchData={fetchClientFilter}
-              placeholder={I18n.t('Crm_Clients')}
+            <ClientSearchBar
+              onChange={() => {}}
+              defaultValue={clientList}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
           </View>
         }
