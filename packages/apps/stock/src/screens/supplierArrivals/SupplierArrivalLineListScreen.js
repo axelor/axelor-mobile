@@ -27,17 +27,19 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   checkNullString,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {SupplierArrivalLineCard, StockMoveHeader} from '../../components';
+import {
+  SupplierArrivalLineCard,
+  StockMoveHeader,
+  SupplierArrivalLineSearchBar,
+} from '../../components';
 import {fetchSupplierArrivalLines} from '../../features/supplierArrivalLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
 import {useSupplierLinesWithRacks} from '../../hooks';
-import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-line-list';
 
@@ -93,10 +95,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
       skipVerification,
       navigation,
     });
-  };
-
-  const handleLineSearch = item => {
-    handleShowLine(item, true);
   };
 
   const fetchSupplierLinesAPI = useCallback(
@@ -197,15 +195,13 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
+        <SupplierArrivalLineSearchBar
+          defaultValue={filteredList}
+          scanKey={scanKey}
+          onChange={filterLinesAPI}
+          showDetailsPopup={false}
           oneFilter={true}
+          isFocus={true}
         />
       </HeaderContainer>
       <ScrollList

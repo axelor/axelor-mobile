@@ -22,6 +22,7 @@ export {default as SupplierArrivalHeader} from './SupplierArrivalHeader/Supplier
 export {default as SupplierArrivalLineButtons} from './SupplierArrivalLineButtons/SupplierArrivalLineButtons';
 export {default as SupplierArrivalLineCard} from './SupplierArrivalLineCard/SupplierArrivalLineCard';
 export {default as SupplierArrivalLineQuantityCard} from './SupplierArrivalLineQuantityCard/SupplierArrivalLineQuantityCard';
+export {default as SupplierArrivalLineSearchBar} from './SupplierArrivalLineSearchBar/SupplierArrivalLineSearchBar';
 export {default as SupplierArrivalMovementIndicationCard} from './SupplierArrivalMovementIndicationCard/SupplierArrivalMovementIndicationCard';
 export {default as SupplierArrivalProductName} from './SupplierArrivalProductName/SupplierArrivalProductName';
 export {default as SupplierArrivalSearchLineContainer} from './SupplierArrivalSearchLineContainer/SupplierArrivalSearchLineContainer';
