@@ -27,19 +27,19 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {SupplierArrivalCard} from '../../components';
-import {searchStockLocations} from '../../features/stockLocationSlice';
-import {filterSuppliers} from '../../features/partnerSlice';
+import {
+  PartnerSearchBar,
+  StockLocationSearchBar,
+  SupplierArrivalCard,
+} from '../../components';
 import {searchSupplierArrivals} from '../../features/supplierArrivalSlice';
-import {displayPartner, displayStockMoveSeq} from '../../utils/displayers';
+import {displayStockMoveSeq} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 
 const stockLocationScanKey = 'stock-location_supplier-arrival-list';
@@ -47,10 +47,7 @@ const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 const SupplierArrivalListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {stockLocationList} = useSelector(state => state.stockLocation);
   const [stockLocation, setStockLocation] = useState(null);
-  const {supplierList} = useSelector(state => state.stock_partner);
-  const {user} = useSelector(state => state.user);
   const [partner, setPartner] = useState(null);
   const {loading, moreLoading, isListEnd, supplierArrivalsList} = useSelector(
     state => state.supplierArrival,
@@ -95,26 +92,6 @@ const SupplierArrivalListScreen = ({navigation}) => {
     }
   };
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const fetchPartnerAPI = useCallback(
-    filterValue => {
-      dispatch(filterSuppliers({searchValue: filterValue}));
-    },
-    [dispatch],
-  );
-
   const fetchSupplierArrivalsAPI = useCallback(
     page => {
       dispatch(
@@ -128,12 +105,12 @@ const SupplierArrivalListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchSupplierArrivals({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
@@ -178,22 +155,17 @@ const SupplierArrivalListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={stockLocation}
+          onChange={setStockLocation}
         />
-        <AutoCompleteSearch
-          objectList={supplierList}
-          value={partner}
-          onChangeValue={item => setPartner(item)}
-          fetchData={fetchPartnerAPI}
-          displayValue={displayPartner}
-          placeholder={I18n.t('Stock_Supplier')}
+        <PartnerSearchBar
+          defaultValue={partner}
+          onChange={setPartner}
+          placeholderKey="Stock_Supplier"
+          isClient={false}
         />
       </HeaderContainer>
       <ScrollList

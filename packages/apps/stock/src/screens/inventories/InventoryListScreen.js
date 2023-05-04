@@ -27,16 +27,13 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {InventoryCard} from '../../components';
-import {searchStockLocations} from '../../features/stockLocationSlice';
+import {InventoryCard, StockLocationSearchBar} from '../../components';
 import {searchInventories} from '../../features/inventorySlice';
 import {displayInventorySeq} from '../../utils/displayers';
 import Inventory from '../../types/inventory';
@@ -52,7 +49,6 @@ const InventoryListScreen = ({navigation}) => {
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
-  const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [filteredList, setFilteredList] = useState(inventoryList);
@@ -92,19 +88,6 @@ const InventoryListScreen = ({navigation}) => {
     }
   };
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
   const fetchInventoriesAPI = useCallback(
     page => {
       dispatch(searchInventories({searchValue: filter, page: page}));
@@ -113,12 +96,12 @@ const InventoryListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchInventories({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
@@ -181,14 +164,11 @@ const InventoryListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={stockLocation}
+          onChange={setStockLocation}
         />
       </HeaderContainer>
       <ScrollList

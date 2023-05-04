@@ -104,12 +104,12 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchDeliveries({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
