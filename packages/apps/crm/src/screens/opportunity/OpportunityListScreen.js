@@ -25,7 +25,6 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -35,6 +34,7 @@ import {
   fetchOpportunityStatus,
 } from '../../features/opportunitySlice';
 import {Opportunity} from '../../types';
+import {OpportunitySearchBar} from '../../components/templates';
 
 const OpportunityListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -52,8 +52,6 @@ const OpportunityListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(opportunityList);
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
-  const [opportunity, setOpportunity] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -72,15 +70,7 @@ const OpportunityListScreen = ({navigation}) => {
 
   const fetchOpportunityAPI = useCallback(
     page => {
-      dispatch(fetchOpportunities({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchOpportunityFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchOpportunities({searchValue: searchValue, page: 0}));
+      dispatch(fetchOpportunities({page: page}));
     },
     [dispatch],
   );
@@ -140,14 +130,11 @@ const OpportunityListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={opportunityList}
-              value={opportunity}
-              onChangeValue={setOpportunity}
-              fetchData={fetchOpportunityFilter}
-              placeholder={I18n.t('Crm_Opportunity')}
+            <OpportunitySearchBar
+              onChange={() => {}}
+              defaultValue={opportunityList}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
             <MultiValuePicker
               listItems={opportunityStatusListItems}
