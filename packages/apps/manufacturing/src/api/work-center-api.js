@@ -21,11 +21,11 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-export async function searchWorkCenterFilter({searchValue = null}) {
+export async function searchWorkCenterFilter({searchValue = null, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.WorkCenter',
     criteria: [getSearchCriterias('manufacturing_workCenter', searchValue)],
     fieldKey: 'manufacturing_workCenter',
-    page: 0,
+    page: page,
   });
 }

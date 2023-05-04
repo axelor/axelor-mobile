@@ -39,8 +39,8 @@ import OperationOrder from '../../types/operation-order';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import {displayManufOrderSeq} from '../../utils/displayers';
 import {OperationOrderDetailsCard} from '../../components/organisms';
-import {searchWorkCenters} from '../../features/workCentersSlice';
 import {searchMachines} from '../../features/machinesSlice';
+import {WorkCenterSearchBar} from '../../components/templates';
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
@@ -102,21 +102,14 @@ function OperationOrderListScreen({navigation}) {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         fetchOperationOrders({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
-    },
-    [dispatch],
-  );
-
-  const fetchWorkCentersAPI = useCallback(
-    searchValue => {
-      dispatch(searchWorkCenters({searchValue: searchValue}));
     },
     [dispatch],
   );
@@ -185,13 +178,17 @@ function OperationOrderListScreen({navigation}) {
             ]}
           />
         }>
-        <AutoCompleteSearch
+        {/*<AutoCompleteSearch
           objectList={workCenterList}
           value={workCenter}
           onChangeValue={item => setWorkCenter(item)}
           fetchData={fetchWorkCentersAPI}
           displayValue={displayItemName}
           placeholder={I18n.t('Manufacturing_WorkCenter')}
+        />*/}
+        <WorkCenterSearchBar
+          onChange={setWorkCenter}
+          defaultValue={workCenterList}
         />
         <AutoCompleteSearch
           objectList={machineList}
