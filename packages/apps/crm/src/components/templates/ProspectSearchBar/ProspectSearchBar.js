@@ -24,10 +24,10 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchLeads} from '../../../features/leadSlice';
+import {fetchProspects} from '../../../features/prospectSlice';
 
-const LeadSearchBar = ({
-  placeholderKey = 'Crm_Leads',
+const ProspectSearchBar = ({
+  placeholderKey = 'Crm_Prospects',
   defaultValue,
   onChange,
   showDetailsPopup = true,
@@ -38,27 +38,27 @@ const LeadSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
-    state => state.lead,
+  const {prospectList, loading, moreLoading, isListEnd} = useSelector(
+    state => state.prospect,
   );
 
-  const fetchLeadSearchBarAPI = useCallback(
+  const fetchProspectSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchLeads({page, searchValue}));
+      dispatch(fetchProspects({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
-      objectList={leadList}
+      objectList={prospectList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchLeadSearchBarAPI}
+      fetchData={fetchProspectSearchBarAPI}
       displayValue={displayItemName}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingLead}
+      loadingList={loading}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}
@@ -68,4 +68,4 @@ const LeadSearchBar = ({
   );
 };
 
-export default LeadSearchBar;
+export default ProspectSearchBar;

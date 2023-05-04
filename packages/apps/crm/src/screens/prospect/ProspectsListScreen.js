@@ -25,11 +25,11 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {PartnerCard} from '../../components';
 import {fetchProspects} from '../../features/prospectSlice';
+import {ProspectSearchBar} from '../../components/templates';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,22 +43,12 @@ const ProspectsListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(prospectList);
   const [assigned, setAssigned] = useState(false);
-  const [prospect, setProspect] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchProspectAPI = useCallback(
     page => {
-      dispatch(fetchProspects({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchProspectFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchProspects({searchValue: searchValue, page: 0}));
+      dispatch(fetchProspects({page: page}));
     },
     [dispatch],
   );
@@ -95,14 +85,11 @@ const ProspectsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={prospectList}
-              value={prospect}
-              onChangeValue={setProspect}
-              fetchData={fetchProspectFilter}
-              placeholder={I18n.t('Crm_Prospects')}
+            <ProspectSearchBar
+              onChange={() => {}}
+              defaultValue={prospectList}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
           </View>
         }
