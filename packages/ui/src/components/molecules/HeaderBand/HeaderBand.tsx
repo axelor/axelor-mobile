@@ -37,6 +37,7 @@ const getStyles = (color: Color) =>
       backgroundColor: color.background_light,
       justifyContent: 'center',
       alignItems: 'center',
+      height: 24,
     },
     text: {
       maxWidth: '80%',

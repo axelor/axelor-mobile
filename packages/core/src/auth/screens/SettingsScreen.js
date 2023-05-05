@@ -40,7 +40,7 @@ import {
 } from '../../features/onlineSlice';
 import {useHeaderBands} from '../../header';
 
-const SettingsScreen = ({route, children}) => {
+const SettingsScreen = ({route, children, navigation}) => {
   const {message} = useSelector(state => state.config);
   const {
     showFilter,
@@ -60,7 +60,8 @@ const SettingsScreen = ({route, children}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {addHeaderBand} = useHeaderBands();
+  // TODO: Please remove this after test
+  const {addHeaderBand, updateHeaderBand} = useHeaderBands(navigation);
 
   useEffect(() => {
     if (message) {
@@ -70,9 +71,18 @@ const SettingsScreen = ({route, children}) => {
     }
   }, [message, dispatch, setActivityIndicator]);
 
+  // TODO: Please remove this after test
   addHeaderBand({
+    key: 'setting_env',
     text: 'setting',
     color: Colors.infoColor,
+    showIf: true,
+  });
+
+  // TODO: Please remove this after test
+  updateHeaderBand('dev_env', {
+    text: 'dev update',
+    color: Colors.warningColor,
     showIf: true,
   });
 

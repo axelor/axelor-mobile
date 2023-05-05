@@ -46,7 +46,7 @@ export interface ActionType {
 }
 
 export interface HeaderBandItem {
-  key?: string;
+  key: string;
   color: Color;
   text: string;
   showIf?: boolean;

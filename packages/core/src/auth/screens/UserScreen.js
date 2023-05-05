@@ -61,7 +61,9 @@ const UserScreen = ({children}) => {
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
   const {addHeaderBand} = useHeaderBands();
 
+  // TODO: Please remove this after test
   addHeaderBand({
+    key: 'dev_env',
     text: 'dev',
     color: Colors.errorColor,
     showIf: true,

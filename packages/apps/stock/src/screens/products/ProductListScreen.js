@@ -19,7 +19,12 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useHeaderBands,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ProductCard, ProductSearchBar} from '../../components';
 import {searchProducts} from '../../features/productSlice';
 import {fetchProductsAvailability} from '../../features/productIndicatorsSlice';
@@ -37,6 +42,12 @@ const ProductListScreen = ({navigation}) => {
 
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
+
+  // TODO: Please remove this after test
+  const {removeHeaderBand} = useHeaderBands(navigation);
+
+  // TODO: Please remove this after test
+  removeHeaderBand('setting_env');
 
   const fetchProductsAPI = useCallback(
     (page = 0) => {

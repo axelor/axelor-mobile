@@ -16,6 +16,10 @@ interface HeaderBandListProps {
 }
 
 const HeaderBandList = ({items}: HeaderBandListProps) => {
+  if (items == null || items.length === 0) {
+    return null;
+  }
+
   return (
     <View>
       {items.map(item => (
