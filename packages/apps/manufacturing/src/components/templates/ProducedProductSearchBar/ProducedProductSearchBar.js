@@ -24,49 +24,55 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProducts} from '../../../features/productSlice';
+import {fetchProducedProducts} from '../../../features/prodProductSlice';
 
-const ProductSearchBar = ({
-  placeholderKey = 'Stock_Product',
-  defaultValue = null,
+const ProducedProductSearchBar = ({
+  placeholderKey = 'Manufacturing_Product',
+  defaultValue,
   onChange,
-  scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  scanKey,
+  manufOrder,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
+  const {producedProductList, loadingProducedProducts, moreLoading, isListEnd} =
+    useSelector(state => state.prodProducts);
 
-  const fetchProductsAPI = useCallback(
+  const fetchProducedProductSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProducts({page, searchValue}));
+      dispatch(
+        fetchProducedProducts({
+          manufOrderId: manufOrder?.id,
+          manufOrderVersion: manufOrder?.version,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, manufOrder],
   );
 
   return (
     <ScannerAutocompleteSearch
-      objectList={productList}
+      objectList={producedProductList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchProductsAPI}
+      fetchData={fetchProducedProductSearchBarAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingProduct}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      loadingList={loadingProducedProducts}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      scanKeySearch={scanKey}
     />
   );
 };
 
-export default ProductSearchBar;
+export default ProducedProductSearchBar;

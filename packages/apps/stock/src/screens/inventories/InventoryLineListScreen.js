@@ -27,16 +27,18 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   checkNullString,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {InventoryHeader, InventoryLineCard} from '../../components';
+import {
+  InventoryHeader,
+  InventoryLineCard,
+  IventoryLineSearchBar,
+} from '../../components';
 import {fetchInventoryLines} from '../../features/inventoryLineSlice';
 import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
-import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
@@ -96,10 +98,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
     [dispatch, inventory?.id],
   );
 
-  const filterLinesAPI = useCallback(
-    value => fetchInventoryLinesAPI({searchValue: value}),
-    [fetchInventoryLinesAPI],
-  );
   const scrollLinesAPI = useCallback(
     page => fetchInventoryLinesAPI({page}),
     [fetchInventoryLinesAPI],
@@ -173,15 +171,13 @@ const InventoryLineListScreen = ({route, navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
+        <IventoryLineSearchBar
+          onChange={handleLineSearch}
+          defaultValue={filteredList}
+          showDetailsPopup={false}
           oneFilter={true}
+          scanKeySearch={scanKey}
+          inventory={inventory}
         />
       </HeaderContainer>
       <ScrollList

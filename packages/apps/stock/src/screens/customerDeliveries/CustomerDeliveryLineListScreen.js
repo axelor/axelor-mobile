@@ -27,17 +27,19 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   checkNullString,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
+import {
+  CustomerDeliveryLineCard,
+  CustomerDeliveryLineSearchBar,
+  StockMoveHeader,
+} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
 import {useCustomerLinesWithRacks} from '../../hooks';
-import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
 
@@ -122,10 +124,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     [dispatch, customerDelivery.id],
   );
 
-  const filterLinesAPI = useCallback(
-    value => fetchDeliveryLinesAPI({searchValue: value}),
-    [fetchDeliveryLinesAPI],
-  );
   const scrollLinesAPI = useCallback(
     page => fetchDeliveryLinesAPI({page}),
     [fetchDeliveryLinesAPI],
@@ -198,15 +196,13 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={filteredList}
-          onChangeValue={handleLineSearch}
-          fetchData={filterLinesAPI}
-          displayValue={displayLine}
-          scanKeySearch={scanKey}
-          placeholder={I18n.t('Stock_SearchLine')}
-          isFocus={true}
+        <CustomerDeliveryLineSearchBar
+          customerDelivery={customerDelivery}
+          onChange={handleLineSearch}
+          defaultValue={filteredList}
+          showDetailsPopup={false}
           oneFilter={true}
+          scanKeySearch={scanKey}
         />
       </HeaderContainer>
       <ScrollList

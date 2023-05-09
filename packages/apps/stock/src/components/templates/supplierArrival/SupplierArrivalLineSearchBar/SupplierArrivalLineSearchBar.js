@@ -35,6 +35,7 @@ const SupplierArrivalLineSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  supplierArrival,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,12 +45,15 @@ const SupplierArrivalLineSearchBar = ({
 
   const fetchLineAPI = useCallback(
     ({page = 0, searchValue}) => {
-      console.log(searchValue);
       dispatch(
-        fetchSupplierArrivalLines({page: page, searchValue: searchValue}),
+        fetchSupplierArrivalLines({
+          supplierArrivalId: supplierArrival.id,
+          page: page,
+          searchValue: searchValue,
+        }),
       );
     },
-    [dispatch],
+    [dispatch, supplierArrival],
   );
 
   return (

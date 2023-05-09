@@ -18,15 +18,8 @@
 
 import React, {useCallback, useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {StockMoveHeader} from '../../components';
-import {searchProducts} from '../../features/productSlice';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {ProductSearchBar, StockMoveHeader} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_internal-move-select';
@@ -35,18 +28,10 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
   const internalMoveLine = route.params.internalMoveLine;
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {productList} = useSelector(state => state.product);
 
   const [isVisible, setVisible] = useState(false);
-
-  const fetchProductsAPI = useCallback(
-    filter => {
-      dispatch(searchProducts({searchValue: filter}));
-    },
-    [dispatch],
-  );
 
   const handleNavigate = useCallback(
     product => {
@@ -88,15 +73,10 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
           />
         }
       />
-      <ScannerAutocompleteSearch
-        objectList={productList}
-        onChangeValue={item => handleNavigate(item)}
-        fetchData={fetchProductsAPI}
-        displayValue={displayItemName}
-        scanKeySearch={productScanKey}
-        placeholder={I18n.t('Stock_Product')}
-        isFocus={true}
-        changeScreenAfter={true}
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleNavigate}
+        defaultValue={productList}
       />
       <PopUpOneButton
         visible={isVisible}

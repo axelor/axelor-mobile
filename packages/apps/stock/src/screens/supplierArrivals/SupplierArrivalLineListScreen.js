@@ -202,6 +202,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           showDetailsPopup={false}
           oneFilter={true}
           isFocus={true}
+          supplierArrival={supplierArrival}
         />
       </HeaderContainer>
       <ScrollList

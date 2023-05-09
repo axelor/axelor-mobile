@@ -16,18 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {StockMoveHeader} from '../../components';
-import {searchProducts} from '../../features/productSlice';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {ProductSearchBar, StockMoveHeader} from '../../components';
 import StockMove from '../../types/stock-move';
 
 const productScanKey = 'product_supplier-arrival-select';
@@ -36,17 +29,8 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLine} = route.params;
 
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
-  const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
-
-  const fetchProductsAPI = useCallback(
-    filter => {
-      dispatch(searchProducts({searchValue: filter}));
-    },
-    [dispatch],
-  );
 
   const handleProductSelection = item => {
     if (item !== null) {
@@ -92,15 +76,9 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
         }
       />
       <View style={styles.stockView}>
-        <ScannerAutocompleteSearch
-          objectList={productList}
-          onChangeValue={item => handleProductSelection(item)}
-          fetchData={fetchProductsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={productScanKey}
-          placeholder={I18n.t('Stock_Product')}
-          isFocus={true}
-          changeScreenAfter={true}
+        <ProductSearchBar
+          scanKey={productScanKey}
+          onChange={handleProductSelection}
         />
       </View>
       <PopUpOneButton

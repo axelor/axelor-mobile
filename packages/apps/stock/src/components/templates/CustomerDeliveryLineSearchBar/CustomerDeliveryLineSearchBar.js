@@ -24,49 +24,56 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProducts} from '../../../features/productSlice';
+import {fetchCustomerDeliveryLines} from '../../../features/customerDeliveryLineSlice';
 
-const ProductSearchBar = ({
-  placeholderKey = 'Stock_Product',
-  defaultValue = null,
+const CustomerDeliveryLineSearchBar = ({
+  placeholderKey = 'Stock_SearchLine',
+  defaultValue,
   onChange,
-  scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  scanKey,
+  customerDelivery,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
+  const {customerDeliveryLineList, loadingCDLines, moreLoading, isListEnd} =
+    useSelector(state => state.customerDeliveryLine);
 
-  const fetchProductsAPI = useCallback(
+  const fetchCustomerDeliverySearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProducts({page, searchValue}));
+      dispatch(
+        fetchCustomerDeliveryLines({
+          customerDeliveryId: customerDelivery.id,
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, customerDelivery],
   );
 
   return (
     <ScannerAutocompleteSearch
-      objectList={productList}
+      objectList={customerDeliveryLineList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchProductsAPI}
+      fetchData={fetchCustomerDeliverySearchBarAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingProduct}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      loadingList={loadingCDLines}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      scanKeySearch={scanKey}
     />
   );
 };
 
-export default ProductSearchBar;
+export default CustomerDeliveryLineSearchBar;

@@ -76,9 +76,13 @@ const InventorySearchLineContainer = ({}) => {
   };
 
   const fetchInventoryLinesAPI = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       dispatch(
-        fetchInventoryLines({inventoryId: inventory?.id, searchValue, page: 0}),
+        fetchInventoryLines({
+          inventoryId: inventory?.id,
+          searchValue,
+          page: page,
+        }),
       );
     },
     [dispatch, inventory],

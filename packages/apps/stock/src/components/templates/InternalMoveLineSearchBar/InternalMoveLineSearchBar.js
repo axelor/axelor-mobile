@@ -24,49 +24,56 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProducts} from '../../../features/productSlice';
+import {fetchInternalMoveLines} from '../../../features/internalMoveLineSlice';
 
-const ProductSearchBar = ({
-  placeholderKey = 'Stock_Product',
-  defaultValue = null,
+const InternalMoveLineSearchBar = ({
+  placeholderKey = 'Stock_SearchLine',
+  defaultValue,
   onChange,
-  scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  scanKey,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
+  const {internalMoveLineList, loadingIMLines, moreLoading, isListEnd} =
+    useSelector(state => state.internalMoveLine);
+  const {internalMove} = useSelector(state => state.internalMove);
 
-  const fetchProductsAPI = useCallback(
+  const fetchInternalMoveLineSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProducts({page, searchValue}));
+      dispatch(
+        fetchInternalMoveLines({
+          internalMoveId: internalMove?.id,
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, internalMove],
   );
 
   return (
     <ScannerAutocompleteSearch
-      objectList={productList}
+      objectList={internalMoveLineList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchProductsAPI}
+      fetchData={fetchInternalMoveLineSearchBarAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingProduct}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      loadingList={loadingIMLines}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      scanKeySearch={scanKey}
     />
   );
 };
 
-export default ProductSearchBar;
+export default InternalMoveLineSearchBar;

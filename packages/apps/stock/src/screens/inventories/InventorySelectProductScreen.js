@@ -16,17 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {InventoryHeader} from '../../components';
-import {searchProducts} from '../../features/productSlice';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {InventoryHeader, ProductSearchBar} from '../../components';
 import Inventory from '../../types/inventory';
 
 const productScanKey = 'product_inventory-select';
@@ -37,14 +30,6 @@ const InventorySelectProductScreen = ({route, navigation}) => {
   const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-
-  const fetchProductsAPI = useCallback(
-    filter => {
-      dispatch(searchProducts({searchValue: filter}));
-    },
-    [dispatch],
-  );
 
   const handleProductSelection = item => {
     if (item !== null) {
@@ -99,15 +84,10 @@ const InventorySelectProductScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScannerAutocompleteSearch
-        objectList={productList}
-        onChangeValue={item => handleProductSelection(item)}
-        fetchData={fetchProductsAPI}
-        displayValue={displayItemName}
-        scanKeySearch={productScanKey}
-        placeholder={I18n.t('Stock_Product')}
-        isFocus={true}
-        changeScreenAfter={true}
+      <ProductSearchBar
+        scanKey={productScanKey}
+        onChange={handleProductSelection}
+        defaultValue={productList}
       />
       <PopUpOneButton
         visible={isVisible}

@@ -27,12 +27,7 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {areObjectsEquals} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
@@ -40,6 +35,7 @@ import {
 } from '../../../components/organisms';
 import {fetchProducedProducts} from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
+import {ProducedProductSearchBar} from '../../../components';
 
 const productScanKey = 'product_manufacturing-order-produced-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
@@ -56,14 +52,17 @@ const ProducedProductListScreen = ({route, navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const dispatch = useDispatch();
 
-  const fetchProducedProductsAPI = useCallback(() => {
-    dispatch(
-      fetchProducedProducts({
-        manufOrderId: manufOrder?.id,
-        manufOrderVersion: manufOrder?.version,
-      }),
-    );
-  }, [dispatch, manufOrder]);
+  const fetchProducedProductsAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      dispatch(
+        fetchProducedProducts({
+          manufOrderId: manufOrder?.id,
+          manufOrderVersion: manufOrder?.version,
+        }),
+      );
+    },
+    [dispatch, manufOrder],
+  );
 
   const filterOnStatus = useCallback(
     list => {
@@ -142,13 +141,14 @@ const ProducedProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <ScannerAutocompleteSearch
-              objectList={producedProductList}
-              onChangeValue={() => {}}
-              fetchData={setProduct}
-              displayValue={item => item?.productName}
-              placeholder={I18n.t('Manufacturing_Product')}
-              scanKeySearch={productScanKey}
+            <ProducedProductSearchBar
+              defaultValue={producedProductList}
+              scanKey={productScanKey}
+              onChange={setProduct}
+              showDetailsPopup={false}
+              oneFilter={true}
+              isFocus={true}
+              manufOrder={manufOrder}
             />
           </>
         }

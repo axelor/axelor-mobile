@@ -24,49 +24,56 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProducts} from '../../../features/productSlice';
+import {fetchInventoryLines} from '../../../features/inventoryLineSlice';
 
-const ProductSearchBar = ({
-  placeholderKey = 'Stock_Product',
-  defaultValue = null,
+const IventoryLineSearchBar = ({
+  placeholderKey = 'Stock_SearchLine',
+  defaultValue,
   onChange,
-  scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  scanKey,
+  inventory,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
+  const {inventoryLineList, loadingInventoryLines, moreLoading, isListEnd} =
+    useSelector(state => state.inventoryLine);
 
-  const fetchProductsAPI = useCallback(
+  const fetchIventoryLineSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProducts({page, searchValue}));
+      dispatch(
+        fetchInventoryLines({
+          inventoryId: inventory?.id,
+          searchValue: searchValue,
+          page: page,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, inventory],
   );
 
   return (
     <ScannerAutocompleteSearch
-      objectList={productList}
+      objectList={inventoryLineList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchProductsAPI}
+      fetchData={fetchIventoryLineSearchBarAPI}
       displayValue={displayItemName}
-      scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingProduct}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      loadingList={loadingInventoryLines}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      scanKeySearch={scanKey}
     />
   );
 };
 
-export default ProductSearchBar;
+export default IventoryLineSearchBar;
