@@ -44,7 +44,7 @@ const ProductListScreen = ({navigation}) => {
   const [navigate, setNavigate] = useState(false);
 
   // TODO: Please remove this after test
-  const {removeHeaderBand} = useHeaderBands(navigation);
+  const {removeHeaderBand} = useHeaderBands();
 
   // TODO: Please remove this after test
   removeHeaderBand('setting_env');

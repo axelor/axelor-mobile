@@ -59,6 +59,7 @@ const UserScreen = ({children}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+  // TODO: Please remove this after test
   const {addHeaderBand} = useHeaderBands();
 
   // TODO: Please remove this after test

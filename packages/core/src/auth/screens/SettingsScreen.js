@@ -61,7 +61,7 @@ const SettingsScreen = ({route, children, navigation}) => {
   const dispatch = useDispatch();
 
   // TODO: Please remove this after test
-  const {addHeaderBand, updateHeaderBand} = useHeaderBands(navigation);
+  const {addHeaderBand, updateHeaderBand} = useHeaderBands();
 
   useEffect(() => {
     if (message) {
