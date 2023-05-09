@@ -84,7 +84,11 @@ const LoginScreen = ({route}) => {
           </View>
 
           <Button
-            title={I18n.t('Auth_Change_Session')}
+            title={
+              !sessionActive && sessionList?.length > 0
+                ? I18n.t('Auth_Choose_Session')
+                : I18n.t('Auth_Change_Session')
+            }
             onPress={() => {
               setPopupSessionListIsOpen(true);
             }}
@@ -113,7 +117,7 @@ const LoginScreen = ({route}) => {
                 style={styles.button}
               />
             )}
-            {!sessionActive && sessionList?.length > 1 && (
+            {!sessionActive && sessionList?.length > 0 && (
               <Button
                 title={I18n.t('Auth_No_Active_Session')}
                 onPress={() => {}}
@@ -161,6 +165,7 @@ const LoginScreen = ({route}) => {
               sessionList={sessionList}
               popupIsOpen={popupSessionListIsOpen}
               setPopupIsOpen={setPopupSessionListIsOpen}
+              setPopupSessionIsOpen={setPopupSessionIsOpen}
             />
             <View style={styles.copyright}>
               <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>

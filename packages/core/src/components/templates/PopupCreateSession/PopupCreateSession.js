@@ -214,7 +214,7 @@ const getStyles = Colors =>
     popupContainer: {
       flexDirection: 'column',
       alignItems: 'center',
-      width: '100%',
+      width: '120%',
     },
     closeIcon: {
       position: 'absolute',

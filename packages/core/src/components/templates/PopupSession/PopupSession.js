@@ -18,9 +18,15 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {Icon, PopUp, useThemeColor, Button} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  PopUp,
+  useThemeColor,
+  Button,
+  LabelText,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
-import {PasswordInput, UrlInput, UsernameInput} from '../../organisms';
+import {PasswordInput, UsernameInput} from '../../organisms';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   useScanActivator,
@@ -76,10 +82,7 @@ const PopupSession = ({
   };
 
   return (
-    <PopUp
-      visible={popupIsOpen}
-      title={I18n.t('Auth_Create_Session')}
-      style={styles.popup}>
+    <PopUp visible={popupIsOpen} title={sessionActive?.id} style={styles.popup}>
       <View style={styles.popupContainer}>
         <Icon
           name="times"
@@ -89,20 +92,12 @@ const PopupSession = ({
           style={styles.closeIcon}
         />
         <View>{error && <ErrorText message={error.message} />}</View>
-
         {showUrlInput && (
-          <UrlInput
-            value={url}
-            onChange={setUrl}
-            readOnly={loading}
-            onScanPress={onScanPress}
-            onSelection={enableScanner}
-            scanIconColor={
-              isEnabled && scanKey === urlScanKey
-                ? Colors.primaryColor.background
-                : Colors.secondaryColor_dark.background
-            }
-            style={styles.input}
+          <LabelText
+            iconName="link"
+            title={url}
+            style={styles.labText}
+            size={17}
           />
         )}
         <UsernameInput
@@ -145,7 +140,7 @@ const getStyles = Colors =>
     popupContainer: {
       flexDirection: 'column',
       alignItems: 'center',
-      width: '100%',
+      width: '120%',
     },
     closeIcon: {
       position: 'absolute',
@@ -163,6 +158,7 @@ const getStyles = Colors =>
       height: 30,
       elevation: 5,
     },
+    labText: {width: '95%'},
   });
 
 export default PopupSession;

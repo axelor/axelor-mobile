@@ -28,7 +28,12 @@ import {
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {sessionStorage} from '../../../sessions';
 
-const PopupSessionList = ({popupIsOpen, setPopupIsOpen, sessionList}) => {
+const PopupSessionList = ({
+  popupIsOpen,
+  setPopupIsOpen,
+  sessionList,
+  setPopupSessionIsOpen,
+}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
@@ -40,8 +45,9 @@ const PopupSessionList = ({popupIsOpen, setPopupIsOpen, sessionList}) => {
     sessionId => {
       sessionStorage.changeActiveSession({sessionId});
       setPopupIsOpen(false);
+      setPopupSessionIsOpen(true);
     },
-    [setPopupIsOpen],
+    [setPopupIsOpen, setPopupSessionIsOpen],
   );
 
   const removeSession = useCallback(sessionId => {
