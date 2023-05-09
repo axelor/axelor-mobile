@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     paddingVertical: 5,
+    position: 'absolute',
+    top: '5%',
   },
   container: {
     flexDirection: 'column',

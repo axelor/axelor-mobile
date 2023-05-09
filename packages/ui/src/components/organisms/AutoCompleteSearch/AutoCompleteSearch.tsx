@@ -125,11 +125,13 @@ const AutoCompleteSearch = ({
 
   const handleSelect = useCallback(
     item => {
-      setDisplayList(false);
-      setSelected(true);
-      setSearchText(changeScreenAfter ? '' : displayValue(item));
-      setPopupIsVisible(false);
-      onChangeValue(item);
+      if (item !== null) {
+        setDisplayList(false);
+        setSelected(true);
+        setSearchText(changeScreenAfter ? '' : displayValue(item));
+        setPopupIsVisible(false);
+        onChangeValue(item);
+      }
     },
     [changeScreenAfter, displayValue, onChangeValue],
   );
