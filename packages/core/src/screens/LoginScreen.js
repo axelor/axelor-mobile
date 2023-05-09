@@ -47,6 +47,7 @@ import {
   useScannerDeviceActivator,
 } from '../hooks/use-scan-activator';
 import {checkNullString} from '../utils';
+import {storage} from '../storage/Storage';
 
 const urlScanKey = 'login_url';
 
@@ -61,6 +62,7 @@ const LoginScreen = ({route}) => {
   const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
+  const urlStorage = storage.getItem('url');
 
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -76,6 +78,9 @@ const LoginScreen = ({route}) => {
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
   const defaultUrl = useMemo(() => {
+    if (urlStorage !== undefined) {
+      return urlStorage;
+    }
     if (baseUrl != null) {
       return baseUrl;
     }
@@ -85,6 +90,7 @@ const LoginScreen = ({route}) => {
 
     return releaseInstanceConfig?.url;
   }, [
+    urlStorage,
     baseUrl,
     modeDebug,
     releaseInstanceConfig?.url,

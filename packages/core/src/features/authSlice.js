@@ -19,6 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {getActiveUserId, loginApi} from '../api/login-api';
+import {storage} from '../storage/Storage';
 import {testUrl} from '../utils/api';
 
 export const login = createAsyncThunk(
@@ -31,6 +32,7 @@ export const login = createAsyncThunk(
       password,
     );
     const userId = await getActiveUserId();
+    storage.setItem('url', urlWithProtocol);
     return {url: urlWithProtocol, token, jsessionId, userId, interceptorId};
   },
 );
