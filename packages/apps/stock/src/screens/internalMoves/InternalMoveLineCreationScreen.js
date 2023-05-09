@@ -18,27 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
-  filterSecondStockLocations,
-  searchStockLocations,
-} from '../../features/stockLocationSlice';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   InternalMoveLineCreationButton,
   InternalMoveLineNotes,
   InternalMoveLineQuantityCard,
   ProductCardInfo,
+  ProductTrackingNumberSearchBar,
+  StockLocationSearchBar,
 } from '../../components';
 import {StockMove} from '../../types';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import {displayItemTrackingNumber} from '../../utils/displayers';
-import {searchProductTrackingNumber} from '../../features/productTrackingNumberSlice';
 
 const originalStockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -55,21 +45,9 @@ const CREATION_STEP = {
   validation: 3,
 };
 
-const displayItem = _item => {
-  return displayItemTrackingNumber(_item) || displayItemName(_item);
-};
-
 const InternalMoveLineCreationScreen = ({navigation}) => {
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {
-    stockLocationList: stockLocationListFirstFilter,
-    stockLocationListMultiFilter: stockLocationListSecondFilter,
-  } = useSelector(state => state.stockLocation);
-  const {productTrackingNumberList} = useSelector(
-    state => state.productTrackingNumber,
-  );
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
 
@@ -102,30 +80,6 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       }
     },
     [handleNextStep, handleReset],
-  );
-
-  const fetchOriginalStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const searchProductTrackingNumberAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchProductTrackingNumber({
-          searchValue: filterValue,
-        }),
-      );
-    },
-    [dispatch],
   );
 
   const handleToProductTrackingNumberChange = useCallback(
@@ -169,19 +123,6 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       }
     },
     [handleNextStep, handleReset],
-  );
-
-  const fetchDestinationStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        filterSecondStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
   );
 
   const handleReset = useCallback(
@@ -241,25 +182,17 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         />
       }>
       <KeyboardAvoidingScrollView>
-        <ScannerAutocompleteSearch
-          value={originalStockLocation}
-          objectList={stockLocationListFirstFilter}
-          onChangeValue={handleFromStockLocationChange}
-          fetchData={fetchOriginalStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={originalStockLocationScanKey}
-          placeholder={I18n.t('Stock_OriginalStockLocation')}
+        <StockLocationSearchBar
+          scanKey={originalStockLocationScanKey}
+          onChange={handleFromStockLocationChange}
+          defaultValue={originalStockLocation}
           isFocus={currentStep === CREATION_STEP.original_stockLocation}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ScannerAutocompleteSearch
-            value={trackingNumber || product}
-            objectList={productTrackingNumberList}
-            onChangeValue={handleToProductTrackingNumberChange}
-            fetchData={searchProductTrackingNumberAPI}
-            displayValue={displayItem}
-            scanKeySearch={itemScanKey}
-            placeholder={I18n.t('Stock_ProductTrackingNumber')}
+          <ProductTrackingNumberSearchBar
+            scanKey={itemScanKey}
+            onChange={handleToProductTrackingNumberChange}
+            defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}
@@ -286,15 +219,12 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
               plannedQty={plannedQty}
               status={StockMove.status.Draft}
             />
-            <ScannerAutocompleteSearch
-              value={destinationStockLocation}
-              objectList={stockLocationListSecondFilter}
-              onChangeValue={handleToStockLocationChange}
-              fetchData={fetchDestinationStockLocationsAPI}
-              displayValue={displayItemName}
-              scanKeySearch={destinationStockLocationScanKey}
-              placeholder={I18n.t('Stock_DestinationStockLocation')}
-              isFocus={currentStep === CREATION_STEP.destination_stockLocation}
+            <StockLocationSearchBar
+              scanKey={destinationStockLocationScanKey}
+              onChange={handleToStockLocationChange}
+              defaultValue={destinationStockLocation}
+              isFocus={currentStep === CREATION_STEP.destination_stock}
+              secondFilter={true}
             />
             <InternalMoveLineNotes
               notes={notes}
