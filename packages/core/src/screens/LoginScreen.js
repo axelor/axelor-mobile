@@ -219,6 +219,7 @@ const getStyles = Colors =>
     row: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
+      alignItems: 'center',
     },
     button: {
       width: '50%',
@@ -236,7 +237,6 @@ const getStyles = Colors =>
     infoBubble: {
       position: 'absolute',
       left: '-10%',
-      top: '15%',
     },
     textIndicationStyle: {
       width: Dimensions.get('window').height * 0.3,
@@ -253,7 +253,6 @@ const getStyles = Colors =>
       height: Dimensions.get('window').width * 0.07,
       position: 'absolute',
       left: '-10%',
-      top: '25%',
     },
     buttonDisabled: {
       width: '50%',
