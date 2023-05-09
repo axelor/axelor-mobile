@@ -42,7 +42,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const {productFromId: product} = useSelector(state => state.product);
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
   const {baseConfig} = useSelector(state => state.config);
 
@@ -111,7 +110,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
           product={product}
         />
         <StockLocationSearchBar
-          defaultValue={stockLocationList}
+          defaultValue={''}
           scanKey={stockLocationScanKey}
           onChange={setStockLocation}
         />

@@ -87,7 +87,7 @@ const ProspectsListScreen = ({navigation}) => {
             />
             <ProspectSearchBar
               onChange={() => {}}
-              defaultValue={prospectList}
+              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />

@@ -87,7 +87,7 @@ const CLientsListScreen = ({navigation}) => {
             />
             <ClientSearchBar
               onChange={() => {}}
-              defaultValue={clientList}
+              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />

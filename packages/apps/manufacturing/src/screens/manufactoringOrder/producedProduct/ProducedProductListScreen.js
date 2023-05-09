@@ -142,7 +142,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
               )}
             </View>
             <ProducedProductSearchBar
-              defaultValue={producedProductList}
+              defaultValue={''}
               scanKey={productScanKey}
               onChange={setProduct}
               showDetailsPopup={false}

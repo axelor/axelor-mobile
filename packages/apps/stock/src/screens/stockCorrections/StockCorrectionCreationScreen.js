@@ -51,7 +51,6 @@ const StockCorrectionCreationScreen = ({route}) => {
 
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
 
   const [location, setLocation] = useState(routeLocation);
   const [product, setProduct] = useState(routeProduct);
@@ -169,7 +168,7 @@ const StockCorrectionCreationScreen = ({route}) => {
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
           onChange={handleStockLocationChange}
-          defaultValue={stockLocationList}
+          defaultValue={''}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ProductTrackingNumberSearchBar

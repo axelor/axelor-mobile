@@ -19,7 +19,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ProductSearchBar, StockMoveHeader} from '../../components';
 import StockMove from '../../types/stock-move';
 
@@ -28,7 +28,6 @@ const productScanKey = 'product_customer-delivery-select';
 const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
   const customerDeliveryLine = route.params.customerDeliveryLine;
-  const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
 
@@ -80,7 +79,7 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleProductSelection}
-          defaultValue={productList}
+          defaultValue={''}
         />
       </View>
       <PopUpOneButton

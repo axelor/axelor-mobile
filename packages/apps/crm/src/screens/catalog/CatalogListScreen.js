@@ -115,7 +115,7 @@ const CatalogListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             <CatalogsSearchBar
               onChange={() => {}}
-              defaultValue={catalogList}
+              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />

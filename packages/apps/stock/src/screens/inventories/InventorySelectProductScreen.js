@@ -18,7 +18,7 @@
 
 import React, {useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {InventoryHeader, ProductSearchBar} from '../../components';
 import Inventory from '../../types/inventory';
 
@@ -27,7 +27,6 @@ const productScanKey = 'product_inventory-select';
 const InventorySelectProductScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
-  const {productList} = useSelector(state => state.product);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
 
@@ -87,7 +86,7 @@ const InventorySelectProductScreen = ({route, navigation}) => {
       <ProductSearchBar
         scanKey={productScanKey}
         onChange={handleProductSelection}
-        defaultValue={productList}
+        defaultValue={''}
       />
       <PopUpOneButton
         visible={isVisible}

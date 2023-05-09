@@ -122,7 +122,7 @@ const LeadListScreen = ({navigation}) => {
             />
             <LeadSearchBar
               onChange={() => {}}
-              defaultValue={leadList}
+              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />

@@ -18,7 +18,7 @@
 
 import React, {useCallback, useState} from 'react';
 import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ProductSearchBar, StockMoveHeader} from '../../components';
 import StockMove from '../../types/stock-move';
 
@@ -28,8 +28,6 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
   const internalMove = route.params.internalMove;
   const internalMoveLine = route.params.internalMoveLine;
   const I18n = useTranslator();
-
-  const {productList} = useSelector(state => state.product);
 
   const [isVisible, setVisible] = useState(false);
 
@@ -76,7 +74,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
       <ProductSearchBar
         scanKey={productScanKey}
         onChange={handleNavigate}
-        defaultValue={productList}
+        defaultValue={''}
       />
       <PopUpOneButton
         visible={isVisible}

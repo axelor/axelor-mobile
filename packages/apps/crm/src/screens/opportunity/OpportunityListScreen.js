@@ -132,7 +132,7 @@ const OpportunityListScreen = ({navigation}) => {
             />
             <OpportunitySearchBar
               onChange={() => {}}
-              defaultValue={opportunityList}
+              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />
