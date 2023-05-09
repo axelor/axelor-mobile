@@ -21,6 +21,7 @@ export {default as InternalMoveLineSearchBar} from './InternalMoveLineSearchBar/
 export {default as IventoryLineSearchBar} from './IventoryLineSearchBar/IventoryLineSearchBar';
 export {default as PartnerSearchBar} from './PartnerSearchBar/PartnerSearchBar';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
+export {default as ProductTrackingNumberSearchBar} from './ProductTrackingNumberSearchBar/ProductTrackingNumberSearchBar';
 export {default as StockLocationSearchBar} from './StockLocationSearchBar/StockLocationSearchBar';
 
 export * from './customerDelivery';

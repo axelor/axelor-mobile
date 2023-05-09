@@ -18,24 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
+  ProductTrackingNumberSearchBar,
   StockCorrectionCreationButton,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
-import {displayItemTrackingNumber} from '../../utils/displayers';
-import {searchStockLocations} from '../../features/stockLocationSlice';
-import {searchProductTrackingNumber} from '../../features/productTrackingNumberSlice';
 
 const stockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -48,25 +41,17 @@ const CREATION_STEP = {
   validation: 3,
 };
 
-const displayItem = _item => {
-  return displayItemTrackingNumber(_item) || displayItemName(_item);
-};
-
 const DEFAULT_REASON = {name: '', id: null};
 
 const StockCorrectionCreationScreen = ({route}) => {
   const routeLocation = route?.params?.stockLocation;
   const routeProduct = route?.params?.product;
   const routeTrackingNumber = route?.params?.trackingNumber;
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {productTrackingNumberList} = useSelector(
-    state => state.productTrackingNumber,
-  );
 
   const [location, setLocation] = useState(routeLocation);
   const [product, setProduct] = useState(routeProduct);
@@ -106,30 +91,6 @@ const StockCorrectionCreationScreen = ({route}) => {
       }
     },
     [handleNextStep, handleReset],
-  );
-
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const searchProductTrackingNumberAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchProductTrackingNumber({
-          searchValue: filterValue,
-        }),
-      );
-    },
-    [dispatch],
   );
 
   const handleToProductTrackingNumberChange = useCallback(
@@ -205,25 +166,16 @@ const StockCorrectionCreationScreen = ({route}) => {
         )
       }>
       <ScrollView>
-        <ScannerAutocompleteSearch
-          value={location}
-          objectList={stockLocationList}
-          onChangeValue={handleStockLocationChange}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
-          isFocus={currentStep === CREATION_STEP.stockLocation}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          onChange={handleStockLocationChange}
+          defaultValue={stockLocationList}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ScannerAutocompleteSearch
-            value={trackingNumber || product}
-            objectList={productTrackingNumberList}
-            onChangeValue={handleToProductTrackingNumberChange}
-            fetchData={searchProductTrackingNumberAPI}
-            displayValue={displayItem}
-            scanKeySearch={itemScanKey}
-            placeholder={I18n.t('Stock_ProductTrackingNumber')}
+          <ProductTrackingNumberSearchBar
+            scanKey={itemScanKey}
+            onChange={handleToProductTrackingNumberChange}
+            defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}
