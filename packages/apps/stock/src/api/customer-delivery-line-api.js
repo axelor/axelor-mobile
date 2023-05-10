@@ -72,3 +72,12 @@ export async function updateLine({stockMoveLineId, version, realQty}) {
     },
   });
 }
+
+export async function fetchCustomerDeliveryLine({customerDeliveryLineId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${customerDeliveryLineId}/fetch`,
+    data: {
+      fields: customerDeliveryLineFields,
+    },
+  });
+}

@@ -79,3 +79,12 @@ export async function updateLine({
     },
   });
 }
+
+export async function fetchSupplierArrivalLine({supplierArrivalLineId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${supplierArrivalLineId}/fetch`,
+    data: {
+      fields: supplierArrivalLineFields,
+    },
+  });
+}

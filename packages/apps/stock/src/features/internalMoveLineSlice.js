@@ -21,10 +21,12 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   searchInternalMoveLines,
   updateInternalMoveLine as _updateInternalMoveLine,
+  fetchInternalMoveLine as _fetchInternalMoveLine,
 } from '../api/internal-move-line-api';
+import {updateStockMoveLineTrackingNumber} from '../api/tracking-number-api';
 
 export const fetchInternalMoveLines = createAsyncThunk(
-  'internalMoveLine/fetchInternalMoveLine',
+  'internalMoveLine/fetchInternalMoveLines',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchInternalMoveLines,
@@ -49,11 +51,47 @@ export const updateInternalMoveLine = createAsyncThunk(
   },
 );
 
+export const fetchInternalMoveLine = createAsyncThunk(
+  'internalMoveLine/fetchInternalMoveLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchInternalMoveLine,
+      data,
+      action: 'Stock_SliceAction_FetchInternalMoveLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const addTrackingNumber = createAsyncThunk(
+  'internalMoveLine/addTrackingNumber',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateStockMoveLineTrackingNumber,
+      data,
+      action: 'Stock_SliceAction_AddTrackingNumberToInternalMoveLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchInternalMoveLine,
+        data: {internalMoveLineId: res?.id},
+        action: 'Stock_SliceAction_FetchInternalMoveLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingIMLines: false,
   moreLoading: false,
   isListEnd: false,
   internalMoveLineList: [],
+  loadingInternalMoveLine: false,
+  internalMoveLine: {},
 };
 
 const internalMoveLineSlice = createSlice({
@@ -84,6 +122,20 @@ const internalMoveLineSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(fetchInternalMoveLine.pending, state => {
+      state.loadingInternalMoveLine = true;
+    });
+    builder.addCase(fetchInternalMoveLine.fulfilled, (state, action) => {
+      state.loadingInternalMoveLine = false;
+      state.internalMoveLine = action.payload;
+    });
+    builder.addCase(addTrackingNumber.pending, state => {
+      state.loadingInternalMoveLine = true;
+    });
+    builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
+      state.loadingInternalMoveLine = false;
+      state.internalMoveLine = action.payload;
     });
   },
 });

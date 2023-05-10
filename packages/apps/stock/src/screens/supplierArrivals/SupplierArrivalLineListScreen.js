@@ -48,6 +48,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
       lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      skipTrackingNumberVerification: true,
       navigation,
     });
   };
@@ -105,11 +106,12 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
             reference={supplierArrival.stockMoveSeq}
             status={supplierArrival.statusSelect}
             date={
-              supplierArrival.statusSelect === StockMove.status.Draft
-                ? supplierArrival.createdOn
-                : supplierArrival.statusSelect === StockMove.status.Planned
-                ? supplierArrival.estimatedDate
-                : supplierArrival.realDate
+              supplierArrival
+                ? StockMove.getStockMoveDate(
+                    supplierArrival.statusSelect,
+                    supplierArrival,
+                  )
+                : null
             }
           />
         }

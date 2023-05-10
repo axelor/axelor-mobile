@@ -40,7 +40,6 @@ const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
       lineDetailsScreen: 'InternalMoveLineDetailsScreen',
       selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
       selectProductScreen: 'InternalMoveSelectProductScreen',
-      productKey: 'stockProduct',
       navigation,
     });
   };

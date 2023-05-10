@@ -41,6 +41,7 @@ interface AutocompleteSearchProps {
   navigate?: boolean;
   oneFilter?: boolean;
   selectLastItem?: boolean;
+  style?: any;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -56,6 +57,7 @@ const ScannerAutocompleteSearch = ({
   navigate = false,
   oneFilter = false,
   selectLastItem = true,
+  style,
 }: AutocompleteSearchProps) => {
   const [searchText, setSearchText] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -97,6 +99,7 @@ const ScannerAutocompleteSearch = ({
           ? Colors.primaryColor.background
           : Colors.secondaryColor_dark.background
       }
+      style={style}
     />
   );
 };

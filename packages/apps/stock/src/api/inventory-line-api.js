@@ -92,3 +92,29 @@ export async function createInventoryLine({
     },
   });
 }
+
+export async function addTrackingNumber({
+  inventoryLineId,
+  version,
+  trackingNumber,
+}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}`,
+    data: {
+      data: {
+        id: inventoryLineId,
+        version,
+        trackingNumber,
+      },
+    },
+  });
+}
+
+export async function fetchInventoryLine({inventoryLineId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.InventoryLine/${inventoryLineId}/fetch`,
+    data: {
+      fields: inventoryLineFields,
+    },
+  });
+}

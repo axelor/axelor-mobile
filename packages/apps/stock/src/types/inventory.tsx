@@ -96,5 +96,17 @@ class Inventory {
         return null;
     }
   };
+
+  static isTrackingNumberSelectVisible = (
+    status: number,
+    product: any,
+    trackingNumber: any,
+  ) => {
+    return (
+      product?.trackingNumberConfiguration != null &&
+      trackingNumber == null &&
+      !(status >= this.status.Completed)
+    );
+  };
 }
 export default Inventory;

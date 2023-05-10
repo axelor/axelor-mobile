@@ -60,9 +60,9 @@ const SupplierArrivalTrackingNumberSelect = ({
         setVisible(true);
       } else {
         navigation.navigate('SupplierArrivalLineDetailScreen', {
-          supplierArrivalLine: supplierArrivalLine,
+          supplierArrivalLineId: supplierArrivalLine?.id,
           supplierArrival: supplierArrival,
-          product: product,
+          productId: product?.id,
           trackingNumber: item,
         });
       }

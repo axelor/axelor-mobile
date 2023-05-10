@@ -18,7 +18,12 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 import {addNewLine} from '../../../../features/supplierArrivalSlice';
 import {updateSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
@@ -48,7 +53,7 @@ const SupplierArrivalLineButtons = ({
         stockMoveLineId: supplierArrivalLine.id,
         version: supplierArrivalLine.version,
         realQty: realQty,
-        conformity: conformity.id,
+        conformity: conformity?.id,
       }),
     );
 
@@ -66,11 +71,11 @@ const SupplierArrivalLineButtons = ({
       addNewLine({
         stockMoveId: supplierArrival.id,
         productId: product.id,
-        unitId: product.unit.id,
+        unitId: product.unit?.id,
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
         expectedQty: 0,
         realQty: realQty,
-        conformity: conformity.id,
+        conformity: conformity?.id,
       }),
     );
 
@@ -87,10 +92,10 @@ const SupplierArrivalLineButtons = ({
 
   const buttonProps = useMemo(
     () =>
-      supplierArrival != null
+      !isEmpty(supplierArrivalLine)
         ? {action: handleValidate, title: I18n.t('Base_Validate')}
         : {action: handleAddLine, title: I18n.t('Base_Add')},
-    [I18n, supplierArrival, handleAddLine, handleValidate],
+    [I18n, supplierArrivalLine, handleAddLine, handleValidate],
   );
 
   if (supplierArrival.statusSelect !== StockMove.status.Realized) {

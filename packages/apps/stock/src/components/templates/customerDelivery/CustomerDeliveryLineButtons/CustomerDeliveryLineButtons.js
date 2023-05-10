@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useDispatch,
+  useSelector,
+  isEmpty,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
@@ -29,6 +34,7 @@ const CustomerDeliveryLineButtons = ({
   realQty,
   navigation,
   trackingNumber,
+  visible = true,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -77,11 +83,15 @@ const CustomerDeliveryLineButtons = ({
 
   const buttonProps = useMemo(
     () =>
-      customerDeliveryLine != null
+      !isEmpty(customerDeliveryLine)
         ? {action: handleValidate, title: I18n.t('Base_Validate')}
         : {action: handleAddLine, title: I18n.t('Base_Add')},
     [I18n, customerDeliveryLine, handleAddLine, handleValidate],
   );
+
+  if (!visible) {
+    return null;
+  }
 
   if (customerDelivery.statusSelect !== StockMove.status.Realized) {
     return <Button title={buttonProps.title} onPress={buttonProps.action} />;

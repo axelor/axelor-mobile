@@ -21,10 +21,11 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {
   searchSupplierArrivalLines,
   updateLine,
+  fetchSupplierArrivalLine as _fetchSupplierArrivalLine,
 } from '../api/supplier-arrival-line-api';
 
 export const fetchSupplierArrivalLines = createAsyncThunk(
-  'SupplierLines/fetchSupplierLine',
+  'supplierLines/fetchSupplierArrivalLines',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchSupplierArrivalLines,
@@ -37,7 +38,7 @@ export const fetchSupplierArrivalLines = createAsyncThunk(
 );
 
 export const updateSupplierArrivalLine = createAsyncThunk(
-  'SupplierLines/updateSupplierArrivalLine',
+  'supplierLine/updateSupplierArrivalLine',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: updateLine,
@@ -49,12 +50,27 @@ export const updateSupplierArrivalLine = createAsyncThunk(
   },
 );
 
+export const fetchSupplierArrivalLine = createAsyncThunk(
+  'supplierLine/fetchSupplierArrivalLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchSupplierArrivalLine,
+      data,
+      action: 'Stock_SliceAction_FetchSupplierArrivalLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loadingSALines: false,
   moreLoading: false,
   isListEnd: false,
   supplierArrivalLineList: [],
   updateLineResponse: {},
+  loadingSupplierArrivalLine: false,
+  supplierArrivalLine: {},
 };
 
 const supplierArrivalLineSlice = createSlice({
@@ -92,6 +108,13 @@ const supplierArrivalLineSlice = createSlice({
     builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
       state.loadingSupplierArrivalLine = false;
       state.updateLineResponse = action.payload;
+    });
+    builder.addCase(fetchSupplierArrivalLine.pending, state => {
+      state.loadingSupplierArrivalLine = true;
+    });
+    builder.addCase(fetchSupplierArrivalLine.fulfilled, (state, action) => {
+      state.loadingSupplierArrivalLine = false;
+      state.supplierArrivalLine = action.payload;
     });
   },
 });

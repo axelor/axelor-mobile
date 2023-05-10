@@ -33,6 +33,7 @@ const InventoryLineButtons = ({
   navigation,
   realQty,
   description,
+  visible = true,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -80,6 +81,10 @@ const InventoryLineButtons = ({
 
     navigateBackToList();
   }, [description, dispatch, inventoryLine, navigateBackToList, realQty]);
+
+  if (!visible) {
+    return null;
+  }
 
   if (inventoryLine == null) {
     return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;

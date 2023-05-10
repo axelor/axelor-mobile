@@ -39,9 +39,8 @@ import Inventory from '../../types/inventory';
 const trackingScanKey = 'tracking_inventory-select';
 
 const InventorySelectTrackingScreen = ({route, navigation}) => {
-  const inventory = route.params.inventory;
-  const inventoryLine = route.params.inventoryLine;
-  const product = route.params.product;
+  const {inventory, inventoryLine, product} = route.params;
+
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
@@ -64,17 +63,17 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
             setVisible(true);
           } else {
             navigation.navigate('InventoryLineDetailsScreen', {
-              inventoryLine: inventoryLine,
+              inventoryLineId: inventoryLine?.id,
               inventory: inventory,
-              product: product,
+              productId: product?.id,
               trackingNumber: item,
             });
           }
         } else {
           navigation.navigate('InventoryLineDetailsScreen', {
-            inventoryLine: inventoryLine,
+            inventoryLineId: inventoryLine?.id,
             inventory: inventory,
-            product: product,
+            productId: product?.id,
             trackingNumber: item,
           });
         }
@@ -101,7 +100,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
         }
       />
       <Card style={styles.cardProductInfo}>
-        <Text>{inventoryLine.product?.fullName}</Text>
+        <Text>{product?.fullName ?? inventoryLine?.product?.fullName}</Text>
       </Card>
       <ScannerAutocompleteSearch
         objectList={trackingNumberList}

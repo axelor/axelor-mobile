@@ -72,3 +72,12 @@ export async function updateInternalMoveLine({
     },
   });
 }
+
+export async function fetchInternalMoveLine({internalMoveLineId}) {
+  return axiosApiProvider.post({
+    url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${internalMoveLineId}/fetch`,
+    data: {
+      fields: internalMoveLineFields,
+    },
+  });
+}

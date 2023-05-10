@@ -54,6 +54,7 @@ const SupplierArrivalViewAllContainer = ({supplierArrival, navigation}) => {
       lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      skipTrackingNumberVerification: true,
       navigation,
     });
   };

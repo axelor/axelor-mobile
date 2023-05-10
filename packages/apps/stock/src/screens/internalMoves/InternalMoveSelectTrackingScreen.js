@@ -40,9 +40,14 @@ import StockMove from '../../types/stock-move';
 const trackingNumberScanKey = 'tracking-number_internal-move-new';
 
 const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
-  const internalMove = route.params.internalMove;
-  const internalMoveLine = route.params.internalMoveLine;
-  const product = route.params.stockProduct;
+  const {
+    internalMove,
+    internalMoveLine,
+    product,
+    fromStockLocation,
+    toStockLocation,
+  } = route.params;
+
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
@@ -63,14 +68,14 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
 
   const handleClearDestinationLocation = () => {
     navigation.navigate('InternalMoveSelectToLocationScreen', {
-      fromStockLocation: route.params.fromStockLocation,
+      fromStockLocation: fromStockLocation,
     });
   };
 
   const handleClearProduct = () => {
     navigation.navigate('InternalMoveSelectProductScreen', {
-      fromStockLocation: route.params.fromStockLocation,
-      toStockLocation: route.params.toStockLocation,
+      fromStockLocation: fromStockLocation,
+      toStockLocation: toStockLocation,
     });
   };
 
@@ -79,9 +84,9 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
       if (trackingNumber != null) {
         if (internalMove == null) {
           navigation.navigate('InternalMoveLineDetailsScreen', {
-            fromStockLocation: route.params.fromStockLocation,
-            toStockLocation: route.params.toStockLocation,
-            stockProduct: route.params.stockProduct,
+            fromStockLocation: fromStockLocation,
+            toStockLocation: toStockLocation,
+            productId: product?.id,
             trackingNumber: trackingNumber,
           });
         } else {
@@ -90,13 +95,21 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
           } else {
             navigation.navigate('InternalMoveLineDetailsScreen', {
               internalMove: internalMove,
-              internalMoveLine: internalMoveLine,
+              internalMoveLineId: internalMoveLine?.id,
+              productId: product?.id,
             });
           }
         }
       }
     },
-    [internalMove, internalMoveLine, navigation, route.params],
+    [
+      internalMove,
+      internalMoveLine,
+      navigation,
+      product,
+      fromStockLocation,
+      toStockLocation,
+    ],
   );
 
   return (
@@ -110,11 +123,12 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
                 reference={internalMove.stockMoveSeq}
                 status={internalMove.statusSelect}
                 date={
-                  internalMove.statusSelect === StockMove.status.Draft
-                    ? internalMove.createdOn
-                    : internalMove.statusSelect === StockMove.status.Planned
-                    ? internalMove.estimatedDate
-                    : internalMove.realDate
+                  internalMove
+                    ? StockMove.getStockMoveDate(
+                        internalMove.statusSelect,
+                        internalMove,
+                      )
+                    : null
                 }
                 availability={internalMove.availableStatusSelect}
               />
@@ -127,15 +141,15 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
       ) : (
         <View>
           <ClearableCard
-            valueTxt={route.params.fromStockLocation.name}
+            valueTxt={fromStockLocation.name}
             onClearPress={handleClearOriginalLocation}
           />
           <ClearableCard
-            valueTxt={route.params.toStockLocation.name}
+            valueTxt={toStockLocation.name}
             onClearPress={handleClearDestinationLocation}
           />
           <ClearableCard
-            valueTxt={route.params.stockProduct.name}
+            valueTxt={product.name}
             onClearPress={handleClearProduct}
           />
         </View>

@@ -48,7 +48,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
       lineDetailsScreen: 'InternalMoveLineDetailsScreen',
       selectTrackingScreen: 'InternalMoveSelectTrackingScreen',
       selectProductScreen: 'InternalMoveSelectProductScreen',
-      productKey: 'stockProduct',
       navigation,
     });
   };
@@ -106,11 +105,12 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             reference={internalMove.stockMoveSeq}
             status={internalMove.statusSelect}
             date={
-              internalMove.statusSelect === StockMove.status.Draft
-                ? internalMove.createdOn
-                : internalMove.statusSelect === StockMove.status.Planned
-                ? internalMove.estimatedDate
-                : internalMove.realDate
+              internalMove
+                ? StockMove.getStockMoveDate(
+                    internalMove.statusSelect,
+                    internalMove,
+                  )
+                : null
             }
             availability={internalMove.availableStatusSelect}
           />
