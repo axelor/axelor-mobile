@@ -151,15 +151,32 @@ const PlanningView = ({
   const todayBtnOnPress = () => {
     setCurrentDate(new Date().toISOString());
   };
+  const nextWeekBtnOnPress = () => {
+    var firstDay = new Date(currentDate);
+    var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+    setCurrentDate(nextWeek.toISOString());
+  };
+
+  const lastWeekBtnOnPress = () => {
+    var firstDay = new Date(currentDate);
+    var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
+    setCurrentDate(lastWeek.toISOString());
+  };
 
   return (
     <View style={styles.agendaContainer}>
-      <CircleButton
-        style={styles.floatingButton}
-        iconName="calendar-day"
-        onPress={todayBtnOnPress}
-      />
+      <View style={styles.headerPlanning}>
+        <CircleButton iconName="arrow-left" onPress={lastWeekBtnOnPress} />
+        <CircleButton
+          //style={styles.floatingButton}
+          iconName="calendar-day"
+          onPress={todayBtnOnPress}
+        />
+        <CircleButton iconName="arrow-right" onPress={nextWeekBtnOnPress} />
+      </View>
       <Agenda
+        onDayPress={date => setCurrentDate(date.dateString)}
+        selected={currentDate}
         items={agendaItems}
         loadItemsForMonth={handleLoadItemsForMonth}
         pastScrollRange={numberMonthsAroundToday}
@@ -260,9 +277,17 @@ const getStyles = Colors =>
     },
     floatingButton: {
       position: 'absolute',
-      left: 15,
+      right: 15,
       zIndex: 2,
-      bottom: 30,
+      top: 30,
+    },
+    headerPlanning: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      position: 'absolute',
+      top: -5,
+      right: 10,
+      zIndex: 2,
     },
   });
 
