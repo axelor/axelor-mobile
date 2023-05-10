@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {Icon, IconInput} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
-const SessionInput = ({style, value, onChange, readOnly}) => {
+const SessionNameInput = ({style, value, onChange, readOnly}) => {
   const I18n = useTranslator();
 
   return (
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SessionInput;
+export default SessionNameInput;

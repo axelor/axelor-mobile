@@ -38,8 +38,7 @@ import {
   PopupCreateSession,
   PopupSession,
 } from '../components';
-import {useSelector} from 'react-redux';
-import useTranslator from '../i18n/hooks/use-translator';
+import {useTranslator} from '../i18n';
 import {useSessions} from '../sessions';
 
 const LoginScreen = ({route}) => {
@@ -50,8 +49,6 @@ const LoginScreen = ({route}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const {error} = useSelector(state => state.auth);
 
   const {sessionList, sessionActive} = useSessions(enableConnectionSessions);
 
@@ -64,8 +61,6 @@ const LoginScreen = ({route}) => {
       return releaseInstanceConfig?.showUrlInput || true;
     }
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
-
-  const [url] = useState('');
 
   const [popupCreateSessionIsOpen, setPopupCreateSessionIsOpen] =
     useState(false);
@@ -82,7 +77,6 @@ const LoginScreen = ({route}) => {
           <View style={styles.bubble}>
             <Text>{sessionList.length}</Text>
           </View>
-
           <Button
             title={
               !sessionActive && sessionList?.length > 0
@@ -106,7 +100,7 @@ const LoginScreen = ({route}) => {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
-              <LogoImage url={url} />
+              <LogoImage />
             </View>
             {sessionActive && (
               <Button
@@ -156,7 +150,6 @@ const LoginScreen = ({route}) => {
             <PopupSession
               enableConnectionSessions={enableConnectionSessions}
               sessionActive={sessionActive}
-              error={error}
               popupIsOpen={popupSessionIsOpen}
               setPopupIsOpen={setPopupSessionIsOpen}
               showUrlInput={showUrlInput}
@@ -197,24 +190,6 @@ const getStyles = Colors =>
       alignItems: 'center',
       width: '100%',
       bottom: 0,
-    },
-    arrowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      marginHorizontal: 32,
-      width: '80%',
-    },
-    arrowIcon: {
-      marginRight: -6,
-      marginLeft: 5,
-    },
-    text: {
-      fontSize: 14,
-      fontWeight: 'normal',
-    },
-    checkbox: {
-      width: '88%',
     },
     row: {
       flexDirection: 'row',

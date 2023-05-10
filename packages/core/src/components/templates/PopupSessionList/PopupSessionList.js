@@ -25,13 +25,13 @@ import {
   Icon,
   HorizontalRule,
 } from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
+import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 
 const PopupSessionList = ({
   popupIsOpen,
-  setPopupIsOpen,
   sessionList,
+  setPopupIsOpen,
   setPopupSessionIsOpen,
 }) => {
   const Colors = useThemeColor();
@@ -105,7 +105,7 @@ const getStyles = Colors =>
     popupItemContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginLeft: '-4%',
+      marginLeft: '-5%',
       marginVertical: '2%',
     },
     popupItemChildren: {

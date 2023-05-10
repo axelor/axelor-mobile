@@ -23,7 +23,7 @@ import {StyleSheet} from 'react-native';
 
 const axelorLogoPath = '../../../assets/Logo_Axelor.png';
 
-const LogoImage = ({url}) => {
+const LogoImage = ({url = null}) => {
   const axelorLogo = useRef(require(axelorLogoPath)).current;
   const [urlLogoSource, setUrlLogoSource] = useState(
     generateImageSourceWithUrl(url),
