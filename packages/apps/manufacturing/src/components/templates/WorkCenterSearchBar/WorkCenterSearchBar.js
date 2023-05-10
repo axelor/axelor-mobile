@@ -28,8 +28,8 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 
 const WorkCenterSearchBar = ({
   placeholderKey = 'Manufacturing_WorkCenter',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   scanKey,
   showDetailsPopup = true,
   navigate = false,

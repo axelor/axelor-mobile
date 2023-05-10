@@ -176,7 +176,6 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               )}
             </View>
             <ConsumedProductSearchBar
-              defaultValue={consumedProductList}
               scanKey={productScanKey}
               onChange={setProduct}
               showDetailsPopup={false}

@@ -28,8 +28,8 @@ import {fetchConsumedProducts} from '../../../features/prodProductSlice';
 
 const ConsumedProductSearchBar = ({
   placeholderKey = 'Manufacturing_Product',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

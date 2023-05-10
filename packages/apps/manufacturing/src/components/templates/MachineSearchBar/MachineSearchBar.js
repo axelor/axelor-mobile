@@ -28,9 +28,8 @@ import {searchMachines} from '../../../features/machinesSlice';
 
 const MachineSearchBar = ({
   placeholderKey = 'Manufacturing_Machine',
-  defaultValue,
-  onChange,
-  scanKey,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

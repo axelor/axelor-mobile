@@ -50,7 +50,6 @@ function OperationOrderListScreen({navigation}) {
   const {loading, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
   );
-  const {workCenterList} = useSelector(state => state.workCenters);
   const [workCenter, setWorkCenter] = useState(null);
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -169,14 +168,8 @@ function OperationOrderListScreen({navigation}) {
             ]}
           />
         }>
-        <WorkCenterSearchBar
-          onChange={setWorkCenter}
-          defaultValue={workCenterList}
-        />
-        <MachineSearchBar
-          onChange={setWorkCenter}
-          defaultValue={workCenterList}
-        />
+        <WorkCenterSearchBar onChange={setWorkCenter} />
+        <MachineSearchBar onChange={setWorkCenter} />
       </HeaderContainer>
       <ScrollList
         loadingList={loading}
