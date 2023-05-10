@@ -19,6 +19,7 @@
 import React, {useMemo} from 'react';
 import {WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
+import {StyleSheet} from 'react-native';
 
 const ERROR_CODE_REGEX = /\d{3}$/g;
 const LOGIN_ERROR = 401;
@@ -53,7 +54,13 @@ const ErrorText = ({error}) => {
     return null;
   }
 
-  return <WarningCard errorMessage={errorMessage} />;
+  return <WarningCard style={styles.card} errorMessage={errorMessage} />;
 };
+
+const styles = StyleSheet.create({
+  card: {
+    width: '100%',
+  },
+});
 
 export default ErrorText;
