@@ -174,7 +174,7 @@ class StockMove {
     return (
       product?.trackingNumberConfiguration != null &&
       trackingNumber == null &&
-      status !== this.status.Realized
+      status === this.status.Planned
     );
   };
 }

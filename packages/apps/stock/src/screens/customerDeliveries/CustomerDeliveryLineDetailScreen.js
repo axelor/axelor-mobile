@@ -40,9 +40,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingProductFromId, productFromId: product} = useSelector(
-    state => state.product,
-  );
+  const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine, loadingCustomerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
   );
@@ -108,7 +106,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           visible={!isTrackingNumberSelectVisible}
         />
       }
-      loading={loadingProductFromId || loadingCustomerDeliveryLine}>
+      loading={loadingCustomerDeliveryLine}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

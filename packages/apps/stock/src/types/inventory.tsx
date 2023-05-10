@@ -105,7 +105,7 @@ class Inventory {
     return (
       product?.trackingNumberConfiguration != null &&
       trackingNumber == null &&
-      status !== this.status.Completed
+      !(status >= this.status.Completed)
     );
   };
 }

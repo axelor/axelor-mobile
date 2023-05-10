@@ -100,7 +100,7 @@ const InventorySelectTrackingScreen = ({route, navigation}) => {
         }
       />
       <Card style={styles.cardProductInfo}>
-        <Text>{inventoryLine.product?.fullName}</Text>
+        <Text>{product?.fullName ?? inventoryLine?.product?.fullName}</Text>
       </Card>
       <ScannerAutocompleteSearch
         objectList={trackingNumberList}
