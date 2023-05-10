@@ -79,7 +79,7 @@ const LoginScreen = ({route}) => {
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
   const defaultUrl = useMemo(() => {
-    if (urlStorage !== null) {
+    if (urlStorage != null) {
       return urlStorage;
     }
     if (baseUrl != null) {
