@@ -28,6 +28,7 @@ import {
 
 interface InfoBubbleProps {
   style?: any;
+  textIndicationStyle?: any;
   iconName: string;
   badgeColor: Color;
   indication: string;
@@ -38,6 +39,7 @@ const InfoBubble = ({
   iconName,
   badgeColor,
   indication,
+  textIndicationStyle,
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -70,7 +72,7 @@ const InfoBubble = ({
         />
       </TouchableOpacity>
       {isOpen ? (
-        <Card style={styles.indicationCard}>
+        <Card style={[styles.indicationCard, textIndicationStyle]}>
           <Text>{indication}</Text>
         </Card>
       ) : null}

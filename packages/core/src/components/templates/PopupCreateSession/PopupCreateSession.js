@@ -19,78 +19,93 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  Icon,
-  PopUp,
-  useThemeColor,
-  Button,
-  LabelText,
-} from '@axelor/aos-mobile-ui';
+import {Icon, PopUp, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
-import {PasswordInput, UsernameInput} from '../../organisms';
+import {
+  PasswordInput,
+  SessionNameInput,
+  UrlInput,
+  UsernameInput,
+} from '../../organisms';
 import {ErrorText, LoginButton} from '../../molecules';
 import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
 import {
-  useScannedValueByKey,
   useScannerSelector,
+  useScannedValueByKey,
 } from '../../../features/scannerSlice';
 import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {login} from '../../../features/authSlice';
-import {sessionStorage} from '../../../sessions';
+import {getStorageUrl, sessionStorage, useSessions} from '../../../sessions';
 import {checkNullString} from '../../../utils';
 
-const urlScanKey = 'urlUsername_FastConnection_login';
+const urlScanKey = 'urlUsername_createSession_login';
 
-const PopupSession = ({
+const PopupCreateSession = ({
   popupIsOpen,
   setPopupIsOpen,
   showUrlInput,
-  sessionActive,
+  modeDebug,
+  testInstanceConfig,
+  enableConnectionSessions,
+  releaseInstanceConfig,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, error} = useSelector(state => state.auth);
+  const {loading, error, baseUrl} = useSelector(state => state.auth);
   const {enable: onScanPress} = useScanActivator(urlScanKey);
   const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
+  const {sessionList} = useSessions(enableConnectionSessions);
 
-  const [username, setUsername] = useState(sessionActive?.username);
-  const [password, setPassword] = useState('');
+  const urlStorage = useMemo(() => getStorageUrl(), []);
 
-  useEffect(() => {
-    if (sessionActive != null) {
-      setUsername(sessionActive.username);
-      setPassword('');
+  const defaultUrl = useMemo(() => {
+    if (urlStorage != null) {
+      return urlStorage;
     }
-  }, [sessionActive]);
 
-  const onPressLogin = useCallback(() => {
-    dispatch(login({url: sessionActive.url, username, password}));
-  }, [dispatch, password, sessionActive, username]);
+    if (baseUrl != null) {
+      return baseUrl;
+    }
 
-  const deleteSession = useCallback(() => {
-    sessionStorage.removeSession({sessionId: sessionActive?.id});
-    setPopupIsOpen(false);
-  }, [sessionActive?.id, setPopupIsOpen]);
+    if (modeDebug) {
+      return testInstanceConfig?.defaultUrl;
+    }
+
+    return releaseInstanceConfig?.url;
+  }, [
+    baseUrl,
+    modeDebug,
+    releaseInstanceConfig?.url,
+    testInstanceConfig?.defaultUrl,
+    urlStorage,
+  ]);
+
+  const [sessionName, setSessionName] = useState('');
+  const [url, setUrl] = useState(defaultUrl || '');
+  const [username, setUsername] = useState(
+    modeDebug ? testInstanceConfig?.defaultUsername : '',
+  );
+  const [password, setPassword] = useState(
+    modeDebug ? testInstanceConfig?.defaultPassword : '',
+  );
 
   const parseQrCode = useCallback(scanValue => {
     if (scanValue.includes('username') === true) {
       const parseScannnedData = JSON.parse(scanValue);
+      setUrl(parseScannnedData.url);
       setUsername(parseScannnedData.username);
+    } else {
+      setUrl(scanValue);
     }
   }, []);
-
-  const disabledLogin = useMemo(
-    () => checkNullString(username) || checkNullString(password) || loading,
-    [loading, password, username],
-  );
 
   useEffect(() => {
     if (scannedValue) {
@@ -100,12 +115,53 @@ const PopupSession = ({
     }
   }, [parseQrCode, scanData, scannedValue]);
 
-  if (sessionActive == null) {
-    return null;
-  }
+  const nameSessionAlreadyExist = useMemo(() => {
+    if (!Array.isArray(sessionList) || sessionList?.length === 0) {
+      return false;
+    }
+
+    return sessionList.some(_session => _session.id === sessionName);
+  }, [sessionList, sessionName]);
+
+  const disabledLogin = useMemo(
+    () =>
+      checkNullString(sessionName) ||
+      checkNullString(url) ||
+      checkNullString(username) ||
+      checkNullString(password) ||
+      loading ||
+      nameSessionAlreadyExist,
+    [loading, nameSessionAlreadyExist, password, sessionName, url, username],
+  );
+
+  const onPressLogin = useCallback(() => {
+    dispatch(login({url, username, password}));
+
+    if (enableConnectionSessions && error == null) {
+      sessionStorage.addSession({
+        session: {
+          id: sessionName,
+          url: url,
+          username: username,
+          isActive: true,
+        },
+      });
+    }
+  }, [
+    dispatch,
+    enableConnectionSessions,
+    password,
+    sessionName,
+    url,
+    username,
+    error,
+  ]);
 
   return (
-    <PopUp visible={popupIsOpen} title={sessionActive?.id} style={styles.popup}>
+    <PopUp
+      visible={popupIsOpen}
+      title={I18n.t('Auth_Create_Session')}
+      style={styles.popup}>
       <View style={styles.popupContainer}>
         <Icon
           name="times"
@@ -115,12 +171,33 @@ const PopupSession = ({
           style={styles.closeIcon}
         />
         <ErrorText error={error} />
+        <View>
+          {!loading && nameSessionAlreadyExist && (
+            <WarningCard
+              style={styles.warningCard}
+              errorMessage={I18n.t('Auth_Session_Name_Aleary_Exist')}
+            />
+          )}
+        </View>
+        <SessionNameInput
+          value={sessionName}
+          onChange={setSessionName}
+          readOnly={loading}
+          style={styles.input}
+        />
         {showUrlInput && (
-          <LabelText
-            iconName="link"
-            title={sessionActive.url}
-            style={styles.labText}
-            size={20}
+          <UrlInput
+            value={url}
+            onChange={setUrl}
+            readOnly={loading}
+            onScanPress={onScanPress}
+            onSelection={enableScanner}
+            scanIconColor={
+              isEnabled && scanKey === urlScanKey
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+            style={styles.input}
           />
         )}
         <UsernameInput
@@ -148,12 +225,6 @@ const PopupSession = ({
         ) : (
           <LoginButton onPress={onPressLogin} disabled={disabledLogin} />
         )}
-        <Button
-          style={styles.delButton}
-          title={I18n.t('Auth_Delete_Session')}
-          onPress={deleteSession}
-          color={Colors.secondaryColor}
-        />
       </View>
     </PopUp>
   );
@@ -179,16 +250,9 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
   },
-  delButton: {
-    marginTop: 10,
-    width: 150,
-    height: 30,
-    elevation: 5,
-  },
-  labText: {
-    width: '95%',
-    marginVertical: 10,
+  warningCard: {
+    width: '100%',
   },
 });
 
-export default PopupSession;
+export default PopupCreateSession;
