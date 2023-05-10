@@ -18,7 +18,12 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  CircleButton,
+  HorizontalRule,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {Agenda, AgendaEntry, DateData} from 'react-native-calendars';
 import {
   AgendaEvent,
@@ -63,6 +68,8 @@ const PlanningView = ({
   );
 
   const [fetchDate, setFetchDate] = useState<any>();
+
+  const [currentDate, setCurrentDate] = useState(new Date().toISOString());
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -141,8 +148,17 @@ const PlanningView = ({
     [fetchbyMonth],
   );
 
+  const todayBtnOnPress = () => {
+    setCurrentDate(new Date().toISOString());
+  };
+
   return (
     <View style={styles.agendaContainer}>
+      <CircleButton
+        style={styles.floatingButton}
+        iconName="calendar-day"
+        onPress={todayBtnOnPress}
+      />
       <Agenda
         items={agendaItems}
         loadItemsForMonth={handleLoadItemsForMonth}
@@ -171,6 +187,8 @@ const PlanningView = ({
           agendaKnobColor: Colors.secondaryColor.background,
           todayBackgroundColor: Colors.secondaryColor.background_light,
         }}
+        current={currentDate}
+        key={currentDate}
       />
     </View>
   );
@@ -180,6 +198,7 @@ const getStyles = Colors =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
+      zIndex: 1,
     },
     emptyDate: {
       height: 15,
@@ -238,6 +257,12 @@ const getStyles = Colors =>
       marginTop: 10,
       width: '60%',
       alignSelf: 'center',
+    },
+    floatingButton: {
+      position: 'absolute',
+      left: 15,
+      zIndex: 2,
+      bottom: 30,
     },
   });
 
