@@ -82,6 +82,7 @@ const SupplierArrivalViewAllContainer = ({}) => {
       lineDetailsScreen: 'SupplierArrivalLineDetailScreen',
       selectTrackingScreen: 'SupplierArrivalSelectTrackingScreen',
       selectProductScreen: 'SupplierArrivalSelectProductScreen',
+      skipTrackingNumberVerification: true,
       navigation,
     });
   };

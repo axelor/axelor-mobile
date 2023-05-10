@@ -43,7 +43,7 @@ const QuantityCard = ({
   style,
   children,
   labelQty,
-  defaultValue,
+  defaultValue = 0,
   onValueChange,
   editable,
   actionQty = false,

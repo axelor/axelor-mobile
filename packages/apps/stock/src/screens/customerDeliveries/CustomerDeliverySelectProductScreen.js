@@ -62,9 +62,9 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
         });
       } else {
         navigation.navigate('CustomerDeliveryLineDetailScreen', {
-          customerDeliveryLine: customerDeliveryLine,
+          customerDeliveryLineId: customerDeliveryLine?.id,
           customerDelivery: customerDelivery,
-          product: item,
+          productId: item?.id,
         });
       }
     }
@@ -80,11 +80,12 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
             status={customerDelivery.statusSelect}
             lineRef={customerDeliveryLine?.name}
             date={
-              customerDelivery.statusSelect === StockMove.status.Draft
-                ? customerDelivery.createdOn
-                : customerDelivery.statusSelect === StockMove.status.Planned
-                ? customerDelivery.estimatedDate
-                : customerDelivery.realDate
+              customerDelivery
+                ? StockMove.getStockMoveDate(
+                    customerDelivery.statusSelect,
+                    customerDelivery,
+                  )
+                : null
             }
             availability={customerDelivery.availableStatusSelect}
           />

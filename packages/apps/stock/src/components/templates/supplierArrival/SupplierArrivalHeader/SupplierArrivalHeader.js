@@ -29,11 +29,12 @@ const SupplierArrivalHeader = ({supplierArrival}) => {
         reference={supplierArrival.stockMoveSeq}
         status={supplierArrival.statusSelect}
         date={
-          supplierArrival.statusSelect === StockMove.status.Draft
-            ? supplierArrival.createdOn
-            : supplierArrival.statusSelect === StockMove.status.Planned
-            ? supplierArrival.estimatedDate
-            : supplierArrival.realDate
+          supplierArrival
+            ? StockMove.getStockMoveDate(
+                supplierArrival.statusSelect,
+                supplierArrival,
+              )
+            : null
         }
       />
       <View style={styles.clientContainer}>

@@ -39,9 +39,8 @@ import StockMove from '../../types/stock-move';
 const trackingScanKey = 'tracking_customer-delivery-select';
 
 const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
-  const customerDelivery = route.params.customerDelivery;
-  const customerDeliveryLine = route.params.customerDeliveryLine;
-  const product = route.params.product;
+  const {customerDelivery, customerDeliveryLine, product} = route.params;
+
   const {trackingNumberList} = useSelector(state => state.trackingNumber);
   const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
@@ -56,23 +55,26 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
     [dispatch, product.id],
   );
 
-  const handleTrackingNumberSelection = item => {
-    if (item != null) {
-      if (
-        customerDeliveryLine != null &&
-        item.id !== customerDeliveryLine.trackingNumber?.id
-      ) {
-        setVisible(true);
-      } else {
-        navigation.navigate('CustomerDeliveryLineDetailScreen', {
-          customerDeliveryLine: customerDeliveryLine,
-          customerDelivery: customerDelivery,
-          product: product,
-          trackingNumber: item,
-        });
+  const handleTrackingNumberSelection = useCallback(
+    item => {
+      if (item != null) {
+        if (
+          customerDeliveryLine != null &&
+          item.id !== customerDeliveryLine.trackingNumber?.id
+        ) {
+          setVisible(true);
+        } else {
+          navigation.navigate('CustomerDeliveryLineDetailScreen', {
+            customerDeliveryLineId: customerDeliveryLine?.id,
+            customerDelivery: customerDelivery,
+            productId: product?.id,
+            trackingNumber: item,
+          });
+        }
       }
-    }
-  };
+    },
+    [customerDelivery, customerDeliveryLine, product, navigation],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -84,11 +86,12 @@ const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
             status={customerDelivery.statusSelect}
             lineRef={customerDeliveryLine?.name}
             date={
-              customerDelivery.statusSelect === StockMove.status.Draft
-                ? customerDelivery.createdOn
-                : customerDelivery.statusSelect === StockMove.status.Planned
-                ? customerDelivery.estimatedDate
-                : customerDelivery.realDate
+              customerDelivery
+                ? StockMove.getStockMoveDate(
+                    customerDelivery.statusSelect,
+                    customerDelivery,
+                  )
+                : null
             }
             availability={customerDelivery.availableStatusSelect}
           />

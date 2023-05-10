@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Screen,
@@ -29,43 +29,70 @@ import {
   StockMoveHeader,
   CustomerDeliveryLineButtons,
   CustomerDeliveryLineQuantityCard,
+  CustomerDeliveryLineTrackingNumberSelect,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import StockMove from '../../types/stock-move';
+import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
-  const customerDelivery = route.params.customerDelivery;
-  const customerDeliveryLine = route.params.customerDeliveryLine;
-  const trackingNumber =
-    customerDeliveryLine != null
-      ? customerDeliveryLine.trackingNumber
-      : route.params.trackingNumber;
-  const {loadingProductFromId, productFromId: product} = useSelector(
-    state => state.product,
-  );
-  const [realQty, setRealQty] = useState(
-    customerDeliveryLine?.isRealQtyModifiedByUser === false
-      ? 0
-      : customerDeliveryLine?.realQty || 0,
-  );
+  const {customerDelivery, customerDeliveryLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {productFromId: product} = useSelector(state => state.product);
+  const {customerDeliveryLine, loadingCustomerDeliveryLine} = useSelector(
+    state => state.customerDeliveryLine,
+  );
+
+  const [realQty, setRealQty] = useState(0);
+
+  const trackingNumber = useMemo(
+    () => customerDeliveryLine?.trackingNumber ?? route.params.trackingNumber,
+    [customerDeliveryLine, route.params.trackingNumber],
+  );
+
+  const isTrackingNumberSelectVisible = useMemo(
+    () =>
+      StockMove.isTrackingNumberSelectVisible(
+        customerDelivery?.statusSelect,
+        product,
+        trackingNumber,
+      ),
+    [customerDelivery, product, trackingNumber],
+  );
+
+  useEffect(() => {
+    setRealQty(
+      customerDeliveryLine?.isRealQtyModifiedByUser === false
+        ? 0
+        : customerDeliveryLine?.realQty || 0,
+    );
+  }, [customerDeliveryLine]);
 
   useEffect(() => {
     dispatch(
       fetchProductWithId(
-        customerDeliveryLine != null
-          ? customerDeliveryLine.product?.id
-          : route.params.product.id,
+        productId ?? route.params.customerDelivery?.product?.id,
       ),
     );
-  }, [dispatch, customerDeliveryLine, route.params.product]);
+  }, [dispatch, productId, route.params.customerDelivery]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
       product: product,
     });
   };
+
+  useEffect(() => {
+    if (customerDeliveryLineId) {
+      dispatch(
+        fetchCustomerDeliveryLine({
+          customerDeliveryLineId: customerDeliveryLineId,
+        }),
+      );
+    }
+  }, [dispatch, customerDeliveryLineId]);
 
   return (
     <Screen
@@ -76,24 +103,26 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
           trackingNumber={trackingNumber}
+          visible={!isTrackingNumberSelectVisible}
         />
       }
-      loading={loadingProductFromId}>
+      loading={loadingCustomerDeliveryLine}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
           <StockMoveHeader
-            reference={customerDelivery.stockMoveSeq}
-            status={customerDelivery.statusSelect}
+            reference={customerDelivery?.stockMoveSeq}
+            status={customerDelivery?.statusSelect}
             lineRef={customerDeliveryLine?.name}
             date={
-              customerDelivery.statusSelect === StockMove.status.Draft
-                ? customerDelivery.createdOn
-                : customerDelivery.statusSelect === StockMove.status.Planned
-                ? customerDelivery.estimatedDate
-                : customerDelivery.realDate
+              customerDelivery
+                ? StockMove.getStockMoveDate(
+                    customerDelivery.statusSelect,
+                    customerDelivery,
+                  )
+                : null
             }
-            availability={customerDelivery.availableStatusSelect}
+            availability={customerDelivery?.availableStatusSelect}
           />
         }
       />
@@ -106,6 +135,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           trackingNumber={trackingNumber?.trackingNumberSeq}
           locker={customerDeliveryLine?.locker}
         />
+        <CustomerDeliveryLineTrackingNumberSelect
+          product={product}
+          customerDeliveryLine={customerDeliveryLine}
+          visible={isTrackingNumberSelectVisible}
+        />
         <CustomerDeliveryLineQuantityCard
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
@@ -114,11 +148,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         />
         <NotesCard
           title={I18n.t('Stock_NotesClient')}
-          data={customerDelivery.pickingOrderComments}
+          data={customerDelivery?.pickingOrderComments}
         />
         <NotesCard
           title={I18n.t('Stock_LineComment')}
-          data={customerDeliveryLine['saleOrderLine.pickingOrderInfo']}
+          data={customerDeliveryLine?.['saleOrderLine.pickingOrderInfo']}
         />
       </ScrollView>
     </Screen>

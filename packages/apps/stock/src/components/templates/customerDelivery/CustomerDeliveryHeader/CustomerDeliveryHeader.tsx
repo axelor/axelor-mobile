@@ -33,11 +33,12 @@ const CustomerDeliveryHeader = ({customerDelivery}) => {
         reference={customerDelivery.stockMoveSeq}
         status={customerDelivery.statusSelect}
         date={
-          customerDelivery.statusSelect === StockMove.status.Draft
-            ? customerDelivery.createdOn
-            : customerDelivery.statusSelect === StockMove.status.Planned
-            ? customerDelivery.estimatedDate
-            : customerDelivery.realDate
+          customerDelivery
+            ? StockMove.getStockMoveDate(
+                customerDelivery.statusSelect,
+                customerDelivery,
+              )
+            : null
         }
         availability={customerDelivery.availableStatusSelect}
       />
