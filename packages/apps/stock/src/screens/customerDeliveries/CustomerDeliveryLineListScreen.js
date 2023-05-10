@@ -199,7 +199,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
         <CustomerDeliveryLineSearchBar
           customerDelivery={customerDelivery}
           onChange={handleLineSearch}
-          defaultValue={''}
           showDetailsPopup={false}
           oneFilter={true}
           scanKeySearch={scanKey}

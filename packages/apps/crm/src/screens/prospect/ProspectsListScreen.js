@@ -85,12 +85,7 @@ const ProspectsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ProspectSearchBar
-              onChange={() => {}}
-              defaultValue={''}
-              showDetailsPopup={false}
-              oneFilter={true}
-            />
+            <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
         }
       />

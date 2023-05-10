@@ -85,12 +85,7 @@ const CLientsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ClientSearchBar
-              onChange={() => {}}
-              defaultValue={''}
-              showDetailsPopup={false}
-              oneFilter={true}
-            />
+            <ClientSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
         }
       />

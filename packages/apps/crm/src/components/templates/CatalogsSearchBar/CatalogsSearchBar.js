@@ -28,8 +28,8 @@ import {fetchCatalog} from '../../../features/catalogSlice';
 
 const CatalogsSearchBar = ({
   placeholderKey = 'Crm_Catalogs',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

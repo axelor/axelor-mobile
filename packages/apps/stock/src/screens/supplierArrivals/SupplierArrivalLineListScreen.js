@@ -196,7 +196,6 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           />
         }>
         <SupplierArrivalLineSearchBar
-          defaultValue={''}
           scanKey={scanKey}
           onChange={filterLinesAPI}
           showDetailsPopup={false}

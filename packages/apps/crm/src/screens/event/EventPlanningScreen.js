@@ -188,7 +188,6 @@ function EventPlanningScreen({navigation}) {
             />
             <EventSearchBar
               onChange={setFilter}
-              defaultValue={''}
               showDetailsPopup={false}
               oneFilter={true}
             />

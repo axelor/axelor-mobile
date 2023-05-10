@@ -28,8 +28,8 @@ import {fetchOpportunities} from '../../../features/opportunitySlice';
 
 const OpportunitySearchBar = ({
   placeholderKey = 'Crm_Opportunity',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

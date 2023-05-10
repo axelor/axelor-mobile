@@ -197,7 +197,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         }>
         <InternalMoveLineSearchBar
           onChange={handleLineSearch}
-          defaultValue={''}
           showDetailsPopup={false}
           oneFilter={true}
           scanKeySearch={scanKey}

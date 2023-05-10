@@ -28,8 +28,8 @@ import {fetchProspects} from '../../../features/prospectSlice';
 
 const ProspectSearchBar = ({
   placeholderKey = 'Crm_Prospects',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

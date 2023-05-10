@@ -86,7 +86,6 @@ const InventorySelectProductScreen = ({route, navigation}) => {
       <ProductSearchBar
         scanKey={productScanKey}
         onChange={handleProductSelection}
-        defaultValue={''}
       />
       <PopUpOneButton
         visible={isVisible}

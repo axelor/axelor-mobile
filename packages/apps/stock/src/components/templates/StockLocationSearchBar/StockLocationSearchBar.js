@@ -31,8 +31,8 @@ import {
 
 const StockLocationSearchBar = ({
   placeholderKey = 'Stock_StockLocation',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   scanKey,
   showDetailsPopup = true,
   secondFilter = false,

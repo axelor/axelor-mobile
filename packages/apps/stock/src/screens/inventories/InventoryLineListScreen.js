@@ -173,7 +173,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
         }>
         <IventoryLineSearchBar
           onChange={handleLineSearch}
-          defaultValue={''}
           showDetailsPopup={false}
           oneFilter={true}
           scanKeySearch={scanKey}

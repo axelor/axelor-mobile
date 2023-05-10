@@ -113,12 +113,7 @@ const CatalogListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            <CatalogsSearchBar
-              onChange={() => {}}
-              defaultValue={''}
-              showDetailsPopup={false}
-              oneFilter={true}
-            />
+            <CatalogsSearchBar showDetailsPopup={false} oneFilter={true} />
             <MultiValuePicker
               listItems={catalogTypeListItems}
               title={I18n.t('Base_Status')}

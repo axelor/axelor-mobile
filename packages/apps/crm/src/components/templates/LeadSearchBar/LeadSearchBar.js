@@ -28,8 +28,8 @@ import {fetchLeads} from '../../../features/leadSlice';
 
 const LeadSearchBar = ({
   placeholderKey = 'Crm_Leads',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

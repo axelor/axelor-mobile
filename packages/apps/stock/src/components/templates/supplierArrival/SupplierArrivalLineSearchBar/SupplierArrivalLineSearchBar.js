@@ -28,8 +28,8 @@ import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLin
 
 const SupplierArrivalLineSearchBar = ({
   placeholderKey = 'Stock_SearchLine',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   scanKey,
   showDetailsPopup = true,
   navigate = false,

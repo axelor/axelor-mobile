@@ -79,7 +79,6 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleProductSelection}
-          defaultValue={''}
         />
       </View>
       <PopUpOneButton

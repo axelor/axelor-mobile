@@ -28,8 +28,8 @@ import {fetchInventoryLines} from '../../../features/inventoryLineSlice';
 
 const IventoryLineSearchBar = ({
   placeholderKey = 'Stock_SearchLine',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

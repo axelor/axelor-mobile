@@ -28,8 +28,8 @@ import {fetchClients} from '../../../features/clientSlice';
 
 const ClientSearchBar = ({
   placeholderKey = 'Crm_Clients',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

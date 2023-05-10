@@ -28,8 +28,8 @@ import {fetchCustomerDeliveryLines} from '../../../features/customerDeliveryLine
 
 const CustomerDeliveryLineSearchBar = ({
   placeholderKey = 'Stock_SearchLine',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

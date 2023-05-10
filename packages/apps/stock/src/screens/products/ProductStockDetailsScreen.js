@@ -110,7 +110,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
           product={product}
         />
         <StockLocationSearchBar
-          defaultValue={''}
           scanKey={stockLocationScanKey}
           onChange={setStockLocation}
         />

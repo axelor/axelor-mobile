@@ -71,11 +71,7 @@ const InternalMoveSelectProductScreen = ({navigation, route}) => {
           />
         }
       />
-      <ProductSearchBar
-        scanKey={productScanKey}
-        onChange={handleNavigate}
-        defaultValue={''}
-      />
+      <ProductSearchBar scanKey={productScanKey} onChange={handleNavigate} />
       <PopUpOneButton
         visible={isVisible}
         title={I18n.t('Auth_Warning')}

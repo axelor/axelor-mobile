@@ -168,7 +168,6 @@ const StockCorrectionCreationScreen = ({route}) => {
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
           onChange={handleStockLocationChange}
-          defaultValue={''}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ProductTrackingNumberSearchBar

@@ -52,7 +52,6 @@ function OperationOrderListScreen({navigation}) {
   );
   const {workCenterList} = useSelector(state => state.workCenters);
   const [workCenter, setWorkCenter] = useState(null);
-  const [machine] = useState(null);
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
@@ -73,11 +72,11 @@ function OperationOrderListScreen({navigation}) {
           operationOrderList,
           ['workCenter', 'machine'],
           ['id', 'id'],
-          [workCenter?.id ?? '', machine?.id ?? ''],
+          [workCenter?.id ?? '', ''],
         ),
       ),
     );
-  }, [filterOnStatus, operationOrderList, workCenter, machine]);
+  }, [filterOnStatus, operationOrderList, workCenter]);
 
   const navigateToOperationOrder = item => {
     if (item != null) {

@@ -28,8 +28,8 @@ import {fetchPlannedEvent} from '../../../features/eventSlice';
 
 const EventSearchBar = ({
   placeholderKey = 'Crm_Events',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

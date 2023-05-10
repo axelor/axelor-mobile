@@ -28,8 +28,8 @@ import {fetchInternalMoveLines} from '../../../features/internalMoveLineSlice';
 
 const InternalMoveLineSearchBar = ({
   placeholderKey = 'Stock_SearchLine',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,

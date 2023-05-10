@@ -130,12 +130,7 @@ const OpportunityListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <OpportunitySearchBar
-              onChange={() => {}}
-              defaultValue={''}
-              showDetailsPopup={false}
-              oneFilter={true}
-            />
+            <OpportunitySearchBar showDetailsPopup={false} oneFilter={true} />
             <MultiValuePicker
               listItems={opportunityStatusListItems}
               title={I18n.t('Base_Status')}

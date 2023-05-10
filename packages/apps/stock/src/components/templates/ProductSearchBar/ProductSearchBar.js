@@ -28,8 +28,8 @@ import {searchProducts} from '../../../features/productSlice';
 
 const ProductSearchBar = ({
   placeholderKey = 'Stock_Product',
-  defaultValue = null,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   scanKey,
   showDetailsPopup = true,
   navigate = false,
