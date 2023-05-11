@@ -23,10 +23,9 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  displayItemTrackingNumber,
-  filterTrackingNumber,
-} from '@axelor/aos-mobile-stock';
+
+import {filterTrackingNumber} from '../../../features/trackingNumberSlice';
+import {displayItemTrackingNumber} from '../../../utils/displayers';
 
 const TrackingNumberSearchBar = ({
   placeholderKey = 'Stock_TrackingNumber',
