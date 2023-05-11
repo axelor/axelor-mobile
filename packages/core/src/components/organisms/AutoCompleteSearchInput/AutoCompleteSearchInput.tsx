@@ -97,7 +97,7 @@ const AutoCompleteSearchInput = ({
   }, [searchAPI]);
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <Text style={[styles.title, styleTxt]}>{title}</Text>
       <AutoCompleteSearch
         style={[value == null && required ? styles.requiredBorder : null]}

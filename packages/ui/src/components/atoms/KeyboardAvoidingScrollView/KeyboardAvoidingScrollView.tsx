@@ -37,7 +37,9 @@ const KeyboardAvoidingScrollView = ({
       keyboardVerticalOffset={
         Platform.OS === 'ios' ? keyboardOffset?.ios : keyboardOffset?.android
       }>
-      <ScrollView style={globalStyle} contentContainerStyle={style}>
+      <ScrollView
+        style={globalStyle}
+        contentContainerStyle={[styles.scrollContent, style]}>
         {children}
       </ScrollView>
     </KeyboardAvoidingView>
@@ -47,9 +49,10 @@ const KeyboardAvoidingScrollView = ({
 const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
+    zIndex: 5,
   },
-  container: {
-    alignItems: 'center',
+  scrollContent: {
+    zIndex: 10,
   },
 });
 
