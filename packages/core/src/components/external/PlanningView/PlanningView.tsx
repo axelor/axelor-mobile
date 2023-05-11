@@ -44,6 +44,8 @@ interface PlanningProps {
   renderItem?: (item: AgendaItem) => React.ReactNode;
   renderFullDayItem?: (item: AgendaItem) => React.ReactNode;
   itemList?: AgendaEvent[];
+  changeWeekButton: boolean;
+  returnToDayButton: boolean;
 }
 
 const PlanningView = ({
@@ -53,6 +55,8 @@ const PlanningView = ({
   fetchbyMonth,
   loading = false,
   itemList = [],
+  changeWeekButton = false,
+  returnToDayButton = false,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -166,24 +170,32 @@ const PlanningView = ({
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.headerPlanning}>
-        <CircleButton
-          iconName="arrow-left"
-          onPress={lastWeekBtnOnPress}
-          size={35}
-        />
-        <CircleButton
-          iconName="calendar-day"
-          onPress={todayBtnOnPress}
-          size={35}
-        />
-        <CircleButton
-          iconName="arrow-right"
-          onPress={nextWeekBtnOnPress}
-          size={35}
-        />
+        {changeWeekButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="arrow-left"
+            onPress={lastWeekBtnOnPress}
+            size={35}
+          />
+        )}
+        {returnToDayButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="calendar-day"
+            onPress={todayBtnOnPress}
+            size={35}
+          />
+        )}
+        {changeWeekButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="arrow-right"
+            onPress={nextWeekBtnOnPress}
+            size={35}
+          />
+        )}
       </View>
       <Agenda
-        headerStyle={{paddingTop: '50%'}}
         onDayPress={date => setCurrentDate(date.dateString)}
         selected={currentDate}
         items={agendaItems}
@@ -212,15 +224,6 @@ const PlanningView = ({
           agendaTodayColor: Colors.primaryColor.background_light,
           agendaKnobColor: Colors.secondaryColor.background,
           todayBackgroundColor: Colors.secondaryColor.background_light,
-          //'stylesheet.calendar.header': {week: {height: 0, width: 100}},
-          'stylesheet.calendar.header': {
-            week: {
-              paddingLeft: 100,
-              paddingRight: 100,
-              marginTop: 6,
-              alignItems: 'center',
-            },
-          },
         }}
         current={currentDate}
         key={currentDate}
@@ -233,7 +236,7 @@ const getStyles = Colors =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
-      zIndex: 1,
+      backgroundColor: Colors.backgroundColor,
     },
     emptyDate: {
       height: 15,
@@ -293,16 +296,14 @@ const getStyles = Colors =>
       width: '60%',
       alignSelf: 'center',
     },
-    floatingButton: {
-      height: '50%',
+    circleButton: {
+      marginHorizontal: 5,
     },
     headerPlanning: {
       flexDirection: 'row',
       alignItems: 'center',
-      position: 'absolute',
-      top: 0,
-      right: 10,
-      zIndex: 2,
+      alignContent: 'flex-end',
+      alignSelf: 'flex-end',
     },
   });
 
