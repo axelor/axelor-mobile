@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {Color, useThemeColor} from '../../../theme';
-import {Text} from '../../atoms';
+import {Color, useThemeColor} from '@axelor/aos-mobile-ui/src/theme';
+import {Text} from '@axelor/aos-mobile-ui/src/components/atoms';
 
 interface HeaderBandProps {
   color: Color;
   text: string;
-  showIf?: boolean;
+  showIf?: () => boolean;
 }
 
 const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
@@ -17,7 +17,7 @@ const HeaderBand = ({color, text, showIf}: HeaderBandProps) => {
     [Colors, color],
   );
 
-  if (!showIf) {
+  if (!showIf()) {
     return null;
   }
 

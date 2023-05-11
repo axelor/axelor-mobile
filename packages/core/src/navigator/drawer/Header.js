@@ -51,28 +51,22 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
             {headerOptions?.headerTitle || I18n.t(title)}
           </Text>
         </View>
-        {headerOptions != null ? (
-          <HeaderOptionsMenu
-            model={headerOptions.model}
-            modelId={headerOptions.modelId}
-            actions={headerOptions.actions}
-            attachedFileScreenTitle={headerOptions.attachedFileScreenTitle}
-            disableMailMessages={headerOptions.disableMailMessages}
-          />
-        ) : null}
       </View>
+      {headerOptions != null ? (
+        <HeaderOptionsMenu
+          model={headerOptions.model}
+          modelId={headerOptions.modelId}
+          actions={headerOptions.actions}
+          attachedFileScreenTitle={headerOptions.attachedFileScreenTitle}
+          disableMailMessages={headerOptions.disableMailMessages}
+        />
+      ) : null}
     </View>
   );
 };
 
 const getHeaderStyles = Colors =>
   StyleSheet.create({
-    headerContianer: {
-      position: 'absolute',
-      top: 0,
-      left: -16,
-      width: Dimensions.get('screen').width,
-    },
     headerTitle: {
       color: Colors.text,
       marginLeft: -14,
@@ -82,11 +76,12 @@ const getHeaderStyles = Colors =>
       top: 0,
       left: Platform.OS === 'ios' ? -Dimensions.get('window').width * 0.5 : -15,
       backgroundColor: Colors.backgroundColor,
+      height: '100%',
+      width: Dimensions.get('screen').width,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       alignContent: 'center',
-      height: 56,
     },
     shadedHeader: {
       elevation: 3,

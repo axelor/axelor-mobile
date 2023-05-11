@@ -38,7 +38,7 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
-import {useHeaderBands} from '../../header';
+import {useHeaderBand} from '../../header';
 
 const SettingsScreen = ({route, children, navigation}) => {
   const {message} = useSelector(state => state.config);
@@ -61,7 +61,7 @@ const SettingsScreen = ({route, children, navigation}) => {
   const dispatch = useDispatch();
 
   // TODO: Please remove this after test
-  const {addHeaderBand, updateHeaderBand} = useHeaderBands();
+  const {addHeaderBand, updateHeaderBand} = useHeaderBand();
 
   useEffect(() => {
     if (message) {
@@ -72,19 +72,21 @@ const SettingsScreen = ({route, children, navigation}) => {
   }, [message, dispatch, setActivityIndicator]);
 
   // TODO: Please remove this after test
-  addHeaderBand({
-    key: 'setting_env',
-    text: 'setting',
-    color: Colors.infoColor,
-    showIf: () => true,
-  });
+  useEffect(() => {
+    addHeaderBand({
+      key: 'setting_env',
+      text: 'setting',
+      color: Colors.infoColor,
+      showIf: () => true,
+    });
 
-  // TODO: Please remove this after test
-  updateHeaderBand('dev_env', {
-    text: 'dev update',
-    color: Colors.warningColor,
-    showIf: () => true,
-  });
+    updateHeaderBand('dev_env', {
+      text: 'dev update',
+      color: Colors.warningColor,
+      showIf: () => true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Colors]);
 
   const handleToggleConnection = useCallback(
     state => {

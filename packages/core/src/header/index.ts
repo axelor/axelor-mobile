@@ -17,7 +17,6 @@
  */
 
 export {headerActionsProvider, useHeaderOptions} from './HeaderActionsProvider';
-export {headerBandProvider} from './HeaderBandProvider';
 export {useBasicActions} from './hooks';
 export {
   HeaderActions,
@@ -25,4 +24,4 @@ export {
   ActionType,
   HeaderBandItem,
 } from './types';
-export {useHeaderBands} from './use-header-band';
+export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';

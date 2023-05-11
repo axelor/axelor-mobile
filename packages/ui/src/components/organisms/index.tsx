@@ -21,7 +21,6 @@ export {default as ChipSelect} from './ChipSelect/ChipSelect';
 export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSwitch';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
 export {default as FloatingButton} from './FloatingButton/FloatingButton';
-export {default as HeaderBandList} from './HeaderBandList/HeaderBandList';
 export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as ImageBubble} from './ImageBubble/ImageBubble';
 export {default as MultiSelectValue} from './MultiSelectValue/MultiSelectValue';

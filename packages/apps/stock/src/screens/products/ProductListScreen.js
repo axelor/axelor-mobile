@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
-  useHeaderBands,
+  useHeaderBand,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -44,10 +44,13 @@ const ProductListScreen = ({navigation}) => {
   const [navigate, setNavigate] = useState(false);
 
   // TODO: Please remove this after test
-  const {removeHeaderBand} = useHeaderBands();
+  const {removeHeaderBand} = useHeaderBand();
 
   // TODO: Please remove this after test
-  removeHeaderBand('setting_env');
+  useEffect(() => {
+    removeHeaderBand('setting_env');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchProductsAPI = useCallback(
     (page = 0) => {

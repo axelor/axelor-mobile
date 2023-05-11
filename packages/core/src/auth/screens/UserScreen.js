@@ -33,7 +33,7 @@ import {
 import {
   logout,
   useDispatch,
-  useHeaderBands,
+  useHeaderBand,
   useSelector,
   useTranslator,
 } from '../../index';
@@ -60,15 +60,18 @@ const UserScreen = ({children}) => {
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
   // TODO: Please remove this after test
-  const {addHeaderBand} = useHeaderBands();
+  const {addHeaderBand} = useHeaderBand();
 
   // TODO: Please remove this after test
-  addHeaderBand({
-    key: 'dev_env',
-    text: 'dev',
-    color: Colors.errorColor,
-    showIf: () => true,
-  });
+  useEffect(() => {
+    addHeaderBand({
+      key: 'dev_env',
+      text: 'dev',
+      color: Colors.errorColor,
+      showIf: () => true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Colors]);
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
