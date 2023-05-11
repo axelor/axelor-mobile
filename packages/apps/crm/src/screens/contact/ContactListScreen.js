@@ -86,8 +86,6 @@ const ContactListScreen = ({navigation}) => {
               onSwitch={() => setAssigned(!assigned)}
             />
             <ContactSearchBar
-              onChange={() => {}}
-              defaultValue={contactList}
               showDetailsPopup={false}
               oneFilter={true}
             />

@@ -28,8 +28,8 @@ import {fetchContact} from '../../../features/contactSlice';
 
 const ContactSearchBar = ({
   placeholderKey = 'Crm_Contacts',
-  defaultValue,
-  onChange,
+  defaultValue = '',
+  onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
