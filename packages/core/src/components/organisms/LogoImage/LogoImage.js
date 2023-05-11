@@ -17,33 +17,38 @@
  */
 
 import axios from 'axios';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 
 const axelorLogoPath = '../../../assets/Logo_Axelor.png';
 
-const LogoImage = ({url = null}) => {
-  const axelorLogo = useRef(require(axelorLogoPath)).current;
-  const [urlLogoSource, setUrlLogoSource] = useState(
-    generateImageSourceWithUrl(url),
+const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
+  const companyLogoFile = useRef(logoFile ?? require(axelorLogoPath)).current;
+  const [source, setSource] = useState(companyLogoFile);
+
+  const generateImageSourceWithUrl = useCallback(
+    _url => ({uri: `${_url}/img/${filePath}`}),
+    [filePath],
   );
-  const [source, setSource] = useState(axelorLogo);
+
+  const urlLogoSource = useMemo(
+    () => (url ? generateImageSourceWithUrl(url) : null),
+    [generateImageSourceWithUrl, url],
+  );
 
   useEffect(() => {
-    setUrlLogoSource(generateImageSourceWithUrl(url));
-  }, [url]);
-
-  useEffect(() => {
-    axios
-      .head(urlLogoSource.uri)
-      .then(({status}) => {
-        if (status === 200) {
-          setSource(urlLogoSource);
-        }
-      })
-      .catch(() => setSource(axelorLogo));
-  }, [axelorLogo, urlLogoSource]);
+    if (urlLogoSource != null) {
+      axios
+        .head(urlLogoSource.uri)
+        .then(({status}) => {
+          if (status === 200) {
+            setSource(urlLogoSource);
+          }
+        })
+        .catch(() => setSource(companyLogoFile));
+    }
+  }, [companyLogoFile, urlLogoSource]);
 
   return (
     <Image resizeMode="contain" style={styles.imageSize} source={source} />
@@ -56,9 +61,5 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-
-const generateImageSourceWithUrl = url => ({uri: concatLogoSuffixToUrl(url)});
-const concatLogoSuffixToUrl = url => `${url}/img/${logoName}`;
-const logoName = 'logo.png';
 
 export default LogoImage;

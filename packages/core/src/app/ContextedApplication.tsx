@@ -51,6 +51,7 @@ interface instanceConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
   enableConnectionSessions: boolean;
+  logoFile?: any;
 }
 
 interface ContextedApplicationProps {

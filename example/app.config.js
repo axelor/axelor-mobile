@@ -80,4 +80,10 @@ export const app_config = {
    * You can use the `WritingStyles` object to specify defaultSize, title, subTitle, and other text styles.
    */
   //writingStylesConfig: {},
+
+  /*
+   * This configuration allows you to customize the logo displayed on the login screen.
+   * By default, the application display the Axelor logo.
+   */
+  //logoFile: require('path to logo file'),
 };
