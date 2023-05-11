@@ -1,6 +1,7 @@
+import {Dimensions} from 'react-native';
 import {HeaderBandItem} from './types';
 
-const HEADER_DEFAULT_HEIGHT = 88;
+const HEADER_DEFAULT_HEIGHT = Dimensions.get('screen').height * 0.1;
 const HEADER_BAND_HEIGHT = 24;
 
 class HeaderBandProvider {
@@ -34,7 +35,7 @@ class HeaderBandProvider {
 
   getFilteredBands = (): HeaderBandItem[] => {
     return this._allBands
-      .filter(band => band.showIf)
+      .filter(band => band.showIf())
       .sort((a, b) => a.order - b.order);
   };
 
@@ -51,7 +52,7 @@ class HeaderBandProvider {
       ...this._allBands,
       {
         order: (this._allBands.length + 1) * 10,
-        showIf: false,
+        showIf: () => false,
         ...band,
       },
     ];

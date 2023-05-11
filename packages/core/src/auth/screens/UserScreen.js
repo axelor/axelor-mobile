@@ -67,7 +67,7 @@ const UserScreen = ({children}) => {
     key: 'dev_env',
     text: 'dev',
     color: Colors.errorColor,
-    showIf: true,
+    showIf: () => true,
   });
 
   useEffect(() => {

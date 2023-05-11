@@ -76,14 +76,14 @@ const SettingsScreen = ({route, children, navigation}) => {
     key: 'setting_env',
     text: 'setting',
     color: Colors.infoColor,
-    showIf: true,
+    showIf: () => true,
   });
 
   // TODO: Please remove this after test
   updateHeaderBand('dev_env', {
     text: 'dev update',
     color: Colors.warningColor,
-    showIf: true,
+    showIf: () => true,
   });
 
   const handleToggleConnection = useCallback(

@@ -49,6 +49,6 @@ export interface HeaderBandItem {
   key: string;
   color: Color;
   text: string;
-  showIf?: boolean;
+  showIf?: () => boolean;
   order?: number;
 }
