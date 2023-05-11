@@ -30,6 +30,7 @@ interface ScrollListProps {
   isListEnd: boolean;
   filter: boolean;
   translator?: (translationKey: string) => string;
+  horizontal?: boolean;
 }
 
 const ScrollList = ({
@@ -42,6 +43,7 @@ const ScrollList = ({
   isListEnd = false,
   filter = false,
   translator,
+  horizontal = false,
 }: ScrollListProps) => {
   const [page, setPage] = useState(0);
 
@@ -82,6 +84,7 @@ const ScrollList = ({
       data={data}
       onRefresh={updateData}
       refreshing={loadingList}
+      horizontal={horizontal}
       onEndReached={() => handleMoreData(page)}
       ListFooterComponent={() => {
         return (

@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {AnyAction} from '@reduxjs/toolkit';
 import {
   AutoCompleteSearch,
   Text,
@@ -26,7 +25,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {stringNoAccent} from '../../../utils/string';
-import {useDispatch} from '../../../redux/hooks';
 
 interface AutoCompleteSearchInputProps {
   title?: string;
@@ -35,12 +33,13 @@ interface AutoCompleteSearchInputProps {
   searchField: string;
   onChangeValue?: (any) => void;
   onSelection?: () => void;
-  searchAPI?: ({searchValue}: {searchValue: string}) => AnyAction;
+  searchAPI?: (searchValue?: string) => any;
   placeholder?: string;
   style?: any;
   styleTxt?: any;
   required?: boolean;
   selectLastItem?: boolean;
+  locallyFilteredList?: boolean;
 }
 
 const AutoCompleteSearchInput = ({
@@ -56,11 +55,10 @@ const AutoCompleteSearchInput = ({
   styleTxt,
   required = false,
   selectLastItem = true,
+  locallyFilteredList = true,
 }: AutoCompleteSearchInputProps) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
-  const [filteredList, setFilteredList] = useState(objectList);
   const [searchValue, setSearchValue] = useState(null);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -68,7 +66,7 @@ const AutoCompleteSearchInput = ({
   const filterSearchList = useCallback(
     _searchValue => {
       if (_searchValue == null || _searchValue === '') {
-        return [];
+        return Array.isArray(objectList) ? objectList : [];
       }
 
       const objectFiltredList =
@@ -78,18 +76,25 @@ const AutoCompleteSearchInput = ({
             .includes(stringNoAccent(_searchValue).toLowerCase()),
         ) || [];
 
-      if (objectFiltredList.length === 0 && searchAPI) {
-        dispatch(searchAPI({searchValue: _searchValue}));
+      if (searchAPI != null && objectFiltredList.length === 0) {
+        searchAPI(_searchValue);
       }
 
       return objectFiltredList;
     },
-    [dispatch, objectList, searchAPI, searchField],
+    [objectList, searchField, searchAPI],
   );
 
-  useEffect(() => {
-    setFilteredList(filterSearchList(searchValue));
-  }, [filterSearchList, searchValue]);
+  const filteredList = useMemo(
+    () => (locallyFilteredList ? filterSearchList(searchValue) : objectList),
+    [filterSearchList, locallyFilteredList, objectList, searchValue],
+  );
+
+  React.useLayoutEffect(() => {
+    if (searchAPI) {
+      searchAPI();
+    }
+  }, [searchAPI]);
 
   return (
     <View style={style}>
@@ -100,7 +105,7 @@ const AutoCompleteSearchInput = ({
         objectList={filteredList}
         onChangeValue={onChangeValue}
         onSelection={onSelection}
-        fetchData={setSearchValue}
+        fetchData={locallyFilteredList ? setSearchValue : searchAPI}
         placeholder={placeholder}
         displayValue={item => item[searchField]}
         selectLastItem={selectLastItem}

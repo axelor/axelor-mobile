@@ -38,6 +38,7 @@ interface IncrementProps {
   onValueChange: (any) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  readonly?: boolean;
 }
 
 const Increment = ({
@@ -49,6 +50,7 @@ const Increment = ({
   onValueChange,
   onFocus = () => {},
   onBlur = () => {},
+  readonly = false,
 }: IncrementProps) => {
   const format = useCallback(
     number => {
@@ -112,14 +114,16 @@ const Increment = ({
 
   return (
     <View style={[styles.container_increment, style]}>
-      <Icon
-        name="minus"
-        size={24}
-        color={Colors.primaryColor.background}
-        touchable={true}
-        onPress={handleMinus}
-        style={styles.container_icon}
-      />
+      {!readonly && (
+        <Icon
+          name="minus"
+          size={24}
+          color={Colors.primaryColor.background}
+          touchable={true}
+          onPress={handleMinus}
+          style={styles.container_icon}
+        />
+      )}
       <View style={styles.inputLine}>
         <Input
           style={[styles.input, inputStyle]}
@@ -128,16 +132,19 @@ const Increment = ({
           keyboardType="numeric"
           onSelection={onFocus}
           onEndFocus={handleEndInput}
+          readOnly={readonly}
         />
       </View>
-      <Icon
-        name="plus"
-        size={24}
-        color={Colors.primaryColor.background}
-        touchable={true}
-        onPress={handlePlus}
-        style={styles.container_icon}
-      />
+      {!readonly && (
+        <Icon
+          name="plus"
+          size={24}
+          color={Colors.primaryColor.background}
+          touchable={true}
+          onPress={handlePlus}
+          style={styles.container_icon}
+        />
+      )}
     </View>
   );
 };

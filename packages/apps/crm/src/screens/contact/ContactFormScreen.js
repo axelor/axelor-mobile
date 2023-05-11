@@ -103,6 +103,13 @@ const ContactFormScreen = ({navigation, route}) => {
     email,
   ]);
 
+  const searchClientAndProspectAPI = useCallback(
+    searchValue => {
+      dispatch(fetchClientAndProspect({searchValue}));
+    },
+    [dispatch],
+  );
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -141,7 +148,8 @@ const ContactFormScreen = ({navigation, route}) => {
               value={clientAndProspect}
               searchField="fullName"
               onChangeValue={setClientAndProspect}
-              searchAPI={fetchClientAndProspect}
+              searchAPI={searchClientAndProspectAPI}
+              locallyFilteredList={false}
             />
             <FormInput
               style={styles.input}
