@@ -166,15 +166,24 @@ const PlanningView = ({
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.headerPlanning}>
-        <CircleButton iconName="arrow-left" onPress={lastWeekBtnOnPress} />
         <CircleButton
-          //style={styles.floatingButton}
+          iconName="arrow-left"
+          onPress={lastWeekBtnOnPress}
+          size={35}
+        />
+        <CircleButton
           iconName="calendar-day"
           onPress={todayBtnOnPress}
+          size={35}
         />
-        <CircleButton iconName="arrow-right" onPress={nextWeekBtnOnPress} />
+        <CircleButton
+          iconName="arrow-right"
+          onPress={nextWeekBtnOnPress}
+          size={35}
+        />
       </View>
       <Agenda
+        headerStyle={{paddingTop: '50%'}}
         onDayPress={date => setCurrentDate(date.dateString)}
         selected={currentDate}
         items={agendaItems}
@@ -203,6 +212,15 @@ const PlanningView = ({
           agendaTodayColor: Colors.primaryColor.background_light,
           agendaKnobColor: Colors.secondaryColor.background,
           todayBackgroundColor: Colors.secondaryColor.background_light,
+          //'stylesheet.calendar.header': {week: {height: 0, width: 100}},
+          'stylesheet.calendar.header': {
+            week: {
+              paddingLeft: 100,
+              paddingRight: 100,
+              marginTop: 6,
+              alignItems: 'center',
+            },
+          },
         }}
         current={currentDate}
         key={currentDate}
@@ -276,16 +294,13 @@ const getStyles = Colors =>
       alignSelf: 'center',
     },
     floatingButton: {
-      position: 'absolute',
-      right: 15,
-      zIndex: 2,
-      top: 30,
+      height: '50%',
     },
     headerPlanning: {
       flexDirection: 'row',
       alignItems: 'center',
       position: 'absolute',
-      top: -5,
+      top: 0,
       right: 10,
       zIndex: 2,
     },
