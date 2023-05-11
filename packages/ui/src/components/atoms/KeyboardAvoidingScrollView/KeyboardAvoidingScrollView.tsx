@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   scrollContent: {
+    height: '100%',
     zIndex: 10,
   },
 });
