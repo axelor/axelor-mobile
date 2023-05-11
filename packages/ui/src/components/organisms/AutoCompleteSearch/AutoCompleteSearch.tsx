@@ -214,7 +214,6 @@ const AutoCompleteSearch = ({
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}
         onSearchPress={handleSearchPress}
-        onEndFocus={() => selected && setDisplayList(false)}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
       />
