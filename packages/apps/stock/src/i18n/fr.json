@@ -124,6 +124,7 @@
   "Stock_SliceAction_FilterInternalMoves": "filtre sur les mouvements interne",
   "Stock_SliceAction_FetchInternalMove": "récupération du mouvement interne",
   "Stock_SliceAction_CreateInternalMove": "création d'un mouvement interne",
+  "Stock_SliceAction_ModifyInternalMoveNotes": "modification des notes d'un mouvement interne",
   "Stock_SliceAction_RealizeInternalMove": "réalisation du mouvement interne",
   "Stock_SliceAction_FetchInventoryLines": "récupération des lignes d'inventaire",
   "Stock_SliceAction_FetchInventoryLine": "récupération de la ligne d'inventaire",

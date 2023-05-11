@@ -124,6 +124,7 @@
   "Stock_SliceAction_FilterInternalMoves": "filter internal moves",
   "Stock_SliceAction_FetchInternalMove": "fetch internal move",
   "Stock_SliceAction_CreateInternalMove": "create internal move",
+  "Stock_SliceAction_ModifyInternalMoveNotes": "modify internal move notes",
   "Stock_SliceAction_RealizeInternalMove": "realize internal move",
   "Stock_SliceAction_FetchInventoryLines": "fetch inventory lines",
   "Stock_SliceAction_FetchInventoryLine": "fetch inventory line",

@@ -99,7 +99,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         handleReset(CREATION_STEP.original_stockLocation);
       } else {
         setOriginalStockLocation(_value);
-        handleNextStep();
+        handleNextStep(CREATION_STEP.original_stockLocation);
       }
     },
     [handleNextStep, handleReset],
@@ -141,7 +141,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
           setProduct(_value);
           setTrackingNumber(null);
         }
-        handleNextStep();
+        handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
     [handleNextStep, handleReset],
@@ -166,7 +166,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         handleReset(CREATION_STEP.destination_stockLocation);
       } else {
         setDestinationStockLocation(_value);
-        handleNextStep();
+        handleNextStep(CREATION_STEP.destination_stockLocation);
       }
     },
     [handleNextStep, handleReset],
@@ -206,8 +206,8 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     [],
   );
 
-  const handleNextStep = useCallback(() => {
-    setCurrentStep(_current => {
+  const handleNextStep = useCallback(_current => {
+    setCurrentStep(() => {
       if (_current <= CREATION_STEP.original_stockLocation) {
         return CREATION_STEP.product_trackingNumber;
       }

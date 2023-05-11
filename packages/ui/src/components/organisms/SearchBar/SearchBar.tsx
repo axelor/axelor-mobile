@@ -30,7 +30,7 @@ interface SearchBarProps {
   onClearPress: () => void;
   onChangeTxt: (any) => void;
   onSelection?: () => void;
-  onEndFocus: () => void;
+  onEndFocus?: () => void;
   onScanPress?: () => void;
   scanIconColor?: string;
   onSearchPress?: () => void;

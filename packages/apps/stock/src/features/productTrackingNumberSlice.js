@@ -27,7 +27,7 @@ export const searchProductTrackingNumber = createAsyncThunk(
     const productResult = await handlerApiCall({
       fetchFunction: searchProductsFilter,
       data,
-      action: 'search products',
+      action: 'Stock_SliceAction_FilterProducts',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -35,13 +35,23 @@ export const searchProductTrackingNumber = createAsyncThunk(
     const trackingNumberResult = await handlerApiCall({
       fetchFunction: searchTrackingNumberFilter,
       data,
-      action: 'search tracking numbers',
+      action: 'Stock_SliceAction_FilterProductTrakingNumbers',
       getState,
       responseOptions: {isArrayResponse: true},
     });
 
+    let result = [];
+
+    if (Array.isArray(productResult)) {
+      result = [...result, ...productResult];
+    }
+
+    if (Array.isArray(trackingNumberResult)) {
+      result = [...result, ...trackingNumberResult];
+    }
+
     return new Promise(async resolve => {
-      resolve([...productResult, ...trackingNumberResult]);
+      resolve(result);
     });
   },
 );

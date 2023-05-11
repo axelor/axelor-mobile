@@ -73,7 +73,7 @@ export const createInternalMove = createAsyncThunk(
           notes: data.notes,
           version: res.version,
         },
-        action: 'modify internal move notes',
+        action: 'Stock_SliceAction_ModifyInternalMoveNotes',
         getState,
         responseOptions: {showToast: false},
       });
