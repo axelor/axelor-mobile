@@ -38,6 +38,7 @@ interface StopwatchProps {
   onPause: () => void;
   onStop: () => void;
   onCancel?: () => void;
+  useObjectStatus?: boolean;
 }
 
 const Stopwatch = ({
@@ -55,6 +56,7 @@ const Stopwatch = ({
   onPause = () => {},
   onStop = () => {},
   onCancel = () => {},
+  useObjectStatus = false,
 }: StopwatchProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -62,9 +64,19 @@ const Stopwatch = ({
   const [state, setState] = useState(status);
   const [time, setTime] = useState(startTime);
 
+  const stopwatchStatus = useMemo(() => {
+    if (useObjectStatus) {
+      return status;
+    }
+
+    return state;
+  }, [state, status, useObjectStatus]);
+
   const borderStyle = useMemo(() => {
-    return getStyles(StopwatchType.getStatusBorderColor(state, Colors)).border;
-  }, [Colors, state]);
+    return getStyles(
+      StopwatchType.getStatusBorderColor(stopwatchStatus, Colors),
+    ).border;
+  }, [Colors, stopwatchStatus]);
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
@@ -89,28 +101,28 @@ const Stopwatch = ({
     <Card style={[styles.container, borderStyle, style]}>
       <View style={styles.row}>
         <Text style={styles.status}>
-          {StopwatchType.getStatus(state, I18n)}
+          {StopwatchType.getStatus(stopwatchStatus, I18n)}
         </Text>
         <Icon name="stopwatch" size={18} style={styles.icon} />
       </View>
       <View style={styles.row}>
         <View style={styles.btnContainer}>
-          {state !== StopwatchType.status.InProgress && (
+          {stopwatchStatus !== StopwatchType.status.InProgress && (
             <Icon
               name="play"
               size={25}
               disabled={
                 disable ||
                 disablePlay ||
-                state === StopwatchType.status.InProgress ||
-                state === StopwatchType.status.Finished
+                stopwatchStatus === StopwatchType.status.InProgress ||
+                stopwatchStatus === StopwatchType.status.Finished
               }
               touchable={true}
               onPress={handlePlayBtn}
               style={styles.btn}
             />
           )}
-          {state === StopwatchType.status.InProgress && (
+          {stopwatchStatus === StopwatchType.status.InProgress && (
             <Icon
               name="pause"
               size={25}
@@ -126,8 +138,8 @@ const Stopwatch = ({
             disabled={
               disable ||
               disableStop ||
-              state === StopwatchType.status.Ready ||
-              state === StopwatchType.status.Finished
+              stopwatchStatus === StopwatchType.status.Ready ||
+              stopwatchStatus === StopwatchType.status.Finished
             }
             touchable={true}
             onPress={handleStopBtn}
@@ -138,7 +150,9 @@ const Stopwatch = ({
               name="undo"
               size={25}
               disabled={
-                disable || disableCancel || state === StopwatchType.status.Ready
+                disable ||
+                disableCancel ||
+                stopwatchStatus === StopwatchType.status.Ready
               }
               touchable={true}
               onPress={handleCancelBtn}
@@ -150,7 +164,7 @@ const Stopwatch = ({
           time={time}
           onCount={setTime}
           style={styles.timer}
-          isPaused={state !== StopwatchType.status.InProgress}
+          isPaused={stopwatchStatus !== StopwatchType.status.InProgress}
           timerFormat={timerFormat}
         />
       </View>

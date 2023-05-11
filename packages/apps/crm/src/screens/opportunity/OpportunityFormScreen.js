@@ -115,6 +115,13 @@ const OpportunityFormScreen = ({navigation, route}) => {
     I18n,
   ]);
 
+  const searchClientAndProspectAPI = useCallback(
+    searchValue => {
+      dispatch(fetchClientAndProspect({searchValue}));
+    },
+    [dispatch],
+  );
+
   return (
     <Screen>
       <KeyboardAvoidingView
@@ -140,7 +147,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
               value={partner}
               searchField="fullName"
               onChangeValue={setPartner}
-              searchAPI={fetchClientAndProspect}
+              searchAPI={searchClientAndProspectAPI}
+              locallyFilteredList={false}
             />
             <DateInput
               title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
