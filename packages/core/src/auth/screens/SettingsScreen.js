@@ -66,7 +66,7 @@ const SettingsScreen = ({route, children}) => {
 
   const handleToggleConnection = useCallback(
     state => {
-      if (state) {
+      if (!state) {
         dispatch(enable());
       } else {
         dispatch(disable());

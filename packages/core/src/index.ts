@@ -40,6 +40,13 @@ export {
   disableCamera,
   default as cameraReducer,
 } from './features/cameraSlice';
+export {
+  useEffectOnline,
+  useOnline,
+  enable as enableOnline,
+  disable as disableOnline,
+} from './features/onlineSlice';
+export {getNetInfo} from './api/net-info-utils';
 export {useDispatch, useSelector} from './redux/hooks';
 export * from './components';
 export * from './tools';

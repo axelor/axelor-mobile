@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
@@ -29,6 +29,7 @@ interface DropdownMenuItemProps {
   FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
+  disableIf?: boolean;
   onPress: (any) => void;
 }
 
@@ -41,20 +42,36 @@ const DropdownMenuItem = ({
   indicator = 0,
   FontAwesome5 = true,
   hideIf = false,
+  disableIf = false,
   onPress,
 }: DropdownMenuItemProps) => {
   const Colors = useThemeColor();
+
+  const _color = useMemo(() => {
+    if (color != null) {
+      return color;
+    }
+
+    if (disableIf) {
+      return Colors.secondaryColor.background;
+    }
+
+    return Colors.secondaryColor_dark.background;
+  }, [Colors, color, disableIf]);
 
   if (hideIf) {
     return null;
   }
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.menuItem}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.menuItem}
+      disabled={disableIf}>
       <View style={styles.iconContainer}>
         <Icon
           name={icon}
-          color={color || Colors.secondaryColor_dark.background}
+          color={_color}
           FontAwesome5={FontAwesome5}
           size={15}
         />

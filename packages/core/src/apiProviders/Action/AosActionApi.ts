@@ -27,14 +27,24 @@ export class AosActionApi implements ActionApi {
   static isOnlineAvailable = true;
 
   async isAvailable(): Promise<boolean> {
-    if (AosActionApi.isOnlineAvailable) {
-      const {isConnected} = await getNetInfo();
-      return isConnected;
-    }
-    return AosActionApi.isOnlineAvailable;
+    const {isConnected} = await getNetInfo();
+
+    return new Promise(resolve => {
+      if (!AosActionApi.isOnlineAvailable) {
+        resolve(false);
+      } else {
+        resolve(isConnected);
+      }
+    });
   }
 
   send(request: ActionRequest): Promise<void> {
     return axios[request.method](request.url, request.body);
+  }
+
+  synchronize(): Promise<void> {
+    return new Promise(resolve => {
+      resolve();
+    });
   }
 }

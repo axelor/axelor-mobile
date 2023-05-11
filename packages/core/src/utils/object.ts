@@ -50,10 +50,13 @@ export function fetchJsonField(object: any, fieldName: string) {
 }
 
 export function pickFieldsOfObject(object, fields): any {
-  return fields.reduce(function (result, field) {
-    result[field] = fetchJsonField(object, field);
-    return result;
-  }, {});
+  return fields.reduce(
+    function (result, field) {
+      result[field] = fetchJsonField(object, field);
+      return result;
+    },
+    {id: object.id, version: object.version},
+  );
 }
 
 export function filterObjectsFields(data: any[], fields: string[]): any[] {

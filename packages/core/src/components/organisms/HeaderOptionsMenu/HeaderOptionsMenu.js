@@ -80,6 +80,7 @@ const HeaderOptionsMenu = ({
           placeholder={_action.title}
           FontAwesome5={_action.FontAwesome5}
           hideIf={_action.hideIf}
+          disableIf={_action.disableIf}
           onPress={_action.onPress}
         />
       )),
@@ -96,6 +97,7 @@ const HeaderOptionsMenu = ({
           placeholder={_action.title}
           FontAwesome5={_action.FontAwesome5}
           hideIf={_action.hideIf}
+          disableIf={_action.disableIf}
           onPress={_action.onPress}
         />
       )),
