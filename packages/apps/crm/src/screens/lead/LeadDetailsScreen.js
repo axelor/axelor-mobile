@@ -23,19 +23,20 @@ import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
-const LeadDetailsScreen = ({navigation, route}) => {
+const LeadDetailsScreen = ({route}) => {
+  const {idLead, versionLead, colorIndex} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
-  const idLead = route.params.idLead;
-  const versionLead = route.params.versionLead;
-  const colorIndex = route.params.colorIndex;
 
   const {lead} = useSelector(state => state.lead);
 
   useEffect(() => {
     dispatch(fetchLeadById({leadId: idLead}));
   }, [dispatch, idLead]);
+
+  if (lead?.id !== idLead) {
+    return null;
+  }
 
   return (
     <Screen removeSpaceOnTop={true}>

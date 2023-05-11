@@ -125,6 +125,7 @@ const getStyles = (Colors: ThemeColors) =>
       paddingRight: 8,
       marginHorizontal: 20,
       marginVertical: 6,
+      minHeight: 40,
     },
     input: {
       flex: 1,

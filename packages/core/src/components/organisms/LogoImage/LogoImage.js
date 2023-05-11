@@ -17,24 +17,22 @@
  */
 
 import axios from 'axios';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Image} from 'react-native';
-import {StyleSheet} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {Image, StyleSheet} from 'react-native';
+import {testUrl} from '../../../utils/api';
+import {checkNullString} from '../../../utils';
 
 const axelorLogoPath = '../../../assets/Logo_Axelor.png';
 
 const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
   const companyLogoFile = useRef(logoFile ?? require(axelorLogoPath)).current;
+
   const [source, setSource] = useState(companyLogoFile);
 
-  const generateImageSourceWithUrl = useCallback(
-    _url => ({uri: `${_url}/img/${filePath}`}),
-    [filePath],
-  );
-
   const urlLogoSource = useMemo(
-    () => (url ? generateImageSourceWithUrl(url) : null),
-    [generateImageSourceWithUrl, url],
+    () =>
+      checkNullString(url) ? generateImageSourceWithUrl(url, filePath) : null,
+    [filePath, url],
   );
 
   useEffect(() => {
@@ -47,6 +45,8 @@ const LogoImage = ({url = null, filePath = 'logo.png', logoFile = null}) => {
           }
         })
         .catch(() => setSource(companyLogoFile));
+    } else {
+      setSource(companyLogoFile);
     }
   }, [companyLogoFile, urlLogoSource]);
 
@@ -61,5 +61,20 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
+
+async function generateImageSourceWithUrl(url, logoPath) {
+  if (checkNullString(url)) {
+    return null;
+  }
+  const _url = await testUrl(url)
+    .then(result => result)
+    .catch(() => {});
+
+  if (_url == null) {
+    return null;
+  }
+
+  return {uri: `${_url}/img/${logoPath}`};
+}
 
 export default LogoImage;

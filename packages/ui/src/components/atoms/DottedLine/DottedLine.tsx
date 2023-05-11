@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {View, StyleSheet, Platform} from 'react-native';
+import {ThemeColors, useThemeColor} from '../../../theme';
 
 interface DottedLineProps {
   style?: any;
@@ -30,10 +30,10 @@ function DottedLine({style}: DottedLineProps) {
   return <View style={[styles.dottedLine, style]} />;
 }
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     dottedLine: {
-      borderStyle: 'dotted',
+      borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted',
       height: 35,
       borderLeftWidth: 2,
       borderColor: Colors.secondaryColor_dark.background,

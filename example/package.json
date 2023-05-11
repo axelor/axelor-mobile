@@ -48,7 +48,7 @@
     "react-native-system-navigation-bar": "2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vision-camera": "^2.13.5",
+    "react-native-vision-camera": "^2.15.4",
     "react-native-webview": "11.26.0",
     "vision-camera-code-scanner": "^0.2.0"
   },

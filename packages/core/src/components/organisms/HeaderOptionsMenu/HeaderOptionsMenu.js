@@ -22,7 +22,7 @@ import {DropdownMenu, DropdownMenuItem} from '@axelor/aos-mobile-ui';
 import {HeaderOptionMenuItem} from '../../molecules';
 import {useBasicActions} from '../../../header';
 
-const SMALLEST_WINDOW_WIDTH = 400;
+const SMALLEST_WINDOW_WIDTH = 300;
 
 const HeaderOptionsMenu = ({
   model,

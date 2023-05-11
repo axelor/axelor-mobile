@@ -33,7 +33,7 @@ export function isHtml(value: string): boolean {
 
 export function stringNoAccent(message) {
   if (message == null) {
-    return null;
+    return '';
   } else {
     const b = 'áàâäãåçéèêëíïîìñóòôöõúùûüýÁÀÂÄÃÅÇÉÈÊËÍÏÎÌÑÓÒÔÖÕÚÙÛÜÝ';
     const c = 'aaaaaaceeeeiiiinooooouuuuyAAAAAACEEEEIIIINOOOOOUUUUY';

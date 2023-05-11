@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    zIndex: 30,
   },
   headerInfo: {
     flexDirection: 'column',

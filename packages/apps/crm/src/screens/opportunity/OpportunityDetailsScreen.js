@@ -29,24 +29,27 @@ import {
 } from '../../components';
 import {getOpportunity} from '../../features/opportunitySlice';
 
-const OpportunityDetailsScreen = ({navigation, route}) => {
+const OpportunityDetailsScreen = ({route}) => {
+  const {opportunityId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingOpportunity, opportunity} = useSelector(
-    state => state.opportunity,
-  );
+  const {opportunity} = useSelector(state => state.opportunity);
 
   useEffect(() => {
     dispatch(
       getOpportunity({
-        opportunityId: route.params.opportunityId,
+        opportunityId: opportunityId,
       }),
     );
-  }, [dispatch, route.params.opportunityId]);
+  }, [dispatch, opportunityId]);
+
+  if (opportunity?.id !== opportunityId) {
+    return null;
+  }
 
   return (
-    <Screen removeSpaceOnTop={true} loading={loadingOpportunity}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={<OpportunityHeader />}

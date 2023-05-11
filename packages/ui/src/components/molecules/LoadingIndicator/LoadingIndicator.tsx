@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     top: Dimensions.get('window').height * 0.4,
     left: Dimensions.get('window').width * 0.4,
     elevation: 24,
+    shadowOpacity: 12,
     paddingRight: 24,
   },
 });

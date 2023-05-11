@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -35,6 +35,8 @@ const MenuIconButton = ({
   disabled = false,
 }) => {
   const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <TouchableOpacity
@@ -73,19 +75,23 @@ const MenuIconButton = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: WIDTH,
-    height: HEIGHT,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    elevation: 2,
-  },
-  moduleSubtitle: {
-    fontSize: 10,
-    maxWidth: 54,
-    alignSelf: 'center',
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      width: WIDTH,
+      height: HEIGHT,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      elevation: 2,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+    },
+    moduleSubtitle: {
+      fontSize: 10,
+      maxWidth: 54,
+      alignSelf: 'center',
+    },
+  });
 
 export default MenuIconButton;

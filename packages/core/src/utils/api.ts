@@ -43,9 +43,7 @@ export function testUrl(url: string): Promise<string | null> {
           resolve(urlWithProtocol);
           return;
         }
-      } catch (error) {
-        console.log(`Error fetching ${urlWithProtocol}: ${error}`);
-      }
+      } catch (error) {}
     }
 
     reject(new Error(`Could not fetch URL: "${url}" ${INVALID_URL_CODE}`));

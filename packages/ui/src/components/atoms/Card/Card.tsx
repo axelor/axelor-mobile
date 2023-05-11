@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 
 interface CardProps {
   style?: any;
@@ -33,7 +33,7 @@ const Card = ({style, children}: CardProps) => {
   return <View style={[styles.container, style]}>{children}</View>;
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 24,
@@ -41,6 +41,9 @@ const getStyles = Colors =>
       paddingVertical: 16,
       borderRadius: 14,
       elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
       backgroundColor: Colors.backgroundColor,
     },
   });

@@ -123,6 +123,7 @@ export const crm_modelAPI: ObjectFields = {
   }),
   crm_partner: schemaContructor.object({
     simpleFullName: schemaContructor.string(),
+    fullName: schemaContructor.string(),
     name: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),
     mainAddress: schemaContructor.subObject('fullName'),

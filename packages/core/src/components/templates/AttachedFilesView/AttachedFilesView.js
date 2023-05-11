@@ -34,7 +34,7 @@ import {
   getAttachedFilesDetails,
 } from '../../../features/attachedFilesSlice';
 import {openFileInExternalApp} from '../../../tools/FileViewer';
-import {useNavigation} from '../../../hooks/use-navigation';
+import {headerActionsProvider} from '../../../header';
 
 function AttachedFilesView({
   files,
@@ -46,7 +46,6 @@ function AttachedFilesView({
 }) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {baseUrl, token, jsessionId} = useSelector(state => state.auth);
@@ -101,13 +100,13 @@ function AttachedFilesView({
     [filterOnSelectExtension, attachedFilesList],
   );
 
-  React.useLayoutEffect(() => {
+  useEffect(() => {
     if (screenTitle) {
-      navigation.setOptions({
+      headerActionsProvider.registerModel('core_attachedFiles_details', {
         headerTitle: screenTitle,
       });
     }
-  }, [navigation, screenTitle]);
+  }, [screenTitle]);
 
   useEffect(() => {
     setExtensionList(

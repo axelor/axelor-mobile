@@ -137,6 +137,9 @@ const getStyles = (Colors: ThemeColors) =>
       borderTopLeftRadius: 7,
       borderTopRightRadius: 7,
       elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     boldTitle: {
       fontWeight: 'bold',

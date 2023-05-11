@@ -61,6 +61,7 @@ const InternalMoveLinePicker = ({
       }
       disabledValue={unit?.name}
       required={true}
+      isScrollViewContainer={true}
     />
   );
 };

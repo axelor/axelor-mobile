@@ -47,8 +47,8 @@ const InfoBubble = ({
   const clickOutside = useClickOutside({wrapperRef, visible: isOpen});
 
   const styles = useMemo(
-    () => getStyles(badgeColor, Colors),
-    [badgeColor, Colors],
+    () => getStyles(badgeColor, Colors, isOpen),
+    [badgeColor, Colors, isOpen],
   );
 
   useEffect(() => {
@@ -80,12 +80,13 @@ const InfoBubble = ({
   );
 };
 
-const getStyles = (badgeColor, Colors) =>
+const getStyles = (badgeColor, Colors, isOpen) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
       flexDirection: 'row',
       marginVertical: 5,
+      zIndex: isOpen ? 50 : 0,
     },
     imageStyle: {
       alignSelf: 'center',

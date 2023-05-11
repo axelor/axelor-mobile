@@ -23,7 +23,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
@@ -105,6 +105,7 @@ const Navigator = ({
         AttachedFilesScreen: {
           title: 'Base_AttachedFiles',
           component: AttachedFilesScreen,
+          actionID: 'core_attachedFiles_details',
           options: {
             shadedHeader: false,
           },
@@ -135,7 +136,16 @@ const Navigator = ({
                 name={key}
                 component={component}
                 options={{
-                  headerStyle: {elevation: 0},
+                  headerStyle: [
+                    {
+                      elevation: 0,
+                    },
+                    Platform.OS === 'ios' && !options?.shadedHeader
+                      ? {
+                          shadowOpacity: 0,
+                        }
+                      : null,
+                  ],
                   headerLeft: () => null,
                   headerRight: () => null,
                   headerTitleStyle: {width: '100%'},

@@ -91,12 +91,14 @@ const getStyles = Colors =>
     container: {
       justifyContent: 'center',
       alignItems: 'center',
+      zIndex: 43,
     },
     autoCompleteSearchContainer: {
       marginVertical: 10,
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
+      zIndex: 44,
     },
     cardTrackingNumberInfo: {
       backgroundColor: Colors.errorColor.background_light,
