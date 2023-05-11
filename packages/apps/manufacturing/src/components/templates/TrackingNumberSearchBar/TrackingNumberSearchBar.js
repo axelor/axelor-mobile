@@ -18,51 +18,57 @@
 
 import React, {useCallback} from 'react';
 import {
-  displayItemName,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchProducts} from '../../../features/productSlice';
+import {
+  displayItemTrackingNumber,
+  filterTrackingNumber,
+} from '@axelor/aos-mobile-stock';
 
-const ProductSearchBar = ({
-  placeholderKey = 'Stock_Product',
-  defaultValue = '',
-  onChange = () => {},
+const TrackingNumberSearchBar = ({
+  placeholderKey = 'Stock_TrackingNumber',
+  defaultValue,
+  onChange,
   scanKey,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  changeScreenAfter = false,
+  changeScreenAfter,
+  product,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productList, loadingProduct, moreLoadingProduct, isListEndProduct} =
-    useSelector(state => state.product);
+  const {trackingNumberList, loading, moreLoading, isListEnd} = useSelector(
+    state => state.trackingNumber,
+  );
 
-  const fetchProductsAPI = useCallback(
+  const fetchTrackingNumberAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProducts({page, searchValue}));
+      dispatch(
+        filterTrackingNumber({productId: product.id, page, searchValue}),
+      );
     },
-    [dispatch],
+    [dispatch, product],
   );
 
   return (
     <ScannerAutocompleteSearch
-      objectList={productList}
+      objectList={trackingNumberList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchProductsAPI}
-      displayValue={displayItemName}
+      fetchData={fetchTrackingNumberAPI}
+      displayValue={displayItemTrackingNumber}
       scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingProduct}
-      moreLoading={moreLoadingProduct}
-      isListEnd={isListEndProduct}
+      loadingList={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
@@ -71,4 +77,4 @@ const ProductSearchBar = ({
   );
 };
 
-export default ProductSearchBar;
+export default TrackingNumberSearchBar;

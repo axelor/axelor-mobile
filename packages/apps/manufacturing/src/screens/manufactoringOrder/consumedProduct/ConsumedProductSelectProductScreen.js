@@ -26,7 +26,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../../components/organisms';
-import {searchProducts} from '@axelor/aos-mobile-stock';
+import {ProductSearchBar, searchProducts} from '@axelor/aos-mobile-stock';
 
 const productScanKey = 'product_manufacturing-order-consumed-product-select';
 
@@ -82,6 +82,10 @@ const ConsumedProductSelectProductScreen = ({route, navigation}) => {
           scanKeySearch={productScanKey}
           isFocus={true}
           changeScreenAfter={true}
+        />
+        <ProductSearchBar
+          scanKey={productScanKey}
+          onChange={handleSelectProduct}
         />
       </ScrollView>
     </Screen>
