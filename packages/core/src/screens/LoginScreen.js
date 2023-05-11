@@ -46,6 +46,7 @@ const LoginScreen = ({route}) => {
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const enableConnectionSessions = route?.params?.enableConnectionSessions;
+  const logoFile = route?.params?.logoFile;
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -100,7 +101,7 @@ const LoginScreen = ({route}) => {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
-              <LogoImage />
+              <LogoImage logoFile={logoFile} />
             </View>
             {sessionActive && (
               <Button

@@ -108,6 +108,7 @@ const RootNavigator = ({
             testInstanceConfig: configuration?.testInstanceConfig,
             releaseInstanceConfig: configuration?.releaseInstanceConfig,
             enableConnectionSessions: configuration?.enableConnectionSessions,
+            logoFile: configuration?.logoFile,
           }}
         />
       ) : (

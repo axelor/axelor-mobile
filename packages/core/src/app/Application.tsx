@@ -50,6 +50,7 @@ interface appConfig {
   showModulesSubtitle: boolean;
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
+  logoFile?: any;
 }
 
 interface ApplicationProps {
@@ -104,6 +105,7 @@ const Application = ({
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
           enableConnectionSessions: configuration?.enableConnectionSessions,
+          logoFile: configuration?.logoFile,
         }}
       />
     </ContextsProvider>
