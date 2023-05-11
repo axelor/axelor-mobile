@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
@@ -24,6 +24,8 @@ import useTranslator from '../../../i18n/hooks/use-translator';
 const LoginButton = ({onPress, disabled}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <View style={styles.container}>
@@ -38,16 +40,20 @@ const LoginButton = ({onPress, disabled}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  button: {
-    marginTop: 15,
-    width: 150,
-    height: 30,
-    elevation: 5,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+    },
+    button: {
+      marginTop: 15,
+      width: 150,
+      height: 30,
+      elevation: 5,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+    },
+  });
 
 export default LoginButton;

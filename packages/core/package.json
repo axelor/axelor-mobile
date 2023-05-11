@@ -43,7 +43,7 @@
     "react-native-screens": "3.13.1",
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
-    "react-native-vision-camera": "^2.13.5",
+    "react-native-vision-camera": "^2.15.4",
     "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "react-native-screens": "3.13.1",
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
-    "react-native-vision-camera": "^2.13.5",
+    "react-native-vision-camera": "^2.15.4",
     "vision-camera-code-scanner": "^0.2.0"
   },
   "dependencies": {

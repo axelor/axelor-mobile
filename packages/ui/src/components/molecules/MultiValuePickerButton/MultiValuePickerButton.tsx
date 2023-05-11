@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Color, useThemeColor} from '../../../theme';
+import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
 interface Item {
@@ -40,6 +40,8 @@ const MultiValuePickerButton = ({
   onPressItem = () => {},
 }: MultiValuePickerButtonProps) => {
   const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
@@ -79,43 +81,47 @@ const getItemColor = (color: Color) => ({
   borderColor: color.background,
 });
 
-const styles = StyleSheet.create({
-  container: {
-    width: Dimensions.get('window').width * 0.35,
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 10,
-    paddingRight: 15,
-    paddingVertical: 5,
-    marginVertical: 4,
-    marginRight: 18,
-  },
-  text: {
-    textAlign: 'center',
-    marginRight: 5,
-  },
-  listItemContainer: {
-    flexDirection: 'row',
-    marginLeft: -5,
-    overflow: 'hidden',
-    width: '90%',
-  },
-  cardItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignContent: 'center',
-    borderWidth: 2,
-    borderRadius: 14,
-    elevation: 3,
-    marginLeft: 5,
-    paddingHorizontal: 7,
-    height: 22,
-    maxWidth: 110,
-    width: null,
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      width: Dimensions.get('window').width * 0.35,
+      height: 50,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingLeft: 10,
+      paddingRight: 15,
+      paddingVertical: 5,
+      marginVertical: 4,
+      marginRight: 18,
+    },
+    text: {
+      textAlign: 'center',
+      marginRight: 5,
+    },
+    listItemContainer: {
+      flexDirection: 'row',
+      marginLeft: -5,
+      overflow: 'hidden',
+      width: '90%',
+    },
+    cardItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      alignContent: 'center',
+      borderWidth: 2,
+      borderRadius: 14,
+      elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+      marginLeft: 5,
+      paddingHorizontal: 7,
+      height: 22,
+      maxWidth: 110,
+      width: null,
+    },
+  });
 
 export default MultiValuePickerButton;

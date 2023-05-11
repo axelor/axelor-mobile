@@ -188,6 +188,9 @@ const getStyles = Colors =>
       width: Dimensions.get('window').width * 0.1,
       height: Dimensions.get('window').width * 0.1,
       elevation: 5,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     textUser: {
       fontSize: 16,

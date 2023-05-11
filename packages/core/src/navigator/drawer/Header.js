@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerToggleButton from './DrawerToggleButton';
 import BackIcon from './BackIcon';
@@ -48,7 +48,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
         )}
         <View>
           <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
-            {I18n.t(title)}
+            {headerOptions?.headerTitle || I18n.t(title)}
           </Text>
         </View>
       </View>
@@ -74,7 +74,7 @@ const getHeaderStyles = Colors =>
     header: {
       position: 'absolute',
       top: 0,
-      left: -15,
+      left: Platform.OS === 'ios' ? -Dimensions.get('window').width * 0.5 : -15,
       backgroundColor: Colors.backgroundColor,
       height: '100%',
       width: Dimensions.get('screen').width,
@@ -85,6 +85,9 @@ const getHeaderStyles = Colors =>
     },
     shadedHeader: {
       elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 2},
     },
     options: {
       flexDirection: 'row',

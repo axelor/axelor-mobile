@@ -18,12 +18,10 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+  HeaderContainer,
+  KeyboardAvoidingScrollView,
+  Screen,
+} from '@axelor/aos-mobile-ui';
 import {isEmpty, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductCardInfo,
@@ -152,71 +150,60 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         />
       }
       loading={loadingProductFromId || loadingInternalMoveLine}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.containerKeyboard}
-        keyboardVerticalOffset={160}>
-        <HeaderContainer
-          expandableFilter={false}
-          fixedItems={
-            <StockMoveHeader
-              reference={internalMove.stockMoveSeq}
-              status={internalMove.statusSelect}
-              date={StockMove.getStockMoveDate(
-                internalMove.statusSelect,
-                internalMove,
-              )}
-              availability={internalMove.availableStatusSelect}
-            />
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={
+          <StockMoveHeader
+            reference={internalMove.stockMoveSeq}
+            status={internalMove.statusSelect}
+            date={StockMove.getStockMoveDate(
+              internalMove.statusSelect,
+              internalMove,
+            )}
+            availability={internalMove.availableStatusSelect}
+          />
+        }
+      />
+      <KeyboardAvoidingScrollView>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          trackingNumber={
+            product?.trackingNumberConfiguration == null
+              ? null
+              : internalMoveLine.trackingNumber?.trackingNumberSeq
           }
+          onPress={handleShowProduct}
         />
-        <ScrollView>
-          <ProductCardInfo
-            name={product?.name}
-            code={product?.code}
-            picture={product?.picture}
-            trackingNumber={
-              product?.trackingNumberConfiguration == null
-                ? null
-                : internalMoveLine.trackingNumber?.trackingNumberSeq
-            }
-            onPress={handleShowProduct}
-          />
-          <InternalMoveLineTrackingNumberSelect
-            product={product}
-            internalMoveLine={internalMoveLine}
-            visible={isTrackingNumberSelectVisible}
-          />
-          <InternalMoveLineQuantityCard
-            movedQty={movedQty}
-            originalStockLocation={internalMove.fromStockLocation}
-            plannedQty={plannedQty}
-            setMovedQty={setMovedQty}
-            setSaveStatus={setSaveStatus}
-            status={internalMove.statusSelect}
-            stockProduct={product}
-            trackingNumber={internalMoveLine.trackingNumber}
-          />
-          <InternalMoveLinePicker
-            setSaveStatus={setSaveStatus}
-            setUnit={setUnit}
-            status={internalMove.statusSelect}
-            unit={unit}
-          />
-          <InternalMoveLineNotes
-            notes={internalMove.note}
-            status={internalMove.statusSelect}
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <InternalMoveLineTrackingNumberSelect
+          product={product}
+          internalMoveLine={internalMoveLine}
+          visible={isTrackingNumberSelectVisible}
+        />
+        <InternalMoveLineQuantityCard
+          movedQty={movedQty}
+          originalStockLocation={internalMove.fromStockLocation}
+          plannedQty={plannedQty}
+          setMovedQty={setMovedQty}
+          setSaveStatus={setSaveStatus}
+          status={internalMove.statusSelect}
+          stockProduct={product}
+          trackingNumber={internalMoveLine.trackingNumber}
+        />
+        <InternalMoveLinePicker
+          setSaveStatus={setSaveStatus}
+          setUnit={setUnit}
+          status={internalMove.statusSelect}
+          unit={unit}
+        />
+        <InternalMoveLineNotes
+          notes={internalMove.note}
+          status={internalMove.statusSelect}
+        />
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  containerKeyboard: {
-    flex: 1,
-  },
-});
 
 export default InternalMoveLineDetailsScreen;

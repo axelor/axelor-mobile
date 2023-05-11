@@ -19,7 +19,7 @@
 import React, {useEffect, useMemo} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {useConfig} from '../../../config/ConfigContext';
 
 interface ScreenProps {
@@ -72,7 +72,7 @@ const Screen = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       backgroundColor: Colors.screenBackgroundColor,
@@ -94,6 +94,9 @@ const getStyles = Colors =>
       borderRightColor: 'rgba(0,0,0,0.2)',
       borderLeftColor: 'rgba(0,0,0,0.1)',
       elevation: 24,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     marginTop: {
       paddingTop: '1.5%',

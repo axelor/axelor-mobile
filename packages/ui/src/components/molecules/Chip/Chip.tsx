@@ -19,14 +19,13 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Color} from '../../../theme/themes';
+import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {sliceString} from '../../../utils/strings';
 
 interface ChipProps {
   selected: boolean;
   title: string;
-  onPress: (any) => void;
+  onPress: () => void;
   selectedColor?: Color;
   width?: number;
   marginHorizontal?: number;
@@ -48,12 +47,9 @@ const Chip = ({
     [Colors.primaryColor, selectedColor],
   );
 
-  const colorStyle = useMemo(
-    () =>
-      selected
-        ? getStyles(chipColor, Colors).selected
-        : getStyles(chipColor, Colors).notSelected,
-    [Colors, chipColor, selected],
+  const styles = useMemo(
+    () => getStyles(chipColor, Colors),
+    [Colors, chipColor],
   );
 
   return (
@@ -61,7 +57,11 @@ const Chip = ({
       style={[getWidth(width, marginHorizontal), style]}
       onPress={onPress}
       activeOpacity={0.8}>
-      <View style={[styles.container, colorStyle]}>
+      <View
+        style={[
+          styles.container,
+          selected ? styles.selected : styles.notSelected,
+        ]}>
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
           fontSize={14}>
@@ -72,7 +72,7 @@ const Chip = ({
   );
 };
 
-const getStyles = (selectedColor, Colors) =>
+const getStyles = (selectedColor: Color, Colors: ThemeColors) =>
   StyleSheet.create({
     selected: {
       backgroundColor: selectedColor.background_light,
@@ -88,24 +88,24 @@ const getStyles = (selectedColor, Colors) =>
       borderRightWidth: 3,
       borderRightColor: selectedColor.background,
     },
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      paddingVertical: 5,
+      marginVertical: 2,
+      borderRadius: 20,
+      elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+    },
   });
 
 const getWidth = (width, margin) => ({
   width: width,
   marginHorizontal: margin,
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: 5,
-    marginVertical: 2,
-    borderRadius: 20,
-    elevation: 3,
-  },
 });
 
 export default Chip;

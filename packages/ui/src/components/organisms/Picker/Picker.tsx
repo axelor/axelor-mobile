@@ -134,12 +134,12 @@ const Picker = ({
     [Colors, _required],
   );
   const styles = useMemo(
-    () => getStyles(Colors, _required, marginBottom),
-    [Colors, _required, marginBottom],
+    () => getStyles(Colors, _required, marginBottom, pickerIsOpen),
+    [Colors, _required, marginBottom, pickerIsOpen],
   );
 
   return (
-    <View ref={wrapperRef} style={style}>
+    <View ref={wrapperRef} style={[styles.container, style]}>
       {!disabled && (
         <View style={styles.titleContainer}>
           <Text style={styleTxt}>{title}</Text>
@@ -201,8 +201,16 @@ const Picker = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean, marginBottom) =>
+const getStyles = (
+  Colors: ThemeColors,
+  _required: boolean,
+  marginBottom,
+  pickerIsOpen: boolean,
+) =>
   StyleSheet.create({
+    container: {
+      zIndex: pickerIsOpen ? 45 : 0,
+    },
     titleContainer: {
       marginHorizontal: 24,
     },
@@ -222,6 +230,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean, marginBottom) =>
     },
     pickerContainerStyle: {
       marginBottom: marginBottom,
+      zIndex: pickerIsOpen ? 50 : 0,
     },
   });
 

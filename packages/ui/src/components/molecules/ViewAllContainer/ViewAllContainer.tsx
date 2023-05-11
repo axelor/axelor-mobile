@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
 interface ViewAllContainerProps {
@@ -31,7 +31,7 @@ interface ViewAllContainerProps {
   onNewIcon?: () => void;
   onViewPress: () => void;
   renderFirstTwoItems?: (item: any, index: number) => any;
-  translator?: (any) => void | undefined;
+  translator?: (key: string) => string;
 }
 
 const ViewAllContainer = ({
@@ -47,6 +47,8 @@ const ViewAllContainer = ({
   translator = null,
 }: ViewAllContainerProps) => {
   const Colors = useThemeColor();
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
     <Card style={[styles.container, style]}>
@@ -88,48 +90,52 @@ const ViewAllContainer = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: '2%',
-    paddingHorizontal: '3%',
-    paddingRight: 16,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  headLineMove: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 1,
-    marginVertical: 2,
-    width: '100%',
-  },
-  title: {
-    alignSelf: 'flex-start',
-    fontSize: 14,
-    marginHorizontal: 8,
-    marginBottom: 0,
-  },
-  cardContainer: {
-    marginBottom: 2,
-    width: '100%',
-  },
-  iconContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    alignContent: 'center',
-    marginBottom: 2,
-    elevation: 3,
-  },
-  txtDetails: {
-    fontSize: 14,
-    marginHorizontal: 15,
-  },
-});
+const getStyles = (Colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: '2%',
+      paddingHorizontal: '3%',
+      paddingRight: 16,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 12,
+      marginVertical: 4,
+    },
+    headLineMove: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginHorizontal: 1,
+      marginVertical: 2,
+      width: '100%',
+    },
+    title: {
+      alignSelf: 'flex-start',
+      fontSize: 14,
+      marginHorizontal: 8,
+      marginBottom: 0,
+    },
+    cardContainer: {
+      marginBottom: 2,
+      width: '100%',
+    },
+    iconContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      alignContent: 'center',
+      marginBottom: 2,
+      elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
+    },
+    txtDetails: {
+      fontSize: 14,
+      marginHorizontal: 15,
+    },
+  });
 
 export default ViewAllContainer;

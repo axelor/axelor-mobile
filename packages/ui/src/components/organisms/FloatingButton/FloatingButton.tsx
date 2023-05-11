@@ -186,6 +186,9 @@ const getStyles = (Colors: ThemeColors) =>
       minWidth: MIN_ACTION_BUTTON_WIDTH,
       borderRadius: 7,
       elevation: 3,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
     actionTitle: {
       textAlign: 'center',

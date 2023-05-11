@@ -30,48 +30,56 @@ function getComponentPosition(index, imageSize): ViewStyle {
   switch (index) {
     case 0:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: 0,
         left: imageSize * 0.03,
       };
     case 1:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize * 0.3,
         left: imageSize * 0.3,
       };
     case 2:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize * 0.7,
         left: imageSize * 0.3,
       };
     case 3:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize,
         left: imageSize * 0.03,
       };
     case 4:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize,
         right: imageSize * 0.03,
       };
     case 5:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize * 0.7,
         right: imageSize * 0.3,
       };
     case 6:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: imageSize * 0.3,
         right: imageSize * 0.3,
       };
     case 7:
       return {
+        zIndex: 45,
         position: 'absolute',
         bottom: 0,
         right: imageSize * 0.03,
@@ -107,7 +115,7 @@ const ImageBubble = ({
         defaultIconSize={defaultIconSize}
         source={source}
       />
-      <View>
+      <View style={styles.iconListContainer}>
         {listComponent &&
           listComponent.map((elt, index) => {
             return (
@@ -125,6 +133,7 @@ const getStyles = imageSize =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
+      zIndex: 35,
     },
     generalImageStyle: {
       alignSelf: 'center',
@@ -136,6 +145,9 @@ const getStyles = imageSize =>
       borderRadius: imageSize,
       width: imageSize,
       height: imageSize,
+    },
+    iconListContainer: {
+      zIndex: 40,
     },
   });
 

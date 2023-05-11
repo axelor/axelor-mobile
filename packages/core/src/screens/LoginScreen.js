@@ -17,17 +17,11 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   useThemeColor,
   Text,
+  KeyboardAvoidingScrollView,
   Screen,
   Button,
   InfoBubble,
@@ -96,78 +90,75 @@ const LoginScreen = ({route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView>
-          <View style={styles.container}>
-            <View style={styles.imageContainer}>
-              <LogoImage logoFile={logoFile} />
-            </View>
-            {sessionActive && (
-              <Button
-                title={sessionActive.id}
-                onPress={() => {
-                  setPopupSessionIsOpen(true);
-                }}
-                style={styles.button}
-              />
-            )}
-            {!sessionActive && sessionList?.length > 0 && (
-              <Button
-                title={I18n.t('Auth_No_Active_Session')}
-                onPress={() => {}}
-                style={styles.buttonDisabled}
-                disabled={true}
-              />
-            )}
-            {renderChangeSessionButton()}
-            <View style={styles.row}>
-              <InfoBubble
-                indication={I18n.t('Auth_InfoSession')}
-                iconName="info"
-                badgeColor={Colors.cautionColor}
-                style={styles.infoBubble}
-                textIndicationStyle={styles.textIndicationStyle}
-              />
-              <Button
-                title={I18n.t('Auth_Create_Session')}
-                style={
-                  sessionList?.length > 0
-                    ? styles.buttonCreateSession
-                    : styles.button
-                }
-                onPress={() => setPopupCreateSessionIsOpen(true)}
-              />
-            </View>
-            <PopupCreateSession
-              modeDebug={modeDebug}
-              popupIsOpen={popupCreateSessionIsOpen}
-              setPopupIsOpen={setPopupCreateSessionIsOpen}
-              showUrlInput={showUrlInput}
-              testInstanceConfig={testInstanceConfig}
-              enableConnectionSessions={enableConnectionSessions}
-              releaseInstanceConfig={releaseInstanceConfig}
-            />
-            <PopupSession
-              enableConnectionSessions={enableConnectionSessions}
-              sessionActive={sessionActive}
-              popupIsOpen={popupSessionIsOpen}
-              setPopupIsOpen={setPopupSessionIsOpen}
-              showUrlInput={showUrlInput}
-            />
-            <PopupSessionList
-              sessionList={sessionList}
-              popupIsOpen={popupSessionListIsOpen}
-              setPopupIsOpen={setPopupSessionListIsOpen}
-              setPopupSessionIsOpen={setPopupSessionIsOpen}
-            />
-            <View style={styles.copyright}>
-              <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
-              <Text>{`Version ${appVersion}`}</Text>
-            </View>
+      <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <LogoImage logoFile={logoFile} />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          {sessionActive && (
+            <Button
+              title={sessionActive.id}
+              onPress={() => {
+                setPopupSessionIsOpen(true);
+              }}
+              style={styles.button}
+            />
+          )}
+          {!sessionActive && sessionList?.length > 0 && (
+            <Button
+              title={I18n.t('Auth_No_Active_Session')}
+              onPress={() => {}}
+              style={styles.buttonDisabled}
+              disabled={true}
+            />
+          )}
+          {renderChangeSessionButton()}
+          <View style={styles.row}>
+            <InfoBubble
+              indication={I18n.t('Auth_InfoSession')}
+              iconName="info"
+              badgeColor={Colors.cautionColor}
+              style={styles.infoBubble}
+              textIndicationStyle={styles.textIndicationStyle}
+            />
+            <Button
+              title={I18n.t('Auth_Create_Session')}
+              style={
+                sessionList?.length > 0
+                  ? styles.buttonCreateSession
+                  : styles.button
+              }
+              onPress={() => setPopupCreateSessionIsOpen(true)}
+            />
+          </View>
+          <PopupCreateSession
+            modeDebug={modeDebug}
+            popupIsOpen={popupCreateSessionIsOpen}
+            setPopupIsOpen={setPopupCreateSessionIsOpen}
+            showUrlInput={showUrlInput}
+            testInstanceConfig={testInstanceConfig}
+            enableConnectionSessions={enableConnectionSessions}
+            releaseInstanceConfig={releaseInstanceConfig}
+          />
+          <PopupSession
+            enableConnectionSessions={enableConnectionSessions}
+            sessionActive={sessionActive}
+            popupIsOpen={popupSessionIsOpen}
+            setPopupIsOpen={setPopupSessionIsOpen}
+            showUrlInput={showUrlInput}
+          />
+          <PopupSessionList
+            sessionList={sessionList}
+            popupIsOpen={popupSessionListIsOpen}
+            setPopupIsOpen={setPopupSessionListIsOpen}
+            setPopupSessionIsOpen={setPopupSessionIsOpen}
+          />
+          <View style={styles.copyright}>
+            <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
+            <Text>{`Version ${appVersion}`}</Text>
+          </View>
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
@@ -177,13 +168,13 @@ const getStyles = Colors =>
     container: {
       marginTop: '15%',
       alignItems: 'center',
-      height: Dimensions.get('window').height * 0.95,
+      height: Dimensions.get('window').height * 0.9,
     },
     imageContainer: {
       alignItems: 'center',
       width: '100%',
       height: '15%',
-      marginTop: Dimensions.get('window').height < 500 ? '15%' : '40%',
+      marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
       marginBottom: '10%',
     },
     copyright: {

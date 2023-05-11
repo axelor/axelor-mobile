@@ -90,7 +90,7 @@ const CameraScanner = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Icon
         name="times"
         size={24}
@@ -111,6 +111,9 @@ const CameraScanner = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    zIndex: 40,
+  },
   camera: {
     height: Dimensions.get('screen').height,
     width: Dimensions.get('window').width,
