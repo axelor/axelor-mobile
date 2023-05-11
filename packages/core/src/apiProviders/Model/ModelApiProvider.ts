@@ -16,14 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Query, ReadOptions} from './utils';
+import {Query, ReadOptions, RequestResponse} from './utils';
 
 export interface ModelApi {
-  init(): void;
+  init(data?: any): void;
   isAvailable(): Promise<boolean>;
-  getAll({modelName, page}: {modelName: string; page: number}): Promise<any[]>;
-  get({modelName, id}: {modelName: string; id: number}): Promise<any[]>;
-  fetch?({
+  getAll({
+    modelName,
+    page,
+  }: {
+    modelName: string;
+    page: number;
+  }): Promise<RequestResponse>;
+  get({
+    modelName,
+    id,
+  }: {
+    modelName: string;
+    id: number;
+  }): Promise<RequestResponse>;
+  fetch({
     modelName,
     id,
     query,
@@ -31,6 +43,22 @@ export interface ModelApi {
     modelName: string;
     id: number;
     query: ReadOptions;
-  }): Promise<any[]>;
-  search({modelName, query}: {modelName: string; query: Query}): Promise<any[]>;
+  }): Promise<RequestResponse>;
+  search({
+    modelName,
+    query,
+  }: {
+    modelName: string;
+    query: Query;
+  }): Promise<RequestResponse>;
+  insert({
+    modelName,
+    id,
+    data,
+  }: {
+    modelName: string;
+    id: number;
+    data: any;
+  }): Promise<any>;
+  reset(modelName?: string): void;
 }

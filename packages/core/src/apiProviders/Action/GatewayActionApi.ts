@@ -19,14 +19,18 @@
 import {ActionApi} from './ActionApiProvider';
 import {ActionRequest} from './utils';
 
-function getAvailableActionApi(actionsApi: ActionApi[]): ActionApi {
-  const actionApi: ActionApi = actionsApi.find(item => {
-    return item.isAvailable();
-  });
-  if (actionApi == null) {
-    throw new Error('No provider available, please check your configuration.');
+async function getAvailableActionApi(
+  actionsApi: ActionApi[],
+): Promise<ActionApi> {
+  for (const _actionApi of actionsApi) {
+    const availability = await _actionApi.isAvailable();
+
+    if (availability) {
+      return _actionApi;
+    }
   }
-  return actionApi;
+
+  throw new Error('No provider available, please check your configuration.');
 }
 
 export class GatewayActionApi implements ActionApi {
@@ -36,17 +40,21 @@ export class GatewayActionApi implements ActionApi {
     this.actionsApi = actionsApi;
   }
 
-  isAvailable(): Promise<boolean> {
-    const actionApi: ActionApi = getAvailableActionApi(this.actionsApi);
-    if (actionApi == null) {
-      throw new Error(
-        'No provider available, please check your configuration.',
-      );
-    }
-    return actionApi.isAvailable();
+  async isAvailable(): Promise<boolean> {
+    const _actionApi: ActionApi = await getAvailableActionApi(this.actionsApi);
+
+    return _actionApi.isAvailable();
   }
 
-  send(request: ActionRequest): Promise<void> {
-    return getAvailableActionApi(this.actionsApi).send(request);
+  async send(request: ActionRequest): Promise<void> {
+    const _actionApi: ActionApi = await getAvailableActionApi(this.actionsApi);
+
+    return _actionApi.send(request);
+  }
+
+  async synchronize(): Promise<void> {
+    for (const _actionApi of this.actionsApi) {
+      _actionApi.synchronize();
+    }
   }
 }

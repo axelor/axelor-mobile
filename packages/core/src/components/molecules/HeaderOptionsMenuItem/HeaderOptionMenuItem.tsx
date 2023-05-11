@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -26,6 +26,7 @@ interface HeaderOptionMenuItemProps {
   FontAwesome5?: boolean;
   indicator?: number;
   hideIf: boolean;
+  disableIf?: boolean;
   onPress: () => void;
 }
 
@@ -37,9 +38,22 @@ const HeaderOptionMenuItem = ({
   indicator = 0,
   FontAwesome5 = true,
   hideIf = false,
+  disableIf = false,
   onPress,
 }: HeaderOptionMenuItemProps) => {
   const Colors = useThemeColor();
+
+  const _color = useMemo(() => {
+    if (color != null) {
+      return color;
+    }
+
+    if (disableIf) {
+      return Colors.secondaryColor.background;
+    }
+
+    return Colors.secondaryColor_dark.background;
+  }, [Colors, color, disableIf]);
 
   if (hideIf) {
     return null;
@@ -49,13 +63,9 @@ const HeaderOptionMenuItem = ({
     <TouchableOpacity
       style={styles.container}
       onPress={onPress}
+      disabled={disableIf}
       activeOpacity={0.7}>
-      <Icon
-        name={icon}
-        color={color || Colors.secondaryColor_dark.background}
-        FontAwesome5={FontAwesome5}
-        size={22}
-      />
+      <Icon name={icon} color={_color} FontAwesome5={FontAwesome5} size={22} />
       {indicator > 0 && (
         <Badge
           style={styles.badge}

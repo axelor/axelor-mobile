@@ -16,11 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-type Method = 'put' | 'post';
+type Method = 'put' | 'post' | 'delete';
 
 export type ActionRequest = {
   url: string;
   method: Method;
   body: any;
   description: string;
+  matchers: MatcherConfig;
+};
+
+export type MatcherConfig = {
+  modelName: string;
+  id: number;
+  fields: FieldMatcher;
+};
+
+export type FieldMatcher = {
+  [requestFieldName: string]: string;
 };

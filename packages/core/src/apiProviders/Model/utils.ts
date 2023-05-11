@@ -49,7 +49,7 @@ export type CriteriaQuery = {
 };
 
 export type Query = {
-  data: CriteriaQuery;
+  data: CriteriaQuery | CriteriaGroup;
   fields?: string[];
   sortBy?: string[];
   offset?: number;
@@ -62,3 +62,9 @@ export type ReadOptions = {
     [fieldName: string]: string[];
   };
 };
+
+export interface RequestResponse {
+  data: {
+    data: any[];
+  };
+}

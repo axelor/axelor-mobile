@@ -47,9 +47,8 @@ class HeaderActionsProvider {
         ...options,
         actions: mergeActions(oldOptions.actions, options.actions),
       };
-
-      this.updateState();
     }
+    this.updateState();
   }
 
   getHeaderOptions(key: string): HeaderOptions {

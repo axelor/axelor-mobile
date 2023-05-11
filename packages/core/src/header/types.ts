@@ -37,6 +37,7 @@ export interface ActionType {
   FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
+  disableIf?: boolean;
   onPress: () => void;
   showInHeader?: boolean;
 }

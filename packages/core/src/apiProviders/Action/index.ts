@@ -25,4 +25,4 @@ export {
   registerActionApi,
   useActionApi,
 } from './ActionProvider';
-export {ActionRequest} from './utils';
+export {ActionRequest, MatcherConfig, FieldMatcher} from './utils';

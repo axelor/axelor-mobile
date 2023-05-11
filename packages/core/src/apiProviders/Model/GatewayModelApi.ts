@@ -17,16 +17,18 @@
  */
 
 import {ModelApi} from './ModelApiProvider';
-import {Query} from './utils';
+import {Query, ReadOptions, RequestResponse} from './utils';
 
-function getAvailableModelApi(modelsApi: ModelApi[]): ModelApi {
-  const modelApi: ModelApi = modelsApi.find(item => {
-    return item.isAvailable();
-  });
-  if (modelApi == null) {
-    throw new Error('No provider available, please check your configuration.');
+async function getAvailableModelApi(modelsApi: ModelApi[]): Promise<ModelApi> {
+  for (const _modelApi of modelsApi) {
+    const availability = await _modelApi.isAvailable();
+
+    if (availability) {
+      return _modelApi;
+    }
   }
-  return modelApi;
+
+  throw new Error('No provider available, please check your configuration.');
 }
 
 export class GatewayModelApi implements ModelApi {
@@ -36,35 +38,85 @@ export class GatewayModelApi implements ModelApi {
     this.modelsApi = modelsApi;
   }
 
-  init(): void {
-    getAvailableModelApi(this.modelsApi)?.init();
-  }
-
-  isAvailable(): Promise<boolean> {
-    const modelApi: ModelApi = getAvailableModelApi(this.modelsApi);
-    if (modelApi == null) {
-      throw new Error(
-        'No provider available, please check your configuration.',
-      );
+  async init(data?: any): Promise<void> {
+    for (const _modelApi of this.modelsApi) {
+      _modelApi.init(data);
     }
-    return modelApi.isAvailable();
   }
 
-  get({modelName, id}: {modelName: string; id: number}): Promise<any[]> {
-    return getAvailableModelApi(this.modelsApi).get({modelName, id});
+  async isAvailable(): Promise<boolean> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.isAvailable();
   }
 
-  getAll({modelName, page}: {modelName: string; page: number}): Promise<any[]> {
-    return getAvailableModelApi(this.modelsApi).getAll({modelName, page});
+  async get({
+    modelName,
+    id,
+  }: {
+    modelName: string;
+    id: number;
+  }): Promise<RequestResponse> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.get({modelName, id});
   }
 
-  search({
+  async getAll({
+    modelName,
+    page,
+  }: {
+    modelName: string;
+    page: number;
+  }): Promise<RequestResponse> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.getAll({modelName, page});
+  }
+
+  async fetch({
+    modelName,
+    id,
+    query,
+  }: {
+    modelName: string;
+    id: number;
+    query: ReadOptions;
+  }): Promise<RequestResponse> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.fetch({modelName, id, query});
+  }
+
+  async search({
     modelName,
     query,
   }: {
     modelName: string;
     query: Query;
-  }): Promise<any[]> {
-    return getAvailableModelApi(this.modelsApi).search({modelName, query});
+  }): Promise<RequestResponse> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.search({modelName, query});
+  }
+
+  async insert({
+    modelName,
+    id,
+    data,
+  }: {
+    modelName: string;
+    id: number;
+    data: any;
+  }): Promise<any> {
+    const _modelApi: ModelApi = await getAvailableModelApi(this.modelsApi);
+
+    return _modelApi.insert({modelName, id, data});
+  }
+
+  async reset(modelName?: string): Promise<void> {
+    for (const _modelApi of this.modelsApi) {
+      _modelApi.reset(modelName);
+    }
   }
 }
