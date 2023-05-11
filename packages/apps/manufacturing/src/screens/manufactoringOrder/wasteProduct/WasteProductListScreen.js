@@ -31,7 +31,6 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
@@ -46,6 +45,7 @@ import {
   fetchWasteProducts,
 } from '../../../features/wasteProductsSlice';
 import {ManufacturingOrder} from '../../../types';
+import {WasteProductSearchBar} from '../../../components/templates';
 
 const productScanKey = 'product_manufacturing-order-waste-product-list';
 
@@ -54,7 +54,6 @@ const WasteProductListScreen = ({route, navigation}) => {
   const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
     useSelector(state => state.wasteProducts);
   const [filteredList, setFilteredList] = useState(wasteProductList);
-  const [product, setProduct] = useState(null);
   const [canDeclare, setDeclare] = useState(
     manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
       manufOrder?.wasteStockMove == null,
@@ -89,10 +88,8 @@ const WasteProductListScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    setFilteredList(
-      filterList(wasteProductList, 'product', 'fullName', product ?? ''),
-    );
-  }, [wasteProductList, product]);
+    setFilteredList(filterList(wasteProductList, 'product', 'fullName', ''));
+  }, [wasteProductList]);
 
   const handleViewItem = item => {
     if (item) {
@@ -163,14 +160,13 @@ const WasteProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <ScannerAutocompleteSearch
-              objectList={wasteProductList}
-              onChangeValue={item => handleViewItem(item)}
-              fetchData={setProduct}
-              displayValue={item => item?.product?.fullName}
-              placeholder={I18n.t('Manufacturing_Product')}
+            <WasteProductSearchBar
               scanKeySearch={productScanKey}
+              displayValue={item => item?.product?.fullName}
+              showDetailsPopup={false}
               oneFilter={true}
+              isFocus={true}
+              onChangeValue={item => handleViewItem(item)}
             />
           </>
         }
