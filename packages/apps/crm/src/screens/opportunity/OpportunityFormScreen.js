@@ -28,7 +28,6 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {
-  AutoCompleteSearchInput,
   DateInput,
   useDispatch,
   useSelector,
@@ -38,15 +37,14 @@ import {
   getOpportunity,
   updateOpportunity,
 } from '../../features/opportunitySlice';
-import {fetchClientAndProspect} from '../../features/partnerSlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
+import {ClientProspectSearchBar} from '../../components/templates';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {clientAndProspectList} = useSelector(state => state.partner);
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
@@ -101,13 +99,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
     navigation,
   ]);
 
-  const searchClientAndProspectAPI = useCallback(
-    searchValue => {
-      dispatch(fetchClientAndProspect({searchValue}));
-    },
-    [dispatch],
-  );
-
   return (
     <Screen>
       <KeyboardAvoidingScrollView>
@@ -121,16 +112,13 @@ const OpportunityFormScreen = ({navigation, route}) => {
           />
         </View>
         <View style={styles.container}>
-          <AutoCompleteSearchInput
+          <ClientProspectSearchBar
+            titleKey="Crm_ClientProspect"
+            placeholderKey="Crm_ClientProspect"
+            defaultValue={partner}
+            onChangeValue={setPartner}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
-            title={I18n.t('Crm_ClientProspect')}
-            objectList={clientAndProspectList}
-            value={partner}
-            searchField="fullName"
-            onChangeValue={setPartner}
-            searchAPI={searchClientAndProspectAPI}
-            locallyFilteredList={false}
           />
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}

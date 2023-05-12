@@ -26,24 +26,19 @@ import {
   Picker,
   Screen,
 } from '@axelor/aos-mobile-ui';
-import {
-  useSelector,
-  useDispatch,
-  useTranslator,
-  AutoCompleteSearchInput,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {getContact} from '../../features/contactSlice';
-import {fetchClientAndProspect} from '../../features/partnerSlice';
 import {updateContact} from '../../features/contactSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
+import {ClientProspectSearchBar} from '../../components/templates';
 
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
-  const {contact} = useSelector(state => state.contact);
-  const {clientAndProspectList} = useSelector(state => state.partner);
-  const {civilityList} = useCivilityList();
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
+  const {contact} = useSelector(state => state.contact);
+  const {civilityList} = useCivilityList();
 
   const [civility, setCivility] = useState(Number(contact.titleSelect));
   const [firstName, setFirstName] = useState(contact.firstName);
@@ -56,6 +51,7 @@ const ContactFormScreen = ({navigation, route}) => {
   const [clientAndProspect, setClientAndProspect] = useState(
     contact.mainPartner,
   );
+
   useEffect(() => {
     dispatch(getContact({contactId: idContact}));
   }, [dispatch, idContact]);
@@ -98,13 +94,6 @@ const ContactFormScreen = ({navigation, route}) => {
     email,
   ]);
 
-  const searchClientAndProspectAPI = useCallback(
-    searchValue => {
-      dispatch(fetchClientAndProspect({searchValue}));
-    },
-    [dispatch],
-  );
-
   return (
     <Screen>
       <KeyboardAvoidingScrollView>
@@ -131,16 +120,13 @@ const ContactFormScreen = ({navigation, route}) => {
             onChange={setName}
             defaultValue={name}
           />
-          <AutoCompleteSearchInput
+          <ClientProspectSearchBar
+            titleKey="Crm_ClientProspect"
+            placeholderKey="Crm_ClientProspect"
+            defaultValue={clientAndProspect}
+            onChangeValue={setClientAndProspect}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
-            title={I18n.t('Crm_ClientProspect')}
-            objectList={clientAndProspectList}
-            value={clientAndProspect}
-            searchField="fullName"
-            onChangeValue={setClientAndProspect}
-            searchAPI={searchClientAndProspectAPI}
-            locallyFilteredList={false}
           />
           <FormInput
             style={styles.input}
