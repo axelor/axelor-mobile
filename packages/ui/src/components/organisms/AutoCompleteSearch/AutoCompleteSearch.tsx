@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
