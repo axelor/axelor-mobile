@@ -17,15 +17,11 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {
-  displayItemName,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
-import {StyleSheet, View} from 'react-native';
+import {displayItemFullname} from '../../../utils/displayers';
 
 const ClientProspectSearchBar = ({
   placeholderKey = 'Crm_ClientProspect',
@@ -71,7 +67,7 @@ const ClientProspectSearchBar = ({
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchClientAndProspectAPI}
-        displayValue={displayItemName}
+        displayValue={displayItemFullname}
         placeholder={I18n.t(placeholderKey)}
         showDetailsPopup={showDetailsPopup}
         loadingList={loading}

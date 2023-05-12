@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Screen,
@@ -35,8 +35,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedEvent} from '../../features/eventSlice';
 import EventType from '../../types/event-type';
-import {PlanningEventCard} from '../../components';
-import {EventSearchBar} from '../../components/templates';
+import {EventSearchBar, PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();

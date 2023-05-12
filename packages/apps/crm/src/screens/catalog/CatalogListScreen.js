@@ -27,11 +27,10 @@ import {
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {CatalogCard, CatalogsSearchBar} from '../../components';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
-import {CatalogCard} from '../../components';
-import Catalog from '../../types/catalog';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
-import {CatalogsSearchBar} from '../../components/templates';
+import Catalog from '../../types/catalog';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,7 +42,6 @@ const CatalogListScreen = ({navigation}) => {
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
 
-  const [filteredList, setFilteredList] = useState(catalogList);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const catalogTypeListItems = useMemo(() => {
@@ -67,17 +65,17 @@ const CatalogListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(status => item?.catalogType?.id === status.key),
-          );
-        } else {
-          return list;
-        }
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       }
+
+      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0) {
+        return list;
+      }
+
+      return list?.filter(item =>
+        selectedStatus.find(status => item?.catalogType?.id === status.key),
+      );
     },
     [selectedStatus],
   );
@@ -87,9 +85,10 @@ const CatalogListScreen = ({navigation}) => {
     dispatch(fetchCatalogType());
   }, [dispatch]);
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(catalogList));
-  }, [catalogList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(catalogList),
+    [catalogList, filterOnStatus],
+  );
 
   if (!crmConfig?.isManageCatalogs) {
     return (

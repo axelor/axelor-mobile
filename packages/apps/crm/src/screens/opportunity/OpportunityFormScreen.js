@@ -26,6 +26,7 @@ import {
   Picker,
   Screen,
   StarScore,
+  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
@@ -38,7 +39,7 @@ import {
   updateOpportunity,
 } from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
-import {ClientProspectSearchBar} from '../../components/templates';
+import {ClientProspectSearchBar} from '../../components';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
@@ -73,8 +74,16 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrent,
-        opportunityAmount: amount,
+        opportunityRecurrentAmount: unformatNumber(
+          recurrent,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
+        opportunityAmount: unformatNumber(
+          amount,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
         opportunityDescription: description,
         idPartner: partner?.id,
         opportunityRating: score,
@@ -87,13 +96,13 @@ const OpportunityFormScreen = ({navigation, route}) => {
     });
   }, [
     dispatch,
-    opportunity.id,
-    opportunity.version,
+    opportunity,
     status,
-    amount,
     recurrent,
+    I18n,
+    amount,
     description,
-    partner?.id,
+    partner,
     score,
     date,
     navigation,
@@ -116,7 +125,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
             defaultValue={partner}
-            onChangeValue={setPartner}
+            onChange={setPartner}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
           />

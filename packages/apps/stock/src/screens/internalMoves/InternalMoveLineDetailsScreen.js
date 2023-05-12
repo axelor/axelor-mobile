@@ -43,9 +43,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {loadingProductFromId, productFromId: product} = useSelector(
-    state => state.product,
-  );
+  const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine, loadingInternalMoveLine} = useSelector(
     state => state.internalMoveLine,
   );
@@ -149,7 +147,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           visible={!isTrackingNumberSelectVisible}
         />
       }
-      loading={loadingProductFromId || loadingInternalMoveLine}>
+      loading={loadingInternalMoveLine}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={

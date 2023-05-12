@@ -31,9 +31,11 @@ import {getClientbyId, updateClient} from '../../features/clientSlice';
 
 const ClientFormScreen = ({navigation, route}) => {
   const idClient = route.params.idClient;
-  const {client} = useSelector(state => state.client);
   const dispatch = useDispatch();
   const I18n = useTranslator();
+
+  const {client} = useSelector(state => state.client);
+
   const [name, setName] = useState(client.name);
   const [fixedPhone, setFixedPhone] = useState(client.fixedPhone);
   const [email, setEmail] = useState(client.emailAddress?.address);

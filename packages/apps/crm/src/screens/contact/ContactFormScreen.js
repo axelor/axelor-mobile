@@ -27,10 +27,10 @@ import {
   Screen,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {ClientProspectSearchBar} from '../../components';
 import {getContact} from '../../features/contactSlice';
 import {updateContact} from '../../features/contactSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
-import {ClientProspectSearchBar} from '../../components/templates';
 
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
@@ -124,7 +124,7 @@ const ContactFormScreen = ({navigation, route}) => {
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
             defaultValue={clientAndProspect}
-            onChangeValue={setClientAndProspect}
+            onChange={setClientAndProspect}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
           />

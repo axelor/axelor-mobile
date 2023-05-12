@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -28,8 +28,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchContact} from '../../features/contactSlice';
-import {PartnerCard} from '../../components';
-import {ContactSearchBar} from '../../components/templates';
+import {ContactSearchBar, PartnerCard} from '../../components';
 
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -41,7 +40,6 @@ const ContactListScreen = ({navigation}) => {
     state => state.contact,
   );
 
-  const [filteredList, setFilteredList] = useState(contactList);
   const [assigned, setAssigned] = useState(false);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -68,9 +66,10 @@ const ContactListScreen = ({navigation}) => {
     [assigned, userId],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(contactList));
-  }, [filterOnUserAssigned, contactList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(contactList),
+    [filterOnUserAssigned, contactList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>

@@ -29,9 +29,8 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
-import {LeadsCard} from '../../components';
+import {LeadsCard, LeadSearchBar} from '../../components';
 import {Lead} from '../../types';
-import {LeadSearchBar} from '../../components/templates';
 
 const LeadListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,7 +42,6 @@ const LeadListScreen = ({navigation}) => {
   const {userId} = useSelector(state => state.auth);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filteredList, setFilteredList] = useState(leadList);
   const [assigned, setAssigned] = useState(false);
 
   const leadStatusListItems = useMemo(() => {
@@ -103,9 +101,10 @@ const LeadListScreen = ({navigation}) => {
     dispatch(fetchLeadStatus());
   }, [dispatch]);
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(leadList)));
-  }, [leadList, filterOnUserAssigned, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(filterOnStatus(leadList)),
+    [leadList, filterOnUserAssigned, filterOnStatus],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>

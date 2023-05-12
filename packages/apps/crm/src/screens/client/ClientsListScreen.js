@@ -27,9 +27,8 @@ import {
   ToggleSwitch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {ClientSearchBar, PartnerCard} from '../../components';
 import {fetchClients} from '../../features/clientSlice';
-import {PartnerCard} from '../../components';
-import {ClientSearchBar} from '../../components/templates';
 
 const CLientsListScreen = ({navigation}) => {
   const I18n = useTranslator();

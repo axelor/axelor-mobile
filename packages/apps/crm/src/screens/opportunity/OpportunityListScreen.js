@@ -28,13 +28,12 @@ import {
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {OpportunityCard} from '../../components';
+import {OpportunityCard, OpportunitySearchBar} from '../../components';
 import {
   fetchOpportunities,
   fetchOpportunityStatus,
 } from '../../features/opportunitySlice';
 import {Opportunity} from '../../types';
-import {OpportunitySearchBar} from '../../components/templates';
 
 const OpportunityListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -50,7 +49,6 @@ const OpportunityListScreen = ({navigation}) => {
     opportunityStatusList,
   } = useSelector(state => state.opportunity);
 
-  const [filteredList, setFilteredList] = useState(opportunityList);
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
@@ -109,9 +107,10 @@ const OpportunityListScreen = ({navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(opportunityList)));
-  }, [filterOnUserAssigned, filterOnStatus, opportunityList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(filterOnStatus(opportunityList)),
+    [filterOnUserAssigned, filterOnStatus, opportunityList],
+  );
 
   useEffect(() => {
     dispatch(fetchOpportunityStatus());

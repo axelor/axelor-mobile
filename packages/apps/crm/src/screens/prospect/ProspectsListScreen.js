@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -27,9 +27,8 @@ import {
   ToggleSwitch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {PartnerCard} from '../../components';
+import {PartnerCard, ProspectSearchBar} from '../../components';
 import {fetchProspects} from '../../features/prospectSlice';
-import {ProspectSearchBar} from '../../components/templates';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -41,7 +40,6 @@ const ProspectsListScreen = ({navigation}) => {
     state => state.prospect,
   );
 
-  const [filteredList, setFilteredList] = useState(prospectList);
   const [assigned, setAssigned] = useState(false);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -68,9 +66,10 @@ const ProspectsListScreen = ({navigation}) => {
     [assigned, userId],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(prospectList));
-  }, [filterOnUserAssigned, prospectList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(prospectList),
+    [filterOnUserAssigned, prospectList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
