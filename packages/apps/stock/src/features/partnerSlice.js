@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
 import {searchClientsFilter, searchSuppliersFilter} from '../api/partner-api';
 
 export const filterClients = createAsyncThunk(
@@ -48,6 +48,8 @@ export const filterSuppliers = createAsyncThunk(
 
 const initialState = {
   loadingPartners: false,
+  moreLoading: false,
+  isListEnd: false,
   clientList: [],
   supplierList: [],
 };
@@ -56,19 +58,54 @@ const partnerSlice = createSlice({
   name: 'stock_partner',
   initialState,
   extraReducers: builder => {
-    builder.addCase(filterClients.pending, state => {
-      state.loadingPartners = true;
+    builder.addCase(filterClients.pending, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'pending', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'clientList',
+      });
     });
     builder.addCase(filterClients.fulfilled, (state, action) => {
-      state.loadingPartners = false;
-      state.clientList = action.payload;
+      state = manageInfiteScrollState(state, action, 'fulfilled', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'clientList',
+      });
     });
-    builder.addCase(filterSuppliers.pending, state => {
-      state.loadingPartners = true;
+    builder.addCase(filterClients.rejected, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'rejected', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'clientList',
+      });
+    });
+
+    builder.addCase(filterSuppliers.pending, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'pending', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'supplierList',
+      });
     });
     builder.addCase(filterSuppliers.fulfilled, (state, action) => {
-      state.loadingPartners = false;
-      state.supplierList = action.payload;
+      state = manageInfiteScrollState(state, action, 'fulfilled', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'supplierList',
+      });
+    });
+    builder.addCase(filterSuppliers.rejected, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'rejected', {
+        loading: 'loadingPartners',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'supplierList',
+      });
     });
   },
 });

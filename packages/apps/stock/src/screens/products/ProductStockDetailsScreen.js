@@ -16,24 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useSelector,
-  useDispatch,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
   ProductSeeStockLocationDistribution,
   ProductStockHeader,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
-import {searchStockLocations} from '../../features/stockLocationSlice';
 import {
   fetchProductWithId,
   updateProductLocker,
@@ -41,20 +35,19 @@ import {
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
-const ProductStockDetailsScreen = ({route, navigation}) => {
+const ProductStockDetailsScreen = ({route}) => {
   const routeProduct = route.params.product;
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {productFromId: product} = useSelector(state => state.product);
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
   const {baseConfig} = useSelector(state => state.config);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProductWithId(routeProduct.id));
@@ -92,19 +85,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
     }
   };
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: companyId,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [companyId, dispatch, user],
-  );
-
   return (
     <Screen>
       <ScrollView>
@@ -129,14 +109,10 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
           companyId={companyId}
           product={product}
         />
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          onChange={setStockLocation}
+          defaultValue={stockLocation}
         />
         {stockLocation == null ? null : (
           <EditableInput

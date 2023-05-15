@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -25,10 +25,9 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {PartnerCard} from '../../components';
+import {PartnerCard, ProspectSearchBar} from '../../components';
 import {fetchProspects} from '../../features/prospectSlice';
 
 const ProspectsListScreen = ({navigation}) => {
@@ -41,24 +40,13 @@ const ProspectsListScreen = ({navigation}) => {
     state => state.prospect,
   );
 
-  const [filteredList, setFilteredList] = useState(prospectList);
   const [assigned, setAssigned] = useState(false);
-  const [prospect, setProspect] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchProspectAPI = useCallback(
     page => {
-      dispatch(fetchProspects({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchProspectFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchProspects({searchValue: searchValue, page: 0}));
+      dispatch(fetchProspects({page: page}));
     },
     [dispatch],
   );
@@ -78,9 +66,10 @@ const ProspectsListScreen = ({navigation}) => {
     [assigned, userId],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(prospectList));
-  }, [filterOnUserAssigned, prospectList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(prospectList),
+    [filterOnUserAssigned, prospectList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -95,15 +84,7 @@ const ProspectsListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={prospectList}
-              value={prospect}
-              onChangeValue={setProspect}
-              fetchData={fetchProspectFilter}
-              placeholder={I18n.t('Crm_Prospects')}
-              oneFilter={true}
-              selectLastItem={false}
-            />
+            <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
         }
       />

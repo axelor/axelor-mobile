@@ -17,7 +17,11 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  handlerApiCall,
+  updateAgendaItems,
+  manageInfiteScrollState,
+} from '@axelor/aos-mobile-core';
 import {
   searchLeads,
   getLeadStatus,
@@ -122,26 +126,28 @@ const leadSlice = createSlice({
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchLeads.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingLead = true;
-      } else {
-        state.moreLoading = true;
-      }
+      state = manageInfiteScrollState(state, action, 'pending', {
+        loading: 'loadingLead',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'leadList',
+      });
     });
     builder.addCase(fetchLeads.fulfilled, (state, action) => {
-      state.loadingLead = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.leadList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.leadList = [...state.leadList, ...action.payload];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+      state = manageInfiteScrollState(state, action, 'fulfilled', {
+        loading: 'loadingLead',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'leadList',
+      });
+    });
+    builder.addCase(fetchLeads.rejected, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'rejected', {
+        loading: 'loadingLead',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'leadList',
+      });
     });
     builder.addCase(fetchLeadStatus.pending, state => {
       state.loadingLeadStatus = true;

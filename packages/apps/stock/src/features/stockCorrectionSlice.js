@@ -78,7 +78,7 @@ export const updateCorrection = createAsyncThunk(
 );
 
 const initialState = {
-  loadingStockCorrection: true,
+  loading: false,
   moreLoading: false,
   isListEnd: false,
   stockCorrectionList: [],
@@ -96,13 +96,13 @@ const stockCorrectionSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(searchStockCorrections.pending, (state, action) => {
       if (action.meta.arg.page === 0) {
-        state.loadingStockCorrection = true;
+        state.loading = true;
       } else {
         state.moreLoading = true;
       }
     });
     builder.addCase(searchStockCorrections.fulfilled, (state, action) => {
-      state.loadingStockCorrection = false;
+      state.loading = false;
       state.moreLoading = false;
       if (action.meta.arg.page === 0) {
         state.stockCorrectionList = action.payload;
@@ -120,10 +120,10 @@ const stockCorrectionSlice = createSlice({
       }
     });
     builder.addCase(fetchStockCorrection.pending, (state, action) => {
-      state.loadingStockCorrection = true;
+      state.loading = true;
     });
     builder.addCase(fetchStockCorrection.fulfilled, (state, action) => {
-      state.loadingStockCorrection = false;
+      state.loading = false;
       state.stockCorrection = action.payload;
     });
   },

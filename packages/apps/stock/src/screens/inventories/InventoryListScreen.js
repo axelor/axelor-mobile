@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -27,16 +27,13 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {InventoryCard} from '../../components';
-import {searchStockLocations} from '../../features/stockLocationSlice';
+import {InventoryCard, StockLocationSearchBar} from '../../components';
 import {searchInventories} from '../../features/inventorySlice';
 import {displayInventorySeq} from '../../utils/displayers';
 import Inventory from '../../types/inventory';
@@ -48,27 +45,22 @@ const InventoryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {stockLocationList} = useSelector(state => state.stockLocation);
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
-  const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
-  const [filteredList, setFilteredList] = useState(inventoryList);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    list => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           inventoryList,
@@ -77,8 +69,8 @@ const InventoryListScreen = ({navigation}) => {
           stockLocation?.id ?? '',
         ),
       ),
-    );
-  }, [filterOnStatus, stockLocation, stockLocationList, inventoryList]);
+    [filterOnStatus, stockLocation, inventoryList],
+  );
 
   const navigateToInventoryDetail = item => {
     if (item != null) {
@@ -92,19 +84,6 @@ const InventoryListScreen = ({navigation}) => {
     }
   };
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
   const fetchInventoriesAPI = useCallback(
     page => {
       dispatch(searchInventories({searchValue: filter, page: page}));
@@ -113,12 +92,12 @@ const InventoryListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchInventories({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
@@ -181,14 +160,11 @@ const InventoryListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={stockLocation}
+          onChange={setStockLocation}
         />
       </HeaderContainer>
       <ScrollList

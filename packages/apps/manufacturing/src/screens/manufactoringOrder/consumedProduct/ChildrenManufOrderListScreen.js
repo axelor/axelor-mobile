@@ -35,7 +35,7 @@ import {
 import {
   ManufacturingOrderHeader,
   ManufacturingOrderCard,
-} from '../../../components/organisms';
+} from '../../../components';
 import {fetchChildrenOfManufacturingOrder} from '../../../features/manufacturingOrderSlice';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 

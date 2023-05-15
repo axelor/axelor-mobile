@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -27,19 +27,19 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {CustomerDeliveryCard} from '../../components';
+import {
+  CustomerDeliveryCard,
+  PartnerSearchBar,
+  StockLocationSearchBar,
+} from '../../components';
 import {searchDeliveries} from '../../features/customerDeliverySlice';
-import {searchStockLocations} from '../../features/stockLocationSlice';
-import {filterClients} from '../../features/partnerSlice';
-import {displayPartner, displayStockMoveSeq} from '../../utils/displayers';
+import {displayStockMoveSeq} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
 
 const stockLocationScanKey = 'stock-location_customer-delivery-list';
@@ -49,29 +49,23 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {clientList} = useSelector(state => state.stock_partner);
   const {loading, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
   );
-  const {user} = useSelector(state => state.user);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [customer, setCustomer] = useState(null);
-  const [filteredList, setFilteredList] = useState(deliveryList);
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    list => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           filterList(
@@ -85,8 +79,8 @@ const CustomerDeliveryListScreen = ({navigation}) => {
           customer?.id ?? '',
         ),
       ),
-    );
-  }, [filterOnStatus, stockLocation, deliveryList, customer]);
+    [filterOnStatus, stockLocation, deliveryList, customer],
+  );
 
   const navigateToCustomerDelivery = item => {
     if (item != null) {
@@ -110,34 +104,14 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchDeliveries({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
-    },
-    [dispatch],
-  );
-
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const fetchPartnerAPI = useCallback(
-    filterValue => {
-      dispatch(filterClients({searchValue: filterValue}));
     },
     [dispatch],
   );
@@ -180,22 +154,16 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={stockLocation}
+          onChange={setStockLocation}
         />
-        <AutoCompleteSearch
-          objectList={clientList}
-          value={customer}
-          onChangeValue={item => setCustomer(item)}
-          fetchData={fetchPartnerAPI}
-          displayValue={displayPartner}
-          placeholder={I18n.t('Stock_Customer')}
+        <PartnerSearchBar
+          defaultValue={customer}
+          onChange={setCustomer}
+          placeholderKey="Stock_Customer"
         />
       </HeaderContainer>
       <ScrollList
@@ -215,11 +183,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
             }
             origin={item.origin}
             style={styles.item}
-            availability={
-              item.availableStatusSelect == null
-                ? null
-                : item.availableStatusSelect
-            }
+            availability={item.availableStatusSelect}
             onPress={() => navigateToCustomerDelivery(item)}
           />
         )}

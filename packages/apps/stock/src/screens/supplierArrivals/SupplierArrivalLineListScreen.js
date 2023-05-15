@@ -123,7 +123,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   );
 
   const filterLinesAPI = useCallback(
-    value => fetchSupplierLinesAPI({searchValue: value}),
+    ({searchValue}) => fetchSupplierLinesAPI({searchValue}),
     [fetchSupplierLinesAPI],
   );
   const scrollLinesAPI = useCallback(

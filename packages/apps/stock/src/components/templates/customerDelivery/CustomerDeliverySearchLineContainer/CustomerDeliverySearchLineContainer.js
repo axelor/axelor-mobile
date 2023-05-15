@@ -75,12 +75,12 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   };
 
   const fetchCustomerLinesAPI = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       dispatch(
         fetchCustomerDeliveryLines({
           customerDeliveryId: customerDelivery.id,
           searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },

@@ -27,7 +27,7 @@ import {
   Text,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ManufacturingOrderHeader} from '../../components/organisms';
+import {ManufacturingOrderHeader} from '../../components';
 import {splitSaleOrderRef} from '../../utils/formaters';
 
 const IS_INFINITE_SCROLL_ENABLED = false;

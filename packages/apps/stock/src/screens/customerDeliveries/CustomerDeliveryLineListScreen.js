@@ -123,9 +123,10 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   );
 
   const filterLinesAPI = useCallback(
-    value => fetchDeliveryLinesAPI({searchValue: value}),
+    ({searchValue}) => fetchDeliveryLinesAPI({searchValue}),
     [fetchDeliveryLinesAPI],
   );
+
   const scrollLinesAPI = useCallback(
     page => fetchDeliveryLinesAPI({page}),
     [fetchDeliveryLinesAPI],

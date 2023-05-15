@@ -36,10 +36,7 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  ManufacturingOrderHeader,
-  WasteProductCard,
-} from '../../../components/organisms';
+import {ManufacturingOrderHeader, WasteProductCard} from '../../../components';
 import {
   clearDeclareResponse,
   declareWasteProductsOfManufOrder,
@@ -51,19 +48,21 @@ const productScanKey = 'product_manufacturing-order-waste-product-list';
 
 const WasteProductListScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
-  const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
-    useSelector(state => state.wasteProducts);
-  const [filteredList, setFilteredList] = useState(wasteProductList);
-  const [product, setProduct] = useState(null);
-  const [canDeclare, setDeclare] = useState(
-    manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
-      manufOrder?.wasteStockMove == null,
-  );
-  const [isVisible, setVisible] = useState(false);
   const {setActivityIndicator} = useConfig();
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
+    useSelector(state => state.wasteProducts);
+
+  const [isVisible, setVisible] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [filteredList, setFilteredList] = useState(wasteProductList);
+  const [canDeclare, setDeclare] = useState(
+    manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
+      manufOrder?.wasteStockMove == null,
+  );
 
   useEffect(() => {
     if (declareResponse) {
@@ -92,7 +91,7 @@ const WasteProductListScreen = ({route, navigation}) => {
     setFilteredList(
       filterList(wasteProductList, 'product', 'fullName', product ?? ''),
     );
-  }, [wasteProductList, product]);
+  }, [product, wasteProductList]);
 
   const handleViewItem = item => {
     if (item) {
@@ -166,7 +165,7 @@ const WasteProductListScreen = ({route, navigation}) => {
             <ScannerAutocompleteSearch
               objectList={wasteProductList}
               onChangeValue={item => handleViewItem(item)}
-              fetchData={setProduct}
+              fetchData={({searchValue}) => setProduct(searchValue)}
               displayValue={item => item?.product?.fullName}
               placeholder={I18n.t('Manufacturing_Product')}
               scanKeySearch={productScanKey}

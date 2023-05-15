@@ -122,9 +122,10 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   );
 
   const filterLinesAPI = useCallback(
-    value => fetchInternalLinesAPI({searchValue: value}),
+    ({searchValue}) => fetchInternalLinesAPI({searchValue}),
     [fetchInternalLinesAPI],
   );
+
   const scrollLinesAPI = useCallback(
     page => fetchInternalLinesAPI({page}),
     [fetchInternalLinesAPI],

@@ -36,18 +36,35 @@ export const searchMachines = createAsyncThunk(
 const initialState = {
   loading: false,
   machineList: [],
+  moreLoading: false,
+  isListEnd: false,
 };
 
 const machinesSlice = createSlice({
   name: 'machines',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchMachines.pending, state => {
-      state.loading = true;
+    builder.addCase(searchMachines.pending, (state, action) => {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.loading = true;
+      } else {
+        state.moreLoading = true;
+      }
     });
     builder.addCase(searchMachines.fulfilled, (state, action) => {
       state.loading = false;
-      state.machineList = action.payload;
+      state.moreLoading = false;
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.machineList = action.payload;
+        state.isListEnd = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEnd = false;
+          state.machineList = [...state.machineList, ...action.payload];
+        } else {
+          state.isListEnd = true;
+        }
+      }
     });
   },
 });

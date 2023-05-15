@@ -36,18 +36,35 @@ export const searchWorkCenters = createAsyncThunk(
 const initialState = {
   loading: false,
   workCenterList: [],
+  moreLoading: false,
+  isListEnd: false,
 };
 
 const workCentersSlice = createSlice({
   name: 'workCenters',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchWorkCenters.pending, state => {
-      state.loading = true;
+    builder.addCase(searchWorkCenters.pending, (state, action) => {
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.loading = true;
+      } else {
+        state.moreLoading = true;
+      }
     });
     builder.addCase(searchWorkCenters.fulfilled, (state, action) => {
       state.loading = false;
-      state.workCenterList = action.payload;
+      state.moreLoading = false;
+      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+        state.workCenterList = action.payload;
+        state.isListEnd = false;
+      } else {
+        if (action.payload != null) {
+          state.isListEnd = false;
+          state.workCenterList = [...state.workCenterList, ...action.payload];
+        } else {
+          state.isListEnd = true;
+        }
+      }
     });
   },
 });

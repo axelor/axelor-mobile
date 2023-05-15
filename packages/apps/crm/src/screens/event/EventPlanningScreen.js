@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   useThemeColor,
   HeaderContainer,
-  AutoCompleteSearch,
   ToggleSwitch,
   getCommonStyles,
   MultiValuePicker,
@@ -36,7 +35,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchPlannedEvent} from '../../features/eventSlice';
 import EventType from '../../types/event-type';
-import {PlanningEventCard} from '../../components';
+import {EventSearchBar, PlanningEventCard} from '../../components';
 
 function EventPlanningScreen({navigation}) {
   const dispatch = useDispatch();
@@ -50,7 +49,6 @@ function EventPlanningScreen({navigation}) {
   const [filter, setFilter] = useState(null);
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [plannedEvent, setPlannedEvent] = useState(null);
   const [dateSave, setDateSave] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -93,19 +91,6 @@ function EventPlanningScreen({navigation}) {
       },
     ],
     [I18n, Colors],
-  );
-
-  const fetchEventFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue === '' ? null : searchValue);
-      dispatch(
-        fetchPlannedEvent({
-          date: dateSave,
-          searchValue: searchValue === '' ? null : searchValue,
-        }),
-      );
-    },
-    [dispatch, dateSave],
   );
 
   const fetchItemsByMonth = useCallback(
@@ -200,14 +185,10 @@ function EventPlanningScreen({navigation}) {
               title={I18n.t('Base_Status')}
               onValueChange={statusList => setSelectedStatus(statusList)}
             />
-            <AutoCompleteSearch
-              objectList={eventList}
-              value={plannedEvent}
-              onChangeValue={setPlannedEvent}
-              fetchData={fetchEventFilter}
-              placeholder={I18n.t('Crm_Clients')}
+            <EventSearchBar
+              onChange={setFilter}
+              showDetailsPopup={false}
               oneFilter={true}
-              selectLastItem={false}
             />
             <ToggleSwitch
               styleContainer={[

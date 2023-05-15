@@ -26,7 +26,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
   ScannerAutocompleteSearch,
   useDispatch,
@@ -34,11 +33,11 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
+import {ProductSearchBar} from '@axelor/aos-mobile-stock';
 import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
-import {ManufacturingOrderCard} from '../../components/organisms';
+import {ManufacturingOrderCard} from '../../components';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {searchProducts} from '@axelor/aos-mobile-stock';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
@@ -46,17 +45,18 @@ const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 const ManufacturingOrderListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {user} = useSelector(state => state.user);
-  const {productList} = useSelector(state => state.product);
+
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {
@@ -102,25 +102,18 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   );
 
   const handleRefChange = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         fetchManufacturingOrders({
           companyId: user?.activeCompany?.id,
           workshopId: user?.workshopStockLocation?.id,
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
     [dispatch, user?.activeCompany?.id, user?.workshopStockLocation?.id],
-  );
-
-  const fetchProductsAPI = useCallback(
-    searchValue => {
-      dispatch(searchProducts({searchValue: searchValue}));
-    },
-    [dispatch],
   );
 
   return (
@@ -180,14 +173,10 @@ const ManufacturingOrderListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={productList}
-          value={product}
-          onChangeValue={item => setProduct(item)}
-          fetchData={fetchProductsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={productScanKey}
-          placeholder={I18n.t('Manufacturing_Product')}
+        <ProductSearchBar
+          scanKey={productScanKey}
+          onChange={setProduct}
+          defaultValue={product}
         />
       </HeaderContainer>
       <ScrollList

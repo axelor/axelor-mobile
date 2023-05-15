@@ -28,16 +28,16 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
+  areObjectsEquals,
   ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {areObjectsEquals} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ConsumedProductGlobalCard,
-} from '../../../components/organisms';
+} from '../../../components';
 import {
   fetchConsumedProducts,
   updateProdProductOfManufOrder,
@@ -48,16 +48,18 @@ const productScanKey = 'product_manufacturing-order-consumed-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
 const ConsumedProductListScreen = ({route, navigation}) => {
+  const manufOrder = route.params.manufOrder;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const manufOrder = route.params.manufOrder;
+  const dispatch = useDispatch();
+
   const {loadingConsumedProducts, consumedProductList} = useSelector(
     state => state.prodProducts,
   );
+
   const [filteredList, setFilteredList] = useState(consumedProductList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [product, setProduct] = useState(null);
-  const dispatch = useDispatch();
 
   const fetchConsumedProductsAPI = useCallback(() => {
     dispatch(
@@ -179,7 +181,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
             <ScannerAutocompleteSearch
               objectList={consumedProductList}
               onChangeValue={() => {}}
-              fetchData={setProduct}
+              fetchData={({searchValue}) => setProduct(searchValue)}
               displayValue={item => item?.productName}
               placeholder={I18n.t('Manufacturing_Product')}
               scanKeySearch={productScanKey}

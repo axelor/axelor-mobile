@@ -76,12 +76,12 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   };
 
   const fetchSupplierLinesAPI = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       dispatch(
         fetchSupplierArrivalLines({
           supplierArrivalId: supplierArrival.id,
           searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },

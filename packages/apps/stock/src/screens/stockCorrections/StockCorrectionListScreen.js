@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
@@ -26,18 +26,18 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {StockCorrectionCard} from '../../components';
+import {
+  ProductSearchBar,
+  StockCorrectionCard,
+  StockLocationSearchBar,
+} from '../../components';
 import {searchStockCorrections} from '../../features/stockCorrectionSlice';
-import {searchProducts} from '../../features/productSlice';
-import {searchStockLocations} from '../../features/stockLocationSlice';
 import StockCorrection from '../../types/stock-corrrection';
 
 const stockLocationScanKey = 'stock-location_stock-correction-list';
@@ -48,16 +48,13 @@ const StockCorrectionListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingStockCorrection, moreLoading, isListEnd, stockCorrectionList} =
-    useSelector(state => state.stockCorrection);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {productList} = useSelector(state => state.product);
-  const {user} = useSelector(state => state.user);
+  const {loading, moreLoading, isListEnd, stockCorrectionList} = useSelector(
+    state => state.stockCorrection,
+  );
 
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filteredList, setFilteredList] = useState(stockCorrectionList);
 
   const filterOnStatus = useCallback(
     list => {
@@ -66,8 +63,8 @@ const StockCorrectionListScreen = ({navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           filterList(
@@ -81,8 +78,8 @@ const StockCorrectionListScreen = ({navigation}) => {
           product?.id ?? '',
         ),
       ),
-    );
-  }, [stockCorrectionList, stockLocation, product, filterOnStatus]);
+    [stockCorrectionList, stockLocation, product, filterOnStatus],
+  );
 
   const showStockCorrectionDetails = stockCorrection => {
     navigation.navigate('StockCorrectionDetailsScreen', {
@@ -95,26 +92,6 @@ const StockCorrectionListScreen = ({navigation}) => {
       dispatch(searchStockCorrections({page: page}));
     },
     [dispatch],
-  );
-
-  const fetchProductsAPI = useCallback(
-    filter => {
-      dispatch(searchProducts({searchValue: filter}));
-    },
-    [dispatch],
-  );
-
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
   );
 
   return (
@@ -144,29 +121,19 @@ const StockCorrectionListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationList}
-          value={stockLocation}
-          onChangeValue={item => setStockLocation(item)}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
-          searchBarKey={1}
+        <StockLocationSearchBar
+          scanKey={stockLocationScanKey}
+          onChange={setStockLocation}
+          defaultValue={stockLocation}
         />
-        <ScannerAutocompleteSearch
-          objectList={productList}
-          value={product}
-          onChangeValue={item => setProduct(item)}
-          fetchData={fetchProductsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={productScanKey}
-          placeholder={I18n.t('Stock_Product')}
-          searchBarKey={2}
+        <ProductSearchBar
+          scanKey={productScanKey}
+          onChange={setProduct}
+          defaultValue={product}
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingStockCorrection}
+        loadingList={loading}
         data={filteredList}
         renderItem={({item}) => (
           <StockCorrectionCard
