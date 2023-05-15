@@ -19,12 +19,13 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '../screens/LoginScreen';
 import {default as CoreNavigator} from '../navigator/Navigator';
 import {useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getNetInfo} from '../api/net-info-utils';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
+import LoginScreen from '../screens/LoginScreen';
+import SessionManagementScreen from '../screens/SessionManagementScreen';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -100,17 +101,30 @@ const RootNavigator = ({
   return (
     <Navigator screenOptions={{headerShown: false}}>
       {!logged ? (
-        <Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          initialParams={{
-            version,
-            testInstanceConfig: configuration?.testInstanceConfig,
-            releaseInstanceConfig: configuration?.releaseInstanceConfig,
-            enableConnectionSessions: configuration?.enableConnectionSessions,
-            logoFile: configuration?.logoFile,
-          }}
-        />
+        configuration?.enableConnectionSessions ? (
+          <Screen
+            name="SessionManagementScreen"
+            component={SessionManagementScreen}
+            initialParams={{
+              version,
+              testInstanceConfig: configuration?.testInstanceConfig,
+              releaseInstanceConfig: configuration?.releaseInstanceConfig,
+              enableConnectionSessions: configuration?.enableConnectionSessions,
+              logoFile: configuration?.logoFile,
+            }}
+          />
+        ) : (
+          <Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            initialParams={{
+              version,
+              testInstanceConfig: configuration?.testInstanceConfig,
+              releaseInstanceConfig: configuration?.releaseInstanceConfig,
+              logoFile: configuration?.logoFile,
+            }}
+          />
+        )
       ) : (
         <Screen name="AppNavigator" component={AppNavigator} />
       )}

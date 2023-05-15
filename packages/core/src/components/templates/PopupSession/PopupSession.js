@@ -61,6 +61,7 @@ const PopupSession = ({
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
 
+  const [showRequiredFields, setShowRequiredFields] = useState(false);
   const [username, setUsername] = useState(sessionActive?.username);
   const [password, setPassword] = useState('');
 
@@ -136,17 +137,23 @@ const PopupSession = ({
               : Colors.secondaryColor_dark.background
           }
           style={styles.input}
+          showRequiredFields={showRequiredFields}
         />
         <PasswordInput
           value={password}
           onChange={setPassword}
           readOnly={loading}
           style={styles.input}
+          showRequiredFields={showRequiredFields}
         />
         {loading ? (
           <ActivityIndicator size="large" />
         ) : (
-          <LoginButton onPress={onPressLogin} disabled={disabledLogin} />
+          <LoginButton
+            onPress={onPressLogin}
+            onDisabledPress={() => setShowRequiredFields(true)}
+            disabled={disabledLogin}
+          />
         )}
         <Button
           style={styles.delButton}

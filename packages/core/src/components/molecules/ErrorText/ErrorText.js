@@ -25,7 +25,7 @@ const ERROR_CODE_REGEX = /\d{3}$/g;
 const LOGIN_ERROR = 401;
 const URL_ERROR = 999;
 
-const ErrorText = ({error}) => {
+const ErrorText = ({error, style}) => {
   const I18n = useTranslator();
 
   const errorCode = useMemo(() => {
@@ -54,7 +54,9 @@ const ErrorText = ({error}) => {
     return null;
   }
 
-  return <WarningCard style={styles.card} errorMessage={errorMessage} />;
+  return (
+    <WarningCard style={[styles.card, style]} errorMessage={errorMessage} />
+  );
 };
 
 const styles = StyleSheet.create({
