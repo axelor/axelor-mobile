@@ -33,11 +33,11 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
+import {ProductSearchBar} from '@axelor/aos-mobile-stock';
 import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
-import {ManufacturingOrderCard} from '../../components/organisms';
+import {ManufacturingOrderCard} from '../../components';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {ProductSearchBar} from '@axelor/aos-mobile-stock';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
@@ -45,16 +45,18 @@ const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 const ManufacturingOrderListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.user);
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {user} = useSelector(state => state.user);
+
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
   const [filter, setFilter] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {

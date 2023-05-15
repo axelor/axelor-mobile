@@ -18,8 +18,8 @@
 
 import React from 'react';
 import {Screen, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
 import {ProductSearchBar} from '@axelor/aos-mobile-stock';
+import {ManufacturingOrderHeader} from '../../../components';
 
 const productScanKey = 'product_manufacturing-order-produced-product-select';
 

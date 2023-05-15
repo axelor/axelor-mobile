@@ -27,7 +27,7 @@ import {
 import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
-} from '../../../components/organisms';
+} from '../../../components';
 import {
   addProdProductToManufOrder,
   updateProdProductOfManufOrder,

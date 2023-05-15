@@ -23,8 +23,8 @@ import {
   ScrollView,
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
-import {TrackingNumberSearchBar} from '../../../components';
+import {TrackingNumberSearchBar} from '@axelor/aos-mobile-stock';
+import {ManufacturingOrderHeader} from '../../../components';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-consumed-product-select';

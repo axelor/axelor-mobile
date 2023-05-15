@@ -33,7 +33,13 @@ interface AutocompleteSearchProps {
   objectList: any[];
   value?: string;
   onChangeValue?: (value: any) => void;
-  fetchData?: (value: any) => void;
+  fetchData?: ({
+    page,
+    searchValue,
+  }: {
+    page: number;
+    searchValue: string;
+  }) => void;
   displayValue?: (value: any) => string;
   placeholder?: string;
   scanKeySearch?: string;

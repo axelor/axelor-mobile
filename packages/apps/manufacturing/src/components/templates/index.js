@@ -16,9 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ConsumedProductSearchBar} from './ConsumedProductSearchBar/ConsumedProductSearchBar';
 export {default as MachineSearchBar} from './MachineSearchBar/MachineSearchBar';
-export {default as ProducedProductSearchBar} from './ProducedProductSearchBar/ProducedProductSearchBar';
-export {default as TrackingNumberSearchBar} from './TrackingNumberSearchBar/TrackingNumberSearchBar';
-export {default as WasteProductSearchBar} from './WasteProductSearchBar/WasteProductSearchBar';
 export {default as WorkCenterSearchBar} from './WorkCenterSearchBar/WorkCenterSearchBar';

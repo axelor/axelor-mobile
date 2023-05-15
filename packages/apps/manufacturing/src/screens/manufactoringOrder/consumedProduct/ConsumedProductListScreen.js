@@ -27,45 +27,48 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {areObjectsEquals} from '@axelor/aos-mobile-stock';
+import {
+  areObjectsEquals,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ManufacturingOrderHeader,
   ConsumedProductGlobalCard,
-} from '../../../components/organisms';
+} from '../../../components';
 import {
   fetchConsumedProducts,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
-import {ConsumedProductSearchBar} from '../../../components';
 
 const productScanKey = 'product_manufacturing-order-consumed-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
 const ConsumedProductListScreen = ({route, navigation}) => {
+  const manufOrder = route.params.manufOrder;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const manufOrder = route.params.manufOrder;
+  const dispatch = useDispatch();
+
   const {loadingConsumedProducts, consumedProductList} = useSelector(
     state => state.prodProducts,
   );
+
   const [filteredList, setFilteredList] = useState(consumedProductList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [product, setProduct] = useState(null);
-  const dispatch = useDispatch();
 
-  const fetchConsumedProductsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchConsumedProducts({
-          manufOrderId: manufOrder?.id,
-          manufOrderVersion: manufOrder?.version,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
-  );
+  const fetchConsumedProductsAPI = useCallback(() => {
+    dispatch(
+      fetchConsumedProducts({
+        manufOrderId: manufOrder?.id,
+        manufOrderVersion: manufOrder?.version,
+      }),
+    );
+  }, [dispatch, manufOrder]);
 
   const updateConsumedProductQtyAPI = useCallback(
     (item, moreValue) => {
@@ -175,13 +178,14 @@ const ConsumedProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <ConsumedProductSearchBar
-              scanKey={productScanKey}
-              onChange={setProduct}
-              showDetailsPopup={false}
+            <ScannerAutocompleteSearch
+              objectList={consumedProductList}
+              onChangeValue={() => {}}
+              fetchData={({searchValue}) => setProduct(searchValue)}
+              displayValue={item => item?.productName}
+              placeholder={I18n.t('Manufacturing_Product')}
+              scanKeySearch={productScanKey}
               oneFilter={true}
-              isFocus={true}
-              manufOrder={manufOrder}
             />
           </>
         }

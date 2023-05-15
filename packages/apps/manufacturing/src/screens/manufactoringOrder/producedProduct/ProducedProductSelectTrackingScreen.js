@@ -28,9 +28,8 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {ManufacturingOrderHeader} from '../../../components/organisms';
-
-import {TrackingNumberSearchBar} from '../../../components';
+import {TrackingNumberSearchBar} from '@axelor/aos-mobile-stock';
+import {ManufacturingOrderHeader} from '../../../components';
 
 const trackingNumberScanKey =
   'tracking-number_manufacturing-order-produced-product-select';

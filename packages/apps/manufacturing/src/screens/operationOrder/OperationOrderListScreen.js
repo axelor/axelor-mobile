@@ -36,26 +36,29 @@ import {
 import OperationOrder from '../../types/operation-order';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {OperationOrderDetailsCard} from '../../components/organisms';
 import {
+  OperationOrderDetailsCard,
   MachineSearchBar,
   WorkCenterSearchBar,
-} from '../../components/templates';
+} from '../../components';
 
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
 
 function OperationOrderListScreen({navigation}) {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loading, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
   );
+
+  const [machine, setMachine] = useState(null);
   const [workCenter, setWorkCenter] = useState(null);
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
     list => {
@@ -71,11 +74,11 @@ function OperationOrderListScreen({navigation}) {
           operationOrderList,
           ['workCenter', 'machine'],
           ['id', 'id'],
-          [workCenter?.id ?? '', ''],
+          [workCenter?.id ?? '', machine?.id ?? ''],
         ),
       ),
     );
-  }, [filterOnStatus, operationOrderList, workCenter]);
+  }, [filterOnStatus, machine, operationOrderList, workCenter]);
 
   const navigateToOperationOrder = item => {
     if (item != null) {
@@ -169,7 +172,7 @@ function OperationOrderListScreen({navigation}) {
           />
         }>
         <WorkCenterSearchBar onChange={setWorkCenter} />
-        <MachineSearchBar onChange={setWorkCenter} />
+        <MachineSearchBar onChange={setMachine} />
       </HeaderContainer>
       <ScrollList
         loadingList={loading}

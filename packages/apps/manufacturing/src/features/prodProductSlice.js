@@ -104,8 +104,6 @@ const initialState = {
   consumedProductList: [],
   loadingProducedProducts: false,
   producedProductList: [],
-  moreLoading: false,
-  isListEnd: false,
 };
 
 const prodProductsSlice = createSlice({

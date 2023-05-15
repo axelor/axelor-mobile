@@ -18,25 +18,27 @@
 
 import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchProductionFile} from '../../features/productionFileSlice';
-import {
-  ProductionFileLargeCard,
-  ProductionFileSmallCard,
-} from '../../components/organisms';
 import {
   Screen,
   ScrollList,
   HeaderContainer,
   ToggleSwitch,
 } from '@axelor/aos-mobile-ui';
+import {fetchProductionFile} from '../../features/productionFileSlice';
+import {
+  ProductionFileLargeCard,
+  ProductionFileSmallCard,
+} from '../../components';
 
-const ProductionFileScreen = ({route, navigation}) => {
-  const [tab, setTab] = useState(false);
+const ProductionFileScreen = ({route}) => {
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loading, moreLoading, isListEnd, productionFileList} = useSelector(
     state => state.productionFile,
   );
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
+
+  const [tab, setTab] = useState(false);
 
   const fetchProductionFileAPI = useCallback(
     page => {

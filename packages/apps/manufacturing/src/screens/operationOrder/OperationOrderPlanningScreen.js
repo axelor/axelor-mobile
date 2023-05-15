@@ -30,11 +30,12 @@ import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 import OperationOrder from '../../types/operation-order';
 
 function OperationOrderPlanningScreen({navigation}) {
+  const dispatch = useDispatch();
+  const Colors = useThemeColor();
+
   const {plannedOperationOrderList, loading} = useSelector(
     state => state.operationOrder,
   );
-  const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const listItem = useMemo(
     () =>

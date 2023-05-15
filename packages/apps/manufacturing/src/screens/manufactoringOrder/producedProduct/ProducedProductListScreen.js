@@ -27,42 +27,44 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {areObjectsEquals} from '@axelor/aos-mobile-stock';
+import {
+  areObjectsEquals,
+  ScannerAutocompleteSearch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ManufacturingOrderHeader,
   ProducedProductCard,
-} from '../../../components/organisms';
+} from '../../../components';
 import {fetchProducedProducts} from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
-import {ProducedProductSearchBar} from '../../../components';
 
 const productScanKey = 'product_manufacturing-order-produced-product-list';
 const IS_INFINITE_SCROLL_ENABLED = false;
 
 const ProducedProductListScreen = ({route, navigation}) => {
+  const manufOrder = route.params.manufOrder;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const manufOrder = route.params.manufOrder;
+  const dispatch = useDispatch();
+
   const {loadingProducedProducts, producedProductList} = useSelector(
     state => state.prodProducts,
   );
   const [filteredList, setFilteredList] = useState(producedProductList);
   const [product, setProduct] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const dispatch = useDispatch();
 
-  const fetchProducedProductsAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        fetchProducedProducts({
-          manufOrderId: manufOrder?.id,
-          manufOrderVersion: manufOrder?.version,
-        }),
-      );
-    },
-    [dispatch, manufOrder],
-  );
+  const fetchProducedProductsAPI = useCallback(() => {
+    dispatch(
+      fetchProducedProducts({
+        manufOrderId: manufOrder?.id,
+        manufOrderVersion: manufOrder?.version,
+      }),
+    );
+  }, [dispatch, manufOrder]);
 
   const filterOnStatus = useCallback(
     list => {
@@ -141,13 +143,14 @@ const ProducedProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <ProducedProductSearchBar
-              scanKey={productScanKey}
-              onChange={setProduct}
-              showDetailsPopup={false}
+            <ScannerAutocompleteSearch
+              objectList={producedProductList}
+              onChangeValue={() => {}}
+              fetchData={({searchValue}) => setProduct(searchValue)}
+              displayValue={item => item?.productName}
+              placeholder={I18n.t('Manufacturing_Product')}
+              scanKeySearch={productScanKey}
               oneFilter={true}
-              isFocus={true}
-              manufOrder={manufOrder}
             />
           </>
         }

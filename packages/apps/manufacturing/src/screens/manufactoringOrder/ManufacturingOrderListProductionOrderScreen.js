@@ -23,7 +23,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   LinkedManufacturingOrderCard,
   ManufacturingOrderHeader,
-} from '../../components/organisms';
+} from '../../components';
 import {fetchLinkedManufOrders} from '../../features/manufacturingOrderSlice';
 
 const ManufacturingOrderListProductionOrderScreen = ({route}) => {

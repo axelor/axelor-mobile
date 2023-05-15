@@ -31,38 +31,38 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   filterList,
+  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  ManufacturingOrderHeader,
-  WasteProductCard,
-} from '../../../components/organisms';
+import {ManufacturingOrderHeader, WasteProductCard} from '../../../components';
 import {
   clearDeclareResponse,
   declareWasteProductsOfManufOrder,
   fetchWasteProducts,
 } from '../../../features/wasteProductsSlice';
 import {ManufacturingOrder} from '../../../types';
-import {WasteProductSearchBar} from '../../../components/templates';
 
 const productScanKey = 'product_manufacturing-order-waste-product-list';
 
 const WasteProductListScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
+  const {setActivityIndicator} = useConfig();
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
   const {loading, moreLoading, isListEnd, wasteProductList, declareResponse} =
     useSelector(state => state.wasteProducts);
+
+  const [isVisible, setVisible] = useState(false);
+  const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(wasteProductList);
   const [canDeclare, setDeclare] = useState(
     manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
       manufOrder?.wasteStockMove == null,
   );
-  const [isVisible, setVisible] = useState(false);
-  const {setActivityIndicator} = useConfig();
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (declareResponse) {
@@ -88,8 +88,10 @@ const WasteProductListScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    setFilteredList(filterList(wasteProductList, 'product', 'fullName', ''));
-  }, [wasteProductList]);
+    setFilteredList(
+      filterList(wasteProductList, 'product', 'fullName', product ?? ''),
+    );
+  }, [product, wasteProductList]);
 
   const handleViewItem = item => {
     if (item) {
@@ -160,13 +162,14 @@ const WasteProductListScreen = ({route, navigation}) => {
                 />
               )}
             </View>
-            <WasteProductSearchBar
-              scanKeySearch={productScanKey}
-              displayValue={item => item?.product?.fullName}
-              showDetailsPopup={false}
-              oneFilter={true}
-              isFocus={true}
+            <ScannerAutocompleteSearch
+              objectList={wasteProductList}
               onChangeValue={item => handleViewItem(item)}
+              fetchData={({searchValue}) => setProduct(searchValue)}
+              displayValue={item => item?.product?.fullName}
+              placeholder={I18n.t('Manufacturing_Product')}
+              scanKeySearch={productScanKey}
+              oneFilter={true}
             />
           </>
         }

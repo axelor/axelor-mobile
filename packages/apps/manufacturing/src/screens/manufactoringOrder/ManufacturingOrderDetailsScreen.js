@@ -34,7 +34,7 @@ import {
   ManufacturingOrderSaleOrderSetView,
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
-} from '../../components/organisms';
+} from '../../components';
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 
