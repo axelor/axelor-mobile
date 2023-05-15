@@ -24,6 +24,7 @@ import {
 } from '../../../hooks/use-click-outside';
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
+import SearchDetailsPopUp from './SearchDetailsPopUp';
 
 const isValidString = (string: String) => {
   return typeof string === 'string' && string !== '';
@@ -35,9 +36,15 @@ const TIME_BETWEEN_CALL = 1000;
 interface AutocompleteSearchProps {
   objectList: any[];
   value?: any;
-  onChangeValue?: (any) => void;
-  fetchData?: (any) => void;
-  displayValue?: (any) => string;
+  onChangeValue?: (item: any) => void;
+  fetchData?: ({
+    page,
+    searchValue,
+  }: {
+    page: number;
+    searchValue: string;
+  }) => void;
+  displayValue?: (item: any) => string;
   placeholder?: string;
   changeScreenAfter?: boolean;
   navigate?: boolean;
@@ -47,6 +54,11 @@ interface AutocompleteSearchProps {
   scanIconColor?: string;
   selectLastItem?: boolean;
   style?: any;
+  showDetailsPopup?: boolean;
+  loadingList?: boolean;
+  moreLoading?: boolean;
+  isListEnd?: boolean;
+  translator?: (translationKey: string) => string;
 }
 
 const AutoCompleteSearch = ({
@@ -64,10 +76,16 @@ const AutoCompleteSearch = ({
   scanIconColor = null,
   selectLastItem = true,
   style,
+  showDetailsPopup = false,
+  loadingList,
+  moreLoading,
+  isListEnd,
+  translator,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
   const [selected, setSelected] = useState(value ? true : false);
+  const [isPopupVisible, setPopupIsVisible] = useState(false);
   const [searchText, setSearchText] = useState(
     value ? displayValue(value) : null,
   );
@@ -86,15 +104,20 @@ const AutoCompleteSearch = ({
     }
   }, [clickOutside, displayList]);
 
+  const fetchDataAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      fetchData({page, searchValue});
+    },
+    [fetchData],
+  );
+
   const handleAPICall = useCallback(() => {
     if (!selected) {
-      if (searchText == null && searchText === '') {
-        fetchData(null);
-      } else {
-        fetchData(searchText);
-      }
+      fetchDataAPI({
+        searchValue: isValidString(searchText) ? searchText : null,
+      });
     }
-  }, [fetchData, searchText, selected]);
+  }, [fetchDataAPI, searchText, selected]);
 
   useEffect(() => {
     handleAPICall();
@@ -102,10 +125,13 @@ const AutoCompleteSearch = ({
 
   const handleSelect = useCallback(
     item => {
-      setDisplayList(false);
-      setSelected(true);
-      setSearchText(changeScreenAfter ? '' : displayValue(item));
-      onChangeValue(item);
+      if (item !== null) {
+        setDisplayList(false);
+        setSelected(true);
+        setSearchText(changeScreenAfter ? '' : displayValue(item));
+        setPopupIsVisible(false);
+        onChangeValue(item);
+      }
     },
     [changeScreenAfter, displayValue, onChangeValue],
   );
@@ -194,10 +220,6 @@ const AutoCompleteSearch = ({
     onSelection();
   }, [onSelection]);
 
-  const handleSearchPress = useCallback(() => {
-    setDisplayList(true);
-  }, []);
-
   useEffect(() => {
     if (isValidString(value)) {
       handleSearchValueChange(value);
@@ -207,7 +229,7 @@ const AutoCompleteSearch = ({
   const styles = useMemo(() => getStyles(displayList), [displayList]);
 
   return (
-    <View ref={wrapperRef} style={styles.container}>
+    <View ref={wrapperRef} style={styles.searchBarContainer}>
       <SearchBar
         style={style}
         valueTxt={searchText}
@@ -215,7 +237,8 @@ const AutoCompleteSearch = ({
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}
-        onSearchPress={handleSearchPress}
+        onSearchPress={() => setPopupIsVisible(true)}
+        disableSearchPress={!showDetailsPopup}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
       />
@@ -227,13 +250,27 @@ const AutoCompleteSearch = ({
           handleSelect={handleSelect}
         />
       )}
+      <SearchDetailsPopUp
+        isVisible={isPopupVisible}
+        objectList={objectList}
+        value={searchText}
+        placeholder={placeholder}
+        displayValue={displayValue}
+        onClose={() => setPopupIsVisible(false)}
+        onSelect={handleSelect}
+        fetchData={fetchData}
+        loadingList={loadingList}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={translator}
+      />
     </View>
   );
 };
 
 const getStyles = displayList =>
   StyleSheet.create({
-    container: {
+    searchBarContainer: {
       zIndex: displayList ? 45 : 0,
     },
   });

@@ -181,3 +181,41 @@ export const handlerApiCall = ({
       }),
     );
 };
+
+export const manageInfiteScrollState = (
+  state: any,
+  action: any,
+  status: 'pending' | 'fulfilled' | 'rejected',
+  keys: {loading: string; moreLoading: string; list: string; isListEnd: string},
+) => {
+  if (status === 'pending') {
+    if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+      state[keys.loading] = true;
+    } else {
+      state[keys.moreLoading] = true;
+    }
+  }
+
+  if (status === 'fulfilled') {
+    state[keys.loading] = false;
+    state[keys.moreLoading] = false;
+    if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
+      state[keys.list] = action.payload;
+      state[keys.isListEnd] = false;
+    } else {
+      if (action.payload != null) {
+        state[keys.isListEnd] = false;
+        state[keys.list] = [...state[keys.list], ...action.payload];
+      } else {
+        state[keys.isListEnd] = true;
+      }
+    }
+  }
+
+  if (status === 'rejected') {
+    state[keys.loading] = false;
+    state[keys.moreLoading] = false;
+  }
+
+  return state;
+};

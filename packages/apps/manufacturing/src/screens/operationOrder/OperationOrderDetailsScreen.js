@@ -20,15 +20,15 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {OperationOrderDatesCard} from '../../components/molecules';
 import {
+  OperationOrderDatesCard,
   OperationOrderHeader,
   OperationOrderLabelTextList,
   OperationOrderStopwatch,
-} from '../../components/organisms';
+} from '../../components';
 import {fetchOperationOrderById} from '../../features/operationOrderSlice';
 
-function OperationOrderDetailsScreen({route, navigation}) {
+function OperationOrderDetailsScreen({route}) {
   const dispatch = useDispatch();
 
   const {loadingOrder, operationOrder} = useSelector(

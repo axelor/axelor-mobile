@@ -18,24 +18,17 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
-  displayItemName,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
+  ProductTrackingNumberSearchBar,
   StockCorrectionCreationButton,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
-import {displayItemTrackingNumber} from '../../utils/displayers';
-import {searchStockLocations} from '../../features/stockLocationSlice';
-import {searchProductTrackingNumber} from '../../features/productTrackingNumberSlice';
 
 const stockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -48,25 +41,16 @@ const CREATION_STEP = {
   validation: 3,
 };
 
-const displayItem = _item => {
-  return displayItemTrackingNumber(_item) || displayItemName(_item);
-};
-
 const DEFAULT_REASON = {name: '', id: null};
 
 const StockCorrectionCreationScreen = ({route}) => {
   const routeLocation = route?.params?.stockLocation;
   const routeProduct = route?.params?.product;
   const routeTrackingNumber = route?.params?.trackingNumber;
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
-  const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {productTrackingNumberList} = useSelector(
-    state => state.productTrackingNumber,
-  );
 
   const [location, setLocation] = useState(routeLocation);
   const [product, setProduct] = useState(routeProduct);
@@ -102,37 +86,13 @@ const StockCorrectionCreationScreen = ({route}) => {
         handleReset(CREATION_STEP.stockLocation);
       } else {
         setLocation(_value);
-        handleNextStep();
+        handleNextStep(CREATION_STEP.stockLocation);
       }
     },
     [handleNextStep, handleReset],
   );
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const searchProductTrackingNumberAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchProductTrackingNumber({
-          searchValue: filterValue,
-        }),
-      );
-    },
-    [dispatch],
-  );
-
-  const handleToProductTrackingNumberChange = useCallback(
+  const handleProductTrackingNumberChange = useCallback(
     _value => {
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
@@ -144,7 +104,7 @@ const StockCorrectionCreationScreen = ({route}) => {
           setProduct(_value);
           setTrackingNumber(null);
         }
-        handleNextStep();
+        handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
     [handleNextStep, handleReset],
@@ -178,8 +138,8 @@ const StockCorrectionCreationScreen = ({route}) => {
     }
   }, []);
 
-  const handleNextStep = useCallback(() => {
-    setCurrentStep(_current => {
+  const handleNextStep = useCallback(_current => {
+    setCurrentStep(() => {
       if (_current <= CREATION_STEP.stockLocation) {
         return CREATION_STEP.product_trackingNumber;
       }
@@ -205,25 +165,17 @@ const StockCorrectionCreationScreen = ({route}) => {
         )
       }>
       <ScrollView>
-        <ScannerAutocompleteSearch
-          value={location}
-          objectList={stockLocationList}
-          onChangeValue={handleStockLocationChange}
-          fetchData={fetchStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockLocationScanKey}
-          placeholder={I18n.t('Stock_StockLocation')}
+        <StockLocationSearchBar
+          defaultValue={location}
+          scanKey={stockLocationScanKey}
+          onChange={handleStockLocationChange}
           isFocus={currentStep === CREATION_STEP.stockLocation}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ScannerAutocompleteSearch
-            value={trackingNumber || product}
-            objectList={productTrackingNumberList}
-            onChangeValue={handleToProductTrackingNumberChange}
-            fetchData={searchProductTrackingNumberAPI}
-            displayValue={displayItem}
-            scanKeySearch={itemScanKey}
-            placeholder={I18n.t('Stock_ProductTrackingNumber')}
+          <ProductTrackingNumberSearchBar
+            scanKey={itemScanKey}
+            onChange={handleProductTrackingNumberChange}
+            defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}

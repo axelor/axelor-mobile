@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -25,11 +25,10 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchContact} from '../../features/contactSlice';
-import {PartnerCard} from '../../components';
+import {ContactSearchBar, PartnerCard} from '../../components';
 
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -41,24 +40,13 @@ const ContactListScreen = ({navigation}) => {
     state => state.contact,
   );
 
-  const [filteredList, setFilteredList] = useState(contactList);
   const [assigned, setAssigned] = useState(false);
-  const [contact, setContact] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchContactAPI = useCallback(
     page => {
-      dispatch(fetchContact({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchContactFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchContact({searchValue: searchValue, page: 0}));
+      dispatch(fetchContact({page: page}));
     },
     [dispatch],
   );
@@ -78,9 +66,10 @@ const ContactListScreen = ({navigation}) => {
     [assigned, userId],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(contactList));
-  }, [filterOnUserAssigned, contactList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(contactList),
+    [filterOnUserAssigned, contactList],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -95,15 +84,7 @@ const ContactListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={contactList}
-              value={contact}
-              onChangeValue={setContact}
-              fetchData={fetchContactFilter}
-              placeholder={I18n.t('Crm_Contacts')}
-              oneFilter={true}
-              selectLastItem={false}
-            />
+            <ContactSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
         }
       />

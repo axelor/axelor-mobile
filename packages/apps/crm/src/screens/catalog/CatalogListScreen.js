@@ -21,17 +21,16 @@ import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
-  AutoCompleteSearch,
   ScrollList,
   MultiValuePicker,
   useThemeColor,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {CatalogCard, CatalogsSearchBar} from '../../components';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
-import {CatalogCard} from '../../components';
-import Catalog from '../../types/catalog';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
+import Catalog from '../../types/catalog';
 
 const CatalogListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,10 +42,7 @@ const CatalogListScreen = ({navigation}) => {
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
 
-  const [filteredList, setFilteredList] = useState(catalogList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filter, setFilter] = useState(null);
-  const [catalog, setCatalog] = useState(null);
 
   const catalogTypeListItems = useMemo(() => {
     return catalogTypeList
@@ -62,32 +58,24 @@ const CatalogListScreen = ({navigation}) => {
 
   const fetchCatalogAPI = useCallback(
     page => {
-      dispatch(fetchCatalog({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchCatalogFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchCatalog({searchValue: searchValue, page: 0}));
+      dispatch(fetchCatalog({page: page}));
     },
     [dispatch],
   );
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(status => item?.catalogType?.id === status.key),
-          );
-        } else {
-          return list;
-        }
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       }
+
+      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0) {
+        return list;
+      }
+
+      return list?.filter(item =>
+        selectedStatus.find(status => item?.catalogType?.id === status.key),
+      );
     },
     [selectedStatus],
   );
@@ -97,9 +85,10 @@ const CatalogListScreen = ({navigation}) => {
     dispatch(fetchCatalogType());
   }, [dispatch]);
 
-  useEffect(() => {
-    setFilteredList(filterOnStatus(catalogList));
-  }, [catalogList, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnStatus(catalogList),
+    [catalogList, filterOnStatus],
+  );
 
   if (!crmConfig?.isManageCatalogs) {
     return (
@@ -123,15 +112,7 @@ const CatalogListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            <AutoCompleteSearch
-              objectList={catalogList}
-              value={catalog}
-              onChangeValue={setCatalog}
-              fetchData={fetchCatalogFilter}
-              placeholder={I18n.t('Crm_Catalogs')}
-              oneFilter={true}
-              selectLastItem={false}
-            />
+            <CatalogsSearchBar showDetailsPopup={false} oneFilter={true} />
             <MultiValuePicker
               listItems={catalogTypeListItems}
               title={I18n.t('Base_Status')}

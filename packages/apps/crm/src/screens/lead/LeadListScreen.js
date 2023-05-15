@@ -25,12 +25,11 @@ import {
   ScrollList,
   useThemeColor,
   getCommonStyles,
-  AutoCompleteSearch,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchLeads, fetchLeadStatus} from '../../features/leadSlice';
-import {LeadsCard} from '../../components';
+import {LeadsCard, LeadSearchBar} from '../../components';
 import {Lead} from '../../types';
 
 const LeadListScreen = ({navigation}) => {
@@ -43,10 +42,7 @@ const LeadListScreen = ({navigation}) => {
   const {userId} = useSelector(state => state.auth);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [filteredList, setFilteredList] = useState(leadList);
   const [assigned, setAssigned] = useState(false);
-  const [lead, setLead] = useState(null);
-  const [filter, setFilter] = useState(null);
 
   const leadStatusListItems = useMemo(() => {
     return leadStatusList
@@ -63,16 +59,8 @@ const LeadListScreen = ({navigation}) => {
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchLeadsAPI = useCallback(
-    page => {
-      dispatch(fetchLeads({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchLeadFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchLeads({searchValue: searchValue, page: 0}));
+    (page = 0) => {
+      dispatch(fetchLeads({page: page}));
     },
     [dispatch],
   );
@@ -113,9 +101,10 @@ const LeadListScreen = ({navigation}) => {
     dispatch(fetchLeadStatus());
   }, [dispatch]);
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(leadList)));
-  }, [leadList, filterOnUserAssigned, filterOnStatus]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(filterOnStatus(leadList)),
+    [leadList, filterOnUserAssigned, filterOnStatus],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -130,15 +119,7 @@ const LeadListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={leadList}
-              value={lead}
-              onChangeValue={setLead}
-              fetchData={fetchLeadFilter}
-              placeholder={I18n.t('Crm_Leads')}
-              oneFilter={true}
-              selectLastItem={false}
-            />
+            <LeadSearchBar showDetailsPopup={false} oneFilter={true} />
             <MultiValuePicker
               listItems={leadStatusListItems}
               title={I18n.t('Base_Status')}

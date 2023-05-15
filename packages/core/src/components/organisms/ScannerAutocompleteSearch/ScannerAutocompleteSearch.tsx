@@ -27,12 +27,19 @@ import {
   useScanActivator,
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
+import {useTranslator} from '../../../i18n';
 
 interface AutocompleteSearchProps {
   objectList: any[];
   value?: string;
   onChangeValue?: (value: any) => void;
-  fetchData?: (value: any) => void;
+  fetchData?: ({
+    page,
+    searchValue,
+  }: {
+    page: number;
+    searchValue: string;
+  }) => void;
   displayValue?: (value: any) => string;
   placeholder?: string;
   scanKeySearch?: string;
@@ -42,6 +49,10 @@ interface AutocompleteSearchProps {
   oneFilter?: boolean;
   selectLastItem?: boolean;
   style?: any;
+  showDetailsPopup?: boolean;
+  loadingList?: boolean;
+  moreLoading?: boolean;
+  isListEnd?: boolean;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -58,7 +69,13 @@ const ScannerAutocompleteSearch = ({
   oneFilter = false,
   selectLastItem = true,
   style,
+  showDetailsPopup = false,
+  loadingList,
+  moreLoading,
+  isListEnd,
 }: AutocompleteSearchProps) => {
+  const I18n = useTranslator();
+
   const [searchText, setSearchText] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
@@ -105,6 +122,11 @@ const ScannerAutocompleteSearch = ({
           : Colors.secondaryColor_dark.background
       }
       style={style}
+      showDetailsPopup={showDetailsPopup}
+      translator={I18n.t}
+      loadingList={loadingList}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
     />
   );
 };

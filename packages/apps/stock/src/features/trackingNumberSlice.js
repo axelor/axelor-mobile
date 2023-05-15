@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
 import {
   createTrackingNumber,
   searchTrackingNumberFilter,
@@ -82,19 +82,37 @@ const initialState = {
   loading: false,
   trackingNumberList: [],
   createdTrackingNumber: null,
+  isListEnd: false,
+  moreLoading: false,
 };
 
 const trackingNumberSlice = createSlice({
   name: 'trackingNumber',
   initialState,
   extraReducers: builder => {
-    builder.addCase(filterTrackingNumber.pending, state => {
-      state.loading = true;
+    builder.addCase(filterTrackingNumber.pending, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'pending', {
+        loading: 'loading',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'trackingNumberList',
+      });
     });
     builder.addCase(filterTrackingNumber.fulfilled, (state, action) => {
-      state.loading = false;
-      state.trackingNumberList = action.payload;
-      state.createdTrackingNumber = null;
+      state = manageInfiteScrollState(state, action, 'fulfilled', {
+        loading: 'loading',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'trackingNumberList',
+      });
+    });
+    builder.addCase(filterTrackingNumber.rejected, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'rejected', {
+        loading: 'loading',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'trackingNumberList',
+      });
     });
     builder.addCase(createTrackingNumberSeq.pending, state => {
       state.loading = true;

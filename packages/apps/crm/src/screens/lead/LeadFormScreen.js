@@ -35,11 +35,12 @@ import {useCivilityList} from '../../hooks/use-civility-list';
 
 const LeadFormScreen = ({navigation, route}) => {
   const idLead = route.params.idLead;
+  const dispatch = useDispatch();
+  const I18n = useTranslator();
+
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
   const {civilityList} = useCivilityList();
-  const dispatch = useDispatch();
-  const I18n = useTranslator();
 
   const [score, setScore] = useState(lead.leadScoringSelect);
   const [civility, setCivility] = useState(Number(lead.titleSelect));

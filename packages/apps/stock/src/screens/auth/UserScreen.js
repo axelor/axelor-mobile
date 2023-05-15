@@ -21,34 +21,20 @@ import {StyleSheet} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
 import {
   changeDefaultStockLocation,
-  displayItemName,
-  ScannerAutocompleteSearch,
   UserScreen as AuthUserScreen,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {searchStockLocations} from '../../features/stockLocationSlice';
+import {StockLocationSearchBar} from '../../components';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
 const UserScreen = ({navigation}) => {
-  const {stockLocationList} = useSelector(state => state.stockLocation);
-  const {user} = useSelector(state => state.user);
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const fetchStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
+  const {user} = useSelector(state => state.user);
 
   const updateDefaultStockLocation = useCallback(
     stockLocation => {
@@ -66,14 +52,11 @@ const UserScreen = ({navigation}) => {
       <Text style={styles.itemTitle}>
         {I18n.t('User_DefaultStockLocation')}
       </Text>
-      <ScannerAutocompleteSearch
-        objectList={stockLocationList}
-        value={user.workshopStockLocation}
-        onChangeValue={updateDefaultStockLocation}
-        fetchData={fetchStockLocationsAPI}
-        displayValue={displayItemName}
-        scanKeySearch={stockLocationScanKey}
-        placeholder={I18n.t('Stock_StockLocation')}
+      <StockLocationSearchBar
+        scanKey={stockLocationScanKey}
+        placeholderKey="Stock_StockLocation"
+        defaultValue={user.workshopStockLocation}
+        onChange={updateDefaultStockLocation}
       />
     </AuthUserScreen>
   );

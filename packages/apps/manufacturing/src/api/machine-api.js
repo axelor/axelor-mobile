@@ -21,11 +21,11 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-export async function searchMachineFilter({searchValue = null}) {
+export async function searchMachineFilter({searchValue = null, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.Machine',
     criteria: [getSearchCriterias('manufacturing_machine', searchValue)],
     fieldKey: 'manufacturing_machine',
-    page: 0,
+    page: page,
   });
 }

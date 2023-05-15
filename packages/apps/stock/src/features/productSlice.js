@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
 import {
   searchProductsFilter,
   searchProductWithId,
@@ -65,8 +65,8 @@ export const updateProductLocker = createAsyncThunk(
 
 const initialState = {
   loadingProduct: false,
-  moreLoading: false,
-  isListEnd: false,
+  moreLoadingProduct: false,
+  isListEndProduct: false,
   productList: [],
   loadingProductFromId: false,
   productFromId: {},
@@ -78,26 +78,28 @@ const productSlice = createSlice({
   initialState,
   extraReducers: builder => {
     builder.addCase(searchProducts.pending, (state, action) => {
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.loadingProduct = true;
-      } else {
-        state.moreLoading = true;
-      }
+      state = manageInfiteScrollState(state, action, 'pending', {
+        loading: 'loadingProduct',
+        moreLoading: 'moreLoadingProduct',
+        isListEnd: 'isListEndProduct',
+        list: 'productList',
+      });
     });
     builder.addCase(searchProducts.fulfilled, (state, action) => {
-      state.loadingProduct = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.productList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.productList = [...state.productList, ...action.payload];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+      state = manageInfiteScrollState(state, action, 'fulfilled', {
+        loading: 'loadingProduct',
+        moreLoading: 'moreLoadingProduct',
+        isListEnd: 'isListEndProduct',
+        list: 'productList',
+      });
+    });
+    builder.addCase(searchProducts.rejected, (state, action) => {
+      state = manageInfiteScrollState(state, action, 'rejected', {
+        loading: 'loadingProduct',
+        moreLoading: 'moreLoadingProduct',
+        isListEnd: 'isListEndProduct',
+        list: 'productList',
+      });
     });
     builder.addCase(fetchProductWithId.pending, state => {
       state.loadingProduct = true;

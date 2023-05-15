@@ -34,6 +34,7 @@ interface SearchBarProps {
   onScanPress?: () => void;
   scanIconColor?: string;
   onSearchPress?: () => void;
+  disableSearchPress?: boolean;
 }
 
 const SearchBar = ({
@@ -47,6 +48,7 @@ const SearchBar = ({
   onScanPress = () => {},
   scanIconColor = null,
   onSearchPress = () => {},
+  disableSearchPress = false,
 }: SearchBarProps) => {
   const Colors = useThemeColor();
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -77,9 +79,13 @@ const SearchBar = ({
         <Icon
           style={styles.action}
           name="search"
-          color={Colors.secondaryColor_dark.background}
+          color={
+            disableSearchPress
+              ? Colors.secondaryColor.background
+              : Colors.secondaryColor_dark.background
+          }
           onPress={onSearchPress}
-          touchable={true}
+          touchable={!disableSearchPress}
           size={20}
         />,
         <Icon

@@ -18,7 +18,7 @@
 
 import React, {useCallback} from 'react';
 import {useDispatch} from '@axelor/aos-mobile-core';
-import {ProductTrackingNumberSelect} from '../../product';
+import {ProductTrackingNumberSelect} from '../../../templates';
 import {addTrackingNumber} from '../../../../features/customerDeliveryLineSlice';
 
 const trackingScanKey = 'tracking_customer-delivery-line-select';

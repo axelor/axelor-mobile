@@ -24,4 +24,5 @@ export {
   getFirstData,
   handlerApiCall,
   handlerError,
+  manageInfiteScrollState,
 } from './utils';

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -27,19 +27,13 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
-  displayItemName,
   filterList,
-  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {InternalMoveCard} from '../../components';
-import {
-  filterSecondStockLocations,
-  searchStockLocations,
-} from '../../features/stockLocationSlice';
+import {InternalMoveCard, StockLocationSearchBar} from '../../components';
 import {searchInternalMoves} from '../../features/internalMoveSlice';
 import {displayStockMoveSeq} from '../../utils/displayers';
 import StockMove from '../../types/stock-move';
@@ -56,49 +50,18 @@ const InternalMoveListScreen = ({navigation}) => {
 
   const {loadingInternalMove, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
-  const {
-    stockLocationList: stockLocationListFirstFilter,
-    stockLocationListMultiFilter: stockLocationListSecondFilter,
-  } = useSelector(state => state.stockLocation);
-  const {user} = useSelector(state => state.user);
 
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
-  const [filteredList, setFilteredList] = useState(internalMoveList);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    list => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
-
-  useEffect(() => {
-    setFilteredList(
-      filterOnStatus(
-        filterList(
-          filterList(
-            internalMoveList,
-            'fromStockLocation',
-            'id',
-            originalStockLocation?.id ?? '',
-          ),
-          'toStockLocation',
-          'id',
-          destinationStockLocation?.id ?? '',
-        ),
-      ),
-    );
-  }, [
-    internalMoveList,
-    originalStockLocation,
-    destinationStockLocation,
-    filterOnStatus,
-  ]);
 
   const showInternalMoveDetails = internalMove => {
     if (internalMove != null) {
@@ -121,43 +84,40 @@ const InternalMoveListScreen = ({navigation}) => {
     [dispatch, filter],
   );
 
-  const handleRefChange = useCallback(
-    searchValue => {
+  const searchInternalMovesAPI = useCallback(
+    ({page = 0, searchValue}) => {
       setFilter(searchValue);
       dispatch(
         searchInternalMoves({
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },
     [dispatch],
   );
 
-  const fetchOriginalStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        searchStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
-
-  const fetchDestinationStockLocationsAPI = useCallback(
-    filterValue => {
-      dispatch(
-        filterSecondStockLocations({
-          searchValue: filterValue,
-          companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
-        }),
-      );
-    },
-    [dispatch, user],
+  const filteredList = useMemo(
+    () =>
+      filterOnStatus(
+        filterList(
+          filterList(
+            internalMoveList,
+            'fromStockLocation',
+            'id',
+            originalStockLocation?.id ?? '',
+          ),
+          'toStockLocation',
+          'id',
+          destinationStockLocation?.id ?? '',
+        ),
+      ),
+    [
+      internalMoveList,
+      originalStockLocation,
+      destinationStockLocation,
+      filterOnStatus,
+    ],
   );
 
   return (
@@ -167,7 +127,7 @@ const InternalMoveListScreen = ({navigation}) => {
           <AutoCompleteSearch
             objectList={internalMoveList}
             onChangeValue={item => showInternalMoveDetails(item)}
-            fetchData={handleRefChange}
+            fetchData={searchInternalMovesAPI}
             displayValue={displayStockMoveSeq}
             placeholder={I18n.t('Stock_Ref')}
             oneFilter={true}
@@ -205,25 +165,18 @@ const InternalMoveListScreen = ({navigation}) => {
             ]}
           />
         }>
-        <ScannerAutocompleteSearch
-          objectList={stockLocationListFirstFilter}
-          value={originalStockLocation}
-          onChangeValue={item => setOriginalStockLocation(item)}
-          fetchData={fetchOriginalStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockOriginalLocationScanKey}
-          placeholder={I18n.t('Stock_OriginalStockLocation')}
-          searchBarKey={1}
+        <StockLocationSearchBar
+          placeholderKey="Stock_OriginalStockLocation"
+          defaultValue={originalStockLocation}
+          onChange={setOriginalStockLocation}
+          scanKey={stockOriginalLocationScanKey}
         />
-        <ScannerAutocompleteSearch
-          objectList={stockLocationListSecondFilter}
-          value={destinationStockLocation}
-          onChangeValue={item => setDestinationStockLocation(item)}
-          fetchData={fetchDestinationStockLocationsAPI}
-          displayValue={displayItemName}
-          scanKeySearch={stockDestinationLocationScanKey}
-          placeholder={I18n.t('Stock_DestinationStockLocation')}
-          searchBarKey={2}
+        <StockLocationSearchBar
+          placeholderKey="Stock_DestinationStockLocation"
+          defaultValue={destinationStockLocation}
+          onChange={setDestinationStockLocation}
+          scanKey={stockDestinationLocationScanKey}
+          secondFilter={true}
         />
       </HeaderContainer>
       <ScrollList
@@ -234,21 +187,11 @@ const InternalMoveListScreen = ({navigation}) => {
             style={styles.item}
             name={item.stockMoveSeq}
             status={item.statusSelect}
-            availability={
-              item.availableStatusSelect == null
-                ? null
-                : item.availableStatusSelect
-            }
+            availability={item.availableStatusSelect}
             fromStockLocation={item.fromStockLocation.name}
             toStockLocation={item.toStockLocation.name}
             origin={item.origin}
-            date={
-              item.statusSelect === StockMove.status.Draft
-                ? item.createdOn
-                : item.statusSelect === StockMove.status.Planned
-                ? item.estimatedDate
-                : item.realDate
-            }
+            date={StockMove.getStockMoveDate(item.statusSelect, item)}
             onPress={() => showInternalMoveDetails(item)}
           />
         )}

@@ -68,12 +68,12 @@ const InternalMoveSearchLineContainer = ({}) => {
   };
 
   const fetchInternalLinesAPI = useCallback(
-    searchValue => {
+    ({page = 0, searchValue}) => {
       dispatch(
         fetchInternalMoveLines({
           internalMoveId: internalMove?.id,
           searchValue: searchValue,
-          page: 0,
+          page: page,
         }),
       );
     },

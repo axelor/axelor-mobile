@@ -16,18 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  useTranslator,
-  useSelector,
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useNavigation,
-} from '@axelor/aos-mobile-core';
+import {useTranslator, useNavigation} from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
-import {filterTrackingNumber} from '../../../../features/trackingNumberSlice';
-import {displayItemTrackingNumber} from '../../../../utils/displayers';
+import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
 
 const trackingScanKey = 'tracking_supplier-arrival-select';
 
@@ -39,10 +32,7 @@ const SupplierArrivalTrackingNumberSelect = ({
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const {trackingNumberList} = useSelector(state => state.trackingNumber);
 
   const handleAddTrackingNumber = () => {
     navigation.navigate('SupplierArrivalAddTrackingScreen', {
@@ -70,15 +60,6 @@ const SupplierArrivalTrackingNumberSelect = ({
     }
   };
 
-  const fetchTrackingAPI = useCallback(
-    filter => {
-      dispatch(
-        filterTrackingNumber({productId: product.id, searchValue: filter}),
-      );
-    },
-    [dispatch, product.id],
-  );
-
   return (
     <View>
       <View style={styles.trackingNumber}>
@@ -94,15 +75,12 @@ const SupplierArrivalTrackingNumberSelect = ({
           onPress={handleAddTrackingNumber}
         />
       </View>
-      <ScannerAutocompleteSearch
-        objectList={trackingNumberList}
-        onChangeValue={item => handleTrackingNumberSelection(item)}
-        fetchData={fetchTrackingAPI}
-        displayValue={displayItemTrackingNumber}
-        scanKeySearch={trackingScanKey}
-        placeholder={I18n.t('Stock_TrackingNumber')}
+      <TrackingNumberSearchBar
+        scanKey={trackingScanKey}
+        onChange={handleTrackingNumberSelection}
         isFocus={true}
         changeScreenAfter={true}
+        product={product}
       />
     </View>
   );

@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as PartnerSearchBar} from './PartnerSearchBar/PartnerSearchBar';
+export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
+export {default as ProductTrackingNumberSearchBar} from './ProductTrackingNumberSearchBar/ProductTrackingNumberSearchBar';
+export {default as StockLocationSearchBar} from './StockLocationSearchBar/StockLocationSearchBar';
+export {default as TrackingNumberSearchBar} from './TrackingNumberSearchBar/TrackingNumberSearchBar';
+
 export * from './customerDelivery';
 export * from './internalMove';
 export * from './inventory';

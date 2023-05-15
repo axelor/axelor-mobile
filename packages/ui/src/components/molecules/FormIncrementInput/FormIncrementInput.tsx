@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useCallback, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
@@ -36,22 +36,15 @@ interface FormIncrementInputProps {
 const FormIncrementInput = ({
   style,
   title,
+  readOnly = false,
   defaultValue = null,
   decimalSpacer,
   thousandSpacer,
   onChange,
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
-  const [value, setValue] = useState(defaultValue);
-  const [isFocused, setIsFocused] = useState(false);
 
-  const onValueChange = useCallback(
-    _value => {
-      setValue(_value);
-      onChange(_value);
-    },
-    [onChange],
-  );
+  const [isFocused, setIsFocused] = useState(false);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -76,14 +69,15 @@ const FormIncrementInput = ({
           isFocused && commonStyles.inputFocused,
         ]}>
         <Increment
-          value={value}
-          onValueChange={onValueChange}
+          value={defaultValue}
+          onValueChange={onChange}
           style={styles.increment}
           inputStyle={styles.containerInput}
           decimalSpacer={decimalSpacer}
           thousandSpacer={thousandSpacer}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          readonly={readOnly}
         />
       </View>
     </View>

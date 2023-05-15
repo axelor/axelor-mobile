@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Picker,
@@ -34,7 +34,7 @@ import {
 import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
-} from '../../../components/organisms';
+} from '../../../components';
 import {ManufacturingOrder} from '../../../types';
 import {
   addWasteProductToManufOrder,
@@ -42,17 +42,23 @@ import {
 } from '../../../features/wasteProductsSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
-  const I18n = useTranslator();
   const manufOrder = route.params.manufOrder;
   const wasteProduct = route.params.wasteProduct;
+  const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {unitList} = useSelector(state => state.unit);
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
-  const product = wasteProduct ? productFromId : route.params.product;
-  const {unitList} = useSelector(state => state.unit);
+
   const [unit, setUnit] = useState(wasteProduct ? wasteProduct?.unit : null);
   const [wasteQty, setWasteQty] = useState(wasteProduct ? wasteProduct.qty : 0);
-  const dispatch = useDispatch();
+
+  const product = useMemo(
+    () => (wasteProduct ? productFromId : route.params.product),
+    [productFromId, route.params.product, wasteProduct],
+  );
 
   useEffect(() => {
     dispatch(fetchUnit());

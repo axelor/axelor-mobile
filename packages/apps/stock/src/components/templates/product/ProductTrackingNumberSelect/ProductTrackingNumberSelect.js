@@ -16,17 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {
-  ScannerAutocompleteSearch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {filterTrackingNumber} from '../../../../features/trackingNumberSlice';
-import {displayItemTrackingNumber} from '../../../../utils/displayers';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {TrackingNumberSearchBar} from '../../../templates';
 
 const ProductTrackingNumberSelect = ({
   product,
@@ -37,20 +31,8 @@ const ProductTrackingNumberSelect = ({
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
-
-  const {trackingNumberList} = useSelector(state => state.trackingNumber);
 
   const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
-
-  const fetchTrackingAPI = useCallback(
-    filter => {
-      dispatch(
-        filterTrackingNumber({productId: product.id, searchValue: filter}),
-      );
-    },
-    [dispatch, product.id],
-  );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -61,16 +43,13 @@ const ProductTrackingNumberSelect = ({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.autoCompleteSearchContainer}>
-        <ScannerAutocompleteSearch
-          value={selectedTrackingNumber}
-          objectList={trackingNumberList}
-          onChangeValue={item => setSelectedTrackingNumber(item)}
-          fetchData={fetchTrackingAPI}
-          displayValue={displayItemTrackingNumber}
-          scanKeySearch={trackingScanKey}
-          placeholder={I18n.t('Stock_TrackingNumber')}
+        <TrackingNumberSearchBar
+          onChange={setSelectedTrackingNumber}
           isFocus={true}
           style={styles.autoSearchComplete}
+          product={product}
+          scanKeySearch={trackingScanKey}
+          defaultValue={selectedTrackingNumber}
         />
         <Card style={styles.cardTrackingNumberInfo}>
           <Text>{I18n.t('Stock_NoTrackingNumberConfigured')}</Text>

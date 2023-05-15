@@ -33,7 +33,7 @@ import {
 import {fetchInternalMove} from '../../features/internalMoveSlice';
 import StockMove from '../../types/stock-move';
 
-const InternalMoveDetailsGeneralScreen = ({navigation, route}) => {
+const InternalMoveDetailsGeneralScreen = ({route}) => {
   const internalMoveId = route.params.internalMoveId;
   const I18n = useTranslator();
   const dispatch = useDispatch();

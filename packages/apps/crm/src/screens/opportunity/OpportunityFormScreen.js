@@ -26,9 +26,9 @@ import {
   Picker,
   Screen,
   StarScore,
+  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
-  AutoCompleteSearchInput,
   DateInput,
   useDispatch,
   useSelector,
@@ -38,15 +38,14 @@ import {
   getOpportunity,
   updateOpportunity,
 } from '../../features/opportunitySlice';
-import {fetchClientAndProspect} from '../../features/partnerSlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
+import {ClientProspectSearchBar} from '../../components';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {clientAndProspectList} = useSelector(state => state.partner);
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
@@ -75,8 +74,16 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrent,
-        opportunityAmount: amount,
+        opportunityRecurrentAmount: unformatNumber(
+          recurrent,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
+        opportunityAmount: unformatNumber(
+          amount,
+          I18n.t('Base_DecimalSpacer'),
+          I18n.t('Base_ThousandSpacer'),
+        ),
         opportunityDescription: description,
         idPartner: partner?.id,
         opportunityRating: score,
@@ -89,24 +96,17 @@ const OpportunityFormScreen = ({navigation, route}) => {
     });
   }, [
     dispatch,
-    opportunity.id,
-    opportunity.version,
+    opportunity,
     status,
-    amount,
     recurrent,
+    I18n,
+    amount,
     description,
-    partner?.id,
+    partner,
     score,
     date,
     navigation,
   ]);
-
-  const searchClientAndProspectAPI = useCallback(
-    searchValue => {
-      dispatch(fetchClientAndProspect({searchValue}));
-    },
-    [dispatch],
-  );
 
   return (
     <Screen>
@@ -121,16 +121,13 @@ const OpportunityFormScreen = ({navigation, route}) => {
           />
         </View>
         <View style={styles.container}>
-          <AutoCompleteSearchInput
+          <ClientProspectSearchBar
+            titleKey="Crm_ClientProspect"
+            placeholderKey="Crm_ClientProspect"
+            defaultValue={partner}
+            onChange={setPartner}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
-            title={I18n.t('Crm_ClientProspect')}
-            objectList={clientAndProspectList}
-            value={partner}
-            searchField="fullName"
-            onChangeValue={setPartner}
-            searchAPI={searchClientAndProspectAPI}
-            locallyFilteredList={false}
           />
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}

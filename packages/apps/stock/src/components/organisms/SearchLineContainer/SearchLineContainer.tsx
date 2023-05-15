@@ -34,7 +34,13 @@ interface Props {
   onAction?: () => void;
   objectList: any[];
   handleSelect: (item: any) => void;
-  handleSearch: (value: string) => void;
+  handleSearch?: ({
+    page,
+    searchValue,
+  }: {
+    page: number;
+    searchValue: string;
+  }) => void;
   scanKey: string;
   onViewPress: () => void;
   renderItem: (item, index) => ReactNode;

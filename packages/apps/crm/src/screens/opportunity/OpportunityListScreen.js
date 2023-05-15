@@ -25,11 +25,10 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
-  AutoCompleteSearch,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {OpportunityCard} from '../../components';
+import {OpportunityCard, OpportunitySearchBar} from '../../components';
 import {
   fetchOpportunities,
   fetchOpportunityStatus,
@@ -50,10 +49,7 @@ const OpportunityListScreen = ({navigation}) => {
     opportunityStatusList,
   } = useSelector(state => state.opportunity);
 
-  const [filteredList, setFilteredList] = useState(opportunityList);
   const [assigned, setAssigned] = useState(false);
-  const [filter, setFilter] = useState(null);
-  const [opportunity, setOpportunity] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -72,15 +68,7 @@ const OpportunityListScreen = ({navigation}) => {
 
   const fetchOpportunityAPI = useCallback(
     page => {
-      dispatch(fetchOpportunities({searchValue: filter, page: page}));
-    },
-    [dispatch, filter],
-  );
-
-  const fetchOpportunityFilter = useCallback(
-    searchValue => {
-      setFilter(searchValue);
-      dispatch(fetchOpportunities({searchValue: searchValue, page: 0}));
+      dispatch(fetchOpportunities({page: page}));
     },
     [dispatch],
   );
@@ -119,9 +107,10 @@ const OpportunityListScreen = ({navigation}) => {
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(filterOnUserAssigned(filterOnStatus(opportunityList)));
-  }, [filterOnUserAssigned, filterOnStatus, opportunityList]);
+  const filteredList = useMemo(
+    () => filterOnUserAssigned(filterOnStatus(opportunityList)),
+    [filterOnUserAssigned, filterOnStatus, opportunityList],
+  );
 
   useEffect(() => {
     dispatch(fetchOpportunityStatus());
@@ -140,15 +129,7 @@ const OpportunityListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <AutoCompleteSearch
-              objectList={opportunityList}
-              value={opportunity}
-              onChangeValue={setOpportunity}
-              fetchData={fetchOpportunityFilter}
-              placeholder={I18n.t('Crm_Opportunity')}
-              oneFilter={true}
-              selectLastItem={false}
-            />
+            <OpportunitySearchBar showDetailsPopup={false} oneFilter={true} />
             <MultiValuePicker
               listItems={opportunityStatusListItems}
               title={I18n.t('Base_Status')}

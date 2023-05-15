@@ -97,9 +97,10 @@ const InventoryLineListScreen = ({route, navigation}) => {
   );
 
   const filterLinesAPI = useCallback(
-    value => fetchInventoryLinesAPI({searchValue: value}),
+    ({searchValue}) => fetchInventoryLinesAPI({searchValue}),
     [fetchInventoryLinesAPI],
   );
+
   const scrollLinesAPI = useCallback(
     page => fetchInventoryLinesAPI({page}),
     [fetchInventoryLinesAPI],

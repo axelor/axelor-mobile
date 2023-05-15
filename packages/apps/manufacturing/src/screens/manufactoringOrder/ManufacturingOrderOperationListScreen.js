@@ -31,26 +31,25 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {
-  ManufacturingOrderHeader,
-  OperationOrderCard,
-} from '../../components/organisms';
+import {ManufacturingOrderHeader, OperationOrderCard} from '../../components';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
 import ManufacturingOrder from '../../types/manufacturing-order';
 
 const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
+  const manufOrder = route.params.manufOrder;
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const manufOrder = route.params.manufOrder;
+  const dispatch = useDispatch();
+
   const {
     loading: loadingOperations,
     moreLoading,
     isListEnd,
     operationOrderList,
   } = useSelector(state => state.operationOrder);
+
   const [filteredList, setFilteredList] = useState(operationOrderList);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const dispatch = useDispatch();
 
   const handleShowLine = item => {
     navigation.navigate('OperationOrderDetailsScreen', {
