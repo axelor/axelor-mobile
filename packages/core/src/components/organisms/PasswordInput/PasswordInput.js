@@ -16,18 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, IconInput} from '@axelor/aos-mobile-ui';
+import {
+  getCommonStyles,
+  Icon,
+  IconInput,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {checkNullString} from '../../../utils';
 
-const PasswordInput = ({style, value, onChange, readOnly}) => {
-  const [visible, setVisible] = useState(false);
+const PasswordInput = ({
+  style,
+  value,
+  onChange,
+  readOnly,
+  showRequiredFields = false,
+}) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
+
+  const [visible, setVisible] = useState(false);
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, checkNullString(value)),
+    [Colors, value],
+  );
 
   return (
     <IconInput
-      style={style}
+      style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
       value={value}
       onChange={onChange}
       readOnly={readOnly}

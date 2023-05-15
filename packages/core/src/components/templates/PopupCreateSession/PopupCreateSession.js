@@ -49,7 +49,6 @@ const PopupCreateSession = ({
   showUrlInput,
   modeDebug,
   testInstanceConfig,
-  enableConnectionSessions,
   releaseInstanceConfig,
 }) => {
   const Colors = useThemeColor();
@@ -62,7 +61,7 @@ const PopupCreateSession = ({
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
-  const {sessionList} = useSessions(enableConnectionSessions);
+  const {sessionList} = useSessions(true);
 
   const urlStorage = useMemo(() => getStorageUrl(), []);
 
@@ -88,6 +87,7 @@ const PopupCreateSession = ({
     urlStorage,
   ]);
 
+  const [showRequiredFields, setShowRequiredFields] = useState(false);
   const [sessionName, setSessionName] = useState('');
   const [url, setUrl] = useState(defaultUrl || '');
   const [username, setUsername] = useState(
@@ -137,7 +137,7 @@ const PopupCreateSession = ({
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password}));
 
-    if (enableConnectionSessions && error == null) {
+    if (error == null) {
       sessionStorage.addSession({
         session: {
           id: sessionName,
@@ -147,15 +147,7 @@ const PopupCreateSession = ({
         },
       });
     }
-  }, [
-    dispatch,
-    enableConnectionSessions,
-    password,
-    sessionName,
-    url,
-    username,
-    error,
-  ]);
+  }, [dispatch, password, sessionName, url, username, error]);
 
   return (
     <PopUp
@@ -184,6 +176,7 @@ const PopupCreateSession = ({
           onChange={setSessionName}
           readOnly={loading}
           style={styles.input}
+          showRequiredFields={showRequiredFields}
         />
         {showUrlInput && (
           <UrlInput
@@ -198,6 +191,7 @@ const PopupCreateSession = ({
                 : Colors.secondaryColor_dark.background
             }
             style={styles.input}
+            showRequiredFields={showRequiredFields}
           />
         )}
         <UsernameInput
@@ -213,17 +207,23 @@ const PopupCreateSession = ({
               : Colors.secondaryColor_dark.background
           }
           style={styles.input}
+          showRequiredFields={showRequiredFields}
         />
         <PasswordInput
           value={password}
           onChange={setPassword}
           readOnly={loading}
           style={styles.input}
+          showRequiredFields={showRequiredFields}
         />
         {loading ? (
           <ActivityIndicator size="large" />
         ) : (
-          <LoginButton onPress={onPressLogin} disabled={disabledLogin} />
+          <LoginButton
+            onPress={onPressLogin}
+            onDisabledPress={() => setShowRequiredFields(true)}
+            disabled={disabledLogin}
+          />
         )}
       </View>
     </PopUp>

@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, IconInput, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  getCommonStyles,
+  Icon,
+  IconInput,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {checkNullString} from '../../../utils';
 
 const UsernameInput = ({
   value,
@@ -30,13 +36,19 @@ const UsernameInput = ({
   onSelection = () => {},
   scanIconColor,
   style,
+  showRequiredFields = false,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, checkNullString(value)),
+    [Colors, value],
+  );
+
   return (
     <IconInput
-      style={style}
+      style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
       value={value}
       onChange={onChange}
       readOnly={readOnly}

@@ -16,36 +16,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   useThemeColor,
   Text,
-  KeyboardAvoidingScrollView,
   Screen,
-  Button,
-  InfoBubble,
+  KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
 import {
+  ErrorText,
+  LoginButton,
   LogoImage,
-  PopupSessionList,
-  PopupCreateSession,
-  PopupSession,
+  PasswordInput,
+  UrlInput,
+  UsernameInput,
 } from '../components';
-import {useTranslator} from '../i18n';
-import {useSessions} from '../sessions';
+import {login} from '../features/authSlice';
+import {
+  useScannedValueByKey,
+  useScannerSelector,
+} from '../features/scannerSlice';
+import {useCameraScannerValueByKey} from '../features/cameraScannerSlice';
+import {
+  useScanActivator,
+  useScannerDeviceActivator,
+} from '../hooks/use-scan-activator';
+import {checkNullString} from '../utils';
+import {sessionStorage, useSessions, getStorageUrl} from '../sessions';
+
+const urlScanKey = 'login_url';
 
 const LoginScreen = ({route}) => {
   const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
-  const enableConnectionSessions = route?.params?.enableConnectionSessions;
   const logoFile = route?.params?.logoFile;
-  const I18n = useTranslator();
   const Colors = useThemeColor();
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const dispatch = useDispatch();
 
-  const {sessionList, sessionActive} = useSessions(enableConnectionSessions);
+  const {loading, error, baseUrl} = useSelector(state => state.auth);
+  const {isEnabled, scanKey} = useScannerSelector();
+  const scannedValue = useScannedValueByKey(urlScanKey);
+  const scanData = useCameraScannerValueByKey(urlScanKey);
+  const {enable: onScanPress} = useScanActivator(urlScanKey);
+  const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
+  const {sessionActive} = useSessions(true);
+
+  const urlStorage = useMemo(() => getStorageUrl(), []);
 
   const modeDebug = useMemo(() => __DEV__, []);
 
@@ -57,102 +76,141 @@ const LoginScreen = ({route}) => {
     }
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
-  const [popupCreateSessionIsOpen, setPopupCreateSessionIsOpen] =
-    useState(false);
-  const [popupSessionIsOpen, setPopupSessionIsOpen] = useState(false);
-  const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
-
-  const renderChangeSessionButton = () => {
-    if (
-      (!sessionActive && sessionList?.length === 1) ||
-      sessionList?.length > 1
-    ) {
-      return (
-        <View style={styles.row}>
-          <View style={styles.bubble}>
-            <Text>{sessionList.length}</Text>
-          </View>
-          <Button
-            title={
-              !sessionActive && sessionList?.length > 0
-                ? I18n.t('Auth_Choose_Session')
-                : I18n.t('Auth_Change_Session')
-            }
-            onPress={() => {
-              setPopupSessionListIsOpen(true);
-            }}
-            style={styles.buttonChangeSession}
-          />
-        </View>
-      );
+  const defaultUrl = useMemo(() => {
+    if (urlStorage != null) {
+      return urlStorage;
     }
-  };
+
+    if (baseUrl != null) {
+      return baseUrl;
+    }
+
+    if (modeDebug) {
+      return testInstanceConfig?.defaultUrl;
+    }
+
+    return releaseInstanceConfig?.url;
+  }, [
+    urlStorage,
+    baseUrl,
+    modeDebug,
+    releaseInstanceConfig?.url,
+    testInstanceConfig?.defaultUrl,
+  ]);
+
+  const [showRequiredFields, setShowRequiredFields] = useState(false);
+  const [url, setUrl] = useState(defaultUrl || '');
+  const [username, setUsername] = useState(
+    modeDebug ? testInstanceConfig?.defaultUsername : '',
+  );
+  const [password, setPassword] = useState(
+    modeDebug ? testInstanceConfig?.defaultPassword : '',
+  );
+
+  const parseQrCode = useCallback(scanValue => {
+    if (scanValue.includes('username') === true) {
+      const parseScannnedData = JSON.parse(scanValue);
+      setUrl(parseScannnedData.url);
+      setUsername(parseScannnedData.username);
+    } else {
+      setUrl(scanValue);
+    }
+  }, []);
+
+  const disabledLogin = useMemo(
+    () =>
+      checkNullString(url) ||
+      checkNullString(username) ||
+      checkNullString(password) ||
+      loading,
+    [loading, password, url, username],
+  );
+
+  useEffect(() => {
+    if (scannedValue) {
+      parseQrCode(scannedValue);
+    } else if (scanData?.value != null) {
+      parseQrCode(scanData?.value);
+    }
+  }, [parseQrCode, scanData, scannedValue]);
+
+  const onPressLogin = useCallback(() => {
+    dispatch(login({url, username, password}));
+
+    sessionStorage.addSession({
+      session: {
+        id: 'default',
+        url: url,
+        username: username,
+        isActive: true,
+      },
+    });
+  }, [dispatch, password, url, username]);
+
+  useEffect(() => {
+    if (sessionActive != null) {
+      setUrl(sessionActive.url);
+      setUsername(sessionActive.username);
+      setPassword('');
+    }
+  }, [sessionActive]);
 
   return (
     <Screen>
-      <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{ios: 0, android: 0}}
+        style={styles.scroll}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
-            <LogoImage logoFile={logoFile} />
+            <LogoImage url={url} logoFile={logoFile} />
           </View>
-          {sessionActive && (
-            <Button
-              title={sessionActive.id}
-              onPress={() => {
-                setPopupSessionIsOpen(true);
-              }}
-              style={styles.button}
-            />
-          )}
-          {!sessionActive && sessionList?.length > 0 && (
-            <Button
-              title={I18n.t('Auth_No_Active_Session')}
-              onPress={() => {}}
-              style={styles.buttonDisabled}
-              disabled={true}
-            />
-          )}
-          {renderChangeSessionButton()}
-          <View style={styles.row}>
-            <InfoBubble
-              indication={I18n.t('Auth_InfoSession')}
-              iconName="info"
-              badgeColor={Colors.cautionColor}
-              style={styles.infoBubble}
-              textIndicationStyle={styles.textIndicationStyle}
-            />
-            <Button
-              title={I18n.t('Auth_Create_Session')}
-              style={
-                sessionList?.length > 0
-                  ? styles.buttonCreateSession
-                  : styles.button
+          <ErrorText error={error} style={styles.card} />
+          {showUrlInput && (
+            <UrlInput
+              value={url}
+              onChange={setUrl}
+              readOnly={loading}
+              onScanPress={onScanPress}
+              onSelection={enableScanner}
+              scanIconColor={
+                isEnabled && scanKey === urlScanKey
+                  ? Colors.primaryColor.background
+                  : Colors.secondaryColor_dark.background
               }
-              onPress={() => setPopupCreateSessionIsOpen(true)}
+              showRequiredFields={showRequiredFields}
             />
+          )}
+          <UsernameInput
+            value={username}
+            onChange={setUsername}
+            readOnly={loading}
+            showScanIcon={!showUrlInput}
+            onScanPress={onScanPress}
+            onSelection={enableScanner}
+            scanIconColor={
+              isEnabled && scanKey === urlScanKey
+                ? Colors.primaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+            showRequiredFields={showRequiredFields}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            readOnly={loading}
+            showRequiredFields={showRequiredFields}
+          />
+          <View>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <LoginButton
+                onPress={onPressLogin}
+                onDisabledPress={() => setShowRequiredFields(true)}
+                disabled={disabledLogin}
+              />
+            )}
           </View>
-          <PopupCreateSession
-            modeDebug={modeDebug}
-            popupIsOpen={popupCreateSessionIsOpen}
-            setPopupIsOpen={setPopupCreateSessionIsOpen}
-            showUrlInput={showUrlInput}
-            testInstanceConfig={testInstanceConfig}
-            enableConnectionSessions={enableConnectionSessions}
-            releaseInstanceConfig={releaseInstanceConfig}
-          />
-          <PopupSession
-            enableConnectionSessions={enableConnectionSessions}
-            sessionActive={sessionActive}
-            popupIsOpen={popupSessionIsOpen}
-            setPopupIsOpen={setPopupSessionIsOpen}
-            showUrlInput={showUrlInput}
-          />
-          <PopupSessionList
-            sessionList={sessionList}
-            popupIsOpen={popupSessionListIsOpen}
-            setPopupIsOpen={setPopupSessionListIsOpen}
-            setPopupSessionIsOpen={setPopupSessionIsOpen}
-          />
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
             <Text>{`Version ${appVersion}`}</Text>
@@ -163,68 +221,31 @@ const LoginScreen = ({route}) => {
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      marginTop: '15%',
-      alignItems: 'center',
-      height: Dimensions.get('window').height * 0.9,
-    },
-    imageContainer: {
-      alignItems: 'center',
-      width: '100%',
-      height: '15%',
-      marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
-      marginBottom: '10%',
-    },
-    copyright: {
-      position: 'absolute',
-      alignItems: 'center',
-      width: '100%',
-      bottom: 0,
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-    },
-    button: {
-      width: '50%',
-    },
-    buttonCreateSession: {
-      width: '50%',
-      borderWidth: 1,
-      borderColor: Colors.primaryColor.background,
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-    },
-    buttonChangeSession: {
-      width: '50%',
-      backgroundColor: Colors.infoColor.background_light,
-    },
-    infoBubble: {
-      position: 'absolute',
-      left: '-10%',
-    },
-    textIndicationStyle: {
-      width: Dimensions.get('window').height * 0.3,
-    },
-    bubble: {
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
-      borderColor: Colors.infoColor.background_light,
-      borderRadius: Dimensions.get('window').width * 0.07,
-      width: Dimensions.get('window').width * 0.07,
-      height: Dimensions.get('window').width * 0.07,
-      position: 'absolute',
-      left: '-10%',
-    },
-    buttonDisabled: {
-      width: '50%',
-      backgroundColor: Colors.secondaryColor.background_light,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    marginTop: '15%',
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.95,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    width: '100%',
+    height: '15%',
+    marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
+    marginBottom: '10%',
+  },
+  copyright: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: '100%',
+    bottom: 0,
+  },
+  card: {
+    width: '90%',
+  },
+  scroll: {
+    height: null,
+  },
+});
 
 export default LoginScreen;

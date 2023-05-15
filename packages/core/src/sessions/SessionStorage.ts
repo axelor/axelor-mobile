@@ -62,14 +62,25 @@ class SessionStorage {
   }
 
   addSession({session}: {session: Session}) {
-    const sessionList = this.getSessionList();
+    let sessionList = this.getSessionList();
 
     if (!Array.isArray(sessionList) || sessionList.length === 0) {
       this.localStorage.setItem(SESSION_KEY, [session]);
       return;
     }
 
-    sessionList.push(session);
+    if (sessionList.find(_item => _item.id === session.id)) {
+      sessionList = sessionList.map(_item => {
+        if (_item.id === session.id) {
+          return {..._item, ...session};
+        }
+
+        return _item;
+      });
+    } else {
+      sessionList.push(session);
+    }
+
     const activeSessionList = setActiveSession(sessionList, session.id);
     this.localStorage.setItem(SESSION_KEY, activeSessionList);
 
