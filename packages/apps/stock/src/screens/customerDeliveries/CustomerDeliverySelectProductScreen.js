@@ -28,8 +28,9 @@ const productScanKey = 'product_customer-delivery-select';
 const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
   const customerDeliveryLine = route.params.customerDeliveryLine;
-  const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
+
+  const [isVisible, setVisible] = useState(false);
 
   const handleProductSelection = item => {
     if (item != null) {
@@ -79,6 +80,8 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleProductSelection}
+          isFocus={true}
+          changeScreenAfter={true}
         />
       </View>
       <PopUpOneButton

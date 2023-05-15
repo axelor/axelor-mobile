@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -47,26 +47,25 @@ const stockLocationScanKey = 'stock-location_supplier-arrival-list';
 const SupplierArrivalListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const [stockLocation, setStockLocation] = useState(null);
-  const [partner, setPartner] = useState(null);
+  const dispatch = useDispatch();
+
   const {loading, moreLoading, isListEnd, supplierArrivalsList} = useSelector(
     state => state.supplierArrival,
   );
-  const [filteredList, setFilteredList] = useState(supplierArrivalsList);
+
+  const [stockLocation, setStockLocation] = useState(null);
+  const [partner, setPartner] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
-  const dispatch = useDispatch();
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    list => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           filterList(
@@ -80,8 +79,8 @@ const SupplierArrivalListScreen = ({navigation}) => {
           partner?.id ?? '',
         ),
       ),
-    );
-  }, [filterOnStatus, partner, stockLocation, supplierArrivalsList]);
+    [filterOnStatus, partner, stockLocation, supplierArrivalsList],
+  );
 
   const navigateToSupplierDetail = item => {
     if (item != null) {

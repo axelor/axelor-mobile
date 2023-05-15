@@ -27,18 +27,16 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   checkNullString,
+  ScannerAutocompleteSearch,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  InternalMoveLineCard,
-  InternalMoveLineSearchBar,
-  StockMoveHeader,
-} from '../../components';
+import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
 import StockMove from '../../types/stock-move';
 import {showLine} from '../../utils/line-navigation';
+import {displayLine} from '../../utils/displayers';
 import {useInternalLinesWithRacks} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
@@ -123,6 +121,11 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     [dispatch, internalMove.id],
   );
 
+  const filterLinesAPI = useCallback(
+    ({searchValue}) => fetchInternalLinesAPI({searchValue}),
+    [fetchInternalLinesAPI],
+  );
+
   const scrollLinesAPI = useCallback(
     page => fetchInternalLinesAPI({page}),
     [fetchInternalLinesAPI],
@@ -195,11 +198,15 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             ]}
           />
         }>
-        <InternalMoveLineSearchBar
-          onChange={handleLineSearch}
-          showDetailsPopup={false}
-          oneFilter={true}
+        <ScannerAutocompleteSearch
+          objectList={filteredList}
+          onChangeValue={handleLineSearch}
+          fetchData={filterLinesAPI}
+          displayValue={displayLine}
           scanKeySearch={scanKey}
+          placeholder={I18n.t('Stock_SearchLine')}
+          isFocus={true}
+          oneFilter={true}
         />
       </HeaderContainer>
       <ScrollList

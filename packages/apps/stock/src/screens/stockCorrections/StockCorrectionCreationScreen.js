@@ -86,13 +86,13 @@ const StockCorrectionCreationScreen = ({route}) => {
         handleReset(CREATION_STEP.stockLocation);
       } else {
         setLocation(_value);
-        handleNextStep();
+        handleNextStep(CREATION_STEP.stockLocation);
       }
     },
     [handleNextStep, handleReset],
   );
 
-  const handleToProductTrackingNumberChange = useCallback(
+  const handleProductTrackingNumberChange = useCallback(
     _value => {
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
@@ -104,7 +104,7 @@ const StockCorrectionCreationScreen = ({route}) => {
           setProduct(_value);
           setTrackingNumber(null);
         }
-        handleNextStep();
+        handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
     [handleNextStep, handleReset],
@@ -138,8 +138,8 @@ const StockCorrectionCreationScreen = ({route}) => {
     }
   }, []);
 
-  const handleNextStep = useCallback(() => {
-    setCurrentStep(_current => {
+  const handleNextStep = useCallback(_current => {
+    setCurrentStep(() => {
       if (_current <= CREATION_STEP.stockLocation) {
         return CREATION_STEP.product_trackingNumber;
       }
@@ -166,13 +166,15 @@ const StockCorrectionCreationScreen = ({route}) => {
       }>
       <ScrollView>
         <StockLocationSearchBar
+          defaultValue={location}
           scanKey={stockLocationScanKey}
           onChange={handleStockLocationChange}
+          isFocus={currentStep === CREATION_STEP.stockLocation}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ProductTrackingNumberSearchBar
             scanKey={itemScanKey}
-            onChange={handleToProductTrackingNumberChange}
+            onChange={handleProductTrackingNumberChange}
             defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />

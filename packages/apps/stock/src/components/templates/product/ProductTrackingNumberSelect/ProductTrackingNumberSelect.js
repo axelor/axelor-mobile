@@ -20,7 +20,7 @@ import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import TrackingNumberSearchBar from '../../TrackingNumberSearchBar/TrackingNumberSearchBar';
+import {TrackingNumberSearchBar} from '../../../templates';
 
 const ProductTrackingNumberSelect = ({
   product,

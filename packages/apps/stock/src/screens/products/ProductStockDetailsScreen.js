@@ -35,9 +35,10 @@ import {
 
 const stockLocationScanKey = 'stock-location_product-indicators';
 
-const ProductStockDetailsScreen = ({route, navigation}) => {
+const ProductStockDetailsScreen = ({route}) => {
   const routeProduct = route.params.product;
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {productFromId: product} = useSelector(state => state.product);
   const {user, canModifyCompany} = useSelector(state => state.user);
@@ -47,7 +48,6 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
 
   const [stockLocation, setStockLocation] = useState(null);
   const [companyId, setCompany] = useState(user.activeCompany?.id);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProductWithId(routeProduct.id));
@@ -112,6 +112,7 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
         <StockLocationSearchBar
           scanKey={stockLocationScanKey}
           onChange={setStockLocation}
+          defaultValue={stockLocation}
         />
         {stockLocation == null ? null : (
           <EditableInput

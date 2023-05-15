@@ -23,7 +23,6 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-
 import {filterTrackingNumber} from '../../../features/trackingNumberSlice';
 import {displayItemTrackingNumber} from '../../../utils/displayers';
 

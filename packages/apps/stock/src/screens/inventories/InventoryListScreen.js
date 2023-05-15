@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
@@ -45,26 +45,22 @@ const InventoryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {stockLocationList} = useSelector(state => state.stockLocation);
   const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
 
   const [stockLocation, setStockLocation] = useState(null);
-  const [filteredList, setFilteredList] = useState(inventoryList);
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
   const filterOnStatus = useCallback(
-    list => {
-      return filterChip(list, selectedStatus, 'statusSelect');
-    },
+    list => filterChip(list, selectedStatus, 'statusSelect'),
     [selectedStatus],
   );
 
-  useEffect(() => {
-    setFilteredList(
+  const filteredList = useMemo(
+    () =>
       filterOnStatus(
         filterList(
           inventoryList,
@@ -73,8 +69,8 @@ const InventoryListScreen = ({navigation}) => {
           stockLocation?.id ?? '',
         ),
       ),
-    );
-  }, [filterOnStatus, stockLocation, stockLocationList, inventoryList]);
+    [filterOnStatus, stockLocation, inventoryList],
+  );
 
   const navigateToInventoryDetail = item => {
     if (item != null) {

@@ -33,9 +33,9 @@ const trackingScanKey = 'tracking_inventory-select';
 
 const InventorySelectTrackingScreen = ({route, navigation}) => {
   const {inventory, inventoryLine, product} = route.params;
+  const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
-  const I18n = useTranslator();
 
   const handleTrackingNumberSelection = useCallback(
     item => {

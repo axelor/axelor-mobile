@@ -27,7 +27,6 @@ const productScanKey = 'product_supplier-arrival-select';
 
 const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLine} = route.params;
-
   const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
@@ -79,6 +78,8 @@ const SupplierArrivalSelectProductScreen = ({route, navigation}) => {
         <ProductSearchBar
           scanKey={productScanKey}
           onChange={handleProductSelection}
+          isFocus={true}
+          changeScreenAfter={true}
         />
       </View>
       <PopUpOneButton

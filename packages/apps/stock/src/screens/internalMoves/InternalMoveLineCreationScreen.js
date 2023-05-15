@@ -183,6 +183,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       }>
       <KeyboardAvoidingScrollView>
         <StockLocationSearchBar
+          placeholderKey="Stock_OriginalStockLocation"
           scanKey={originalStockLocationScanKey}
           onChange={handleFromStockLocationChange}
           defaultValue={originalStockLocation}
@@ -220,6 +221,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
               status={StockMove.status.Draft}
             />
             <StockLocationSearchBar
+              placeholderKey="Stock_DestinationStockLocation"
               scanKey={destinationStockLocationScanKey}
               onChange={handleToStockLocationChange}
               defaultValue={destinationStockLocation}

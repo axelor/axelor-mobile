@@ -191,13 +191,7 @@ const InternalMoveListScreen = ({navigation}) => {
             fromStockLocation={item.fromStockLocation.name}
             toStockLocation={item.toStockLocation.name}
             origin={item.origin}
-            date={
-              item.statusSelect === StockMove.status.Draft
-                ? item.createdOn
-                : item.statusSelect === StockMove.status.Planned
-                ? item.estimatedDate
-                : item.realDate
-            }
+            date={StockMove.getStockMoveDate(item.statusSelect, item)}
             onPress={() => showInternalMoveDetails(item)}
           />
         )}

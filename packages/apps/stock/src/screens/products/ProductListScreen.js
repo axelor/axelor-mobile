@@ -35,6 +35,7 @@ const ProductListScreen = ({navigation}) => {
   const {loadingProduct, moreLoadingProduct, isListEndProduct, productList} =
     useSelector(state => state.product);
 
+  const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
 
   const fetchProductsAPI = useCallback(
@@ -74,6 +75,7 @@ const ProductListScreen = ({navigation}) => {
           <ProductSearchBar
             scanKey={productScanKey}
             onChange={showProductDetails}
+            onFetchDataAction={setFilter}
             showDetailsPopup={false}
             navigate={navigate}
             oneFilter={true}
@@ -100,6 +102,7 @@ const ProductListScreen = ({navigation}) => {
         fetchData={fetchProductsAPI}
         moreLoading={moreLoadingProduct}
         isListEnd={isListEndProduct}
+        filter={filter != null && filter !== ''}
         translator={I18n.t}
       />
     </Screen>

@@ -27,8 +27,9 @@ const productScanKey = 'product_inventory-select';
 const InventorySelectProductScreen = ({route, navigation}) => {
   const inventory = route.params.inventory;
   const inventoryLine = route.params.inventoryLine;
-  const [isVisible, setVisible] = useState(false);
   const I18n = useTranslator();
+
+  const [isVisible, setVisible] = useState(false);
 
   const handleProductSelection = item => {
     if (item !== null) {
@@ -86,6 +87,8 @@ const InventorySelectProductScreen = ({route, navigation}) => {
       <ProductSearchBar
         scanKey={productScanKey}
         onChange={handleProductSelection}
+        isFocus={true}
+        changeScreenAfter={true}
       />
       <PopUpOneButton
         visible={isVisible}

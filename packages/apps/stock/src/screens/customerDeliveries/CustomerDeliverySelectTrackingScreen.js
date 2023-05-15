@@ -26,17 +26,16 @@ import {
   Text,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {StockMoveHeader} from '../../components';
+import {StockMoveHeader, TrackingNumberSearchBar} from '../../components';
 import StockMove from '../../types/stock-move';
-import {TrackingNumberSearchBar} from '../../components/templates';
 
 const trackingScanKey = 'tracking_customer-delivery-select';
 
 const CustomerDeliverySelectTrackingScreen = ({route, navigation}) => {
   const {customerDelivery, customerDeliveryLine, product} = route.params;
+  const I18n = useTranslator();
 
   const [isVisible, setVisible] = useState(false);
-  const I18n = useTranslator();
 
   const handleTrackingNumberSelection = useCallback(
     item => {
