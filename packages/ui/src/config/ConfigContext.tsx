@@ -215,8 +215,11 @@ const actions = {
   }),
 };
 
-export const ConfigProvider = ({children}) => {
-  const [state, dispatch] = useReducer(configReducer, defaultConfigContext);
+export const ConfigProvider = ({children, showModulesSubtitle}) => {
+  const [state, dispatch] = useReducer(configReducer, {
+    ...defaultConfigContext,
+    showSubtitles: showModulesSubtitle,
+  });
 
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),

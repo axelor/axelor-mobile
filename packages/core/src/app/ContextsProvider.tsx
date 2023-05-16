@@ -53,6 +53,7 @@ interface ContextsProviderProps {
   defaultRequestLimit: number;
   themeColorsConfig?: ThemeColors;
   writingStylesConfig?: WritingStyles;
+  showModulesSubtitle?: boolean;
 }
 
 const ContextsProvider = ({
@@ -67,6 +68,7 @@ const ContextsProvider = ({
   defaultRequestLimit = 10,
   themeColorsConfig,
   writingStylesConfig,
+  showModulesSubtitle = false,
 }: ContextsProviderProps) => {
   const [loading, setLoading] = useState(true);
 
@@ -153,7 +155,9 @@ const ContextsProvider = ({
               themes={writingThemes}
               defaultTheme={defaultWritingTheme}
               writingStylesConfig={writingStylesConfig}>
-              <ConfigProvider>{children}</ConfigProvider>
+              <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
+                {children}
+              </ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>
         </OutsideAlerterProvider>

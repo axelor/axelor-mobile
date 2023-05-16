@@ -61,8 +61,8 @@ interface ApplicationProps {
   themes?: Theme[];
   defaultTheme?: Theme;
   writingThemes?: Writing[];
-  showModulesSubtitle?: boolean;
   defaultWritingTheme?: Writing;
+  showModulesSubtitle?: boolean;
   configuration?: appConfig;
 }
 
@@ -93,14 +93,14 @@ const Application = ({
       defaultLanguage={configuration?.defaultLanguage}
       defaultRequestLimit={configuration?.defaultRequestLimit}
       themeColorsConfig={configuration?.themeColorsConfig}
-      writingStylesConfig={configuration?.writingStylesConfig}>
+      writingStylesConfig={configuration?.writingStylesConfig}
+      showModulesSubtitle={
+        configuration?.showModulesSubtitle ?? showModulesSubtitle
+      }>
       <ContextedApplication
         modules={modules}
         mainMenu={mainMenu}
         version={version}
-        showModulesSubtitle={
-          configuration?.showModulesSubtitle ?? showModulesSubtitle
-        }
         configuration={{
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
