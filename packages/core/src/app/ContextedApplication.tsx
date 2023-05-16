@@ -58,6 +58,7 @@ interface ContextedApplicationProps {
   modules: Module[];
   mainMenu?: string;
   version: string;
+  showModulesSubtitle: boolean;
   configuration?: instanceConfig;
 }
 
@@ -65,6 +66,7 @@ const ContextedApplication = ({
   modules,
   mainMenu,
   version,
+  showModulesSubtitle = false,
   configuration,
 }: ContextedApplicationProps) => {
   const Colors = useThemeColor();
@@ -118,6 +120,7 @@ const ContextedApplication = ({
             modules={modules}
             mainMenu={mainMenu}
             version={version}
+            showModulesSubtitle={showModulesSubtitle}
             onRefresh={() => setRefresh(_current => !_current)}
             configuration={configuration}
           />

@@ -34,6 +34,7 @@ const RootNavigator = ({
   mainMenu,
   version,
   onRefresh,
+  showModulesSubtitle = false,
   configuration,
 }) => {
   const Colors = useThemeColor();
@@ -42,6 +43,7 @@ const RootNavigator = ({
     isHeaderIndicatorVisible,
     setIsHeaderIndicatorVisible,
     setHeaderIndicatorState,
+    setShowSubtitles,
     showSubtitles,
   } = useConfig();
   const {logged} = useSelector(state => state.auth);
@@ -65,6 +67,10 @@ const RootNavigator = ({
     ),
     [modules, mainMenu, showSubtitles, onRefresh],
   );
+
+  useEffect(() => {
+    setShowSubtitles(showModulesSubtitle);
+  }, [showModulesSubtitle, setShowSubtitles]);
 
   const checkInternetConnection = useCallback(async () => {
     const {isConnected} = await getNetInfo();

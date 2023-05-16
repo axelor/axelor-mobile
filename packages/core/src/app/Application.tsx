@@ -47,6 +47,7 @@ interface appConfig {
   defaultRequestLimit: number;
   enableConnectionSessions: boolean;
   retrocompatibilityAOS6: boolean;
+  showModulesSubtitle: boolean;
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
   logoFile?: any;
@@ -60,6 +61,7 @@ interface ApplicationProps {
   themes?: Theme[];
   defaultTheme?: Theme;
   writingThemes?: Writing[];
+  showModulesSubtitle?: boolean;
   defaultWritingTheme?: Writing;
   configuration?: appConfig;
 }
@@ -73,6 +75,7 @@ const Application = ({
   defaultTheme,
   writingThemes,
   defaultWritingTheme,
+  showModulesSubtitle = false,
   configuration,
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
@@ -95,6 +98,9 @@ const Application = ({
         modules={modules}
         mainMenu={mainMenu}
         version={version}
+        showModulesSubtitle={
+          configuration?.showModulesSubtitle ?? showModulesSubtitle
+        }
         configuration={{
           testInstanceConfig: configuration?.testInstanceConfig,
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
