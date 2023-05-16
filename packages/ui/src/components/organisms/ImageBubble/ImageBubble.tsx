@@ -111,7 +111,6 @@ const ImageBubble = ({
       <Image
         resizeMode="contain"
         generalStyle={[styles.generalImageStyle, style]}
-        imageSize={styles.imageStyle}
         defaultIconSize={defaultIconSize}
         source={source}
       />
@@ -140,8 +139,6 @@ const getStyles = imageSize =>
       justifyContent: 'center',
       alignItems: 'center',
       marginVertical: '5%',
-    },
-    imageStyle: {
       borderRadius: imageSize,
       width: imageSize,
       height: imageSize,
