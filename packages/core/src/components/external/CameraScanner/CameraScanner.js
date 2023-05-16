@@ -112,17 +112,17 @@ const CameraScanner = () => {
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 40,
+    zIndex: 700,
   },
   camera: {
     height: Dimensions.get('screen').height,
     width: Dimensions.get('window').width,
     position: 'absolute',
     top: 0,
-    zIndex: 50,
+    zIndex: 750,
   },
   icon: {
-    zIndex: 60,
+    zIndex: 800,
     position: 'absolute',
     right: 30,
     top: 60,
