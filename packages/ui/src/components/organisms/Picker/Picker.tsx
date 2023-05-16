@@ -193,6 +193,7 @@ const Picker = ({
               displayValue={item => item[labelField]}
               handleSelect={handleValueChange}
               isPicker={true}
+              selectedItem={[selectedItem]}
             />
           ) : null}
         </View>
