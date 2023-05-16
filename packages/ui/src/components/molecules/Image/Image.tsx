@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image as ReactNativeImage,
   ImageResizeMode,
@@ -28,11 +28,11 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
 
 interface ImageProps {
-  imageSize: StyleProp<ImageStyle>;
-  generalStyle: StyleProp<ImageStyle>;
+  imageSize?: StyleProp<ImageStyle>;
+  generalStyle?: StyleProp<ImageStyle>;
   resizeMode: ImageResizeMode;
   source: ImageSourcePropType;
-  defaultIconSize: number;
+  defaultIconSize?: number;
 }
 
 const Image = ({
@@ -50,6 +50,12 @@ const Image = ({
       setValid(false);
     }
   };
+
+  useEffect(() => {
+    if (source != null) {
+      setValid(true);
+    }
+  }, [source]);
 
   if (source == null || isValid === false) {
     return (

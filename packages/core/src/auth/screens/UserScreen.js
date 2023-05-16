@@ -40,19 +40,19 @@ import {
 } from '../features/userSlice';
 import {fetchBaseConfig, fetchMobileSettings} from '../features/configSlice';
 
-const UserScreen = ({children, navigation}) => {
-  const {companyList} = useSelector(state => state.company);
-  const {userId, baseUrl} = useSelector(state => state.auth);
-  const {languageList} = useSelector(state => state.language);
-  const {loading, baseConfig} = useSelector(state => state.config);
-  const {loadingUser, user, canModifyCompany} = useSelector(
-    state => state.user,
-  );
+const UserScreen = ({children}) => {
   const Theme = useTheme();
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
   const dispatch = useDispatch();
+
+  const {companyList} = useSelector(state => state.company);
+  const {userId, baseUrl} = useSelector(state => state.auth);
+  const {languageList} = useSelector(state => state.language);
+  const {baseConfig} = useSelector(state => state.config);
+  const {user, canModifyCompany} = useSelector(state => state.user);
+
+  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
@@ -63,7 +63,7 @@ const UserScreen = ({children, navigation}) => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    const SMALL_SCREEN_HEIGHT = 500;
+    const SMALL_SCREEN_HEIGHT = 300;
 
     DeviceInfo.getManufacturer().then(manufacturer =>
       setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
@@ -107,7 +107,7 @@ const UserScreen = ({children, navigation}) => {
   );
 
   return (
-    <Screen style={styles.container} loading={loadingUser || loading}>
+    <Screen style={styles.container}>
       <ScrollView>
         <View style={styles.imageContainer}>
           <ImageBubble
