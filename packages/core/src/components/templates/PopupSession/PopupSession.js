@@ -41,6 +41,7 @@ import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../../../sessions';
 import {checkNullString} from '../../../utils';
+import DeviceInfo from 'react-native-device-info';
 
 const urlScanKey = 'urlUsername_FastConnection_login';
 
@@ -61,6 +62,7 @@ const PopupSession = ({
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
 
+  const [isOpen, setIsOpen] = useState(false);
   const [showRequiredFields, setShowRequiredFields] = useState(false);
   const [username, setUsername] = useState(sessionActive?.username);
   const [password, setPassword] = useState('');
@@ -86,6 +88,7 @@ const PopupSession = ({
       const parseScannnedData = JSON.parse(scanValue);
       setUsername(parseScannnedData.username);
     }
+    setIsOpen(true);
   }, []);
 
   const disabledLogin = useMemo(
@@ -101,12 +104,26 @@ const PopupSession = ({
     }
   }, [parseQrCode, scanData, scannedValue]);
 
+  useEffect(() => {
+    setIsOpen(popupIsOpen);
+  }, [popupIsOpen]);
+
+  const handleScanPress = useCallback(() => {
+    DeviceInfo.getManufacturer()
+      .then(manufacturer => {
+        if (manufacturer !== 'Zebra Technologies') {
+          setIsOpen(false);
+        }
+      })
+      .then(() => onScanPress());
+  }, [onScanPress]);
+
   if (sessionActive == null) {
     return null;
   }
 
   return (
-    <PopUp visible={popupIsOpen} title={sessionActive?.id} style={styles.popup}>
+    <PopUp visible={isOpen} title={sessionActive?.id} style={styles.popup}>
       <View style={styles.popupContainer}>
         <Icon
           name="times"
@@ -129,7 +146,7 @@ const PopupSession = ({
           onChange={setUsername}
           readOnly={loading}
           showScanIcon={!showUrlInput}
-          onScanPress={onScanPress}
+          onScanPress={handleScanPress}
           onSelection={enableScanner}
           scanIconColor={
             isEnabled && scanKey === urlScanKey

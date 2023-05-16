@@ -40,6 +40,7 @@ import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {login} from '../../../features/authSlice';
 import {getStorageUrl, sessionStorage, useSessions} from '../../../sessions';
 import {checkNullString} from '../../../utils';
+import DeviceInfo from 'react-native-device-info';
 
 const urlScanKey = 'urlUsername_createSession_login';
 
@@ -87,6 +88,7 @@ const PopupCreateSession = ({
     urlStorage,
   ]);
 
+  const [isOpen, setIsOpen] = useState(false);
   const [showRequiredFields, setShowRequiredFields] = useState(false);
   const [sessionName, setSessionName] = useState('');
   const [url, setUrl] = useState(defaultUrl || '');
@@ -105,6 +107,7 @@ const PopupCreateSession = ({
     } else {
       setUrl(scanValue);
     }
+    setIsOpen(true);
   }, []);
 
   useEffect(() => {
@@ -149,9 +152,23 @@ const PopupCreateSession = ({
     }
   }, [dispatch, password, sessionName, url, username, error]);
 
+  useEffect(() => {
+    setIsOpen(popupIsOpen);
+  }, [popupIsOpen]);
+
+  const handleScanPress = useCallback(() => {
+    DeviceInfo.getManufacturer()
+      .then(manufacturer => {
+        if (manufacturer !== 'Zebra Technologies') {
+          setIsOpen(false);
+        }
+      })
+      .then(() => onScanPress());
+  }, [onScanPress]);
+
   return (
     <PopUp
-      visible={popupIsOpen}
+      visible={isOpen}
       title={I18n.t('Auth_Create_Session')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
@@ -183,7 +200,7 @@ const PopupCreateSession = ({
             value={url}
             onChange={setUrl}
             readOnly={loading}
-            onScanPress={onScanPress}
+            onScanPress={handleScanPress}
             onSelection={enableScanner}
             scanIconColor={
               isEnabled && scanKey === urlScanKey
@@ -199,7 +216,7 @@ const PopupCreateSession = ({
           onChange={setUsername}
           readOnly={loading}
           showScanIcon={!showUrlInput}
-          onScanPress={onScanPress}
+          onScanPress={handleScanPress}
           onSelection={enableScanner}
           scanIconColor={
             isEnabled && scanKey === urlScanKey
