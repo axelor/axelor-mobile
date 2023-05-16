@@ -51,7 +51,7 @@ export const app_config = {
    * This configuration allows you to activate or not the subtitles under app icons in the drawer.
    * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
    */
-  showModulesSubtitle: true,
+  showModulesSubtitle: false,
 
   /*
    * This configuration allows you to customize the colors used in the application.

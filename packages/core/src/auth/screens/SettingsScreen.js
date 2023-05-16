@@ -90,9 +90,12 @@ const SettingsScreen = ({route, children}) => {
     [Theme],
   );
 
-  const handleToggleSubtitles = useCallback(() => {
-    setShowSubtitles(!showSubtitles);
-  }, [setShowSubtitles, showSubtitles]);
+  const handleToggleSubtitles = useCallback(
+    state => {
+      setShowSubtitles(state);
+    },
+    [setShowSubtitles],
+  );
 
   const handleSendTranslations = useCallback(() => {
     setActivityIndicator(true);
