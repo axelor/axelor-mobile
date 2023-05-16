@@ -36,7 +36,7 @@ Please see [installation guide](https://github.com/axelor/axelor-mobile/blob/mai
 
 ## Add or remove module for APK generation
 
-Modules can be enabled directly in file App.js from example folder or with settings module from AOS.
+Modules can be enabled directly in file App.js from src folder or with settings module from AOS.
 
 To manage apps directly with the _Application_ component, you just need to add/remove Module objects from _modules_ props.
 
@@ -68,4 +68,4 @@ You can also activate/desactivate apps directly for the configuration module whi
 - Build packages : `yarn build`
 - Install debug android APK : `yarn android`
 - Start Metro for development : `yarn start`
-- Create release AP : `cd example/android && ./gradlew app:assembleRelease`
+- Create release AP : `cd android && ./gradlew app:assembleRelease`

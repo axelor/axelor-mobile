@@ -22,7 +22,7 @@ import {StockModule} from '@axelor/aos-mobile-stock';
 import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
 import {CrmModule} from '@axelor/aos-mobile-crm';
 import application_properties from '../package.json';
-import {app_config} from '../app.config';
+import {app_config} from './app.config';
 
 const App = () => {
   return (
