@@ -28,6 +28,7 @@ interface ConfigContextState {
   showFilter: boolean;
   hideVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
+  showSubtitles: boolean;
   headerHeight: number;
   isHeaderIndicatorVisible: boolean;
   headerIndicatorState: HeaderIndicatorState;
@@ -56,12 +57,16 @@ const defaultConfigContext = {
   showFilter: true,
   hideVirtualKeyboard: false,
   showActivityIndicator: false,
+  showSubtitles: false,
   headerHeight: 115,
   isHeaderIndicatorVisible: false,
   headerIndicatorState: {
     text: '',
   },
   setActivityIndicator: () => {
+    throw new Error('ConfigProvider should be mounted to set Indicator config');
+  },
+  setShowSubtitles: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
   },
   setFilterConfig: () => {
@@ -103,6 +108,7 @@ const actionTypes = {
   setFilterConfig: 'setFilterConfig',
   toggleFilterConfig: 'toggleFilterConfig',
   setVirtualKeyboardConfig: 'setVirtualKeyboardConfig',
+  setShowSubtitles: 'setShowSubtitles',
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
@@ -119,6 +125,12 @@ const configReducer = (
       return {
         ...state,
         showActivityIndicator: action.payload as boolean,
+      };
+    }
+    case actionTypes.setShowSubtitles: {
+      return {
+        ...state,
+        showSubtitles: action.payload as boolean,
       };
     }
     case actionTypes.setFilterConfig: {
@@ -171,6 +183,10 @@ const actions = {
     type: actionTypes.setActivityIndicator,
     payload: option,
   }),
+  setShowSubtitles: option => ({
+    type: actionTypes.setShowSubtitles,
+    payload: option,
+  }),
   setFilterConfig: option => ({
     type: actionTypes.setFilterConfig,
     payload: option,
@@ -204,6 +220,10 @@ export const ConfigProvider = ({children}) => {
 
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
+    [],
+  );
+  const setShowSubtitles = useCallback(
+    option => dispatch(actions.setShowSubtitles(option)),
     [],
   );
   const setFilterConfig = useCallback(
@@ -240,6 +260,7 @@ export const ConfigProvider = ({children}) => {
     () => ({
       ...state,
       setActivityIndicator,
+      setShowSubtitles,
       setFilterConfig,
       toggleFilterConfig,
       setVirtualKeyboardConfig,
@@ -250,6 +271,7 @@ export const ConfigProvider = ({children}) => {
     }),
     [
       setActivityIndicator,
+      setShowSubtitles,
       setFilterConfig,
       setVirtualKeyboardConfig,
       state,

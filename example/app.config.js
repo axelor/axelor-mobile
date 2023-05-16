@@ -48,12 +48,6 @@ export const app_config = {
   retrocompatibilityAOS6: false,
 
   /*
-   * This configuration allows you to activate or not the subtitles under app icons in the drawer.
-   * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
-   */
-  //showModulesSubtitle: false,
-
-  /*
    * This configuration allows you to customize the colors used in the application.
    * You can use the `ThemeColors` object to specify primary, secondary, error, and other color values.
    */

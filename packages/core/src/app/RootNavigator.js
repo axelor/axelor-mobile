@@ -33,7 +33,6 @@ const RootNavigator = ({
   modules,
   mainMenu,
   version,
-  showModulesSubtitle = false,
   onRefresh,
   configuration,
 }) => {
@@ -43,6 +42,7 @@ const RootNavigator = ({
     isHeaderIndicatorVisible,
     setIsHeaderIndicatorVisible,
     setHeaderIndicatorState,
+    showSubtitles,
   } = useConfig();
   const {logged} = useSelector(state => state.auth);
 
@@ -59,11 +59,11 @@ const RootNavigator = ({
       <CoreNavigator
         modules={modules}
         mainMenu={mainMenu}
-        showModulesSubtitle={showModulesSubtitle}
+        showModulesSubtitle={showSubtitles}
         onRefresh={onRefresh}
       />
     ),
-    [modules, mainMenu, showModulesSubtitle, onRefresh],
+    [modules, mainMenu, showSubtitles, onRefresh],
   );
 
   const checkInternetConnection = useCallback(async () => {

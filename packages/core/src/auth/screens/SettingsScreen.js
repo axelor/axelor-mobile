@@ -47,6 +47,8 @@ const SettingsScreen = ({route, children}) => {
     setActivityIndicator,
     toggleFilterConfig,
     toggleVirtualKeyboardConfig,
+    setShowSubtitles,
+    showSubtitles,
   } = useConfig();
   const language = useSelector(selectLanguage);
   const {baseUrl} = useSelector(state => state.auth);
@@ -88,6 +90,10 @@ const SettingsScreen = ({route, children}) => {
     [Theme],
   );
 
+  const handleToggleSubtitles = useCallback(() => {
+    setShowSubtitles(!showSubtitles);
+  }, [setShowSubtitles, showSubtitles]);
+
   const handleSendTranslations = useCallback(() => {
     setActivityIndicator(true);
     const translations = getTranslations(language);
@@ -116,6 +122,11 @@ const SettingsScreen = ({route, children}) => {
           title={I18n.t('User_BlockConnection')}
           defaultValue={!online.isEnabled}
           onToggle={handleToggleConnection}
+        />
+        <SwitchCard
+          title={I18n.t('User_Show_Drawer_Subtitles')}
+          defaultValue={showSubtitles}
+          onToggle={handleToggleSubtitles}
         />
         {children}
         {route.params.user?.group?.code !== 'admins' ? null : (
