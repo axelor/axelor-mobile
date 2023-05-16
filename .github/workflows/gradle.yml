@@ -50,11 +50,11 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Provide permission for execution
-        run: chmod +x example/android/gradlew
+        run: chmod +x android/gradlew
       - name: Check packages
         run: yarn build
       - name: Check Android build
-        run: cd example/android && ./gradlew app:assembleRelease
+        run: cd android && ./gradlew app:assembleRelease
 
   publish:
     runs-on: ubuntu-latest
