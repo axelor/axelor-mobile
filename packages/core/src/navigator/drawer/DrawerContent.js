@@ -25,7 +25,13 @@ import React, {
 } from 'react';
 import {StyleSheet, View, Animated, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {IconButton, PopUp, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  IconButton,
+  PopUp,
+  Text,
+  useThemeColor,
+  useConfig,
+} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
@@ -43,7 +49,6 @@ const DrawerContent = ({
   modules,
   navigation,
   onModuleClick,
-  showModulesSubtitle = false,
   onRefresh,
 }) => {
   useEffect(() => {
@@ -73,6 +78,9 @@ const DrawerContent = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const {showSubtitles} = useConfig();
+
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
@@ -194,7 +202,7 @@ const DrawerContent = ({
                 <MenuIconButton
                   key={_module.title}
                   icon={_module.icon}
-                  subtitle={showModulesSubtitle && I18n.t(_module.subtitle)}
+                  subtitle={showSubtitles && I18n.t(_module.subtitle)}
                   disabled={_module.disabled}
                   color={
                     _module === activeModule
@@ -209,7 +217,7 @@ const DrawerContent = ({
           <View style={styles.otherIconsContainer}>
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}
-              showModulesSubtitle={showModulesSubtitle}
+              showModulesSubtitle={showSubtitles}
               onPress={handleAuthModuleClick}
             />
           </View>
@@ -247,7 +255,7 @@ const DrawerContent = ({
               !externalMenuIsVisible ? (
                 <AuthMenuIconButton
                   isActive={authModule.name === activeModule.name}
-                  showModulesSubtitle={showModulesSubtitle}
+                  showModulesSubtitle={showSubtitles}
                   onPress={handleAuthModuleClick}
                 />
               ) : null
