@@ -115,8 +115,9 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          Tag: ${{ github.ref }}
         with:
           upload_url: ${{ steps.create-new-release.outputs.upload_url }}
           asset_path: ./app-release.apk
-          asset_name: aom-${{ github.ref }}.apk
+          asset_name: aom-${Tag}.apk
           asset_content_type: application/vnd.android.package-archive
