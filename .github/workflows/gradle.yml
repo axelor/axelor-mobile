@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '**'
+    tags:
+      - '**'
   pull_request:
     branches:
       - '**'
@@ -55,6 +57,11 @@ jobs:
         run: yarn build
       - name: Check Android build
         run: cd android && ./gradlew app:assembleRelease
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: android/app/build/outputs/apk/release/app-release.apk
 
   check-license-lines:
     runs-on: ubuntu-latest
@@ -84,3 +91,34 @@ jobs:
         run: yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  relasease:
+    needs: [format, build, check-license-lines]
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    name: Release pushed tag
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: Download site content
+        uses: actions/download-artifact@v2
+        with:
+          name: apk
+      - name: View content
+        run: ls -R
+      - name: Create GitHub release
+        id: create-new-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: apk-${{ github.ref }}.apk
+          asset_content_type: application/vnd.android.package-archive
