@@ -16,17 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getFromList(list: any[], objectParam: string, query: any) {
-  if (query === '') {
-    return null;
-  } else {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i][objectParam] === query) {
-        return list[i];
-      }
-    }
+import {checkNullString} from './strings';
+
+export function getFromList(list, objectParam, query) {
+  if (checkNullString(query) || !Array.isArray(list) || list.length === 0) {
     return null;
   }
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i][objectParam] === query) {
+      return list[i];
+    }
+  }
+
+  return null;
 }
 
 export function getItemsFromList(

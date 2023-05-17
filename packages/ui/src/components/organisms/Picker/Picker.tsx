@@ -118,7 +118,7 @@ const Picker = ({
   );
 
   const marginBottom = useMemo(() => {
-    const listLength = listItems.length;
+    const listLength = listItems?.length ?? 0;
 
     if (isScrollViewContainer && pickerIsOpen) {
       return emptyValue
@@ -127,7 +127,7 @@ const Picker = ({
     }
 
     return null;
-  }, [emptyValue, isScrollViewContainer, listItems.length, pickerIsOpen]);
+  }, [emptyValue, isScrollViewContainer, listItems, pickerIsOpen]);
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, _required),
