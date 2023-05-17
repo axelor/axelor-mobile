@@ -116,8 +116,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref }}
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "action_state=${{ github.ref }}" >> "$GITHUB_ENV"
+      - name: Use the value
+        id: step_two
+        run: |
+          echo "${{ env.action_state }}" # This will output 'yellow'
         with:
           upload_url: ${{ steps.create-new-release.outputs.upload_url }}
           asset_path: ./app-release.apk
-          asset_name: aom-{$TAG}.apk
+          asset_name: aom-${{ env.action_state }}.apk
           asset_content_type: application/vnd.android.package-archive
