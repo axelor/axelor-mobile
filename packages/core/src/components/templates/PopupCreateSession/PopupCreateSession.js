@@ -90,7 +90,9 @@ const PopupCreateSession = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [showRequiredFields, setShowRequiredFields] = useState(false);
-  const [sessionName, setSessionName] = useState('');
+  const [sessionName, setSessionName] = useState(
+    modeDebug ? DeviceInfo.getApplicationName() : '',
+  );
   const [url, setUrl] = useState(defaultUrl || '');
   const [username, setUsername] = useState(
     modeDebug ? testInstanceConfig?.defaultUsername : '',

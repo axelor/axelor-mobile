@@ -50,6 +50,7 @@ const PopupSession = ({
   setPopupIsOpen,
   showUrlInput,
   sessionActive,
+  testInstanceConfig,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -67,12 +68,14 @@ const PopupSession = ({
   const [username, setUsername] = useState(sessionActive?.username);
   const [password, setPassword] = useState('');
 
+  const modeDebug = useMemo(() => __DEV__, []);
+
   useEffect(() => {
     if (sessionActive != null) {
       setUsername(sessionActive.username);
-      setPassword('');
+      setPassword(modeDebug ? testInstanceConfig?.defaultPassword : '');
     }
-  }, [sessionActive]);
+  }, [modeDebug, sessionActive, testInstanceConfig?.defaultPassword]);
 
   const onPressLogin = useCallback(() => {
     dispatch(login({url: sessionActive.url, username, password}));
