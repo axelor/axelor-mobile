@@ -16,30 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {axiosApiProvider} from '../apiProviders';
 import routes from './routes';
 
 class RouterProvider {
-  private static instance: RouterProvider;
-  private _retrocompatibilityAOS6: boolean = true;
+  private retrocompatibilityAOS6: boolean = true;
 
-  private constructor() {}
+  constructor() {}
 
-  public static getInstance() {
-    if (!RouterProvider.instance) {
-      RouterProvider.instance = new RouterProvider();
+  public enableRetrocompatibilityWithAOSv6(value: boolean) {
+    this.retrocompatibilityAOS6 = value;
+  }
+
+  public async get(resource: string): Promise<string> {
+    if (!this.retrocompatibilityAOS6) {
+      return routes.AOS7[resource];
     }
-    return RouterProvider.instance;
-  }
 
-  public set retrocompatibilityAOS6(value: boolean) {
-    this._retrocompatibilityAOS6 = value;
-  }
+    const objectRoute = await axiosApiProvider
+      .get({
+        url: routes.AOS6[resource],
+      })
+      .then(res => {
+        if (
+          typeof res?.data?.data?.cause === 'string' &&
+          res.data.data.cause.includes('java.lang.ClassNotFoundException')
+        ) {
+          return routes.AOS7[resource];
+        }
 
-  public get(resource: string): string {
-    return routes[this._retrocompatibilityAOS6 ? 'AOS6' : 'AOS7'][resource];
+        return routes.AOS6[resource];
+      })
+      .catch(() => {
+        return routes.AOS7[resource];
+      });
+
+    return objectRoute;
   }
 }
 
-const routerProvider = RouterProvider.getInstance();
+const routerProvider = new RouterProvider();
 
 export default routerProvider;

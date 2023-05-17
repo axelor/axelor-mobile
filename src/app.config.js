@@ -45,7 +45,7 @@ export const app_config = {
    * This means that the app can still function and deliver its full features to users who have not upgraded to the latest versions of Axelor Open Suite.
    * However, it's important to note that enabling this feature may limit access to certain advanced features that are only available on higher versions of Axelor Open Suite.
    */
-  retrocompatibilityAOS6: false,
+  retrocompatibilityAOS6: true,
 
   /*
    * This configuration allows you to activate or not the subtitles under app icons in the drawer.

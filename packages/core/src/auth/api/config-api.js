@@ -20,32 +20,30 @@ import {axiosApiProvider} from '../../apiProviders';
 import {RouterProvider} from '../../config';
 
 export async function getBaseConfig() {
-  return axiosApiProvider.get({
-    url: RouterProvider.get('AppBase'),
-  });
+  const route = await RouterProvider.get('AppBase');
+
+  return axiosApiProvider.get({url: route});
 }
 
 export async function getMobileSettings() {
-  return axiosApiProvider
-    .get({
-      url: RouterProvider.get('AppMobileSettings'),
-    })
-    .then(res => {
-      if (res?.data?.status !== 0) {
-        return {
-          data: {
-            data: [
-              {
-                isTrackerMessageEnabled: true,
-                isVerifyCustomerDeliveryLineEnabled: false,
-                isVerifyInventoryLineEnabled: false,
-                isVerifySupplierArrivalLineEnabled: false,
-                isVerifyInternalMoveLineEnabled: false,
-              },
-            ],
-          },
-        };
-      }
-      return res;
-    });
+  const route = await RouterProvider.get('AppMobileSettings');
+
+  return axiosApiProvider.get({url: route}).then(res => {
+    if (res?.data?.status !== 0) {
+      return {
+        data: {
+          data: [
+            {
+              isTrackerMessageEnabled: true,
+              isVerifyCustomerDeliveryLineEnabled: false,
+              isVerifyInventoryLineEnabled: false,
+              isVerifySupplierArrivalLineEnabled: false,
+              isVerifyInternalMoveLineEnabled: false,
+            },
+          ],
+        },
+      };
+    }
+    return res;
+  });
 }
