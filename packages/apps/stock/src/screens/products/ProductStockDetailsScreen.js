@@ -94,7 +94,7 @@ const ProductStockDetailsScreen = ({route}) => {
           stockLocation={stockLocation}
         />
         <View style={styles.lineStyle} />
-        {baseConfig.enableMultiCompany && canModifyCompany && (
+        {baseConfig?.enableMultiCompany && canModifyCompany && (
           <Picker
             styles={styles.picker}
             title={I18n.t('User_Company')}

@@ -139,16 +139,12 @@ const SelectionContainer = ({
   );
 
   const selectedKeys = useMemo(
-    () => selectedItem.map(_item => _item[keyField]),
+    () => selectedItem?.map(_item => _item?.[keyField]) ?? [],
     [keyField, selectedItem],
   );
 
   const renderListItemContainer = useCallback(() => {
-    if (
-      objectList == null ||
-      objectList.length === 0 ||
-      !Array.isArray(objectList)
-    ) {
+    if (!Array.isArray(objectList) || objectList.length === 0) {
       return null;
     }
 
@@ -169,7 +165,7 @@ const SelectionContainer = ({
         <View
           key={'border' + index}
           style={
-            index + 1 === objectList.length ||
+            index + 1 === objectList?.length ||
             (!isPicker && index + 1 === listLength)
               ? null
               : styles.border

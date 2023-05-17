@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {checkNullString} from './string';
 import {areObjectsEquals} from './object';
 
 export function filterList(list, subObject, objectParam, query) {
@@ -98,14 +99,15 @@ function subListContain(subList, objectParam, query) {
 }
 
 export function getFromList(list, objectParam, query) {
-  if (query === '') {
-    return null;
-  } else {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i][objectParam] === query) {
-        return list[i];
-      }
-    }
+  if (checkNullString(query) || !Array.isArray(list) || list.length === 0) {
     return null;
   }
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i][objectParam] === query) {
+      return list[i];
+    }
+  }
+
+  return null;
 }
