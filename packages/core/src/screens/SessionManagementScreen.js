@@ -143,6 +143,7 @@ const SessionManagementScreen = ({route}) => {
             popupIsOpen={popupSessionIsOpen}
             setPopupIsOpen={setPopupSessionIsOpen}
             showUrlInput={showUrlInput}
+            testInstanceConfig={testInstanceConfig}
           />
           <PopupSessionList
             sessionList={sessionList}

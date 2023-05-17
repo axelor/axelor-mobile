@@ -45,6 +45,7 @@ import {
 } from '../hooks/use-scan-activator';
 import {checkNullString} from '../utils';
 import {sessionStorage, useSessions, getStorageUrl} from '../sessions';
+import DeviceInfo from 'react-native-device-info';
 
 const urlScanKey = 'login_url';
 
@@ -139,7 +140,7 @@ const LoginScreen = ({route}) => {
 
     sessionStorage.addSession({
       session: {
-        id: 'default',
+        id: DeviceInfo.getApplicationName(),
         url: url,
         username: username,
         isActive: true,
@@ -151,9 +152,9 @@ const LoginScreen = ({route}) => {
     if (sessionActive != null) {
       setUrl(sessionActive.url);
       setUsername(sessionActive.username);
-      setPassword('');
+      setPassword(modeDebug ? testInstanceConfig?.defaultPassword : '');
     }
-  }, [sessionActive]);
+  }, [modeDebug, sessionActive, testInstanceConfig?.defaultPassword]);
 
   return (
     <Screen>
