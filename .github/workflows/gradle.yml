@@ -68,7 +68,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [format, build]
+    needs: [format, build, check-license-lines]
     if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v3
