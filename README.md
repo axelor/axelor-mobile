@@ -69,3 +69,7 @@ You can also activate/desactivate apps directly for the configuration module whi
 - Install debug android APK : `yarn android`
 - Start Metro for development : `yarn start`
 - Create release AP : `cd android && ./gradlew app:assembleRelease`
+
+## StoryBook
+
+- Start storybook : `yarn storybook`
