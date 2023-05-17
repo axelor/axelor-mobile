@@ -56,9 +56,19 @@ jobs:
       - name: Check Android build
         run: cd android && ./gradlew app:assembleRelease
 
+  check-license-lines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+      - name: check-license
+        run: deno run --allow-read https://deno.land/x/license_checker@v3.2.2/main.ts
+
   publish:
     runs-on: ubuntu-latest
-    needs: [format, build]
+    needs: [format, build, check-license-lines]
     if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v3
