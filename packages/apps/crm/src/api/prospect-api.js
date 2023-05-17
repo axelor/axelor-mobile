@@ -92,9 +92,11 @@ export async function updateProspect({
   emailId,
   emailVersion,
 }) {
+  const route = await RouterProvider.get('EmailAddress');
+
   return axiosApiProvider
     .post({
-      url: RouterProvider.get('EmailAddress'),
+      url: route,
       data: {
         data: {
           id: emailId,

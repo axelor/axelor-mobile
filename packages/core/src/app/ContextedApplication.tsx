@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
@@ -72,6 +72,7 @@ const ContextedApplication = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const [, setRefresh] = useState(false);
+  const [tracebackRoute, setTracebackRoute] = useState('');
 
   const toastConfig = {
     success: (props: any) => (
@@ -100,6 +101,10 @@ const ContextedApplication = ({
     return axios.put(additionalURL, {data: data});
   }, []);
 
+  useEffect(() => {
+    RouterProvider.get('TraceBack').then(setTracebackRoute);
+  }, []);
+
   return (
     <>
       <Camera />
@@ -110,7 +115,7 @@ const ContextedApplication = ({
         errorScreen={ErrorScreen}
         userIdfetcher={getActiveUserId}
         putMethod={traceBackPutMethod}
-        additionalURL={RouterProvider.get('TraceBack')}>
+        additionalURL={tracebackRoute}>
         <NavigationContainer>
           <HeaderIndicator />
           <LoadingIndicator />

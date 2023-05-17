@@ -80,7 +80,9 @@ const Application = ({
 }: ApplicationProps) => {
   const modules: Module[] = useRef([authModule, ...modulesProvided]).current;
 
-  RouterProvider.retrocompatibilityAOS6 = configuration?.retrocompatibilityAOS6;
+  RouterProvider.enableRetrocompatibilityWithAOSv6(
+    configuration?.retrocompatibilityAOS6,
+  );
 
   return (
     <ContextsProvider

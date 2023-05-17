@@ -24,9 +24,11 @@ function emptyResponse() {
 }
 
 export async function getMobileConfigs() {
+  const route = await RouterProvider.get('App');
+
   return axiosApiProvider
     .post({
-      url: `${RouterProvider.get('App')}/search`,
+      url: `${route}/search`,
       data: {
         data: {
           criteria: [

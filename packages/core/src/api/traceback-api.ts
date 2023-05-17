@@ -28,8 +28,10 @@ interface traceErrorProps {
   userId: number;
 }
 
-export const traceError = ({message, cause, userId}: traceErrorProps) => {
-  return axios.put(RouterProvider.get('TraceBack'), {
+export async function traceError({message, cause, userId}: traceErrorProps) {
+  const route = await RouterProvider.get('TraceBack');
+
+  return axios.put(route, {
     data: {
       origin: 'mobile app',
       typeSelect: TECHNICAL_ABNORMALITY,
@@ -41,4 +43,4 @@ export const traceError = ({message, cause, userId}: traceErrorProps) => {
       internalUser: {id: userId},
     },
   });
-};
+}

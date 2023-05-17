@@ -19,7 +19,7 @@
 import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
 
 export async function fetchSupplychainConfig() {
-  return axiosApiProvider.get({
-    url: RouterProvider.get('AppSupplychain'),
-  });
+  const route = await RouterProvider.get('AppSupplychain');
+
+  return axiosApiProvider.get({url: route});
 }
