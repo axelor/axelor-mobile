@@ -298,6 +298,7 @@ const getStyles = Colors =>
     },
     circleButton: {
       marginHorizontal: 5,
+      width: 50 + 50 * (1 / 3),
     },
     headerPlanning: {
       flexDirection: 'row',
