@@ -59,19 +59,17 @@ const UserScreen = ({children}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
-  // TODO: Please remove this after test
-  const {addHeaderBand} = useHeaderBand();
+  const {registerHeaderBand} = useHeaderBand();
 
   // TODO: Please remove this after test
   useEffect(() => {
-    addHeaderBand({
+    registerHeaderBand({
       key: 'dev_env',
       text: 'dev',
       color: Colors.errorColor,
-      showIf: () => true,
+      showIf: true,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Colors]);
+  }, [Colors, registerHeaderBand]);
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));

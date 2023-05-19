@@ -25,3 +25,4 @@ export {
   HeaderBandItem,
 } from './types';
 export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';
+export {HeaderBandHelper} from './header-band-context.helper';

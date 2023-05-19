@@ -28,16 +28,12 @@ import {HeaderBandHelper} from './header-band-context.helper';
 
 interface HeaderBandContextState {
   allBands: HeaderBandItem[];
-  filteredBands: HeaderBandItem[];
-  filterHeaderBands: () => HeaderBandItem[];
-  addHeaderBand: (band: HeaderBandItem) => void;
-  upadateHeaderBand: (band: HeaderBandItem) => void;
-  removeHeaderBand: (band: HeaderBandItem) => void;
+  registerHeaderBand: (band: HeaderBandItem) => void;
 }
 
 interface HeaderBandAction {
   type: string;
-  payload?: HeaderBandItem | UpdateHeaderBandActionPayload | string;
+  payload: HeaderBandItem;
 }
 
 interface UpdateHeaderBandActionPayload {
@@ -47,23 +43,9 @@ interface UpdateHeaderBandActionPayload {
 
 const defaultHeaderBandContext = {
   allBands: [],
-  filteredBands: [],
-  filterHeaderBands: () => {
+  registerHeaderBand: () => {
     throw new Error(
-      'HeaderBandProvider should be mounted to filter header band',
-    );
-  },
-  addHeaderBand: () => {
-    throw new Error('HeaderBandProvider should be mounted to add header band');
-  },
-  upadateHeaderBand: () => {
-    throw new Error(
-      'HeaderBandProvider should be mounted to update header band',
-    );
-  },
-  removeHeaderBand: () => {
-    throw new Error(
-      'HeaderBandProvider should be mounted to remove header band',
+      'HeaderBandProvider should be mounted to register header band',
     );
   },
 };
@@ -73,10 +55,7 @@ const HeaderBandContext = createContext<HeaderBandContextState>(
 );
 
 const actionTypes = {
-  fitlerHeaderBand: 'fitlerHeaderBand',
-  addHeaderBand: 'addHeaderBand',
-  upadateHeaderBand: 'upadateHeaderBand',
-  removeHeaderBand: 'removeHeaderBand',
+  registerHeaderBand: 'registerHeaderBand',
 };
 
 const headerBandReducer = (
@@ -84,68 +63,22 @@ const headerBandReducer = (
   action: HeaderBandAction,
 ): HeaderBandContextState => {
   switch (action.type) {
-    case actionTypes.addHeaderBand: {
-      const _allBands = HeaderBandHelper.addHeaderBand(
-        state.allBands,
-        action.payload as HeaderBandItem,
-      );
-
+    case actionTypes.registerHeaderBand: {
       return {
         ...state,
-        allBands: _allBands,
-        filteredBands: HeaderBandHelper.filterBands(_allBands),
-      };
-    }
-    case actionTypes.upadateHeaderBand: {
-      const {key, band} = action.payload as UpdateHeaderBandActionPayload;
-      const _allBands = HeaderBandHelper.updateHeaderBand(
-        state.allBands,
-        key,
-        band,
-      );
-
-      return {
-        ...state,
-        allBands: _allBands,
-        filteredBands: HeaderBandHelper.filterBands(_allBands),
-      };
-    }
-    case actionTypes.removeHeaderBand: {
-      const _allBands = HeaderBandHelper.removeHeaderBand(
-        state.allBands,
-        action.payload as string,
-      );
-
-      return {
-        ...state,
-        allBands: _allBands,
-        filteredBands: HeaderBandHelper.filterBands(_allBands),
-      };
-    }
-    case actionTypes.fitlerHeaderBand: {
-      return {
-        ...state,
-        filteredBands: HeaderBandHelper.filterBands(state.allBands),
+        allBands: HeaderBandHelper.registerHeaderBand(
+          state.allBands,
+          action.payload as HeaderBandItem,
+        ),
       };
     }
   }
 };
 
 const actions = {
-  addHeaderBand: band => ({
-    type: actionTypes.addHeaderBand,
+  registerHeaderBand: band => ({
+    type: actionTypes.registerHeaderBand,
     payload: band,
-  }),
-  upadateHeaderBand: (key, band) => ({
-    type: actionTypes.upadateHeaderBand,
-    payload: {key, band},
-  }),
-  removeHeaderBand: key => ({
-    type: actionTypes.removeHeaderBand,
-    payload: key,
-  }),
-  fitlerHeaderBand: () => ({
-    type: actionTypes.fitlerHeaderBand,
   }),
 };
 
@@ -155,41 +88,17 @@ export const HeaderBandProvider = ({children}) => {
     defaultHeaderBandContext,
   );
 
-  const addHeaderBand = useCallback(
-    band => dispatch(actions.addHeaderBand(band)),
-    [],
-  );
-
-  const updateHeaderBand = useCallback(
-    (key, band) => dispatch(actions.upadateHeaderBand(key, band)),
-    [],
-  );
-
-  const removeHeaderBand = useCallback(
-    key => dispatch(actions.removeHeaderBand(key)),
-    [],
-  );
-
-  const fitlerHeaderBand = useCallback(
-    () => dispatch(actions.fitlerHeaderBand()),
+  const registerHeaderBand = useCallback(
+    band => dispatch(actions.registerHeaderBand(band)),
     [],
   );
 
   const headerBandContextState = useMemo<HeaderBandContextState>(
     () => ({
       ...state,
-      addHeaderBand,
-      updateHeaderBand,
-      removeHeaderBand,
-      fitlerHeaderBand,
+      registerHeaderBand: registerHeaderBand,
     }),
-    [
-      state,
-      addHeaderBand,
-      updateHeaderBand,
-      removeHeaderBand,
-      fitlerHeaderBand,
-    ],
+    [state, registerHeaderBand],
   );
 
   return (

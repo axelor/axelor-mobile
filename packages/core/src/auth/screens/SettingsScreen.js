@@ -61,7 +61,7 @@ const SettingsScreen = ({route, children, navigation}) => {
   const dispatch = useDispatch();
 
   // TODO: Please remove this after test
-  const {addHeaderBand, updateHeaderBand} = useHeaderBand();
+  const {registerHeaderBand} = useHeaderBand();
 
   useEffect(() => {
     if (message) {
@@ -73,20 +73,20 @@ const SettingsScreen = ({route, children, navigation}) => {
 
   // TODO: Please remove this after test
   useEffect(() => {
-    addHeaderBand({
+    registerHeaderBand({
       key: 'setting_env',
       text: 'setting',
       color: Colors.infoColor,
-      showIf: () => true,
+      showIf: true,
     });
 
-    updateHeaderBand('dev_env', {
+    registerHeaderBand({
+      key: 'dev_env',
       text: 'dev update',
       color: Colors.warningColor,
-      showIf: () => true,
+      showIf: true,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Colors]);
+  }, [Colors, registerHeaderBand]);
 
   const handleToggleConnection = useCallback(
     state => {

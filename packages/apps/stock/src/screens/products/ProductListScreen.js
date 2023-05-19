@@ -43,14 +43,12 @@ const ProductListScreen = ({navigation}) => {
   const [filter, setFilter] = useState(null);
   const [navigate, setNavigate] = useState(false);
 
-  // TODO: Please remove this after test
-  const {removeHeaderBand} = useHeaderBand();
+  const {registerHeaderBand} = useHeaderBand();
 
   // TODO: Please remove this after test
   useEffect(() => {
-    removeHeaderBand('setting_env');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    registerHeaderBand({key: 'setting_env', showIf: false});
+  }, [registerHeaderBand]);
 
   const fetchProductsAPI = useCallback(
     (page = 0) => {
