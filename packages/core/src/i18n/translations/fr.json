@@ -81,5 +81,6 @@
   "Base_SliceAction_MarkMailMessageAsRead": "marquer le message comme lu",
   "Base_SliceAction_MarkAllMailMessageAsRead": "marquer tous les messages comme lus",
   "Base_SliceAction_FetchMenuConfig": "récupération des configs de menus",
-  "Base_SliceAction_FetchMobileConfig": "récupération des configs mobile"
+  "Base_SliceAction_FetchMobileConfig": "récupération des configs mobile",
+  "Base_Offline_Mode": "La connexion internet est désactivée"
 }

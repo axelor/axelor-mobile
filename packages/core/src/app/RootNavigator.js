@@ -20,12 +20,12 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {default as CoreNavigator} from '../navigator/Navigator';
-import {useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getNetInfo} from '../api/net-info-utils';
-import useTranslator from '../i18n/hooks/use-translator';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
+import {onlineSlice, useOnline} from '../features/onlineSlice';
+import {useDispatch} from '../redux/hooks';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -36,14 +36,9 @@ const RootNavigator = ({
   onRefresh,
   configuration,
 }) => {
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
-  const {
-    isHeaderIndicatorVisible,
-    setIsHeaderIndicatorVisible,
-    setHeaderIndicatorState,
-  } = useConfig();
   const {logged} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const online = useOnline();
 
   const modulesHeaderRegisters = useMemo(() => {
     return modules
@@ -67,29 +62,15 @@ const RootNavigator = ({
   const checkInternetConnection = useCallback(async () => {
     const {isConnected} = await getNetInfo();
     if (!isConnected) {
-      setHeaderIndicatorState({
-        text: I18n.t('Base_NoConnection'),
-        color: Colors.secondaryColor.background_light,
-      });
-      setIsHeaderIndicatorVisible(true);
+      if (online.isEnabled) {
+        dispatch(onlineSlice.actions.disable());
+      }
     } else {
-      if (isHeaderIndicatorVisible) {
-        setHeaderIndicatorState({
-          text: I18n.t('Base_Connected'),
-          color: Colors.primaryColor.background,
-          textColor: 'white',
-        });
-        setIsHeaderIndicatorVisible(false);
+      if (!online.isEnabled) {
+        dispatch(onlineSlice.actions.enable());
       }
     }
-  }, [
-    I18n,
-    Colors.primaryColor,
-    Colors.secondaryColor,
-    isHeaderIndicatorVisible,
-    setIsHeaderIndicatorVisible,
-    setHeaderIndicatorState,
-  ]);
+  }, [dispatch, online.isEnabled]);
 
   useEffect(() => {
     const interval = setInterval(checkInternetConnection, 2000);

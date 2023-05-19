@@ -39,12 +39,14 @@ import {
   fetchActiveUser,
 } from '../features/userSlice';
 import {fetchBaseConfig, fetchMobileSettings} from '../features/configSlice';
+import {useOnline} from '../../features/onlineSlice';
 
 const UserScreen = ({children}) => {
   const Theme = useTheme();
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const online = useOnline();
 
   const {companyList} = useSelector(state => state.company);
   const {userId, baseUrl} = useSelector(state => state.auth);
@@ -53,6 +55,16 @@ const UserScreen = ({children}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'offlineMode',
+      text: I18n.t('Base_Offline_Mode'),
+      color: Colors.cautionColor,
+      order: 10,
+      showIf: online.isEnabled === false,
+    });
+  }, [I18n, baseConfig, Colors, online.isEnabled, registerHeaderBand]);
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
