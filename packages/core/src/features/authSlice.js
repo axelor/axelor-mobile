@@ -18,7 +18,7 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {getActiveUserId, loginApi} from '../api/login-api';
+import {getActiveUserInfo, loginApi} from '../api/login-api';
 import {saveUrlInStorage} from '../sessions';
 import {testUrl} from '../utils/api';
 
@@ -31,11 +31,18 @@ export const login = createAsyncThunk(
       username,
       password,
     );
-    const userId = await getActiveUserId();
+    const {userId, applicationMode} = await getActiveUserInfo();
 
     saveUrlInStorage(urlWithProtocol);
 
-    return {url: urlWithProtocol, token, jsessionId, userId, interceptorId};
+    return {
+      url: urlWithProtocol,
+      token,
+      jsessionId,
+      userId,
+      interceptorId,
+      applicationMode,
+    };
   },
 );
 
@@ -56,6 +63,7 @@ const initialState = {
   token: null,
   jsessionId: null,
   interceptorId: null,
+  applicationMode: null,
   error: null,
 };
 
@@ -71,7 +79,8 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const {url, token, jsessionId, userId, interceptorId} = action.payload;
+      const {url, token, jsessionId, userId, interceptorId, applicationMode} =
+        action.payload;
       state.logged = token != null;
       state.loading = false;
       state.userId = userId;
@@ -80,6 +89,7 @@ export const authSlice = createSlice({
       state.jsessionId = jsessionId;
       state.error = null;
       state.interceptorId = interceptorId;
+      state.applicationMode = applicationMode;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -93,6 +103,7 @@ export const authSlice = createSlice({
       state.jsessionId = null;
       state.error = null;
       state.interceptorId = null;
+      state.applicationMode = null;
     });
   },
 });
