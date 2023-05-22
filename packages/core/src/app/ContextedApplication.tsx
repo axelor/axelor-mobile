@@ -31,7 +31,7 @@ import {ErrorBoundary} from '@axelor/aos-mobile-error';
 import RootNavigator from './RootNavigator';
 import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
-import {getActiveUserId} from '../api/login-api';
+import {getActiveUserInfo} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
 import {Camera, CameraScanner, HeaderBandList, Scanner} from '../components';
 import {RouterProvider} from '../config';
@@ -104,6 +104,11 @@ const ContextedApplication = ({
   useEffect(() => {
     RouterProvider.get('TraceBack').then(setTracebackRoute);
   }, []);
+
+  const getActiveUserId = useCallback(
+    () => getActiveUserInfo().then(({userId}) => userId),
+    [],
+  );
 
   return (
     <>
