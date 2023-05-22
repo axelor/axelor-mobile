@@ -23,7 +23,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import axios from 'axios';
 import {
   LoadingIndicator,
-  HeaderIndicator,
   ThemeColors,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -123,7 +122,6 @@ const ContextedApplication = ({
         additionalURL={tracebackRoute}>
         <NavigationContainer>
           <HeaderBandList />
-          <HeaderIndicator />
           <LoadingIndicator />
           <RootNavigator
             modules={modules}
