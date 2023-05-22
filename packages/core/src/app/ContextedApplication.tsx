@@ -33,7 +33,7 @@ import {Module} from './Module';
 import Translator from '../i18n/component/Translator';
 import {getActiveUserId} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
-import {Camera, CameraScanner, Scanner} from '../components';
+import {Camera, CameraScanner, HeaderBandList, Scanner} from '../components';
 import {RouterProvider} from '../config';
 
 interface proxy {
@@ -117,6 +117,7 @@ const ContextedApplication = ({
         putMethod={traceBackPutMethod}
         additionalURL={tracebackRoute}>
         <NavigationContainer>
+          <HeaderBandList />
           <HeaderIndicator />
           <LoadingIndicator />
           <RootNavigator
