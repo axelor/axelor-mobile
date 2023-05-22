@@ -36,11 +36,6 @@ interface HeaderBandAction {
   payload: HeaderBandItem;
 }
 
-interface UpdateHeaderBandActionPayload {
-  key: string;
-  band: HeaderBandItem;
-}
-
 const defaultHeaderBandContext = {
   allBands: [],
   registerHeaderBand: () => {
