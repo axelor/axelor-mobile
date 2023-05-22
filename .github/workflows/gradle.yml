@@ -92,7 +92,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  relasease:
+  create-tag-release:
     needs: [format, build, check-license-lines]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     name: Release pushed tag
