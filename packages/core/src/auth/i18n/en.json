@@ -19,6 +19,7 @@
   "Auth_Choose_Session": "Choose a session",
   "Auth_Delete_Session": "Delete session",
   "Auth_InfoSession": "To connect to the mobile application, you must create a session by entering the url of your instance and your username and password. Once you have created your first session, you will be able to log in more easily by entering only the password. You can also manage a set of sessions.",
+  "Auth_Dev_Mode": "Test environment",
   "User_User": "User",
   "User_VirtualKeyboardConfig": "Hide virtual keyboard",
   "User_ShowFilter": "Show filter",
