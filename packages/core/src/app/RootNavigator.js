@@ -19,13 +19,14 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {default as CoreNavigator} from '../navigator/Navigator';
 import {getNetInfo} from '../api/net-info-utils';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
-import {onlineSlice, useOnline} from '../features/onlineSlice';
-import {useDispatch} from '../redux/hooks';
+import {useHeaderBand} from '../header';
+import {useTranslator} from '../i18n';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -36,9 +37,12 @@ const RootNavigator = ({
   onRefresh,
   configuration,
 }) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  const {registerHeaderBand} = useHeaderBand();
+
   const {logged} = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const online = useOnline();
 
   const modulesHeaderRegisters = useMemo(() => {
     return modules
@@ -61,16 +65,15 @@ const RootNavigator = ({
 
   const checkInternetConnection = useCallback(async () => {
     const {isConnected} = await getNetInfo();
-    if (!isConnected) {
-      if (online.isEnabled) {
-        dispatch(onlineSlice.actions.disable());
-      }
-    } else {
-      if (!online.isEnabled) {
-        dispatch(onlineSlice.actions.enable());
-      }
-    }
-  }, [dispatch, online.isEnabled]);
+
+    registerHeaderBand({
+      key: 'noInternetConnection',
+      text: I18n.t('Base_NoConnection'),
+      color: Colors.secondaryColor,
+      order: 15,
+      showIf: !isConnected,
+    });
+  }, [Colors, I18n, registerHeaderBand]);
 
   useEffect(() => {
     const interval = setInterval(checkInternetConnection, 2000);
