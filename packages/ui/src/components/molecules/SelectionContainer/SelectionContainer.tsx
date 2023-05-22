@@ -208,7 +208,7 @@ const SelectionContainer = ({
 
   return (
     <View style={[styles.flatListContainer, style]}>
-      <ScrollView nestedScrollEnabled={true}>
+      <ScrollView keyboardShouldPersistTaps="always" nestedScrollEnabled={true}>
         {isPicker ? renderListItemContainerPicker() : renderListItemContainer()}
       </ScrollView>
     </View>
