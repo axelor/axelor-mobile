@@ -19,13 +19,14 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {default as CoreNavigator} from '../navigator/Navigator';
-import {useConfig, useThemeColor} from '@axelor/aos-mobile-ui';
 import {getNetInfo} from '../api/net-info-utils';
-import useTranslator from '../i18n/hooks/use-translator';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
+import {useHeaderBand} from '../header';
+import {useTranslator} from '../i18n';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -38,11 +39,9 @@ const RootNavigator = ({
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const {
-    isHeaderIndicatorVisible,
-    setIsHeaderIndicatorVisible,
-    setHeaderIndicatorState,
-  } = useConfig();
+
+  const {registerHeaderBand} = useHeaderBand();
+
   const {logged} = useSelector(state => state.auth);
 
   const modulesHeaderRegisters = useMemo(() => {
@@ -66,30 +65,15 @@ const RootNavigator = ({
 
   const checkInternetConnection = useCallback(async () => {
     const {isConnected} = await getNetInfo();
-    if (!isConnected) {
-      setHeaderIndicatorState({
-        text: I18n.t('Base_NoConnection'),
-        color: Colors.secondaryColor.background_light,
-      });
-      setIsHeaderIndicatorVisible(true);
-    } else {
-      if (isHeaderIndicatorVisible) {
-        setHeaderIndicatorState({
-          text: I18n.t('Base_Connected'),
-          color: Colors.primaryColor.background,
-          textColor: 'white',
-        });
-        setIsHeaderIndicatorVisible(false);
-      }
-    }
-  }, [
-    I18n,
-    Colors.primaryColor,
-    Colors.secondaryColor,
-    isHeaderIndicatorVisible,
-    setIsHeaderIndicatorVisible,
-    setHeaderIndicatorState,
-  ]);
+
+    registerHeaderBand({
+      key: 'noInternetConnection',
+      text: I18n.t('Base_NoConnection'),
+      color: Colors.secondaryColor,
+      order: 15,
+      showIf: !isConnected,
+    });
+  }, [Colors, I18n, registerHeaderBand]);
 
   useEffect(() => {
     const interval = setInterval(checkInternetConnection, 2000);

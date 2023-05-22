@@ -22,6 +22,7 @@ import {headerActionsProvider, useHeaderBand} from '../../header';
 import {useSelector} from '../../redux/hooks';
 import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
+import {useOnline} from '../../features/onlineSlice';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
@@ -55,6 +56,8 @@ const useUserProfileActions = () => {
 const useAuthHeaderBands = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const online = useOnline();
+
   const {registerHeaderBand} = useHeaderBand();
 
   const {applicationMode} = useSelector(state => state.auth);
@@ -68,4 +71,14 @@ const useAuthHeaderBands = () => {
       showIf: applicationMode === 'dev',
     });
   }, [I18n, Colors, applicationMode, registerHeaderBand]);
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'offlineMode',
+      text: I18n.t('Base_Offline_Mode'),
+      color: Colors.cautionColor,
+      order: 10,
+      showIf: online.isEnabled === false,
+    });
+  }, [I18n, Colors, registerHeaderBand, online.isEnabled]);
 };
