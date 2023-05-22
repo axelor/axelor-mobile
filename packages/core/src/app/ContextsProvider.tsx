@@ -38,6 +38,7 @@ import {addModuleModels} from './context.helper';
 import {objectFieldsProvider} from '../apiProviders';
 import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI} from '../models';
+import {HeaderBandProvider} from '../header';
 
 const ApplicationContext = createContext(null);
 
@@ -156,7 +157,7 @@ const ContextsProvider = ({
               defaultTheme={defaultWritingTheme}
               writingStylesConfig={writingStylesConfig}>
               <ConfigProvider showModulesSubtitle={showModulesSubtitle}>
-                {children}
+                <HeaderBandProvider>{children}</HeaderBandProvider>
               </ConfigProvider>
             </WritingThemeProvider>
           </ThemeProvider>
