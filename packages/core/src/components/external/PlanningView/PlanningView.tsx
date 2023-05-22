@@ -55,8 +55,8 @@ const PlanningView = ({
   fetchbyMonth,
   loading = false,
   itemList = [],
-  changeWeekButton = false,
-  returnToDayButton = false,
+  changeWeekButton = true,
+  returnToDayButton = true,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -175,7 +175,7 @@ const PlanningView = ({
             style={styles.circleButton}
             iconName="arrow-left"
             onPress={lastWeekBtnOnPress}
-            size={35}
+            size={30}
           />
         )}
         {returnToDayButton && (
@@ -183,7 +183,7 @@ const PlanningView = ({
             style={styles.circleButton}
             iconName="calendar-day"
             onPress={todayBtnOnPress}
-            size={35}
+            size={30}
           />
         )}
         {changeWeekButton && (
@@ -191,7 +191,7 @@ const PlanningView = ({
             style={styles.circleButton}
             iconName="arrow-right"
             onPress={nextWeekBtnOnPress}
-            size={35}
+            size={30}
           />
         )}
       </View>
@@ -298,6 +298,7 @@ const getStyles = Colors =>
     },
     circleButton: {
       marginHorizontal: 5,
+      marginTop: 5,
       width: 50 + 50 * (1 / 3),
     },
     headerPlanning: {
