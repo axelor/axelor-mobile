@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -24,18 +24,26 @@ import {
   StyleSheet,
 } from 'react-native';
 
+const DEFAULT_OFFSET = {ios: 70, android: 180};
+
 const KeyboardAvoidingScrollView = ({
   globalStyle,
   style,
   children,
-  keyboardOffset = {ios: 70, android: 180},
+  keyboardOffset = {},
 }) => {
+  const keyboardVerticalOffset = useMemo(() => {
+    return {...DEFAULT_OFFSET, ...keyboardOffset};
+  }, [keyboardOffset]);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.containerKeyboard}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? keyboardOffset?.ios : keyboardOffset?.android
+        Platform.OS === 'ios'
+          ? keyboardVerticalOffset?.ios
+          : keyboardVerticalOffset?.android
       }>
       <ScrollView
         style={globalStyle}
