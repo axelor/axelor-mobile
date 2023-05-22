@@ -36,7 +36,7 @@ const ProductSearchBar = ({
   oneFilter = false,
   isFocus = false,
   changeScreenAfter = false,
-  onFetchDataAction = () => {},
+  onFetchDataAction,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const ProductSearchBar = ({
 
   const fetchProductsAPI = useCallback(
     ({page = 0, searchValue}) => {
-      onFetchDataAction(searchValue);
+      onFetchDataAction && onFetchDataAction(searchValue);
       dispatch(searchProducts({page, searchValue}));
     },
     [dispatch, onFetchDataAction],

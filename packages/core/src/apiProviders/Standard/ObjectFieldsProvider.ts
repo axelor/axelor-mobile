@@ -19,6 +19,7 @@
 import {object, Schema} from 'yup';
 import {Models, ObjectFields, SearchFields, SortFields} from '../../app/Module';
 import {CriteriaField, CriteriaGroup} from '../Model';
+import {checkNullString} from '../../utils/string';
 
 class ObjectFieldsProvider {
   private objectFields: ObjectFields;
@@ -82,7 +83,7 @@ class ObjectFieldsProvider {
 
     let criteria: CriteriaField[] = [];
 
-    if (searchFields.length > 0 && searchValue != null) {
+    if (searchFields.length > 0 && !checkNullString(searchValue)) {
       criteria = searchFields.map(_searchField => ({
         fieldName: _searchField,
         operator: 'like',

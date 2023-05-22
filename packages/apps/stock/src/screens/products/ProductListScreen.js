@@ -45,6 +45,10 @@ const ProductListScreen = ({navigation}) => {
     [dispatch],
   );
 
+  const handleDataSearch = useCallback(searchValue => {
+    setFilter(searchValue);
+  }, []);
+
   const showProductDetails = useCallback(
     product => {
       if (product != null) {
@@ -75,7 +79,7 @@ const ProductListScreen = ({navigation}) => {
           <ProductSearchBar
             scanKey={productScanKey}
             onChange={showProductDetails}
-            onFetchDataAction={setFilter}
+            onFetchDataAction={handleDataSearch}
             showDetailsPopup={false}
             navigate={navigate}
             oneFilter={true}
