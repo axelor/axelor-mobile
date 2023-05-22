@@ -18,13 +18,14 @@
 
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {headerActionsProvider} from '../../header';
+import {headerActionsProvider, useHeaderBand} from '../../header';
 import {useSelector} from '../../redux/hooks';
 import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
+  useAuthHeaderBands();
 };
 
 const useUserProfileActions = () => {
@@ -49,4 +50,22 @@ const useUserProfileActions = () => {
       ],
     });
   }, [Colors, I18n, navigation, user]);
+};
+
+const useAuthHeaderBands = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const {registerHeaderBand} = useHeaderBand();
+
+  const {applicationMode} = useSelector(state => state.auth);
+
+  useEffect(() => {
+    registerHeaderBand({
+      key: 'devMode',
+      text: I18n.t('Auth_Dev_Mode'),
+      color: Colors.importantColor,
+      order: 0,
+      showIf: applicationMode === 'dev',
+    });
+  }, [I18n, Colors, applicationMode, registerHeaderBand]);
 };

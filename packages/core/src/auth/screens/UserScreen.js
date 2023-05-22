@@ -30,13 +30,7 @@ import {
   useTheme,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {
-  logout,
-  useDispatch,
-  useHeaderBand,
-  useSelector,
-  useTranslator,
-} from '../../index';
+import {logout, useDispatch, useSelector, useTranslator} from '../../index';
 import {fetchCompanies} from '../features/companySlice';
 import {fetchLanguages} from '../features/languageSlice';
 import {
@@ -53,23 +47,12 @@ const UserScreen = ({children}) => {
   const dispatch = useDispatch();
 
   const {companyList} = useSelector(state => state.company);
-  const {userId, baseUrl, applicationMode} = useSelector(state => state.auth);
+  const {userId, baseUrl} = useSelector(state => state.auth);
   const {languageList} = useSelector(state => state.language);
   const {baseConfig} = useSelector(state => state.config);
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
-  const {registerHeaderBand} = useHeaderBand();
-
-  useEffect(() => {
-    registerHeaderBand({
-      key: 'devMode',
-      text: I18n.t('Auth_Dev_Mode'),
-      color: Colors.importantColor,
-      order: 0,
-      showIf: applicationMode === 'dev',
-    });
-  }, [I18n, baseConfig, Colors, applicationMode, registerHeaderBand]);
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
