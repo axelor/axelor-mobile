@@ -70,6 +70,12 @@ You can also activate/desactivate apps directly for the configuration module whi
 - Start Metro for development : `yarn start`
 - Create release AP : `cd android && ./gradlew app:assembleRelease`
 
-## StoryBook
+## Storybook
 
-- Start storybook : `yarn storybook`
+The project provides a storybook to visualize the rendering of the different components available in the UI package.
+
+The stories are available in the `packages/ui/stories` folder.
+
+To start the storybook, just run the command `yarn storybook`. The storybook is then available at the following address: [localhost:6006](http://localhost:6006/).
+
+The official documentation of the storybook tool used is [here](https://storybook.js.org/).
