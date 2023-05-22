@@ -18,7 +18,12 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HorizontalRule, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  CircleButton,
+  HorizontalRule,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {Agenda, AgendaEntry, DateData} from 'react-native-calendars';
 import {
   AgendaEvent,
@@ -39,6 +44,8 @@ interface PlanningProps {
   renderItem?: (item: AgendaItem) => React.ReactNode;
   renderFullDayItem?: (item: AgendaItem) => React.ReactNode;
   itemList?: AgendaEvent[];
+  changeWeekButton: boolean;
+  returnToDayButton: boolean;
 }
 
 const PlanningView = ({
@@ -48,6 +55,8 @@ const PlanningView = ({
   fetchbyMonth,
   loading = false,
   itemList = [],
+  changeWeekButton = true,
+  returnToDayButton = true,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -63,6 +72,8 @@ const PlanningView = ({
   );
 
   const [fetchDate, setFetchDate] = useState<any>();
+
+  const [currentDate, setCurrentDate] = useState(new Date().toISOString());
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -141,9 +152,52 @@ const PlanningView = ({
     [fetchbyMonth],
   );
 
+  const todayBtnOnPress = () => {
+    setCurrentDate(new Date().toISOString());
+  };
+  const nextWeekBtnOnPress = () => {
+    var firstDay = new Date(currentDate);
+    var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+    setCurrentDate(nextWeek.toISOString());
+  };
+
+  const lastWeekBtnOnPress = () => {
+    var firstDay = new Date(currentDate);
+    var lastWeek = new Date(firstDay.getTime() - 7 * 24 * 60 * 60 * 1000);
+    setCurrentDate(lastWeek.toISOString());
+  };
+
   return (
     <View style={styles.agendaContainer}>
+      <View style={styles.headerPlanning}>
+        {changeWeekButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="arrow-left"
+            onPress={lastWeekBtnOnPress}
+            size={30}
+          />
+        )}
+        {returnToDayButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="calendar-day"
+            onPress={todayBtnOnPress}
+            size={30}
+          />
+        )}
+        {changeWeekButton && (
+          <CircleButton
+            style={styles.circleButton}
+            iconName="arrow-right"
+            onPress={nextWeekBtnOnPress}
+            size={30}
+          />
+        )}
+      </View>
       <Agenda
+        onDayPress={date => setCurrentDate(date.dateString)}
+        selected={currentDate}
         items={agendaItems}
         loadItemsForMonth={handleLoadItemsForMonth}
         pastScrollRange={numberMonthsAroundToday}
@@ -171,6 +225,8 @@ const PlanningView = ({
           agendaKnobColor: Colors.secondaryColor.background,
           todayBackgroundColor: Colors.secondaryColor.background_light,
         }}
+        current={currentDate}
+        key={currentDate}
       />
     </View>
   );
@@ -180,6 +236,7 @@ const getStyles = Colors =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
+      backgroundColor: Colors.backgroundColor,
     },
     emptyDate: {
       height: 15,
@@ -238,6 +295,17 @@ const getStyles = Colors =>
       marginTop: 10,
       width: '60%',
       alignSelf: 'center',
+    },
+    circleButton: {
+      marginHorizontal: 5,
+      marginTop: 5,
+      width: 50 + 50 * (1 / 3),
+    },
+    headerPlanning: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignContent: 'flex-end',
+      alignSelf: 'flex-end',
     },
   });
 
