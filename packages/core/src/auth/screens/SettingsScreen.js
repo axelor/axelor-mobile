@@ -38,9 +38,8 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
-import {useHeaderBand} from '../../header';
 
-const SettingsScreen = ({route, children, navigation}) => {
+const SettingsScreen = ({route, children}) => {
   const {message} = useSelector(state => state.config);
   const {
     showFilter,
@@ -53,15 +52,11 @@ const SettingsScreen = ({route, children, navigation}) => {
   } = useConfig();
   const language = useSelector(selectLanguage);
   const {baseUrl} = useSelector(state => state.auth);
-
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
-
-  // TODO: Please remove this after test
-  const {registerHeaderBand} = useHeaderBand();
 
   useEffect(() => {
     if (message) {
@@ -70,23 +65,6 @@ const SettingsScreen = ({route, children, navigation}) => {
       dispatch(clearMessage());
     }
   }, [message, dispatch, setActivityIndicator]);
-
-  // TODO: Please remove this after test
-  useEffect(() => {
-    registerHeaderBand({
-      key: 'setting_env',
-      text: 'setting',
-      color: Colors.infoColor,
-      showIf: true,
-    });
-
-    registerHeaderBand({
-      key: 'dev_env',
-      text: 'dev update',
-      color: Colors.warningColor,
-      showIf: true,
-    });
-  }, [Colors, registerHeaderBand]);
 
   const handleToggleConnection = useCallback(
     state => {
