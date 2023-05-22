@@ -13,7 +13,6 @@ on:
     types: [released]
     branches:
       - main
-      - '6.5'
 
 jobs:
   format:
@@ -63,16 +62,6 @@ jobs:
         with:
           name: apk
           path: android/app/build/outputs/apk/release/app-release.apk
-
-  check-license-lines:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-      - name: check-license
-        run: deno run --allow-read https://deno.land/x/license_checker@v3.2.2/main.ts
 
   check-license-lines:
     runs-on: ubuntu-latest
