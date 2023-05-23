@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useEffect} from 'react';
+import {useEffect, useMemo} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {headerActionsProvider, useHeaderBand} from '../../header';
 import {useSelector} from '../../redux/hooks';
 import {useTranslator} from '../../i18n';
 import {useNavigation} from '../../hooks/use-navigation';
 import {useOnline} from '../../features/onlineSlice';
+import {formatDateTime} from '../../utils/formatters';
 
 export const useAuthHeaders = () => {
   useUserProfileActions();
@@ -60,17 +61,28 @@ const useAuthHeaderBands = () => {
 
   const {registerHeaderBand} = useHeaderBand();
 
+  const {baseConfig} = useSelector(state => state.config);
+  const {user} = useSelector(state => state.user);
   const {applicationMode} = useSelector(state => state.auth);
+
+  const todayDateT = useMemo(
+    () => user?.todayDateT || baseConfig?.todayDateT,
+    [baseConfig, user],
+  );
 
   useEffect(() => {
     registerHeaderBand({
       key: 'devMode',
-      text: I18n.t('Auth_Dev_Mode'),
+      text: `${I18n.t('Auth_Dev_Mode')} ${
+        todayDateT
+          ? formatDateTime(todayDateT, I18n.t('Base_DateTimeFormat'))
+          : ''
+      }`,
       color: Colors.importantColor,
       order: 0,
       showIf: applicationMode === 'dev',
     });
-  }, [I18n, Colors, applicationMode, registerHeaderBand]);
+  }, [I18n, Colors, applicationMode, registerHeaderBand, todayDateT]);
 
   useEffect(() => {
     registerHeaderBand({
