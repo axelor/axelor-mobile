@@ -41,6 +41,12 @@ export const app_config = {
   enableConnectionSessions: true,
 
   /*
+   * This configuration allows you to activate or not the possibility to block the internet connection.
+   * If enabled, the user will be able to block the internet connection for requests from the settings screen.
+   */
+  allowInternetConnectionBlock: false,
+
+  /*
    * This setting enables backward compatibility with Axelor Open Suite version 6 and below.
    * This means that the app can still function and deliver its full features to users who have not upgraded to the latest versions of Axelor Open Suite.
    * However, it's important to note that enabling this feature may limit access to certain advanced features that are only available on higher versions of Axelor Open Suite.

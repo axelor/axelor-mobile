@@ -69,7 +69,7 @@ const manageError = (
         type: 'error',
         position: 'bottom',
         bottomOffset: 20,
-        text1: `Error ${code}`,
+        text1: `${i18nProvider.i18n.t('Auth_Error')} ${code}`,
         text2: `${i18nProvider.i18n.t('Base_Failed_To')} ${i18nProvider.i18n.t(
           action,
         )}: ${message}.`,

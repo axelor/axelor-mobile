@@ -38,9 +38,15 @@ import {
   useEffectOnline,
   useOnline,
 } from '../../features/onlineSlice';
+import {ApiProviderConfig} from '../../apiProviders/config';
 
-const SettingsScreen = ({route, children}) => {
-  const {message} = useSelector(state => state.config);
+const SettingsScreen = ({children}) => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const Theme = useTheme();
+  const online = useOnline();
+  const dispatch = useDispatch();
+
   const {
     showFilter,
     hideVirtualKeyboard,
@@ -51,12 +57,10 @@ const SettingsScreen = ({route, children}) => {
     showSubtitles,
   } = useConfig();
   const language = useSelector(selectLanguage);
+
+  const {message} = useSelector(state => state.config);
+  const {user} = useSelector(state => state.user);
   const {baseUrl} = useSelector(state => state.auth);
-  const Colors = useThemeColor();
-  const I18n = useTranslator();
-  const Theme = useTheme();
-  const online = useOnline();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (message) {
@@ -121,18 +125,20 @@ const SettingsScreen = ({route, children}) => {
           defaultValue={Theme.isColorBlind}
           onToggle={handleToggleColorBlind}
         />
-        <SwitchCard
-          title={I18n.t('User_BlockConnection')}
-          defaultValue={!online.isEnabled}
-          onToggle={handleToggleConnection}
-        />
+        {ApiProviderConfig.allowConnectionBlock && (
+          <SwitchCard
+            title={I18n.t('User_BlockConnection')}
+            defaultValue={!online.isEnabled}
+            onToggle={handleToggleConnection}
+          />
+        )}
         <SwitchCard
           title={I18n.t('User_Show_Drawer_Subtitles')}
           defaultValue={showSubtitles}
           onToggle={handleToggleSubtitles}
         />
         {children}
-        {route.params.user?.group?.code !== 'admins' ? null : (
+        {user?.group?.code !== 'admins' ? null : (
           <RightIconButton
             icon={
               <Icon

@@ -28,6 +28,7 @@ import ContextsProvider from './ContextsProvider';
 import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
 import {RouterProvider} from '../config';
+import {ApiProviderConfig} from '../apiProviders/config';
 
 interface proxy {
   defaultUrl: string;
@@ -46,6 +47,7 @@ interface appConfig {
   defaultLanguage: string;
   defaultRequestLimit: number;
   enableConnectionSessions: boolean;
+  allowInternetConnectionBlock: boolean;
   retrocompatibilityAOS6: boolean;
   showModulesSubtitle: boolean;
   themeColorsConfig: ThemeColors;
@@ -83,6 +85,9 @@ const Application = ({
   RouterProvider.enableRetrocompatibilityWithAOSv6(
     configuration?.retrocompatibilityAOS6,
   );
+
+  ApiProviderConfig.allowConnectionBlock =
+    configuration.allowInternetConnectionBlock;
 
   return (
     <ContextsProvider
