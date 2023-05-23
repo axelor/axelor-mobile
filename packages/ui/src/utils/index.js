@@ -16,14 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './components';
-export * from './theme';
-export * from './utils';
-export {default as File} from './types/file';
-export {ConfigProvider, useConfig} from './config/ConfigContext';
-export {
-  OutsideAlerterProvider,
-  useClickOutside,
-  OUTSIDE_INDICATOR,
-} from './hooks/use-click-outside';
-export {animationUtil} from './tools/AnimationUtil';
+export {replace, indexOfElement} from './arrays';
+export {getCommonStyles} from './commons-styles';
+export {formatNumber, unformatNumber} from './formatters';
+export {getFromList, getItemsFromList} from './list';
+export {isHalf, getIntegerPart, roundHalf, roundInteger} from './number';
+export {deepCopy} from './objects';
+export {splitInTwo, checkNullString, sliceString} from './strings';

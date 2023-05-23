@@ -63,11 +63,10 @@ const StockCorrectionCreationButton = ({
     [
       dispatch,
       navigation,
-      product.id,
-      product?.trackingNumberConfiguration,
+      product,
       realQty,
-      reason.id,
-      stockLocation.id,
+      reason,
+      stockLocation,
       trackingNumber,
     ],
   );

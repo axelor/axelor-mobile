@@ -17,9 +17,8 @@
  */
 
 import React, {useEffect} from 'react';
-import {Picker} from '@axelor/aos-mobile-ui';
-import {useDispatch} from '@axelor/aos-mobile-core';
-import {useTranslator, useSelector, getFromList} from '@axelor/aos-mobile-core';
+import {getFromList, Picker} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 import {fetchUnit} from '../../../../features/unitSlice';
 

@@ -17,13 +17,8 @@
  */
 
 import React, {useEffect} from 'react';
-import {
-  useTranslator,
-  useSelector,
-  useDispatch,
-  getFromList,
-} from '@axelor/aos-mobile-core';
-import {Picker} from '@axelor/aos-mobile-ui';
+import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {getFromList, Picker} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
 import {fetchStockCorrectionReasons} from '../../../../features/stockCorrectionReasonSlice';
 

@@ -34,7 +34,7 @@ export {
   formatScan,
   formatURL,
 } from './formatters';
-export {filterList, filterListContain, getFromList} from './list';
+export {filterList, filterListContain} from './list';
 export {
   calculateDiff,
   formatDuration,
