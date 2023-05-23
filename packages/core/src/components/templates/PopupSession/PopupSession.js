@@ -19,14 +19,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  Icon,
-  PopUp,
-  useThemeColor,
-  Button,
-  LabelText,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
+import DeviceInfo from 'react-native-device-info';
+import {Icon, PopUp, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
 import {PasswordInput, UsernameInput} from '../../organisms';
 import {ErrorText, LoginButton} from '../../molecules';
 import {
@@ -41,7 +35,6 @@ import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
 import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../../../sessions';
 import {checkNullString} from '../../../utils';
-import DeviceInfo from 'react-native-device-info';
 
 const urlScanKey = 'urlUsername_FastConnection_login';
 
@@ -53,7 +46,6 @@ const PopupSession = ({
   testInstanceConfig,
 }) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loading, error} = useSelector(state => state.auth);
@@ -175,11 +167,13 @@ const PopupSession = ({
             disabled={disabledLogin}
           />
         )}
-        <Button
-          style={styles.delButton}
-          title={I18n.t('Auth_Delete_Session')}
+        <Icon
+          name="trash-alt"
+          size={20}
+          color={Colors.errorColor.background}
+          touchable={true}
           onPress={deleteSession}
-          color={Colors.secondaryColor}
+          style={styles.binIcon}
         />
       </View>
     </PopUp>
@@ -203,14 +197,13 @@ const styles = StyleSheet.create({
     right: 0,
     top: '-10%',
   },
+  binIcon: {
+    position: 'absolute',
+    right: '1%',
+    bottom: '5%',
+  },
   input: {
     width: '100%',
-  },
-  delButton: {
-    marginTop: 10,
-    width: 150,
-    height: 30,
-    elevation: 5,
   },
   labText: {
     width: '95%',

@@ -26,7 +26,13 @@ export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
 export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
 export {default as MailMessageNotificationCard} from './MailMessageNotificationCard/MailMessageNotificationCard';
 export {default as PasswordInput} from './PasswordInput/PasswordInput';
-export {default as SessionNameInput} from './SessionNameInput/SessionNameInput';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
+export {
+  ChooseSessionButton,
+  ConnectSessionButton,
+  CreateSessionButton,
+  NoActiveSessionButton,
+} from './SessionButtons/SessionButtons';
+export {default as SessionNameInput} from './SessionNameInput/SessionNameInput';
 export {default as UrlInput} from './UrlInput/UrlInput';
 export {default as UsernameInput} from './UsernameInput/UsernameInput';

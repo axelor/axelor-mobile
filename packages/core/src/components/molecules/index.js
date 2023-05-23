@@ -23,4 +23,5 @@ export {default as HeaderOptionMenuItem} from './HeaderOptionsMenuItem/HeaderOpt
 export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
+export {default as SessionNumberIndicator} from './SessionNumberIndicator/SessionNumberIndicator';
 export {default as TrackItem} from './TrackItem/TrackItem';
