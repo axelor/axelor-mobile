@@ -37,14 +37,15 @@ import {
   useScannedValueByKey,
 } from '../../../features/scannerSlice';
 import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
-import {login} from '../../../features/authSlice';
-import {getStorageUrl, sessionStorage, useSessions} from '../../../sessions';
+import {isUrlValid, login} from '../../../features/authSlice';
+import {getStorageUrl, sessionStorage} from '../../../sessions';
 import {checkNullString} from '../../../utils';
 import DeviceInfo from 'react-native-device-info';
 
 const urlScanKey = 'urlUsername_createSession_login';
 
 const PopupCreateSession = ({
+  sessionList,
   popupIsOpen,
   setPopupIsOpen,
   showUrlInput,
@@ -62,7 +63,6 @@ const PopupCreateSession = ({
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(urlScanKey);
   const scanData = useCameraScannerValueByKey(urlScanKey);
-  const {sessionList} = useSessions(true);
 
   const urlStorage = useMemo(() => getStorageUrl(), []);
 
@@ -154,6 +154,10 @@ const PopupCreateSession = ({
     }
   }, [dispatch, password, sessionName, url, username, error]);
 
+  const handleTestUrl = useCallback(() => {
+    dispatch(isUrlValid({url}));
+  }, [dispatch, url]);
+
   useEffect(() => {
     setIsOpen(popupIsOpen);
   }, [popupIsOpen]);
@@ -204,6 +208,7 @@ const PopupCreateSession = ({
             readOnly={loading}
             onScanPress={handleScanPress}
             onSelection={enableScanner}
+            onEndFocus={handleTestUrl}
             scanIconColor={
               isEnabled && scanKey === urlScanKey
                 ? Colors.primaryColor.background

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {Text, KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
@@ -30,16 +31,18 @@ import {
   CreateSessionButton,
 } from '../components';
 import {useSessions} from '../sessions';
+import {clearError} from '../features/authSlice';
 
 const SessionManagementScreen = ({route}) => {
   const appVersion = route?.params?.version;
   const testInstanceConfig = route?.params?.testInstanceConfig;
   const releaseInstanceConfig = route?.params?.releaseInstanceConfig;
   const logoFile = route?.params?.logoFile;
+  const dispatch = useDispatch();
 
   const modeDebug = useMemo(() => __DEV__, []);
 
-  const {sessionList, sessionActive} = useSessions(true);
+  const {sessionList, sessionActive} = useSessions();
 
   const showUrlInput = useMemo(() => {
     if (modeDebug) {
@@ -52,6 +55,12 @@ const SessionManagementScreen = ({route}) => {
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
   const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!popupCreateIsOpen && !popupConnectionIsOpen) {
+      dispatch(clearError());
+    }
+  }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
   return (
     <Screen>
@@ -80,6 +89,7 @@ const SessionManagementScreen = ({route}) => {
             />
           </View>
           <PopupCreateSession
+            sessionList={sessionList}
             modeDebug={modeDebug}
             popupIsOpen={popupCreateIsOpen}
             setPopupIsOpen={setPopupCreateIsOpen}
@@ -125,7 +135,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '70%',
-    marginTop: '35%',
+    marginTop: Dimensions.get('window').height < 500 ? '15%' : '35%',
   },
   copyright: {
     position: 'absolute',

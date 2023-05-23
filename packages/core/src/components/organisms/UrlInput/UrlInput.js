@@ -34,6 +34,7 @@ const UrlInput = ({
   readOnly,
   onScanPress,
   onSelection = () => {},
+  onEndFocus = () => {},
   scanIconColor,
   showRequiredFields = false,
 }) => {
@@ -53,6 +54,7 @@ const UrlInput = ({
       readOnly={readOnly}
       required={true}
       onSelection={onSelection}
+      onEndFocus={onEndFocus}
       placeholder={I18n.t('Auth_URL')}
       leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
       rightIconsList={[

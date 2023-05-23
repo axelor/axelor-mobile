@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {getActiveUserInfo, loginApi} from '../api/login-api';
 import {saveUrlInStorage} from '../sessions';
+import {checkNullString} from '../utils';
 import {testUrl} from '../utils/api';
 
 export const login = createAsyncThunk(
@@ -46,6 +47,15 @@ export const login = createAsyncThunk(
   },
 );
 
+export const isUrlValid = createAsyncThunk('auth/isUrlValid', async ({url}) => {
+  if (!checkNullString(url)) {
+    const urlWithProtocol = await testUrl(url);
+    return urlWithProtocol;
+  }
+
+  return url;
+});
+
 export const logout = createAsyncThunk(
   'auth/logout',
   async function (data, {getState}) {
@@ -70,6 +80,11 @@ const initialState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    clearError: state => {
+      state.error = null;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(login.pending, state => {
       state.logged = false;
@@ -95,6 +110,12 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = {...action.error, url: action.meta?.arg?.url};
     });
+    builder.addCase(isUrlValid.fulfilled, (state, action) => {
+      state.error = null;
+    });
+    builder.addCase(isUrlValid.rejected, (state, action) => {
+      state.error = {...action.error, url: action.meta?.arg?.url};
+    });
     builder.addCase(logout.fulfilled, state => {
       state.logged = false;
       state.loading = false;
@@ -107,5 +128,7 @@ export const authSlice = createSlice({
     });
   },
 });
+
+export const {clearError} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

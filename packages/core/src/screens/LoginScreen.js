@@ -33,7 +33,7 @@ import {
   UrlInput,
   UsernameInput,
 } from '../components';
-import {login} from '../features/authSlice';
+import {isUrlValid, login} from '../features/authSlice';
 import {
   useScannedValueByKey,
   useScannerSelector,
@@ -63,7 +63,7 @@ const LoginScreen = ({route}) => {
   const scanData = useCameraScannerValueByKey(urlScanKey);
   const {enable: onScanPress} = useScanActivator(urlScanKey);
   const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
-  const {sessionActive} = useSessions(true);
+  const {sessionActive} = useSessions();
 
   const urlStorage = useMemo(() => getStorageUrl(), []);
 
@@ -148,6 +148,10 @@ const LoginScreen = ({route}) => {
     });
   }, [dispatch, password, url, username]);
 
+  const handleTestUrl = useCallback(() => {
+    dispatch(isUrlValid({url}));
+  }, [dispatch, url]);
+
   useEffect(() => {
     if (sessionActive != null) {
       setUrl(sessionActive.url);
@@ -173,6 +177,7 @@ const LoginScreen = ({route}) => {
               readOnly={loading}
               onScanPress={onScanPress}
               onSelection={enableScanner}
+              onEndFocus={handleTestUrl}
               scanIconColor={
                 isEnabled && scanKey === urlScanKey
                   ? Colors.primaryColor.background

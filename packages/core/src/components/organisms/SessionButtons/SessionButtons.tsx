@@ -147,6 +147,6 @@ const getStyles = (Colors: ThemeColors) =>
       left: '-10%',
     },
     textIndicationStyle: {
-      width: Dimensions.get('window').height * 0.3,
+      width: Dimensions.get('window').width * 0.7,
     },
   });

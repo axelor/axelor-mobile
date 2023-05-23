@@ -20,9 +20,10 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {sessionStorage} from './SessionStorage';
 import {Session} from './type';
 
-export const useSessions = (
-  enableConnectionSessions: boolean = false,
-): {sessionList: Session[]; sessionActive: Session} => {
+export const useSessions = (): {
+  sessionList: Session[];
+  sessionActive: Session;
+} => {
   const [sessionList, setSessionList] = useState(
     sessionStorage.getSessionList(),
   );
@@ -41,16 +42,9 @@ export const useSessions = (
   }, [refreshData]);
 
   return useMemo(() => {
-    if (enableConnectionSessions) {
-      return {
-        sessionList: sessionList,
-        sessionActive: sessionActive,
-      };
-    }
-
     return {
-      sessionList: [],
-      sessionActive: null,
+      sessionList: sessionList,
+      sessionActive: sessionActive,
     };
-  }, [enableConnectionSessions, sessionActive, sessionList]);
+  }, [sessionActive, sessionList]);
 };
