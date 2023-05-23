@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {Icon, Text} from '../../atoms';
@@ -133,13 +133,16 @@ const Picker = ({
     () => getCommonStyles(Colors, _required),
     [Colors, _required],
   );
+
   const styles = useMemo(
     () => getStyles(Colors, _required, marginBottom, pickerIsOpen),
     [Colors, _required, marginBottom, pickerIsOpen],
   );
 
   return (
-    <View ref={wrapperRef} style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      style={[Platform.OS === 'ios' ? styles.containerZIndex : null, style]}>
       {!disabled && (
         <View style={styles.titleContainer}>
           <Text style={styleTxt}>{title}</Text>
@@ -165,7 +168,11 @@ const Picker = ({
           />
         </View>
       ) : (
-        <View style={styles.pickerContainerStyle}>
+        <View
+          style={[
+            styles.pickerContainerStyle,
+            Platform.OS === 'ios' ? styles.pickerContainerZIndex : null,
+          ]}>
           <RightIconButton
             onPress={togglePicker}
             icon={
@@ -209,7 +216,7 @@ const getStyles = (
   pickerIsOpen: boolean,
 ) =>
   StyleSheet.create({
-    container: {
+    containerZIndex: {
       zIndex: pickerIsOpen ? 45 : 0,
     },
     titleContainer: {
@@ -231,6 +238,8 @@ const getStyles = (
     },
     pickerContainerStyle: {
       marginBottom: marginBottom,
+    },
+    pickerContainerZIndex: {
       zIndex: pickerIsOpen ? 50 : 0,
     },
   });
