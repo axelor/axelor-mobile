@@ -17,6 +17,7 @@
  */
 
 import {axiosApiProvider} from '../apiProviders';
+import {RouterProvider} from '../config';
 
 interface fetchMailMessageProps {
   model: string;
@@ -37,8 +38,10 @@ export async function fetchMailMessages({
   limit = 10,
   page,
 }: fetchMailMessageProps) {
+  const route = await RouterProvider.get('MailMessages');
+
   return axiosApiProvider.get({
-    url: `/ws/rest/com.axelor.mail.db.MailMessage/messages?relatedId=${modelId}&relatedModel=${model}&limit=${limit}&offset=${
+    url: `${route}?relatedId=${modelId}&relatedModel=${model}&limit=${limit}&offset=${
       limit * page
     }`,
   });

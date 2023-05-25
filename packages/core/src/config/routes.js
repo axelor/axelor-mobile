@@ -24,6 +24,7 @@ const routes = {
     AppSupplychain: '/ws/rest/com.axelor.apps.base.db.AppSupplychain',
     EmailAddress: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
     AppMobileSettings: '/ws/rest/com.axelor.apps.base.db.AppMobileSettings',
+    MailMessages: '/ws/rest/com.axelor.mail.db.MailMessage/messages',
   },
   AOS7: {
     App: '/ws/rest/com.axelor.studio.db.App',
@@ -32,6 +33,7 @@ const routes = {
     AppSupplychain: ' /ws/rest/com.axelor.studio.db.AppSupplychain',
     EmailAddress: '/ws/rest/com.axelor.message.db.EmailAddress',
     AppMobileSettings: '/ws/rest/com.axelor.studio.db.AppMobileSettings',
+    MailMessages: '/ws/messages',
   },
 };
 
