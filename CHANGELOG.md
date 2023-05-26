@@ -1,3 +1,87 @@
+---
+title: 6.4.0
+tags: Changelog
+---
+
+## [6.4.2] (2023-05-26)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- New components : _Checkbox_, _CricleButton_, _FloatingButton_, _FormHtmlInput_, _FormIncrementInput_, _FormInput_, _MultiSelectValue_ and _PanelTabs_.
+- Add new props on Picker and MultiValuePicker to know if value is required.
+- Add HTML keyboard on MessageBox component
+- Add border color on input focus
+- Show first five items of AutoCompleteSearch when user focus or on search icon press
+
+#### Changes
+
+- Simplify ChipSelect integration
+    <Details>
+    Transform children chip components into a list of objects with the following props : isActive, color, title and key. Two available behaviours: 'mutli' or 'switch'. 
+    </Details>
+
+
+#### Fixed
+
+- Minor corrections on Increment
+
+#### Removes
+
+- Replace RenderHTML by HtmlInput
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Add multiday event management on PlanningView.
+- Improve error management on login screen
+- Display connected instance url on setting screen
+- Save last connected instance url in local storage to pre-fill url input when user returns on the app
+- Configurations management to customise the application:
+  - `testInstanceConfig`: configure instance to use in debug mode
+  - `releaseInstanceConfig`: configure instance to use in release mode
+  - `defaultLanguage`: define default language
+- New components : CodeHighlighter to display code blocks, AutoCompleteSearchInput, DatePicker and DateInput.
+
+#### Fixed
+
+- Add translations and remove success code in API toast messages
+- Remove axios config on log out
+- Manage url without http / https prefix
+- Remove unwanted regex from url : 'login.jsp', '#' and excess '/'.
+- Zebra device format issue when scanning value
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- StockMoveLine & InventoryLine : manage no tracking number configured
+- Manage isRealQtyModifiedByUser value on StockMoveLine
+
+#### Changes
+
+- Simplification of screen composition: addition of empowered components.
+- Implementation of new functionalities of UI package : ChipSelect refactor, replace uses of RenderHtml by HtmlInput.
+- Use generic API request to update internal move line (AOS 6.4.10 or 6.5.4 required)
+
+#### Fixed
+
+- StockMoveLine & InventoryLine : remove product check if tracking number is defined
+- Rename duplicated partner reducer due to CRM package
+
+### @axelor/aos-mobile-manufacturing
+
+#### Features
+
+- Add manufOrderSeq copy to clipboard on linked MO cards
+
+#### Changes
+
+- Simplification of screen composition: addition of empowered components.
+- Implementation of new functionalities of UI package : ChipSelect refactor, replace uses of RenderHtml by HtmlInput.
+
 ## [6.4.1] (2023-03-13)
 
 #### Features
@@ -115,5 +199,6 @@ There are two functional packages available for Axelor Open Mobile.
   - _Operation order_: view, change of status with management of the stopwatch, view of the production file
   - _Planning vision_ of operation orders
 
-[6.4.1]: https://github.com/axelor/axelor-mobile/compare/v6.4.0...v6.4.1
-[6.4.0]: https://github.com/axelor/axelor-mobile/commits/6.4.0
+[6.4.2]: https://github.com/axelor/axelor-mobile/compare/6.4.1...6.4.2
+[6.4.1]: https://github.com/axelor/axelor-mobile/compare/6.4.0...6.4.1
+[6.4.0]: https://github.com/axelor/axelor-mobile/
