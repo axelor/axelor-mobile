@@ -22,43 +22,37 @@ import {isPlainObject} from '../../utils';
 export const translationMiddleware = (
   response: AxiosResponse,
 ): AxiosResponse => {
-  try {
-    if (response?.data?.data) {
-      const originalData = response.data.data;
-      const updatedData = originalData.map(parseTranslation);
-
-      const updatedResponse: AxiosResponse = {
-        ...response,
-        data: {
-          ...response.data,
-          data: updatedData,
-        },
-      };
-
-      return updatedResponse;
-    }
-
-    return response;
-  } catch (error) {
-    throw error;
+  if (response?.data?.data) {
+    response.data.data = parseTranslation(response.data.data);
   }
+
+  return response;
 };
 
-const parseTranslation = (item: any): any => {
-  const itemKeys = Object.keys(item);
-  const translationKeys = itemKeys.filter(key => key.startsWith('$t:'));
-  const subObjectKeys = itemKeys.filter(key => isPlainObject(item[key]));
+const parseTranslation = (data: any, cache = new Map()): any => {
+  if (Array.isArray(data)) {
+    return data.map(value => parseTranslation(value, cache));
+  }
 
-  translationKeys.forEach(translationKey => {
-    const key = translationKey.split(':')?.[1];
-    if (key) {
-      item[key] = item[translationKey];
+  if (isPlainObject(data)) {
+    if (cache.has(data)) {
+      return cache.get(data);
     }
-  });
 
-  subObjectKeys.forEach(subObject => {
-    item[subObject] = parseTranslation(item[subObject]);
-  });
+    const updatedItem = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => {
+        if (key.startsWith('$t:')) {
+          const translationKey = key.slice(3);
+          return [translationKey, value];
+        }
 
-  return item;
+        return [key, parseTranslation(value, cache)];
+      }),
+    );
+
+    cache.set(data, updatedItem);
+    return updatedItem;
+  }
+
+  return data;
 };
