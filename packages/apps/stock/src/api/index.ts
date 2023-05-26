@@ -26,7 +26,6 @@ export {
   updateLine as updateCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {
-  fetchInternalMove as fetchInternalMoveApi,
   searchInternalMoveFilter,
   realizeInternalMove as realizeInternalMoveApi,
   createInternalStockMove,
@@ -40,7 +39,6 @@ export * from './inventory-line-api';
 export * from './partner-api';
 export * from './product-api';
 export {
-  fetchStockCorrection as fetchStockCorrectionApi,
   createStockCorrection,
   updateStockCorrection,
   searchStockCorrection,

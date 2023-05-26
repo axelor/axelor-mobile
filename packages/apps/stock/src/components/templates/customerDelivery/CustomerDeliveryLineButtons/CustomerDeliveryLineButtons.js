@@ -37,7 +37,7 @@ const CustomerDeliveryLineButtons = ({
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('CustomerDeliveryDetailScreen', {
-      customerDelivery: customerDelivery,
+      customerDeliveryId: customerDelivery.id,
     });
   }, [customerDelivery, navigation]);
 
