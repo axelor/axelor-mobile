@@ -17,6 +17,7 @@
  */
 
 import {AxiosResponse} from 'axios';
+import {isPlainObject} from '../../utils';
 
 export const translationMiddleware = (
   response: AxiosResponse,
@@ -24,21 +25,7 @@ export const translationMiddleware = (
   try {
     if (response?.data?.data) {
       const originalData = response.data.data;
-      const updatedData = originalData.map(item => {
-        const itemKeys = Object.keys(item);
-        const translationKeys = itemKeys.filter(key => key.startsWith('$t:'));
-
-        if (translationKeys.length > 0) {
-          translationKeys.forEach(translationKey => {
-            const key = translationKey.split(':')?.[1];
-            if (key) {
-              item[key] = item[translationKey];
-            }
-          });
-        }
-
-        return item;
-      });
+      const updatedData = originalData.map(parseTranslation);
 
       const updatedResponse: AxiosResponse = {
         ...response,
@@ -55,4 +42,23 @@ export const translationMiddleware = (
   } catch (error) {
     throw error;
   }
+};
+
+const parseTranslation = (item: any): any => {
+  const itemKeys = Object.keys(item);
+  const translationKeys = itemKeys.filter(key => key.startsWith('$t:'));
+  const subObjectKeys = itemKeys.filter(key => isPlainObject(item[key]));
+
+  translationKeys.forEach(translationKey => {
+    const key = translationKey.split(':')?.[1];
+    if (key) {
+      item[key] = item[translationKey];
+    }
+  });
+
+  subObjectKeys.forEach(subObject => {
+    item[subObject] = parseTranslation(item[subObject]);
+  });
+
+  return item;
 };

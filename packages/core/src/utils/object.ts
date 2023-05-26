@@ -66,3 +66,6 @@ export function filterObjectsFields(data: any[], fields: string[]): any[] {
 
   return data.map(object => pickFieldsOfObject(object, fields));
 }
+
+export const isPlainObject = val =>
+  !!val && typeof val === 'object' && val.constructor === Object;
