@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
 } from '../../../utils/formatters';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Input} from '../../atoms';
 
 const cutDecimalExcess = number => {
@@ -30,6 +30,8 @@ const cutDecimalExcess = number => {
 };
 
 interface IncrementProps {
+  style?: any;
+  inputStyle?: any;
   value: string | undefined;
   decimalSpacer?: string;
   thousandSpacer?: string;
@@ -39,6 +41,8 @@ interface IncrementProps {
 }
 
 const Increment = ({
+  style,
+  inputStyle,
   value,
   decimalSpacer,
   thousandSpacer,
@@ -61,7 +65,11 @@ const Increment = ({
   );
 
   const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState(format(value));
+  const [valueQty, setValueQty] = useState<string>();
+
+  useEffect(() => {
+    setValueQty(format(unformat(value)));
+  }, [format, unformat, value]);
 
   const handlePlus = () => {
     const unformatedValue = unformat(valueQty);
@@ -103,7 +111,7 @@ const Increment = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.container_increment}>
+    <View style={[styles.container_increment, style]}>
       <Icon
         name="minus"
         size={24}
@@ -114,7 +122,7 @@ const Increment = ({
       />
       <View style={styles.inputLine}>
         <Input
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           value={valueQty}
           onChange={input => setValueQty(input)}
           keyboardType="numeric"
@@ -134,7 +142,7 @@ const Increment = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container_increment: {
       flexDirection: 'row',
