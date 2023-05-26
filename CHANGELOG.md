@@ -3,6 +3,69 @@ title: 6.5.0
 tags: Changelog
 ---
 
+## [6.5.1] (2023-05-17)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add border color on input focus
+- Show first five items of AutoCompleteSearch when user focus or on search icon press
+
+#### Fixed
+
+- Minor corrections on HtlmInput and Increment
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Header actions overload management
+    <Details>
+    New system to register header actions to manage overload: link a screen to a action key and then register header actions for this key. 
+    </Details>
+- Display connected instance url on setting screen
+- Improve error management on login screen
+- Add translations and remove success code in API toast messages
+- Save last connected instance url in local storage to pre-fill url input when user returns on the app
+
+#### Fixed
+
+- Remove axios config on log out
+- Hide header icon actions for small screen
+- Manage url without http / https prefix
+- Remove unwanted regex from url : 'login.jsp', '#' and excess '/'.
+- Zebra device format issue when scanning value
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- StockMoveLine & InventoryLine : manage no tracking number configured
+- Manage isRealQtyModifiedByUser value on StockMoveLine
+
+#### Fixed
+
+- StockMoveLine & InventoryLine : remove product check if tracking number is defined
+- Rename duplicated partner reducer due to CRM package
+
+#### Changes
+
+- Simplification of screen composition: addition of empowered components.
+- Use generic API request to update internal move line (AOS 6.4.10 or 6.5.4 required)
+
+### @axelor/aos-mobile-crm
+
+#### Features
+
+- Manage CRM web configurations on recurrent amount and catalogs
+
+### @axelor/aos-mobile-manufacturing
+
+#### Features
+
+- Add manufOrderSeq copy to clipboard on linked MO cards
+
 ## [6.5.0] (2023-03-14)
 
 ### New package : @axelor/aos-mobile-crm
@@ -137,4 +200,5 @@ It contains the following functionnalities
 
 - Replace RenderHTML by HtmlInput
 
-[6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.1...6.5.0
+[6.5.1]: https://github.com/axelor/axelor-mobile/compare/6.5.0...6.5.1
+[6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.2...6.5.0
