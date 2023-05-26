@@ -23,6 +23,7 @@
     "format:check": "nx run-many --target=format:check",
     "start": "nx start example",
     "android": "nx android example",
+    "graph": "nx graph",
     "license:add": "nx run-many --target=license:add"
   },
   "devDependencies": {

@@ -26,18 +26,20 @@ interface ChipProps {
   selected: boolean;
   title: string;
   onPress: (any) => void;
-  selectedColor: Color;
+  selectedColor?: Color;
   width?: number;
   marginHorizontal?: number;
+  style?: any;
 }
 
 const Chip = ({
   selected,
   title,
   onPress,
-  selectedColor,
+  selectedColor = null,
   width = Dimensions.get('window').width * 0.4,
   marginHorizontal = 12,
+  style,
 }: ChipProps) => {
   const Colors = useThemeColor();
   const chipColor = useMemo(
@@ -55,7 +57,7 @@ const Chip = ({
 
   return (
     <TouchableOpacity
-      style={getWidth(width, marginHorizontal)}
+      style={[getWidth(width, marginHorizontal), style]}
       onPress={onPress}
       activeOpacity={0.8}>
       <View style={[styles.container, colorStyle]}>

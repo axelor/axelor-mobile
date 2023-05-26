@@ -18,6 +18,7 @@
 
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   Screen,
   SwitchCard,
@@ -27,17 +28,11 @@ import {
   Icon,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {
-  getTranslations,
-  selectLanguage,
-  showToastMessage,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
+import {getTranslations, selectLanguage, useTranslator} from '../../i18n';
+import {showToastMessage} from '../../utils';
 
-const SettingsScreen = ({route}) => {
+const SettingsScreen = ({route, children}) => {
   const {message} = useSelector(state => state.config);
   const {
     showFilter,
@@ -93,8 +88,9 @@ const SettingsScreen = ({route}) => {
         <SwitchCard
           title={I18n.t('User_ColorForColorBlind')}
           defaultValue={Theme.isColorBlind}
-          onToggle={state => handleToggleColorBlind(state)}
+          onToggle={handleToggleColorBlind}
         />
+        {children}
         {route.params.user == null ||
         route.params.user.group.code !== 'admins' ? null : (
           <RightIconButton

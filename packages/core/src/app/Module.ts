@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Reducer} from '@reduxjs/toolkit';
+
 export interface Module {
   name: string;
-  title: string;
-  subtitle: string;
-  icon: string;
+  title?: string;
+  subtitle?: string;
+  icon?: string;
   disabled?: boolean;
-  menus: {
+  menus?: {
     [screenKey: string]: {
       title: string;
       icon: string;
@@ -30,7 +32,7 @@ export interface Module {
       disabled?: boolean;
     };
   };
-  screens: {
+  screens?: {
     [screenKey: string]:
       | React.FC<any>
       | {
@@ -41,5 +43,7 @@ export interface Module {
   translations?: {
     [languageKey: string]: any;
   };
-  reducers?: any;
+  reducers?: {
+    [key: string]: Reducer;
+  };
 }

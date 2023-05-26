@@ -19,7 +19,7 @@
 export * from './app';
 export {default as Navigator} from './navigator/Navigator';
 export {configGlobalStore} from './redux/store';
-export {storage, useStorage} from './storage/Storage';
+export {storage, Storage, useStorage} from './storage/Storage';
 export {traceError} from './api/traceback-api';
 export {useEffectDebugger} from './hooks/use-effect-debugger';
 export {logout} from './features/authSlice';

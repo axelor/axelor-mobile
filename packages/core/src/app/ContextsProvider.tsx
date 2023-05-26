@@ -57,13 +57,15 @@ const ContextsProvider = ({
 
   const appTranslations = useMemo(
     () =>
-      modules.reduce(
-        (translations, _module) => ({
-          en: {...translations.en, ..._module.translations?.en},
-          fr: {...translations.fr, ..._module.translations?.fr},
-        }),
-        {en: enTranslation, fr: frTranslation},
-      ),
+      modules
+        .filter(_module => _module.translations)
+        .reduce(
+          (translations, _module) => ({
+            en: {...translations.en, ..._module.translations?.en},
+            fr: {...translations.fr, ..._module.translations?.fr},
+          }),
+          {en: enTranslation, fr: frTranslation},
+        ),
     [modules],
   );
 
@@ -75,18 +77,17 @@ const ContextsProvider = ({
       ],
     });
     setLoading(false);
-    // I18n should be initialize only once
+    // NOTE: I18n should be initialize only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const externalsReducers = useMemo(
     () =>
-      modules.reduce(
-        (reducers, _module) => ({...reducers, ..._module.reducers}),
-        {
+      modules
+        .filter(_module => _module.reducers)
+        .reduce((reducers, _module) => ({...reducers, ..._module.reducers}), {
           ...additionalsReducers,
-        },
-      ),
+        }),
     [additionalsReducers, modules],
   );
 

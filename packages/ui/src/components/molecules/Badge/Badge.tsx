@@ -18,14 +18,14 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Color} from '../../../theme/themes';
+import {Color, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 
 interface BadgeProps {
   style?: any;
   txtStyle?: any;
   title: string | number;
-  color: Color;
+  color?: Color;
   numberOfLines?: number;
 }
 
@@ -33,10 +33,14 @@ const Badge = ({
   style,
   txtStyle,
   title,
-  color,
+  color = null,
   numberOfLines = 1,
 }: BadgeProps) => {
-  const badgeStyle = useMemo(() => getStyles(color), [color]);
+  const Colors = useThemeColor();
+  const badgeStyle = useMemo(
+    () => getStyles(color || Colors.primaryColor),
+    [color, Colors],
+  );
 
   return (
     <View style={[badgeStyle.container, style]}>
