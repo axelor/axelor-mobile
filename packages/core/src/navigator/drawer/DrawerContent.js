@@ -23,7 +23,13 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Animated,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   IconButton,
@@ -44,6 +50,7 @@ import AuthMenuIconButton from './AuthMenuIconButton';
 import {useDispatch} from '../../redux/hooks';
 import {logout} from '../../features/authSlice';
 import {useSelector} from 'react-redux';
+import {linkingProvider} from '../../tools/LinkingProvider';
 
 const DrawerContent = ({
   state,
@@ -180,6 +187,14 @@ const DrawerContent = ({
     }
   };
 
+  const handleUpdate = () => {
+    const url =
+      Platform.OS === 'ios'
+        ? minimalRequiredMobileAppVersion?.ios
+        : minimalRequiredMobileAppVersion?.android;
+    linkingProvider.openBrowser(url);
+  };
+
   if (numberOfModules(drawerModules) === 0) {
     return (
       <PopUp
@@ -215,14 +230,29 @@ const DrawerContent = ({
       <PopUp
         visible={true}
         title={I18n.t('Base_Information')}
-        data={I18n.t('Base_NoAppConfigured')}>
+        data={I18n.t('Base_MinimalRequiredVersion')}>
         <View style={styles.btnContainer}>
+          <IconButton
+            title={I18n.t('Base_Update')}
+            iconName="angle-double-up"
+            color={Colors.primaryColor}
+            onPress={() => handleUpdate()}
+            style={styles.btn}
+          />
+
           <IconButton
             title={I18n.t('Base_Refresh')}
             iconName="refresh"
             FontAwesome5={false}
             color={Colors.secondaryColor}
             onPress={onRefresh}
+            style={styles.btn}
+          />
+          <IconButton
+            title={I18n.t('Base_Logout')}
+            iconName="power-off"
+            color={Colors.errorColor}
+            onPress={() => dispatch(logout())}
             style={styles.btn}
           />
         </View>

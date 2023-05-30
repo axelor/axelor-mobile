@@ -58,8 +58,9 @@ export const app_config = {
    */
   minimalRequiredMobileAppVersion: {
     activate: true,
-    android: 'linkAndroid',
-    ios: 'linkios',
+    android:
+      'https://play.google.com/store/apps/details?id=com.aosmobile&gl=FR',
+    ios: 'link_ios',
   },
 
   /*
