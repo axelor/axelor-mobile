@@ -51,9 +51,17 @@ export const ModuleNavigatorContext = createContext({
   activeModule: null,
   modulesMenus: {},
   modulesScreens: {},
+  version: '',
+  minimalRequiredMobileAppVersion: {},
 });
 
-const Navigator = ({modules, mainMenu, onRefresh}) => {
+const Navigator = ({
+  modules,
+  mainMenu,
+  onRefresh,
+  version,
+  minimalRequiredMobileAppVersion,
+}) => {
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
@@ -184,6 +192,8 @@ const Navigator = ({modules, mainMenu, onRefresh}) => {
             modules={enabledModule}
             onModuleClick={changeActiveModule}
             onRefresh={onRefresh}
+            version={version}
+            minimalRequiredMobileAppVersion={minimalRequiredMobileAppVersion}
           />
         )}>
         {Object.entries(modulesMenus).map(([key, menu]) => (

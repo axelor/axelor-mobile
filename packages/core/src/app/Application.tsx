@@ -53,6 +53,7 @@ interface appConfig {
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
   logoFile?: any;
+  minimalRequiredMobileAppVersion?: any;
 }
 
 interface ApplicationProps {
@@ -113,6 +114,8 @@ const Application = ({
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
           enableConnectionSessions: configuration?.enableConnectionSessions,
           logoFile: configuration?.logoFile,
+          minimalRequiredMobileAppVersion:
+            configuration?.minimalRequiredMobileAppVersion,
         }}
       />
     </ContextsProvider>

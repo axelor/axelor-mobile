@@ -43,6 +43,7 @@ import {CommonActions, DrawerActions} from '@react-navigation/native';
 import AuthMenuIconButton from './AuthMenuIconButton';
 import {useDispatch} from '../../redux/hooks';
 import {logout} from '../../features/authSlice';
+import {useSelector} from 'react-redux';
 
 const DrawerContent = ({
   state,
@@ -50,6 +51,8 @@ const DrawerContent = ({
   navigation,
   onModuleClick,
   onRefresh,
+  version,
+  minimalRequiredMobileAppVersion,
 }) => {
   useEffect(() => {
     navigation.dispatch(_state => {
@@ -84,6 +87,18 @@ const DrawerContent = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
+  const {mobileSettings} = useSelector(_state => _state.config);
+  const mobileVersion = Number(version.replace(/\D/g, ''));
+
+  const minimalRequiredVersion = useMemo(() => {
+    const formattedRequiredApp =
+      mobileSettings?.minimalRequiredMobileAppVersion?.replace(/\D/g, '');
+    if (formattedRequiredApp?.length === 3) {
+      return formattedRequiredApp;
+    } else {
+      return null;
+    }
+  }, [mobileSettings]);
 
   const innerMenuIsVisible = useMemo(
     () => activeModule.name !== authModule.name,
@@ -185,6 +200,29 @@ const DrawerContent = ({
             iconName="power-off"
             color={Colors.errorColor}
             onPress={() => dispatch(logout())}
+            style={styles.btn}
+          />
+        </View>
+      </PopUp>
+    );
+  }
+
+  if (
+    minimalRequiredMobileAppVersion?.activate === true &&
+    mobileVersion < minimalRequiredVersion
+  ) {
+    return (
+      <PopUp
+        visible={true}
+        title={I18n.t('Base_Information')}
+        data={I18n.t('Base_NoAppConfigured')}>
+        <View style={styles.btnContainer}>
+          <IconButton
+            title={I18n.t('Base_Refresh')}
+            iconName="refresh"
+            FontAwesome5={false}
+            color={Colors.secondaryColor}
+            onPress={onRefresh}
             style={styles.btn}
           />
         </View>

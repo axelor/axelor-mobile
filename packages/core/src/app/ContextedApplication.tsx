@@ -51,6 +51,7 @@ interface instanceConfig {
   releaseInstanceConfig: releaseConfig;
   enableConnectionSessions: boolean;
   logoFile?: any;
+  minimalRequiredMobileAppVersion?: any;
 }
 
 interface ContextedApplicationProps {

@@ -54,6 +54,15 @@ export const app_config = {
   retrocompatibilityAOS6: true,
 
   /*
+   * This setting enables minimal required mobile app version
+   */
+  minimalRequiredMobileAppVersion: {
+    activate: true,
+    android: 'linkAndroid',
+    ios: 'linkios',
+  },
+
+  /*
    * This configuration allows you to activate or not the subtitles under app icons in the drawer.
    * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
    */
