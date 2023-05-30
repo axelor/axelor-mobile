@@ -51,8 +51,6 @@ export const ModuleNavigatorContext = createContext({
   activeModule: null,
   modulesMenus: {},
   modulesScreens: {},
-  version: '',
-  minimalRequiredMobileAppVersion: {},
 });
 
 const Navigator = ({

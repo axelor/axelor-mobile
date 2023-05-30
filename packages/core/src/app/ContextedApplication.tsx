@@ -46,12 +46,18 @@ interface releaseConfig {
   showUrlInput: boolean;
 }
 
+interface minimalRequiredMobileAppVersion {
+  activate: boolean;
+  android: string;
+  ios: string;
+}
+
 interface instanceConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
   enableConnectionSessions: boolean;
   logoFile?: any;
-  minimalRequiredMobileAppVersion?: any;
+  minimalRequiredMobileAppVersion?: minimalRequiredMobileAppVersion;
 }
 
 interface ContextedApplicationProps {

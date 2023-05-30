@@ -239,7 +239,6 @@ const DrawerContent = ({
             onPress={() => handleUpdate()}
             style={styles.btn}
           />
-
           <IconButton
             title={I18n.t('Base_Refresh')}
             iconName="refresh"

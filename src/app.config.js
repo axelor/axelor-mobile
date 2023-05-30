@@ -55,6 +55,9 @@ export const app_config = {
 
   /*
    * This setting enables minimal required mobile app version
+   * This means if activate is set true and your app version is below the requiredMobileVersion, the app will not work and a popup will ask you to update your app.
+   * if activite is false, your app will work anyway but it's important to note that may limit access to certain features
+   * thoses link android/ios is where you can update your app, one for android update app and one for ios update app
    */
   minimalRequiredMobileAppVersion: {
     activate: true,

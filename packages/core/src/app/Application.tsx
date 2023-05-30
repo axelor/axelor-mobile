@@ -41,6 +41,12 @@ interface releaseConfig {
   showUrlInput: boolean;
 }
 
+interface minimalRequiredMobileAppVersion {
+  activate: boolean;
+  android: string;
+  ios: string;
+}
+
 interface appConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
@@ -53,7 +59,7 @@ interface appConfig {
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
   logoFile?: any;
-  minimalRequiredMobileAppVersion?: any;
+  minimalRequiredMobileAppVersion?: minimalRequiredMobileAppVersion;
 }
 
 interface ApplicationProps {
