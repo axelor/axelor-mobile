@@ -9,11 +9,6 @@ on:
   pull_request:
     branches:
       - '**'
-  release:
-    types: [released]
-    branches:
-      - main
-      - '6.4'
 
 jobs:
   format:
@@ -27,7 +22,7 @@ jobs:
           java-version: '11'
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install
@@ -48,7 +43,7 @@ jobs:
           java-version: '11'
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install
@@ -73,25 +68,6 @@ jobs:
           deno-version: v1.x
       - name: check-license
         run: deno run --allow-read https://deno.land/x/license_checker@v3.2.2/main.ts
-
-  publish:
-    runs-on: ubuntu-latest
-    needs: [format, build, check-license-lines]
-    if: github.event_name == 'release'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        run: yarn install
-      - name: Check packages
-        run: yarn build
-      - name: Publish packages
-        run: yarn release
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-tag-release:
     needs: [format, build, check-license-lines]
@@ -121,3 +97,16 @@ jobs:
           asset_path: ./app-release.apk
           asset_name: aom-${{ github.ref_name }}.apk
           asset_content_type: application/vnd.android.package-archive
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: yarn install
+      - name: Check packages
+        run: yarn build
+      - name: Publish packages
+        run: yarn release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
