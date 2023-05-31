@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactNode, useMemo} from 'react';
+import React, {ReactNode, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
@@ -64,6 +64,16 @@ const SearchLineContainer = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
+  const [navigate, setNavigate] = useState(false);
+
+  const _handleSelect = useCallback(
+    item => {
+      setNavigate(current => !current);
+      handleSelect(item);
+    },
+    [handleSelect],
+  );
+
   const item = useMemo(() => {
     if (!Array.isArray(objectList) || objectList.length === 0) {
       return null;
@@ -102,12 +112,15 @@ const SearchLineContainer = ({
       <ScannerAutocompleteSearch
         style={styles.searchBar}
         objectList={objectList}
-        onChangeValue={handleSelect}
+        onChangeValue={_handleSelect}
         fetchData={handleSearch}
         displayValue={displayLine}
         scanKeySearch={scanKey}
         placeholder={I18n.t('Stock_SearchLine')}
         isFocus={true}
+        changeScreenAfter={true}
+        oneFilter={true}
+        navigate={navigate}
       />
       {item != null && (
         <View style={styles.cardContainer}>
