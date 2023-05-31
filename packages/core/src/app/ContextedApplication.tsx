@@ -34,23 +34,14 @@ import {getActiveUserInfo} from '../api/login-api';
 import ErrorScreen from '../screens/ErrorScreen';
 import {Camera, CameraScanner, HeaderBandList, Scanner} from '../components';
 import {RouterProvider} from '../config';
-
-interface proxy {
-  defaultUrl: string;
-  defaultUsername: string;
-  defaultPassword: string;
-}
-
-interface releaseConfig {
-  url: string;
-  showUrlInput: boolean;
-}
+import {proxy, releaseConfig, versionCheckConfig} from './types';
 
 interface instanceConfig {
   testInstanceConfig: proxy;
   releaseInstanceConfig: releaseConfig;
   enableConnectionSessions: boolean;
   logoFile?: any;
+  versionCheckConfig?: versionCheckConfig;
 }
 
 interface ContextedApplicationProps {

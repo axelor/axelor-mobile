@@ -16,9 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
-export {default as MailMessageView} from './MailMessageView/MailMessageView';
-export {default as PopupCreateSession} from './PopupCreateSession/PopupCreateSession';
-export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
-export {default as PopupSession} from './PopupSession/PopupSession';
-export {default as PopupSessionList} from './PopupSessionList/PopupSessionList';
+export interface proxy {
+  defaultUrl: string;
+  defaultUsername: string;
+  defaultPassword: string;
+}
+
+export interface releaseConfig {
+  url: string;
+  showUrlInput: boolean;
+}
+
+export interface versionCheckConfig {
+  activate: boolean;
+  android: string;
+  ios: string;
+}

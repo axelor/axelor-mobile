@@ -54,6 +54,19 @@ export const app_config = {
   retrocompatibilityAOS6: true,
 
   /*
+   * This configuration enables verification of the minimum version required for the mobile application.
+   * If this option is enabled and the application version is below the required version (minimalRequiredMobileAppVersion),
+   * the user will be prompted to update the application using the Android and ios links provided to access it.
+   * If this is not the case, the application will still work, but it is important to note that this may limit access to certain functionalities.
+   */
+  versionCheckConfig: {
+    activate: true,
+    android:
+      'https://play.google.com/store/apps/details?id=com.aosmobile&gl=FR',
+    ios: 'link_ios',
+  },
+
+  /*
    * This configuration allows you to activate or not the subtitles under app icons in the drawer.
    * If enabled, subtitles will be displayed under app icons to provide additional context to the user.
    */

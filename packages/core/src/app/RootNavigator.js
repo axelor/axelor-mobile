@@ -58,9 +58,11 @@ const RootNavigator = ({
         modules={modules}
         mainMenu={mainMenu}
         onRefresh={onRefresh}
+        version={version}
+        versionCheckConfig={configuration?.versionCheckConfig}
       />
     ),
-    [modules, mainMenu, onRefresh],
+    [modules, mainMenu, onRefresh, version, configuration?.versionCheckConfig],
   );
 
   const checkInternetConnection = useCallback(async () => {
