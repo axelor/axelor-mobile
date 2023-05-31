@@ -31,7 +31,6 @@ import {
   Picker,
   Screen,
   StarScore,
-  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   AutoCompleteSearchInput,
@@ -80,16 +79,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: unformatNumber(
-          recurrent,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
-        opportunityAmount: unformatNumber(
-          amount,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
+        opportunityRecurrentAmount: recurrent,
+        opportunityAmount: amount,
         opportunityDescription: description,
         idPartner: partner?.id,
         opportunityRating: score,
@@ -102,17 +93,15 @@ const OpportunityFormScreen = ({navigation, route}) => {
     });
   }, [
     dispatch,
-    opportunity.id,
-    opportunity.version,
+    opportunity,
     status,
     amount,
     recurrent,
     description,
-    partner?.id,
+    partner,
     score,
     date,
     navigation,
-    I18n,
   ]);
 
   return (
