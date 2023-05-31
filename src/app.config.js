@@ -54,12 +54,12 @@ export const app_config = {
   retrocompatibilityAOS6: true,
 
   /*
-   * This setting enables minimal required mobile app version
-   * This means if activate is set true and your app version is below the requiredMobileVersion, the app will not work and a popup will ask you to update your app.
-   * if activite is false, your app will work anyway but it's important to note that may limit access to certain features
-   * thoses link android/ios is where you can update your app, one for android update app and one for ios update app
+   * This configuration enables verification of the minimum version required for the mobile application.
+   * If this option is enabled and the application version is below the required version (minimalRequiredMobileAppVersion),
+   * the user will be prompted to update the application using the Android and ios links provided to access it.
+   * If this is not the case, the application will still work, but it is important to note that this may limit access to certain functionalities.
    */
-  minimalRequiredMobileAppVersion: {
+  versionCheckConfig: {
     activate: true,
     android:
       'https://play.google.com/store/apps/details?id=com.aosmobile&gl=FR',

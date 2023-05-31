@@ -53,7 +53,7 @@ const DrawerContent = ({
   onModuleClick,
   onRefresh,
   version,
-  minimalRequiredMobileAppVersion,
+  versionCheckConfig,
 }) => {
   useEffect(() => {
     navigation.dispatch(_state => {
@@ -209,12 +209,12 @@ const DrawerContent = ({
   }
 
   if (
-    minimalRequiredMobileAppVersion?.activate === true &&
+    versionCheckConfig?.activate === true &&
     mobileVersion < minimalRequiredVersion
   ) {
     return (
       <PopupMinimalRequiredVersion
-        minimalRequiredMobileAppVersion={minimalRequiredMobileAppVersion}
+        versionCheckConfig={versionCheckConfig}
         onRefresh={onRefresh}
       />
     );

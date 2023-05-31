@@ -17,17 +17,14 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, Platform} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {PopUp, IconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {linkingProvider} from '../../../tools/LinkingProvider';
 import {logout} from '../../../features/authSlice';
 import {useDispatch} from '../../../redux/hooks';
 
-const PopupMinimalRequiredVersion = ({
-  minimalRequiredMobileAppVersion,
-  onRefresh,
-}) => {
+const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -35,8 +32,8 @@ const PopupMinimalRequiredVersion = ({
   const handleUpdate = () => {
     const url =
       Platform.OS === 'ios'
-        ? minimalRequiredMobileAppVersion?.ios
-        : minimalRequiredMobileAppVersion?.android;
+        ? versionCheckConfig?.ios
+        : versionCheckConfig?.android;
     linkingProvider.openBrowser(url);
   };
 
@@ -44,31 +41,31 @@ const PopupMinimalRequiredVersion = ({
     <PopUp
       visible={true}
       title={I18n.t('Base_Information')}
-      data={I18n.t('Base_MinimalRequiredVersion')}>
-      <View style={styles.btnContainer}>
-        <IconButton
-          title={I18n.t('Base_Update')}
-          iconName="angle-double-up"
-          color={Colors.primaryColor}
-          onPress={() => handleUpdate()}
-          style={styles.btn}
-        />
-        <IconButton
-          title={I18n.t('Base_Refresh')}
-          iconName="refresh"
-          FontAwesome5={false}
-          color={Colors.secondaryColor}
-          onPress={onRefresh}
-          style={styles.btn}
-        />
-        <IconButton
-          title={I18n.t('Base_Logout')}
-          iconName="power-off"
-          color={Colors.errorColor}
-          onPress={() => dispatch(logout())}
-          style={styles.btn}
-        />
-      </View>
+      data={I18n.t('Base_MinimalRequiredVersion')}
+      style={styles.popup}
+      childrenStyle={styles.btnContainer}>
+      <IconButton
+        title={I18n.t('Base_Update')}
+        iconName="angle-double-up"
+        color={Colors.primaryColor}
+        onPress={() => handleUpdate()}
+        style={styles.btn}
+      />
+      <IconButton
+        title={I18n.t('Base_Refresh')}
+        iconName="refresh"
+        FontAwesome5={false}
+        color={Colors.secondaryColor}
+        onPress={onRefresh}
+        style={styles.btn}
+      />
+      <IconButton
+        title={I18n.t('Base_Logout')}
+        iconName="power-off"
+        color={Colors.errorColor}
+        onPress={() => dispatch(logout())}
+        style={styles.btn}
+      />
     </PopUp>
   );
 };
@@ -80,27 +77,15 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingVertical: 15,
   },
-  popupContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '120%',
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: 0,
-    top: '-10%',
-  },
-  binIcon: {
-    position: 'absolute',
-    right: '1%',
-    bottom: '5%',
-  },
-  input: {
+  btnContainer: {
     width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  labText: {
-    width: '95%',
-    marginVertical: 10,
+  btn: {
+    height: 70,
+    marginVertical: '1%',
   },
 });
 

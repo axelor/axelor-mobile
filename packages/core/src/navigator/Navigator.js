@@ -58,7 +58,7 @@ const Navigator = ({
   mainMenu,
   onRefresh,
   version,
-  minimalRequiredMobileAppVersion,
+  versionCheckConfig,
 }) => {
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
@@ -191,7 +191,7 @@ const Navigator = ({
             onModuleClick={changeActiveModule}
             onRefresh={onRefresh}
             version={version}
-            minimalRequiredMobileAppVersion={minimalRequiredMobileAppVersion}
+            versionCheckConfig={versionCheckConfig}
           />
         )}>
         {Object.entries(modulesMenus).map(([key, menu]) => (

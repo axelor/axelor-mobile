@@ -29,23 +29,7 @@ import ContextedApplication from './ContextedApplication';
 import {authModule} from '../auth';
 import {RouterProvider} from '../config';
 import {ApiProviderConfig} from '../apiProviders/config';
-
-interface proxy {
-  defaultUrl: string;
-  defaultUsername: string;
-  defaultPassword: string;
-}
-
-interface releaseConfig {
-  url: string;
-  showUrlInput: boolean;
-}
-
-interface minimalRequiredMobileAppVersion {
-  activate: boolean;
-  android: string;
-  ios: string;
-}
+import {proxy, releaseConfig, versionCheckConfig} from './types';
 
 interface appConfig {
   testInstanceConfig: proxy;
@@ -59,7 +43,7 @@ interface appConfig {
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
   logoFile?: any;
-  minimalRequiredMobileAppVersion?: minimalRequiredMobileAppVersion;
+  versionCheckConfig?: versionCheckConfig;
 }
 
 interface ApplicationProps {
@@ -120,8 +104,7 @@ const Application = ({
           releaseInstanceConfig: configuration?.releaseInstanceConfig,
           enableConnectionSessions: configuration?.enableConnectionSessions,
           logoFile: configuration?.logoFile,
-          minimalRequiredMobileAppVersion:
-            configuration?.minimalRequiredMobileAppVersion,
+          versionCheckConfig: configuration?.versionCheckConfig,
         }}
       />
     </ContextsProvider>
