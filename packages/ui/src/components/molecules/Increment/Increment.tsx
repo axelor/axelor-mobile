@@ -70,14 +70,14 @@ const Increment = ({
   const [valueQty, setValueQty] = useState<string>();
 
   useEffect(() => {
-    setValueQty(format(unformat(value)));
-  }, [format, unformat, value]);
+    setValueQty(format(value));
+  }, [format, value]);
 
   const handlePlus = () => {
     const unformatedValue = unformat(valueQty);
     const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
     setValueQty(format(cutDecimalExcess(newValue)));
-    onValueChange(format(cutDecimalExcess(newValue)));
+    onValueChange(newValue);
   };
 
   const handleMinus = () => {
@@ -85,7 +85,7 @@ const Increment = ({
     const newValue = parseFloat(unformatedValue) - parseFloat('1');
     if (newValue >= 0) {
       setValueQty(format(cutDecimalExcess(newValue)));
-      onValueChange(format(cutDecimalExcess(newValue)));
+      onValueChange(newValue);
     }
   };
 

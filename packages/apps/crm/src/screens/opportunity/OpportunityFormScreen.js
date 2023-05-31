@@ -26,7 +26,6 @@ import {
   Picker,
   Screen,
   StarScore,
-  unformatNumber,
 } from '@axelor/aos-mobile-ui';
 import {
   DateInput,
@@ -74,16 +73,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
         opportunityId: opportunity.id,
         opportunityVersion: opportunity.version,
         opportunityStatusId: status,
-        opportunityRecurrentAmount: unformatNumber(
-          recurrent,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
-        opportunityAmount: unformatNumber(
-          amount,
-          I18n.t('Base_DecimalSpacer'),
-          I18n.t('Base_ThousandSpacer'),
-        ),
+        opportunityRecurrentAmount: recurrent,
+        opportunityAmount: amount,
         opportunityDescription: description,
         idPartner: partner?.id,
         opportunityRating: score,
@@ -99,7 +90,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
     opportunity,
     status,
     recurrent,
-    I18n,
     amount,
     description,
     partner,

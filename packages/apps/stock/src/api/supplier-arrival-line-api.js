@@ -56,11 +56,17 @@ export async function updateLine({
 }) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
-    data: {
-      version: version,
-      realQty: realQty,
-      conformity: conformity,
-    },
+    data:
+      conformity > StockMove.conformity.None
+        ? {
+            version: version,
+            realQty: realQty,
+            conformity: conformity,
+          }
+        : {
+            version: version,
+            realQty: realQty,
+          },
   });
 }
 
