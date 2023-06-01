@@ -61,9 +61,8 @@ export const app_config = {
    */
   versionCheckConfig: {
     activate: true,
-    android:
-      'https://play.google.com/store/apps/details?id=com.aosmobile&gl=FR',
-    ios: 'link_ios',
+    android: 'https://play.google.com/store/apps/details?id=com.aosmobile',
+    ios: null,
   },
 
   /*
