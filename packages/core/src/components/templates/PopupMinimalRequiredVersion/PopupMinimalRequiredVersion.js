@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, Platform} from 'react-native';
-import {PopUp, IconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {PopUp, IconButton, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {linkingProvider} from '../../../tools/LinkingProvider';
 import {logout} from '../../../features/authSlice';
@@ -37,6 +37,18 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
     linkingProvider.openBrowser(url);
   };
 
+  const noUrl = useMemo(() => {
+    const url =
+      Platform.OS === 'ios'
+        ? versionCheckConfig?.ios
+        : versionCheckConfig?.android;
+    if (url.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [versionCheckConfig]);
+
   return (
     <PopUp
       visible={true}
@@ -44,13 +56,17 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
       data={I18n.t('Base_MinimalRequiredVersion')}
       style={styles.popup}
       childrenStyle={styles.btnContainer}>
-      <IconButton
-        title={I18n.t('Base_Update')}
-        iconName="angle-double-up"
-        color={Colors.primaryColor}
-        onPress={() => handleUpdate()}
-        style={styles.btn}
-      />
+      {noUrl ? (
+        <Text style={styles.text}>{I18n.t('Base_Contact_Admin')}</Text>
+      ) : (
+        <IconButton
+          title={I18n.t('Base_Update')}
+          iconName="angle-double-up"
+          color={Colors.primaryColor}
+          onPress={() => handleUpdate()}
+          style={styles.btn}
+        />
+      )}
       <IconButton
         title={I18n.t('Base_Refresh')}
         iconName="refresh"
@@ -86,6 +102,10 @@ const styles = StyleSheet.create({
   btn: {
     height: 70,
     marginVertical: '1%',
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 16,
   },
 });
 

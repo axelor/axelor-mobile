@@ -63,7 +63,7 @@ export const app_config = {
     activate: true,
     android:
       'https://play.google.com/store/apps/details?id=com.aosmobile&gl=FR',
-    ios: 'link_ios',
+    ios: '',
   },
 
   /*
