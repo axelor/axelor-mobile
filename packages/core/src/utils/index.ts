@@ -47,6 +47,7 @@ export {
   fetchJsonField,
   filterObjectsFields,
   pickFieldsOfObject,
+  isPlainObject,
 } from './object';
 export {showToastMessage} from './show-toast-message';
 export {checkNullString, isHtml, splitInTwo, stringNoAccent} from './string';
