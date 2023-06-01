@@ -19,11 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Platform} from 'react-native';
 import {
-  PopUp,
-  IconButton,
-  useThemeColor,
-  Text,
   checkNullString,
+  IconButton,
+  PopUp,
+  Text,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {linkingProvider} from '../../../tools/LinkingProvider';
@@ -35,21 +35,17 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const handleUpdate = () => {
-    const url =
+  const url = useMemo(
+    () =>
       Platform.OS === 'ios'
         ? versionCheckConfig?.ios
-        : versionCheckConfig?.android;
+        : versionCheckConfig?.android,
+    [versionCheckConfig],
+  );
+
+  const handleUpdate = () => {
     linkingProvider.openBrowser(url);
   };
-
-  const noUrl = useMemo(() => {
-    const url =
-      Platform.OS === 'ios'
-        ? versionCheckConfig?.ios
-        : versionCheckConfig?.android;
-    return checkNullString(url);
-  }, [versionCheckConfig]);
 
   return (
     <PopUp
@@ -58,14 +54,14 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
       data={I18n.t('Base_MinimalRequiredVersion')}
       style={styles.popup}
       childrenStyle={styles.btnContainer}>
-      {noUrl ? (
+      {checkNullString(url) ? (
         <Text style={styles.text}>{I18n.t('Base_Contact_Admin')}</Text>
       ) : (
         <IconButton
           title={I18n.t('Base_Update')}
           iconName="angle-double-up"
           color={Colors.primaryColor}
-          onPress={() => handleUpdate()}
+          onPress={handleUpdate}
           style={styles.btn}
         />
       )}
