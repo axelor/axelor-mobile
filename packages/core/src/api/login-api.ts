@@ -17,6 +17,7 @@
  */
 
 import axios from 'axios';
+import {translationMiddleware} from '../middlewares/translation';
 
 const loginPath = '/callback';
 
@@ -24,7 +25,12 @@ export async function loginApi(
   url: string,
   username: string,
   password: string,
-): Promise<{token: string; jsessionId: string; interceptorId: number}> {
+): Promise<{
+  token: string;
+  jsessionId: string;
+  requestInterceptorId: number;
+  responseInterceptorId: number;
+}> {
   return axios
     .post(`${url}${loginPath}`, {username, password})
     .then(response => {
@@ -34,13 +40,17 @@ export async function loginApi(
         throw new Error('X-CSRF-Token is not exposed in remote header');
       }
 
-      const interceptorId = axios.interceptors.request.use(config => {
+      const requestInterceptorId = axios.interceptors.request.use(config => {
         config.baseURL = url;
         config.headers['x-csrf-token'] = token;
         return config;
       });
 
-      return {token, jsessionId, interceptorId};
+      const responseInterceptorId = axios.interceptors.response.use(_response =>
+        translationMiddleware(_response),
+      );
+
+      return {token, jsessionId, requestInterceptorId, responseInterceptorId};
     });
 }
 

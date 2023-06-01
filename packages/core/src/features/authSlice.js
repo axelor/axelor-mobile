@@ -27,22 +27,27 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({url, username, password}) => {
     const urlWithProtocol = await testUrl(url);
-    const {token, jsessionId, interceptorId} = await loginApi(
-      urlWithProtocol,
-      username,
-      password,
-    );
+    const {token, jsessionId, requestInterceptorId, responseInterceptorId} =
+      await loginApi(urlWithProtocol, username, password);
     const userId = await getActiveUserId();
     storage.setItem(URL_STORAGE_KEY, urlWithProtocol);
-    return {url: urlWithProtocol, token, jsessionId, userId, interceptorId};
+    return {
+      url: urlWithProtocol,
+      token,
+      jsessionId,
+      userId,
+      requestInterceptorId,
+      responseInterceptorId,
+    };
   },
 );
 
 export const logout = createAsyncThunk(
   'auth/logout',
   async function (data, {getState}) {
-    const interceptorId = getState()?.auth?.interceptorId;
-    axios.interceptors.request.eject(interceptorId);
+    const {requestInterceptorId, responseInterceptorId} = getState()?.auth;
+    axios.interceptors.request.eject(requestInterceptorId);
+    axios.interceptors.request.eject(responseInterceptorId);
     return;
   },
 );
@@ -54,7 +59,8 @@ const initialState = {
   baseUrl: null,
   token: null,
   jsessionId: null,
-  interceptorId: null,
+  requestInterceptorId: null,
+  responseInterceptorId: null,
   error: null,
 };
 
@@ -70,7 +76,14 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      const {url, token, jsessionId, userId, interceptorId} = action.payload;
+      const {
+        url,
+        token,
+        jsessionId,
+        userId,
+        requestInterceptorId,
+        responseInterceptorId,
+      } = action.payload;
       state.logged = token != null;
       state.loading = false;
       state.userId = userId;
@@ -78,7 +91,8 @@ export const authSlice = createSlice({
       state.token = token;
       state.jsessionId = jsessionId;
       state.error = null;
-      state.interceptorId = interceptorId;
+      state.requestInterceptorId = requestInterceptorId;
+      state.responseInterceptorId = responseInterceptorId;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -91,7 +105,8 @@ export const authSlice = createSlice({
       state.token = null;
       state.jsessionId = null;
       state.error = null;
-      state.interceptorId = null;
+      state.requestInterceptorId = null;
+      state.responseInterceptorId = null;
     });
   },
 });
