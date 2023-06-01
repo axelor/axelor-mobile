@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, Platform} from 'react-native';
-import {PopUp, IconButton, useThemeColor, Text} from '@axelor/aos-mobile-ui';
+import {
+  PopUp,
+  IconButton,
+  useThemeColor,
+  Text,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {linkingProvider} from '../../../tools/LinkingProvider';
 import {logout} from '../../../features/authSlice';
@@ -42,11 +48,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
       Platform.OS === 'ios'
         ? versionCheckConfig?.ios
         : versionCheckConfig?.android;
-    if (url.length === 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return checkNullString(url);
   }, [versionCheckConfig]);
 
   return (
