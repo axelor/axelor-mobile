@@ -39,16 +39,15 @@ const parseTranslation = (data: any, cache = new Map()): any => {
       return cache.get(data);
     }
 
-    const updatedItem = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => {
-        if (key.startsWith('$t:')) {
-          const translationKey = key.slice(3);
-          return [translationKey, value];
-        }
-
-        return [key, parseTranslation(value, cache)];
-      }),
-    );
+    const updatedItem = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (key.startsWith('$t:')) {
+        const translationKey = key.slice(3);
+        updatedItem[translationKey] = value;
+      } else if (!(key in updatedItem)) {
+        updatedItem[key] = parseTranslation(value, cache);
+      }
+    }
 
     cache.set(data, updatedItem);
     return updatedItem;
