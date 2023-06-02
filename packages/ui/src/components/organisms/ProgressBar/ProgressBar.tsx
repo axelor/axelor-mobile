@@ -49,6 +49,7 @@ const ProgressBar = ({
   const Colors = useThemeColor();
   const percent = total !== 0 ? (value / total) * 100 : 0;
   const animatedStripe = useRef(new Animated.Value(0)).current;
+  const animatedWidth = useRef(new Animated.Value(0)).current;
 
   if (Object.keys(colorRepartition).length === 0) {
     colorRepartition = {
@@ -58,13 +59,6 @@ const ProgressBar = ({
       75: Colors.priorityColor,
       100: Colors.successColor,
     };
-  }
-
-  let displayValue;
-  if (showPercent) {
-    displayValue = `${Math.round(percent)}%`;
-  } else {
-    null;
   }
 
   let color: Color = Colors.cautionColor;
@@ -79,8 +73,6 @@ const ProgressBar = ({
     () => getStyles(Colors, height, color, percent, stripeWidth),
     [Colors, height, color, percent, stripeWidth],
   );
-
-  const animatedWidth = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(animatedWidth, {
@@ -128,7 +120,11 @@ const ProgressBar = ({
             ]}
           />
         )}
-        <Text style={[styles.text, styleTxt]}>{displayValue}</Text>
+        {showPercent && (
+          <Text style={[styles.text, styleTxt]}>{`${Math.round(
+            percent,
+          )}%`}</Text>
+        )}
       </Animated.View>
     </View>
   );
