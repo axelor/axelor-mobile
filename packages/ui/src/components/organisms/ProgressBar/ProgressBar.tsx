@@ -56,7 +56,7 @@ const ProgressBar = ({
   if (showPercent) {
     displayValue = `${Math.round(percent)}%`;
   } else {
-    displayValue = `${value}/${total}`;
+    null;
   }
 
   let color: Color = Colors.cautionColor;
