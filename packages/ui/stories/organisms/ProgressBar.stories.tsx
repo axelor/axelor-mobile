@@ -45,6 +45,21 @@ storiesOf('ui/organisms/ProgressBar', module)
           defaultValue: true,
           control: {type: 'boolean'},
         },
+        stripe: {
+          type: 'boolean',
+          defaultValue: true,
+          control: {type: 'boolean'},
+        },
+        stripeDuration: {
+          type: 'number',
+          defaultValue: 60000,
+          control: {type: 'number'},
+        },
+        stripeWidth: {
+          type: 'number',
+          defaultValue: 40,
+          control: {type: 'number'},
+        },
         colorRepartition: {
           type: 'object',
           defaultValue: {},

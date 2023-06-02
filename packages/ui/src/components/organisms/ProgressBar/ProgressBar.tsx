@@ -29,6 +29,9 @@ type ProgressBarProps = {
   height?: number;
   style?: object;
   styleTxt?: object;
+  stripe?: boolean;
+  stripeDuration?: number;
+  stripeWidth?: number;
 };
 
 const ProgressBar = ({
@@ -36,13 +39,15 @@ const ProgressBar = ({
   total = 100,
   showPercent = true,
   colorRepartition = {},
+  stripe = true,
   height = 30,
+  stripeDuration = 1000,
+  stripeWidth = 40,
   style,
   styleTxt,
 }: ProgressBarProps) => {
   const Colors = useThemeColor();
   const percent = total !== 0 ? (value / total) * 100 : 0;
-  const stripeWidth = 40;
   const animatedStripe = useRef(new Animated.Value(0)).current;
 
   if (Object.keys(colorRepartition).length === 0) {
@@ -89,12 +94,12 @@ const ProgressBar = ({
     const stripeAnimation = Animated.loop(
       Animated.timing(animatedStripe, {
         toValue: 1,
-        duration: 1000,
+        duration: stripeDuration,
         useNativeDriver: true,
       }),
     );
     stripeAnimation.start();
-  }, [animatedStripe]);
+  }, [animatedStripe, stripeDuration]);
 
   const translateX = animatedStripe.interpolate({
     inputRange: [0, 1],
@@ -113,14 +118,16 @@ const ProgressBar = ({
             }),
           },
         ]}>
-        <Animated.View
-          style={[
-            styles.stripe,
-            {
-              transform: [{translateX}],
-            },
-          ]}
-        />
+        {stripe && percent < 100 && (
+          <Animated.View
+            style={[
+              styles.stripe,
+              {
+                transform: [{translateX}],
+              },
+            ]}
+          />
+        )}
         <Text style={[styles.text, styleTxt]}>{displayValue}</Text>
       </Animated.View>
     </View>
