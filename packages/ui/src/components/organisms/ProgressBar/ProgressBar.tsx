@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useEffect, useRef} from 'react';
-import {StyleSheet, View, Animated} from 'react-native';
+import {StyleSheet, View, Animated, Dimensions} from 'react-native';
 import {ThemeColors, useThemeColor, Color} from '../../../theme';
 import {Text} from '../../atoms';
 
@@ -42,6 +42,9 @@ const ProgressBar = ({
 }: ProgressBarProps) => {
   const Colors = useThemeColor();
   const percent = total !== 0 ? (value / total) * 100 : 0;
+  const stripeWidth = 40;
+  const animatedStripe = useRef(new Animated.Value(0)).current;
+
   if (Object.keys(colorRepartition).length === 0) {
     colorRepartition = {
       0: Colors.errorColor,
@@ -66,9 +69,10 @@ const ProgressBar = ({
       color = colorRepartition[threshold];
     }
   });
+
   const styles = useMemo(
-    () => getStyles(Colors, height, color, percent),
-    [Colors, height, color, percent],
+    () => getStyles(Colors, height, color, percent, stripeWidth),
+    [Colors, height, color, percent, stripeWidth],
   );
 
   const animatedWidth = useRef(new Animated.Value(0)).current;
@@ -80,6 +84,22 @@ const ProgressBar = ({
       useNativeDriver: false,
     }).start();
   }, [percent, animatedWidth]);
+
+  useEffect(() => {
+    const stripeAnimation = Animated.loop(
+      Animated.timing(animatedStripe, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    );
+    stripeAnimation.start();
+  }, [animatedStripe]);
+
+  const translateX = animatedStripe.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-stripeWidth, Dimensions.get('window').width],
+  });
 
   return (
     <View style={[styles.container, style]}>
@@ -93,13 +113,27 @@ const ProgressBar = ({
             }),
           },
         ]}>
+        <Animated.View
+          style={[
+            styles.stripe,
+            {
+              transform: [{translateX}],
+            },
+          ]}
+        />
         <Text style={[styles.text, styleTxt]}>{displayValue}</Text>
       </Animated.View>
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors, height: number, color, percent) =>
+const getStyles = (
+  Colors: ThemeColors,
+  height: number,
+  color,
+  percent,
+  stripeWidth,
+) =>
   StyleSheet.create({
     container: {
       width: '100%',
@@ -118,6 +152,15 @@ const getStyles = (Colors: ThemeColors, height: number, color, percent) =>
       backgroundColor: color.background,
       width: `${percent}%`,
       height: height,
+      overflow: 'hidden',
+    },
+    stripe: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      width: stripeWidth,
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     text: {
       textAlign: 'center',
