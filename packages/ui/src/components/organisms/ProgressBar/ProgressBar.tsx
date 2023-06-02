@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useMemo, useEffect, useRef} from 'react';
+import {StyleSheet, View, Animated} from 'react-native';
 import {ThemeColors, useThemeColor, Color} from '../../../theme';
 import {Text} from '../../atoms';
 
@@ -71,11 +71,30 @@ const ProgressBar = ({
     [Colors, height, color, percent],
   );
 
+  const animatedWidth = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animatedWidth, {
+      toValue: percent,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [percent, animatedWidth]);
+
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.progressBar}>
+      <Animated.View
+        style={[
+          styles.progressBar,
+          {
+            width: animatedWidth.interpolate({
+              inputRange: [0, 100],
+              outputRange: ['0%', '100%'],
+            }),
+          },
+        ]}>
         <Text style={[styles.text, styleTxt]}>{displayValue}</Text>
-      </View>
+      </Animated.View>
     </View>
   );
 };
