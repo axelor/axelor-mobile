@@ -18,7 +18,7 @@
 
 import {Module} from '@axelor/aos-mobile-core';
 
-export const CrmModule: Module = {
+export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
   title: 'Helpdesk_Helpdesk',
   subtitle: 'Helpdesk_Helpdesk',

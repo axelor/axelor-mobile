@@ -21,13 +21,14 @@ import {Application} from '@axelor/aos-mobile-core';
 import {StockModule} from '@axelor/aos-mobile-stock';
 import {ManufacturingModule} from '@axelor/aos-mobile-manufacturing';
 import {CrmModule} from '@axelor/aos-mobile-crm';
+import {HelpDeskModule} from '@axelor/aos-mobile-helpdesk';
 import application_properties from '../package.json';
 import {app_config} from './app.config';
 
 const App = () => {
   return (
     <Application
-      modules={[StockModule, ManufacturingModule, CrmModule]}
+      modules={[StockModule, ManufacturingModule, CrmModule, HelpDeskModule]}
       mainMenu="auth_menu_user"
       version={application_properties.version}
       configuration={app_config}
