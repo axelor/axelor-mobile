@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {searchCatalog, getCatalogType} from '../api/catalog-api';
 
 export const fetchCatalog = createAsyncThunk(
@@ -59,29 +62,11 @@ const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchCatalog.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loadingCatalog',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'catalogList',
-      });
-    });
-    builder.addCase(fetchCatalog.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loadingCatalog',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'catalogList',
-      });
-    });
-    builder.addCase(fetchCatalog.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loadingCatalog',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'catalogList',
-      });
+    generateInifiniteScrollCases(builder, fetchCatalog, {
+      loading: 'loadingCatalog',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'catalogList',
     });
     builder.addCase(fetchCatalogType.pending, state => {
       state.loadingCatalogType = true;

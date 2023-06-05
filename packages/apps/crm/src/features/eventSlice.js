@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   searchEventsByIds,
   partnerEventById,
@@ -128,27 +131,11 @@ const eventSlice = createSlice({
       state.loading = false;
       state.listEventContact = action.payload;
     });
-    builder.addCase(fetchPlannedEvent.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingEvent = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchPlannedEvent.fulfilled, (state, action) => {
-      state.loadingEvent = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.eventList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.eventList = [...state.eventList, ...action.payload];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, fetchPlannedEvent, {
+      loading: 'loadingEvent',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'eventList',
     });
     builder.addCase(fetchEventById.pending, (state, action) => {
       state.loadingEvent = true;
