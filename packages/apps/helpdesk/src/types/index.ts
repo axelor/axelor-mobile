@@ -16,12 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as CatalogCard} from './CatalogCard/CatalogCard';
-export {default as ContactInfoCard} from './ContactInfoCard/ContactInfoCard';
-export {default as EventCard} from './EventCard/EventCard';
-export {default as LeadsCard} from './LeadsCard/LeadsCard';
-export {default as LiteContactCard} from './LiteContactCard/LiteContactCard';
-export {default as OpportunityCard} from './OpportunityCard/OpportunityCard';
-export {default as PartnerCard} from './PartnerCard/PartnerCard';
-export {default as PartnerInfoCard} from './PartnerInfoCard/PartnerInfoCard';
-export {default as PlanningEventCard} from './PlanningEventCard/PlanningEventCard';
+export {default as Ticket} from './ticket';
