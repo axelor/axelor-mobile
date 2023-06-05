@@ -26,4 +26,5 @@ export {
   handlerApiCall,
   handlerError,
   manageInfiteScrollState,
+  generateInifiniteScrollCases,
 } from './utils';
