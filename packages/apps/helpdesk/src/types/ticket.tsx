@@ -55,13 +55,13 @@ class TicketType {
   static getStatusColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.status.New:
-        return Colors.plannedColor.background;
+        return Colors.plannedColor;
       case this.status.In_Progress:
-        return Colors.progressColor.background;
+        return Colors.progressColor;
       case this.status.Resolved:
-        return Colors.primaryColor.background;
+        return Colors.primaryColor;
       case this.status.Closed:
-        return Colors.cautionColor.background;
+        return Colors.cautionColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by Ticket`,

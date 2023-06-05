@@ -19,118 +19,114 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
+  Badge,
   Card,
   Icon,
   LabelText,
   Text,
   useThemeColor,
-  Image,
-  StarScore,
 } from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
-import Lead from '../../../types/lead';
+import {useTranslator, formatDateTime} from '@axelor/aos-mobile-core';
+import Ticket from '../../../types/ticket';
 
 interface TicketCardProps {
   style?: any;
-  leadsFullname: string;
-  leadsCompany: string;
-  leadsAddress: string;
-  leadsPhoneNumber: string;
-  leadsFixedPhone: string;
-  leadsEmail: string;
-  leadScoring: number;
-  leadVersion: string | number;
-  leadsId: string | number;
-  allLeadStatus?: any;
-  leadsStatus?: any;
+  ticketSeq: string;
+  subject: string;
+  progressSelect: string;
+  duration: number;
+  deadlineDateT: string;
+  responsibleUser: string;
+  assignedToUser: string;
+  prioritySelect: number;
+  statusSelect: number;
+  allTicketType?: any;
+  ticketType?: any;
   onPress: () => void;
-  isDoNotSendEmail: boolean;
-  isDoNotCall: boolean;
 }
 const TicketCard = ({
   style,
-  leadsFullname,
-  leadsCompany,
-  leadsAddress,
-  leadsPhoneNumber,
-  leadsFixedPhone,
-  leadsEmail,
-  leadScoring,
-  leadVersion,
-  leadsId,
-  allLeadStatus,
-  leadsStatus,
+  ticketSeq,
+  subject,
+  progressSelect,
+  duration,
+  deadlineDateT,
+  responsibleUser,
+  assignedToUser,
+  prioritySelect,
+  statusSelect,
+  allTicketType,
+  ticketType,
   onPress,
-  isDoNotSendEmail,
-  isDoNotCall,
-}: LeadsCardProps) => {
+}: TicketCardProps) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
-  const {baseUrl} = useSelector((state: any) => state.auth);
+  const colorType = useMemo(() => {
+    const colorIndex = allTicketType?.findIndex(
+      status => status.id === ticketType?.id,
+    );
+    return getStyles(Ticket.getTypeColor(colorIndex, Colors))?.colorBadge;
+  }, [Colors, allTicketType, ticketType?.id]);
+
+  const colorStatus = useMemo(() => {
+    return getStyles(Ticket.getStatusColor(statusSelect, Colors))?.colorBadge;
+  }, [Colors, statusSelect]);
 
   const borderStyle = useMemo(() => {
-    const colorIndex = allLeadStatus?.findIndex(
-      status => status.id === leadsStatus?.id,
-    );
-    return getStyles(Lead.getStatusColor(colorIndex, Colors)?.background)
-      ?.border;
-  }, [Colors, allLeadStatus, leadsStatus?.id]);
+    return getStyles(Ticket.getPriorityColor(prioritySelect, Colors))?.border;
+  }, [prioritySelect, Colors]);
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.leftContainer}>
-          <StarScore score={leadScoring} showMissingStar={true} />
-          <Image
-            generalStyle={styles.imageSize}
-            imageSize={styles.imageSize}
-            resizeMode="contain"
-            defaultIconSize={70}
-            source={{
-              uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${leadsId}/picture/download?v=${leadVersion}&parentId=${leadsId}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
-            }}
+          <Text style={styles.txtImportant}>
+            {I18n.t('Helpdesk_Progress')}n°{ticketSeq}
+          </Text>
+          {subject && <Text>{subject}</Text>}
+          {progressSelect && (
+            <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
+          )}
+          {duration !== null && (
+            <Text>{`${I18n.t('Helpdesk_Duration')}: ${duration}`}</Text>
+          )}
+          {deadlineDateT && (
+            <LabelText
+              iconName="calendar-times"
+              title={`${I18n.t('Helpdesk_Deadline')} :`}
+              value={formatDateTime(
+                deadlineDateT,
+                I18n.t('Base_DateTimeFormat'),
+              )}
+            />
+          )}
+          {responsibleUser && (
+            <Text>{`${I18n.t(
+              'Helpdesk_User_In_Charge',
+            )}: ${responsibleUser}`}</Text>
+          )}
+          {assignedToUser && (
+            <Text>{`${I18n.t(
+              'Helpdesk_Assigned_To',
+            )}: ${assignedToUser}`}</Text>
+          )}
+        </View>
+        <View style={styles.rightContainer}>
+          <View style={styles.badgeContainer}>
+            <Badge
+              title={Ticket.getStatus(statusSelect, I18n)}
+              style={colorStatus}
+            />
+            <Badge title={ticketType?.name} style={colorType} />
+          </View>
+          <Icon
+            style={styles.chevron}
+            name="chevron-right"
+            color={Colors.secondaryColor.background_light}
+            size={20}
           />
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{leadsFullname}</Text>
-          {leadsCompany && (
-            <LabelText iconName="building" title={leadsCompany} />
-          )}
-          {leadsAddress != null && (
-            <LabelText iconName="map-marker-alt" title={leadsAddress} />
-          )}
-          {leadsPhoneNumber != null && (
-            <LabelText
-              iconName={isDoNotCall ? 'phone-slash' : 'mobile-phone'}
-              title={leadsPhoneNumber}
-              FontAwesome5={isDoNotCall}
-              color={isDoNotCall ? 'red' : null}
-              textStyle={isDoNotCall ? styles.txtRed : null}
-              size={isDoNotCall ? null : 18}
-            />
-          )}
-          {leadsFixedPhone != null && (
-            <LabelText
-              iconName={isDoNotCall ? 'phone-slash' : 'phone'}
-              title={leadsFixedPhone}
-              color={isDoNotCall ? 'red' : null}
-              textStyle={isDoNotCall ? styles.txtRed : null}
-            />
-          )}
-          {leadsEmail != null && (
-            <LabelText
-              iconName={isDoNotSendEmail ? 'user-alt-slash' : 'envelope'}
-              title={leadsEmail}
-              color={isDoNotSendEmail ? 'red' : null}
-              textStyle={isDoNotSendEmail ? styles.txtRed : null}
-            />
-          )}
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
       </Card>
     </TouchableOpacity>
   );
@@ -142,37 +138,35 @@ const getStyles = color =>
       borderLeftWidth: 7,
       borderLeftColor: color,
     },
+    colorBadge: {
+      backgroundColor: color?.background_light,
+      borderColor: color?.background,
+    },
   });
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     paddingRight: 15,
   },
   leftContainer: {
-    width: '20%',
+    width: '50%',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
-  textContainer: {
-    width: '60%',
+  rightContainer: {
+    width: '50%',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   txtImportant: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
   },
-  imageSize: {
-    height: 80,
-    width: 80,
+  badgeContainer: {
+    flexDirection: 'row',
   },
-  txtRed: {
-    color: 'red',
-  },
+  chevron: {marginTop: '20%'},
 });
 
 export default TicketCard;

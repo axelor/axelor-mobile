@@ -30,3 +30,6 @@ export const HelpDeskModule: Module = {
     fr: frTranslations,
   },
 };
+
+export * from './types';
+export * from './components';
