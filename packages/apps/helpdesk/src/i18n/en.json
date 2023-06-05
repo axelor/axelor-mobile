@@ -1,3 +1,13 @@
 {
-  "Helpdesk_Helpdesk": "Helpdesk"
+  "Helpdesk_Helpdesk": "Helpdesk",
+  "Helpdesk_Ticket": "Ticket",
+  "Helpdesk_Progress": "Progress",
+  "Helpdesk_Duration": "Duration",
+  "Helpdesk_Deadline": "Deadline",
+  "Helpdesk_User_In_Charge": "User in charge",
+  "Helpdesk_Assigned_To": "Assigned to",
+  "Helpdesk_Status_New": "New",
+  "Helpdesk_Status_In_Progress": "In progress",
+  "Helpdesk_Status_Resolved": "Resolved",
+  "Helpdesk_Status_Closed": "Closed"
 }
