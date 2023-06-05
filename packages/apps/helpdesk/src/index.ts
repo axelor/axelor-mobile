@@ -17,10 +17,16 @@
  */
 
 import {Module} from '@axelor/aos-mobile-core';
+import enTranslations from './i18n/en.json';
+import frTranslations from './i18n/fr.json';
 
 export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
   title: 'Helpdesk_Helpdesk',
   subtitle: 'Helpdesk_Helpdesk',
   icon: 'life-ring',
+  translations: {
+    en: enTranslations,
+    fr: frTranslations,
+  },
 };
