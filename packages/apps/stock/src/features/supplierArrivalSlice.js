@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   fetchSupplierArrival as _fetchSupplierArrival,
   addLineStockMove,
@@ -89,30 +92,11 @@ const supplierArrivalSlice = createSlice({
   name: 'supplierArrivals',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchSupplierArrivals.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(searchSupplierArrivals.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0) {
-        state.supplierArrivalsList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.supplierArrivalsList = [
-            ...state.supplierArrivalsList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, searchSupplierArrivals, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'supplierArrivalsList',
     });
     builder.addCase(fetchSupplierArrival.pending, state => {
       state.loading = true;

@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   fetchStockCorrection as _fetchStockCorrection,
   searchStockCorrection,
@@ -94,30 +97,11 @@ const stockCorrectionSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(searchStockCorrections.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(searchStockCorrections.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0) {
-        state.stockCorrectionList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.stockCorrectionList = [
-            ...state.stockCorrectionList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, searchStockCorrections, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'stockCorrectionList',
     });
     builder.addCase(fetchStockCorrection.pending, (state, action) => {
       state.loading = true;

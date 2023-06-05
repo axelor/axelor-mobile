@@ -17,7 +17,11 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {checkNullString, handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   fetchInternalMove as _fetchInternalMove,
   searchInternalMoveFilter,
@@ -106,30 +110,11 @@ const internalMoveSlice = createSlice({
   name: 'internalMove',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchInternalMoves.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingInternalMove = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(searchInternalMoves.fulfilled, (state, action) => {
-      state.loadingInternalMove = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0) {
-        state.internalMoveList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.internalMoveList = [
-            ...state.internalMoveList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, searchInternalMoves, {
+      loading: 'loadingInternalMove',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'internalMoveList',
     });
     builder.addCase(fetchInternalMove.pending, state => {
       state.loadingInternalMove = true;

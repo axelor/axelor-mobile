@@ -17,7 +17,11 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+  updateAgendaItems,
+} from '@axelor/aos-mobile-core';
 import {
   searchProspect,
   getProspect,
@@ -105,27 +109,11 @@ const prospectSlice = createSlice({
   name: 'prospect',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchProspects.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchProspects.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.prospectList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.prospectList = [...state.prospectList, ...action.payload];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, fetchProspects, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'prospectList',
     });
     builder.addCase(fetchProspectById.pending, (state, action) => {
       state.loading = true;

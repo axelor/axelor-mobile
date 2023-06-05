@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   searchSupplierArrivalLines,
   updateLine,
@@ -69,7 +72,6 @@ const initialState = {
   isListEnd: false,
   supplierArrivalLineList: [],
   totalNumberLines: 0,
-  updateLineResponse: {},
   loadingSupplierArrivalLine: false,
   supplierArrivalLine: {},
 };
@@ -78,39 +80,20 @@ const supplierArrivalLineSlice = createSlice({
   name: 'supplierArrivalLine',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchSupplierArrivalLines.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingSALines = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchSupplierArrivalLines.fulfilled, (state, action) => {
-      state.loadingSALines = false;
-      state.moreLoading = false;
-      state.totalNumberLines = action.payload?.total;
-      if (action.meta.arg.page === 0) {
-        state.supplierArrivalLineList = action.payload?.data;
-        state.isListEnd = false;
-      } else {
-        if (action.payload?.data != null) {
-          state.isListEnd = false;
-          state.supplierArrivalLineList = [
-            ...state.supplierArrivalLineList,
-            ...action.payload?.data,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
-    });
-    builder.addCase(updateSupplierArrivalLine.pending, state => {
-      state.loadingSupplierArrivalLine = true;
-    });
-    builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
-      state.loadingSupplierArrivalLine = false;
-      state.updateLineResponse = action.payload;
-    });
+    generateInifiniteScrollCases(
+      builder,
+      fetchSupplierArrivalLines,
+      {
+        loading: 'loadingSALines',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'supplierArrivalLineList',
+        total: 'totalNumberLines',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     builder.addCase(fetchSupplierArrivalLine.pending, state => {
       state.loadingSupplierArrivalLine = true;
     });

@@ -17,8 +17,10 @@
  */
 
 import Toast from 'react-native-toast-message';
+import {checkNullString} from '@axelor/aos-mobile-ui';
 import {traceError} from '../api/traceback-api';
 import {i18nProvider} from '../i18n';
+import {ActionReducerMapBuilder} from '@reduxjs/toolkit';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -182,12 +184,25 @@ export const handlerApiCall = ({
     );
 };
 
+type InfiniteScrollStateKeys = {
+  loading: string;
+  moreLoading: string;
+  isListEnd: string;
+  list: string;
+  total?: string;
+};
+
 export const manageInfiteScrollState = (
   state: any,
   action: any,
   status: 'pending' | 'fulfilled' | 'rejected',
-  keys: {loading: string; moreLoading: string; list: string; isListEnd: string},
+  keys: InfiniteScrollStateKeys,
+  manageTotal: boolean = false,
+  parseData: (data: any[]) => any[] = data => data,
 ) => {
+  const data = parseData(manageTotal ? action.payload?.data : action.payload);
+  const total = manageTotal ? action.payload?.total : null;
+
   if (status === 'pending') {
     if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
       state[keys.loading] = true;
@@ -199,13 +214,14 @@ export const manageInfiteScrollState = (
   if (status === 'fulfilled') {
     state[keys.loading] = false;
     state[keys.moreLoading] = false;
+    !checkNullString(keys.total) ? (state[keys.total] = total) : null;
     if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-      state[keys.list] = action.payload;
+      state[keys.list] = data;
       state[keys.isListEnd] = false;
     } else {
-      if (Array.isArray(action.payload)) {
+      if (Array.isArray(data)) {
         state[keys.isListEnd] = false;
-        state[keys.list] = [...state[keys.list], ...action.payload];
+        state[keys.list] = [...state[keys.list], ...data];
       } else {
         state[keys.isListEnd] = true;
       }
@@ -218,4 +234,47 @@ export const manageInfiteScrollState = (
   }
 
   return state;
+};
+
+export const generateInifiniteScrollCases = (
+  builder: ActionReducerMapBuilder<any>,
+  actionCreator: any,
+  keys: InfiniteScrollStateKeys,
+  options?: {
+    manageTotal?: boolean;
+    parseFunction?: (data: any[]) => any[];
+  },
+) => {
+  builder.addCase(actionCreator.pending, (state, action) => {
+    state = manageInfiteScrollState(
+      state,
+      action,
+      'pending',
+      keys,
+      options?.manageTotal,
+      options?.parseFunction,
+    );
+  });
+
+  builder.addCase(actionCreator.fulfilled, (state, action) => {
+    state = manageInfiteScrollState(
+      state,
+      action,
+      'fulfilled',
+      keys,
+      options?.manageTotal,
+      options?.parseFunction,
+    );
+  });
+
+  builder.addCase(actionCreator.rejected, (state, action) => {
+    state = manageInfiteScrollState(
+      state,
+      action,
+      'rejected',
+      keys,
+      options?.manageTotal,
+      options?.parseFunction,
+    );
+  });
 };

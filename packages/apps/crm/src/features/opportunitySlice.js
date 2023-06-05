@@ -17,7 +17,11 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+  updateAgendaItems,
+} from '@axelor/aos-mobile-core';
 import {
   getOpportunityStatus,
   searchOpportunities,
@@ -145,33 +149,20 @@ const opportunitySlice = createSlice({
   name: 'opportunity',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchOpportunities.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchOpportunities.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.opportunityList = action.payload.map(item =>
-          Opportunity.responseParser(item),
-        );
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.opportunityList = [
-            ...state.opportunityList,
-            ...action.payload.map(item => Opportunity.responseParser(item)),
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
-    });
+    generateInifiniteScrollCases(
+      builder,
+      fetchOpportunities,
+      {
+        loading: 'loading',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'opportunityList',
+      },
+      {
+        parseFunction: data =>
+          data?.map(item => Opportunity.responseParser(item)),
+      },
+    );
     builder.addCase(fetchOpportunityStatus.pending, state => {
       state.loadingOpportunityStatus = true;
     });

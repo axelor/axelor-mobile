@@ -18,9 +18,9 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
+  generateInifiniteScrollCases,
   handlerApiCall,
   updateAgendaItems,
-  manageInfiteScrollState,
 } from '@axelor/aos-mobile-core';
 import {
   searchLeads,
@@ -125,29 +125,11 @@ const leadSlice = createSlice({
   name: 'lead',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchLeads.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loadingLead',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'leadList',
-      });
-    });
-    builder.addCase(fetchLeads.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loadingLead',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'leadList',
-      });
-    });
-    builder.addCase(fetchLeads.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loadingLead',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'leadList',
-      });
+    generateInifiniteScrollCases(builder, fetchLeads, {
+      loading: 'loadingLead',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'leadList',
     });
     builder.addCase(fetchLeadStatus.pending, state => {
       state.loadingLeadStatus = true;
