@@ -41,13 +41,13 @@ const StockLocationSearchBar = ({
   const dispatch = useDispatch();
 
   const {
-    loadingStockLoaction: loading,
-    moreLoadingStockLoaction: moreLoading,
-    isListEndStockLoaction: isListEnd,
+    loadingStockLocation: loading,
+    moreLoadingStockLocation: moreLoading,
+    isListEndStockLocation: isListEnd,
     stockLocationList,
-    loadingStockLoactionMultiFilter: loadingMultiFilter,
-    moreLoadingStockLoactionMultiFilter: moreLoadingMultiFilter,
-    isListEndStockLoactionMultiFilter: isListEndMultiFilter,
+    loadingStockLocationMultiFilter: loadingMultiFilter,
+    moreLoadingStockLocationMultiFilter: moreLoadingMultiFilter,
+    isListEndStockLocationMultiFilter: isListEndMultiFilter,
     stockLocationListMultiFilter,
   } = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);

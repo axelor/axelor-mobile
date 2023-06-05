@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   searchInternalMoveLines,
   updateInternalMoveLine as _updateInternalMoveLine,
@@ -99,32 +102,20 @@ const internalMoveLineSlice = createSlice({
   name: 'internalMoveLine',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchInternalMoveLines.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingIMLines = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchInternalMoveLines.fulfilled, (state, action) => {
-      state.loadingIMLines = false;
-      state.moreLoading = false;
-      state.totalNumberLines = action.payload?.total;
-      if (action.meta.arg.page === 0) {
-        state.internalMoveLineList = action.payload?.data;
-        state.isListEnd = false;
-      } else {
-        if (action.payload?.data != null) {
-          state.isListEnd = false;
-          state.internalMoveLineList = [
-            ...state.internalMoveLineList,
-            ...action.payload?.data,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
-    });
+    generateInifiniteScrollCases(
+      builder,
+      fetchInternalMoveLines,
+      {
+        loading: 'loadingIMLines',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'internalMoveLineList',
+        total: 'totalNumberLines',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     builder.addCase(fetchInternalMoveLine.pending, state => {
       state.loadingInternalMoveLine = true;
     });

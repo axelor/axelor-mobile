@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   searchCustomerDeliveryLines,
   updateLine,
@@ -91,7 +94,6 @@ const initialState = {
   isListEnd: false,
   customerDeliveryLineList: [],
   totalNumberLines: 0,
-  updateLineResponse: {},
   loadingCustomerDeliveryLine: false,
   customerDeliveryLine: {},
 };
@@ -100,39 +102,20 @@ const CustomerDeliveryLineSlice = createSlice({
   name: 'customerDeliveryLine',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchCustomerDeliveryLines.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingCDLines = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchCustomerDeliveryLines.fulfilled, (state, action) => {
-      state.loadingCDLines = false;
-      state.moreLoading = false;
-      state.totalNumberLines = action.payload?.total;
-      if (action.meta.arg.page === 0) {
-        state.customerDeliveryLineList = action.payload?.data;
-        state.isListEnd = false;
-      } else {
-        if (action.payload?.data != null) {
-          state.isListEnd = false;
-          state.customerDeliveryLineList = [
-            ...state.customerDeliveryLineList,
-            ...action.payload?.data,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
-    });
-    builder.addCase(updateCustomerDeliveryLine.pending, state => {
-      state.loadingCDLines = true;
-    });
-    builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
-      state.loadingCDLines = false;
-      state.updateLineResponse = action.payload;
-    });
+    generateInifiniteScrollCases(
+      builder,
+      fetchCustomerDeliveryLines,
+      {
+        loading: 'loadingCDLines',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'customerDeliveryLineList',
+        total: 'totalNumberLines',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     builder.addCase(fetchCustomerDeliveryLine.pending, state => {
       state.loadingCustomerDeliveryLine = true;
     });

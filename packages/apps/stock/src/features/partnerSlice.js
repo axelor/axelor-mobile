@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {searchClientsFilter, searchSuppliersFilter} from '../api/partner-api';
 
 export const filterClients = createAsyncThunk(
@@ -58,54 +61,17 @@ const partnerSlice = createSlice({
   name: 'stock_partner',
   initialState,
   extraReducers: builder => {
-    builder.addCase(filterClients.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'clientList',
-      });
+    generateInifiniteScrollCases(builder, filterClients, {
+      loading: 'loadingPartners',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'clientList',
     });
-    builder.addCase(filterClients.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'clientList',
-      });
-    });
-    builder.addCase(filterClients.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'clientList',
-      });
-    });
-
-    builder.addCase(filterSuppliers.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'supplierList',
-      });
-    });
-    builder.addCase(filterSuppliers.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'supplierList',
-      });
-    });
-    builder.addCase(filterSuppliers.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loadingPartners',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'supplierList',
-      });
+    generateInifiniteScrollCases(builder, filterSuppliers, {
+      loading: 'loadingPartners',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'supplierList',
     });
   },
 });

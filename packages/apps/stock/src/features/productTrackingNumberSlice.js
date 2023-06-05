@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {searchProductsFilter} from '../api/product-api';
 import {searchTrackingNumberFilter} from '../api/tracking-number-api';
 
@@ -67,29 +70,11 @@ const productTrackingNumberSlice = createSlice({
   name: 'productTrackingNumber',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchProductTrackingNumber.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loading',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'productTrackingNumberList',
-      });
-    });
-    builder.addCase(searchProductTrackingNumber.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loading',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'productTrackingNumberList',
-      });
-    });
-    builder.addCase(searchProductTrackingNumber.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loading',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'productTrackingNumberList',
-      });
+    generateInifiniteScrollCases(builder, searchProductTrackingNumber, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'productTrackingNumberList',
     });
   },
 });

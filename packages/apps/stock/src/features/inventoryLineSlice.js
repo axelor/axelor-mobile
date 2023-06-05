@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   createInventoryLine,
   searchInventoryLines,
@@ -105,8 +108,6 @@ const initialState = {
   isListEnd: false,
   inventoryLineList: [],
   totalNumberLines: 0,
-  updateResponse: null,
-  createResponse: null,
   loadingInventoryLine: false,
   inventoryLine: {},
 };
@@ -115,46 +116,20 @@ const inventoryLineSlice = createSlice({
   name: 'inventoryLines',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchInventoryLines.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loadingInventoryLines = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchInventoryLines.fulfilled, (state, action) => {
-      state.loadingInventoryLines = false;
-      state.moreLoading = false;
-      state.totalNumberLines = action.payload?.total;
-      if (action.meta.arg.page === 0) {
-        state.inventoryLineList = action.payload?.data;
-        state.isListEnd = false;
-      } else {
-        if (action.payload?.data != null) {
-          state.isListEnd = false;
-          state.inventoryLineList = [
-            ...state.inventoryLineList,
-            ...action.payload?.data,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
-    });
-    builder.addCase(updateInventoryLine.pending, state => {
-      state.loadingInventoryLines = true;
-    });
-    builder.addCase(updateInventoryLine.fulfilled, (state, action) => {
-      state.loadingInventoryLines = false;
-      state.updateResponse = action.payload;
-    });
-    builder.addCase(createNewInventoryLine.pending, state => {
-      state.loadingInventoryLines = true;
-    });
-    builder.addCase(createNewInventoryLine.fulfilled, (state, action) => {
-      state.loadingInventoryLines = false;
-      state.createResponse = action.payload;
-    });
+    generateInifiniteScrollCases(
+      builder,
+      fetchInventoryLines,
+      {
+        loading: 'loadingInventoryLines',
+        moreLoading: 'moreLoading',
+        isListEnd: 'isListEnd',
+        list: 'inventoryLineList',
+        total: 'totalNumberLines',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     builder.addCase(addTrackingNumber.pending, state => {
       state.loadingInventoryLine = true;
     });

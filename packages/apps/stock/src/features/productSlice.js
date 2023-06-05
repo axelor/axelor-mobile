@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, manageInfiteScrollState} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {
   searchProductsFilter,
   searchProductWithId,
@@ -77,29 +80,11 @@ const productSlice = createSlice({
   name: 'product',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchProducts.pending, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'pending', {
-        loading: 'loadingProduct',
-        moreLoading: 'moreLoadingProduct',
-        isListEnd: 'isListEndProduct',
-        list: 'productList',
-      });
-    });
-    builder.addCase(searchProducts.fulfilled, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'fulfilled', {
-        loading: 'loadingProduct',
-        moreLoading: 'moreLoadingProduct',
-        isListEnd: 'isListEndProduct',
-        list: 'productList',
-      });
-    });
-    builder.addCase(searchProducts.rejected, (state, action) => {
-      state = manageInfiteScrollState(state, action, 'rejected', {
-        loading: 'loadingProduct',
-        moreLoading: 'moreLoadingProduct',
-        isListEnd: 'isListEndProduct',
-        list: 'productList',
-      });
+    generateInifiniteScrollCases(builder, searchProducts, {
+      loading: 'loadingProduct',
+      moreLoading: 'moreLoadingProduct',
+      isListEnd: 'isListEndProduct',
+      list: 'productList',
     });
     builder.addCase(fetchProductWithId.pending, state => {
       state.loadingProduct = true;

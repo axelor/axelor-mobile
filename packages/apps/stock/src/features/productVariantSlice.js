@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {fetchVariantAttributes, fetchVariants} from '../api/product-api';
 
 export const fetchProductVariants = createAsyncThunk(
@@ -75,30 +78,11 @@ const productSlice = createSlice({
   name: 'productVariant',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchProductVariants.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
-    });
-    builder.addCase(fetchProductVariants.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0) {
-        state.productListVariables = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.productListVariables = [
-            ...state.productListVariables,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, fetchProductVariants, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'productListVariables',
     });
     builder.addCase(fetchProductsAttributes.pending, (state, action) => {
       state.loading = true;

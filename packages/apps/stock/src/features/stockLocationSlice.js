@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {searchStockLocationsFilter} from '../api/stock-location-api';
 
 export const searchStockLocations = createAsyncThunk(
@@ -47,69 +50,31 @@ export const filterSecondStockLocations = createAsyncThunk(
 );
 
 const initialState = {
-  loadingStockLoaction: false,
-  moreLoadingStockLoaction: false,
-  isListEndStockLoaction: false,
+  loadingStockLocation: false,
+  moreLoadingStockLocation: false,
+  isListEndStockLocation: false,
   stockLocationList: [],
+  loadingStockLocationMultiFilter: false,
+  moreLoadingStockLocationMultiFilter: false,
+  isListEndStockLocationMultiFilter: false,
   stockLocationListMultiFilter: [],
-  loadingStockLoactionMultiFilter: false,
-  moreLoadingStockLoactionMultiFilter: false,
-  isListEndStockLoactionMultiFilter: false,
 };
 
 const stockLocationSlice = createSlice({
   name: 'stockLocation',
   initialState,
   extraReducers: builder => {
-    builder.addCase(searchStockLocations.pending, (state, action) => {
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.loadingStockLoaction = true;
-      } else {
-        state.moreLoadingStockLoaction = true;
-      }
+    generateInifiniteScrollCases(builder, searchStockLocations, {
+      loading: 'loadingStockLocation',
+      moreLoading: 'moreLoadingStockLocation',
+      isListEnd: 'isListEndStockLocation',
+      list: 'stockLocationList',
     });
-    builder.addCase(searchStockLocations.fulfilled, (state, action) => {
-      state.loadingStockLoaction = false;
-      state.moreLoadingStockLoaction = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.stockLocationList = action.payload;
-        state.isListEndStockLoaction = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEndStockLoaction = false;
-          state.stockLocationList = [
-            ...state.stockLocationList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEndStockLoaction = true;
-        }
-      }
-    });
-    builder.addCase(filterSecondStockLocations.pending, (state, action) => {
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.loadingStockLoactionMultiFilter = true;
-      } else {
-        state.moreLoadingStockLoactionMultiFilter = true;
-      }
-    });
-    builder.addCase(filterSecondStockLocations.fulfilled, (state, action) => {
-      state.loadingStockLoactionMultiFilter = false;
-      state.moreLoadingStockLoactionMultiFilter = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.stockLocationListMultiFilter = action.payload;
-        state.isListEndStockLoactionMultiFilter = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEndStockLoactionMultiFilter = false;
-          state.stockLocationListMultiFilter = [
-            ...state.stockLocationListMultiFilter,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEndStockLoactionMultiFilter = true;
-        }
-      }
+    generateInifiniteScrollCases(builder, filterSecondStockLocations, {
+      loading: 'loadingStockLocationMultiFilter',
+      moreLoading: 'moreLoadingStockLocationMultiFilter',
+      isListEnd: 'isListEndStockLocationMultiFilter',
+      list: 'stockLocationListMultiFilter',
     });
   },
 });
