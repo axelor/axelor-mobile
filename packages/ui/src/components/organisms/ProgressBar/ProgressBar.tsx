@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useEffect, useRef} from 'react';
-import {StyleSheet, View, Animated, Dimensions} from 'react-native';
+import React, {useMemo, useEffect, useRef, useCallback, useState} from 'react';
+import {StyleSheet, View, Animated} from 'react-native';
 import {ThemeColors, useThemeColor, Color} from '../../../theme';
 import {Text} from '../../atoms';
 
@@ -47,25 +47,33 @@ const ProgressBar = ({
   styleTxt,
 }: ProgressBarProps) => {
   const Colors = useThemeColor();
-  const percent = total !== 0 ? (value / total) * 100 : 0;
   const animatedStripe = useRef(new Animated.Value(0)).current;
   const animatedWidth = useRef(new Animated.Value(0)).current;
+  const [progressBarWidth, setProgressBarWidth] = useState(0);
 
-  if (Object.keys(colorRepartition).length === 0) {
-    colorRepartition = {
-      0: Colors.errorColor,
-      25: Colors.cautionColor,
-      50: Colors.progressColor,
-      75: Colors.priorityColor,
-      100: Colors.successColor,
-    };
-  }
+  const percent = useMemo(
+    () => (total !== 0 ? (value / total) * 100 : 0),
+    [total, value],
+  );
+
+  const progressColors = useMemo(() => {
+    if (Object.keys(colorRepartition).length === 0) {
+      return {
+        0: Colors.errorColor,
+        25: Colors.cautionColor,
+        50: Colors.progressColor,
+        75: Colors.priorityColor,
+        100: Colors.successColor,
+      };
+    }
+    return colorRepartition;
+  }, [Colors, colorRepartition]);
 
   let color: Color = Colors.cautionColor;
-  Object.keys(colorRepartition).forEach(key => {
+  Object.keys(progressColors).forEach(key => {
     const threshold = parseInt(key, 10);
-    if (percent >= threshold && colorRepartition[threshold]) {
-      color = colorRepartition[threshold];
+    if (percent >= threshold && progressColors[threshold]) {
+      color = progressColors[threshold];
     }
   });
 
@@ -95,12 +103,27 @@ const ProgressBar = ({
 
   const translateX = animatedStripe.interpolate({
     inputRange: [0, 1],
-    outputRange: [-stripeWidth, Dimensions.get('window').width],
+    outputRange: [-stripeWidth, progressBarWidth],
   });
+
+  const renderPercent = useCallback(() => {
+    if (showPercent) {
+      return (
+        <Text style={[styles.text, styleTxt]}>{`${percent.toFixed(2)}%`}</Text>
+      );
+    } else {
+      return <Text style={[styles.text, styleTxt]}>{`${value}/${total}`}</Text>;
+    }
+  }, [percent, showPercent, styles, styleTxt, total, value]);
 
   return (
     <View style={[styles.container, style]}>
+      {percent <= 5 && <View style={styles.percent}>{renderPercent()}</View>}
       <Animated.View
+        onLayout={event => {
+          const {width} = event.nativeEvent.layout;
+          setProgressBarWidth(width);
+        }}
         style={[
           styles.progressBar,
           {
@@ -120,11 +143,7 @@ const ProgressBar = ({
             ]}
           />
         )}
-        {showPercent && (
-          <Text style={[styles.text, styleTxt]}>{`${Math.round(
-            percent,
-          )}%`}</Text>
-        )}
+        {percent > 5 && renderPercent()}
       </Animated.View>
     </View>
   );
@@ -147,6 +166,8 @@ const getStyles = (
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
       backgroundColor: Colors.backgroundColor,
+      borderWidth: 1,
+      borderColor: Colors.secondaryColor.background,
     },
     progressBar: {
       borderRadius: 7,
@@ -154,6 +175,7 @@ const getStyles = (
       alignItems: 'center',
       backgroundColor: color.background,
       width: `${percent}%`,
+      maxWidth: '100%',
       height: height,
       overflow: 'hidden',
     },
@@ -168,6 +190,7 @@ const getStyles = (
     text: {
       textAlign: 'center',
     },
+    percent: {position: 'absolute', left: '50%', top: '25%'},
   });
 
 export default ProgressBar;
