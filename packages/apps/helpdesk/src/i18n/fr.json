@@ -1,7 +1,7 @@
 {
-  "Helpdesk_Helpdesk": "Suppport client",
+  "Helpdesk_Helpdesk": "Support client",
   "Helpdesk_Ticket": "Ticket",
-  "Helpdesk_Progress": "Progressions",
+  "Helpdesk_Progress": "Progression",
   "Helpdesk_Duration": "Durée",
   "Helpdesk_Deadline": "Date limite",
   "Helpdesk_User_In_Charge": "Utilisateur en charge",
@@ -9,5 +9,5 @@
   "Helpdesk_Status_New": "Nouveau",
   "Helpdesk_Status_In_Progress": "En cours",
   "Helpdesk_Status_Resolved": "Résolu",
-  "Helpdesk_Status_Closed": "Fermée"
+  "Helpdesk_Status_Closed": "Fermé"
 }

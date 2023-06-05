@@ -26,7 +26,11 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, formatDateTime} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  formatDateTime,
+  formatDuration,
+} from '@axelor/aos-mobile-core';
 import Ticket from '../../../types/ticket';
 
 interface TicketCardProps {
@@ -66,12 +70,8 @@ const TicketCard = ({
     const colorIndex = allTicketType?.findIndex(
       status => status.id === ticketType?.id,
     );
-    return getStyles(Ticket.getTypeColor(colorIndex, Colors))?.colorBadge;
+    return Ticket.getTypeColor(colorIndex, Colors);
   }, [Colors, allTicketType, ticketType?.id]);
-
-  const colorStatus = useMemo(() => {
-    return getStyles(Ticket.getStatusColor(statusSelect, Colors))?.colorBadge;
-  }, [Colors, statusSelect]);
 
   const borderStyle = useMemo(() => {
     return getStyles(Ticket.getPriorityColor(prioritySelect, Colors))?.border;
@@ -82,14 +82,16 @@ const TicketCard = ({
       <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.leftContainer}>
           <Text style={styles.txtImportant}>
-            {I18n.t('Helpdesk_Progress')}n°{ticketSeq}
+            {`${I18n.t('Helpdesk_Ticket')} n° ${ticketSeq}`}
           </Text>
           {subject && <Text>{subject}</Text>}
           {progressSelect && (
             <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
           )}
           {duration !== null && (
-            <Text>{`${I18n.t('Helpdesk_Duration')}: ${duration}`}</Text>
+            <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
+              duration,
+            )}`}</Text>
           )}
           {deadlineDateT && (
             <LabelText
@@ -116,9 +118,9 @@ const TicketCard = ({
           <View style={styles.badgeContainer}>
             <Badge
               title={Ticket.getStatus(statusSelect, I18n)}
-              style={colorStatus}
+              color={Ticket.getStatusColor(statusSelect, Colors)}
             />
-            <Badge title={ticketType?.name} style={colorType} />
+            <Badge title={ticketType?.name} color={colorType} />
           </View>
           <Icon
             style={styles.chevron}
@@ -136,11 +138,7 @@ const getStyles = color =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
-      borderLeftColor: color,
-    },
-    colorBadge: {
-      backgroundColor: color?.background_light,
-      borderColor: color?.background,
+      borderLeftColor: color.background,
     },
   });
 

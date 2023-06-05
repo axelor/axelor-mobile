@@ -45,7 +45,7 @@ class TicketType {
           return I18n.t('Helpdesk_Status_Closed');
         default:
           console.warn(
-            `Status provided with value ${select} is not supported by Event`,
+            `Status provided with value ${select} is not supported by Ticket`,
           );
           return null;
       }
@@ -66,7 +66,7 @@ class TicketType {
         console.warn(
           `Status provided with value ${status} is not supported by Ticket`,
         );
-        return {};
+        return null;
     }
   };
 
@@ -93,18 +93,18 @@ class TicketType {
   static getPriorityColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.priority.Low:
-        return Colors.primaryColor.background;
+        return Colors.primaryColor;
       case this.priority.Normal:
-        return Colors.priorityColor.background;
+        return Colors.priorityColor;
       case this.priority.High:
-        return Colors.cautionColor.background;
+        return Colors.cautionColor;
       case this.priority.Urgent:
-        return Colors.importantColor.background;
+        return Colors.importantColor;
       default:
         console.warn(
           `Priority provided with value ${status} is not supported by Ticket`,
         );
-        return {};
+        return null;
     }
   };
 
