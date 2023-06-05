@@ -17,7 +17,11 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+  updateAgendaItems,
+} from '@axelor/aos-mobile-core';
 import {
   searchOperationOrderFilter,
   fetchOperationOrder,
@@ -99,12 +103,11 @@ const operationOrderSlice = createSlice({
   name: 'operationOrder',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchOperationOrders.pending, (state, action) => {
-      if (action.meta.arg.page === 0) {
-        state.loading = true;
-      } else {
-        state.moreLoading = true;
-      }
+    generateInifiniteScrollCases(builder, fetchOperationOrders, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'operationOrderList',
     });
     builder.addCase(fetchPlannedOperationOrder.pending, state => {
       state.loading = true;
@@ -115,24 +118,6 @@ const operationOrderSlice = createSlice({
         state.plannedOperationOrderList,
         action.payload,
       );
-    });
-    builder.addCase(fetchOperationOrders.fulfilled, (state, action) => {
-      state.loading = false;
-      state.moreLoading = false;
-      if (action.meta.arg.page === 0 || action.meta.arg.page == null) {
-        state.operationOrderList = action.payload;
-        state.isListEnd = false;
-      } else {
-        if (action.payload != null) {
-          state.isListEnd = false;
-          state.operationOrderList = [
-            ...state.operationOrderList,
-            ...action.payload,
-          ];
-        } else {
-          state.isListEnd = true;
-        }
-      }
     });
     builder.addCase(fetchOperationOrderById.pending, state => {
       state.loadingOrder = true;
