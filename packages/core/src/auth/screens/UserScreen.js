@@ -172,10 +172,7 @@ const UserScreen = ({children}) => {
         )}
         <ProgressBar value={value} style={styles.progressBar} />
         <Button title="+5" onPress={() => setValue(_current => _current + 5)} />
-        <Button
-          title="+10"
-          onPress={() => setValue(_current => _current + 10)}
-        />
+        <Button title="-5" onPress={() => setValue(_current => _current - 5)} />
         <Button title="Reset" onPress={() => setValue(0)} />
       </ScrollView>
     </Screen>

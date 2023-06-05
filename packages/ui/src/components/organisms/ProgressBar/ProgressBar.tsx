@@ -99,7 +99,7 @@ const ProgressBar = ({
       }),
     );
     stripeAnimation.start();
-  }, [animatedStripe, stripeDuration, value]);
+  }, [animatedStripe, stripeDuration]);
 
   const translateX = animatedStripe.interpolate({
     inputRange: [0, 1],
@@ -133,16 +133,15 @@ const ProgressBar = ({
             }),
           },
         ]}>
-        {stripe && percent < 100 && (
-          <Animated.View
-            style={[
-              styles.stripe,
-              {
-                transform: [{translateX}],
-              },
-            ]}
-          />
-        )}
+        <Animated.View
+          style={[
+            stripe && percent < 100 ? styles.stripe : styles.none,
+            {
+              transform: [{translateX}],
+            },
+          ]}
+        />
+
         {percent > 5 && renderPercent()}
       </Animated.View>
     </View>
@@ -191,6 +190,8 @@ const getStyles = (
       textAlign: 'center',
     },
     percent: {position: 'absolute', left: '50%', top: '25%'},
+
+    none: {display: 'none'},
   });
 
 export default ProgressBar;
