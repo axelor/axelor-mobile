@@ -99,7 +99,7 @@ const ProgressBar = ({
       }),
     );
     stripeAnimation.start();
-  }, [animatedStripe, stripeDuration]);
+  }, [animatedStripe, stripeDuration, value]);
 
   const translateX = animatedStripe.interpolate({
     inputRange: [0, 1],
