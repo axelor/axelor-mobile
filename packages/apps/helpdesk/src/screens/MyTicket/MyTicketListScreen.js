@@ -212,7 +212,7 @@ const MyTicketListScreen = ({navigation}) => {
             ticketType={item.ticketType}
             statusSelect={item.statusSelect}
             deadlineDateT={item.deadlineDateT}
-            responsibleUser={item?.responsibleUser?.fullname}
+            responsibleUser={item?.responsibleUser?.fullName}
             prioritySelect={item.prioritySelect}
             duration={item.duration}
             allTicketType={ticketTypeList}
