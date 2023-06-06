@@ -78,8 +78,9 @@ const ProgressBar = ({
   });
 
   const styles = useMemo(
-    () => getStyles(Colors, height, color, percent, stripeWidth),
-    [Colors, height, color, percent, stripeWidth],
+    () =>
+      getStyles(Colors, height, color, percent, stripeWidth, progressBarWidth),
+    [Colors, height, color, percent, stripeWidth, progressBarWidth],
   );
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const ProgressBar = ({
 
   return (
     <View style={[styles.container, style]}>
-      {percent <= 5 && <View style={styles.percent}>{renderPercent()}</View>}
+      {percent <= 10 && <View style={styles.percent}>{renderPercent()}</View>}
       <Animated.View
         onLayout={event => {
           const {width} = event.nativeEvent.layout;
@@ -142,7 +143,7 @@ const ProgressBar = ({
           ]}
         />
 
-        {percent > 5 && renderPercent()}
+        {percent > 10 && renderPercent()}
       </Animated.View>
     </View>
   );
@@ -154,6 +155,7 @@ const getStyles = (
   color,
   percent,
   stripeWidth,
+  progressBarWidth,
 ) =>
   StyleSheet.create({
     container: {
@@ -189,7 +191,11 @@ const getStyles = (
     text: {
       textAlign: 'center',
     },
-    percent: {position: 'absolute', left: '50%', top: '25%'},
+    percent: {
+      position: 'absolute',
+      left: progressBarWidth + 5,
+      top: height / 2 - 10,
+    },
 
     none: {display: 'none'},
   });
