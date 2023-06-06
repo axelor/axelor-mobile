@@ -32,6 +32,13 @@ class TicketType {
     Urgent: 4,
   };
 
+  static statusList = [
+    {name: 'Helpdesk_Status_New', id: 0},
+    {name: 'Helpdesk_Status_In_Progress', id: 1},
+    {name: 'Helpdesk_Status_Resolved', id: 2},
+    {name: 'Helpdesk_Status_Closed', id: 3},
+  ];
+
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
     if (I18n) {
       switch (select) {

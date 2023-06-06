@@ -39,6 +39,7 @@ const MyTicketListScreen = ({navigation}) => {
   const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
     useSelector(state => state.ticket);
   const [selectedType, setSelectedType] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   useEffect(() => {
     dispatch(fetchTicketType());
@@ -63,6 +64,18 @@ const MyTicketListScreen = ({navigation}) => {
       : [];
   }, [ticketTypeList, Colors]);
 
+  const ticketStatusListItems = useMemo(() => {
+    return Ticket.statusList
+      ? Ticket.statusList.map(status => {
+          return {
+            title: I18n.t(status.name),
+            color: Ticket.getStatusColor(status.id, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [Colors, I18n]);
+
   const filterOnType = useCallback(
     list => {
       if (list == null || list === []) {
@@ -80,9 +93,26 @@ const MyTicketListScreen = ({navigation}) => {
     [selectedType],
   );
 
+  const filterOnStatus = useCallback(
+    list => {
+      if (list == null || list === []) {
+        return list;
+      } else {
+        if (selectedStatus.length > 0) {
+          return list?.filter(item =>
+            selectedStatus.find(status => item?.statusSelect === status.key),
+          );
+        } else {
+          return list;
+        }
+      }
+    },
+    [selectedStatus],
+  );
+
   const filteredList = useMemo(
-    () => filterOnType(ticketList),
-    [ticketList, filterOnType],
+    () => filterOnStatus(filterOnType(ticketList)),
+    [ticketList, filterOnType, filterOnStatus],
   );
 
   console.log(ticketTypeList);
@@ -100,9 +130,14 @@ const MyTicketListScreen = ({navigation}) => {
         }>
         <View style={styles.headerContainer}>
           <MultiValuePicker
+            listItems={ticketStatusListItems}
+            title={I18n.t('Helpdesk_Status')}
+            onValueChange={statusList => setSelectedStatus(statusList)}
+          />
+          <MultiValuePicker
             listItems={ticketTypeListItems}
-            title={I18n.t('Helpdesk_type')}
-            onValueChange={statusList => setSelectedType(statusList)}
+            title={I18n.t('Helpdesk_Type')}
+            onValueChange={typeList => setSelectedType(typeList)}
           />
         </View>
       </HeaderContainer>
