@@ -20,7 +20,7 @@ import MyTicketListScreen from './MyTicketListScreen';
 
 export default {
   MyTicketListScreen: {
-    title: 'helpdesk_myTickets',
+    title: 'Helpdesk_myTickets',
     component: MyTicketListScreen,
     options: {
       shadedHeader: false,

@@ -116,11 +116,15 @@ const TicketCard = ({
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.badgeContainer}>
-            <Badge
-              title={Ticket.getStatus(statusSelect, I18n)}
-              color={Ticket.getStatusColor(statusSelect, Colors)}
-            />
-            <Badge title={ticketType?.name} color={colorType} />
+            {statusSelect && (
+              <Badge
+                title={Ticket.getStatus(statusSelect, I18n)}
+                color={Ticket.getStatusColor(statusSelect, Colors)}
+              />
+            )}
+            {ticketType?.name && (
+              <Badge title={ticketType?.name} color={colorType} />
+            )}
           </View>
           <Icon
             style={styles.chevron}

@@ -13,5 +13,8 @@
   "Helpdesk_Priority_Low": "Low",
   "Helpdesk_Priority_Normal": "Normal",
   "Helpdesk_Priority_High": "High",
-  "Helpdesk_Priority_Urgent": "Urgent"
+  "Helpdesk_Priority_Urgent": "Urgent",
+  "Helpdesk_myTickets": "My tickets",
+  "Helpdesk_Status": "Status",
+  "Helpdesk_Type": "Type"
 }

@@ -46,7 +46,20 @@ const MyTicketListScreen = ({navigation}) => {
     useSelector(state => state.ticket);
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [priorityStatus, setPriorityStatus] = useState([]);
+  const [priorityStatus, setPriorityStatus] = useState([
+    {
+      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
+      isActive: true,
+      key: 1,
+      title: I18n.t('Helpdesk_Priority_Low'),
+    },
+    {
+      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
+      isActive: true,
+      key: 2,
+      title: I18n.t('Helpdesk_Priority_Normal'),
+    },
+  ]);
 
   useEffect(() => {
     dispatch(fetchTicketType());
@@ -135,7 +148,11 @@ const MyTicketListScreen = ({navigation}) => {
         expandableFilter={true}
         fixedItems={
           <View style={styles.headerContainer}>
-            <TicketSearchBar showDetailsPopup={false} oneFilter={true} />
+            <TicketSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              placeholderKey={I18n.t('Helpdesk_Ticket')}
+            />
           </View>
         }
         chipComponent={

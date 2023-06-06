@@ -38,7 +38,7 @@ export const HelpDeskModule: Module = {
   },
   menus: {
     helpdesk_menu_myTickets: {
-      title: 'helpdesk_myTickets',
+      title: 'Helpdesk_myTickets',
       icon: 'user-tag',
       screen: 'MyTicketListScreen',
     },
