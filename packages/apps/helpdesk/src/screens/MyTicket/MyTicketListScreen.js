@@ -17,15 +17,21 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
   ScrollList,
   MultiValuePicker,
   useThemeColor,
+  ChipSelect,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  filterChip,
+} from '@axelor/aos-mobile-core';
 import {fetchTickets, fetchTicketType} from '../../features/ticketSlice';
 import {TicketCard} from '../../components';
 import {TicketSearchBar} from '../../components/templates';
@@ -40,6 +46,7 @@ const MyTicketListScreen = ({navigation}) => {
     useSelector(state => state.ticket);
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [priorityStatus, setPriorityStatus] = useState([]);
 
   useEffect(() => {
     dispatch(fetchTicketType());
@@ -110,14 +117,17 @@ const MyTicketListScreen = ({navigation}) => {
     [selectedStatus],
   );
 
-  const filteredList = useMemo(
-    () => filterOnStatus(filterOnType(ticketList)),
-    [ticketList, filterOnType, filterOnStatus],
+  const filterOnPriority = useCallback(
+    list => {
+      return filterChip(list, priorityStatus, 'prioritySelect');
+    },
+    [priorityStatus],
   );
 
-  console.log(ticketTypeList);
-
-  console.log(ticketList);
+  const filteredList = useMemo(
+    () => filterOnStatus(filterOnType(filterOnPriority(ticketList))),
+    [ticketList, filterOnType, filterOnStatus, filterOnPriority],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -127,6 +137,38 @@ const MyTicketListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             <TicketSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
+        }
+        chipComponent={
+          <ChipSelect
+            mode="multi"
+            marginHorizontal={4}
+            width={Dimensions.get('window').width * 0.3}
+            onChangeValue={chiplist => setPriorityStatus(chiplist)}
+            selectionItems={[
+              {
+                title: I18n.t('Helpdesk_Priority_Low'),
+                color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
+                key: Ticket.priority.Low,
+                isActive: true,
+              },
+              {
+                title: I18n.t('Helpdesk_Priority_Normal'),
+                color: Ticket.getPriorityColor(Ticket.priority.Normal, Colors),
+                key: Ticket.priority.Normal,
+                isActive: true,
+              },
+              {
+                title: I18n.t('Helpdesk_Priority_High'),
+                color: Ticket.getPriorityColor(Ticket.priority.High, Colors),
+                key: Ticket.priority.High,
+              },
+              {
+                title: I18n.t('Helpdesk_Priority_Urgent'),
+                color: Ticket.getPriorityColor(Ticket.priority.Urgent, Colors),
+                key: Ticket.priority.Urgent,
+              },
+            ]}
+          />
         }>
         <View style={styles.headerContainer}>
           <MultiValuePicker

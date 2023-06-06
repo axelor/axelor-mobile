@@ -33,10 +33,10 @@ class TicketType {
   };
 
   static statusList = [
-    {name: 'Helpdesk_Status_New', id: 0},
-    {name: 'Helpdesk_Status_In_Progress', id: 1},
-    {name: 'Helpdesk_Status_Resolved', id: 2},
-    {name: 'Helpdesk_Status_Closed', id: 3},
+    {name: 'Helpdesk_Status_New', id: this.status.New},
+    {name: 'Helpdesk_Status_In_Progress', id: this.status.In_Progress},
+    {name: 'Helpdesk_Status_Resolved', id: this.status.Resolved},
+    {name: 'Helpdesk_Status_Closed', id: this.status.Closed},
   ];
 
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {

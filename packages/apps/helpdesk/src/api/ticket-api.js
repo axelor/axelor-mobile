@@ -21,7 +21,7 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createLeadCriteria = (searchValue, userId) => {
+const createTicketCriteria = (searchValue, userId) => {
   return [
     {
       fieldName: 'assignedToUser.id',
@@ -35,7 +35,7 @@ const createLeadCriteria = (searchValue, userId) => {
 export async function searchTickets({searchValue, userId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
-    criteria: createLeadCriteria(searchValue, userId),
+    criteria: createTicketCriteria(searchValue, userId),
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,

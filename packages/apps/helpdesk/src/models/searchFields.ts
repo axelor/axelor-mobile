@@ -22,8 +22,7 @@ export const helpdesk_searchFields: SearchFields = {
   helpdesk_ticket: [
     'ticketSeq',
     'subject',
-    'responsibleUser',
-    'progressSelect',
+    'responsibleUser.fullName',
     'customer.fullName',
     'project.fullName',
   ],

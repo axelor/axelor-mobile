@@ -49,8 +49,8 @@ export const HelpDeskModule: Module = {
   reducers: {...helpdeskReducers},
   models: {
     objectFields: {...helpdesk_modelAPI},
-    sortFields: {...helpdesk_searchFields},
-    searchFields: {...helpdesk_sortFields},
+    sortFields: {...helpdesk_sortFields},
+    searchFields: {...helpdesk_searchFields},
   },
 };
 
