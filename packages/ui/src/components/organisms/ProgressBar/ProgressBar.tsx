@@ -22,36 +22,39 @@ import {ThemeColors, useThemeColor, Color} from '../../../theme';
 import {Text} from '../../atoms';
 
 type ProgressBarProps = {
+  style?: object;
+  styleTxt?: object;
   value?: number;
   total?: number;
   showPercent?: boolean;
+  centeredPercent?: boolean;
   colorRepartition?: {[key: number]: Color};
   height?: number;
-  style?: object;
-  styleTxt?: object;
   stripe?: boolean;
   stripeDuration?: number;
   stripeWidth?: number;
-  centredPercent?: boolean;
 };
 
 const ProgressBar = ({
+  style,
+  styleTxt,
   value = 0,
   total = 100,
   showPercent = true,
+  centeredPercent = false,
   colorRepartition = {},
-  stripe = true,
   height = 30,
+  stripe = true,
   stripeDuration = 1000,
   stripeWidth = 40,
-  centredPercent = false,
-  style,
-  styleTxt,
 }: ProgressBarProps) => {
   const Colors = useThemeColor();
+
   const animatedStripe = useRef(new Animated.Value(0)).current;
   const animatedWidth = useRef(new Animated.Value(0)).current;
+
   const [progressBarWidth, setProgressBarWidth] = useState(0);
+  const [textWidth, setTextWidth] = useState(0);
 
   const percent = useMemo(
     () => (total !== 0 ? (value / total) * 100 : 0),
@@ -68,6 +71,7 @@ const ProgressBar = ({
         100: Colors.successColor,
       };
     }
+
     return colorRepartition;
   }, [Colors, colorRepartition]);
 
@@ -78,6 +82,22 @@ const ProgressBar = ({
       color = progressColors[threshold];
     }
   });
+
+  const displayText = useMemo(() => {
+    if (showPercent) {
+      return `${percent.toFixed(2)}%`;
+    }
+
+    return `${value}/${total}`;
+  }, [percent, showPercent, total, value]);
+
+  const displayTextOutside = useMemo(() => {
+    if (centeredPercent) {
+      return true;
+    }
+
+    return progressBarWidth - textWidth * 1.3 < 0;
+  }, [centeredPercent, progressBarWidth, textWidth]);
 
   const styles = useMemo(
     () =>
@@ -110,22 +130,24 @@ const ProgressBar = ({
   });
 
   const renderPercent = useCallback(() => {
-    if (showPercent) {
-      return (
-        <Text style={[styles.text, styleTxt]}>{`${percent.toFixed(2)}%`}</Text>
-      );
-    } else {
-      return <Text style={[styles.text, styleTxt]}>{`${value}/${total}`}</Text>;
-    }
-  }, [percent, showPercent, styles, styleTxt, total, value]);
+    return (
+      <Text
+        style={[styles.text, styleTxt]}
+        onTextLayout={event => {
+          setTextWidth(event.nativeEvent.lines?.[0]?.width);
+        }}>
+        {displayText}
+      </Text>
+    );
+  }, [displayText, styles, styleTxt]);
 
   return (
     <View style={[styles.container, style]}>
-      {(percent <= 10 || centredPercent) && (
-        <View style={centredPercent ? styles.centredPercent : styles.percent}>
+      {displayTextOutside ? (
+        <View style={centeredPercent ? styles.centeredPercent : styles.percent}>
           {renderPercent()}
         </View>
-      )}
+      ) : null}
       <Animated.View
         onLayout={event => {
           const {width} = event.nativeEvent.layout;
@@ -148,8 +170,7 @@ const ProgressBar = ({
             },
           ]}
         />
-
-        {!centredPercent && percent > 10 && renderPercent()}
+        {!displayTextOutside ? renderPercent() : null}
       </Animated.View>
     </View>
   );
@@ -166,8 +187,8 @@ const getStyles = (
   StyleSheet.create({
     container: {
       width: '100%',
-      height: height,
-      borderRadius: 7,
+      height: height + 2,
+      borderRadius: 8,
       elevation: 3,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
@@ -175,6 +196,7 @@ const getStyles = (
       backgroundColor: Colors.backgroundColor,
       borderWidth: 1,
       borderColor: Colors.secondaryColor.background,
+      zIndex: 1,
     },
     progressBar: {
       borderRadius: 7,
@@ -202,13 +224,15 @@ const getStyles = (
       left: progressBarWidth + 5,
       top: height / 2 - 10,
     },
-    centredPercent: {
+    centeredPercent: {
       position: 'absolute',
-      left: '50%',
+      left: '45%',
       top: height / 2 - 10,
       zIndex: 2,
     },
-    none: {display: 'none'},
+    none: {
+      display: 'none',
+    },
   });
 
 export default ProgressBar;
