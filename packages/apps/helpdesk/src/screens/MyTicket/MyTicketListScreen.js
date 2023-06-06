@@ -29,15 +29,50 @@ import {
   Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchTickets} from '../../features/ticketSlice';
+import {TicketCard} from '../../components';
 
 const MyTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const {userId} = useSelector(state => state.auth);
+  const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
+    state => state.ticket,
+  );
+
+  console.log(ticketList);
+
+  const fetchTicketsAPI = useCallback(
+    (page = 0) => {
+      dispatch(fetchTickets({userId: userId, page: page}));
+    },
+    [dispatch, userId],
+  );
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <Text>My Ticket</Text>
+      <ScrollList
+        loadingList={loadingTicket}
+        data={ticketList}
+        renderItem={({item}) => (
+          <TicketCard
+            style={styles.item}
+            ticketSeq={item.ticketSeq}
+            subject={item.subject}
+            progressSelect={item.progressSelect}
+            ticketType={item.ticketType}
+            statusSelect={item.statusSelect}
+            deadlineDateT={item.deadlineDateT}
+            responsibleUser={item?.responsibleUser?.fullname}
+            prioritySelect={item.prioritySelect}
+          />
+        )}
+        fetchData={fetchTicketsAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };

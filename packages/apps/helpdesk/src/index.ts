@@ -20,6 +20,12 @@ import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import MyTicketScreens from './screens/MyTicket';
+import {
+  helpdesk_modelAPI,
+  helpdesk_searchFields,
+  helpdesk_sortFields,
+} from './models';
+import * as helpdeskReducers from './features';
 
 export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
@@ -33,12 +39,18 @@ export const HelpDeskModule: Module = {
   menus: {
     helpdesk_menu_myTickets: {
       title: 'helpdesk_myTickets',
-      icon: 'address-card',
+      icon: 'user-tag',
       screen: 'MyTicketListScreen',
     },
   },
   screens: {
     ...MyTicketScreens,
+  },
+  reducers: {...helpdeskReducers},
+  models: {
+    objectFields: {...helpdesk_modelAPI},
+    sortFields: {...helpdesk_searchFields},
+    searchFields: {...helpdesk_sortFields},
   },
 };
 

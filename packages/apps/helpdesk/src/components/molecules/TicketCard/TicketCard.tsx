@@ -138,7 +138,7 @@ const getStyles = color =>
   StyleSheet.create({
     border: {
       borderLeftWidth: 7,
-      borderLeftColor: color.background,
+      borderLeftColor: color?.background,
     },
   });
 
