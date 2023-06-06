@@ -30,4 +30,7 @@ export const helpdesk_modelAPI: ObjectFields = {
     ticketType: schemaContructor.subObject(),
     prioritySelect: schemaContructor.number(),
   }),
+  helpdesk_ticketType: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
 };

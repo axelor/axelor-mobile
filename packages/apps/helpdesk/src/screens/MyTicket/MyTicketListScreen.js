@@ -16,23 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Screen, HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
+import {
+  Screen,
+  HeaderContainer,
+  ScrollList,
+  MultiValuePicker,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchTickets} from '../../features/ticketSlice';
+import {fetchTickets, fetchTicketType} from '../../features/ticketSlice';
 import {TicketCard} from '../../components';
 import {TicketSearchBar} from '../../components/templates';
+import {Ticket} from '../../types';
 
 const MyTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
   const {userId} = useSelector(state => state.auth);
-  const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
-    state => state.ticket,
-  );
+  const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
+    useSelector(state => state.ticket);
+  const [selectedType, setSelectedType] = useState([]);
 
-  console.log(ticketList);
+  useEffect(() => {
+    dispatch(fetchTicketType());
+  }, [dispatch]);
 
   const fetchTicketsAPI = useCallback(
     (page = 0) => {
@@ -40,6 +50,44 @@ const MyTicketListScreen = ({navigation}) => {
     },
     [dispatch, userId],
   );
+
+  const ticketTypeListItems = useMemo(() => {
+    return ticketTypeList
+      ? ticketTypeList.map((type, index) => {
+          return {
+            title: type.name,
+            color: Ticket.getTypeColor(index, Colors),
+            key: type.id,
+          };
+        })
+      : [];
+  }, [ticketTypeList, Colors]);
+
+  const filterOnType = useCallback(
+    list => {
+      if (list == null || list === []) {
+        return list;
+      } else {
+        if (selectedType.length > 0) {
+          return list?.filter(item =>
+            selectedType.find(status => item?.ticketType?.id === status.key),
+          );
+        } else {
+          return list;
+        }
+      }
+    },
+    [selectedType],
+  );
+
+  const filteredList = useMemo(
+    () => filterOnType(ticketList),
+    [ticketList, filterOnType],
+  );
+
+  console.log(ticketTypeList);
+
+  console.log(ticketList);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -49,11 +97,18 @@ const MyTicketListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             <TicketSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
-        }
-      />
+        }>
+        <View style={styles.headerContainer}>
+          <MultiValuePicker
+            listItems={ticketTypeListItems}
+            title={I18n.t('Helpdesk_type')}
+            onValueChange={statusList => setSelectedType(statusList)}
+          />
+        </View>
+      </HeaderContainer>
       <ScrollList
         loadingList={loadingTicket}
-        data={ticketList}
+        data={filteredList}
         renderItem={({item}) => (
           <TicketCard
             style={styles.item}
@@ -65,6 +120,8 @@ const MyTicketListScreen = ({navigation}) => {
             deadlineDateT={item.deadlineDateT}
             responsibleUser={item?.responsibleUser?.fullname}
             prioritySelect={item.prioritySelect}
+            duration={item.duration}
+            allTicketType={ticketTypeList}
           />
         )}
         fetchData={fetchTicketsAPI}

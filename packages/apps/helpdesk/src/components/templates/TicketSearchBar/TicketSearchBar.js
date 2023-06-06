@@ -46,7 +46,7 @@ const TicketSearchBar = ({
   const fetchTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        fetchTickets({page: page, searchValue: searchValue, userID: userId}),
+        fetchTickets({page: page, searchValue: searchValue, userId: userId}),
       );
     },
     [dispatch, userId],

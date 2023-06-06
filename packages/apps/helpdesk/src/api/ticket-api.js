@@ -41,3 +41,12 @@ export async function searchTickets({searchValue, userId, page = 0}) {
     page,
   });
 }
+
+export async function getTicketType() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.helpdesk.db.TicketType',
+    fieldKey: 'helpdesk_ticketType',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
