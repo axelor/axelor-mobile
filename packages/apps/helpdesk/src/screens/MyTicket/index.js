@@ -16,31 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Module} from '@axelor/aos-mobile-core';
-import enTranslations from './i18n/en.json';
-import frTranslations from './i18n/fr.json';
-import MyTicketScreens from './screens/MyTicket';
+import MyTicketListScreen from './MyTicketListScreen';
 
-export const HelpDeskModule: Module = {
-  name: 'app-helpdesk',
-  title: 'Helpdesk_Helpdesk',
-  subtitle: 'Helpdesk_Helpdesk',
-  icon: 'life-ring',
-  translations: {
-    en: enTranslations,
-    fr: frTranslations,
-  },
-  menus: {
-    helpdesk_menu_myTickets: {
-      title: 'helpdesk_myTickets',
-      icon: 'address-card',
-      screen: 'MyTicketListScreen',
+export default {
+  MyTicketListScreen: {
+    title: 'helpdesk_myTickets',
+    component: MyTicketListScreen,
+    options: {
+      shadedHeader: false,
     },
   },
-  screens: {
-    ...MyTicketScreens,
-  },
 };
-
-export * from './types';
-export * from './components';
