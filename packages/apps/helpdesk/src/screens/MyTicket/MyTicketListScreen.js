@@ -16,25 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState, useEffect, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Screen,
-  HeaderContainer,
-  ToggleSwitch,
-  ScrollList,
-  useThemeColor,
-  getCommonStyles,
-  MultiValuePicker,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {Screen, HeaderContainer, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTickets} from '../../features/ticketSlice';
 import {TicketCard} from '../../components';
+import {TicketSearchBar} from '../../components/templates';
 
 const MyTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const {userId} = useSelector(state => state.auth);
   const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
@@ -52,6 +43,14 @@ const MyTicketListScreen = ({navigation}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
+      <HeaderContainer
+        expandableFilter={true}
+        fixedItems={
+          <View style={styles.headerContainer}>
+            <TicketSearchBar showDetailsPopup={false} oneFilter={true} />
+          </View>
+        }
+      />
       <ScrollList
         loadingList={loadingTicket}
         data={ticketList}

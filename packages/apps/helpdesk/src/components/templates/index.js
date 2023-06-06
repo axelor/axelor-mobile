@@ -16,15 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SearchFields} from '@axelor/aos-mobile-core';
-
-export const helpdesk_searchFields: SearchFields = {
-  helpdesk_ticket: [
-    'ticketSeq',
-    'subject',
-    'responsibleUser',
-    'progressSelect',
-    'customer.fullName',
-    'project.fullName',
-  ],
-};
+export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';

@@ -91,6 +91,7 @@ const TicketCard = ({
           {duration !== null && (
             <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
               duration,
+              'hh:mm:ss',
             )}`}</Text>
           )}
           {deadlineDateT && (
