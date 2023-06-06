@@ -45,6 +45,11 @@ storiesOf('ui/organisms/ProgressBar', module)
           defaultValue: true,
           control: {type: 'boolean'},
         },
+        centredPercent: {
+          type: 'boolean',
+          defaultValue: false,
+          control: {type: 'boolean'},
+        },
         stripe: {
           type: 'boolean',
           defaultValue: true,

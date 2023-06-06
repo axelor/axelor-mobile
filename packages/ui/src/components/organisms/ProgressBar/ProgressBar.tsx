@@ -32,6 +32,7 @@ type ProgressBarProps = {
   stripe?: boolean;
   stripeDuration?: number;
   stripeWidth?: number;
+  centredPercent?: boolean;
 };
 
 const ProgressBar = ({
@@ -43,6 +44,7 @@ const ProgressBar = ({
   height = 30,
   stripeDuration = 1000,
   stripeWidth = 40,
+  centredPercent = false,
   style,
   styleTxt,
 }: ProgressBarProps) => {
@@ -119,7 +121,11 @@ const ProgressBar = ({
 
   return (
     <View style={[styles.container, style]}>
-      {percent <= 10 && <View style={styles.percent}>{renderPercent()}</View>}
+      {(percent <= 10 || centredPercent) && (
+        <View style={centredPercent ? styles.centredPercent : styles.percent}>
+          {renderPercent()}
+        </View>
+      )}
       <Animated.View
         onLayout={event => {
           const {width} = event.nativeEvent.layout;
@@ -143,7 +149,7 @@ const ProgressBar = ({
           ]}
         />
 
-        {percent > 10 && renderPercent()}
+        {!centredPercent && percent > 10 && renderPercent()}
       </Animated.View>
     </View>
   );
@@ -196,7 +202,12 @@ const getStyles = (
       left: progressBarWidth + 5,
       top: height / 2 - 10,
     },
-
+    centredPercent: {
+      position: 'absolute',
+      left: '50%',
+      top: height / 2 - 10,
+      zIndex: 2,
+    },
     none: {display: 'none'},
   });
 
