@@ -16,15 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import DeviceInfo from 'react-native-device-info';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {
-  Button,
   Icon,
   ImageBubble,
   Picker,
-  ProgressBar,
   Screen,
   ScrollView,
   Text,
@@ -55,8 +53,6 @@ const UserScreen = ({children}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
 
   const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
-
-  const [value, setValue] = useState(0);
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
@@ -170,10 +166,6 @@ const UserScreen = ({children}) => {
             emptyValue={false}
           />
         )}
-        <ProgressBar value={value} style={styles.progressBar} />
-        <Button title="+5" onPress={() => setValue(_current => _current + 5)} />
-        <Button title="-5" onPress={() => setValue(_current => _current - 5)} />
-        <Button title="Reset" onPress={() => setValue(0)} />
       </ScrollView>
     </Screen>
   );
@@ -205,11 +197,6 @@ const getStyles = Colors =>
       fontWeight: 'bold',
       marginBottom: 30,
       marginTop: 0,
-    },
-    progressBar: {
-      width: '90%',
-      marginLeft: 18,
-      marginVertical: 10,
     },
   });
 
