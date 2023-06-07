@@ -29,6 +29,7 @@ const TicketSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  team = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -38,15 +39,19 @@ const TicketSearchBar = ({
   const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
     state => state.ticket,
   );
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
 
   const fetchTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        fetchTickets({page: page, searchValue: searchValue, userId: userId}),
+        fetchTickets({
+          page: page,
+          searchValue: searchValue,
+          userId: team ? user : user.id,
+        }),
       );
     },
-    [dispatch, userId],
+    [dispatch, user, team],
   );
 
   return (

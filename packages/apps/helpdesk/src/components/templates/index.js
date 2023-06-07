@@ -17,4 +17,3 @@
  */
 
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
-export {default as TicketTeamSearchBar} from './TicketTeamSearchBar/TicketTeamSearchBar';

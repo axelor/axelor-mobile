@@ -33,7 +33,7 @@ import {
   filterChip,
 } from '@axelor/aos-mobile-core';
 import {fetchTeamTickets, fetchTicketType} from '../features/ticketSlice';
-import {TicketCard, TicketTeamSearchBar} from '../components';
+import {TicketCard, TicketSearchBar} from '../components';
 import {Ticket} from '../types';
 
 const MyTeamTicketListScreen = ({navigation}) => {
@@ -146,10 +146,11 @@ const MyTeamTicketListScreen = ({navigation}) => {
         expandableFilter={true}
         fixedItems={
           <View style={styles.headerContainer}>
-            <TicketTeamSearchBar
+            <TicketSearchBar
               showDetailsPopup={false}
               oneFilter={true}
               placeholderKey={I18n.t('Helpdesk_Ticket')}
+              team={true}
             />
           </View>
         }
@@ -191,7 +192,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
             prioritySelect={item.prioritySelect}
             duration={item.duration}
             allTicketType={ticketTypeList}
-            assignedToUser={item?.responsibleUser?.fullName}
+            assignedToUser={item?.assignedToUser?.fullName}
           />
         )}
         fetchData={fetchTicketsAPI}
