@@ -21,21 +21,29 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createTicketCriteria = (searchValue, userId) => {
-  return [
-    {
+const createTicketCriteria = (searchValue, userId, userTeam) => {
+  const criteria = [getSearchCriterias('helpdesk_ticket', searchValue)];
+  if (userId != null) {
+    criteria.push({
       fieldName: 'assignedToUser.id',
       operator: '=',
       value: userId,
-    },
-    getSearchCriterias('helpdesk_ticket', searchValue),
-  ];
+    });
+  }
+  if (userTeam != null) {
+    criteria.push({
+      fieldName: 'assignedToUser.activeTeam',
+      operator: '=',
+      value: userTeam,
+    });
+  }
+  return criteria;
 };
 
-export async function searchTickets({searchValue, userId, page = 0}) {
+export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
-    criteria: createTicketCriteria(searchValue, userId),
+    criteria: createTicketCriteria(searchValue, userId, userTeam),
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,
