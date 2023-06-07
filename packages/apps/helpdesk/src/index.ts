@@ -19,7 +19,7 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
-import MyTicketScreens from './screens/MyTicket';
+import MyTicketScreens from './screens/';
 import {
   helpdesk_modelAPI,
   helpdesk_searchFields,

@@ -32,9 +32,9 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchTickets, fetchTicketType} from '../../features/ticketSlice';
-import {TicketCard, TicketSearchBar} from '../../components';
-import {Ticket} from '../../types';
+import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
+import {TicketCard, TicketSearchBar} from '../components';
+import {Ticket} from '../types';
 
 const MyTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
