@@ -89,7 +89,7 @@ const TicketCard = ({
           {!checkNullString(progressSelect) && (
             <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
           )}
-          {checkNullString(duration) && (
+          {duration !== null && (
             <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
               duration,
             )}`}</Text>
@@ -117,12 +117,10 @@ const TicketCard = ({
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.badgeContainer}>
-            {checkNullString(statusSelect) && (
-              <Badge
-                title={Ticket.getStatus(statusSelect, I18n)}
-                color={Ticket.getStatusColor(statusSelect, Colors)}
-              />
-            )}
+            <Badge
+              title={Ticket.getStatus(statusSelect, I18n)}
+              color={Ticket.getStatusColor(statusSelect, Colors)}
+            />
             {!checkNullString(ticketType?.name) && (
               <Badge title={ticketType?.name} color={colorType} />
             )}
