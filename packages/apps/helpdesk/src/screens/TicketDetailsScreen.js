@@ -16,51 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {
-  Screen,
-  HeaderContainer,
-  ScrollList,
-  MultiValuePicker,
-  useThemeColor,
-  ChipSelect,
-  Text,
-} from '@axelor/aos-mobile-ui';
-import {
-  useDispatch,
-  useSelector,
-  useTranslator,
-  filterChip,
-} from '@axelor/aos-mobile-core';
-import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
-import {TicketCard, TicketSearchBar} from '../components';
-import {Ticket} from '../types';
+import React, {useEffect} from 'react';
+import {ScrollView} from 'react-native';
+import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchTicketById} from '../features/ticketSlice';
+import {TicketHeader} from '../components';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, versionTicket, colorIndex} = route.params;
-  console.log(idTicket);
-  console.log(versionTicket);
-  console.log(colorIndex);
   const I18n = useTranslator();
+
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
+  const {ticket} = useSelector(state => state.ticket);
+
+  useEffect(() => {
+    dispatch(fetchTicketById({ticketId: idTicket}));
+  }, [dispatch, idTicket]);
+
+  if (ticket?.id !== idTicket) {
+    return null;
+  }
+
+  console.log(versionTicket);
+  console.log(ticket);
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <Text>D</Text>
+      <HeaderContainer
+        expandableFilter={false}
+        fixedItems={<TicketHeader colorIndex={colorIndex} />}
+      />
+      <ScrollView>
+        <NotesCard
+          title={I18n.t('Crm_Description')}
+          data={ticket.description}
+        />
+      </ScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  headerContainer: {alignItems: 'center'},
-  toggleSwitchContainer: {width: '90%', height: 40},
-  toggle: {width: '54%', height: 38, borderRadius: 13},
-});
 
 export default TicketDetailsScreen;
