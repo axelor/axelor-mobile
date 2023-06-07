@@ -19,6 +19,7 @@
 import MyTicketListScreen from './MyTicketListScreen';
 import MyTeamTicketListScreen from './MyTeamTicketListScreen';
 import TicketDetailsScreen from './TicketDetailsScreen';
+import TicketFormScreen from './TicketFormScreen';
 
 export default {
   MyTicketListScreen: {
@@ -31,6 +32,13 @@ export default {
   MyTeamTicketListScreen: {
     title: 'Helpdesk_myTeamTickets',
     component: MyTeamTicketListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  TicketFormScreen: {
+    title: 'Helpdesk_TicketForm',
+    component: TicketFormScreen,
     options: {
       shadedHeader: false,
     },

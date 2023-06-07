@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {helpdeskConfigReducer as helpdeskConfig} from './helpdeskConfigSlice';
-export {projectReducer as project} from './projectSlice';
-export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
+
+export async function getProject() {
+  return axiosApiProvider.get({
+    url: '/ws/rest/com.axelor.apps.project.db.Project',
+  });
+}
