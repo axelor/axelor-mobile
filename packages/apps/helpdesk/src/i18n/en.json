@@ -18,5 +18,7 @@
   "Helpdesk_Status": "Status",
   "Helpdesk_Type": "Type",
   "Helpdesk_fetch_myTicket": "fetch my tickets",
-  "Helpdesk_fetch_Ticket_Type": "fetch types tickets"
+  "Helpdesk_fetch_Ticket_Type": "fetch types tickets",
+  "Helpdesk_myTeamTickets": "My team tickets",
+  "Helpdesk_fetch_myTeamTicket": "fetch my team tickets"
 }
