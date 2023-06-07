@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './molecules';
-export * from './templates';
+export {helpdesk_searchFields} from './searchFields';
+export {helpdesk_sortFields} from './sortFields';
+export {helpdesk_modelAPI} from './objectFields';

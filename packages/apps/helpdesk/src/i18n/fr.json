@@ -9,5 +9,14 @@
   "Helpdesk_Status_New": "Nouveau",
   "Helpdesk_Status_In_Progress": "En cours",
   "Helpdesk_Status_Resolved": "Résolu",
-  "Helpdesk_Status_Closed": "Fermé"
+  "Helpdesk_Status_Closed": "Fermé",
+  "Helpdesk_Priority_Low": "Faible",
+  "Helpdesk_Priority_Normal": "Normal",
+  "Helpdesk_Priority_High": "Elevé",
+  "Helpdesk_Priority_Urgent": "Urgent",
+  "Helpdesk_myTickets": "Mes tickets",
+  "Helpdesk_Status": "Statut",
+  "Helpdesk_Type": "Type",
+  "Helpdesk_fetch_myTicket": "récupération de mes tickets",
+  "Helpdesk_fetch_Ticket_Type": "récupération des types de tickets"
 }

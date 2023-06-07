@@ -16,5 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './molecules';
-export * from './templates';
+import {SortFields} from '@axelor/aos-mobile-core';
+
+export const helpdesk_sortFields: SortFields = {
+  helpdesk_ticket: ['ticketSeq', 'createdOn'],
+};
