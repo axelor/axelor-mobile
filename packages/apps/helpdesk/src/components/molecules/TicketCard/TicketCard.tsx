@@ -21,6 +21,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Badge,
   Card,
+  checkNullString,
   Icon,
   LabelText,
   Text,
@@ -84,16 +85,16 @@ const TicketCard = ({
           <Text style={styles.txtImportant}>
             {`${I18n.t('Helpdesk_Ticket')} n° ${ticketSeq}`}
           </Text>
-          {subject && <Text>{subject}</Text>}
-          {progressSelect && (
+          {!checkNullString(subject) && <Text>{subject}</Text>}
+          {!checkNullString(progressSelect) && (
             <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
           )}
-          {duration !== null && (
+          {checkNullString(duration) && (
             <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
               duration,
             )}`}</Text>
           )}
-          {deadlineDateT && (
+          {!checkNullString(deadlineDateT) && (
             <LabelText
               iconName="calendar-times"
               title={`${I18n.t('Helpdesk_Deadline')} :`}
@@ -103,12 +104,12 @@ const TicketCard = ({
               )}
             />
           )}
-          {responsibleUser && (
+          {!checkNullString(responsibleUser) && (
             <Text>{`${I18n.t(
               'Helpdesk_User_In_Charge',
             )}: ${responsibleUser}`}</Text>
           )}
-          {assignedToUser && (
+          {!checkNullString(assignedToUser) && (
             <Text>{`${I18n.t(
               'Helpdesk_Assigned_To',
             )}: ${assignedToUser}`}</Text>
@@ -116,13 +117,13 @@ const TicketCard = ({
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.badgeContainer}>
-            {statusSelect && (
+            {checkNullString(statusSelect) && (
               <Badge
                 title={Ticket.getStatus(statusSelect, I18n)}
                 color={Ticket.getStatusColor(statusSelect, Colors)}
               />
             )}
-            {ticketType?.name && (
+            {!checkNullString(ticketType?.name) && (
               <Badge title={ticketType?.name} color={colorType} />
             )}
           </View>

@@ -33,17 +33,18 @@ import {
   filterChip,
 } from '@axelor/aos-mobile-core';
 import {fetchTickets, fetchTicketType} from '../../features/ticketSlice';
-import {TicketCard} from '../../components';
-import {TicketSearchBar} from '../../components/templates';
+import {TicketCard, TicketSearchBar} from '../../components';
 import {Ticket} from '../../types';
 
 const MyTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
+
   const {userId} = useSelector(state => state.auth);
   const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
     useSelector(state => state.ticket);
+
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [priorityStatus, setPriorityStatus] = useState([
@@ -85,15 +86,7 @@ const MyTicketListScreen = ({navigation}) => {
   }, [ticketTypeList, Colors]);
 
   const ticketStatusListItems = useMemo(() => {
-    return Ticket.statusList
-      ? Ticket.statusList.map(status => {
-          return {
-            title: I18n.t(status.name),
-            color: Ticket.getStatusColor(status.id, Colors),
-            key: status.id,
-          };
-        })
-      : [];
+    return Ticket.getStatusList(Colors, I18n);
   }, [Colors, I18n]);
 
   const filterOnType = useCallback(
@@ -161,30 +154,7 @@ const MyTicketListScreen = ({navigation}) => {
             marginHorizontal={4}
             width={Dimensions.get('window').width * 0.3}
             onChangeValue={chiplist => setPriorityStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Helpdesk_Priority_Low'),
-                color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
-                key: Ticket.priority.Low,
-                isActive: true,
-              },
-              {
-                title: I18n.t('Helpdesk_Priority_Normal'),
-                color: Ticket.getPriorityColor(Ticket.priority.Normal, Colors),
-                key: Ticket.priority.Normal,
-                isActive: true,
-              },
-              {
-                title: I18n.t('Helpdesk_Priority_High'),
-                color: Ticket.getPriorityColor(Ticket.priority.High, Colors),
-                key: Ticket.priority.High,
-              },
-              {
-                title: I18n.t('Helpdesk_Priority_Urgent'),
-                color: Ticket.getPriorityColor(Ticket.priority.Urgent, Colors),
-                key: Ticket.priority.Urgent,
-              },
-            ]}
+            selectionItems={Ticket.getPriorityList(Colors, I18n)}
           />
         }>
         <View style={styles.headerContainer}>

@@ -16,5 +16,7 @@
   "Helpdesk_Priority_Urgent": "Urgent",
   "Helpdesk_myTickets": "Mes tickets",
   "Helpdesk_Status": "Statut",
-  "Helpdesk_Type": "Type"
+  "Helpdesk_Type": "Type",
+  "Helpdesk_fetch_myTicket": "récupération de mes tickets",
+  "Helpdesk_fetch_Ticket_Type": "récupération des types de tickets"
 }

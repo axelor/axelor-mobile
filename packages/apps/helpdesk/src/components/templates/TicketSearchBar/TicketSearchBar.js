@@ -17,12 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {
-  displayItemName,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchTickets} from '../../../features/ticketSlice';
 
@@ -37,6 +32,8 @@ const TicketSearchBar = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
+  const displayItemTicketSeq = item => item.ticketSeq;
 
   const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
     state => state.ticket,
@@ -58,7 +55,7 @@ const TicketSearchBar = ({
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchTicketSearchBarAPI}
-      displayValue={displayItemName}
+      displayValue={displayItemTicketSeq}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingTicket}

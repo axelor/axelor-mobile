@@ -24,12 +24,12 @@ import {
 import {getTicketType, searchTickets} from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
-  'ticket/myTicket',
+  'ticket/fetchTickets',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchTickets,
       data,
-      action: 'fetch myTicket',
+      action: 'Helpdesk_fetch_myTicket',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,12 +37,12 @@ export const fetchTickets = createAsyncThunk(
 );
 
 export const fetchTicketType = createAsyncThunk(
-  'ticket/ticketType',
+  'ticket/fetchTicketType',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: getTicketType,
       data,
-      action: 'fetch Ticket type',
+      action: 'Helpdesk_fetch_Ticket_Type',
       getState,
       responseOptions: {isArrayResponse: true},
     });
