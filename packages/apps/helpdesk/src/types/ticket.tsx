@@ -52,6 +52,34 @@ class TicketType {
     }
   };
 
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return [
+      {
+        title: I18n.t('Helpdesk_Status_New'),
+        color: this.getStatusColor(this.status.New, Colors),
+        key: this.status.New,
+      },
+      {
+        title: I18n.t('Helpdesk_Status_In_Progress'),
+        color: this.getStatusColor(this.status.In_Progress, Colors),
+        key: this.status.In_Progress,
+      },
+      {
+        title: I18n.t('Helpdesk_Priority_High'),
+        color: this.getStatusColor(this.status.Resolved, Colors),
+        key: this.status.Resolved,
+      },
+      {
+        title: I18n.t('Helpdesk_Priority_Urgent'),
+        color: this.getStatusColor(this.status.Closed, Colors),
+        key: this.status.Closed,
+      },
+    ];
+  };
+
   static getStatusColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.status.New:
@@ -106,6 +134,38 @@ class TicketType {
         );
         return null;
     }
+  };
+
+  static getPriorityList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return [
+      {
+        title: I18n.t('Helpdesk_Priority_Low'),
+        color: this.getPriorityColor(this.priority.Low, Colors),
+        key: this.priority.Low,
+        isActive: true,
+      },
+      {
+        title: I18n.t('Helpdesk_Priority_Normal'),
+        color: this.getPriorityColor(this.priority.Normal, Colors),
+        key: this.priority.Normal,
+        isActive: true,
+      },
+      {
+        title: I18n.t('Helpdesk_Priority_High'),
+        color: this.getPriorityColor(this.priority.High, Colors),
+        key: this.priority.High,
+        isActive: false,
+      },
+      {
+        title: I18n.t('Helpdesk_Priority_Urgent'),
+        color: this.getPriorityColor(this.priority.Urgent, Colors),
+        key: this.priority.Urgent,
+        isActive: false,
+      },
+    ];
   };
 
   static getTypeColor = (index: number, Colors: ThemeColors): Color => {
