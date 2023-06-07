@@ -68,12 +68,12 @@ class TicketType {
         key: this.status.In_Progress,
       },
       {
-        title: I18n.t('Helpdesk_Priority_High'),
+        title: I18n.t('Helpdesk_Status_Resolved'),
         color: this.getStatusColor(this.status.Resolved, Colors),
         key: this.status.Resolved,
       },
       {
-        title: I18n.t('Helpdesk_Priority_Urgent'),
+        title: I18n.t('Helpdesk_Status_Closed'),
         color: this.getStatusColor(this.status.Closed, Colors),
         key: this.status.Closed,
       },

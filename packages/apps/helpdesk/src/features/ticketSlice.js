@@ -20,8 +20,14 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
-import {getTicket, getTicketType, searchTickets} from '../api/ticket-api';
+import {
+  getTicket,
+  getTicketType,
+  searchTickets,
+  updateTicketDuration as _updateTicketDuration,
+} from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
   'ticket/fetchTickets',
@@ -62,6 +68,27 @@ export const fetchTicketById = createAsyncThunk(
   },
 );
 
+export const updateTicketDuration = createAsyncThunk(
+  'ticket/updateTicketDuration',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateTicketDuration,
+      data,
+      action: 'Heldesk_updateTicketDuration',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getTicket,
+        data: {ticketId: res?.id},
+        action: 'Heldesk_Fetch_Ticket_ById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingTicket: true,
   loadingTicketType: true,
@@ -95,6 +122,14 @@ const ticketSlice = createSlice({
     builder.addCase(fetchTicketById.fulfilled, (state, action) => {
       state.loadingTicket = false;
       state.ticket = action.payload;
+    });
+    builder.addCase(updateTicketDuration.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(updateTicketDuration.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticket = action.payload;
+      state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
     });
   },
 });

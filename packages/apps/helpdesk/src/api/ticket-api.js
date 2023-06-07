@@ -20,6 +20,7 @@ import {
   createStandardSearch,
   getSearchCriterias,
   createStandardFetch,
+  axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 
 const createTicketCriteria = (searchValue, userId, userTeam) => {
@@ -65,5 +66,22 @@ export async function getTicketType() {
     fieldKey: 'helpdesk_ticketType',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function updateTicketDuration({
+  ticketId,
+  ticketVersion,
+  duration,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
+    data: {
+      data: {
+        id: ticketId,
+        version: ticketVersion,
+        duration: duration,
+      },
+    },
   });
 }

@@ -34,10 +34,10 @@ interface StopwatchProps {
   disableCancel?: boolean;
   hideCancel?: boolean;
   style?: any;
-  onPlay: () => void;
-  onPause: () => void;
-  onStop: () => void;
-  onCancel?: () => void;
+  onPlay: (time: number) => number;
+  onPause: (time: number) => number;
+  onStop: (time: number) => number;
+  onCancel?: (time: number) => number;
   useObjectStatus?: boolean;
 }
 
@@ -52,10 +52,10 @@ const Stopwatch = ({
   disableCancel = false,
   hideCancel = false,
   style,
-  onPlay = () => {},
-  onPause = () => {},
-  onStop = () => {},
-  onCancel = () => {},
+  onPlay = () => 0,
+  onPause = () => 0,
+  onStop = () => 0,
+  onCancel = () => 0,
   useObjectStatus = false,
 }: StopwatchProps) => {
   const Colors = useThemeColor();
@@ -80,21 +80,21 @@ const Stopwatch = ({
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
-    onPlay();
+    onPlay(time);
   };
 
   const handlePauseBtn = () => {
     setState(StopwatchType.status.Paused);
-    onPause();
+    onPause(time);
   };
   const handleStopBtn = () => {
     setState(StopwatchType.status.Finished);
-    onStop();
+    onStop(time);
   };
   const handleCancelBtn = () => {
     setState(StopwatchType.status.Canceled);
     setTime(0);
-    onCancel();
+    onCancel(time);
   };
 
   return (

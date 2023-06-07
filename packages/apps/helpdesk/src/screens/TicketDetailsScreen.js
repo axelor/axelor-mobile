@@ -16,30 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo, useCallback} from 'react';
 import {ScrollView} from 'react-native';
 import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchTicketById} from '../features/ticketSlice';
+import {
+  Stopwatch,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
+import {fetchTicketById, updateTicketDuration} from '../features/ticketSlice';
 import {TicketHeader, TicketDropdownCards} from '../components';
 
 const TicketDetailsScreen = ({navigation, route}) => {
-  const {idTicket, versionTicket, colorIndex} = route.params;
+  const {idTicket, colorIndex} = route.params;
   const I18n = useTranslator();
 
   const dispatch = useDispatch();
   const {ticket} = useSelector(state => state.ticket);
 
+  const duration = useMemo(() => {
+    return ticket?.duration;
+  }, [ticket?.duration]);
+
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
   }, [dispatch, idTicket]);
 
+  const updateDurationTicketAPI = useCallback(
+    timer => {
+      dispatch(
+        updateTicketDuration({
+          ticketId: ticket.id,
+          ticketVersion: ticket.version,
+          duration: timer,
+        }),
+      );
+    },
+    [dispatch, ticket],
+  );
+
   if (ticket?.id !== idTicket) {
     return null;
   }
-
-  console.log(versionTicket);
-  console.log(ticket);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -53,6 +72,11 @@ const TicketDetailsScreen = ({navigation, route}) => {
           data={ticket.description}
         />
         <TicketDropdownCards />
+        <Stopwatch
+          startTime={duration}
+          timerFormat={I18n.t('Stopwatch_TimerFormat')}
+          onPause={updateDurationTicketAPI}
+        />
       </ScrollView>
     </Screen>
   );
