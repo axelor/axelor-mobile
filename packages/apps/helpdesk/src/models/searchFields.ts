@@ -16,5 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './molecules';
-export * from './templates';
+import {SearchFields} from '@axelor/aos-mobile-core';
+
+export const helpdesk_searchFields: SearchFields = {
+  helpdesk_ticket: [
+    'ticketSeq',
+    'subject',
+    'responsibleUser.fullName',
+    'customerPartner.fullName',
+    'project.fullName',
+  ],
+};

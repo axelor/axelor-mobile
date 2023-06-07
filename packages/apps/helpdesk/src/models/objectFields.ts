@@ -16,5 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './molecules';
-export * from './templates';
+import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
+
+export const helpdesk_modelAPI: ObjectFields = {
+  helpdesk_ticket: schemaContructor.object({
+    ticketSeq: schemaContructor.string(),
+    subject: schemaContructor.string(),
+    progressSelect: schemaContructor.number(),
+    duration: schemaContructor.number(),
+    deadlineDateT: schemaContructor.string(),
+    responsibleUser: schemaContructor.subObject(),
+    statusSelect: schemaContructor.number(),
+    ticketType: schemaContructor.subObject(),
+    prioritySelect: schemaContructor.number(),
+  }),
+  helpdesk_ticketType: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
+};
