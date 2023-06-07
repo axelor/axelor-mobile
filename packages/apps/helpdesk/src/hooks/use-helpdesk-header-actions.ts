@@ -16,31 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import MyTicketListScreen from './MyTicketListScreen';
-import MyTeamTicketListScreen from './MyTeamTicketListScreen';
-import TicketDetailsScreen from './TicketDetailsScreen';
+import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
+import {useEffect} from 'react';
 
-export default {
-  MyTicketListScreen: {
-    title: 'Helpdesk_myTickets',
-    component: MyTicketListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  MyTeamTicketListScreen: {
-    title: 'Helpdesk_myTeamTickets',
-    component: MyTeamTicketListScreen,
-    options: {
-      shadedHeader: false,
-    },
-  },
-  TicketDetailsScreen: {
-    title: 'Helpdesk_Ticket',
-    component: TicketDetailsScreen,
-    actionID: 'helpdesk_ticket_details',
-    options: {
-      shadedHeader: false,
-    },
-  },
+const useHeldpeskTicketDetailsActions = () => {
+  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {ticket} = useSelector((state: any) => state.ticket);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('helpdesk_ticket_details', {
+      model: 'com.axelor.apps.helpdesk.db.Ticket',
+      modelId: ticket?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: ticket?.fullName,
+    });
+  }, [mobileSettings, ticket]);
+};
+
+export const useHELPDESKHeaders = () => {
+  useHeldpeskTicketDetailsActions();
 };

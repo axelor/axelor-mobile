@@ -26,7 +26,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {fetchTicketById, updateTicketDuration} from '../features/ticketSlice';
-import {TicketHeader, TicketDropdownCards} from '../components';
+import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, colorIndex} = route.params;
@@ -78,6 +78,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
           onPause={updateDurationTicketAPI}
         />
       </ScrollView>
+      <TicketBottom idTicket={idTicket} />
     </Screen>
   );
 };

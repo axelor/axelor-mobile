@@ -26,6 +26,7 @@ import {
   helpdesk_sortFields,
 } from './models';
 import * as helpdeskReducers from './features';
+import {useHELPDESKHeaders} from './hooks/use-helpdesk-header-actions';
 
 export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
@@ -56,6 +57,7 @@ export const HelpDeskModule: Module = {
     objectFields: {...helpdesk_modelAPI},
     sortFields: {...helpdesk_sortFields},
     searchFields: {...helpdesk_searchFields},
+    headerRegisters: useHELPDESKHeaders,
   },
 };
 
