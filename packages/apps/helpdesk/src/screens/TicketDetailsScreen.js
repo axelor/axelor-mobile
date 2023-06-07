@@ -21,7 +21,7 @@ import {ScrollView} from 'react-native';
 import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
-import {TicketHeader} from '../components';
+import {TicketHeader, TicketDropdownCards} from '../components';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, versionTicket, colorIndex} = route.params;
@@ -49,9 +49,10 @@ const TicketDetailsScreen = ({navigation, route}) => {
       />
       <ScrollView>
         <NotesCard
-          title={I18n.t('Crm_Description')}
+          title={I18n.t('Base_Description')}
           data={ticket.description}
         />
+        <TicketDropdownCards />
       </ScrollView>
     </Screen>
   );

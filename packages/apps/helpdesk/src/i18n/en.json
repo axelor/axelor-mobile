@@ -21,5 +21,12 @@
   "Helpdesk_fetch_Ticket_Type": "fetch types tickets",
   "Helpdesk_myTeamTickets": "My team tickets",
   "Helpdesk_fetch_myTeamTicket": "fetch my team tickets",
-  "Heldesk_Fetch_Ticket_ById": "fetch ticket by id"
+  "Heldesk_Fetch_Ticket_ById": "fetch ticket by id",
+  "Helpdesk_StartDate": "Start date",
+  "Helpdesk_EndDate": "End date",
+  "Helpdesk_Project": "Project",
+  "Helpdesk_CustomPartner": "Customer",
+  "Helpdesk_ContactPartner": "Customer Contact",
+  "Helpdesk_General_Informations": "Général Informations",
+  "Helpdesk_Timing": "Timing"
 }
