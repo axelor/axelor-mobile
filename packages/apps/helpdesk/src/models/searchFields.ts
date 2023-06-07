@@ -23,7 +23,7 @@ export const helpdesk_searchFields: SearchFields = {
     'ticketSeq',
     'subject',
     'responsibleUser.fullName',
-    'customer.fullName',
+    'customerPartner.fullName',
     'project.fullName',
   ],
 };
