@@ -47,7 +47,8 @@ const TicketSearchBar = ({
         fetchTickets({
           page: page,
           searchValue: searchValue,
-          userId: team ? user : user.id,
+          userId: team ? null : user.id,
+          userTeam: team ? user.activeTeam : null,
         }),
       );
     },

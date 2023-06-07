@@ -32,7 +32,7 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchTeamTickets, fetchTicketType} from '../features/ticketSlice';
+import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
 import {TicketCard, TicketSearchBar} from '../components';
 import {Ticket} from '../types';
 
@@ -42,13 +42,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
   const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
-  const {
-    tickeTeamtList,
-    loadingTicket,
-    moreLoading,
-    isListEnd,
-    ticketTypeList,
-  } = useSelector(state => state.ticket);
+  const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
+    useSelector(state => state.ticket);
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -73,7 +68,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
 
   const fetchTicketsAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTeamTickets({user: user, page: page}));
+      dispatch(fetchTickets({userTeam: user.activeTeam, page: page}));
     },
     [dispatch, user],
   );
@@ -136,8 +131,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
   );
 
   const filteredList = useMemo(
-    () => filterOnStatus(filterOnType(filterOnPriority(tickeTeamtList))),
-    [tickeTeamtList, filterOnType, filterOnStatus, filterOnPriority],
+    () => filterOnStatus(filterOnType(filterOnPriority(ticketList))),
+    [ticketList, filterOnType, filterOnStatus, filterOnPriority],
   );
 
   return (

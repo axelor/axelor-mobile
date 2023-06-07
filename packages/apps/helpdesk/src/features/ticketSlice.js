@@ -21,11 +21,7 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {
-  getTicketType,
-  searchTickets,
-  searchTeamTickets,
-} from '../api/ticket-api';
+import {getTicketType, searchTickets} from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
   'ticket/fetchTickets',
@@ -34,19 +30,6 @@ export const fetchTickets = createAsyncThunk(
       fetchFunction: searchTickets,
       data,
       action: 'Helpdesk_fetch_myTicket',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
-export const fetchTeamTickets = createAsyncThunk(
-  'ticket/fetchTeamTickets',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: searchTeamTickets,
-      data,
-      action: 'Helpdesk_fetch_myTeamTicket',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -73,7 +56,6 @@ const initialState = {
   isListEnd: false,
   ticketList: [],
   ticketTypeList: [],
-  tickeTeamtList: [],
   ticket: {},
 };
 
@@ -86,12 +68,6 @@ const ticketSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
-    });
-    generateInifiniteScrollCases(builder, fetchTeamTickets, {
-      loading: 'loadingTicket',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'tickeTeamtList',
     });
     builder.addCase(fetchTicketType.pending, state => {
       state.loadingTicketType = true;
