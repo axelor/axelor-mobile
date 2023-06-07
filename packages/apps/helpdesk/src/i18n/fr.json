@@ -20,5 +20,6 @@
   "Helpdesk_fetch_myTicket": "récupération de mes tickets",
   "Helpdesk_fetch_Ticket_Type": "récupération des types de tickets",
   "Helpdesk_myTeamTickets": "Les tickets de mon équipe",
-  "Helpdesk_fetch_myTeamTicket": "récupération des tickets de mon équipe"
+  "Helpdesk_fetch_myTeamTicket": "récupération des tickets de mon équipe",
+  "Heldesk_Fetch_Ticket_ById": "récupération du ticket par id"
 }

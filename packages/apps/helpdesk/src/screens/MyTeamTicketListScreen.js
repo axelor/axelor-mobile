@@ -188,6 +188,15 @@ const MyTeamTicketListScreen = ({navigation}) => {
             duration={item.duration}
             allTicketType={ticketTypeList}
             assignedToUser={item?.assignedToUser?.fullName}
+            onPress={() =>
+              navigation.navigate('TicketDetailsScreen', {
+                idTicket: item.id,
+                versionTicket: item.version,
+                colorIndex: ticketTypeList?.findIndex(
+                  type => type.id === item?.ticketType?.id,
+                ),
+              })
+            }
           />
         )}
         fetchData={fetchTicketsAPI}

@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   getSearchCriterias,
+  createStandardFetch,
 } from '@axelor/aos-mobile-core';
 
 const createTicketCriteria = (searchValue, userId, userTeam) => {
@@ -47,6 +48,14 @@ export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,
+  });
+}
+
+export async function getTicket({ticketId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.helpdesk.db.Ticket',
+    id: ticketId,
+    fieldKey: 'helpdesk_ticket',
   });
 }
 
