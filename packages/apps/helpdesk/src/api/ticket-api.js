@@ -32,10 +32,31 @@ const createTicketCriteria = (searchValue, userId) => {
   ];
 };
 
+const createTeamTicketCriteria = (searchValue, user) => {
+  return [
+    {
+      fieldName: 'assignedToUser.activeTeam',
+      operator: '=',
+      value: user.activeTeam,
+    },
+    getSearchCriterias('helpdesk_ticket', searchValue),
+  ];
+};
+
 export async function searchTickets({searchValue, userId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
     criteria: createTicketCriteria(searchValue, userId),
+    fieldKey: 'helpdesk_ticket',
+    sortKey: 'helpdesk_ticket',
+    page,
+  });
+}
+
+export async function searchTeamTickets({searchValue, user, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.helpdesk.db.Ticket',
+    criteria: createTeamTicketCriteria(searchValue, user),
     fieldKey: 'helpdesk_ticket',
     sortKey: 'helpdesk_ticket',
     page,
