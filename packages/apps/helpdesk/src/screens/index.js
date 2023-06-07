@@ -17,11 +17,19 @@
  */
 
 import MyTicketListScreen from './MyTicketListScreen';
+import MyTeamTicketListScreen from './MyTeamTicketListScreen';
 
 export default {
   MyTicketListScreen: {
     title: 'Helpdesk_myTickets',
     component: MyTicketListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  MyTeamTicketListScreen: {
+    title: 'Helpdesk_myTeamTickets',
+    component: MyTeamTicketListScreen,
     options: {
       shadedHeader: false,
     },

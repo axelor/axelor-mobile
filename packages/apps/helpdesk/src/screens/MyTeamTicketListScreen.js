@@ -32,16 +32,16 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchTickets, fetchTicketType} from '../../features/ticketSlice';
-import {TicketCard, TicketSearchBar} from '../../components';
-import {Ticket} from '../../types';
+import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
+import {TicketCard, TicketSearchBar} from '../components';
+import {Ticket} from '../types';
 
-const MyTicketListScreen = ({navigation}) => {
+const MyTeamTicketListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
 
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
   const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
     useSelector(state => state.ticket);
 
@@ -68,9 +68,9 @@ const MyTicketListScreen = ({navigation}) => {
 
   const fetchTicketsAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTickets({userId: userId, page: page}));
+      dispatch(fetchTickets({userTeam: user.activeTeam, page: page}));
     },
-    [dispatch, userId],
+    [dispatch, user],
   );
 
   const ticketTypeListItems = useMemo(() => {
@@ -145,6 +145,7 @@ const MyTicketListScreen = ({navigation}) => {
               showDetailsPopup={false}
               oneFilter={true}
               placeholderKey={I18n.t('Helpdesk_Ticket')}
+              team={true}
             />
           </View>
         }
@@ -186,6 +187,7 @@ const MyTicketListScreen = ({navigation}) => {
             prioritySelect={item.prioritySelect}
             duration={item.duration}
             allTicketType={ticketTypeList}
+            assignedToUser={item?.assignedToUser?.fullName}
           />
         )}
         fetchData={fetchTicketsAPI}
@@ -207,4 +209,4 @@ const styles = StyleSheet.create({
   toggle: {width: '54%', height: 38, borderRadius: 13},
 });
 
-export default MyTicketListScreen;
+export default MyTeamTicketListScreen;
