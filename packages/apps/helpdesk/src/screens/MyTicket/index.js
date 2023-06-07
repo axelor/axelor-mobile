@@ -16,5 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './molecules';
-export * from './templates';
+import MyTicketListScreen from './MyTicketListScreen';
+
+export default {
+  MyTicketListScreen: {
+    title: 'Helpdesk_myTickets',
+    component: MyTicketListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+};
