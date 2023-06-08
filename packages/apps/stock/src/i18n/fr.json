@@ -151,6 +151,7 @@
   "Stock_SliceAction_CreateStockCorrection": "creation d'une correction de stock",
   "Stock_SliceAction_UpdateStockCorrection": "mise à jour de la correction de stock",
   "Stock_SliceAction_FetchStockLocationLines": "récupération des lignes d'emplacement de stock",
+  "Stock_SliceAction_SearchAvailableProducts": "récupération des articles disponibles",
   "Stock_SliceAction_FilterStockLocations": "filtre sur les emplacements de stock",
   "Stock_SliceAction_FetchSupplierArrivalLines": "récupération des lignes de réception fournisseur",
   "Stock_SliceAction_FetchSupplierArrivalLine": "récupération de la ligne de réception fournisseur",

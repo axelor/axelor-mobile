@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchStockLocationLine} from '../api/stock-location-line-api';
+import {
+  searchAvailableProducts as _searchAvailableProducts,
+  searchStockLocationLine,
+} from '../api/stock-location-line-api';
 
 export const fetchStockLocationLine = createAsyncThunk(
   'stockLocationLine/fetchStockLocationLines',
@@ -36,11 +39,28 @@ export const fetchStockLocationLine = createAsyncThunk(
   },
 );
 
+export const searchAvailableProducts = createAsyncThunk(
+  'stockLocationLine/searchAvailableProducts',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchAvailableProducts,
+      data,
+      action: 'Stock_SliceAction_SearchAvailableProducts',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
   stockLocationLine: [],
+  loadingAvailableProducts: false,
+  moreLoadingAvailableProducts: false,
+  isListEndAvailableProducts: false,
+  availableProducts: [],
 };
 
 const stockLocationLineSlice = createSlice({
@@ -53,6 +73,32 @@ const stockLocationLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'stockLocationLine',
     });
+    generateInifiniteScrollCases(
+      builder,
+      searchAvailableProducts,
+      {
+        loading: 'loadingAvailableProducts',
+        moreLoading: 'moreLoadingAvailableProducts',
+        isListEnd: 'isListEndAvailableProducts',
+        list: 'availableProducts',
+      },
+      {
+        parseFunction: data =>
+          data?.map(_item => ({
+            ..._item,
+            product: {
+              ..._item.product,
+              version: _item.product.$version,
+              code: _item['product.code'],
+              name: _item['product.name'],
+              unit: _item['product.unit'],
+              picture: _item['product.picture'],
+              trackingNumberConfiguration:
+                _item['product.trackingNumberConfiguration'],
+            },
+          })),
+      },
+    );
   },
 });
 

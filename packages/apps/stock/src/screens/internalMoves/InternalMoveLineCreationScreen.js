@@ -16,19 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
+  AvailableProductsSearchBar,
   InternalMoveLineCreationButton,
   InternalMoveLineNotes,
   InternalMoveLineQuantityCard,
   ProductCardInfo,
-  ProductTrackingNumberSearchBar,
   StockLocationSearchBar,
 } from '../../components';
 import {StockMove} from '../../types';
-import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 
 const originalStockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -46,29 +44,15 @@ const CREATION_STEP = {
 };
 
 const InternalMoveLineCreationScreen = ({navigation}) => {
-  const dispatch = useDispatch();
-
-  const {user} = useSelector(state => state.user);
-  const {productIndicators} = useSelector(state => state.productIndicators);
-
   const [currentStep, setCurrentStep] = useState(
     CREATION_STEP.original_stockLocation,
   );
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
-  const [product, setProduct] = useState(null);
-  const [trackingNumber, setTrackingNumber] = useState(null);
+  const [stockLocationLine, setStockLocationLine] = useState(null);
   const [destinationStockLocation, setDestinationStockLocation] =
     useState(null);
   const [movedQty, setMovedQty] = useState(0);
   const [notes, setNotes] = useState('');
-
-  const plannedQty = useMemo(
-    () =>
-      productIndicators.id !== product?.id
-        ? 0
-        : productIndicators?.availableStock,
-    [product, productIndicators],
-  );
 
   const handleFromStockLocationChange = useCallback(
     _value => {
@@ -87,31 +71,12 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
       } else {
-        if (_value?.product != null) {
-          setTrackingNumber(_value);
-          setProduct(_value.product);
-        } else {
-          setProduct(_value);
-          setTrackingNumber(null);
-        }
+        setStockLocationLine(_value);
         handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
     [handleNextStep, handleReset],
   );
-
-  useEffect(() => {
-    if (product != null && originalStockLocation != null) {
-      dispatch(
-        fetchProductIndicators({
-          version: product?.version,
-          productId: product?.id,
-          companyId: user.activeCompany?.id,
-          stockLocationId: originalStockLocation?.id,
-        }),
-      );
-    }
-  }, [user.activeCompany?.id, dispatch, product, originalStockLocation]);
 
   const handleToStockLocationChange = useCallback(
     _value => {
@@ -134,8 +99,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       }
 
       if (_step <= CREATION_STEP.product_trackingNumber) {
-        setProduct(null);
-        setTrackingNumber(null);
+        setStockLocationLine(null);
         setMovedQty(0);
       }
 
@@ -163,7 +127,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: product,
+      product: stockLocationLine?.product,
     });
   };
 
@@ -173,8 +137,8 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         <InternalMoveLineCreationButton
           onContinue={handleReset}
           hideIf={currentStep !== CREATION_STEP.validation}
-          product={product}
-          trackingNumber={trackingNumber}
+          product={stockLocationLine?.product}
+          trackingNumber={stockLocationLine?.trackingNumber}
           originalStockLocation={originalStockLocation}
           destinationStockLocation={destinationStockLocation}
           movedQty={movedQty}
@@ -190,34 +154,35 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
           isFocus={currentStep === CREATION_STEP.original_stockLocation}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ProductTrackingNumberSearchBar
+          <AvailableProductsSearchBar
+            stockLocationId={originalStockLocation?.id}
             scanKey={itemScanKey}
             onChange={handleToProductTrackingNumberChange}
-            defaultValue={trackingNumber || product}
+            defaultValue={stockLocationLine}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}
         {currentStep >= CREATION_STEP.destination_stockLocation ? (
           <>
             <ProductCardInfo
-              name={product.name}
-              code={product.code}
-              picture={product.picture}
+              name={stockLocationLine?.product?.name}
+              code={stockLocationLine?.product?.code}
+              picture={stockLocationLine?.product?.picture}
               trackingNumber={
-                product.trackingNumberConfiguration == null ||
-                trackingNumber == null
+                stockLocationLine?.product?.trackingNumberConfiguration ==
+                  null || stockLocationLine?.trackingNumber == null
                   ? null
-                  : trackingNumber.trackingNumberSeq
+                  : stockLocationLine?.trackingNumber.trackingNumberSeq
               }
               onPress={handleShowProduct}
             />
             <InternalMoveLineQuantityCard
               originalStockLocation={originalStockLocation}
-              stockProduct={product}
-              trackingNumber={trackingNumber}
+              stockProduct={stockLocationLine?.product}
+              trackingNumber={stockLocationLine?.trackingNumber}
               movedQty={movedQty}
               setMovedQty={setMovedQty}
-              plannedQty={plannedQty}
+              plannedQty={stockLocationLine?.currentQty}
               status={StockMove.status.Draft}
             />
             <StockLocationSearchBar

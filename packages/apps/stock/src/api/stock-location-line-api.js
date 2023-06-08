@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
 
 const createSearchCriteria = ({productId, companyId, stockLocationId}) => {
@@ -67,6 +70,40 @@ export async function searchStockLocationLine({
       stockLocationId: stockId,
     }),
     fieldKey: 'stock_stockLocationLine',
+    page,
+  });
+}
+
+const createAvailableProductsCriteria = ({stockLocationId, searchValue}) => {
+  let criterias = [
+    {
+      fieldName: 'detailsStockLocation.id',
+      operator: '=',
+      value: stockLocationId,
+    },
+    {
+      fieldName: 'currentQty',
+      operator: '>',
+      value: 0,
+    },
+    getSearchCriterias('stock_stockLocationLine', searchValue),
+  ];
+
+  return criterias;
+};
+
+export async function searchAvailableProducts({
+  stockLocationId,
+  searchValue,
+  page = 0,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.stock.db.StockLocationLine',
+    criteria: createAvailableProductsCriteria({
+      stockLocationId,
+      searchValue,
+    }),
+    fieldKey: 'stock_availableProducts',
     page,
   });
 }

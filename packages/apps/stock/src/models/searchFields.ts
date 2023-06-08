@@ -49,6 +49,12 @@ export const stock_searchFields: SearchFields = {
   ],
   stock_product: ['name', 'code', 'serialNumber'],
   stock_stockLocation: ['name', 'serialNumber'],
+  stock_stockLocationLine: [
+    'product.fullName',
+    'product.serialNumber',
+    'trackingNumber.trackingNumberSeq',
+    'trackingNumber.serialNumber',
+  ],
   stock_supplierArrival: ['stockMoveSeq'],
   stock_supplierArrivalLine: [
     'product.fullName',

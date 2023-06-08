@@ -151,6 +151,7 @@
   "Stock_SliceAction_CreateStockCorrection": "create stock correction",
   "Stock_SliceAction_UpdateStockCorrection": "update stock correction",
   "Stock_SliceAction_FetchStockLocationLines": "fetch stock location line",
+  "Stock_SliceAction_SearchAvailableProducts": "search available products",
   "Stock_SliceAction_FilterStockLocations": "filter stock locations",
   "Stock_SliceAction_FetchSupplierArrivalLines": "fetch supplier arrival lines",
   "Stock_SliceAction_FetchSupplierArrivalLine": "fetch supplier arrival line",
