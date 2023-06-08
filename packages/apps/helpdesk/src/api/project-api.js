@@ -16,10 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export async function getProject() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.apps.project.db.Project',
+const createProjectCriteria = searchValue => {
+  return [getSearchCriterias('helpdesk_customer', searchValue)];
+};
+
+export async function seatchProject({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createProjectCriteria(searchValue),
+    fieldKey: 'helpdesk_customer',
+    sortKey: 'helpdesk_customer',
+    numberElementsByPage: null,
+    page: page,
   });
 }

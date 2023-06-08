@@ -27,8 +27,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
-import {fetchProject} from '../features/projectSlice';
-import {CustomerSearchBar} from '../components';
+import {CustomerSearchBar, ProjectSearchBar} from '../components';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
@@ -36,15 +35,13 @@ const TicketFormScreen = ({navigation, route}) => {
   const I18n = useTranslator();
 
   const {ticket} = useSelector(state => state.ticket);
-  const {projectList} = useSelector(state => state.project);
 
   const [subject, setSubject] = useState(ticket?.subject);
-  const [project, setProject] = useState(ticket?.project?.id);
+  const [project, setProject] = useState(ticket?.project);
   const [customer, setCustomer] = useState(ticket?.customerPartner);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
-    dispatch(fetchProject());
   }, [dispatch, idTicket]);
 
   return (
@@ -57,15 +54,13 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={setSubject}
             defaultValue={subject}
           />
-          <Picker
-            style={styles.picker}
-            title={I18n.t('Hepdesk_Project')}
-            onValueChange={setProject}
-            listItems={projectList}
-            labelField="name"
-            valueField="id"
+          <ProjectSearchBar
+            titleKey="Helpdesk_Project"
+            placeholderKey="Helpdesk_Project"
             defaultValue={project}
-            styleTxt={styles.pickerTitle}
+            onChange={setProject}
+            style={styles.picker}
+            styleTxt={styles.marginTitle}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"

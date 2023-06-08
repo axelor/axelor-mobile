@@ -21,6 +21,6 @@ export async function searchCustomer({searchValue, page = 0}) {
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
     numberElementsByPage: null,
-    page: 0,
+    page: page,
   });
 }

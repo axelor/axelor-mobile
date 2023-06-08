@@ -1,14 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {getProject} from '../api/project-api';
+import {
+  handlerApiCall,
+  generateInifiniteScrollCases,
+} from '@axelor/aos-mobile-core';
+import {seatchProject as _seatchProject} from '../api/project-api';
 
-export const fetchProject = createAsyncThunk(
-  'Project/fetchProject',
+export const searchProject = createAsyncThunk(
+  'Project/searchProject',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: getProject,
+      fetchFunction: _seatchProject,
       data,
-      action: 'Helpdesk_FetchProject',
+      action: 'Helpdesk_SearchProject',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -18,18 +21,19 @@ export const fetchProject = createAsyncThunk(
 const initialState = {
   loadingProject: true,
   projectList: [],
+  moreLoading: false,
+  isListEnd: false,
 };
 
 const projectSlice = createSlice({
   name: 'project',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchProject.pending, state => {
-      state.loadingProject = true;
-    });
-    builder.addCase(fetchProject.fulfilled, (state, action) => {
-      state.loadingProject = false;
-      state.projectList = action.payload;
+    generateInifiniteScrollCases(builder, searchProject, {
+      loading: 'loadingProject',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'projectList',
     });
   },
 });
