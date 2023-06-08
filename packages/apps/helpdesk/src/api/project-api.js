@@ -25,7 +25,7 @@ const createProjectCriteria = searchValue => {
   return [getSearchCriterias('helpdesk_customer', searchValue)];
 };
 
-export async function seatchProject({searchValue, page = 0}) {
+export async function searchProject({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createProjectCriteria(searchValue),

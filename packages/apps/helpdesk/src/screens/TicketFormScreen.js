@@ -27,7 +27,11 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
-import {CustomerSearchBar, ProjectSearchBar} from '../components';
+import {
+  CustomerSearchBar,
+  ProjectSearchBar,
+  TicketTypeSearchBar,
+} from '../components';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
@@ -39,6 +43,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [subject, setSubject] = useState(ticket?.subject);
   const [project, setProject] = useState(ticket?.project);
   const [customer, setCustomer] = useState(ticket?.customerPartner);
+  const [ticketType, setTicketType] = useState(ticket?.ticketType);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -67,6 +72,14 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_CustomPartner"
             defaultValue={customer}
             onChange={setCustomer}
+            style={styles.picker}
+            styleTxt={styles.marginTitle}
+          />
+          <TicketTypeSearchBar
+            titleKey="Helpdesk_Type"
+            placeholderKey="Helpdesk_Type"
+            defaultValue={ticketType}
+            onChange={setTicketType}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />

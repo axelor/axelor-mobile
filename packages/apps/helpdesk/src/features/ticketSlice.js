@@ -27,6 +27,7 @@ import {
   getTicketType,
   searchTickets,
   updateStatusTicket,
+  searchTicketType as _searchTicketType,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -89,10 +90,25 @@ export const updateTicketStatus = createAsyncThunk(
   },
 );
 
+export const searchTicketType = createAsyncThunk(
+  'Project/searchTicketType',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchTicketType,
+      data,
+      action: 'Helpdesk_searchTicketType',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingTicket: true,
   loadingTicketType: true,
   moreLoading: false,
+  moreLoadingTicketType: false,
+  isListEndTicketType: false,
   isListEnd: false,
   ticketList: [],
   ticketTypeList: [],
@@ -108,6 +124,12 @@ const ticketSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
+    });
+    generateInifiniteScrollCases(builder, searchTicketType, {
+      loading: 'loadingTicketType',
+      moreLoading: 'moreLoadingTicketType',
+      isListEnd: 'isListEndTicketType',
+      list: 'ticketTypeList',
     });
     builder.addCase(fetchTicketType.pending, state => {
       state.loadingTicketType = true;

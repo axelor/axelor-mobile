@@ -23,3 +23,4 @@ export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdo
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
 export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
+export {default as TicketTypeSearchBar} from './TicketTypeSearchBar/TicketTypeSearchBar';

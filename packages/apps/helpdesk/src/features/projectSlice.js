@@ -3,13 +3,13 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {seatchProject as _seatchProject} from '../api/project-api';
+import {searchProject as _searchProject} from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
   'Project/searchProject',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _seatchProject,
+      fetchFunction: _searchProject,
       data,
       action: 'Helpdesk_SearchProject',
       getState,
