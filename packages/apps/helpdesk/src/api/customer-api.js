@@ -39,7 +39,6 @@ export async function searchCustomer({searchValue, page = 0}) {
     criteria: createCustomerCriteria(searchValue),
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
-    numberElementsByPage: null,
     page: page,
   });
 }

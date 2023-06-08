@@ -31,7 +31,6 @@ export async function searchProject({searchValue, page = 0}) {
     criteria: createProjectCriteria(searchValue),
     fieldKey: 'helpdesk_project',
     sortKey: 'helpdesk_project',
-    numberElementsByPage: null,
     page: page,
   });
 }
