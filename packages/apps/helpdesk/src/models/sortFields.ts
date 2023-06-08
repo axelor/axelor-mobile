@@ -21,5 +21,6 @@ import {SortFields} from '@axelor/aos-mobile-core';
 export const helpdesk_sortFields: SortFields = {
   helpdesk_ticket: ['ticketSeq', 'createdOn'],
   helpdesk_customer: ['name', 'partnerSeq', 'createdOn'],
+  helpdesk_project: ['name', 'fullName'],
   helpdesk_ticketType: ['name'],
 };

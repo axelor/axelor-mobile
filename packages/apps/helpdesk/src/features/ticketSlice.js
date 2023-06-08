@@ -28,6 +28,7 @@ import {
   searchTickets,
   updateStatusTicket,
   searchTicketType as _searchTicketType,
+  updateTicket as _updateTicket,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -91,7 +92,7 @@ export const updateTicketStatus = createAsyncThunk(
 );
 
 export const searchTicketType = createAsyncThunk(
-  'Project/searchTicketType',
+  'ticket/searchTicketType',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchTicketType,
@@ -99,6 +100,27 @@ export const searchTicketType = createAsyncThunk(
       action: 'Helpdesk_searchTicketType',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateTicket = createAsyncThunk(
+  'ticket/updateTicket',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateTicket,
+      data,
+      action: 'Heldesk_Update_Ticket',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getTicket,
+        data: {ticketId: res?.id},
+        action: 'Heldesk_Fetch_Ticket_ById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -149,6 +171,14 @@ const ticketSlice = createSlice({
       state.loadingTicket = true;
     });
     builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticket = action.payload;
+      state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
+    });
+    builder.addCase(updateTicket.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(updateTicket.fulfilled, (state, action) => {
       state.loadingTicket = false;
       state.ticket = action.payload;
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);

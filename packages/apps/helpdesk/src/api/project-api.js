@@ -22,15 +22,15 @@ import {
 } from '@axelor/aos-mobile-core';
 
 const createProjectCriteria = searchValue => {
-  return [getSearchCriterias('helpdesk_customer', searchValue)];
+  return [getSearchCriterias('helpdesk_project', searchValue)];
 };
 
 export async function searchProject({searchValue, page = 0}) {
   return createStandardSearch({
-    model: 'com.axelor.apps.base.db.Partner',
+    model: 'com.axelor.apps.project.db.Project',
     criteria: createProjectCriteria(searchValue),
-    fieldKey: 'helpdesk_customer',
-    sortKey: 'helpdesk_customer',
+    fieldKey: 'helpdesk_project',
+    sortKey: 'helpdesk_project',
     numberElementsByPage: null,
     page: page,
   });

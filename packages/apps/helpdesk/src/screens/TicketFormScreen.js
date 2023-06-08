@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -36,7 +36,7 @@ import {
   useTranslator,
   DateInput,
 } from '@axelor/aos-mobile-core';
-import {fetchTicketById} from '../features/ticketSlice';
+import {fetchTicketById, updateTicket} from '../features/ticketSlice';
 import {
   CustomerSearchBar,
   ProjectSearchBar,
@@ -60,8 +60,8 @@ const TicketFormScreen = ({navigation, route}) => {
   const [client, setClient] = useState(ticket?.customerPartner);
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [priority, setPriority] = useState(ticket?.prioritySelect);
-  const [startDate, setStartDate] = useState(ticket?.startDateT);
-  const [endDate, setEndDate] = useState(ticket?.endDateT);
+  const [startDate, setStartDate] = useState(new Date(ticket?.startDateT));
+  const [endDate, setEndDate] = useState(new Date(ticket?.endDateT));
   const [description, setDescription] = useState(ticket?.description);
   const [progress, setProgress] = useState(ticket?.progressSelect);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
@@ -75,6 +75,44 @@ const TicketFormScreen = ({navigation, route}) => {
       dispatch(getCustomerbyId({customerId: client?.id}));
     }
   }, [dispatch, client?.id]);
+
+  const updateTicketAPI = useCallback(() => {
+    dispatch(
+      updateTicket({
+        ticketId: ticket.id,
+        ticketVersion: ticket.version,
+        subject: subject,
+        projectId: project?.id,
+        progressSelect: progress,
+        customerId: client.id,
+        contactPartnerId: contactPartner?.id,
+        ticketTypeId: ticketType?.id,
+        prioritySelect: priority?.key,
+        startDateT: startDate?.toISOString()?.split('T')[0],
+        endDateT: endDate?.toISOString()?.split('T')[0],
+        description: description,
+      }),
+    );
+
+    navigation.navigate('TicketDetailsScreen', {
+      idTicket: ticket.id,
+    });
+  }, [
+    client.id,
+    contactPartner?.id,
+    description,
+    dispatch,
+    endDate,
+    navigation,
+    priority?.key,
+    progress,
+    project?.id,
+    startDate,
+    subject,
+    ticket.id,
+    ticket.version,
+    ticketType?.id,
+  ]);
 
   return (
     <Screen>
@@ -143,13 +181,13 @@ const TicketFormScreen = ({navigation, route}) => {
           <DateInput
             onDateChange={setStartDate}
             title={I18n.t('Helpdesk_StartDate')}
-            defaultDate={new Date(startDate)}
+            defaultDate={startDate}
             style={styles.input}
           />
           <DateInput
             onDateChange={setEndDate}
             title={I18n.t('Helpdesk_EndDate')}
-            defaultDate={new Date(endDate)}
+            defaultDate={endDate}
             style={styles.input}
           />
           <FormHtmlInput
@@ -160,7 +198,7 @@ const TicketFormScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={() => {}} />
+        <Button title={I18n.t('Base_Save')} onPress={updateTicketAPI} />
       </View>
     </Screen>
   );
