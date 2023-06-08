@@ -17,6 +17,7 @@
  */
 
 export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
+export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';

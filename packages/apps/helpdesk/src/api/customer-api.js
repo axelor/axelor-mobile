@@ -1,19 +1,23 @@
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-const createCustomerCriteria = () => {
+const createCustomerCriteria = searchValue => {
   return [
     {
       fieldName: 'isCustomer',
       operator: '=',
       value: true,
     },
+    getSearchCriterias('helpdesk_customer', searchValue),
   ];
 };
 
-export async function searchCustomer() {
+export async function searchCustomer({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
-    criteria: createCustomerCriteria(),
+    criteria: createCustomerCriteria(searchValue),
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
     numberElementsByPage: null,

@@ -17,14 +17,17 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchCustomer} from '../api/customer-api';
+import {
+  handlerApiCall,
+  generateInifiniteScrollCases,
+} from '@axelor/aos-mobile-core';
+import {searchCustomer as _searchCustomer} from '../api/customer-api';
 
-export const fetchCustomer = createAsyncThunk(
+export const searchCustomer = createAsyncThunk(
   'customer/fetchCustomer',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: searchCustomer,
+      fetchFunction: _searchCustomer,
       data,
       action: 'Helpdesk_Fetch_Customer',
       getState,
@@ -36,18 +39,19 @@ export const fetchCustomer = createAsyncThunk(
 const initialState = {
   loading: false,
   customerList: [],
+  moreLoading: false,
+  isListEnd: false,
 };
 
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchCustomer.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(fetchCustomer.fulfilled, (state, action) => {
-      state.loading = false;
-      state.customerList = action.payload;
+    generateInifiniteScrollCases(builder, searchCustomer, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'customerList',
     });
   },
 });
