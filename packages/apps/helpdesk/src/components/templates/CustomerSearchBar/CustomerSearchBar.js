@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchCustomer} from '../../../features/customerSlice';
+import {displayItemFullname} from '../../../utils/displayers';
 
 const CustomerSearchBar = ({
   placeholderKey = 'Helpdesk_CustomPartner',
@@ -52,8 +53,6 @@ const CustomerSearchBar = ({
     },
     [dispatch],
   );
-
-  const displayItemFullname = item => item.fullName;
 
   return (
     <View style={[styles.container, style]}>

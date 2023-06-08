@@ -44,6 +44,7 @@ import {
 } from '../components';
 import {Ticket} from '../types/';
 import {getCustomerbyId} from '../features/customerSlice';
+import {displayItemFullname} from '../utils/displayers';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
@@ -63,9 +64,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [endDate, setEndDate] = useState(ticket?.endDateT);
   const [description, setDescription] = useState(ticket?.description);
   const [progress, setProgress] = useState(ticket?.progressSelect);
-  const [contactPartner, setContactPartner] = useState(
-    ticket?.contactPartner?.id,
-  );
+  const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -76,8 +75,6 @@ const TicketFormScreen = ({navigation, route}) => {
       dispatch(getCustomerbyId({customerId: client?.id}));
     }
   }, [dispatch, client?.id]);
-
-  const displayItemFullname = item => item.fullName;
 
   return (
     <Screen>

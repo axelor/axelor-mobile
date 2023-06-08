@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
+import {displayItemFullname} from '../../../utils/displayers';
 
 const ProjectSearchBar = ({
   placeholderKey = 'Helpdesk_Project',
@@ -52,8 +53,6 @@ const ProjectSearchBar = ({
     },
     [dispatch],
   );
-
-  const displayItemFullname = item => item.fullName;
 
   return (
     <View style={[styles.container, style]}>
