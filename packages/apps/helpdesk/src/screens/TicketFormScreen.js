@@ -26,6 +26,7 @@ import {
   Screen,
   useThemeColor,
   FormHtmlInput,
+  FormIncrementInput,
 } from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -57,6 +58,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [startDate, setStartDate] = useState(ticket?.startDateT);
   const [endDate, setEndDate] = useState(ticket?.endDateT);
   const [description, setDescription] = useState(ticket?.description);
+  const [progress, setProgress] = useState(ticket?.progressSelect);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -79,6 +81,13 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={setProject}
             style={styles.picker}
             styleTxt={styles.marginTitle}
+          />
+          <FormIncrementInput
+            title={I18n.t('Helpdesk_Progress')}
+            defaultValue={progress.toString()}
+            onChange={setProgress}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
