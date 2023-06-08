@@ -56,5 +56,7 @@ export const helpdesk_modelAPI: ObjectFields = {
   helpdesk_project: schemaContructor.object({
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
+    clientPartner: schemaContructor.subObject(),
+    contactPartner: schemaContructor.subObject(),
   }),
 };

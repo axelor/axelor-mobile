@@ -56,7 +56,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const {customer} = useSelector(state => state.customer);
 
   const [subject, setSubject] = useState(ticket?.subject);
-  const [project, setProject] = useState(ticket?.project);
+  const [projectInput, setProjectInput] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [priority, setPriority] = useState(ticket?.prioritySelect);
@@ -76,13 +76,19 @@ const TicketFormScreen = ({navigation, route}) => {
     }
   }, [dispatch, client?.id]);
 
+  const handleChangeValueProject = value => {
+    setProjectInput(value);
+    setClient(value?.clientPartner);
+    setContactPartner(value?.contactPartner);
+  };
+
   const updateTicketAPI = useCallback(() => {
     dispatch(
       updateTicket({
         ticketId: ticket.id,
         ticketVersion: ticket.version,
         subject: subject,
-        projectId: project?.id,
+        projectId: projectInput?.id,
         progressSelect: progress,
         customerId: client?.id,
         contactPartnerId: contactPartner?.id,
@@ -106,7 +112,7 @@ const TicketFormScreen = ({navigation, route}) => {
     navigation,
     priority,
     progress,
-    project?.id,
+    projectInput?.id,
     startDate,
     subject,
     ticket.id,
@@ -127,8 +133,8 @@ const TicketFormScreen = ({navigation, route}) => {
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
-            defaultValue={project}
-            onChange={setProject}
+            defaultValue={projectInput}
+            onChange={handleChangeValueProject}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
