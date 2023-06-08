@@ -28,6 +28,7 @@ import {
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
 import {fetchProject} from '../features/projectSlice';
+import {fetchCustomer} from '../features/customerSlice';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
@@ -36,13 +37,16 @@ const TicketFormScreen = ({navigation, route}) => {
 
   const {ticket} = useSelector(state => state.ticket);
   const {projectList} = useSelector(state => state.project);
+  const {customerList} = useSelector(state => state.customer);
 
-  const [subject, setSubject] = useState(ticket.subject);
-  const [project, setProject] = useState(ticket.project?.id);
+  const [subject, setSubject] = useState(ticket?.subject);
+  const [project, setProject] = useState(ticket?.project?.id);
+  const [customer, setCustomer] = useState(ticket?.customerPartner?.id);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
     dispatch(fetchProject());
+    dispatch(fetchCustomer());
   }, [dispatch, idTicket]);
 
   return (
@@ -63,6 +67,16 @@ const TicketFormScreen = ({navigation, route}) => {
             labelField="name"
             valueField="id"
             defaultValue={project}
+            styleTxt={styles.pickerTitle}
+          />
+          <Picker
+            style={styles.picker}
+            title={I18n.t('Hepdesk_Customer')}
+            onValueChange={setCustomer}
+            listItems={customerList}
+            labelField="fullName"
+            valueField="id"
+            defaultValue={customer}
             styleTxt={styles.pickerTitle}
           />
         </View>
