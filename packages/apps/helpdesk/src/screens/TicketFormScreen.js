@@ -25,8 +25,14 @@ import {
   Picker,
   Screen,
   useThemeColor,
+  FormHtmlInput,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  DateInput,
+} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
 import {
   CustomerSearchBar,
@@ -48,6 +54,9 @@ const TicketFormScreen = ({navigation, route}) => {
   const [customer, setCustomer] = useState(ticket?.customerPartner);
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [priority, setPriority] = useState(ticket?.prioritySelect);
+  const [startDate, setStartDate] = useState(ticket?.startDateT);
+  const [endDate, setEndDate] = useState(ticket?.endDateT);
+  const [description, setDescription] = useState(ticket?.description);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -95,6 +104,23 @@ const TicketFormScreen = ({navigation, route}) => {
             labelField="title"
             valueField="key"
             defaultValue={priority}
+          />
+          <DateInput
+            onDateChange={setStartDate}
+            title={I18n.t('Helpdesk_StartDate')}
+            defaultDate={new Date(startDate)}
+            style={styles.input}
+          />
+          <DateInput
+            onDateChange={setEndDate}
+            title={I18n.t('Helpdesk_EndDate')}
+            defaultDate={new Date(endDate)}
+            style={styles.input}
+          />
+          <FormHtmlInput
+            title={I18n.t('Base_Description')}
+            onChange={setDescription}
+            defaultValue={description}
           />
         </View>
       </KeyboardAvoidingScrollView>
