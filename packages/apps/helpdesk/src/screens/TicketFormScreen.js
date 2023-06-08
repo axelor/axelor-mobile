@@ -24,6 +24,7 @@ import {
   KeyboardAvoidingScrollView,
   Picker,
   Screen,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
@@ -32,11 +33,13 @@ import {
   ProjectSearchBar,
   TicketTypeSearchBar,
 } from '../components';
+import {Ticket} from '../types/';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {ticket} = useSelector(state => state.ticket);
 
@@ -44,6 +47,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [project, setProject] = useState(ticket?.project);
   const [customer, setCustomer] = useState(ticket?.customerPartner);
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
+  const [priority, setPriority] = useState(ticket?.prioritySelect);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -83,6 +87,15 @@ const TicketFormScreen = ({navigation, route}) => {
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
+          <Picker
+            style={styles.picker}
+            title={I18n.t('Helpdesk_Priority')}
+            onValueChange={setPriority}
+            listItems={Ticket.getPriorityList(Colors, I18n)}
+            labelField="title"
+            valueField="key"
+            defaultValue={priority}
+          />
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
@@ -114,14 +127,6 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: '100%',
-    marginLeft: 5,
-  },
-
-  civilityPicker: {
-    width: '100%',
-    marginLeft: 12,
-  },
-  pickerTitle: {
     marginLeft: 5,
   },
   input: {

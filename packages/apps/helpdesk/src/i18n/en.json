@@ -10,6 +10,7 @@
   "Helpdesk_Status_In_Progress": "In progress",
   "Helpdesk_Status_Resolved": "Resolved",
   "Helpdesk_Status_Closed": "Closed",
+  "Helpdesk_Priority": "Priority",
   "Helpdesk_Priority_Low": "Low",
   "Helpdesk_Priority_Normal": "Normal",
   "Helpdesk_Priority_High": "High",
