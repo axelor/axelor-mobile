@@ -18,14 +18,10 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  displayItemName,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
+import {displayItemFullname} from '../../../utils/displayers';
 
 const ProjectSearchBar = ({
   placeholderKey = 'Helpdesk_Project',
@@ -71,7 +67,7 @@ const ProjectSearchBar = ({
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchProjectAPI}
-        displayValue={displayItemName}
+        displayValue={displayItemFullname}
         placeholder={I18n.t(placeholderKey)}
         showDetailsPopup={showDetailsPopup}
         loadingList={loadingProject}
