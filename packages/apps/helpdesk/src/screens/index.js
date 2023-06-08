@@ -37,7 +37,7 @@ export default {
     },
   },
   TicketFormScreen: {
-    title: 'Helpdesk_TicketForm',
+    title: 'Helpdesk_Ticket',
     component: TicketFormScreen,
     options: {
       shadedHeader: false,
