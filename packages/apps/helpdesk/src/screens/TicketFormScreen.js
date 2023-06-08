@@ -27,6 +27,8 @@ import {
   useThemeColor,
   FormHtmlInput,
   FormIncrementInput,
+  AutoCompleteSearch,
+  Text,
 } from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -41,6 +43,7 @@ import {
   TicketTypeSearchBar,
 } from '../components';
 import {Ticket} from '../types/';
+import {getCustomerbyId} from '../features/customerSlice';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
@@ -49,20 +52,32 @@ const TicketFormScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
 
   const {ticket} = useSelector(state => state.ticket);
+  const {customer} = useSelector(state => state.customer);
 
   const [subject, setSubject] = useState(ticket?.subject);
   const [project, setProject] = useState(ticket?.project);
-  const [customer, setCustomer] = useState(ticket?.customerPartner);
+  const [client, setClient] = useState(ticket?.customerPartner);
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [priority, setPriority] = useState(ticket?.prioritySelect);
   const [startDate, setStartDate] = useState(ticket?.startDateT);
   const [endDate, setEndDate] = useState(ticket?.endDateT);
   const [description, setDescription] = useState(ticket?.description);
   const [progress, setProgress] = useState(ticket?.progressSelect);
+  const [contactPartner, setContactPartner] = useState(
+    ticket?.contactPartner?.id,
+  );
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
   }, [dispatch, idTicket]);
+
+  useEffect(() => {
+    if (client?.id != null) {
+      dispatch(getCustomerbyId({customerId: client?.id}));
+    }
+  }, [dispatch, client?.id]);
+
+  const displayItemFullname = item => item.fullName;
 
   return (
     <Screen>
@@ -92,11 +107,25 @@ const TicketFormScreen = ({navigation, route}) => {
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
             placeholderKey="Helpdesk_CustomPartner"
-            defaultValue={customer}
-            onChange={setCustomer}
+            defaultValue={client}
+            onChange={setClient}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
+          <View style={styles.input}>
+            <Text style={styles.titlte}>
+              {I18n.t('Helpdesk_ContactPartner')}
+            </Text>
+            <AutoCompleteSearch
+              style={styles.search}
+              objectList={customer?.contactPartnerSet}
+              value={contactPartner}
+              onChangeValue={setContactPartner}
+              placeholder={I18n.t('Helpdesk_ContactPartner')}
+              displayValue={displayItemFullname}
+              showDetailsPopup={true}
+            />
+          </View>
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
             placeholderKey="Helpdesk_Type"
@@ -162,6 +191,13 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: '100%',
+    marginLeft: 5,
+  },
+  search: {
+    width: '100%',
+    marginLeft: 0,
+  },
+  titlte: {
     marginLeft: 5,
   },
   input: {

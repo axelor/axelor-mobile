@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   getSearchCriterias,
+  createStandardFetch,
 } from '@axelor/aos-mobile-core';
 
 const createCustomerCriteria = searchValue => {
@@ -40,5 +41,13 @@ export async function searchCustomer({searchValue, page = 0}) {
     sortKey: 'helpdesk_customer',
     numberElementsByPage: null,
     page: page,
+  });
+}
+
+export async function getCustomer({customerId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Partner',
+    id: customerId,
+    fieldKey: 'helpdesk_customer',
   });
 }

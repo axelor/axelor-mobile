@@ -21,7 +21,10 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {searchCustomer as _searchCustomer} from '../api/customer-api';
+import {
+  getCustomer,
+  searchCustomer as _searchCustomer,
+} from '../api/customer-api';
 
 export const searchCustomer = createAsyncThunk(
   'customer/fetchCustomer',
@@ -36,11 +39,25 @@ export const searchCustomer = createAsyncThunk(
   },
 );
 
+export const getCustomerbyId = createAsyncThunk(
+  'customer/getCustomerbyId',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getCustomer,
+      data,
+      action: 'Helpdesk_Fetch_Customer_ById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   customerList: [],
   moreLoading: false,
   isListEnd: false,
+  customer: {},
 };
 
 const customerSlice = createSlice({
@@ -52,6 +69,13 @@ const customerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'customerList',
+    });
+    builder.addCase(getCustomerbyId.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getCustomerbyId.fulfilled, (state, action) => {
+      state.loading = false;
+      state.customer = action.payload;
     });
   },
 });
