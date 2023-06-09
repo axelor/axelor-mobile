@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
   Checkbox,
@@ -114,10 +114,10 @@ const LeadFormScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingScrollView>
-        <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <View style={styles.halfHeader}>
+      <KeyboardAvoidingScrollView style={styles.scroll}>
+        <View style={[styles.container, getZIndexStyles(30)]}>
+          <View style={[styles.headerContainer, getZIndexStyles(35)]}>
+            <View style={[styles.halfHeader, getZIndexStyles(40)]}>
               <Picker
                 pickerStyle={styles.civilityPicker}
                 title={I18n.t('Crm_Civility')}
@@ -221,20 +221,23 @@ const LeadFormScreen = ({navigation, route}) => {
   );
 };
 
+const getZIndexStyles = value =>
+  Platform.OS === 'ios' ? {zIndex: value} : null;
+
 const styles = StyleSheet.create({
+  scroll: {
+    height: null,
+  },
   container: {
     alignItems: 'center',
-    zIndex: 30,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '90%',
-    zIndex: 35,
   },
   halfHeader: {
     width: '50%',
-    zIndex: 40,
   },
   checkBoxContainer: {
     flexDirection: 'column',

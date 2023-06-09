@@ -17,7 +17,11 @@
  */
 
 import React from 'react';
-import {ScrollView as ReactNativeScrollView, StyleSheet} from 'react-native';
+import {
+  Platform,
+  ScrollView as ReactNativeScrollView,
+  StyleSheet,
+} from 'react-native';
 
 interface ScrollViewProps {
   style?: any;
@@ -26,7 +30,12 @@ interface ScrollViewProps {
 
 const ScrollView = ({style, children}: ScrollViewProps) => {
   return (
-    <ReactNativeScrollView contentContainerStyle={[styles.container, style]}>
+    <ReactNativeScrollView
+      contentContainerStyle={[
+        styles.container,
+        Platform.OS === 'ios' ? styles.containerZIndex : null,
+        style,
+      ]}>
       {children}
     </ReactNativeScrollView>
   );
@@ -37,6 +46,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     height: '100%',
+  },
+  containerZIndex: {
     zIndex: 10,
   },
 });

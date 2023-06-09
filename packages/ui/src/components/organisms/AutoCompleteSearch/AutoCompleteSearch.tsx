@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
@@ -229,7 +229,9 @@ const AutoCompleteSearch = ({
   const styles = useMemo(() => getStyles(displayList), [displayList]);
 
   return (
-    <View ref={wrapperRef} style={styles.searchBarContainer}>
+    <View
+      ref={wrapperRef}
+      style={Platform.OS === 'ios' ? styles.searchBarContainer : null}>
       <SearchBar
         style={style}
         valueTxt={searchText}

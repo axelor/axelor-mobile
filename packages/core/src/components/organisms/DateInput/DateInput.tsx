@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {
   Card,
@@ -113,7 +113,13 @@ const DateInput = ({
   );
 
   return (
-    <View ref={wrapperRef} style={[styles.container, style]}>
+    <View
+      ref={wrapperRef}
+      style={[
+        styles.container,
+        Platform.OS === 'ios' ? styles.containerZIndex : null,
+        style,
+      ]}>
       <Text style={styles.title}>{title}</Text>
       <RightIconButton
         onPress={togglePicker}
@@ -139,7 +145,7 @@ const DateInput = ({
           isFocused && commonStyles.inputFocused,
         ]}
       />
-      <View style={styles.dropdownContainer}>
+      <View style={Platform.OS === 'ios' ? styles.dropdownContainer : null}>
         {pickerIsOpen ? (
           <Card style={styles.selectionContainer}>
             <View
@@ -196,6 +202,8 @@ const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
     },
     container: {
       width: '100%',
+    },
+    containerZIndex: {
       zIndex: pickerIsOpen ? 45 : 0,
     },
     datePickerContainer: {

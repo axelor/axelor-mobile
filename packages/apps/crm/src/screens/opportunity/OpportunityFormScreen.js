@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
   FormHtmlInput,
@@ -110,7 +110,11 @@ const OpportunityFormScreen = ({navigation, route}) => {
             editMode={true}
           />
         </View>
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            Platform.OS === 'ios' ? styles.containerZIndex : null,
+          ]}>
           <ClientProspectSearchBar
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
@@ -173,6 +177,8 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+  },
+  containerZIndex: {
     zIndex: 40,
   },
   headerContainer: {

@@ -39,7 +39,7 @@ const KeyboardAvoidingScrollView = ({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.containerKeyboard}
+      style={[styles.containerKeyboard, getZIndexStyles(5)]}
       keyboardVerticalOffset={
         Platform.OS === 'ios'
           ? keyboardVerticalOffset?.ios
@@ -47,21 +47,26 @@ const KeyboardAvoidingScrollView = ({
       }>
       <ScrollView
         style={globalStyle}
-        contentContainerStyle={[styles.scrollContent, style]}>
+        contentContainerStyle={[
+          styles.scrollContent,
+          getZIndexStyles(10),
+          style,
+        ]}>
         {children}
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
+const getZIndexStyles = value =>
+  Platform.OS === 'ios' ? {zIndex: value} : null;
+
 const styles = StyleSheet.create({
   containerKeyboard: {
     flex: 1,
-    zIndex: 5,
   },
   scrollContent: {
     height: '100%',
-    zIndex: 10,
   },
 });
 

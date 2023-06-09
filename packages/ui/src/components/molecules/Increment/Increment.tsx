@@ -70,7 +70,7 @@ const Increment = ({
   const [valueQty, setValueQty] = useState<string>();
 
   useEffect(() => {
-    setValueQty(format(value));
+    setValueQty(format(parseFloat(value)?.toString()));
   }, [format, value]);
 
   const handlePlus = () => {
