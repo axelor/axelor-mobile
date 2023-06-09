@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
   FormHtmlInput,
@@ -97,7 +97,11 @@ const ContactFormScreen = ({navigation, route}) => {
   return (
     <Screen>
       <KeyboardAvoidingScrollView>
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            Platform.OS === 'ios' ? styles.containerZIndex : null,
+          ]}>
           <Picker
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginPicker}
@@ -169,6 +173,8 @@ const ContactFormScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+  },
+  containerZIndex: {
     zIndex: 40,
   },
   marginPicker: {
