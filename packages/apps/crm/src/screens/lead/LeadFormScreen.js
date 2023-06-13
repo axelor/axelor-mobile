@@ -157,7 +157,11 @@ const LeadFormScreen = ({navigation, route}) => {
         contactDate: new Date().toISOString().split('T')[0],
         userId: userId,
       }),
-    );
+    ).then(res => {
+      navigation.navigate('LeadDetailsScreen', {
+        idLead: res.payload?.id,
+      });
+    });
   }, [
     dispatch,
     score,
@@ -175,6 +179,7 @@ const LeadFormScreen = ({navigation, route}) => {
     email,
     description,
     userId,
+    navigation,
   ]);
 
   return (
