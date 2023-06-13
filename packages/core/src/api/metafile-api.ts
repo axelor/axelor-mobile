@@ -17,6 +17,9 @@
  */
 
 import {axiosApiProvider} from '../axios/AxiosApi';
+import {DocumentPickerResponse} from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const MetaFileFields = ['id', 'fileName', 'createdOn'];
 
@@ -57,5 +60,48 @@ export async function fetchFileDetails({
       limit: null,
       offset: 0,
     },
+  });
+}
+
+export async function uploadFile(
+  file: DocumentPickerResponse,
+  {baseUrl, jsessionId, token},
+) {
+  if (file == null) {
+    return;
+  }
+
+  return new Promise<any>(async (resolve, reject) => {
+    try {
+      const base64Data = await RNFS.readFile(file.uri, 'base64');
+
+      const headers = {
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': String(file.size),
+        'X-File-Name': file.name,
+        'X-File-Type': file.type,
+        'X-File-Size': String(file.size),
+        'X-File-Offset': String(0),
+        'x-csrf-token': token,
+        Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`,
+      };
+
+      const response: any = await RNFetchBlob.fetch(
+        'POST',
+        `${baseUrl}ws/files/upload`,
+        headers,
+        base64Data,
+      );
+
+      const metaFile = JSON.parse(response.data);
+
+      if (Object.keys(metaFile).includes('id')) {
+        resolve(metaFile);
+      } else {
+        throw Error('no metafile created');
+      }
+    } catch (error) {
+      reject(error);
+    }
   });
 }
