@@ -34,38 +34,92 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {
+  createOpportunity,
   getOpportunity,
   updateOpportunity,
 } from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
-import {ClientProspectSearchBar} from '../../components';
+import {ClientProspectSearchBar, ContactSearchBar} from '../../components';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
+  const {userId} = useSelector(state => state.auth);
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
 
-  const [score, setScore] = useState(opportunity.opportunityRating);
-  const [partner, setPartner] = useState(opportunity.partner);
-  const [date, setDate] = useState(new Date(opportunity.expectedCloseDate));
-  const [amount, setAmount] = useState(opportunity.amount);
-  const [recurrent, setRecurrent] = useState(opportunity.recurrentAmount);
-  const [description, setDescription] = useState(opportunity.description);
-  const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
+  const [score, setScore] = useState(
+    idOpportunity != null ? opportunity.opportunityRating : 0,
+  );
+  const [partner, setPartner] = useState(
+    idOpportunity != null ? opportunity.partner : null,
+  );
+  const [contact, setContact] = useState(
+    idOpportunity != null ? opportunity.contact : null,
+  );
+  const [date, setDate] = useState(
+    idOpportunity != null ? new Date(opportunity.expectedCloseDate) : null,
+  );
+  const [amount, setAmount] = useState(
+    idOpportunity != null ? opportunity.amount : null,
+  );
+  const [recurrent, setRecurrent] = useState(
+    idOpportunity != null ? opportunity.recurrentAmount : null,
+  );
+  const [description, setDescription] = useState(
+    idOpportunity != null ? opportunity.description : null,
+  );
+  const [status, setStatus] = useState(
+    idOpportunity != null ? opportunity.opportunityStatus?.id : null,
+  );
 
   useEffect(() => {
-    dispatch(
-      getOpportunity({
-        opportunityId: idOpportunity,
-      }),
-    );
+    if (idOpportunity != null) {
+      dispatch(
+        getOpportunity({
+          opportunityId: idOpportunity,
+        }),
+      );
+    }
     dispatch(fetchCrmConfigApi());
   }, [dispatch, idOpportunity]);
+
+  const createOpportinityAPI = useCallback(() => {
+    dispatch(
+      createOpportunity({
+        opportunityStatusId: status,
+        opportunityRecurrentAmount: recurrent,
+        opportunityAmount: amount,
+        opportunityDescription: description,
+        idPartner: partner?.id,
+        opportunityRating: score,
+        opportunityCloseDate: date?.toISOString().split('T')[0],
+        idContact: contact?.id,
+        userId: userId,
+        name: partner?.fullName,
+      }),
+    ).then(res => {
+      navigation.navigate('OpportunityDetailsScreen', {
+        opportunityId: res.payload?.id,
+      });
+    });
+  }, [
+    dispatch,
+    status,
+    recurrent,
+    amount,
+    description,
+    partner,
+    score,
+    date,
+    contact,
+    userId,
+    navigation,
+  ]);
 
   const updateOpportunityAPI = useCallback(() => {
     dispatch(
@@ -79,6 +133,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
         idPartner: partner?.id,
         opportunityRating: score,
         opportunityCloseDate: date?.toISOString().split('T')[0],
+        idContact: contact?.id,
       }),
     );
 
@@ -95,6 +150,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
     partner,
     score,
     date,
+    contact,
     navigation,
   ]);
 
@@ -122,6 +178,16 @@ const OpportunityFormScreen = ({navigation, route}) => {
             onChange={setPartner}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
+            required={true}
+          />
+          <ContactSearchBar
+            titleKey="Crm_Contact"
+            placeholderKey="Crm_Contact"
+            defaultValue={contact}
+            onChange={setContact}
+            style={[styles.picker, styles.marginPicker]}
+            styleTxt={styles.marginTitle}
+            required={true}
           />
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
@@ -161,11 +227,17 @@ const OpportunityFormScreen = ({navigation, route}) => {
             emptyValue={false}
             onValueChange={setStatus}
             isScrollViewContainer={true}
+            required={true}
           />
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateOpportunityAPI} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={
+            idOpportunity != null ? updateOpportunityAPI : createOpportinityAPI
+          }
+        />
       </View>
     </Screen>
   );

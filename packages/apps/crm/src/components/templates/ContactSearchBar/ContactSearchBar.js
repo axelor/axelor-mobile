@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {
-  displayItemName,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
+import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactSearchBar = ({
   placeholderKey = 'Crm_Contacts',
@@ -34,13 +31,17 @@ const ContactSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  required,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
     state => state.contact,
   );
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const fetchContactSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -51,11 +52,12 @@ const ContactSearchBar = ({
 
   return (
     <AutoCompleteSearch
+      style={[defaultValue == null && required ? styles.requiredBorder : null]}
       objectList={contactList}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchContactSearchBarAPI}
-      displayValue={displayItemName}
+      displayValue={displayItemFullname}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingContact}
@@ -67,5 +69,18 @@ const ContactSearchBar = ({
     />
   );
 };
+
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      zIndex: 41,
+    },
+    title: {
+      marginHorizontal: 24,
+    },
+    requiredBorder: {
+      borderColor: Colors.errorColor.background,
+    },
+  });
 
 export default ContactSearchBar;

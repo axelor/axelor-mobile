@@ -87,8 +87,27 @@ const useLeadDetailsActions = () => {
 };
 
 const useOpportunityDetailsActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {opportunity} = useSelector((state: any) => state.opportunity);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_opportunity_list', {
+      actions: [
+        {
+          key: 'newOpportunity',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Crm_NewLead'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('OpportunityFormScreen', {}),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_details', {

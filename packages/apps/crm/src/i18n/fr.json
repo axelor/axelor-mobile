@@ -108,5 +108,6 @@
   "Crm_SliceAction_FetchProspectById": "récupération du prospect par id",
   "Crm_SliceAction_UpdateProspectScore": "mise à jour du score du prospect",
   "Crm_SliceAction_UpdateProspect": "mise à jour du prospect",
-  "Crm_SliceAction_CreateLead": "création d'une piste"
+  "Crm_SliceAction_CreateLead": "création d'une piste",
+  "Crm_SliceAction_CreateOpportunity": "création d'une opportunité"
 }

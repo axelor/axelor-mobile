@@ -112,6 +112,7 @@ export async function updateOpportunity({
   idPartner,
   opportunityCloseDate,
   opportunityRating,
+  idContact,
 }) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
@@ -124,8 +125,40 @@ export async function updateOpportunity({
         opportunityStatus: {id: opportunityStatusId},
         description: opportunityDescription,
         partner: idPartner ? {id: idPartner} : null,
+        contact: idContact ? {id: idContact} : null,
         expectedCloseDate: opportunityCloseDate,
         opportunityRating: opportunityRating,
+      },
+    },
+  });
+}
+
+export async function createOpportunity({
+  opportunityAmount,
+  opportunityRecurrentAmount,
+  opportunityDescription,
+  opportunityStatusId,
+  idPartner,
+  opportunityCloseDate,
+  opportunityRating,
+  idContact,
+  userId,
+  name,
+}) {
+  return axiosApiProvider.put({
+    url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
+    data: {
+      data: {
+        amount: opportunityAmount,
+        recurrentAmount: opportunityRecurrentAmount,
+        opportunityStatus: {id: opportunityStatusId},
+        description: opportunityDescription,
+        partner: idPartner ? {id: idPartner} : null,
+        expectedCloseDate: opportunityCloseDate,
+        opportunityRating: opportunityRating,
+        contact: idContact ? {id: idContact} : null,
+        user: {id: userId},
+        name: name,
       },
     },
   });
