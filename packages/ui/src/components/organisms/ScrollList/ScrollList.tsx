@@ -66,9 +66,19 @@ const ScrollList = ({
     [fetchData, filter, isListEnd, moreLoading],
   );
 
+  const onEndReached = useCallback(() => {
+    handleMoreData(page);
+  }, [handleMoreData, page]);
+
   useEffect(() => {
     initialize();
   }, [initialize]);
+
+  useEffect(() => {
+    if (Array.isArray(data) && data?.length === 0) {
+      handleMoreData(page);
+    }
+  }, [data, handleMoreData, page]);
 
   if (loadingList) {
     return (
@@ -85,23 +95,21 @@ const ScrollList = ({
       onRefresh={updateData}
       refreshing={loadingList}
       horizontal={horizontal}
-      onEndReached={() => handleMoreData(page)}
+      onEndReached={onEndReached}
       ListFooterComponent={() => {
         return (
           <View style={styles.footerText}>
             {moreLoading && <ActivityIndicator size="large" color="black" />}
-            {data == null || data?.length === 0 ? (
+            {isListEnd && (
               <Text>
-                {translator != null ? translator('Base_NoData') : 'No data.'}
+                {data == null || data?.length === 0
+                  ? translator != null
+                    ? translator('Base_NoData')
+                    : 'No data.'
+                  : translator != null
+                  ? translator('Base_NoMoreItems')
+                  : 'No more items.'}
               </Text>
-            ) : (
-              isListEnd && (
-                <Text>
-                  {translator != null
-                    ? translator('Base_NoMoreItems')
-                    : 'No more items.'}
-                </Text>
-              )
             )}
           </View>
         );
