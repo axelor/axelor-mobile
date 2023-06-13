@@ -23,13 +23,13 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
-import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
+import {addNewLine} from '../../../../features/customerDeliverySlice';
 
-const CustomerDeliveryLineButtons = ({
-  customerDeliveryLine,
+const CustomerDeliveryLineCreationButton = ({
   customerDelivery,
+  product,
   realQty,
+  trackingNumber,
   visible = true,
 }) => {
   const I18n = useTranslator();
@@ -42,27 +42,34 @@ const CustomerDeliveryLineButtons = ({
     });
   }, [customerDelivery, navigation]);
 
-  const handleValidate = useCallback(() => {
+  const handleAddLine = useCallback(() => {
     dispatch(
-      updateCustomerDeliveryLine({
-        stockMoveLineId: customerDeliveryLine.id,
-        version: customerDeliveryLine.version,
+      addNewLine({
+        stockMoveId: customerDelivery.id,
+        version: customerDelivery.version,
+        productId: product.id,
+        unitId: product.unit.id,
+        trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
+        expectedQty: 0,
         realQty: realQty,
       }),
     );
 
     navigateBackToDetails();
-  }, [customerDeliveryLine, dispatch, navigateBackToDetails, realQty]);
+  }, [
+    customerDelivery,
+    dispatch,
+    navigateBackToDetails,
+    product,
+    realQty,
+    trackingNumber,
+  ]);
 
   if (!visible) {
     return null;
   }
 
-  if (customerDelivery.statusSelect !== StockMove.status.Realized) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
-  }
-
-  return null;
+  return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
 };
 
-export default CustomerDeliveryLineButtons;
+export default CustomerDeliveryLineCreationButton;

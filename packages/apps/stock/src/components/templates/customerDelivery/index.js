@@ -20,6 +20,7 @@ export {default as CustomerDeliveryCard} from './CustomerDeliveryCard/CustomerDe
 export {default as CustomerDeliveryHeader} from './CustomerDeliveryHeader/CustomerDeliveryHeader';
 export {default as CustomerDeliveryLineButtons} from './CustomerDeliveryLineButtons/CustomerDeliveryLineButtons';
 export {default as CustomerDeliveryLineCard} from './CustomerDeliveryLineCard/CustomerDeliveryLineCard';
+export {default as CustomerDeliveryLineCreationButton} from './CustomerDeliveryLineCreationButton/CustomerDeliveryLineCreationButton';
 export {default as CustomerDeliveryLineQuantityCard} from './CustomerDeliveryLineQuantityCard/CustomerDeliveryLineQuantityCard';
 export {default as CustomerDeliveryLineTrackingNumberSelect} from './CustomerDeliveryLineTrackingNumberSelect/CustomerDeliveryLineTrackingNumberSelect';
 export {default as CustomerDeliveryMovementIndicationCard} from './CustomerDeliveryMovementIndicationCard/CustomerDeliveryMovementIndicationCard';

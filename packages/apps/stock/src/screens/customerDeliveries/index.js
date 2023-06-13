@@ -17,6 +17,7 @@
  */
 
 import CustomerDeliveryDetailScreen from './CustomerDeliveryDetailScreen';
+import CustomerDeliveryLineCreationScreen from './CustomerDeliveryLineCreationScreen';
 import CustomerDeliveryLineDetailScreen from './CustomerDeliveryLineDetailScreen';
 import CustomerDeliveryLineListScreen from './CustomerDeliveryLineListScreen';
 import CustomerDeliveryListScreen from './CustomerDeliveryListScreen';
@@ -46,9 +47,17 @@ export default {
       shadedHeader: false,
     },
   },
+  CustomerDeliveryLineCreationScreen: {
+    title: 'Stock_CustomerDelivery',
+    component: CustomerDeliveryLineCreationScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
   CustomerDeliveryLineListScreen: {
     title: 'Stock_CustomerDelivery',
     component: CustomerDeliveryLineListScreen,
+    actionID: 'stock_customerDelivery_lineList',
     options: {
       shadedHeader: false,
     },

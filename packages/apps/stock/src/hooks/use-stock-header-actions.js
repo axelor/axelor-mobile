@@ -24,9 +24,11 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
+  useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
   useInternalMoveListActions();
   useInventoryPlannedDetailsActions();
@@ -49,6 +51,43 @@ const useCustomerDeliveryDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, customerDelivery]);
+};
+
+const useCustomerDeliveryLineListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.config);
+  const {customerDelivery} = useSelector(state => state.customerDelivery);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_customerDelivery_lineList', {
+      actions: [
+        {
+          key: 'newCustomerDeliveryLine',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Stock_AddLine'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            !mobileSettings?.isCustomerDeliveryLineAdditionEnabled ||
+            customerDelivery?.statusSelect >= StockMove.status.Realized,
+          onPress: () =>
+            navigation.navigate('CustomerDeliveryLineCreationScreen', {
+              customerDelivery: customerDelivery,
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    mobileSettings,
+    customerDelivery,
+    I18n,
+    Colors.primaryColor.background,
+    navigation,
+  ]);
 };
 
 const useInternalMoveDetailsActions = () => {

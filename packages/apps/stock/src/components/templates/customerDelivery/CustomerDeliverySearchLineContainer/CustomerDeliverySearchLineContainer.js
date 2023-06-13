@@ -44,7 +44,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
     useCustomerLinesWithRacks(customerDelivery);
 
   const handleNewLine = () => {
-    navigation.navigate('CustomerDeliverySelectProductScreen', {
+    navigation.navigate('CustomerDeliveryLineCreationScreen', {
       customerDelivery: customerDelivery,
     });
   };

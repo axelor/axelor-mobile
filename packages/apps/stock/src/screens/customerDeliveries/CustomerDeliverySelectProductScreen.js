@@ -34,10 +34,7 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
 
   const handleProductSelection = item => {
     if (item != null) {
-      if (
-        customerDeliveryLine != null &&
-        item.id !== customerDeliveryLine?.product.id
-      ) {
+      if (item.id !== customerDeliveryLine?.product?.id) {
         setVisible(true);
       } else if (item.trackingNumberConfiguration != null) {
         navigation.navigate('CustomerDeliverySelectTrackingScreen', {
