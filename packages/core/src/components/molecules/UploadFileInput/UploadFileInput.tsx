@@ -17,24 +17,34 @@
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import {Text} from '@axelor/aos-mobile-ui';
+import {CircleButton, Text} from '@axelor/aos-mobile-ui';
 import {uploadFile} from '../../../api/metafile-api';
+import {useTranslator} from '../../../i18n';
 
 interface UploadFileInputProps {
   style?: any;
+  onUpload?: (file: any) => void;
 }
 
-const UploadFileInput = ({style}: UploadFileInputProps) => {
+const UploadFileInput = ({
+  style,
+  onUpload = console.log,
+}: UploadFileInputProps) => {
+  const I18n = useTranslator();
+
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleDocumentPick = async () => {
     try {
       const file = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.allFiles, DocumentPicker.types.images],
       });
 
       setSelectedFile(file);
@@ -47,12 +57,8 @@ const UploadFileInput = ({style}: UploadFileInputProps) => {
 
   const handleFileUpload = async (file: DocumentPickerResponse) => {
     try {
-      const response = await uploadFile(file);
-      console.log(
-        'response',
-        response.status,
-        JSON.stringify(response.data, null, 2),
-      );
+      const response = await uploadFile(file, {baseUrl, token, jsessionId});
+      onUpload(response);
     } catch (error) {
       console.log('Could not upload the file:', error);
     }
@@ -60,14 +66,10 @@ const UploadFileInput = ({style}: UploadFileInputProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity
-        onPress={handleDocumentPick}
-        style={styles.uploadButtonContainer}>
-        <View style={styles.uploadButton}>
-          <Text style={styles.buttonText}>Choose File</Text>
-        </View>
-      </TouchableOpacity>
-      {selectedFile && <Text style={styles.fileName}>{selectedFile.name}</Text>}
+      <Text style={styles.fileName}>
+        {selectedFile ? selectedFile.name : I18n.t('Base_ChooseFile')}
+      </Text>
+      <CircleButton iconName="plus" size={30} onPress={handleDocumentPick} />
     </View>
   );
 };
@@ -75,30 +77,14 @@ const UploadFileInput = ({style}: UploadFileInputProps) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  uploadButton: {
-    width: '100%',
-    borderWidth: 1,
-    borderStyle: 'dotted',
-    borderColor: '#888',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  uploadButtonContainer: {
-    width: '90%',
-  },
-  buttonText: {
-    height: 20,
-    fontWeight: 'bold',
+    marginVertical: 5,
+    paddingHorizontal: 18,
   },
   fileName: {
     width: '90%',
-    height: 20,
-    marginTop: 10,
   },
 });
 

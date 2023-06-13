@@ -16,12 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios, {AxiosResponse} from 'axios';
 import {createStandardSearch, Criteria} from '../apiProviders';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
-
-const CHUNK_SIZE = 1024 * 1024; // Chunk size in bytes (1MB)
+import RNFetchBlob from 'rn-fetch-blob';
 
 const createCriteria = (listFiles): Criteria[] => {
   if (Array.isArray(listFiles)) {
@@ -58,47 +56,42 @@ export async function fetchFileDetails({listFiles, isMetaFile}) {
   });
 }
 
-export async function uploadFile(file: DocumentPickerResponse) {
+export async function uploadFile(
+  file: DocumentPickerResponse,
+  {baseUrl, jsessionId, token},
+) {
   if (file == null) {
     return;
   }
 
-  return new Promise<AxiosResponse>(async (resolve, reject) => {
+  return new Promise<any>(async (resolve, reject) => {
     try {
-      const filePath = file.uri.replace('file://', '');
-      const fileData = await RNFS.readFile(filePath, 'ascii');
+      const base64Data = await RNFS.readFile(file.uri, 'base64');
 
-      const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-      let currentChunk = 0;
-      let fileId;
+      const headers = {
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': String(file.size),
+        'X-File-Name': file.name,
+        'X-File-Type': file.type,
+        'X-File-Size': String(file.size),
+        'X-File-Offset': String(0),
+        'x-csrf-token': token,
+        Cookie: `CSRF-TOKEN=${token}; ${jsessionId}`,
+      };
 
-      while (currentChunk < totalChunks) {
-        const start = currentChunk * CHUNK_SIZE;
-        const end = Math.min(start + CHUNK_SIZE, file.size);
-        const chunk = fileData.slice(start, end);
+      const response: any = await RNFetchBlob.fetch(
+        'POST',
+        `${baseUrl}ws/files/upload`,
+        headers,
+        base64Data,
+      );
 
-        const headers = {
-          'Content-Type': 'application/octet-stream',
-          'Content-Length': String(chunk.length),
-          'X-File-Name': file.name,
-          'X-File-Type': file.type,
-          'X-File-Size': String(file.size),
-          'X-File-Offset': String(start),
-        };
+      const metaFile = JSON.parse(response.data);
 
-        if (fileId) {
-          headers['X-File-Id'] = fileId;
-        }
-
-        const response = await axios.post('ws/files/upload', chunk, {headers});
-
-        if (response.data.fileId) {
-          fileId = response.data.fileId;
-        } else if (response.data.id) {
-          resolve(response);
-        }
-
-        currentChunk++;
+      if (Object.keys(metaFile).includes('id')) {
+        resolve(metaFile);
+      } else {
+        throw Error('no metafile created');
       }
     } catch (error) {
       reject(error);

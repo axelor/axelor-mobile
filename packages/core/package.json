@@ -44,6 +44,7 @@
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vision-camera": "^2.15.4",
+    "rn-fetch-blob": "0.13.0-beta.1",
     "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
@@ -77,6 +78,7 @@
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vision-camera": "^2.15.4",
+    "rn-fetch-blob": "0.13.0-beta.1",
     "vision-camera-code-scanner": "^0.2.0"
   },
   "dependencies": {
@@ -92,7 +94,6 @@
     "react-native-reanimated": "2.10.0",
     "react-native-syntax-highlighter": "^2.1.0",
     "react-redux": "^7.2.8",
-    "rn-fetch-blob": "^0.12.0",
     "yup": "^1.0.2"
   },
   "resolutions": {
