@@ -72,11 +72,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     dispatch(
-      fetchProductWithId(
-        productId ?? route.params.customerDelivery?.product?.id,
-      ),
+      fetchProductWithId(productId ?? customerDeliveryLine?.product?.id),
     );
-  }, [dispatch, productId, route.params.customerDelivery]);
+  }, [dispatch, productId, customerDeliveryLine]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -102,7 +100,6 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
-          trackingNumber={trackingNumber}
           visible={!isTrackingNumberSelectVisible}
         />
       }

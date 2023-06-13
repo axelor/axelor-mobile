@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AvailableProductsSearchBar} from './AvailableProductsSearchBar/AvailableProductsSearchBar';
 export {default as PartnerSearchBar} from './PartnerSearchBar/PartnerSearchBar';
 export {default as ProductSearchBar} from './ProductSearchBar/ProductSearchBar';
 export {default as ProductTrackingNumberSearchBar} from './ProductTrackingNumberSearchBar/ProductTrackingNumberSearchBar';

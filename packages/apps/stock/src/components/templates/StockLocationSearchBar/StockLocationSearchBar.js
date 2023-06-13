@@ -36,6 +36,7 @@ const StockLocationSearchBar = ({
   scanKey,
   showDetailsPopup = true,
   secondFilter = false,
+  isFocus = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const StockLocationSearchBar = ({
       loadingList={secondFilter ? loadingMultiFilter : loading}
       moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
       isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
+      isFocus={isFocus}
     />
   );
 };

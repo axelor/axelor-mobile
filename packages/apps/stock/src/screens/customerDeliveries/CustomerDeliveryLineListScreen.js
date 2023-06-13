@@ -213,7 +213,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
       <ScrollList
         loadingList={loadingCDLines}
         data={filteredList}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <CustomerDeliveryLineCard
             style={styles.item}
             productName={item.product.fullName}
@@ -228,7 +228,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
                 ? null
                 : item.availableStatusSelect
             }
-            onPress={() => handleShowLine(item, index)}
+            onPress={() => handleShowLine(item)}
           />
         )}
         fetchData={scrollLinesAPI}

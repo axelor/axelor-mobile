@@ -176,6 +176,16 @@ export const stock_modelAPI: ObjectFields = {
     futureQty: schemaContructor.number(),
     reservedQty: schemaContructor.number(),
   }),
+  stock_availableProducts: schemaContructor.object({
+    currentQty: schemaContructor.number(),
+    product: schemaContructor.subObject('fullName'),
+    'product.name': schemaContructor.string(),
+    'product.code': schemaContructor.string(),
+    'product.unit': schemaContructor.subObject('name'),
+    'product.picture': schemaContructor.subObject('fileName'),
+    'product.trackingNumberConfiguration': schemaContructor.subObject(),
+    trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
+  }),
   stock_supplierArrival: schemaContructor.object({
     name: schemaContructor.string(),
     stockMoveSeq: schemaContructor.string(),

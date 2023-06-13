@@ -99,6 +99,12 @@ const ScannerAutocompleteSearch = ({
     }
   }, [enableScanner, isFocus]);
 
+  useEffect(() => {
+    if (value) {
+      setSearchText(value);
+    }
+  }, [value]);
+
   return (
     <AutoCompleteSearch
       selectLastItem={selectLastItem}

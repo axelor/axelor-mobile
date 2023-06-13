@@ -24,9 +24,11 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {StockMove} from '../types';
 
 export const useStockHeaders = () => {
   useCustomerDeliveryDetailsActions();
+  useCustomerDeliveryLineListActions();
   useInternalMoveDetailsActions();
   useInternalMoveListActions();
   useInventoryPlannedDetailsActions();
@@ -36,6 +38,7 @@ export const useStockHeaders = () => {
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
   useSupplierArrivalDetailsActions();
+  useSupplierArrivalLineListActions();
 };
 
 const useCustomerDeliveryDetailsActions = () => {
@@ -49,6 +52,43 @@ const useCustomerDeliveryDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, customerDelivery]);
+};
+
+const useCustomerDeliveryLineListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.config);
+  const {customerDelivery} = useSelector(state => state.customerDelivery);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_customerDelivery_lineList', {
+      actions: [
+        {
+          key: 'newCustomerDeliveryLine',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Stock_AddLine'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            !mobileSettings?.isCustomerDeliveryLineAdditionEnabled ||
+            customerDelivery?.statusSelect >= StockMove.status.Realized,
+          onPress: () =>
+            navigation.navigate('CustomerDeliveryLineCreationScreen', {
+              customerDelivery: customerDelivery,
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    mobileSettings,
+    customerDelivery,
+    I18n,
+    Colors.primaryColor.background,
+    navigation,
+  ]);
 };
 
 const useInternalMoveDetailsActions = () => {
@@ -188,4 +228,41 @@ const useSupplierArrivalDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, supplierArrival]);
+};
+
+const useSupplierArrivalLineListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.config);
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_supplierArrival_lineList', {
+      actions: [
+        {
+          key: 'newSupplierArrivalLine',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Stock_AddLine'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
+            supplierArrival?.statusSelect >= StockMove.status.Realized,
+          onPress: () =>
+            navigation.navigate('SupplierArrivalSelectProductScreen', {
+              supplierArrival: supplierArrival,
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    mobileSettings,
+    I18n,
+    Colors.primaryColor.background,
+    navigation,
+    supplierArrival,
+  ]);
 };
