@@ -50,6 +50,7 @@ export default {
   SupplierArrivalLineListScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineListScreen,
+    actionID: 'stock_supplierArrival_lineList',
     options: {
       shadedHeader: false,
     },

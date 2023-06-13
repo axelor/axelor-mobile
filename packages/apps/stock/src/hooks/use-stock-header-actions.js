@@ -38,6 +38,7 @@ export const useStockHeaders = () => {
   useStockCorrectionListActions();
   useStockCorrectionDetailsActions();
   useSupplierArrivalDetailsActions();
+  useSupplierArrivalLineListActions();
 };
 
 const useCustomerDeliveryDetailsActions = () => {
@@ -227,4 +228,41 @@ const useSupplierArrivalDetailsActions = () => {
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
     });
   }, [mobileSettings, supplierArrival]);
+};
+
+const useSupplierArrivalLineListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  const {mobileSettings} = useSelector(state => state.config);
+  const {supplierArrival} = useSelector(state => state.supplierArrival);
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('stock_supplierArrival_lineList', {
+      actions: [
+        {
+          key: 'newSupplierArrivalLine',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Stock_AddLine'),
+          iconColor: Colors.primaryColor.background,
+          hideIf:
+            !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
+            supplierArrival?.statusSelect >= StockMove.status.Realized,
+          onPress: () =>
+            navigation.navigate('SupplierArrivalSelectProductScreen', {
+              supplierArrival: supplierArrival,
+            }),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [
+    mobileSettings,
+    I18n,
+    Colors.primaryColor.background,
+    navigation,
+    supplierArrival,
+  ]);
 };
