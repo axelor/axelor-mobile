@@ -29,7 +29,7 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchLeadById, updateLead} from '../../features/leadSlice';
+import {createLead, fetchLeadById, updateLead} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
 
@@ -41,24 +41,49 @@ const LeadFormScreen = ({navigation, route}) => {
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
   const {civilityList} = useCivilityList();
+  const {userId} = useSelector(state => state.auth);
 
-  const [score, setScore] = useState(lead.leadScoringSelect);
+  const [score, setScore] = useState(
+    idLead != null ? lead.leadScoringSelect : 0,
+  );
   const [civility, setCivility] = useState(Number(lead.titleSelect));
-  const [firstName, setFirstName] = useState(lead.firstName);
-  const [name, setName] = useState(lead.name);
-  const [leadJob, setLeadJob] = useState(lead.jobTitleFunction.id);
-  const [leadAdress, setLeadAdress] = useState(lead.primaryAddress);
-  const [fixedPhone, setFixedPhone] = useState(lead.fixedPhone);
-  const [mobilePhone, setMobilePhone] = useState(lead.mobilePhone);
-  const [email, setEmail] = useState(lead.emailAddress?.address);
-  const [webSite, setWebSite] = useState(lead.webSite);
-  const [leadNoCall, setLeadNoCall] = useState(lead.isDoNotCall);
-  const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
-  const [leadCompany, setLeadCompany] = useState(lead.enterpriseName);
-  const [description, setDescription] = useState(lead.description);
+  const [firstName, setFirstName] = useState(
+    idLead != null ? lead.firstName : null,
+  );
+  const [name, setName] = useState(idLead != null ? lead.name : null);
+  const [leadJob, setLeadJob] = useState(
+    idLead != null ? lead.jobTitleFunction?.id : null,
+  );
+  const [leadAdress, setLeadAdress] = useState(
+    idLead != null ? lead.primaryAddress : null,
+  );
+  const [fixedPhone, setFixedPhone] = useState(
+    idLead != null ? lead.fixedPhone : null,
+  );
+  const [mobilePhone, setMobilePhone] = useState(
+    idLead != null ? lead.mobilePhone : null,
+  );
+  const [email, setEmail] = useState(
+    idLead != null ? lead.emailAddress?.address : null,
+  );
+  const [webSite, setWebSite] = useState(idLead != null ? lead.webSite : null);
+  const [leadNoCall, setLeadNoCall] = useState(
+    idLead != null ? lead.isDoNotCall : false,
+  );
+  const [leadNoEmail, setLeadNoEmail] = useState(
+    idLead != null ? lead.isDoNotSendEmail : false,
+  );
+  const [leadCompany, setLeadCompany] = useState(
+    idLead != null ? lead.enterpriseName : null,
+  );
+  const [description, setDescription] = useState(
+    idLead != null ? lead.description : null,
+  );
 
   useEffect(() => {
-    dispatch(fetchLeadById({leadId: idLead}));
+    if (idLead != null) {
+      dispatch(fetchLeadById({leadId: idLead}));
+    }
     dispatch(fetchFunction());
   }, [dispatch, idLead]);
 
@@ -112,6 +137,46 @@ const LeadFormScreen = ({navigation, route}) => {
     navigation,
   ]);
 
+  const crealteLeadAPI = useCallback(() => {
+    dispatch(
+      createLead({
+        leadScore: score,
+        leadCivility: civility,
+        leadFirstname: firstName,
+        leadName: name,
+        leadJob: leadJob,
+        leadAdress: leadAdress !== '' ? leadAdress : null,
+        leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
+        leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
+        leadWebsite: webSite !== '' ? webSite : null,
+        leadNoCall: leadNoCall,
+        leadNoEmail: leadNoEmail,
+        leadCompany: leadCompany,
+        leadEmail: email !== '' ? email : null,
+        leadDescription: description !== '' ? description : null,
+        contactDate: new Date().toISOString().split('T')[0],
+        userId: userId,
+      }),
+    );
+  }, [
+    dispatch,
+    score,
+    civility,
+    firstName,
+    name,
+    leadJob,
+    leadAdress,
+    fixedPhone,
+    mobilePhone,
+    webSite,
+    leadNoCall,
+    leadNoEmail,
+    leadCompany,
+    email,
+    description,
+    userId,
+  ]);
+
   return (
     <Screen>
       <KeyboardAvoidingScrollView style={styles.scroll}>
@@ -160,6 +225,7 @@ const LeadFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Name')}
             onChange={setName}
             defaultValue={name}
+            required={true}
           />
           <FormInput
             style={styles.input}
@@ -215,7 +281,10 @@ const LeadFormScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateLeadAPI} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={idLead != null ? updateLeadAPI : crealteLeadAPI}
+        />
       </View>
     </Screen>
   );

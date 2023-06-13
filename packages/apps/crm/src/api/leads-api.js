@@ -142,3 +142,50 @@ export async function updateLead({
       }),
     );
 }
+
+export async function createLead({
+  leadScore,
+  leadCivility,
+  leadFirstname,
+  leadName,
+  leadNoCall,
+  leadNoEmail,
+  leadCompany,
+  leadJob,
+  leadAdress,
+  leadFixedPhone,
+  leadMobilePhone,
+  leadEmail,
+  leadWebsite,
+  leadDescription,
+  contactDate,
+  userId,
+}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Lead',
+    data: {
+      data: {
+        leadScoringSelect: leadScore,
+        titleSelect: leadCivility,
+        firstName: leadFirstname,
+        name: leadName,
+        isDoNotSendEmail: leadNoEmail,
+        isDoNotCall: leadNoCall,
+        enterpriseName: leadCompany,
+        primaryAddress: leadAdress,
+        jobTitleFunction: {
+          id: leadJob,
+        },
+        fixedPhone: leadFixedPhone,
+        mobilePhone: leadMobilePhone,
+        webSite: leadWebsite,
+        description: leadDescription,
+        contactDate: contactDate,
+        user: {id: userId},
+        emailAddress: {
+          address: leadEmail,
+        },
+      },
+    },
+  });
+}

@@ -24,6 +24,7 @@ export default {
   LeadListScreen: {
     title: 'Crm_Leads',
     component: LeadListScreen,
+    actionID: 'crm_lead_list',
     options: {
       shadedHeader: false,
     },

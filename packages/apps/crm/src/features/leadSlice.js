@@ -28,6 +28,7 @@ import {
   getLead,
   updateLeadScoring,
   updateLead as _updateLead,
+  createLead as _createLead,
 } from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
@@ -111,6 +112,27 @@ export const updateLead = createAsyncThunk(
   },
 );
 
+export const createLead = createAsyncThunk(
+  'lead/createLead',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createLead,
+      data,
+      action: 'Crm_SliceAction_CreateLead',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getLead,
+        data: {leadId: res?.id},
+        action: 'Crm_SliceAction_FetchLeadById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingLead: true,
   loadingLeadStatus: true,
@@ -157,6 +179,14 @@ const leadSlice = createSlice({
       state.loadingLead = true;
     });
     builder.addCase(updateLead.fulfilled, (state, action) => {
+      state.loadingLead = false;
+      state.lead = action.payload;
+      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
+    });
+    builder.addCase(createLead.pending, (state, action) => {
+      state.loadingLead = true;
+    });
+    builder.addCase(createLead.fulfilled, (state, action) => {
       state.loadingLead = false;
       state.lead = action.payload;
       state.leadList = updateAgendaItems(state.leadList, [action.payload]);

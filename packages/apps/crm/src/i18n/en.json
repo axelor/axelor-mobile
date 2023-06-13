@@ -107,5 +107,6 @@
   "Crm_SliceAction_FetchProspect": "fetch prospects",
   "Crm_SliceAction_FetchProspectById": "get prospect by id",
   "Crm_SliceAction_UpdateProspectScore": "update prospect score",
-  "Crm_SliceAction_UpdateProspect": "update prospect"
+  "Crm_SliceAction_UpdateProspect": "update prospect",
+  "Crm_SliceAction_CreateLead": "Create lead"
 }
