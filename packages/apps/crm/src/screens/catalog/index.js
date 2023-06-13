@@ -17,11 +17,20 @@
  */
 
 import CatalogListScreen from './CatalogListScreen';
+import CatalogFormScreen from './CatalogFormScreen';
 
 export default {
   CatalogListScreen: {
     title: 'Crm_Catalogs',
     component: CatalogListScreen,
+    actionID: 'crm_catalog_list',
+    options: {
+      shadedHeader: false,
+    },
+  },
+  CatalogFormScreen: {
+    title: 'Crm_Catalogs',
+    component: CatalogFormScreen,
     options: {
       shadedHeader: false,
     },

@@ -112,5 +112,6 @@
   "Crm_SliceAction_UpdateProspect": "mise à jour du prospect",
   "Crm_SliceAction_CreateLead": "création d'une piste",
   "Crm_SliceAction_CreateOpportunity": "création d'une opportunité",
-  "Crm_SliceAction_FetchCompanyById": "récupération de la société par id"
+  "Crm_SliceAction_FetchCompanyById": "récupération de la société par id",
+  "Crm_Catalog_Type": "Type"
 }

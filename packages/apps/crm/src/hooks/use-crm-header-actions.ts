@@ -25,6 +25,28 @@ import {
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 
+const useCatalogListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_catalog_list', {
+      actions: [
+        {
+          key: 'newCatalog',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Crm_NewCatalog'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('CatalogFormScreen', {}),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
+};
+
 const useClientDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {client} = useSelector((state: any) => state.client);
@@ -153,6 +175,7 @@ const useEventDetailsActions = () => {
 };
 
 export const useCRMHeaders = () => {
+  useCatalogListActions();
   useClientDetailsActions();
   useContactDetailsActions();
   useEventDetailsActions();
