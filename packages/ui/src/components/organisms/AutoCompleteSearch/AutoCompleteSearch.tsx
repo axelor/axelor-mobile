@@ -224,6 +224,14 @@ const AutoCompleteSearch = ({
     if (isValidString(value)) {
       handleSearchValueChange(value);
     }
+
+    if (value != null && isValidString(displayValue(value))) {
+      handleSearchValueChange(displayValue(value));
+    }
+
+    if (value == null) {
+      handleSearchValueChange(null);
+    }
   }, [displayValue, handleSearchValueChange, value]);
 
   const styles = useMemo(() => getStyles(displayList), [displayList]);

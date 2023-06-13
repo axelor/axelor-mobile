@@ -33,8 +33,9 @@ export function areObjectsEquals(object1, object2) {
 }
 
 export const isEmpty = obj =>
-  Object.keys(obj).length === 0 &&
-  Object.getPrototypeOf(obj) === Object.prototype;
+  obj == null ||
+  (Object.keys(obj).length === 0 &&
+    Object.getPrototypeOf(obj) === Object.prototype);
 
 export function fetchJsonField(object: any, fieldName: string) {
   if (object == null) {
