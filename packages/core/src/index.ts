@@ -40,6 +40,7 @@ export {
   disableCamera,
   default as cameraReducer,
 } from './features/cameraSlice';
+export {uploadFile} from './api/metafile-api';
 export {useDispatch, useSelector} from './redux/hooks';
 export * from './components';
 export * from './tools';
