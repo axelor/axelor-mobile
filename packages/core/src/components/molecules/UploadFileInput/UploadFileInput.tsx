@@ -29,11 +29,13 @@ import {useTranslator} from '../../../i18n';
 interface UploadFileInputProps {
   style?: any;
   onUpload?: (file: any) => void;
+  returnBase64String: boolean;
 }
 
 const UploadFileInput = ({
   style,
   onUpload = console.log,
+  returnBase64String = false,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
 
@@ -57,7 +59,12 @@ const UploadFileInput = ({
 
   const handleFileUpload = async (file: DocumentPickerResponse) => {
     try {
-      const response = await uploadFile(file, {baseUrl, token, jsessionId});
+      const response = await uploadFile(file, {
+        baseUrl,
+        token,
+        jsessionId,
+        returnBase64String,
+      });
       onUpload(response);
     } catch (error) {
       console.log('Could not upload the file:', error);

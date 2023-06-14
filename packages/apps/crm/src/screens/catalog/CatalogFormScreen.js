@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Screen, FormInput, FormHtmlInput, Picker} from '@axelor/aos-mobile-ui';
+import {
+  Screen,
+  FormInput,
+  FormHtmlInput,
+  Picker,
+  Button,
+} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
   useTranslator,
   UploadFileInput,
 } from '@axelor/aos-mobile-core';
-import {fetchCatalogType} from '../../features/catalogSlice';
+import {createCatalog, fetchCatalogType} from '../../features/catalogSlice';
 
 const CatalogFormScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -36,10 +42,24 @@ const CatalogFormScreen = ({navigation}) => {
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(description);
   const [type, setType] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCatalogType());
   }, [dispatch]);
+
+  const createCatalogAPI = useCallback(() => {
+    dispatch(
+      createCatalog({
+        name: name,
+        idCatalogType: type,
+        pdfFile: pdfFile,
+        image: image,
+        description: description,
+      }),
+    );
+  }, [dispatch, name, description, type, pdfFile, image]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -67,8 +87,9 @@ const CatalogFormScreen = ({navigation}) => {
           onChange={setDescription}
           defaultValue={description}
         />
-        <UploadFileInput />
-        <UploadFileInput />
+        <UploadFileInput returnBase64String={true} onUpload={setImage} />
+        <UploadFileInput onUpload={setPdfFile} />
+        <Button title={I18n.t('Base_Save')} onPress={createCatalogAPI} />
       </View>
     </Screen>
   );
