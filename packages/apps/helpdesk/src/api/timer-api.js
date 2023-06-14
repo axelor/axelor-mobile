@@ -16,5 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
+import {
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
+
+export async function getTimer({timerId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Timer',
+    id: timerId,
+    fieldKey: 'helpdesk_timer',
+  });
+}
+
+export async function searchTimerHistoryWithId({idTimer}) {
+  console.log('___________________', idTimer);
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.TimerHistory',
+    criteria: [
+      {
+        fieldName: 'timer.id',
+        operator: '=',
+        value: idTimer,
+      },
+    ],
+    fieldKey: 'helpdesk_timerHistory',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}

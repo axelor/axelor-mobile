@@ -36,8 +36,13 @@ export const helpdesk_modelAPI: ObjectFields = {
     contactPartner: schemaContructor.subObject(),
     startDateT: schemaContructor.string(),
     endDateT: schemaContructor.string(),
+    timerList: schemaContructor.array().of(schemaContructor.subObject()),
   }),
   helpdesk_ticketType: schemaContructor.object({
     name: schemaContructor.string(),
+  }),
+  helpdesk_timerHistory: schemaContructor.object({
+    startDateT: schemaContructor.string(),
+    endDateT: schemaContructor.string(),
   }),
 };

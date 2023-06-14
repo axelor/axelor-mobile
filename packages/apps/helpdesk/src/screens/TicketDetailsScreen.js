@@ -27,6 +27,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {fetchTicketById, updateTicketDuration} from '../features/ticketSlice';
 import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
+import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, colorIndex} = route.params;
@@ -34,6 +35,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const {ticket} = useSelector(state => state.ticket);
+  const {timer, timerHistory} = useSelector(state => state.timer);
 
   const duration = useMemo(() => {
     return ticket?.duration;
@@ -43,13 +45,26 @@ const TicketDetailsScreen = ({navigation, route}) => {
     dispatch(fetchTicketById({ticketId: idTicket}));
   }, [dispatch, idTicket]);
 
+  useEffect(() => {
+    if (ticket?.timerList?.length > 0) {
+      console.log('ici');
+      dispatch(fetchTimerById({timerId: ticket?.timerList[0]?.id}));
+    }
+  }, [dispatch, ticket?.timerList]);
+
+  useEffect(() => {
+    if (timer?.timerHistoryList?.length > 0) {
+      dispatch(searchTimerHistoryById({idTimer: timer?.id}));
+    }
+  }, [dispatch, timer]);
+
   const updateDurationTicketAPI = useCallback(
-    timer => {
+    _timer => {
       dispatch(
         updateTicketDuration({
           ticketId: ticket.id,
           ticketVersion: ticket.version,
-          duration: timer,
+          duration: _timer,
         }),
       );
     },
@@ -59,6 +74,10 @@ const TicketDetailsScreen = ({navigation, route}) => {
   if (ticket?.id !== idTicket) {
     return null;
   }
+
+  console.log('ticket', ticket);
+  console.log('timer', timer);
+  console.log('timerHistory', timerHistory);
 
   return (
     <Screen removeSpaceOnTop={true}>
