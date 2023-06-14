@@ -204,6 +204,10 @@ const AutoCompleteSearch = ({
     if (isValidString(value)) {
       handleSearchValueChange(value);
     }
+
+    if (value != null && isValidString(displayValue(value))) {
+      handleSearchValueChange(displayValue(value));
+    }
   }, [displayValue, handleSearchValueChange, value]);
 
   return (
