@@ -22,16 +22,24 @@ import {useSelector} from 'react-redux';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import {CircleButton, Text, Card} from '@axelor/aos-mobile-ui';
+import {
+  CircleButton,
+  Text,
+  Card,
+  getCommonStyles,
+  useThemeColor,
+  ThemeColors,
+} from '@axelor/aos-mobile-ui';
 import {uploadFile} from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
 
 interface UploadFileInputProps {
   style?: any;
   onUpload?: (file: any) => void;
-  returnBase64String: boolean;
-  onlyPdf: boolean;
-  onlyImage: boolean;
+  returnBase64String?: boolean;
+  onlyPdf?: boolean;
+  onlyImage?: boolean;
+  required?: boolean;
 }
 
 const UploadFileInput = ({
@@ -40,12 +48,29 @@ const UploadFileInput = ({
   onlyPdf = false,
   onlyImage = false,
   returnBase64String = false,
+  required = false,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const _required = useMemo(
+    () => required && selectedFile == null,
+    [required, selectedFile],
+  );
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   const type = useMemo(() => {
     if (onlyPdf) {
@@ -86,7 +111,14 @@ const UploadFileInput = ({
   };
 
   return (
-    <Card style={[styles.container, style]}>
+    <Card
+      style={[
+        styles.container,
+        style,
+        commonStyles.filter,
+        commonStyles.filterSize,
+        commonStyles.filterAlign,
+      ]}>
       <Text style={styles.fileName}>
         {selectedFile ? selectedFile.name : I18n.t('Base_ChooseFile')}
       </Text>
@@ -95,18 +127,23 @@ const UploadFileInput = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 5,
-    paddingHorizontal: 18,
-  },
-  fileName: {
-    width: '90%',
-  },
-});
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginVertical: 5,
+      paddingHorizontal: 18,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
+      borderWidth: 1,
+    },
+    fileName: {
+      width: '90%',
+    },
+  });
 
 export default UploadFileInput;

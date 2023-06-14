@@ -69,9 +69,10 @@ const CatalogFormScreen = ({navigation}) => {
           title={I18n.t('Crm_Name')}
           onChange={setName}
           defaultValue={name}
+          required={true}
         />
         <Picker
-          style={[styles.picker, styles.marginPicker]}
+          style={styles.picker}
           styleTxt={styles.marginPicker}
           title={I18n.t('Crm_Catalog_Type')}
           defaultValue={type}
@@ -81,6 +82,7 @@ const CatalogFormScreen = ({navigation}) => {
           emptyValue={false}
           onValueChange={setType}
           isScrollViewContainer={true}
+          required={true}
         />
         <FormHtmlInput
           title={I18n.t('Crm_Description')}
@@ -97,7 +99,10 @@ const CatalogFormScreen = ({navigation}) => {
           style={styles.input}
           onlyPdf={true}
           onUpload={setPdfFile}
+          required={true}
         />
+      </View>
+      <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={createCatalogAPI} />
       </View>
     </Screen>
@@ -105,26 +110,14 @@ const CatalogFormScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  score: {
-    marginRight: '10%',
-  },
   container: {
     alignItems: 'center',
-  },
-  containerZIndex: {
-    zIndex: 40,
-  },
-  headerContainer: {
-    flexDirection: 'row-reverse',
   },
   marginPicker: {
     marginLeft: 5,
   },
   picker: {
     width: '100%',
-  },
-  marginTitle: {
-    marginLeft: 28,
   },
   button_container: {
     marginVertical: '1%',
