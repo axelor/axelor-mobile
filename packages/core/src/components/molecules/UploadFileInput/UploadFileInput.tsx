@@ -40,6 +40,7 @@ interface UploadFileInputProps {
   onlyPdf?: boolean;
   onlyImage?: boolean;
   required?: boolean;
+  title?: string;
 }
 
 const UploadFileInput = ({
@@ -49,6 +50,7 @@ const UploadFileInput = ({
   onlyImage = false,
   returnBase64String = false,
   required = false,
+  title,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -120,7 +122,11 @@ const UploadFileInput = ({
         commonStyles.filterAlign,
       ]}>
       <Text style={styles.fileName}>
-        {selectedFile ? selectedFile.name : I18n.t('Base_ChooseFile')}
+        {selectedFile
+          ? selectedFile.name
+          : title
+          ? title
+          : I18n.t('Base_ChooseFile')}
       </Text>
       <CircleButton iconName="plus" size={30} onPress={handleDocumentPick} />
     </Card>

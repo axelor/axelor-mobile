@@ -94,12 +94,14 @@ const CatalogFormScreen = ({navigation}) => {
           returnBase64String={true}
           onUpload={setImage}
           onlyImage={true}
+          title={I18n.t('Base_Image')}
         />
         <UploadFileInput
           style={styles.input}
           onlyPdf={true}
           onUpload={setPdfFile}
           required={true}
+          title={I18n.t('Base_PdfFile')}
         />
       </View>
       <View style={styles.button_container}>

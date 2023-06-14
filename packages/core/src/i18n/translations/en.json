@@ -86,5 +86,7 @@
   "Base_SliceAction_MarkAllMailMessageAsRead": "mark all mail messages as read",
   "Base_SliceAction_FetchMenuConfig": "fetch menu config",
   "Base_SliceAction_FetchMobileConfig": "fetch mobile config",
-  "Base_Offline_Mode": "The internet connection is disabled"
+  "Base_Offline_Mode": "The internet connection is disabled",
+  "Base_Image": "Image",
+  "Base_PdfFile": "PDF file"
 }
