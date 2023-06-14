@@ -58,8 +58,8 @@ const CatalogFormScreen = ({navigation}) => {
         image: image,
         description: description,
       }),
-    );
-  }, [dispatch, name, description, type, pdfFile, image]);
+    ).then(() => navigation.navigate('CatalogListScreen'));
+  }, [dispatch, name, description, type, pdfFile, image, navigation]);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -87,8 +87,17 @@ const CatalogFormScreen = ({navigation}) => {
           onChange={setDescription}
           defaultValue={description}
         />
-        <UploadFileInput returnBase64String={true} onUpload={setImage} />
-        <UploadFileInput onUpload={setPdfFile} />
+        <UploadFileInput
+          style={styles.input}
+          returnBase64String={true}
+          onUpload={setImage}
+          onlyImage={true}
+        />
+        <UploadFileInput
+          style={styles.input}
+          onlyPdf={true}
+          onUpload={setPdfFile}
+        />
         <Button title={I18n.t('Base_Save')} onPress={createCatalogAPI} />
       </View>
     </Screen>
