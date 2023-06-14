@@ -70,6 +70,7 @@ const SupplierArrivalLineButtons = ({
     dispatch(
       addNewLine({
         stockMoveId: supplierArrival.id,
+        version: supplierArrival.version,
         productId: product.id,
         unitId: product.unit?.id,
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,

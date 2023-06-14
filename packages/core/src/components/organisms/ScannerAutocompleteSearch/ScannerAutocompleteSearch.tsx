@@ -76,6 +76,12 @@ const ScannerAutocompleteSearch = ({
 
   const Colors = useThemeColor();
 
+  useEffect(() => {
+    if (value) {
+      setSearchText(value);
+    }
+  }, [value]);
+
   return (
     <AutoCompleteSearch
       selectLastItem={selectLastItem}

@@ -63,6 +63,7 @@ const CustomerDeliveryLineButtons = ({
     dispatch(
       addNewLine({
         stockMoveId: customerDelivery.id,
+        version: customerDelivery.version,
         productId: product.id,
         unitId: product.unit.id,
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
