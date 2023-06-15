@@ -23,3 +23,4 @@ export {productionFileReducer as productionFile} from './productionFileSlice';
 export {wasteProductsReducer as wasteProducts} from './wasteProductsSlice';
 export {workCentersReducer as workCenters} from './workCentersSlice';
 export {machinesReducer as machines} from './machinesSlice';
+export {consumedProductReducer as consumedProduct} from './consumedProductSlice';

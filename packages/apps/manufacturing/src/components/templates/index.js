@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ConsumedProductTrackingNumberSelect} from './ConsumedProductTrackingNumberSelect/ConsumedProductTrackingNumberSelect';
 export {default as MachineSearchBar} from './MachineSearchBar/MachineSearchBar';
 export {default as WorkCenterSearchBar} from './WorkCenterSearchBar/WorkCenterSearchBar';

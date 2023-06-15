@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {HeaderContainer, Screen, ScrollView, Text} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -25,6 +25,7 @@ import {
   ProductCardInfo,
 } from '@axelor/aos-mobile-stock';
 import {
+  ConsumedProductTrackingNumberSelect,
   ManufacturingOrderHeader,
   ProdProductFixedItems,
 } from '../../../components';
@@ -37,16 +38,37 @@ import {ManufacturingOrder} from '../../../types';
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
   const consumedProduct = route.params.consumedProduct;
-  const trackingNumber = route.params.trackingNumber;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
+  const {consumedProductStockMoveLine} = useSelector(
+    state => state.consumedProduct,
+  );
+
   const product = consumedProduct ? productFromId : route.params.product;
   const [consumedQty, setConsumedQty] = useState(
     consumedProduct ? consumedProduct.realQty : 0,
+  );
+
+  const trackingNumber = useMemo(
+    () =>
+      route.params.trackingNumber ||
+      consumedProductStockMoveLine.trackingNumber ||
+      consumedProduct.trackingNumber,
+    [
+      route.params.trackingNumber,
+      consumedProduct,
+      consumedProductStockMoveLine,
+    ],
+  );
+
+  const isTrackingNumberSelectVisible = useMemo(
+    () =>
+      product?.trackingNumberConfiguration != null && trackingNumber == null,
+    [product, trackingNumber],
   );
 
   useEffect(() => {
@@ -147,6 +169,12 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
             onPress={handleShowProduct}
           />
         )}
+        <ConsumedProductTrackingNumberSelect
+          product={product}
+          stockMoveLineId={consumedProduct?.stockMoveLineId}
+          stockMoveLineVersion={consumedProduct?.stockMoveLineVersion}
+          visible={isTrackingNumberSelectVisible}
+        />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ConsumedQty')}
           defaultValue={consumedQty}
