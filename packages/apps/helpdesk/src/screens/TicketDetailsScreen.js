@@ -24,10 +24,16 @@ import {
   useDispatch,
   useSelector,
   useTranslator,
+  getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
-import {fetchTicketById, updateTicketDuration} from '../features/ticketSlice';
+import {
+  fetchTicketById,
+  updateTicketDuration,
+  updateTicketStatus,
+} from '../features/ticketSlice';
 import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
 import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
+import {Ticket} from '../types';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, colorIndex} = route.params;
@@ -58,7 +64,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
     }
   }, [dispatch, timer]);
 
-  const updateDurationTicketAPI = useCallback(
+  /*const updateDurationTicketAPI = useCallback(
     _timer => {
       dispatch(
         updateTicketDuration({
@@ -69,15 +75,44 @@ const TicketDetailsScreen = ({navigation, route}) => {
       );
     },
     [dispatch, ticket],
+  );*/
+
+  const timerInProgress = useMemo(() => {
+    console.log(timer?.statusSelect);
+    if (timer?.statusSelect === 0) {
+      return false;
+    }
+    return true;
+  }, [timer]);
+
+  const timerDuration = useMemo(() => {
+    console.log(Ticket.getTotalDuration(timerHistory));
+    return Ticket.getTotalDuration(timerHistory);
+  }, [timerHistory]);
+
+  const updateStatus = useCallback(
+    status => {
+      console.log('status', status);
+      dispatch(
+        updateTicketStatus({
+          version: ticket?.id,
+          dateTime: getNowDateZonesISOString(),
+          targetStatus: status,
+          ticketId: ticket?.id,
+        }),
+      );
+    },
+    [dispatch, ticket],
   );
 
   if (ticket?.id !== idTicket) {
     return null;
   }
 
-  console.log('ticket', ticket);
+  //console.log('ticket', ticket);
   console.log('timer', timer);
-  console.log('timerHistory', timerHistory);
+  //console.log('timerHistory', timerHistory);
+  //console.log('timerInProgress', timerInProgress);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -92,9 +127,14 @@ const TicketDetailsScreen = ({navigation, route}) => {
         />
         <TicketDropdownCards />
         <Stopwatch
-          startTime={duration}
+          startTime={timerDuration}
           timerFormat={I18n.t('Stopwatch_TimerFormat')}
-          onPause={updateDurationTicketAPI}
+          inProgressAtStart={timerInProgress}
+          //onPause={updateDurationTicketAPI}
+          onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
+          onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
+          onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
+          onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
         />
       </ScrollView>
       <TicketBottom idTicket={idTicket} />

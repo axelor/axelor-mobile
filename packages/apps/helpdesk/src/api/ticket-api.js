@@ -85,3 +85,23 @@ export async function updateTicketDuration({
     },
   });
 }
+
+export async function updateStatusTicket({
+  version,
+  dateTime,
+  targetStatus,
+  ticketId,
+}) {
+  console.log('version', version);
+  console.log('dateTime', dateTime);
+  console.log('targetStatus', targetStatus);
+  console.log('ticketId', ticketId);
+  return axiosApiProvider.post({
+    url: `ws/aos/ticket/${ticketId}`,
+    data: {
+      version: version,
+      dateTime: dateTime,
+      targetStatus: targetStatus,
+    },
+  });
+}

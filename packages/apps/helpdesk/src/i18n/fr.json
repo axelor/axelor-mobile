@@ -29,5 +29,6 @@
   "Helpdesk_ContactPartner": "Contact client",
   "Helpdesk_General_Informations": "Informations Générales",
   "Helpdesk_Timing": "Dates",
-  "Heldesk_Fetch_Timer_ById": "récupération du timer par id"
+  "Heldesk_Fetch_Timer_ById": "récupération du timer par id",
+  "Heldesk_UpdateTicketStatus": "mise à jour du statut du ticket"
 }

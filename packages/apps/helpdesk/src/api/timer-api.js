@@ -30,7 +30,6 @@ export async function getTimer({timerId}) {
 }
 
 export async function searchTimerHistoryWithId({idTimer}) {
-  console.log('___________________', idTimer);
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.TimerHistory',
     criteria: [

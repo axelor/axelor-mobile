@@ -26,6 +26,7 @@ import {
   getTicket,
   getTicketType,
   searchTickets,
+  updateStatusTicket,
   updateTicketDuration as _updateTicketDuration,
 } from '../api/ticket-api';
 
@@ -78,6 +79,29 @@ export const updateTicketDuration = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
+      return handlerApiCall({
+        fetchFunction: getTicket,
+        data: {ticketId: res?.id},
+        action: 'Heldesk_Fetch_Ticket_ById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const updateTicketStatus = createAsyncThunk(
+  'ticket/updateTicketStatus',
+  async function (data = {}, {getState}) {
+    console.log('aaaaaaa');
+    return handlerApiCall({
+      fetchFunction: updateStatusTicket,
+      data,
+      action: 'Heldesk_UpdateTicketStatus',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(res => {
+      console.log('res', res);
       return handlerApiCall({
         fetchFunction: getTicket,
         data: {ticketId: res?.id},

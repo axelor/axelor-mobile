@@ -17,6 +17,7 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {calculateDiff} from '@axelor/aos-mobile-core';
 
 class TicketType {
   static status = {
@@ -30,6 +31,26 @@ class TicketType {
     Normal: 2,
     High: 3,
     Urgent: 4,
+  };
+
+  static stopWatchStatus = {
+    start: 'start',
+    pause: 'pause',
+    stop: 'stop',
+    reset: 'reset',
+    validate: 'validate',
+  };
+
+  static getTotalDuration = (timerHystoryList: any): number => {
+    if (timerHystoryList == null) {
+      return 0;
+    }
+    let totalDuration = 0;
+    timerHystoryList.forEach(duration => {
+      let diff = calculateDiff(duration.startDateT, duration.endDateT);
+      totalDuration += diff;
+    });
+    return totalDuration;
   };
 
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {

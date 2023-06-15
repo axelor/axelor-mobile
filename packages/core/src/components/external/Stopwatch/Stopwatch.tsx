@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
@@ -34,16 +34,20 @@ interface StopwatchProps {
   disableCancel?: boolean;
   hideCancel?: boolean;
   style?: any;
-  onPlay: (time: number) => number;
-  onPause: (time: number) => number;
-  onStop: (time: number) => number;
-  onCancel?: (time: number) => number;
+  onPlay: () => void;
+  onPause: () => void;
+  onStop: () => void;
+  onCancel?: () => void;
   useObjectStatus?: boolean;
+  inProgressAtStart?: boolean;
 }
 
 const Stopwatch = ({
   startTime = 0,
-  status = StopwatchType.status.Ready,
+  inProgressAtStart = false,
+  status = inProgressAtStart
+    ? StopwatchType.status.InProgress
+    : StopwatchType.status.Ready,
   timerFormat,
   disable = false,
   disablePlay = false,
@@ -52,10 +56,10 @@ const Stopwatch = ({
   disableCancel = false,
   hideCancel = false,
   style,
-  onPlay = () => 0,
-  onPause = () => 0,
-  onStop = () => 0,
-  onCancel = () => 0,
+  onPlay = () => {},
+  onPause = () => {},
+  onStop = () => {},
+  onCancel = () => {},
   useObjectStatus = false,
 }: StopwatchProps) => {
   const Colors = useThemeColor();
@@ -63,6 +67,17 @@ const Stopwatch = ({
 
   const [state, setState] = useState(status);
   const [time, setTime] = useState(startTime);
+
+  console.log(inProgressAtStart);
+  console.log(status);
+
+  useEffect(() => {
+    setTime(startTime);
+  }, [startTime]);
+
+  useEffect(() => {
+    setState(status);
+  }, [status]);
 
   const stopwatchStatus = useMemo(() => {
     if (useObjectStatus) {
@@ -80,21 +95,21 @@ const Stopwatch = ({
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
-    onPlay(time);
+    onPlay();
   };
 
   const handlePauseBtn = () => {
     setState(StopwatchType.status.Paused);
-    onPause(time);
+    onPause();
   };
   const handleStopBtn = () => {
     setState(StopwatchType.status.Finished);
-    onStop(time);
+    onStop();
   };
   const handleCancelBtn = () => {
     setState(StopwatchType.status.Canceled);
     setTime(0);
-    onCancel(time);
+    onCancel();
   };
 
   return (

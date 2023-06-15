@@ -117,3 +117,28 @@ function addEndSlash(url: String): String {
 
   return url + '/';
 }
+
+export const getNowDateZonesISOString = () => {
+  const now = new Date();
+
+  return getDateZonesISOString(now.toString());
+};
+
+export const getDateZonesISOString = (dateString: string) => {
+  const _date = new Date(dateString);
+
+  const year = _date.getFullYear();
+  const month = (_date.getMonth() + 1).toString().padStart(2, '0');
+  const day = _date.getDate().toString().padStart(2, '0');
+
+  const date = `${year}-${month}-${day}`;
+
+  const hours = _date.getHours().toString().padStart(2, '0');
+  const minutes = _date.getMinutes().toString().padStart(2, '0');
+  const seconds = _date.getSeconds().toString().padStart(2, '0');
+  const milliseconds = _date.getMilliseconds().toString().padStart(3, '0');
+
+  const time = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+  return `${date}T${time}`;
+};
