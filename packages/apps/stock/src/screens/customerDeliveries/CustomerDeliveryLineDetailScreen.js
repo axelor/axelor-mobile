@@ -64,11 +64,13 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setRealQty(
-      customerDeliveryLine?.isRealQtyModifiedByUser === false
+      customerDeliveryLine?.isRealQtyModifiedByUser === false &&
+        (customerDelivery.statusSelect === StockMove.status.Draft ||
+          customerDelivery.statusSelect === StockMove.status.Planned)
         ? 0
         : customerDeliveryLine?.realQty || 0,
     );
-  }, [customerDeliveryLine]);
+  }, [customerDeliveryLine, customerDelivery]);
 
   useEffect(() => {
     dispatch(

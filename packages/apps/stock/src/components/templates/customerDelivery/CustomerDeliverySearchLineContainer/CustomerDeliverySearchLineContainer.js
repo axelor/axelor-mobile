@@ -122,7 +122,13 @@ const CustomerDeliverySearchLineContainer = ({}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+          pickedQty={
+            item.isRealQtyModifiedByUser === false &&
+            (customerDelivery.statusSelect === StockMove.status.Draft ||
+              customerDelivery.statusSelect === StockMove.status.Planned)
+              ? 0
+              : item.realQty
+          }
           askedQty={item.qty}
           trackingNumber={item.trackingNumber}
           locker={item.locker}
