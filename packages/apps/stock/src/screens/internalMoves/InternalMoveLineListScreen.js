@@ -225,7 +225,13 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
             locker={item.locker}
             expectedQty={item.qty}
-            movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+            movedQty={
+              item.isRealQtyModifiedByUser === false &&
+              (internalMove.statusSelect === StockMove.status.Draft ||
+                internalMove.statusSelect === StockMove.status.Planned)
+                ? 0
+                : item.realQty
+            }
             onPress={() => handleShowLine(item)}
           />
         )}

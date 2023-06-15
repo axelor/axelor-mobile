@@ -50,7 +50,9 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   const [saveStatus, setSaveStatus] = useState(true);
   const [movedQty, setMovedQty] = useState(
-    internalMoveLine.isRealQtyModifiedByUser === false
+    internalMoveLine.isRealQtyModifiedByUser === false &&
+      (internalMove.statusSelect === StockMove.status.Draft ||
+        internalMove.statusSelect === StockMove.status.Planned)
       ? 0
       : internalMoveLine.realQty,
   );
@@ -115,14 +117,16 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     if (!isEmpty(internalMoveLine)) {
       setMovedQty(
-        internalMoveLine.isRealQtyModifiedByUser === false
+        internalMoveLine.isRealQtyModifiedByUser === false &&
+          (internalMove.statusSelect === StockMove.status.Draft ||
+            internalMove.statusSelect === StockMove.status.Planned)
           ? 0
           : internalMoveLine.realQty,
       );
       setUnit(internalMoveLine.unit);
       setSaveStatus(true);
     }
-  }, [internalMoveLine]);
+  }, [internalMoveLine, internalMove]);
 
   const handleShowProduct = useCallback(() => {
     navigation.navigate('ProductStockDetailsScreen', {

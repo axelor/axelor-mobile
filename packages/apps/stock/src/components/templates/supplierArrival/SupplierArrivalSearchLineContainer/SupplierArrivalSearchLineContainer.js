@@ -124,7 +124,11 @@ const SupplierArrivalSearchLineContainer = ({}) => {
           style={styles.item}
           productName={item.product?.fullName}
           deliveredQty={
-            item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+            item.isRealQtyModifiedByUser === false &&
+            (supplierArrival.statusSelect === StockMove.status.Draft ||
+              supplierArrival.statusSelect === StockMove.status.Planned)
+              ? 0
+              : item.realQty
           }
           askedQty={item.qty}
           trackingNumber={item.trackingNumber}

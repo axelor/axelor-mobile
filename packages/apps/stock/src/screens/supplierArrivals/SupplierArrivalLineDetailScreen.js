@@ -66,7 +66,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setRealQty(
-      supplierArrivalLine?.isRealQtyModifiedByUser === false
+      supplierArrivalLine?.isRealQtyModifiedByUser === false &&
+        (supplierArrival.statusSelect === StockMove.status.Draft ||
+          supplierArrival.statusSelect === StockMove.status.Planned)
         ? 0
         : supplierArrivalLine?.realQty || 0,
     );
@@ -80,7 +82,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           ? supplierArrivalLine.conformitySelect
           : StockMove.conformity.None,
     });
-  }, [supplierArrivalLine, I18n]);
+  }, [supplierArrivalLine, I18n, supplierArrival]);
 
   useEffect(() => {
     dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));
