@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
 import {
@@ -36,16 +36,32 @@ const UserScreen = ({navigation}) => {
 
   const {user} = useSelector(state => state.user);
 
+  const [stockLocation, setStockLocation] = useState(
+    user?.workshopStockLocation,
+  );
+
   const updateDefaultStockLocation = useCallback(
-    stockLocation => {
+    newStockLocation => {
       dispatch(
         changeDefaultStockLocation({
-          newStockLocation: stockLocation,
+          newStockLocation,
         }),
       );
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    if (user?.workshopStockLocation) {
+      setStockLocation(user?.workshopStockLocation);
+    }
+  }, [user?.workshopStockLocation]);
+
+  useEffect(() => {
+    if (stockLocation) {
+      updateDefaultStockLocation(stockLocation);
+    }
+  }, [stockLocation, updateDefaultStockLocation]);
 
   return (
     <AuthUserScreen navigation={navigation}>
@@ -55,8 +71,8 @@ const UserScreen = ({navigation}) => {
       <StockLocationSearchBar
         scanKey={stockLocationScanKey}
         placeholderKey="Stock_StockLocation"
-        defaultValue={user.workshopStockLocation}
-        onChange={updateDefaultStockLocation}
+        defaultValue={stockLocation}
+        onChange={setStockLocation}
       />
     </AuthUserScreen>
   );
