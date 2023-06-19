@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useScannedValueByKey,
@@ -59,7 +59,7 @@ const ScannerAutocompleteSearch = ({
   selectLastItem = true,
   style,
 }: AutocompleteSearchProps) => {
-  const [searchText, setSearchText] = useState(value);
+  const [searchValue, setSearchValue] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
   const scannedValue = useScannedValueByKey(scanKeySearch);
   const scanData = useCameraScannerValueByKey(scanKeySearch);
@@ -68,9 +68,9 @@ const ScannerAutocompleteSearch = ({
 
   useEffect(() => {
     if (scannedValue) {
-      setSearchText(scannedValue);
+      setSearchValue(scannedValue);
     } else if (scanData?.value != null) {
-      setSearchText(scanData.value);
+      setSearchValue(scanData.value);
     }
   }, [scanData, scannedValue]);
 
@@ -78,19 +78,24 @@ const ScannerAutocompleteSearch = ({
 
   useEffect(() => {
     if (value) {
-      setSearchText(value);
+      setSearchValue(value);
     }
   }, [value]);
+
+  const handleChangeValue = useCallback(
+    _value => {
+      setSearchValue(_value);
+      onChangeValue(_value);
+    },
+    [onChangeValue],
+  );
 
   return (
     <AutoCompleteSearch
       selectLastItem={selectLastItem}
       objectList={objectList}
-      value={searchText}
-      onChangeValue={result => {
-        setSearchText(result);
-        onChangeValue(result);
-      }}
+      value={searchValue}
+      onChangeValue={handleChangeValue}
       fetchData={fetchData}
       displayValue={displayValue}
       placeholder={placeholder}
