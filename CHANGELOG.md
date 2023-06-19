@@ -3,6 +3,40 @@ title: 6.5.0
 tags: Changelog
 ---
 
+## [6.5.2] (2023-06-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Manage translated values fetched from AOS
+- Add upload tool
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add ProgressBar component
+
+#### Fixes
+
+- Format issue on increment
+- Refresh issue on ScrollList when using local filters
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Only send conformity if not null on supplier arrival line update
+- StockMoveLine addition : missing version in API call
+- StockMove : ignore isRealQtyModifiedByUser on realized moves
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products : manage no tracking number configured
+
 ## [6.5.1] (2023-05-17)
 
 ### @axelor/aos-mobile-ui
@@ -200,5 +234,6 @@ It contains the following functionnalities
 
 - Replace RenderHTML by HtmlInput
 
+[6.5.2]: https://github.com/axelor/axelor-mobile/compare/6.5.1...6.5.2
 [6.5.1]: https://github.com/axelor/axelor-mobile/compare/6.5.0...6.5.1
-[6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.2...6.5.0
+[6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.3...6.5.0
