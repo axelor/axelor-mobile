@@ -52,7 +52,9 @@ const ProductStockDetailsScreen = ({route, navigation}) => {
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
   const {baseConfig} = useSelector(state => state.config);
 
-  const [stockLocation, setStockLocation] = useState(null);
+  const [stockLocation, setStockLocation] = useState(
+    user?.workshopStockLocation,
+  );
   const [companyId, setCompany] = useState(user.activeCompany?.id);
   const dispatch = useDispatch();
 

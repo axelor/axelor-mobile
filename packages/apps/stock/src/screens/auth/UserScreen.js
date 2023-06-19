@@ -68,7 +68,7 @@ const UserScreen = ({navigation}) => {
       </Text>
       <ScannerAutocompleteSearch
         objectList={stockLocationList}
-        value={user.workshopStockLocation}
+        value={user?.workshopStockLocation}
         onChangeValue={updateDefaultStockLocation}
         fetchData={fetchStockLocationsAPI}
         displayValue={displayItemName}
