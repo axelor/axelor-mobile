@@ -55,7 +55,7 @@ const UserScreen = ({navigation}) => {
       <StockLocationSearchBar
         scanKey={stockLocationScanKey}
         placeholderKey="Stock_StockLocation"
-        defaultValue={user.workshopStockLocation}
+        defaultValue={user?.workshopStockLocation}
         onChange={updateDefaultStockLocation}
       />
     </AuthUserScreen>
