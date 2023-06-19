@@ -32,7 +32,7 @@ import {
   CustomerDeliveryLineTrackingNumberSelect,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
@@ -64,9 +64,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setRealQty(
-      customerDeliveryLine?.isRealQtyModifiedByUser === false &&
-        (customerDelivery.statusSelect === StockMove.status.Draft ||
-          customerDelivery.statusSelect === StockMove.status.Planned)
+      StockMoveLine.hideLineQty(customerDeliveryLine, customerDelivery)
         ? 0
         : customerDeliveryLine?.realQty || 0,
     );

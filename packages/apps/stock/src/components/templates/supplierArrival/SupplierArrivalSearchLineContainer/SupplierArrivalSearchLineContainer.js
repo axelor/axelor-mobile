@@ -28,7 +28,7 @@ import {SearchLineContainer} from '../../../organisms';
 import {SupplierArrivalLineCard} from '../../../templates';
 import {showLine} from '../../../../utils/line-navigation';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import {StockMove} from '../../../../types';
+import {StockMove, StockMoveLine} from '../../../../types';
 import {useSupplierLinesWithRacks} from '../../../../hooks';
 
 const scanKey = 'trackingNumber-or-product_supplier-arrival-details';
@@ -124,11 +124,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
           style={styles.item}
           productName={item.product?.fullName}
           deliveredQty={
-            item.isRealQtyModifiedByUser === false &&
-            (supplierArrival.statusSelect === StockMove.status.Draft ||
-              supplierArrival.statusSelect === StockMove.status.Planned)
-              ? 0
-              : item.realQty
+            StockMoveLine.hideLineQty(item, supplierArrival) ? 0 : item.realQty
           }
           askedQty={item.qty}
           trackingNumber={item.trackingNumber}

@@ -34,35 +34,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
 import {useCustomerLinesWithRacks} from '../../hooks';
 import {displayLine} from '../../utils/displayers';
 
 const scanKey = 'trackingNumber-or-product_customer-delivery-line-list';
-
-const DONE_STATUS_KEY = 'done';
-const PARTIALLY_DONE_STATUS_KEY = 'partially_done';
-const NOT_DONE_STATUS_KEY = 'not_done';
-
-const getitemStatus = item => {
-  const _realQty = parseFloat(item.realQty);
-  const _qty = parseFloat(item.qty);
-
-  if (
-    item.isRealQtyModifiedByUser === false ||
-    _realQty == null ||
-    _realQty === 0
-  ) {
-    return NOT_DONE_STATUS_KEY;
-  }
-
-  if (_realQty < _qty) {
-    return PARTIALLY_DONE_STATUS_KEY;
-  }
-
-  return DONE_STATUS_KEY;
-};
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const customerDelivery = route.params.customerDelivery;
@@ -144,11 +121,13 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 
       return list.filter(item => {
         return selectedStatus.find(
-          _status => _status?.key === getitemStatus(item),
+          _status =>
+            _status?.key ===
+            StockMoveLine.getStockMoveLineStatus(item, customerDelivery),
         );
       });
     },
-    [selectedStatus],
+    [customerDelivery, selectedStatus],
   );
 
   const filteredList = useMemo(
@@ -180,23 +159,10 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             marginHorizontal={3}
             width={Dimensions.get('window').width * 0.3}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Done'),
-                color: Colors.primaryColor,
-                key: DONE_STATUS_KEY,
-              },
-              {
-                title: I18n.t('Stock_PartiallyDone'),
-                color: Colors.cautionColor,
-                key: PARTIALLY_DONE_STATUS_KEY,
-              },
-              {
-                title: I18n.t('Stock_NotDone'),
-                color: Colors.secondaryColor,
-                key: NOT_DONE_STATUS_KEY,
-              },
-            ]}
+            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
+              I18n,
+              Colors,
+            )}
           />
         }>
         <ScannerAutocompleteSearch
@@ -218,7 +184,9 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             style={styles.item}
             productName={item.product.fullName}
             pickedQty={
-              item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+              StockMoveLine.hideLineQty(item, customerDelivery)
+                ? 0
+                : item.realQty
             }
             askedQty={item.qty}
             trackingNumber={item?.trackingNumber}

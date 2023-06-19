@@ -34,7 +34,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
@@ -66,9 +66,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setRealQty(
-      supplierArrivalLine?.isRealQtyModifiedByUser === false &&
-        (supplierArrival.statusSelect === StockMove.status.Draft ||
-          supplierArrival.statusSelect === StockMove.status.Planned)
+      StockMoveLine.hideLineQty(supplierArrivalLine, supplierArrival)
         ? 0
         : supplierArrivalLine?.realQty || 0,
     );
