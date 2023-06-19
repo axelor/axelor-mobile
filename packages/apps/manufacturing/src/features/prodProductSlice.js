@@ -18,6 +18,7 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {updateStockMoveLineTrackingNumber} from '@axelor/aos-mobile-stock';
 import {
   createProdProduct,
   fetchManufacturingOrderConsumedProducts,
@@ -99,9 +100,35 @@ export const updateProdProductOfManufOrder = createAsyncThunk(
   },
 );
 
+export const addTrackingNumberToConsumedProduct = createAsyncThunk(
+  'consumedProduct/addTrackingNumberToConsumedProduct',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateStockMoveLineTrackingNumber,
+      data,
+      action:
+        'Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine',
+      getState,
+      responseOptions: {showToast: true},
+    }).then(async res => {
+      const {productList} = await handlerApiCall({
+        fetchFunction: fetchManufacturingOrderConsumedProducts,
+        data,
+        action: 'Manufacturing_SliceAction_FetchComsumedProducts',
+        getState,
+        responseOptions: {},
+      });
+
+      return {consumedProducts: productList, stockMoveLine: res};
+    });
+  },
+);
+
 const initialState = {
   loadingConsumedProducts: false,
   consumedProductList: [],
+  loadingConsumedProductStockMoveLine: false,
+  consumedProductStockMoveLine: {},
   loadingProducedProducts: false,
   producedProductList: [],
 };
@@ -132,6 +159,17 @@ const prodProductsSlice = createSlice({
         } else if (action.meta.arg.type === TYPE_PRODUCED) {
           state.producedProductList = action.payload?.productList;
         }
+      },
+    );
+    builder.addCase(addTrackingNumberToConsumedProduct.pending, state => {
+      state.loadingConsumedProductStockMoveLine = true;
+    });
+    builder.addCase(
+      addTrackingNumberToConsumedProduct.fulfilled,
+      (state, action) => {
+        state.loadingConsumedProductStockMoveLine = false;
+        state.consumedProductList = action.payload?.consumedProducts;
+        state.consumedProductStockMoveLine = action.payload?.stockMoveLine;
       },
     );
   },

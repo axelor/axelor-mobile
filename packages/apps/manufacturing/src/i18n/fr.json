@@ -63,5 +63,6 @@
   "Manufacturing_SliceAction_CreateWasteProduct": "création d'un rebut",
   "Manufacturing_SliceAction_UpdateWasteProductQty": "mise à jour de la quantité d'un produit rebut",
   "Manufacturing_SliceAction_DeclareWasteProducts": "déclaration des rebuts",
-  "Manufacturing_SliceAction_FilterWorkCenter": "filtre des postes de charge"
+  "Manufacturing_SliceAction_FilterWorkCenter": "filtre des postes de charge",
+  "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "ajouter un numéro de suivi à la ligne de déplacement du stock de produits consommés"
 }
