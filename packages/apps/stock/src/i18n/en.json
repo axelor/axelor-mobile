@@ -74,6 +74,7 @@
   "Stock_NotesClient": "Notes of client",
   "Stock_DeliveryCondition": "Delivery condition",
   "Stock_Done": "Done",
+  "Stock_PartiallyDone": "Partially done",
   "Stock_NotDone": "Not done",
   "Stock_Complete": "Complete",
   "Stock_Difference": "Difference",

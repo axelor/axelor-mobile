@@ -25,9 +25,9 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
-import {CustomerDeliveryLineCard} from '..';
+import {CustomerDeliveryLineCard} from '../../customerDelivery';
 import {showLine} from '../../../../utils/line-navigation';
+import {StockMove, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {getRacks} from '../../../../features/racksListSlice';
 
@@ -108,7 +108,9 @@ const CustomerDeliveryViewAllContainer = ({}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+          pickedQty={
+            StockMoveLine.hideLineQty(item, customerDelivery) ? 0 : item.realQty
+          }
           askedQty={item?.qty}
           locker={
             !loadingRacks && racksList != null && racksList[index] != null

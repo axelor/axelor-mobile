@@ -28,7 +28,7 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {CustomerDeliveryLineCard, StockMoveHeader} from '../../components';
 import {fetchCustomerDeliveryLines} from '../../features/customerDeliveryLineSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
 
 const CustomerDeliveryLineListScreen = ({route, navigation}) => {
@@ -76,30 +76,23 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
-      } else if (selectedStatus !== null && selectedStatus.length > 0) {
-        return list.filter(item => {
-          if (selectedStatus[0].key === 'doneStatus') {
-            return (
-              item.isRealQtyModifiedByUser !== false &&
-              parseFloat(item.realQty) >= parseFloat(item.qty)
-            );
-          } else if (selectedStatus[0].key === 'unDoneStatus') {
-            return (
-              item.isRealQtyModifiedByUser === false ||
-              parseFloat(item.realQty) == null ||
-              parseFloat(item.realQty) < parseFloat(item.qty)
-            );
-          } else {
-            return item;
-          }
-        });
-      } else {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      }
+
+      if (!Array.isArray(selectedStatus) || selectedStatus.length === 0) {
         return list;
       }
+
+      return list.filter(item => {
+        return selectedStatus.find(
+          _status =>
+            _status?.key ===
+            StockMoveLine.getStockMoveLineStatus(item, customerDelivery),
+        );
+      });
     },
-    [selectedStatus],
+    [customerDelivery, selectedStatus],
   );
 
   useEffect(() => {
@@ -129,18 +122,10 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Done'),
-                color: Colors.primaryColor,
-                key: 'doneStatus',
-              },
-              {
-                title: I18n.t('Stock_NotDone'),
-                color: Colors.cautionColor,
-                key: 'unDoneStatus',
-              },
-            ]}
+            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
+              I18n,
+              Colors,
+            )}
           />
         }
       />
@@ -152,7 +137,9 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
             style={styles.item}
             productName={item.product.fullName}
             pickedQty={
-              item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+              StockMoveLine.hideLineQty(item, customerDelivery)
+                ? 0
+                : item.realQty
             }
             askedQty={item.qty}
             locker={

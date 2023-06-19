@@ -29,6 +29,7 @@ import {showLine} from '../../../../utils/line-navigation';
 import {InternalMoveLineCard} from '../../internalMove';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {getRacks} from '../../../../features/racksListSlice';
+import {StockMoveLine} from '../../../../types';
 
 const InternalMoveViewAllContainer = ({}) => {
   const I18n = useTranslator();
@@ -83,6 +84,10 @@ const InternalMoveViewAllContainer = ({}) => {
           style={styles.item}
           productName={item.product?.fullName}
           internalMoveStatus={internalMove.statusSelect}
+          expectedQty={item.qty}
+          movedQty={
+            StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
+          }
           availability={
             item.availableStatusSelect != null
               ? item.availableStatusSelect
@@ -94,8 +99,6 @@ const InternalMoveViewAllContainer = ({}) => {
               : ''
           }
           trackingNumber={item.trackingNumber?.trackingNumberSeq}
-          expectedQty={item.qty}
-          movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
           onPress={() => handleShowLine(item)}
         />
       )}

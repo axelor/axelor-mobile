@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
 import {
   searchInternalMoveLines,
   updateInternalMoveLine as _updateInternalMoveLine,
@@ -47,6 +47,14 @@ export const updateInternalMoveLine = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateInternalMoveLine',
       getState,
       responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchInternalMoveLine,
+        data: {internalMoveLineId: res?.id},
+        action: 'Stock_SliceAction_FetchInternalMoveLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -122,6 +130,17 @@ const internalMoveLineSlice = createSlice({
           state.isListEnd = true;
         }
       }
+    });
+    builder.addCase(updateInternalMoveLine.pending, state => {
+      state.loadingIMLines = true;
+    });
+    builder.addCase(updateInternalMoveLine.fulfilled, (state, action) => {
+      state.loadingIMLines = false;
+      state.internalMoveLine = action.payload;
+      state.internalMoveLineList = updateAgendaItems(
+        state.internalMoveLineList,
+        [action.payload],
+      );
     });
     builder.addCase(fetchInternalMoveLine.pending, state => {
       state.loadingInternalMoveLine = true;

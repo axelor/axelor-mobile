@@ -39,7 +39,7 @@ import {fetchUnit} from '../../features/unitSlice';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {
@@ -159,7 +159,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           setPlannedQty(productIndicators?.availableStock);
         }
         setMovedQty(
-          internalMoveLine.isRealQtyModifiedByUser === false
+          StockMoveLine.hideLineQty(internalMoveLine, internalMove)
             ? 0
             : internalMoveLine.realQty,
         );
