@@ -20,6 +20,7 @@ const routes = {
   AOS6: {
     App: '/ws/rest/com.axelor.apps.base.db.App',
     AppBase: '/ws/rest/com.axelor.apps.base.db.AppBase',
+    AppCrm: '/ws/rest/com.axelor.apps.base.db.AppCrm',
     TraceBack: '/ws/rest/com.axelor.exception.db.TraceBack',
     AppSupplychain: '/ws/rest/com.axelor.apps.base.db.AppSupplychain',
     EmailAddress: '/ws/rest/com.axelor.apps.message.db.EmailAddress',
@@ -29,6 +30,7 @@ const routes = {
   AOS7: {
     App: '/ws/rest/com.axelor.studio.db.App',
     AppBase: '/ws/rest/com.axelor.studio.db.AppBase',
+    AppCrm: '/ws/rest/com.axelor.studio.db.AppCrm',
     TraceBack: '/ws/rest/com.axelor.apps.base.db.TraceBack',
     AppSupplychain: ' /ws/rest/com.axelor.studio.db.AppSupplychain',
     EmailAddress: '/ws/rest/com.axelor.message.db.EmailAddress',
