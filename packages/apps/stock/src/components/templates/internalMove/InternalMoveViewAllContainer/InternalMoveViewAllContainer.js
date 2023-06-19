@@ -22,6 +22,7 @@ import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
 import {showLine} from '../../../../utils/line-navigation';
 import {InternalMoveLineCard} from '../../internalMove';
+import {StockMoveLine} from '../../../../types';
 
 const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
   const {internalMoveLineList} = useSelector(state => state.internalMoveLine);
@@ -52,6 +53,10 @@ const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
           style={styles.item}
           productName={item.product?.fullName}
           internalMoveStatus={internalMove.statusSelect}
+          expectedQty={item.qty}
+          movedQty={
+            StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
+          }
           availability={
             item.availableStatusSelect != null
               ? item.availableStatusSelect
@@ -63,8 +68,6 @@ const InternalMoveViewAllContainer = ({internalMove, navigation}) => {
               : ''
           }
           trackingNumber={item.trackingNumber?.trackingNumberSeq}
-          expectedQty={item.qty}
-          movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
           onPress={() => handleShowLine(item)}
         />
       )}

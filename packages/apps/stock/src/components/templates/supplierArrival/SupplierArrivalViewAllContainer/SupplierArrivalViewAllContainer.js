@@ -24,7 +24,7 @@ import {SupplierArrivalLineCard} from '../../supplierArrival';
 import {showLine} from '../../../../utils/line-navigation';
 import {getRacks} from '../../../../features/racksListSlice';
 import {fetchSupplierArrivalLines} from '../../../../features/supplierArrivalLineSlice';
-import StockMove from '../../../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../../../types';
 
 const SupplierArrivalViewAllContainer = ({supplierArrival, navigation}) => {
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const SupplierArrivalViewAllContainer = ({supplierArrival, navigation}) => {
           style={styles.item}
           productName={item.product?.fullName}
           deliveredQty={
-            item.isRealQtyModifiedByUser === false ? 0 : item.realQty
+            StockMoveLine.hideLineQty(item, supplierArrival) ? 0 : item.realQty
           }
           askedQty={item.qty}
           trackingNumber={item?.trackingNumber}

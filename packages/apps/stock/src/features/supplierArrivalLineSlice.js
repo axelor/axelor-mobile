@@ -17,7 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {handlerApiCall, updateAgendaItems} from '@axelor/aos-mobile-core';
 import {
   searchSupplierArrivalLines,
   updateLine,
@@ -46,6 +46,14 @@ export const updateSupplierArrivalLine = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateSupplierArrivalLine',
       getState,
       responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchSupplierArrivalLine,
+        data: {supplierArrivalLineId: res?.id},
+        action: 'Stock_SliceAction_FetchSupplierArrivalLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -68,7 +76,6 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   supplierArrivalLineList: [],
-  updateLineResponse: {},
   loadingSupplierArrivalLine: false,
   supplierArrivalLine: {},
 };
@@ -103,11 +110,15 @@ const supplierArrivalLineSlice = createSlice({
       }
     });
     builder.addCase(updateSupplierArrivalLine.pending, state => {
-      state.loadingSupplierArrivalLine = true;
+      state.loadingSALines = true;
     });
     builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
-      state.loadingSupplierArrivalLine = false;
-      state.updateLineResponse = action.payload;
+      state.loadingSALines = false;
+      state.supplierArrivalLine = action.payload;
+      state.supplierArrivalLineList = updateAgendaItems(
+        state.supplierArrivalLineList,
+        [action.payload],
+      );
     });
     builder.addCase(fetchSupplierArrivalLine.pending, state => {
       state.loadingSupplierArrivalLine = true;

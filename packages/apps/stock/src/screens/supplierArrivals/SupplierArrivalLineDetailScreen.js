@@ -34,7 +34,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
@@ -66,7 +66,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setRealQty(
-      supplierArrivalLine?.isRealQtyModifiedByUser === false
+      StockMoveLine.hideLineQty(supplierArrivalLine, supplierArrival)
         ? 0
         : supplierArrivalLine?.realQty || 0,
     );
@@ -80,7 +80,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           ? supplierArrivalLine.conformitySelect
           : StockMove.conformity.None,
     });
-  }, [supplierArrivalLine, I18n]);
+  }, [supplierArrivalLine, I18n, supplierArrival]);
 
   useEffect(() => {
     dispatch(fetchProductWithId(supplierArrivalLine.product?.id ?? productId));

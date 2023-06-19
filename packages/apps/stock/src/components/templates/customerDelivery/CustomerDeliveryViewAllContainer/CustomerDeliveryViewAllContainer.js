@@ -20,9 +20,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {ViewAllContainer} from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
-import {CustomerDeliveryLineCard} from '..';
+import {CustomerDeliveryLineCard} from '../../customerDelivery';
 import {showLine} from '../../../../utils/line-navigation';
+import {StockMove, StockMoveLine} from '../../../../types';
 
 const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
   const {loadingRacks, racksList} = useSelector(state => state.rack);
@@ -71,7 +71,9 @@ const CustomerDeliveryViewAllContainer = ({customerDelivery, navigation}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+          pickedQty={
+            StockMoveLine.hideLineQty(item, customerDelivery) ? 0 : item.realQty
+          }
           askedQty={item?.qty}
           locker={
             !loadingRacks && racksList != null && racksList[index] != null
