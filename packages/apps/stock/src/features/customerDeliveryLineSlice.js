@@ -130,7 +130,7 @@ const CustomerDeliveryLineSlice = createSlice({
     });
     builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
       state.loadingCDLines = false;
-      state.updateLineResponse = action.payload;
+      state.customerDeliveryLine = action.payload;
       state.customerDeliveryLineList = updateAgendaItems(
         state.customerDeliveryLineList,
         [action.payload],

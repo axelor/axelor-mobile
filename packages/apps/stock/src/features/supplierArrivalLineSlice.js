@@ -104,11 +104,11 @@ const supplierArrivalLineSlice = createSlice({
       },
     );
     builder.addCase(updateSupplierArrivalLine.pending, state => {
-      state.loadingSupplierArrivalLine = true;
+      state.loadingSALines = true;
     });
     builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
-      state.loadingSupplierArrivalLine = false;
-      state.updateLineResponse = action.payload;
+      state.loadingSALines = false;
+      state.supplierArrivalLine = action.payload;
       state.supplierArrivalLineList = updateAgendaItems(
         state.supplierArrivalLineList,
         [action.payload],
