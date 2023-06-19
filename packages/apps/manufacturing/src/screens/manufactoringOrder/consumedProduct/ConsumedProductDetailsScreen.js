@@ -45,7 +45,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     state => state.product,
   );
   const {consumedProductStockMoveLine} = useSelector(
-    state => state.consumedProduct,
+    state => state.prodProducts,
   );
 
   const product = consumedProduct ? productFromId : route.params.product;
@@ -56,8 +56,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const trackingNumber = useMemo(
     () =>
       route.params.trackingNumber ||
-      consumedProductStockMoveLine.trackingNumber ||
-      consumedProduct.trackingNumber,
+      consumedProduct.trackingNumber ||
+      (consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+        ? consumedProductStockMoveLine.trackingNumber
+        : null),
     [
       route.params.trackingNumber,
       consumedProduct,
@@ -113,7 +115,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const handleUpdateConsumedProduct = useCallback(() => {
     dispatch(
       updateProdProductOfManufOrder({
-        stockMoveLineVersion: consumedProduct?.stockMoveLineVersion,
+        stockMoveLineVersion:
+          consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+            ? consumedProductStockMoveLine.version
+            : consumedProduct?.stockMoveLineVersion,
         stockMoveLineId: consumedProduct?.stockMoveLineId,
         prodProductQty: consumedQty,
         type: 'consumed',
@@ -124,6 +129,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     handleNavigateBackToList();
   }, [
     consumedProduct,
+    consumedProductStockMoveLine,
     consumedQty,
     dispatch,
     handleNavigateBackToList,
@@ -173,6 +179,8 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           product={product}
           stockMoveLineId={consumedProduct?.stockMoveLineId}
           stockMoveLineVersion={consumedProduct?.stockMoveLineVersion}
+          manufOrderId={manufOrder?.id}
+          manufOrderVersion={manufOrder?.version}
           visible={isTrackingNumberSelectVisible}
         />
         <QuantityCard
