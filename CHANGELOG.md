@@ -3,7 +3,70 @@ title: 7.0.0
 tags: Changelog
 ---
 
-## [7.0.0] (2023-05-26)
+## [7.0.1] (2023-06-19)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- New helpers to manage states of infinite scroll
+- Add minimal required version check, new configurations :
+  - versionCheckConfig.activate : activate or not minimal version check
+  - versionCheckConfig.android : update link (default value is Google Play Store)
+  - versionCheckConfig.ios : update link (default value is App Store)
+- Manage translated values fetched from AOS
+- Add upload tool
+
+#### Fixes
+
+- Add meaningful message for camera permission on iOS
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add ProgressBar component
+
+#### Fixes
+
+- Format issue on increment
+- Refresh issue on ScrollList when using local filters
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Only send conformity if not null on supplier arrival line update
+- Clear SearchBar after scan on line search component
+- Internal move & customer delivery : filter available products on line creation
+- StockMove : ignore isRealQtyModifiedByUser on realized moves
+
+#### Changes
+
+- Implementation of new slice helper from Core package
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products : manage no tracking number configured
+
+#### Changes
+
+- Implementation of new slice helper from Core package
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Issues with components on form views
+- Add AppCrm API path to RouterProvider to manage AOSv7
+
+#### Changes
+
+- Implementation of new slice helper from Core package
+
+## [7.0.0] (2023-05-17)
 
 ### General
 
@@ -85,4 +148,5 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
-[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.2...7.0.0
+[7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1
+[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.1...7.0.0
