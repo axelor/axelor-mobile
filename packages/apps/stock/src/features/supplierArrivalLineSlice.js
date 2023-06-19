@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchSupplierArrivalLines,
@@ -49,6 +50,14 @@ export const updateSupplierArrivalLine = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateSupplierArrivalLine',
       getState,
       responseOptions: {showToast: true},
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: _fetchSupplierArrivalLine,
+        data: {supplierArrivalLineId: res?.id},
+        action: 'Stock_SliceAction_FetchSupplierArrivalLine',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -94,6 +103,17 @@ const supplierArrivalLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(updateSupplierArrivalLine.pending, state => {
+      state.loadingSALines = true;
+    });
+    builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
+      state.loadingSALines = false;
+      state.supplierArrivalLine = action.payload;
+      state.supplierArrivalLineList = updateAgendaItems(
+        state.supplierArrivalLineList,
+        [action.payload],
+      );
+    });
     builder.addCase(fetchSupplierArrivalLine.pending, state => {
       state.loadingSupplierArrivalLine = true;
     });

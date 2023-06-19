@@ -27,7 +27,7 @@ import {
 import {CustomerDeliveryLineCard} from '../../../templates';
 import {SearchLineContainer} from '../../../organisms';
 import {showLine} from '../../../../utils/line-navigation';
-import StockMove from '../../../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../../../types';
 import {fetchCustomerDeliveryLines} from '../../../../features/customerDeliveryLineSlice';
 import {useCustomerLinesWithRacks} from '../../../../hooks';
 
@@ -122,7 +122,9 @@ const CustomerDeliverySearchLineContainer = ({}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
-          pickedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+          pickedQty={
+            StockMoveLine.hideLineQty(item, customerDelivery) ? 0 : item.realQty
+          }
           askedQty={item.qty}
           trackingNumber={item.trackingNumber}
           locker={item.locker}

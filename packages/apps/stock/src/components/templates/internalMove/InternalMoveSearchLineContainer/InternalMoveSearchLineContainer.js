@@ -29,6 +29,7 @@ import {InternalMoveLineCard} from '../../../templates';
 import {fetchInternalMoveLines} from '../../../../features/internalMoveLineSlice';
 import {showLine} from '../../../../utils/line-navigation';
 import {useInternalLinesWithRacks} from '../../../../hooks';
+import {StockMoveLine} from '../../../../types';
 
 const scanKey = 'trackingNumber-or-product_internal-move-details';
 
@@ -103,7 +104,9 @@ const InternalMoveSearchLineContainer = ({}) => {
           productName={item.product?.fullName}
           internalMoveStatus={internalMove.statusSelect}
           expectedQty={item.qty}
-          movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+          movedQty={
+            StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
+          }
           locker={item.locker}
           trackingNumber={item.trackingNumber?.trackingNumberSeq}
           availability={

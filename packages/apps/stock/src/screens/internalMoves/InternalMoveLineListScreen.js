@@ -34,35 +34,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import {InternalMoveLineCard, StockMoveHeader} from '../../components';
 import {fetchInternalMoveLines} from '../../features/internalMoveLineSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
 import {useInternalLinesWithRacks} from '../../hooks';
 
 const scanKey = 'trackingNumber-or-product_internal-move-line-list';
-
-const DONE_STATUS_KEY = 'done';
-const PARTIALLY_DONE_STATUS_KEY = 'partially_done';
-const NOT_DONE_STATUS_KEY = 'not_done';
-
-const getitemStatus = item => {
-  const _realQty = parseFloat(item.realQty);
-  const _qty = parseFloat(item.qty);
-
-  if (
-    item.isRealQtyModifiedByUser === false ||
-    _realQty == null ||
-    _realQty === 0
-  ) {
-    return NOT_DONE_STATUS_KEY;
-  }
-
-  if (_realQty < _qty) {
-    return PARTIALLY_DONE_STATUS_KEY;
-  }
-
-  return DONE_STATUS_KEY;
-};
 
 const InternalMoveLineListScreen = ({route, navigation}) => {
   const internalMove = route.params.internalMove;
@@ -143,11 +120,13 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
 
       return list.filter(item => {
         return selectedStatus.find(
-          _status => _status?.key === getitemStatus(item),
+          _status =>
+            _status?.key ===
+            StockMoveLine.getStockMoveLineStatus(item, internalMove),
         );
       });
     },
-    [selectedStatus],
+    [internalMove, selectedStatus],
   );
 
   const filteredList = useMemo(
@@ -179,23 +158,10 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             marginHorizontal={3}
             width={Dimensions.get('window').width * 0.3}
-            selectionItems={[
-              {
-                title: I18n.t('Stock_Done'),
-                color: Colors.primaryColor,
-                key: DONE_STATUS_KEY,
-              },
-              {
-                title: I18n.t('Stock_PartiallyDone'),
-                color: Colors.cautionColor,
-                key: PARTIALLY_DONE_STATUS_KEY,
-              },
-              {
-                title: I18n.t('Stock_NotDone'),
-                color: Colors.secondaryColor,
-                key: NOT_DONE_STATUS_KEY,
-              },
-            ]}
+            selectionItems={StockMoveLine.getStockMoveLineStatusItems(
+              I18n,
+              Colors,
+            )}
           />
         }>
         <ScannerAutocompleteSearch
@@ -225,7 +191,9 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             trackingNumber={item.trackingNumber?.trackingNumberSeq}
             locker={item.locker}
             expectedQty={item.qty}
-            movedQty={item.isRealQtyModifiedByUser === false ? 0 : item.realQty}
+            movedQty={
+              StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty
+            }
             onPress={() => handleShowLine(item)}
           />
         )}

@@ -35,7 +35,7 @@ import {
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
-import StockMove from '../../types/stock-move';
+import {StockMove, StockMoveLine} from '../../types';
 
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
@@ -50,11 +50,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   const [saveStatus, setSaveStatus] = useState(true);
   const [movedQty, setMovedQty] = useState(
-    internalMoveLine.isRealQtyModifiedByUser === false
+    StockMoveLine.hideLineQty(internalMoveLine, internalMove)
       ? 0
       : internalMoveLine.realQty,
   );
-  const [unit, setUnit] = useState(internalMoveLine.unit);
+  const [unit, setUnit] = useState(internalMoveLine?.unit);
 
   const trackingNumber = useMemo(
     () => internalMoveLine?.trackingNumber ?? route.params.trackingNumber,
@@ -115,14 +115,14 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     if (!isEmpty(internalMoveLine)) {
       setMovedQty(
-        internalMoveLine.isRealQtyModifiedByUser === false
+        StockMoveLine.hideLineQty(internalMoveLine, internalMove)
           ? 0
           : internalMoveLine.realQty,
       );
       setUnit(internalMoveLine.unit);
       setSaveStatus(true);
     }
-  }, [internalMoveLine]);
+  }, [internalMoveLine, internalMove]);
 
   const handleShowProduct = useCallback(() => {
     navigation.navigate('ProductStockDetailsScreen', {
