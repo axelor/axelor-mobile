@@ -82,26 +82,7 @@ export async function updateLeadScoring({leadId, leadVersion, newScore}) {
   });
 }
 
-export async function updateLead({
-  leadId,
-  leadVersion,
-  leadScore,
-  leadCivility,
-  leadFirstname,
-  leadName,
-  leadNoCall,
-  leadNoEmail,
-  leadCompany,
-  leadJob,
-  leadAdress,
-  leadFixedPhone,
-  leadMobilePhone,
-  leadEmail,
-  leadWebsite,
-  leadDescription,
-  emailId,
-  emailVersion,
-}) {
+export async function updateLead({lead, emailId, emailVersion}) {
   const route = await RouterProvider.get('EmailAddress');
 
   return axiosApiProvider
@@ -111,7 +92,7 @@ export async function updateLead({
         data: {
           id: emailId,
           version: emailVersion,
-          address: leadEmail,
+          address: lead.emailAddress?.address,
         },
       },
     })
@@ -119,73 +100,18 @@ export async function updateLead({
       axiosApiProvider.post({
         url: '/ws/rest/com.axelor.apps.crm.db.Lead',
         data: {
-          data: {
-            id: leadId,
-            version: leadVersion,
-            leadScoringSelect: leadScore,
-            titleSelect: leadCivility,
-            firstName: leadFirstname,
-            name: leadName,
-            isDoNotSendEmail: leadNoEmail,
-            isDoNotCall: leadNoCall,
-            enterpriseName: leadCompany,
-            primaryAddress: leadAdress,
-            jobTitleFunction: {
-              id: leadJob,
-            },
-            fixedPhone: leadFixedPhone,
-            mobilePhone: leadMobilePhone,
-            webSite: leadWebsite,
-            description: leadDescription,
-          },
+          data: lead,
         },
       }),
     );
 }
 
-export async function createLead({
-  leadScore,
-  leadCivility,
-  leadFirstname,
-  leadName,
-  leadNoCall,
-  leadNoEmail,
-  leadCompany,
-  leadJob,
-  leadAdress,
-  leadFixedPhone,
-  leadMobilePhone,
-  leadEmail,
-  leadWebsite,
-  leadDescription,
-  contactDate,
-  userId,
-}) {
+export async function createLead({lead}) {
+  console.log('api', lead);
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
     data: {
-      data: {
-        leadScoringSelect: leadScore,
-        titleSelect: leadCivility,
-        firstName: leadFirstname,
-        name: leadName,
-        isDoNotSendEmail: leadNoEmail,
-        isDoNotCall: leadNoCall,
-        enterpriseName: leadCompany,
-        primaryAddress: leadAdress,
-        jobTitleFunction: {
-          id: leadJob,
-        },
-        fixedPhone: leadFixedPhone,
-        mobilePhone: leadMobilePhone,
-        webSite: leadWebsite,
-        description: leadDescription,
-        contactDate: contactDate,
-        user: {id: userId},
-        emailAddress: {
-          address: leadEmail,
-        },
-      },
+      data: lead,
     },
   });
 }
