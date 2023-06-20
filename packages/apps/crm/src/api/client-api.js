@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
   RouterProvider,
 } from '@axelor/aos-mobile-core';
@@ -52,6 +52,7 @@ export async function searchClient({searchValue, page = 0}) {
     fieldKey: 'crm_client',
     sortKey: 'crm_client',
     page,
+    provider: 'model',
   });
 }
 
@@ -60,6 +61,7 @@ export async function getClient({clientId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: clientId,
     fieldKey: 'crm_client',
+    provider: 'model',
   });
 }
 
@@ -75,22 +77,29 @@ export async function updateClient({
   emailVersion,
 }) {
   const route = await RouterProvider.get('EmailAddress');
-
-  return axiosApiProvider
-    .post({
+  return getActionApi()
+    .send({
       url: route,
-      data: {
+      method: 'post',
+      body: {
         data: {
           id: emailId,
           version: emailVersion,
           address: email,
         },
       },
+      description: 'update client email',
+      matchers: {
+        id: 'data.id',
+        version: 'data.version',
+        address: 'data.address',
+      },
     })
-    .then(res =>
-      axiosApiProvider.post({
+    .then(() =>
+      getActionApi().send({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
-        data: {
+        method: 'post',
+        body: {
           data: {
             id,
             version,
@@ -99,6 +108,15 @@ export async function updateClient({
             website,
             description,
           },
+        },
+        description: 'update lead',
+        matchers: {
+          id: 'data.id',
+          version: 'data.version',
+          name: 'data.name',
+          fixedPhone: 'data.fixedPhone',
+          webSite: 'data.webSite',
+          description: 'data.description',
         },
       }),
     );

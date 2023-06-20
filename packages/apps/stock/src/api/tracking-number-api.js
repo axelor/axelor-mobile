@@ -17,8 +17,8 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
@@ -47,17 +47,29 @@ export async function searchTrackingNumberFilter({
     fieldKey: 'stock_trackingNumber',
     sortKey: 'stock_trackingNumber',
     page,
+    provider: 'model',
   });
 }
 
 export async function createTrackingNumber({qty, product, trackingNumberSeq}) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: '/ws/rest/com.axelor.apps.stock.db.TrackingNumber',
-    data: {
+    method: 'put',
+    body: {
       data: {
         counter: qty,
         product: product,
         trackingNumberSeq: trackingNumberSeq,
+      },
+    },
+    description: 'create tracking number',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.TrackingNumber',
+      id: Date.now(),
+      fields: {
+        counter: 'data.counter',
+        product: 'data.product',
+        trackingNumberSeq: 'data.trackingNumberSeq',
       },
     },
   });
@@ -68,13 +80,22 @@ export async function updateStockMoveLineTrackingNumber({
   stockMoveLineVersion,
   trackingNumber,
 }) {
-  return axiosApiProvider.post({
-    url: `/ws/rest/com.axelor.apps.stock.db.StockMoveLine/${stockMoveLineId}`,
-    data: {
+  return getActionApi().send({
+    url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
+    method: 'put',
+    body: {
       data: {
         id: stockMoveLineId,
         version: stockMoveLineVersion,
         trackingNumber: trackingNumber,
+      },
+    },
+    description: 'add tracking number on stock move line',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMoveLine',
+      id: stockMoveLineId,
+      fields: {
+        trackingNumber: 'data.trackingNumber',
       },
     },
   });

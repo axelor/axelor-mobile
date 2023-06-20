@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
 } from '@axelor/aos-mobile-core';
 
 export async function searchStockCorrection({page = 0}) {
@@ -29,6 +29,7 @@ export async function searchStockCorrection({page = 0}) {
     fieldKey: 'stock_stockCorrection',
     sortKey: 'stock_stockCorrection',
     page,
+    provider: 'model',
   });
 }
 
@@ -37,6 +38,7 @@ export async function fetchStockCorrection({id}) {
     model: 'com.axelor.apps.stock.db.StockCorrection',
     id: id,
     fieldKey: 'stock_stockCorrection',
+    provider: 'model',
   });
 }
 
@@ -49,9 +51,10 @@ export async function createStockCorrection({
   realQty,
   comments,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/stock-correction/',
-    data: {
+    method: 'post',
+    body: {
       productId: productId,
       stockLocationId: stockLocationId,
       reasonId: reasonId,
@@ -59,6 +62,18 @@ export async function createStockCorrection({
       status: status,
       realQty: realQty,
       comments: comments,
+    },
+    description: 'create stock correction',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockCorrection',
+      id: Date.now(),
+      fields: {
+        productId: 'product.id',
+        stockLocationId: 'stockLocation.id',
+        reasonId: 'reason.id',
+        trackingNumberId: 'trackingNumber.id',
+        status: 'statusSelect',
+      },
     },
   });
 }
@@ -71,14 +86,24 @@ export async function updateStockCorrection({
   reasonId,
   comments,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-correction/${stockCorrectionId}`,
-    data: {
+    method: 'put',
+    body: {
       version: version,
       realQty: realQty,
       status: status,
       reasonId: reasonId,
       comments: comments,
+    },
+    description: 'update stock correction',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockCorrection',
+      id: stockCorrectionId,
+      fields: {
+        reasonId: 'reason.id',
+        status: 'statusSelect',
+      },
     },
   });
 }

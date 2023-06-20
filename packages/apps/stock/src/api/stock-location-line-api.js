@@ -71,6 +71,7 @@ export async function searchStockLocationLine({
     }),
     fieldKey: 'stock_stockLocationLine',
     page,
+    provider: 'model',
   });
 }
 
@@ -134,5 +135,6 @@ export async function searchAvailableProducts({
     fieldKey: 'stock_availableProducts',
     sortKey: 'stock_availableProducts',
     page,
+    provider: 'model',
   });
 }

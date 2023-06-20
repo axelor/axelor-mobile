@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../types/manufacturing-order';
@@ -111,6 +111,7 @@ export async function searchManufacturingOrderFilter({
     fieldKey: 'manufacturing_manufacturingOrder',
     sortKey: 'manufacturing_manufacturingOrder',
     page,
+    provider: 'model',
   });
 }
 
@@ -120,6 +121,7 @@ export async function fetchManufacturingOrder({manufOrderId}) {
     id: manufOrderId,
     fieldKey: 'manufacturing_manufacturingOrder',
     relatedFields: {product: ['name', 'code', 'picture']},
+    provider: 'model',
   });
 }
 
@@ -133,15 +135,17 @@ export async function fetchManufacturingOrderOfProductionOrder({
 
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ProductionOrder',
-    domain: 'self.id IN :productionOrderIds',
-    domainContext: {
-      productionOrderIds: productionOrderList.map(
-        productionOrder => productionOrder.id,
-      ),
-    },
+    criteria: [
+      {
+        fieldName: 'id',
+        operator: 'in',
+        value: productionOrderList.map(productionOrder => productionOrder.id),
+      },
+    ],
     fieldKey: 'manufacturing_productionOrder',
     page: 0,
-    limit: null,
+    numberElementsByPage: null,
+    provider: 'model',
   })
     .then(res => {
       const result = res?.data?.data;
@@ -162,13 +166,17 @@ async function fetchManufacturingOrderByIds({manufOrderIds, page = 0}) {
 
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
-    domain: 'self.id IN :manufOrderIds',
-    domainContext: {
-      manufOrderIds: manufOrderIds,
-    },
+    criteria: [
+      {
+        fieldName: 'id',
+        operator: 'in',
+        value: manufOrderIds,
+      },
+    ],
     fieldKey: 'manufacturing_manufacturingOrderShort',
     sortKey: 'manufacturing_manufacturingOrder',
     page,
+    provider: 'model',
   });
 }
 
@@ -188,6 +196,7 @@ export async function fetchChildrenManufacturingOrders({
     fieldKey: 'manufacturing_manufacturingOrder',
     sortKey: 'manufacturing_manufacturingOrder',
     page,
+    provider: 'model',
   });
 }
 
@@ -196,11 +205,20 @@ export async function updateManufacturingOrderStatus({
   manufOrderVersion,
   targetStatus,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/manuf-order/${manufOrderId}`,
-    data: {
+    method: 'put',
+    body: {
       version: manufOrderVersion,
       status: targetStatus,
+    },
+    description: 'update manufacturing order status',
+    matchers: {
+      id: manufOrderId,
+      modelName: 'com.axelor.apps.production.db.ManufOrder',
+      fields: {
+        statusSelect: 'status',
+      },
     },
   });
 }

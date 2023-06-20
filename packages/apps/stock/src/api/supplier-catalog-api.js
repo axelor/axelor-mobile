@@ -36,5 +36,6 @@ export async function searchSupplierProduct({supplierId, productId}) {
     fieldKey: 'stock_supplierCatalog',
     page: 0,
     numberElementsByPage: 1,
+    provider: 'model',
   });
 }

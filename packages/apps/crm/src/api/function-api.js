@@ -28,5 +28,6 @@ export async function getFunction({searchValue, page = 0}) {
     fieldKey: 'crm_function',
     sortKey: 'crm_function',
     page,
+    provider: 'model',
   });
 }
