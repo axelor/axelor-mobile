@@ -42,5 +42,6 @@ export async function searchProductionFile({
     fieldKey: 'manufacturing_productionFile',
     sortKey: 'manufacturing_productionFile',
     page,
+    provider: 'model',
   });
 }

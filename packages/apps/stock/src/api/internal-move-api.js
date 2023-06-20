@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 import StockLocation from '../types/stock-location';
@@ -53,6 +53,7 @@ export async function searchInternalMoveFilter({searchValue = null, page = 0}) {
     fieldKey: 'stock_internalMove',
     sortKey: 'stock_internalMove',
     page,
+    provider: 'model',
   });
 }
 
@@ -61,6 +62,7 @@ export async function fetchInternalMove({internalMoveId}) {
     model: 'com.axelor.apps.stock.db.StockMove',
     id: internalMoveId,
     fieldKey: 'stock_internalMove',
+    provider: 'model',
   });
 }
 
@@ -70,8 +72,9 @@ export async function createInternalStockMove({
   toStockLocationId,
   lineItems,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: 'ws/aos/stock-move/internal/',
+    method: 'post',
     data: {
       companyId,
       fromStockLocationId,
@@ -85,14 +88,27 @@ export async function createInternalStockMove({
         toStockLocationId: _item.toStockLocation?.id,
       })),
     },
+    description: 'create internal move',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: null,
+      fields: {},
+    },
   });
 }
 
 export async function realizeInternalMove({stockMoveId, version}) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `/ws/aos/stock-move/realize/${stockMoveId}`,
-    data: {
+    method: 'put',
+    body: {
       version: version,
+    },
+    description: 'realize internal move',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: stockMoveId,
+      fields: {},
     },
   });
 }
@@ -102,13 +118,18 @@ export async function modifyInternalMoveNotes({
   version,
   notes,
 }) {
-  return axiosApiProvider.post({
+  return getActionApi().send({
     url: `/ws/rest/com.axelor.apps.stock.db.StockMove/${internalMoveId}`,
-    data: {
-      data: {
-        version: version,
-        note: notes,
-      },
+    method: 'post',
+    body: {
+      version: version,
+      note: notes,
+    },
+    description: 'modify internal move notes',
+    matchers: {
+      modelName: 'com.axelor.apps.stock.db.StockMove',
+      id: internalMoveId,
+      fields: {},
     },
   });
 }

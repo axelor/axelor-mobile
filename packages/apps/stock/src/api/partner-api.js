@@ -64,6 +64,7 @@ export async function searchSuppliersFilter({searchValue, page = 0}) {
     criteria: createSearchCriteria(searchValue, true),
     fieldKey: 'stock_partner',
     page,
+    provider: 'model',
   });
 }
 
@@ -73,5 +74,6 @@ export async function searchClientsFilter({searchValue, page = 0}) {
     criteria: createSearchCriteria(searchValue, false),
     fieldKey: 'stock_partner',
     page,
+    provider: 'model',
   });
 }

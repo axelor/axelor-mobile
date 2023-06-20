@@ -109,6 +109,7 @@ export async function getPartner({partnerId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: partnerId,
     fieldKey: 'crm_partner',
+    provider: 'model',
   });
 }
 
@@ -127,6 +128,7 @@ export async function searchClientAndProspect({searchValue, page = 0}) {
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
+    provider: 'model',
   });
 }
 

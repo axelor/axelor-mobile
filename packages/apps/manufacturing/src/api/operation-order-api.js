@@ -17,9 +17,9 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  getActionApi,
   getNextMonth,
   getPreviousMonth,
   getSearchCriterias,
@@ -121,6 +121,7 @@ export async function searchOperationOrderFilter({
     fieldKey: 'manufacturing_operationOrder',
     sortKey: 'manufacturing_operationOrder',
     page,
+    provider: 'model',
   });
 }
 
@@ -131,7 +132,8 @@ export async function getPlannedOperationOrder(date) {
     fieldKey: 'manufacturing_operationOrder',
     sortKey: 'manufacturing_operationOrderPlanning',
     page: 0,
-    limit: null,
+    numberElementsByPage: null,
+    provider: 'model',
   });
 }
 
@@ -148,6 +150,7 @@ export async function fetchOperationOrder({operationOrderId}) {
       ],
       prodProcessLine: ['objectDescriptionList'],
     },
+    provider: 'model',
   });
 }
 
@@ -156,11 +159,20 @@ export async function updateOperationOrderStatus({
   version,
   status,
 }) {
-  return axiosApiProvider.put({
+  return getActionApi().send({
     url: `ws/aos/operation-order/${operationOrderId}`,
-    data: {
+    method: 'put',
+    body: {
       version,
       status,
+    },
+    description: 'update operation order status',
+    matchers: {
+      id: operationOrderId,
+      modelName: 'com.axelor.apps.production.db.OperationOrder',
+      fields: {
+        statusSelect: 'status',
+      },
     },
   });
 }
