@@ -40,12 +40,23 @@ const useClientDetailsActions = () => {
 };
 
 const useContactDetailsActions = () => {
-  const Colors = useThemeColor();
-  const navigation = useNavigation();
-  const I18n = useTranslator();
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {contact} = useSelector((state: any) => state.contact);
 
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_contact_details', {
+      model: 'com.axelor.apps.base.db.Partner',
+      modelId: contact?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
+      attachedFileScreenTitle: contact?.simpleFullName,
+    });
+  }, [mobileSettings, contact]);
+};
+
+const useLeadListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_list', {
       actions: [
@@ -61,15 +72,6 @@ const useContactDetailsActions = () => {
       ],
     });
   }, [Colors, I18n, navigation]);
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('crm_contact_details', {
-      model: 'com.axelor.apps.base.db.Partner',
-      modelId: contact?.id,
-      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
-      attachedFileScreenTitle: contact?.simpleFullName,
-    });
-  }, [mobileSettings, contact]);
 };
 
 const useLeadDetailsActions = () => {
@@ -86,13 +88,10 @@ const useLeadDetailsActions = () => {
   }, [mobileSettings, lead]);
 };
 
-const useOpportunityDetailsActions = () => {
+const useOpportunityListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
-  const {mobileSettings} = useSelector((state: any) => state.config);
-  const {opportunity} = useSelector((state: any) => state.opportunity);
-
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_list', {
       actions: [
@@ -100,7 +99,7 @@ const useOpportunityDetailsActions = () => {
           key: 'newOpportunity',
           order: 10,
           iconName: 'plus',
-          title: I18n.t('Crm_NewLead'),
+          title: I18n.t('Crm_NewOpportunity'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('OpportunityFormScreen', {}),
           showInHeader: true,
@@ -108,6 +107,11 @@ const useOpportunityDetailsActions = () => {
       ],
     });
   }, [Colors, I18n, navigation]);
+};
+
+const useOpportunityDetailsActions = () => {
+  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {opportunity} = useSelector((state: any) => state.opportunity);
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_details', {
@@ -153,4 +157,6 @@ export const useCRMHeaders = () => {
   useLeadDetailsActions();
   useOpportunityDetailsActions();
   useProspectDetailsActions();
+  useLeadListActions();
+  useOpportunityListActions();
 };

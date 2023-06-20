@@ -46,7 +46,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [score, setScore] = useState(
     idLead != null ? lead.leadScoringSelect : 0,
   );
-  const [civility, setCivility] = useState(Number(lead.titleSelect));
+  const [civility, setCivility] = useState(
+    idLead != null ? Number(lead.titleSelect) : 0,
+  );
   const [firstName, setFirstName] = useState(
     idLead != null ? lead.firstName : null,
   );
@@ -110,7 +112,6 @@ const LeadFormScreen = ({navigation, route}) => {
         leadDescription: description !== '' ? description : null,
       }),
     );
-
     navigation.navigate('LeadDetailsScreen', {
       idLead: lead.id,
     });
@@ -157,10 +158,8 @@ const LeadFormScreen = ({navigation, route}) => {
         contactDate: new Date().toISOString().split('T')[0],
         userId: userId,
       }),
-    ).then(res => {
-      navigation.navigate('LeadDetailsScreen', {
-        idLead: res.payload?.id,
-      });
+    ).then(() => {
+      navigation.navigate('LeadListScreen');
     });
   }, [
     dispatch,

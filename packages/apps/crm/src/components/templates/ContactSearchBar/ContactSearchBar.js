@@ -72,12 +72,6 @@ const ContactSearchBar = ({
 
 const getStyles = Colors =>
   StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 24,
-    },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
     },

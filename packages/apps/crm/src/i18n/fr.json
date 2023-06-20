@@ -109,5 +109,7 @@
   "Crm_SliceAction_UpdateProspectScore": "mise à jour du score du prospect",
   "Crm_SliceAction_UpdateProspect": "mise à jour du prospect",
   "Crm_SliceAction_CreateLead": "création d'une piste",
-  "Crm_SliceAction_CreateOpportunity": "création d'une opportunité"
+  "Crm_SliceAction_CreateOpportunity": "création d'une opportunité",
+  "Crm_NewLead": "Nouvelle piste",
+  "Crm_NewOpportunity": "Nouvelle opportunité"
 }
