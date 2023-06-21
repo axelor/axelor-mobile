@@ -19,6 +19,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {getActiveUserInfo, loginApi} from '../api/login-api';
+import {apiProviderConfig} from '../apiProviders/config';
 import {saveUrlInStorage} from '../sessions';
 import {checkNullString} from '../utils';
 import {testUrl} from '../utils/api';
@@ -32,6 +33,8 @@ export const login = createAsyncThunk(
     const {userId, applicationMode} = await getActiveUserInfo();
 
     saveUrlInStorage(urlWithProtocol);
+
+    apiProviderConfig.setSessionExpired(false);
 
     return {
       url: urlWithProtocol,

@@ -20,6 +20,8 @@
   "Auth_Delete_Session": "Supprimer la session",
   "Auth_InfoSession": "Pour vous connecter à l'application mobile, vous devez créer une session en indiquant l'url de votre instance ainsi que votre nom d'utilisateur et votre mot de passe. Une fois que vous aurez créé votre première session, vous pourrez vous connecter plus facilement en saisissant uniquement le mot de passe. Vous pouvez également gérer un ensemble de sessions.",
   "Auth_Dev_Mode": "Environnement de test",
+  "Auth_Disconnected": "Utilisateur déconnecté",
+  "Auth_LooseConnectionWithServer": "La session avec le serveur a expirée.",
   "User_User": "Utilisateur",
   "User_VirtualKeyboardConfig": "Cacher le clavier virtuel",
   "User_ShowFilter": "Afficher les filtres",
