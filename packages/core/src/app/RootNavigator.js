@@ -17,16 +17,19 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {default as CoreNavigator} from '../navigator/Navigator';
-import {getNetInfo} from '../api/net-info-utils';
+import {getNetInfo, getTokenInfo} from '../api/net-info-utils';
 import {useHeaderRegisters} from '../hooks/use-header-registers';
 import LoginScreen from '../screens/LoginScreen';
 import SessionManagementScreen from '../screens/SessionManagementScreen';
 import {useHeaderBand} from '../header';
 import {useTranslator} from '../i18n';
+import {showToastMessage} from '../utils';
+import {logout} from '../features/authSlice';
+import {useSessionExpired} from '../apiProviders/config';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
@@ -39,7 +42,9 @@ const RootNavigator = ({
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
+  const {sessionExpired} = useSessionExpired();
   const {registerHeaderBand} = useHeaderBand();
 
   const {logged} = useSelector(state => state.auth);
@@ -81,6 +86,37 @@ const RootNavigator = ({
     const interval = setInterval(checkInternetConnection, 2000);
     return () => clearInterval(interval.current);
   }, [checkInternetConnection]);
+
+  const handleSessionExpired = useCallback(() => {
+    showToastMessage({
+      type: 'error',
+      text1: I18n.t('Auth_Disconnected'),
+      text2: I18n.t('Auth_LooseConnectionWithServer'),
+      position: 'bottom',
+    });
+    dispatch(logout());
+  }, [I18n, dispatch]);
+
+  useEffect(() => {
+    const checkERPToken = async () => {
+      if (logged) {
+        const {isTokenValid} = await getTokenInfo();
+
+        if (!isTokenValid) {
+          handleSessionExpired();
+        }
+      }
+    };
+
+    const interval = setInterval(checkERPToken, 120000);
+    return () => clearInterval(interval.current);
+  }, [handleSessionExpired, logged]);
+
+  useEffect(() => {
+    if (sessionExpired) {
+      handleSessionExpired();
+    }
+  }, [handleSessionExpired, sessionExpired]);
 
   return (
     <Navigator screenOptions={{headerShown: false}}>

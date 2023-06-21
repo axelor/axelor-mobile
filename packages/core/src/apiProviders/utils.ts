@@ -21,6 +21,7 @@ import {checkNullString} from '@axelor/aos-mobile-ui';
 import {traceError} from '../api/traceback-api';
 import {i18nProvider} from '../i18n';
 import {ActionReducerMapBuilder} from '@reduxjs/toolkit';
+import {apiProviderConfig} from './config';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -57,6 +58,11 @@ const manageError = (
     const message =
       error?.response?.data?.messageStatus || error?.response?.statusText;
     const code = error.response?.data?.codeStatus || error?.response?.status;
+
+    if (code === 401) {
+      apiProviderConfig.setSessionExpired(true);
+      return;
+    }
 
     if (errorTracing) {
       traceError({
