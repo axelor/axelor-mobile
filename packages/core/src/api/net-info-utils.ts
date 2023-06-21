@@ -32,3 +32,24 @@ export async function getNetInfo(): Promise<NetInfoState> {
       return {isConnected: false};
     });
 }
+
+interface TokenInfoState {
+  isTokenValid: boolean;
+}
+
+export async function getTokenInfo(): Promise<TokenInfoState> {
+  return axiosApiProvider
+    .get({url: '/'})
+    .then(res => {
+      if (
+        typeof res?.data === 'string' &&
+        res.data.includes('<form id="login-form"')
+      ) {
+        return {isTokenValid: false};
+      }
+      return {isTokenValid: res?.status !== 401};
+    })
+    .catch(error => {
+      return {isTokenValid: error?.response?.status !== 401};
+    });
+}
