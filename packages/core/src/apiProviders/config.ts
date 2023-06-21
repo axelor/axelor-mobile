@@ -16,8 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export class ApiProviderConfig {
-  static allowConnectionBlock = false;
+import {useEffect, useMemo, useState} from 'react';
 
-  constructor() {}
+export class ApiProviderConfig {
+  static allowConnectionBlock: boolean = false;
+
+  private sessionExpired: boolean = false;
+  private refreshCallBack: Function;
+
+  constructor() {
+    this.refreshCallBack = () => {};
+  }
+
+  register(callBack) {
+    this.refreshCallBack = callBack;
+  }
+
+  private updateState() {
+    this.refreshCallBack(this.sessionExpired);
+  }
+
+  setSessionExpired(_sessionExpired: boolean) {
+    this.sessionExpired = _sessionExpired;
+
+    this.updateState();
+  }
+
+  getSessionExpired(): boolean {
+    return this.sessionExpired;
+  }
 }
+
+export const apiProviderConfig = new ApiProviderConfig();
+
+export const useSessionExpired = () => {
+  const [sessionExpired, setSessionExpired] = useState();
+
+  useEffect(() => {
+    apiProviderConfig.register(setSessionExpired);
+  }, []);
+
+  return useMemo(() => ({sessionExpired: sessionExpired}), [sessionExpired]);
+};
