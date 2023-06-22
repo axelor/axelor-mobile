@@ -25,6 +25,7 @@ import {Color} from '../../../theme/themes';
 
 interface ButtonProps {
   style?: any;
+  styleTxt?: any;
   color?: Color;
   title: string;
   onPress?: () => void;
@@ -33,6 +34,7 @@ interface ButtonProps {
 
 const Button = ({
   style,
+  styleTxt,
   color,
   title,
   onPress = () => {},
@@ -58,7 +60,7 @@ const Button = ({
       onPress={onPress}
       disabled={disabled}>
       <Text
-        style={styles.text}
+        style={[styles.text, styleTxt]}
         fontSize={15}
         textColor={buttonColor.foreground}>
         {title}

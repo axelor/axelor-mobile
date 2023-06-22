@@ -48,6 +48,7 @@ export const CreateSessionButton = ({onPress, numberSessions}) => {
           styles.button,
           numberSessions > 0 ? styles.buttonCreateSession : null,
         ]}
+        styleTxt={numberSessions > 0 ? styles.buttonCreateSessionText : null}
         onPress={onPress}
       />
     </View>
@@ -141,6 +142,9 @@ const getStyles = (Colors: ThemeColors) =>
       borderWidth: 1,
       borderColor: Colors.primaryColor.background,
       backgroundColor: Colors.secondaryColor_dark.foreground,
+    },
+    buttonCreateSessionText: {
+      color: Colors.text,
     },
     infoBubble: {
       position: 'absolute',
