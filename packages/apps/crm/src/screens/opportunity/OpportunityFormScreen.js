@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
-  Button,
   FormHtmlInput,
   FormIncrementInput,
   KeyboardAvoidingScrollView,
@@ -33,14 +32,25 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  createOpportunity,
-  getOpportunity,
-  updateOpportunity,
-} from '../../features/opportunitySlice';
+import {getOpportunity} from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
-import {ClientProspectSearchBar, ContactSearchBar} from '../../components';
+import {
+  ClientProspectSearchBar,
+  ContactSearchBar,
+  ValidateButtonOpportunity,
+} from '../../components';
 import {fetchCompanyById} from '../../features/companySlice';
+
+const hasRequiredField = object => {
+  if (
+    object.partner == null ||
+    object.contact == null ||
+    object.opportunityStatus == null
+  ) {
+    return false;
+  }
+  return true;
+};
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
@@ -59,6 +69,10 @@ const OpportunityFormScreen = ({navigation, route}) => {
     idOpportunity != null ? opportunity : {},
   );
 
+  const [disabledButton, setDisabledButton] = useState(
+    idOpportunity != null ? hasRequiredField(opportunity) : false,
+  );
+
   const handleOpportunityFieldChange = (newValue, fieldName) => {
     setOpportunity(current => {
       if (!current) {
@@ -67,6 +81,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
       current[fieldName] = newValue;
       return current;
     });
+    setDisabledButton(hasRequiredField(_opportunity));
   };
 
   useEffect(() => {
@@ -89,54 +104,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
       );
     }
   }, [dispatch, user]);
-
-  const createOpportinityAPI = useCallback(() => {
-    dispatch(
-      createOpportunity({
-        opportunity: {
-          ..._opportunity,
-          user: {id: user.id},
-          partner: {id: _opportunity.partner?.id},
-          contact: {id: _opportunity.contact?.id},
-          name: _opportunity.partner?.fullName,
-          amount: _opportunity.amount != null ? _opportunity.amount : 0,
-          recurrentAmount:
-            _opportunity.recurrentAmount != null
-              ? _opportunity.recurrentAmount
-              : 0,
-          probability: '0',
-          worstCase: '0',
-          expectedDurationOfRecurringRevenue: 0,
-          bestCase: '0',
-          company: user.activeCompany,
-          team: user.activeTeam,
-          opportunityStatus: {id: _opportunity.opportunityStatus},
-          currency: company?.currency,
-        },
-      }),
-    ).then(res => {
-      navigation.navigate('OpportunityListScreen');
-    });
-  }, [dispatch, _opportunity, user, navigation, company]);
-
-  const updateOpportunityAPI = useCallback(() => {
-    dispatch(
-      updateOpportunity({
-        opportunity: {
-          ..._opportunity,
-          id: opportunity.id,
-          name: _opportunity.partner?.fullName,
-          version: opportunity.version,
-          partner: {id: _opportunity.partner?.id},
-          contact: {id: _opportunity.contact?.id},
-        },
-      }),
-    );
-
-    navigation.navigate('OpportunityDetailsScreen', {
-      opportunityId: opportunity.id,
-    });
-  }, [dispatch, opportunity, _opportunity, navigation]);
 
   return (
     <Screen>
@@ -236,14 +203,14 @@ const OpportunityFormScreen = ({navigation, route}) => {
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={
-            idOpportunity != null ? updateOpportunityAPI : createOpportinityAPI
-          }
-        />
-      </View>
+      <ValidateButtonOpportunity
+        _opportunity={_opportunity}
+        company={company}
+        idOpportunity={idOpportunity}
+        navigation={navigation}
+        opportunity={opportunity}
+        disabled={!disabledButton}
+      />
     </Screen>
   );
 };
