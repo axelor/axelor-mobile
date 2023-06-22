@@ -68,6 +68,12 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
   const handleToProductTrackingNumberChange = useCallback(
     _value => {
+      if (destinationStockLocation != null) {
+        setStockLocationLine(_value);
+        setMovedQty(0);
+        return;
+      }
+
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
       } else {
@@ -75,7 +81,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
-    [handleNextStep, handleReset],
+    [destinationStockLocation, handleNextStep, handleReset],
   );
 
   const handleToStockLocationChange = useCallback(
@@ -106,6 +112,10 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
       if (_step <= CREATION_STEP.original_stockLocation) {
         setOriginalStockLocation(null);
       }
+
+      if (_step === CREATION_STEP.validation) {
+        setMovedQty(0);
+      }
     },
     [],
   );
@@ -131,11 +141,15 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     });
   };
 
+  const handleOnContinue = useCallback(() => {
+    handleReset(CREATION_STEP.validation);
+  }, [handleReset]);
+
   return (
     <Screen
       fixedItems={
         <InternalMoveLineCreationButton
-          onContinue={handleReset}
+          onContinue={handleOnContinue}
           hideIf={currentStep !== CREATION_STEP.validation}
           product={stockLocationLine?.product}
           trackingNumber={stockLocationLine?.trackingNumber}
@@ -162,7 +176,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}
-        {currentStep >= CREATION_STEP.destination_stockLocation ? (
+        {stockLocationLine ? (
           <>
             <ProductCardInfo
               name={stockLocationLine?.product?.name}
@@ -185,6 +199,10 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
               plannedQty={stockLocationLine?.currentQty}
               status={StockMove.status.Draft}
             />
+          </>
+        ) : null}
+        {currentStep >= CREATION_STEP.destination_stockLocation ? (
+          <>
             <StockLocationSearchBar
               placeholderKey="Stock_DestinationStockLocation"
               scanKey={destinationStockLocationScanKey}
