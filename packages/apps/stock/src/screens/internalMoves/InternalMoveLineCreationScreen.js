@@ -68,12 +68,6 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
   const handleToProductTrackingNumberChange = useCallback(
     _value => {
-      if (destinationStockLocation != null) {
-        setStockLocationLine(_value);
-        setMovedQty(0);
-        return;
-      }
-
       if (_value == null) {
         handleReset(CREATION_STEP.product_trackingNumber);
       } else {
@@ -81,7 +75,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
         handleNextStep(CREATION_STEP.product_trackingNumber);
       }
     },
-    [destinationStockLocation, handleNextStep, handleReset],
+    [handleNextStep, handleReset],
   );
 
   const handleToStockLocationChange = useCallback(
@@ -100,7 +94,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     (_step = CREATION_STEP.original_stockLocation) => {
       setCurrentStep(_step);
 
-      if (_step <= CREATION_STEP.destination_stockLocation) {
+      if (_step === CREATION_STEP.destination_stockLocation) {
         setDestinationStockLocation(null);
       }
 
@@ -111,6 +105,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
       if (_step <= CREATION_STEP.original_stockLocation) {
         setOriginalStockLocation(null);
+        setDestinationStockLocation(null);
       }
 
       if (_step === CREATION_STEP.validation) {
@@ -201,7 +196,8 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
             />
           </>
         ) : null}
-        {currentStep >= CREATION_STEP.destination_stockLocation ? (
+        {currentStep >= CREATION_STEP.destination_stockLocation ||
+        destinationStockLocation ? (
           <>
             <StockLocationSearchBar
               placeholderKey="Stock_DestinationStockLocation"
