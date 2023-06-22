@@ -26,7 +26,7 @@ import {displayItemFullname} from '../../../utils/displayers';
 const ClientProspectSearchBar = ({
   placeholderKey = 'Crm_ClientProspect',
   titleKey = 'Crm_ClientProspect',
-  defaultValue = null,
+  defaultValue = '',
   onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
@@ -60,9 +60,7 @@ const ClientProspectSearchBar = ({
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}
       <AutoCompleteSearch
-        style={[
-          defaultValue == null && required ? styles.requiredBorder : null,
-        ]}
+        style={[defaultValue === '' && required ? styles.requiredBorder : null]}
         objectList={clientAndProspectList}
         value={defaultValue}
         onChangeValue={onChange}

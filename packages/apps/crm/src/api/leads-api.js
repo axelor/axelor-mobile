@@ -107,7 +107,6 @@ export async function updateLead({lead, emailId, emailVersion}) {
 }
 
 export async function createLead({lead}) {
-  console.log('api', lead);
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Lead',
     data: {

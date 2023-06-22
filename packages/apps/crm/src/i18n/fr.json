@@ -111,5 +111,6 @@
   "Crm_SliceAction_CreateLead": "création d'une piste",
   "Crm_SliceAction_CreateOpportunity": "création d'une opportunité",
   "Crm_NewLead": "Nouvelle piste",
-  "Crm_NewOpportunity": "Nouvelle opportunité"
+  "Crm_NewOpportunity": "Nouvelle opportunité",
+  "Crm_SliceAction_FetchCompanyById": "récupération de la compagnie par id"
 }

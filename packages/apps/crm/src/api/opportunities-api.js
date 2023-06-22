@@ -102,64 +102,20 @@ export async function updateOpportunityStatus({
   });
 }
 
-export async function updateOpportunity({
-  opportunityId,
-  opportunityVersion,
-  opportunityAmount,
-  opportunityRecurrentAmount,
-  opportunityDescription,
-  opportunityStatusId,
-  idPartner,
-  opportunityCloseDate,
-  opportunityRating,
-  idContact,
-}) {
+export async function updateOpportunity({opportunity}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     data: {
-      data: {
-        id: opportunityId,
-        version: opportunityVersion,
-        amount: opportunityAmount,
-        recurrentAmount: opportunityRecurrentAmount,
-        opportunityStatus: {id: opportunityStatusId},
-        description: opportunityDescription,
-        partner: idPartner ? {id: idPartner} : null,
-        contact: idContact ? {id: idContact} : null,
-        expectedCloseDate: opportunityCloseDate,
-        opportunityRating: opportunityRating,
-      },
+      data: opportunity,
     },
   });
 }
 
-export async function createOpportunity({
-  opportunityAmount,
-  opportunityRecurrentAmount,
-  opportunityDescription,
-  opportunityStatusId,
-  idPartner,
-  opportunityCloseDate,
-  opportunityRating,
-  idContact,
-  userId,
-  name,
-}) {
-  return axiosApiProvider.put({
+export async function createOpportunity({opportunity}) {
+  return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     data: {
-      data: {
-        amount: opportunityAmount,
-        recurrentAmount: opportunityRecurrentAmount,
-        opportunityStatus: {id: opportunityStatusId},
-        description: opportunityDescription,
-        partner: idPartner ? {id: idPartner} : null,
-        expectedCloseDate: opportunityCloseDate,
-        opportunityRating: opportunityRating,
-        contact: idContact ? {id: idContact} : null,
-        user: {id: userId},
-        name: name,
-      },
+      data: opportunity,
     },
   });
 }

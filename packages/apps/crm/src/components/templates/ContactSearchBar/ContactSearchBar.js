@@ -17,9 +17,9 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, useThemeColor} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
@@ -31,6 +31,10 @@ const ContactSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  showTitle = true,
+  style,
+  styleTxt,
+  titleKey = 'Crm_Contact',
   required,
 }) => {
   const I18n = useTranslator();
@@ -51,22 +55,27 @@ const ContactSearchBar = ({
   );
 
   return (
-    <AutoCompleteSearch
-      style={[defaultValue == null && required ? styles.requiredBorder : null]}
-      objectList={contactList}
-      value={defaultValue}
-      onChangeValue={onChange}
-      fetchData={fetchContactSearchBarAPI}
-      displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
-      showDetailsPopup={showDetailsPopup}
-      loadingList={loadingContact}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      isFocus={isFocus}
-    />
+    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
+      {showTitle && (
+        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
+      )}
+      <AutoCompleteSearch
+        style={[defaultValue === '' && required ? styles.requiredBorder : null]}
+        objectList={contactList}
+        value={defaultValue}
+        onChangeValue={onChange}
+        fetchData={fetchContactSearchBarAPI}
+        displayValue={displayItemFullname}
+        placeholder={I18n.t(placeholderKey)}
+        showDetailsPopup={showDetailsPopup}
+        loadingList={loadingContact}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        navigate={navigate}
+        oneFilter={oneFilter}
+        isFocus={isFocus}
+      />
+    </View>
   );
 };
 

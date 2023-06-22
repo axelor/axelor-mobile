@@ -40,42 +40,34 @@ import {
 } from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 import {ClientProspectSearchBar, ContactSearchBar} from '../../components';
+import {fetchCompanyById} from '../../features/companySlice';
 
 const OpportunityFormScreen = ({navigation, route}) => {
   const idOpportunity = route.params.opportunityId;
   const dispatch = useDispatch();
   const I18n = useTranslator();
 
-  const {userId} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.user);
+  const {company} = useSelector(state => state.company);
+
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
 
-  const [score, setScore] = useState(
-    idOpportunity != null ? opportunity.opportunityRating : 0,
+  const [_opportunity, setOpportunity] = useState(
+    idOpportunity != null ? opportunity : {},
   );
-  const [partner, setPartner] = useState(
-    idOpportunity != null ? opportunity.partner : null,
-  );
-  const [contact, setContact] = useState(
-    idOpportunity != null ? opportunity.contact : null,
-  );
-  const [date, setDate] = useState(
-    idOpportunity != null ? new Date(opportunity.expectedCloseDate) : null,
-  );
-  const [amount, setAmount] = useState(
-    idOpportunity != null ? opportunity.amount : null,
-  );
-  const [recurrent, setRecurrent] = useState(
-    idOpportunity != null ? opportunity.recurrentAmount : null,
-  );
-  const [description, setDescription] = useState(
-    idOpportunity != null ? opportunity.description : null,
-  );
-  const [status, setStatus] = useState(
-    idOpportunity != null ? opportunity.opportunityStatus?.id : null,
-  );
+
+  const handleOpportunityFieldChange = (newValue, fieldName) => {
+    setOpportunity(current => {
+      if (!current) {
+        return {[fieldName]: newValue};
+      }
+      current[fieldName] = newValue;
+      return current;
+    });
+  };
 
   useEffect(() => {
     if (idOpportunity != null) {
@@ -88,71 +80,63 @@ const OpportunityFormScreen = ({navigation, route}) => {
     dispatch(fetchCrmConfigApi());
   }, [dispatch, idOpportunity]);
 
+  useEffect(() => {
+    if (user?.activeTeam?.id != null) {
+      dispatch(
+        fetchCompanyById({
+          companyId: user?.activeCompany?.id,
+        }),
+      );
+    }
+  }, [dispatch, user]);
+
   const createOpportinityAPI = useCallback(() => {
     dispatch(
       createOpportunity({
-        opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrent,
-        opportunityAmount: amount,
-        opportunityDescription: description,
-        idPartner: partner?.id,
-        opportunityRating: score,
-        opportunityCloseDate: date?.toISOString().split('T')[0],
-        idContact: contact?.id,
-        userId: userId,
-        name: partner?.fullName,
+        opportunity: {
+          ..._opportunity,
+          user: {id: user.id},
+          partner: {id: _opportunity.partner?.id},
+          contact: {id: _opportunity.contact?.id},
+          name: _opportunity.partner?.fullName,
+          amount: _opportunity.amount != null ? _opportunity.amount : 0,
+          recurrentAmount:
+            _opportunity.recurrentAmount != null
+              ? _opportunity.recurrentAmount
+              : 0,
+          probability: '0',
+          worstCase: '0',
+          expectedDurationOfRecurringRevenue: 0,
+          bestCase: '0',
+          company: user.activeCompany,
+          team: user.activeTeam,
+          opportunityStatus: {id: _opportunity.opportunityStatus},
+          currency: company?.currency,
+        },
       }),
     ).then(res => {
-      navigation.navigate('OpportunityDetailsScreen', {
-        opportunityId: res.payload?.id,
-      });
+      navigation.navigate('OpportunityListScreen');
     });
-  }, [
-    dispatch,
-    status,
-    recurrent,
-    amount,
-    description,
-    partner,
-    score,
-    date,
-    contact,
-    userId,
-    navigation,
-  ]);
+  }, [dispatch, _opportunity, user, navigation, company]);
 
   const updateOpportunityAPI = useCallback(() => {
     dispatch(
       updateOpportunity({
-        opportunityId: opportunity.id,
-        opportunityVersion: opportunity.version,
-        opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrent,
-        opportunityAmount: amount,
-        opportunityDescription: description,
-        idPartner: partner?.id,
-        opportunityRating: score,
-        opportunityCloseDate: date?.toISOString().split('T')[0],
-        idContact: contact?.id,
+        opportunity: {
+          ..._opportunity,
+          id: opportunity.id,
+          name: _opportunity.partner?.fullName,
+          version: opportunity.version,
+          partner: {id: _opportunity.partner?.id},
+          contact: {id: _opportunity.contact?.id},
+        },
       }),
     );
 
     navigation.navigate('OpportunityDetailsScreen', {
       opportunityId: opportunity.id,
     });
-  }, [
-    dispatch,
-    opportunity,
-    status,
-    recurrent,
-    amount,
-    description,
-    partner,
-    score,
-    date,
-    contact,
-    navigation,
-  ]);
+  }, [dispatch, opportunity, _opportunity, navigation]);
 
   return (
     <Screen>
@@ -160,9 +144,11 @@ const OpportunityFormScreen = ({navigation, route}) => {
         <View style={styles.headerContainer}>
           <StarScore
             style={styles.score}
-            score={score}
+            score={_opportunity.opportunityRating}
             showMissingStar={true}
-            onPress={setScore}
+            onPress={value =>
+              handleOpportunityFieldChange(value, 'opportunityRating')
+            }
             editMode={true}
           />
         </View>
@@ -174,8 +160,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
           <ClientProspectSearchBar
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
-            defaultValue={partner}
-            onChange={setPartner}
+            defaultValue={_opportunity.partner}
+            onChange={value => handleOpportunityFieldChange(value, 'partner')}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
             required={true}
@@ -183,49 +169,68 @@ const OpportunityFormScreen = ({navigation, route}) => {
           <ContactSearchBar
             titleKey="Crm_Contact"
             placeholderKey="Crm_Contact"
-            defaultValue={contact}
-            onChange={setContact}
+            defaultValue={_opportunity.contact}
+            onChange={value =>
+              handleOpportunityFieldChange({id: value?.id}, 'contact')
+            }
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
             required={true}
           />
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
-            defaultDate={date}
-            onDateChange={setDate}
+            defaultDate={
+              idOpportunity != null
+                ? new Date(_opportunity.expectedCloseDate)
+                : null
+            }
+            onDateChange={value =>
+              handleOpportunityFieldChange(
+                value?.toISOString().split('T')[0],
+                'expectedCloseDate',
+              )
+            }
             style={styles.input}
           />
           <FormIncrementInput
             title={I18n.t('Crm_Opportunity_Amount')}
-            defaultValue={amount}
-            onChange={setAmount}
+            defaultValue={idOpportunity != null ? _opportunity.amount : 0}
+            onChange={value => handleOpportunityFieldChange(value, 'amount')}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
           {crmConfig?.isManageRecurrent && (
             <FormIncrementInput
               title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-              defaultValue={recurrent}
-              onChange={setRecurrent}
+              defaultValue={
+                idOpportunity != null ? _opportunity.recurrentAmount : 0
+              }
+              onChange={value =>
+                handleOpportunityFieldChange(value, 'recurrentAmount')
+              }
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
           )}
           <FormHtmlInput
             title={I18n.t('Base_Description')}
-            onChange={setDescription}
-            defaultValue={description}
+            onChange={value =>
+              handleOpportunityFieldChange(value, 'description')
+            }
+            defaultValue={_opportunity.description}
           />
           <Picker
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Opportunity_Status')}
-            defaultValue={status}
+            defaultValue={_opportunity.opportunityStatus?.id}
             listItems={opportunityStatusList}
             labelField="name"
             valueField="id"
             emptyValue={false}
-            onValueChange={setStatus}
+            onValueChange={value =>
+              handleOpportunityFieldChange(value, 'opportunityStatus')
+            }
             isScrollViewContainer={true}
             required={true}
           />

@@ -122,7 +122,6 @@ export const createLead = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
-      console.log('res', res);
       return handlerApiCall({
         fetchFunction: getLead,
         data: {leadId: res?.id},

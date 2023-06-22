@@ -126,7 +126,7 @@ export const updateOpportunity = createAsyncThunk(
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: data?.opportunityId},
+        data: {opportunityId: res?.id},
         action: 'Crm_SliceAction_GetOpportunity',
         getState,
         responseOptions: {isArrayResponse: false},

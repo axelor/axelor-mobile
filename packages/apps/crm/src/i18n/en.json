@@ -111,5 +111,6 @@
   "Crm_SliceAction_CreateLead": "Create lead",
   "Crm_SliceAction_CreateOpportunity": "Create opportunity",
   "Crm_NewLead": "New lead",
-  "Crm_NewOpportunity": "New opportunity"
+  "Crm_NewOpportunity": "New opportunity",
+  "Crm_SliceAction_FetchCompanyById": "get company by id"
 }
