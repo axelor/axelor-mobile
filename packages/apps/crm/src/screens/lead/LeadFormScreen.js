@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
-  Button,
   Checkbox,
   FormHtmlInput,
   FormInput,
@@ -29,9 +28,17 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {createLead, fetchLeadById, updateLead} from '../../features/leadSlice';
+import {fetchLeadById} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
+import {ValidateButtonLead} from '../../components';
+
+const hasRequiredField = object => {
+  if (object.name == null) {
+    return false;
+  }
+  return true;
+};
 
 const LeadFormScreen = ({navigation, route}) => {
   const idLead = route.params.idLead;
@@ -41,9 +48,11 @@ const LeadFormScreen = ({navigation, route}) => {
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
   const {civilityList} = useCivilityList();
-  const {userId} = useSelector(state => state.auth);
 
   const [_lead, setLead] = useState(idLead != null ? lead : {});
+  const [disabledButton, setDisabledButton] = useState(
+    idLead != null ? hasRequiredField(lead) : false,
+  );
 
   const handleLeadFieldChange = (newValue, fieldName) => {
     setLead(current => {
@@ -53,6 +62,7 @@ const LeadFormScreen = ({navigation, route}) => {
       current[fieldName] = newValue;
       return current;
     });
+    setDisabledButton(hasRequiredField(_lead));
   };
 
   useEffect(() => {
@@ -61,36 +71,6 @@ const LeadFormScreen = ({navigation, route}) => {
     }
     dispatch(fetchFunction());
   }, [dispatch, idLead]);
-
-  const updateLeadAPI = useCallback(() => {
-    dispatch(
-      updateLead({
-        lead: {
-          ..._lead,
-          id: lead.id,
-          version: lead.version,
-          emailVersion: lead.emailAddress?.$version,
-          emailId: lead.emailAddress?.id,
-        },
-      }),
-    );
-    navigation.navigate('LeadDetailsScreen', {
-      idLead: lead.id,
-    });
-  }, [dispatch, navigation, _lead, lead]);
-
-  const crealteLeadAPI = useCallback(() => {
-    dispatch(
-      createLead({
-        lead: {
-          ..._lead,
-          user: {id: userId},
-        },
-      }),
-    ).then(() => {
-      navigation.navigate('LeadListScreen');
-    });
-  }, [dispatch, _lead, userId, navigation]);
 
   return (
     <Screen>
@@ -210,12 +190,13 @@ const LeadFormScreen = ({navigation, route}) => {
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <View style={styles.button_container}>
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={idLead != null ? updateLeadAPI : crealteLeadAPI}
-        />
-      </View>
+      <ValidateButtonLead
+        _lead={_lead}
+        idLead={idLead}
+        lead={lead}
+        navigation={navigation}
+        disabled={!disabledButton}
+      />
     </Screen>
   );
 };

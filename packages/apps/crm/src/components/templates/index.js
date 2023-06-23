@@ -24,4 +24,5 @@ export {default as LeadSearchBar} from './LeadSearchBar/LeadSearchBar';
 export {default as EventSearchBar} from './EventSearchBar/EventSearchBar';
 export {default as OpportunitySearchBar} from './OpportunitySearchBar/OpportunitySearchBar';
 export {default as ProspectSearchBar} from './ProspectSearchBar/ProspectSearchBar';
+export {default as ValidateButtonLead} from './ValidateButtonLead/ValidateButtonLead';
 export {default as ValidateButtonOpportunity} from './ValidateButtonOpportunity/ValidateButtonOpportunity';
