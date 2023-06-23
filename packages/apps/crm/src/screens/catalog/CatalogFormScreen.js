@@ -16,15 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Screen,
-  FormInput,
-  FormHtmlInput,
-  Picker,
-  Button,
-} from '@axelor/aos-mobile-ui';
+import {Screen, FormInput, Picker, Button} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useSelector,
@@ -61,6 +55,13 @@ const CatalogFormScreen = ({navigation}) => {
     ).then(() => navigation.navigate('CatalogListScreen'));
   }, [dispatch, name, description, type, pdfFile, image, navigation]);
 
+  const disabled = useMemo(() => {
+    if (name != null && type != null && pdfFile != null) {
+      return false;
+    }
+    return true;
+  }, [name, type, pdfFile]);
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -83,10 +84,12 @@ const CatalogFormScreen = ({navigation}) => {
           onValueChange={setType}
           required={true}
         />
-        <FormHtmlInput
+        <FormInput
+          style={styles.input}
           title={I18n.t('Crm_Description')}
           onChange={setDescription}
           defaultValue={description}
+          multiline={true}
         />
         <UploadFileInput
           style={styles.input}
@@ -104,7 +107,11 @@ const CatalogFormScreen = ({navigation}) => {
         />
       </View>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={createCatalogAPI} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={createCatalogAPI}
+          disabled={disabled}
+        />
       </View>
     </Screen>
   );

@@ -31,6 +31,7 @@ interface FormInputProps {
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
+  multiline: boolean;
 }
 
 const FormInput = ({
@@ -39,6 +40,7 @@ const FormInput = ({
   readOnly,
   style,
   required = false,
+  multiline = false,
   onChange = () => {},
   onSelection = () => {},
 }: FormInputProps) => {
@@ -98,6 +100,7 @@ const FormInput = ({
           onEndFocus={handleEndFocus}
           numberOfLines={null}
           readOnly={readOnly}
+          multiline={multiline}
         />
       </View>
     </View>
