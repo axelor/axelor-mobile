@@ -41,15 +41,15 @@ interface UploadFileInputProps {
   onlyImage?: boolean;
   required?: boolean;
   title?: string;
+  documentTypesAllowed?: 'images' | 'pdf' | 'allFiles';
 }
 
 const UploadFileInput = ({
   style,
   onUpload = console.log,
-  onlyPdf = false,
-  onlyImage = false,
   returnBase64String = false,
   required = false,
+  documentTypesAllowed = 'allFiles',
   title,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
@@ -74,20 +74,10 @@ const UploadFileInput = ({
     [Colors, _required],
   );
 
-  const type = useMemo(() => {
-    if (onlyPdf) {
-      return [DocumentPicker.types.pdf];
-    }
-    if (onlyImage) {
-      return [DocumentPicker.types.images];
-    }
-    return [DocumentPicker.types.allFiles];
-  }, [onlyPdf, onlyImage]);
-
   const handleDocumentPick = async () => {
     try {
       const file = await DocumentPicker.pickSingle({
-        type: type,
+        type: DocumentPicker.types[documentTypesAllowed],
       });
 
       setSelectedFile(file);
@@ -116,10 +106,11 @@ const UploadFileInput = ({
     <Card
       style={[
         styles.container,
-        style,
         commonStyles.filter,
         commonStyles.filterSize,
         commonStyles.filterAlign,
+        commonStyles.inputFocused,
+        style,
       ]}>
       <Text style={styles.fileName}>
         {selectedFile
@@ -136,12 +127,6 @@ const UploadFileInput = ({
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginVertical: 5,
-      paddingHorizontal: 18,
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,

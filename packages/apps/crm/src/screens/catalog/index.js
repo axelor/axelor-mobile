@@ -31,8 +31,5 @@ export default {
   CatalogFormScreen: {
     title: 'Crm_Catalogs',
     component: CatalogFormScreen,
-    options: {
-      shadedHeader: false,
-    },
   },
 };

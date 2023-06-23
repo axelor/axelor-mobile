@@ -40,7 +40,7 @@ const CatalogFormScreen = ({navigation}) => {
   const {catalogTypeList} = useSelector(state => state.catalog);
 
   const [name, setName] = useState(null);
-  const [description, setDescription] = useState(description);
+  const [description, setDescription] = useState(null);
   const [type, setType] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [image, setImage] = useState(null);
@@ -62,7 +62,7 @@ const CatalogFormScreen = ({navigation}) => {
   }, [dispatch, name, description, type, pdfFile, image, navigation]);
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <Screen>
       <View style={styles.container}>
         <FormInput
           style={styles.input}
@@ -81,7 +81,6 @@ const CatalogFormScreen = ({navigation}) => {
           valueField="id"
           emptyValue={false}
           onValueChange={setType}
-          isScrollViewContainer={true}
           required={true}
         />
         <FormHtmlInput
@@ -93,15 +92,15 @@ const CatalogFormScreen = ({navigation}) => {
           style={styles.input}
           returnBase64String={true}
           onUpload={setImage}
-          onlyImage={true}
-          title={I18n.t('Base_Image')}
+          documentTypesAllowed="images"
+          title={I18n.t('Crm_Image')}
         />
         <UploadFileInput
           style={styles.input}
-          onlyPdf={true}
+          documentTypesAllowed="pdf"
           onUpload={setPdfFile}
           required={true}
-          title={I18n.t('Base_PdfFile')}
+          title={I18n.t('Crm_PdfFile')}
         />
       </View>
       <View style={styles.button_container}>
