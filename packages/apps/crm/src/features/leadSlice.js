@@ -123,11 +123,11 @@ export const createLead = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
-        fetchFunction: getLead,
-        data: {leadId: res?.id},
-        action: 'Crm_SliceAction_FetchLeadById',
+        fetchFunction: searchLeads,
+        data,
+        action: 'Crm_SliceAction_FetchLead',
         getState,
-        responseOptions: {isArrayResponse: false},
+        responseOptions: {isArrayResponse: true},
       });
     });
   },
@@ -188,8 +188,7 @@ const leadSlice = createSlice({
     });
     builder.addCase(createLead.fulfilled, (state, action) => {
       state.loadingLead = false;
-      state.lead = action.payload;
-      state.leadList = updateAgendaItems(state.leadList, [action.payload]);
+      state.leadList = action.payload;
     });
   },
 });

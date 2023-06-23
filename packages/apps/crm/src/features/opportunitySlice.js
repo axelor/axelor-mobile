@@ -146,11 +146,11 @@ export const createOpportunity = createAsyncThunk(
       responseOptions: {isArrayResponse: false},
     }).then(res => {
       return handlerApiCall({
-        fetchFunction: _getOpportunity,
-        data: {opportunityId: res?.id},
-        action: 'Crm_SliceAction_GetOpportunity',
+        fetchFunction: searchOpportunities,
+        data,
+        action: 'Crm_SliceAction_FetchOpportunities',
         getState,
-        responseOptions: {isArrayResponse: false},
+        responseOptions: {isArrayResponse: true},
       });
     });
   },
@@ -234,10 +234,7 @@ const opportunitySlice = createSlice({
     });
     builder.addCase(createOpportunity.fulfilled, (state, action) => {
       state.loading = false;
-      state.opportunity = action.payload;
-      state.opportunityList = updateAgendaItems(state.opportunityList, [
-        action.payload,
-      ]);
+      state.opportunityList = action.payload;
     });
   },
 });
