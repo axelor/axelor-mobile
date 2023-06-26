@@ -40,6 +40,7 @@ import {
   ValidateButtonOpportunity,
 } from '../../components';
 import {fetchCompanyById} from '../../features/companySlice';
+import lead from '../lead';
 
 const hasRequiredField = object => {
   if (
@@ -68,9 +69,11 @@ const OpportunityFormScreen = ({navigation, route}) => {
   const [_opportunity, setOpportunity] = useState(
     idOpportunity != null ? opportunity : {amount: 0, recurrentAmount: 0},
   );
-
   const [disabledButton, setDisabledButton] = useState(
     idOpportunity != null ? hasRequiredField(opportunity) : true,
+  );
+  const [score, setScore] = useState(
+    idOpportunity != null ? opportunity.opportunityRating : 0,
   );
 
   const handleOpportunityFieldChange = (newValue, fieldName) => {
@@ -82,6 +85,11 @@ const OpportunityFormScreen = ({navigation, route}) => {
       return current;
     });
     setDisabledButton(hasRequiredField(_opportunity));
+  };
+
+  const handleChangeScore = (newValue, fieldName) => {
+    setScore(newValue);
+    handleOpportunityFieldChange(newValue, fieldName);
   };
 
   useEffect(() => {
@@ -104,11 +112,9 @@ const OpportunityFormScreen = ({navigation, route}) => {
         <View style={styles.headerContainer}>
           <StarScore
             style={styles.score}
-            score={_opportunity.opportunityRating}
+            score={score}
             showMissingStar={true}
-            onPress={value =>
-              handleOpportunityFieldChange(value, 'opportunityRating')
-            }
+            onPress={value => handleChangeScore(value, 'opportunityRating')}
             editMode={true}
           />
         </View>

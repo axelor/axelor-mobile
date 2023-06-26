@@ -53,6 +53,9 @@ const LeadFormScreen = ({navigation, route}) => {
   const [disabledButton, setDisabledButton] = useState(
     idLead != null ? hasRequiredField(lead) : true,
   );
+  const [score, setScore] = useState(
+    idLead != null ? lead.leadScoringSelect : 0,
+  );
 
   const handleLeadFieldChange = (newValue, fieldName) => {
     setLead(current => {
@@ -63,6 +66,11 @@ const LeadFormScreen = ({navigation, route}) => {
       return current;
     });
     setDisabledButton(hasRequiredField(_lead));
+  };
+
+  const handleChangeScore = (newValue, fieldName) => {
+    setScore(newValue);
+    handleLeadFieldChange(newValue, fieldName);
   };
 
   useEffect(() => {
@@ -89,11 +97,9 @@ const LeadFormScreen = ({navigation, route}) => {
             </View>
             <View style={styles.checkBoxContainer}>
               <StarScore
-                score={_lead.leadScoringSelect}
+                score={score}
                 showMissingStar={true}
-                onPress={value =>
-                  handleLeadFieldChange(value, 'leadScoringSelect')
-                }
+                onPress={value => handleChangeScore(value, 'leadScoringSelect')}
                 editMode={true}
               />
               <Checkbox
