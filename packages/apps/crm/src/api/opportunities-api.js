@@ -112,7 +112,7 @@ export async function updateOpportunity({opportunity}) {
 }
 
 export async function createOpportunity({opportunity}) {
-  return axiosApiProvider.post({
+  return axiosApiProvider.put({
     url: '/ws/rest/com.axelor.apps.crm.db.Opportunity',
     data: {
       data: opportunity,

@@ -45,7 +45,7 @@ const ValidateButtonLead = ({idLead, lead, _lead, navigation, disabled}) => {
     });
   }, [dispatch, navigation, _lead, lead]);
 
-  const crealteLeadAPI = useCallback(() => {
+  const createLeadAPI = useCallback(() => {
     dispatch(
       createLead({
         lead: {
@@ -53,16 +53,15 @@ const ValidateButtonLead = ({idLead, lead, _lead, navigation, disabled}) => {
           user: {id: userId},
         },
       }),
-    ).then(() => {
-      navigation.navigate('LeadListScreen');
-    });
+    );
+    navigation.navigate('LeadListScreen');
   }, [dispatch, _lead, userId, navigation]);
 
   return (
     <View style={styles.button_container}>
       <Button
         title={I18n.t('Base_Save')}
-        onPress={idLead != null ? updateLeadAPI : crealteLeadAPI}
+        onPress={idLead != null ? updateLeadAPI : createLeadAPI}
         disabled={disabled}
       />
     </View>

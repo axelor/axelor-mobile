@@ -62,9 +62,8 @@ const ValidateButtonOpportunity = ({
           currency: company?.currency,
         },
       }),
-    ).then(res => {
-      navigation.navigate('OpportunityListScreen');
-    });
+    );
+    navigation.navigate('OpportunityListScreen');
   }, [dispatch, _opportunity, user, navigation, company]);
 
   const updateOpportunityAPI = useCallback(() => {

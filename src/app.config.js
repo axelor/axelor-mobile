@@ -62,7 +62,7 @@ export const app_config = {
   versionCheckConfig: {
     activate: true,
     android: 'https://play.google.com/store/apps/details?id=com.aosmobile',
-    ios: null,
+    ios: 'https://apps.apple.com/fr/app/axelor-open-mobile/id6446699597',
   },
 
   /*
