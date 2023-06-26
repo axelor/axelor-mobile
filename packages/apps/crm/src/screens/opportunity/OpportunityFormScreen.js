@@ -66,7 +66,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const [_opportunity, setOpportunity] = useState(
-    idOpportunity != null ? opportunity : {},
+    idOpportunity != null ? opportunity : {amount: 0, recurrentAmount: 0},
   );
 
   const [disabledButton, setDisabledButton] = useState(
@@ -140,7 +140,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
             defaultDate={
-              idOpportunity != null
+              _opportunity.expectedCloseDate != null
                 ? new Date(_opportunity.expectedCloseDate)
                 : null
             }
@@ -154,7 +154,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
           />
           <FormIncrementInput
             title={I18n.t('Crm_Opportunity_Amount')}
-            defaultValue={idOpportunity != null ? _opportunity.amount : 0}
+            defaultValue={_opportunity.amount}
             onChange={value => handleOpportunityFieldChange(value, 'amount')}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
@@ -162,9 +162,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
           {crmConfig?.isManageRecurrent && (
             <FormIncrementInput
               title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-              defaultValue={
-                idOpportunity != null ? _opportunity.recurrentAmount : 0
-              }
+              defaultValue={_opportunity.recurrentAmount}
               onChange={value =>
                 handleOpportunityFieldChange(value, 'recurrentAmount')
               }

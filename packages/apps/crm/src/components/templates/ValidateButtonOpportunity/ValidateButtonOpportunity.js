@@ -24,7 +24,7 @@ import {
   useTranslator,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   createOpportunity,
   updateOpportunity,
@@ -34,6 +34,7 @@ const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
   const {company} = useSelector(state => state.company);
@@ -47,11 +48,8 @@ const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
           partner: {id: _opportunity.partner?.id},
           contact: {id: _opportunity.contact?.id},
           name: _opportunity.partner?.fullName,
-          amount: _opportunity.amount != null ? _opportunity.amount : 0,
-          recurrentAmount:
-            _opportunity.recurrentAmount != null
-              ? _opportunity.recurrentAmount
-              : 0,
+          amount: _opportunity.amount,
+          recurrentAmount: _opportunity.recurrentAmount,
           probability: '0',
           worstCase: '0',
           expectedDurationOfRecurringRevenue: 0,
@@ -93,6 +91,7 @@ const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
           idOpportunity != null ? updateOpportunityAPI : createOpportinityAPI
         }
         disabled={disabled}
+        color={disabled ? Colors.secondaryColor : Colors.primayColor}
       />
     </View>
   );
