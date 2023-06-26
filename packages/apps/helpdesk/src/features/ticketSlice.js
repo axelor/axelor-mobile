@@ -27,7 +27,6 @@ import {
   getTicketType,
   searchTickets,
   updateStatusTicket,
-  updateTicketDuration as _updateTicketDuration,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -69,31 +68,9 @@ export const fetchTicketById = createAsyncThunk(
   },
 );
 
-export const updateTicketDuration = createAsyncThunk(
-  'ticket/updateTicketDuration',
-  async function (data = {}, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _updateTicketDuration,
-      data,
-      action: 'Heldesk_updateTicketDuration',
-      getState,
-      responseOptions: {isArrayResponse: false},
-    }).then(res => {
-      return handlerApiCall({
-        fetchFunction: getTicket,
-        data: {ticketId: res?.id},
-        action: 'Heldesk_Fetch_Ticket_ById',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
-    });
-  },
-);
-
 export const updateTicketStatus = createAsyncThunk(
   'ticket/updateTicketStatus',
   async function (data = {}, {getState}) {
-    console.log('aaaaaaa');
     return handlerApiCall({
       fetchFunction: updateStatusTicket,
       data,
@@ -101,7 +78,6 @@ export const updateTicketStatus = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(res => {
-      console.log('res', res);
       return handlerApiCall({
         fetchFunction: getTicket,
         data: {ticketId: res?.id},
@@ -147,10 +123,10 @@ const ticketSlice = createSlice({
       state.loadingTicket = false;
       state.ticket = action.payload;
     });
-    builder.addCase(updateTicketDuration.pending, (state, action) => {
+    builder.addCase(updateTicketStatus.pending, (state, action) => {
       state.loadingTicket = true;
     });
-    builder.addCase(updateTicketDuration.fulfilled, (state, action) => {
+    builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
       state.loadingTicket = false;
       state.ticket = action.payload;
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);

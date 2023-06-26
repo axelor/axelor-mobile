@@ -18,7 +18,12 @@
 
 import React, {useEffect, useMemo, useCallback} from 'react';
 import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  Button,
+} from '@axelor/aos-mobile-ui';
 import {
   Stopwatch,
   useDispatch,
@@ -26,11 +31,7 @@ import {
   useTranslator,
   getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
-import {
-  fetchTicketById,
-  updateTicketDuration,
-  updateTicketStatus,
-} from '../features/ticketSlice';
+import {fetchTicketById, updateTicketStatus} from '../features/ticketSlice';
 import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
 import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
 import {Ticket} from '../types';
@@ -43,17 +44,12 @@ const TicketDetailsScreen = ({navigation, route}) => {
   const {ticket} = useSelector(state => state.ticket);
   const {timer, timerHistory} = useSelector(state => state.timer);
 
-  const duration = useMemo(() => {
-    return ticket?.duration;
-  }, [ticket?.duration]);
-
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
   }, [dispatch, idTicket]);
 
   useEffect(() => {
     if (ticket?.timerList?.length > 0) {
-      console.log('ici');
       dispatch(fetchTimerById({timerId: ticket?.timerList[0]?.id}));
     }
   }, [dispatch, ticket?.timerList]);
@@ -64,38 +60,36 @@ const TicketDetailsScreen = ({navigation, route}) => {
     }
   }, [dispatch, timer]);
 
-  /*const updateDurationTicketAPI = useCallback(
-    _timer => {
-      dispatch(
-        updateTicketDuration({
-          ticketId: ticket.id,
-          ticketVersion: ticket.version,
-          duration: _timer,
-        }),
-      );
-    },
-    [dispatch, ticket],
-  );*/
-
   const timerInProgress = useMemo(() => {
-    console.log(timer?.statusSelect);
-    if (timer?.statusSelect === 0) {
-      return false;
+    if (
+      Object.keys(timer).length !== 0 &&
+      timer != null &&
+      timer?.statusSelect !== 0
+    ) {
+      return true;
     }
-    return true;
+    return false;
   }, [timer]);
 
+  const disbaled = useMemo(() => {
+    if (
+      ticket?.statusSelect === Ticket.status.Closed ||
+      ticket?.statusSelect === Ticket.status.Resolved
+    ) {
+      return true;
+    }
+    return false;
+  }, [ticket]);
+
   const timerDuration = useMemo(() => {
-    console.log(Ticket.getTotalDuration(timerHistory));
     return Ticket.getTotalDuration(timerHistory);
   }, [timerHistory]);
 
   const updateStatus = useCallback(
     status => {
-      console.log('status', status);
       dispatch(
         updateTicketStatus({
-          version: ticket?.id,
+          version: ticket?.version,
           dateTime: getNowDateZonesISOString(),
           targetStatus: status,
           ticketId: ticket?.id,
@@ -108,11 +102,6 @@ const TicketDetailsScreen = ({navigation, route}) => {
   if (ticket?.id !== idTicket) {
     return null;
   }
-
-  //console.log('ticket', ticket);
-  console.log('timer', timer);
-  //console.log('timerHistory', timerHistory);
-  //console.log('timerInProgress', timerInProgress);
 
   return (
     <Screen removeSpaceOnTop={true}>
@@ -130,11 +119,15 @@ const TicketDetailsScreen = ({navigation, route}) => {
           startTime={timerDuration}
           timerFormat={I18n.t('Stopwatch_TimerFormat')}
           inProgressAtStart={timerInProgress}
-          //onPause={updateDurationTicketAPI}
           onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
           onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
           onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
           onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
+          disable={disbaled}
+        />
+        <Button
+          title={I18n.t('Helpdesk_Validate')}
+          onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
         />
       </ScrollView>
       <TicketBottom idTicket={idTicket} />

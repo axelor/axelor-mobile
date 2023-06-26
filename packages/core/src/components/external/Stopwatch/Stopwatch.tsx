@@ -68,9 +68,6 @@ const Stopwatch = ({
   const [state, setState] = useState(status);
   const [time, setTime] = useState(startTime);
 
-  console.log(inProgressAtStart);
-  console.log(status);
-
   useEffect(() => {
     setTime(startTime);
   }, [startTime]);

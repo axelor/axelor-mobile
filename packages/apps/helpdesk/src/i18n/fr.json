@@ -30,5 +30,6 @@
   "Helpdesk_General_Informations": "Informations Générales",
   "Helpdesk_Timing": "Dates",
   "Heldesk_Fetch_Timer_ById": "récupération du timer par id",
-  "Heldesk_UpdateTicketStatus": "mise à jour du statut du ticket"
+  "Heldesk_UpdateTicketStatus": "mise à jour du statut du ticket",
+  "Helpdesk_Validate": "Validé"
 }

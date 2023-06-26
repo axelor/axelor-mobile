@@ -37,33 +37,39 @@ const TicketHeader = ({colorIndex}) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerInfo}>
-        {!checkNullString(ticket.ticketSeq) && (
-          <Text style={styles.textTitle}>{ticket.ticketSeq}</Text>
-        )}
-        <View style={styles.badgeContainer}>
-          <Badge
-            title={Ticket.getStatus(ticket.statusSelect, I18n)}
-            color={Ticket.getStatusColor(ticket.statusSelect, Colors)}
-          />
-          {!checkNullString(ticket.ticketType?.name) && (
-            <Badge
-              title={ticket.ticketType?.name}
-              color={Ticket.getTypeColor(colorIndex, Colors)}
-            />
+        <View style={styles.halfContainer}>
+          {!checkNullString(ticket.ticketSeq) && (
+            <Text style={styles.textTitle}>{ticket.ticketSeq}</Text>
           )}
+        </View>
+        <View style={styles.halfContainer}>
+          <View style={styles.badgeContainer}>
+            <Badge
+              title={Ticket.getStatus(ticket.statusSelect, I18n)}
+              color={Ticket.getStatusColor(ticket.statusSelect, Colors)}
+            />
+            {!checkNullString(ticket.ticketType?.name) && (
+              <Badge
+                title={ticket.ticketType?.name}
+                color={Ticket.getTypeColor(colorIndex, Colors)}
+              />
+            )}
+          </View>
         </View>
       </View>
       <View style={styles.headerInfo}>
         <View style={styles.halfContainer}>
           {!checkNullString(ticket.subject) && <Text>{ticket.subject}</Text>}
         </View>
-        <View style={styles.halfContainerBadge}>
-          {ticket.prioritySelect !== null && (
-            <Badge
-              title={Ticket.getPriority(ticket.prioritySelect, I18n)}
-              color={Ticket.getPriorityColor(ticket.prioritySelect, Colors)}
-            />
-          )}
+        <View style={styles.halfContainer}>
+          <View style={styles.halfContainerBadge}>
+            {ticket.prioritySelect !== null && (
+              <Badge
+                title={Ticket.getPriority(ticket.prioritySelect, I18n)}
+                color={Ticket.getPriorityColor(ticket.prioritySelect, Colors)}
+              />
+            )}
+          </View>
         </View>
       </View>
       <ProgressBar value={ticket.progressSelect} style={styles.progressBar} />
@@ -94,7 +100,6 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   halfContainerBadge: {
-    width: '50%',
     marginLeft: '25%',
   },
 });
