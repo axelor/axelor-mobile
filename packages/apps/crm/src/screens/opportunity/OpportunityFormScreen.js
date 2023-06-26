@@ -32,7 +32,6 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {getOpportunity} from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 import {
   ClientProspectSearchBar,
@@ -40,7 +39,6 @@ import {
   ValidateButtonOpportunity,
 } from '../../components';
 import {fetchCompanyById} from '../../features/companySlice';
-import lead from '../lead';
 
 const hasRequiredField = object => {
   if (
@@ -59,7 +57,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
-  const {company} = useSelector(state => state.company);
 
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
