@@ -25,11 +25,16 @@
   "Helpdesk_ContactPartner": "Customer Contact",
   "Helpdesk_General_Informations": "Général Informations",
   "Helpdesk_Timing": "Timing",
-  "Helpdesk_Validate": "Validate",
+  "Helpdesk_Closed": "Closed",
+  "Helpdesk_Start": "Start",
+  "Helpdesk_Pause": "Pause",
+  "Helpdesk_Resolve": "Resolve",
+  "Helpdesk_Reset": "Reset",
   "Helpdesk_fetch_myTicket": "fetch my tickets",
   "Helpdesk_fetch_Ticket_Type": "fetch types tickets",
   "Helpdesk_fetch_myTeamTicket": "fetch my team tickets",
   "Heldesk_fetch_Ticket_ById": "fetch ticket by id",
   "Heldesk_Fetch_Timer_ById": "fetch timer by id",
-  "Heldesk_UpdateTicketStatus": "Update Ticket Status"
+  "Heldesk_UpdateTicketStatus": "update Ticket Status",
+  "Helpdesk_FetchHelpdeskConfig": "fetch helpdesk config"
 }

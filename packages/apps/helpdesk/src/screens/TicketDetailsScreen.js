@@ -23,6 +23,7 @@ import {
   HeaderContainer,
   NotesCard,
   Button,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
   Stopwatch,
@@ -35,14 +36,21 @@ import {fetchTicketById, updateTicketStatus} from '../features/ticketSlice';
 import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
 import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
 import {Ticket} from '../types';
+import {fetchHelpdeskConfigApi} from '../features/helpdeskConfigSlice';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, colorIndex} = route.params;
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const dispatch = useDispatch();
   const {ticket} = useSelector(state => state.ticket);
   const {timer, timerHistory} = useSelector(state => state.timer);
+  const {helpdeskConfig} = useSelector(state => state.helpdeskConfig);
+
+  useEffect(() => {
+    dispatch(fetchHelpdeskConfigApi());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -115,19 +123,42 @@ const TicketDetailsScreen = ({navigation, route}) => {
           data={ticket.description}
         />
         <TicketDropdownCards />
-        <Stopwatch
-          startTime={timerDuration}
-          timerFormat={I18n.t('Stopwatch_TimerFormat')}
-          inProgressAtStart={timerInProgress}
-          onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
-          onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
-          onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
-          onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
-          disable={disbaled}
-        />
+        {helpdeskConfig?.manageTimer ? (
+          <Stopwatch
+            startTime={timerDuration}
+            timerFormat={I18n.t('Stopwatch_TimerFormat')}
+            inProgressAtStart={timerInProgress}
+            onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
+            onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
+            onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
+            onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
+            disable={disbaled}
+          />
+        ) : (
+          <>
+            <Button
+              title={I18n.t('Helpdesk_Start')}
+              onPress={() => updateStatus(Ticket.stopWatchStatus.start)}
+              disabled={disbaled || ticket?.statusSelect !== Ticket.status.New}
+              color={Colors.progressColor}
+            />
+            <Button
+              title={I18n.t('Helpdesk_Resolve')}
+              onPress={() => updateStatus(Ticket.stopWatchStatus.stop)}
+              disabled={
+                disbaled || ticket?.statusSelect !== Ticket.status.In_Progress
+              }
+            />
+          </>
+        )}
         <Button
-          title={I18n.t('Helpdesk_Validate')}
+          title={I18n.t('Helpdesk_Closed')}
           onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
+          color={Colors.cautionColor}
+          disabled={
+            ticket?.statusSelect === Ticket.status.Closed ||
+            ticket?.statusSelect === Ticket.status.New
+          }
         />
       </ScrollView>
       <TicketBottom idTicket={idTicket} />

@@ -26,10 +26,15 @@
   "Helpdesk_ContactPartner": "Contact client",
   "Helpdesk_General_Informations": "Informations Générales",
   "Helpdesk_Timing": "Dates",
-  "Helpdesk_Validate": "Validé",
+  "Helpdesk_Closed": "Fermé",
+  "Helpdesk_Start": "Débuté",
+  "Helpdesk_Pause": "Pause",
+  "Helpdesk_Resolve": "Résolue",
+  "Helpdesk_Reset": "Réinitialiser",
   "Helpdesk_fetch_myTicket": "récupération de mes tickets",
   "Helpdesk_fetch_Ticket_Type": "récupération des types de tickets",
   "Heldesk_Fetch_Ticket_ById": "récupération du ticket par id",
   "Heldesk_Fetch_Timer_ById": "récupération du timer par id",
-  "Heldesk_UpdateTicketStatus": "mise à jour du statut du ticket"
+  "Heldesk_UpdateTicketStatus": "mise à jour du statut du ticket",
+  "Helpdesk_FetchHelpdeskConfig": "récupération de la configuration support client"
 }
