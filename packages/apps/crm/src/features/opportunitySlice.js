@@ -126,7 +126,7 @@ export const updateOpportunity = createAsyncThunk(
     }).then(res => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: res?.id},
+        data: {opportunityId: data?.id},
         action: 'Crm_SliceAction_GetOpportunity',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -143,8 +143,8 @@ export const createOpportunity = createAsyncThunk(
       data,
       action: 'Crm_SliceAction_CreateOpportunity',
       getState,
-      responseOptions: {isArrayResponse: false},
-    }).then(res => {
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: searchOpportunities,
         data,

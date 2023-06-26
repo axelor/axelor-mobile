@@ -18,13 +18,19 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {createLead, updateLead} from '../../../features/leadSlice';
 
-const ValidateButtonLead = ({idLead, lead, _lead, navigation, disabled}) => {
+const ValidateButtonLead = ({idLead, _lead, disabled}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {userId} = useSelector(state => state.auth);
 
@@ -33,17 +39,17 @@ const ValidateButtonLead = ({idLead, lead, _lead, navigation, disabled}) => {
       updateLead({
         lead: {
           ..._lead,
-          id: lead.id,
-          version: lead.version,
-          emailVersion: lead.emailAddress?.$version,
-          emailId: lead.emailAddress?.id,
+          id: _lead.id,
+          version: _lead.version,
+          emailVersion: _lead.emailAddress?.$version,
+          emailId: _lead.emailAddress?.id,
         },
       }),
     );
     navigation.navigate('LeadDetailsScreen', {
-      idLead: lead.id,
+      idLead: _lead.id,
     });
-  }, [dispatch, navigation, _lead, lead]);
+  }, [dispatch, navigation, _lead]);
 
   const createLeadAPI = useCallback(() => {
     dispatch(

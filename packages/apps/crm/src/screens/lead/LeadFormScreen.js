@@ -66,11 +66,8 @@ const LeadFormScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (idLead != null) {
-      dispatch(fetchLeadById({leadId: idLead}));
-    }
     dispatch(fetchFunction());
-  }, [dispatch, idLead]);
+  }, [dispatch]);
 
   return (
     <Screen>
@@ -193,8 +190,6 @@ const LeadFormScreen = ({navigation, route}) => {
       <ValidateButtonLead
         _lead={_lead}
         idLead={idLead}
-        lead={lead}
-        navigation={navigation}
         disabled={!disabledButton}
       />
     </Screen>

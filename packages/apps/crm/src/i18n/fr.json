@@ -75,6 +75,8 @@
   "Crm_End": "Fin",
   "Crm_Catalogs_Disabled": "Les catalogues sont désactivés sur cette instance, merci de contacter votre administrateur.",
   "Crm_Catalogs_Disabled_Admin": "Cette entrée de menu peut être retirée pour tous les utilisateurs depuis la configuration de l'application \"Axelor Mobile Settings\" sur le web.",
+  "Crm_NewLead": "Nouvelle piste",
+  "Crm_NewOpportunity": "Nouvelle opportunité",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",
@@ -110,7 +112,5 @@
   "Crm_SliceAction_UpdateProspect": "mise à jour du prospect",
   "Crm_SliceAction_CreateLead": "création d'une piste",
   "Crm_SliceAction_CreateOpportunity": "création d'une opportunité",
-  "Crm_NewLead": "Nouvelle piste",
-  "Crm_NewOpportunity": "Nouvelle opportunité",
-  "Crm_SliceAction_FetchCompanyById": "récupération de la compagnie par id"
+  "Crm_SliceAction_FetchCompanyById": "récupération de la société par id"
 }

@@ -18,7 +18,12 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button} from '@axelor/aos-mobile-ui';
 import {
   createOpportunity,
@@ -28,13 +33,12 @@ import {
 const ValidateButtonOpportunity = ({
   _opportunity,
   company,
-  navigation,
-  opportunity,
   idOpportunity,
   disabled,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {user} = useSelector(state => state.user);
 
@@ -71,9 +75,9 @@ const ValidateButtonOpportunity = ({
       updateOpportunity({
         opportunity: {
           ..._opportunity,
-          id: opportunity.id,
+          id: _opportunity.id,
           name: _opportunity.partner?.fullName,
-          version: opportunity.version,
+          version: _opportunity.version,
           partner: {id: _opportunity.partner?.id},
           contact: {id: _opportunity.contact?.id},
         },
@@ -81,9 +85,9 @@ const ValidateButtonOpportunity = ({
     );
 
     navigation.navigate('OpportunityDetailsScreen', {
-      opportunityId: opportunity.id,
+      opportunityId: _opportunity.id,
     });
-  }, [dispatch, opportunity, _opportunity, navigation]);
+  }, [dispatch, _opportunity, navigation]);
 
   return (
     <View style={styles.button_container}>

@@ -85,15 +85,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (idOpportunity != null) {
-      dispatch(
-        getOpportunity({
-          opportunityId: idOpportunity,
-        }),
-      );
-    }
     dispatch(fetchCrmConfigApi());
-  }, [dispatch, idOpportunity]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (user?.activeTeam?.id != null) {
@@ -207,8 +200,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
         _opportunity={_opportunity}
         company={company}
         idOpportunity={idOpportunity}
-        navigation={navigation}
-        opportunity={opportunity}
         disabled={!disabledButton}
       />
     </Screen>
