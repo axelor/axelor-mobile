@@ -37,8 +37,6 @@ interface UploadFileInputProps {
   style?: any;
   onUpload?: (file: any) => void;
   returnBase64String?: boolean;
-  onlyPdf?: boolean;
-  onlyImage?: boolean;
   required?: boolean;
   title?: string;
   documentTypesAllowed?: 'images' | 'pdf' | 'allFiles';
@@ -64,10 +62,7 @@ const UploadFileInput = ({
     [required, selectedFile],
   );
 
-  const commonStyles = useMemo(
-    () => getCommonStyles(Colors, _required),
-    [Colors, _required],
-  );
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const styles = useMemo(
     () => getStyles(Colors, _required),
@@ -109,7 +104,6 @@ const UploadFileInput = ({
         commonStyles.filter,
         commonStyles.filterSize,
         commonStyles.filterAlign,
-        commonStyles.inputFocused,
         style,
       ]}>
       <Text style={styles.fileName}>

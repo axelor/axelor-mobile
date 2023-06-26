@@ -30,6 +30,8 @@ const useCatalogListActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
+  const {crmConfig} = useSelector((state: any) => state.crmConfig);
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_catalog_list', {
       actions: [
@@ -39,12 +41,13 @@ const useCatalogListActions = () => {
           iconName: 'plus',
           title: I18n.t('Crm_NewCatalog'),
           iconColor: Colors.primaryColor.background,
+          hideIf: !crmConfig?.isManageCatalogs,
           onPress: () => navigation.navigate('CatalogFormScreen', {}),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, navigation]);
+  }, [Colors, I18n, navigation, crmConfig]);
 };
 
 const useClientDetailsActions = () => {

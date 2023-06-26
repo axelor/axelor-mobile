@@ -68,8 +68,8 @@ const FormInput = ({
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, _required),
-    [Colors, _required],
+    () => getStyles(Colors, _required, multiline),
+    [Colors, _required, multiline],
   );
 
   const handleSelection = () => {
@@ -107,7 +107,11 @@ const FormInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, _required: boolean) =>
+const getStyles = (
+  Colors: ThemeColors,
+  _required: boolean,
+  multiline: boolean,
+) =>
   StyleSheet.create({
     container: {
       width: '100%',
@@ -119,6 +123,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
+      height: multiline ? 100 : 40,
     },
     input: {
       width: '100%',

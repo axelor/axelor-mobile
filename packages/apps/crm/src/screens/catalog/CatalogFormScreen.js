@@ -56,10 +56,7 @@ const CatalogFormScreen = ({navigation}) => {
   }, [dispatch, name, description, type, pdfFile, image, navigation]);
 
   const disabled = useMemo(() => {
-    if (name != null && type != null && pdfFile != null) {
-      return false;
-    }
-    return true;
+    return name == null || type == null || pdfFile == null;
   }, [name, type, pdfFile]);
 
   return (
