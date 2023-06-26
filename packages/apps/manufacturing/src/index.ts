@@ -34,6 +34,10 @@ export const ManufacturingModule: Module = {
   title: 'Manufacturing_Manufacturing',
   subtitle: 'Manufacturing_Manufacturing',
   icon: 'cogs',
+  compatibilityAOS: {
+    moduleName: 'axelor-production',
+    downToVersion: '6.4.0',
+  },
   menus: {
     manufacturing_menu_manufacturing_order: {
       title: 'Manufacturing_ManufacturingOrder',
