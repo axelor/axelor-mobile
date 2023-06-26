@@ -35,9 +35,9 @@ import {ValidateButtonLead} from '../../components';
 
 const hasRequiredField = object => {
   if (object.name == null) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 };
 
 const LeadFormScreen = ({navigation, route}) => {
@@ -51,7 +51,7 @@ const LeadFormScreen = ({navigation, route}) => {
 
   const [_lead, setLead] = useState(idLead != null ? lead : {});
   const [disabledButton, setDisabledButton] = useState(
-    idLead != null ? hasRequiredField(lead) : false,
+    idLead != null ? hasRequiredField(lead) : true,
   );
 
   const handleLeadFieldChange = (newValue, fieldName) => {
@@ -190,7 +190,7 @@ const LeadFormScreen = ({navigation, route}) => {
       <ValidateButtonLead
         _lead={_lead}
         idLead={idLead}
-        disabled={!disabledButton}
+        disabled={disabledButton}
       />
     </Screen>
   );

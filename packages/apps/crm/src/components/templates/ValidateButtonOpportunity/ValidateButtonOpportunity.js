@@ -30,17 +30,13 @@ import {
   updateOpportunity,
 } from '../../../features/opportunitySlice';
 
-const ValidateButtonOpportunity = ({
-  _opportunity,
-  company,
-  idOpportunity,
-  disabled,
-}) => {
+const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const {user} = useSelector(state => state.user);
+  const {company} = useSelector(state => state.company);
 
   const createOpportinityAPI = useCallback(() => {
     dispatch(

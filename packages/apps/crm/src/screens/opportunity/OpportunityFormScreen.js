@@ -47,9 +47,9 @@ const hasRequiredField = object => {
     object.contact == null ||
     object.opportunityStatus == null
   ) {
-    return false;
+    return true;
   }
-  return true;
+  return false;
 };
 
 const OpportunityFormScreen = ({navigation, route}) => {
@@ -70,7 +70,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const [disabledButton, setDisabledButton] = useState(
-    idOpportunity != null ? hasRequiredField(opportunity) : false,
+    idOpportunity != null ? hasRequiredField(opportunity) : true,
   );
 
   const handleOpportunityFieldChange = (newValue, fieldName) => {
@@ -198,9 +198,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
       </KeyboardAvoidingScrollView>
       <ValidateButtonOpportunity
         _opportunity={_opportunity}
-        company={company}
         idOpportunity={idOpportunity}
-        disabled={!disabledButton}
+        disabled={disabledButton}
       />
     </Screen>
   );
