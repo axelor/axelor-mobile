@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {checkNullString} from '@axelor/aos-mobile-ui';
 import {userHaveAccessToConfig} from './roles.helper';
 
 const userHaveAccessToMenu = ({menuConfig, user}) => {
@@ -52,4 +53,36 @@ export function getMenuTitle(menu, {I18n}) {
     return I18n.t(menu.title);
   }
   return menu.screen;
+}
+
+export function isModuleNotFound(compatibility) {
+  return compatibility?.moduleVersion == null;
+}
+
+export function isMenuIncompatible(compatibility) {
+  if (compatibility == null) {
+    return false;
+  }
+
+  if (isModuleNotFound(compatibility)) {
+    return true;
+  }
+
+  const moduleVersion = Number(compatibility.moduleVersion.replace(/\D/g, ''));
+
+  if (
+    !checkNullString(compatibility.downToVersion) &&
+    moduleVersion < Number(compatibility.downToVersion.replace(/\D/g, ''))
+  ) {
+    return true;
+  }
+
+  if (
+    !checkNullString(compatibility.upToVersion) &&
+    moduleVersion >= Number(compatibility.upToVersion.replace(/\D/g, ''))
+  ) {
+    return true;
+  }
+
+  return false;
 }

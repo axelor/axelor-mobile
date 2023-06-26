@@ -16,14 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {attachedFilesReducer as attachedFiles} from './attachedFilesSlice';
-export {authReducer as auth} from './authSlice';
-export {default as cameraScanner} from './cameraScannerSlice';
-export {default as camera} from './cameraSlice';
-export {mailMessagesReducer as mailMessages} from './mailMessageSlice';
-export {menuConfigReducer as menuConfig} from './menuConfigSlice';
-export {metafileReducer as metafile} from './metafileSlice';
-export {metaModuleReducer as metaModule} from './metaModuleSlice';
-export {mobileConfigReducer as mobileConfig} from './mobileConfigSlice';
-export {onlineReducer as online} from './onlineSlice';
-export {default as scanner} from './scannerSlice';
+import {axiosApiProvider} from '../apiProviders';
+
+export const getAllMetaModules = () => {
+  return axiosApiProvider.get({url: 'ws/rest/com.axelor.meta.db.MetaModule'});
+};

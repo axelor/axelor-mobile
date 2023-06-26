@@ -32,6 +32,7 @@ import {
   filterAuthorizedModules,
   getDefaultModule,
   manageOverridingMenus,
+  manageWebCompatibility,
   moduleHasMenus,
   updateAccessibleMenus,
 } from './module.helper';
@@ -43,6 +44,7 @@ import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import AttachedFilesScreen from '../screens/AttachedFilesScreen';
 import MailMessageScreen from '../screens/MailMessageScreen';
 import Header from './drawer/Header';
+import {fetchMetaModules} from '../features/metaModuleSlice';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -63,6 +65,7 @@ const Navigator = ({
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
+  const {metaModules} = useSelector(state => state.metaModule);
 
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -70,10 +73,13 @@ const Navigator = ({
 
   const enabledModule = useMemo(
     () =>
-      manageOverridingMenus(
-        filterAuthorizedModules(modules, mobileConfigs, user),
+      manageWebCompatibility(
+        manageOverridingMenus(
+          filterAuthorizedModules(modules, mobileConfigs, user),
+        ),
+        metaModules,
       ),
-    [mobileConfigs, modules, user],
+    [metaModules, mobileConfigs, modules, user],
   );
 
   const [activeModule, setActiveModule] = useState(
@@ -82,6 +88,7 @@ const Navigator = ({
 
   useEffect(() => {
     dispatch(fetchMobileConfig());
+    dispatch(fetchMetaModules());
     dispatch(fetchMenuConfig());
   }, [dispatch]);
 
