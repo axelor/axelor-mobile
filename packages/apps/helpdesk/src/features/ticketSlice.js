@@ -61,7 +61,7 @@ export const fetchTicketById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getTicket,
       data,
-      action: 'Heldesk_Fetch_Ticket_ById',
+      action: 'Heldesk_fetch_Ticket_ById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -81,7 +81,7 @@ export const updateTicketStatus = createAsyncThunk(
       return handlerApiCall({
         fetchFunction: getTicket,
         data: {ticketId: res?.id},
-        action: 'Heldesk_Fetch_Ticket_ById',
+        action: 'Heldesk_fetch_Ticket_ById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

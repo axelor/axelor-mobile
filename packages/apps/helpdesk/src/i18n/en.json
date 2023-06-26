@@ -17,11 +17,7 @@
   "Helpdesk_myTickets": "My tickets",
   "Helpdesk_Status": "Status",
   "Helpdesk_Type": "Type",
-  "Helpdesk_fetch_myTicket": "fetch my tickets",
-  "Helpdesk_fetch_Ticket_Type": "fetch types tickets",
   "Helpdesk_myTeamTickets": "My team tickets",
-  "Helpdesk_fetch_myTeamTicket": "fetch my team tickets",
-  "Heldesk_Fetch_Ticket_ById": "fetch ticket by id",
   "Helpdesk_StartDate": "Start date",
   "Helpdesk_EndDate": "End date",
   "Helpdesk_Project": "Project",
@@ -29,7 +25,11 @@
   "Helpdesk_ContactPartner": "Customer Contact",
   "Helpdesk_General_Informations": "Général Informations",
   "Helpdesk_Timing": "Timing",
+  "Helpdesk_Validate": "Validate",
+  "Helpdesk_fetch_myTicket": "fetch my tickets",
+  "Helpdesk_fetch_Ticket_Type": "fetch types tickets",
+  "Helpdesk_fetch_myTeamTicket": "fetch my team tickets",
+  "Heldesk_fetch_Ticket_ById": "fetch ticket by id",
   "Heldesk_Fetch_Timer_ById": "fetch timer by id",
-  "Heldesk_UpdateTicketStatus": "Update Ticket Status",
-  "Helpdesk_Validate": "Validate"
+  "Heldesk_UpdateTicketStatus": "Update Ticket Status"
 }
