@@ -17,6 +17,7 @@
  */
 
 import {Module} from '../app';
+import {Compatibility} from '../app/Module';
 import {isMenuEnabled} from './menu.helper';
 import {userHaveAccessToConfig} from './roles.helper';
 
@@ -184,4 +185,40 @@ function firstModulesWithMenus(modules) {
 
 export function authModuleFilter(_module) {
   return _module.name !== 'Auth';
+}
+
+export function manageWebCompatibility(
+  modules: Module[],
+  metaModules: any[],
+): Module[] {
+  if (!Array.isArray(modules) || modules.length === 0) {
+    return [];
+  }
+
+  return modules.map((_module: Module): Module => {
+    if (_module.compatibilityAOS != null) {
+      const webModule = metaModules?.find(
+        _item => _item.name === _module.compatibilityAOS.moduleName,
+      );
+
+      return {
+        ..._module,
+        compatibilityAOS: {
+          ..._module.compatibilityAOS,
+          moduleVersion: webModule?.moduleVersion,
+        },
+      };
+    }
+    return _module;
+  });
+}
+
+export function formatCompatibilityToDisplay(
+  compatibility: Compatibility,
+): Compatibility {
+  return {
+    downToVersion: '-',
+    upToVersion: '-',
+    ...compatibility,
+  };
 }

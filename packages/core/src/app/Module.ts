@@ -58,11 +58,26 @@ export interface Models {
   headerRegisters?: Function;
 }
 
+type version = `${number}.${number}.${number}` | '-';
+
+export interface Compatibility {
+  /** Name of the web  module */
+  moduleName: string;
+  /** Version of the web module, this value will be filled in automatically with the information obtained from the web instance. */
+  moduleVersion?: version;
+  /** Minimum web module version (included) */
+  downToVersion?: version;
+  /** Maximum web module version (excluded) */
+  upToVersion?: version;
+}
+
 export interface Module {
   name: string;
   title?: string;
   subtitle?: string;
   icon?: string;
+  /** Detail compatibility with the web version */
+  compatibilityAOS?: Compatibility;
   disabled?: boolean;
   menus?: {
     [menuKey: string]: Menu;

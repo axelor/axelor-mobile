@@ -17,8 +17,11 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Icon, InfoBubble, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../i18n';
+import {isMenuIncompatible, isModuleNotFound} from '../menu.helper';
+import {formatCompatibilityToDisplay} from '../module.helper';
 
 const WIDTH = 54;
 const HEIGHT = 54;
@@ -33,15 +36,27 @@ const MenuIconButton = ({
   subtitle,
   rounded = false,
   disabled = false,
+  compatibility,
 }) => {
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const moduleNotFound = useMemo(
+    () => isModuleNotFound(compatibility),
+    [compatibility],
+  );
+
+  const compatibilityError = useMemo(
+    () => isMenuIncompatible(compatibility),
+    [compatibility],
+  );
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      disabled={disabled}
+      disabled={disabled || compatibilityError}
       activeOpacity={0.95}>
       <View
         style={[
@@ -65,6 +80,22 @@ const MenuIconButton = ({
               : Colors.secondaryColor_dark.background
           }
         />
+        {compatibilityError && (
+          <InfoBubble
+            style={styles.infoBubble}
+            iconName="exclamation-triangle"
+            badgeColor={Colors.errorColor}
+            textIndicationStyle={styles.textIndicationStyle}
+            indication={I18n.t(
+              moduleNotFound
+                ? 'Base_Compatibily_NotFoundDetails'
+                : 'Base_Compatibily_ErrorDetails',
+              {
+                compatibility: formatCompatibilityToDisplay(compatibility),
+              },
+            )}
+          />
+        )}
       </View>
       {subtitle && (
         <Text style={styles.moduleSubtitle} numberOfLines={1}>
@@ -86,11 +117,21 @@ const getStyles = Colors =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
+      zIndex: 10,
     },
     moduleSubtitle: {
       fontSize: 10,
       maxWidth: 54,
       alignSelf: 'center',
+    },
+    infoBubble: {
+      position: 'absolute',
+      bottom: -10,
+      right: -10,
+    },
+    textIndicationStyle: {
+      width: Dimensions.get('window').width * 0.6,
+      top: 0,
     },
   });
 

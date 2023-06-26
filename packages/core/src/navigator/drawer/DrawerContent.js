@@ -23,28 +23,23 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import {StyleSheet, View, Animated, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Animated} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  IconButton,
-  PopUp,
-  Text,
-  useThemeColor,
-  useConfig,
-} from '@axelor/aos-mobile-ui';
+import {CommonActions, DrawerActions} from '@react-navigation/native';
+import {useThemeColor, useConfig} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuIconButton from './MenuIconButton';
 import Menu from './Menu';
 import {moduleHasMenus, numberOfModules} from '../module.helper';
-import {getMenuTitle} from '../menu.helper';
-import useTranslator from '../../i18n/hooks/use-translator';
+import {useTranslator} from '../../i18n';
 import {authModule} from '../../auth';
-import {CommonActions, DrawerActions} from '@react-navigation/native';
 import AuthMenuIconButton from './AuthMenuIconButton';
-import {useDispatch} from '../../redux/hooks';
-import {logout} from '../../features/authSlice';
-import {useSelector} from 'react-redux';
-import {PopupMinimalRequiredVersion} from '../../components';
+import {useSelector} from '../../redux/hooks';
+import {
+  PopupApplicationNotConfigured,
+  PopupMinimalRequiredVersion,
+} from '../../components';
+import MenuTitle from './MenuTitle';
 
 const DrawerContent = ({
   state,
@@ -81,7 +76,6 @@ const DrawerContent = ({
 
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
 
   const {showSubtitles} = useConfig();
 
@@ -182,30 +176,7 @@ const DrawerContent = ({
   };
 
   if (numberOfModules(drawerModules) === 0) {
-    return (
-      <PopUp
-        visible={true}
-        title={I18n.t('Base_Information')}
-        data={I18n.t('Base_NoAppConfigured')}>
-        <View style={styles.btnContainer}>
-          <IconButton
-            title={I18n.t('Base_Refresh')}
-            iconName="refresh"
-            FontAwesome5={false}
-            color={Colors.secondaryColor}
-            onPress={onRefresh}
-            style={styles.btn}
-          />
-          <IconButton
-            title={I18n.t('Base_Logout')}
-            iconName="power-off"
-            color={Colors.errorColor}
-            onPress={() => dispatch(logout())}
-            style={styles.btn}
-          />
-        </View>
-      </PopUp>
-    );
+    return <PopupApplicationNotConfigured onRefresh={onRefresh} />;
   }
 
   if (
@@ -238,6 +209,7 @@ const DrawerContent = ({
                       : null
                   }
                   onPress={() => onModuleClick(_module.name)}
+                  compatibility={_module.compatibilityAOS}
                 />
               </View>
             ))}
@@ -254,16 +226,11 @@ const DrawerContent = ({
       <View style={styles.menusContainer}>
         <View>
           {drawerModules.map(_module => (
-            <TouchableOpacity
+            <MenuTitle
               key={_module.name}
-              style={styles.menuItemContainer}
-              onPress={() => onModuleClick(_module.name)}>
-              <Text
-                style={styles.primaryMenuTitle}
-                textColor={Colors.secondaryColor_dark.background}>
-                {getMenuTitle(_module, {I18n})}
-              </Text>
-            </TouchableOpacity>
+              module={_module}
+              onPress={() => onModuleClick(_module.name)}
+            />
           ))}
         </View>
         <Animated.View
@@ -307,6 +274,7 @@ const getStyles = Colors =>
       flexDirection: 'row',
       backgroundColor: Colors.screenBackgroundColor,
       overflow: 'hidden',
+      zIndex: 2,
     },
     menusContainer: {
       flex: 1,
@@ -315,6 +283,7 @@ const getStyles = Colors =>
       justifyContent: 'space-between',
       alignItems: 'center',
       marginHorizontal: 12,
+      zIndex: 3,
     },
     otherIconsContainer: {
       marginVertical: 8,
@@ -323,11 +292,7 @@ const getStyles = Colors =>
       height: 60,
       marginVertical: 8,
       justifyContent: 'center',
-    },
-    primaryMenuTitle: {
-      marginHorizontal: 6,
-      fontSize: 24,
-      fontWeight: 'bold',
+      zIndex: 5,
     },
     secondaryMenusContainer: {
       position: 'absolute',
@@ -340,17 +305,6 @@ const getStyles = Colors =>
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
-    },
-    subMenuContainer: {
-      padding: 8,
-    },
-    btnContainer: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    btn: {
-      width: '100%',
     },
   });
 
