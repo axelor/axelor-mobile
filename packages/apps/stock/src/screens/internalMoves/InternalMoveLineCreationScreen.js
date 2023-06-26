@@ -94,7 +94,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     (_step = CREATION_STEP.original_stockLocation) => {
       setCurrentStep(_step);
 
-      if (_step <= CREATION_STEP.destination_stockLocation) {
+      if (_step === CREATION_STEP.destination_stockLocation) {
         setDestinationStockLocation(null);
       }
 
@@ -105,6 +105,11 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
       if (_step <= CREATION_STEP.original_stockLocation) {
         setOriginalStockLocation(null);
+        setDestinationStockLocation(null);
+      }
+
+      if (_step === CREATION_STEP.validation) {
+        setMovedQty(0);
       }
     },
     [],
@@ -131,11 +136,15 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
     });
   };
 
+  const handleOnContinue = useCallback(() => {
+    handleReset(CREATION_STEP.validation);
+  }, [handleReset]);
+
   return (
     <Screen
       fixedItems={
         <InternalMoveLineCreationButton
-          onContinue={handleReset}
+          onContinue={handleOnContinue}
           hideIf={currentStep !== CREATION_STEP.validation}
           product={stockLocationLine?.product}
           trackingNumber={stockLocationLine?.trackingNumber}
@@ -162,7 +171,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
         ) : null}
-        {currentStep >= CREATION_STEP.destination_stockLocation ? (
+        {stockLocationLine ? (
           <>
             <ProductCardInfo
               name={stockLocationLine?.product?.name}
@@ -185,6 +194,11 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
               plannedQty={stockLocationLine?.currentQty}
               status={StockMove.status.Draft}
             />
+          </>
+        ) : null}
+        {currentStep >= CREATION_STEP.destination_stockLocation ||
+        destinationStockLocation ? (
+          <>
             <StockLocationSearchBar
               placeholderKey="Stock_DestinationStockLocation"
               scanKey={destinationStockLocationScanKey}
