@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import DocumentPicker, {
   DocumentPickerResponse,
@@ -25,7 +25,6 @@ import DocumentPicker, {
 import {
   CircleButton,
   Text,
-  Card,
   getCommonStyles,
   useThemeColor,
   ThemeColors,
@@ -98,7 +97,7 @@ const UploadFileInput = ({
   };
 
   return (
-    <Card
+    <View
       style={[
         styles.container,
         commonStyles.filter,
@@ -114,7 +113,7 @@ const UploadFileInput = ({
           : I18n.t('Base_ChooseFile')}
       </Text>
       <CircleButton iconName="plus" size={30} onPress={handleDocumentPick} />
-    </Card>
+    </View>
   );
 };
 
