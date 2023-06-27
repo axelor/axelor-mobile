@@ -79,10 +79,10 @@ export const updateLeadScore = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateLeadScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: getLead,
-        data: {leadId: res?.id},
+        data,
         action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -100,10 +100,10 @@ export const updateLead = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateLead',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: getLead,
-        data: {leadId: data?.id},
+        data: {leadId: data?.lead?.id},
         action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},

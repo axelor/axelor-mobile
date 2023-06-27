@@ -57,6 +57,7 @@ const useLeadListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_list', {
       actions: [
@@ -92,6 +93,7 @@ const useOpportunityListActions = () => {
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const I18n = useTranslator();
+
   useEffect(() => {
     headerActionsProvider.registerModel('crm_opportunity_list', {
       actions: [
@@ -154,9 +156,9 @@ export const useCRMHeaders = () => {
   useClientDetailsActions();
   useContactDetailsActions();
   useEventDetailsActions();
+  useLeadListActions();
   useLeadDetailsActions();
+  useOpportunityListActions();
   useOpportunityDetailsActions();
   useProspectDetailsActions();
-  useLeadListActions();
-  useOpportunityListActions();
 };

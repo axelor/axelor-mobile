@@ -19,19 +19,14 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  AutoCompleteSearch,
-  Text,
-  useThemeColor,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ClientProspectSearchBar = ({
   placeholderKey = 'Crm_ClientProspect',
   titleKey = 'Crm_ClientProspect',
-  defaultValue = '',
+  defaultValue = null,
   onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
@@ -66,9 +61,7 @@ const ClientProspectSearchBar = ({
       )}
       <AutoCompleteSearch
         style={[
-          checkNullString(defaultValue) && required
-            ? styles.requiredBorder
-            : null,
+          defaultValue == null && required ? styles.requiredBorder : null,
         ]}
         objectList={clientAndProspectList}
         value={defaultValue}

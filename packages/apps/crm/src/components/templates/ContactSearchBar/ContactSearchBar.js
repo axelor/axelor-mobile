@@ -19,18 +19,13 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  AutoCompleteSearch,
-  useThemeColor,
-  Text,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactSearchBar = ({
   placeholderKey = 'Crm_Contacts',
-  defaultValue = '',
+  defaultValue = null,
   onChange = () => {},
   showDetailsPopup = true,
   navigate = false,
@@ -66,9 +61,7 @@ const ContactSearchBar = ({
       )}
       <AutoCompleteSearch
         style={[
-          checkNullString(defaultValue) && required
-            ? styles.requiredBorder
-            : null,
+          defaultValue == null && required ? styles.requiredBorder : null,
         ]}
         objectList={contactList}
         value={defaultValue}

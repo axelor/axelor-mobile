@@ -20,6 +20,7 @@ import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
   Checkbox,
+  checkNullString,
   FormHtmlInput,
   FormInput,
   KeyboardAvoidingScrollView,
@@ -30,30 +31,27 @@ import {
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchFunction} from '../../features/functionSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
-import {ValidateButtonLead} from '../../components';
+import {LeadValidateButton} from '../../components';
 
-const hasRequiredField = object => {
-  if (object.name == null) {
-    return true;
-  }
-  return false;
-};
+const isObjectMissingRequiredField = object => checkNullString(object?.name);
 
-const LeadFormScreen = ({navigation, route}) => {
+const LeadFormScreen = ({route}) => {
   const idLead = route.params.idLead;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
   const {civilityList} = useCivilityList();
 
-  const [_lead, setLead] = useState(idLead != null ? lead : {});
-  const [disabledButton, setDisabledButton] = useState(
-    idLead != null ? hasRequiredField(lead) : true,
+  const [_lead, setLead] = useState(
+    idLead != null
+      ? lead
+      : {leadScoringSelect: 0, isDoNotSendEmail: false, isDoNotCall: false},
   );
-  const [score, setScore] = useState(
-    idLead != null ? lead.leadScoringSelect : 0,
+  const [score, setScore] = useState(_lead.leadScoringSelect);
+  const [disabledButton, setDisabledButton] = useState(
+    isObjectMissingRequiredField(_lead),
   );
 
   const handleLeadFieldChange = (newValue, fieldName) => {
@@ -64,12 +62,12 @@ const LeadFormScreen = ({navigation, route}) => {
       current[fieldName] = newValue;
       return current;
     });
-    setDisabledButton(hasRequiredField(_lead));
+    setDisabledButton(isObjectMissingRequiredField(_lead));
   };
 
-  const handleChangeScore = (newValue, fieldName) => {
+  const handleChangeScore = newValue => {
     setScore(newValue);
-    handleLeadFieldChange(newValue, fieldName);
+    handleLeadFieldChange(newValue, 'leadScoringSelect');
   };
 
   useEffect(() => {
@@ -98,7 +96,7 @@ const LeadFormScreen = ({navigation, route}) => {
               <StarScore
                 score={score}
                 showMissingStar={true}
-                onPress={value => handleChangeScore(value, 'leadScoringSelect')}
+                onPress={handleChangeScore}
                 editMode={true}
               />
               <Checkbox
@@ -192,7 +190,7 @@ const LeadFormScreen = ({navigation, route}) => {
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <ValidateButtonLead
+      <LeadValidateButton
         _lead={_lead}
         idLead={idLead}
         disabled={disabledButton}

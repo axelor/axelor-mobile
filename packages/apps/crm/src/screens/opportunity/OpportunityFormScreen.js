@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
   FormHtmlInput,
@@ -33,28 +33,22 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
+import {fetchCompanyById} from '../../features/companySlice';
 import {
   ClientProspectSearchBar,
   ContactSearchBar,
-  ValidateButtonOpportunity,
+  OpportunityValidateButton,
 } from '../../components';
-import {fetchCompanyById} from '../../features/companySlice';
 
-const hasRequiredField = object => {
-  if (
-    object.partner == null ||
-    object.contact == null ||
-    object.opportunityStatus == null
-  ) {
-    return true;
-  }
-  return false;
-};
+const isObjectMissingRequiredField = object =>
+  object.partner == null ||
+  object.contact == null ||
+  object.opportunityStatus == null;
 
-const OpportunityFormScreen = ({navigation, route}) => {
+const OpportunityFormScreen = ({route}) => {
   const idOpportunity = route.params.opportunityId;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
 
@@ -64,30 +58,59 @@ const OpportunityFormScreen = ({navigation, route}) => {
   );
 
   const [_opportunity, setOpportunity] = useState(
-    idOpportunity != null ? opportunity : {amount: 0, recurrentAmount: 0},
+    idOpportunity != null
+      ? opportunity
+      : {
+          amount: 0,
+          recurrentAmount: 0,
+          opportunityRating: 0,
+          probability: '0',
+          worstCase: '0',
+          expectedDurationOfRecurringRevenue: 0,
+          bestCase: '0',
+        },
   );
+  const [score, setScore] = useState(_opportunity.opportunityRating);
+  const [partner, setPartner] = useState(_opportunity.partner);
+  const [contact, setContact] = useState(_opportunity.contact);
   const [disabledButton, setDisabledButton] = useState(
-    idOpportunity != null ? hasRequiredField(opportunity) : true,
-  );
-  const [score, setScore] = useState(
-    idOpportunity != null ? opportunity.opportunityRating : 0,
+    isObjectMissingRequiredField(_opportunity),
   );
 
-  const handleOpportunityFieldChange = (newValue, fieldName) => {
+  const handleOpportunityFieldChange = useCallback((newValue, fieldName) => {
     setOpportunity(current => {
       if (!current) {
         return {[fieldName]: newValue};
       }
       current[fieldName] = newValue;
+      setDisabledButton(isObjectMissingRequiredField(current));
       return current;
     });
-    setDisabledButton(hasRequiredField(_opportunity));
-  };
+  }, []);
 
-  const handleChangeScore = (newValue, fieldName) => {
-    setScore(newValue);
-    handleOpportunityFieldChange(newValue, fieldName);
-  };
+  const handleChangeScore = useCallback(
+    newValue => {
+      setScore(newValue);
+      handleOpportunityFieldChange(newValue, 'opportunityRating');
+    },
+    [handleOpportunityFieldChange],
+  );
+
+  const handleChangePartner = useCallback(
+    newValue => {
+      setPartner(newValue);
+      handleOpportunityFieldChange(newValue, 'partner');
+    },
+    [handleOpportunityFieldChange],
+  );
+
+  const handleChangeContact = useCallback(
+    newValue => {
+      setContact(newValue);
+      handleOpportunityFieldChange(newValue, 'contact');
+    },
+    [handleOpportunityFieldChange],
+  );
 
   useEffect(() => {
     dispatch(fetchCrmConfigApi());
@@ -111,7 +134,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
             style={styles.score}
             score={score}
             showMissingStar={true}
-            onPress={value => handleChangeScore(value, 'opportunityRating')}
+            onPress={handleChangeScore}
             editMode={true}
           />
         </View>
@@ -123,8 +146,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
           <ClientProspectSearchBar
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
-            defaultValue={_opportunity.partner}
-            onChange={value => handleOpportunityFieldChange(value, 'partner')}
+            defaultValue={partner}
+            onChange={handleChangePartner}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
             required={true}
@@ -132,10 +155,8 @@ const OpportunityFormScreen = ({navigation, route}) => {
           <ContactSearchBar
             titleKey="Crm_Contact"
             placeholderKey="Crm_Contact"
-            defaultValue={_opportunity.contact}
-            onChange={value =>
-              handleOpportunityFieldChange({id: value?.id}, 'contact')
-            }
+            defaultValue={contact}
+            onChange={handleChangeContact}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
             required={true}
@@ -190,14 +211,14 @@ const OpportunityFormScreen = ({navigation, route}) => {
             valueField="id"
             emptyValue={false}
             onValueChange={value =>
-              handleOpportunityFieldChange(value, 'opportunityStatus')
+              handleOpportunityFieldChange({id: value}, 'opportunityStatus')
             }
             isScrollViewContainer={true}
             required={true}
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <ValidateButtonOpportunity
+      <OpportunityValidateButton
         _opportunity={_opportunity}
         idOpportunity={idOpportunity}
         disabled={disabledButton}

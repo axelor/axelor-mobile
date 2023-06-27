@@ -28,13 +28,13 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   createOpportunity,
   updateOpportunity,
-} from '../../../features/opportunitySlice';
+} from '../../../../features/opportunitySlice';
 
-const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
+const OpportunityValidateButton = ({_opportunity, idOpportunity, disabled}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
   const {company} = useSelector(state => state.company);
@@ -50,17 +50,14 @@ const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
           name: _opportunity.partner?.fullName,
           amount: _opportunity.amount,
           recurrentAmount: _opportunity.recurrentAmount,
-          probability: '0',
-          worstCase: '0',
-          expectedDurationOfRecurringRevenue: 0,
-          bestCase: '0',
           company: user.activeCompany,
           team: user.activeTeam,
-          opportunityStatus: {id: _opportunity.opportunityStatus},
+          opportunityStatus: _opportunity.opportunityStatus,
           currency: company?.currency,
         },
       }),
     );
+
     navigation.navigate('OpportunityListScreen');
   }, [dispatch, _opportunity, user, navigation, company]);
 
@@ -91,7 +88,7 @@ const ValidateButtonOpportunity = ({_opportunity, idOpportunity, disabled}) => {
           idOpportunity != null ? updateOpportunityAPI : createOpportinityAPI
         }
         disabled={disabled}
-        color={disabled ? Colors.secondaryColor : Colors.primayColor}
+        color={disabled ? Colors.secondaryColor : Colors.primaryColor}
       />
     </View>
   );
@@ -107,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ValidateButtonOpportunity;
+export default OpportunityValidateButton;

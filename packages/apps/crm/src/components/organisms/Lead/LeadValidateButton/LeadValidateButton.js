@@ -25,13 +25,13 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {createLead, updateLead} from '../../../features/leadSlice';
+import {createLead, updateLead} from '../../../../features/leadSlice';
 
-const ValidateButtonLead = ({idLead, _lead, disabled}) => {
+const LeadValidateButton = ({idLead, _lead, disabled}) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
   const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
 
@@ -47,6 +47,7 @@ const ValidateButtonLead = ({idLead, _lead, disabled}) => {
         },
       }),
     );
+
     navigation.navigate('LeadDetailsScreen', {
       idLead: _lead.id,
     });
@@ -61,6 +62,7 @@ const ValidateButtonLead = ({idLead, _lead, disabled}) => {
         },
       }),
     );
+
     navigation.navigate('LeadListScreen');
   }, [dispatch, _lead, userId, navigation]);
 
@@ -70,7 +72,7 @@ const ValidateButtonLead = ({idLead, _lead, disabled}) => {
         title={I18n.t('Base_Save')}
         onPress={idLead != null ? updateLeadAPI : createLeadAPI}
         disabled={disabled}
-        color={disabled ? Colors.secondaryColor : Colors.primayColor}
+        color={disabled ? Colors.secondaryColor : Colors.primaryColor}
       />
     </View>
   );
@@ -86,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ValidateButtonLead;
+export default LeadValidateButton;
