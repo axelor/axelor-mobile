@@ -16,8 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
+import {
+  headerActionsProvider,
+  useSelector,
+  useNavigation,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
 
 const useClientDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
@@ -47,6 +53,28 @@ const useContactDetailsActions = () => {
   }, [mobileSettings, contact]);
 };
 
+const useLeadListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_lead_list', {
+      actions: [
+        {
+          key: 'newLead',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Crm_NewLead'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('LeadFormScreen', {}),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
+};
+
 const useLeadDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {lead} = useSelector((state: any) => state.lead);
@@ -59,6 +87,28 @@ const useLeadDetailsActions = () => {
       attachedFileScreenTitle: lead?.simpleFullName,
     });
   }, [mobileSettings, lead]);
+};
+
+const useOpportunityListActions = () => {
+  const Colors = useThemeColor();
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('crm_opportunity_list', {
+      actions: [
+        {
+          key: 'newOpportunity',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Crm_NewOpportunity'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('OpportunityFormScreen', {}),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
 };
 
 const useOpportunityDetailsActions = () => {
@@ -106,7 +156,9 @@ export const useCRMHeaders = () => {
   useClientDetailsActions();
   useContactDetailsActions();
   useEventDetailsActions();
+  useLeadListActions();
   useLeadDetailsActions();
+  useOpportunityListActions();
   useOpportunityDetailsActions();
   useProspectDetailsActions();
 };

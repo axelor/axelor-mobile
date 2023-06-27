@@ -29,6 +29,7 @@ import {
   updateOpportunityStatus as _updateOpportunityStatus,
   updateOpportunity as _updateOpportunity,
   updateOpportunityScoring as _updateOpportunityScoring,
+  createOpportunity as _createOpportunity,
 } from '../api/opportunities-api';
 import {Opportunity} from '../types';
 
@@ -80,7 +81,7 @@ export const updateOpportunityStatus = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateOpportunityStatus',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res =>
+    }).then(() =>
       handlerApiCall({
         fetchFunction: _getOpportunity,
         data: {opportunityId: data?.opportunityId},
@@ -101,7 +102,7 @@ export const updateOpportunityScore = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateOpportunityScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
         data: {opportunityId: data?.opportunityId},
@@ -122,13 +123,34 @@ export const updateOpportunity = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateOpportunity',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: _getOpportunity,
-        data: {opportunityId: data?.opportunityId},
+        data: {opportunityId: data?.opportunity?.id},
         action: 'Crm_SliceAction_GetOpportunity',
         getState,
         responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const createOpportunity = createAsyncThunk(
+  'opportunity/createOpportunity',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createOpportunity,
+      data,
+      action: 'Crm_SliceAction_CreateOpportunity',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchOpportunities,
+        data,
+        action: 'Crm_SliceAction_FetchOpportunities',
+        getState,
+        responseOptions: {isArrayResponse: true},
       });
     });
   },
@@ -206,6 +228,13 @@ const opportunitySlice = createSlice({
       state.opportunityList = updateAgendaItems(state.opportunityList, [
         action.payload,
       ]);
+    });
+    builder.addCase(createOpportunity.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(createOpportunity.fulfilled, (state, action) => {
+      state.loading = false;
+      state.opportunityList = action.payload;
     });
   },
 });
