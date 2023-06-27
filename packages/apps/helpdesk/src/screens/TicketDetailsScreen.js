@@ -138,7 +138,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
         {ticket?.statusSelect !== Ticket.status.Closed &&
           ticket?.statusSelect !== Ticket.status.New && (
             <Button
-              title={I18n.t('Helpdesk_Closed')}
+              title={I18n.t('Helpdesk_Close')}
               onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
               color={Colors.cautionColor}
               disabled={

@@ -44,7 +44,7 @@ const TicketDropdownCards = ({}) => {
         styleTitle={styles.textTitle}
         dropdownItems={[
           {
-            title: I18n.t('Helpdesk_General_Informations'),
+            title: I18n.t('Helpdesk_GeneralInformations'),
             key: 1,
             childrenComp: (
               <>

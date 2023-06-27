@@ -27,7 +27,7 @@ export const fetchTimerById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getTimer,
       data,
-      action: 'Heldesk_Fetch_Timer_ById',
+      action: 'Helpdesk_SliceAction_FetchTimerById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -40,7 +40,7 @@ export const searchTimerHistoryById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchTimerHistoryWithId,
       data,
-      action: 'Heldesk_Fetch_TimerHistory_WithId',
+      action: 'Helpdesk_SliceAction_FetchTimerHistory',
       getState,
       responseOptions: {isArrayResponse: true},
     });

@@ -26,7 +26,7 @@ export const fetchHelpdeskConfig = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _fetchHelpdeskConfig,
       data,
-      action: 'Helpdesk_FetchHelpdeskConfig',
+      action: 'Helpdesk_SliceAction_FetchHelpdeskConfig',
       getState,
       responseOptions: {isArrayResponse: false},
       errorOptions: {showErrorToast: false, errorTracing: false},

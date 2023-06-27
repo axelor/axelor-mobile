@@ -35,7 +35,7 @@ export const fetchTickets = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchTickets,
       data,
-      action: 'Helpdesk_fetch_myTicket',
+      action: 'Helpdesk_SliceAction_FetchMyTicket',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -48,7 +48,7 @@ export const fetchTicketType = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getTicketType,
       data,
-      action: 'Helpdesk_fetch_Ticket_Type',
+      action: 'Helpdesk_SliceAction_FetchTicketType',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -61,7 +61,7 @@ export const fetchTicketById = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getTicket,
       data,
-      action: 'Heldesk_fetch_Ticket_ById',
+      action: 'Helpdesk_SliceAction_FetchTicketById',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -74,14 +74,14 @@ export const updateTicketStatus = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: updateStatusTicket,
       data,
-      action: 'Heldesk_UpdateTicketStatus',
+      action: 'Helpdesk_SliceAction_UpdateTicketStatus',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
       return handlerApiCall({
         fetchFunction: getTicket,
         data: {ticketId: data?.ticketId},
-        action: 'Heldesk_fetch_Ticket_ById',
+        action: 'Helpdesk_SliceAction_FetchTicketById',
         getState,
         responseOptions: {isArrayResponse: false},
       });
