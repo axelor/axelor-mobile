@@ -58,7 +58,7 @@ export async function fetchFileDetails({listFiles, isMetaFile}) {
 
 export async function uploadFile(
   file: DocumentPickerResponse,
-  {baseUrl, jsessionId, token},
+  {baseUrl, jsessionId, token, returnBase64String},
 ) {
   if (file == null) {
     return;
@@ -67,6 +67,10 @@ export async function uploadFile(
   return new Promise<any>(async (resolve, reject) => {
     try {
       const base64Data = await RNFS.readFile(file.uri, 'base64');
+
+      if (returnBase64String) {
+        resolve(`data:${file.type};base64,${base64Data}`);
+      }
 
       const headers = {
         'Content-Type': 'application/octet-stream',

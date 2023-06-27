@@ -20,8 +20,13 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
-import {searchCatalog, getCatalogType} from '../api/catalog-api';
+import {
+  searchCatalog,
+  getCatalogType,
+  createCatalog as _createCatalog,
+} from '../api/catalog-api';
 
 export const fetchCatalog = createAsyncThunk(
   'catalog/fetchCatalog',
@@ -45,6 +50,19 @@ export const fetchCatalogType = createAsyncThunk(
       action: 'Crm_SliceAction_FetchCatalogType',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const createCatalog = createAsyncThunk(
+  'catalog/createCatalog',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createCatalog,
+      data,
+      action: 'Crm_SliceAction_CreateCatalog',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -74,6 +92,15 @@ const catalogSlice = createSlice({
     builder.addCase(fetchCatalogType.fulfilled, (state, action) => {
       state.loadingCatalogType = false;
       state.catalogTypeList = action.payload;
+    });
+    builder.addCase(createCatalog.pending, (state, action) => {
+      state.loadingCatalog = true;
+    });
+    builder.addCase(createCatalog.fulfilled, (state, action) => {
+      state.loadingCatalog = false;
+      state.catalogList = updateAgendaItems(state.catalogList, [
+        action.payload,
+      ]);
     });
   },
 });
