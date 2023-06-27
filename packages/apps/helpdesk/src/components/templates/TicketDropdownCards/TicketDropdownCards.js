@@ -22,7 +22,7 @@ import {checkNullString, DropdownCardSwitch, Text} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
-  formatDateTime,
+  formatDateTime as _formatDateTime,
   formatDuration,
 } from '@axelor/aos-mobile-core';
 
@@ -30,6 +30,13 @@ const TicketDropdownCards = ({}) => {
   const I18n = useTranslator();
 
   const {ticket} = useSelector(state => state.ticket);
+
+  const formatDateTime = (titleKey, value) => {
+    return `${I18n.t(titleKey)}: ${_formatDateTime(
+      value,
+      I18n.t('Base_DateTimeFormat'),
+    )}`;
+  };
 
   return (
     <View style={styles.container}>
@@ -75,22 +82,19 @@ const TicketDropdownCards = ({}) => {
             childrenComp: (
               <>
                 {!checkNullString(ticket.deadlineDateT) && (
-                  <Text>{`${I18n.t('Helpdesk_Deadline')}: ${formatDateTime(
-                    ticket.deadlineDateT,
-                    I18n.t('Base_DateTimeFormat'),
-                  )}`}</Text>
+                  <Text>
+                    {formatDateTime('Helpdesk_Deadline', ticket.deadlineDateT)}
+                  </Text>
                 )}
                 {!checkNullString(ticket.startDateT) && (
-                  <Text>{`${I18n.t('Helpdesk_StartDate')}: ${formatDateTime(
-                    ticket.startDateT,
-                    I18n.t('Base_DateTimeFormat'),
-                  )}`}</Text>
+                  <Text>
+                    {formatDateTime('Helpdesk_StartDate', ticket.startDateT)}
+                  </Text>
                 )}
                 {!checkNullString(ticket.endDateT) && (
-                  <Text>{`${I18n.t('Helpdesk_EndDate')}: ${formatDateTime(
-                    ticket.endDateT,
-                    I18n.t('Base_DateTimeFormat'),
-                  )}`}</Text>
+                  <Text>
+                    {formatDateTime('Helpdesk_EndDate', ticket.endDateT)}
+                  </Text>
                 )}
                 {ticket.duration !== null && (
                   <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(

@@ -169,7 +169,7 @@ const useEventDetailsActions = () => {
   const {event} = useSelector((state: any) => state.event);
 
   useEffect(() => {
-    headerActionsProvider.registerModel('useEventDetailsActions', {
+    headerActionsProvider.registerModel('crm_event_details', {
       model: 'com.axelor.apps.crm.db.Event',
       modelId: event?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,

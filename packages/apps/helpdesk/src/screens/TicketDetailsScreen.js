@@ -33,7 +33,11 @@ import {
   getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
 import {fetchTicketById, updateTicketStatus} from '../features/ticketSlice';
-import {TicketHeader, TicketDropdownCards, TicketBottom} from '../components';
+import {
+  TicketHeader,
+  TicketDropdownCards,
+  TicketEditButton,
+} from '../components';
 import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
 import {Ticket} from '../types';
 import {fetchHelpdeskConfigApi} from '../features/helpdeskConfigSlice';
@@ -161,7 +165,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
           }
         />
       </ScrollView>
-      <TicketBottom idTicket={idTicket} />
+      <TicketEditButton idTicket={idTicket} />
     </Screen>
   );
 };

@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {useNavigation} from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
 
-const TicketBottom = ({idTicket}) => {
+const TicketEditButton = ({idTicket}) => {
   const navigation = useNavigation();
   return (
     <CircleButton
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TicketBottom;
+export default TicketEditButton;

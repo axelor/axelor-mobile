@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
 
 export async function fetchHelpdeskConfig() {
-  return axiosApiProvider.get({
-    url: '/ws/rest/com.axelor.studio.db.AppHelpdesk',
-  });
+  const route = await RouterProvider.get('AppHeldesk');
+
+  return axiosApiProvider.get({url: route});
 }
