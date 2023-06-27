@@ -37,10 +37,11 @@ import {
   TicketHeader,
   TicketDropdownCards,
   TicketEditButton,
+  TicketsStatusButton,
 } from '../components';
 import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
 import {Ticket} from '../types';
-import {fetchHelpdeskConfigApi} from '../features/helpdeskConfigSlice';
+import {fetchHelpdeskConfig} from '../features/helpdeskConfigSlice';
 
 const TicketDetailsScreen = ({navigation, route}) => {
   const {idTicket, colorIndex} = route.params;
@@ -53,7 +54,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
   const {helpdeskConfig} = useSelector(state => state.helpdeskConfig);
 
   useEffect(() => {
-    dispatch(fetchHelpdeskConfigApi());
+    dispatch(fetchHelpdeskConfig());
   }, [dispatch]);
 
   useEffect(() => {
@@ -139,31 +140,20 @@ const TicketDetailsScreen = ({navigation, route}) => {
             disable={disbaled}
           />
         ) : (
-          <>
+          <TicketsStatusButton />
+        )}
+        {ticket?.statusSelect !== Ticket.status.Closed &&
+          ticket?.statusSelect !== Ticket.status.New && (
             <Button
-              title={I18n.t('Helpdesk_Start')}
-              onPress={() => updateStatus(Ticket.stopWatchStatus.start)}
-              disabled={disbaled || ticket?.statusSelect !== Ticket.status.New}
-              color={Colors.progressColor}
-            />
-            <Button
-              title={I18n.t('Helpdesk_Resolve')}
-              onPress={() => updateStatus(Ticket.stopWatchStatus.stop)}
+              title={I18n.t('Helpdesk_Closed')}
+              onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
+              color={Colors.cautionColor}
               disabled={
-                disbaled || ticket?.statusSelect !== Ticket.status.In_Progress
+                ticket?.statusSelect === Ticket.status.Closed ||
+                ticket?.statusSelect === Ticket.status.New
               }
             />
-          </>
-        )}
-        <Button
-          title={I18n.t('Helpdesk_Closed')}
-          onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
-          color={Colors.cautionColor}
-          disabled={
-            ticket?.statusSelect === Ticket.status.Closed ||
-            ticket?.statusSelect === Ticket.status.New
-          }
-        />
+          )}
       </ScrollView>
       <TicketEditButton idTicket={idTicket} />
     </Screen>

@@ -18,13 +18,13 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {fetchHelpdeskConfig} from '../api/helpdesk-config-api';
+import {fetchHelpdeskConfig as _fetchHelpdeskConfig} from '../api/helpdesk-config-api';
 
-export const fetchHelpdeskConfigApi = createAsyncThunk(
-  'AppHelpdesk/fetchHelpdeskConfigApi',
+export const fetchHelpdeskConfig = createAsyncThunk(
+  'AppHelpdesk/fetchHelpdeskConfig',
   async function (data = {}, {getState}) {
     return handlerApiCall({
-      fetchFunction: fetchHelpdeskConfig,
+      fetchFunction: _fetchHelpdeskConfig,
       data,
       action: 'Helpdesk_FetchHelpdeskConfig',
       getState,
@@ -43,10 +43,10 @@ const helpdeskConfigSlice = createSlice({
   name: 'helpdeskConfig',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchHelpdeskConfigApi.pending, state => {
+    builder.addCase(fetchHelpdeskConfig.pending, state => {
       state.loadingConfig = true;
     });
-    builder.addCase(fetchHelpdeskConfigApi.fulfilled, (state, action) => {
+    builder.addCase(fetchHelpdeskConfig.fulfilled, (state, action) => {
       state.loadingConfig = false;
       state.helpdeskConfig = action.payload;
     });

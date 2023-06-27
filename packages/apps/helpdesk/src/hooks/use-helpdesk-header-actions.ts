@@ -33,6 +33,6 @@ const useHeldpeskTicketDetailsActions = () => {
   }, [mobileSettings, ticket]);
 };
 
-export const useHELPDESKHeaders = () => {
+export const useHelpdeskHeaders = () => {
   useHeldpeskTicketDetailsActions();
 };

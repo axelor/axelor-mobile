@@ -20,3 +20,4 @@ export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
+export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
