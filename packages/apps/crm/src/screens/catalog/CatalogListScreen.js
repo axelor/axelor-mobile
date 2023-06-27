@@ -90,6 +90,10 @@ const CatalogListScreen = ({navigation}) => {
     [catalogList, filterOnStatus],
   );
 
+  if (crmConfig?.isManageCatalogs == null) {
+    return null;
+  }
+
   if (!crmConfig?.isManageCatalogs) {
     return (
       <View>

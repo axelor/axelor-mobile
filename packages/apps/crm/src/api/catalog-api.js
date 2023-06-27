@@ -41,3 +41,24 @@ export async function getCatalogType() {
     url: '/ws/rest/com.axelor.apps.crm.db.CatalogType/',
   });
 }
+
+export async function createCatalog({
+  name,
+  idCatalogType,
+  pdfFile,
+  image,
+  description,
+}) {
+  return axiosApiProvider.put({
+    url: '/ws/rest/com.axelor.apps.crm.db.Catalog/',
+    data: {
+      data: {
+        name: name,
+        catalogType: {id: idCatalogType},
+        pdfFile: {id: pdfFile?.id},
+        image: image,
+        description: description,
+      },
+    },
+  });
+}

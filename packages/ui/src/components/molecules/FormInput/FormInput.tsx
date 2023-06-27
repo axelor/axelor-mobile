@@ -33,6 +33,8 @@ interface FormInputProps {
   onSelection?: () => void;
   onEndFocus?: () => void;
   keyboardType?: KeyboardTypeOptions;
+  multiline: boolean;
+  adjustHeightWithLines?: boolean;
 }
 
 const FormInput = ({
@@ -45,9 +47,12 @@ const FormInput = ({
   onSelection = () => {},
   onEndFocus = () => {},
   keyboardType,
+  multiline = false,
+  adjustHeightWithLines = false,
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
+  const [textHeight, setTextHeight] = useState(40);
   const [value, setValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -98,6 +103,9 @@ const FormInput = ({
           commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
+          adjustHeightWithLines && {
+            height: parseInt(textHeight.toString(), 10),
+          },
         ]}>
         <Input
           style={styles.input}
@@ -108,6 +116,13 @@ const FormInput = ({
           keyboardType={keyboardType}
           numberOfLines={null}
           readOnly={readOnly}
+          multiline={multiline}
+          onContentSizeChange={e => {
+            const {height} = e.nativeEvent.contentSize;
+            if (adjustHeightWithLines) {
+              setTextHeight(height);
+            }
+          }}
         />
       </View>
     </View>
