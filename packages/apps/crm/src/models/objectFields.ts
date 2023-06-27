@@ -64,6 +64,7 @@ export const crm_modelAPI: ObjectFields = {
     webSite: schemaContructor.string(),
     language: schemaContructor.subObject('name'),
     titleSelect: schemaContructor.number(),
+    fullName: schemaContructor.string(),
   }),
   crm_event: schemaContructor.object({
     startDateTime: schemaContructor.string(),
@@ -117,6 +118,7 @@ export const crm_modelAPI: ObjectFields = {
     amount: schemaContructor.number(),
     recurrentAmount: schemaContructor.number(),
     user: schemaContructor.subObject('fullName'),
+    contact: schemaContructor.subObject(),
   }),
   crm_opportunityStatus: schemaContructor.object({
     name: schemaContructor.string(),

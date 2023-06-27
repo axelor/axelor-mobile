@@ -28,6 +28,7 @@ import {
   getLead,
   updateLeadScoring,
   updateLead as _updateLead,
+  createLead as _createLead,
 } from '../api/leads-api';
 
 export const fetchLeads = createAsyncThunk(
@@ -78,10 +79,10 @@ export const updateLeadScore = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateLeadScore',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: getLead,
-        data: {leadId: res?.id},
+        data,
         action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
@@ -99,13 +100,34 @@ export const updateLead = createAsyncThunk(
       action: 'Crm_SliceAction_UpdateLead',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: getLead,
-        data: {leadId: res?.id},
+        data: {leadId: data?.lead?.id},
         action: 'Crm_SliceAction_FetchLeadById',
         getState,
         responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
+export const createLead = createAsyncThunk(
+  'lead/createLead',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createLead,
+      data,
+      action: 'Crm_SliceAction_CreateLead',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchLeads,
+        data,
+        action: 'Crm_SliceAction_FetchLead',
+        getState,
+        responseOptions: {isArrayResponse: true},
       });
     });
   },
@@ -160,6 +182,13 @@ const leadSlice = createSlice({
       state.loadingLead = false;
       state.lead = action.payload;
       state.leadList = updateAgendaItems(state.leadList, [action.payload]);
+    });
+    builder.addCase(createLead.pending, (state, action) => {
+      state.loadingLead = true;
+    });
+    builder.addCase(createLead.fulfilled, (state, action) => {
+      state.loadingLead = false;
+      state.leadList = action.payload;
     });
   },
 });

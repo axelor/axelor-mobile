@@ -16,29 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import LeadListScreen from './LeadListScreen';
-import LeadDetailsScreen from './LeadDetailsScreen';
-import LeadFormScreen from './LeadFormScreen';
+import {createStandardFetch} from '@axelor/aos-mobile-core';
 
-export default {
-  LeadListScreen: {
-    title: 'Crm_Leads',
-    component: LeadListScreen,
-    actionID: 'crm_lead_list',
-    options: {
-      shadedHeader: false,
-    },
-  },
-  LeadDetailsScreen: {
-    title: 'Crm_Lead',
-    component: LeadDetailsScreen,
-    actionID: 'crm_lead_details',
-    options: {
-      shadedHeader: false,
-    },
-  },
-  LeadFormScreen: {
-    title: 'Crm_Lead',
-    component: LeadFormScreen,
-  },
-};
+export async function getCompany({companyId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Company',
+    id: companyId,
+    fieldKey: 'crm_company',
+  });
+}
