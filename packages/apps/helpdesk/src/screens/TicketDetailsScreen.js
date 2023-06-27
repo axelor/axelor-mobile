@@ -73,16 +73,9 @@ const TicketDetailsScreen = ({navigation, route}) => {
     }
   }, [dispatch, timer]);
 
-  const timerInProgress = useMemo(() => {
-    if (
-      Object.keys(timer).length !== 0 &&
-      timer != null &&
-      timer?.statusSelect !== 0
-    ) {
-      return true;
-    }
-    return false;
-  }, [timer]);
+  const statustimer = useMemo(() => {
+    return Ticket.getTimerState(ticket?.statusSelect, timer?.statusSelect);
+  }, [ticket, timer]);
 
   const disbaled = useMemo(() => {
     if (
@@ -132,7 +125,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
           <Stopwatch
             startTime={timerDuration}
             timerFormat={I18n.t('Stopwatch_TimerFormat')}
-            inProgressAtStart={timerInProgress}
+            status={statustimer}
             onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
             onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
             onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}

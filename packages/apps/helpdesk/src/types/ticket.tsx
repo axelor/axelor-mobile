@@ -17,7 +17,7 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
-import {calculateDiff} from '@axelor/aos-mobile-core';
+import {calculateDiff, StopwatchType} from '@axelor/aos-mobile-core';
 
 class TicketType {
   static status = {
@@ -41,6 +41,11 @@ class TicketType {
     validate: 'validate',
   };
 
+  static timerStatus = {
+    inProgress: 1,
+    stop: 0,
+  };
+
   static getTotalDuration = (timerHystoryList: any): number => {
     if (timerHystoryList == null) {
       return 0;
@@ -51,6 +56,30 @@ class TicketType {
       totalDuration += diff;
     });
     return totalDuration;
+  };
+
+  static getTimerState = (ticketState: number, timerState: number) => {
+    if (ticketState === TicketType.status.New) {
+      return StopwatchType.status.Ready;
+    }
+    if (
+      ticketState === TicketType.status.In_Progress &&
+      timerState === TicketType.timerStatus.stop
+    ) {
+      return StopwatchType.status.Ready;
+    }
+    if (
+      ticketState === TicketType.status.In_Progress &&
+      timerState === TicketType.timerStatus.inProgress
+    ) {
+      return StopwatchType.status.InProgress;
+    }
+    if (ticketState === TicketType.status.Closed) {
+      return StopwatchType.status.Canceled;
+    }
+    if (ticketState === TicketType.status.Resolved) {
+      return StopwatchType.status.Finished;
+    }
   };
 
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {

@@ -39,15 +39,11 @@ interface StopwatchProps {
   onStop: () => void;
   onCancel?: () => void;
   useObjectStatus?: boolean;
-  inProgressAtStart?: boolean;
 }
 
 const Stopwatch = ({
   startTime = 0,
-  inProgressAtStart = false,
-  status = inProgressAtStart
-    ? StopwatchType.status.InProgress
-    : StopwatchType.status.Ready,
+  status = StopwatchType.status.Ready,
   timerFormat,
   disable = false,
   disablePlay = false,
