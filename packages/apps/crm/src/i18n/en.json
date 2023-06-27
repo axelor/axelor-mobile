@@ -77,6 +77,10 @@
   "Crm_Catalogs_Disabled_Admin": "This menu entry can be removed for all users from the configuration of the \"Axelor Mobile settings\" application on the web.",
   "Crm_NewLead": "New lead",
   "Crm_NewOpportunity": "New opportunity",
+  "Crm_Catalog_Type": "Type",
+  "Crm_NewCatalog": "New catalog",
+  "Crm_Image": "Image",
+  "Crm_PdfFile": "PDF file",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -112,5 +116,6 @@
   "Crm_SliceAction_UpdateProspect": "update prospect",
   "Crm_SliceAction_CreateLead": "create lead",
   "Crm_SliceAction_CreateOpportunity": "create opportunity",
-  "Crm_SliceAction_FetchCompanyById": "get company by id"
+  "Crm_SliceAction_FetchCompanyById": "get company by id",
+  "Crm_SliceAction_CreateCatalog": "Create catalog"
 }
