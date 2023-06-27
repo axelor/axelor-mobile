@@ -52,7 +52,9 @@ const CatalogFormScreen = ({navigation}) => {
         image: image,
         description: description,
       }),
-    ).then(() => navigation.navigate('CatalogListScreen'));
+    );
+
+    navigation.navigate('CatalogListScreen');
   }, [dispatch, name, description, type, pdfFile, image, navigation]);
 
   const disabled = useMemo(() => {
@@ -71,7 +73,7 @@ const CatalogFormScreen = ({navigation}) => {
         />
         <Picker
           style={styles.picker}
-          styleTxt={styles.marginPicker}
+          styleTxt={styles.pickerTitle}
           title={I18n.t('Crm_Catalog_Type')}
           defaultValue={type}
           listItems={catalogTypeList}
@@ -87,6 +89,7 @@ const CatalogFormScreen = ({navigation}) => {
           onChange={setDescription}
           defaultValue={description}
           multiline={true}
+          adjustHeightWithLines={true}
         />
         <UploadFileInput
           style={styles.input}
@@ -118,11 +121,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  marginPicker: {
-    marginLeft: 5,
-  },
   picker: {
     width: '100%',
+    marginLeft: 5,
+  },
+  pickerTitle: {
+    marginLeft: 5,
   },
   button_container: {
     marginVertical: '1%',

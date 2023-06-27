@@ -32,6 +32,7 @@ interface FormInputProps {
   onChange?: (any: any) => void;
   onSelection?: () => void;
   multiline: boolean;
+  adjustHeightWithLines?: boolean;
 }
 
 const FormInput = ({
@@ -43,9 +44,11 @@ const FormInput = ({
   multiline = false,
   onChange = () => {},
   onSelection = () => {},
+  adjustHeightWithLines = false,
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
+  const [textHeight, setTextHeight] = useState(40);
   const [value, setValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -68,8 +71,8 @@ const FormInput = ({
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, _required, multiline),
-    [Colors, _required, multiline],
+    () => getStyles(Colors, _required),
+    [Colors, _required],
   );
 
   const handleSelection = () => {
@@ -91,6 +94,9 @@ const FormInput = ({
           commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
+          adjustHeightWithLines && {
+            height: parseInt(textHeight.toString(), 10),
+          },
         ]}>
         <Input
           style={styles.input}
@@ -101,17 +107,19 @@ const FormInput = ({
           numberOfLines={null}
           readOnly={readOnly}
           multiline={multiline}
+          onContentSizeChange={e => {
+            const {height} = e.nativeEvent.contentSize;
+            if (adjustHeightWithLines) {
+              setTextHeight(height);
+            }
+          }}
         />
       </View>
     </View>
   );
 };
 
-const getStyles = (
-  Colors: ThemeColors,
-  _required: boolean,
-  multiline: boolean,
-) =>
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
       width: '100%',
@@ -123,7 +131,6 @@ const getStyles = (
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
-      height: multiline ? 100 : 40,
     },
     input: {
       width: '100%',

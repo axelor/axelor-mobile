@@ -17,7 +17,13 @@
  */
 
 import React, {useMemo} from 'react';
-import {KeyboardTypeOptions, TextInput, TextStyle} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputContentSizeChangeEventData,
+  TextStyle,
+} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {useWritingType} from '../../../theme/writingTheme';
 import {useConfig} from '../../../config/ConfigContext';
@@ -36,6 +42,9 @@ interface InputProps {
   onEndFocus?: () => void;
   isFocus?: boolean;
   writingType?: 'title' | 'subtitle' | 'important' | 'details' | undefined;
+  onContentSizeChange?: (
+    e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
+  ) => void;
 }
 
 const Input = ({
@@ -52,6 +61,7 @@ const Input = ({
   onEndFocus = () => {},
   isFocus = false,
   writingType,
+  onContentSizeChange,
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
@@ -62,8 +72,9 @@ const Input = ({
       ...writingStyle,
       color: Colors.text,
       fontSize: 15,
+      textAlignVertical: multiline ? 'top' : 'center',
     };
-  }, [Colors.text, writingStyle]);
+  }, [Colors.text, multiline, writingStyle]);
 
   return (
     <TextInput
@@ -82,6 +93,7 @@ const Input = ({
       onBlur={onEndFocus}
       showSoftInputOnFocus={hideVirtualKeyboard ? false : true}
       autoFocus={isFocus}
+      onContentSizeChange={onContentSizeChange}
     />
   );
 };
