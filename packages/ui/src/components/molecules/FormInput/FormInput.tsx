@@ -31,6 +31,8 @@ interface FormInputProps {
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
+  multiline: boolean;
+  adjustHeightWithLines?: boolean;
 }
 
 const FormInput = ({
@@ -39,11 +41,14 @@ const FormInput = ({
   readOnly,
   style,
   required = false,
+  multiline = false,
   onChange = () => {},
   onSelection = () => {},
+  adjustHeightWithLines = false,
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
+  const [textHeight, setTextHeight] = useState(40);
   const [value, setValue] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -89,6 +94,9 @@ const FormInput = ({
           commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
+          adjustHeightWithLines && {
+            height: parseInt(textHeight.toString(), 10),
+          },
         ]}>
         <Input
           style={styles.input}
@@ -98,6 +106,13 @@ const FormInput = ({
           onEndFocus={handleEndFocus}
           numberOfLines={null}
           readOnly={readOnly}
+          multiline={multiline}
+          onContentSizeChange={e => {
+            const {height} = e.nativeEvent.contentSize;
+            if (adjustHeightWithLines) {
+              setTextHeight(height);
+            }
+          }}
         />
       </View>
     </View>
