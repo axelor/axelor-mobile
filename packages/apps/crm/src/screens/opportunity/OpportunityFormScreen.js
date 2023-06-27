@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
-  Button,
   FormHtmlInput,
   FormIncrementInput,
   KeyboardAvoidingScrollView,
@@ -33,70 +32,99 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  getOpportunity,
-  updateOpportunity,
-} from '../../features/opportunitySlice';
 import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
-import {ClientProspectSearchBar} from '../../components';
+import {fetchCompanyById} from '../../features/companySlice';
+import {
+  ClientProspectSearchBar,
+  ContactSearchBar,
+  OpportunityValidateButton,
+} from '../../components';
 
-const OpportunityFormScreen = ({navigation, route}) => {
+const isObjectMissingRequiredField = object =>
+  object.partner == null ||
+  object.contact == null ||
+  object.opportunityStatus == null;
+
+const OpportunityFormScreen = ({route}) => {
   const idOpportunity = route.params.opportunityId;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.user);
 
   const {crmConfig} = useSelector(state => state.crmConfig);
   const {opportunity, opportunityStatusList} = useSelector(
     state => state.opportunity,
   );
 
-  const [score, setScore] = useState(opportunity.opportunityRating);
-  const [partner, setPartner] = useState(opportunity.partner);
-  const [date, setDate] = useState(new Date(opportunity.expectedCloseDate));
-  const [amount, setAmount] = useState(opportunity.amount);
-  const [recurrent, setRecurrent] = useState(opportunity.recurrentAmount);
-  const [description, setDescription] = useState(opportunity.description);
-  const [status, setStatus] = useState(opportunity.opportunityStatus?.id);
+  const [_opportunity, setOpportunity] = useState(
+    idOpportunity != null
+      ? opportunity
+      : {
+          amount: 0,
+          recurrentAmount: 0,
+          opportunityRating: 0,
+          probability: '0',
+          worstCase: '0',
+          expectedDurationOfRecurringRevenue: 0,
+          bestCase: '0',
+        },
+  );
+  const [score, setScore] = useState(_opportunity.opportunityRating);
+  const [partner, setPartner] = useState(_opportunity.partner);
+  const [contact, setContact] = useState(_opportunity.contact);
+  const [disabledButton, setDisabledButton] = useState(
+    isObjectMissingRequiredField(_opportunity),
+  );
+
+  const handleOpportunityFieldChange = useCallback((newValue, fieldName) => {
+    setOpportunity(current => {
+      if (!current) {
+        return {[fieldName]: newValue};
+      }
+      current[fieldName] = newValue;
+      setDisabledButton(isObjectMissingRequiredField(current));
+      return current;
+    });
+  }, []);
+
+  const handleChangeScore = useCallback(
+    newValue => {
+      setScore(newValue);
+      handleOpportunityFieldChange(newValue, 'opportunityRating');
+    },
+    [handleOpportunityFieldChange],
+  );
+
+  const handleChangePartner = useCallback(
+    newValue => {
+      setPartner(newValue);
+      handleOpportunityFieldChange(newValue, 'partner');
+    },
+    [handleOpportunityFieldChange],
+  );
+
+  const handleChangeContact = useCallback(
+    newValue => {
+      setContact(newValue);
+      handleOpportunityFieldChange(newValue, 'contact');
+    },
+    [handleOpportunityFieldChange],
+  );
 
   useEffect(() => {
-    dispatch(
-      getOpportunity({
-        opportunityId: idOpportunity,
-      }),
-    );
     dispatch(fetchCrmConfigApi());
-  }, [dispatch, idOpportunity]);
+  }, [dispatch]);
 
-  const updateOpportunityAPI = useCallback(() => {
-    dispatch(
-      updateOpportunity({
-        opportunityId: opportunity.id,
-        opportunityVersion: opportunity.version,
-        opportunityStatusId: status,
-        opportunityRecurrentAmount: recurrent,
-        opportunityAmount: amount,
-        opportunityDescription: description,
-        idPartner: partner?.id,
-        opportunityRating: score,
-        opportunityCloseDate: date?.toISOString().split('T')[0],
-      }),
-    );
-
-    navigation.navigate('OpportunityDetailsScreen', {
-      opportunityId: opportunity.id,
-    });
-  }, [
-    dispatch,
-    opportunity,
-    status,
-    recurrent,
-    amount,
-    description,
-    partner,
-    score,
-    date,
-    navigation,
-  ]);
+  useEffect(() => {
+    if (user?.activeTeam?.id != null) {
+      dispatch(
+        fetchCompanyById({
+          companyId: user?.activeCompany?.id,
+        }),
+      );
+    }
+  }, [dispatch, user]);
 
   return (
     <Screen>
@@ -106,7 +134,7 @@ const OpportunityFormScreen = ({navigation, route}) => {
             style={styles.score}
             score={score}
             showMissingStar={true}
-            onPress={setScore}
+            onPress={handleChangeScore}
             editMode={true}
           />
         </View>
@@ -119,53 +147,80 @@ const OpportunityFormScreen = ({navigation, route}) => {
             titleKey="Crm_ClientProspect"
             placeholderKey="Crm_ClientProspect"
             defaultValue={partner}
-            onChange={setPartner}
+            onChange={handleChangePartner}
             styleTxt={styles.marginTitle}
+            required={true}
+          />
+          <ContactSearchBar
+            titleKey="Crm_Contact"
+            placeholderKey="Crm_Contact"
+            defaultValue={contact}
+            onChange={handleChangeContact}
+            styleTxt={styles.marginTitle}
+            required={true}
           />
           <DateInput
             title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
-            defaultDate={date}
-            onDateChange={setDate}
+            defaultDate={
+              _opportunity.expectedCloseDate != null
+                ? new Date(_opportunity.expectedCloseDate)
+                : null
+            }
+            onDateChange={value =>
+              handleOpportunityFieldChange(
+                value?.toISOString().split('T')[0],
+                'expectedCloseDate',
+              )
+            }
             style={styles.input}
           />
           <FormIncrementInput
             title={I18n.t('Crm_Opportunity_Amount')}
-            defaultValue={amount}
-            onChange={setAmount}
+            defaultValue={_opportunity.amount}
+            onChange={value => handleOpportunityFieldChange(value, 'amount')}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
           {crmConfig?.isManageRecurrent && (
             <FormIncrementInput
               title={I18n.t('Crm_Opportunity_RecurrentAmount')}
-              defaultValue={recurrent}
-              onChange={setRecurrent}
+              defaultValue={_opportunity.recurrentAmount}
+              onChange={value =>
+                handleOpportunityFieldChange(value, 'recurrentAmount')
+              }
               decimalSpacer={I18n.t('Base_DecimalSpacer')}
               thousandSpacer={I18n.t('Base_ThousandSpacer')}
             />
           )}
           <FormHtmlInput
             title={I18n.t('Base_Description')}
-            onChange={setDescription}
-            defaultValue={description}
+            onChange={value =>
+              handleOpportunityFieldChange(value, 'description')
+            }
+            defaultValue={_opportunity.description}
             style={styles.input}
           />
           <Picker
             styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Opportunity_Status')}
-            defaultValue={status}
+            defaultValue={_opportunity.opportunityStatus?.id}
             listItems={opportunityStatusList}
             labelField="name"
             valueField="id"
             emptyValue={false}
-            onValueChange={setStatus}
+            onValueChange={value =>
+              handleOpportunityFieldChange({id: value}, 'opportunityStatus')
+            }
             isScrollViewContainer={true}
+            required={true}
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateOpportunityAPI} />
-      </View>
+      <OpportunityValidateButton
+        _opportunity={_opportunity}
+        idOpportunity={idOpportunity}
+        disabled={disabledButton}
+      />
     </Screen>
   );
 };

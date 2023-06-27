@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
-  Button,
   Checkbox,
+  checkNullString,
   FormHtmlInput,
   FormInput,
   KeyboardAvoidingScrollView,
@@ -29,88 +29,50 @@ import {
   StarScore,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
-import {fetchLeadById, updateLead} from '../../features/leadSlice';
 import {fetchFunction} from '../../features/functionSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
+import {LeadValidateButton} from '../../components';
 
-const LeadFormScreen = ({navigation, route}) => {
+const isObjectMissingRequiredField = object => checkNullString(object?.name);
+
+const LeadFormScreen = ({route}) => {
   const idLead = route.params.idLead;
-  const dispatch = useDispatch();
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {lead} = useSelector(state => state.lead);
   const {functionList} = useSelector(state => state.function);
   const {civilityList} = useCivilityList();
 
-  const [score, setScore] = useState(lead.leadScoringSelect);
-  const [civility, setCivility] = useState(Number(lead.titleSelect));
-  const [firstName, setFirstName] = useState(lead.firstName);
-  const [name, setName] = useState(lead.name);
-  const [leadJob, setLeadJob] = useState(lead.jobTitleFunction?.id);
-  const [leadAdress, setLeadAdress] = useState(lead.primaryAddress);
-  const [fixedPhone, setFixedPhone] = useState(lead.fixedPhone);
-  const [mobilePhone, setMobilePhone] = useState(lead.mobilePhone);
-  const [email, setEmail] = useState(lead.emailAddress?.address);
-  const [webSite, setWebSite] = useState(lead.webSite);
-  const [leadNoCall, setLeadNoCall] = useState(lead.isDoNotCall);
-  const [leadNoEmail, setLeadNoEmail] = useState(lead.isDoNotSendEmail);
-  const [leadCompany, setLeadCompany] = useState(lead.enterpriseName);
-  const [description, setDescription] = useState(lead.description);
+  const [_lead, setLead] = useState(
+    idLead != null
+      ? lead
+      : {leadScoringSelect: 0, isDoNotSendEmail: false, isDoNotCall: false},
+  );
+  const [score, setScore] = useState(_lead.leadScoringSelect);
+  const [disabledButton, setDisabledButton] = useState(
+    isObjectMissingRequiredField(_lead),
+  );
+
+  const handleLeadFieldChange = (newValue, fieldName) => {
+    setLead(current => {
+      if (!current) {
+        return {[fieldName]: newValue};
+      }
+      current[fieldName] = newValue;
+      return current;
+    });
+    setDisabledButton(isObjectMissingRequiredField(_lead));
+  };
+
+  const handleChangeScore = newValue => {
+    setScore(newValue);
+    handleLeadFieldChange(newValue, 'leadScoringSelect');
+  };
 
   useEffect(() => {
-    dispatch(fetchLeadById({leadId: idLead}));
     dispatch(fetchFunction());
-  }, [dispatch, idLead]);
-
-  const updateLeadAPI = useCallback(() => {
-    dispatch(
-      updateLead({
-        leadId: lead.id,
-        leadVersion: lead.version,
-        leadScore: score,
-        leadCivility: civility,
-        leadFirstname: firstName,
-        leadName: name,
-        leadJob: leadJob,
-        leadAdress: leadAdress !== '' ? leadAdress : null,
-        leadFixedPhone: fixedPhone !== '' ? fixedPhone : null,
-        leadMobilePhone: mobilePhone !== '' ? mobilePhone : null,
-        leadWebsite: webSite !== '' ? webSite : null,
-        leadNoCall: leadNoCall,
-        leadNoEmail: leadNoEmail,
-        leadCompany: leadCompany,
-        leadEmail: email !== '' ? email : null,
-        emailId: lead.emailAddress?.id,
-        emailVersion: lead.emailAddress?.$version,
-        leadDescription: description !== '' ? description : null,
-      }),
-    );
-
-    navigation.navigate('LeadDetailsScreen', {
-      idLead: lead.id,
-    });
-  }, [
-    dispatch,
-    lead.id,
-    lead.version,
-    lead.emailAddress?.id,
-    lead.emailAddress?.$version,
-    score,
-    civility,
-    firstName,
-    name,
-    leadJob,
-    leadAdress,
-    fixedPhone,
-    mobilePhone,
-    webSite,
-    leadNoCall,
-    leadNoEmail,
-    leadCompany,
-    email,
-    description,
-    navigation,
-  ]);
+  }, [dispatch]);
 
   return (
     <Screen>
@@ -122,30 +84,34 @@ const LeadFormScreen = ({navigation, route}) => {
                 pickerStyle={styles.civilityPicker}
                 styleTxt={styles.civilityTitle}
                 title={I18n.t('Crm_Civility')}
-                onValueChange={setCivility}
+                onValueChange={value =>
+                  handleLeadFieldChange(value, 'titleSelect')
+                }
                 listItems={civilityList}
                 labelField="name"
                 valueField="id"
-                defaultValue={civility}
+                defaultValue={Number(_lead.titleSelect)}
               />
             </View>
             <View style={styles.checkBoxContainer}>
               <StarScore
                 score={score}
                 showMissingStar={true}
-                onPress={setScore}
+                onPress={handleChangeScore}
                 editMode={true}
               />
               <Checkbox
                 title={I18n.t('Crm_NoEmail')}
-                isDefaultChecked={leadNoEmail}
-                onChange={setLeadNoEmail}
+                isDefaultChecked={_lead.isDoNotSendEmail}
+                onChange={value =>
+                  handleLeadFieldChange(value, 'isDoNotSendEmail')
+                }
                 iconSize={20}
               />
               <Checkbox
                 title={I18n.t('Crm_NoPhoneCall')}
-                isDefaultChecked={leadNoCall}
-                onChange={setLeadNoCall}
+                isDefaultChecked={_lead.isDoNotCall}
+                onChange={value => handleLeadFieldChange(value, 'isDoNotCall')}
                 iconSize={20}
               />
             </View>
@@ -153,71 +119,82 @@ const LeadFormScreen = ({navigation, route}) => {
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_FirstName')}
-            onChange={setFirstName}
-            defaultValue={firstName}
+            onChange={value => handleLeadFieldChange(value, 'firstName')}
+            defaultValue={_lead.firstName}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_Name')}
-            onChange={setName}
-            defaultValue={name}
+            onChange={value => handleLeadFieldChange(value, 'name')}
+            defaultValue={_lead.name}
+            required={true}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_Company')}
-            onChange={setLeadCompany}
-            defaultValue={leadCompany}
+            onChange={value => handleLeadFieldChange(value, 'enterpriseName')}
+            defaultValue={_lead.enterpriseName}
           />
           <Picker
             title={I18n.t('Crm_JobTitle')}
-            onValueChange={setLeadJob}
+            onValueChange={value =>
+              handleLeadFieldChange(
+                {
+                  id: value,
+                },
+                'jobTitleFunction',
+              )
+            }
             listItems={functionList}
             labelField="name"
             valueField="id"
-            defaultValue={leadJob}
+            defaultValue={_lead.jobTitleFunction?.id}
             styleTxt={styles.pickerTitle}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_Adress')}
-            onChange={setLeadAdress}
-            defaultValue={leadAdress}
+            onChange={value => handleLeadFieldChange(value, 'primaryAddress')}
+            defaultValue={_lead.primaryAddress}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_Phone')}
-            onChange={setFixedPhone}
-            defaultValue={fixedPhone}
+            onChange={value => handleLeadFieldChange(value, 'fixedPhone')}
+            defaultValue={_lead.fixedPhone}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_MobilePhone')}
-            onChange={setMobilePhone}
-            defaultValue={mobilePhone}
+            onChange={value => handleLeadFieldChange(value, 'mobilePhone')}
+            defaultValue={_lead.mobilePhone}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_Email')}
-            onChange={setEmail}
-            defaultValue={email}
+            onChange={value =>
+              handleLeadFieldChange({address: value}, 'emailAddress')
+            }
+            defaultValue={_lead.emailAddress?.address}
           />
           <FormInput
             style={styles.input}
             title={I18n.t('Crm_WebSite')}
-            onChange={setWebSite}
-            defaultValue={webSite}
+            onChange={value => handleLeadFieldChange(value, 'webSite')}
+            defaultValue={_lead.webSite}
           />
           <FormHtmlInput
             title={I18n.t('Crm_Description')}
-            onChange={setDescription}
-            defaultValue={description}
-            style={styles.input}
+            onChange={value => handleLeadFieldChange(value, 'description')}
+            defaultValue={_lead.description}
           />
         </View>
       </KeyboardAvoidingScrollView>
-      <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateLeadAPI} />
-      </View>
+      <LeadValidateButton
+        _lead={_lead}
+        idLead={idLead}
+        disabled={disabledButton}
+      />
     </Screen>
   );
 };

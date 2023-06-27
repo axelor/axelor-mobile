@@ -24,6 +24,7 @@ export default {
   OpportunityListScreen: {
     title: 'Crm_Opportunities',
     component: OpportunityListScreen,
+    actionID: 'crm_opportunity_list',
     options: {
       shadedHeader: false,
     },
