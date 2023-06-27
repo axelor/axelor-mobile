@@ -52,7 +52,8 @@ const UserScreen = ({children}) => {
   const {baseConfig} = useSelector(state => state.config);
   const {user, canModifyCompany} = useSelector(state => state.user);
 
-  const {setFilterConfig, setVirtualKeyboardConfig} = useConfig();
+  const {setFilterConfig, setVirtualKeyboardConfig, setNbDecimalDigitForQty} =
+    useConfig();
 
   useEffect(() => {
     dispatch(fetchActiveUser(userId));
@@ -61,6 +62,12 @@ const UserScreen = ({children}) => {
     dispatch(fetchBaseConfig());
     dispatch(fetchMobileSettings());
   }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (baseConfig?.nbDecimalDigitForQty !== null) {
+      setNbDecimalDigitForQty(baseConfig?.nbDecimalDigitForQty);
+    }
+  }, [baseConfig, setNbDecimalDigitForQty]);
 
   useEffect(() => {
     const SMALL_SCREEN_HEIGHT = 300;

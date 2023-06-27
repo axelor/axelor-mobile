@@ -58,3 +58,4 @@ export * from './i18n';
 export * from './config';
 export * from './header';
 export {useNavigation} from './hooks/use-navigation';
+export {useDigitFormat} from './hooks/use-digit-format';
