@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, LabelText, checkNullString} from '@axelor/aos-mobile-ui';
+import {Text, LabelText} from '@axelor/aos-mobile-ui';
 import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
 
 const ContactHeader = ({}) => {
@@ -32,7 +32,7 @@ const ContactHeader = ({}) => {
           {contact.simpleFullName}
         </Text>
         <LabelText iconName="building" title={contact.mainPartner?.fullName} />
-        {!checkNullString(contact?.jobTitleFunction) && (
+        {contact?.jobTitleFunction != null && (
           <LabelText
             iconName="suitcase"
             title={contact?.jobTitleFunction?.name}

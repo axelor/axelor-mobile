@@ -55,13 +55,13 @@ const ContactPartnerCard = ({}) => {
   return (
     <PartnerCard
       style={styles.item}
-      partnerFullName={partner?.simpleFullName}
-      partnerReference={partner?.partnerSeq}
-      partnerScoring={partner?.isProspect ? partner?.leadScoringSelect : null}
-      partnerAdress={partner?.mainAddress?.fullName}
-      partnerFixedPhone={partner?.fixedPhone}
-      partnerEmail={partner?.emailAddress?.address}
-      partnerPicture={partner?.picture}
+      partnerFullName={partner.simpleFullName}
+      partnerReference={partner.partnerSeq}
+      partnerScoring={partner.isProspect ? partner?.leadScoringSelect : null}
+      partnerAdress={partner.mainAddress?.fullName}
+      partnerFixedPhone={partner.fixedPhone}
+      partnerEmail={partner.emailAddress?.address}
+      partnerPicture={partner.picture}
       onPress={handleCardPress}
     />
   );
