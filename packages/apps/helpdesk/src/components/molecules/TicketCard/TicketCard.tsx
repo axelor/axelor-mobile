@@ -38,7 +38,7 @@ interface TicketCardProps {
   style?: any;
   ticketSeq: string;
   subject: string;
-  progressSelect: string;
+  progressSelect: number;
   duration: number;
   deadlineDateT: string;
   responsibleUser: string;
@@ -86,7 +86,7 @@ const TicketCard = ({
             {`${I18n.t('Helpdesk_Ticket')} n° ${ticketSeq}`}
           </Text>
           {!checkNullString(subject) && <Text>{subject}</Text>}
-          {!checkNullString(progressSelect) && (
+          {progressSelect !== null && (
             <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
           )}
           {duration !== null && (

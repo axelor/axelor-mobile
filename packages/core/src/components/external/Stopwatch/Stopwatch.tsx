@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
@@ -63,6 +63,14 @@ const Stopwatch = ({
 
   const [state, setState] = useState(status);
   const [time, setTime] = useState(startTime);
+
+  useEffect(() => {
+    setTime(startTime);
+  }, [startTime]);
+
+  useEffect(() => {
+    setState(status);
+  }, [status]);
 
   const stopwatchStatus = useMemo(() => {
     if (useObjectStatus) {
