@@ -16,8 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
-export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
-export {default as TicketHeader} from './TicketHeader/TicketHeader';
-export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
-export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useNavigation} from '@axelor/aos-mobile-core';
+import {CircleButton} from '@axelor/aos-mobile-ui';
+
+const TicketEditButton = ({idTicket}) => {
+  const navigation = useNavigation();
+  return (
+    <CircleButton
+      style={styles.floatingButton}
+      iconName="pen"
+      onPress={() =>
+        navigation.navigate('TicketFormScreen', {
+          idTicket: idTicket,
+        })
+      }
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+  },
+});
+
+export default TicketEditButton;

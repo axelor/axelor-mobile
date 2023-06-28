@@ -17,6 +17,7 @@
  */
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {calculateDiff, StopwatchType} from '@axelor/aos-mobile-core';
 
 class TicketType {
   static status = {
@@ -30,6 +31,57 @@ class TicketType {
     Normal: 2,
     High: 3,
     Urgent: 4,
+  };
+
+  static stopWatchStatus = {
+    start: 'start',
+    pause: 'pause',
+    stop: 'stop',
+    reset: 'reset',
+    validate: 'validate',
+  };
+
+  static timerStatus = {
+    inProgress: 1,
+    stop: 0,
+  };
+
+  static getTotalDuration = (timerHystoryList: any): number => {
+    if (timerHystoryList == null) {
+      return 0;
+    }
+
+    let totalDuration = 0;
+    timerHystoryList.forEach(duration => {
+      let diff = calculateDiff(duration.startDateT, duration.endDateT);
+      totalDuration += diff;
+    });
+
+    return totalDuration;
+  };
+
+  static getTimerState = (ticketState: number, timerState: number) => {
+    if (ticketState === TicketType.status.New) {
+      return StopwatchType.status.Ready;
+    }
+    if (
+      ticketState === TicketType.status.In_Progress &&
+      timerState === TicketType.timerStatus.stop
+    ) {
+      return StopwatchType.status.Paused;
+    }
+    if (
+      ticketState === TicketType.status.In_Progress &&
+      timerState === TicketType.timerStatus.inProgress
+    ) {
+      return StopwatchType.status.InProgress;
+    }
+    if (ticketState === TicketType.status.Closed) {
+      return StopwatchType.status.Finished;
+    }
+    if (ticketState === TicketType.status.Resolved) {
+      return StopwatchType.status.Finished;
+    }
   };
 
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
@@ -68,12 +120,12 @@ class TicketType {
         key: this.status.In_Progress,
       },
       {
-        title: I18n.t('Helpdesk_Priority_High'),
+        title: I18n.t('Helpdesk_Status_Resolved'),
         color: this.getStatusColor(this.status.Resolved, Colors),
         key: this.status.Resolved,
       },
       {
-        title: I18n.t('Helpdesk_Priority_Urgent'),
+        title: I18n.t('Helpdesk_Status_Closed'),
         color: this.getStatusColor(this.status.Closed, Colors),
         key: this.status.Closed,
       },

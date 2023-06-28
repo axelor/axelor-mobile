@@ -19,6 +19,8 @@
 import {
   createStandardSearch,
   getSearchCriterias,
+  createStandardFetch,
+  axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 
 const createTicketCriteria = (searchValue, userId, userTeam) => {
@@ -50,11 +52,35 @@ export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
   });
 }
 
+export async function getTicket({ticketId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.helpdesk.db.Ticket',
+    id: ticketId,
+    fieldKey: 'helpdesk_ticket',
+  });
+}
+
 export async function getTicketType() {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.TicketType',
     fieldKey: 'helpdesk_ticketType',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function updateStatusTicket({
+  version,
+  dateTime,
+  targetStatus,
+  ticketId,
+}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/ticket/${ticketId}`,
+    data: {
+      version: version,
+      dateTime: dateTime,
+      targetStatus: targetStatus,
+    },
   });
 }
