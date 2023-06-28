@@ -98,37 +98,11 @@ export async function updateStatusTicket({
   });
 }
 
-export async function updateTicket({
-  ticketId,
-  ticketVersion,
-  subject,
-  projectId,
-  progressSelect,
-  customerId,
-  contactPartnerId,
-  ticketTypeId,
-  prioritySelect,
-  startDateT,
-  endDateT,
-  description,
-}) {
+export async function updateTicket({ticket}) {
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
     data: {
-      data: {
-        id: ticketId,
-        version: ticketVersion,
-        subject: subject,
-        project: projectId ? {id: projectId} : null,
-        progressSelect: progressSelect,
-        customerPartner: customerId ? {id: customerId} : null,
-        contactPartner: contactPartnerId ? {id: contactPartnerId} : null,
-        ticketType: ticketTypeId ? {id: ticketTypeId} : null,
-        prioritySelect: prioritySelect,
-        startDateT: startDateT,
-        endDateT: endDateT,
-        description: description,
-      },
+      data: ticket,
     },
   });
 }

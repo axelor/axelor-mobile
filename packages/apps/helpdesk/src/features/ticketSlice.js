@@ -113,10 +113,10 @@ export const updateTicket = createAsyncThunk(
       action: 'Heldesk_Update_Ticket',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: getTicket,
-        data: {ticketId: res?.id},
+        data: {ticketId: data?.ticket?.id},
         action: 'Heldesk_Fetch_Ticket_ById',
         getState,
         responseOptions: {isArrayResponse: false},

@@ -55,16 +55,20 @@ const TicketFormScreen = ({navigation, route}) => {
   const {ticket} = useSelector(state => state.ticket);
   const {customer} = useSelector(state => state.customer);
 
-  const [subject, setSubject] = useState(ticket?.subject);
   const [projectInput, setProjectInput] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
-  const [ticketType, setTicketType] = useState(ticket?.ticketType);
-  const [priority, setPriority] = useState(ticket?.prioritySelect);
-  const [startDate, setStartDate] = useState(new Date(ticket?.startDateT));
-  const [endDate, setEndDate] = useState(new Date(ticket?.endDateT));
-  const [description, setDescription] = useState(ticket?.description);
-  const [progress, setProgress] = useState(ticket?.progressSelect);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
+  const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
+
+  const handleTicketFieldChange = (newValue, fieldName) => {
+    setTicket(current => {
+      if (!current) {
+        return {[fieldName]: newValue};
+      }
+      current[fieldName] = newValue;
+      return current;
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
@@ -85,40 +89,21 @@ const TicketFormScreen = ({navigation, route}) => {
   const updateTicketAPI = useCallback(() => {
     dispatch(
       updateTicket({
-        ticketId: ticket.id,
-        ticketVersion: ticket.version,
-        subject: subject,
-        projectId: projectInput?.id,
-        progressSelect: progress,
-        customerId: client?.id,
-        contactPartnerId: contactPartner?.id,
-        ticketTypeId: ticketType?.id,
-        prioritySelect: priority,
-        startDateT: startDate?.toISOString()?.split('T')[0],
-        endDateT: endDate?.toISOString()?.split('T')[0],
-        description: description,
+        ticket: {
+          ..._ticket,
+          ticketType: _ticket?.ticketType
+            ? {id: _ticket?.ticketType?.id}
+            : null,
+          project: projectInput ? {id: projectInput?.id} : null,
+          customerPartner: client ? {id: client?.id} : null,
+          contactPartner: contactPartner ? {id: contactPartner.id} : null,
+        },
       }),
     );
-
     navigation.navigate('TicketDetailsScreen', {
-      idTicket: ticket.id,
+      idTicket: _ticket.id,
     });
-  }, [
-    client?.id,
-    contactPartner?.id,
-    description,
-    dispatch,
-    endDate,
-    navigation,
-    priority,
-    progress,
-    projectInput?.id,
-    startDate,
-    subject,
-    ticket.id,
-    ticket.version,
-    ticketType?.id,
-  ]);
+  }, [_ticket, dispatch, navigation, contactPartner, client, projectInput]);
 
   return (
     <Screen>
@@ -127,8 +112,8 @@ const TicketFormScreen = ({navigation, route}) => {
           <FormInput
             style={styles.input}
             title={I18n.t('Hepdesk_Subject')}
-            onChange={setSubject}
-            defaultValue={subject}
+            onChange={value => handleTicketFieldChange(value, 'subject')}
+            defaultValue={_ticket.subject}
           />
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
@@ -140,8 +125,8 @@ const TicketFormScreen = ({navigation, route}) => {
           />
           <FormIncrementInput
             title={I18n.t('Helpdesk_Progress')}
-            defaultValue={progress.toString()}
-            onChange={setProgress}
+            defaultValue={_ticket.progressSelect?.toString()}
+            onChange={value => handleTicketFieldChange(value, 'progressSelect')}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
@@ -170,36 +155,48 @@ const TicketFormScreen = ({navigation, route}) => {
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
             placeholderKey="Helpdesk_Type"
-            defaultValue={ticketType}
-            onChange={setTicketType}
+            defaultValue={_ticket?.ticketType}
+            onChange={value => handleTicketFieldChange(value, 'ticketType')}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <Picker
             style={styles.picker}
             title={I18n.t('Helpdesk_Priority')}
-            onValueChange={setPriority}
+            onValueChange={value =>
+              handleTicketFieldChange(value, 'prioritySelect')
+            }
             listItems={Ticket.getPriorityList(Colors, I18n)}
             labelField="title"
             valueField="key"
-            defaultValue={priority}
+            defaultValue={_ticket?.prioritySelect}
           />
           <DateInput
-            onDateChange={setStartDate}
+            onDateChange={value =>
+              handleTicketFieldChange(
+                value.toISOString()?.split('T')[0],
+                'startDateT',
+              )
+            }
             title={I18n.t('Helpdesk_StartDate')}
-            defaultDate={startDate}
+            defaultDate={new Date(_ticket?.startDateT)}
             style={styles.input}
           />
           <DateInput
-            onDateChange={setEndDate}
+            onDateChange={value =>
+              handleTicketFieldChange(
+                value.toISOString()?.split('T')[0],
+                'endDateT',
+              )
+            }
             title={I18n.t('Helpdesk_EndDate')}
-            defaultDate={endDate}
+            defaultDate={new Date(ticket?.endDateT)}
             style={styles.input}
           />
           <FormHtmlInput
             title={I18n.t('Base_Description')}
-            onChange={setDescription}
-            defaultValue={description}
+            onChange={value => handleTicketFieldChange(value, 'description')}
+            defaultValue={_ticket?.description}
           />
         </View>
       </KeyboardAvoidingScrollView>
