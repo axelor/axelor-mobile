@@ -29,13 +29,13 @@ const OpportunityPartnerCard = ({}) => {
   const navigateToPartnerDetails = useCallback(() => {
     if (opportunity?.partner?.isProspect) {
       return navigation.navigate('ProspectDetailsScreen', {
-        idProspect: opportunity.partner.id,
+        idProspect: opportunity.partner?.id,
       });
     }
 
     if (opportunity?.partner?.isCustomer) {
       return navigation.navigate('ClientDetailsScreen', {
-        idClient: opportunity.partner.id,
+        idClient: opportunity.partner?.id,
       });
     }
   }, [navigation, opportunity?.partner]);
