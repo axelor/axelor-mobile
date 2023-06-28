@@ -20,8 +20,14 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
-import {getTicketType, searchTickets} from '../api/ticket-api';
+import {
+  getTicket,
+  getTicketType,
+  searchTickets,
+  updateStatusTicket,
+} from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
   'ticket/fetchTickets',
@@ -29,7 +35,7 @@ export const fetchTickets = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchTickets,
       data,
-      action: 'Helpdesk_fetch_myTicket',
+      action: 'Helpdesk_SliceAction_FetchMyTicket',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -42,9 +48,43 @@ export const fetchTicketType = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getTicketType,
       data,
-      action: 'Helpdesk_fetch_Ticket_Type',
+      action: 'Helpdesk_SliceAction_FetchTicketType',
       getState,
       responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchTicketById = createAsyncThunk(
+  'ticket/fetchTicketById',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getTicket,
+      data,
+      action: 'Helpdesk_SliceAction_FetchTicketById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const updateTicketStatus = createAsyncThunk(
+  'ticket/updateTicketStatus',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: updateStatusTicket,
+      data,
+      action: 'Helpdesk_SliceAction_UpdateTicketStatus',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: getTicket,
+        data: {ticketId: data?.ticketId},
+        action: 'Helpdesk_SliceAction_FetchTicketById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -75,6 +115,21 @@ const ticketSlice = createSlice({
     builder.addCase(fetchTicketType.fulfilled, (state, action) => {
       state.loadingTicketType = false;
       state.ticketTypeList = action.payload;
+    });
+    builder.addCase(fetchTicketById.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(fetchTicketById.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticket = action.payload;
+    });
+    builder.addCase(updateTicketStatus.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticket = action.payload;
+      state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
     });
   },
 });

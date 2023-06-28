@@ -16,8 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
-export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
-export {default as TicketHeader} from './TicketHeader/TicketHeader';
-export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
-export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
+import {
+  createStandardFetch,
+  createStandardSearch,
+} from '@axelor/aos-mobile-core';
+
+export async function getTimer({timerId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.base.db.Timer',
+    id: timerId,
+    fieldKey: 'helpdesk_timer',
+  });
+}
+
+export async function searchTimerHistoryWithId({idTimer}) {
+  if (idTimer == null) {
+    return null;
+  }
+
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.TimerHistory',
+    criteria: [
+      {
+        fieldName: 'timer.id',
+        operator: '=',
+        value: idTimer,
+      },
+    ],
+    fieldKey: 'helpdesk_timerHistory',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
