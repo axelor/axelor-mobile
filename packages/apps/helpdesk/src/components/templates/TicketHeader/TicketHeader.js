@@ -37,13 +37,14 @@ const TicketHeader = ({colorIndex}) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerInfo}>
-        <View style={styles.halfContainer}>
+        <View style={styles.textContainer}>
           {!checkNullString(ticket.ticketSeq) && (
-            <Text style={styles.textTitle}>{ticket.ticketSeq}</Text>
+            <Text writingType="title">{ticket.ticketSeq}</Text>
           )}
+          {!checkNullString(ticket.subject) && <Text>{ticket.subject}</Text>}
         </View>
-        <View style={styles.halfContainer}>
-          <View style={styles.badgeContainer}>
+        <View style={styles.badgeContainer}>
+          <View style={styles.upperBadgesContainer}>
             <Badge
               title={Ticket.getStatus(ticket.statusSelect, I18n)}
               color={Ticket.getStatusColor(ticket.statusSelect, Colors)}
@@ -55,21 +56,12 @@ const TicketHeader = ({colorIndex}) => {
               />
             )}
           </View>
-        </View>
-      </View>
-      <View style={styles.headerInfo}>
-        <View style={styles.halfContainer}>
-          {!checkNullString(ticket.subject) && <Text>{ticket.subject}</Text>}
-        </View>
-        <View style={styles.halfContainer}>
-          <View style={styles.halfContainerBadge}>
-            {ticket.prioritySelect !== null && (
-              <Badge
-                title={Ticket.getPriority(ticket.prioritySelect, I18n)}
-                color={Ticket.getPriorityColor(ticket.prioritySelect, Colors)}
-              />
-            )}
-          </View>
+          {ticket.prioritySelect !== null && (
+            <Badge
+              title={Ticket.getPriority(ticket.prioritySelect, I18n)}
+              color={Ticket.getPriorityColor(ticket.prioritySelect, Colors)}
+            />
+          )}
         </View>
       </View>
       <ProgressBar value={ticket.progressSelect} style={styles.progressBar} />
@@ -80,27 +72,30 @@ const TicketHeader = ({colorIndex}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'column',
-    padding: 10,
+    marginHorizontal: 16,
   },
   headerInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 2,
   },
-  badgeContainer: {
-    flexDirection: 'row',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
-  progressBar: {
-    width: '90%',
-    marginLeft: '5%',
-  },
-  halfContainer: {
+  textContainer: {
     width: '50%',
   },
-  halfContainerBadge: {
-    marginLeft: '25%',
+  badgeContainer: {
+    width: '50%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  upperBadgesContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  progressBar: {
+    width: '100%',
   },
 });
 

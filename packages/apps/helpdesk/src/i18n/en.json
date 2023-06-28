@@ -30,7 +30,8 @@
   "Helpdesk_Pause": "Pause",
   "Helpdesk_Resolve": "Resolve",
   "Helpdesk_Reset": "Reset",
-
+  "Helpdesk_NoGeneralInformation": "No general informations",
+  "Helpdesk_NoTimingInformation": "No timing informations",
   "Helpdesk_SliceAction_FetchMyTicket": "fetch my tickets",
   "Helpdesk_SliceAction_FetchTicketType": "fetch ticket types",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "fetch my team tickets",

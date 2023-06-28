@@ -56,6 +56,12 @@ const initialState = {
 const ticketSlice = createSlice({
   name: 'timer',
   initialState,
+  reducers: {
+    clearTimer: state => {
+      state.timer = {};
+      state.timerHistory = [];
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchTimerById.pending, (state, action) => {
       state.loadingTimer = true;
@@ -63,15 +69,18 @@ const ticketSlice = createSlice({
     builder.addCase(fetchTimerById.fulfilled, (state, action) => {
       state.loadingTimer = false;
       state.timer = action.payload;
+      state.timerHistory = [];
     });
     builder.addCase(searchTimerHistoryById.pending, state => {
       state.loadingTimer = true;
     });
     builder.addCase(searchTimerHistoryById.fulfilled, (state, action) => {
       state.loadingTimer = false;
-      state.timerHistory = action.payload;
+      state.timerHistory = action.payload ?? [];
     });
   },
 });
+
+export const {clearTimer} = ticketSlice.actions;
 
 export const timerReducer = ticketSlice.reducer;

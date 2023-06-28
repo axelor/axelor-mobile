@@ -18,25 +18,15 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {checkNullString, DropdownCardSwitch, Text} from '@axelor/aos-mobile-ui';
-import {
-  useTranslator,
-  useSelector,
-  formatDateTime as _formatDateTime,
-  formatDuration,
-} from '@axelor/aos-mobile-core';
+import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
+import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import DropdownGeneralView from './DropdownGeneralView';
+import DropdownTimingView from './DropdownTimingView';
 
 const TicketDropdownCards = ({}) => {
   const I18n = useTranslator();
 
   const {ticket} = useSelector(state => state.ticket);
-
-  const formatDateTime = (titleKey, value) => {
-    return `${I18n.t(titleKey)}: ${_formatDateTime(
-      value,
-      I18n.t('Base_DateTimeFormat'),
-    )}`;
-  };
 
   return (
     <View style={styles.container}>
@@ -47,61 +37,25 @@ const TicketDropdownCards = ({}) => {
             title: I18n.t('Helpdesk_GeneralInformations'),
             key: 1,
             childrenComp: (
-              <>
-                {ticket.project && (
-                  <Text>{`${I18n.t('Helpdesk_Project')}: ${
-                    ticket.project?.fullName
-                  }`}</Text>
-                )}
-                {ticket.customerPartner && (
-                  <Text>{`${I18n.t('Helpdesk_CustomPartner')}: ${
-                    ticket.customerPartner.fullName
-                  }`}</Text>
-                )}
-                {ticket.contactPartner && (
-                  <Text>{`${I18n.t('Helpdesk_ContactPartner')}: ${
-                    ticket.contactPartner.fullName
-                  }`}</Text>
-                )}
-                {!checkNullString(ticket.assignedToUser) && (
-                  <Text>{`${I18n.t('Helpdesk_Assigned_To')}: ${
-                    ticket.assignedToUser
-                  }`}</Text>
-                )}
-                {!checkNullString(ticket.responsibleUser) && (
-                  <Text>{`${I18n.t('Helpdesk_User_In_Charge')}: ${
-                    ticket.responsibleUser
-                  }`}</Text>
-                )}
-              </>
+              <DropdownGeneralView
+                project={ticket.project?.fullName}
+                contactPartner={ticket.contactPartner?.fullName}
+                customerPartner={ticket.customerPartner?.fullName}
+                assignedToUser={ticket.assignedToUser}
+                responsibleUser={ticket.responsibleUser}
+              />
             ),
           },
           {
             title: I18n.t('Helpdesk_Timing'),
             key: 2,
             childrenComp: (
-              <>
-                {!checkNullString(ticket.deadlineDateT) && (
-                  <Text>
-                    {formatDateTime('Helpdesk_Deadline', ticket.deadlineDateT)}
-                  </Text>
-                )}
-                {!checkNullString(ticket.startDateT) && (
-                  <Text>
-                    {formatDateTime('Helpdesk_StartDate', ticket.startDateT)}
-                  </Text>
-                )}
-                {!checkNullString(ticket.endDateT) && (
-                  <Text>
-                    {formatDateTime('Helpdesk_EndDate', ticket.endDateT)}
-                  </Text>
-                )}
-                {ticket.duration !== null && (
-                  <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
-                    ticket.duration,
-                  )}`}</Text>
-                )}
-              </>
+              <DropdownTimingView
+                deadlineDateT={ticket.deadlineDateT}
+                startDateT={ticket.startDateT}
+                endDateT={ticket.endDateT}
+                duration={ticket.duration}
+              />
             ),
           },
         ]}

@@ -50,11 +50,13 @@ class TicketType {
     if (timerHystoryList == null) {
       return 0;
     }
+
     let totalDuration = 0;
     timerHystoryList.forEach(duration => {
       let diff = calculateDiff(duration.startDateT, duration.endDateT);
       totalDuration += diff;
     });
+
     return totalDuration;
   };
 
@@ -66,7 +68,7 @@ class TicketType {
       ticketState === TicketType.status.In_Progress &&
       timerState === TicketType.timerStatus.stop
     ) {
-      return StopwatchType.status.Ready;
+      return StopwatchType.status.Paused;
     }
     if (
       ticketState === TicketType.status.In_Progress &&
@@ -75,7 +77,7 @@ class TicketType {
       return StopwatchType.status.InProgress;
     }
     if (ticketState === TicketType.status.Closed) {
-      return StopwatchType.status.Canceled;
+      return StopwatchType.status.Finished;
     }
     if (ticketState === TicketType.status.Resolved) {
       return StopwatchType.status.Finished;

@@ -22,8 +22,8 @@ import {
   Screen,
   HeaderContainer,
   NotesCard,
-  Button,
   useThemeColor,
+  IconButton,
 } from '@axelor/aos-mobile-ui';
 import {
   Stopwatch,
@@ -31,6 +31,7 @@ import {
   useSelector,
   useTranslator,
   getNowDateZonesISOString,
+  StopwatchType,
 } from '@axelor/aos-mobile-core';
 import {fetchTicketById, updateTicketStatus} from '../features/ticketSlice';
 import {
@@ -39,16 +40,20 @@ import {
   TicketEditButton,
   TicketsStatusButton,
 } from '../components';
-import {fetchTimerById, searchTimerHistoryById} from '../features/timerSlice';
+import {
+  clearTimer,
+  fetchTimerById,
+  searchTimerHistoryById,
+} from '../features/timerSlice';
 import {Ticket} from '../types';
 import {fetchHelpdeskConfig} from '../features/helpdeskConfigSlice';
 
-const TicketDetailsScreen = ({navigation, route}) => {
+const TicketDetailsScreen = ({route}) => {
   const {idTicket, colorIndex} = route.params;
   const I18n = useTranslator();
   const Colors = useThemeColor();
-
   const dispatch = useDispatch();
+
   const {ticket} = useSelector(state => state.ticket);
   const {timer, timerHistory} = useSelector(state => state.timer);
   const {helpdeskConfig} = useSelector(state => state.helpdeskConfig);
@@ -64,13 +69,13 @@ const TicketDetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     if (ticket?.timerList?.length > 0) {
       dispatch(fetchTimerById({timerId: ticket?.timerList[0]?.id}));
+    } else {
+      dispatch(clearTimer());
     }
   }, [dispatch, ticket?.timerList]);
 
   useEffect(() => {
-    if (timer?.timerHistoryList?.length > 0) {
-      dispatch(searchTimerHistoryById({idTimer: timer?.id}));
-    }
+    dispatch(searchTimerHistoryById({idTimer: timer?.id}));
   }, [dispatch, timer]);
 
   const statustimer = useMemo(() => {
@@ -88,8 +93,15 @@ const TicketDetailsScreen = ({navigation, route}) => {
   }, [ticket]);
 
   const timerDuration = useMemo(() => {
+    if (
+      !Array.isArray(ticket?.timerList) ||
+      ticket.timerList.length === 0 ||
+      ticket.timerList[0]?.id !== timer?.id
+    ) {
+      return 0;
+    }
     return Ticket.getTotalDuration(timerHistory);
-  }, [timerHistory]);
+  }, [ticket?.timerList, timer?.id, timerHistory]);
 
   const updateStatus = useCallback(
     status => {
@@ -126,6 +138,7 @@ const TicketDetailsScreen = ({navigation, route}) => {
             startTime={timerDuration}
             timerFormat={I18n.t('Stopwatch_TimerFormat')}
             status={statustimer}
+            disableStop={statustimer === StopwatchType.status.Paused}
             onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
             onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
             onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
@@ -137,10 +150,11 @@ const TicketDetailsScreen = ({navigation, route}) => {
         )}
         {ticket?.statusSelect !== Ticket.status.Closed &&
           ticket?.statusSelect !== Ticket.status.New && (
-            <Button
+            <IconButton
               title={I18n.t('Helpdesk_Close')}
+              iconName="power-off"
               onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
-              color={Colors.cautionColor}
+              color={Colors.primaryColor}
               disabled={
                 ticket?.statusSelect === Ticket.status.Closed ||
                 ticket?.statusSelect === Ticket.status.New

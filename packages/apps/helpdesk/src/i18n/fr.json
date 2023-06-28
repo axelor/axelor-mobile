@@ -30,7 +30,8 @@
   "Helpdesk_Pause": "Mettre en pause",
   "Helpdesk_Resolve": "Résoudre",
   "Helpdesk_Reset": "Réinitialiser",
-
+  "Helpdesk_NoGeneralInformation": "Pas d'informations générales.",
+  "Helpdesk_NoTimingInformation": "Pas d'informations temporelles.",
   "Helpdesk_SliceAction_FetchMyTicket": "récupération de mes tickets",
   "Helpdesk_SliceAction_FetchTicketType": "récupération des types de tickets",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "récupération des tickets de mon équipe",
