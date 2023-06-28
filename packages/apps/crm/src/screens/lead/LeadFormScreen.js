@@ -46,7 +46,7 @@ const LeadFormScreen = ({navigation, route}) => {
   const [civility, setCivility] = useState(Number(lead.titleSelect));
   const [firstName, setFirstName] = useState(lead.firstName);
   const [name, setName] = useState(lead.name);
-  const [leadJob, setLeadJob] = useState(lead.jobTitleFunction.id);
+  const [leadJob, setLeadJob] = useState(lead.jobTitleFunction?.id);
   const [leadAdress, setLeadAdress] = useState(lead.primaryAddress);
   const [fixedPhone, setFixedPhone] = useState(lead.fixedPhone);
   const [mobilePhone, setMobilePhone] = useState(lead.mobilePhone);

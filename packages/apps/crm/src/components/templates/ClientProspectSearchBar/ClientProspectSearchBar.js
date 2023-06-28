@@ -19,7 +19,12 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  Text,
+  useThemeColor,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
@@ -56,7 +61,7 @@ const ClientProspectSearchBar = ({
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
+      {!checkNullString(showTitle) && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}
       <AutoCompleteSearch
