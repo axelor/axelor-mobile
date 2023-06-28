@@ -53,7 +53,6 @@ const ProjectSearchBar = ({
     },
     [dispatch],
   );
-  console.log(defaultValue);
 
   return (
     <View style={[styles.container, style]}>
