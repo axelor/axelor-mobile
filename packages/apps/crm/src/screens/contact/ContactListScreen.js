@@ -88,7 +88,6 @@ const ContactListScreen = ({navigation}) => {
               showDetailsPopup={false}
               oneFilter={true}
               showTitle={false}
-              style={styles.searchBar}
             />
           </View>
         }
@@ -140,9 +139,6 @@ const styles = StyleSheet.create({
     width: '54%',
     height: 38,
     borderRadius: 13,
-  },
-  searchBar: {
-    width: '100%',
   },
 });
 
