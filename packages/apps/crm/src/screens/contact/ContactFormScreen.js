@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -25,17 +25,18 @@ import {
   KeyboardAvoidingScrollView,
   Picker,
   Screen,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ClientProspectSearchBar} from '../../components';
 import {getContact} from '../../features/contactSlice';
 import {updateContact} from '../../features/contactSlice';
 import {useCivilityList} from '../../hooks/use-civility-list';
-
 const ContactFormScreen = ({navigation, route}) => {
   const idContact = route.params.idContact;
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const {contact} = useSelector(state => state.contact);
   const {civilityList} = useCivilityList();
@@ -94,6 +95,14 @@ const ContactFormScreen = ({navigation, route}) => {
     email,
   ]);
 
+  const disabled = useMemo(() => {
+    if (clientAndProspect == null) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
   return (
     <Screen>
       <KeyboardAvoidingScrollView>
@@ -131,6 +140,7 @@ const ContactFormScreen = ({navigation, route}) => {
             onChange={setClientAndProspect}
             style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
+            required={true}
           />
           <FormInput
             style={styles.input}
@@ -164,7 +174,12 @@ const ContactFormScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateContactAPI} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={updateContactAPI}
+          disabled={disabled}
+          color={disabled ? Colors.secondaryColor : Colors.primaryColor}
+        />
       </View>
     </Screen>
   );
