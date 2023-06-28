@@ -27,3 +27,4 @@ export {
   OUTSIDE_INDICATOR,
 } from './hooks/use-click-outside';
 export {animationUtil} from './tools/AnimationUtil';
+export {useDigitFormat} from './hooks/use-digit-format';
