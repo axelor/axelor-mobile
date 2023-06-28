@@ -55,7 +55,12 @@ const ContactSearchBar = ({
   );
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
+    <View
+      style={[
+        styles.searchBar,
+        Platform.OS === 'ios' ? styles.container : null,
+        style,
+      ]}>
       {showTitle && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}
@@ -83,6 +88,10 @@ const ContactSearchBar = ({
 
 const getStyles = Colors =>
   StyleSheet.create({
+    searchBar: {
+      width: '100%',
+      marginLeft: 5,
+    },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
     },
