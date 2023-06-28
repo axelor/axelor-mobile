@@ -101,7 +101,7 @@ const ContactFormScreen = ({navigation, route}) => {
     } else {
       return false;
     }
-  });
+  }, [clientAndProspect]);
 
   return (
     <Screen>
