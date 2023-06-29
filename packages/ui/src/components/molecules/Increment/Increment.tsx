@@ -24,10 +24,7 @@ import {
 } from '../../../utils/formatters';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Input} from '../../atoms';
-
-const cutDecimalExcess = number => {
-  return number.toFixed(2).toString();
-};
+import {useDigitFormat} from '../../../hooks/use-digit-format';
 
 interface IncrementProps {
   style?: any;
@@ -52,11 +49,16 @@ const Increment = ({
   onBlur = () => {},
   readonly = false,
 }: IncrementProps) => {
+  const Colors = useThemeColor();
+  const cutDecimalExcess = useDigitFormat();
+
+  const [valueQty, setValueQty] = useState<string>();
+
   const format = useCallback(
-    number => {
-      return _format(number, decimalSpacer, thousandSpacer);
+    (number: number | string) => {
+      return _format(number, decimalSpacer, thousandSpacer, cutDecimalExcess);
     },
-    [decimalSpacer, thousandSpacer],
+    [cutDecimalExcess, decimalSpacer, thousandSpacer],
   );
 
   const unformat = useCallback(
@@ -66,9 +68,6 @@ const Increment = ({
     [decimalSpacer, thousandSpacer],
   );
 
-  const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState<string>();
-
   useEffect(() => {
     setValueQty(format(parseFloat(value)?.toString()));
   }, [format, value]);
@@ -76,7 +75,7 @@ const Increment = ({
   const handlePlus = () => {
     const unformatedValue = unformat(valueQty);
     const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
-    setValueQty(format(cutDecimalExcess(newValue)));
+    setValueQty(format(newValue));
     onValueChange(newValue);
   };
 
@@ -84,7 +83,7 @@ const Increment = ({
     const unformatedValue = unformat(valueQty);
     const newValue = parseFloat(unformatedValue) - parseFloat('1');
     if (newValue >= 0) {
-      setValueQty(format(cutDecimalExcess(newValue)));
+      setValueQty(format(newValue));
       onValueChange(newValue);
     }
   };
@@ -95,16 +94,16 @@ const Increment = ({
     }
 
     if (valueQty === '' || valueQty === null) {
-      setValueQty(`0${decimalSpacer}00`);
-      onValueChange(0.0);
+      setValueQty(format(0));
+      onValueChange(0);
     } else {
       const newValue: number = parseFloat(valueQty);
       if (newValue >= 0) {
-        setValueQty(format(cutDecimalExcess(newValue)));
-        onValueChange(newValue.toFixed(2));
+        setValueQty(format(newValue));
+        onValueChange(newValue);
       } else {
-        setValueQty(`0${decimalSpacer}00`);
-        onValueChange(0.0);
+        setValueQty(format(0));
+        onValueChange(0);
       }
     }
     onBlur();
