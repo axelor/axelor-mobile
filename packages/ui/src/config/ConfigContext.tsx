@@ -46,7 +46,9 @@ interface ConfigContextState {
   showSubtitles: boolean;
   headerHeight: number;
   blockInteractionConfig: BlockInteractionConfig;
+  nbDecimalDigitForQty: number;
   setBlockInteractionConfig: (config: BlockInteractionConfig) => void;
+  setNbDecimalDigitForQty: (option: number) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -72,9 +74,15 @@ const defaultConfigContext = {
     message: '',
     actionItems: [],
   },
+  nbDecimalDigitForQty: 2,
   setBlockInteractionConfig: () => {
     throw new Error(
       'ConfigProvider should be mounted to set blockInteractionConfig config',
+    );
+  },
+  setNbDecimalDigitForQty: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set nbDecimalDigitForQty config',
     );
   },
   setActivityIndicator: () => {
@@ -117,6 +125,7 @@ const actionTypes = {
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
   setBlockInteractionConfig: 'setBlockInteractionConfig',
+  setNbDecimalDigitForQty: 'setNbDecimalDigitForQty',
 };
 
 const configReducer = (
@@ -128,6 +137,12 @@ const configReducer = (
       return {
         ...state,
         blockInteractionConfig: action.payload as BlockInteractionConfig,
+      };
+    }
+    case actionTypes.setNbDecimalDigitForQty: {
+      return {
+        ...state,
+        nbDecimalDigitForQty: action.payload as number,
       };
     }
     case actionTypes.setActivityIndicator: {
@@ -186,6 +201,10 @@ const actions = {
     type: actionTypes.setActivityIndicator,
     payload: option,
   }),
+  setNbDecimalDigitForQty: option => ({
+    type: actionTypes.setNbDecimalDigitForQty,
+    payload: option,
+  }),
   setShowSubtitles: option => ({
     type: actionTypes.setShowSubtitles,
     payload: option,
@@ -220,6 +239,10 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     config => dispatch(actions.setBlockInteractionConfig(config)),
     [],
   );
+  const setNbDecimalDigitForQty = useCallback(
+    option => dispatch(actions.setNbDecimalDigitForQty(option)),
+    [],
+  );
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
     [],
@@ -251,6 +274,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
   const configContextState = useMemo<ConfigContextState>(
     () => ({
       ...state,
+      setNbDecimalDigitForQty,
       setActivityIndicator,
       setShowSubtitles,
       setFilterConfig,
@@ -262,6 +286,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     }),
     [
       setActivityIndicator,
+      setNbDecimalDigitForQty,
       setShowSubtitles,
       setFilterConfig,
       setVirtualKeyboardConfig,

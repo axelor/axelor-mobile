@@ -25,18 +25,7 @@ import {
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Input} from '../../atoms';
 import IncrementButton from './IncrementButton';
-
-const cutDecimalExcess = number => {
-  if (number == null) {
-    return '0.00';
-  }
-
-  if (typeof number === 'string') {
-    return parseFloat(number).toFixed(2).toString();
-  }
-
-  return number.toFixed(2).toString();
-};
+import {useDigitFormat} from '../../../hooks/use-digit-format';
 
 interface IncrementProps {
   style?: any;
@@ -70,14 +59,15 @@ const Increment = ({
   maxValue = null,
 }: IncrementProps) => {
   const Colors = useThemeColor();
+  const cutDecimalExcess = useDigitFormat();
 
   const [valueQty, setValueQty] = useState<string>();
 
   const format = useCallback(
     (number: number | string) => {
-      return _format(cutDecimalExcess(number), decimalSpacer, thousandSpacer);
+      return _format(number, decimalSpacer, thousandSpacer, cutDecimalExcess);
     },
-    [decimalSpacer, thousandSpacer],
+    [cutDecimalExcess, decimalSpacer, thousandSpacer],
   );
 
   const unformat = useCallback(
