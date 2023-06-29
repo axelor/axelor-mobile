@@ -16,19 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useConfig} from '@axelor/aos-mobile-ui';
 import {useCallback} from 'react';
+import {useConfig} from '../config/ConfigContext';
+import {checkNullString} from '../utils';
 
 export const useDigitFormat = () => {
   const {nbDecimalDigitForQty} = useConfig();
 
-  const formatDigit = useCallback(
-    numberToFormat => {
-      return parseFloat(numberToFormat.toString()).toFixed(
-        nbDecimalDigitForQty,
-      );
+  return useCallback(
+    (numberToFormat: number | string) => {
+      if (typeof numberToFormat === 'number') {
+        numberToFormat = numberToFormat.toString();
+      }
+
+      if (checkNullString(numberToFormat)) {
+        return parseFloat('0').toFixed(nbDecimalDigitForQty);
+      }
+
+      return parseFloat(numberToFormat).toFixed(nbDecimalDigitForQty);
     },
     [nbDecimalDigitForQty],
   );
-  return formatDigit;
 };

@@ -34,15 +34,26 @@ export function formatDate(inputDate: string, format: string): string {
 }
 
 export function formatNumber(
-  number: string,
+  number: string | number,
   decimalSpacer: string = '.',
   thousandSpacer: string = ' ',
+  cutDecimalExcess: (value: number | string) => string = value => {
+    if (typeof value === 'number') {
+      return parseFloat(value.toString()).toFixed(2);
+    }
+
+    return parseFloat(value).toFixed(2);
+  },
 ): string {
-  if (checkNullString(number)) {
-    return `0${decimalSpacer}00`;
+  if (typeof number === 'number') {
+    number = number.toString();
   }
 
-  number = parseFloat(number).toFixed(2);
+  if (checkNullString(number)) {
+    number = cutDecimalExcess(0);
+  } else {
+    number = cutDecimalExcess(number);
+  }
 
   const decimalPart = splitInTwo(number)[1];
   const integerPart = splitInTwo(number)[0];
@@ -67,7 +78,7 @@ export function unformatNumber(
   thousandSpacer: string = ' ',
 ): string {
   if (checkNullString(number)) {
-    return `0${decimalSpacer}00`;
+    return '0';
   }
 
   const JS_THOUSAND_SPACER = '';

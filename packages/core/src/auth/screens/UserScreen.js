@@ -64,7 +64,7 @@ const UserScreen = ({children}) => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    if (baseConfig?.nbDecimalDigitForQty !== null) {
+    if (baseConfig?.nbDecimalDigitForQty != null) {
       setNbDecimalDigitForQty(baseConfig?.nbDecimalDigitForQty);
     }
   }, [baseConfig, setNbDecimalDigitForQty]);
