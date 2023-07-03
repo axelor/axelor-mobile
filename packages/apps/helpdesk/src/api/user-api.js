@@ -16,9 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {customerReducer as customer} from './customerSlice';
-export {helpdeskConfigReducer as helpdeskConfig} from './helpdeskConfigSlice';
-export {projectReducer as project} from './projectSlice';
-export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
-export {userListReducer as userList} from './userSlice';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+const createTicketTypeCriteria = searchValue => {
+  return [getSearchCriterias('helpdesk_user', searchValue)];
+};
+
+export async function searchUser({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.auth.db.User',
+    criteria: createTicketTypeCriteria(searchValue),
+    fieldKey: 'helpdesk_user',
+    sortKey: 'helpdesk_user',
+    page: page,
+  });
+}

@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   Button,
   FormInput,
@@ -41,6 +41,7 @@ import {
   CustomerSearchBar,
   ProjectSearchBar,
   TicketTypeSearchBar,
+  UserSearchBar,
 } from '../components';
 import {Ticket} from '../types/';
 import {getCustomerbyId} from '../features/customerSlice';
@@ -58,6 +59,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [projectInput, setProjectInput] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
+  const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
   const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
 
   const handleTicketFieldChange = (newValue, fieldName) => {
@@ -97,18 +99,27 @@ const TicketFormScreen = ({navigation, route}) => {
           project: projectInput ? {id: projectInput?.id} : null,
           customerPartner: client ? {id: client?.id} : null,
           contactPartner: contactPartner ? {id: contactPartner.id} : null,
+          assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
         },
       }),
     );
     navigation.navigate('TicketDetailsScreen', {
       idTicket: _ticket.id,
     });
-  }, [_ticket, dispatch, navigation, contactPartner, client, projectInput]);
+  }, [
+    _ticket,
+    dispatch,
+    navigation,
+    contactPartner,
+    client,
+    projectInput,
+    assignedTo,
+  ]);
 
   return (
     <Screen>
       <KeyboardAvoidingScrollView>
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <FormInput
             style={styles.input}
             title={I18n.t('Hepdesk_Subject')}
@@ -193,12 +204,20 @@ const TicketFormScreen = ({navigation, route}) => {
             defaultDate={new Date(ticket?.endDateT)}
             style={styles.input}
           />
+          <UserSearchBar
+            titleKey="Helpdesk_assignedToUser"
+            placeholderKey="Helpdesk_assignedToUser"
+            defaultValue={assignedTo}
+            onChange={setAssignedTo}
+            style={styles.picker}
+            styleTxt={styles.marginTitle}
+          />
           <FormHtmlInput
             title={I18n.t('Base_Description')}
             onChange={value => handleTicketFieldChange(value, 'description')}
             defaultValue={_ticket?.description}
           />
-        </View>
+        </ScrollView>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={updateTicketAPI} />

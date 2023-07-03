@@ -23,4 +23,5 @@ export const helpdesk_sortFields: SortFields = {
   helpdesk_customer: ['name', 'partnerSeq', 'createdOn'],
   helpdesk_project: ['name', 'fullName'],
   helpdesk_ticketType: ['name'],
+  helpdesk_user: ['fullName'],
 };

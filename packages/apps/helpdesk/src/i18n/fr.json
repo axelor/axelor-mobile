@@ -34,6 +34,7 @@
   "Hepdesk_Subject": "Sujet",
   "Helpdesk_NoGeneralInformation": "Pas d'informations générales.",
   "Helpdesk_NoTimingInformation": "Pas d'informations temporelles.",
+  "Helpdesk_assignedToUser": "assigné à",
   "Helpdesk_SliceAction_FetchMyTicket": "récupération de mes tickets",
   "Helpdesk_SliceAction_FetchTicketType": "récupération des types de tickets",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "récupération des tickets de mon équipe",
@@ -41,5 +42,6 @@
   "Helpdesk_SliceAction_FetchTimerById": "récupération du timer par id",
   "Helpdesk_SliceAction_FetchTimerHistory": "récupération de l'historique du timer",
   "Helpdesk_SliceAction_UpdateTicketStatus": "mise à jour du statut du ticket",
-  "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client"
+  "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client",
+  "Helpdesk_SliceAction_SearchUser": "récupération des utilisateurs"
 }

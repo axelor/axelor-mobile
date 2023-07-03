@@ -36,4 +36,5 @@ export const helpdesk_searchFields: SearchFields = {
     'emailAddress.name',
   ],
   helpdesk_project: ['name', 'fullName'],
+  helpdesk_user: ['fullName'],
 };
