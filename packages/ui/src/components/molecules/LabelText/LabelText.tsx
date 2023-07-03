@@ -59,7 +59,7 @@ const LabelText = ({
       )}
       {!checkNullString(title) && (
         <Text
-          style={textStyle}
+          style={[styles.title, textStyle]}
           fontSize={14}
           numberOfLines={onlyOneLine ? 1 : null}>
           {title}
@@ -80,9 +80,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
+  title: {
+    marginRight: 5,
+  },
   txtDetails: {
     fontWeight: 'bold',
-    marginHorizontal: 5,
   },
   icon: {
     marginRight: 5,
