@@ -37,8 +37,7 @@ export const StockModule: Module = {
   icon: 'cubes',
   compatibilityAOS: {
     moduleName: 'axelor-stock',
-    downToVersion: '6.4.0',
-    upToVersion: '7.1.0',
+    downToVersion: '7.1.0',
   },
   menus: {
     stock_menu_product: {
