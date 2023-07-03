@@ -35,13 +35,13 @@ const EventLabelsCard = ({}) => {
           title={event.location}
         />
       )}
-      {!checkNullString(event.user?.fullName) && (
+      {event.user != null && (
         <LabelText
           title={I18n.t('Crm_AssignedTo')}
           value={event.user?.fullName}
         />
       )}
-      {!checkNullString(event.organizer) && (
+      {event.organizer != null && (
         <LabelText
           title={I18n.t('Crm_Organisator')}
           value={event.organizer?.name?.split(' [')[0]}
