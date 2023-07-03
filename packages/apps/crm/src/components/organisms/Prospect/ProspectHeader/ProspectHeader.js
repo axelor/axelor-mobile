@@ -18,7 +18,13 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge, StarScore, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  Badge,
+  StarScore,
+  useThemeColor,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {
   useSelector,
   AOSImageBubble,
@@ -63,13 +69,13 @@ const ProspectHeader = ({}) => {
         </View>
       </View>
       <View style={styles.headerBadge}>
-        {prospect.partnerCategory?.name && (
+        {!checkNullString(prospect.partnerCategory?.name) && (
           <Badge
             color={Colors.progressColor}
             title={prospect.partnerCategory?.name}
           />
         )}
-        {prospect.industrySector?.name && (
+        {!checkNullString(prospect.industrySector?.name) && (
           <Badge
             color={Colors.plannedColor}
             title={prospect.industrySector?.name}

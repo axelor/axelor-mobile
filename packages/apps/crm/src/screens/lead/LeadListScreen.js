@@ -154,7 +154,7 @@ const LeadListScreen = ({navigation}) => {
                 idLead: item.id,
                 versionLead: item.version,
                 colorIndex: leadStatusList?.findIndex(
-                  status => status.id === item.leadStatus.id,
+                  status => status.id === item.leadStatus?.id,
                 ),
               })
             }

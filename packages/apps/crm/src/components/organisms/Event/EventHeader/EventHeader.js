@@ -35,10 +35,10 @@ const EventHeader = ({}) => {
         </Text>
       </View>
       <View style={styles.halfContainer}>
-        {event.statusSelect && (
+        {event.statusSelect != null && (
           <Badge title={EventType.getStatus(event.statusSelect, I18n)} />
         )}
-        {event.typeSelect && (
+        {event.typeSelect != null && (
           <Badge
             title={EventType.getCategory(event.typeSelect, I18n)}
             color={Colors.plannedColor}

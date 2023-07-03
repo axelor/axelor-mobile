@@ -26,6 +26,7 @@ import {
   useThemeColor,
   Badge,
   StarScore,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Lead} from '../../../../types';
@@ -77,15 +78,15 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
       />
       <View style={styles.headerInfo}>
         <Text style={styles.textTitle}>{lead.simpleFullName}</Text>
-        {lead.enterpriseName && (
+        {!checkNullString(lead.enterpriseName) && (
           <LabelText iconName="building" title={lead.enterpriseName} />
         )}
-        {lead.jobTitleFunction?.name && (
+        {!checkNullString(lead.jobTitleFunction?.name) && (
           <LabelText iconName="suitcase" title={lead.jobTitleFunction?.name} />
         )}
       </View>
       <View style={styles.headerInfo}>
-        {lead.leadStatus && (
+        {lead.leadStatus != null && (
           <Badge
             color={Lead.getStatusColor(colorIndex, Colors)}
             title={lead.leadStatus.name}

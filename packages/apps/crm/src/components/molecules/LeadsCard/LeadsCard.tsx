@@ -26,6 +26,7 @@ import {
   useThemeColor,
   Image,
   StarScore,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {useSelector} from '@axelor/aos-mobile-core';
 import Lead from '../../../types/lead';
@@ -93,13 +94,13 @@ const LeadsCard = ({
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.txtImportant}>{leadsFullname}</Text>
-          {leadsCompany && (
+          {!checkNullString(leadsCompany) && (
             <LabelText iconName="building" title={leadsCompany} />
           )}
-          {leadsAddress != null && (
+          {!checkNullString(leadsAddress) && (
             <LabelText iconName="map-marker-alt" title={leadsAddress} />
           )}
-          {leadsPhoneNumber != null && (
+          {!checkNullString(leadsPhoneNumber) && (
             <LabelText
               iconName={isDoNotCall ? 'phone-slash' : 'mobile-phone'}
               title={leadsPhoneNumber}
@@ -109,7 +110,7 @@ const LeadsCard = ({
               size={isDoNotCall ? null : 18}
             />
           )}
-          {leadsFixedPhone != null && (
+          {!checkNullString(leadsFixedPhone) && (
             <LabelText
               iconName={isDoNotCall ? 'phone-slash' : 'phone'}
               title={leadsFixedPhone}
@@ -117,7 +118,7 @@ const LeadsCard = ({
               textStyle={isDoNotCall ? styles.txtRed : null}
             />
           )}
-          {leadsEmail != null && (
+          {!checkNullString(leadsEmail) && (
             <LabelText
               iconName={isDoNotSendEmail ? 'user-alt-slash' : 'envelope'}
               title={leadsEmail}

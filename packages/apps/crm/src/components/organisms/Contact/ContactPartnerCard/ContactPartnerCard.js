@@ -57,7 +57,7 @@ const ContactPartnerCard = ({}) => {
       style={styles.item}
       partnerFullName={partner.simpleFullName}
       partnerReference={partner.partnerSeq}
-      partnerScoring={partner?.isProspect ? partner.leadScoringSelect : null}
+      partnerScoring={partner.isProspect ? partner?.leadScoringSelect : null}
       partnerAdress={partner.mainAddress?.fullName}
       partnerFixedPhone={partner.fixedPhone}
       partnerEmail={partner.emailAddress?.address}
