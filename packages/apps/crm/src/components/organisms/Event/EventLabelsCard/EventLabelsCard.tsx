@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {LabelText} from '@axelor/aos-mobile-ui';
+import {LabelText, checkNullString} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 const EventLabelsCard = ({}) => {
@@ -28,20 +28,20 @@ const EventLabelsCard = ({}) => {
 
   return (
     <View style={styles.contentContainer}>
-      {event.location && (
+      {!checkNullString(event.location) && (
         <LabelText
           style={styles.margin}
           iconName="map-pin"
           title={event.location}
         />
       )}
-      {event.user?.fullName && (
+      {!checkNullString(event.user?.fullName) && (
         <LabelText
           title={I18n.t('Crm_AssignedTo')}
           value={event.user?.fullName}
         />
       )}
-      {event.organizer && (
+      {!checkNullString(event.organizer) && (
         <LabelText
           title={I18n.t('Crm_Organisator')}
           value={event.organizer?.name?.split(' [')[0]}

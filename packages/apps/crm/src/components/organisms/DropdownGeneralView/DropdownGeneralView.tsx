@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {LabelText, Text} from '@axelor/aos-mobile-ui';
+import {LabelText, Text, checkNullString} from '@axelor/aos-mobile-ui';
 
 interface DropdownGeneralViewProps {
   assignedUser?: string;
@@ -39,11 +39,11 @@ const DropdownGeneralView = ({
   const I18n = useTranslator();
 
   if (
-    !assignedUser &&
-    !category &&
-    !industrySector &&
-    !priceList &&
-    !language
+    checkNullString(assignedUser) &&
+    checkNullString(category) &&
+    checkNullString(industrySector) &&
+    checkNullString(priceList) &&
+    checkNullString(language)
   ) {
     return (
       <View>
@@ -54,23 +54,23 @@ const DropdownGeneralView = ({
 
   return (
     <View>
-      {assignedUser && (
+      {!checkNullString(assignedUser) && (
         <LabelText
           title={I18n.t('Crm_AssignedTo')}
           iconName={'user-tie'}
           value={assignedUser}
         />
       )}
-      {language && (
+      {!checkNullString(language) && (
         <LabelText title={I18n.t('Crm_Language')} value={language} />
       )}
-      {category && (
+      {!checkNullString(category) && (
         <LabelText title={I18n.t('Crm_Category')} value={category} />
       )}
-      {industrySector && (
+      {!checkNullString(industrySector) && (
         <LabelText title={I18n.t('Crm_Sector')} value={industrySector} />
       )}
-      {priceList && (
+      {!checkNullString(priceList) && (
         <LabelText title={I18n.t('Crm_PriceList')} value={priceList} />
       )}
     </View>
