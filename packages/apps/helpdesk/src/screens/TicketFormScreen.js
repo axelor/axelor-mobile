@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Button,
   FormInput,
@@ -123,8 +123,8 @@ const TicketFormScreen = ({navigation, route}) => {
 
   return (
     <Screen>
-      <KeyboardAvoidingScrollView>
-        <ScrollView contentContainerStyle={styles.container}>
+      <KeyboardAvoidingScrollView style={styles.scroll}>
+        <View style={styles.container}>
           <FormInput
             style={styles.input}
             title={I18n.t('Hepdesk_Subject')}
@@ -248,7 +248,7 @@ const TicketFormScreen = ({navigation, route}) => {
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
-        </ScrollView>
+        </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
         <Button title={I18n.t('Base_Save')} onPress={updateTicketAPI} />
@@ -261,6 +261,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     zIndex: 30,
+  },
+  scroll: {
+    height: null,
   },
   headerContainer: {
     flexDirection: 'row',
