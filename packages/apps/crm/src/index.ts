@@ -37,8 +37,7 @@ export const CrmModule: Module = {
   icon: 'users',
   compatibilityAOS: {
     moduleName: 'axelor-crm',
-    downToVersion: '6.5.0',
-    upToVersion: '7.1.0',
+    downToVersion: '7.1.0',
   },
   menus: {
     crm_menu_lead: {
