@@ -28,3 +28,4 @@ export {
 } from './hooks/use-click-outside';
 export {animationUtil} from './tools/AnimationUtil';
 export {formatNumber, unformatNumber} from './utils/formatters';
+export {checkNullString} from './utils/strings';

@@ -32,10 +32,10 @@ const ContactHeader = ({}) => {
           {contact.simpleFullName}
         </Text>
         <LabelText iconName="building" title={contact.mainPartner?.fullName} />
-        {contact.jobTitleFunction && (
+        {contact?.jobTitleFunction != null && (
           <LabelText
             iconName="suitcase"
-            title={contact.jobTitleFunction?.name}
+            title={contact?.jobTitleFunction?.name}
           />
         )}
       </View>

@@ -65,10 +65,10 @@ const OpportunityHeader = ({}) => {
         />
       </View>
       <View>
-        {opportunity.opportunityStatus && (
+        {opportunity.opportunityStatus != null && (
           <Badge
             color={Opportunity.getStatusColor(colorIndex, Colors)}
-            title={opportunity.opportunityStatus.name}
+            title={opportunity.opportunityStatus?.name}
           />
         )}
       </View>

@@ -53,8 +53,8 @@ const ClientFormScreen = ({navigation, route}) => {
         clientFixedPhone: fixedPhone,
         clientWebsite: webSite,
         clientEmail: email,
-        emailVersion: client.emailAddress.$version,
-        emailId: client.emailAddress.id,
+        emailVersion: client.emailAddress?.$version,
+        emailId: client.emailAddress?.id,
         clientDescription: description,
       }),
       navigation.navigate('ClientDetailsScreen', {
@@ -70,8 +70,8 @@ const ClientFormScreen = ({navigation, route}) => {
     webSite,
     navigation,
     email,
-    client.emailAddress.$version,
-    client.emailAddress.id,
+    client.emailAddress?.$version,
+    client.emailAddress?.id,
     description,
   ]);
 

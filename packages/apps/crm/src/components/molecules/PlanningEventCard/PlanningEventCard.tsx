@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Text, LabelText} from '@axelor/aos-mobile-ui';
+import {Card, Text, LabelText, checkNullString} from '@axelor/aos-mobile-ui';
 interface PlanningEventCardProps {
   style?: any;
   onPress: () => void;
@@ -40,8 +40,12 @@ const PlanningEventCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card key={id} style={[styles.container, style]}>
         <Text style={styles.bold}>{subject}</Text>
-        {contactPartner && <LabelText iconName="user" title={contactPartner} />}
-        {location && <LabelText iconName="map-pin" title={location} />}
+        {!checkNullString(contactPartner) && (
+          <LabelText iconName="user" title={contactPartner} />
+        )}
+        {!checkNullString(location) && (
+          <LabelText iconName="map-pin" title={location} />
+        )}
       </Card>
     </TouchableOpacity>
   );

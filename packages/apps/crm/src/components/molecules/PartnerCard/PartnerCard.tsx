@@ -25,6 +25,7 @@ import {
   Icon,
   useThemeColor,
   LabelText,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {AOSImage} from '@axelor/aos-mobile-core';
 
@@ -76,17 +77,17 @@ const PartnerCard = ({
               {partnerScoring != null && (
                 <StarScore score={partnerScoring} showMissingStar={true} />
               )}
-              {partnerCompany && (
+              {!checkNullString(partnerCompany) && (
                 <LabelText iconName="building" title={partnerCompany} />
               )}
             </View>
           </View>
           <View style={styles.containerBody}>
             <View style={styles.containerTextBody}>
-              {partnerAdress && (
+              {!checkNullString(partnerAdress) && (
                 <LabelText iconName="map-marker-alt" title={partnerAdress} />
               )}
-              {partnerMobilePhone && (
+              {!checkNullString(partnerMobilePhone) && (
                 <LabelText
                   iconName="mobile-phone"
                   FontAwesome5={false}
@@ -94,10 +95,10 @@ const PartnerCard = ({
                   size={18}
                 />
               )}
-              {partnerFixedPhone && (
+              {!checkNullString(partnerFixedPhone) && (
                 <LabelText iconName="phone-alt" title={partnerFixedPhone} />
               )}
-              {partnerEmail && (
+              {!checkNullString(partnerEmail) && (
                 <LabelText iconName="envelope" title={partnerEmail} />
               )}
             </View>

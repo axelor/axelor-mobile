@@ -24,6 +24,7 @@ import {
   Text,
   useThemeColor,
   LabelText,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 
 interface LiteContactCardProps {
@@ -47,16 +48,18 @@ const LiteContactCard = ({
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.containerChildren}>
-          {contactFullname && (
+          {!checkNullString(contactFullname) && (
             <Text style={styles.bold}>{contactFullname}</Text>
           )}
-          {mobilePhoneNumber && (
+          {!checkNullString(mobilePhoneNumber) && (
             <LabelText iconName="phone-alt" title={mobilePhoneNumber} />
           )}
-          {fixedPhoneNumber && (
+          {!checkNullString(fixedPhoneNumber) && (
             <LabelText iconName="phone-alt" title={fixedPhoneNumber} />
           )}
-          {email && <LabelText iconName="envelope" title={email} />}
+          {!checkNullString(email) && (
+            <LabelText iconName="envelope" title={email} />
+          )}
         </View>
         <Icon
           name="chevron-right"

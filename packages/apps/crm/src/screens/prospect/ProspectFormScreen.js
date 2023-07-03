@@ -61,8 +61,8 @@ const ProspectFormScreen = ({navigation, route}) => {
         prospectFixedPhone: fixedPhone,
         prospectWebsite: webSite,
         prospectDescription: description,
-        emailId: prospect.emailAddress.id,
-        emailVersion: prospect.emailAddress.$version,
+        emailId: prospect.emailAddress?.id,
+        emailVersion: prospect.emailAddress?.$version,
         prospectEmail: email,
       }),
     );

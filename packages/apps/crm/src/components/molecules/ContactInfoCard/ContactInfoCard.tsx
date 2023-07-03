@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  LabelText,
+  Text,
+  useThemeColor,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {clipboardProvider} from '@axelor/aos-mobile-core';
 
 interface ContactInfoCardProps {
@@ -53,7 +59,7 @@ const ContactInfoCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      {data && (
+      {!checkNullString(data) && (
         <View>
           <LabelText
             title={title}

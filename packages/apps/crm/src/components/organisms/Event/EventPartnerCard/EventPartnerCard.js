@@ -47,7 +47,7 @@ const EventBody = ({}) => {
     }
   }, [navigation, partner?.id, partner?.isCustomer, partner?.isProspect]);
 
-  if (!event.partner) {
+  if (!event?.partner) {
     return null;
   }
 
