@@ -60,6 +60,9 @@ const TicketFormScreen = ({navigation, route}) => {
   const [client, setClient] = useState(ticket?.customerPartner);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
   const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
+  const [responsibleUser, setResponsibleUser] = useState(
+    ticket?.responsibleUser,
+  );
   const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
 
   const handleTicketFieldChange = (newValue, fieldName) => {
@@ -100,6 +103,7 @@ const TicketFormScreen = ({navigation, route}) => {
           customerPartner: client ? {id: client?.id} : null,
           contactPartner: contactPartner ? {id: contactPartner.id} : null,
           assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
+          responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
         },
       }),
     );
@@ -114,6 +118,7 @@ const TicketFormScreen = ({navigation, route}) => {
     client,
     projectInput,
     assignedTo,
+    responsibleUser,
   ]);
 
   return (
@@ -209,6 +214,14 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_assignedToUser"
             defaultValue={assignedTo}
             onChange={setAssignedTo}
+            style={styles.picker}
+            styleTxt={styles.marginTitle}
+          />
+          <UserSearchBar
+            titleKey="Helpdesk_responsibleUser"
+            placeholderKey="Helpdesk_responsibleUser"
+            defaultValue={responsibleUser}
+            onChange={setResponsibleUser}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
