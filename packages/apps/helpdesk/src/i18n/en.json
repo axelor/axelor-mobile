@@ -35,6 +35,7 @@
   "Helpdesk_NoGeneralInformation": "No general informations",
   "Helpdesk_NoTimingInformation": "No timing informations",
   "Helpdesk_assignedToUser": "assigned to",
+  "Helpdesk_responsibleUser": "User in charge",
   "Helpdesk_SliceAction_FetchMyTicket": "fetch my tickets",
   "Helpdesk_SliceAction_FetchTicketType": "fetch ticket types",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "fetch my team tickets",

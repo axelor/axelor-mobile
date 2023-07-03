@@ -209,6 +209,17 @@ const TicketFormScreen = ({navigation, route}) => {
             defaultDate={new Date(ticket?.endDateT)}
             style={styles.input}
           />
+          <DateInput
+            onDateChange={value =>
+              handleTicketFieldChange(
+                value.toISOString()?.split('T')[0],
+                'deadlineDateT',
+              )
+            }
+            title={I18n.t('Helpdesk_deadlineDate')}
+            defaultDate={new Date(ticket?.endDateT)}
+            style={styles.input}
+          />
           <UserSearchBar
             titleKey="Helpdesk_assignedToUser"
             placeholderKey="Helpdesk_assignedToUser"
@@ -229,6 +240,13 @@ const TicketFormScreen = ({navigation, route}) => {
             title={I18n.t('Base_Description')}
             onChange={value => handleTicketFieldChange(value, 'description')}
             defaultValue={_ticket?.description}
+          />
+          <FormIncrementInput
+            title={I18n.t('Helpdesk_Duration')}
+            defaultValue={_ticket.duration}
+            onChange={value => handleTicketFieldChange(value, 'duration')}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
         </ScrollView>
       </KeyboardAvoidingScrollView>
