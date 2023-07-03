@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
-    "nx": "14.7.5",
+    "nx": "16.4.2",
     "typescript": "^4.8.2"
   }
 }
