@@ -33,6 +33,10 @@ export const HelpDeskModule: Module = {
   title: 'Helpdesk_Helpdesk',
   subtitle: 'Helpdesk_Helpdesk',
   icon: 'life-ring',
+  compatibilityAOS: {
+    moduleName: 'axelor-helpdesk',
+    downToVersion: '7.1.0',
+  },
   translations: {
     en: enTranslations,
     fr: frTranslations,
