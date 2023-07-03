@@ -62,23 +62,76 @@ const upperBadgeItems = [
 
 const sideBadgeItems = [
   {order: 2, displayText: 'Lorem', color: lightTheme.colors.infoColor},
+  {order: 1, displayText: 'Lorem', color: lightTheme.colors.errorColor},
 ];
 
-const defaultArgs = {
+const simpleArgs = {
   touchable: true,
   onPress: () => console.log('Pressed'),
   showArrow: false,
   image: {source: {uri: 'https://picsum.photos/70'}},
-  upperBadges: {items: upperBadgeItems},
-  sideBadges: {items: sideBadgeItems},
-  lowerBadges: {items: upperBadgeItems},
   upperTexts: {items: upperTextItems},
+};
+
+const simpleArrowArgs = {
+  ...simpleArgs,
+  showArrow: true,
+};
+
+const simpleBadgeArgs = {
+  ...simpleArrowArgs,
+  sideBadges: {items: sideBadgeItems},
+};
+
+const allTextsArgs = {
+  ...simpleBadgeArgs,
   lowerTexts: {items: lowerTextItems},
+};
+
+const onlyLowerTextArgs = {
+  ...allTextsArgs,
+  upperTexts: null,
+  image: null,
+};
+
+const upperBadgesArgs = {
+  ...allTextsArgs,
+  upperBadges: {items: upperBadgeItems},
+};
+
+const upperBadgesReverseArgs = {
+  ...allTextsArgs,
+  upperBadges: {items: upperBadgeItems, fixedOnRightSide: true},
+};
+
+const lowerBadgesArgs = {
+  ...allTextsArgs,
+  lowerBadges: {items: upperBadgeItems},
+};
+
+const lowerBadgesReverseArgs = {
+  ...allTextsArgs,
+  lowerBadges: {items: upperBadgeItems, fixedOnRightSide: true},
+};
+
+const defaultArgs = {
+  ...upperBadgesArgs,
+  lowerBadges: {items: upperBadgeItems},
 };
 
 storiesOf('ui/templates/ObjectCard', module)
   .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add('Default', () => <ObjectCard {...defaultArgs} />);
+  .add('Default', () => <ObjectCard {...defaultArgs} />)
+  .add('Simple card', () => <ObjectCard {...simpleArgs} />)
+  .add('Simple card with arrow', () => <ObjectCard {...simpleArrowArgs} />)
+  .add('Side badges', () => <ObjectCard {...simpleBadgeArgs} />)
+  .add('Both texts card', () => <ObjectCard {...allTextsArgs} />)
+  .add('Only lower text', () => <ObjectCard {...onlyLowerTextArgs} />)
+  .add('Upper badges basic', () => <ObjectCard {...upperBadgesArgs} />)
+  .add('Upper badges reverse', () => <ObjectCard {...upperBadgesReverseArgs} />)
+  .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />)
+  .add('Lower badges reverse', () => <ObjectCard {...lowerBadgesReverseArgs} />)
+  .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />);
 
 const styles = StyleSheet.create({
   container: {
