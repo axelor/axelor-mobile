@@ -77,9 +77,37 @@ export async function searchStockLocationLine({
 const createAvailableProductsCriteria = ({stockLocationId, searchValue}) => {
   let criterias = [
     {
-      fieldName: 'detailsStockLocation.id',
-      operator: '=',
-      value: stockLocationId,
+      operator: 'or',
+      criteria: [
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'product.trackingNumberConfiguration',
+              operator: 'isNull',
+            },
+            {
+              fieldName: 'stockLocation.id',
+              operator: '=',
+              value: stockLocationId,
+            },
+          ],
+        },
+        {
+          operator: 'and',
+          criteria: [
+            {
+              fieldName: 'product.trackingNumberConfiguration',
+              operator: 'notNull',
+            },
+            {
+              fieldName: 'detailsStockLocation.id',
+              operator: '=',
+              value: stockLocationId,
+            },
+          ],
+        },
+      ],
     },
     {
       fieldName: 'currentQty',
@@ -104,6 +132,7 @@ export async function searchAvailableProducts({
       searchValue,
     }),
     fieldKey: 'stock_availableProducts',
+    sortKey: 'stock_availableProducts',
     page,
   });
 }

@@ -19,6 +19,10 @@
 import {SortFields} from '@axelor/aos-mobile-core';
 
 export const stock_sortFields: SortFields = {
+  stock_availableProducts: [
+    'product.fullName',
+    'trackingNumber.trackingNumberSeq',
+  ],
   stock_customerDelivery: [
     'statusSelect',
     '-realDate',
