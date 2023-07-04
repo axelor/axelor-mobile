@@ -62,7 +62,6 @@ export const formatDuration = (secondsValue, format = 'hh:mm:ss') => {
 };
 
 export const formatDurationToMiliseconds = duration => {
-  console.log(duration * 60 * 60 * 1000);
   return duration * 60 * 60;
 };
 
