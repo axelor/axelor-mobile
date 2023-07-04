@@ -29,6 +29,7 @@ import {
   FormIncrementInput,
   AutoCompleteSearch,
   Text,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {
   useSelector,
@@ -49,6 +50,8 @@ import {Ticket} from '../types/';
 import {getCustomerbyId} from '../features/customerSlice';
 import {displayItemFullname} from '../utils/displayers';
 
+const isObjectMissingRequiredField = object => checkNullString(object?.subject);
+
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route.params.idTicket;
   const dispatch = useDispatch();
@@ -67,6 +70,9 @@ const TicketFormScreen = ({navigation, route}) => {
     ticket?.responsibleUser,
   );
   const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
+  const [disabledButton, setDisabledButton] = useState(
+    isObjectMissingRequiredField(_ticket),
+  );
 
   const handleTicketFieldChange = (newValue, fieldName) => {
     setTicket(current => {
@@ -76,6 +82,7 @@ const TicketFormScreen = ({navigation, route}) => {
       current[fieldName] = newValue;
       return current;
     });
+    setDisabledButton(isObjectMissingRequiredField(_ticket));
   };
 
   useEffect(() => {
@@ -135,6 +142,7 @@ const TicketFormScreen = ({navigation, route}) => {
             title={I18n.t('Hepdesk_Subject')}
             onChange={value => handleTicketFieldChange(value, 'subject')}
             defaultValue={_ticket.subject}
+            required={true}
           />
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
@@ -267,7 +275,12 @@ const TicketFormScreen = ({navigation, route}) => {
         </View>
       </KeyboardAvoidingScrollView>
       <View style={styles.button_container}>
-        <Button title={I18n.t('Base_Save')} onPress={updateTicketAPI} />
+        <Button
+          title={I18n.t('Base_Save')}
+          onPress={updateTicketAPI}
+          disabled={disabledButton}
+          color={disabledButton ? Colors.secondaryColor : Colors.primaryColor}
+        />
       </View>
     </Screen>
   );
@@ -280,21 +293,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     height: null,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '90%',
-    zIndex: 35,
-  },
-  halfHeader: {
-    width: '50%',
-    zIndex: 40,
-  },
-  checkBoxContainer: {
-    flexDirection: 'column',
-    width: '50%',
-    marginLeft: '10%',
   },
   picker: {
     width: '100%',
