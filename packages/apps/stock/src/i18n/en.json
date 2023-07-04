@@ -110,6 +110,7 @@
   "Stock_SearchLine": "Search line",
   "Stock_NoTrackingNumberConfigured": "No tracking number configured",
   "Stock_FromStockLocation": "From stock location",
+  "Stock_ToStockLocation": "To stock location",
   "Sale_Sale": "Sale",
   "Purchase_Purchase": "Purchase",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",

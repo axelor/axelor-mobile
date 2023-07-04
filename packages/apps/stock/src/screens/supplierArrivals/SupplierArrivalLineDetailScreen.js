@@ -30,18 +30,21 @@ import {
   SupplierArrivalLineButtons,
   SupplierArrivalLineQuantityCard,
   SupplierProductInfo,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductForSupplier} from '../../features/supplierCatalogSlice';
 import {fetchSupplierArrivalLine} from '../../features/supplierArrivalLineSlice';
 import {StockMove, StockMoveLine} from '../../types';
 
+const stockLocationScanKey = 'to-stock-location_supplier-arrival-line-update';
+
 const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const {supplierArrival, supplierArrivalLineId, productId} = route.params;
-
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {stockConfig} = useSelector(state => state.stockAppConfig);
   const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
   const {loadingSupplierArrivalLine, supplierArrivalLine} = useSelector(
     state => state.supplierArrivalLine,
@@ -51,13 +54,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   );
 
   const trackingNumber = useMemo(
-    () =>
-      supplierArrivalLine != null
-        ? supplierArrivalLine.trackingNumber
-        : route.params.trackingNumber,
-    [supplierArrivalLine, route.params.trackingNumber],
+    () => supplierArrivalLine?.trackingNumber,
+    [supplierArrivalLine],
   );
 
+  const [toStockLocation, setToStockLocation] = useState(null);
   const [realQty, setRealQty] = useState(0);
   const [conformity, setConformity] = useState({
     name: StockMove.getConformity(StockMove.conformity.None, I18n),
@@ -80,6 +81,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           ? supplierArrivalLine.conformitySelect
           : StockMove.conformity.None,
     });
+    setToStockLocation(supplierArrivalLine?.toStockLocation);
   }, [supplierArrivalLine, I18n, supplierArrival]);
 
   useEffect(() => {
@@ -126,9 +128,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
         <SupplierArrivalLineButtons
           conformity={conformity}
           realQty={realQty}
+          toStockLocation={toStockLocation}
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}
-          trackingNumber={trackingNumber}
         />
       }
       loading={
@@ -143,14 +145,10 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             reference={supplierArrival.stockMoveSeq}
             status={supplierArrival.statusSelect}
             lineRef={supplierArrivalLine?.name}
-            date={
-              supplierArrival
-                ? StockMove.getStockMoveDate(
-                    supplierArrival.statusSelect,
-                    supplierArrival,
-                  )
-                : null
-            }
+            date={StockMove.getStockMoveDate(
+              supplierArrival.statusSelect,
+              supplierArrival,
+            )}
           />
         }
       />
@@ -169,6 +167,16 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}
         />
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_ToStockLocation"
+            defaultValue={toStockLocation}
+            onChange={setToStockLocation}
+            scanKey={stockLocationScanKey}
+            isFocus={true}
+            defaultStockLocation={supplierArrival.toStockLocation}
+          />
+        ) : null}
         <Picker
           title={I18n.t('Stock_Conformity')}
           onValueChange={item => handleConformityChange(item)}

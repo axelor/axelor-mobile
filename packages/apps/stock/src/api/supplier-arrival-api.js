@@ -82,6 +82,7 @@ export async function addLineStockMove({
   realQty,
   conformity = StockMove.conformity.None,
   version,
+  toStockLocationId,
 }) {
   return axiosApiProvider.post({
     url: `/ws/aos/stock-move/add-line/${stockMoveId}`,
@@ -93,6 +94,7 @@ export async function addLineStockMove({
       realQty: realQty,
       conformity: conformity,
       version,
+      toStockLocationId,
     },
   });
 }

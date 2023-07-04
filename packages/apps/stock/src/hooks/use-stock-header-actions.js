@@ -251,7 +251,7 @@ const useSupplierArrivalLineListActions = () => {
             !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
             supplierArrival?.statusSelect >= StockMove.status.Realized,
           onPress: () =>
-            navigation.navigate('SupplierArrivalSelectProductScreen', {
+            navigation.navigate('SupplierArrivalLineCreationScreen', {
               supplierArrival: supplierArrival,
             }),
           showInHeader: true,
