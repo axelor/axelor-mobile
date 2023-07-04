@@ -35,6 +35,8 @@ import {
   useDispatch,
   useTranslator,
   DateInput,
+  formatDuration,
+  formatDurationToMiliseconds,
 } from '@axelor/aos-mobile-core';
 import {fetchTicketById, updateTicket} from '../features/ticketSlice';
 import {
@@ -252,8 +254,13 @@ const TicketFormScreen = ({navigation, route}) => {
           />
           <FormIncrementInput
             title={I18n.t('Helpdesk_Duration')}
-            defaultValue={_ticket.duration}
-            onChange={value => handleTicketFieldChange(value, 'duration')}
+            defaultValue={formatDuration(_ticket.duration)}
+            onChange={value =>
+              handleTicketFieldChange(
+                formatDurationToMiliseconds(value),
+                'duration',
+              )
+            }
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
