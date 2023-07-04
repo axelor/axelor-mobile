@@ -38,6 +38,7 @@ const StockLocationSearchBar = ({
   secondFilter = false,
   isFocus = false,
   isScrollViewContainer = false,
+  defaultStockLocation = null,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -61,11 +62,12 @@ const StockLocationSearchBar = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
+          defaultStockLocation:
+            defaultStockLocation ?? user.workshopStockLocation,
         }),
       );
     },
-    [dispatch, user],
+    [defaultStockLocation, dispatch, user],
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
@@ -75,11 +77,12 @@ const StockLocationSearchBar = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
+          defaultStockLocation:
+            defaultStockLocation ?? user.workshopStockLocation,
         }),
       );
     },
-    [dispatch, user],
+    [defaultStockLocation, dispatch, user],
   );
 
   return (

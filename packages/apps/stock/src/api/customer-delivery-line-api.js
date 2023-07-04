@@ -47,12 +47,18 @@ export async function searchCustomerDeliveryLines({
   });
 }
 
-export async function updateLine({stockMoveLineId, version, realQty}) {
+export async function updateLine({
+  stockMoveLineId,
+  version,
+  realQty,
+  fromStockLocationId,
+}) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
     data: {
-      version: version,
-      realQty: realQty,
+      version,
+      realQty,
+      fromStockLocationId,
     },
   });
 }
