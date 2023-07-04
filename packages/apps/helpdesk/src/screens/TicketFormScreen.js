@@ -60,6 +60,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const [client, setClient] = useState(ticket?.customerPartner);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
   const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
+  const [priority, setPriority] = useState(ticket?.prioritySelect);
   const [responsibleUser, setResponsibleUser] = useState(
     ticket?.responsibleUser,
   );
@@ -104,6 +105,7 @@ const TicketFormScreen = ({navigation, route}) => {
           contactPartner: contactPartner ? {id: contactPartner.id} : null,
           assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
           responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
+          prioritySelect: priority,
         },
       }),
     );
@@ -119,6 +121,7 @@ const TicketFormScreen = ({navigation, route}) => {
     projectInput,
     assignedTo,
     responsibleUser,
+    priority,
   ]);
 
   return (
@@ -179,13 +182,11 @@ const TicketFormScreen = ({navigation, route}) => {
           <Picker
             style={styles.picker}
             title={I18n.t('Helpdesk_Priority')}
-            onValueChange={value =>
-              handleTicketFieldChange(value, 'prioritySelect')
-            }
+            onValueChange={setPriority}
             listItems={Ticket.getPriorityList(Colors, I18n)}
             labelField="title"
             valueField="key"
-            defaultValue={_ticket?.prioritySelect}
+            defaultValue={priority}
           />
           <DateInput
             onDateChange={value =>
@@ -195,7 +196,9 @@ const TicketFormScreen = ({navigation, route}) => {
               )
             }
             title={I18n.t('Helpdesk_StartDate')}
-            defaultDate={new Date(_ticket?.startDateT)}
+            defaultDate={
+              _ticket?.startDateT != null ? new Date(_ticket?.startDateT) : null
+            }
             style={styles.input}
           />
           <DateInput
@@ -206,7 +209,9 @@ const TicketFormScreen = ({navigation, route}) => {
               )
             }
             title={I18n.t('Helpdesk_EndDate')}
-            defaultDate={new Date(ticket?.endDateT)}
+            defaultDate={
+              _ticket?.endDateT != null ? new Date(_ticket?.endDateT) : null
+            }
             style={styles.input}
           />
           <DateInput
@@ -217,7 +222,11 @@ const TicketFormScreen = ({navigation, route}) => {
               )
             }
             title={I18n.t('Helpdesk_deadlineDate')}
-            defaultDate={new Date(ticket?.endDateT)}
+            defaultDate={
+              _ticket?.deadlineDateT != null
+                ? new Date(_ticket?.deadlineDateT)
+                : null
+            }
             style={styles.input}
           />
           <UserSearchBar

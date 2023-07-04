@@ -36,6 +36,7 @@
   "Helpdesk_NoTimingInformation": "Pas d'informations temporelles.",
   "Helpdesk_assignedToUser": "assigné à",
   "Helpdesk_responsibleUser": "Utilisateur en charge",
+  "Helpdesk_deadlineDate": "Date limite",
   "Helpdesk_SliceAction_FetchMyTicket": "récupération de mes tickets",
   "Helpdesk_SliceAction_FetchTicketType": "récupération des types de tickets",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "récupération des tickets de mon équipe",
