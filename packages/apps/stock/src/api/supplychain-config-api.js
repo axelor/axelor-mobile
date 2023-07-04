@@ -23,3 +23,9 @@ export async function fetchSupplychainConfig() {
 
   return axiosApiProvider.get({url: route});
 }
+
+export async function fetchStockConfig() {
+  const route = await RouterProvider.get('AppStock');
+
+  return axiosApiProvider.get({url: route});
+}
