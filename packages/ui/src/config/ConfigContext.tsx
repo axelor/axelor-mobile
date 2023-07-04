@@ -30,6 +30,8 @@ interface ConfigContextState {
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   headerHeight: number;
+  showBlockInteractionMessage: {show: boolean; message: string};
+  setShowBlockInteractionMessage: (show: boolean, message: string) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -41,7 +43,7 @@ interface ConfigContextState {
 
 interface ConfigAction {
   type: string;
-  payload?: boolean | number;
+  payload?: boolean | number | {show: boolean; message: string};
 }
 
 const defaultConfigContext = {
@@ -50,6 +52,12 @@ const defaultConfigContext = {
   showActivityIndicator: false,
   showSubtitles: false,
   headerHeight: 115,
+  showBlockInteractionMessage: {show: false, message: ''},
+  setShowBlockInteractionMessage: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set showBlockInteractionMessage config',
+    );
+  },
   setActivityIndicator: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
   },
@@ -89,6 +97,7 @@ const actionTypes = {
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
+  setShowBlockInteractionMessage: 'setShowBlockInteractionMessage',
 };
 
 const configReducer = (
@@ -96,6 +105,15 @@ const configReducer = (
   action: ConfigAction,
 ): ConfigContextState => {
   switch (action.type) {
+    case actionTypes.setShowBlockInteractionMessage: {
+      return {
+        ...state,
+        showBlockInteractionMessage: action.payload as {
+          show: boolean;
+          message: string;
+        },
+      };
+    }
     case actionTypes.setActivityIndicator: {
       return {
         ...state,
@@ -142,6 +160,12 @@ const configReducer = (
 };
 
 const actions = {
+  setShowBlockInteractionMessage: (show, message) => {
+    return {
+      type: actionTypes.setShowBlockInteractionMessage,
+      payload: {show: show, message: message},
+    };
+  },
   setActivityIndicator: option => ({
     type: actionTypes.setActivityIndicator,
     payload: option,
@@ -176,6 +200,9 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     showSubtitles: showModulesSubtitle,
   });
 
+  const setShowBlockInteractionMessage = useCallback((show, message) => {
+    return dispatch(actions.setShowBlockInteractionMessage(show, message));
+  }, []);
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
     [],
@@ -214,6 +241,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setShowBlockInteractionMessage,
     }),
     [
       setActivityIndicator,
@@ -224,6 +252,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       toggleFilterConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setShowBlockInteractionMessage,
     ],
   );
 
