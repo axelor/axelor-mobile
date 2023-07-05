@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
@@ -27,6 +27,7 @@ import {
   LabelText,
 } from '@axelor/aos-mobile-ui';
 import {AOSImage} from '@axelor/aos-mobile-core';
+import Prospect from '../../../types/prospect';
 
 interface PartnerCardProps {
   style?: any;
@@ -40,6 +41,8 @@ interface PartnerCardProps {
   partnerEmail: string;
   partnerPicture: any;
   onPress: () => void;
+  allProspectStatus?: any;
+  partnerStatus?: any;
 }
 const PartnerCard = ({
   style,
@@ -52,13 +55,23 @@ const PartnerCard = ({
   partnerFixedPhone,
   partnerEmail,
   partnerPicture,
+  allProspectStatus,
+  partnerStatus,
   onPress,
 }: PartnerCardProps) => {
   const Colors = useThemeColor();
 
+  const borderStyle = useMemo(() => {
+    const colorIndex = allProspectStatus?.findIndex(
+      status => status.id === partnerStatus?.id,
+    );
+    return getStyles(Prospect.getStatusColor(colorIndex, Colors)?.background)
+      ?.border;
+  }, [Colors, allProspectStatus, partnerStatus?.id]);
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
+      <Card style={[styles.container, borderStyle, style]}>
         <View style={styles.containerChild}>
           <View style={styles.containerHeader}>
             <AOSImage
@@ -112,6 +125,14 @@ const PartnerCard = ({
     </TouchableOpacity>
   );
 };
+
+const getStyles = color =>
+  StyleSheet.create({
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
+  });
 
 const styles = StyleSheet.create({
   container: {

@@ -106,6 +106,9 @@ export const crm_modelAPI: ObjectFields = {
   crm_leadStatus: schemaContructor.object({
     name: schemaContructor.string(),
   }),
+  crm_prospectStatus: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   crm_opportunity: schemaContructor.object({
     'currency.symbol': schemaContructor.string(),
     description: schemaContructor.string(),
@@ -161,6 +164,7 @@ export const crm_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
     webSite: schemaContructor.string(),
     picture: schemaContructor.subObject('fileName'),
+    partnerStatus: schemaContructor.subObject('name'),
     contactPartnerSet: schemaContructor
       .array()
       .of(schemaContructor.subObject()),

@@ -25,6 +25,7 @@ import {
 import {
   searchProspect,
   getProspect,
+  getProspectStatus,
   updateProspectScoring,
   updateProspect as _updateProspect,
 } from '../api/prospect-api';
@@ -36,6 +37,19 @@ export const fetchProspects = createAsyncThunk(
       fetchFunction: searchProspect,
       data,
       action: 'Crm_SliceAction_FetchProspect',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchProspectStatus = createAsyncThunk(
+  'prospect/fetchProspectStatus',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getProspectStatus,
+      data,
+      action: 'Crm_SliceAction_FetchProspectStatus',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -99,10 +113,12 @@ export const updateProspect = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  loadingProspectStatus: true,
   moreLoading: false,
   isListEnd: false,
   prospectList: [],
   prospect: {},
+  prospectStatusList: [],
 };
 
 const prospectSlice = createSlice({
@@ -121,6 +137,13 @@ const prospectSlice = createSlice({
     builder.addCase(fetchProspectById.fulfilled, (state, action) => {
       state.loading = false;
       state.prospect = action.payload;
+    });
+    builder.addCase(fetchProspectStatus.pending, state => {
+      state.loadingProspectStatus = true;
+    });
+    builder.addCase(fetchProspectStatus.fulfilled, (state, action) => {
+      state.loadingProspectStatus = false;
+      state.prospectStatusList = action.payload;
     });
     builder.addCase(updateProspectScore.pending, (state, action) => {
       state.loading = true;
