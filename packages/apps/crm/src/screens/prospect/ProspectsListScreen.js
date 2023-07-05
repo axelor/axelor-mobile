@@ -51,7 +51,7 @@ const ProspectsListScreen = ({navigation}) => {
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
-  const leadPropspectListItems = useMemo(() => {
+  const prospectPropspectListItems = useMemo(() => {
     return prospectStatusList
       ? prospectStatusList.map((status, index) => {
           return {
@@ -129,7 +129,7 @@ const ProspectsListScreen = ({navigation}) => {
             <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
             {crmConfig?.crmProcessOnPartner && (
               <MultiValuePicker
-                listItems={leadPropspectListItems}
+                listItems={prospectPropspectListItems}
                 title={I18n.t('Base_Status')}
                 onValueChange={statusList => setSelectedStatus(statusList)}
               />
