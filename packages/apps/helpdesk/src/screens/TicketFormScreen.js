@@ -27,8 +27,6 @@ import {
   useThemeColor,
   FormHtmlInput,
   FormIncrementInput,
-  AutoCompleteSearch,
-  Text,
   checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -41,6 +39,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {updateTicket} from '../features/ticketSlice';
 import {
+  ContactPartnerSearchBar,
   CustomerSearchBar,
   ProjectSearchBar,
   TicketTypeSearchBar,
@@ -48,7 +47,6 @@ import {
 } from '../components';
 import {Ticket} from '../types/';
 import {getCustomerbyId} from '../features/customerSlice';
-import {displayItemFullname} from '../utils/displayers';
 
 const isObjectMissingRequiredField = object => checkNullString(object?.subject);
 
@@ -59,7 +57,6 @@ const TicketFormScreen = ({navigation, route}) => {
   const Colors = useThemeColor();
 
   const {ticket} = useSelector(state => state.ticket);
-  const {customer} = useSelector(state => state.customer);
 
   const [project, setProject] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
@@ -163,20 +160,14 @@ const TicketFormScreen = ({navigation, route}) => {
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
-          <View style={styles.input}>
-            <Text style={styles.titlte}>
-              {I18n.t('Helpdesk_ContactPartner')}
-            </Text>
-            <AutoCompleteSearch
-              style={styles.search}
-              objectList={customer?.contactPartnerSet}
-              value={contactPartner}
-              onChangeValue={setContactPartner}
-              placeholder={I18n.t('Helpdesk_ContactPartner')}
-              displayValue={displayItemFullname}
-              showDetailsPopup={true}
-            />
-          </View>
+          <ContactPartnerSearchBar
+            titleKey={I18n.t('Helpdesk_ContactPartner')}
+            placeholderKey={I18n.t('Helpdesk_ContactPartner')}
+            defaultValue={contactPartner}
+            onChange={setContactPartner}
+            style={styles.picker}
+            styleTxt={styles.marginTitle}
+          />
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
             placeholderKey="Helpdesk_Type"
@@ -297,9 +288,6 @@ const styles = StyleSheet.create({
   search: {
     width: '100%',
     marginLeft: 0,
-  },
-  titlte: {
-    marginLeft: 5,
   },
   input: {
     width: '90%',
