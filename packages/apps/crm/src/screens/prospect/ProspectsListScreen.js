@@ -155,6 +155,9 @@ const ProspectsListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ProspectDetailsScreen', {
                 idProspect: item.id,
+                colorIndex: prospectStatusList?.findIndex(
+                  status => status.id === item.partnerStatus?.id,
+                ),
               })
             }
           />

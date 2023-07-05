@@ -25,12 +25,14 @@ import {
   useDispatch,
 } from '@axelor/aos-mobile-core';
 import {updateProspectScore} from '../../../../features/prospectSlice';
+import {Prospect} from '../../../../types';
 
-const ProspectHeader = ({}) => {
+const ProspectHeader = ({colorIndex}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {prospect} = useSelector(state => state.prospect);
+  const {crmConfig} = useSelector(state => state.crmConfig);
 
   const updateScoreProspectAPI = useCallback(
     newScore => {
@@ -73,6 +75,12 @@ const ProspectHeader = ({}) => {
           <Badge
             color={Colors.plannedColor}
             title={prospect.industrySector?.name}
+          />
+        )}
+        {prospect.partnerStatus && crmConfig?.crmProcessOnPartner && (
+          <Badge
+            color={Prospect.getStatusColor(colorIndex, Colors)}
+            title={prospect.partnerStatus.name}
           />
         )}
       </View>
