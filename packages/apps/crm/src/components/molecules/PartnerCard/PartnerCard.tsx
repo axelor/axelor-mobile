@@ -76,7 +76,7 @@ const PartnerCard = ({
       <Card
         style={[
           styles.container,
-          crmConfig?.crmProcessOnPartner && borderStyle,
+          crmConfig?.crmProcessOnPartner && partnerStatus ? borderStyle : null,
           style,
         ]}>
         <View style={styles.containerChild}>
