@@ -154,13 +154,14 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
           notes={notes}
         />
       }>
-      <KeyboardAvoidingScrollView keyboardOffset={{android: 100}}>
+      <KeyboardAvoidingScrollView>
         <StockLocationSearchBar
           placeholderKey="Stock_OriginalStockLocation"
           scanKey={originalStockLocationScanKey}
           onChange={handleFromStockLocationChange}
           defaultValue={originalStockLocation}
           isFocus={currentStep === CREATION_STEP.original_stockLocation}
+          isScrollViewContainer={stockLocationLine == null}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <AvailableProductsSearchBar
@@ -169,6 +170,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
             onChange={handleToProductTrackingNumberChange}
             defaultValue={stockLocationLine}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+            isScrollViewContainer={true}
           />
         ) : null}
         {stockLocationLine ? (
@@ -206,6 +208,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
               defaultValue={destinationStockLocation}
               isFocus={currentStep === CREATION_STEP.destination_stock}
               secondFilter={true}
+              isScrollViewContainer={true}
             />
             <InternalMoveLineNotes
               notes={notes}

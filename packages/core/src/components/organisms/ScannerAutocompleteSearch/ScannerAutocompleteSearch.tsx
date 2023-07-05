@@ -53,6 +53,7 @@ interface AutocompleteSearchProps {
   loadingList?: boolean;
   moreLoading?: boolean;
   isListEnd?: boolean;
+  isScrollViewContainer?: boolean;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -73,6 +74,7 @@ const ScannerAutocompleteSearch = ({
   loadingList,
   moreLoading,
   isListEnd,
+  isScrollViewContainer = false,
 }: AutocompleteSearchProps) => {
   const I18n = useTranslator();
 
@@ -138,6 +140,7 @@ const ScannerAutocompleteSearch = ({
       loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };
