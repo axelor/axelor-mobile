@@ -192,6 +192,7 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
             <ProductSeeStockLocationDistribution
               companyId={user.activeCompany?.id}
               product={stockLocationLine?.product}
+              forceShow={true}
             />
             <InternalMoveLineQuantityCard
               originalStockLocation={originalStockLocation}
