@@ -25,7 +25,11 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Text, useThemeColor, Icon} from '@axelor/aos-mobile-ui';
 
-const ProductSeeStockLocationDistribution = ({product, companyId}) => {
+const ProductSeeStockLocationDistribution = ({
+  product,
+  companyId,
+  forceShow = false,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
@@ -40,9 +44,10 @@ const ProductSeeStockLocationDistribution = ({product, companyId}) => {
   };
 
   if (
-    productIndicators?.realQty != null &&
-    parseInt(productIndicators?.realQty, 10) !== 0 &&
-    parseInt(productIndicators?.futureQty, 10) !== 0
+    forceShow ||
+    (productIndicators?.realQty != null &&
+      parseInt(productIndicators?.realQty, 10) !== 0 &&
+      parseInt(productIndicators?.futureQty, 10) !== 0)
   ) {
     return (
       <TouchableOpacity onPress={navigateStockLocationDetails}>
@@ -67,11 +72,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginHorizontal: 32,
-    width: '80%',
+    marginHorizontal: 16,
+    width: '90%',
   },
   arrowIcon: {
-    marginRight: -6,
     marginLeft: 5,
   },
 });
