@@ -25,6 +25,7 @@ import {
   LoadingIndicator,
   ThemeColors,
   useThemeColor,
+  BlockInteractionMessage,
 } from '@axelor/aos-mobile-ui';
 import {ErrorBoundary} from '@axelor/aos-mobile-error';
 import RootNavigator from './RootNavigator';
@@ -114,6 +115,7 @@ const ContextedApplication = ({
         <NavigationContainer>
           <HeaderBandList />
           <LoadingIndicator />
+          <BlockInteractionMessage />
           <RootNavigator
             modules={modules}
             mainMenu={mainMenu}

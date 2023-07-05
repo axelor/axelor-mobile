@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {useConfig} from '../../../config/ConfigContext';
 import {BlockInteractionScreen, Card, Icon} from '../../atoms';
 import WarningCard from '../WarningCard/WarningCard';
@@ -27,46 +27,37 @@ import WarningCard from '../WarningCard/WarningCard';
  * @description To desactivate this component, please use setShowBlockInteractionMessage(false,'message') from useConfig of aos-mobile/ui
  */
 
-interface BlockInteractionMessageProps {
-  style?: any;
-  navigation?: any;
-}
-
-const BlockInteractionMessage = ({
-  style,
-  navigation,
-}: BlockInteractionMessageProps) => {
+const BlockInteractionMessage = ({}) => {
   const {showBlockInteractionMessage, setShowBlockInteractionMessage} =
     useConfig();
-
+  //block interaction configuration   visible   message [nomnde licone ,action associé]
   if (!showBlockInteractionMessage?.show) {
     return null;
   }
 
-  const handlePopButton = () => {
-    setShowBlockInteractionMessage(false, '');
-    navigation.popToTop();
+  const handleButton = () => {
+    showBlockInteractionMessage?.callback();
+    setShowBlockInteractionMessage(false, '', () => {});
   };
 
   return (
     <BlockInteractionScreen hideHeader={true}>
-      <Card style={[styles.loadingIndicatorCard, style]}>
-        <WarningCard errorMessage={showBlockInteractionMessage.message} />
-        {navigation != null && (
-          <TouchableOpacity onPress={handlePopButton}>
-            <Icon name="undo" />
-          </TouchableOpacity>
-        )}
+      <Card style={styles.container}>
+        <WarningCard
+          errorMessage={showBlockInteractionMessage.message}
+          style={{width: Dimensions.get('window').width * 0.5}}
+        />
+        {<Icon name="undo" touchable={true} onPress={handleButton} />}
       </Card>
     </BlockInteractionScreen>
   );
 };
 
 const styles = StyleSheet.create({
-  loadingIndicatorCard: {
+  container: {
     position: 'absolute',
     top: Dimensions.get('window').height * 0.4,
-    left: Dimensions.get('window').width * 0.4,
+    left: Dimensions.get('window').width * 0.15,
     elevation: 24,
     shadowOpacity: 12,
   },

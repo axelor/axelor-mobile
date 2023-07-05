@@ -30,8 +30,16 @@ interface ConfigContextState {
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   headerHeight: number;
-  showBlockInteractionMessage: {show: boolean; message: string};
-  setShowBlockInteractionMessage: (show: boolean, message: string) => void;
+  showBlockInteractionMessage: {
+    show: boolean;
+    message: string;
+    callback: () => void;
+  };
+  setShowBlockInteractionMessage: (
+    show: boolean,
+    message: string,
+    callback: () => void,
+  ) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -43,7 +51,10 @@ interface ConfigContextState {
 
 interface ConfigAction {
   type: string;
-  payload?: boolean | number | {show: boolean; message: string};
+  payload?:
+    | boolean
+    | number
+    | {show: boolean; message: string; callback: () => void};
 }
 
 const defaultConfigContext = {
@@ -52,7 +63,7 @@ const defaultConfigContext = {
   showActivityIndicator: false,
   showSubtitles: false,
   headerHeight: 115,
-  showBlockInteractionMessage: {show: false, message: ''},
+  showBlockInteractionMessage: {show: false, message: '', callback: () => {}},
   setShowBlockInteractionMessage: () => {
     throw new Error(
       'ConfigProvider should be mounted to set showBlockInteractionMessage config',
@@ -111,6 +122,7 @@ const configReducer = (
         showBlockInteractionMessage: action.payload as {
           show: boolean;
           message: string;
+          callback: () => void;
         },
       };
     }
@@ -160,10 +172,10 @@ const configReducer = (
 };
 
 const actions = {
-  setShowBlockInteractionMessage: (show, message) => {
+  setShowBlockInteractionMessage: (show, message, callback) => {
     return {
       type: actionTypes.setShowBlockInteractionMessage,
-      payload: {show: show, message: message},
+      payload: {show: show, message: message, callback: callback},
     };
   },
   setActivityIndicator: option => ({
@@ -200,9 +212,14 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     showSubtitles: showModulesSubtitle,
   });
 
-  const setShowBlockInteractionMessage = useCallback((show, message) => {
-    return dispatch(actions.setShowBlockInteractionMessage(show, message));
-  }, []);
+  const setShowBlockInteractionMessage = useCallback(
+    (show, message, callback) => {
+      return dispatch(
+        actions.setShowBlockInteractionMessage(show, message, callback),
+      );
+    },
+    [],
+  );
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
     [],
