@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
 import {getCustomerbyId} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
@@ -35,12 +35,9 @@ const ContactPartnerSearchBar = ({
   client,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {customer} = useSelector(state => state.customer);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   useEffect(() => {
     if (client?.id != null) {
@@ -66,14 +63,13 @@ const ContactPartnerSearchBar = ({
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 24,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    zIndex: 41,
+  },
+  title: {
+    marginHorizontal: 24,
+  },
+});
 
 export default ContactPartnerSearchBar;

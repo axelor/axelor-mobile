@@ -97,7 +97,7 @@ export const searchTicketType = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchTicketType,
       data,
-      action: 'Helpdesk_searchTicketType',
+      action: 'Helpdesk_SliceAction_SearchTicketType',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -110,14 +110,14 @@ export const updateTicket = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _updateTicket,
       data,
-      action: 'Heldesk_Update_Ticket',
+      action: 'Helpdesk_SliceAction_UpdateTicket',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       return handlerApiCall({
         fetchFunction: getTicket,
         data: {ticketId: data?.ticket?.id},
-        action: 'Heldesk_Fetch_Ticket_ById',
+        action: 'Helpdesk_SliceAction_FetchTicketById',
         getState,
         responseOptions: {isArrayResponse: false},
       });

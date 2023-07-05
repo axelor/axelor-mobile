@@ -45,5 +45,10 @@
   "Helpdesk_SliceAction_FetchTimerHistory": "récupération de l'historique du timer",
   "Helpdesk_SliceAction_UpdateTicketStatus": "mise à jour du statut du ticket",
   "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client",
-  "Helpdesk_SliceAction_SearchUser": "récupération des utilisateurs"
+  "Helpdesk_SliceAction_SearchUser": "récupération des utilisateurs",
+  "Helpdesk_SliceAction_FetchCustomer": "récupération des clients",
+  "Helpdesk_SliceAction_FetchCustomerById": "récupération du client par id",
+  "Helpdesk_SliceAction_FetchProject": "récupération des projets",
+  "Helpdesk_SliceAction_SearchTicketType": "recherche sur les types de tickets",
+  "Helpdesk_SliceAction_UpdateTicket": "mise à jour du ticket"
 }

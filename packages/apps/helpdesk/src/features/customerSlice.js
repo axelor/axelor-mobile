@@ -32,7 +32,7 @@ export const searchCustomer = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchCustomer,
       data,
-      action: 'Helpdesk_Fetch_Customer',
+      action: 'Helpdesk_SliceAction_FetchCustomer',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -45,7 +45,7 @@ export const getCustomerbyId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: getCustomer,
       data,
-      action: 'Helpdesk_Fetch_Customer_ById',
+      action: 'Helpdesk_SliceAction_FetchCustomerById',
       getState,
       responseOptions: {isArrayResponse: false},
     });

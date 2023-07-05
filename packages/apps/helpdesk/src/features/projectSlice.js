@@ -29,7 +29,7 @@ export const searchProject = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchProject,
       data,
-      action: 'Helpdesk_SearchProject',
+      action: 'Helpdesk_SliceAction_FetchProjects',
       getState,
       responseOptions: {isArrayResponse: true},
     });
