@@ -37,6 +37,7 @@ const StockLocationSearchBar = ({
   showDetailsPopup = true,
   secondFilter = false,
   isFocus = false,
+  isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -101,6 +102,7 @@ const StockLocationSearchBar = ({
       moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
       isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
       isFocus={isFocus}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };

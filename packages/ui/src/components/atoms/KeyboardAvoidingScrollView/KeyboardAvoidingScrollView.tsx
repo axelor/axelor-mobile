@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    height: '100%',
+    height: null,
   },
 });
 

@@ -33,6 +33,8 @@ const isValidString = (string: String) => {
 const TIME_WITHOUT_INPUT = 2000;
 const TIME_BETWEEN_CALL = 1000;
 
+const ITEM_HEIGHT = 40;
+
 interface AutocompleteSearchProps {
   objectList: any[];
   value?: any;
@@ -59,6 +61,7 @@ interface AutocompleteSearchProps {
   moreLoading?: boolean;
   isListEnd?: boolean;
   translator?: (translationKey: string) => string;
+  isScrollViewContainer?: boolean;
 }
 
 const AutoCompleteSearch = ({
@@ -81,6 +84,7 @@ const AutoCompleteSearch = ({
   moreLoading,
   isListEnd,
   translator,
+  isScrollViewContainer = false,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
@@ -234,12 +238,28 @@ const AutoCompleteSearch = ({
     }
   }, [displayValue, handleSearchValueChange, value]);
 
-  const styles = useMemo(() => getStyles(displayList), [displayList]);
+  const marginBottom = useMemo(() => {
+    const listLength = objectList?.length ?? 0;
+
+    if (isScrollViewContainer && displayList) {
+      return listLength * ITEM_HEIGHT + 5;
+    }
+
+    return null;
+  }, [isScrollViewContainer, objectList, displayList]);
+
+  const styles = useMemo(
+    () => getStyles(displayList, marginBottom),
+    [displayList, marginBottom],
+  );
 
   return (
     <View
       ref={wrapperRef}
-      style={Platform.OS === 'ios' ? styles.searchBarContainer : null}>
+      style={[
+        styles.marginContainer,
+        Platform.OS === 'ios' ? styles.searchBarContainer : null,
+      ]}>
       <SearchBar
         style={style}
         valueTxt={searchText}
@@ -278,10 +298,13 @@ const AutoCompleteSearch = ({
   );
 };
 
-const getStyles = displayList =>
+const getStyles = (displayList, marginBottom) =>
   StyleSheet.create({
     searchBarContainer: {
       zIndex: displayList ? 45 : 0,
+    },
+    marginContainer: {
+      marginBottom: marginBottom,
     },
   });
 

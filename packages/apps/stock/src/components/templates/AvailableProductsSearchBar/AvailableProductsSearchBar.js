@@ -36,6 +36,7 @@ const AvailableProductsSearchBar = ({
   oneFilter = false,
   isFocus = false,
   changeScreenAfter = false,
+  isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ const AvailableProductsSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };
