@@ -24,9 +24,11 @@ import {
   InternalMoveLineNotes,
   InternalMoveLineQuantityCard,
   ProductCardInfo,
+  ProductSeeStockLocationDistribution,
   StockLocationSearchBar,
 } from '../../components';
 import {StockMove} from '../../types';
+import {useSelector} from '@axelor/aos-mobile-core';
 
 const originalStockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -44,6 +46,8 @@ const CREATION_STEP = {
 };
 
 const InternalMoveLineCreationScreen = ({navigation}) => {
+  const {user} = useSelector(state => state.user);
+
   const [currentStep, setCurrentStep] = useState(
     CREATION_STEP.original_stockLocation,
   );
@@ -186,6 +190,11 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
                   : stockLocationLine?.trackingNumber.trackingNumberSeq
               }
               onPress={handleShowProduct}
+            />
+            <ProductSeeStockLocationDistribution
+              companyId={user.activeCompany?.id}
+              product={stockLocationLine?.product}
+              forceShow={true}
             />
             <InternalMoveLineQuantityCard
               originalStockLocation={originalStockLocation}
