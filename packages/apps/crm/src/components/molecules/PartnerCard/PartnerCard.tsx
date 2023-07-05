@@ -26,7 +26,7 @@ import {
   useThemeColor,
   LabelText,
 } from '@axelor/aos-mobile-ui';
-import {AOSImage} from '@axelor/aos-mobile-core';
+import {AOSImage, useSelector} from '@axelor/aos-mobile-core';
 import Prospect from '../../../types/prospect';
 
 interface PartnerCardProps {
@@ -61,6 +61,8 @@ const PartnerCard = ({
 }: PartnerCardProps) => {
   const Colors = useThemeColor();
 
+  const {crmConfig} = useSelector((state: any) => state.crmConfig);
+
   const borderStyle = useMemo(() => {
     const colorIndex = allProspectStatus?.findIndex(
       status => status.id === partnerStatus?.id,
@@ -71,7 +73,12 @@ const PartnerCard = ({
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
+      <Card
+        style={[
+          styles.container,
+          crmConfig?.crmProcessOnPartner && borderStyle,
+          style,
+        ]}>
         <View style={styles.containerChild}>
           <View style={styles.containerHeader}>
             <AOSImage

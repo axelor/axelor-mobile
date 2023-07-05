@@ -34,6 +34,7 @@ import {
   fetchProspectStatus,
 } from '../../features/prospectSlice';
 import {Prospect} from '../../types';
+import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -43,6 +44,7 @@ const ProspectsListScreen = ({navigation}) => {
   const {userId} = useSelector(state => state.auth);
   const {loading, moreLoading, isListEnd, prospectList, prospectStatusList} =
     useSelector(state => state.prospect);
+  const {crmConfig} = useSelector(state => state.crmConfig);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
@@ -69,6 +71,7 @@ const ProspectsListScreen = ({navigation}) => {
   );
   useEffect(() => {
     dispatch(fetchProspectStatus());
+    dispatch(fetchCrmConfigApi());
   }, [dispatch]);
 
   const filterOnStatus = useCallback(
@@ -124,11 +127,13 @@ const ProspectsListScreen = ({navigation}) => {
               onSwitch={() => setAssigned(!assigned)}
             />
             <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
-            <MultiValuePicker
-              listItems={leadPropspectListItems}
-              title={I18n.t('Base_Status')}
-              onValueChange={statusList => setSelectedStatus(statusList)}
-            />
+            {crmConfig?.crmProcessOnPartner && (
+              <MultiValuePicker
+                listItems={leadPropspectListItems}
+                title={I18n.t('Base_Status')}
+                onValueChange={statusList => setSelectedStatus(statusList)}
+              />
+            )}
           </View>
         }
       />
