@@ -46,7 +46,7 @@ const BlockInteractionMessage = ({}) => {
       <Card style={styles.container}>
         <WarningCard
           errorMessage={blockInteractionConfig.message}
-          style={{width: Dimensions.get('window').width * 0.5}}
+          style={styles.warningCard}
         />
         <Icon
           name={blockInteractionConfig?.iconName}
@@ -62,9 +62,15 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: Dimensions.get('window').height * 0.4,
-    left: Dimensions.get('window').width * 0.15,
+    left: Dimensions.get('window').width * 0.1,
     elevation: 24,
     shadowOpacity: 12,
+    alignItems: 'center',
+    width: Dimensions.get('window').width * 0.8,
+  },
+  warningCard: {
+    width: '100%',
+    marginRight: 10,
   },
 });
 
