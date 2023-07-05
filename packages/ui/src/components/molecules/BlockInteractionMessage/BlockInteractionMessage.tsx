@@ -37,7 +37,11 @@ const BlockInteractionMessage = ({}) => {
 
   const handleButton = () => {
     showBlockInteractionMessage?.callback();
-    setShowBlockInteractionMessage(false, '', () => {});
+    setShowBlockInteractionMessage({
+      show: false,
+      message: '',
+      callback: () => {},
+    });
   };
 
   return (
@@ -47,7 +51,11 @@ const BlockInteractionMessage = ({}) => {
           errorMessage={showBlockInteractionMessage.message}
           style={{width: Dimensions.get('window').width * 0.5}}
         />
-        {<Icon name="undo" touchable={true} onPress={handleButton} />}
+        <Icon
+          name={showBlockInteractionMessage?.iconName}
+          touchable={true}
+          onPress={handleButton}
+        />
       </Card>
     </BlockInteractionScreen>
   );

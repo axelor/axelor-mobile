@@ -33,13 +33,20 @@ interface ConfigContextState {
   showBlockInteractionMessage: {
     show: boolean;
     message: string;
+    iconName: string;
     callback: () => void;
   };
-  setShowBlockInteractionMessage: (
-    show: boolean,
-    message: string,
-    callback: () => void,
-  ) => void;
+  setShowBlockInteractionMessage: ({
+    show,
+    message,
+    iconName,
+    callback,
+  }: {
+    show: boolean;
+    message: string;
+    iconName?: string;
+    callback: () => void;
+  }) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -54,7 +61,7 @@ interface ConfigAction {
   payload?:
     | boolean
     | number
-    | {show: boolean; message: string; callback: () => void};
+    | {show: boolean; message: string; iconName: string; callback: () => void};
 }
 
 const defaultConfigContext = {
@@ -63,7 +70,12 @@ const defaultConfigContext = {
   showActivityIndicator: false,
   showSubtitles: false,
   headerHeight: 115,
-  showBlockInteractionMessage: {show: false, message: '', callback: () => {}},
+  showBlockInteractionMessage: {
+    show: false,
+    message: '',
+    iconName: 'undo',
+    callback: () => {},
+  },
   setShowBlockInteractionMessage: () => {
     throw new Error(
       'ConfigProvider should be mounted to set showBlockInteractionMessage config',
@@ -122,6 +134,7 @@ const configReducer = (
         showBlockInteractionMessage: action.payload as {
           show: boolean;
           message: string;
+          iconName: string;
           callback: () => void;
         },
       };
@@ -172,10 +185,10 @@ const configReducer = (
 };
 
 const actions = {
-  setShowBlockInteractionMessage: (show, message, callback) => {
+  setShowBlockInteractionMessage: ({show, message, iconName, callback}) => {
     return {
       type: actionTypes.setShowBlockInteractionMessage,
-      payload: {show: show, message: message, callback: callback},
+      payload: {show: show, message: message, iconName, callback: callback},
     };
   },
   setActivityIndicator: option => ({
@@ -213,9 +226,14 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
   });
 
   const setShowBlockInteractionMessage = useCallback(
-    (show, message, callback) => {
+    ({show, message, iconName = 'undo', callback}) => {
       return dispatch(
-        actions.setShowBlockInteractionMessage(show, message, callback),
+        actions.setShowBlockInteractionMessage({
+          show,
+          message,
+          iconName,
+          callback,
+        }),
       );
     },
     [],
