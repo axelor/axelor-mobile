@@ -23,22 +23,19 @@ import {BlockInteractionScreen, Card, Icon} from '../../atoms';
 import WarningCard from '../WarningCard/WarningCard';
 
 /**
- * @description To activate this component, please use setShowBlockInteractionMessage(true,'message') from useConfig of aos-mobile/ui
- * @description To desactivate this component, please use setShowBlockInteractionMessage(false,'message') from useConfig of aos-mobile/ui
+ * @description To use this component, please use setBlockInteractionConfig({visible:boolean,message:'string',callback:()=> {},iconName(optional):'string'}) from useConfig of aos-mobile/ui
  */
 
 const BlockInteractionMessage = ({}) => {
-  const {showBlockInteractionMessage, setShowBlockInteractionMessage} =
-    useConfig();
-  //block interaction configuration   visible   message [nomnde licone ,action associé]
-  if (!showBlockInteractionMessage?.show) {
+  const {blockInteractionConfig, setBlockInteractionConfig} = useConfig();
+  if (!blockInteractionConfig?.visible) {
     return null;
   }
 
   const handleButton = () => {
-    showBlockInteractionMessage?.callback();
-    setShowBlockInteractionMessage({
-      show: false,
+    blockInteractionConfig?.callback();
+    setBlockInteractionConfig({
+      visible: false,
       message: '',
       callback: () => {},
     });
@@ -48,11 +45,11 @@ const BlockInteractionMessage = ({}) => {
     <BlockInteractionScreen hideHeader={true}>
       <Card style={styles.container}>
         <WarningCard
-          errorMessage={showBlockInteractionMessage.message}
+          errorMessage={blockInteractionConfig.message}
           style={{width: Dimensions.get('window').width * 0.5}}
         />
         <Icon
-          name={showBlockInteractionMessage?.iconName}
+          name={blockInteractionConfig?.iconName}
           touchable={true}
           onPress={handleButton}
         />

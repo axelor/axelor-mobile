@@ -30,19 +30,19 @@ interface ConfigContextState {
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   headerHeight: number;
-  showBlockInteractionMessage: {
-    show: boolean;
+  blockInteractionConfig: {
+    visible: boolean;
     message: string;
     iconName: string;
     callback: () => void;
   };
-  setShowBlockInteractionMessage: ({
-    show,
+  setBlockInteractionConfig: ({
+    visible,
     message,
     iconName,
     callback,
   }: {
-    show: boolean;
+    visible: boolean;
     message: string;
     iconName?: string;
     callback: () => void;
@@ -61,7 +61,12 @@ interface ConfigAction {
   payload?:
     | boolean
     | number
-    | {show: boolean; message: string; iconName: string; callback: () => void};
+    | {
+        visible: boolean;
+        message: string;
+        iconName: string;
+        callback: () => void;
+      };
 }
 
 const defaultConfigContext = {
@@ -70,15 +75,15 @@ const defaultConfigContext = {
   showActivityIndicator: false,
   showSubtitles: false,
   headerHeight: 115,
-  showBlockInteractionMessage: {
-    show: false,
+  blockInteractionConfig: {
+    visible: false,
     message: '',
     iconName: 'undo',
     callback: () => {},
   },
-  setShowBlockInteractionMessage: () => {
+  setBlockInteractionConfig: () => {
     throw new Error(
-      'ConfigProvider should be mounted to set showBlockInteractionMessage config',
+      'ConfigProvider should be mounted to set blockInteractionConfig config',
     );
   },
   setActivityIndicator: () => {
@@ -120,7 +125,7 @@ const actionTypes = {
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
-  setShowBlockInteractionMessage: 'setShowBlockInteractionMessage',
+  setBlockInteractionConfig: 'setBlockInteractionConfig',
 };
 
 const configReducer = (
@@ -128,11 +133,11 @@ const configReducer = (
   action: ConfigAction,
 ): ConfigContextState => {
   switch (action.type) {
-    case actionTypes.setShowBlockInteractionMessage: {
+    case actionTypes.setBlockInteractionConfig: {
       return {
         ...state,
-        showBlockInteractionMessage: action.payload as {
-          show: boolean;
+        blockInteractionConfig: action.payload as {
+          visible: boolean;
           message: string;
           iconName: string;
           callback: () => void;
@@ -185,10 +190,15 @@ const configReducer = (
 };
 
 const actions = {
-  setShowBlockInteractionMessage: ({show, message, iconName, callback}) => {
+  setBlockInteractionConfig: ({visible, message, iconName, callback}) => {
     return {
-      type: actionTypes.setShowBlockInteractionMessage,
-      payload: {show: show, message: message, iconName, callback: callback},
+      type: actionTypes.setBlockInteractionConfig,
+      payload: {
+        visible: visible,
+        message: message,
+        iconName,
+        callback: callback,
+      },
     };
   },
   setActivityIndicator: option => ({
@@ -225,11 +235,11 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     showSubtitles: showModulesSubtitle,
   });
 
-  const setShowBlockInteractionMessage = useCallback(
-    ({show, message, iconName = 'undo', callback}) => {
+  const setBlockInteractionConfig = useCallback(
+    ({visible, message, iconName = 'undo', callback}) => {
       return dispatch(
-        actions.setShowBlockInteractionMessage({
-          show,
+        actions.setBlockInteractionConfig({
+          visible,
           message,
           iconName,
           callback,
@@ -276,7 +286,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
-      setShowBlockInteractionMessage,
+      setBlockInteractionConfig,
     }),
     [
       setActivityIndicator,
@@ -287,7 +297,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       toggleFilterConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
-      setShowBlockInteractionMessage,
+      setBlockInteractionConfig,
     ],
   );
 
