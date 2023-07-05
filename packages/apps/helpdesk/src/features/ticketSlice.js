@@ -112,7 +112,7 @@ export const updateTicket = createAsyncThunk(
       data,
       action: 'Heldesk_Update_Ticket',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
       return handlerApiCall({
         fetchFunction: getTicket,

@@ -21,14 +21,14 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createTicketTypeCriteria = searchValue => {
+const createUserCriteria = searchValue => {
   return [getSearchCriterias('helpdesk_user', searchValue)];
 };
 
 export async function searchUser({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.auth.db.User',
-    criteria: createTicketTypeCriteria(searchValue),
+    criteria: createUserCriteria(searchValue),
     fieldKey: 'helpdesk_user',
     sortKey: 'helpdesk_user',
     page: page,

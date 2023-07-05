@@ -39,7 +39,7 @@ import {
   formatDuration,
   formatDurationToMiliseconds,
 } from '@axelor/aos-mobile-core';
-import {fetchTicketById, updateTicket} from '../features/ticketSlice';
+import {updateTicket} from '../features/ticketSlice';
 import {
   CustomerSearchBar,
   ProjectSearchBar,
@@ -61,7 +61,7 @@ const TicketFormScreen = ({navigation, route}) => {
   const {ticket} = useSelector(state => state.ticket);
   const {customer} = useSelector(state => state.customer);
 
-  const [projectInput, setProjectInput] = useState(ticket?.project);
+  const [project, setProject] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
   const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
@@ -86,17 +86,13 @@ const TicketFormScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    dispatch(fetchTicketById({ticketId: idTicket}));
-  }, [dispatch, idTicket]);
-
-  useEffect(() => {
     if (client?.id != null) {
       dispatch(getCustomerbyId({customerId: client?.id}));
     }
   }, [dispatch, client?.id]);
 
   const handleChangeValueProject = value => {
-    setProjectInput(value);
+    setProject(value);
     setClient(value?.clientPartner);
     setContactPartner(value?.contactPartner);
   };
@@ -109,7 +105,7 @@ const TicketFormScreen = ({navigation, route}) => {
           ticketType: _ticket?.ticketType
             ? {id: _ticket?.ticketType?.id}
             : null,
-          project: projectInput ? {id: projectInput?.id} : null,
+          project: project ? {id: project?.id} : null,
           customerPartner: client ? {id: client?.id} : null,
           contactPartner: contactPartner ? {id: contactPartner.id} : null,
           assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
@@ -127,7 +123,7 @@ const TicketFormScreen = ({navigation, route}) => {
     navigation,
     contactPartner,
     client,
-    projectInput,
+    project,
     assignedTo,
     responsibleUser,
     priority,
@@ -147,7 +143,7 @@ const TicketFormScreen = ({navigation, route}) => {
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
-            defaultValue={projectInput}
+            defaultValue={project}
             onChange={handleChangeValueProject}
             style={styles.picker}
             styleTxt={styles.marginTitle}
@@ -231,7 +227,7 @@ const TicketFormScreen = ({navigation, route}) => {
                 'deadlineDateT',
               )
             }
-            title={I18n.t('Helpdesk_deadlineDate')}
+            title={I18n.t('Helpdesk_DeadlineDate')}
             defaultDate={
               _ticket?.deadlineDateT != null
                 ? new Date(_ticket?.deadlineDateT)
@@ -240,16 +236,16 @@ const TicketFormScreen = ({navigation, route}) => {
             style={styles.input}
           />
           <UserSearchBar
-            titleKey="Helpdesk_assignedToUser"
-            placeholderKey="Helpdesk_assignedToUser"
+            titleKey="Helpdesk_AssignedToUser"
+            placeholderKey="Helpdesk_AssignedToUser"
             defaultValue={assignedTo}
             onChange={setAssignedTo}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <UserSearchBar
-            titleKey="Helpdesk_responsibleUser"
-            placeholderKey="Helpdesk_responsibleUser"
+            titleKey="Helpdesk_ResponsibleUser"
+            placeholderKey="Helpdesk_ResponsibleUser"
             defaultValue={responsibleUser}
             onChange={setResponsibleUser}
             style={styles.picker}
