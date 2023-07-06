@@ -27,7 +27,9 @@ import {
   Icon,
   useThemeColor,
   Text,
+  Button,
 } from '@axelor/aos-mobile-ui';
+import {useNavigation} from '@axelor/aos-mobile-core';
 import {clearMessage, uploadTranslations} from '../features/configSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {getTranslations, selectLanguage, useTranslator} from '../../i18n';
@@ -46,6 +48,7 @@ const SettingsScreen = ({children}) => {
   const Theme = useTheme();
   const online = useOnline();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {
     showFilter,
@@ -55,6 +58,7 @@ const SettingsScreen = ({children}) => {
     toggleVirtualKeyboardConfig,
     setShowSubtitles,
     showSubtitles,
+    setBlockInteractionConfig,
   } = useConfig();
   const language = useSelector(selectLanguage);
 
@@ -151,6 +155,29 @@ const SettingsScreen = ({children}) => {
             onPress={handleSendTranslations}
           />
         )}
+        <Button
+          onPress={() =>
+            setBlockInteractionConfig({
+              visible: true,
+              message: 'teeeeeeeest',
+              callback: navigation.popToTop,
+              iconName: 'yin-yang',
+              action: [
+                {
+                  iconName: 'undo',
+                  title: 'popop',
+                  onPress: navigation.popToTop,
+                  color: Colors.primaryColor,
+                },
+                {
+                  title: 'test',
+                  onPress: () => console.log('test'),
+                  color: Colors.secondaryColor,
+                },
+              ],
+            })
+          }
+        />
       </View>
       <View style={styles.footerContainer}>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>

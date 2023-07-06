@@ -23,6 +23,14 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
+import {Color} from '../theme';
+
+interface Action {
+  iconName?: string;
+  title: string;
+  onPress: () => void;
+  color?: Color;
+}
 
 interface ConfigContextState {
   showFilter: boolean;
@@ -35,17 +43,20 @@ interface ConfigContextState {
     message: string;
     iconName: string;
     callback: () => void;
+    action: Action[];
   };
   setBlockInteractionConfig: ({
     visible,
     message,
     iconName,
     callback,
+    action,
   }: {
     visible: boolean;
     message: string;
     iconName?: string;
     callback: () => void;
+    action: Action[];
   }) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
@@ -66,6 +77,7 @@ interface ConfigAction {
         message: string;
         iconName: string;
         callback: () => void;
+        action: Action[];
       };
 }
 
@@ -80,6 +92,7 @@ const defaultConfigContext = {
     message: '',
     iconName: 'undo',
     callback: () => {},
+    action: [],
   },
   setBlockInteractionConfig: () => {
     throw new Error(
@@ -141,6 +154,7 @@ const configReducer = (
           message: string;
           iconName: string;
           callback: () => void;
+          action: Action[];
         },
       };
     }
@@ -190,7 +204,13 @@ const configReducer = (
 };
 
 const actions = {
-  setBlockInteractionConfig: ({visible, message, iconName, callback}) => {
+  setBlockInteractionConfig: ({
+    visible,
+    message,
+    iconName,
+    callback,
+    action,
+  }) => {
     return {
       type: actionTypes.setBlockInteractionConfig,
       payload: {
@@ -198,6 +218,7 @@ const actions = {
         message: message,
         iconName,
         callback: callback,
+        action,
       },
     };
   },
@@ -236,13 +257,14 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
   });
 
   const setBlockInteractionConfig = useCallback(
-    ({visible, message, iconName = 'undo', callback}) => {
+    ({visible, message, iconName = 'undo', callback, action}) => {
       return dispatch(
         actions.setBlockInteractionConfig({
           visible,
           message,
           iconName,
           callback,
+          action,
         }),
       );
     },

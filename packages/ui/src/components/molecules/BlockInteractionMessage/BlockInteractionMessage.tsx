@@ -18,9 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
+import {checkNullString} from '../../../utils/strings';
 import {useConfig} from '../../../config/ConfigContext';
-import {BlockInteractionScreen, Card, Icon} from '../../atoms';
+import {BlockInteractionScreen, Card} from '../../atoms';
+import Button from '../Button/Button';
 import WarningCard from '../WarningCard/WarningCard';
+import IconButton from '../IconButton/IconButton';
 
 /**
  * @description To use this component, please use setBlockInteractionConfig({visible:boolean,message:'string',callback:()=> {},iconName(optional):'string'}) from useConfig of aos-mobile/ui
@@ -32,12 +35,18 @@ const BlockInteractionMessage = ({}) => {
     return null;
   }
 
-  const handleButton = () => {
-    blockInteractionConfig?.callback();
+  const handleButton = action => {
+    action();
     setBlockInteractionConfig({
       visible: false,
       message: '',
       callback: () => {},
+      action: [
+        {
+          title: '',
+          onPress: () => {},
+        },
+      ],
     });
   };
 
@@ -48,11 +57,26 @@ const BlockInteractionMessage = ({}) => {
           errorMessage={blockInteractionConfig.message}
           style={styles.warningCard}
         />
-        <Icon
-          name={blockInteractionConfig?.iconName}
-          touchable={true}
-          onPress={handleButton}
-        />
+        {blockInteractionConfig.action.length > 0 &&
+          blockInteractionConfig.action.map((action, index) => {
+            return !checkNullString(action.iconName) ? (
+              <IconButton
+                iconName={action.iconName}
+                FontAwesome5={true}
+                key={index}
+                title={action.title}
+                onPress={() => handleButton(action.onPress)}
+                color={action.color}
+              />
+            ) : (
+              <Button
+                key={index}
+                title={action.title}
+                onPress={() => handleButton(action.onPress)}
+                color={action.color}
+              />
+            );
+          })}
       </Card>
     </BlockInteractionScreen>
   );
