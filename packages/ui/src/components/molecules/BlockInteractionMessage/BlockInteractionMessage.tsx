@@ -56,31 +56,32 @@ const BlockInteractionMessage = ({}) => {
           errorMessage={blockInteractionConfig.message}
           style={styles.width}
         />
-        {blockInteractionConfig.actionItems.length > 0 && (
-          <View style={styles.buttonContainer}>
-            {blockInteractionConfig.actionItems.map((action, index) => {
-              return !checkNullString(action.iconName) ? (
-                <IconButton
-                  iconName={action.iconName}
-                  FontAwesome5={true}
-                  key={index}
-                  title={action.title}
-                  onPress={action.onPress}
-                  color={action.color}
-                  style={styles.width}
-                />
-              ) : (
-                <Button
-                  key={index}
-                  title={action.title}
-                  onPress={action.onPress}
-                  color={action.color}
-                  style={styles.width}
-                />
-              );
-            })}
-          </View>
-        )}
+        {Array.isArray(blockInteractionConfig.actionItems) &&
+          blockInteractionConfig.actionItems.length > 0 && (
+            <View style={styles.buttonContainer}>
+              {blockInteractionConfig.actionItems.map((action, index) => {
+                return !checkNullString(action.iconName) ? (
+                  <IconButton
+                    iconName={action.iconName}
+                    FontAwesome5={true}
+                    key={index}
+                    title={action.title}
+                    onPress={action.onPress}
+                    color={action.color}
+                    style={styles.width}
+                  />
+                ) : (
+                  <Button
+                    key={index}
+                    title={action.title}
+                    onPress={action.onPress}
+                    color={action.color}
+                    style={styles.width}
+                  />
+                );
+              })}
+            </View>
+          )}
       </Card>
     </BlockInteractionScreen>
   );

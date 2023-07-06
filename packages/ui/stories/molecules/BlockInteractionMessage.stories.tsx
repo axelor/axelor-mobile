@@ -29,19 +29,20 @@ storiesOf('ui/molecules/BlockInteractionMessage', module)
 
     setBlockInteractionConfig({
       visible: true,
-      message: 'teeeeeeeest',
-      action: [
+      message: 'Error message',
+      actionItems: [
         {
           iconName: 'undo',
-          title: 'popop',
+          title: 'Action 1',
           onPress: () => {},
         },
         {
-          title: 'test',
+          title: 'Action 2',
           onPress: () => {},
         },
       ],
     });
+
     return <BlockInteractionMessage />;
   });
 
