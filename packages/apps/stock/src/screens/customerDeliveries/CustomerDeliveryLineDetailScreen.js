@@ -140,6 +140,9 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
             scanKey={stockLocationScanKey}
             isFocus={true}
             defaultStockLocation={customerDelivery.fromStockLocation}
+            readOnly={
+              customerDelivery?.statusSelect !== StockMove.status.Planned
+            }
           />
         ) : null}
         <ProductCardInfo

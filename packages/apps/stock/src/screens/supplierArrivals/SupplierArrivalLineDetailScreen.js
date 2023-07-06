@@ -175,6 +175,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             scanKey={stockLocationScanKey}
             isFocus={true}
             defaultStockLocation={supplierArrival.toStockLocation}
+            readOnly={
+              supplierArrival?.statusSelect !== StockMove.status.Planned
+            }
           />
         ) : null}
         <Picker
