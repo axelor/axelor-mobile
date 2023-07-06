@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import {checkNullString} from '../../../utils/strings';
 import {useConfig} from '../../../config/ConfigContext';
 import {BlockInteractionScreen, Card} from '../../atoms';
@@ -28,6 +28,7 @@ import IconButton from '../IconButton/IconButton';
 /**
  * @description To use this component, please use
  * setBlockInteractionConfig({
+ *             style(optional): card style
  *             visible: boolean,
  *             message: 'string',
  *             actionItems: [
@@ -35,59 +36,51 @@ import IconButton from '../IconButton/IconButton';
  *                 iconName(optional): 'string',
  *                 title: 'string',
  *                 onPress: action,
- *                 color(optional): Colors,
+ *                 color(optional): Color,
  *               },
  *             ],
  *           })
  */
 
 const BlockInteractionMessage = ({}) => {
-  const {blockInteractionConfig, setBlockInteractionConfig} = useConfig();
+  const {blockInteractionConfig} = useConfig();
+
   if (!blockInteractionConfig?.visible) {
     return null;
   }
 
-  const handleButton = action => {
-    action();
-    setBlockInteractionConfig({
-      visible: false,
-      message: '',
-      actionItems: [
-        {
-          title: '',
-          onPress: () => {},
-        },
-      ],
-    });
-  };
-
   return (
     <BlockInteractionScreen hideHeader={true}>
-      <Card style={styles.container}>
+      <Card style={[styles.container, blockInteractionConfig.style]}>
         <WarningCard
           errorMessage={blockInteractionConfig.message}
-          style={styles.warningCard}
+          style={styles.width}
         />
-        {blockInteractionConfig.actionItems.length > 0 &&
-          blockInteractionConfig.actionItems.map((action, index) => {
-            return !checkNullString(action.iconName) ? (
-              <IconButton
-                iconName={action.iconName}
-                FontAwesome5={true}
-                key={index}
-                title={action.title}
-                onPress={() => handleButton(action.onPress)}
-                color={action.color}
-              />
-            ) : (
-              <Button
-                key={index}
-                title={action.title}
-                onPress={() => handleButton(action.onPress)}
-                color={action.color}
-              />
-            );
-          })}
+        {blockInteractionConfig.actionItems.length > 0 && (
+          <View style={styles.buttonContainer}>
+            {blockInteractionConfig.actionItems.map((action, index) => {
+              return !checkNullString(action.iconName) ? (
+                <IconButton
+                  iconName={action.iconName}
+                  FontAwesome5={true}
+                  key={index}
+                  title={action.title}
+                  onPress={action.onPress}
+                  color={action.color}
+                  style={styles.width}
+                />
+              ) : (
+                <Button
+                  key={index}
+                  title={action.title}
+                  onPress={action.onPress}
+                  color={action.color}
+                  style={styles.width}
+                />
+              );
+            })}
+          </View>
+        )}
       </Card>
     </BlockInteractionScreen>
   );
@@ -95,17 +88,22 @@ const BlockInteractionMessage = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 16,
+    paddingRight: 16,
+    paddingVertical: 10,
     position: 'absolute',
-    top: Dimensions.get('window').height * 0.4,
+    top: Dimensions.get('window').height * 0.35,
     left: Dimensions.get('window').width * 0.1,
     elevation: 24,
     shadowOpacity: 12,
     alignItems: 'center',
     width: Dimensions.get('window').width * 0.8,
   },
-  warningCard: {
-    width: '100%',
-    marginRight: 10,
+  width: {
+    width: Dimensions.get('window').width * 0.75,
+  },
+  buttonContainer: {
+    flexDirection: 'column',
   },
 });
 
