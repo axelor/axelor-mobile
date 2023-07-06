@@ -30,7 +30,7 @@ import IconButton from '../IconButton/IconButton';
  * setBlockInteractionConfig({
  *             visible: boolean,
  *             message: 'string',
- *             action: [
+ *             actionItems: [
  *               {
  *                 iconName(optional): 'string',
  *                 title: 'string',
@@ -52,7 +52,7 @@ const BlockInteractionMessage = ({}) => {
     setBlockInteractionConfig({
       visible: false,
       message: '',
-      action: [
+      actionItems: [
         {
           title: '',
           onPress: () => {},
@@ -68,8 +68,8 @@ const BlockInteractionMessage = ({}) => {
           errorMessage={blockInteractionConfig.message}
           style={styles.warningCard}
         />
-        {blockInteractionConfig.action.length > 0 &&
-          blockInteractionConfig.action.map((action, index) => {
+        {blockInteractionConfig.actionItems.length > 0 &&
+          blockInteractionConfig.actionItems.map((action, index) => {
             return !checkNullString(action.iconName) ? (
               <IconButton
                 iconName={action.iconName}

@@ -35,7 +35,7 @@ interface Action {
 interface BlockInteractionConfig {
   visible: boolean;
   message: string;
-  action: Action[];
+  actionItems: Action[];
 }
 
 interface ConfigContextState {
@@ -48,7 +48,7 @@ interface ConfigContextState {
   setBlockInteractionConfig: ({
     visible,
     message,
-    action,
+    actionItems,
   }: BlockInteractionConfig) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
@@ -73,7 +73,7 @@ const defaultConfigContext = {
   blockInteractionConfig: {
     visible: false,
     message: '',
-    action: [],
+    actionItems: [],
   },
   setBlockInteractionConfig: () => {
     throw new Error(
@@ -179,13 +179,13 @@ const configReducer = (
 };
 
 const actions = {
-  setBlockInteractionConfig: ({visible, message, action}) => {
+  setBlockInteractionConfig: ({visible, message, actionItems}) => {
     return {
       type: actionTypes.setBlockInteractionConfig,
       payload: {
         visible,
         message,
-        action,
+        actionItems,
       },
     };
   },
@@ -224,12 +224,12 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
   });
 
   const setBlockInteractionConfig = useCallback(
-    ({visible, message, action}) => {
+    ({visible, message, actionItems}) => {
       return dispatch(
         actions.setBlockInteractionConfig({
           visible,
           message,
-          action,
+          actionItems,
         }),
       );
     },
