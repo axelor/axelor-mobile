@@ -63,6 +63,16 @@ export async function getProspect({partnerId}) {
   });
 }
 
+export async function getProspectStatus() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.PartnerStatus',
+    criteria: [],
+    fieldKey: 'crm_prospectStatus',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}
+
 export async function updateProspectScoring({
   partnerId,
   partnerVersion,
