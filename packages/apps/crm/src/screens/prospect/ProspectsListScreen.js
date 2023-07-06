@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback} from 'react';
+import React, {useMemo, useState, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
@@ -25,10 +25,16 @@ import {
   useThemeColor,
   getCommonStyles,
   ToggleSwitch,
+  MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {PartnerCard, ProspectSearchBar} from '../../components';
-import {fetchProspects} from '../../features/prospectSlice';
+import {
+  fetchProspects,
+  fetchProspectStatus,
+} from '../../features/prospectSlice';
+import {Prospect} from '../../types';
+import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -36,19 +42,55 @@ const ProspectsListScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
-  const {loading, moreLoading, isListEnd, prospectList} = useSelector(
-    state => state.prospect,
-  );
+  const {loading, moreLoading, isListEnd, prospectList, prospectStatusList} =
+    useSelector(state => state.prospect);
+  const {crmConfig} = useSelector(state => state.crmConfig);
 
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  const prospectStatusListItems = useMemo(() => {
+    return prospectStatusList
+      ? prospectStatusList.map((status, index) => {
+          return {
+            title: status.name,
+            color: Prospect.getStatusColor(index, Colors),
+            key: status.id,
+          };
+        })
+      : [];
+  }, [prospectStatusList, Colors]);
 
   const fetchProspectAPI = useCallback(
     page => {
       dispatch(fetchProspects({page: page}));
     },
     [dispatch],
+  );
+  useEffect(() => {
+    dispatch(fetchProspectStatus());
+    dispatch(fetchCrmConfigApi());
+  }, [dispatch]);
+
+  const filterOnStatus = useCallback(
+    list => {
+      if (list == null || list === []) {
+        return list;
+      } else {
+        if (selectedStatus.length > 0) {
+          return list?.filter(item =>
+            selectedStatus.find(
+              status => item?.partnerStatus?.id === status.key,
+            ),
+          );
+        } else {
+          return list;
+        }
+      }
+    },
+    [selectedStatus],
   );
 
   const filterOnUserAssigned = useCallback(
@@ -67,8 +109,8 @@ const ProspectsListScreen = ({navigation}) => {
   );
 
   const filteredList = useMemo(
-    () => filterOnUserAssigned(prospectList),
-    [filterOnUserAssigned, prospectList],
+    () => filterOnUserAssigned(filterOnStatus(prospectList)),
+    [filterOnUserAssigned, prospectList, filterOnStatus],
   );
 
   return (
@@ -85,6 +127,13 @@ const ProspectsListScreen = ({navigation}) => {
               onSwitch={() => setAssigned(!assigned)}
             />
             <ProspectSearchBar showDetailsPopup={false} oneFilter={true} />
+            {crmConfig?.crmProcessOnPartner && (
+              <MultiValuePicker
+                listItems={prospectStatusListItems}
+                title={I18n.t('Base_Status')}
+                onValueChange={statusList => setSelectedStatus(statusList)}
+              />
+            )}
           </View>
         }
       />
@@ -101,9 +150,14 @@ const ProspectsListScreen = ({navigation}) => {
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}
+            partnerStatus={item.partnerStatus}
+            allProspectStatus={prospectStatusList}
             onPress={() =>
               navigation.navigate('ProspectDetailsScreen', {
                 idProspect: item.id,
+                colorIndex: prospectStatusList?.findIndex(
+                  status => status.id === item.partnerStatus?.id,
+                ),
               })
             }
           />
