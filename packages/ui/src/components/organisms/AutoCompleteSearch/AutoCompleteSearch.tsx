@@ -146,13 +146,13 @@ const AutoCompleteSearch = ({
     }
   }, [navigate, oneFilter]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setDisplayList(false);
     setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
     onChangeValue(null);
-  };
+  }, [onChangeValue, searchText]);
 
   const stopInterval = useCallback(() => {
     clearInterval(intervalRequestCall.current);
@@ -233,20 +233,18 @@ const AutoCompleteSearch = ({
       handleSearchValueChange(displayValue(value));
     }
 
-    if (value == null) {
-      handleSearchValueChange(null);
+    if (value == null && selected) {
+      handleClear();
     }
-  }, [displayValue, handleSearchValueChange, value]);
+  }, [displayValue, handleClear, handleSearchValueChange, selected, value]);
 
   const marginBottom = useMemo(() => {
-    const listLength = objectList?.length ?? 0;
-
     if (isScrollViewContainer && displayList) {
-      return listLength * ITEM_HEIGHT + 5;
+      return 5 * ITEM_HEIGHT + 5;
     }
 
     return null;
-  }, [isScrollViewContainer, objectList, displayList]);
+  }, [isScrollViewContainer, displayList]);
 
   const styles = useMemo(
     () => getStyles(displayList, marginBottom),

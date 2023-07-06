@@ -102,9 +102,7 @@ const ScannerAutocompleteSearch = ({
   }, [enableScanner, isFocus]);
 
   useEffect(() => {
-    if (value) {
-      setSearchValue(value);
-    }
+    setSearchValue(value);
   }, [value]);
 
   const handleChangeValue = useCallback(
