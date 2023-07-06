@@ -26,7 +26,19 @@ import WarningCard from '../WarningCard/WarningCard';
 import IconButton from '../IconButton/IconButton';
 
 /**
- * @description To use this component, please use setBlockInteractionConfig({visible:boolean,message:'string',callback:()=> {},iconName(optional):'string'}) from useConfig of aos-mobile/ui
+ * @description To use this component, please use
+ * setBlockInteractionConfig({
+ *             visible: boolean,
+ *             message: 'string',
+ *             action: [
+ *               {
+ *                 iconName(optional): 'string',
+ *                 title: 'string',
+ *                 onPress: action,
+ *                 color(optional): Colors,
+ *               },
+ *             ],
+ *           })
  */
 
 const BlockInteractionMessage = ({}) => {

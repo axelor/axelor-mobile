@@ -26,11 +26,21 @@ storiesOf('ui/molecules/BlockInteractionMessage', module)
   .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('custom', () => {
     const {setBlockInteractionConfig} = useConfig();
+
     setBlockInteractionConfig({
       visible: true,
       message: 'teeeeeeeest',
-      callback: () => {},
-      iconName: 'yin-yang',
+      action: [
+        {
+          iconName: 'undo',
+          title: 'popop',
+          onPress: () => {},
+        },
+        {
+          title: 'test',
+          onPress: () => {},
+        },
+      ],
     });
     return <BlockInteractionMessage />;
   });
