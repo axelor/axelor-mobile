@@ -32,32 +32,24 @@ interface Action {
   color?: Color;
 }
 
+interface BlockInteractionConfig {
+  visible: boolean;
+  message: string;
+  action: Action[];
+}
+
 interface ConfigContextState {
   showFilter: boolean;
   hideVirtualKeyboard: boolean;
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   headerHeight: number;
-  blockInteractionConfig: {
-    visible: boolean;
-    message: string;
-    iconName: string;
-    callback: () => void;
-    action: Action[];
-  };
+  blockInteractionConfig: BlockInteractionConfig;
   setBlockInteractionConfig: ({
     visible,
     message,
-    iconName,
-    callback,
     action,
-  }: {
-    visible: boolean;
-    message: string;
-    iconName?: string;
-    callback: () => void;
-    action: Action[];
-  }) => void;
+  }: BlockInteractionConfig) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -69,16 +61,7 @@ interface ConfigContextState {
 
 interface ConfigAction {
   type: string;
-  payload?:
-    | boolean
-    | number
-    | {
-        visible: boolean;
-        message: string;
-        iconName: string;
-        callback: () => void;
-        action: Action[];
-      };
+  payload?: boolean | number | BlockInteractionConfig;
 }
 
 const defaultConfigContext = {
@@ -90,8 +73,6 @@ const defaultConfigContext = {
   blockInteractionConfig: {
     visible: false,
     message: '',
-    iconName: 'undo',
-    callback: () => {},
     action: [],
   },
   setBlockInteractionConfig: () => {
@@ -149,13 +130,7 @@ const configReducer = (
     case actionTypes.setBlockInteractionConfig: {
       return {
         ...state,
-        blockInteractionConfig: action.payload as {
-          visible: boolean;
-          message: string;
-          iconName: string;
-          callback: () => void;
-          action: Action[];
-        },
+        blockInteractionConfig: action.payload as BlockInteractionConfig,
       };
     }
     case actionTypes.setActivityIndicator: {
@@ -204,20 +179,12 @@ const configReducer = (
 };
 
 const actions = {
-  setBlockInteractionConfig: ({
-    visible,
-    message,
-    iconName,
-    callback,
-    action,
-  }) => {
+  setBlockInteractionConfig: ({visible, message, action}) => {
     return {
       type: actionTypes.setBlockInteractionConfig,
       payload: {
-        visible: visible,
-        message: message,
-        iconName,
-        callback: callback,
+        visible,
+        message,
         action,
       },
     };
@@ -257,13 +224,11 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
   });
 
   const setBlockInteractionConfig = useCallback(
-    ({visible, message, iconName = 'undo', callback, action}) => {
+    ({visible, message, action}) => {
       return dispatch(
         actions.setBlockInteractionConfig({
           visible,
           message,
-          iconName,
-          callback,
           action,
         }),
       );

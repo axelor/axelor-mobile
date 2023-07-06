@@ -40,7 +40,6 @@ const BlockInteractionMessage = ({}) => {
     setBlockInteractionConfig({
       visible: false,
       message: '',
-      callback: () => {},
       action: [
         {
           title: '',
