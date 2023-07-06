@@ -23,7 +23,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {StyleSheet, View} from 'react-native';
 
 const InternalMoveLineNotes = ({
-  status,
+  status = null,
   notes,
   setNotes = () => {},
   setSaveStatus = () => {},

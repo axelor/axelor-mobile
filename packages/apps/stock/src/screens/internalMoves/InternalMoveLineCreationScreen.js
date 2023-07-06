@@ -18,53 +18,53 @@
 
 import React, {useCallback, useState} from 'react';
 import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {
   AvailableProductsSearchBar,
+  InternalMoveCreationHeader,
   InternalMoveLineCreationButton,
-  InternalMoveLineNotes,
   InternalMoveLineQuantityCard,
   ProductCardInfo,
   ProductSeeStockLocationDistribution,
   StockLocationSearchBar,
 } from '../../components';
 import {StockMove} from '../../types';
-import {useSelector} from '@axelor/aos-mobile-core';
 
-const originalStockLocationScanKey =
-  'original-stock-location_internal-move-select-from';
-
-const itemScanKey = 'product-tracking-number_internal-move-select-item';
-
-const destinationStockLocationScanKey =
-  'destination-stock-location_internal-move-select-to';
+const fromScanKey = 'from-stock-location_internal-move-line-creation';
+const itemScanKey = 'product-tracking-number_internal-move-line-creation';
+const toScanKey = 'to-stock-location_internal-move-line-creation';
 
 const CREATION_STEP = {
-  original_stockLocation: 0,
-  product_trackingNumber: 1,
-  destination_stockLocation: 2,
+  fromStockLocation: 0,
+  line: 1,
+  toStockLocation: 2,
   validation: 3,
 };
 
-const InternalMoveLineCreationScreen = ({navigation}) => {
+const InternalMoveLineCreationScreen = ({navigation, route}) => {
+  const {
+    fromStockLocation: _moveFrom,
+    toStockLocation: _moveTo,
+    notes,
+  } = route.params;
+
+  const {stockConfig} = useSelector(state => state.stockAppConfig);
   const {user} = useSelector(state => state.user);
 
-  const [currentStep, setCurrentStep] = useState(
-    CREATION_STEP.original_stockLocation,
-  );
-  const [originalStockLocation, setOriginalStockLocation] = useState(null);
-  const [stockLocationLine, setStockLocationLine] = useState(null);
-  const [destinationStockLocation, setDestinationStockLocation] =
-    useState(null);
+  const [currentStep, setStep] = useState(CREATION_STEP.line);
+  const [lines, setLines] = useState([]);
+  const [fromStockLocation, setFromStockLocation] = useState(_moveFrom);
+  const [locationLine, setLocationLine] = useState(null);
+  const [toStockLocation, setToStockLocation] = useState(_moveTo);
   const [movedQty, setMovedQty] = useState(0);
-  const [notes, setNotes] = useState('');
 
   const handleFromStockLocationChange = useCallback(
     _value => {
       if (_value == null) {
-        handleReset(CREATION_STEP.original_stockLocation);
+        handleReset(CREATION_STEP.fromStockLocation);
       } else {
-        setOriginalStockLocation(_value);
-        handleNextStep(CREATION_STEP.original_stockLocation);
+        setFromStockLocation(_value);
+        handleNextStep(CREATION_STEP.fromStockLocation);
       }
     },
     [handleNextStep, handleReset],
@@ -73,10 +73,10 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
   const handleToProductTrackingNumberChange = useCallback(
     _value => {
       if (_value == null) {
-        handleReset(CREATION_STEP.product_trackingNumber);
+        handleReset(CREATION_STEP.line);
       } else {
-        setStockLocationLine(_value);
-        handleNextStep(CREATION_STEP.product_trackingNumber);
+        setLocationLine(_value);
+        handleNextStep(CREATION_STEP.line);
       }
     },
     [handleNextStep, handleReset],
@@ -85,60 +85,99 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
   const handleToStockLocationChange = useCallback(
     _value => {
       if (_value == null) {
-        handleReset(CREATION_STEP.destination_stockLocation);
+        handleReset(CREATION_STEP.toStockLocation);
       } else {
-        setDestinationStockLocation(_value);
-        handleNextStep(CREATION_STEP.destination_stockLocation);
+        setToStockLocation(_value);
+        handleNextStep(CREATION_STEP.toStockLocation);
       }
     },
     [handleNextStep, handleReset],
   );
 
   const handleReset = useCallback(
-    (_step = CREATION_STEP.original_stockLocation) => {
-      setCurrentStep(_step);
+    (_step = CREATION_STEP.fromStockLocation) => {
+      setStep(_step);
 
-      if (_step === CREATION_STEP.destination_stockLocation) {
-        setDestinationStockLocation(null);
+      if (_step === CREATION_STEP.toStockLocation) {
+        setToStockLocation(null);
       }
 
-      if (_step <= CREATION_STEP.product_trackingNumber) {
-        setStockLocationLine(null);
+      if (_step <= CREATION_STEP.line) {
+        setLocationLine(null);
         setMovedQty(0);
       }
 
-      if (_step <= CREATION_STEP.original_stockLocation) {
-        setOriginalStockLocation(null);
-        setDestinationStockLocation(null);
+      if (_step <= CREATION_STEP.fromStockLocation) {
+        setFromStockLocation(null);
+        setToStockLocation(null);
       }
 
       if (_step === CREATION_STEP.validation) {
+        setFromStockLocation(_moveFrom);
+        setToStockLocation(_moveTo);
+        setLocationLine(null);
         setMovedQty(0);
       }
     },
-    [],
+    [_moveFrom, _moveTo],
   );
 
-  const handleNextStep = useCallback(_current => {
-    setCurrentStep(() => {
-      if (_current <= CREATION_STEP.original_stockLocation) {
-        return CREATION_STEP.product_trackingNumber;
-      }
-      if (_current <= CREATION_STEP.product_trackingNumber) {
-        return CREATION_STEP.destination_stockLocation;
-      }
-      if (_current <= CREATION_STEP.destination_stockLocation) {
-        return CREATION_STEP.validation;
-      }
-      return _current;
-    });
-  }, []);
+  const handleNextStep = useCallback(
+    _current => {
+      setStep(() => {
+        if (_current === CREATION_STEP.fromStockLocation) {
+          return CREATION_STEP.line;
+        }
+        if (_current === CREATION_STEP.line) {
+          if (toStockLocation != null) {
+            return CREATION_STEP.validation;
+          }
+
+          return CREATION_STEP.toStockLocation;
+        }
+        if (_current === CREATION_STEP.toStockLocation) {
+          return CREATION_STEP.validation;
+        }
+        return _current;
+      });
+    },
+    [toStockLocation],
+  );
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
-      product: stockLocationLine?.product,
+      product: locationLine?.product,
     });
   };
+
+  const handleAddLine = useCallback(() => {
+    return new Promise(resolve => {
+      let _lines = null;
+
+      setLines(_current => {
+        if (
+          locationLine != null &&
+          movedQty > 0 &&
+          fromStockLocation != null &&
+          toStockLocation != null
+        ) {
+          _current.push({
+            product: locationLine?.product,
+            trackingNumber: locationLine?.trackingNumber,
+            unit: locationLine?.product?.unit,
+            realQty: movedQty,
+            fromStockLocation: fromStockLocation,
+            toStockLocation: toStockLocation,
+          });
+        }
+
+        _lines = _current;
+        return _current;
+      });
+
+      resolve(_lines);
+    });
+  }, [fromStockLocation, locationLine, movedQty, toStockLocation]);
 
   const handleOnContinue = useCallback(() => {
     handleReset(CREATION_STEP.validation);
@@ -146,85 +185,86 @@ const InternalMoveLineCreationScreen = ({navigation}) => {
 
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         <InternalMoveLineCreationButton
           onContinue={handleOnContinue}
+          onAdd={handleAddLine}
           hideIf={currentStep !== CREATION_STEP.validation}
-          product={stockLocationLine?.product}
-          trackingNumber={stockLocationLine?.trackingNumber}
-          originalStockLocation={originalStockLocation}
-          destinationStockLocation={destinationStockLocation}
-          movedQty={movedQty}
+          moveFromStockLocation={_moveFrom}
+          moveToStockLocation={_moveTo}
           notes={notes}
         />
       }>
+      <InternalMoveCreationHeader
+        fromStockLocation={_moveFrom}
+        toStockLocation={_moveTo}
+        notes={notes}
+        linesSaved={lines}
+      />
       <KeyboardAvoidingScrollView>
-        <StockLocationSearchBar
-          placeholderKey="Stock_OriginalStockLocation"
-          scanKey={originalStockLocationScanKey}
-          onChange={handleFromStockLocationChange}
-          defaultValue={originalStockLocation}
-          isFocus={currentStep === CREATION_STEP.original_stockLocation}
-          isScrollViewContainer={stockLocationLine == null}
-        />
-        {currentStep >= CREATION_STEP.product_trackingNumber ? (
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_OriginalStockLocation"
+            scanKey={fromScanKey}
+            onChange={handleFromStockLocationChange}
+            defaultValue={fromStockLocation}
+            isFocus={currentStep === CREATION_STEP.fromStockLocation}
+            defaultStockLocation={_moveFrom}
+            isScrollViewContainer={locationLine == null}
+          />
+        ) : null}
+        {currentStep >= CREATION_STEP.line ? (
           <AvailableProductsSearchBar
-            stockLocationId={originalStockLocation?.id}
+            stockLocationId={fromStockLocation?.id}
             scanKey={itemScanKey}
             onChange={handleToProductTrackingNumberChange}
-            defaultValue={stockLocationLine}
-            isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+            defaultValue={locationLine}
+            isFocus={currentStep === CREATION_STEP.line}
             isScrollViewContainer={true}
           />
         ) : null}
-        {stockLocationLine ? (
+        {locationLine ? (
           <>
             <ProductCardInfo
-              name={stockLocationLine?.product?.name}
-              code={stockLocationLine?.product?.code}
-              picture={stockLocationLine?.product?.picture}
+              name={locationLine?.product?.name}
+              code={locationLine?.product?.code}
+              picture={locationLine?.product?.picture}
               trackingNumber={
-                stockLocationLine?.product?.trackingNumberConfiguration ==
-                  null || stockLocationLine?.trackingNumber == null
+                locationLine?.product?.trackingNumberConfiguration == null
                   ? null
-                  : stockLocationLine?.trackingNumber.trackingNumberSeq
+                  : locationLine?.trackingNumber?.trackingNumberSeq
               }
               onPress={handleShowProduct}
             />
             <ProductSeeStockLocationDistribution
               companyId={user.activeCompany?.id}
-              product={stockLocationLine?.product}
+              product={locationLine?.product}
               forceShow={true}
             />
             <InternalMoveLineQuantityCard
-              originalStockLocation={originalStockLocation}
-              stockProduct={stockLocationLine?.product}
-              trackingNumber={stockLocationLine?.trackingNumber}
+              originalStockLocation={fromStockLocation}
+              stockProduct={locationLine?.product}
+              trackingNumber={locationLine?.trackingNumber}
               movedQty={movedQty}
               setMovedQty={setMovedQty}
-              plannedQty={stockLocationLine?.currentQty}
+              plannedQty={locationLine?.currentQty}
               status={StockMove.status.Draft}
             />
           </>
         ) : null}
-        {currentStep >= CREATION_STEP.destination_stockLocation ||
-        destinationStockLocation ? (
-          <>
-            <StockLocationSearchBar
-              placeholderKey="Stock_DestinationStockLocation"
-              scanKey={destinationStockLocationScanKey}
-              onChange={handleToStockLocationChange}
-              defaultValue={destinationStockLocation}
-              isFocus={currentStep === CREATION_STEP.destination_stock}
-              secondFilter={true}
-              isScrollViewContainer={true}
-            />
-            <InternalMoveLineNotes
-              notes={notes}
-              setNotes={setNotes}
-              status={StockMove.status.Draft}
-            />
-          </>
+        {stockConfig.isManageStockLocationOnStockMoveLine &&
+        (currentStep >= CREATION_STEP.toStockLocation || toStockLocation) ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_DestinationStockLocation"
+            scanKey={toScanKey}
+            onChange={handleToStockLocationChange}
+            defaultValue={toStockLocation}
+            isFocus={currentStep === CREATION_STEP.toStockLocation}
+            secondFilter={true}
+            defaultStockLocation={_moveTo}
+            isScrollViewContainer={true}
+          />
         ) : null}
       </KeyboardAvoidingScrollView>
     </Screen>

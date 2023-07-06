@@ -111,6 +111,8 @@
   "Stock_NoTrackingNumberConfigured": "No tracking number configured",
   "Stock_FromStockLocation": "From stock location",
   "Stock_ToStockLocation": "To stock location",
+  "Stock_DefineLines": "Complete lines",
+  "Stock_LinesAdded": "Lines added",
   "Sale_Sale": "Sale",
   "Purchase_Purchase": "Purchase",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "fetch customer delivery lines",

@@ -103,6 +103,8 @@ const InternalMoveSearchLineContainer = ({}) => {
           style={styles.item}
           productName={item.product?.fullName}
           internalMoveStatus={internalMove.statusSelect}
+          fromStockLocation={item.fromStockLocation?.name}
+          toStockLocation={item.toStockLocation?.name}
           expectedQty={item.qty}
           movedQty={
             StockMoveLine.hideLineQty(item, internalMove) ? 0 : item.realQty

@@ -20,6 +20,7 @@ import React, {useCallback} from 'react';
 import {
   useDispatch,
   useNavigation,
+  useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
@@ -27,67 +28,56 @@ import {createInternalMove} from '../../../../features/internalMoveSlice';
 
 const InternalMoveLineCreationButton = ({
   onContinue = () => {},
+  onAdd = () => {},
   hideIf = false,
-  product,
-  trackingNumber,
-  originalStockLocation,
-  destinationStockLocation,
-  movedQty,
+  moveFromStockLocation,
+  moveToStockLocation,
   notes,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const createInternalMoveAPI = useCallback(() => {
-    dispatch(
-      createInternalMove({
-        productId: product.id,
-        companyId: 1,
-        originStockLocationId: originalStockLocation.id,
-        destStockLocationId: destinationStockLocation.id,
-        unitId: product.unit?.id,
-        trackingNumberId:
-          product.trackingNumberConfiguration == null || trackingNumber == null
-            ? null
-            : trackingNumber.id,
-        movedQty: movedQty,
-        notes: notes,
-      }),
-    );
+  const {user} = useSelector(state => state.user);
+
+  const handleRealize = useCallback(() => {
+    onAdd().then(items => {
+      dispatch(
+        createInternalMove({
+          companyId: user?.activeCompany?.id,
+          fromStockLocationId: moveFromStockLocation?.id,
+          toStockLocationId: moveToStockLocation?.id,
+          lineItems: items,
+          notes: notes,
+        }),
+      );
+    });
+
+    navigation.popToTop();
   }, [
-    destinationStockLocation,
+    onAdd,
+    navigation,
     dispatch,
-    movedQty,
-    originalStockLocation,
-    product,
-    trackingNumber,
+    user?.activeCompany?.id,
+    moveFromStockLocation?.id,
+    moveToStockLocation?.id,
     notes,
   ]);
 
-  const handleRealize = () => {
-    createInternalMoveAPI();
-    navigation.popToTop();
-  };
-
   const handleContinue = () => {
-    createInternalMoveAPI();
-    onContinue();
+    onAdd().then(onContinue);
   };
 
   if (!hideIf) {
     return (
       <>
         <Button
-          title={I18n.t('Base_Realize')}
+          title={I18n.t('Base_AddContinue')}
           color={Colors.secondaryColor}
-          onPress={handleRealize}
-        />
-        <Button
-          title={I18n.t('Base_RealizeContinue')}
           onPress={handleContinue}
         />
+        <Button title={I18n.t('Base_Realize')} onPress={handleRealize} />
       </>
     );
   }
