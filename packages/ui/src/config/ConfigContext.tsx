@@ -23,6 +23,21 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
+import {Color} from '../theme';
+
+interface Action {
+  iconName?: string;
+  title: string;
+  onPress: () => void;
+  color?: Color;
+}
+
+interface BlockInteractionConfig {
+  style?: any;
+  visible: boolean;
+  message: string;
+  actionItems: Action[];
+}
 
 interface ConfigContextState {
   showFilter: boolean;
@@ -30,6 +45,8 @@ interface ConfigContextState {
   showActivityIndicator: boolean;
   showSubtitles: boolean;
   headerHeight: number;
+  blockInteractionConfig: BlockInteractionConfig;
+  setBlockInteractionConfig: (config: BlockInteractionConfig) => void;
   setActivityIndicator: (option: boolean) => void;
   setShowSubtitles: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
@@ -41,7 +58,7 @@ interface ConfigContextState {
 
 interface ConfigAction {
   type: string;
-  payload?: boolean | number;
+  payload?: boolean | number | BlockInteractionConfig;
 }
 
 const defaultConfigContext = {
@@ -50,6 +67,16 @@ const defaultConfigContext = {
   showActivityIndicator: false,
   showSubtitles: false,
   headerHeight: 115,
+  blockInteractionConfig: {
+    visible: false,
+    message: '',
+    actionItems: [],
+  },
+  setBlockInteractionConfig: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set blockInteractionConfig config',
+    );
+  },
   setActivityIndicator: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
   },
@@ -89,6 +116,7 @@ const actionTypes = {
   toggleVirtualKeyboardConfig: 'toggleVirtualKeyboardConfig',
   setActivityIndicator: 'setActivityIndicator',
   setHeaderHeight: 'setHeaderHeight',
+  setBlockInteractionConfig: 'setBlockInteractionConfig',
 };
 
 const configReducer = (
@@ -96,6 +124,12 @@ const configReducer = (
   action: ConfigAction,
 ): ConfigContextState => {
   switch (action.type) {
+    case actionTypes.setBlockInteractionConfig: {
+      return {
+        ...state,
+        blockInteractionConfig: action.payload as BlockInteractionConfig,
+      };
+    }
     case actionTypes.setActivityIndicator: {
       return {
         ...state,
@@ -142,6 +176,12 @@ const configReducer = (
 };
 
 const actions = {
+  setBlockInteractionConfig: config => {
+    return {
+      type: actionTypes.setBlockInteractionConfig,
+      payload: config,
+    };
+  },
   setActivityIndicator: option => ({
     type: actionTypes.setActivityIndicator,
     payload: option,
@@ -176,6 +216,10 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
     showSubtitles: showModulesSubtitle,
   });
 
+  const setBlockInteractionConfig = useCallback(
+    config => dispatch(actions.setBlockInteractionConfig(config)),
+    [],
+  );
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
     [],
@@ -214,6 +258,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       setVirtualKeyboardConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setBlockInteractionConfig,
     }),
     [
       setActivityIndicator,
@@ -224,6 +269,7 @@ export const ConfigProvider = ({children, showModulesSubtitle}) => {
       toggleFilterConfig,
       toggleVirtualKeyboardConfig,
       setHeaderHeight,
+      setBlockInteractionConfig,
     ],
   );
 
