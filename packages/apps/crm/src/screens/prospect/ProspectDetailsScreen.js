@@ -28,7 +28,7 @@ import {
 import {fetchProspectById} from '../../features/prospectSlice';
 
 const ProspectDetailsScreen = ({route}) => {
-  const {idProspect} = route.params;
+  const {idProspect, colorIndex} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ const ProspectDetailsScreen = ({route}) => {
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
-        fixedItems={<ProspectHeader />}
+        fixedItems={<ProspectHeader colorIndex={colorIndex} />}
       />
       <ScrollView>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
