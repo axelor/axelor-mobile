@@ -17,19 +17,9 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  Card,
-  Icon,
-  LabelText,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 interface SupplierArrivalLineCardProps {
   style?: any;
@@ -74,51 +64,44 @@ const SupplierArrivalLineCard = ({
   }, [borderColor]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{productName}</Text>
-          <LabelText
-            title={`${I18n.t('Stock_AskedQty')} :`}
-            value={parseFloat(askedQty.toString()).toFixed(2)}
-          />
-          <LabelText
-            title={`${I18n.t('Stock_DeliveredQty')} :`}
-            value={parseFloat(deliveredQty.toString()).toFixed(2)}
-          />
-          {stockConfig?.isManageStockLocationOnStockMoveLine
-            ? checkNullString(stockLocationName) === false && (
-                <LabelText
-                  title={`${I18n.t('Stock_ToStockLocation')} :`}
-                  value={stockLocationName}
-                  iconName="warehouse"
-                />
-              )
-            : null}
-          {checkNullString(locker) === false && (
-            <LabelText
-              title={`${I18n.t('Stock_Locker')} :`}
-              value={locker}
-              iconName="map-marker-alt"
-            />
-          )}
-          {trackingNumber != null && (
-            <LabelText
-              title={`${I18n.t('Stock_TrackingNumber')} :`}
-              value={trackingNumber?.trackingNumberSeq}
-              iconName="qrcode"
-            />
-          )}
-        </View>
-        <View style={styles.rightContainer}>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      showArrow={true}
+      lowerTexts={{
+        items: [
+          {displayText: productName, isTitle: true},
+          {
+            displayText: parseFloat(askedQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_AskedQty')} :`,
+          },
+          {
+            displayText: parseFloat(deliveredQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_DeliveredQty')} :`,
+          },
+          {
+            displayText: stockConfig?.isManageStockLocationOnStockMoveLine
+              ? stockLocationName
+              : null,
+            indicatorText: `${I18n.t('Stock_ToStockLocation')} :`,
+            hideIfNull: true,
+            iconName: 'warehouse',
+          },
+          {
+            displayText: locker,
+            indicatorText: `${I18n.t('Stock_Locker')} :`,
+            hideIfNull: true,
+            iconName: 'map-marker-alt',
+          },
+          {
+            displayText: trackingNumber?.trackingNumberSeq,
+            indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
+            hideIfNull: true,
+            iconName: 'qrcode',
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -129,29 +112,5 @@ const getStyles = color =>
       borderColor: color,
     },
   });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 15,
-  },
-  textContainer: {
-    width: '80%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  txtImportant: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  rightContainer: {
-    width: '20%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default SupplierArrivalLineCard;
