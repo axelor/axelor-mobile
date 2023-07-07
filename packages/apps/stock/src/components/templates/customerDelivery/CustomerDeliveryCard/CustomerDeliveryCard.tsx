@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Badge, Card, Text, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
@@ -58,57 +58,54 @@ const CustomerDeliveryCard = ({
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
     if (status === StockMove.status.Draft) {
-      return (
-        <Text style={[styles.txtDetails, styles.date]}>
-          {`${I18n.t('Base_CreatedOn')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_CreatedOn')} ${_date}`;
     }
 
     if (status === StockMove.status.Planned) {
-      return (
-        <Text style={[styles.txtDetails, styles.date]}>
-          {`${I18n.t('Base_PlannedFor')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
-    return (
-      <Text style={styles.txtDetails}>
-        {`${I18n.t('Base_ValidatedOn')} ${_date}`}
-      </Text>
-    );
+    return `${I18n.t('Base_ValidatedOn')} ${_date}`;
   }, [I18n, date, status]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{reference}</Text>
-          <Text style={styles.txtDetails}>{client}</Text>
-          {origin != null && (
-            <View style={styles.origin}>
-              <Icon name="tag" size={12} style={styles.icon} />
-              <Text style={styles.txtDetails}>{origin}</Text>
-            </View>
-          )}
-          {_formatDate}
-        </View>
-        <View style={styles.rightContainer}>
-          {availability == null ? null : (
-            <Badge
-              color={StockMove.getAvailabilityColor(availability, Colors)}
-              title={StockMove.getAvailability(availability, I18n)}
-            />
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      showArrow={true}
+      style={[borderStyle, style]}
+      lowerTexts={{
+        items: [
+          {displayText: reference, isTitle: true},
+          {displayText: client},
+          {
+            displayText: origin,
+            iconName: 'tag',
+            style: styles.noBold,
+            hideIfNull: true,
+          },
+          {
+            displayText: _formatDate,
+            style: [
+              styles.noBold,
+              status === StockMove.status.Realized ? styles.date : null,
+            ],
+            hideIfNull: true,
+          },
+        ],
+      }}
+      sideBadges={
+        availability == null
+          ? null
+          : {
+              items: [
+                {
+                  displayText: StockMove.getAvailability(availability, I18n),
+                  color: StockMove.getAvailabilityColor(availability, Colors),
+                },
+              ],
+            }
+      }
+    />
   );
 };
 
@@ -121,35 +118,11 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  rightContainer: {
-    width: '20%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  container: {
-    flexDirection: 'row',
-  },
-  textContainer: {
-    width: '80%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
+  noBold: {
+    fontWeight: null,
   },
   date: {
     fontStyle: 'italic',
-  },
-  origin: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 5,
   },
 });
 
