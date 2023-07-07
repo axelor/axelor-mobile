@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Badge, Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {AOSImage, useTranslator} from '@axelor/aos-mobile-core';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 import Product from '../../../../types/product';
 
 interface ProductAttribut {
@@ -50,6 +50,7 @@ const ProductVariantCard = ({
 }: ProductVariantCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatMetaFile = useMetafileUri();
 
   const attr1 = attributesList?.attributes[0];
   const attr2 = attributesList?.attributes[1];
@@ -57,127 +58,127 @@ const ProductVariantCard = ({
   const attr4 = attributesList?.attributes[3];
   const attr5 = attributesList?.attributes[4];
 
+  const renderAttrItems = () => {
+    if (attributesList == null) {
+      return null;
+    }
+
+    let items = [];
+
+    if (attr1 != null) {
+      items.push({
+        numberOfLines: null,
+        style: styles.attr,
+        displayText: `${attr1.attrName} : ${attr1.attrValue} ${
+          attr1.priceExtra >= 0
+            ? `(${Product.getApplicationPriceSelect(
+                attr1.applicationPriceSelect,
+                I18n,
+              )} : +${parseFloat(attr1.priceExtra.toString()).toFixed(2)})`
+            : ''
+        }`,
+      });
+    }
+
+    if (attr2 != null) {
+      items.push({
+        numberOfLines: null,
+        style: styles.attr,
+        displayText: `${attr2.attrName} : ${attr2.attrValue} ${
+          attr2.priceExtra >= 0
+            ? `(${Product.getApplicationPriceSelect(
+                attr2.applicationPriceSelect,
+                I18n,
+              )} : +${parseFloat(attr2.priceExtra.toString()).toFixed(2)})`
+            : ''
+        }`,
+      });
+    }
+
+    if (attr3 != null) {
+      items.push({
+        numberOfLines: null,
+        style: styles.attr,
+        displayText: `${attr3.attrName} : ${attr3.attrValue} ${
+          attr3.priceExtra >= 0
+            ? `(${Product.getApplicationPriceSelect(
+                attr3.applicationPriceSelect,
+                I18n,
+              )} : +${parseFloat(attr3.priceExtra.toString()).toFixed(2)})`
+            : ''
+        }`,
+      });
+    }
+
+    if (attr4 != null) {
+      items.push({
+        numberOfLines: null,
+        style: styles.attr,
+        displayText: `${attr4.attrName} : ${attr4.attrValue} ${
+          attr4.priceExtra >= 0
+            ? `(${Product.getApplicationPriceSelect(
+                attr4.applicationPriceSelect,
+                I18n,
+              )} : +${parseFloat(attr4.priceExtra.toString()).toFixed(2)})`
+            : ''
+        }`,
+      });
+    }
+
+    if (attr5 != null) {
+      items.push({
+        numberOfLines: null,
+        style: styles.attr,
+        displayText: `${attr5.attrName} : ${attr5.attrValue} ${
+          attr5.priceExtra >= 0
+            ? `(${Product.getApplicationPriceSelect(
+                attr5.applicationPriceSelect,
+                I18n,
+              )} : +${parseFloat(attr5.priceExtra.toString()).toFixed(2)})`
+            : ''
+        }`,
+      });
+    }
+
+    return items?.length > 0 ? {items} : null;
+  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Card style={style}>
-        <View style={styles.content}>
-          <AOSImage
-            generalStyle={styles.imageStyle}
-            imageSize={styles.imageSize}
-            resizeMode="contain"
-            metaFile={picture}
-            defaultIconSize={40}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.code}>{code}</Text>
-          </View>
-          <Badge
-            color={
-              stockAvailability > 0 ? Colors.primaryColor : Colors.errorColor
-            }
-            title={
+    <ObjectCard
+      onPress={onPress}
+      style={style}
+      showArrow={true}
+      image={{
+        defaultIconSize: 40,
+        imageSize: styles.imageSize,
+        generalStyle: styles.imageStyle,
+        resizeMode: 'contain',
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {displayText: name, isTitle: true, numberOfLines: null},
+          {displayText: code, style: styles.code},
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            displayText:
               stockAvailability > 0
                 ? I18n.t('Stock_Available')
-                : I18n.t('Stock_Unavailable')
-            }
-          />
-        </View>
-        <View style={styles.attrView}>
-          {attributesList == null ? (
-            <View style={styles.textContainer} />
-          ) : (
-            <View style={styles.textContainer}>
-              {attr1 == null ? null : (
-                <View>
-                  <Text style={styles.attribute}>
-                    {`${attr1.attrName} : ${attr1.attrValue} `}
-                    {attr1.priceExtra >= 0 && attr1.priceExtra != null
-                      ? `(${Product.getApplicationPriceSelect(
-                          attr1.applicationPriceSelect,
-                          I18n,
-                        )} : +${attr1.priceExtra})`
-                      : null}
-                  </Text>
-                </View>
-              )}
-              {attr2 == null ? null : (
-                <View>
-                  <Text style={styles.attribute}>
-                    {`${attr2.attrName} : ${attr2.attrValue} `}
-                    {attr2.priceExtra >= 0 && attr2.priceExtra != null
-                      ? `(${Product.getApplicationPriceSelect(
-                          attr2.applicationPriceSelect,
-                          I18n,
-                        )} : +${attr2.priceExtra})`
-                      : null}
-                  </Text>
-                </View>
-              )}
-              {attr3 == null ? null : (
-                <View>
-                  <Text style={styles.attribute}>
-                    {`${attr3.attrName} : ${attr3.attrValue} `}
-                    {attr3.priceExtra >= 0 && attr3.priceExtra != null
-                      ? `(${Product.getApplicationPriceSelect(
-                          attr3.applicationPriceSelect,
-                          I18n,
-                        )} : +${attr3.priceExtra})`
-                      : null}
-                  </Text>
-                </View>
-              )}
-              {attr4 == null ? null : (
-                <View>
-                  <Text style={styles.attribute}>
-                    {`${attr4.attrName} : ${attr4.attrValue} `}
-                    {attr4.priceExtra >= 0 && attr4.priceExtra != null
-                      ? `(${Product.getApplicationPriceSelect(
-                          attr4.applicationPriceSelect,
-                          I18n,
-                        )} : +${attr4.priceExtra})`
-                      : null}
-                  </Text>
-                </View>
-              )}
-              {attr5 == null ? null : (
-                <View>
-                  <Text style={styles.attribute}>
-                    {`${attr5.attrName} : ${attr5.attrValue} `}
-                    {attr5.priceExtra >= 0 && attr5.priceExtra != null
-                      ? `(${Product.getApplicationPriceSelect(
-                          attr5.applicationPriceSelect,
-                          I18n,
-                        )} : +${attr5.priceExtra})`
-                      : null}
-                  </Text>
-                </View>
-              )}
-            </View>
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+                : I18n.t('Stock_Unavailable'),
+            color:
+              stockAvailability > 0 ? Colors.primaryColor : Colors.errorColor,
+          },
+        ],
+      }}
+      lowerTexts={renderAttrItems()}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  attrView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   imageSize: {
     height: 40,
     width: 40,
@@ -185,21 +186,11 @@ const styles = StyleSheet.create({
   imageStyle: {
     marginRight: 15,
   },
-  textContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginHorizontal: 6,
-  },
-  name: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  attribute: {
-    fontSize: 14,
-  },
   code: {
     fontSize: 12,
+  },
+  attr: {
+    fontStyle: 'italic',
   },
 });
 
