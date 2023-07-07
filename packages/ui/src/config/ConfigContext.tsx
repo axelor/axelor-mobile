@@ -23,6 +23,21 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
+import {Color} from '../theme';
+
+interface Action {
+  iconName?: string;
+  title: string;
+  onPress: () => void;
+  color?: Color;
+}
+
+interface BlockInteractionConfig {
+  style?: any;
+  visible: boolean;
+  message: string;
+  actionItems: Action[];
+}
 
 interface ConfigContextState {
   showFilter: boolean;
@@ -31,6 +46,8 @@ interface ConfigContextState {
   headerHeight: number;
   isHeaderIndicatorVisible: boolean;
   headerIndicatorState: HeaderIndicatorState;
+  blockInteractionConfig: BlockInteractionConfig;
+  setBlockInteractionConfig: (config: BlockInteractionConfig) => void;
   setActivityIndicator: (option: boolean) => void;
   setFilterConfig: (option: boolean) => void;
   toggleFilterConfig: () => void;
@@ -43,7 +60,7 @@ interface ConfigContextState {
 
 interface ConfigAction {
   type: string;
-  payload?: boolean | number | HeaderIndicatorState;
+  payload?: boolean | number | HeaderIndicatorState | BlockInteractionConfig;
 }
 
 interface HeaderIndicatorState {
@@ -60,6 +77,16 @@ const defaultConfigContext = {
   isHeaderIndicatorVisible: false,
   headerIndicatorState: {
     text: '',
+  },
+  blockInteractionConfig: {
+    visible: false,
+    message: '',
+    actionItems: [],
+  },
+  setBlockInteractionConfig: () => {
+    throw new Error(
+      'ConfigProvider should be mounted to set blockInteractionConfig config',
+    );
   },
   setActivityIndicator: () => {
     throw new Error('ConfigProvider should be mounted to set Indicator config');
@@ -108,6 +135,7 @@ const actionTypes = {
   setHeaderHeight: 'setHeaderHeight',
   setIsHeaderIndicatorVisible: 'setIsHeaderIndicatorVisible',
   setHeaderIndicatorState: 'setHeaderIndicatorState',
+  setBlockInteractionConfig: 'setBlockInteractionConfig',
 };
 
 const configReducer = (
@@ -115,6 +143,12 @@ const configReducer = (
   action: ConfigAction,
 ): ConfigContextState => {
   switch (action.type) {
+    case actionTypes.setBlockInteractionConfig: {
+      return {
+        ...state,
+        blockInteractionConfig: action.payload as BlockInteractionConfig,
+      };
+    }
     case actionTypes.setActivityIndicator: {
       return {
         ...state,
@@ -167,6 +201,12 @@ const configReducer = (
 };
 
 const actions = {
+  setBlockInteractionConfig: config => {
+    return {
+      type: actionTypes.setBlockInteractionConfig,
+      payload: config,
+    };
+  },
   setActivityIndicator: option => ({
     type: actionTypes.setActivityIndicator,
     payload: option,
@@ -202,6 +242,10 @@ const actions = {
 export const ConfigProvider = ({children}) => {
   const [state, dispatch] = useReducer(configReducer, defaultConfigContext);
 
+  const setBlockInteractionConfig = useCallback(
+    config => dispatch(actions.setBlockInteractionConfig(config)),
+    [],
+  );
   const setActivityIndicator = useCallback(
     option => dispatch(actions.setActivityIndicator(option)),
     [],
@@ -247,6 +291,7 @@ export const ConfigProvider = ({children}) => {
       setHeaderHeight,
       setIsHeaderIndicatorVisible,
       setHeaderIndicatorState,
+      setBlockInteractionConfig,
     }),
     [
       setActivityIndicator,
@@ -258,6 +303,7 @@ export const ConfigProvider = ({children}) => {
       setHeaderHeight,
       setIsHeaderIndicatorVisible,
       setHeaderIndicatorState,
+      setBlockInteractionConfig,
     ],
   );
 

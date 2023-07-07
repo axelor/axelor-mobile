@@ -18,6 +18,7 @@
 
 export {default as AttachmentCard} from './AttachmentCard/AttachmentCard';
 export {default as Badge} from './Badge/Badge';
+export {default as BlockInteractionMessage} from './BlockInteractionMessage/BlockInteractionMessage';
 export {default as Button} from './Button/Button';
 export {default as CardIconButton} from './CardIconButton/CardIconButton';
 export {default as Checkbox} from './Checkbox/Checkbox';
