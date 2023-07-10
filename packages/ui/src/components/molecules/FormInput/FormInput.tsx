@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {Input, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
@@ -31,6 +31,8 @@ interface FormInputProps {
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
+  onEndFocus?: () => void;
+  keyboardType?: KeyboardTypeOptions;
 }
 
 const FormInput = ({
@@ -41,6 +43,8 @@ const FormInput = ({
   required = false,
   onChange = () => {},
   onSelection = () => {},
+  onEndFocus = () => {},
+  keyboardType,
 }: FormInputProps) => {
   const Colors = useThemeColor();
 
@@ -77,7 +81,12 @@ const FormInput = ({
 
   const handleEndFocus = () => {
     setIsFocused(false);
+    onEndFocus();
   };
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   return (
     <View style={[styles.container, style]}>
@@ -95,6 +104,7 @@ const FormInput = ({
           onChange={onValueChange}
           onSelection={handleSelection}
           onEndFocus={handleEndFocus}
+          keyboardType={keyboardType}
           numberOfLines={null}
           readOnly={readOnly}
         />
