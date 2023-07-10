@@ -3,6 +3,33 @@ title: 6.5.0
 tags: Changelog
 ---
 
+## [6.5.3] (2023-07-10)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer toggle race condition issue (upgrade react-navigation packages)
+- Upgrade nx package to fix issue with Nodejs version
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add BlockInteractionMessage component
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Add default filter with user active location on product stock view
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Check for NPE and null string conditions
+
 ## [6.5.2] (2023-06-19)
 
 ### @axelor/aos-mobile-core
@@ -234,6 +261,7 @@ It contains the following functionnalities
 
 - Replace RenderHTML by HtmlInput
 
+[6.5.3]: https://github.com/axelor/axelor-mobile/compare/6.5.2...6.5.3
 [6.5.2]: https://github.com/axelor/axelor-mobile/compare/6.5.1...6.5.2
 [6.5.1]: https://github.com/axelor/axelor-mobile/compare/6.5.0...6.5.1
 [6.5.0]: https://github.com/axelor/axelor-mobile/compare/6.4.3...6.5.0
