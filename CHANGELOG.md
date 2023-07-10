@@ -3,6 +3,27 @@ title: 6.4.0
 tags: Changelog
 ---
 
+## [6.4.4] (2023-07-10)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Drawer toggle race condition issue (upgrade react-navigation packages)
+- Upgrade nx package to fix issue with Nodejs version
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add BlockInteractionMessage component
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Add default filter with user active location on product stock view
+
 ## [6.4.3] (2023-06-19)
 
 ### @axelor/aos-mobile-core
@@ -55,7 +76,6 @@ tags: Changelog
     <Details>
     Transform children chip components into a list of objects with the following props : isActive, color, title and key. Two available behaviours: 'mutli' or 'switch'. 
     </Details>
-
 
 #### Fixed
 
@@ -233,6 +253,7 @@ There are two functional packages available for Axelor Open Mobile.
   - _Operation order_: view, change of status with management of the stopwatch, view of the production file
   - _Planning vision_ of operation orders
 
+[6.4.4]: https://github.com/axelor/axelor-mobile/compare/6.4.3...6.4.4
 [6.4.3]: https://github.com/axelor/axelor-mobile/compare/6.4.2...6.4.3
 [6.4.2]: https://github.com/axelor/axelor-mobile/compare/6.4.1...6.4.2
 [6.4.1]: https://github.com/axelor/axelor-mobile/compare/6.4.0...6.4.1
