@@ -3,6 +3,42 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.2] (2023-07-10)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Manage compatibility with AOS modules with new configuration in module export
+- Add image helpers to get source with AOS objects
+
+#### Fixes
+
+- Drawer toggle race condition issue (upgrade react-navigation packages)
+- Upgrade nx package to fix issue with Nodejs version
+- Use default text color on session creation button
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Add BlockInteractionMessage component
+- Add new component ObjectCard to standardize cards creation
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Add default filter with user active location on product stock view
+- Improve fields visibility on internal move creation
+- Scroll issue on internal move creation screen
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Check for NPE and null string conditions
+
 ## [7.0.1] (2023-06-19)
 
 ### @axelor/aos-mobile-core
@@ -148,5 +184,6 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.2]: https://github.com/axelor/axelor-mobile/compare/7.0.1...7.0.2
 [7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1
 [7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.1...7.0.0
