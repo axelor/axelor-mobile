@@ -29,8 +29,12 @@ interface FormIncrementInputProps {
   readOnly?: boolean;
   defaultValue?: string;
   onChange: (value: any) => void;
-  decimalSpacer: string;
-  thousandSpacer: string;
+  decimalSpacer?: string;
+  thousandSpacer?: string;
+  defaultFormatting?: boolean;
+  stepSize?: number;
+  minValue?: number;
+  maxValue?: number;
 }
 
 const FormIncrementInput = ({
@@ -41,6 +45,10 @@ const FormIncrementInput = ({
   decimalSpacer,
   thousandSpacer,
   onChange,
+  defaultFormatting = true,
+  stepSize = 1,
+  minValue = 0,
+  maxValue = null,
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
 
@@ -78,6 +86,10 @@ const FormIncrementInput = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           readonly={readOnly}
+          defaultFormatting={defaultFormatting}
+          stepSize={stepSize}
+          minValue={minValue}
+          maxValue={maxValue}
         />
       </View>
     </View>

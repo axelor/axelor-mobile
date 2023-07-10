@@ -23,9 +23,18 @@ import {
   unformatNumber as _unformat,
 } from '../../../utils/formatters';
 import {ThemeColors, useThemeColor} from '../../../theme';
-import {Icon, Input} from '../../atoms';
+import {Input} from '../../atoms';
+import IncrementButton from './IncrementButton';
 
 const cutDecimalExcess = number => {
+  if (number == null) {
+    return '0.00';
+  }
+
+  if (typeof number === 'string') {
+    return parseFloat(number).toFixed(2).toString();
+  }
+
   return number.toFixed(2).toString();
 };
 
@@ -39,6 +48,10 @@ interface IncrementProps {
   onFocus?: () => void;
   onBlur?: () => void;
   readonly?: boolean;
+  defaultFormatting?: boolean;
+  stepSize?: number;
+  minValue?: number;
+  maxValue?: number;
 }
 
 const Increment = ({
@@ -51,10 +64,18 @@ const Increment = ({
   onFocus = () => {},
   onBlur = () => {},
   readonly = false,
+  defaultFormatting = true,
+  stepSize = 1,
+  minValue = 0,
+  maxValue = null,
 }: IncrementProps) => {
+  const Colors = useThemeColor();
+
+  const [valueQty, setValueQty] = useState<string>();
+
   const format = useCallback(
-    number => {
-      return _format(number, decimalSpacer, thousandSpacer);
+    (number: number | string) => {
+      return _format(cutDecimalExcess(number), decimalSpacer, thousandSpacer);
     },
     [decimalSpacer, thousandSpacer],
   );
@@ -66,27 +87,50 @@ const Increment = ({
     [decimalSpacer, thousandSpacer],
   );
 
-  const Colors = useThemeColor();
-  const [valueQty, setValueQty] = useState<string>();
+  const handleValueFormatting = useCallback(
+    (_value: number | string) => {
+      if (defaultFormatting) {
+        setValueQty(format(_value));
+      } else {
+        setValueQty(typeof _value === 'string' ? _value : _value.toString());
+      }
+    },
+    [defaultFormatting, format],
+  );
+
+  const handleResult = useCallback(
+    (_value: number | string) => {
+      let resultValue;
+      if (minValue != null && _value <= minValue) {
+        resultValue = minValue;
+      } else if (maxValue != null && _value >= maxValue) {
+        resultValue = maxValue;
+      } else {
+        resultValue = _value;
+      }
+
+      handleValueFormatting(resultValue);
+      onValueChange(resultValue);
+    },
+    [handleValueFormatting, maxValue, minValue, onValueChange],
+  );
 
   useEffect(() => {
-    setValueQty(format(parseFloat(value)?.toString()));
-  }, [format, value]);
+    handleValueFormatting(parseFloat(value)?.toString());
+  }, [handleValueFormatting, value]);
 
   const handlePlus = () => {
-    const unformatedValue = unformat(valueQty);
-    const newValue: number = parseFloat(unformatedValue) + parseFloat('1');
-    setValueQty(format(cutDecimalExcess(newValue)));
-    onValueChange(newValue);
+    const unformatedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+    const newValue: number = parseFloat(unformatedValue) + stepSize;
+
+    handleResult(newValue);
   };
 
   const handleMinus = () => {
-    const unformatedValue = unformat(valueQty);
-    const newValue = parseFloat(unformatedValue) - parseFloat('1');
-    if (newValue >= 0) {
-      setValueQty(format(cutDecimalExcess(newValue)));
-      onValueChange(newValue);
-    }
+    const unformatedValue = defaultFormatting ? unformat(valueQty) : valueQty;
+    const newValue = parseFloat(unformatedValue) - stepSize;
+
+    handleResult(newValue);
   };
 
   const handleEndInput = () => {
@@ -95,18 +139,11 @@ const Increment = ({
     }
 
     if (valueQty === '' || valueQty === null) {
-      setValueQty(`0${decimalSpacer}00`);
-      onValueChange(0.0);
+      handleResult(0);
     } else {
-      const newValue: number = parseFloat(valueQty);
-      if (newValue >= 0) {
-        setValueQty(format(cutDecimalExcess(newValue)));
-        onValueChange(newValue.toFixed(2));
-      } else {
-        setValueQty(`0${decimalSpacer}00`);
-        onValueChange(0.0);
-      }
+      handleResult(valueQty);
     }
+
     onBlur();
   };
 
@@ -114,16 +151,12 @@ const Increment = ({
 
   return (
     <View style={[styles.container_increment, style]}>
-      {!readonly && (
-        <Icon
-          name="minus"
-          size={24}
-          color={Colors.primaryColor.background}
-          touchable={true}
-          onPress={handleMinus}
-          style={styles.container_icon}
-        />
-      )}
+      <IncrementButton
+        iconName="minus"
+        onPress={handleMinus}
+        readonly={readonly}
+        disabled={minValue != null && parseFloat(valueQty) <= minValue}
+      />
       <View style={styles.inputLine}>
         <Input
           style={[styles.input, inputStyle]}
@@ -135,16 +168,12 @@ const Increment = ({
           readOnly={readonly}
         />
       </View>
-      {!readonly && (
-        <Icon
-          name="plus"
-          size={24}
-          color={Colors.primaryColor.background}
-          touchable={true}
-          onPress={handlePlus}
-          style={styles.container_icon}
-        />
-      )}
+      <IncrementButton
+        iconName="plus"
+        onPress={handlePlus}
+        readonly={readonly}
+        disabled={maxValue != null && parseFloat(valueQty) >= maxValue}
+      />
     </View>
   );
 };
@@ -154,21 +183,6 @@ const getStyles = (Colors: ThemeColors) =>
     container_increment: {
       flexDirection: 'row',
       alignItems: 'center',
-    },
-    container_icon: {
-      backgroundColor: Colors.backgroundColor,
-      elevation: 3,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 8,
-      padding: 2,
-      paddingHorizontal: 5,
-      borderColor: Colors.secondaryColor.background,
-      borderWidth: 0.5,
-      borderRadius: 10,
     },
     input: {
       fontSize: 23,
