@@ -34,6 +34,7 @@ export {
   formatScan,
   formatURL,
 } from './formatters';
+export {useBinaryImageUri, useMetafileUri} from './image';
 export {filterList, filterListContain} from './list';
 export {
   calculateDiff,
