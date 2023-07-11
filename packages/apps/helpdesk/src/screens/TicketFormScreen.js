@@ -26,7 +26,6 @@ import {
   Screen,
   useThemeColor,
   FormHtmlInput,
-  FormIncrementInput,
   checkNullString,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -40,6 +39,7 @@ import {
   ContactPartnerSearchBar,
   CustomerSearchBar,
   DurationFormInput,
+  ProgressFormInput,
   ProjectSearchBar,
   TicketTypeSearchBar,
   UserSearchBar,
@@ -136,6 +136,11 @@ const TicketFormScreen = ({navigation, route}) => {
             defaultValue={_ticket.subject}
             required={true}
           />
+          <ProgressFormInput
+            title={I18n.t('Helpdesk_Progress')}
+            defaultValue={_ticket?.progressSelect}
+            onChange={value => handleTicketFieldChange(value, 'progressSelect')}
+          />
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
@@ -143,13 +148,6 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={handleChangeValueProject}
             style={styles.picker}
             styleTxt={styles.marginTitle}
-          />
-          <FormIncrementInput
-            title={I18n.t('Helpdesk_Progress')}
-            defaultValue={_ticket.progressSelect?.toString()}
-            onChange={value => handleTicketFieldChange(value, 'progressSelect')}
-            decimalSpacer={I18n.t('Base_DecimalSpacer')}
-            thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
