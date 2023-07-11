@@ -27,6 +27,8 @@ import {
   getTicketType,
   searchTickets,
   updateStatusTicket,
+  searchTicketType as _searchTicketType,
+  updateTicket as _updateTicket,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -89,14 +91,50 @@ export const updateTicketStatus = createAsyncThunk(
   },
 );
 
+export const searchTicketType = createAsyncThunk(
+  'ticket/searchTicketType',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchTicketType,
+      data,
+      action: 'Helpdesk_SliceAction_SearchTicketType',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const updateTicket = createAsyncThunk(
+  'ticket/updateTicket',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateTicket,
+      data,
+      action: 'Helpdesk_SliceAction_UpdateTicket',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: getTicket,
+        data: {ticketId: data?.ticket?.id},
+        action: 'Helpdesk_SliceAction_FetchTicketById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingTicket: true,
-  loadingTicketType: true,
   moreLoading: false,
   isListEnd: false,
   ticketList: [],
-  ticketTypeList: [],
   ticket: {},
+  loadingTicketType: true,
+  moreLoadingTicketType: false,
+  isListEndTicketType: false,
+  ticketTypeList: [],
 };
 
 const ticketSlice = createSlice({
@@ -108,6 +146,12 @@ const ticketSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
+    });
+    generateInifiniteScrollCases(builder, searchTicketType, {
+      loading: 'loadingTicketType',
+      moreLoading: 'moreLoadingTicketType',
+      isListEnd: 'isListEndTicketType',
+      list: 'ticketTypeList',
     });
     builder.addCase(fetchTicketType.pending, state => {
       state.loadingTicketType = true;
@@ -127,6 +171,14 @@ const ticketSlice = createSlice({
       state.loadingTicket = true;
     });
     builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticket = action.payload;
+      state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
+    });
+    builder.addCase(updateTicket.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(updateTicket.fulfilled, (state, action) => {
       state.loadingTicket = false;
       state.ticket = action.payload;
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);

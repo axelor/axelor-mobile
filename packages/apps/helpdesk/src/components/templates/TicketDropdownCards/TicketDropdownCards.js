@@ -41,8 +41,8 @@ const TicketDropdownCards = ({}) => {
                 project={ticket.project?.fullName}
                 contactPartner={ticket.contactPartner?.fullName}
                 customerPartner={ticket.customerPartner?.fullName}
-                assignedToUser={ticket.assignedToUser}
-                responsibleUser={ticket.responsibleUser}
+                assignedToUser={ticket.assignedToUser?.fullName}
+                responsibleUser={ticket.responsibleUser?.fullName}
               />
             ),
           },

@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
+export {default as ContactPartnerSearchBar} from './ContactPartnerSearchBar/ContactPartnerSearchBar';
+export {default as CustomerSearchBar} from './CustomerSearchBar/CustomerSearchBar';
+export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
+export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
 export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
+export {default as TicketTypeSearchBar} from './TicketTypeSearchBar/TicketTypeSearchBar';
+export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';

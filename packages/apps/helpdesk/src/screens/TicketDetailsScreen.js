@@ -49,7 +49,7 @@ import {Ticket} from '../types';
 import {fetchHelpdeskConfig} from '../features/helpdeskConfigSlice';
 
 const TicketDetailsScreen = ({route}) => {
-  const {idTicket, colorIndex} = route.params;
+  const {idTicket} = route.params;
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -123,10 +123,7 @@ const TicketDetailsScreen = ({route}) => {
 
   return (
     <Screen removeSpaceOnTop={true}>
-      <HeaderContainer
-        expandableFilter={false}
-        fixedItems={<TicketHeader colorIndex={colorIndex} />}
-      />
+      <HeaderContainer expandableFilter={false} fixedItems={<TicketHeader />} />
       <ScrollView>
         <NotesCard
           title={I18n.t('Base_Description')}
@@ -162,7 +159,9 @@ const TicketDetailsScreen = ({route}) => {
             />
           )}
       </ScrollView>
-      <TicketEditButton idTicket={idTicket} />
+      {ticket?.statusSelect !== Ticket.status.Closed && (
+        <TicketEditButton idTicket={idTicket} />
+      )}
     </Screen>
   );
 };
