@@ -16,9 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {customerReducer as customer} from './customerSlice';
-export {helpdeskConfigReducer as helpdeskConfig} from './helpdeskConfigSlice';
-export {projectReducer as project} from './projectSlice';
-export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
-export {userListReducer as userList} from './userSlice';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+const createProjectCriteria = searchValue => {
+  return [getSearchCriterias('helpdesk_project', searchValue)];
+};
+
+export async function searchProject({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.Project',
+    criteria: createProjectCriteria(searchValue),
+    fieldKey: 'helpdesk_project',
+    sortKey: 'helpdesk_project',
+    page: page,
+  });
+}

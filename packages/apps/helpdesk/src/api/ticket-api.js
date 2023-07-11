@@ -42,6 +42,10 @@ const createTicketCriteria = (searchValue, userId, userTeam) => {
   return criteria;
 };
 
+const createTicketTypeCriteria = searchValue => {
+  return [getSearchCriterias('helpdesk_ticketType', searchValue)];
+};
+
 export async function searchTickets({searchValue, userId, page = 0, userTeam}) {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.Ticket',
@@ -69,6 +73,16 @@ export async function getTicketType() {
   });
 }
 
+export async function searchTicketType({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.helpdesk.db.TicketType',
+    criteria: createTicketTypeCriteria(searchValue),
+    fieldKey: 'helpdesk_ticketType',
+    sortKey: 'helpdesk_ticketType',
+    page: page,
+  });
+}
+
 export async function updateStatusTicket({
   version,
   dateTime,
@@ -81,6 +95,15 @@ export async function updateStatusTicket({
       version: version,
       dateTime: dateTime,
       targetStatus: targetStatus,
+    },
+  });
+}
+
+export async function updateTicket({ticket}) {
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
+    data: {
+      data: ticket,
     },
   });
 }
