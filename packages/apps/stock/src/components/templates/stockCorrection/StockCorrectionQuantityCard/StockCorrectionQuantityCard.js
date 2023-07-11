@@ -45,7 +45,8 @@ const StockCorrectionQuantityCard = ({
       labelQty={I18n.t('Stock_RealQty')}
       defaultValue={qty}
       onValueChange={handleQtyChange}
-      editable={status === StockCorrection.status.Draft}>
+      editable={status === StockCorrection.status.Draft}
+      isBigButton={true}>
       <Text style={styles.text}>
         {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(databaseQty).toFixed(
           2,

@@ -32,7 +32,8 @@ const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
       labelQty={`${I18n.t('Stock_PhysicalQty')} :`}
       defaultValue={realQty}
       onValueChange={setRealQty}
-      editable={inventory.statusSelect !== Inventory.status.Validated}>
+      editable={inventory.statusSelect !== Inventory.status.Validated}
+      isBigButton={true}>
       {inventoryLine == null ? (
         <Text>
           {`${I18n.t('Stock_DatabaseQty')} : ${I18n.t('Base_Unknown')}`}

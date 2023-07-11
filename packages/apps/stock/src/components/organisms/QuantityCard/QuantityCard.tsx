@@ -37,6 +37,7 @@ interface QuantityCardProps {
   editable: boolean;
   actionQty?: boolean;
   onPressActionQty?: () => void;
+  isBigButton?: boolean;
 }
 
 const QuantityCard = ({
@@ -48,6 +49,7 @@ const QuantityCard = ({
   editable,
   actionQty = false,
   onPressActionQty = () => {},
+  isBigButton = false,
 }: QuantityCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -69,6 +71,7 @@ const QuantityCard = ({
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
+            isBigButton={isBigButton}
           />
         ) : (
           <Text style={styles.noChildrenTextValue}>{_defaultValue}</Text>
@@ -102,6 +105,7 @@ const QuantityCard = ({
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
+            isBigButton={isBigButton}
           />
         ) : (
           <Text style={styles.textValue}>{_defaultValue}</Text>
