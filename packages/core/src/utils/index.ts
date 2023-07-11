@@ -43,6 +43,7 @@ export {
   formatDuration,
   formatTwoNumber,
   getIntegerPart,
+  formatDurationToMiliseconds,
 } from './time';
 export {
   areObjectsEquals,

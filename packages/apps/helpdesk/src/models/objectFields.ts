@@ -45,4 +45,21 @@ export const helpdesk_modelAPI: ObjectFields = {
     startDateT: schemaContructor.string(),
     endDateT: schemaContructor.string(),
   }),
+  helpdesk_customer: schemaContructor.object({
+    simpleFullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+    fullName: schemaContructor.string(),
+    contactPartnerSet: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+  }),
+  helpdesk_project: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+    clientPartner: schemaContructor.subObject(),
+    contactPartner: schemaContructor.subObject(),
+  }),
+  helpdesk_user: schemaContructor.object({
+    fullName: schemaContructor.string(),
+  }),
 };

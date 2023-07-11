@@ -10,6 +10,7 @@
   "Helpdesk_Status_In_Progress": "En cours",
   "Helpdesk_Status_Resolved": "Résolu",
   "Helpdesk_Status_Closed": "Fermé",
+  "Helpdesk_Priority": "Priorité",
   "Helpdesk_Priority_Low": "Faible",
   "Helpdesk_Priority_Normal": "Normal",
   "Helpdesk_Priority_High": "Elevé",
@@ -30,8 +31,12 @@
   "Helpdesk_Pause": "Mettre en pause",
   "Helpdesk_Resolve": "Résoudre",
   "Helpdesk_Reset": "Réinitialiser",
+  "Hepdesk_Subject": "Sujet",
   "Helpdesk_NoGeneralInformation": "Pas d'informations générales.",
   "Helpdesk_NoTimingInformation": "Pas d'informations temporelles.",
+  "Helpdesk_AssignedToUser": "Assigné à",
+  "Helpdesk_ResponsibleUser": "Utilisateur en charge",
+  "Helpdesk_DeadlineDate": "Date limite",
   "Helpdesk_SliceAction_FetchMyTicket": "récupération de mes tickets",
   "Helpdesk_SliceAction_FetchTicketType": "récupération des types de tickets",
   "Helpdesk_SliceAction_FetchMyTeamTicket": "récupération des tickets de mon équipe",
@@ -39,5 +44,11 @@
   "Helpdesk_SliceAction_FetchTimerById": "récupération du timer par id",
   "Helpdesk_SliceAction_FetchTimerHistory": "récupération de l'historique du timer",
   "Helpdesk_SliceAction_UpdateTicketStatus": "mise à jour du statut du ticket",
-  "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client"
+  "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client",
+  "Helpdesk_SliceAction_SearchUser": "récupération des utilisateurs",
+  "Helpdesk_SliceAction_FetchCustomer": "récupération des clients",
+  "Helpdesk_SliceAction_FetchCustomerById": "récupération du client par id",
+  "Helpdesk_SliceAction_FetchProject": "récupération des projets",
+  "Helpdesk_SliceAction_SearchTicketType": "recherche sur les types de tickets",
+  "Helpdesk_SliceAction_UpdateTicket": "mise à jour du ticket"
 }

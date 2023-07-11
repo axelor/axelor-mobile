@@ -26,4 +26,15 @@ export const helpdesk_searchFields: SearchFields = {
     'customerPartner.fullName',
     'project.fullName',
   ],
+  helpdesk_ticketType: ['name'],
+  helpdesk_customer: [
+    'simpleFullName',
+    'partnerSeq',
+    'mainAddress.fullName',
+    'mobilePhone',
+    'fixedPhone',
+    'emailAddress.name',
+  ],
+  helpdesk_project: ['name', 'fullName'],
+  helpdesk_user: ['fullName'],
 };

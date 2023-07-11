@@ -61,6 +61,10 @@ export const formatDuration = (secondsValue, format = 'hh:mm:ss') => {
   }
 };
 
+export const formatDurationToMiliseconds = duration => {
+  return duration * 60 * 60;
+};
+
 export const calculateDiff = (start, end) => {
   if (start == null) {
     console.warn('the start date value cannot be null');
