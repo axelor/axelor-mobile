@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -45,7 +45,6 @@ import {
   UserSearchBar,
 } from '../components';
 import {Ticket} from '../types/';
-import {getCustomerbyId} from '../features/customerSlice';
 
 const isObjectMissingRequiredField = object => checkNullString(object?.subject);
 
@@ -57,15 +56,15 @@ const TicketFormScreen = ({navigation, route}) => {
 
   const {ticket} = useSelector(state => state.ticket);
 
+  const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
+  const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [project, setProject] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
   const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
   const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
-  const [priority, setPriority] = useState(ticket?.prioritySelect);
   const [responsibleUser, setResponsibleUser] = useState(
     ticket?.responsibleUser,
   );
-  const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
   const [disabledButton, setDisabledButton] = useState(
     isObjectMissingRequiredField(_ticket),
   );
@@ -81,12 +80,6 @@ const TicketFormScreen = ({navigation, route}) => {
     setDisabledButton(isObjectMissingRequiredField(_ticket));
   };
 
-  useEffect(() => {
-    if (client?.id != null) {
-      dispatch(getCustomerbyId({customerId: client?.id}));
-    }
-  }, [dispatch, client?.id]);
-
   const handleChangeValueProject = value => {
     setProject(value);
     setClient(value?.clientPartner);
@@ -98,31 +91,29 @@ const TicketFormScreen = ({navigation, route}) => {
       updateTicket({
         ticket: {
           ..._ticket,
-          ticketType: _ticket?.ticketType
-            ? {id: _ticket?.ticketType?.id}
-            : null,
+          ticketType: ticketType ? {id: ticketType?.id} : null,
           project: project ? {id: project?.id} : null,
           customerPartner: client ? {id: client?.id} : null,
           contactPartner: contactPartner ? {id: contactPartner.id} : null,
           assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
           responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
-          prioritySelect: priority,
         },
       }),
     );
+
     navigation.navigate('TicketDetailsScreen', {
       idTicket: _ticket.id,
     });
   }, [
-    _ticket,
     dispatch,
-    navigation,
-    contactPartner,
-    client,
+    _ticket,
+    ticketType,
     project,
+    client,
+    contactPartner,
     assignedTo,
     responsibleUser,
-    priority,
+    navigation,
   ]);
 
   return (
@@ -133,7 +124,7 @@ const TicketFormScreen = ({navigation, route}) => {
             style={styles.input}
             title={I18n.t('Hepdesk_Subject')}
             onChange={value => handleTicketFieldChange(value, 'subject')}
-            defaultValue={_ticket.subject}
+            defaultValue={_ticket?.subject}
             required={true}
           />
           <ProgressFormInput
@@ -168,19 +159,22 @@ const TicketFormScreen = ({navigation, route}) => {
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
             placeholderKey="Helpdesk_Type"
-            defaultValue={_ticket?.ticketType}
-            onChange={value => handleTicketFieldChange(value, 'ticketType')}
+            defaultValue={ticketType}
+            onChange={setTicketType}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <Picker
             style={styles.picker}
+            styleTxt={styles.pickerTitle}
             title={I18n.t('Helpdesk_Priority')}
-            onValueChange={setPriority}
+            onValueChange={value =>
+              handleTicketFieldChange(value, 'prioritySelect')
+            }
             listItems={Ticket.getPriorityList(Colors, I18n)}
             labelField="title"
             valueField="key"
-            defaultValue={priority}
+            defaultValue={_ticket?.prioritySelect}
           />
           <DateInput
             onDateChange={value =>
@@ -273,6 +267,12 @@ const styles = StyleSheet.create({
   picker: {
     width: '100%',
     marginLeft: 5,
+  },
+  pickerTitle: {
+    marginLeft: 5,
+  },
+  marginTitle: {
+    marginLeft: 28,
   },
   search: {
     width: '100%',

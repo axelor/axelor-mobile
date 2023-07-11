@@ -68,6 +68,7 @@ export async function getTicketType() {
   return createStandardSearch({
     model: 'com.axelor.apps.helpdesk.db.TicketType',
     fieldKey: 'helpdesk_ticketType',
+    numberElementsByPage: null,
     page: 0,
   });
 }

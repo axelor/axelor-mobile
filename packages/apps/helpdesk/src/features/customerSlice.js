@@ -27,7 +27,7 @@ import {
 } from '../api/customer-api';
 
 export const searchCustomer = createAsyncThunk(
-  'customer/fetchCustomer',
+  'customer/searchCustomer',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchCustomer,
@@ -54,9 +54,9 @@ export const getCustomerbyId = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  customerList: [],
   moreLoading: false,
   isListEnd: false,
+  customerList: [],
   customer: {},
 };
 

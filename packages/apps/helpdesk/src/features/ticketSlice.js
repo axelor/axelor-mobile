@@ -127,14 +127,14 @@ export const updateTicket = createAsyncThunk(
 
 const initialState = {
   loadingTicket: true,
-  loadingTicketType: true,
   moreLoading: false,
-  moreLoadingTicketType: false,
-  isListEndTicketType: false,
   isListEnd: false,
   ticketList: [],
-  ticketTypeList: [],
   ticket: {},
+  loadingTicketType: true,
+  moreLoadingTicketType: false,
+  isListEndTicketType: false,
+  ticketTypeList: [],
 };
 
 const ticketSlice = createSlice({

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Text,
@@ -28,11 +28,17 @@ import {
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Ticket} from '../../../types/';
 
-const TicketHeader = ({colorIndex}) => {
+const TicketHeader = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {ticket} = useSelector(state => state.ticket);
+  const {ticket, ticketTypeList} = useSelector(state => state.ticket);
+
+  const colorIndex = useMemo(
+    () =>
+      ticketTypeList?.findIndex(status => status.id === ticket.ticketType?.id),
+    [ticket, ticketTypeList],
+  );
 
   return (
     <View style={styles.headerContainer}>

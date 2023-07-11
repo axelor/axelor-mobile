@@ -189,9 +189,6 @@ const MyTicketListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('TicketDetailsScreen', {
                 idTicket: item.id,
-                colorIndex: ticketTypeList?.findIndex(
-                  type => type.id === item?.ticketType?.id,
-                ),
               })
             }
           />

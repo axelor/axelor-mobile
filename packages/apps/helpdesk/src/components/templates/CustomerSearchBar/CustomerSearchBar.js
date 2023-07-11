@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchCustomer} from '../../../features/customerSlice';
@@ -55,7 +55,7 @@ const CustomerSearchBar = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
       {showTitle && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}

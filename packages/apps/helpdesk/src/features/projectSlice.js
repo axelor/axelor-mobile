@@ -38,9 +38,9 @@ export const searchProject = createAsyncThunk(
 
 const initialState = {
   loadingProject: true,
-  projectList: [],
   moreLoading: false,
   isListEnd: false,
+  projectList: [],
 };
 
 const projectSlice = createSlice({
