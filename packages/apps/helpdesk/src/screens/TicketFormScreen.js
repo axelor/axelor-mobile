@@ -34,13 +34,12 @@ import {
   useDispatch,
   useTranslator,
   DateInput,
-  formatDuration,
-  formatDurationToMiliseconds,
 } from '@axelor/aos-mobile-core';
 import {updateTicket} from '../features/ticketSlice';
 import {
   ContactPartnerSearchBar,
   CustomerSearchBar,
+  DurationFormInput,
   ProjectSearchBar,
   TicketTypeSearchBar,
   UserSearchBar,
@@ -226,6 +225,10 @@ const TicketFormScreen = ({navigation, route}) => {
             }
             style={styles.input}
           />
+          <DurationFormInput
+            duration={_ticket?.duration}
+            onChange={value => handleTicketFieldChange(value, 'duration')}
+          />
           <UserSearchBar
             titleKey="Helpdesk_AssignedToUser"
             placeholderKey="Helpdesk_AssignedToUser"
@@ -246,18 +249,6 @@ const TicketFormScreen = ({navigation, route}) => {
             title={I18n.t('Base_Description')}
             onChange={value => handleTicketFieldChange(value, 'description')}
             defaultValue={_ticket?.description}
-          />
-          <FormIncrementInput
-            title={I18n.t('Helpdesk_Duration')}
-            defaultValue={formatDuration(_ticket.duration)}
-            onChange={value =>
-              handleTicketFieldChange(
-                formatDurationToMiliseconds(value),
-                'duration',
-              )
-            }
-            decimalSpacer={I18n.t('Base_DecimalSpacer')}
-            thousandSpacer={I18n.t('Base_ThousandSpacer')}
           />
         </View>
       </KeyboardAvoidingScrollView>
