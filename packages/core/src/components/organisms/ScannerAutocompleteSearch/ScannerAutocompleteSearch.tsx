@@ -77,6 +77,7 @@ const ScannerAutocompleteSearch = ({
   isScrollViewContainer = false,
 }: AutocompleteSearchProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const [searchValue, setSearchValue] = useState(value);
   const {isEnabled, scanKey} = useScannerSelector();
@@ -92,8 +93,6 @@ const ScannerAutocompleteSearch = ({
       setSearchValue(scanData.value);
     }
   }, [scanData, scannedValue]);
-
-  const Colors = useThemeColor();
 
   useEffect(() => {
     if (isFocus) {

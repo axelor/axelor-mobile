@@ -37,6 +37,7 @@ const ProductSearchBar = ({
   isFocus = false,
   changeScreenAfter = false,
   onFetchDataAction,
+  selectLastItem = true,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const ProductSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
+      selectLastItem={selectLastItem}
     />
   );
 };

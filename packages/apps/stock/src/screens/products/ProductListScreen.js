@@ -84,6 +84,7 @@ const ProductListScreen = ({navigation}) => {
             navigate={navigate}
             oneFilter={true}
             isFocus={true}
+            selectLastItem={false}
           />
         }
       />
