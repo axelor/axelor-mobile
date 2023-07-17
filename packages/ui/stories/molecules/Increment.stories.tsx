@@ -60,6 +60,12 @@ storiesOf('ui/molecules/Increment', module)
           },
           defaultValue: {},
         },
+        isBigButton: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: false,
+        },
       },
     },
   );

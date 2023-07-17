@@ -66,6 +66,12 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
       onChange: {
         action: 'onChange',
       },
+      isBigButton: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
     },
   },
 );

@@ -159,8 +159,10 @@ const Increment = ({
         readonly={readonly}
         disabled={minValue != null && parseFloat(valueQty) <= minValue}
         isBigButton={isBigButton}
+        style={isBigButton && bigButtonStyles.incrementButton}
       />
-      <View style={styles.inputLine}>
+      <View
+        style={[styles.inputLine, isBigButton && bigButtonStyles.inputLine]}>
         <Input
           style={[styles.input, inputStyle]}
           value={valueQty}
@@ -177,10 +179,21 @@ const Increment = ({
         readonly={readonly}
         disabled={maxValue != null && parseFloat(valueQty) >= maxValue}
         isBigButton={isBigButton}
+        style={isBigButton && bigButtonStyles.incrementButton}
       />
     </View>
   );
 };
+
+const bigButtonStyles = StyleSheet.create({
+  inputLine: {
+    width: '35%',
+  },
+  incrementButton: {
+    width: '25%',
+    paddingHorizontal: '5%',
+  },
+});
 
 const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
@@ -192,12 +205,14 @@ const getStyles = (Colors: ThemeColors) =>
       fontSize: 23,
       fontWeight: 'bold',
       paddingBottom: 0,
+      textAlign: 'center',
     },
     inputLine: {
       borderStyle: Platform.OS === 'ios' ? 'solid' : 'dashed',
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,
+      width: '35%',
     },
   });
 
