@@ -41,6 +41,7 @@ import {
 } from '../../components';
 import MenuTitle from './MenuTitle';
 import {formatVersionString} from '../../utils/string';
+import {isHasSubMenus} from '../menu.helper';
 
 const DrawerContent = ({
   state,
@@ -52,25 +53,57 @@ const DrawerContent = ({
   versionCheckConfig,
 }) => {
   useEffect(() => {
+    const generateRoutes = _state => {
+      const routes = modules
+        ?.filter(_module => _module.menus)
+        ?.flatMap(_module => {
+          const moduleMenus = _module.menus;
+          const result = [];
+
+          let menuIndex = 0;
+          for (const [key, menu] of Object.entries(moduleMenus)) {
+            const {subMenus} = menu;
+            const menuOrder = menu?.order != null ? menu.order : menuIndex * 10;
+
+            result.push({
+              ...menu,
+              order: menuOrder,
+              key,
+            });
+
+            let subMenuIndex = 0;
+            if (isHasSubMenus(menu)) {
+              for (const [subMenuKey, subMenu] of Object.entries(subMenus)) {
+                const subMenuOrder =
+                  subMenu?.order != null ? subMenu.order : subMenuIndex;
+
+                result.push({
+                  ...subMenu,
+                  order: subMenuOrder,
+                  key: subMenuKey,
+                });
+
+                subMenuIndex++;
+              }
+            }
+
+            menuIndex++;
+          }
+
+          return result;
+        });
+
+      return routes
+        .sort((a, b) => a.order - b.order)
+        .map(item =>
+          _state.routes.find(stateItem => stateItem.name === item.key),
+        );
+    };
+
     navigation.dispatch(_state => {
       return CommonActions.reset({
         ..._state,
-        routes: modules
-          ?.filter(_module => _module.menus)
-          ?.flatMap(_module => {
-            const moduleMenus = _module.menus;
-
-            return Object.entries(moduleMenus)
-              .map((item, index) => ({
-                ...item[1],
-                order: item[1]?.order != null ? item[1]?.order : index * 10,
-                key: item[0],
-              }))
-              .sort((a, b) => a.order - b.order)
-              .map(item =>
-                _state.routes.find(stateItem => stateItem.name === item.key),
-              );
-          }),
+        routes: generateRoutes(_state),
       });
     });
   }, [modules, navigation]);

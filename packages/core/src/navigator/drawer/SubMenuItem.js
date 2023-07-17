@@ -17,45 +17,38 @@
  */
 
 import React from 'react';
-import {getMenuTitle, isHasSubMenus} from '../menu.helper';
+import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
-import SubMenuItemList from './SubMenuItemList';
 import MenuItemEntry from './MenuItemEntry';
+import {StyleSheet} from 'react-native';
 
-const MenuItem = ({
-  state,
+const SUB_MENU_ICON_SIZE = 20;
+
+const SubMenuItem = ({
   route,
-  navigation,
-  menuItem,
-  subRoutes,
+  subMenu,
   onPress = () => {},
   isActive = false,
 }) => {
   const I18n = useTranslator();
-  const hasSubMenus = isHasSubMenus(menuItem);
-
-  if (hasSubMenus) {
-    return (
-      <SubMenuItemList
-        state={state}
-        route={route}
-        navigation={navigation}
-        onPress={onPress}
-        menuItem={menuItem}
-        subRoutes={subRoutes}
-      />
-    );
-  }
 
   return (
     <MenuItemEntry
+      icon={subMenu.icon}
+      title={getMenuTitle(subMenu, {I18n})}
+      disabled={subMenu.disabled}
+      iconSize={SUB_MENU_ICON_SIZE}
       onPress={() => onPress(route)}
-      title={getMenuTitle(menuItem, {I18n})}
-      icon={menuItem.icon}
-      disabled={menuItem.disabled}
       isActive={isActive}
+      style={styles.subMenuItem}
     />
   );
 };
 
-export default MenuItem;
+const styles = StyleSheet.create({
+  subMenuItem: {
+    marginLeft: 20,
+  },
+});
+
+export default SubMenuItem;

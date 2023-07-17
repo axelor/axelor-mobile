@@ -22,12 +22,19 @@ import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
-import {getMenuTitle} from '../menu.helper';
+import {getMenuTitle, isHasSubMenus} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
-  const I18n = useTranslator();
   const {modulesMenus} = useContext(ModuleNavigatorContext);
+
+  const generateSubRoutes = menuItem => {
+    if (isHasSubMenus(menuItem)) {
+      const {subMenus} = menuItem;
+      return state.routes.filter(subRoute => subRoute.name in subMenus);
+    }
+    return [];
+  };
 
   return state.routes.map((route, i) => {
     if (activeModule.menus[route.name] == null) {
@@ -36,14 +43,17 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
 
     const focused =
       i === state.index && Object.keys(activeModule.menus).includes(route.name);
-    const menu = modulesMenus[route.name];
 
-    const onPress = () => {
+    const onPress = _route => {
+      if (_route == null) {
+        return null;
+      }
+
       onItemClick();
 
       const event = navigation.emit({
         type: 'drawerItemPress',
-        target: route.key,
+        target: _route.key,
         canPreventDefault: true,
       });
 
@@ -51,18 +61,24 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
         navigation.dispatch({
           ...(focused
             ? DrawerActions.closeDrawer()
-            : CommonActions.navigate({name: route.name, merge: true})),
+            : CommonActions.navigate({name: _route.name, merge: true})),
           target: state.key,
         });
       }
     };
 
+    const menuItem = modulesMenus[route.name];
+
+    const subRoutes = generateSubRoutes(menuItem);
+
     return (
       <MenuItem
         key={route.key}
-        title={getMenuTitle(menu, {I18n})}
-        icon={menu.icon}
-        disabled={menu.disabled}
+        state={state}
+        route={route}
+        navigation={navigation}
+        menuItem={menuItem}
+        subRoutes={subRoutes}
         onPress={onPress}
         isActive={focused}
       />

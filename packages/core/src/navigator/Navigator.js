@@ -36,7 +36,7 @@ import {
   moduleHasMenus,
   updateAccessibleMenus,
 } from './module.helper';
-import {getMenuTitle} from './menu.helper';
+import {getMenuTitle, isHasSubMenus} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMenuConfig} from '../features/menuConfigSlice';
@@ -201,21 +201,43 @@ const Navigator = ({
             versionCheckConfig={versionCheckConfig}
           />
         )}>
-        {Object.entries(modulesMenus).map(([key, menu]) => (
-          <Drawer.Screen
-            key={key}
-            name={key}
-            options={{
-              title: getMenuTitle(menu, {I18n}),
-            }}>
-            {props => (
-              <ModulesScreensStackNavigator
-                {...props}
-                initialRouteName={menu.screen}
-              />
-            )}
-          </Drawer.Screen>
-        ))}
+        {Object.entries(modulesMenus).map(([key, menu], index) => {
+          return (
+            <React.Fragment key={index}>
+              <Drawer.Screen
+                key={key}
+                name={key}
+                options={{
+                  title: getMenuTitle(menu, {I18n}),
+                }}>
+                {props => (
+                  <ModulesScreensStackNavigator
+                    {...props}
+                    initialRouteName={menu.screen}
+                  />
+                )}
+              </Drawer.Screen>
+              {isHasSubMenus(menu) &&
+                Object.entries(menu.subMenus).map(([subMenukey, subMenu]) => {
+                  return (
+                    <Drawer.Screen
+                      key={subMenukey}
+                      name={subMenukey}
+                      options={{
+                        title: getMenuTitle(subMenu, {I18n}),
+                      }}>
+                      {props => (
+                        <ModulesScreensStackNavigator
+                          {...props}
+                          initialRouteName={subMenu.screen}
+                        />
+                      )}
+                    </Drawer.Screen>
+                  );
+                })}
+            </React.Fragment>
+          );
+        })}
       </Drawer.Navigator>
     </ModuleNavigatorContext.Provider>
   );

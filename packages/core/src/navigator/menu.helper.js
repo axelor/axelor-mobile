@@ -87,3 +87,18 @@ export function isMenuIncompatible(compatibility) {
 
   return false;
 }
+
+export function isHasSubMenus(menu) {
+  return (
+    menu != null &&
+    Object.keys(menu).length > 0 &&
+    Object.keys(menu).includes('subMenus')
+  );
+}
+
+export function resolveSubMenus(subMenus) {
+  if (subMenus == null || Object.keys(subMenus).length === 0) {
+    return [];
+  }
+  return Object.entries(subMenus).map(entry => ({...entry[1], key: entry[0]}));
+}
