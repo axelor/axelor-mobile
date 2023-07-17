@@ -40,6 +40,7 @@ import {
   PopupMinimalRequiredVersion,
 } from '../../components';
 import MenuTitle from './MenuTitle';
+import {formatVersionString} from '../../utils/string';
 
 const DrawerContent = ({
   state,
@@ -83,17 +84,12 @@ const DrawerContent = ({
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
   const {mobileSettings} = useSelector(_state => _state.config);
-  const mobileVersion = Number(version.replace(/\D/g, ''));
+  const mobileVersion = formatVersionString(version);
 
-  const minimalRequiredVersion = useMemo(() => {
-    const formattedRequiredApp =
-      mobileSettings?.minimalRequiredMobileAppVersion?.replace(/\D/g, '');
-    if (formattedRequiredApp?.length === 3) {
-      return formattedRequiredApp;
-    } else {
-      return null;
-    }
-  }, [mobileSettings]);
+  const minimalRequiredVersion = useMemo(
+    () => formatVersionString(mobileSettings?.minimalRequiredMobileAppVersion),
+    [mobileSettings],
+  );
 
   const innerMenuIsVisible = useMemo(
     () => activeModule.name !== authModule.name,

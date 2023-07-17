@@ -53,3 +53,30 @@ export function checkNullString(message) {
     return newMessage == null || newMessage === '';
   }
 }
+
+export function formatVersionString(version: string): number {
+  if (typeof version !== 'string') {
+    return null;
+  }
+
+  const vparts = version.split('.');
+  let result: string = '';
+
+  for (const v of vparts) {
+    if (isNaN(parseFloat(v))) {
+      break;
+    }
+
+    result = result.concat(parseFloat(v).toString().padStart(3, '0'));
+  }
+
+  const missingVersionNumber = 3 - vparts.length;
+
+  if (missingVersionNumber > 0) {
+    for (let index = 0; index < missingVersionNumber; index++) {
+      result = result.concat('000');
+    }
+  }
+
+  return parseFloat(result);
+}

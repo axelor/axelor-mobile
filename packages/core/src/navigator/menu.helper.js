@@ -18,6 +18,7 @@
 
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {userHaveAccessToConfig} from './roles.helper';
+import {formatVersionString} from '../utils/string';
 
 const userHaveAccessToMenu = ({menuConfig, user}) => {
   return userHaveAccessToConfig({config: menuConfig, user: user});
@@ -68,18 +69,18 @@ export function isMenuIncompatible(compatibility) {
     return true;
   }
 
-  const moduleVersion = Number(compatibility.moduleVersion.replace(/\D/g, ''));
+  const moduleVersion = formatVersionString(compatibility.moduleVersion);
 
   if (
     !checkNullString(compatibility.downToVersion) &&
-    moduleVersion < Number(compatibility.downToVersion.replace(/\D/g, ''))
+    moduleVersion < formatVersionString(compatibility.downToVersion)
   ) {
     return true;
   }
 
   if (
     !checkNullString(compatibility.upToVersion) &&
-    moduleVersion >= Number(compatibility.upToVersion.replace(/\D/g, ''))
+    moduleVersion >= formatVersionString(compatibility.upToVersion)
   ) {
     return true;
   }
