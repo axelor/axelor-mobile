@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {ReactElement, useCallback} from 'react';
 import {
   ImageResizeMode,
   ImageSourcePropType,
@@ -57,6 +57,7 @@ interface TextElement {
   hideIfNull?: boolean;
   order?: number;
   numberOfLines?: number;
+  customComponent?: ReactElement<any>;
 }
 
 interface BadgeElement {
@@ -65,6 +66,7 @@ interface BadgeElement {
   color?: Color;
   showIf?: boolean;
   order?: number;
+  customComponent?: ReactElement<any>;
 }
 
 interface ImageElement {
@@ -141,6 +143,12 @@ const ObjectCard = ({
   );
 
   const renderTextElement = useCallback((item: TextElement) => {
+    if (item.customComponent != null) {
+      return React.cloneElement(item.customComponent, {
+        key: `${item.displayText} - ${item.order}`,
+      });
+    }
+
     if (item.hideIfNull && checkNullString(item.displayText)) {
       return null;
     }
@@ -161,6 +169,7 @@ const ObjectCard = ({
       <LabelText
         key={`${item.displayText} - ${item.order}`}
         style={[styles.text, item.style]}
+        textStyle={item.style}
         iconName={item.iconName}
         color={item.color}
         title={item.indicatorText}
@@ -171,6 +180,12 @@ const ObjectCard = ({
   }, []);
 
   const renderBadgeElement = useCallback((item: BadgeElement) => {
+    if (item.customComponent != null) {
+      return React.cloneElement(item.customComponent, {
+        key: `${item.displayText} - ${item.order}`,
+      });
+    }
+
     if (item.showIf === false || checkNullString(item.displayText)) {
       return null;
     }
