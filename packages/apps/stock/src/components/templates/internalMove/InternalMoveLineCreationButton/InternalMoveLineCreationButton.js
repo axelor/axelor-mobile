@@ -29,7 +29,8 @@ import {createInternalMove} from '../../../../features/internalMoveSlice';
 const InternalMoveLineCreationButton = ({
   onContinue = () => {},
   onAdd = () => {},
-  hideIf = false,
+  hideAllIf = false,
+  showRealize = false,
   moveFromStockLocation,
   moveToStockLocation,
   notes,
@@ -69,7 +70,11 @@ const InternalMoveLineCreationButton = ({
     onAdd().then(onContinue);
   };
 
-  if (!hideIf) {
+  const renderRealizeButton = () => {
+    return <Button title={I18n.t('Base_Realize')} onPress={handleRealize} />;
+  };
+
+  if (!hideAllIf) {
     return (
       <>
         <Button
@@ -77,9 +82,13 @@ const InternalMoveLineCreationButton = ({
           color={Colors.secondaryColor}
           onPress={handleContinue}
         />
-        <Button title={I18n.t('Base_Realize')} onPress={handleRealize} />
+        {renderRealizeButton()}
       </>
     );
+  }
+
+  if (showRealize) {
+    return renderRealizeButton();
   }
 
   return null;

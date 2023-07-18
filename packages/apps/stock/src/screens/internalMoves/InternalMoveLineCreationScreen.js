@@ -45,7 +45,7 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
   const {
     fromStockLocation: _moveFrom,
     toStockLocation: _moveTo,
-    notes,
+    notes: _notes,
   } = route.params;
 
   const {stockConfig} = useSelector(state => state.stockAppConfig);
@@ -53,6 +53,7 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
 
   const [currentStep, setStep] = useState(CREATION_STEP.line);
   const [lines, setLines] = useState([]);
+  const [notes, setNotes] = useState(_notes);
   const [fromStockLocation, setFromStockLocation] = useState(_moveFrom);
   const [locationLine, setLocationLine] = useState(null);
   const [toStockLocation, setToStockLocation] = useState(_moveTo);
@@ -109,7 +110,6 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
 
       if (_step <= CREATION_STEP.fromStockLocation) {
         setFromStockLocation(null);
-        setToStockLocation(null);
       }
 
       if (_step === CREATION_STEP.validation) {
@@ -190,19 +190,25 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
         <InternalMoveLineCreationButton
           onContinue={handleOnContinue}
           onAdd={handleAddLine}
-          hideIf={currentStep !== CREATION_STEP.validation}
+          hideAllIf={currentStep !== CREATION_STEP.validation}
+          showRealize={lines.length > 0}
           moveFromStockLocation={_moveFrom}
           moveToStockLocation={_moveTo}
           notes={notes}
         />
       }>
-      <InternalMoveCreationHeader
-        fromStockLocation={_moveFrom}
-        toStockLocation={_moveTo}
-        notes={notes}
-        linesSaved={lines}
-      />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{
+          ios: 70,
+          android: 100,
+        }}>
+        <InternalMoveCreationHeader
+          fromStockLocation={_moveFrom}
+          toStockLocation={_moveTo}
+          notes={notes}
+          setNotes={setNotes}
+          linesSaved={lines}
+        />
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_OriginalStockLocation"

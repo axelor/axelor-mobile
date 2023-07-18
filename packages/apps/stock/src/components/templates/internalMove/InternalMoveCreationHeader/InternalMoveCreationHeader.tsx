@@ -23,17 +23,20 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {Indicator} from '../../../organisms/SearchLineContainer/IndicatorBadge';
 import InternalMoveMovementIndicationCard from '../InternalMoveMovementIndicationCard/InternalMoveMovementIndicationCard';
 import InternalMoveLineNotes from '../InternalMoveLineNotes/InternalMoveLineNotes';
+import {StockMove} from '../../../../types';
 
 const InternalMoveCreationHeader = ({
   fromStockLocation,
   toStockLocation,
   linesSaved,
   notes,
+  setNotes,
 }) => {
   const I18n = useTranslator();
 
   return (
     <HeaderContainer
+      forceHideByDefault={true}
       fixedItems={
         <View style={styles.header}>
           <Indicator
@@ -48,7 +51,11 @@ const InternalMoveCreationHeader = ({
           from={fromStockLocation?.name}
           to={toStockLocation?.name}
         />
-        <InternalMoveLineNotes notes={notes} />
+        <InternalMoveLineNotes
+          notes={notes}
+          setNotes={setNotes}
+          status={StockMove.status.Draft}
+        />
       </View>
     </HeaderContainer>
   );

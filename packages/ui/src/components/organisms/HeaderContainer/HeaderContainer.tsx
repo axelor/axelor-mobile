@@ -29,6 +29,7 @@ interface HeaderContainerProps {
   fixedItems?: any;
   chipComponent?: any;
   expandableFilter?: boolean;
+  forceHideByDefault?: boolean;
 }
 
 const HeaderContainer = ({
@@ -37,14 +38,15 @@ const HeaderContainer = ({
   fixedItems = null,
   chipComponent = null,
   expandableFilter = true,
+  forceHideByDefault = false,
 }: HeaderContainerProps) => {
   const {showFilter} = useConfig();
-  const [isVisible, setVisible] = useState(true);
+  const [isVisible, setVisible] = useState(!forceHideByDefault);
   const Colors = useThemeColor();
 
   useEffect(() => {
-    setVisible(showFilter);
-  }, [showFilter]);
+    setVisible(forceHideByDefault ? false : showFilter);
+  }, [forceHideByDefault, showFilter]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
