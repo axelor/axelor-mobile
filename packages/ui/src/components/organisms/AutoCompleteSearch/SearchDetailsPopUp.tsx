@@ -59,21 +59,17 @@ const SearchDetailsPopUp = ({
   isListEnd,
   translator,
 }: SearchDetailsPopUpProps) => {
-  const [searchText, setSearchText] = useState(value);
+  const [searchText, setSearchText] = useState<string>();
 
   useEffect(() => {
-    setSearchText(value);
-  }, [value]);
+    fetchData({page: 0});
+  }, [fetchData]);
 
   const fetchAPI = useCallback(
     ({page = 0, searchValue}: {page?: number; searchValue?: string}) => {
       if (isVisible) {
-        if (!checkNullString(searchValue)) {
-          setSearchText(searchValue);
-          fetchData({page, searchValue: searchValue});
-        } else {
-          fetchData({page});
-        }
+        setSearchText(searchValue);
+        fetchData({page, searchValue});
       }
     },
     [fetchData, isVisible],
@@ -102,7 +98,6 @@ const SearchDetailsPopUp = ({
         style={styles.closeIcon}
       />
       <AutoCompleteSearch
-        value={value}
         objectList={objectList}
         onChangeValue={onSelect}
         fetchData={filterAPI}

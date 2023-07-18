@@ -160,6 +160,10 @@ const AutoCompleteSearch = ({
     clearInterval(intervalRequestCall.current);
   }, []);
 
+  const stopTimeout = useCallback(() => {
+    clearTimeout(timeOutRequestCall.current);
+  }, []);
+
   const handleInterval = useCallback(() => {
     handleAPICall();
   }, [handleAPICall]);
@@ -186,10 +190,10 @@ const AutoCompleteSearch = ({
       timeOutRequestCall.current = id;
 
       return () => {
-        clearTimeout(timeOutRequestCall.current);
+        stopTimeout();
       };
     }
-  }, [handleTimeOut, searchText]);
+  }, [handleTimeOut, searchText, stopTimeout]);
 
   const handleSearchValueChange = useCallback(
     input => {
@@ -225,6 +229,13 @@ const AutoCompleteSearch = ({
     setDisplayList(true);
     onSelection();
   }, [onSelection]);
+
+  const handleDetailsView = useCallback(() => {
+    stopInterval();
+    stopTimeout();
+    setPopupIsVisible(true);
+    setDisplayList(false);
+  }, [stopInterval, stopTimeout]);
 
   useEffect(() => {
     if (isValidString(value)) {
@@ -268,7 +279,7 @@ const AutoCompleteSearch = ({
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}
-        onSearchPress={() => setPopupIsVisible(true)}
+        onSearchPress={handleDetailsView}
         disableSearchPress={!showDetailsPopup}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
