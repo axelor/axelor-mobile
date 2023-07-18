@@ -30,6 +30,7 @@ const CustomerDeliveryLineCreationButton = ({
   product,
   realQty,
   trackingNumber,
+  fromStockLocation,
   visible = true,
 }) => {
   const I18n = useTranslator();
@@ -47,8 +48,9 @@ const CustomerDeliveryLineCreationButton = ({
       addNewLine({
         stockMoveId: customerDelivery.id,
         version: customerDelivery.version,
+        fromStockLocationId: fromStockLocation?.id,
         productId: product.id,
-        unitId: product.unit.id,
+        unitId: product.unit?.id,
         trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
         expectedQty: 0,
         realQty: realQty,
@@ -59,6 +61,7 @@ const CustomerDeliveryLineCreationButton = ({
   }, [
     customerDelivery,
     dispatch,
+    fromStockLocation,
     navigateBackToDetails,
     product,
     realQty,

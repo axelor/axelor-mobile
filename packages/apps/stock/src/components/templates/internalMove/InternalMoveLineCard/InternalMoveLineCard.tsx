@@ -26,7 +26,11 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {checkNullString, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
 interface InternalMoveLineCardProps {
@@ -35,6 +39,8 @@ interface InternalMoveLineCardProps {
   productName: string;
   availability: number;
   trackingNumber: string;
+  fromStockLocation: string;
+  toStockLocation: string;
   locker: string;
   expectedQty: number;
   movedQty: number;
@@ -47,6 +53,8 @@ const InternalMoveLineCard = ({
   productName,
   availability,
   trackingNumber,
+  fromStockLocation,
+  toStockLocation,
   locker,
   expectedQty,
   movedQty,
@@ -54,6 +62,8 @@ const InternalMoveLineCard = ({
 }: InternalMoveLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
+  const {stockConfig} = useSelector((state: any) => state.stockAppConfig);
 
   const borderColor = useMemo(() => {
     if (movedQty === 0 || movedQty == null) {
@@ -96,6 +106,13 @@ const InternalMoveLineCard = ({
             title={`${I18n.t('Stock_MovedQty')} :`}
             value={parseFloat(movedQty.toString()).toFixed(2)}
           />
+          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
+            <View style={styles.locations}>
+              <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
+              <Icon name="arrow-right" size={14} style={styles.icon} />
+              <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
+            </View>
+          ) : null}
           {checkNullString(locker) === false && (
             <LabelText
               title={`${I18n.t('Stock_Locker')} :`}
@@ -171,6 +188,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+  },
+  locations: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '60%',
+  },
+  icon: {
+    marginHorizontal: 2,
   },
 });
 

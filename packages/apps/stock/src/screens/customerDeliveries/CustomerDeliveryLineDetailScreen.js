@@ -30,21 +30,27 @@ import {
   CustomerDeliveryLineButtons,
   CustomerDeliveryLineQuantityCard,
   CustomerDeliveryLineTrackingNumberSelect,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {StockMove, StockMoveLine} from '../../types';
 import {fetchCustomerDeliveryLine} from '../../features/customerDeliveryLineSlice';
+
+const stockLocationScanKey =
+  'from-stock-location_customer-delivery-line-update';
 
 const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const {customerDelivery, customerDeliveryLineId, productId} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
+  const {stockConfig} = useSelector(state => state.stockAppConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine, loadingCustomerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
   );
 
+  const [fromStockLocation, setFromStockLocation] = useState();
   const [realQty, setRealQty] = useState(0);
 
   const trackingNumber = useMemo(
@@ -68,6 +74,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         ? 0
         : customerDeliveryLine?.realQty || 0,
     );
+    setFromStockLocation(customerDeliveryLine?.fromStockLocation);
   }, [customerDeliveryLine, customerDelivery]);
 
   useEffect(() => {
@@ -100,6 +107,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           customerDelivery={customerDelivery}
           customerDeliveryLine={customerDeliveryLine}
           realQty={realQty}
+          fromStockLocation={fromStockLocation}
           visible={!isTrackingNumberSelectVisible}
         />
       }
@@ -124,6 +132,19 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         }
       />
       <ScrollView>
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_FromStockLocation"
+            defaultValue={fromStockLocation}
+            onChange={setFromStockLocation}
+            scanKey={stockLocationScanKey}
+            isFocus={true}
+            defaultStockLocation={customerDelivery.fromStockLocation}
+            readOnly={
+              customerDelivery?.statusSelect !== StockMove.status.Planned
+            }
+          />
+        ) : null}
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={product?.picture}

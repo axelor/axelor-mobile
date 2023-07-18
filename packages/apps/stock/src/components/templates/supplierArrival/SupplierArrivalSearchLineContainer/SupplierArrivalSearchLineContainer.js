@@ -44,7 +44,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
     useSupplierLinesWithRacks(supplierArrival);
 
   const handleNewLine = () => {
-    navigation.navigate('SupplierArrivalSelectProductScreen', {
+    navigation.navigate('SupplierArrivalLineCreationScreen', {
       supplierArrival: supplierArrival,
     });
   };
@@ -123,6 +123,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
         <SupplierArrivalLineCard
           style={styles.item}
           productName={item.product?.fullName}
+          stockLocationName={item.toStockLocation?.name}
           deliveredQty={
             StockMoveLine.hideLineQty(item, supplierArrival) ? 0 : item.realQty
           }

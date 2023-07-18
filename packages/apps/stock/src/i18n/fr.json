@@ -108,6 +108,11 @@
   "Stock_LineComment": "Commentaire de la ligne",
   "Stock_ProductTrackingNumber": "Produit / Numéro de suivi",
   "Stock_SearchLine": "Rechercher une ligne",
+  "Stock_NoTrackingNumberConfigured": "Aucun numéro de suivi configuré",
+  "Stock_FromStockLocation": "Emplacement stock source",
+  "Stock_ToStockLocation": "Vers l'emplacement de stock",
+  "Stock_DefineLines": "Compléter les lignes",
+  "Stock_LinesAdded": "Lignes ajoutées",
   "Sale_Sale": "Vente",
   "Purchase_Purchase": "Achat",
   "Stock_SliceAction_FetchCustomerDeliveryLines": "récupération des lignes de livraison client",
@@ -146,6 +151,7 @@
   "Stock_SliceAction_FetchProductVariantAttributes": "récupération des attributs du variant",
   "Stock_SliceAction_FetchRacks": "récupération des casiers",
   "Stock_SliceAction_FetchSupplychainConfig": "récupération de la config supplychain",
+  "Stock_SliceAction_FetchStockConfig": "récupération de la config stock",
   "Stock_SliceAction_FetchStockCorrectionReasons": "récupération des motifs de correction de stock",
   "Stock_SliceAction_SearchStockCorrections": "recherche sur les corrections de stock",
   "Stock_SliceAction_FetchStockCorrection": "récupération d'une correction de stock",
@@ -165,6 +171,5 @@
   "Stock_SliceAction_FilterProductTrakingNumbers": "filtrer les numéros de suivi du produit",
   "Stock_SliceAction_CreateTrakingNumber": "création d'un numéro de suivi",
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "mise à jour d'une ligne de réception fournisseur avec un nouveau numéro de suivi",
-  "Stock_SliceAction_FetchUnits": "récupération des unités",
-  "Stock_NoTrackingNumberConfigured": "Aucun numéro de suivi configuré"
+  "Stock_SliceAction_FetchUnits": "récupération des unités"
 }

@@ -181,6 +181,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
           <SupplierArrivalLineCard
             style={styles.item}
             productName={item.product?.fullName}
+            stockLocationName={item.toStockLocation?.name}
             deliveredQty={
               StockMoveLine.hideLineQty(item, supplierArrival)
                 ? 0

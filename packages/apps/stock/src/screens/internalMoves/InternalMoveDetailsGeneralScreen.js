@@ -71,7 +71,10 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
         }
       />
       <ScrollView>
-        <InternalMoveMovementIndicationCard internalMove={internalMove} />
+        <InternalMoveMovementIndicationCard
+          from={internalMove.fromStockLocation?.name}
+          to={internalMove.toStockLocation?.name}
+        />
         <InternalMoveSearchLineContainer />
         <NotesCard
           title={I18n.t('Stock_NotesOnPreparation')}

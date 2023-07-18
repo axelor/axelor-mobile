@@ -17,21 +17,22 @@
  */
 
 import React, {useCallback} from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
 import {
+  useTranslator,
   useDispatch,
   useNavigation,
-  useTranslator,
 } from '@axelor/aos-mobile-core';
-import StockMove from '../../../../types/stock-move';
-import {updateSupplierArrivalLine} from '../../../../features/supplierArrivalLineSlice';
+import {Button} from '@axelor/aos-mobile-ui';
+import {addNewLine} from '../../../../features/supplierArrivalSlice';
 
-const SupplierArrivalLineButtons = ({
+const SupplierArrivalLineCreationButton = ({
   supplierArrival,
-  supplierArrivalLine,
+  product,
   realQty,
+  trackingNumber,
   conformity,
   toStockLocation,
+  visible = true,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -43,11 +44,15 @@ const SupplierArrivalLineButtons = ({
     });
   }, [supplierArrival, navigation]);
 
-  const handleValidate = useCallback(() => {
+  const handleAddLine = useCallback(() => {
     dispatch(
-      updateSupplierArrivalLine({
-        stockMoveLineId: supplierArrivalLine.id,
-        version: supplierArrivalLine.version,
+      addNewLine({
+        stockMoveId: supplierArrival.id,
+        version: supplierArrival.version,
+        productId: product.id,
+        unitId: product.unit?.id,
+        trackingNumberId: trackingNumber != null ? trackingNumber.id : null,
+        expectedQty: 0,
         realQty: realQty,
         conformity: conformity?.id,
         toStockLocationId: toStockLocation?.id,
@@ -56,19 +61,21 @@ const SupplierArrivalLineButtons = ({
 
     navigateBackToDetails();
   }, [
-    conformity,
     dispatch,
-    navigateBackToDetails,
+    supplierArrival,
+    product,
+    trackingNumber,
     realQty,
-    supplierArrivalLine,
+    conformity,
     toStockLocation,
+    navigateBackToDetails,
   ]);
 
-  if (supplierArrival.statusSelect !== StockMove.status.Realized) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
+  if (!visible) {
+    return null;
   }
 
-  return null;
+  return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
 };
 
-export default SupplierArrivalLineButtons;
+export default SupplierArrivalLineCreationButton;

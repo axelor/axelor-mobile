@@ -17,6 +17,7 @@
  */
 
 export {default as InternalMoveCard} from './InternalMoveCard/InternalMoveCard';
+export {default as InternalMoveCreationHeader} from './InternalMoveCreationHeader/InternalMoveCreationHeader';
 export {default as InternalMoveLineButtons} from './InternalMoveLineButtons/InternalMoveLineButtons';
 export {default as InternalMoveLineCard} from './InternalMoveLineCard/InternalMoveLineCard';
 export {default as InternalMoveLineCreationButton} from './InternalMoveLineCreationButton/InternalMoveLineCreationButton';

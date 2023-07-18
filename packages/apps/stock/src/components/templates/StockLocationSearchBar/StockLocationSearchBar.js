@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -24,10 +24,12 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
+import {FormInput} from '@axelor/aos-mobile-ui';
 import {
   filterSecondStockLocations,
   searchStockLocations,
 } from '../../../features/stockLocationSlice';
+import {StyleSheet} from 'react-native';
 
 const StockLocationSearchBar = ({
   placeholderKey = 'Stock_StockLocation',
@@ -38,6 +40,8 @@ const StockLocationSearchBar = ({
   secondFilter = false,
   isFocus = false,
   isScrollViewContainer = false,
+  defaultStockLocation = null,
+  readOnly,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -61,11 +65,12 @@ const StockLocationSearchBar = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
+          defaultStockLocation:
+            defaultStockLocation ?? user.workshopStockLocation,
         }),
       );
     },
-    [dispatch, user],
+    [defaultStockLocation, dispatch, user],
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
@@ -75,12 +80,32 @@ const StockLocationSearchBar = ({
           page,
           searchValue,
           companyId: user.activeCompany?.id,
-          defaultStockLocation: user.workshopStockLocation,
+          defaultStockLocation:
+            defaultStockLocation ?? user.workshopStockLocation,
         }),
       );
     },
-    [dispatch, user],
+    [defaultStockLocation, dispatch, user],
   );
+
+  useEffect(() => {
+    const defaultArgs = {page: 0, searchValue: null};
+
+    secondFilter
+      ? fetchStockLocationsMultiFilterAPI(defaultArgs)
+      : fetchStockLocationsAPI(defaultArgs);
+  }, [fetchStockLocationsAPI, fetchStockLocationsMultiFilterAPI, secondFilter]);
+
+  if (readOnly) {
+    return (
+      <FormInput
+        style={styles.readonlyCard}
+        title={I18n.t(placeholderKey)}
+        defaultValue={defaultValue ? displayItemName(defaultValue) : null}
+        readOnly={true}
+      />
+    );
+  }
 
   return (
     <ScannerAutocompleteSearch
@@ -106,5 +131,12 @@ const StockLocationSearchBar = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  readonlyCard: {
+    width: '90%',
+    marginLeft: 18,
+  },
+});
 
 export default StockLocationSearchBar;

@@ -65,24 +65,25 @@ export async function fetchInternalMove({internalMoveId}) {
 }
 
 export async function createInternalStockMove({
-  productId,
   companyId,
-  originStockLocationId,
-  destStockLocationId,
-  unitId,
-  trackingNumberId,
-  movedQty,
+  fromStockLocationId,
+  toStockLocationId,
+  lineItems,
 }) {
   return axiosApiProvider.post({
     url: 'ws/aos/stock-move/internal/',
     data: {
-      productId: productId,
-      companyId: companyId,
-      originStockLocationId: originStockLocationId,
-      destStockLocationId: destStockLocationId,
-      unitId: unitId,
-      trackingNumberId: trackingNumberId,
-      movedQty: movedQty,
+      companyId,
+      fromStockLocationId,
+      toStockLocationId,
+      lineList: lineItems?.map(_item => ({
+        productId: _item.product?.id,
+        trackingNumberId: _item.trackingNumber?.id,
+        unitId: _item.unit?.id,
+        realQty: _item.realQty,
+        fromStockLocationId: _item.fromStockLocation?.id,
+        toStockLocationId: _item.toStockLocation?.id,
+      })),
     },
   });
 }
