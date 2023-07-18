@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {LegacyRef, useMemo} from 'react';
+import {StyleSheet, TextInput} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon} from '../../atoms';
@@ -25,6 +25,7 @@ import {IconInput} from '../../molecules';
 
 interface SearchBarProps {
   style?: any;
+  inputRef?: LegacyRef<TextInput>;
   valueTxt: string;
   placeholder: string;
   onClearPress: () => void;
@@ -39,6 +40,7 @@ interface SearchBarProps {
 
 const SearchBar = ({
   style,
+  inputRef,
   valueTxt,
   placeholder,
   onClearPress,
@@ -55,6 +57,7 @@ const SearchBar = ({
 
   return (
     <IconInput
+      inputRef={inputRef}
       style={[
         commonStyles.filter,
         commonStyles.filterAlign,
