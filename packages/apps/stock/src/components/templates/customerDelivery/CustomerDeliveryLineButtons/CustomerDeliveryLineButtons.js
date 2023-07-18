@@ -30,6 +30,7 @@ const CustomerDeliveryLineButtons = ({
   customerDeliveryLine,
   customerDelivery,
   realQty,
+  fromStockLocation,
   visible = true,
 }) => {
   const I18n = useTranslator();
@@ -48,11 +49,18 @@ const CustomerDeliveryLineButtons = ({
         stockMoveLineId: customerDeliveryLine.id,
         version: customerDeliveryLine.version,
         realQty: realQty,
+        fromStockLocationId: fromStockLocation?.id,
       }),
     );
 
     navigateBackToDetails();
-  }, [customerDeliveryLine, dispatch, navigateBackToDetails, realQty]);
+  }, [
+    customerDeliveryLine,
+    dispatch,
+    fromStockLocation,
+    navigateBackToDetails,
+    realQty,
+  ]);
 
   if (!visible) {
     return null;

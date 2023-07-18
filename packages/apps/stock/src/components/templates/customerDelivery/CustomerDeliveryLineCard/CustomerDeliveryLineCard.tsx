@@ -26,12 +26,17 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {checkNullString, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  checkNullString,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
 interface CustomerDeliveryLineCardProps {
   style?: any;
   productName: string;
+  stockLocationName: string;
   askedQty: number;
   pickedQty: number;
   locker?: string;
@@ -43,6 +48,7 @@ interface CustomerDeliveryLineCardProps {
 const CustomerDeliveryLineCard = ({
   style,
   productName,
+  stockLocationName,
   askedQty,
   pickedQty,
   locker,
@@ -52,6 +58,8 @@ const CustomerDeliveryLineCard = ({
 }: CustomerDeliveryLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+
+  const {stockConfig} = useSelector((state: any) => state.stockAppConfig);
 
   const borderColor = useMemo(() => {
     if (pickedQty === 0 || pickedQty == null) {
@@ -89,6 +97,15 @@ const CustomerDeliveryLineCard = ({
             title={`${I18n.t('Stock_PickedQty')} :`}
             value={parseFloat(pickedQty.toString()).toFixed(2)}
           />
+          {stockConfig?.isManageStockLocationOnStockMoveLine
+            ? checkNullString(stockLocationName) === false && (
+                <LabelText
+                  title={`${I18n.t('Stock_FromStockLocation')} :`}
+                  value={stockLocationName}
+                  iconName="warehouse"
+                />
+              )
+            : null}
           {checkNullString(locker) === false && (
             <LabelText
               title={`${I18n.t('Stock_Locker')} :`}

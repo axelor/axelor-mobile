@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InternalMoveCreationScreen from './InternalMoveCreationScreen';
 import InternalMoveDetailsGeneralScreen from './InternalMoveDetailsGeneralScreen';
 import InternalMoveLineCreationScreen from './InternalMoveLineCreationScreen';
 import InternalMoveLineDetailsScreen from './InternalMoveLineDetailsScreen';
@@ -41,9 +42,16 @@ export default {
       shadedHeader: false,
     },
   },
+  InternalMoveCreationScreen: {
+    title: 'Stock_InternalMove',
+    component: InternalMoveCreationScreen,
+  },
   InternalMoveLineCreationScreen: {
     title: 'Stock_InternalMove',
     component: InternalMoveLineCreationScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
   InternalMoveLineDetailsScreen: {
     title: 'Stock_InternalMove',

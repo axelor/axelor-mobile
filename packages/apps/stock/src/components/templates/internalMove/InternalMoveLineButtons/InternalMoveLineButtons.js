@@ -31,6 +31,8 @@ const InternalMoveLineButtons = ({
   internalMoveLine,
   unit,
   movedQty,
+  fromStockLocation,
+  toStockLocation,
   visible = true,
 }) => {
   const I18n = useTranslator();
@@ -44,6 +46,10 @@ const InternalMoveLineButtons = ({
         version: internalMoveLine.version,
         realQty: movedQty,
         unitId: unit.id,
+        fromStockLocationId:
+          fromStockLocation?.id ?? internalMove.fromStockLocation?.id,
+        toStockLocationId:
+          toStockLocation?.id ?? internalMove.toStockLocation?.id,
       }),
     );
 

@@ -31,17 +31,22 @@ import {
   InternalMoveLineQuantityCard,
   InternalMoveLinePicker,
   InternalMoveLineTrackingNumberSelect,
+  StockLocationSearchBar,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchInternalMoveLine} from '../../features/internalMoveLineSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import {StockMove, StockMoveLine} from '../../types';
 
+const fromScanKey = 'from-stock-location_internal-move-line-update';
+const toScanKey = 'to-stock-location_internal-move-line-update';
+
 const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const {internalMove, internalMoveLineId} = route.params;
   const dispatch = useDispatch();
 
   const {activeCompany} = useSelector(state => state.user.user);
+  const {stockConfig} = useSelector(state => state.stockAppConfig);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine, loadingInternalMoveLine} = useSelector(
@@ -49,6 +54,12 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   );
 
   const [saveStatus, setSaveStatus] = useState(true);
+  const [fromStockLocation, setFromStockLocation] = useState(
+    internalMoveLine?.fromStockLocation,
+  );
+  const [toStockLocation, setToStockLocation] = useState(
+    internalMoveLine?.toStockLocation,
+  );
   const [movedQty, setMovedQty] = useState(
     StockMoveLine.hideLineQty(internalMoveLine, internalMove)
       ? 0
@@ -120,6 +131,8 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           : internalMoveLine.realQty,
       );
       setUnit(internalMoveLine.unit);
+      setFromStockLocation(internalMoveLine.fromStockLocation);
+      setToStockLocation(internalMoveLine.toStockLocation);
       setSaveStatus(true);
     }
   }, [internalMoveLine, internalMove]);
@@ -144,6 +157,8 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           saveStatus={saveStatus}
           movedQty={movedQty}
           unit={unit}
+          fromStockLocation={fromStockLocation}
+          toStockLocation={toStockLocation}
           visible={!isTrackingNumberSelectVisible}
         />
       }
@@ -163,6 +178,16 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         }
       />
       <KeyboardAvoidingScrollView>
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_OriginalStockLocation"
+            scanKey={fromScanKey}
+            onChange={setFromStockLocation}
+            defaultValue={fromStockLocation}
+            defaultStockLocation={internalMove.fromStockLocation}
+            readOnly={internalMove.statusSelect !== StockMove.status.Planned}
+          />
+        ) : null}
         <ProductCardInfo
           name={product?.name}
           code={product?.code}
@@ -195,6 +220,18 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           status={internalMove.statusSelect}
           unit={unit}
         />
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_DestinationStockLocation"
+            scanKey={toScanKey}
+            onChange={setToStockLocation}
+            defaultValue={toStockLocation}
+            secondFilter={true}
+            defaultStockLocation={internalMove.toStockLocation}
+            isScrollViewContainer={true}
+            readOnly={internalMove.statusSelect !== StockMove.status.Planned}
+          />
+        ) : null}
         <InternalMoveLineNotes
           notes={internalMove.note}
           status={internalMove.statusSelect}

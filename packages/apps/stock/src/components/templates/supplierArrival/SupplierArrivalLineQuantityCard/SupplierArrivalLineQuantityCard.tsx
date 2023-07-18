@@ -40,7 +40,7 @@ const SupplierArrivalLineQuantityCard = ({
 
   const indicatorBadge = useMemo(
     () =>
-      Number(supplierArrivalLine.qty) !== Number(supplierArrivalLine.realQty)
+      Number(supplierArrivalLine?.qty) !== Number(supplierArrivalLine?.realQty)
         ? {title: I18n.t('Stock_Status_Incomplete'), color: Colors.cautionColor}
         : {title: I18n.t('Stock_Status_Complete'), color: Colors.primaryColor},
     [Colors, I18n, supplierArrivalLine],

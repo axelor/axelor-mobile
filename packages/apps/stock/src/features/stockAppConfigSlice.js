@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {fetchSupplychainConfig} from '../api/supplychain-config-api';
+import {
+  fetchSupplychainConfig,
+  fetchStockConfig as _fetchStockConfig,
+} from '../api/supplychain-config-api';
 
 export const fetchSupplychainConfigForStockApp = createAsyncThunk(
   'stockAppConfig/fetchSupplychainConfigForStockApp',
@@ -29,7 +32,19 @@ export const fetchSupplychainConfigForStockApp = createAsyncThunk(
       action: 'Stock_SliceAction_FetchSupplychainConfig',
       getState,
       responseOptions: {isArrayResponse: false},
-      errorOptions: {showErrorToast: false, errorTracing: false},
+    });
+  },
+);
+
+export const fetchStockConfig = createAsyncThunk(
+  'stockAppConfig/fetchStockConfig',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchStockConfig,
+      data,
+      action: 'Stock_SliceAction_FetchStockConfig',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -37,6 +52,7 @@ export const fetchSupplychainConfigForStockApp = createAsyncThunk(
 const initialState = {
   loadingConfig: false,
   supplychainConfig: {},
+  stockConfig: {},
 };
 
 const stockAppConfigSlice = createSlice({
@@ -53,6 +69,9 @@ const stockAppConfigSlice = createSlice({
         state.supplychainConfig = action.payload;
       },
     );
+    builder.addCase(fetchStockConfig.fulfilled, (state, action) => {
+      state.stockConfig = action.payload;
+    });
   },
 });
 

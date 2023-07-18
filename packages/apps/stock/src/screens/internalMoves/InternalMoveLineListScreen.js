@@ -183,6 +183,8 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
             style={styles.item}
             productName={item.product?.fullName}
             internalMoveStatus={internalMove.statusSelect}
+            fromStockLocation={item.fromStockLocation?.name}
+            toStockLocation={item.toStockLocation?.name}
             availability={
               item.availableStatusSelect == null
                 ? null

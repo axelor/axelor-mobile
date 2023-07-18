@@ -18,6 +18,7 @@
 
 import SupplierArrivalAddTrackingScreen from './SupplierArrivalAddTrackingScreen';
 import SupplierArrivalDetailsScreen from './SupplierArrivalDetailsScreen';
+import SupplierArrivalLineCreationScreen from './SupplierArrivalLineCreationScreen';
 import SupplierArrivalLineDetailScreen from './SupplierArrivalLineDetailScreen';
 import SupplierArrivalLineListScreen from './SupplierArrivalLineListScreen';
 import SupplierArrivalListScreen from './SupplierArrivalListScreen';
@@ -43,6 +44,13 @@ export default {
   SupplierArrivalLineDetailScreen: {
     title: 'Stock_SupplierArrival',
     component: SupplierArrivalLineDetailScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  SupplierArrivalLineCreationScreen: {
+    title: 'Stock_SupplierArrival',
+    component: SupplierArrivalLineCreationScreen,
     options: {
       shadedHeader: false,
     },

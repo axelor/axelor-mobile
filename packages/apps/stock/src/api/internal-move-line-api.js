@@ -52,13 +52,17 @@ export async function updateInternalMoveLine({
   version,
   realQty,
   unitId,
+  fromStockLocationId,
+  toStockLocationId,
 }) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-move-line/${stockMoveLineId}`,
     data: {
-      version: version,
-      realQty: realQty,
-      unitId: unitId,
+      version,
+      realQty,
+      unitId,
+      fromStockLocationId,
+      toStockLocationId,
     },
   });
 }

@@ -118,8 +118,7 @@ const useInternalMoveListActions = () => {
           iconName: 'plus',
           title: I18n.t('Stock_NewInternalMove'),
           iconColor: Colors.primaryColor.background,
-          onPress: () =>
-            navigation.navigate('InternalMoveLineCreationScreen', {}),
+          onPress: () => navigation.navigate('InternalMoveCreationScreen'),
           showInHeader: true,
         },
       ],
@@ -251,7 +250,7 @@ const useSupplierArrivalLineListActions = () => {
             !mobileSettings?.isSupplierArrivalLineAdditionEnabled ||
             supplierArrival?.statusSelect >= StockMove.status.Realized,
           onPress: () =>
-            navigation.navigate('SupplierArrivalSelectProductScreen', {
+            navigation.navigate('SupplierArrivalLineCreationScreen', {
               supplierArrival: supplierArrival,
             }),
           showInHeader: true,

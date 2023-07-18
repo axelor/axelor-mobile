@@ -122,6 +122,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
         <CustomerDeliveryLineCard
           style={styles.item}
           productName={item.product?.fullName}
+          stockLocationName={item.fromStockLocation?.name}
           pickedQty={
             StockMoveLine.hideLineQty(item, customerDelivery) ? 0 : item.realQty
           }

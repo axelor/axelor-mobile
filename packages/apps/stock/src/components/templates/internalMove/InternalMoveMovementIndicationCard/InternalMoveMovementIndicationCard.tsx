@@ -23,14 +23,14 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 
-const InternalMoveMovementIndicationCard = ({internalMove}) => {
+const InternalMoveMovementIndicationCard = ({from, to}) => {
   const Colors = useThemeColor();
 
   return (
     <MovementIndicationCard
-      titleTop={internalMove.fromStockLocation.name}
+      titleTop={from}
       iconTop={<Icon name="warehouse" color={Colors.primaryColor.background} />}
-      titleDown={internalMove.toStockLocation.name}
+      titleDown={to}
       iconDown={
         <Icon name="warehouse" color={Colors.primaryColor.background} />
       }
