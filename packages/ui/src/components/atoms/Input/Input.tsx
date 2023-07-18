@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {LegacyRef, useMemo} from 'react';
 import {KeyboardTypeOptions, TextInput, TextStyle} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {useWritingType} from '../../../theme/writingTheme';
 import {useConfig} from '../../../config/ConfigContext';
 
 interface InputProps {
-  style: any;
+  style?: any;
+  inputRef?: LegacyRef<TextInput>;
   value: string;
   onChange: (any) => void;
   placeholder?: string;
@@ -40,6 +41,7 @@ interface InputProps {
 
 const Input = ({
   style,
+  inputRef,
   value,
   onChange,
   placeholder,
@@ -67,6 +69,7 @@ const Input = ({
 
   return (
     <TextInput
+      ref={inputRef}
       style={[defaultStyle, style]}
       value={value}
       onChangeText={onChange}

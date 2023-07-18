@@ -17,7 +17,7 @@
  */
 
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {View} from 'react-native';
+import {TextInput, View} from 'react-native';
 import {
   useClickOutside,
   OUTSIDE_INDICATOR,
@@ -75,6 +75,7 @@ const AutoCompleteSearch = ({
   );
   let timeOutRequestCall = useRef<number>();
   let intervalRequestCall = useRef<number>();
+  const inputRef = useRef<TextInput>(null);
 
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
@@ -84,6 +85,7 @@ const AutoCompleteSearch = ({
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && displayList) {
+      inputRef.current.blur();
       setDisplayList(false);
     }
   }, [clickOutside, displayList]);
@@ -213,6 +215,7 @@ const AutoCompleteSearch = ({
   return (
     <View ref={wrapperRef}>
       <SearchBar
+        inputRef={inputRef}
         style={style}
         valueTxt={searchText}
         placeholder={placeholder}
