@@ -87,7 +87,7 @@ const CustomerDeliveryCard = ({
             displayText: _formatDate,
             style: [
               styles.noBold,
-              status === StockMove.status.Realized ? styles.date : null,
+              status !== StockMove.status.Realized ? styles.date : null,
             ],
             hideIfNull: true,
           },

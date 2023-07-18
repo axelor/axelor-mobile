@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
@@ -52,96 +52,34 @@ const ProductVariantCard = ({
   const I18n = useTranslator();
   const formatMetaFile = useMetafileUri();
 
-  const attr1 = attributesList?.attributes[0];
-  const attr2 = attributesList?.attributes[1];
-  const attr3 = attributesList?.attributes[2];
-  const attr4 = attributesList?.attributes[3];
-  const attr5 = attributesList?.attributes[4];
-
-  const renderAttrItems = () => {
-    if (attributesList == null) {
+  const renderAttrItems = useCallback(() => {
+    if (!Array.isArray(attributesList?.attributes)) {
       return null;
     }
 
     let items = [];
 
-    if (attr1 != null) {
-      items.push({
-        numberOfLines: null,
-        style: styles.attr,
-        displayText: `${attr1.attrName} : ${attr1.attrValue} ${
-          attr1.priceExtra >= 0
-            ? `(${Product.getApplicationPriceSelect(
-                attr1.applicationPriceSelect,
-                I18n,
-              )} : +${parseFloat(attr1.priceExtra.toString()).toFixed(2)})`
-            : ''
-        }`,
-      });
-    }
+    for (let index = 0; index < attributesList?.attributes.length; index++) {
+      const attr = attributesList?.attributes[index];
 
-    if (attr2 != null) {
-      items.push({
-        numberOfLines: null,
-        style: styles.attr,
-        displayText: `${attr2.attrName} : ${attr2.attrValue} ${
-          attr2.priceExtra >= 0
-            ? `(${Product.getApplicationPriceSelect(
-                attr2.applicationPriceSelect,
-                I18n,
-              )} : +${parseFloat(attr2.priceExtra.toString()).toFixed(2)})`
-            : ''
-        }`,
-      });
-    }
-
-    if (attr3 != null) {
-      items.push({
-        numberOfLines: null,
-        style: styles.attr,
-        displayText: `${attr3.attrName} : ${attr3.attrValue} ${
-          attr3.priceExtra >= 0
-            ? `(${Product.getApplicationPriceSelect(
-                attr3.applicationPriceSelect,
-                I18n,
-              )} : +${parseFloat(attr3.priceExtra.toString()).toFixed(2)})`
-            : ''
-        }`,
-      });
-    }
-
-    if (attr4 != null) {
-      items.push({
-        numberOfLines: null,
-        style: styles.attr,
-        displayText: `${attr4.attrName} : ${attr4.attrValue} ${
-          attr4.priceExtra >= 0
-            ? `(${Product.getApplicationPriceSelect(
-                attr4.applicationPriceSelect,
-                I18n,
-              )} : +${parseFloat(attr4.priceExtra.toString()).toFixed(2)})`
-            : ''
-        }`,
-      });
-    }
-
-    if (attr5 != null) {
-      items.push({
-        numberOfLines: null,
-        style: styles.attr,
-        displayText: `${attr5.attrName} : ${attr5.attrValue} ${
-          attr5.priceExtra >= 0
-            ? `(${Product.getApplicationPriceSelect(
-                attr5.applicationPriceSelect,
-                I18n,
-              )} : +${parseFloat(attr5.priceExtra.toString()).toFixed(2)})`
-            : ''
-        }`,
-      });
+      if (attr != null) {
+        items.push({
+          numberOfLines: null,
+          style: styles.attr,
+          displayText: `${attr.attrName} : ${attr.attrValue} ${
+            attr.priceExtra >= 0
+              ? `(${Product.getApplicationPriceSelect(
+                  attr.applicationPriceSelect,
+                  I18n,
+                )} : +${parseFloat(attr.priceExtra.toString()).toFixed(2)})`
+              : ''
+          }`,
+        });
+      }
     }
 
     return items?.length > 0 ? {items} : null;
-  };
+  }, [I18n, attributesList?.attributes]);
 
   return (
     <ObjectCard

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   code: {
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 
