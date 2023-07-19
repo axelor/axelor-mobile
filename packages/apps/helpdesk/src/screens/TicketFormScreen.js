@@ -59,13 +59,13 @@ const TicketFormScreen = ({navigation, route}) => {
   const [_ticket, setTicket] = useState(
     idTicket != null ? ticket : {duration: 0},
   );
-  const [ticketType, setTicketType] = useState(ticket?.ticketType);
-  const [project, setProject] = useState(ticket?.project);
-  const [client, setClient] = useState(ticket?.customerPartner);
-  const [contactPartner, setContactPartner] = useState(ticket?.contactPartner);
-  const [assignedTo, setAssignedTo] = useState(ticket?.assignedToUser);
+  const [ticketType, setTicketType] = useState(_ticket?.ticketType);
+  const [project, setProject] = useState(_ticket?.project);
+  const [client, setClient] = useState(_ticket?.customerPartner);
+  const [contactPartner, setContactPartner] = useState(_ticket?.contactPartner);
+  const [assignedTo, setAssignedTo] = useState(_ticket?.assignedToUser);
   const [responsibleUser, setResponsibleUser] = useState(
-    ticket?.responsibleUser,
+    _ticket?.responsibleUser,
   );
   const [disabledButton, setDisabledButton] = useState(
     isObjectMissingRequiredField(_ticket),
