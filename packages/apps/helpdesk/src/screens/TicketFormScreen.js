@@ -184,6 +184,7 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={setContactPartner}
             style={styles.picker}
             styleTxt={styles.marginTitle}
+            client={client}
           />
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
