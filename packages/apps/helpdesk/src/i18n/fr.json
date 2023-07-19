@@ -52,5 +52,6 @@
   "Helpdesk_SliceAction_FetchProject": "récupération des projets",
   "Helpdesk_SliceAction_SearchTicketType": "recherche sur les types de tickets",
   "Helpdesk_SliceAction_UpdateTicket": "mise à jour du ticket",
-  "Helpdesk_SliceAction_CreateTicket": "creation du ticket"
+  "Helpdesk_SliceAction_CreateTicket": "creation du ticket",
+  "Helpdesk_SliceAction_FetchCustomerContact": "récupération des contacts clients"
 }

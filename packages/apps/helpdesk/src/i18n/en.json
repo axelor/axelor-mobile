@@ -52,5 +52,6 @@
   "Helpdesk_SliceAction_FetchProjects": "fetch projects",
   "Helpdesk_SliceAction_SearchTicketType": "search ticket types",
   "Helpdesk_SliceAction_UpdateTicket": "update ticket",
-  "Helpdesk_SliceAction_CreateTicket": "create ticket"
+  "Helpdesk_SliceAction_CreateTicket": "create ticket",
+  "Helpdesk_SliceAction_FetchCustomerContact": "fetch customer contact"
 }
