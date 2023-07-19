@@ -56,7 +56,9 @@ const TicketFormScreen = ({navigation, route}) => {
 
   const {ticket} = useSelector(state => state.ticket);
 
-  const [_ticket, setTicket] = useState(idTicket != null ? ticket : {});
+  const [_ticket, setTicket] = useState(
+    idTicket != null ? ticket : {duration: 0},
+  );
   const [ticketType, setTicketType] = useState(ticket?.ticketType);
   const [project, setProject] = useState(ticket?.project);
   const [client, setClient] = useState(ticket?.customerPartner);
@@ -130,19 +132,14 @@ const TicketFormScreen = ({navigation, route}) => {
         },
       }),
     );
-    setTicket({});
-    setTicketType(null);
-    setProject(null);
-    setClient(null);
-    setContactPartner(null);
-    setAssignedTo(null);
-    setResponsibleUser(null);
+    navigation.navigate('MyTeamTicketListScreen');
   }, [
     _ticket,
     assignedTo,
     client,
     contactPartner,
     dispatch,
+    navigation,
     project,
     responsibleUser,
     ticketType,
@@ -209,12 +206,7 @@ const TicketFormScreen = ({navigation, route}) => {
             defaultValue={_ticket?.prioritySelect}
           />
           <DateInput
-            onDateChange={value =>
-              handleTicketFieldChange(
-                value.toISOString()?.split('T')[0],
-                'startDateT',
-              )
-            }
+            onDateChange={value => handleTicketFieldChange(value, 'startDateT')}
             title={I18n.t('Helpdesk_StartDate')}
             defaultDate={
               _ticket?.startDateT != null ? new Date(_ticket?.startDateT) : null
@@ -222,12 +214,7 @@ const TicketFormScreen = ({navigation, route}) => {
             style={styles.input}
           />
           <DateInput
-            onDateChange={value =>
-              handleTicketFieldChange(
-                value.toISOString()?.split('T')[0],
-                'endDateT',
-              )
-            }
+            onDateChange={value => handleTicketFieldChange(value, 'endDateT')}
             title={I18n.t('Helpdesk_EndDate')}
             defaultDate={
               _ticket?.endDateT != null ? new Date(_ticket?.endDateT) : null
@@ -236,10 +223,7 @@ const TicketFormScreen = ({navigation, route}) => {
           />
           <DateInput
             onDateChange={value =>
-              handleTicketFieldChange(
-                value.toISOString()?.split('T')[0],
-                'deadlineDateT',
-              )
+              handleTicketFieldChange(value, 'deadlineDateT')
             }
             title={I18n.t('Helpdesk_DeadlineDate')}
             defaultDate={

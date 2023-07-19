@@ -135,6 +135,14 @@ export const createTicket = createAsyncThunk(
       action: 'Helpdesk_SliceAction_CreateTicket',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchTickets,
+        data,
+        action: 'Helpdesk_SliceAction_FetchMyTicket',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -196,6 +204,13 @@ const ticketSlice = createSlice({
       state.loadingTicket = false;
       state.ticket = action.payload;
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
+    });
+    builder.addCase(createTicket.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(createTicket.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticketList = action.payload;
     });
   },
 });
