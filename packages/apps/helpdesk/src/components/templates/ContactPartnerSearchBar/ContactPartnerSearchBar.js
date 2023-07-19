@@ -16,11 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
-import {getCustomerbyId} from '../../../features/customerSlice';
+import {
+  getCustomerbyId,
+  searchCustomerContact,
+} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactPartnerSearchBar = ({
@@ -33,11 +36,20 @@ const ContactPartnerSearchBar = ({
   styleTxt,
   showTitle = true,
   client,
+  navigate = false,
+  oneFilter = false,
+  isFocus = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {customer} = useSelector(state => state.customer);
+  const {
+    customer,
+    loadingCustomerContact,
+    moreLoadingCustomerContact,
+    isListEndCustomerContact,
+    customerContactList,
+  } = useSelector(state => state.customer);
 
   useEffect(() => {
     if (client?.id != null) {
@@ -45,19 +57,50 @@ const ContactPartnerSearchBar = ({
     }
   }, [dispatch, client?.id]);
 
+  const searchProjectAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      dispatch(searchCustomerContact({page, searchValue}));
+    },
+    [dispatch],
+  );
+
+  if (client?.id != null) {
+    return (
+      <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
+        {showTitle && (
+          <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
+        )}
+        <AutoCompleteSearch
+          style={styles.search}
+          objectList={customer?.contactPartnerSet}
+          value={defaultValue}
+          onChangeValue={onChange}
+          placeholder={placeholderKey}
+          displayValue={displayItemFullname}
+          showDetailsPopup={showDetailsPopup}
+        />
+      </View>
+    );
+  }
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
       {showTitle && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}
       <AutoCompleteSearch
-        style={styles.search}
-        objectList={customer?.contactPartnerSet}
+        objectList={customerContactList}
         value={defaultValue}
         onChangeValue={onChange}
-        placeholder={placeholderKey}
+        fetchData={searchProjectAPI}
         displayValue={displayItemFullname}
+        placeholder={I18n.t(placeholderKey)}
         showDetailsPopup={showDetailsPopup}
+        loadingList={loadingCustomerContact}
+        moreLoading={moreLoadingCustomerContact}
+        isListEnd={isListEndCustomerContact}
+        navigate={navigate}
+        oneFilter={oneFilter}
+        isFocus={isFocus}
       />
     </View>
   );
