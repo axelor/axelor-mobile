@@ -29,6 +29,7 @@ import {
   updateStatusTicket,
   searchTicketType as _searchTicketType,
   updateTicket as _updateTicket,
+  createTicket as _createTicket,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -121,6 +122,19 @@ export const updateTicket = createAsyncThunk(
         getState,
         responseOptions: {isArrayResponse: false},
       });
+    });
+  },
+);
+
+export const createTicket = createAsyncThunk(
+  'ticket/createTicket',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createTicket,
+      data,
+      action: 'Helpdesk_SliceAction_CreateTicket',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

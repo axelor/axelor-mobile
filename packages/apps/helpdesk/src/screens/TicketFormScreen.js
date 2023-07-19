@@ -34,7 +34,7 @@ import {
   useTranslator,
   DateInput,
 } from '@axelor/aos-mobile-core';
-import {updateTicket} from '../features/ticketSlice';
+import {createTicket, updateTicket} from '../features/ticketSlice';
 import {
   ContactPartnerSearchBar,
   CustomerSearchBar,
@@ -49,7 +49,7 @@ import {Ticket} from '../types/';
 const isObjectMissingRequiredField = object => checkNullString(object?.subject);
 
 const TicketFormScreen = ({navigation, route}) => {
-  const idTicket = route.params.idTicket;
+  const idTicket = route?.params?.idTicket;
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -114,6 +114,38 @@ const TicketFormScreen = ({navigation, route}) => {
     assignedTo,
     responsibleUser,
     navigation,
+  ]);
+
+  const createTicketAPI = useCallback(() => {
+    dispatch(
+      createTicket({
+        ticket: {
+          ..._ticket,
+          ticketType: ticketType ? {id: ticketType?.id} : null,
+          project: project ? {id: project?.id} : null,
+          customerPartner: client ? {id: client?.id} : null,
+          contactPartner: contactPartner ? {id: contactPartner.id} : null,
+          assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
+          responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
+        },
+      }),
+    );
+    setTicket({});
+    setTicketType(null);
+    setProject(null);
+    setClient(null);
+    setContactPartner(null);
+    setAssignedTo(null);
+    setResponsibleUser(null);
+  }, [
+    _ticket,
+    assignedTo,
+    client,
+    contactPartner,
+    dispatch,
+    project,
+    responsibleUser,
+    ticketType,
   ]);
 
   return (
@@ -247,7 +279,7 @@ const TicketFormScreen = ({navigation, route}) => {
       <View style={styles.button_container}>
         <Button
           title={I18n.t('Base_Save')}
-          onPress={updateTicketAPI}
+          onPress={idTicket != null ? updateTicketAPI : createTicketAPI}
           disabled={disabledButton}
           color={disabledButton ? Colors.secondaryColor : Colors.primaryColor}
         />

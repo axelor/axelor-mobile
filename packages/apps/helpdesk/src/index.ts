@@ -42,6 +42,11 @@ export const HelpDeskModule: Module = {
     fr: frTranslations,
   },
   menus: {
+    helpdesk_menu_createTicket: {
+      title: 'helpdesk_createTicket',
+      icon: 'plus',
+      screen: 'TicketFormScreen',
+    },
     helpdesk_menu_myTickets: {
       title: 'Helpdesk_myTickets',
       icon: 'user-tag',
