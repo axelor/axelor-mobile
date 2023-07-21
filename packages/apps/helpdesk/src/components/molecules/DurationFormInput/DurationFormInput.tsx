@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {FormInput, checkNullString} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -84,6 +84,10 @@ const DurationFormInput = ({
     setFormattedDuration(value);
     onChange(parseDuration(value));
   };
+
+  useEffect(() => {
+    setFormattedDuration(formatDurationFromSeconds(duration ?? 0));
+  }, [duration]);
 
   return (
     <FormInput

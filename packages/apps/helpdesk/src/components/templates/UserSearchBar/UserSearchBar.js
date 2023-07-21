@@ -22,6 +22,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchUser} from '../../../features/userSlice';
 import {displayItemFullname} from '../../../utils/displayers';
+import {Platform} from 'react-native';
 
 const UserSearchBar = ({
   placeholderKey = 'Helpdesk_User',
@@ -55,7 +56,7 @@ const UserSearchBar = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
       {showTitle && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}

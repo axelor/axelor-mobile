@@ -57,7 +57,7 @@ const ContactPartnerSearchBar = ({
     }
   }, [dispatch, client?.id]);
 
-  const searchProjectAPI = useCallback(
+  const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(searchCustomerContact({page, searchValue}));
     },
@@ -71,17 +71,17 @@ const ContactPartnerSearchBar = ({
           <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
         )}
         <AutoCompleteSearch
-          style={styles.search}
           objectList={customer?.contactPartnerSet}
           value={defaultValue}
           onChangeValue={onChange}
-          placeholder={placeholderKey}
+          placeholder={I18n.t(placeholderKey)}
           displayValue={displayItemFullname}
           showDetailsPopup={showDetailsPopup}
         />
       </View>
     );
   }
+
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
       {showTitle && (
@@ -91,9 +91,9 @@ const ContactPartnerSearchBar = ({
         objectList={customerContactList}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={searchProjectAPI}
-        displayValue={displayItemFullname}
+        fetchData={searchContactAPI}
         placeholder={I18n.t(placeholderKey)}
+        displayValue={displayItemFullname}
         showDetailsPopup={showDetailsPopup}
         loadingList={loadingCustomerContact}
         moreLoading={moreLoadingCustomerContact}

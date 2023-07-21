@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {searchTicketType} from '../../../features/ticketSlice';
+import {Platform} from 'react-native';
 
 const TicketTypeSearchBar = ({
   placeholderKey = 'Helpdesk_Type',
@@ -62,7 +63,7 @@ const TicketTypeSearchBar = ({
   );
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
       {showTitle && (
         <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
       )}

@@ -46,6 +46,12 @@ import {
 } from '../components';
 import {Ticket} from '../types/';
 
+const PROJECT_KEY = 'project';
+const CUSTOMER_KEY = 'customerPartner';
+const CONTACT_KEY = 'contactPartner';
+
+const DEFAULT_TICKET_VALUE = {duration: 0};
+
 const isObjectMissingRequiredField = object => checkNullString(object?.subject);
 
 const TicketFormScreen = ({navigation, route}) => {
@@ -57,93 +63,54 @@ const TicketFormScreen = ({navigation, route}) => {
   const {ticket} = useSelector(state => state.ticket);
 
   const [_ticket, setTicket] = useState(
-    idTicket != null ? ticket : {duration: 0},
-  );
-  const [ticketType, setTicketType] = useState(_ticket?.ticketType);
-  const [project, setProject] = useState(_ticket?.project);
-  const [client, setClient] = useState(_ticket?.customerPartner);
-  const [contactPartner, setContactPartner] = useState(_ticket?.contactPartner);
-  const [assignedTo, setAssignedTo] = useState(_ticket?.assignedToUser);
-  const [responsibleUser, setResponsibleUser] = useState(
-    _ticket?.responsibleUser,
+    idTicket != null ? ticket : DEFAULT_TICKET_VALUE,
   );
   const [disabledButton, setDisabledButton] = useState(
     isObjectMissingRequiredField(_ticket),
   );
 
-  const handleTicketFieldChange = (newValue, fieldName) => {
+  const handleTicketFieldChange = useCallback((newValue, fieldName) => {
     setTicket(current => {
-      if (!current) {
-        return {[fieldName]: newValue};
+      if (current?.[fieldName] === newValue) {
+        return current;
       }
-      current[fieldName] = newValue;
-      return current;
-    });
-    setDisabledButton(isObjectMissingRequiredField(_ticket));
-  };
 
-  const handleChangeValueProject = value => {
-    setProject(value);
-    setClient(value?.clientPartner);
-    setContactPartner(value?.contactPartner);
-  };
+      const updatedObject = current == null ? {} : {...current};
+
+      updatedObject[fieldName] = newValue;
+
+      if (fieldName === PROJECT_KEY) {
+        updatedObject[CUSTOMER_KEY] = newValue?.clientPartner;
+        updatedObject[CONTACT_KEY] = newValue?.contactPartner;
+      }
+
+      setDisabledButton(isObjectMissingRequiredField(updatedObject));
+
+      return updatedObject;
+    });
+  }, []);
 
   const updateTicketAPI = useCallback(() => {
     dispatch(
       updateTicket({
-        ticket: {
-          ..._ticket,
-          ticketType: ticketType ? {id: ticketType?.id} : null,
-          project: project ? {id: project?.id} : null,
-          customerPartner: client ? {id: client?.id} : null,
-          contactPartner: contactPartner ? {id: contactPartner.id} : null,
-          assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
-          responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
-        },
+        ticket: _ticket,
       }),
     );
 
     navigation.navigate('TicketDetailsScreen', {
       idTicket: _ticket.id,
     });
-  }, [
-    dispatch,
-    _ticket,
-    ticketType,
-    project,
-    client,
-    contactPartner,
-    assignedTo,
-    responsibleUser,
-    navigation,
-  ]);
+  }, [dispatch, _ticket, navigation]);
 
   const createTicketAPI = useCallback(() => {
     dispatch(
       createTicket({
-        ticket: {
-          ..._ticket,
-          ticketType: ticketType ? {id: ticketType?.id} : null,
-          project: project ? {id: project?.id} : null,
-          customerPartner: client ? {id: client?.id} : null,
-          contactPartner: contactPartner ? {id: contactPartner.id} : null,
-          assignedToUser: assignedTo ? {id: assignedTo?.id} : null,
-          responsibleUser: responsibleUser ? {id: responsibleUser?.id} : null,
-        },
+        ticket: _ticket,
       }),
     );
-    navigation.navigate('MyTeamTicketListScreen');
-  }, [
-    _ticket,
-    assignedTo,
-    client,
-    contactPartner,
-    dispatch,
-    navigation,
-    project,
-    responsibleUser,
-    ticketType,
-  ]);
+
+    setTicket(DEFAULT_TICKET_VALUE);
+  }, [_ticket, dispatch]);
 
   return (
     <Screen>
@@ -164,33 +131,33 @@ const TicketFormScreen = ({navigation, route}) => {
           <ProjectSearchBar
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
-            defaultValue={project}
-            onChange={handleChangeValueProject}
+            defaultValue={_ticket?.[PROJECT_KEY]}
+            onChange={value => handleTicketFieldChange(value, PROJECT_KEY)}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
             placeholderKey="Helpdesk_CustomPartner"
-            defaultValue={client}
-            onChange={setClient}
+            defaultValue={_ticket?.[CUSTOMER_KEY]}
+            onChange={value => handleTicketFieldChange(value, CUSTOMER_KEY)}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <ContactPartnerSearchBar
             titleKey={I18n.t('Helpdesk_ContactPartner')}
             placeholderKey={I18n.t('Helpdesk_ContactPartner')}
-            defaultValue={contactPartner}
-            onChange={setContactPartner}
+            defaultValue={_ticket?.[CONTACT_KEY]}
+            onChange={value => handleTicketFieldChange(value, CONTACT_KEY)}
             style={styles.picker}
             styleTxt={styles.marginTitle}
-            client={client}
+            client={_ticket?.[CUSTOMER_KEY]}
           />
           <TicketTypeSearchBar
             titleKey="Helpdesk_Type"
             placeholderKey="Helpdesk_Type"
-            defaultValue={ticketType}
-            onChange={setTicketType}
+            defaultValue={_ticket?.ticketType}
+            onChange={value => handleTicketFieldChange(value, 'ticketType')}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
@@ -241,16 +208,18 @@ const TicketFormScreen = ({navigation, route}) => {
           <UserSearchBar
             titleKey="Helpdesk_AssignedToUser"
             placeholderKey="Helpdesk_AssignedToUser"
-            defaultValue={assignedTo}
-            onChange={setAssignedTo}
+            defaultValue={_ticket?.assignedToUser}
+            onChange={value => handleTicketFieldChange(value, 'assignedToUser')}
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />
           <UserSearchBar
             titleKey="Helpdesk_ResponsibleUser"
             placeholderKey="Helpdesk_ResponsibleUser"
-            defaultValue={responsibleUser}
-            onChange={setResponsibleUser}
+            defaultValue={_ticket?.responsibleUser}
+            onChange={value =>
+              handleTicketFieldChange(value, 'responsibleUser')
+            }
             style={styles.picker}
             styleTxt={styles.marginTitle}
           />

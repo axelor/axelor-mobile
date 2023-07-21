@@ -70,12 +70,12 @@ const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
+  customerList: [],
+  customer: {},
   loadingCustomerContact: false,
   moreLoadingCustomerContact: false,
   isListEndCustomerContact: false,
-  customerList: [],
   customerContactList: [],
-  customer: {},
 };
 
 const customerSlice = createSlice({
