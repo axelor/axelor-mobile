@@ -146,6 +146,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder?.wasteStockMove == null
           }
           onValueChange={setWasteQty}
+          isBigButton={true}
         />
         <Picker
           style={styles.picker}

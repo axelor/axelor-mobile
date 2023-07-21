@@ -52,6 +52,7 @@ interface IncrementProps {
   stepSize?: number;
   minValue?: number;
   maxValue?: number;
+  isBigButton?: boolean;
 }
 
 const Increment = ({
@@ -68,6 +69,7 @@ const Increment = ({
   stepSize = 1,
   minValue = 0,
   maxValue = null,
+  isBigButton = false,
 }: IncrementProps) => {
   const Colors = useThemeColor();
 
@@ -156,8 +158,10 @@ const Increment = ({
         onPress={handleMinus}
         readonly={readonly}
         disabled={minValue != null && parseFloat(valueQty) <= minValue}
+        isBigButton={isBigButton}
       />
-      <View style={styles.inputLine}>
+      <View
+        style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
           style={[styles.input, inputStyle]}
           value={valueQty}
@@ -173,6 +177,7 @@ const Increment = ({
         onPress={handlePlus}
         readonly={readonly}
         disabled={maxValue != null && parseFloat(valueQty) >= maxValue}
+        isBigButton={isBigButton}
       />
     </View>
   );
@@ -188,12 +193,16 @@ const getStyles = (Colors: ThemeColors) =>
       fontSize: 23,
       fontWeight: 'bold',
       paddingBottom: 0,
+      textAlign: 'center',
     },
     inputLine: {
       borderStyle: Platform.OS === 'ios' ? 'solid' : 'dashed',
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,
+    },
+    fixedInputWidth: {
+      width: '40%',
     },
   });
 

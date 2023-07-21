@@ -21,12 +21,17 @@ import {StyleSheet} from 'react-native';
 import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 
+const ICON_SIZE = 24;
+const DEFAULT_BUTTON_SIZE = 35;
+const BIG_BUTTON_SIZE = 75;
+
 interface IncrementButtonProps {
   style?: any;
   iconName: 'plus' | 'minus';
   onPress?: () => void;
   readonly?: boolean;
   disabled?: boolean;
+  isBigButton?: boolean;
 }
 
 const IncrementButton = ({
@@ -35,10 +40,19 @@ const IncrementButton = ({
   onPress = () => {},
   readonly = false,
   disabled,
+  isBigButton = false,
 }: IncrementButtonProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const buttonSize = useMemo(
+    () => (isBigButton ? BIG_BUTTON_SIZE : DEFAULT_BUTTON_SIZE),
+    [isBigButton],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, buttonSize),
+    [Colors, buttonSize],
+  );
 
   if (readonly) {
     return null;
@@ -47,7 +61,7 @@ const IncrementButton = ({
   return (
     <Icon
       name={iconName}
-      size={24}
+      size={ICON_SIZE}
       color={
         disabled
           ? Colors.secondaryColor.background
@@ -60,7 +74,7 @@ const IncrementButton = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (Colors: ThemeColors, buttonSize: number) =>
   StyleSheet.create({
     container_icon: {
       backgroundColor: Colors.backgroundColor,
@@ -76,6 +90,8 @@ const getStyles = (Colors: ThemeColors) =>
       borderColor: Colors.secondaryColor.background,
       borderWidth: 0.5,
       borderRadius: 10,
+      width: buttonSize ?? DEFAULT_BUTTON_SIZE,
+      height: buttonSize ?? DEFAULT_BUTTON_SIZE,
     },
   });
 

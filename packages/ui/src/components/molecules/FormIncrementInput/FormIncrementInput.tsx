@@ -35,6 +35,7 @@ interface FormIncrementInputProps {
   stepSize?: number;
   minValue?: number;
   maxValue?: number;
+  isBigButton?: boolean;
 }
 
 const FormIncrementInput = ({
@@ -49,6 +50,7 @@ const FormIncrementInput = ({
   stepSize = 1,
   minValue = 0,
   maxValue = null,
+  isBigButton = false,
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
 
@@ -90,6 +92,7 @@ const FormIncrementInput = ({
           stepSize={stepSize}
           minValue={minValue}
           maxValue={maxValue}
+          isBigButton={isBigButton}
         />
       </View>
     </View>

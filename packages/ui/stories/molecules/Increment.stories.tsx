@@ -60,6 +60,42 @@ storiesOf('ui/molecules/Increment', module)
           },
           defaultValue: {},
         },
+        readonly: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: false,
+        },
+        defaultFormatting: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: true,
+        },
+        stepSize: {
+          control: {
+            type: 'number',
+          },
+          defaultValue: 1,
+        },
+        minValue: {
+          control: {
+            type: 'number',
+          },
+          defaultValue: 0,
+        },
+        maxValue: {
+          control: {
+            type: 'number',
+          },
+          defaultValue: null,
+        },
+        isBigButton: {
+          control: {
+            type: 'boolean',
+          },
+          defaultValue: false,
+        },
       },
     },
   );
