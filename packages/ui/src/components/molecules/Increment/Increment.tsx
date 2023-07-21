@@ -160,7 +160,8 @@ const Increment = ({
         disabled={minValue != null && parseFloat(valueQty) <= minValue}
         isBigButton={isBigButton}
       />
-      <View style={styles.inputLine}>
+      <View
+        style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
           style={[styles.input, inputStyle]}
           value={valueQty}
@@ -199,7 +200,9 @@ const getStyles = (Colors: ThemeColors) =>
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 0.7,
       marginBottom: 9,
-      width: '35%',
+    },
+    fixedInputWidth: {
+      width: '40%',
     },
   });
 
