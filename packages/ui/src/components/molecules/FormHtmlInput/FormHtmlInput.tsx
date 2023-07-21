@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {HtmlInput, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
@@ -51,6 +51,10 @@ const FormHtmlInput = ({
     () => required && (value == null || value === ''),
     [required, value],
   );
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const onValueChange = useCallback(
     _value => {
