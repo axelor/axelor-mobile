@@ -107,3 +107,12 @@ export async function updateTicket({ticket}) {
     },
   });
 }
+
+export async function createTicket({ticket}) {
+  return axiosApiProvider.put({
+    url: '/ws/rest/com.axelor.apps.helpdesk.db.Ticket',
+    data: {
+      data: ticket,
+    },
+  });
+}
