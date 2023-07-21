@@ -61,7 +61,8 @@ const InternalMoveLineQuantityCard = ({
       actionQty={
         status === StockMove.status.Draft || status === StockMove.status.Planned
       }
-      onPressActionQty={handleCreateCorrection}>
+      onPressActionQty={handleCreateCorrection}
+      isBigButton={true}>
       <Text style={styles.text}>
         {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(plannedQty).toFixed(
           2,

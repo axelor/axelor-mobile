@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {useThemeColor} from '../../../theme/ThemeContext';
@@ -61,15 +61,16 @@ const Icon = ({
   }
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={onPress} disabled={!touchable || disabled}>
-        {FontAwesome5 ? (
-          <Icon5 name={name} style={styles.icon} />
-        ) : (
-          <Icon4 name={name} style={styles.icon} />
-        )}
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      disabled={!touchable || disabled}>
+      {FontAwesome5 ? (
+        <Icon5 name={name} style={styles.icon} />
+      ) : (
+        <Icon4 name={name} style={styles.icon} />
+      )}
+    </TouchableOpacity>
   );
 };
 

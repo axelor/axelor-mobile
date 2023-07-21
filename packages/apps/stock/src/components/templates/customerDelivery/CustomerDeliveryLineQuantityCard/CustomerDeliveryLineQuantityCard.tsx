@@ -61,7 +61,8 @@ const CustomerDeliveryLineQuantityCard = ({
       labelQty={I18n.t('Stock_PickedQty')}
       defaultValue={realQty}
       onValueChange={handleQtyChange}
-      editable={customerDelivery.statusSelect !== StockMove.status.Realized}>
+      editable={customerDelivery.statusSelect !== StockMove.status.Realized}
+      isBigButton={true}>
       <View style={styles.headerQuantityCard}>
         <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>
         {customerDeliveryLine != null && (

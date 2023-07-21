@@ -61,7 +61,8 @@ const SupplierArrivalLineQuantityCard = ({
       labelQty={I18n.t('Stock_ReceivedQty')}
       defaultValue={realQty}
       onValueChange={handleQtyChange}
-      editable={supplierArrival.statusSelect !== StockMove.status.Realized}>
+      editable={supplierArrival.statusSelect !== StockMove.status.Realized}
+      isBigButton={true}>
       <View style={styles.headerQuantityCard}>
         <Text>{`${I18n.t('Stock_AskedQty')} : ${askedQty}`}</Text>
         {supplierArrivalLine != null && (

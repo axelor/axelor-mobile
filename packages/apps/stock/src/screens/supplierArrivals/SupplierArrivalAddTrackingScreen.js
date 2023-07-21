@@ -126,6 +126,7 @@ const SupplierArrivalAddTrackingScreen = ({route, navigation}) => {
           defaultValue={trackingQty}
           onValueChange={setTrackingQty}
           editable={true}
+          isBigButton={true}
         />
       </ScrollView>
     </Screen>
