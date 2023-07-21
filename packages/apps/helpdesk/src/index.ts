@@ -52,6 +52,11 @@ export const HelpDeskModule: Module = {
       icon: 'users',
       screen: 'MyTeamTicketListScreen',
     },
+    helpdesk_menu_createTicket: {
+      title: 'helpdesk_createTicket',
+      icon: 'plus',
+      screen: 'TicketFormScreen',
+    },
   },
   screens: {
     ...MyTicketScreens,

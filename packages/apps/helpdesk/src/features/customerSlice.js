@@ -24,6 +24,7 @@ import {
 import {
   getCustomer,
   searchCustomer as _searchCustomer,
+  searchCustomerContact as _searchCustomerContact,
 } from '../api/customer-api';
 
 export const searchCustomer = createAsyncThunk(
@@ -33,6 +34,19 @@ export const searchCustomer = createAsyncThunk(
       fetchFunction: _searchCustomer,
       data,
       action: 'Helpdesk_SliceAction_FetchCustomer',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchCustomerContact = createAsyncThunk(
+  'customer/searchCustomerContact',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchCustomerContact,
+      data,
+      action: 'Helpdesk_SliceAction_FetchCustomerContact',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -58,6 +72,10 @@ const initialState = {
   isListEnd: false,
   customerList: [],
   customer: {},
+  loadingCustomerContact: false,
+  moreLoadingCustomerContact: false,
+  isListEndCustomerContact: false,
+  customerContactList: [],
 };
 
 const customerSlice = createSlice({
@@ -69,6 +87,12 @@ const customerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'customerList',
+    });
+    generateInifiniteScrollCases(builder, searchCustomerContact, {
+      loading: 'loadingCustomerContact',
+      moreLoading: 'moreLoadingCustomerContact',
+      isListEnd: 'isListEndCustomerContact',
+      list: 'customerContactList',
     });
     builder.addCase(getCustomerbyId.pending, state => {
       state.loading = true;

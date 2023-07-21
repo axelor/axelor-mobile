@@ -19,6 +19,7 @@
   "Helpdesk_Status": "Statut",
   "Helpdesk_Type": "Type",
   "Helpdesk_myTeamTickets": "Les tickets de mon équipe",
+  "helpdesk_createTicket": "Créer un ticket",
   "Helpdesk_StartDate": "Date de début",
   "Helpdesk_EndDate": "Date de fin",
   "Helpdesk_Project": "Projet",
@@ -50,5 +51,7 @@
   "Helpdesk_SliceAction_FetchCustomerById": "récupération du client par id",
   "Helpdesk_SliceAction_FetchProject": "récupération des projets",
   "Helpdesk_SliceAction_SearchTicketType": "recherche sur les types de tickets",
-  "Helpdesk_SliceAction_UpdateTicket": "mise à jour du ticket"
+  "Helpdesk_SliceAction_UpdateTicket": "mise à jour du ticket",
+  "Helpdesk_SliceAction_CreateTicket": "creation du ticket",
+  "Helpdesk_SliceAction_FetchCustomerContact": "récupération des contacts clients"
 }

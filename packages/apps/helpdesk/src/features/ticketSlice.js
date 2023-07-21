@@ -29,6 +29,7 @@ import {
   updateStatusTicket,
   searchTicketType as _searchTicketType,
   updateTicket as _updateTicket,
+  createTicket as _createTicket,
 } from '../api/ticket-api';
 
 export const fetchTickets = createAsyncThunk(
@@ -125,6 +126,27 @@ export const updateTicket = createAsyncThunk(
   },
 );
 
+export const createTicket = createAsyncThunk(
+  'ticket/createTicket',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createTicket,
+      data,
+      action: 'Helpdesk_SliceAction_CreateTicket',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchTickets,
+        data,
+        action: 'Helpdesk_SliceAction_FetchMyTicket',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
+
 const initialState = {
   loadingTicket: true,
   moreLoading: false,
@@ -182,6 +204,13 @@ const ticketSlice = createSlice({
       state.loadingTicket = false;
       state.ticket = action.payload;
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
+    });
+    builder.addCase(createTicket.pending, (state, action) => {
+      state.loadingTicket = true;
+    });
+    builder.addCase(createTicket.fulfilled, (state, action) => {
+      state.loadingTicket = false;
+      state.ticketList = action.payload;
     });
   },
 });

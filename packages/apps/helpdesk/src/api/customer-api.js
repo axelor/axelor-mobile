@@ -33,12 +33,26 @@ const createCustomerCriteria = searchValue => {
   ];
 };
 
+const createCustomerContactCriteria = searchValue => {
+  return [getSearchCriterias('helpdesk_customerContact', searchValue)];
+};
+
 export async function searchCustomer({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
     criteria: createCustomerCriteria(searchValue),
     fieldKey: 'helpdesk_customer',
     sortKey: 'helpdesk_customer',
+    page: page,
+  });
+}
+
+export async function searchCustomerContact({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createCustomerContactCriteria(searchValue),
+    fieldKey: 'helpdesk_customerContact',
+    sortKey: 'helpdesk_customerContact',
     page: page,
   });
 }
