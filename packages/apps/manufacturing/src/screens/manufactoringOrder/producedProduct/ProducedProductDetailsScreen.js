@@ -152,7 +152,8 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           onValueChange={setProducedQty}
           editable={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
-          }>
+          }
+          isBigButton={true}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${parseFloat(
               producedProduct ? producedProduct.plannedQty : 0,
