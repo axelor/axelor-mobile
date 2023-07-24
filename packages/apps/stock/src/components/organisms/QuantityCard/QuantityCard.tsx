@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
     width: '90%',
+    alignSelf: 'center',
   },
   container_up: {
     borderBottomColor: 'black',

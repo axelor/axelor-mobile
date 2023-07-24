@@ -42,6 +42,7 @@ const InternalMoveLineNotes = ({
           title={I18n.t('Stock_NotesOnStockMove')}
           onChange={handleNotesChange}
           defaultValue={notes}
+          style={styles.input}
         />
       </View>
     );
@@ -55,6 +56,7 @@ const InternalMoveLineNotes = ({
           onChange={handleNotesChange}
           defaultValue={notes}
           readonly={true}
+          style={styles.input}
         />
       </View>
     );
@@ -65,9 +67,10 @@ const InternalMoveLineNotes = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 18,
-    width: '100%',
+    width: '90%',
+    alignSelf: 'center',
   },
+  input: {width: '100%'},
 });
 
 export default InternalMoveLineNotes;

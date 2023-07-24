@@ -126,6 +126,7 @@ const LeadFormScreen = ({navigation, route}) => {
                 labelField="name"
                 valueField="id"
                 defaultValue={civility}
+                styleTxt={styles.civilityTitle}
               />
             </View>
             <View style={styles.seconHalfHeader}>
@@ -251,6 +252,9 @@ const styles = StyleSheet.create({
   civilityPicker: {
     width: '100%',
     marginLeft: '0%',
+  },
+  civilityTitle: {
+    marginLeft: -15,
   },
   pickerTitle: {
     marginLeft: 5,

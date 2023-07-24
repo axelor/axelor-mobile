@@ -151,7 +151,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
             style={styles.input}
           />
           <Picker
-            styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Opportunity_Status')}
             defaultValue={status}
             listItems={opportunityStatusList}
