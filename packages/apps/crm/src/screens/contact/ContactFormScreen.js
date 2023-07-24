@@ -103,7 +103,6 @@ const ContactFormScreen = ({navigation, route}) => {
             Platform.OS === 'ios' ? styles.containerZIndex : null,
           ]}>
           <Picker
-            style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Civility')}
             onValueChange={setCivility}
@@ -129,7 +128,6 @@ const ContactFormScreen = ({navigation, route}) => {
             placeholderKey="Crm_ClientProspect"
             defaultValue={clientAndProspect}
             onChange={setClientAndProspect}
-            style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
           />
           <FormInput
@@ -160,6 +158,7 @@ const ContactFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Notes')}
             onChange={setDescription}
             defaultValue={description}
+            style={styles.input}
           />
         </View>
       </KeyboardAvoidingScrollView>

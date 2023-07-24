@@ -109,7 +109,7 @@ const UserScreen = ({children}) => {
   return (
     <Screen style={styles.container}>
       <ScrollView>
-        <View style={styles.imageContainer}>
+        <View style={styles.alignContainer}>
           <ImageBubble
             style={styles.imageIcon}
             imageSize={Dimensions.get('window').width * 0.3}
@@ -130,42 +130,42 @@ const UserScreen = ({children}) => {
             ]}
           />
           <Text style={styles.textUser}>{user.name}</Text>
+          {baseConfig?.enableMultiCompany && (
+            <Picker
+              title={I18n.t('User_ActiveCompany')}
+              listItems={companyList}
+              labelField="name"
+              valueField="id"
+              onValueChange={updateActiveCompany}
+              isValueItem={true}
+              disabled={!canModifyCompany}
+              disabledValue={user?.activeCompany?.name}
+            />
+          )}
+          {children}
+          {languageList?.length > 1 && (
+            <Picker
+              title={I18n.t('User_Language')}
+              defaultValue={user.language}
+              listItems={languageList}
+              labelField="name"
+              valueField="code"
+              onValueChange={updateLanguage}
+              emptyValue={false}
+            />
+          )}
+          {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
+            <Picker
+              title={I18n.t('User_Theme')}
+              defaultValue={Theme.activeTheme?.key}
+              listItems={Theme.themes}
+              labelField="name"
+              valueField="key"
+              onValueChange={handleChangeTheme}
+              emptyValue={false}
+            />
+          )}
         </View>
-        {baseConfig?.enableMultiCompany && (
-          <Picker
-            title={I18n.t('User_ActiveCompany')}
-            listItems={companyList}
-            labelField="name"
-            valueField="id"
-            onValueChange={updateActiveCompany}
-            isValueItem={true}
-            disabled={!canModifyCompany}
-            disabledValue={user?.activeCompany?.name}
-          />
-        )}
-        {children}
-        {languageList?.length > 1 && (
-          <Picker
-            title={I18n.t('User_Language')}
-            defaultValue={user.language}
-            listItems={languageList}
-            labelField="name"
-            valueField="code"
-            onValueChange={updateLanguage}
-            emptyValue={false}
-          />
-        )}
-        {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
-          <Picker
-            title={I18n.t('User_Theme')}
-            defaultValue={Theme.activeTheme?.key}
-            listItems={Theme.themes}
-            labelField="name"
-            valueField="key"
-            onValueChange={handleChangeTheme}
-            emptyValue={false}
-          />
-        )}
       </ScrollView>
     </Screen>
   );
@@ -176,7 +176,7 @@ const getStyles = Colors =>
     container: {
       justifyContent: 'center',
     },
-    imageContainer: {
+    alignContainer: {
       alignItems: 'center',
     },
     imageIcon: {

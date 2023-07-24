@@ -275,7 +275,7 @@ const AutoCompleteSearch = ({
       ]}>
       <SearchBar
         inputRef={inputRef}
-        style={style}
+        style={[styles.alignContainer, style]}
         valueTxt={searchText}
         placeholder={placeholder}
         onClearPress={handleClear}
@@ -288,7 +288,7 @@ const AutoCompleteSearch = ({
       />
       {displayList && !oneFilter && (
         <SelectionContainer
-          style={style}
+          style={[styles.alignContainer, style]}
           objectList={objectList}
           displayValue={displayValue}
           handleSelect={handleSelect}
@@ -319,6 +319,11 @@ const getStyles = (displayList, marginBottom) =>
     },
     marginContainer: {
       marginBottom: marginBottom,
+      width: '100%',
+      alignSelf: 'center',
+    },
+    alignContainer: {
+      alignSelf: 'center',
     },
   });
 

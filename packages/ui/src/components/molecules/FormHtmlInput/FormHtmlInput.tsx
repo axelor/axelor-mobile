@@ -109,7 +109,7 @@ const FormHtmlInput = ({
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     content: {
-      width: '90%',
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,

@@ -109,6 +109,7 @@ const ClientFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Notes')}
             onChange={setDescription}
             defaultValue={description}
+            style={styles.input}
           />
         </View>
       </KeyboardAvoidingScrollView>

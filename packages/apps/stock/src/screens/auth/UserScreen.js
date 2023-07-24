@@ -17,8 +17,6 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
 import {
   changeDefaultStockLocation,
   UserScreen as AuthUserScreen,
@@ -49,10 +47,9 @@ const UserScreen = ({navigation}) => {
 
   return (
     <AuthUserScreen navigation={navigation}>
-      <Text style={styles.itemTitle}>
-        {I18n.t('User_DefaultStockLocation')}
-      </Text>
       <StockLocationSearchBar
+        showTitle={true}
+        titleKey={I18n.t('User_DefaultStockLocation')}
         scanKey={stockLocationScanKey}
         placeholderKey="Stock_StockLocation"
         defaultValue={user?.workshopStockLocation}
@@ -61,12 +58,5 @@ const UserScreen = ({navigation}) => {
     </AuthUserScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  itemTitle: {
-    alignSelf: 'flex-start',
-    marginLeft: 24,
-  },
-});
 
 export default UserScreen;

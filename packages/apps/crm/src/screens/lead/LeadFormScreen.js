@@ -120,6 +120,7 @@ const LeadFormScreen = ({navigation, route}) => {
             <View style={[styles.halfHeader, getZIndexStyles(40)]}>
               <Picker
                 pickerStyle={styles.civilityPicker}
+                styleTxt={styles.civilityTitle}
                 title={I18n.t('Crm_Civility')}
                 onValueChange={setCivility}
                 listItems={civilityList}
@@ -174,7 +175,6 @@ const LeadFormScreen = ({navigation, route}) => {
             labelField="name"
             valueField="id"
             defaultValue={leadJob}
-            style={styles.picker}
             styleTxt={styles.pickerTitle}
           />
           <FormInput
@@ -211,6 +211,7 @@ const LeadFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Description')}
             onChange={setDescription}
             defaultValue={description}
+            style={styles.input}
           />
         </View>
       </KeyboardAvoidingScrollView>
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     width: '90%',
   },
   halfHeader: {
@@ -242,15 +243,15 @@ const styles = StyleSheet.create({
   checkBoxContainer: {
     flexDirection: 'column',
     width: '50%',
-    marginLeft: '10%',
-  },
-  picker: {
-    width: '100%',
-    marginLeft: 5,
+    alignItems: 'flex-start',
+    marginLeft: 15,
   },
   civilityPicker: {
     width: '100%',
-    marginLeft: 12,
+    marginLeft: 5,
+  },
+  civilityTitle: {
+    marginLeft: -10,
   },
   pickerTitle: {
     marginLeft: 5,

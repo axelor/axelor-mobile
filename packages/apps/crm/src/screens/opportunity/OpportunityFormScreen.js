@@ -120,7 +120,6 @@ const OpportunityFormScreen = ({navigation, route}) => {
             placeholderKey="Crm_ClientProspect"
             defaultValue={partner}
             onChange={setPartner}
-            style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginTitle}
           />
           <DateInput
@@ -149,9 +148,9 @@ const OpportunityFormScreen = ({navigation, route}) => {
             title={I18n.t('Base_Description')}
             onChange={setDescription}
             defaultValue={description}
+            style={styles.input}
           />
           <Picker
-            style={[styles.picker, styles.marginPicker]}
             styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Opportunity_Status')}
             defaultValue={status}
@@ -184,14 +183,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row-reverse',
   },
-  marginPicker: {
-    marginLeft: 5,
-  },
-  picker: {
-    width: '100%',
-  },
   marginTitle: {
     marginLeft: 28,
+  },
+  marginPicker: {
+    marginLeft: 5,
   },
   button_container: {
     marginVertical: '1%',
