@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   picker: {
     marginBottom: 10,
     marginLeft: 2,
+    alignSelf: 'center',
   },
 });
 

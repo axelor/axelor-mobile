@@ -174,7 +174,6 @@ const LeadFormScreen = ({navigation, route}) => {
             labelField="name"
             valueField="id"
             defaultValue={leadJob}
-            style={styles.picker}
             styleTxt={styles.pickerTitle}
           />
           <FormInput
@@ -211,6 +210,7 @@ const LeadFormScreen = ({navigation, route}) => {
             title={I18n.t('Crm_Description')}
             onChange={setDescription}
             defaultValue={description}
+            style={styles.input}
           />
         </View>
       </KeyboardAvoidingScrollView>
@@ -243,10 +243,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '50%',
     marginLeft: '10%',
-  },
-  picker: {
-    width: '100%',
-    marginLeft: 5,
   },
   civilityPicker: {
     width: '100%',

@@ -28,6 +28,7 @@ import {
   filterSecondStockLocations,
   searchStockLocations,
 } from '../../../features/stockLocationSlice';
+import {Platform, StyleSheet, View} from 'react-native';
 
 const StockLocationSearchBar = ({
   placeholderKey = 'Stock_StockLocation',
@@ -38,6 +39,10 @@ const StockLocationSearchBar = ({
   secondFilter = false,
   isFocus = false,
   isScrollViewContainer = false,
+  showTitle = false,
+  styleTxt,
+  titleKey = '',
+  style,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -83,28 +88,39 @@ const StockLocationSearchBar = ({
   );
 
   return (
-    <ScannerAutocompleteSearch
-      objectList={
-        secondFilter ? stockLocationListMultiFilter : stockLocationList
-      }
-      value={defaultValue}
-      onChangeValue={onChange}
-      fetchData={
-        secondFilter
-          ? fetchStockLocationsMultiFilterAPI
-          : fetchStockLocationsAPI
-      }
-      displayValue={displayItemName}
-      scanKeySearch={scanKey}
-      placeholder={I18n.t(placeholderKey)}
-      showDetailsPopup={showDetailsPopup}
-      loadingList={secondFilter ? loadingMultiFilter : loading}
-      moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
-      isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
-      isFocus={isFocus}
-      isScrollViewContainer={isScrollViewContainer}
-    />
+    <View style={[Platform.OS === 'ios' ? styles.iosContainer : null, style]}>
+      <ScannerAutocompleteSearch
+        objectList={
+          secondFilter ? stockLocationListMultiFilter : stockLocationList
+        }
+        value={defaultValue}
+        onChangeValue={onChange}
+        fetchData={
+          secondFilter
+            ? fetchStockLocationsMultiFilterAPI
+            : fetchStockLocationsAPI
+        }
+        displayValue={displayItemName}
+        scanKeySearch={scanKey}
+        placeholder={I18n.t(placeholderKey)}
+        showDetailsPopup={showDetailsPopup}
+        loadingList={secondFilter ? loadingMultiFilter : loading}
+        moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
+        isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
+        isFocus={isFocus}
+        isScrollViewContainer={isScrollViewContainer}
+        title={I18n.t(titleKey)}
+        showTitle={showTitle}
+        styleTxt={styleTxt}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  iosContainer: {
+    zIndex: 41,
+  },
+});
 
 export default StockLocationSearchBar;

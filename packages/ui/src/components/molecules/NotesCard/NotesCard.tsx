@@ -45,19 +45,19 @@ const styles = StyleSheet.create({
   description: {
     flexDirection: 'column',
     marginTop: 10,
+    width: '90%',
+    alignSelf: 'center',
   },
   title: {
-    marginHorizontal: 24,
+    marginLeft: 10,
   },
   note: {
     justifyContent: 'center',
-    width: '90%',
+    width: '100%',
     elevation: 0,
     shadowOpacity: 0,
     borderRadius: 13,
     marginVertical: 8,
-    marginLeft: 20,
-    paddingHorizontal: 10,
     paddingRight: 10,
     paddingVertical: 10,
   },

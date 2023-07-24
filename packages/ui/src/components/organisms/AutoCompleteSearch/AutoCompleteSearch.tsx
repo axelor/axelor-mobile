@@ -22,6 +22,7 @@ import {
   useClickOutside,
   OUTSIDE_INDICATOR,
 } from '../../../hooks/use-click-outside';
+import {Text} from '../../atoms';
 import {SelectionContainer} from '../../molecules';
 import {SearchBar} from '../../organisms';
 import SearchDetailsPopUp from './SearchDetailsPopUp';
@@ -62,6 +63,9 @@ interface AutocompleteSearchProps {
   isListEnd?: boolean;
   translator?: (translationKey: string) => string;
   isScrollViewContainer?: boolean;
+  title?: string;
+  showTitle?: boolean;
+  styleTxt?: any;
 }
 
 const AutoCompleteSearch = ({
@@ -85,6 +89,9 @@ const AutoCompleteSearch = ({
   isListEnd,
   translator,
   isScrollViewContainer = false,
+  title = '',
+  styleTxt,
+  showTitle = false,
 }: AutocompleteSearchProps) => {
   const [displayList, setDisplayList] = useState(false);
   const [previousState, setPreviousState] = useState(null);
@@ -271,11 +278,18 @@ const AutoCompleteSearch = ({
       ref={wrapperRef}
       style={[
         styles.marginContainer,
-        Platform.OS === 'ios' ? styles.searchBarContainer : null,
+        Platform.OS === 'ios'
+          ? styles.searchBarContainerIos
+          : styles.searchBarContainerAndroid,
       ]}>
+      {showTitle && (
+        <View style={[styles.title, styleTxt]}>
+          <Text>{title}</Text>
+        </View>
+      )}
       <SearchBar
         inputRef={inputRef}
-        style={style}
+        style={[styles.alignContainer, style]}
         valueTxt={searchText}
         placeholder={placeholder}
         onClearPress={handleClear}
@@ -288,7 +302,7 @@ const AutoCompleteSearch = ({
       />
       {displayList && !oneFilter && (
         <SelectionContainer
-          style={style}
+          style={[styles.alignContainer, style]}
           objectList={objectList}
           displayValue={displayValue}
           handleSelect={handleSelect}
@@ -314,12 +328,22 @@ const AutoCompleteSearch = ({
 
 const getStyles = (displayList, marginBottom) =>
   StyleSheet.create({
-    searchBarContainer: {
+    searchBarContainerIos: {
       zIndex: displayList ? 45 : 0,
+      width: '100%',
+      alignSelf: 'center',
     },
     marginContainer: {
       marginBottom: marginBottom,
     },
+    alignContainer: {
+      alignSelf: 'center',
+    },
+    searchBarContainerAndroid: {
+      width: '100%',
+      alignSelf: 'center',
+    },
+    title: {marginHorizontal: 24},
   });
 
 export default AutoCompleteSearch;
