@@ -54,9 +54,6 @@ interface AutocompleteSearchProps {
   moreLoading?: boolean;
   isListEnd?: boolean;
   isScrollViewContainer?: boolean;
-  title?: string;
-  showTitle?: boolean;
-  styleTxt?: any;
 }
 
 const ScannerAutocompleteSearch = ({
@@ -78,9 +75,6 @@ const ScannerAutocompleteSearch = ({
   moreLoading,
   isListEnd,
   isScrollViewContainer = false,
-  title = '',
-  styleTxt,
-  showTitle = false,
 }: AutocompleteSearchProps) => {
   const I18n = useTranslator();
 
@@ -145,9 +139,6 @@ const ScannerAutocompleteSearch = ({
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       isScrollViewContainer={isScrollViewContainer}
-      title={title}
-      styleTxt={styleTxt}
-      showTitle={showTitle}
     />
   );
 };

@@ -70,7 +70,9 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
   },
-  input: {width: '100%'},
+  input: {
+    width: '100%',
+  },
 });
 
 export default InternalMoveLineNotes;

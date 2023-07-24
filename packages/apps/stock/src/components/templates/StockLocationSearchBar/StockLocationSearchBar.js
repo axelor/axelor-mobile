@@ -17,6 +17,8 @@
  */
 
 import React, {useCallback} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
+import {Text} from '@axelor/aos-mobile-ui';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -28,9 +30,10 @@ import {
   filterSecondStockLocations,
   searchStockLocations,
 } from '../../../features/stockLocationSlice';
-import {Platform, StyleSheet, View} from 'react-native';
 
 const StockLocationSearchBar = ({
+  style,
+  styleTxt,
   placeholderKey = 'Stock_StockLocation',
   defaultValue = null,
   onChange = () => {},
@@ -40,9 +43,7 @@ const StockLocationSearchBar = ({
   isFocus = false,
   isScrollViewContainer = false,
   showTitle = false,
-  styleTxt,
-  titleKey = '',
-  style,
+  titleKey = 'Stock_StockLocation',
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -88,7 +89,10 @@ const StockLocationSearchBar = ({
   );
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.iosContainer : null, style]}>
+    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
+      {showTitle && (
+        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
+      )}
       <ScannerAutocompleteSearch
         objectList={
           secondFilter ? stockLocationListMultiFilter : stockLocationList
@@ -109,17 +113,17 @@ const StockLocationSearchBar = ({
         isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
         isFocus={isFocus}
         isScrollViewContainer={isScrollViewContainer}
-        title={I18n.t(titleKey)}
-        showTitle={showTitle}
-        styleTxt={styleTxt}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  iosContainer: {
+  container: {
     zIndex: 41,
+  },
+  title: {
+    marginHorizontal: 24,
   },
 });
 

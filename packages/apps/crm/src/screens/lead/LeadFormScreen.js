@@ -120,36 +120,34 @@ const LeadFormScreen = ({navigation, route}) => {
             <View style={[styles.halfHeader, getZIndexStyles(40)]}>
               <Picker
                 pickerStyle={styles.civilityPicker}
+                styleTxt={styles.civilityTitle}
                 title={I18n.t('Crm_Civility')}
                 onValueChange={setCivility}
                 listItems={civilityList}
                 labelField="name"
                 valueField="id"
                 defaultValue={civility}
-                styleTxt={styles.civilityTitle}
               />
             </View>
-            <View style={styles.seconHalfHeader}>
-              <View style={styles.checkBoxContainer}>
-                <StarScore
-                  score={score}
-                  showMissingStar={true}
-                  onPress={setScore}
-                  editMode={true}
-                />
-                <Checkbox
-                  title={I18n.t('Crm_NoEmail')}
-                  isDefaultChecked={leadNoEmail}
-                  onChange={setLeadNoEmail}
-                  iconSize={20}
-                />
-                <Checkbox
-                  title={I18n.t('Crm_NoPhoneCall')}
-                  isDefaultChecked={leadNoCall}
-                  onChange={setLeadNoCall}
-                  iconSize={20}
-                />
-              </View>
+            <View style={styles.checkBoxContainer}>
+              <StarScore
+                score={score}
+                showMissingStar={true}
+                onPress={setScore}
+                editMode={true}
+              />
+              <Checkbox
+                title={I18n.t('Crm_NoEmail')}
+                isDefaultChecked={leadNoEmail}
+                onChange={setLeadNoEmail}
+                iconSize={20}
+              />
+              <Checkbox
+                title={I18n.t('Crm_NoPhoneCall')}
+                isDefaultChecked={leadNoCall}
+                onChange={setLeadNoCall}
+                iconSize={20}
+              />
             </View>
           </View>
           <FormInput
@@ -242,19 +240,18 @@ const styles = StyleSheet.create({
   halfHeader: {
     width: '50%',
   },
-  seconHalfHeader: {
-    width: '50%',
-    alignItems: 'flex-end',
-  },
   checkBoxContainer: {
     flexDirection: 'column',
+    width: '50%',
+    alignItems: 'flex-start',
+    marginLeft: 15,
   },
   civilityPicker: {
     width: '100%',
-    marginLeft: '0%',
+    marginLeft: 5,
   },
   civilityTitle: {
-    marginLeft: -15,
+    marginLeft: -10,
   },
   pickerTitle: {
     marginLeft: 5,

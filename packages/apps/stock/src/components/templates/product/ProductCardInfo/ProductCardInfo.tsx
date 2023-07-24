@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, Text} from '@axelor/aos-mobile-ui';
+import {LabelText, Text} from '@axelor/aos-mobile-ui';
 import {AOSImage, checkNullString} from '@axelor/aos-mobile-core';
 import {ProductCardDetails} from '../../../molecules';
 
@@ -52,21 +52,20 @@ const ProductCardInfo = ({
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.code}>{code}</Text>
         {!checkNullString(trackingNumber) && (
-          <View style={styles.labelText}>
-            <Icon
-              name="qrcode"
-              FontAwesome5={false}
-              size={15}
-              style={styles.picto}
-            />
-            <Text style={styles.code}>{trackingNumber}</Text>
-          </View>
+          <LabelText
+            iconName="qrcode"
+            size={15}
+            FontAwesome5={false}
+            title={trackingNumber}
+          />
         )}
         {!checkNullString(locker) && (
-          <View style={styles.labelText}>
-            <Icon name="map-marker-alt" size={15} style={styles.picto} />
-            <Text style={styles.code}>{locker}</Text>
-          </View>
+          <LabelText
+            iconName="map-marker-alt"
+            size={15}
+            FontAwesome5={false}
+            title={locker}
+          />
         )}
       </ProductCardDetails>
     </View>
@@ -98,12 +97,6 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: 14,
-  },
-  labelText: {
-    flexDirection: 'row',
-  },
-  picto: {
-    marginRight: 5,
   },
 });
 
