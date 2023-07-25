@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Schema, array, boolean, number, object, string} from 'yup';
+import {Schema, array, boolean, number, object, setLocale, string} from 'yup';
 import {getFields} from './display.helpers';
 import {DisplayField, Form} from './types';
 
@@ -41,7 +41,88 @@ export const isObjectMissingRequiredField = (
   return requiredFieldNames.some(_fieldName => content?.[_fieldName] == null);
 };
 
+const mapErrorWithTranslationKey = () => {
+  setLocale({
+    mixed: {
+      notType: function notType(_ref) {
+        switch (_ref.type) {
+          case 'string':
+            return 'Base_FormValidation_String';
+          case 'number':
+            return 'Base_FormValidation_Number';
+          case 'boolean':
+            return 'Base_FormValidation_Boolean';
+          case 'array':
+            return 'Base_FormValidation_Array';
+          default:
+            return 'Base_FormValidation_Object';
+        }
+      },
+      required: 'Base_FormValidation_Required',
+    },
+    string: {
+      length: ({length}) => ({
+        key: 'Base_FormValidation_String_Length',
+        values: {length},
+      }),
+      min: ({min}) => ({key: 'Base_FormValidation_String_Min', values: {min}}),
+      max: ({max}) => ({key: 'Base_FormValidation_String_Max', values: {max}}),
+      matches: ({regex}) => ({
+        key: 'Base_FormValidation_String_Match',
+        values: {regex},
+      }),
+      email: 'Base_FormValidation_String_Email',
+      url: 'Base_FormValidation_String_Url',
+      uuid: 'Base_FormValidation_String_UUID',
+      trim: 'Base_FormValidation_String_Trim',
+      lowercase: 'Base_FormValidation_String_Lowercase',
+      uppercase: 'Base_FormValidation_String_Uppercase',
+    },
+    number: {
+      min: ({min}) => ({key: 'Base_FormValidation_Number_Min', values: {min}}),
+      max: ({max}) => ({key: 'Base_FormValidation_Number_Max', values: {max}}),
+      lessThan: ({less}) => ({
+        key: 'Base_FormValidation_Number_LessThan',
+        values: {less},
+      }),
+      moreThan: ({more}) => ({
+        key: 'Base_FormValidation_Number_MoreThan',
+        values: {more},
+      }),
+      positive: 'Base_FormValidation_Number_Positive',
+      negative: 'Base_FormValidation_Number_Negative',
+      integer: 'Base_FormValidation_Number_Integer',
+    },
+    date: {
+      min: ({min}) => ({key: 'Base_FormValidation_Date_Min', values: {min}}),
+      max: ({max}) => ({key: 'Base_FormValidation_Date_Max', values: {max}}),
+    },
+    boolean: {
+      isValue: ({value}) => ({
+        key: 'Base_FormValidation_Boolean_IsValue',
+        values: {value},
+      }),
+    },
+    object: {
+      noUnknown: ({unknown}) => ({
+        key: 'Base_FormValidation_Object_Unknown',
+        values: {unknown},
+      }),
+    },
+    array: {
+      min: ({min}) => ({key: 'Base_FormValidation_Array_Min', values: {min}}),
+      max: ({max}) => ({key: 'Base_FormValidation_Array_Max', values: {max}}),
+      length: ({length}) => ({
+        key: 'Base_FormValidation_Array_Length',
+        values: {length},
+      }),
+    },
+  });
+};
+
 const createValidationSchema = (config: Form): Schema => {
+  mapErrorWithTranslationKey();
+
   const fields = getFields(config);
 
   let schemaConfig = {};
@@ -53,6 +134,14 @@ const createValidationSchema = (config: Form): Schema => {
     });
 
   return object(schemaConfig);
+};
+
+const getRequiredCondition = (schema: Schema, _field: DisplayField): Schema => {
+  if (_field.required) {
+    return schema.required();
+  }
+
+  return schema;
 };
 
 const getFieldSchema = (field: DisplayField): Schema => {
@@ -77,9 +166,9 @@ const getFieldSchema = (field: DisplayField): Schema => {
       schema = array().of(object());
       break;
     case 'object':
-      schema = object({
-        id: number().positive().integer().required(),
-        version: number().min(0).integer().required(),
+      schema = object().shape({
+        id: getRequiredCondition(number().positive().integer(), field),
+        version: getRequiredCondition(number().min(0).integer(), field),
       });
       break;
     default:
@@ -97,7 +186,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
       case 'phone':
         schema = schema.matches(
           /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/g,
-          'must be a valid phone number',
+          'Base_FormValidation_PhoneNumber',
         );
         break;
       case 'date':
@@ -127,11 +216,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
     }
   }
 
-  if (field.required) {
-    schema = schema.required();
-  }
-
-  return schema;
+  return getRequiredCondition(schema, field);
 };
 
 export async function validateSchema(content: Form, value: any): Promise<any> {
@@ -140,8 +225,15 @@ export async function validateSchema(content: Form, value: any): Promise<any> {
   });
 }
 
-export function getValidationErrors(err: any): string[] {
-  return err.inner?.map(e =>
-    e.message.includes(e.path) ? e.message : `${e.path} ${e.message}`,
-  );
+export function getValidationErrors(err: any): any[] {
+  return err.inner?.map(e => {
+    const message = typeof e.message === 'object' ? e.message?.key : e.message;
+
+    return {
+      attr: e.path,
+      message: message,
+      values: typeof e.message === 'object' ? e.message?.values : null,
+      translatable: !message.includes(e.path),
+    };
+  });
 }

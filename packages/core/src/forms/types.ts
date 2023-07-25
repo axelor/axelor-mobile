@@ -58,7 +58,7 @@ export interface Field {
   };
   validationOptions?: {
     [key: string]: {
-      value?: number | string | boolean | RegExp;
+      value?: any;
       customErrorKey?: string;
     };
   };

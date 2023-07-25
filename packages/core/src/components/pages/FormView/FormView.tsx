@@ -56,7 +56,7 @@ const FormView = ({
 
   const [object, setObject] = useState(defaultValue);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
-  const [errors, setErrors] = useState<string[]>();
+  const [errors, setErrors] = useState<any[]>();
 
   const config: Form = useMemo(
     () => formConfigsProvider.getFormConfig(formKey),

@@ -27,12 +27,19 @@ import {
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 
+interface ErrorItem {
+  attr?: string;
+  message: string;
+  values?: any;
+  translatable?: boolean;
+}
+
 const ConstraintsValidatorPopup = ({
   onContinue,
   errors,
 }: {
   onContinue: () => void;
-  errors: string[];
+  errors: ErrorItem[];
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -46,7 +53,13 @@ const ConstraintsValidatorPopup = ({
       childrenStyle={styles.btnContainer}>
       <UnorderedList
         data={errors}
-        renderItem={({item}) => <Text>{item}</Text>}
+        renderItem={({item}: {item: ErrorItem}) => (
+          <Text key={`${item.attr} - ${item.message}`}>
+            {item.translatable
+              ? `${item.attr} ${I18n.t(item.message, item.values)}`
+              : item.message}
+          </Text>
+        )}
       />
       <Button
         title={I18n.t('Base_OK')}
