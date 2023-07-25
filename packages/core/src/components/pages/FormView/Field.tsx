@@ -25,7 +25,7 @@ import {
   FormInput,
   StarScore,
 } from '@axelor/aos-mobile-ui';
-import {DisplayField, States, getWidget} from '../../../forms';
+import {DisplayField, States, getKeyboardType, getWidget} from '../../../forms';
 import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
 import {UploadFileInput} from '../../molecules';
@@ -83,6 +83,7 @@ const Field = ({
         onChange: handleChange,
         required: _field.required,
         readonly: isGlobalReadonly || _field.readonly,
+        ..._field.options,
       });
     case 'checkbox':
       return (
@@ -158,6 +159,7 @@ const Field = ({
           thousandSpacer={I18n.t('Base_ThousandSpacer')}
           required={_field.required}
           readOnly={isGlobalReadonly || _field.readonly}
+          keyboardType={getKeyboardType(_field)}
           {..._field.options}
         />
       );
@@ -170,6 +172,7 @@ const Field = ({
           onChange={handleChange}
           required={_field.required}
           readOnly={isGlobalReadonly || _field.readonly}
+          keyboardType={getKeyboardType(_field)}
           {..._field.options}
         />
       );

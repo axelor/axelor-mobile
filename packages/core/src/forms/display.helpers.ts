@@ -24,6 +24,7 @@ import {
   Form,
   Widget,
 } from './types';
+import {KeyboardType} from 'react-native';
 
 export const isField = (_object: DisplayPanel | DisplayField): boolean => {
   return (_object as any).type != null;
@@ -147,4 +148,24 @@ export const getWidget = (_field: DisplayField): Widget => {
   }
 
   return 'default';
+};
+
+export const getKeyboardType = (_field: DisplayField): KeyboardType => {
+  switch (_field.type) {
+    case 'number':
+      if (
+        _field.validationOptions != null &&
+        Object.keys(_field.validationOptions).includes('integer')
+      ) {
+        return 'number-pad';
+      }
+
+      return 'decimal-pad';
+    case 'phone':
+      return 'phone-pad';
+    case 'email':
+      return 'email-address';
+    default:
+      return 'default';
+  }
 };
