@@ -69,6 +69,7 @@
   "Base_Compatibily_ErrorDetails": "This menu item is not compatible with the current web ERP configuration. This menu entry requires the {{compatibility.moduleName}} application to be installed on the web instance with a version between {{compatibility.downToVersion}} and {{compatibility.upToVersion}}. The currently installed web version of the application is {{compatibility.moduleVersion}}.",
   "Base_Compatibily_NotFound": "The {{compatibility.moduleName}} web application cannot be found.",
   "Base_Compatibily_NotFoundDetails": "This menu item is not compatible with the current web ERP configuration. This menu entry requires the {{compatibility.moduleName}} application to be installed on the web instance with a version between {{compatibility.downToVersion}} and {{compatibility.upToVersion}}. The application is not installed on the web instance.",
+  "Base_InvalidConstraints": "Some constraints are invalid.",
   "Auth_WrongPasswordOrUserName": "Wrong username or password",
   "Auth_InvalidUrl": "Invalid url",
   "User_BlockConnection": "Stop internet connection",

@@ -16,8 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './external';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+import {Form, FormConfigs} from './types';
+
+class FormConfigsProvider {
+  private formConfigs: FormConfigs;
+
+  constructor() {
+    this.formConfigs = {};
+  }
+
+  init(configs: FormConfigs) {
+    this.formConfigs = configs;
+  }
+
+  getFormConfig(key: string): Form {
+    const registeredForms = Object.keys(this.formConfigs);
+
+    if (registeredForms.includes(key)) {
+      return this.formConfigs[key];
+    }
+
+    return null;
+  }
+}
+
+export const formConfigsProvider = new FormConfigsProvider();

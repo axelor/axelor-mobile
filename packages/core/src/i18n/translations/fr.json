@@ -69,6 +69,7 @@
   "Base_Compatibily_ErrorDetails": "Cette entrée de menu n'est pas compatible avec la configuration de l'ERP web actuelle. Cette entrée de menu nécessite que l'application {{compatibility.moduleName}} soit installée sur l'instance web avec une version comprise entre {{compatibility.downToVersion}} et {{compatibility.upToVersion}}. La version web installée de l'application est actuellement la {{compatibility.moduleVersion}}.",
   "Base_Compatibily_NotFound": "L'application web {{compatibility.moduleName}} est introuvable.",
   "Base_Compatibily_NotFoundDetails": "Cette entrée de menu n'est pas compatible avec la configuration de l'ERP web actuelle. Cette entrée de menu nécessite que l'application {{compatibility.moduleName}} soit installée sur l'instance web avec une version comprise entre {{compatibility.downToVersion}} et {{compatibility.upToVersion}}. L'application n'est pas installée sur l'instance web.",
+  "Base_InvalidConstraints": "Certaines contraintes ne sont pas respectées.",
   "Auth_WrongPasswordOrUserName": "Mauvais nom d'utilisateur ou mot de passe",
   "Auth_InvalidUrl": "Url non valide",
   "User_BlockConnection": "Bloquer la connexion internet",

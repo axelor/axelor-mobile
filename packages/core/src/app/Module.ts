@@ -18,6 +18,7 @@
 
 import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
+import {FormConfigs} from '../forms/types';
 
 interface MenuBase {
   title: string;
@@ -68,6 +69,7 @@ export interface Models {
   objectFields?: ObjectFields;
   sortFields?: SortFields;
   searchFields?: SearchFields;
+  formsRegister?: FormConfigs;
   headerRegisters?: Function;
 }
 
