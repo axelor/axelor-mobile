@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
+  IconButton,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
@@ -27,10 +29,12 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
+  Action,
   DisplayField,
   DisplayPanel,
   Form,
   formConfigsProvider,
+  getButtonTitleKey,
   getFields,
   getValidationErrors,
   isField,
@@ -41,21 +45,28 @@ import {
 import {default as FieldComponent} from './Field';
 import {default as PanelComponent} from './Panel';
 import {default as ConstraintsValidatorPopup} from './ConstraintsValidatorPopup';
-import {useSelector} from '../../../redux/hooks';
+import {
+  clearRecord,
+  createRecord,
+  refreshRecord,
+  updateRecord,
+} from '../../../features/FormSlice';
 
-const FormView = ({
-  onSave,
-  resetAfterSave = true,
-  defaultValue = {},
-  formKey,
-}) => {
+interface FormProps {
+  defaultValue?: any;
+  formKey: string;
+  actions: Action[];
+}
+
+const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const storeState = useSelector((state: any) => state);
+  const {record} = useSelector((state: any) => state.form);
 
   const [object, setObject] = useState(defaultValue);
-  const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [errors, setErrors] = useState<any[]>();
 
   const config: Form = useMemo(
@@ -67,6 +78,14 @@ const FormView = ({
     () => sortContent(config),
     [config],
   );
+
+  useEffect(() => {
+    dispatch(clearRecord());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setObject(record);
+  }, [record]);
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
     setObject(_current => {
@@ -88,24 +107,131 @@ const FormView = ({
           });
         });
 
-      setDisabledButton(isObjectMissingRequiredField(updatedObject, config));
-
       return updatedObject;
     });
   };
 
-  const handleValidate = () => {
-    validateSchema(config, object)
-      .then(() => {
-        onSave(object);
+  const getButtonConfig = (
+    _action: Action,
+  ): {title: string; onPress: (value?: any) => void} => {
+    const buttonConfig: any = {title: getButtonTitleKey(_action)};
 
-        if (resetAfterSave) {
-          handleReset();
+    if (_action.customAction != null) {
+      buttonConfig.onPress = () =>
+        _action.customAction({
+          handleObjectChange: setObject,
+          objectState: object,
+          storeState,
+          handleReset,
+          dispatch,
+        });
+    } else {
+      switch (_action.type) {
+        case 'create':
+          buttonConfig.onPress = () => {
+            dispatch(
+              (createRecord as any)({
+                modelName: config.modelName,
+                data: object,
+              }),
+            );
+            handleReset();
+          };
+          break;
+        case 'update':
+          buttonConfig.onPress = () => {
+            dispatch(
+              (updateRecord as any)({
+                modelName: config.modelName,
+                data: object,
+              }),
+            );
+          };
+          break;
+        case 'refresh':
+          buttonConfig.onPress = () => {
+            dispatch(
+              (refreshRecord as any)({
+                modelName: config.modelName,
+                id: object?.id,
+              }),
+            );
+          };
+          break;
+        case 'reset':
+          buttonConfig.onPress = handleReset;
+          break;
+        default:
+          buttonConfig.onPress = () => console.log(object);
+          break;
+      }
+    }
+
+    return buttonConfig;
+  };
+
+  const renderAction = (_action: Action) => {
+    if (_action.hideIf?.({objectState: object, storeState})) {
+      return null;
+    }
+
+    const buttonConfig = getButtonConfig(_action);
+    const isDisabled =
+      (_action.needRequiredFields
+        ? isObjectMissingRequiredField(object, config)
+        : false) || _action.disabledIf?.({objectState: object, storeState});
+
+    if (_action.iconName != null) {
+      return (
+        <IconButton
+          key={_action.key}
+          iconName={_action.iconName}
+          color={
+            isDisabled
+              ? Colors.secondaryColor
+              : _action.color || Colors.primaryColor
+          }
+          title={I18n.t(buttonConfig.title)}
+          onPress={() =>
+            handleValidate(buttonConfig.onPress, _action.needValidation)
+          }
+          disabled={isDisabled}
+        />
+      );
+    }
+
+    return (
+      <Button
+        key={_action.key}
+        color={
+          isDisabled
+            ? Colors.secondaryColor
+            : _action.color || Colors.primaryColor
         }
-      })
-      .catch(_error => {
-        setErrors(getValidationErrors(_error));
-      });
+        title={I18n.t(buttonConfig.title)}
+        onPress={() =>
+          handleValidate(buttonConfig.onPress, _action.needValidation)
+        }
+        disabled={isDisabled}
+      />
+    );
+  };
+
+  const handleValidate = (_action, needValidation) => {
+    if (needValidation) {
+      return validateSchema(config, object)
+        .then(() => {
+          _action(object);
+        })
+        .catch(_error => {
+          setErrors(getValidationErrors(_error));
+        });
+    }
+
+    return new Promise<void>(resolve => {
+      _action(object);
+      resolve();
+    });
   };
 
   const handleReset = () => {
@@ -143,15 +269,7 @@ const FormView = ({
   }
 
   return (
-    <Screen
-      fixedItems={
-        <Button
-          title={I18n.t('Base_Save')}
-          onPress={handleValidate}
-          disabled={disabledButton}
-          color={disabledButton ? Colors.secondaryColor : Colors.primaryColor}
-        />
-      }>
+    <Screen fixedItems={actions.map(renderAction)}>
       <KeyboardAvoidingScrollView style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup

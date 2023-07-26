@@ -119,8 +119,10 @@ const Field = ({
       return (
         <UploadFileInput
           title={I18n.t(_field.titleKey)}
+          defaultValue={value}
           onUpload={handleChange}
           required={_field.required}
+          readonly={isGlobalReadonly || _field.readonly}
           {..._field.options}
         />
       );

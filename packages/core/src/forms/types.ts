@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Dispatch} from '@reduxjs/toolkit';
 import {ReactElement} from 'react';
+import {Color} from '@axelor/aos-mobile-ui';
 
 export const DEFAULT_COLSPAN = 12;
 
@@ -101,6 +103,7 @@ export interface JSONObject<Type> {
 
 export interface Form {
   readonlyIf?: (values?: States) => boolean;
+  modelName?: string;
   panels?: JSONObject<Panel>;
   /** Fields attribut is a JSON object contening all fields of object.
    * When defining a field you need to define as key in the JSON object
@@ -121,3 +124,31 @@ export interface DisplayPanel extends Panel {
 export interface DisplayField extends Field {
   key: string;
 }
+
+export interface Action {
+  key: string;
+  type: FormActionType;
+  titleKey?: string;
+  iconName?: string;
+  color?: Color;
+  hideIf?: (_states: States) => boolean;
+  disabledIf?: (_states: States) => boolean;
+  customAction?: (_options: ActionProps) => void;
+  needValidation?: boolean;
+  needRequiredFields?: boolean;
+}
+
+interface ActionProps {
+  handleReset?: () => void;
+  objectState?: any;
+  storeState?: any;
+  handleObjectChange?: (newValue?: any) => void;
+  dispatch?: Dispatch<any>;
+}
+
+export type FormActionType =
+  | 'update'
+  | 'create'
+  | 'reset'
+  | 'refresh'
+  | 'custom';
