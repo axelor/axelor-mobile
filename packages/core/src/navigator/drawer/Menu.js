@@ -22,14 +22,14 @@ import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
-import {getMenuTitle, isHasSubMenus} from '../menu.helper';
+import {getMenuTitle, hasSubMenus} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
   const {modulesMenus} = useContext(ModuleNavigatorContext);
 
   const generateSubRoutes = menuItem => {
-    if (isHasSubMenus(menuItem)) {
+    if (hasSubMenus(menuItem)) {
       const {subMenus} = menuItem;
       return state.routes.filter(subRoute => subRoute.name in subMenus);
     }

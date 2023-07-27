@@ -55,6 +55,11 @@ export const StockModule: Module = {
           icon: 'warehouse',
           screen: 'StockCorrectionListScreen',
         },
+        stock_subMenu_toExtended: {
+          title: 'Sub Menu Main',
+          icon: 'home',
+          screen: 'InternalMoveListScreen',
+        },
       },
     },
     stock_menu_product: {

@@ -36,7 +36,11 @@ import {
   moduleHasMenus,
   updateAccessibleMenus,
 } from './module.helper';
-import {getMenuTitle, isHasSubMenus} from './menu.helper';
+import {
+  manageSubMenusOverriding,
+  getMenuTitle,
+  hasSubMenus,
+} from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMenuConfig} from '../features/menuConfigSlice';
@@ -75,7 +79,9 @@ const Navigator = ({
     () =>
       manageWebCompatibility(
         manageOverridingMenus(
-          filterAuthorizedModules(modules, mobileConfigs, user),
+          manageSubMenusOverriding(
+            filterAuthorizedModules(modules, mobileConfigs, user),
+          ),
         ),
         metaModules,
       ),
@@ -210,14 +216,16 @@ const Navigator = ({
                 options={{
                   title: getMenuTitle(menu, {I18n}),
                 }}>
-                {props => (
-                  <ModulesScreensStackNavigator
-                    {...props}
-                    initialRouteName={menu.screen}
-                  />
-                )}
+                {props =>
+                  menu.screen && (
+                    <ModulesScreensStackNavigator
+                      {...props}
+                      initialRouteName={menu.screen}
+                    />
+                  )
+                }
               </Drawer.Screen>
-              {isHasSubMenus(menu) &&
+              {hasSubMenus(menu) &&
                 Object.entries(menu.subMenus).map(([subMenukey, subMenu]) => {
                   return (
                     <Drawer.Screen

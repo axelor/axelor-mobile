@@ -41,7 +41,7 @@ import {
 } from '../../components';
 import MenuTitle from './MenuTitle';
 import {formatVersionString} from '../../utils/string';
-import {isHasSubMenus} from '../menu.helper';
+import {hasSubMenus} from '../menu.helper';
 
 const DrawerContent = ({
   state,
@@ -60,10 +60,11 @@ const DrawerContent = ({
           const moduleMenus = _module.menus;
           const result = [];
 
-          let menuIndex = 0;
+          let orderIndex = 0;
           for (const [key, menu] of Object.entries(moduleMenus)) {
             const {subMenus} = menu;
-            const menuOrder = menu?.order != null ? menu.order : menuIndex * 10;
+            const menuOrder =
+              menu?.order != null ? menu.order : orderIndex * 10;
 
             result.push({
               ...menu,
@@ -71,11 +72,12 @@ const DrawerContent = ({
               key,
             });
 
-            let subMenuIndex = 0;
-            if (isHasSubMenus(menu)) {
+            orderIndex++;
+
+            if (hasSubMenus(menu)) {
               for (const [subMenuKey, subMenu] of Object.entries(subMenus)) {
                 const subMenuOrder =
-                  subMenu?.order != null ? subMenu.order : subMenuIndex;
+                  subMenu?.order != null ? subMenu.order : orderIndex * 10;
 
                 result.push({
                   ...subMenu,
@@ -83,11 +85,9 @@ const DrawerContent = ({
                   key: subMenuKey,
                 });
 
-                subMenuIndex++;
+                orderIndex++;
               }
             }
-
-            menuIndex++;
           }
 
           return result;

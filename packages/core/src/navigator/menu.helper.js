@@ -88,7 +88,7 @@ export function isMenuIncompatible(compatibility) {
   return false;
 }
 
-export function isHasSubMenus(menu) {
+export function hasSubMenus(menu) {
   return (
     menu != null &&
     Object.keys(menu).length > 0 &&
@@ -100,5 +100,79 @@ export function resolveSubMenus(subMenus) {
   if (subMenus == null || Object.keys(subMenus).length === 0) {
     return [];
   }
+
   return Object.entries(subMenus).map(entry => ({...entry[1], key: entry[0]}));
+}
+
+export function manageSubMenusOverriding(modules) {
+  const allMenus = {};
+
+  modules.forEach(module => {
+    if (module.menus) {
+      Object.entries(module.menus).forEach(([menuKey, menu]) => {
+        allMenus[menuKey] = menu;
+      });
+    }
+  });
+
+  modules.forEach(module => {
+    if (module.menus) {
+      Object.values(module.menus).forEach(menu => {
+        if (menu.subMenus && Object.keys(menu.subMenus).length !== 0) {
+          menu.subMenus = Object.entries(menu.subMenus).reduce(
+            (acc, [subMenuKey, subMenu]) => {
+              if ('parent' in subMenu) {
+                const parentMenuName = subMenu.parent;
+                const parentMenu = allMenus[parentMenuName];
+
+                if (parentMenu) {
+                  if (!parentMenu.subMenus) {
+                    parentMenu.subMenus = {};
+                  }
+
+                  parentMenu.subMenus[subMenuKey] = {...subMenu};
+                  delete parentMenu.subMenus[subMenuKey].parent;
+                }
+              } else {
+                acc[subMenuKey] = subMenu;
+              }
+
+              return acc;
+            },
+            {},
+          );
+        }
+      });
+    }
+  });
+
+  return cleanEmptyMenusAndSubMenus(modules);
+}
+
+export function cleanEmptyMenusAndSubMenus(modules) {
+  const cleanedModules = modules.map(module => {
+    const {menus, ...restModuleAttrs} = module;
+
+    if (menus) {
+      if (Object.keys(menus).length === 0) {
+        return {...restModuleAttrs};
+      }
+
+      const cleanedMenus = Object.entries(menus).map(([key, menu]) => {
+        const {subMenus, ...restMenusAttrs} = menu;
+
+        if (subMenus && Object.keys(subMenus).length === 0) {
+          return [key, {...restMenusAttrs}];
+        }
+
+        return [key, menu];
+      });
+
+      return {...module, menus: Object.fromEntries(cleanedMenus)};
+    }
+
+    return module;
+  });
+
+  return cleanedModules;
 }

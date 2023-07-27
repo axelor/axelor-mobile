@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {getMenuTitle, isHasSubMenus} from '../menu.helper';
+import {getMenuTitle, hasSubMenus} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 import SubMenuItemList from './SubMenuItemList';
 import MenuItemEntry from './MenuItemEntry';
@@ -32,9 +32,8 @@ const MenuItem = ({
   isActive = false,
 }) => {
   const I18n = useTranslator();
-  const hasSubMenus = isHasSubMenus(menuItem);
 
-  if (hasSubMenus) {
+  if (hasSubMenus(menuItem)) {
     return (
       <SubMenuItemList
         state={state}

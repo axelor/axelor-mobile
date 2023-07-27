@@ -17,10 +17,10 @@
  */
 
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {getMenuTitle} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 import MenuItemEntry from './MenuItemEntry';
-import {StyleSheet} from 'react-native';
 
 const SUB_MENU_ICON_SIZE = 20;
 
