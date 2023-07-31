@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Badge, Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {AOSImage, useTranslator} from '@axelor/aos-mobile-core';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 
 interface ProductCardProps {
   style?: any;
@@ -40,58 +40,52 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatMetaFile = useMetafileUri();
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <View style={styles.content}>
-          <AOSImage
-            generalStyle={styles.imageStyle}
-            imageSize={styles.imageSize}
-            resizeMode="contain"
-            metaFile={picture}
-            defaultIconSize={60}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.code}>{code}</Text>
-            <Badge
-              color={
-                availableStock == null
-                  ? Colors.secondaryColor
-                  : availableStock > 0
-                  ? Colors.primaryColor
-                  : Colors.errorColor
-              }
-              title={
-                availableStock == null
-                  ? `${I18n.t('Stock_Calculing')}...`
-                  : availableStock > 0
-                  ? I18n.t('Stock_Available')
-                  : I18n.t('Stock_Unavailable')
-              }
-            />
-          </View>
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      showArrow={true}
+      onPress={onPress}
+      style={style}
+      image={{
+        generalStyle: styles.imageStyle,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 60,
+        source: formatMetaFile(picture?.id),
+      }}
+      upperTexts={{
+        items: [
+          {
+            displayText: name,
+            isTitle: true,
+          },
+          {displayText: code, style: styles.code},
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            displayText:
+              availableStock == null
+                ? `${I18n.t('Stock_Calculing')}...`
+                : availableStock > 0
+                ? I18n.t('Stock_Available')
+                : I18n.t('Stock_Unavailable'),
+            color:
+              availableStock == null
+                ? Colors.secondaryColor
+                : availableStock > 0
+                ? Colors.primaryColor
+                : Colors.errorColor,
+          },
+        ],
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  content: {
-    flexDirection: 'row',
-  },
   imageSize: {
     height: 60,
     width: 60,
@@ -99,17 +93,8 @@ const styles = StyleSheet.create({
   imageStyle: {
     marginRight: 30,
   },
-  textContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   code: {
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 

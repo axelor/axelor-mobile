@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductCard, ProductSearchBar} from '../../components';
@@ -93,7 +92,6 @@ const ProductListScreen = ({navigation}) => {
         renderItem={({item, index}) => (
           <ProductCard
             key={item.id}
-            style={styles.item}
             name={item.name}
             code={item.code}
             picture={item.picture == null ? null : item.picture}
@@ -112,12 +110,5 @@ const ProductListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default ProductListScreen;

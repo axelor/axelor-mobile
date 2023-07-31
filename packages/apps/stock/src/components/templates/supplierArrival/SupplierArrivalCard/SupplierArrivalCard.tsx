@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
@@ -56,43 +56,38 @@ const SupplierArrivalCard = ({
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
     if (status === StockMove.status.Planned) {
-      return (
-        <Text style={[styles.txtDetails, styles.creationDate]}>
-          {`${I18n.t('Base_PlannedFor')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
-    return (
-      <Text style={styles.txtDetails}>
-        {`${I18n.t('Base_RealizedOn')} ${_date}`}
-      </Text>
-    );
+    return `${I18n.t('Base_RealizedOn')} ${_date}`;
   }, [I18n, date, status]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{reference}</Text>
-          <Text style={styles.txtDetails}>{client}</Text>
-          {origin != null && (
-            <View style={styles.origin}>
-              <Icon name="tag" size={12} style={styles.icon} />
-              <Text style={styles.txtDetails}>{origin}</Text>
-            </View>
-          )}
-          {_formatDate}
-        </View>
-        <View style={styles.rightContainer}>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      showArrow={true}
+      lowerTexts={{
+        items: [
+          {displayText: reference, isTitle: true},
+          {displayText: client, style: styles.noBold},
+          {
+            displayText: origin,
+            iconName: 'tag',
+            hideIfNull: true,
+            style: styles.noBold,
+          },
+          {
+            displayText: _formatDate,
+            hideIfNull: true,
+            style: [
+              styles.noBold,
+              status === StockMove.status.Planned ? styles.creationDate : null,
+            ],
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -105,38 +100,11 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  rightContainer: {
-    width: '20%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingRight: 15,
-  },
-  textContainer: {
-    width: '80%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
+  noBold: {
+    fontWeight: null,
   },
   creationDate: {
     fontStyle: 'italic',
-  },
-  origin: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 5,
   },
 });
 
