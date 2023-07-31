@@ -3,6 +3,26 @@ title: 6.5.0
 tags: Changelog
 ---
 
+## [6.5.4] (2023-07-31)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Improve Increment with new props :
+  - `defaultFormatting` : disable default formatting behaviour
+  - `stepSize` : define step when using plus and minus buttons
+  - `minValue` : minimum value of input value
+  - `maxValue` : maximum value of input value
+  - `isBigButton` : display bigger plus and minus buttons
+- Spread new Increment props on FormIncrementInput
+
+#### Fixes
+
+- AutoCompleteSearch :
+  - display issue after clicking outside of input
+- Improve refresh with default value on form components
+
 ## [6.5.3] (2023-07-10)
 
 ### @axelor/aos-mobile-core
@@ -261,6 +281,7 @@ It contains the following functionnalities
 
 - Replace RenderHTML by HtmlInput
 
+[6.5.4]: https://github.com/axelor/axelor-mobile/compare/6.5.3...6.5.4
 [6.5.3]: https://github.com/axelor/axelor-mobile/compare/6.5.2...6.5.3
 [6.5.2]: https://github.com/axelor/axelor-mobile/compare/6.5.1...6.5.2
 [6.5.1]: https://github.com/axelor/axelor-mobile/compare/6.5.0...6.5.1
