@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
@@ -184,7 +184,6 @@ const InternalMoveListScreen = ({navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <InternalMoveCard
-            style={styles.item}
             name={item.stockMoveSeq}
             status={item.statusSelect}
             availability={item.availableStatusSelect}
@@ -203,15 +202,5 @@ const InternalMoveListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  action: {
-    marginRight: 15,
-  },
-});
 
 export default InternalMoveListScreen;
