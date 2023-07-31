@@ -17,20 +17,15 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
-  Badge,
-  Card,
   Icon,
-  LabelText,
+  ObjectCard,
   Text,
+  checkNullString,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {
-  checkNullString,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
 interface InternalMoveLineCardProps {
@@ -81,71 +76,61 @@ const InternalMoveLineCard = ({
     return getStyles(borderColor)?.border;
   }, [borderColor]);
 
-  const rightStyle = useMemo(() => {
-    return internalMoveStatus === StockMove.status.Realized
-      ? styles.noBadge
-      : styles.badge;
-  }, [internalMoveStatus]);
-
-  const leftStyle = useMemo(() => {
-    return internalMoveStatus === StockMove.status.Realized
-      ? styles.textContainerNoBadge
-      : styles.textContainer;
-  }, [internalMoveStatus]);
-
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={leftStyle}>
-          <Text style={styles.txtImportant}>{productName}</Text>
-          <LabelText
-            title={`${I18n.t('Stock_AskedQty')} :`}
-            value={parseFloat(expectedQty.toString()).toFixed(2)}
-          />
-          <LabelText
-            title={`${I18n.t('Stock_MovedQty')} :`}
-            value={parseFloat(movedQty.toString()).toFixed(2)}
-          />
-          {stockConfig?.isManageStockLocationOnStockMoveLine ? (
-            <View style={styles.locations}>
-              <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
-              <Icon name="arrow-right" size={14} style={styles.icon} />
-              <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
-            </View>
-          ) : null}
-          {checkNullString(locker) === false && (
-            <LabelText
-              title={`${I18n.t('Stock_Locker')} :`}
-              value={locker}
-              iconName="map-marker-alt"
-            />
-          )}
-          {trackingNumber != null && (
-            <LabelText
-              title={`${I18n.t('Stock_TrackingNumber')} :`}
-              value={trackingNumber}
-              iconName="qrcode"
-              FontAwesome5={false}
-            />
-          )}
-        </View>
-        <View style={rightStyle}>
-          {availability == null ||
-          availability === 0 ||
-          internalMoveStatus === StockMove.status.Realized ? null : (
-            <Badge
-              color={StockMove.getAvailabilityColor(availability, Colors)}
-              title={StockMove.getAvailability(availability, I18n)}
-            />
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      showArrow={true}
+      style={[borderStyle, style]}
+      lowerTexts={{
+        items: [
+          {displayText: productName, isTitle: true},
+          {
+            displayText: parseFloat(expectedQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_AskedQty')} :`,
+          },
+          {
+            displayText: parseFloat(movedQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_MovedQty')} :`,
+          },
+          {
+            hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
+            customComponent: (
+              <View style={styles.locations}>
+                <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
+                <Icon name="arrow-right" size={14} style={styles.icon} />
+                <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
+              </View>
+            ),
+          },
+          {
+            displayText: locker,
+            indicatorText: `${I18n.t('Stock_Locker')} :`,
+            hideIf: checkNullString(locker),
+            iconName: 'map-marker-alt',
+          },
+          {
+            displayText: trackingNumber,
+            indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
+            hideIf: trackingNumber == null,
+            iconName: 'qrcode',
+          },
+        ],
+      }}
+      sideBadges={
+        availability == null ||
+        availability === 0 ||
+        internalMoveStatus === StockMove.status.Realized
+          ? null
+          : {
+              items: [
+                {
+                  displayText: StockMove.getAvailability(availability, I18n),
+                  color: StockMove.getAvailabilityColor(availability, Colors),
+                },
+              ],
+            }
+      }
+    />
   );
 };
 
@@ -158,37 +143,6 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    marginBottom: '2%',
-    paddingRight: 8,
-  },
-  txtImportant: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  textContainer: {
-    width: '70%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  textContainerNoBadge: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  badge: {
-    width: '30%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  noBadge: {
-    width: '10%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
   locations: {
     flexDirection: 'row',
     justifyContent: 'space-between',
