@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -181,7 +181,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <CustomerDeliveryLineCard
-            style={styles.item}
             productName={item.product.fullName}
             stockLocationName={item.fromStockLocation?.name}
             pickedQty={
@@ -209,12 +208,5 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 16,
-    marginVertical: 4,
-  },
-});
 
 export default CustomerDeliveryLineListScreen;
