@@ -3,6 +3,40 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.3] (2023-07-31)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Improve version management to manage cases where patch version is bigger than 9.
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Improve Increment with new props :
+  - `defaultFormatting` : disable default formatting behaviour
+  - `stepSize` : define step when using plus and minus buttons
+  - `minValue` : minimum value of input value
+  - `maxValue` : maximum value of input value
+  - `isBigButton` : display bigger plus and minus buttons
+- Spread new Increment props on FormIncrementInput
+- ObjectCard : enable to define custom components
+
+#### Fixes
+
+- AutoCompleteSearch :
+  - display issue after clicking outside of input
+  - input issue on details popup with default value
+- Improve refresh with default value on form components
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Align form components
+
 ## [7.0.2] (2023-07-10)
 
 ### @axelor/aos-mobile-core
@@ -184,6 +218,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.3]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.0.3
 [7.0.2]: https://github.com/axelor/axelor-mobile/compare/7.0.1...7.0.2
 [7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1
 [7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.1...7.0.0
