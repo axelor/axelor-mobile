@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -137,7 +136,6 @@ const StockCorrectionListScreen = ({navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <StockCorrectionCard
-            style={styles.item}
             status={item.statusSelect}
             productFullname={item.product.fullName}
             stockLocation={item.stockLocation.name}
@@ -157,15 +155,5 @@ const StockCorrectionListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  action: {
-    marginRight: 15,
-  },
-});
 
 export default StockCorrectionListScreen;
