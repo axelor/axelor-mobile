@@ -3,6 +3,26 @@ title: 6.4.0
 tags: Changelog
 ---
 
+## [6.4.5] (2023-07-31)
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- Improve Increment with new props :
+  - `defaultFormatting` : disable default formatting behaviour
+  - `stepSize` : define step when using plus and minus buttons
+  - `minValue` : minimum value of input value
+  - `maxValue` : maximum value of input value
+  - `isBigButton` : display bigger plus and minus buttons
+- Spread new Increment props on FormIncrementInput
+
+#### Fixes
+
+- AutoCompleteSearch :
+  - display issue after clicking outside of input
+- Improve refresh with default value on form components
+
 ## [6.4.4] (2023-07-10)
 
 ### @axelor/aos-mobile-core
@@ -76,6 +96,7 @@ tags: Changelog
     <Details>
     Transform children chip components into a list of objects with the following props : isActive, color, title and key. Two available behaviours: 'mutli' or 'switch'. 
     </Details>
+
 
 #### Fixed
 
@@ -253,6 +274,7 @@ There are two functional packages available for Axelor Open Mobile.
   - _Operation order_: view, change of status with management of the stopwatch, view of the production file
   - _Planning vision_ of operation orders
 
+[6.4.5]: https://github.com/axelor/axelor-mobile/compare/6.4.4...6.4.5
 [6.4.4]: https://github.com/axelor/axelor-mobile/compare/6.4.3...6.4.4
 [6.4.3]: https://github.com/axelor/axelor-mobile/compare/6.4.2...6.4.3
 [6.4.2]: https://github.com/axelor/axelor-mobile/compare/6.4.1...6.4.2
