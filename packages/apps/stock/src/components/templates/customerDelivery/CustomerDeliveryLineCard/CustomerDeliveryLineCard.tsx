@@ -17,20 +17,13 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  Badge,
-  Card,
-  Icon,
-  LabelText,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
 import {
   checkNullString,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+  ObjectCard,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
 interface CustomerDeliveryLineCardProps {
@@ -78,57 +71,54 @@ const CustomerDeliveryLineCard = ({
   }, [borderColor]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.leftContainer}>
-          <Text style={styles.txtImportant}>{productName}</Text>
-          {availability != null && (
-            <Badge
-              style={styles.badgeContainer}
-              color={StockMove.getAvailabilityColor(availability, Colors)}
-              title={StockMove.getAvailability(availability, I18n)}
-            />
-          )}
-          <LabelText
-            title={`${I18n.t('Stock_AskedQty')} :`}
-            value={parseFloat(askedQty.toString()).toFixed(2)}
-          />
-          <LabelText
-            title={`${I18n.t('Stock_PickedQty')} :`}
-            value={parseFloat(pickedQty.toString()).toFixed(2)}
-          />
-          {stockConfig?.isManageStockLocationOnStockMoveLine
-            ? checkNullString(stockLocationName) === false && (
-                <LabelText
-                  title={`${I18n.t('Stock_FromStockLocation')} :`}
-                  value={stockLocationName}
-                  iconName="warehouse"
-                />
-              )
-            : null}
-          {checkNullString(locker) === false && (
-            <LabelText
-              title={`${I18n.t('Stock_Locker')} :`}
-              value={locker}
-              iconName="map-marker-alt"
-            />
-          )}
-          {trackingNumber != null && (
-            <LabelText
-              title={`${I18n.t('Stock_TrackingNumber')} :`}
-              value={trackingNumber?.trackingNumberSeq}
-              iconName="qrcode"
-              FontAwesome5={false}
-            />
-          )}
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      showArrow={true}
+      style={[borderStyle, style]}
+      lowerTexts={{
+        items: [
+          {displayText: productName, isTitle: true},
+          {
+            displayText: parseFloat(askedQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_AskedQty')} :`,
+          },
+          {
+            displayText: parseFloat(pickedQty.toString()).toFixed(2),
+            indicatorText: `${I18n.t('Stock_PickedQty')} :`,
+          },
+          {
+            displayText: stockLocationName,
+            indicatorText: `${I18n.t('Stock_FromStockLocation')} :`,
+            hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
+            iconName: 'warehouse',
+          },
+          {
+            displayText: locker,
+            indicatorText: `${I18n.t('Stock_Locker')} :`,
+            hideIf: checkNullString(locker),
+            iconName: 'map-marker-alt',
+          },
+          {
+            displayText: trackingNumber?.trackingNumberSeq,
+            indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
+            hideIf: trackingNumber?.trackingNumberSeq == null,
+            iconName: 'qrcode',
+          },
+        ],
+      }}
+      sideBadges={
+        availability == null
+          ? null
+          : {
+              items: [
+                {
+                  displayText: StockMove.getAvailability(availability, I18n),
+                  color: StockMove.getAvailabilityColor(availability, Colors),
+                },
+              ],
+            }
+      }
+    />
   );
 };
 
@@ -139,26 +129,5 @@ const getStyles = color =>
       borderColor: color,
     },
   });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    marginBottom: '2%',
-    paddingRight: 8,
-  },
-  leftContainer: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginRight: '1%',
-  },
-  txtImportant: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  badgeContainer: {
-    marginLeft: 10,
-  },
-});
 
 export default CustomerDeliveryLineCard;
