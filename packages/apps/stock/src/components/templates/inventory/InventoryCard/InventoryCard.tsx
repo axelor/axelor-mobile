@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import Inventory from '../../../../types/inventory';
 
@@ -54,53 +54,43 @@ const InventoryCard = ({
     const _date = formatDate(date, I18n.t('Base_DateFormat'));
 
     if (status === Inventory.status.Planned) {
-      return (
-        <Text style={[styles.txtDetails, styles.creationDate]}>
-          {`${I18n.t('Base_PlannedFor')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_PlannedFor')} ${_date}`;
     }
 
     if (status === Inventory.status.InProgress) {
-      return (
-        <Text style={[styles.txtDetails, styles.creationDate]}>
-          {`${I18n.t('Base_StartedOn')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_StartedOn')} ${_date}`;
     }
 
     if (status === Inventory.status.Completed) {
-      return (
-        <Text style={styles.txtDetails}>
-          {`${I18n.t('Base_CompletedOn')} ${_date}`}
-        </Text>
-      );
+      return `${I18n.t('Base_CompletedOn')} ${_date}`;
     }
 
-    return (
-      <Text style={styles.txtDetails}>
-        {`${I18n.t('Base_ValidatedOn')} ${_date}`}
-      </Text>
-    );
+    return `${I18n.t('Base_ValidatedOn')} ${_date}`;
   }, [I18n, date, status]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{reference}</Text>
-          {stockLocation != null && (
-            <Text style={styles.txtDetails}>{stockLocation}</Text>
-          )}
-          {_formatDate}
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      showArrow={true}
+      style={[borderStyle, style]}
+      lowerTexts={{
+        items: [
+          {displayText: reference, isTitle: true},
+          {displayText: stockLocation, style: styles.noBold, hideIfNull: true},
+          {
+            displayText: _formatDate,
+            style: [
+              styles.noBold,
+              status === Inventory.status.Planned ||
+              status === Inventory.status.InProgress
+                ? styles.date
+                : null,
+            ],
+            hideIfNull: true,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -113,32 +103,11 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingRight: 15,
+  noBold: {
+    fontWeight: null,
   },
-  textContainer: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
-  },
-  creationDate: {
+  date: {
     fontStyle: 'italic',
-  },
-  origin: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 5,
   },
 });
 
