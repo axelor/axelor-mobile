@@ -49,12 +49,15 @@ const filterList = (list: any[]): any[] => {
 
 interface TextElement {
   style?: any;
-  displayText: string;
+  displayText?: string;
   indicatorText?: string;
+  fontAwesome5?: boolean;
+  size?: number;
   iconName?: string;
   color?: string;
   isTitle?: boolean;
   hideIfNull?: boolean;
+  hideIf?: boolean;
   order?: number;
   numberOfLines?: number;
   customComponent?: ReactElement<any>;
@@ -62,7 +65,7 @@ interface TextElement {
 
 interface BadgeElement {
   style?: any;
-  displayText: string;
+  displayText?: string;
   color?: Color;
   showIf?: boolean;
   order?: number;
@@ -149,7 +152,12 @@ const ObjectCard = ({
       });
     }
 
-    if (item.hideIfNull && checkNullString(item.displayText)) {
+    if (
+      (item.hideIfNull &&
+        checkNullString(item.displayText) &&
+        checkNullString(item.indicatorText)) ||
+      item.hideIf
+    ) {
       return null;
     }
 
@@ -165,12 +173,26 @@ const ObjectCard = ({
       );
     }
 
+    if (checkNullString(item.iconName) && checkNullString(item.indicatorText)) {
+      return (
+        <Text
+          key={`${item.displayText} - ${item.order}`}
+          writingType="subtitle"
+          style={[styles.text, item.style]}
+          numberOfLines={item.numberOfLines}>
+          {item.displayText}
+        </Text>
+      );
+    }
+
     return (
       <LabelText
         key={`${item.displayText} - ${item.order}`}
         style={[styles.text, item.style]}
         textStyle={item.style}
         iconName={item.iconName}
+        FontAwesome5={item.fontAwesome5}
+        size={item.size}
         color={item.color}
         title={item.indicatorText}
         value={item.displayText}

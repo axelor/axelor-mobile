@@ -24,7 +24,7 @@ export const useMetafileUri = () => {
 
   return useCallback(
     (metafileId: number) =>
-      metafileId
+      metafileId != null
         ? {
             uri: `${baseUrl}ws/rest/com.axelor.meta.db.MetaFile/${metafileId}/content/download`,
           }
@@ -38,9 +38,23 @@ export const useBinaryImageUri = () => {
 
   return useCallback(
     (id: number, version: number, model: string) =>
-      id && version && model
+      id != null && version != null && model != null
         ? {
-            uri: `${baseUrl}ws/${model}/${id}/image/download?v=${version}&parentId=${id}&parentModel=${model}&image=true`,
+            uri: `${baseUrl}ws/rest/${model}/${id}/image/download?v=${version}&parentId=${id}&parentModel=${model}&image=true`,
+          }
+        : null,
+    [baseUrl],
+  );
+};
+
+export const useBinaryPictureUri = () => {
+  const {baseUrl} = useSelector((state: any) => state.auth);
+
+  return useCallback(
+    (id: number, version: number, model: string) =>
+      id != null && version != null && model != null
+        ? {
+            uri: `${baseUrl}ws/rest/${model}/${id}/picture/download?v=${version}&parentId=${id}&parentModel=${model}&image=true`,
           }
         : null,
     [baseUrl],
