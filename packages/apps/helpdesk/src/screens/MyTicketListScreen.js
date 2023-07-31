@@ -207,7 +207,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginVertical: 4,
   },
-  headerContainer: {alignItems: 'center'},
+  headerContainer: {
+    alignItems: 'center',
+    zIndex: 30,
+  },
   toggleSwitchContainer: {width: '90%', height: 40},
   toggle: {width: '54%', height: 38, borderRadius: 13},
 });

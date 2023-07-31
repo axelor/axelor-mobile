@@ -133,6 +133,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
       width: '100%',
+      minHeight: 62,
     },
     content: {
       width: '100%',
@@ -141,6 +142,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
+      minHeight: 40,
     },
     input: {
       width: '100%',
