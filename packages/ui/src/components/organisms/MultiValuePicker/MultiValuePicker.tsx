@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {Text} from '../../atoms';
@@ -125,7 +125,12 @@ const MultiValuePicker = ({
   );
 
   return (
-    <View ref={wrapperRef} style={style}>
+    <View
+      ref={wrapperRef}
+      style={[
+        Platform.OS === 'ios' && pickerIsOpen ? styles.containerZIndex : null,
+        style,
+      ]}>
       {!disabled && (
         <View style={styles.titleContainer}>
           <Text style={styleTxt}>{title}</Text>
@@ -143,7 +148,12 @@ const MultiValuePicker = ({
           <MultiSelectValue itemList={disabledValue} title={`${title} :`} />
         </View>
       ) : (
-        <View>
+        <View
+          style={[
+            Platform.OS === 'ios' && pickerIsOpen
+              ? styles.pickerContainerZIndex
+              : null,
+          ]}>
           <MultiValuePickerButton
             onPress={togglePicker}
             listItem={selectedItemList}
@@ -175,6 +185,9 @@ const MultiValuePicker = ({
 
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
+    containerZIndex: {
+      zIndex: 45,
+    },
     titleContainer: {
       marginHorizontal: 24,
     },
@@ -188,6 +201,9 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     infosCard: {
       justifyContent: 'flex-start',
       width: Dimensions.get('window').width * 0.9,
+    },
+    pickerContainerZIndex: {
+      zIndex: 50,
     },
   });
 
