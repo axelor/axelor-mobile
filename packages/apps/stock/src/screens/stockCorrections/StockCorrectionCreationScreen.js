@@ -17,11 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductTrackingNumberSearchBar,
   StockCorrectionCreationButton,
+  StockCorrectionHtmlInput,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
@@ -29,6 +30,7 @@ import {
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
+import {StyleSheet, View} from 'react-native';
 
 const stockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -58,6 +60,7 @@ const StockCorrectionCreationScreen = ({route}) => {
   const [realQty, setRealQty] = useState(0);
   const [reason, setReason] = useState(DEFAULT_REASON);
   const [currentStep, setCurrentStep] = useState();
+  const [comments, setComments] = useState();
 
   const databaseQty = useMemo(() => {
     if (productIndicators?.id === product?.id) {
@@ -161,47 +164,61 @@ const StockCorrectionCreationScreen = ({route}) => {
             trackingNumber={trackingNumber}
             stockLocation={location}
             realQty={realQty}
+            comments={comments}
           />
         )
       }>
-      <ScrollView>
-        <StockLocationSearchBar
-          defaultValue={location}
-          scanKey={stockLocationScanKey}
-          onChange={handleStockLocationChange}
-          isFocus={currentStep === CREATION_STEP.stockLocation}
-        />
-        {currentStep >= CREATION_STEP.product_trackingNumber ? (
-          <ProductTrackingNumberSearchBar
-            scanKey={itemScanKey}
-            onChange={handleProductTrackingNumberChange}
-            defaultValue={trackingNumber || product}
-            isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+      <KeyboardAvoidingScrollView style={styles.scroll}>
+        <View style={styles.stockView}>
+          <StockLocationSearchBar
+            defaultValue={location}
+            scanKey={stockLocationScanKey}
+            onChange={handleStockLocationChange}
+            isFocus={currentStep === CREATION_STEP.stockLocation}
           />
-        ) : null}
-        {currentStep >= CREATION_STEP.validation ? (
-          <>
-            <StockCorrectionProductCardInfo
-              stockProduct={product}
-              trackingNumber={trackingNumber}
+          {currentStep >= CREATION_STEP.product_trackingNumber ? (
+            <ProductTrackingNumberSearchBar
+              scanKey={itemScanKey}
+              onChange={handleProductTrackingNumberChange}
+              defaultValue={trackingNumber || product}
+              isFocus={currentStep === CREATION_STEP.product_trackingNumber}
             />
-            <StockCorrectionQuantityCard
-              databaseQty={databaseQty}
-              realQty={realQty}
-              setRealQty={setRealQty}
-              status={StockCorrection.status.Draft}
-              stockProduct={product}
-            />
-            <StockCorrectionReasonPicker
-              reason={reason}
-              setReason={setReason}
-              status={StockCorrection.status.Draft}
-            />
-          </>
-        ) : null}
-      </ScrollView>
+          ) : null}
+          {currentStep >= CREATION_STEP.validation ? (
+            <>
+              <StockCorrectionProductCardInfo
+                stockProduct={product}
+                trackingNumber={trackingNumber}
+              />
+              <StockCorrectionQuantityCard
+                databaseQty={databaseQty}
+                realQty={realQty}
+                setRealQty={setRealQty}
+                status={StockCorrection.status.Draft}
+                stockProduct={product}
+              />
+              <StockCorrectionReasonPicker
+                reason={reason}
+                setReason={setReason}
+                status={StockCorrection.status.Draft}
+              />
+              <StockCorrectionHtmlInput setComments={setComments} />
+            </>
+          ) : null}
+        </View>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  stockView: {
+    marginTop: '2%',
+  },
+  scroll: {
+    height: null,
+    flex: 1,
+  },
+});
 
 export default StockCorrectionCreationScreen;
