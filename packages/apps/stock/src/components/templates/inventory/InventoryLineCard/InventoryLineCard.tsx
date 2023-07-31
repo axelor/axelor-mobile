@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  ObjectCard,
+  checkNullString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface InventoryLineCardProps {
@@ -76,13 +80,13 @@ const InventoryLineCard = ({
           {
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
-            hideIfNull: true,
+            hideIf: checkNullString(locker),
             iconName: 'map-marker-alt',
           },
           {
             displayText: trackingNumber?.trackingNumberSeq,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
-            hideIfNull: true,
+            hideIf: trackingNumber?.trackingNumberSeq == null,
             iconName: 'qrcode',
           },
         ],

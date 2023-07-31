@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  checkNullString,
+  ObjectCard,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
@@ -83,23 +87,21 @@ const CustomerDeliveryLineCard = ({
             indicatorText: `${I18n.t('Stock_PickedQty')} :`,
           },
           {
-            displayText: stockConfig?.isManageStockLocationOnStockMoveLine
-              ? stockLocationName
-              : null,
+            displayText: stockLocationName,
             indicatorText: `${I18n.t('Stock_FromStockLocation')} :`,
-            hideIfNull: true,
+            hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
             iconName: 'warehouse',
           },
           {
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
-            hideIfNull: true,
+            hideIf: checkNullString(locker),
             iconName: 'map-marker-alt',
           },
           {
             displayText: trackingNumber?.trackingNumberSeq,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
-            hideIfNull: true,
+            hideIf: trackingNumber?.trackingNumberSeq == null,
             iconName: 'qrcode',
           },
         ],

@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  ObjectCard,
+  Text,
+  checkNullString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 
@@ -87,29 +93,25 @@ const InternalMoveLineCard = ({
             indicatorText: `${I18n.t('Stock_MovedQty')} :`,
           },
           {
-            displayText: stockConfig?.isManageStockLocationOnStockMoveLine
-              ? `${fromStockLocation} - ${toStockLocation}`
-              : null,
-            hideIfNull: true,
-            customComponent:
-              stockConfig?.isManageStockLocationOnStockMoveLine ? (
-                <View style={styles.locations}>
-                  <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
-                  <Icon name="arrow-right" size={14} style={styles.icon} />
-                  <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
-                </View>
-              ) : null,
+            hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
+            customComponent: (
+              <View style={styles.locations}>
+                <Text numberOfLines={1}>{fromStockLocation ?? '-'}</Text>
+                <Icon name="arrow-right" size={14} style={styles.icon} />
+                <Text numberOfLines={1}>{toStockLocation ?? '-'}</Text>
+              </View>
+            ),
           },
           {
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
-            hideIfNull: true,
+            hideIf: checkNullString(locker),
             iconName: 'map-marker-alt',
           },
           {
             displayText: trackingNumber,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
-            hideIfNull: true,
+            hideIf: trackingNumber == null,
             iconName: 'qrcode',
           },
         ],

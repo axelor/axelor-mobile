@@ -71,8 +71,8 @@ const ProductStockLocationCard = ({
             indicatorText: `${I18n.t('Stock_FutureQty')} :`,
           },
           {
-            displayText: reservedQty > 0 ? `${reservedQty} ${unit}` : null,
-            hideIfNull: true,
+            displayText: `${reservedQty} ${unit}`,
+            hideIf: reservedQty > 0,
             indicatorText: `${I18n.t('Stock_AllocatedQty')} :`,
             iconName: 'user-tag',
           },

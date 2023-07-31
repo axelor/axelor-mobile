@@ -18,7 +18,11 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  ObjectCard,
+  checkNullString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 
 interface SupplierArrivalLineCardProps {
@@ -80,23 +84,21 @@ const SupplierArrivalLineCard = ({
             indicatorText: `${I18n.t('Stock_DeliveredQty')} :`,
           },
           {
-            displayText: stockConfig?.isManageStockLocationOnStockMoveLine
-              ? stockLocationName
-              : null,
+            displayText: stockLocationName,
             indicatorText: `${I18n.t('Stock_ToStockLocation')} :`,
-            hideIfNull: true,
+            hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
             iconName: 'warehouse',
           },
           {
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
-            hideIfNull: true,
+            hideIf: checkNullString(locker),
             iconName: 'map-marker-alt',
           },
           {
             displayText: trackingNumber?.trackingNumberSeq,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
-            hideIfNull: true,
+            hideIf: trackingNumber?.trackingNumberSeq == null,
             iconName: 'qrcode',
           },
         ],
