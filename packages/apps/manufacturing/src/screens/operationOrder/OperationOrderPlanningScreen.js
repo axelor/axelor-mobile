@@ -17,14 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {
-  Card,
-  LabelText,
-  Screen,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {ObjectCard, Screen, useThemeColor} from '@axelor/aos-mobile-ui';
 import {PlanningView, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {fetchPlannedOperationOrder} from '../../features/operationOrderSlice';
 import OperationOrder from '../../types/operation-order';
@@ -71,20 +64,18 @@ function OperationOrderPlanningScreen({navigation}) {
     }
 
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => navigateToOperationOrder(id)}>
-        <Card
-          key={id}
-          style={[
-            styles.containerDetails,
-            rendBorderColor(operationOrder.border),
-          ]}>
-          <Text style={styles.bold}>{operationOrder.ref}</Text>
-          <Text>{operationOrder.name}</Text>
-          <LabelText iconName="pallet" title={operationOrder.workCenter} />
-        </Card>
-      </TouchableOpacity>
+      <ObjectCard
+        onPress={() => navigateToOperationOrder(id)}
+        key={id}
+        style={rendBorderColor(operationOrder.border)}
+        upperTexts={{
+          items: [
+            {isTitle: true, displayText: operationOrder.ref},
+            {displayText: operationOrder.name},
+            {iconName: 'pallet', indicatorText: operationOrder.workCenter},
+          ],
+        }}
+      />
     );
   };
 
@@ -94,16 +85,17 @@ function OperationOrderPlanningScreen({navigation}) {
     }
 
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => navigateToOperationOrder(id)}>
-        <Card
-          key={id}
-          style={[styles.container, rendBorderColor(operationOrder.border)]}>
-          <Text style={styles.bold}>{operationOrder.ref}</Text>
-          <LabelText iconName="pallet" title={operationOrder.workCenter} />
-        </Card>
-      </TouchableOpacity>
+      <ObjectCard
+        onPress={() => navigateToOperationOrder(id)}
+        key={id}
+        style={rendBorderColor(operationOrder.border)}
+        upperTexts={{
+          items: [
+            {isTitle: true, displayText: operationOrder.ref},
+            {iconName: 'pallet', indicatorText: operationOrder.workCenter},
+          ],
+        }}
+      />
     );
   };
 
@@ -119,22 +111,5 @@ function OperationOrderPlanningScreen({navigation}) {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  containerDetails: {
-    alignSelf: 'center',
-    width: '100%',
-  },
-  container: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  bold: {
-    fontWeight: 'bold',
-  },
-});
 
 export default OperationOrderPlanningScreen;
