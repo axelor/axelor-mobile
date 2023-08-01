@@ -17,8 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Badge, Card, LabelText, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {clipboardProvider, useTranslator} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 
@@ -33,30 +32,20 @@ const LinkedManufacturingOrderCard = ({
   const I18n = useTranslator();
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => clipboardProvider.copyToClipboard(manufOrderSeq)}>
-      <Card style={styles.itemContainer}>
-        <LabelText title={manufOrderSeq} iconName="tag" />
-        <Badge
-          title={ManufacturingOrder.getStatus(statusSelect, I18n)}
-          color={ManufacturingOrder.getStatusColor(statusSelect, Colors)}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      showArrow={false}
+      onPress={() => clipboardProvider.copyToClipboard(manufOrderSeq)}
+      sideBadges={{
+        items: [
+          {
+            displayText: ManufacturingOrder.getStatus(statusSelect, I18n),
+            color: ManufacturingOrder.getStatusColor(statusSelect, Colors),
+          },
+        ],
+      }}
+      upperTexts={{items: [{iconName: 'tag', indicatorText: manufOrderSeq}]}}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  itemContainer: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-});
 
 export default LinkedManufacturingOrderCard;
