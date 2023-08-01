@@ -62,6 +62,12 @@ const SessionManagementScreen = ({route}) => {
     }
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
+  useEffect(() => {
+    if (sessionList <= 0) {
+      setPopupCreateIsOpen(true);
+    }
+  }, [sessionList]);
+
   return (
     <Screen>
       <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>

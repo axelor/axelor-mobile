@@ -178,13 +178,15 @@ const PopupCreateSession = ({
       title={I18n.t('Auth_Create_Session')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
-        <Icon
-          name="times"
-          size={20}
-          touchable={true}
-          onPress={() => setPopupIsOpen(false)}
-          style={styles.closeIcon}
-        />
+        {sessionList?.length > 0 && (
+          <Icon
+            name="times"
+            size={20}
+            touchable={true}
+            onPress={() => setPopupIsOpen(false)}
+            style={styles.closeIcon}
+          />
+        )}
         <ErrorText error={error} />
         <View>
           {!loading && nameSessionAlreadyExist && (
