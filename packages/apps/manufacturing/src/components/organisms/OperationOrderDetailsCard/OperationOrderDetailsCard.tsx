@@ -17,15 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Badge,
-  Card,
-  Icon,
-  Text,
-  LabelText,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {formatDuration, useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
@@ -78,55 +71,49 @@ const OperationOrderDetailsCard = ({
   );
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{manufOrder}</Text>
-          <Text style={styles.txtDetails}>{operationName}</Text>
-          <LabelText
-            iconName="pallet"
-            title={workcenter + ' ' + (machine ? `- ${machine}` : '')}
-          />
-          {startDate && (
-            <Text
-              style={
-                styles.txtDetails
-              }>{`${startDate.title} ${startDate.value}`}</Text>
-          )}
-          {status !== OperationOrder.status.InProgress &&
-            status !== OperationOrder.status.StandBy &&
-            endDate && (
-              <Text
-                style={
-                  styles.txtDetails
-                }>{`${endDate.title} ${endDate.value}`}</Text>
-            )}
-          {(status === OperationOrder.status.InProgress ||
-            status === OperationOrder.status.StandBy) && (
-            <LabelText
-              iconName="stopwatch"
-              title={`${
-                plannedDuration ? formatDuration(plannedDuration) : ''
-              }`}
-            />
-          )}
-        </View>
-        <View style={styles.rightContainer}>
-          {priority == null ? null : (
-            <Badge
-              color={Colors.priorityColor}
-              title={priority.toString()}
-              style={styles.badge}
-            />
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      upperTexts={{
+        items: [
+          {isTitle: true, displayText: manufOrder},
+          {displayText: operationName},
+          {
+            iconName: 'pallet',
+            indicatorText: workcenter + ' ' + (machine ? `- ${machine}` : ''),
+          },
+          {
+            displayText: `${startDate.title} ${startDate.value}`,
+            hideIf: startDate == null,
+          },
+          {
+            displayText: `${endDate.title} ${endDate.value}`,
+            hideIf:
+              status === OperationOrder.status.InProgress ||
+              status === OperationOrder.status.StandBy ||
+              endDate == null,
+          },
+          {
+            iconName: 'stopwatch',
+            indicatorText: `${
+              plannedDuration ? formatDuration(plannedDuration) : ''
+            }`,
+            hideIf:
+              status !== OperationOrder.status.InProgress &&
+              status !== OperationOrder.status.StandBy,
+          },
+        ],
+      }}
+      sideBadges={{
+        items: [
+          {
+            color: Colors.priorityColor,
+            displayText: priority.toString(),
+            style: styles.badge,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -136,34 +123,12 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  rightContainer: {
-    width: '10%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  container: {
-    flexDirection: 'row',
-  },
-  textContainer: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginRight: 5,
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
-    justifyContent: 'center',
-  },
   badge: {
     borderRadius: 50,
     width: 35,
     height: 35,
     marginBottom: 10,
+    alignSelf: 'flex-end',
   },
 });
 
