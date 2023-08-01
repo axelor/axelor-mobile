@@ -17,17 +17,9 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  Card,
-  Text,
-  StarScore,
-  Icon,
-  useThemeColor,
-  LabelText,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
-import {AOSImage, useSelector} from '@axelor/aos-mobile-core';
+import {StyleSheet} from 'react-native';
+import {StarScore, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
+import {useSelector, useMetafileUri} from '@axelor/aos-mobile-core';
 import Prospect from '../../../types/prospect';
 
 interface PartnerCardProps {
@@ -61,6 +53,7 @@ const PartnerCard = ({
   onPress,
 }: PartnerCardProps) => {
   const Colors = useThemeColor();
+  const formatMetaFile = useMetafileUri();
 
   const {crmConfig} = useSelector((state: any) => state.crmConfig);
 
@@ -73,64 +66,67 @@ const PartnerCard = ({
   }, [Colors, allProspectStatus, partnerStatus?.id]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card
-        style={[
-          styles.container,
-          crmConfig?.crmProcessOnPartner && partnerStatus ? borderStyle : null,
-          style,
-        ]}>
-        <View style={styles.containerChild}>
-          <View style={styles.containerHeader}>
-            <AOSImage
-              generalStyle={styles.imageIcon}
-              imageSize={styles.imageSize}
-              defaultIconSize={50}
-              metaFile={partnerPicture}
-              resizeMode="contain"
-            />
-            <View style={styles.containerTextHeader}>
-              <Text style={styles.textTitle} fontSize={14}>
-                {partnerFullName}
-              </Text>
-              <Text fontSize={14}>{partnerReference}</Text>
-              {partnerScoring != null && (
+    <ObjectCard
+      onPress={onPress}
+      image={{
+        generalStyle: styles.imageIcon,
+        imageSize: styles.imageSize,
+        resizeMode: 'contain',
+        defaultIconSize: 50,
+        source: formatMetaFile(partnerPicture?.id),
+      }}
+      style={[
+        crmConfig?.crmProcessOnPartner && partnerStatus ? borderStyle : null,
+        style,
+      ]}
+      upperTexts={{
+        items: [
+          {displayText: partnerFullName, isTitle: true},
+          {
+            displayText: partnerReference,
+            hideIfNull: true,
+          },
+          {
+            customComponent:
+              partnerScoring != null ? (
                 <StarScore score={partnerScoring} showMissingStar={true} />
-              )}
-              {!checkNullString(partnerCompany) && (
-                <LabelText iconName="building" title={partnerCompany} />
-              )}
-            </View>
-          </View>
-          <View style={styles.containerBody}>
-            <View style={styles.containerTextBody}>
-              {!checkNullString(partnerAdress) && (
-                <LabelText iconName="map-marker-alt" title={partnerAdress} />
-              )}
-              {!checkNullString(partnerMobilePhone) && (
-                <LabelText
-                  iconName="mobile-phone"
-                  FontAwesome5={false}
-                  title={partnerMobilePhone}
-                  size={18}
-                />
-              )}
-              {!checkNullString(partnerFixedPhone) && (
-                <LabelText iconName="phone-alt" title={partnerFixedPhone} />
-              )}
-              {!checkNullString(partnerEmail) && (
-                <LabelText iconName="envelope" title={partnerEmail} />
-              )}
-            </View>
-          </View>
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
-      </Card>
-    </TouchableOpacity>
+              ) : null,
+            hideIfNull: true,
+          },
+          {
+            indicatorText: partnerCompany,
+            hideIfNull: true,
+            iconName: 'building',
+          },
+        ],
+      }}
+      lowerTexts={{
+        items: [
+          {
+            indicatorText: partnerAdress,
+            hideIfNull: true,
+            iconName: 'map-marker-alt',
+          },
+          {
+            indicatorText: partnerMobilePhone,
+            fontAwesome5: false,
+            size: 18,
+            hideIfNull: true,
+            iconName: 'mobile-phone',
+          },
+          {
+            indicatorText: partnerFixedPhone,
+            hideIfNull: true,
+            iconName: 'phone-alt',
+          },
+          {
+            indicatorText: partnerEmail,
+            hideIfNull: true,
+            iconName: 'envelope',
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -143,25 +139,6 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  containerChild: {
-    flexDirection: 'column',
-  },
-  containerHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  containerTextHeader: {
-    flexDirection: 'column',
-    marginLeft: '3%',
-  },
-  textTitle: {
-    fontWeight: 'bold',
-  },
   imageIcon: {
     height: 50,
     width: 50,
@@ -169,14 +146,6 @@ const styles = StyleSheet.create({
   imageSize: {
     height: 50,
     width: 50,
-  },
-  containerBody: {
-    marginTop: '2%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  containerTextBody: {
-    flexDirection: 'column',
   },
 });
 
