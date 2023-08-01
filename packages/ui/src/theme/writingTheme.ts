@@ -44,7 +44,7 @@ export const writingDefaultTheme: Writing = {
   style: {
     defaultSize: 14,
     title: {fontSize: 16, fontWeight: 'bold', fontStyle: 'normal'},
-    subTitle: {fontSize: 16, fontWeight: 'normal', fontStyle: 'normal'},
+    subTitle: {fontSize: 14, fontWeight: 'normal', fontStyle: 'normal'},
     textImportant: {fontSize: 14, fontWeight: 'bold', fontStyle: 'normal'},
     textDetails: {fontSize: 14, fontWeight: 'normal', fontStyle: 'italic'},
   },

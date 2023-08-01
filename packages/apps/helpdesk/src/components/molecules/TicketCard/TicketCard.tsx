@@ -17,14 +17,10 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
-  Badge,
-  Card,
   checkNullString,
-  Icon,
-  LabelText,
-  Text,
+  ObjectCard,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -79,61 +75,64 @@ const TicketCard = ({
   }, [prioritySelect, Colors]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.leftContainer}>
-          <Text style={styles.txtImportant}>
-            {`${I18n.t('Helpdesk_Ticket')} n° ${ticketSeq}`}
-          </Text>
-          {!checkNullString(subject) && <Text>{subject}</Text>}
-          {progressSelect !== null && (
-            <Text>{`${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`}</Text>
-          )}
-          {duration !== null && (
-            <Text>{`${I18n.t('Helpdesk_Duration')}: ${formatDuration(
+    <ObjectCard
+      style={[borderStyle, style]}
+      onPress={onPress}
+      sideBadges={{
+        items: [
+          {
+            displayText: Ticket.getStatus(statusSelect, I18n),
+            color: Ticket.getStatusColor(statusSelect, Colors),
+          },
+          {
+            displayText: ticketType?.name,
+            color: colorType,
+            showIf: !checkNullString(ticketType?.name),
+          },
+        ],
+      }}
+      upperTexts={{
+        items: [
+          {
+            isTitle: true,
+            displayText: `${I18n.t('Helpdesk_Ticket')} n° ${ticketSeq}`,
+          },
+          {
+            hideIfNull: true,
+            displayText: subject,
+          },
+          {
+            hideIf: progressSelect == null,
+            displayText: `${I18n.t('Helpdesk_Progress')}: ${progressSelect} %`,
+          },
+          {
+            hideIf: duration == null,
+            displayText: `${I18n.t('Helpdesk_Duration')}: ${formatDuration(
               duration,
-            )}`}</Text>
-          )}
-          {!checkNullString(deadlineDateT) && (
-            <LabelText
-              iconName="calendar-times"
-              title={`${I18n.t('Helpdesk_Deadline')} :`}
-              value={formatDateTime(
-                deadlineDateT,
-                I18n.t('Base_DateTimeFormat'),
-              )}
-            />
-          )}
-          {!checkNullString(responsibleUser) && (
-            <Text>{`${I18n.t(
+            )}`,
+          },
+          {
+            hideIf: checkNullString(deadlineDateT),
+            indicatorText: `${I18n.t('Helpdesk_Deadline')} :`,
+            displayText: formatDateTime(
+              deadlineDateT,
+              I18n.t('Base_DateTimeFormat'),
+            ),
+            iconName: 'calendar-times',
+          },
+          {
+            hideIf: checkNullString(responsibleUser),
+            displayText: `${I18n.t(
               'Helpdesk_User_In_Charge',
-            )}: ${responsibleUser}`}</Text>
-          )}
-          {!checkNullString(assignedToUser) && (
-            <Text>{`${I18n.t(
-              'Helpdesk_Assigned_To',
-            )}: ${assignedToUser}`}</Text>
-          )}
-        </View>
-        <View style={styles.rightContainer}>
-          <View style={styles.badgeContainer}>
-            <Badge
-              title={Ticket.getStatus(statusSelect, I18n)}
-              color={Ticket.getStatusColor(statusSelect, Colors)}
-            />
-            {!checkNullString(ticketType?.name) && (
-              <Badge title={ticketType?.name} color={colorType} />
-            )}
-          </View>
-          <Icon
-            style={styles.chevron}
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+            )}: ${responsibleUser}`,
+          },
+          {
+            hideIf: checkNullString(assignedToUser),
+            displayText: `${I18n.t('Helpdesk_Assigned_To')}: ${assignedToUser}`,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -144,30 +143,5 @@ const getStyles = color =>
       borderLeftColor: color?.background,
     },
   });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingRight: 15,
-  },
-  leftContainer: {
-    width: '50%',
-    flexDirection: 'column',
-  },
-  rightContainer: {
-    width: '50%',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  txtImportant: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  badgeContainer: {
-    flexDirection: 'row',
-  },
-  chevron: {marginTop: '20%'},
-});
 
 export default TicketCard;
