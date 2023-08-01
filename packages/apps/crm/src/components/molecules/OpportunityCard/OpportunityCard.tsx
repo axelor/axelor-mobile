@@ -17,15 +17,12 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
-  Card,
-  Icon,
-  LabelText,
-  Text,
   useThemeColor,
   StarScore,
   formatNumber,
+  ObjectCard,
 } from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 import {Opportunity} from '../../../types';
@@ -59,7 +56,10 @@ const OpportunityCard = ({
   const I18n = useTranslator();
 
   const _expectedCloseDate = useMemo(
-    () => formatDate(expectedCloseDate, I18n.t('Base_DateFormat')),
+    () =>
+      expectedCloseDate
+        ? formatDate(expectedCloseDate, I18n.t('Base_DateFormat'))
+        : null,
     [expectedCloseDate, I18n],
   );
 
@@ -72,64 +72,49 @@ const OpportunityCard = ({
   }, [Colors, allOpportunityStatus, opportunityStatus?.id]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.contentContainer}>
-          <Text style={styles.txtImportant}>{reference}</Text>
-          <Text style={styles.txtImportant}>{name}</Text>
-          <LabelText
-            title={I18n.t('Crm_Opportunity_Amount')}
-            value={`${formatNumber(
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      sideBadges={{
+        items: [
+          {
+            customComponent: (
+              <StarScore score={opportunityScoring} showMissingStar={true} />
+            ),
+          },
+        ],
+      }}
+      upperTexts={{
+        items: [
+          {displayText: reference, isTitle: true},
+          {displayText: name, isTitle: true},
+          {
+            indicatorText: I18n.t('Crm_Opportunity_Amount'),
+            displayText: `${formatNumber(
               amount,
               I18n.t('Base_DecimalSpacer'),
               I18n.t('Base_ThousandSpacer'),
-            )} ${currencySymbol}`}
-          />
-          <LabelText
-            iconName="clock"
-            title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
-            value={_expectedCloseDate}
-          />
-        </View>
-        <View>
-          <StarScore score={opportunityScoring} showMissingStar={true} />
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-            style={styles.icon}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+            )} ${currencySymbol}`,
+            hideIf: amount == null,
+          },
+          {
+            indicatorText: I18n.t('Crm_Opportunity_ExpectedCloseDate'),
+            displayText: _expectedCloseDate,
+            hideIf: _expectedCloseDate == null,
+            iconName: 'clock',
+          },
+        ],
+      }}
+    />
   );
 };
 
 const getStyles = color =>
   StyleSheet.create({
-    border: {borderLeftWidth: 7, borderLeftColor: color},
+    border: {
+      borderLeftWidth: 7,
+      borderLeftColor: color,
+    },
   });
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingRight: 15,
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingRight: 10,
-  },
-  icon: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingRight: 5,
-  },
-  txtImportant: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default OpportunityCard;
