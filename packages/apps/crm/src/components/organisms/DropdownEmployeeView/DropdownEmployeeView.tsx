@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import {LiteContactCard} from '../../molecules';
@@ -52,7 +52,6 @@ const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
         contactFullname={contact.simpleFullName}
         fixedPhoneNumber={contact.fixedPhone}
         email={contact['emailAddress.address']}
-        style={styles.item}
         onPress={() =>
           navigation.navigate('ContactDetailsScreen', {
             idContact: contact.id,
@@ -62,12 +61,5 @@ const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
     );
   });
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default DropdownEmployeeView;
