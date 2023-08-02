@@ -29,6 +29,7 @@ import {
   NoActiveSessionButton,
   ChooseSessionButton,
   CreateSessionButton,
+  SessionListCard,
 } from '../components';
 import {useSessions} from '../sessions';
 import {clearError} from '../features/authSlice';
@@ -81,6 +82,14 @@ const SessionManagementScreen = ({route}) => {
           <View style={styles.imageContainer}>
             <LogoImage logoFile={logoFile} url={sessionActive?.url} />
           </View>
+          <SessionListCard
+            logoFile={logoFile}
+            onChange={setSession}
+            sessionList={sessionList}
+            sessionActive={sessionActive}
+            setPopupSessionIsOpen={setPopupConnectionIsOpen}
+            setPopupCreateIsOpen={setPopupCreateIsOpen}
+          />
           <View style={styles.buttonContainer}>
             <ConnectSessionButton
               sessionActive={session}
@@ -105,6 +114,7 @@ const SessionManagementScreen = ({route}) => {
             modeDebug={modeDebug}
             popupIsOpen={popupCreateIsOpen}
             setPopupIsOpen={setPopupCreateIsOpen}
+            setPopupCreateIsOpen={setPopupCreateIsOpen}
             showUrlInput={showUrlInput}
             testInstanceConfig={testInstanceConfig}
             releaseInstanceConfig={releaseInstanceConfig}

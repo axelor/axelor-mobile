@@ -44,8 +44,7 @@ const getStyles = (Colors: ThemeColors) =>
       borderRadius: Dimensions.get('window').width * 0.07,
       width: Dimensions.get('window').width * 0.07,
       height: Dimensions.get('window').width * 0.07,
-      position: 'absolute',
-      left: '-10%',
+      marginHorizontal: 4,
     },
   });
 
