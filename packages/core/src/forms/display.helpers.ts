@@ -140,7 +140,11 @@ export const getWidget = (_field: DisplayField): Widget => {
     return 'increment';
   }
 
-  if (_field.type === 'date' || _field.type === 'datetime') {
+  if (
+    _field.type === 'date' ||
+    _field.type === 'datetime' ||
+    _field.type === 'time'
+  ) {
     return 'date';
   }
 

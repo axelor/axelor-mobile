@@ -121,7 +121,7 @@ const Field = ({
       return (
         <DateInput
           title={I18n.t(_field.titleKey)}
-          mode={_field.type as 'date' | 'datetime'}
+          mode={_field.type as 'date' | 'datetime' | 'time'}
           defaultDate={value ? new Date(value) : null}
           onDateChange={_date =>
             handleChange(_date.toISOString()?.split('T')[0])

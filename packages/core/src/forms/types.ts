@@ -83,6 +83,7 @@ export type InputType =
   | 'phone'
   | 'date'
   | 'datetime'
+  | 'time'
   | 'number'
   | 'boolean'
   | 'array'
