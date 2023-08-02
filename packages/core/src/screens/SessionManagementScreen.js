@@ -89,6 +89,7 @@ const SessionManagementScreen = ({route}) => {
             sessionActive={sessionActive}
             setPopupSessionIsOpen={setPopupConnectionIsOpen}
             setPopupCreateIsOpen={setPopupCreateIsOpen}
+            session={session}
           />
           <View style={styles.buttonContainer}>
             <ConnectSessionButton

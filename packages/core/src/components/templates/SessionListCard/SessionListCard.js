@@ -42,6 +42,7 @@ const SessionListCard = ({
   logoFile,
   setPopupSessionIsOpen,
   setPopupCreateIsOpen,
+  session,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -94,7 +95,13 @@ const SessionListCard = ({
               key={index}
               onPress={() => changeActiveSession(_session.id)}
               activeOpacity={0.9}>
-              <Card style={styles.cardContainer}>
+              <Card
+                style={[
+                  styles.cardContainer,
+                  _session.id === session.id
+                    ? styles.selectBorderCard
+                    : styles.borderCard,
+                ]}>
                 <View style={styles.imageContainer}>
                   <LogoImage logoFile={logoFile} url={_session?.url} />
                 </View>
@@ -128,6 +135,14 @@ const getStyles = Colors =>
       width: '100%',
       alignItems: 'center',
       height: Dimensions.get('window').height * 0.15,
+    },
+    borderCard: {
+      borderWidth: 1,
+      borderColor: Colors.secondaryColor_dark.background,
+    },
+    selectBorderCard: {
+      borderWidth: 1,
+      borderColor: Colors.primaryColor.background,
     },
     textTitle: {
       fontSize: 18,
