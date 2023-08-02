@@ -17,16 +17,17 @@
  */
 
 import React, {useEffect, useMemo} from 'react';
-import {FormView} from '../components';
 import {useDispatch, useSelector} from 'react-redux';
+import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {FormView} from '../components';
 import {fetchJsonFieldsOfModel} from '../features/metaJsonFieldSlice';
-import {mapStudioFields} from '../forms/studio/display.helpers';
-import {Form, formConfigsProvider} from '../forms';
+import {Form, formConfigsProvider, mapStudioFields} from '../forms';
 
 const FORM_KEY = 'attrs-form';
 
 const JsonFieldScreen = ({route}) => {
   const {model, object} = route.params;
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {fields: _fields} = useSelector((state: any) => state.metaJsonField);
@@ -36,13 +37,13 @@ const JsonFieldScreen = ({route}) => {
   }, [dispatch, model]);
 
   const form: Form = useMemo(() => {
-    const {fields, panels} = mapStudioFields(_fields);
+    const {fields, panels} = mapStudioFields(_fields, Colors);
     return {
       readonlyIf: () => false,
       fields,
       panels,
     };
-  }, [_fields]);
+  }, [Colors, _fields]);
 
   useEffect(() => {
     formConfigsProvider.registerFrom(FORM_KEY, form);
@@ -50,7 +51,15 @@ const JsonFieldScreen = ({route}) => {
 
   return (
     <FormView
-      actions={[]}
+      actions={[
+        {
+          key: 'refresh-config',
+          type: 'refresh',
+          customAction: () => {
+            dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
+          },
+        },
+      ]}
       formKey={FORM_KEY}
       defaultValue={object?.attrs == null ? {} : JSON.parse(object.attrs)}
     />

@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Label} from '@axelor/aos-mobile-ui';
+import {Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel} from '../types';
 import CustomSearchBar from '../../components/pages/FormView/CustomSearchBar';
 
 export const mapStudioFields = (
   items: any[],
+  Colors,
 ): {panels: JSONObject<Panel>; fields: JSONObject<Field>} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
@@ -36,6 +37,7 @@ export const mapStudioFields = (
     for (const modelField of modelFields) {
       const {_fields, _panels} = manageContentOfModel(
         metaJsonFields.filter(_item => _item.modelField === modelField),
+        Colors,
       );
 
       formFields = {...formFields, ..._fields};
@@ -58,8 +60,44 @@ export const mapStudioTypeToInputType = (type: string): InputType => {
   }
 };
 
+const BootstrapMapper = {
+  error: ['warning'],
+  danger: ['danger'],
+  info: ['info'],
+  success: ['primary', 'success'],
+  light: ['light', 'secondary'],
+  dark: ['dark'],
+};
+
+export const mapStudioCSSToLabelOptions = (
+  item: any,
+  Colors: ThemeColors,
+): any => {
+  const css: string =
+    item?.widgetAttrs == null
+      ? ''
+      : (JSON.parse(item.widgetAttrs)?.css as string);
+
+  let result: any = {};
+
+  Object.entries(BootstrapMapper).forEach(([key, values]) => {
+    if (Array.isArray(values) && values.some(_item => css.includes(_item))) {
+      if (key === 'light') {
+        result.color = Colors.secondaryColor;
+      } else if (key === 'dark') {
+        result.color = Colors.secondaryColor_dark;
+      } else {
+        result.type = key;
+      }
+    }
+  });
+
+  return result;
+};
+
 const manageContentOfModel = (
   items: any,
+  Colors: ThemeColors,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>} => {
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
@@ -94,7 +132,12 @@ const manageContentOfModel = (
             order: item.sequence,
             parentPanel: lastPanel,
             widget: 'custom',
-            customComponent: () => Label({message: item.title, type: 'info'}),
+            customComponent: () =>
+              Label({
+                message: item.title,
+                type: 'info',
+                ...mapStudioCSSToLabelOptions(item, Colors),
+              }),
           };
           break;
         default:
