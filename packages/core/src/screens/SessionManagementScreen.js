@@ -42,7 +42,7 @@ const SessionManagementScreen = ({route}) => {
 
   const modeDebug = useMemo(() => __DEV__, []);
 
-  const {sessionList, sessionActive} = useSessions();
+  const {sessionList, sessionActive, sessionDefault} = useSessions();
 
   const showUrlInput = useMemo(() => {
     if (modeDebug) {
@@ -55,6 +55,9 @@ const SessionManagementScreen = ({route}) => {
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
   const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
+  const [session, setSession] = useState(
+    sessionDefault != null ? sessionDefault : sessionActive,
+  );
 
   useEffect(() => {
     if (!popupCreateIsOpen && !popupConnectionIsOpen) {
@@ -66,7 +69,10 @@ const SessionManagementScreen = ({route}) => {
     if (sessionList <= 0) {
       setPopupCreateIsOpen(true);
     }
-  }, [sessionList]);
+    if (sessionDefault != null) {
+      setPopupConnectionIsOpen(true);
+    }
+  }, [sessionList, sessionDefault]);
 
   return (
     <Screen>
@@ -77,7 +83,7 @@ const SessionManagementScreen = ({route}) => {
           </View>
           <View style={styles.buttonContainer}>
             <ConnectSessionButton
-              sessionActive={sessionActive}
+              sessionActive={session}
               onPress={() => setPopupConnectionIsOpen(true)}
             />
             <NoActiveSessionButton
@@ -104,7 +110,7 @@ const SessionManagementScreen = ({route}) => {
             releaseInstanceConfig={releaseInstanceConfig}
           />
           <PopupSession
-            sessionActive={sessionActive}
+            sessionActive={session}
             popupIsOpen={popupConnectionIsOpen}
             setPopupIsOpen={setPopupConnectionIsOpen}
             showUrlInput={showUrlInput}
@@ -115,6 +121,7 @@ const SessionManagementScreen = ({route}) => {
             popupIsOpen={popupSessionListIsOpen}
             setPopupIsOpen={setPopupSessionListIsOpen}
             setPopupSessionIsOpen={setPopupConnectionIsOpen}
+            onChange={setSession}
           />
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>

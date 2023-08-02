@@ -19,7 +19,13 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, PopUp, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  PopUp,
+  useThemeColor,
+  WarningCard,
+  Checkbox,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
   PasswordInput,
@@ -100,6 +106,7 @@ const PopupCreateSession = ({
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
+  const [isDefault, setIsDefault] = useState(false);
 
   const parseQrCode = useCallback(scanValue => {
     if (scanValue.includes('username') === true) {
@@ -149,14 +156,19 @@ const PopupCreateSession = ({
           url: url,
           username: username,
           isActive: true,
+          isDefault: isDefault,
         },
       });
     }
-  }, [dispatch, password, sessionName, url, username, error]);
+  }, [dispatch, password, sessionName, url, username, error, isDefault]);
 
   const handleTestUrl = useCallback(() => {
     dispatch(isUrlValid({url}));
   }, [dispatch, url]);
+
+  useEffect(() => {
+    handleTestUrl();
+  }, [handleTestUrl, url]);
 
   useEffect(() => {
     setIsOpen(popupIsOpen);
@@ -242,6 +254,13 @@ const PopupCreateSession = ({
           style={styles.input}
           showRequiredFields={showRequiredFields}
         />
+        <Checkbox
+          title={I18n.t('Auth_Always_Active')}
+          isDefaultChecked={isDefault}
+          onChange={setIsDefault}
+          iconSize={20}
+          style={styles.checkbox}
+        />
         {loading ? (
           <ActivityIndicator size="large" />
         ) : (
@@ -278,6 +297,9 @@ const styles = StyleSheet.create({
   },
   warningCard: {
     width: '100%',
+  },
+  checkbox: {
+    alignSelf: 'flex-start',
   },
 });
 

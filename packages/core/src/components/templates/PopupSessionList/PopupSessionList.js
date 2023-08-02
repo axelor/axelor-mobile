@@ -33,6 +33,7 @@ const PopupSessionList = ({
   sessionList,
   setPopupIsOpen,
   setPopupSessionIsOpen,
+  onChange,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -44,10 +45,11 @@ const PopupSessionList = ({
   const changeActiveSession = useCallback(
     sessionId => {
       sessionStorage.changeActiveSession({sessionId});
+      onChange(sessionStorage.getActiveSession());
       setPopupIsOpen(false);
       setPopupSessionIsOpen(true);
     },
-    [setPopupIsOpen, setPopupSessionIsOpen],
+    [setPopupIsOpen, setPopupSessionIsOpen, onChange],
   );
 
   const removeSession = useCallback(sessionId => {

@@ -33,6 +33,19 @@ export const setActiveSession = (
   });
 };
 
+export const setDefaultSession = (
+  sessionList: Session[],
+  defaultSessionId: string,
+): Session[] => {
+  return sessionList.map(_session => {
+    if (_session.id === defaultSessionId) {
+      return {..._session, isDefault: true};
+    }
+
+    return {..._session, isDefault: false};
+  });
+};
+
 export const getStorageUrl = (): string => {
   return storage.getItem(URL_STORAGE_KEY);
 };

@@ -18,7 +18,7 @@
 
 import {storage, Storage} from '../storage/Storage';
 import {Session} from './type';
-import {setActiveSession} from './utils';
+import {setActiveSession, setDefaultSession} from './utils';
 
 const SESSION_KEY = 'ConnectionSessions';
 
@@ -26,9 +26,11 @@ class SessionStorage {
   private refreshCallBack: ({
     sessionList,
     activeSession,
+    defaultSession,
   }: {
     sessionList: Session[];
     activeSession: Session;
+    defaultSession: Session;
   }) => void;
 
   constructor(private localStorage: Storage) {}
@@ -42,6 +44,7 @@ class SessionStorage {
       this.refreshCallBack({
         sessionList: this.getSessionList(),
         activeSession: this.getActiveSession(),
+        defaultSession: this.getDefaultSession(),
       });
     }
   }
@@ -59,6 +62,16 @@ class SessionStorage {
     }
 
     return sessionList.find(_session => _session.isActive === true);
+  }
+
+  getDefaultSession(): Session {
+    const sessionList = this.getSessionList();
+
+    if (!Array.isArray(sessionList) || sessionList.length === 0) {
+      return null;
+    }
+
+    return sessionList.find(_session => _session.isDefault === true);
   }
 
   addSession({session}: {session: Session}) {
@@ -82,7 +95,14 @@ class SessionStorage {
     }
 
     const activeSessionList = setActiveSession(sessionList, session.id);
-    this.localStorage.setItem(SESSION_KEY, activeSessionList);
+    const defaultSessionList = session.isDefault
+      ? setDefaultSession(activeSessionList, session.id)
+      : [];
+
+    this.localStorage.setItem(
+      SESSION_KEY,
+      session.isDefault ? defaultSessionList : activeSessionList,
+    );
 
     this.updateState();
   }

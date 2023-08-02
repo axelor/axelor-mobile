@@ -23,6 +23,7 @@ import {Session} from './type';
 export const useSessions = (): {
   sessionList: Session[];
   sessionActive: Session;
+  sessionDefault: Session;
 } => {
   const [sessionList, setSessionList] = useState(
     sessionStorage.getSessionList(),
@@ -31,11 +32,18 @@ export const useSessions = (): {
   const [sessionActive, setSessionActive] = useState(
     sessionStorage.getActiveSession(),
   );
+  const [sessionDefault, setSessionDefault] = useState(
+    sessionStorage.getDefaultSession(),
+  );
 
-  const refreshData = useCallback(({sessionList: sessions, activeSession}) => {
-    setSessionActive(activeSession);
-    setSessionList(sessions);
-  }, []);
+  const refreshData = useCallback(
+    ({sessionList: sessions, activeSession, defaultSession}) => {
+      setSessionActive(activeSession);
+      setSessionList(sessions);
+      setSessionDefault(defaultSession);
+    },
+    [],
+  );
 
   useEffect(() => {
     sessionStorage.register(refreshData);
@@ -45,6 +53,7 @@ export const useSessions = (): {
     return {
       sessionList: sessionList,
       sessionActive: sessionActive,
+      sessionDefault: sessionDefault,
     };
-  }, [sessionActive, sessionList]);
+  }, [sessionActive, sessionList, sessionDefault]);
 };
