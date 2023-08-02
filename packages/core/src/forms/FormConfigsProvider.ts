@@ -16,28 +16,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Form, FormConfigs} from './types';
+import {addModuleForms, fetchOptionsOfFormKey} from './register.helpers';
 
 class FormConfigsProvider {
   private formConfigs: FormConfigs;
+  private refreshCallBack: Function;
 
   constructor() {
     this.formConfigs = {};
+    this.refreshCallBack = () => {};
+  }
+
+  register(callBack) {
+    this.refreshCallBack = callBack;
   }
 
   init(configs: FormConfigs) {
     this.formConfigs = configs;
   }
 
+  private updateState() {
+    this.refreshCallBack(this.formConfigs);
+  }
+
   getFormConfig(key: string): Form {
-    const registeredForms = Object.keys(this.formConfigs);
+    return fetchOptionsOfFormKey(this.formConfigs, key);
+  }
 
-    if (registeredForms.includes(key)) {
-      return this.formConfigs[key];
-    }
+  registerFrom(key: string, options: Form) {
+    this.formConfigs = addModuleForms({...this.formConfigs}, {[key]: options});
 
-    return null;
+    this.updateState();
+  }
+
+  getAllConfigs(): FormConfigs {
+    return this.formConfigs;
   }
 }
 
 export const formConfigsProvider = new FormConfigsProvider();
+
+export const useFormConfig = (modelKey: string): {config: Form} => {
+  const [forms, setForms] = useState(formConfigsProvider.getAllConfigs());
+
+  useEffect(() => {
+    formConfigsProvider.register(setForms);
+  }, []);
+
+  const getFormConfigOfModel = useCallback(
+    key => fetchOptionsOfFormKey(forms, key),
+    [forms],
+  );
+
+  return useMemo(
+    () => ({config: getFormConfigOfModel(modelKey)}),
+    [getFormConfigOfModel, modelKey],
+  );
+};

@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
@@ -32,14 +32,13 @@ import {
   Action,
   DisplayField,
   DisplayPanel,
-  Form,
-  formConfigsProvider,
   getButtonTitleKey,
   getFields,
   getValidationErrors,
   isField,
   isObjectMissingRequiredField,
   sortContent,
+  useFormConfig,
   validateSchema,
 } from '../../../forms';
 import {default as FieldComponent} from './Field';
@@ -50,7 +49,8 @@ import {
   createRecord,
   refreshRecord,
   updateRecord,
-} from '../../../features/FormSlice';
+} from '../../../features/formSlice';
+import {isEmpty} from '../../../utils';
 
 interface FormProps {
   defaultValue?: any;
@@ -63,16 +63,13 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
+  const {config} = useFormConfig(formKey);
+
   const storeState = useSelector((state: any) => state);
   const {record} = useSelector((state: any) => state.form);
 
   const [object, setObject] = useState(defaultValue);
   const [errors, setErrors] = useState<any[]>();
-
-  const config: Form = useMemo(
-    () => formConfigsProvider.getFormConfig(formKey),
-    [formKey],
-  );
 
   const formContent: (DisplayPanel | DisplayField)[] = useMemo(
     () => sortContent(config),
@@ -84,8 +81,22 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   }, [dispatch]);
 
   useEffect(() => {
-    setObject(record);
-  }, [record]);
+    setObject(_current => {
+      if (isEmpty(record)) {
+        if (isEmpty(defaultValue) || _current === defaultValue) {
+          return _current;
+        } else {
+          return defaultValue;
+        }
+      }
+
+      if (_current === record) {
+        return _current;
+      } else {
+        return record;
+      }
+    });
+  }, [defaultValue, record]);
 
   const handleFieldChange = (newValue: any, fieldName: string) => {
     setObject(_current => {
@@ -263,21 +274,33 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   if (config == null) {
     return (
       <View>
-        <WarningCard errorMessage={'Error'} />
+        <WarningCard errorMessage={I18n.t('Base_FormNotFound')} />
       </View>
     );
   }
 
   return (
-    <Screen fixedItems={actions.map(renderAction)}>
-      <KeyboardAvoidingScrollView style={styles.scroll}>
+    <Screen
+      fixedItems={actions.length === 0 ? undefined : actions.map(renderAction)}>
+      <KeyboardAvoidingScrollView
+        keyboardOffset={{
+          ios: 70,
+          android: 100,
+        }}
+        style={styles.scroll}>
         {Array.isArray(errors) && (
           <ConstraintsValidatorPopup
             onContinue={() => setErrors(null)}
             errors={errors}
           />
         )}
-        <View style={styles.container}>{formContent.map(renderItem)}</View>
+        <View
+          style={[
+            styles.container,
+            Platform.OS === 'ios' ? styles.containerZIndex : null,
+          ]}>
+          {formContent.map(renderItem)}
+        </View>
       </KeyboardAvoidingScrollView>
     </Screen>
   );
@@ -285,10 +308,12 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
 const styles = StyleSheet.create({
   scroll: {
-    height: null,
+    height: Dimensions.get('window').height,
   },
   container: {
     alignItems: 'center',
+  },
+  containerZIndex: {
     zIndex: 30,
   },
 });

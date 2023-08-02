@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {Schema, mixed, number, object} from 'yup';
 import {Models, Module, ObjectFields, SearchFields, SortFields} from './Module';
 
 export const addModuleObjectFields = (
@@ -31,7 +32,13 @@ export const addModuleObjectFields = (
     if (currentObjects.includes(_objectKey)) {
       result[_objectKey] = result[_objectKey].concat(moduleObjects[_objectKey]);
     } else {
-      result[_objectKey] = moduleObjects[_objectKey];
+      result[_objectKey] = (
+        object({
+          id: number(),
+          version: number(),
+          attrs: mixed(),
+        }) as Schema
+      ).concat(moduleObjects[_objectKey]);
     }
   });
 

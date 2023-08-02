@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleProp, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {
   Checkbox,
   FormHtmlInput,
@@ -88,10 +88,11 @@ const Field = ({
     case 'checkbox':
       return (
         <Checkbox
+          style={[fieldStyle, styles.checkbox]}
           title={I18n.t(_field.titleKey)}
           isDefaultChecked={value}
           onChange={handleChange}
-          disabled={!isGlobalReadonly || _field.readonly}
+          disabled={isGlobalReadonly || _field.readonly}
           {..._field.options}
         />
       );
@@ -100,18 +101,8 @@ const Field = ({
         <StarScore
           score={value}
           onPress={handleChange}
-          editMode={!isGlobalReadonly || _field.readonly}
+          editMode={!isGlobalReadonly && !_field.readonly}
           showMissingStar={true}
-          {..._field.options}
-        />
-      );
-    case 'checkbox':
-      return (
-        <Checkbox
-          title={I18n.t(_field.titleKey)}
-          isDefaultChecked={value}
-          onChange={handleChange}
-          disabled={!isGlobalReadonly || _field.readonly}
           {..._field.options}
         />
       );
@@ -143,6 +134,7 @@ const Field = ({
     case 'HTML':
       return (
         <FormHtmlInput
+          style={fieldStyle}
           title={I18n.t(_field.titleKey)}
           defaultValue={value}
           onChange={handleChange}
@@ -154,6 +146,7 @@ const Field = ({
     case 'increment':
       return (
         <FormIncrementInput
+          style={fieldStyle}
           title={I18n.t(_field.titleKey)}
           defaultValue={value}
           onChange={handleChange}
@@ -180,5 +173,11 @@ const Field = ({
       );
   }
 };
+
+const styles = StyleSheet.create({
+  checkbox: {
+    marginVertical: 5,
+  },
+});
 
 export default Field;

@@ -29,14 +29,19 @@ const HeaderOptionsMenu = ({
   modelId,
   actions = [],
   disableMailMessages,
+  disableJsonFields,
+  object,
   attachedFileScreenTitle,
 }) => {
-  const {mailMessagesAction, attachedFilesAction} = useBasicActions({
-    model,
-    modelId,
-    disableMailMessages,
-    attachedFileScreenTitle,
-  });
+  const {mailMessagesAction, attachedFilesAction, jsonFieldsAction} =
+    useBasicActions({
+      model,
+      modelId,
+      disableMailMessages,
+      disableJsonFields,
+      object,
+      attachedFileScreenTitle,
+    });
 
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
@@ -50,10 +55,10 @@ const HeaderOptionsMenu = ({
 
   const allActions = useMemo(
     () =>
-      [attachedFilesAction, mailMessagesAction, ...actions]
+      [attachedFilesAction, mailMessagesAction, jsonFieldsAction, ...actions]
         .filter(_action => !_action.hideIf)
         .sort((a, b) => a.order - b.order),
-    [actions, attachedFilesAction, mailMessagesAction],
+    [actions, attachedFilesAction, mailMessagesAction, jsonFieldsAction],
   );
 
   const headerActions = useMemo(

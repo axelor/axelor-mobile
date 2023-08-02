@@ -25,12 +25,12 @@ import {
 } from '../forms/api.helpers';
 
 export const createRecord = createAsyncThunk(
-  'form/create',
+  'form/createRecord',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _createRecord,
       data: data,
-      action: 'Base_SliceAction_FetchAttachedFiles',
+      action: 'Base_SliceAction_CreateRecord',
       getState: getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     });
@@ -38,12 +38,12 @@ export const createRecord = createAsyncThunk(
 );
 
 export const updateRecord = createAsyncThunk(
-  'form/update',
+  'form/updateRecord',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _updateRecord,
       data: data,
-      action: 'Base_SliceAction_FetchAttachedFiles',
+      action: 'Base_SliceAction_UpdateRecord',
       getState: getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     });
@@ -51,12 +51,12 @@ export const updateRecord = createAsyncThunk(
 );
 
 export const refreshRecord = createAsyncThunk(
-  'form/refresh',
+  'form/refreshRecord',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _refreshRecord,
       data: data,
-      action: 'Base_SliceAction_FetchAttachedFiles',
+      action: 'Base_SliceAction_RefreshRecord',
       getState: getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -87,4 +87,4 @@ const formSlice = createSlice({
 
 export const {clearRecord} = formSlice.actions;
 
-export const fromReducer = formSlice.reducer;
+export const formReducer = formSlice.reducer;

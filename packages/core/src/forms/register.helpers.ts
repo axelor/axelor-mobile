@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Field, FormConfigs, JSONObject, Panel} from './types';
+import {checkNullString} from '@axelor/aos-mobile-ui';
+import {Field, Form, FormConfigs, JSONObject, Panel} from './types';
 
 export const mergePanels = (
   currentPanels: JSONObject<Panel>,
@@ -79,7 +80,7 @@ export const mergeFields = (
 export const addModuleForms = (
   forms: FormConfigs,
   _moduleForms: FormConfigs,
-) => {
+): FormConfigs => {
   if (_moduleForms == null || Object.keys(_moduleForms).length === 0) {
     return forms;
   }
@@ -103,4 +104,21 @@ export const addModuleForms = (
       };
     }
   }
+
+  return result;
+};
+
+export const fetchOptionsOfFormKey = (
+  forms: FormConfigs = {},
+  key: string,
+): Form => {
+  if (checkNullString(key)) {
+    return null;
+  }
+
+  if (!Object.keys(forms).includes(key)) {
+    return null;
+  }
+
+  return forms[key];
 };

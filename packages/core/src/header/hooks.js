@@ -28,6 +28,8 @@ export const useBasicActions = ({
   model,
   modelId,
   disableMailMessages,
+  disableJsonFields = false,
+  object,
   attachedFileScreenTitle,
 }) => {
   const navigation = useNavigation();
@@ -112,17 +114,40 @@ export const useBasicActions = ({
     navigation,
   ]);
 
+  const jsonFieldsAction = useMemo(() => {
+    return {
+      key: 'metaJsonFields',
+      order: 30,
+      title: I18n.t('Base_MetaJsonFields'),
+      iconName: 'paint-brush',
+      hideIf: disableJsonFields || object == null,
+      onPress: () =>
+        navigation.navigate('JsonFieldScreen', {
+          model,
+          object,
+        }),
+      showInHeader: true,
+    };
+  }, [I18n, disableJsonFields, model, navigation, object]);
+
   return useMemo(() => {
     if (modelConfigured) {
       return {
         mailMessagesAction,
         attachedFilesAction,
+        jsonFieldsAction,
       };
     }
 
     return {
       mailMessagesAction: {key: 'mailMessages', hideIf: true},
       attachedFilesAction: {key: 'attachedFiles', hideIf: true},
+      jsonFieldsAction: {key: 'metaJsonFields', hideIf: true},
     };
-  }, [attachedFilesAction, mailMessagesAction, modelConfigured]);
+  }, [
+    attachedFilesAction,
+    jsonFieldsAction,
+    mailMessagesAction,
+    modelConfigured,
+  ]);
 };
