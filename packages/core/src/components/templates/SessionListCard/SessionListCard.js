@@ -241,7 +241,7 @@ const getStyles = Colors =>
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: Colors.primaryColor.background_light,
+      backgroundColor: Colors.secondaryColor_dark.foreground,
       borderWidth: 2,
       borderColor: Colors.primaryColor.background,
       borderRadius: Dimensions.get('window').width * 0.07,

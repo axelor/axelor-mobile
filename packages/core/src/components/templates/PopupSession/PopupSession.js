@@ -19,24 +19,12 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
 import {Icon, PopUp, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
-import {PasswordInput, UsernameInput} from '../../organisms';
+import {PasswordInput} from '../../organisms';
 import {ErrorText, LoginButton} from '../../molecules';
-import {
-  useScanActivator,
-  useScannerDeviceActivator,
-} from '../../../hooks/use-scan-activator';
-import {
-  useScannedValueByKey,
-  useScannerSelector,
-} from '../../../features/scannerSlice';
-import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
+import {} from '../../../hooks/use-scan-activator';
 import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../../../sessions';
-import {checkNullString} from '../../../utils';
-
-const urlScanKey = 'urlUsername_FastConnection_login';
 
 const PopupSession = ({
   popupIsOpen,
@@ -49,69 +37,37 @@ const PopupSession = ({
   const dispatch = useDispatch();
 
   const {loading, error} = useSelector(state => state.auth);
-  const {enable: onScanPress} = useScanActivator(urlScanKey);
-  const {enable: enableScanner} = useScannerDeviceActivator(urlScanKey);
-  const {isEnabled, scanKey} = useScannerSelector();
-  const scannedValue = useScannedValueByKey(urlScanKey);
-  const scanData = useCameraScannerValueByKey(urlScanKey);
 
   const [isOpen, setIsOpen] = useState(false);
   const [showRequiredFields, setShowRequiredFields] = useState(false);
-  const [username, setUsername] = useState(sessionActive?.username);
   const [password, setPassword] = useState('');
 
   const modeDebug = useMemo(() => __DEV__, []);
 
   useEffect(() => {
     if (sessionActive != null) {
-      setUsername(sessionActive.username);
       setPassword(modeDebug ? testInstanceConfig?.defaultPassword : '');
     }
   }, [modeDebug, sessionActive, testInstanceConfig?.defaultPassword]);
 
   const onPressLogin = useCallback(() => {
-    dispatch(login({url: sessionActive.url, username, password}));
-  }, [dispatch, password, sessionActive, username]);
+    dispatch(
+      login({
+        url: sessionActive.url,
+        username: sessionActive.username,
+        password,
+      }),
+    );
+  }, [dispatch, password, sessionActive]);
 
   const deleteSession = useCallback(() => {
     sessionStorage.removeSession({sessionId: sessionActive?.id});
     setPopupIsOpen(false);
   }, [sessionActive?.id, setPopupIsOpen]);
 
-  const parseQrCode = useCallback(scanValue => {
-    if (scanValue.includes('username') === true) {
-      const parseScannnedData = JSON.parse(scanValue);
-      setUsername(parseScannnedData.username);
-    }
-    setIsOpen(true);
-  }, []);
-
-  const disabledLogin = useMemo(
-    () => checkNullString(username) || checkNullString(password) || loading,
-    [loading, password, username],
-  );
-
-  useEffect(() => {
-    if (scannedValue) {
-      parseQrCode(scannedValue);
-    } else if (scanData?.value != null) {
-      parseQrCode(scanData?.value);
-    }
-  }, [parseQrCode, scanData, scannedValue]);
-
   useEffect(() => {
     setIsOpen(popupIsOpen);
   }, [popupIsOpen]);
-
-  const handleScanPress = useCallback(() => {
-    DeviceInfo.getManufacturer()
-      .then(manufacturer => {
-        if (manufacturer !== 'Zebra Technologies') {
-          setIsOpen(false);
-        }
-      })
-      .then(() => onScanPress());
-  }, [onScanPress]);
 
   if (sessionActive == null) {
     return null;
@@ -136,20 +92,11 @@ const PopupSession = ({
             size={20}
           />
         )}
-        <UsernameInput
-          value={username}
-          onChange={setUsername}
-          readOnly={loading}
-          showScanIcon={!showUrlInput}
-          onScanPress={handleScanPress}
-          onSelection={enableScanner}
-          scanIconColor={
-            isEnabled && scanKey === urlScanKey
-              ? Colors.primaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-          style={styles.input}
-          showRequiredFields={showRequiredFields}
+        <LabelText
+          iconName="user"
+          title={sessionActive.username}
+          style={styles.labText}
+          size={20}
         />
         <PasswordInput
           value={password}
@@ -164,7 +111,6 @@ const PopupSession = ({
           <LoginButton
             onPress={onPressLogin}
             onDisabledPress={() => setShowRequiredFields(true)}
-            disabled={disabledLogin}
           />
         )}
         <Icon

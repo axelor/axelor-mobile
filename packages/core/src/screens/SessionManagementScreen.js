@@ -25,10 +25,6 @@ import {
   PopupSessionList,
   PopupCreateSession,
   PopupSession,
-  ConnectSessionButton,
-  NoActiveSessionButton,
-  ChooseSessionButton,
-  CreateSessionButton,
   SessionListCard,
 } from '../components';
 import {useSessions} from '../sessions';
@@ -91,25 +87,6 @@ const SessionManagementScreen = ({route}) => {
             setPopupCreateIsOpen={setPopupCreateIsOpen}
             session={session}
           />
-          <View style={styles.buttonContainer}>
-            <ConnectSessionButton
-              sessionActive={session}
-              onPress={() => setPopupConnectionIsOpen(true)}
-            />
-            <NoActiveSessionButton
-              numberSessions={sessionList?.length}
-              sessionActive={sessionActive}
-            />
-            <ChooseSessionButton
-              sessionActive={sessionActive}
-              numberSessions={sessionList?.length}
-              onPress={() => setPopupSessionListIsOpen(true)}
-            />
-            <CreateSessionButton
-              numberSessions={sessionList?.length}
-              onPress={() => setPopupCreateIsOpen(true)}
-            />
-          </View>
           <PopupCreateSession
             sessionList={sessionList}
             modeDebug={modeDebug}
@@ -156,10 +133,6 @@ const styles = StyleSheet.create({
     height: '15%',
     marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
     marginBottom: 10,
-  },
-  buttonContainer: {
-    width: '70%',
-    marginTop: Dimensions.get('window').height < 500 ? '15%' : '35%',
   },
   copyright: {
     position: 'absolute',
