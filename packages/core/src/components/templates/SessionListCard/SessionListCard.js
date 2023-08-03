@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -51,38 +51,43 @@ const SessionListCard = ({
 
   const {onTouchStart, onTouchEnd} = useSwipe(onSwipeLeft, onSwipeRight, 6);
 
+  const [showButton, setShowButton] = useState(false);
+
   const sessions = useMemo(() => sessionList, [sessionList]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const translateXAnim = useRef(new Animated.Value(1)).current;
+
   const selectedIndex = sessions.findIndex(
     _session => _session.id === session.id,
   );
 
   function onSwipeLeft() {
-    console.log('SWIPE_LEFT');
     Animated.timing(translateXAnim, {
-      toValue: -50,
+      toValue: -60,
       duration: 1000,
       useNativeDriver: true,
     }).start();
     setPopupSessionIsOpen(false);
+    setShowButton(true);
+    setPopupSessionIsOpen(false);
+    setShowButton(true);
   }
 
   function onSwipeRight() {
-    console.log('SWIPE_RIGHT');
     Animated.timing(translateXAnim, {
       toValue: 0,
       duration: 1000,
       useNativeDriver: true,
     }).start();
     setPopupSessionIsOpen(false);
+    setShowButton(false);
   }
 
-  /*const removeSession = useCallback(sessionId => {
+  const removeSession = useCallback(sessionId => {
     sessionStorage.removeSession({sessionId});
-  }, []);*/
+  }, []);
 
   const changeActiveSession = useCallback(
     sessionId => {
@@ -120,38 +125,60 @@ const SessionListCard = ({
         style={styles.scrollView}>
         {sessions.map((_session, index) => {
           return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                onSwipeRight();
-                changeActiveSession(_session.id);
-              }}
-              activeOpacity={0.9}>
-              <Animated.View
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
-                style={[
-                  selectedIndex === index
-                    ? {transform: [{translateX: translateXAnim}]}
-                    : null,
-                ]}>
-                <Card
+            <View key={index} style={styles.listContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  onSwipeRight();
+                  changeActiveSession(_session.id);
+                }}
+                activeOpacity={0.9}>
+                <Animated.View
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
                   style={[
-                    styles.cardContainer,
-                    _session.id === session.id
-                      ? styles.selectBorderCard
-                      : styles.borderCard,
+                    selectedIndex === index
+                      ? {transform: [{translateX: translateXAnim}]}
+                      : null,
                   ]}>
-                  <View style={styles.imageContainer}>
-                    <LogoImage logoFile={logoFile} url={_session?.url} />
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.textTitle}>{_session.id}</Text>
-                    <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
-                  </View>
-                </Card>
-              </Animated.View>
-            </TouchableOpacity>
+                  <Card
+                    style={[
+                      styles.cardContainer,
+                      _session.id === session.id
+                        ? styles.selectBorderCard
+                        : styles.borderCard,
+                    ]}>
+                    <View style={styles.imageContainer}>
+                      <LogoImage logoFile={logoFile} url={_session?.url} />
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.textTitle}>{_session.id}</Text>
+                      <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
+                    </View>
+                  </Card>
+                </Animated.View>
+              </TouchableOpacity>
+              {showButton && _session.id === session.id && (
+                <Animated.View
+                  style={[
+                    styles.squareIconContainer,
+                    {transform: [{translateX: translateXAnim}]},
+                  ]}>
+                  <Icon
+                    name="pencil-alt"
+                    style={styles.iconPen}
+                    touchable={true}
+                    onPress={() => setPopupCreateIsOpen(true)}
+                  />
+                  <Icon
+                    name="trash-alt"
+                    style={styles.iconTrash}
+                    touchable={true}
+                    onPress={() => removeSession(_session.id)}
+                    color={Colors.errorColor.background}
+                  />
+                </Animated.View>
+              )}
+            </View>
           );
         })}
       </ScrollView>
@@ -163,6 +190,10 @@ const getStyles = Colors =>
   StyleSheet.create({
     container: {
       maxHeight: Dimensions.get('window').height * 0.45,
+    },
+    listContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     scrollView: {
       width: '90%',
@@ -216,6 +247,37 @@ const getStyles = Colors =>
       borderRadius: Dimensions.get('window').width * 0.07,
       width: Dimensions.get('window').width * 0.07,
       height: Dimensions.get('window').width * 0.07,
+    },
+    squareIconContainer: {
+      flexDirection: 'column',
+      position: 'absolute',
+      right: -60,
+    },
+    iconTrash: {
+      marginHorizontal: 4,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: Colors.secondaryColor_dark.foreground,
+      borderWidth: 2,
+      borderColor: Colors.errorColor.background,
+      borderRadius: 10,
+      width: Dimensions.get('window').height * 0.07,
+      height: Dimensions.get('window').height * 0.07,
+      marginVertical: 3,
+    },
+    iconPen: {
+      marginHorizontal: 4,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: Colors.secondaryColor_dark.foreground,
+      borderWidth: 2,
+      borderColor: Colors.infoColor.background,
+      borderRadius: 10,
+      width: Dimensions.get('window').height * 0.07,
+      height: Dimensions.get('window').height * 0.07,
+      marginVertical: 3,
     },
     textIndicationStyle: {
       width: Dimensions.get('window').width * 0.7,
