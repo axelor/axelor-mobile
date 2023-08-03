@@ -17,14 +17,8 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {
-  generateInifiniteScrollCases,
-  handlerApiCall,
-} from '../apiProviders/utils';
-import {
-  fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel,
-  fetchData as _fetchData,
-} from '../forms/studio/api.helpers';
+import {handlerApiCall} from '../apiProviders/utils';
+import {fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel} from '../forms/studio/api.helpers';
 
 export const fetchJsonFieldsOfModel = createAsyncThunk(
   'metaJsonField/fetchJsonFieldsOfModel',
@@ -39,25 +33,8 @@ export const fetchJsonFieldsOfModel = createAsyncThunk(
   },
 );
 
-export const fetchData = createAsyncThunk(
-  'metaJsonField/fetchData',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _fetchData,
-      data: data,
-      action: 'Base_SliceAction_FetchDataOfModel',
-      getState: getState,
-      responseOptions: {isArrayResponse: true, showToast: false},
-    });
-  },
-);
-
 const initialState = {
   fields: [],
-  loading: false,
-  moreLoading: false,
-  isListEnd: false,
-  data: [],
 };
 
 const metaJsonFieldSlice = createSlice({
@@ -66,12 +43,6 @@ const metaJsonFieldSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchJsonFieldsOfModel.fulfilled, (state, action) => {
       state.fields = action.payload;
-    });
-    generateInifiniteScrollCases(builder, fetchData, {
-      loading: 'loading',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'data',
     });
   },
 });

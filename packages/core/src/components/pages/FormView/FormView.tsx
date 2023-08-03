@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
@@ -308,7 +308,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
 const styles = StyleSheet.create({
   scroll: {
-    height: Dimensions.get('window').height,
+    height: null,
   },
   container: {
     alignItems: 'center',

@@ -18,7 +18,6 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   AutoCompleteSearch,
   FormInput,
@@ -26,8 +25,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../forms/types';
-import {fetchData} from '../../../features/metaJsonFieldSlice';
-import {fetchModelFields} from '../../../forms/studio/api.helpers';
+import {fetchModelFields, fetchData} from '../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
   item: any;
@@ -49,34 +47,57 @@ const CustomSearchBar = ({
   readonly,
 }: props) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
-
-  const {loading, moreLoading, isListEnd, data} = useSelector(
-    (state: any) => state.metaJsonField,
-  );
 
   const [searchFields, setSearchFields] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [moreLoading, setMoreLoading] = useState<boolean>(false);
+  const [isListEnd, setIsListEnd] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const searchClientAndProspectAPI = useCallback(
-    ({page = 0, searchValue}) => {
-      dispatch(
-        (fetchData as any)({
-          page,
-          searchValue,
-          modelName: item.targetModel,
-          domain: item.domain,
-          searchFields,
-        }),
-      );
-    },
-    [dispatch, item, searchFields],
-  );
 
   useEffect(() => {
     fetchModelFields({modelName: item.targetModel}).then(setSearchFields);
   }, [item]);
+
+  const searchClientAndProspectAPI = useCallback(
+    ({page = 0, searchValue}) => {
+      if (page == null || page === 0) {
+        setLoading(true);
+      } else {
+        setMoreLoading(true);
+      }
+
+      fetchData({
+        page,
+        searchValue,
+        modelName: item.targetModel,
+        domain: item.domain,
+        searchFields,
+      })
+        .catch(() => {
+          setLoading(false);
+          setMoreLoading(false);
+        })
+        .then(_data => {
+          setLoading(false);
+          setMoreLoading(false);
+
+          if (page == null || page === 0) {
+            setData(_data);
+            setIsListEnd(false);
+          } else {
+            if (Array.isArray(_data) && _data.length > 0) {
+              setIsListEnd(false);
+              setData(_current => [..._current, ..._data]);
+            } else {
+              setIsListEnd(true);
+            }
+          }
+        });
+    },
+    [item, searchFields],
+  );
 
   if (readonly) {
     return (

@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Label, ThemeColors} from '@axelor/aos-mobile-ui';
+import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel} from '../types';
 import CustomSearchBar from '../../components/pages/FormView/CustomSearchBar';
+import CustomPicker from '../../components/pages/FormView/CustomPicker';
 
 export const mapStudioFields = (
   items: any[],
@@ -140,6 +141,23 @@ const manageContentOfModel = (
               }),
           };
           break;
+        case 'separator':
+          formFields[item.name] = {
+            titleKey: item.title,
+            type: 'string',
+            order: item.sequence,
+            parentPanel: lastPanel,
+            widget: 'custom',
+            customComponent: () =>
+              HorizontalRule({
+                style: {
+                  marginTop: 10,
+                  width: '60%',
+                  alignSelf: 'center',
+                },
+              }),
+          };
+          break;
         default:
           const fieldType: InputType = mapStudioTypeToInputType(item.type);
 
@@ -151,6 +169,12 @@ const manageContentOfModel = (
             order: item.sequence,
             parentPanel: lastPanel,
           };
+
+          if (item.isSelectionField) {
+            config.widget = 'custom';
+            config.customComponent = CustomPicker;
+            config.options = {item};
+          }
 
           if (fieldType === 'object') {
             config.widget = 'custom';

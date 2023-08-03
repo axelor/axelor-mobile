@@ -69,24 +69,42 @@ export async function fetchData({
     });
   }
 
-  return axiosApiProvider.post({
-    url: `ws/rest/${modelName}/search`,
-    data: {
+  return axiosApiProvider
+    .post({
+      url: `ws/rest/${modelName}/search`,
       data: {
-        _domain: domain,
-        criteria: [
-          {
-            criteria,
-            operator: 'or',
-          },
-        ],
+        data: {
+          _domain: domain,
+          criteria: [
+            {
+              criteria,
+              operator: 'or',
+            },
+          ],
+        },
+        fields: searchFields,
+        limit: 10,
+        offset: 10 * page,
+        translate: true,
       },
-      fields: searchFields,
-      limit: 10,
-      offset: 10 * page,
-      translate: true,
-    },
-  });
+    })
+    .then(res => res?.data?.data);
+}
+
+export async function fetchMetaConfig({
+  modelName,
+}: {
+  modelName: string;
+}): Promise<any> {
+  if (modelName == null) {
+    return null;
+  }
+
+  return axiosApiProvider
+    .get({
+      url: `ws/meta/fields/${modelName}`,
+    })
+    .catch(console.warn);
 }
 
 export async function fetchModelFields({
@@ -98,11 +116,7 @@ export async function fetchModelFields({
     return null;
   }
 
-  return axiosApiProvider
-    .get({
-      url: `ws/meta/fields/${modelName}`,
-    })
-    .catch(console.warn)
+  return fetchMetaConfig({modelName})
     .then(res => res?.data?.data)
     .then(res => res?.fields)
     .then(_fields => {
@@ -113,4 +127,42 @@ export async function fetchModelFields({
       return _fields.filter(_item => _item.nameColumn);
     })
     .then(targetFields => targetFields.map(_item => _item.name));
+}
+
+interface SelectionItem {
+  name: string;
+  id: string;
+}
+
+export async function fetchSelectionOptions({
+  modelName,
+  attrsPanelName,
+  fieldName,
+}: {
+  modelName: string;
+  attrsPanelName: string;
+  fieldName: string;
+}): Promise<SelectionItem[]> {
+  if (modelName == null) {
+    return null;
+  }
+
+  return fetchMetaConfig({modelName})
+    .then(res => res?.data?.data)
+    .then(res => res?.jsonFields)
+    .then(_attrsPanels => _attrsPanels?.[attrsPanelName])
+    .then(_panel => _panel?.[fieldName])
+    .then(_field => _field?.selectionList)
+    .then(_selection => {
+      if (!Array.isArray(_selection)) {
+        return [];
+      }
+
+      return _selection
+        .sort((a, b) => a.order - b.order)
+        .map(_item => ({
+          name: _item?.title as string,
+          id: _item?.value as string,
+        }));
+    });
 }
