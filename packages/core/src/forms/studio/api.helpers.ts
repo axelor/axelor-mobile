@@ -40,6 +40,22 @@ export async function fetchJsonFieldsOfModel({modelName}: {modelName: string}) {
   });
 }
 
+export async function fetchObject({
+  modelName,
+  id,
+}: {
+  modelName: string;
+  id: number;
+}) {
+  if (modelName == null || id == null) {
+    return null;
+  }
+
+  return axiosApiProvider.get({
+    url: `ws/rest/${modelName}/${id}`,
+  });
+}
+
 export async function fetchData({
   modelName,
   domain,

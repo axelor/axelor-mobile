@@ -24,9 +24,10 @@ import CustomPicker from '../../components/pages/FormView/CustomPicker';
 export const mapStudioFields = (
   items: any[],
   Colors,
-): {panels: JSONObject<Panel>; fields: JSONObject<Field>} => {
+): {panels: JSONObject<Panel>; fields: JSONObject<Field>; defaults: any} => {
   let formFields: JSONObject<Field> = {};
   let formPanels: JSONObject<Panel> = {};
+  let defaults: any = {};
 
   if (Array.isArray(items)) {
     const metaJsonFields = [...items];
@@ -36,17 +37,18 @@ export const mapStudioFields = (
       .sort();
 
     for (const modelField of modelFields) {
-      const {_fields, _panels} = manageContentOfModel(
+      const {_fields, _panels, _defaults} = manageContentOfModel(
         metaJsonFields.filter(_item => _item.modelField === modelField),
         Colors,
       );
 
       formFields = {...formFields, ..._fields};
       formPanels = {...formPanels, ..._panels};
+      defaults = {...defaults, ..._defaults};
     }
   }
 
-  return {fields: formFields, panels: formPanels};
+  return {fields: formFields, panels: formPanels, defaults};
 };
 
 const mapStudioTypeToInputType = (type: string): InputType => {
@@ -113,9 +115,10 @@ const hasPanelTitle = (item: any): any => {
 const manageContentOfModel = (
   items: any,
   Colors: ThemeColors,
-): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>} => {
+): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
   const formPanels: JSONObject<Panel> = {};
+  const defaults: any = {};
   let lastPanel = null;
 
   items
@@ -176,6 +179,10 @@ const manageContentOfModel = (
         default:
           const fieldType: InputType = mapStudioTypeToInputType(item.type);
 
+          if (item.defaultValue != null) {
+            defaults[item.name] = item.defaultValue;
+          }
+
           const config: Field = {
             titleKey: item.title,
             type: fieldType,
@@ -203,5 +210,5 @@ const manageContentOfModel = (
       }
     });
 
-  return {_fields: formFields, _panels: formPanels};
+  return {_fields: formFields, _panels: formPanels, _defaults: defaults};
 };

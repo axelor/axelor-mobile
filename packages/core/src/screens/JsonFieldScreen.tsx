@@ -20,34 +20,57 @@ import React, {useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../components';
-import {fetchJsonFieldsOfModel} from '../features/metaJsonFieldSlice';
-import {Form, formConfigsProvider, mapStudioFields} from '../forms';
+import {
+  fetchJsonFieldsOfModel,
+  fetchObject,
+} from '../features/metaJsonFieldSlice';
+import {formConfigsProvider, mapStudioFields} from '../forms';
+import {isEmpty} from '../utils';
 
 const FORM_KEY = 'attrs-form';
 
 const JsonFieldScreen = ({route}) => {
-  const {model, object} = route.params;
+  const {model, modelId} = route.params;
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {fields: _fields} = useSelector((state: any) => state.metaJsonField);
+  const {fields: _fields, object} = useSelector(
+    (state: any) => state.metaJsonField,
+  );
 
   useEffect(() => {
     dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
-  }, [dispatch, model]);
+    dispatch((fetchObject as any)({modelName: model, id: modelId}));
+  }, [dispatch, model, modelId]);
 
-  const form: Form = useMemo(() => {
-    const {fields, panels} = mapStudioFields(_fields, Colors);
-    return {
+  const {fields, panels, defaults} = useMemo(
+    () => mapStudioFields(_fields, Colors),
+    [Colors, _fields],
+  );
+
+  useEffect(() => {
+    formConfigsProvider.registerFrom(FORM_KEY, {
       readonlyIf: () => false,
       fields,
       panels,
-    };
-  }, [Colors, _fields]);
+    });
+  }, [fields, panels]);
 
-  useEffect(() => {
-    formConfigsProvider.registerFrom(FORM_KEY, form);
-  }, [form]);
+  const attrsValues = useMemo(() => {
+    if (isEmpty(object)) {
+      return {};
+    }
+
+    let result = {};
+
+    Object.entries(object)
+      .filter(([key]) => key.toLowerCase().includes('attrs'))
+      .forEach(([_, value]: [string, string]) => {
+        result = {...result, ...JSON.parse(value)};
+      });
+
+    return result;
+  }, [object]);
 
   return (
     <FormView
@@ -61,7 +84,7 @@ const JsonFieldScreen = ({route}) => {
         },
       ]}
       formKey={FORM_KEY}
-      defaultValue={object?.attrs == null ? {} : JSON.parse(object.attrs)}
+      defaultValue={attrsValues == null ? {...defaults} : attrsValues}
     />
   );
 };

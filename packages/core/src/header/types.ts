@@ -27,7 +27,6 @@ export interface HeaderOptions {
   modelId?: number;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
-  object?: any;
   attachedFileScreenTitle?: string;
   headerTitle?: string;
   actions?: ActionType[];

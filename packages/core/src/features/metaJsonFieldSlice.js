@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '../apiProviders/utils';
-import {fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel} from '../forms/studio/api.helpers';
+import {
+  fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel,
+  fetchObject as _fetchObject,
+} from '../forms/studio/api.helpers';
 
 export const fetchJsonFieldsOfModel = createAsyncThunk(
   'metaJsonField/fetchJsonFieldsOfModel',
@@ -33,8 +36,22 @@ export const fetchJsonFieldsOfModel = createAsyncThunk(
   },
 );
 
+export const fetchObject = createAsyncThunk(
+  'metaJsonField/fetchObject',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchObject,
+      data: data,
+      action: 'Base_SliceAction_FetchDataOfModel',
+      getState: getState,
+      responseOptions: {isArrayResponse: false, showToast: false},
+    });
+  },
+);
+
 const initialState = {
   fields: [],
+  object: {},
 };
 
 const metaJsonFieldSlice = createSlice({
@@ -43,6 +60,9 @@ const metaJsonFieldSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchJsonFieldsOfModel.fulfilled, (state, action) => {
       state.fields = action.payload;
+    });
+    builder.addCase(fetchObject.fulfilled, (state, action) => {
+      state.object = action.payload;
     });
   },
 });

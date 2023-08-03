@@ -30,7 +30,6 @@ const HeaderOptionsMenu = ({
   actions = [],
   disableMailMessages,
   disableJsonFields,
-  object,
   attachedFileScreenTitle,
 }) => {
   const {mailMessagesAction, attachedFilesAction, jsonFieldsAction} =
@@ -39,7 +38,6 @@ const HeaderOptionsMenu = ({
       modelId,
       disableMailMessages,
       disableJsonFields,
-      object,
       attachedFileScreenTitle,
     });
 

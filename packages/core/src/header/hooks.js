@@ -29,7 +29,6 @@ export const useBasicActions = ({
   modelId,
   disableMailMessages,
   disableJsonFields = false,
-  object,
   attachedFileScreenTitle,
 }) => {
   const navigation = useNavigation();
@@ -120,15 +119,15 @@ export const useBasicActions = ({
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
       iconName: 'paint-brush',
-      hideIf: disableJsonFields || object == null,
+      hideIf: disableJsonFields,
       onPress: () =>
         navigation.navigate('JsonFieldScreen', {
           model,
-          object,
+          modelId,
         }),
       showInHeader: true,
     };
-  }, [I18n, disableJsonFields, model, navigation, object]);
+  }, [I18n, disableJsonFields, model, navigation, modelId]);
 
   return useMemo(() => {
     if (modelConfigured) {
