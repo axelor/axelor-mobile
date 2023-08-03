@@ -102,6 +102,14 @@ const isPanelTab = (item: any): any => {
   return getWidgetAttrs(item)?.tab;
 };
 
+const hasPanelTitle = (item: any): any => {
+  return (
+    isPanelCollapsible(item) ||
+    isPanelTab(item) ||
+    !getWidgetAttrs(item)?.showTitle
+  );
+};
+
 const manageContentOfModel = (
   items: any,
   Colors: ThemeColors,
@@ -116,10 +124,9 @@ const manageContentOfModel = (
       switch (item.type) {
         case 'panel':
           lastPanel = item.name;
-          console.log(isPanelTab(item));
 
           formPanels[item.name] = {
-            titleKey: item.title,
+            titleKey: hasPanelTitle(item) ? item.title : null,
             order: item.sequence,
             colSpan: 12,
             direction: 'column',
@@ -159,7 +166,7 @@ const manageContentOfModel = (
             customComponent: () =>
               HorizontalRule({
                 style: {
-                  marginTop: 10,
+                  marginVertical: 5,
                   width: '60%',
                   alignSelf: 'center',
                 },

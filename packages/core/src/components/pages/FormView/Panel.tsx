@@ -17,8 +17,8 @@
  */
 
 import React, {ReactNode, useMemo} from 'react';
-import {StyleProp, View, ViewStyle} from 'react-native';
-import {DropdownCard} from '@axelor/aos-mobile-ui';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {DEFAULT_COLSPAN, DisplayField, DisplayPanel} from '../../../forms';
 
@@ -60,11 +60,50 @@ const Panel = ({renderItem, _panel}: PanelProps) => {
     );
   }
 
+  if (_panel.titleKey != null) {
+    return (
+      <View key={_panel.key} style={[panelStyle, styles.container]}>
+        <Text style={styles.title}>{I18n.t(_panel.titleKey)}</Text>
+        <HorizontalRule style={styles.line} />
+        <View
+          style={[
+            {
+              flexDirection: panelStyle.flexDirection,
+            },
+            styles.content,
+          ]}>
+          {_panel.content.map(renderItem)}
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View key={_panel.key} style={panelStyle}>
       {_panel.content.map(renderItem)}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+  },
+  title: {
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  line: {
+    marginVertical: 4,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  content: {
+    alignItems: 'center',
+    width: '100%',
+  },
+});
 
 export default Panel;
