@@ -147,19 +147,21 @@ const PopupCreateSession = ({
   );
 
   const onPressLogin = useCallback(() => {
-    dispatch(login({url, username, password}));
-
-    if (error == null) {
-      sessionStorage.addSession({
-        session: {
-          id: sessionName,
-          url: url,
-          username: username,
-          isActive: true,
-          isDefault: isDefault,
-        },
-      });
-    }
+    dispatch(login({url, username, password})).then(res => {
+      if (res.error == null && error == null) {
+        if (error == null) {
+          sessionStorage.addSession({
+            session: {
+              id: sessionName,
+              url: url,
+              username: username,
+              isActive: true,
+              isDefault: isDefault,
+            },
+          });
+        }
+      }
+    });
   }, [dispatch, password, sessionName, url, username, error, isDefault]);
 
   const handleTestUrl = useCallback(() => {

@@ -66,7 +66,7 @@ const SessionListCard = ({
   function onSwipeLeft() {
     Animated.timing(translateXAnim, {
       toValue: -60,
-      duration: 1000,
+      duration: 500,
       useNativeDriver: true,
     }).start();
     setPopupSessionIsOpen(false);
@@ -78,7 +78,7 @@ const SessionListCard = ({
   function onSwipeRight() {
     Animated.timing(translateXAnim, {
       toValue: 0,
-      duration: 1000,
+      duration: 500,
       useNativeDriver: true,
     }).start();
     setPopupSessionIsOpen(false);
