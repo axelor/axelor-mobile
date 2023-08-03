@@ -67,7 +67,7 @@ const SessionManagementScreen = ({route}) => {
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
   useEffect(() => {
-    if (sessionList <= 0) {
+    if (sessionList <= 0 || sessionList == null) {
       setPopupCreateIsOpen(true);
     }
     if (sessionDefault != null) {

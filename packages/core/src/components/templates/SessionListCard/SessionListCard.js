@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
   Dimensions,
+  Animated,
 } from 'react-native';
 import {
   useThemeColor,
@@ -35,6 +36,7 @@ import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 import {LogoImage} from '../../organisms';
 import {SessionNumberIndicator} from '../../molecules';
+import {useSwipe} from '../../../hooks/useSwipe';
 
 const SessionListCard = ({
   sessionList,
@@ -47,9 +49,36 @@ const SessionListCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const {onTouchStart, onTouchEnd} = useSwipe(onSwipeLeft, onSwipeRight, 6);
+
   const sessions = useMemo(() => sessionList, [sessionList]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  const translateXAnim = useRef(new Animated.Value(1)).current;
+  const selectedIndex = sessions.findIndex(
+    _session => _session.id === session.id,
+  );
+
+  function onSwipeLeft() {
+    console.log('SWIPE_LEFT');
+    Animated.timing(translateXAnim, {
+      toValue: -50,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+    setPopupSessionIsOpen(false);
+  }
+
+  function onSwipeRight() {
+    console.log('SWIPE_RIGHT');
+    Animated.timing(translateXAnim, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+    setPopupSessionIsOpen(false);
+  }
 
   /*const removeSession = useCallback(sessionId => {
     sessionStorage.removeSession({sessionId});
@@ -93,23 +122,35 @@ const SessionListCard = ({
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => changeActiveSession(_session.id)}
+              onPress={() => {
+                onSwipeRight();
+                changeActiveSession(_session.id);
+              }}
               activeOpacity={0.9}>
-              <Card
+              <Animated.View
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
                 style={[
-                  styles.cardContainer,
-                  _session.id === session.id
-                    ? styles.selectBorderCard
-                    : styles.borderCard,
+                  selectedIndex === index
+                    ? {transform: [{translateX: translateXAnim}]}
+                    : null,
                 ]}>
-                <View style={styles.imageContainer}>
-                  <LogoImage logoFile={logoFile} url={_session?.url} />
-                </View>
-                <View style={styles.textContainer}>
-                  <Text style={styles.textTitle}>{_session.id}</Text>
-                  <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
-                </View>
-              </Card>
+                <Card
+                  style={[
+                    styles.cardContainer,
+                    _session.id === session.id
+                      ? styles.selectBorderCard
+                      : styles.borderCard,
+                  ]}>
+                  <View style={styles.imageContainer}>
+                    <LogoImage logoFile={logoFile} url={_session?.url} />
+                  </View>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.textTitle}>{_session.id}</Text>
+                    <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
+                  </View>
+                </Card>
+              </Animated.View>
             </TouchableOpacity>
           );
         })}
