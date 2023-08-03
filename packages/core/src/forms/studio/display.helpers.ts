@@ -49,7 +49,7 @@ export const mapStudioFields = (
   return {fields: formFields, panels: formPanels};
 };
 
-export const mapStudioTypeToInputType = (type: string): InputType => {
+const mapStudioTypeToInputType = (type: string): InputType => {
   switch (type) {
     case 'integer':
     case 'decimal':
@@ -61,6 +61,10 @@ export const mapStudioTypeToInputType = (type: string): InputType => {
   }
 };
 
+const getWidgetAttrs = (item: any): any => {
+  return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
+};
+
 const BootstrapMapper = {
   error: ['warning'],
   danger: ['danger'],
@@ -70,14 +74,8 @@ const BootstrapMapper = {
   dark: ['dark'],
 };
 
-export const mapStudioCSSToLabelOptions = (
-  item: any,
-  Colors: ThemeColors,
-): any => {
-  const css: string =
-    item?.widgetAttrs == null
-      ? ''
-      : (JSON.parse(item.widgetAttrs)?.css as string);
+const mapStudioCSSToLabelOptions = (item: any, Colors: ThemeColors): any => {
+  const css: string = getWidgetAttrs(item)?.css as string;
 
   let result: any = {};
 
@@ -96,6 +94,14 @@ export const mapStudioCSSToLabelOptions = (
   return result;
 };
 
+const isPanelCollapsible = (item: any): any => {
+  return getWidgetAttrs(item)?.canCollapse;
+};
+
+const isPanelTab = (item: any): any => {
+  return getWidgetAttrs(item)?.tab;
+};
+
 const manageContentOfModel = (
   items: any,
   Colors: ThemeColors,
@@ -110,12 +116,14 @@ const manageContentOfModel = (
       switch (item.type) {
         case 'panel':
           lastPanel = item.name;
+          console.log(isPanelTab(item));
 
           formPanels[item.name] = {
             titleKey: item.title,
             order: item.sequence,
             colSpan: 12,
             direction: 'column',
+            isCollaspible: isPanelCollapsible(item),
           };
           break;
         case 'spacer':

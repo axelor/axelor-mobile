@@ -54,10 +54,7 @@ const Panel = ({renderItem, _panel}: PanelProps) => {
 
   if (_panel.isCollaspible) {
     return (
-      <DropdownCard
-        key={_panel.key}
-        style={panelStyle}
-        title={I18n.t(_panel.titleKey)}>
+      <DropdownCard key={_panel.key} title={I18n.t(_panel.titleKey)}>
         {_panel.content.map(renderItem)}
       </DropdownCard>
     );
