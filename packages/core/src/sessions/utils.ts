@@ -25,7 +25,7 @@ export const setActiveSession = (
   activeSessionId: string,
 ): Session[] => {
   return sessionList.map(_session => {
-    if (_session.id === activeSessionId) {
+    if (_session.sessionId === activeSessionId) {
       return {..._session, isActive: true};
     }
 
@@ -38,7 +38,7 @@ export const setDefaultSession = (
   defaultSessionId: string,
 ): Session[] => {
   return sessionList.map(_session => {
-    if (_session.id === defaultSessionId) {
+    if (_session.sessionId === defaultSessionId) {
       return {..._session, isDefault: true};
     }
 

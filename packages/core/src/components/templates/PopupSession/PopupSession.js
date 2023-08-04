@@ -61,9 +61,9 @@ const PopupSession = ({
   }, [dispatch, password, sessionActive]);
 
   const deleteSession = useCallback(() => {
-    sessionStorage.removeSession({sessionId: sessionActive?.id});
+    sessionStorage.removeSession({sessionId: sessionActive?.sessionId});
     setPopupIsOpen(false);
-  }, [sessionActive?.id, setPopupIsOpen]);
+  }, [sessionActive?.sessionId, setPopupIsOpen]);
 
   useEffect(() => {
     setIsOpen(popupIsOpen);

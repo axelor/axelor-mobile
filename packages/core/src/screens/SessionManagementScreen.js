@@ -55,6 +55,7 @@ const SessionManagementScreen = ({route}) => {
   const [session, setSession] = useState(
     sessionDefault != null ? sessionDefault : sessionActive,
   );
+  const [authorizePopupToOpen, setAuthorizePopupToOpen] = useState(true);
 
   useEffect(() => {
     if (!popupCreateIsOpen && !popupConnectionIsOpen) {
@@ -63,13 +64,16 @@ const SessionManagementScreen = ({route}) => {
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
   useEffect(() => {
+    if (sessionDefault != null && authorizePopupToOpen) {
+      setPopupConnectionIsOpen(true);
+    }
+  }, [sessionDefault, authorizePopupToOpen]);
+
+  useEffect(() => {
     if (sessionList <= 0 || sessionList == null) {
       setPopupCreateIsOpen(true);
     }
-    if (sessionDefault != null) {
-      setPopupConnectionIsOpen(true);
-    }
-  }, [sessionList, sessionDefault]);
+  }, [sessionList]);
 
   return (
     <Screen>
@@ -86,6 +90,7 @@ const SessionManagementScreen = ({route}) => {
             setPopupSessionIsOpen={setPopupConnectionIsOpen}
             setPopupCreateIsOpen={setPopupCreateIsOpen}
             session={session}
+            setAuthorizePopupToOpen={setAuthorizePopupToOpen}
           />
           <PopupCreateSession
             sessionList={sessionList}

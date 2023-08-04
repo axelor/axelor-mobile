@@ -17,6 +17,7 @@
  */
 
 export interface Session {
+  sessionId: string;
   id: string;
   url: string;
   username: string;

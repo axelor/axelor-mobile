@@ -45,6 +45,7 @@ const SessionListCard = ({
   setPopupSessionIsOpen,
   setPopupCreateIsOpen,
   session,
+  setAuthorizePopupToOpen,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -62,10 +63,11 @@ const SessionListCard = ({
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const selectedIndex = sessions.findIndex(
-    _session => _session?.id === session?.id,
+    _session => _session?.sessionId === session?.sessionId,
   );
 
   function onSwipeLeft() {
+    setAuthorizePopupToOpen(false);
     Animated.timing(translateXAnim, {
       toValue: -60,
       duration: 500,
@@ -78,6 +80,7 @@ const SessionListCard = ({
   }
 
   function onSwipeRight() {
+    setAuthorizePopupToOpen(false);
     Animated.timing(translateXAnim, {
       toValue: 0,
       duration: 500,
@@ -93,6 +96,7 @@ const SessionListCard = ({
 
   const changeActiveSession = useCallback(
     sessionId => {
+      setAuthorizePopupToOpen(true);
       translateXAnim.setValue(0);
       translateYAnim.setValue(0);
       scaleAnim.setValue(1);
@@ -102,6 +106,7 @@ const SessionListCard = ({
       setPopupSessionIsOpen(true);
     },
     [
+      setAuthorizePopupToOpen,
       onChange,
       scaleAnim,
       setPopupSessionIsOpen,
@@ -112,6 +117,7 @@ const SessionListCard = ({
 
   const animateRemoval = useCallback(
     index => {
+      setAuthorizePopupToOpen(false);
       Animated.parallel([
         Animated.timing(scaleAnim, {
           toValue: 0,
@@ -129,13 +135,20 @@ const SessionListCard = ({
           useNativeDriver: true,
         }),
       ]).start(() => {
-        removeSession(sessionList[index].id);
+        removeSession(sessionList[index].sessionId);
         scaleAnim.setValue(1);
         translateXAnim.setValue(0);
         translateYAnim.setValue(0);
       });
     },
-    [removeSession, sessionList, scaleAnim, translateXAnim, translateYAnim],
+    [
+      setAuthorizePopupToOpen,
+      removeSession,
+      sessionList,
+      scaleAnim,
+      translateXAnim,
+      translateYAnim,
+    ],
   );
 
   if (!Array.isArray(sessions) || sessions?.length === 0) {
@@ -168,12 +181,12 @@ const SessionListCard = ({
             <View key={index} style={styles.listContainer}>
               <TouchableOpacity
                 onLongPress={() => {
-                  changeActiveSession(_session.id);
+                  changeActiveSession(_session.sessionId);
                   onSwipeLeft();
                 }}
                 onPress={() => {
                   onSwipeRight();
-                  changeActiveSession(_session.id);
+                  changeActiveSession(_session.sessionId);
                 }}
                 activeOpacity={0.9}>
                 <Animated.View
@@ -193,7 +206,7 @@ const SessionListCard = ({
                   <Card
                     style={[
                       styles.cardContainer,
-                      _session?.id === session?.id
+                      _session?.sessionId === session?.sessionId
                         ? styles.selectBorderCard
                         : styles.borderCard,
                     ]}>
@@ -203,11 +216,12 @@ const SessionListCard = ({
                     <View style={styles.textContainer}>
                       <Text style={styles.textTitle}>{_session.id}</Text>
                       <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
+                      {_session.isDefault && <Text>{'default'}</Text>}
                     </View>
                   </Card>
                 </Animated.View>
               </TouchableOpacity>
-              {showButton && _session?.id === session?.id && (
+              {showButton && _session?.sessionId === session?.sessionId && (
                 <Animated.View
                   style={[
                     styles.squareIconContainer,

@@ -82,9 +82,9 @@ class SessionStorage {
       return;
     }
 
-    if (sessionList.find(_item => _item.id === session.id)) {
+    if (sessionList.find(_item => _item.sessionId === session.sessionId)) {
       sessionList = sessionList.map(_item => {
-        if (_item.id === session.id) {
+        if (_item.sessionId === session.sessionId) {
           return {..._item, ...session};
         }
 
@@ -94,9 +94,9 @@ class SessionStorage {
       sessionList.push(session);
     }
 
-    const activeSessionList = setActiveSession(sessionList, session.id);
+    const activeSessionList = setActiveSession(sessionList, session.sessionId);
     const defaultSessionList = session.isDefault
-      ? setDefaultSession(activeSessionList, session.id)
+      ? setDefaultSession(activeSessionList, session.sessionId)
       : [];
 
     this.localStorage.setItem(
@@ -127,7 +127,9 @@ class SessionStorage {
       return;
     }
 
-    const index = sessionList.findIndex(_session => _session.id === sessionId);
+    const index = sessionList.findIndex(
+      _session => _session.sessionId === sessionId,
+    );
 
     if (index !== -1) {
       sessionList.splice(index, 1);

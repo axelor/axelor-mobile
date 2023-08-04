@@ -160,6 +160,7 @@ const PopupCreateSession = ({
         if (error == null && isMounted) {
           sessionStorage.addSession({
             session: {
+              sessionId: `session-${Date.now()}`,
               id: sessionName,
               url: url,
               username: username,
