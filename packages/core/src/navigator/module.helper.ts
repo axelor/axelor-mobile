@@ -195,7 +195,9 @@ export function manageWebCompatibility(
     return [];
   }
 
-  return modules.map((_module: Module): Module => {
+  const _modules = manageCompatibilityOverride(modules);
+
+  return _modules.map((_module: Module): Module => {
     if (_module.compatibilityAOS != null) {
       const webModule = metaModules?.find(
         _item => _item.name === _module.compatibilityAOS.moduleName,
@@ -222,3 +224,53 @@ export function formatCompatibilityToDisplay(
     ...compatibility,
   };
 }
+
+export function findModuleDependingOnWeb(
+  modules: Module[],
+  webModuleName: string,
+) {
+  const index = modules.findIndex(
+    _module => _module.compatibilityAOS?.moduleName === webModuleName,
+  );
+
+  if (index === -1) {
+    return {module: null, index: null};
+  }
+
+  return {module: modules[index], index: index};
+}
+
+export const manageCompatibilityOverride = (modules: Module[]): Module[] => {
+  if (modules == null) {
+    return modules;
+  }
+
+  let result: Module[] = [];
+
+  modules.forEach(_module => {
+    if (_module.compatibilityAOS != null) {
+      const {module: parentModule, index} = findModuleDependingOnWeb(
+        result,
+        _module.compatibilityAOS.moduleName,
+      );
+
+      if (index && parentModule) {
+        result[index] = {
+          ...parentModule,
+          compatibilityAOS: {
+            ...parentModule.compatibilityAOS,
+            ..._module.compatibilityAOS,
+          },
+        };
+
+        result.push({..._module, compatibilityAOS: null});
+      } else {
+        result.push(_module);
+      }
+    } else {
+      result.push(_module);
+    }
+  });
+
+  return result;
+};
