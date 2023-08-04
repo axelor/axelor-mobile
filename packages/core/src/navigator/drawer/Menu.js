@@ -19,13 +19,24 @@
 import React, {useContext, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
-import {Text} from '@axelor/aos-mobile-ui';
+import {Text, WarningCard} from '@axelor/aos-mobile-ui';
 import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
-import {getMenuTitle} from '../menu.helper';
+import {
+  getMenuTitle,
+  isMenuIncompatible,
+  isModuleNotFound,
+} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
+import {formatCompatibilityToDisplay} from '../module.helper';
 
-const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
+const MenuItemList = ({
+  state,
+  navigation,
+  activeModule,
+  onItemClick,
+  disabled,
+}) => {
   const I18n = useTranslator();
   const {modulesMenus} = useContext(ModuleNavigatorContext);
 
@@ -62,7 +73,7 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
         key={route.key}
         title={getMenuTitle(menu, {I18n})}
         icon={menu.icon}
-        disabled={menu.disabled}
+        disabled={menu.disabled || disabled}
         onPress={onPress}
         isActive={focused}
       />
@@ -70,12 +81,29 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
   });
 };
 
-const Menu = ({state, navigation, authMenu, activeModule, onItemClick}) => {
+const Menu = ({
+  state,
+  navigation,
+  authMenu,
+  activeModule,
+  onItemClick,
+  compatibility,
+}) => {
   const I18n = useTranslator();
 
   const title = useMemo(
     () => getMenuTitle(activeModule, {I18n}),
     [I18n, activeModule],
+  );
+
+  const moduleNotFound = useMemo(
+    () => isModuleNotFound(compatibility),
+    [compatibility],
+  );
+
+  const compatibilityError = useMemo(
+    () => isMenuIncompatible(compatibility),
+    [compatibility],
   );
 
   return (
@@ -84,11 +112,24 @@ const Menu = ({state, navigation, authMenu, activeModule, onItemClick}) => {
         <View style={styles.menuTitleContainer}>
           <Text style={styles.menuTitle}>{title}</Text>
         </View>
+        {compatibilityError && (
+          <WarningCard
+            errorMessage={I18n.t(
+              moduleNotFound
+                ? 'Base_Compatibily_NotFoundDetails'
+                : 'Base_Compatibily_ErrorDetails',
+              {
+                compatibility: formatCompatibilityToDisplay(compatibility),
+              },
+            )}
+          />
+        )}
         <MenuItemList
           state={state}
           navigation={navigation}
           activeModule={activeModule}
           onItemClick={onItemClick}
+          disabled={compatibilityError}
         />
       </View>
       <View style={styles.authMenuIcon}>{authMenu}</View>

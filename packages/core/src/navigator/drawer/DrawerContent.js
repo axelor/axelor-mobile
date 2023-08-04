@@ -256,6 +256,9 @@ const DrawerContent = ({
                 ? () => {}
                 : () => onModuleClick(drawerModules[0]?.name)
             }
+            compatibility={
+              externalMenuIsVisible ? null : drawerModules[0].compatibilityAOS
+            }
           />
         </Animated.View>
       </View>
