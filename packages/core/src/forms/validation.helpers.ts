@@ -154,6 +154,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
     case 'phone':
     case 'date':
     case 'datetime':
+    case 'time':
       schema = string();
       break;
     case 'number':

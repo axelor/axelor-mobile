@@ -17,7 +17,7 @@
  */
 
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
-import {Field, InputType, JSONObject, Panel} from '../types';
+import {Field, InputType, JSONObject, Panel, Widget} from '../types';
 import CustomSearchBar from '../../components/pages/FormView/CustomSearchBar';
 import CustomPicker from '../../components/pages/FormView/CustomPicker';
 
@@ -63,6 +63,28 @@ const mapStudioTypeToInputType = (type: string): InputType => {
   }
 };
 
+const mapStudioWidgetToWidget = (
+  widget: any,
+): {widget: Widget; inputType: InputType} => {
+  let result = {widget: undefined, inputType: undefined};
+
+  switch (widget) {
+    case 'Email':
+      result.inputType = 'email';
+      break;
+    case 'Url':
+      result.inputType = 'url';
+      break;
+    case 'Html':
+      result.widget = 'HTML';
+      break;
+    default:
+      break;
+  }
+
+  return result;
+};
+
 const getWidgetAttrs = (item: any): any => {
   return item?.widgetAttrs == null ? null : JSON.parse(item.widgetAttrs);
 };
@@ -96,15 +118,19 @@ const mapStudioCSSToLabelOptions = (item: any, Colors: ThemeColors): any => {
   return result;
 };
 
-const isPanelCollapsible = (item: any): any => {
+const isPanelCollapsible = (item: any): boolean => {
   return getWidgetAttrs(item)?.canCollapse;
 };
 
-const isPanelTab = (item: any): any => {
+const isPanelTab = (item: any): boolean => {
   return getWidgetAttrs(item)?.tab;
 };
 
-const hasPanelTitle = (item: any): any => {
+const isMultiLinesInput = (item: any): boolean => {
+  return getWidgetAttrs(item)?.multiline;
+};
+
+const hasPanelTitle = (item: any): boolean => {
   return (
     isPanelCollapsible(item) ||
     isPanelTab(item) ||
@@ -178,6 +204,7 @@ const manageContentOfModel = (
           break;
         default:
           const fieldType: InputType = mapStudioTypeToInputType(item.type);
+          const {widget, inputType} = mapStudioWidgetToWidget(item.widget);
 
           if (item.defaultValue != null) {
             defaults[item.name] = item.defaultValue;
@@ -185,12 +212,23 @@ const manageContentOfModel = (
 
           const config: Field = {
             titleKey: item.title,
-            type: fieldType,
+            type: inputType || fieldType,
             required: item.required,
             readonly: item.readonly,
             order: item.sequence,
             parentPanel: lastPanel,
+            widget: widget,
           };
+
+          if (item.type === 'integer') {
+            config.validationOptions = {
+              integer: {},
+            };
+          }
+
+          if (isMultiLinesInput(item)) {
+            config.options = {multiline: true, adjustHeightWithLines: true};
+          }
 
           if (item.isSelectionField) {
             config.widget = 'custom';
