@@ -107,6 +107,14 @@ const PopupCreateSession = ({
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
   const [isDefault, setIsDefault] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
 
   const parseQrCode = useCallback(scanValue => {
     if (scanValue.includes('username') === true) {
@@ -149,7 +157,7 @@ const PopupCreateSession = ({
   const onPressLogin = useCallback(() => {
     dispatch(login({url, username, password})).then(res => {
       if (res.error == null && error == null) {
-        if (error == null) {
+        if (error == null && isMounted) {
           sessionStorage.addSession({
             session: {
               id: sessionName,
@@ -162,7 +170,16 @@ const PopupCreateSession = ({
         }
       }
     });
-  }, [dispatch, password, sessionName, url, username, error, isDefault]);
+  }, [
+    dispatch,
+    password,
+    sessionName,
+    url,
+    username,
+    error,
+    isDefault,
+    isMounted,
+  ]);
 
   const handleTestUrl = useCallback(() => {
     dispatch(isUrlValid({url}));
