@@ -57,10 +57,12 @@ const SessionListCard = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const translateXAnim = useRef(new Animated.Value(1)).current;
+  const translateXAnim = useRef(new Animated.Value(0)).current;
+  const translateYAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const selectedIndex = sessions.findIndex(
-    _session => _session.id === session.id,
+    _session => _session?.id === session?.id,
   );
 
   function onSwipeLeft() {
@@ -91,11 +93,49 @@ const SessionListCard = ({
 
   const changeActiveSession = useCallback(
     sessionId => {
+      translateXAnim.setValue(0);
+      translateYAnim.setValue(0);
+      scaleAnim.setValue(1);
+
       sessionStorage.changeActiveSession({sessionId});
       onChange(sessionStorage.getActiveSession());
       setPopupSessionIsOpen(true);
     },
-    [onChange, setPopupSessionIsOpen],
+    [
+      onChange,
+      scaleAnim,
+      setPopupSessionIsOpen,
+      translateXAnim,
+      translateYAnim,
+    ],
+  );
+
+  const animateRemoval = useCallback(
+    index => {
+      Animated.parallel([
+        Animated.timing(scaleAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateXAnim, {
+          toValue: Dimensions.get('window').width * 0.5,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateYAnim, {
+          toValue: Dimensions.get('window').height * 0.3,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        removeSession(sessionList[index].id);
+        scaleAnim.setValue(1);
+        translateXAnim.setValue(0);
+        translateYAnim.setValue(0);
+      });
+    },
+    [removeSession, sessionList, scaleAnim, translateXAnim, translateYAnim],
   );
 
   if (!Array.isArray(sessions) || sessions?.length === 0) {
@@ -127,6 +167,10 @@ const SessionListCard = ({
           return (
             <View key={index} style={styles.listContainer}>
               <TouchableOpacity
+                onLongPress={() => {
+                  changeActiveSession(_session.id);
+                  onSwipeLeft();
+                }}
                 onPress={() => {
                   onSwipeRight();
                   changeActiveSession(_session.id);
@@ -137,13 +181,19 @@ const SessionListCard = ({
                   onTouchEnd={onTouchEnd}
                   style={[
                     selectedIndex === index
-                      ? {transform: [{translateX: translateXAnim}]}
+                      ? {
+                          transform: [
+                            {translateX: translateXAnim},
+                            {translateY: translateYAnim},
+                            {scale: scaleAnim},
+                          ],
+                        }
                       : null,
                   ]}>
                   <Card
                     style={[
                       styles.cardContainer,
-                      _session.id === session.id
+                      _session?.id === session?.id
                         ? styles.selectBorderCard
                         : styles.borderCard,
                     ]}>
@@ -157,7 +207,7 @@ const SessionListCard = ({
                   </Card>
                 </Animated.View>
               </TouchableOpacity>
-              {showButton && _session.id === session.id && (
+              {showButton && _session?.id === session?.id && (
                 <Animated.View
                   style={[
                     styles.squareIconContainer,
@@ -173,7 +223,7 @@ const SessionListCard = ({
                     name="trash-alt"
                     style={styles.iconTrash}
                     touchable={true}
-                    onPress={() => removeSession(_session.id)}
+                    onPress={() => animateRemoval(index)}
                     color={Colors.errorColor.background}
                   />
                 </Animated.View>
@@ -251,7 +301,7 @@ const getStyles = Colors =>
     squareIconContainer: {
       flexDirection: 'column',
       position: 'absolute',
-      right: -60,
+      right: -Dimensions.get('window').height * 0.07 - 10,
     },
     iconTrash: {
       marginHorizontal: 4,
