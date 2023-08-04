@@ -26,6 +26,7 @@ import {
   PopupCreateSession,
   PopupSession,
   SessionListCard,
+  PopupEditSession,
 } from '../components';
 import {useSessions} from '../sessions';
 import {clearError} from '../features/authSlice';
@@ -52,6 +53,7 @@ const SessionManagementScreen = ({route}) => {
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
   const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
+  const [popupEditIsOpen, setPopupEditIsOpen] = useState(false);
   const [session, setSession] = useState(
     sessionDefault != null ? sessionDefault : sessionActive,
   );
@@ -91,6 +93,7 @@ const SessionManagementScreen = ({route}) => {
             setPopupCreateIsOpen={setPopupCreateIsOpen}
             session={session}
             setAuthorizePopupToOpen={setAuthorizePopupToOpen}
+            setPopupEditIsOpen={setPopupEditIsOpen}
           />
           <PopupCreateSession
             sessionList={sessionList}
@@ -115,6 +118,13 @@ const SessionManagementScreen = ({route}) => {
             setPopupIsOpen={setPopupSessionListIsOpen}
             setPopupSessionIsOpen={setPopupConnectionIsOpen}
             onChange={setSession}
+          />
+          <PopupEditSession
+            session={session}
+            sessionList={sessionList}
+            modeDebug={modeDebug}
+            popupIsOpen={popupEditIsOpen}
+            setPopupIsOpen={setPopupEditIsOpen}
           />
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>

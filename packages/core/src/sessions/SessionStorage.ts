@@ -18,7 +18,7 @@
 
 import {storage, Storage} from '../storage/Storage';
 import {Session} from './type';
-import {setActiveSession, setDefaultSession} from './utils';
+import {setActiveSession, setDefaultSession, setUpdateSession} from './utils';
 
 const SESSION_KEY = 'ConnectionSessions';
 
@@ -104,6 +104,20 @@ class SessionStorage {
       session.isDefault ? defaultSessionList : activeSessionList,
     );
 
+    this.updateState();
+  }
+
+  updateSession({newSession}: {newSession: Session}) {
+    let sessionList = this.getSessionList();
+    const updateSessionList = setUpdateSession(sessionList, newSession);
+    const defaultSessionList = newSession.isDefault
+      ? setDefaultSession(updateSessionList, newSession.sessionId)
+      : [];
+
+    this.localStorage.setItem(
+      SESSION_KEY,
+      newSession.isDefault ? defaultSessionList : updateSessionList,
+    );
     this.updateState();
   }
 

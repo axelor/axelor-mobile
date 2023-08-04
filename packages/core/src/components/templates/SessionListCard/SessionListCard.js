@@ -46,6 +46,7 @@ const SessionListCard = ({
   setPopupCreateIsOpen,
   session,
   setAuthorizePopupToOpen,
+  setPopupEditIsOpen,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -209,6 +210,7 @@ const SessionListCard = ({
                       _session?.sessionId === session?.sessionId
                         ? styles.selectBorderCard
                         : styles.borderCard,
+                      _session?.isDefault ? styles.borderIsDefaultCard : null,
                     ]}>
                     <View style={styles.imageContainer}>
                       <LogoImage logoFile={logoFile} url={_session?.url} />
@@ -231,7 +233,7 @@ const SessionListCard = ({
                     name="pencil-alt"
                     style={styles.iconPen}
                     touchable={true}
-                    onPress={() => setPopupCreateIsOpen(true)}
+                    onPress={() => setPopupEditIsOpen(true)}
                   />
                   <Icon
                     name="trash-alt"
@@ -277,6 +279,10 @@ const getStyles = Colors =>
       borderColor: Colors.secondaryColor_dark.background,
     },
     selectBorderCard: {
+      borderWidth: 1,
+      borderColor: Colors.infoColor.background,
+    },
+    borderIsDefaultCard: {
       borderWidth: 1,
       borderColor: Colors.primaryColor.background,
     },

@@ -53,3 +53,23 @@ export const getStorageUrl = (): string => {
 export const saveUrlInStorage = (url: string): void => {
   storage.setItem(URL_STORAGE_KEY, url);
 };
+
+export const setUpdateSession = (
+  sessionList: Session[],
+  newSession: Session,
+): Session[] => {
+  return sessionList.map(_session => {
+    if (_session.sessionId === newSession.sessionId) {
+      return {
+        sessionId: _session.sessionId,
+        id: newSession.id,
+        url: newSession.url,
+        username: newSession.username,
+        isActive: newSession.isActive,
+        isDefault: newSession.isDefault,
+      };
+    }
+
+    return {..._session};
+  });
+};

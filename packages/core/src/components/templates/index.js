@@ -20,6 +20,7 @@ export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesVie
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
 export {default as PopupApplicationNotConfigured} from './PopupApplicationNotConfigured/PopupApplicationNotConfigured';
 export {default as PopupCreateSession} from './PopupCreateSession/PopupCreateSession';
+export {default as PopupEditSession} from './PopupEditSession/PopupEditSession';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
 export {default as PopupSession} from './PopupSession/PopupSession';
 export {default as SessionListCard} from './SessionListCard/SessionListCard';
