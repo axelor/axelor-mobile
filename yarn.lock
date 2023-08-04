@@ -13392,6 +13392,11 @@ react-native-codegen@^0.0.13:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-contacts@^7.0.6:
+  version "7.0.6"
+  resolved "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-7.0.6.tgz#3cd333c45e4d24a59192989bd1cf75bd73e1aade"
+  integrity sha512-vmGlZmzmT7SDUzM6kyhNlmra6/mulfa5fNpXON7RI1kLrM36iNHWot7MpWScG0mAJvkUSHUvkjnWFOrIUCokyQ==
+
 react-native-datawedge-intents@^0.1.8:
   version "0.1.8"
   resolved "https://registry.npmjs.org/react-native-datawedge-intents/-/react-native-datawedge-intents-0.1.8.tgz#2021b8ad2b351bce84c84392dcfdf1731750ef0e"
