@@ -18,6 +18,7 @@
 
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {Field, Form, FormConfigs, JSONObject, Panel} from './types';
+import {RegisterOptions} from './FormConfigsProvider';
 
 export const mergePanels = (
   currentPanels: JSONObject<Panel>,
@@ -80,6 +81,7 @@ export const mergeFields = (
 export const addModuleForms = (
   forms: FormConfigs,
   _moduleForms: FormConfigs,
+  registerOptions?: RegisterOptions,
 ): FormConfigs => {
   if (_moduleForms == null || Object.keys(_moduleForms).length === 0) {
     return forms;
@@ -92,7 +94,7 @@ export const addModuleForms = (
   let result = {...forms};
 
   for (const [key, config] of Object.entries(_moduleForms)) {
-    if (!Object.keys(result).includes(key)) {
+    if (!Object.keys(result).includes(key) || registerOptions?.replaceOld) {
       result[key] = config;
     } else {
       const oldOptions = {...result[key]};

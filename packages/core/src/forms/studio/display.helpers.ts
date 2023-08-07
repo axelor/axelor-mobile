@@ -51,6 +51,40 @@ export const mapStudioFields = (
   return {fields: formFields, panels: formPanels, defaults};
 };
 
+export const mapFormToStudioFields = (
+  fields: any[],
+  formValues: any,
+): JSONObject<string> => {
+  let items: JSONObject<string> = {};
+
+  if (Array.isArray(fields)) {
+    const metaJsonFields = [...fields];
+    const modelFields = metaJsonFields
+      .map(_item => _item.modelField)
+      .filter((item, index, self) => self.indexOf(item) === index)
+      .sort();
+
+    for (const modelField of modelFields) {
+      let panelValues = {};
+      const keys = Object.keys(formValues);
+
+      metaJsonFields
+        .filter(_item => _item.modelField === modelField)
+        .forEach(_item => {
+          const fieldKey = _item.name;
+
+          if (keys.includes(fieldKey)) {
+            panelValues[fieldKey] = formValues[fieldKey];
+          }
+        });
+
+      items = {...items, [modelField]: JSON.stringify(panelValues)};
+    }
+  }
+
+  return items;
+};
+
 const mapStudioTypeToInputType = (type: string): InputType => {
   switch (type) {
     case 'integer':

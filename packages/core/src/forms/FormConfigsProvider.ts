@@ -20,6 +20,10 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Form, FormConfigs} from './types';
 import {addModuleForms, fetchOptionsOfFormKey} from './register.helpers';
 
+export interface RegisterOptions {
+  replaceOld?: boolean;
+}
+
 class FormConfigsProvider {
   private formConfigs: FormConfigs;
   private refreshCallBack: Function;
@@ -45,8 +49,12 @@ class FormConfigsProvider {
     return fetchOptionsOfFormKey(this.formConfigs, key);
   }
 
-  registerFrom(key: string, options: Form) {
-    this.formConfigs = addModuleForms({...this.formConfigs}, {[key]: options});
+  registerForm(key: string, options: Form, registerOptions: RegisterOptions) {
+    this.formConfigs = addModuleForms(
+      {...this.formConfigs},
+      {[key]: options},
+      registerOptions,
+    );
 
     this.updateState();
   }

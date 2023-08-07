@@ -80,6 +80,7 @@
   "Stopwatch_Status_Canceled": "Annulé",
   "Stopwatch_TimerFormat": "mm:ss",
   "Base_MetaJsonFields": "Champs studio",
+  "Base_Studio_RefreshConfig": "Actualiser la vue",
   "Base_FormNotFound": "Le formulaire demandé est introuvable, merci de contacter un administrateur.",
   "Base_FormValidation_String": "doit être une chaîne de caractères",
   "Base_FormValidation_Number": "doit être un nombre",
@@ -135,5 +136,6 @@
   "Base_SliceAction_UpdateRecord": "mise à jour de l'objet",
   "Base_SliceAction_RefreshRecord": "actualisation de l'objet",
   "Base_SliceAction_FetchJsonFieldsOfModel": "récupération des champs studio du modèle",
-  "Base_SliceAction_FetchDataOfModel": "récupération des données du model"
+  "Base_SliceAction_FetchDataOfModel": "récupération des données du model",
+  "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet"
 }

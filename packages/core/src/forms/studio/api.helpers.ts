@@ -56,6 +56,33 @@ export async function fetchObject({
   });
 }
 
+export async function updateJsonFieldsObject({
+  modelName,
+  id,
+  version,
+  values,
+}: {
+  modelName: string;
+  id: number;
+  version: number;
+  values: any;
+}) {
+  if (modelName == null || id == null) {
+    return null;
+  }
+
+  return axiosApiProvider.post({
+    url: `ws/rest/${modelName}`,
+    data: {
+      data: {
+        id: id,
+        version: version,
+        ...values,
+      },
+    },
+  });
+}
+
 export async function fetchData({
   modelName,
   domain,

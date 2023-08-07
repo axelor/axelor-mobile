@@ -21,6 +21,7 @@ import {handlerApiCall} from '../apiProviders/utils';
 import {
   fetchJsonFieldsOfModel as _fetchJsonFieldsOfModel,
   fetchObject as _fetchObject,
+  updateJsonFieldsObject as _updateJsonFieldsObject,
 } from '../forms/studio/api.helpers';
 
 export const fetchJsonFieldsOfModel = createAsyncThunk(
@@ -49,6 +50,19 @@ export const fetchObject = createAsyncThunk(
   },
 );
 
+export const updateJsonFieldsObject = createAsyncThunk(
+  'metaJsonField/updateJsonFieldsObject',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateJsonFieldsObject,
+      data: data,
+      action: 'Base_SliceAction_UpdateJsonFieldsObject',
+      getState: getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    });
+  },
+);
+
 const initialState = {
   fields: [],
   object: {},
@@ -62,6 +76,9 @@ const metaJsonFieldSlice = createSlice({
       state.fields = action.payload;
     });
     builder.addCase(fetchObject.fulfilled, (state, action) => {
+      state.object = action.payload;
+    });
+    builder.addCase(updateJsonFieldsObject.fulfilled, (state, action) => {
       state.object = action.payload;
     });
   },

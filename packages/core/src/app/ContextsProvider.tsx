@@ -140,7 +140,7 @@ const ContextsProvider = ({
     return modules
       .filter(_module => _module.models?.formsRegister)
       .map(_module => _module.models.formsRegister)
-      .reduce(addModuleForms, {});
+      .reduce((forms, _moduleForms) => addModuleForms(forms, _moduleForms), {});
   }, [modules]);
 
   useEffect(() => {

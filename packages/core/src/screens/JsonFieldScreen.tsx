@@ -23,15 +23,23 @@ import {FormView} from '../components';
 import {
   fetchJsonFieldsOfModel,
   fetchObject,
+  updateJsonFieldsObject,
 } from '../features/metaJsonFieldSlice';
-import {formConfigsProvider, mapStudioFields} from '../forms';
+import {
+  formConfigsProvider,
+  mapFormToStudioFields,
+  mapStudioFields,
+} from '../forms';
 import {isEmpty} from '../utils';
+import {headerActionsProvider} from '../header';
+import {useTranslator} from '../i18n';
 
 const FORM_KEY = 'attrs-form';
 
 const JsonFieldScreen = ({route}) => {
   const {model, modelId} = route.params;
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {fields: _fields, object} = useSelector(
@@ -49,11 +57,15 @@ const JsonFieldScreen = ({route}) => {
   );
 
   useEffect(() => {
-    formConfigsProvider.registerFrom(FORM_KEY, {
-      readonlyIf: () => false,
-      fields,
-      panels,
-    });
+    formConfigsProvider.registerForm(
+      FORM_KEY,
+      {
+        readonlyIf: () => false,
+        fields,
+        panels,
+      },
+      {replaceOld: true},
+    );
   }, [fields, panels]);
 
   const attrsValues = useMemo(() => {
@@ -72,14 +84,40 @@ const JsonFieldScreen = ({route}) => {
     return result;
   }, [object]);
 
+  useEffect(() => {
+    headerActionsProvider.registerModel('core_metaJsonFields_details', {
+      actions: [
+        {
+          key: 'refreshConfig',
+          order: 10,
+          showInHeader: false,
+          iconName: 'redo',
+          title: I18n.t('Base_Studio_RefreshConfig'),
+          onPress: () => {
+            dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
+          },
+        },
+      ],
+    });
+  }, [I18n, dispatch, model]);
+
   return (
     <FormView
       actions={[
         {
-          key: 'refresh-config',
-          type: 'refresh',
-          customAction: () => {
-            dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
+          key: 'validateChanges',
+          type: 'custom',
+          needRequiredFields: true,
+          needValidation: true,
+          customAction: ({objectState}) => {
+            dispatch(
+              (updateJsonFieldsObject as any)({
+                modelName: model,
+                id: object.id,
+                version: object.version,
+                values: mapFormToStudioFields(_fields, objectState),
+              }),
+            );
           },
         },
       ]}

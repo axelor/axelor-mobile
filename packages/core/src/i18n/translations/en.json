@@ -80,6 +80,7 @@
   "Stopwatch_Status_Canceled": "Canceled",
   "Stopwatch_TimerFormat": "mm:ss",
   "Base_MetaJsonFields": "Custom fields",
+  "Base_Studio_RefreshConfig": "Refresh view",
   "Base_FormNotFound": "The requested form cannot be found, please contact an administrator.",
   "Base_FormValidation_String": "must be a string",
   "Base_FormValidation_Number": "must be a number",
@@ -135,5 +136,6 @@
   "Base_SliceAction_UpdateRecord": "update record",
   "Base_SliceAction_RefreshRecord": "refresh record",
   "Base_SliceAction_FetchJsonFieldsOfModel": "fetch custom fields of model",
-  "Base_SliceAction_FetchDataOfModel": "fetch data of model"
+  "Base_SliceAction_FetchDataOfModel": "fetch data of model",
+  "Base_SliceAction_UpdateJsonFieldsObject": "update custom fields of object"
 }
