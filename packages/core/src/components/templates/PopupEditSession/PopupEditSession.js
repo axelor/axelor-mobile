@@ -147,12 +147,14 @@ const PopupEditSession = ({
   }, [onScanPress]);
 
   useEffect(() => {
-    setUpdateSession(session);
-    setSessionName(session.id);
-    setUrl(session.url);
-    setUsername(session.username);
-    setIsDefault(session.isDefault);
-  }, [session]);
+    setUpdateSession(
+      sessionList?.find(item => item.sessionId === session?.sessionId),
+    );
+    setSessionName(updateSession?.id);
+    setUrl(updateSession?.url);
+    setUsername(updateSession?.username);
+    setIsDefault(updateSession?.isDefault);
+  }, [session, sessionList, updateSession]);
 
   return (
     <PopUp

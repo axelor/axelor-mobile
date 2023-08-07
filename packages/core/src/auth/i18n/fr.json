@@ -15,6 +15,7 @@
   "Auth_Saved_Sessions": "Sessions enregistrées",
   "Auth_Session_Name_Aleary_Exist": "Ce nom de session existe déjà",
   "Auth_Create_Session": "Créer une session",
+  "Auth_Edit_Session": "Editer la session",
   "Auth_No_Active_Session": "Aucune session active",
   "Auth_Always_Active": "Toujours active ?",
   "Auth_Choose_Session": "Choisir une session",

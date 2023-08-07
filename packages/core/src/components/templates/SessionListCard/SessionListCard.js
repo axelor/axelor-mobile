@@ -71,7 +71,7 @@ const SessionListCard = ({
     setAuthorizePopupToOpen(false);
     Animated.timing(translateXAnim, {
       toValue: -60,
-      duration: 500,
+      duration: 200,
       useNativeDriver: true,
     }).start();
     setPopupSessionIsOpen(false);
@@ -217,8 +217,9 @@ const SessionListCard = ({
                     </View>
                     <View style={styles.textContainer}>
                       <Text style={styles.textTitle}>{_session.id}</Text>
-                      <Text numberOfLines={1}>{`Url: ${_session.url}`}</Text>
-                      {_session.isDefault && <Text>{'default'}</Text>}
+                      <Text
+                        numberOfLines={1}
+                        style={styles.details}>{`Url: ${_session.url}`}</Text>
                     </View>
                   </Card>
                 </Animated.View>
@@ -262,10 +263,11 @@ const getStyles = Colors =>
       alignItems: 'center',
     },
     scrollView: {
-      width: '90%',
+      width: '100%',
     },
     contentContainer: {
       alignItems: 'center',
+      paddingHorizontal: '5%',
     },
     cardContainer: {
       flexDirection: 'row',
@@ -302,9 +304,13 @@ const getStyles = Colors =>
     iconContainer: {
       alignSelf: 'flex-end',
       flexDirection: 'row',
+      paddingHorizontal: '5%',
     },
     icon: {
       marginHorizontal: 4,
+    },
+    details: {
+      fontStyle: 'italic',
     },
     iconPlus: {
       marginHorizontal: 4,

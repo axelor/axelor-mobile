@@ -22,7 +22,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Icon, PopUp, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
 import {PasswordInput} from '../../organisms';
 import {ErrorText, LoginButton} from '../../molecules';
-import {} from '../../../hooks/use-scan-activator';
 import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../../../sessions';
 
