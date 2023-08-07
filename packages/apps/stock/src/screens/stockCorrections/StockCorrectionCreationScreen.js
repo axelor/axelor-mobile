@@ -30,7 +30,7 @@ import {
 } from '../../components';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
 import StockCorrection from '../../types/stock-corrrection';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const stockLocationScanKey =
   'original-stock-location_internal-move-select-from';
@@ -168,44 +168,43 @@ const StockCorrectionCreationScreen = ({route}) => {
           />
         )
       }>
-      <KeyboardAvoidingScrollView style={styles.scroll}>
-        <View style={styles.stockView}>
-          <StockLocationSearchBar
-            defaultValue={location}
-            scanKey={stockLocationScanKey}
-            onChange={handleStockLocationChange}
-            isFocus={currentStep === CREATION_STEP.stockLocation}
+      <KeyboardAvoidingScrollView
+        style={currentStep < CREATION_STEP.validation ? styles.scroll : null}>
+        <StockLocationSearchBar
+          defaultValue={location}
+          scanKey={stockLocationScanKey}
+          onChange={handleStockLocationChange}
+          isFocus={currentStep === CREATION_STEP.stockLocation}
+        />
+        {currentStep >= CREATION_STEP.product_trackingNumber ? (
+          <ProductTrackingNumberSearchBar
+            scanKey={itemScanKey}
+            onChange={handleProductTrackingNumberChange}
+            defaultValue={trackingNumber || product}
+            isFocus={currentStep === CREATION_STEP.product_trackingNumber}
           />
-          {currentStep >= CREATION_STEP.product_trackingNumber ? (
-            <ProductTrackingNumberSearchBar
-              scanKey={itemScanKey}
-              onChange={handleProductTrackingNumberChange}
-              defaultValue={trackingNumber || product}
-              isFocus={currentStep === CREATION_STEP.product_trackingNumber}
+        ) : null}
+        {currentStep >= CREATION_STEP.validation ? (
+          <>
+            <StockCorrectionProductCardInfo
+              stockProduct={product}
+              trackingNumber={trackingNumber}
             />
-          ) : null}
-          {currentStep >= CREATION_STEP.validation ? (
-            <>
-              <StockCorrectionProductCardInfo
-                stockProduct={product}
-                trackingNumber={trackingNumber}
-              />
-              <StockCorrectionQuantityCard
-                databaseQty={databaseQty}
-                realQty={realQty}
-                setRealQty={setRealQty}
-                status={StockCorrection.status.Draft}
-                stockProduct={product}
-              />
-              <StockCorrectionReasonPicker
-                reason={reason}
-                setReason={setReason}
-                status={StockCorrection.status.Draft}
-              />
-              <StockCorrectionHtmlInput setComments={setComments} />
-            </>
-          ) : null}
-        </View>
+            <StockCorrectionQuantityCard
+              databaseQty={databaseQty}
+              realQty={realQty}
+              setRealQty={setRealQty}
+              status={StockCorrection.status.Draft}
+              stockProduct={product}
+            />
+            <StockCorrectionReasonPicker
+              reason={reason}
+              setReason={setReason}
+              status={StockCorrection.status.Draft}
+            />
+            <StockCorrectionHtmlInput setComments={setComments} />
+          </>
+        ) : null}
       </KeyboardAvoidingScrollView>
     </Screen>
   );
