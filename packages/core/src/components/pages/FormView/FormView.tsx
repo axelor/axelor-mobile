@@ -286,7 +286,8 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
 
   return (
     <Screen
-      fixedItems={actions.length === 0 ? undefined : actions.map(renderAction)}>
+      fixedItems={actions.length === 0 ? undefined : actions.map(renderAction)}
+      removeSpaceOnTop={true}>
       <KeyboardAvoidingScrollView
         keyboardOffset={{
           ios: 70,

@@ -95,6 +95,7 @@ const Field = ({
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
       width: `${_field.parentPanel != null ? 100 : 90}%`,
+      alignSelf: 'center',
     }),
     [_field],
   );
@@ -134,6 +135,7 @@ const Field = ({
       case 'file':
         return (
           <UploadFileInput
+            style={fieldStyle}
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onUpload={handleChange}
@@ -145,6 +147,7 @@ const Field = ({
       case 'date':
         return (
           <DateInput
+            style={fieldStyle}
             title={I18n.t(_field.titleKey)}
             mode={_field.type as 'date' | 'datetime' | 'time'}
             defaultDate={value ? new Date(value) : null}
@@ -204,7 +207,7 @@ const Field = ({
   }
 
   return (
-    <View style={fieldStyle}>
+    <View style={styles.container}>
       {getComponent()}
       {error != null && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
@@ -218,6 +221,11 @@ const Field = ({
 const styles = StyleSheet.create({
   checkbox: {
     marginVertical: 5,
+  },
+  container: {
+    alignSelf: 'center',
+    width: '100%',
+    zIndex: 40,
   },
   error: {
     marginLeft: 5,

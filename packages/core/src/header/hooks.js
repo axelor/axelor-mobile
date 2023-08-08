@@ -118,7 +118,7 @@ export const useBasicActions = ({
       key: 'metaJsonFields',
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
-      iconName: 'paint-brush',
+      iconName: 'object-group',
       hideIf: disableJsonFields,
       onPress: () =>
         navigation.navigate('JsonFieldScreen', {
