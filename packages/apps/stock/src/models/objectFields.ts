@@ -162,6 +162,7 @@ export const stock_modelAPI: ObjectFields = {
     realQty: schemaContructor.number(),
     baseQty: schemaContructor.number(),
     stockCorrectionReason: schemaContructor.subObject('name'),
+    comments: schemaContructor.string(),
   }),
   stock_stockLocation: schemaContructor.object({
     name: schemaContructor.string(),
