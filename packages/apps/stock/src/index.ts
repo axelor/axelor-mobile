@@ -30,7 +30,6 @@ import UserScreen from './screens/auth/UserScreen';
 import {stock_modelAPI, stock_searchFields, stock_sortFields} from './models';
 import {useStockHeaders} from './hooks/use-stock-header-actions';
 
-// TODO: clean test sub menus
 export const StockModule: Module = {
   name: 'app-stock',
   title: 'Stock',
@@ -41,27 +40,6 @@ export const StockModule: Module = {
     downToVersion: '7.1.0',
   },
   menus: {
-    stock_test: {
-      title: 'Menu',
-      icon: 'folder-open',
-      subMenus: {
-        stock_subMenu_home: {
-          title: 'Sub Menu 1',
-          icon: 'home',
-          screen: 'ProductListScreen',
-        },
-        stock_subMenu_test: {
-          title: 'Sub Menu 2',
-          icon: 'warehouse',
-          screen: 'StockCorrectionListScreen',
-        },
-        stock_subMenu_toExtended: {
-          title: 'Sub Menu Main',
-          icon: 'home',
-          screen: 'InternalMoveListScreen',
-        },
-      },
-    },
     stock_menu_product: {
       title: 'Stock_Product',
       icon: 'shopping-cart',

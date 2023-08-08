@@ -29,7 +29,6 @@ import {
 } from './models';
 import {useManufacturingHeaders} from './hooks/use-manufacturing-headers';
 
-//TODO: clean test subMenu
 export const ManufacturingModule: Module = {
   name: 'app-manufacturing',
   title: 'Manufacturing_Manufacturing',
@@ -44,14 +43,6 @@ export const ManufacturingModule: Module = {
       title: 'Manufacturing_ManufacturingOrder',
       icon: 'clipboard-list',
       screen: 'ManufacturingOrderListScreen',
-      subMenus: {
-        stock_subMenu_toExtended: {
-          title: 'Sub Menu extended',
-          icon: 'bug',
-          screen: 'InternalMoveListScreen',
-          parent: 'stock_test',
-        },
-      },
     },
     manufacturing_menu_operation_order: {
       title: 'Manufacturing_OperationOrder',
