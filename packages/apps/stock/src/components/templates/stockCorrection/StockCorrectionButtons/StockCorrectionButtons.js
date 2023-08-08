@@ -33,11 +33,13 @@ const StockCorrectionButtons = ({
   stockCorrection,
   realQty,
   status,
+  comments,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const {mobileSettings} = useSelector(state => state.config);
 
   const handleAPI = useCallback(
@@ -49,12 +51,21 @@ const StockCorrectionButtons = ({
           realQty: saveStatus ? null : realQty,
           reasonId: saveStatus ? null : reason?.id,
           status: _status,
+          comments: comments,
         }),
       );
 
       navigation.pop();
     },
-    [dispatch, navigation, realQty, reason, saveStatus, stockCorrection],
+    [
+      dispatch,
+      navigation,
+      realQty,
+      reason,
+      saveStatus,
+      stockCorrection,
+      comments,
+    ],
   );
 
   const handleSave = useCallback(
