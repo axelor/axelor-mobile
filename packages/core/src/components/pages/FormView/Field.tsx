@@ -104,6 +104,7 @@ const Field = ({
     switch (getWidget(_field)) {
       case 'custom':
         return _field.customComponent({
+          style: fieldStyle,
           title: I18n.t(_field.titleKey),
           defaultValue: value,
           onChange: handleChange,

@@ -32,6 +32,7 @@ export interface DependsOnStates extends States {
 }
 
 export interface customComponentOptions {
+  style?: any;
   title?: string;
   defaultValue?: any;
   onChange: (value?: any) => void;
