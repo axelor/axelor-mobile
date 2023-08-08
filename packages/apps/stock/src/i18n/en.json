@@ -63,6 +63,7 @@
   "Stock_Application_SalePrice": "Sale price",
   "Stock_Application_CostPrice": "Cost price",
   "Stock_Application_PurchasePrice": "Purchase price",
+  "Stock_Comments": "Comments",
   "Stock_Status_Draft": "Draft",
   "Stock_Status_Validated": "Validated",
   "Stock_Status_Planned": "Planned",
