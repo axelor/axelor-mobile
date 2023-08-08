@@ -17,7 +17,11 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  Screen,
+  KeyboardAvoidingScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
@@ -25,6 +29,7 @@ import {
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
+  StockCorrectionHtmlInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -41,6 +46,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
   const {productFromId: product} = useSelector(state => state.product);
 
   const [saveStatus, setSaveStatus] = useState(true);
+  const [comments, setComments] = useState();
   const [realQty, setRealQty] = useState();
   const [reason, setReason] = useState();
 
@@ -76,6 +82,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
   useEffect(() => {
     setRealQty(stockCorrection?.realQty);
     setReason(stockCorrection?.stockCorrectionReason || {name: '', id: null});
+    setComments(stockCorrection?.comments);
   }, [stockCorrection]);
 
   if (
@@ -84,7 +91,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   ) {
     return null;
   }
-
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -95,6 +101,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
           stockCorrection={stockCorrection}
           saveStatus={saveStatus}
           status={stockCorrection.statusSelect}
+          comments={comments}
         />
       }>
       <HeaderContainer
@@ -106,7 +113,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
           />
         }
       />
-      <ScrollView>
+      <KeyboardAvoidingScrollView>
         <StockCorrectionProductCardInfo
           stockProduct={product}
           trackingNumber={stockCorrection.trackingNumber}
@@ -125,7 +132,12 @@ const StockCorrectionDetailsScreen = ({route}) => {
           setSaveStatus={setSaveStatus}
           status={stockCorrection.statusSelect}
         />
-      </ScrollView>
+        <StockCorrectionHtmlInput
+          setComments={setComments}
+          stockCorrection={stockCorrection}
+          setSaveStatus={setSaveStatus}
+        />
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

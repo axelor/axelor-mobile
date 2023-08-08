@@ -63,6 +63,14 @@ export const createCorrection = createAsyncThunk(
       action: 'Stock_SliceAction_CreateStockCorrection',
       getState,
       responseOptions: {showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchStockCorrection,
+        data,
+        action: 'Stock_SliceAction_SearchStockCorrections',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -75,7 +83,15 @@ export const updateCorrection = createAsyncThunk(
       data,
       action: 'Stock_SliceAction_UpdateStockCorrection',
       getState,
-      responseOptions: {showToast: true},
+      responseOptions: {showToast: true, isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchStockCorrection,
+        data,
+        action: 'Stock_SliceAction_SearchStockCorrections',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -109,6 +125,20 @@ const stockCorrectionSlice = createSlice({
     builder.addCase(fetchStockCorrection.fulfilled, (state, action) => {
       state.loading = false;
       state.stockCorrection = action.payload;
+    });
+    builder.addCase(createCorrection.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(createCorrection.fulfilled, (state, action) => {
+      state.loading = false;
+      state.stockCorrectionList = action.payload;
+    });
+    builder.addCase(updateCorrection.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateCorrection.fulfilled, (state, action) => {
+      state.loading = false;
+      state.stockCorrectionList = action.payload;
     });
   },
 });
