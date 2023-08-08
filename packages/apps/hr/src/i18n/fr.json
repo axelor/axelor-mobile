@@ -1,4 +1,7 @@
 {
   "Hr_HumanRessources": "Ressources humaines",
-  "Hr_Hr": "RH"
+  "Hr_Hr": "RH",
+  "Hr_Expense_Lines": "Frais",
+
+  "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais"
 }
