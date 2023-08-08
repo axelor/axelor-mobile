@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text, WarningCard} from '@axelor/aos-mobile-ui';
-import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
 import {
+  findIndexAndRouteOfMenu,
   getMenuTitle,
+  hasSubMenus,
   isMenuIncompatible,
   isModuleNotFound,
 } from '../menu.helper';
@@ -37,24 +38,47 @@ const MenuItemList = ({
   onItemClick,
   disabled,
 }) => {
-  const I18n = useTranslator();
-  const {modulesMenus} = useContext(ModuleNavigatorContext);
-
-  return state.routes.map((route, i) => {
-    if (activeModule.menus[route.name] == null) {
-      return null;
+  const generateSubRoutes = menuItem => {
+    if (hasSubMenus(menuItem)) {
+      const {subMenus} = menuItem;
+      return state.routes.filter(subRoute => subRoute.name in subMenus);
     }
+    return [];
+  };
+
+  const moduleEntries = useMemo(() => {
+    return state.routes
+      .filter(_route => activeModule.menus[_route.name] != null)
+      .map(route => ({...activeModule.menus[route.name], key: route.name}))
+      .map((item, index) => {
+        if (item.order != null) {
+          return item;
+        }
+
+        return {...item, order: index * 10};
+      })
+      .sort((a, b) => a.order - b.order);
+  }, [activeModule, state.routes]);
+
+  return moduleEntries.map(menuItem => {
+    const {route, index: i} = findIndexAndRouteOfMenu(
+      state.routes,
+      menuItem.key,
+    );
 
     const focused =
       i === state.index && Object.keys(activeModule.menus).includes(route.name);
-    const menu = modulesMenus[route.name];
 
-    const onPress = () => {
+    const onPress = _route => {
+      if (_route == null) {
+        return null;
+      }
+
       onItemClick();
 
       const event = navigation.emit({
         type: 'drawerItemPress',
-        target: route.key,
+        target: _route.key,
         canPreventDefault: true,
       });
 
@@ -62,20 +86,25 @@ const MenuItemList = ({
         navigation.dispatch({
           ...(focused
             ? DrawerActions.closeDrawer()
-            : CommonActions.navigate({name: route.name, merge: true})),
+            : CommonActions.navigate({name: _route.name, merge: true})),
           target: state.key,
         });
       }
     };
 
+    const subRoutes = generateSubRoutes(menuItem);
+
     return (
       <MenuItem
         key={route.key}
-        title={getMenuTitle(menu, {I18n})}
-        icon={menu.icon}
-        disabled={menu.disabled || disabled}
+        state={state}
+        route={route}
+        navigation={navigation}
+        menuItem={menuItem}
+        subRoutes={subRoutes}
         onPress={onPress}
         isActive={focused}
+        disabled={disabled}
       />
     );
   });
