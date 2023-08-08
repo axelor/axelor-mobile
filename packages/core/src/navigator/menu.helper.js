@@ -20,6 +20,16 @@ import {checkNullString} from '@axelor/aos-mobile-ui';
 import {userHaveAccessToConfig} from './roles.helper';
 import {formatVersionString} from '../utils/string';
 
+export function findIndexAndRouteOfMenu(routes, menuName) {
+  const index = routes.findIndex(_route => _route.name === menuName);
+
+  if (index === -1) {
+    return {route: null, index: null};
+  }
+
+  return {route: routes[index], index: index};
+}
+
 const userHaveAccessToMenu = ({menuConfig, user}) => {
   return userHaveAccessToConfig({config: menuConfig, user: user});
 };
@@ -101,7 +111,16 @@ export function resolveSubMenus(subMenus) {
     return [];
   }
 
-  return Object.entries(subMenus).map(entry => ({...entry[1], key: entry[0]}));
+  return Object.entries(subMenus)
+    .map(([key, content]) => ({...content, key}))
+    .map((item, index) => {
+      if (item?.order != null) {
+        return item;
+      }
+
+      return {...item, order: index * 10};
+    })
+    .sort((a, b) => a.order - b.order);
 }
 
 export function manageSubMenusOverriding(modules) {

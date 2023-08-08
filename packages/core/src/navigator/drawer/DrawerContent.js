@@ -54,50 +54,24 @@ const DrawerContent = ({
 }) => {
   useEffect(() => {
     const generateRoutes = _state => {
-      const routes = modules
+      return [...modules]
         ?.filter(_module => _module.menus)
         ?.flatMap(_module => {
-          const moduleMenus = _module.menus;
           const result = [];
 
-          let orderIndex = 0;
-          for (const [key, menu] of Object.entries(moduleMenus)) {
-            const {subMenus} = menu;
-            const menuOrder =
-              menu?.order != null ? menu.order : orderIndex * 10;
-
-            result.push({
-              ...menu,
-              order: menuOrder,
-              key,
-            });
-
-            orderIndex++;
+          for (const [key, menu] of Object.entries(_module.menus)) {
+            result.push(key);
 
             if (hasSubMenus(menu)) {
-              for (const [subMenuKey, subMenu] of Object.entries(subMenus)) {
-                const subMenuOrder =
-                  subMenu?.order != null ? subMenu.order : orderIndex * 10;
-
-                result.push({
-                  ...subMenu,
-                  order: subMenuOrder,
-                  key: subMenuKey,
-                });
-
-                orderIndex++;
-              }
+              Object.keys(menu.subMenus).forEach(_key => {
+                result.push(_key);
+              });
             }
           }
 
           return result;
-        });
-
-      return routes
-        .sort((a, b) => a.order - b.order)
-        .map(item =>
-          _state.routes.find(stateItem => stateItem.name === item.key),
-        );
+        })
+        .map(_key => _state.routes.find(_item => _item.name === _key));
     };
 
     navigation.dispatch(_state => {

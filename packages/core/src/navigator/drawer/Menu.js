@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CommonActions, DrawerActions} from '@react-navigation/native';
 import {Text} from '@axelor/aos-mobile-ui';
-import {ModuleNavigatorContext} from '../Navigator';
 import MenuItem from './MenuItem';
-import {getMenuTitle, hasSubMenus} from '../menu.helper';
+import {
+  findIndexAndRouteOfMenu,
+  getMenuTitle,
+  hasSubMenus,
+} from '../menu.helper';
 import useTranslator from '../../i18n/hooks/use-translator';
 
 const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
-  const {modulesMenus} = useContext(ModuleNavigatorContext);
-
   const generateSubRoutes = menuItem => {
     if (hasSubMenus(menuItem)) {
       const {subMenus} = menuItem;
@@ -36,10 +37,25 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
     return [];
   };
 
-  return state.routes.map((route, i) => {
-    if (activeModule.menus[route.name] == null) {
-      return null;
-    }
+  const moduleEntries = useMemo(() => {
+    return state.routes
+      .filter(_route => activeModule.menus[_route.name] != null)
+      .map(route => ({...activeModule.menus[route.name], key: route.name}))
+      .map((item, index) => {
+        if (item.order != null) {
+          return item;
+        }
+
+        return {...item, order: index * 10};
+      })
+      .sort((a, b) => a.order - b.order);
+  }, [activeModule, state.routes]);
+
+  return moduleEntries.map(menuItem => {
+    const {route, index: i} = findIndexAndRouteOfMenu(
+      state.routes,
+      menuItem.key,
+    );
 
     const focused =
       i === state.index && Object.keys(activeModule.menus).includes(route.name);
@@ -66,8 +82,6 @@ const MenuItemList = ({state, navigation, activeModule, onItemClick}) => {
         });
       }
     };
-
-    const menuItem = modulesMenus[route.name];
 
     const subRoutes = generateSubRoutes(menuItem);
 

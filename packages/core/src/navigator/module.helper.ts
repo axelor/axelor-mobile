@@ -91,8 +91,8 @@ export function manageOverridingMenus(modules: Module[]) {
 
       menusNames.forEach(_menuKey => {
         const menu: Menu = _module.menus[_menuKey];
-
         const menuParentField = menu?.parent;
+
         if (menuParentField != null && menuParentField !== _module.name) {
           const {module: parentModule, index} = findIndexAndObjectOfModule(
             result,
