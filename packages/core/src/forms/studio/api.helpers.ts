@@ -209,3 +209,20 @@ export async function fetchSelectionOptions({
         }));
     });
 }
+
+export async function executeButtonAction(
+  actions: string,
+  model: string,
+  object: any,
+) {
+  return axiosApiProvider.post({
+    url: 'ws/action',
+    data: {
+      action: actions,
+      data: {
+        context: {...object},
+      },
+      model,
+    },
+  });
+}

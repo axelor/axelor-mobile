@@ -20,6 +20,7 @@ import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
 import CustomSearchBar from '../../components/pages/FormView/CustomSearchBar';
 import CustomPicker from '../../components/pages/FormView/CustomPicker';
+import CustomButton from '../../components/pages/FormView/CustomButton';
 
 export const mapStudioFields = (
   items: any[],
@@ -234,6 +235,17 @@ const manageContentOfModel = (
                   alignSelf: 'center',
                 },
               }),
+          };
+          break;
+        case 'button':
+          formFields[item.name] = {
+            titleKey: item.title,
+            type: 'object',
+            order: item.sequence,
+            parentPanel: lastPanel,
+            widget: 'custom',
+            customComponent: CustomButton,
+            options: {item},
           };
           break;
         default:
