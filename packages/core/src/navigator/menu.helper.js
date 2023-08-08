@@ -18,6 +18,16 @@
 
 import {userHaveAccessToConfig} from './roles.helper';
 
+export function findIndexAndRouteOfMenu(routes, menuName) {
+  const index = routes.findIndex(_route => _route.name === menuName);
+
+  if (index === -1) {
+    return {route: null, index: null};
+  }
+
+  return {route: routes[index], index: index};
+}
+
 const userHaveAccessToMenu = ({menuConfig, user}) => {
   return userHaveAccessToConfig({config: menuConfig, user: user});
 };
@@ -52,4 +62,102 @@ export function getMenuTitle(menu, {I18n}) {
     return I18n.t(menu.title);
   }
   return menu.screen;
+}
+
+export function hasSubMenus(menu) {
+  return (
+    menu != null &&
+    Object.keys(menu).length > 0 &&
+    Object.keys(menu).includes('subMenus')
+  );
+}
+
+export function resolveSubMenus(subMenus) {
+  if (subMenus == null || Object.keys(subMenus).length === 0) {
+    return [];
+  }
+
+  return Object.entries(subMenus)
+    .map(([key, content]) => ({...content, key}))
+    .map((item, index) => {
+      if (item?.order != null) {
+        return item;
+      }
+
+      return {...item, order: index * 10};
+    })
+    .sort((a, b) => a.order - b.order);
+}
+
+export function manageSubMenusOverriding(modules) {
+  const allMenus = {};
+
+  modules.forEach(module => {
+    if (module.menus) {
+      Object.entries(module.menus).forEach(([menuKey, menu]) => {
+        allMenus[menuKey] = menu;
+      });
+    }
+  });
+
+  modules.forEach(module => {
+    if (module.menus) {
+      Object.values(module.menus).forEach(menu => {
+        if (menu.subMenus && Object.keys(menu.subMenus).length !== 0) {
+          menu.subMenus = Object.entries(menu.subMenus).reduce(
+            (acc, [subMenuKey, subMenu]) => {
+              if ('parent' in subMenu) {
+                const parentMenuName = subMenu.parent;
+                const parentMenu = allMenus[parentMenuName];
+
+                if (parentMenu) {
+                  if (!parentMenu.subMenus) {
+                    parentMenu.subMenus = {};
+                  }
+
+                  parentMenu.subMenus[subMenuKey] = {...subMenu};
+                  delete parentMenu.subMenus[subMenuKey].parent;
+                }
+              } else {
+                acc[subMenuKey] = subMenu;
+              }
+
+              return acc;
+            },
+            {},
+          );
+        }
+      });
+    }
+  });
+
+  return cleanEmptyMenusAndSubMenus(modules);
+}
+
+export function cleanEmptyMenusAndSubMenus(modules) {
+  const cleanedModules = modules.map(module => {
+    const {menus, ...restModuleAttrs} = module;
+
+    if (menus) {
+      if (Object.keys(menus).length === 0) {
+        return {...restModuleAttrs};
+      }
+
+      const cleanedMenus = Object.entries(menus).map(([key, menu]) => {
+        const {subMenus, ...restMenusAttrs} = menu;
+
+        if (subMenus && Object.keys(subMenus).length === 0) {
+          return [key, {...restMenusAttrs}];
+        }
+
+        return [key, menu];
+      });
+
+      return {...module, menus: Object.fromEntries(cleanedMenus)};
+    }
+
+    return module;
+  });
+
+  return cleanedModules;
 }
