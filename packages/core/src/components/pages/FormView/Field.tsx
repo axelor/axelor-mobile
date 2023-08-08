@@ -156,6 +156,7 @@ const Field = ({
             }
             required={_field.required}
             readonly={isGlobalReadonly || _field.readonly}
+            nullable={true}
             {..._field.options}
           />
         );

@@ -280,6 +280,11 @@ const manageContentOfModel = (
             config.validationOptions = {
               integer: {},
             };
+            config.options = {scale: 0};
+          }
+
+          if (item.type === 'decimal' && item.scale != null) {
+            config.options = {scale: item.scale};
           }
 
           if (isMultiLinesInput(item)) {
