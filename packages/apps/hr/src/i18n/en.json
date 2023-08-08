@@ -1,7 +1,8 @@
 {
   "Hr_HumanRessources": "Human ressources",
   "Hr_Hr": "HR",
-  "Hr_Expense_Lines": "Expense lines",
+  "Hr_ExpenseLines": "Expense lines",
+  "Hr_NewExpenseLine": "New expense line",
 
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines"
 }

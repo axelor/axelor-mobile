@@ -20,7 +20,8 @@ import ExpenseLinesListScreen from './ExpenseLinesListScreen';
 
 export default {
   ExpenseLinesListScreen: {
-    title: 'Hr_Expense_Lines',
+    title: 'Hr_ExpenseLines',
     component: ExpenseLinesListScreen,
+    actionID: 'hr_expenseLine_list',
   },
 };
