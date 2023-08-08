@@ -16,5 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './atoms';
-export * from './templates';
+import React from 'react';
+import {Button} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+
+const ExpenseLineValidationButton = ({}) => {
+  return (
+    <View style={styles.container}>
+      <Button title="cancel" style={styles.button} />
+      <Button title="save" style={styles.button} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-evenly',
+  },
+  button: {
+    width: '45%',
+  },
+});
+
+export default ExpenseLineValidationButton;

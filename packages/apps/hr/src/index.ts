@@ -29,10 +29,10 @@ export const HrModule: Module = {
   title: 'Hr_HumanRessources',
   subtitle: 'Hr_Hr',
   icon: 'sitemap',
-  /*compatibilityAOS: {
-    moduleName: 'axelor-hr',
+  compatibilityAOS: {
+    moduleName: 'axelor-human-resource',
     downToVersion: '7.2.0',
-  },*/
+  },
   translations: {
     en: enTranslations,
     fr: frTranslations,

@@ -16,17 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  CircleButton,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {
+  headerActionsProvider,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../features/expenseLineSlice';
 import {ExpenseLineCard} from '../components';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {ExpenseLine} from '../types';
+import {ExpenseLineValidationButton} from '../components/templates';
 
 const ExpenseLinesListScreen = ({navigation}) => {
+  const Colors = useThemeColor();
   const dispatch = useDispatch();
   const I18n = useTranslator();
+  const [selectedState, setSelectedState] = useState(false);
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
@@ -39,13 +52,33 @@ const ExpenseLinesListScreen = ({navigation}) => {
     [dispatch, userId],
   );
 
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_expenseLine_list', {
+      actions: [
+        {
+          key: 'newExpenseLines',
+          order: 10,
+          iconName: 'plus',
+          hideIf: selectedState,
+          title: I18n.t('Hr_NewExpenseLine'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('ExpenseLineFormScreen', {}),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation, selectedState]);
+
   return (
-    <Screen>
+    <Screen fixedItems={selectedState && <ExpenseLineValidationButton />}>
       <ScrollList
         loadingList={loadingExpenseLine}
         data={expenseLineList}
         renderItem={({item}) => (
           <ExpenseLineCard
+            onLongPress={() => {
+              setSelectedState(current => !current);
+            }}
             style={styles.item}
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
@@ -62,6 +95,13 @@ const ExpenseLinesListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         translator={I18n.t}
       />
+      {!selectedState && (
+        <CircleButton
+          style={styles.floatingButton}
+          iconName="camera"
+          onPress={() => {}}
+        />
+      )}
     </Screen>
   );
 };
@@ -70,6 +110,13 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 12,
     marginVertical: 4,
+  },
+  floatingButton: {
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 25,
+    elevation: 2,
+    left: Dimensions.get('window').width / 2 - 25,
   },
 });
 

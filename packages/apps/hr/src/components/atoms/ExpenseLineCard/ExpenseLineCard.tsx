@@ -32,6 +32,7 @@ interface ExpenseLineCardProps {
   totalAmount?: string;
   displayText?: string | number;
   onPress: () => void;
+  onLongPress: () => void;
 }
 const ExpenseLineCard = ({
   style,
@@ -40,13 +41,17 @@ const ExpenseLineCard = ({
   totalAmount,
   displayText,
   onPress,
+  onLongPress,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <TouchableOpacity
+      onLongPress={onLongPress}
+      onPress={onPress}
+      activeOpacity={0.8}>
       <Card style={[styles.container, styles.border, style]}>
         <Text style={styles.date}>{expenseDate}</Text>
         <View style={styles.verticalLine} />
