@@ -19,14 +19,27 @@
 import {Reducer} from '@reduxjs/toolkit';
 import {Schema} from 'yup';
 
-export interface Menu {
+interface MenuBase {
   title: string;
   icon: string;
-  screen: string;
   disabled?: boolean;
   parent?: string;
   order?: number;
 }
+
+interface MenuWithSubMenus extends MenuBase {
+  subMenus: {
+    [subMenuKey: string]: SubMenu;
+  };
+}
+
+interface MenuWithScreen extends MenuBase {
+  screen: string;
+}
+
+export type Menu = MenuWithSubMenus | MenuWithScreen;
+
+export interface SubMenu extends MenuWithScreen {}
 
 interface ScreenOptions {
   shadedHeader: boolean;

@@ -17,7 +17,7 @@
  */
 
 import {Module} from '../app';
-import {Compatibility} from '../app/Module';
+import {Compatibility, Menu} from '../app/Module';
 import {isMenuEnabled} from './menu.helper';
 import {userHaveAccessToConfig} from './roles.helper';
 
@@ -90,7 +90,7 @@ export function manageOverridingMenus(modules: Module[]) {
       const menusNames = Object.keys(_module.menus);
 
       menusNames.forEach(_menuKey => {
-        const menu = _module.menus[_menuKey];
+        const menu: Menu = _module.menus[_menuKey];
         const menuParentField = menu?.parent;
 
         if (menuParentField != null && menuParentField !== _module.name) {
@@ -114,6 +114,7 @@ export function manageOverridingMenus(modules: Module[]) {
         ..._module,
         menus: removeMenusFromOverridingModule(_module.menus, menusToRemove),
       };
+
       result.push(clearedModule);
     } else {
       result.push(_module);

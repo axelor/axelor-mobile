@@ -41,6 +41,7 @@ import {
 } from '../../components';
 import MenuTitle from './MenuTitle';
 import {formatVersionString} from '../../utils/string';
+import {hasSubMenus} from '../menu.helper';
 
 const DrawerContent = ({
   state,
@@ -52,25 +53,31 @@ const DrawerContent = ({
   versionCheckConfig,
 }) => {
   useEffect(() => {
+    const generateRoutes = _state => {
+      return [...modules]
+        ?.filter(_module => _module.menus)
+        ?.flatMap(_module => {
+          const result = [];
+
+          for (const [key, menu] of Object.entries(_module.menus)) {
+            result.push(key);
+
+            if (hasSubMenus(menu)) {
+              Object.keys(menu.subMenus).forEach(_key => {
+                result.push(_key);
+              });
+            }
+          }
+
+          return result;
+        })
+        .map(_key => _state.routes.find(_item => _item.name === _key));
+    };
+
     navigation.dispatch(_state => {
       return CommonActions.reset({
         ..._state,
-        routes: modules
-          ?.filter(_module => _module.menus)
-          ?.flatMap(_module => {
-            const moduleMenus = _module.menus;
-
-            return Object.entries(moduleMenus)
-              .map((item, index) => ({
-                ...item[1],
-                order: item[1]?.order != null ? item[1]?.order : index * 10,
-                key: item[0],
-              }))
-              .sort((a, b) => a.order - b.order)
-              .map(item =>
-                _state.routes.find(stateItem => stateItem.name === item.key),
-              );
-          }),
+        routes: generateRoutes(_state),
       });
     });
   }, [modules, navigation]);
