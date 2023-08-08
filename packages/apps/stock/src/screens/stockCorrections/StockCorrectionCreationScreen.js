@@ -18,11 +18,12 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductTrackingNumberSearchBar,
   StockCorrectionCreationButton,
+  StockCorrectionHtmlInput,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
@@ -59,6 +60,7 @@ const StockCorrectionCreationScreen = ({route}) => {
   const [realQty, setRealQty] = useState(0);
   const [reason, setReason] = useState(DEFAULT_REASON);
   const [currentStep, setCurrentStep] = useState();
+  const [comments, setComments] = useState();
 
   const databaseQty = useMemo(() => {
     if (productIndicators?.id === product?.id) {
@@ -162,10 +164,15 @@ const StockCorrectionCreationScreen = ({route}) => {
             trackingNumber={trackingNumber}
             stockLocation={location}
             realQty={realQty}
+            comments={comments}
           />
         )
       }>
-      <ScrollView style={styles.container}>
+      <KeyboardAvoidingScrollView
+        style={[
+          styles.container,
+          currentStep < CREATION_STEP.validation ? styles.scroll : null,
+        ]}>
         <StockLocationSearchBar
           defaultValue={location}
           scanKey={stockLocationScanKey}
@@ -198,9 +205,10 @@ const StockCorrectionCreationScreen = ({route}) => {
               setReason={setReason}
               status={StockCorrection.status.Draft}
             />
+            <StockCorrectionHtmlInput setComments={setComments} />
           </>
         ) : null}
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
@@ -208,6 +216,10 @@ const StockCorrectionCreationScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+  },
+  scroll: {
+    height: null,
+    flex: 1,
   },
 });
 
