@@ -24,12 +24,22 @@ import {
   FormIncrementInput,
   FormInput,
   StarScore,
+  Text,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {DisplayField, States, getKeyboardType, getWidget} from '../../../forms';
+import {
+  DisplayField,
+  States,
+  getKeyboardType,
+  getWidget,
+  validateFieldSchema,
+} from '../../../forms';
 import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
 import {UploadFileInput} from '../../molecules';
 import {DateInput} from '../../organisms';
+import {View} from 'react-native';
+import {useState} from 'react';
 
 interface FieldProps {
   handleFieldChange: (newValue: any, fieldName: string) => void;
@@ -45,15 +55,33 @@ const Field = ({
   globalReadonly = () => false,
 }: FieldProps) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
   const value = object?.[_field.key];
 
   const storeState = useSelector((state: any) => state);
 
+  const [error, setError] = useState<any>();
+
+  const handleValidate = useCallback(
+    (_value: any) => {
+      validateFieldSchema(_field, _value)
+        .then(() => {
+          setError(null);
+        })
+        .catch(_error => {
+          setError(`${_field.key} ${I18n.t(_error.message)}`);
+        });
+    },
+    [I18n, _field],
+  );
+
   const handleChange = useCallback(
     (_value: any) => {
+      handleValidate(_value);
+
       handleFieldChange(_value, _field.key);
     },
-    [_field.key, handleFieldChange],
+    [_field.key, handleFieldChange, handleValidate],
   );
 
   const isHidden = useMemo(() => {
@@ -71,112 +99,128 @@ const Field = ({
     [_field],
   );
 
+  const getComponent = () => {
+    switch (getWidget(_field)) {
+      case 'custom':
+        return _field.customComponent({
+          title: I18n.t(_field.titleKey),
+          defaultValue: value,
+          onChange: handleChange,
+          required: _field.required,
+          readonly: isGlobalReadonly || _field.readonly,
+          ..._field.options,
+        });
+      case 'checkbox':
+        return (
+          <Checkbox
+            style={[fieldStyle, styles.checkbox]}
+            title={I18n.t(_field.titleKey)}
+            isDefaultChecked={value}
+            onChange={handleChange}
+            disabled={isGlobalReadonly || _field.readonly}
+            {..._field.options}
+          />
+        );
+      case 'star':
+        return (
+          <StarScore
+            score={value}
+            onPress={handleChange}
+            editMode={!isGlobalReadonly && !_field.readonly}
+            showMissingStar={true}
+            {..._field.options}
+          />
+        );
+      case 'file':
+        return (
+          <UploadFileInput
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onUpload={handleChange}
+            required={_field.required}
+            readonly={isGlobalReadonly || _field.readonly}
+            {..._field.options}
+          />
+        );
+      case 'date':
+        return (
+          <DateInput
+            title={I18n.t(_field.titleKey)}
+            mode={_field.type as 'date' | 'datetime' | 'time'}
+            defaultDate={value ? new Date(value) : null}
+            onDateChange={_date =>
+              handleChange(_date.toISOString()?.split('T')[0])
+            }
+            required={_field.required}
+            readonly={isGlobalReadonly || _field.readonly}
+            {..._field.options}
+          />
+        );
+      case 'HTML':
+        return (
+          <FormHtmlInput
+            style={fieldStyle}
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onChange={handleChange}
+            required={_field.required}
+            readonly={isGlobalReadonly || _field.readonly}
+            {..._field.options}
+          />
+        );
+      case 'increment':
+        return (
+          <FormIncrementInput
+            style={fieldStyle}
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onChange={handleChange}
+            decimalSpacer={I18n.t('Base_DecimalSpacer')}
+            thousandSpacer={I18n.t('Base_ThousandSpacer')}
+            required={_field.required}
+            readOnly={isGlobalReadonly || _field.readonly}
+            keyboardType={getKeyboardType(_field)}
+            {..._field.options}
+          />
+        );
+      default:
+        return (
+          <FormInput
+            style={fieldStyle}
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onChange={handleChange}
+            required={_field.required}
+            readOnly={isGlobalReadonly || _field.readonly}
+            keyboardType={getKeyboardType(_field)}
+            {..._field.options}
+          />
+        );
+    }
+  };
+
   if (isHidden) {
     return null;
   }
 
-  switch (getWidget(_field)) {
-    case 'custom':
-      return _field.customComponent({
-        title: I18n.t(_field.titleKey),
-        defaultValue: value,
-        onChange: handleChange,
-        required: _field.required,
-        readonly: isGlobalReadonly || _field.readonly,
-        ..._field.options,
-      });
-    case 'checkbox':
-      return (
-        <Checkbox
-          style={[fieldStyle, styles.checkbox]}
-          title={I18n.t(_field.titleKey)}
-          isDefaultChecked={value}
-          onChange={handleChange}
-          disabled={isGlobalReadonly || _field.readonly}
-          {..._field.options}
-        />
-      );
-    case 'star':
-      return (
-        <StarScore
-          score={value}
-          onPress={handleChange}
-          editMode={!isGlobalReadonly && !_field.readonly}
-          showMissingStar={true}
-          {..._field.options}
-        />
-      );
-    case 'file':
-      return (
-        <UploadFileInput
-          title={I18n.t(_field.titleKey)}
-          defaultValue={value}
-          onUpload={handleChange}
-          required={_field.required}
-          readonly={isGlobalReadonly || _field.readonly}
-          {..._field.options}
-        />
-      );
-    case 'date':
-      return (
-        <DateInput
-          title={I18n.t(_field.titleKey)}
-          mode={_field.type as 'date' | 'datetime' | 'time'}
-          defaultDate={value ? new Date(value) : null}
-          onDateChange={_date =>
-            handleChange(_date.toISOString()?.split('T')[0])
-          }
-          required={_field.required}
-          readonly={isGlobalReadonly || _field.readonly}
-          {..._field.options}
-        />
-      );
-    case 'HTML':
-      return (
-        <FormHtmlInput
-          style={fieldStyle}
-          title={I18n.t(_field.titleKey)}
-          defaultValue={value}
-          onChange={handleChange}
-          required={_field.required}
-          readonly={isGlobalReadonly || _field.readonly}
-          {..._field.options}
-        />
-      );
-    case 'increment':
-      return (
-        <FormIncrementInput
-          style={fieldStyle}
-          title={I18n.t(_field.titleKey)}
-          defaultValue={value}
-          onChange={handleChange}
-          decimalSpacer={I18n.t('Base_DecimalSpacer')}
-          thousandSpacer={I18n.t('Base_ThousandSpacer')}
-          required={_field.required}
-          readOnly={isGlobalReadonly || _field.readonly}
-          keyboardType={getKeyboardType(_field)}
-          {..._field.options}
-        />
-      );
-    default:
-      return (
-        <FormInput
-          style={fieldStyle}
-          title={I18n.t(_field.titleKey)}
-          defaultValue={value}
-          onChange={handleChange}
-          required={_field.required}
-          readOnly={isGlobalReadonly || _field.readonly}
-          keyboardType={getKeyboardType(_field)}
-          {..._field.options}
-        />
-      );
-  }
+  return (
+    <View style={fieldStyle}>
+      {getComponent()}
+      {error != null && (
+        <Text textColor={Colors.errorColor.background} style={styles.error}>
+          {error}
+        </Text>
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   checkbox: {
     marginVertical: 5,
+  },
+  error: {
+    marginLeft: 5,
   },
 });
 

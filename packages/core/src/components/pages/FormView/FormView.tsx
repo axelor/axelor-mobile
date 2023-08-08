@@ -37,6 +37,7 @@ import {
   getValidationErrors,
   isField,
   isObjectMissingRequiredField,
+  mapErrorWithTranslationKey,
   sortContent,
   useFormConfig,
   validateSchema,
@@ -75,6 +76,10 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     () => sortContent(config),
     [config],
   );
+
+  useEffect(() => {
+    mapErrorWithTranslationKey();
+  }, []);
 
   useEffect(() => {
     dispatch(clearRecord());

@@ -41,7 +41,7 @@ export const isObjectMissingRequiredField = (
   return requiredFieldNames.some(_fieldName => content?.[_fieldName] == null);
 };
 
-const mapErrorWithTranslationKey = () => {
+export const mapErrorWithTranslationKey = () => {
   setLocale({
     mixed: {
       notType: function notType(_ref) {
@@ -121,8 +121,6 @@ const mapErrorWithTranslationKey = () => {
 };
 
 const createValidationSchema = (config: Form): Schema => {
-  mapErrorWithTranslationKey();
-
   const fields = getFields(config);
 
   let schemaConfig = {};
@@ -224,6 +222,13 @@ export async function validateSchema(content: Form, value: any): Promise<any> {
   return createValidationSchema(content).validate(value, {
     abortEarly: false,
   });
+}
+
+export async function validateFieldSchema(
+  field: DisplayField,
+  value: any,
+): Promise<any> {
+  return getFieldSchema(field).validate(value);
 }
 
 export function getValidationErrors(err: any): any[] {
