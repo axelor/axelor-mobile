@@ -53,3 +53,5 @@ export const HrModule: Module = {
     searchFields: {...hr_searchFields},
   },
 };
+
+export * from './components';

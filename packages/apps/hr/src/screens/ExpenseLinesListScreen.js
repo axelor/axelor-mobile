@@ -16,28 +16,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {Screen, Text} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import React, {useCallback} from 'react';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../features/expenseLineSlice';
+import {ExpenseLineCard} from '../components';
+import {StyleSheet} from 'react-native';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
-  const {expenseLineList} = useSelector(state => state.expenseLine);
+  const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
+    useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
 
-  console.log(expenseLineList);
-
-  useEffect(() => {
-    dispatch(fetchExpenseLine({userId: userId}));
-  }, [dispatch, userId]);
+  const fetchExpenseLineAPI = useCallback(
+    (page = 0) => {
+      dispatch(fetchExpenseLine({userId: userId, page: page}));
+    },
+    [dispatch, userId],
+  );
 
   return (
     <Screen>
-      <Text>Test</Text>
+      <ScrollList
+        loadingList={loadingExpenseLine}
+        data={expenseLineList}
+        renderItem={({item}) => (
+          <ExpenseLineCard
+            style={styles.item}
+            expenseDate={item.expenseDate}
+            projectName={item.project?.fullName}
+            totalAmount={item.totalAmount}
+            displayText={
+              item.fromCity == null && item.toCity == null
+                ? item.expenseProduct?.fullName
+                : item.kilometricTypeSelect
+            }
+          />
+        )}
+        fetchData={fetchExpenseLineAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  item: {
+    marginHorizontal: 12,
+    marginVertical: 4,
+  },
+});
 
 export default ExpenseLinesListScreen;
