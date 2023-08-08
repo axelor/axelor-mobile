@@ -3,6 +3,8 @@
   "Hr_Hr": "HR",
   "Hr_ExpenseLines": "Expense lines",
   "Hr_NewExpenseLine": "New expense line",
+  "Hr_kilomectricTypeSelect_OneWay": "One-Way",
+  "Hr_kilomectricTypeSelect_RoundTrip": "Round Trip",
 
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines"
 }

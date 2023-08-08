@@ -22,6 +22,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../features/expenseLineSlice';
 import {ExpenseLineCard} from '../components';
 import {StyleSheet} from 'react-native';
+import {ExpenseLine} from '../types';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
             displayText={
               item.fromCity == null && item.toCity == null
                 ? item.expenseProduct?.fullName
-                : item.kilometricTypeSelect
+                : ExpenseLine.getStatus(item.kilometricTypeSelect, I18n)
             }
           />
         )}
