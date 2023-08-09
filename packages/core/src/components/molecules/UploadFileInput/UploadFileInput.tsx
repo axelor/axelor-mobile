@@ -28,10 +28,14 @@ import {
   getCommonStyles,
   useThemeColor,
   ThemeColors,
+  Image,
 } from '@axelor/aos-mobile-ui';
 import {deleteMetaFile, uploadFile} from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
 import {openFileInExternalApp} from '../../../tools';
+import {useMetafileUri} from '../../../utils';
+
+const DEFAULT_MAX_FILE_SIZE = 5000000;
 
 const isMetaFile = file => {
   return (
@@ -40,6 +44,18 @@ const isMetaFile = file => {
     file?.version != null &&
     file?.fileName != null
   );
+};
+
+const formatFileSize = (size: number): string => {
+  const _size = Math.abs(size);
+
+  const labels: string[] = ['octets', 'ko', 'Mo', 'Go', 'To'];
+
+  for (let i = 0; i < labels.length; i++) {
+    if (_size < Math.pow(1000, i)) {
+      return (_size / Math.pow(1000, i - 1)).toFixed(2) + ' ' + labels[i - 1];
+    }
+  }
 };
 
 interface UploadFileInputProps {
@@ -52,6 +68,8 @@ interface UploadFileInputProps {
   readonly?: boolean;
   documentTypesAllowed?: 'images' | 'pdf' | 'allFiles';
   canDeleteFile?: boolean;
+  displayPreview?: boolean;
+  maxSize?: number;
 }
 
 const UploadFileInput = ({
@@ -64,18 +82,29 @@ const UploadFileInput = ({
   readonly = false,
   documentTypesAllowed = 'allFiles',
   canDeleteFile = true,
+  displayPreview = false,
+  maxSize = DEFAULT_MAX_FILE_SIZE,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const formatMetafileURI = useMetafileUri();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(defaultValue);
+  const [sizeError, setSizeError] = useState<boolean>(false);
 
   const _required = useMemo(
     () => required && selectedFile == null,
     [required, selectedFile],
   );
+
+  const _maxFileSize = useMemo(() => {
+    if (maxSize == null) {
+      return DEFAULT_MAX_FILE_SIZE;
+    }
+    return maxSize;
+  }, [maxSize]);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -90,7 +119,12 @@ const UploadFileInput = ({
         type: DocumentPicker.types[documentTypesAllowed],
       });
 
-      handleFileUpload(file);
+      if (file.size < _maxFileSize) {
+        setSizeError(false);
+        handleFileUpload(file);
+      } else {
+        setSizeError(true);
+      }
     } catch (error) {
       console.log('Document picking error:', error);
     }
@@ -105,7 +139,11 @@ const UploadFileInput = ({
         returnBase64String,
       });
 
-      setSelectedFile(returnBase64String ? file : response);
+      setSelectedFile(
+        returnBase64String
+          ? {...file, base64: response}
+          : {...file, ...response},
+      );
       onUpload(response);
     } catch (error) {
       console.log('Could not upload the file:', error);
@@ -152,10 +190,20 @@ const UploadFileInput = ({
           commonStyles.filterAlign,
           styles.content,
         ]}>
-        <Text style={styles.fileName}>
-          {selectedFile
-            ? selectedFile.fileName || selectedFile.name
-            : I18n.t('Base_ChooseFile')}
+        {displayPreview && selectedFile != null ? (
+          <Image
+            imageSize={styles.imageSize}
+            resizeMode="contain"
+            source={
+              isMetaFile(selectedFile)
+                ? formatMetafileURI(selectedFile)
+                : {uri: selectedFile?.base64}
+            }
+            defaultIconSize={60}
+          />
+        ) : null}
+        <Text style={styles.fileName} numberOfLines={1}>
+          {selectedFile ? selectedFile.name : I18n.t('Base_ChooseFile')}
         </Text>
         <View style={styles.buttons}>
           {canDeleteFile && selectedFile != null && !readonly && (
@@ -184,6 +232,13 @@ const UploadFileInput = ({
           )}
         </View>
       </View>
+      {sizeError && (
+        <Text textColor={Colors.errorColor.background} style={styles.error}>
+          {I18n.t('Base_FileSizeUploadError', {
+            maxSize: formatFileSize(_maxFileSize),
+          })}
+        </Text>
+      )}
     </View>
   );
 };
@@ -201,12 +256,14 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
         : Colors.secondaryColor.background,
       borderWidth: 1,
       marginHorizontal: 0,
+      height: null,
+      minHeight: 40,
     },
     title: {
       marginLeft: 10,
     },
     fileName: {
-      width: '80%',
+      width: '60%',
     },
     buttons: {
       flexDirection: 'row',
@@ -215,6 +272,13 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     },
     action: {
       marginHorizontal: 2,
+    },
+    imageSize: {
+      height: 60,
+      width: 60,
+    },
+    error: {
+      marginLeft: 5,
     },
   });
 

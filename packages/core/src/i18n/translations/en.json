@@ -34,6 +34,7 @@
   "Base_Content": "Content",
   "Base_ViewAll": "View all",
   "Base_ChooseFile": "Choose a file",
+  "Base_FileSizeUploadError": "File is too big, max size is {{maxSize}}.",
   "Base_NoAppConfigured": "No module configured on your application, please contact an administrator.",
   "Base_MinimalRequiredVersion": "The current version is below the minimum required version, please update your application.",
   "Base_Contact_Admin": "Please contact an administrator.",
