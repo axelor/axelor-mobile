@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {KeyboardTypeOptions, Platform, StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
@@ -42,6 +42,8 @@ interface IncrementProps {
   minValue?: number;
   maxValue?: number;
   isBigButton?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  scale?: number;
 }
 
 const Increment = ({
@@ -59,17 +61,36 @@ const Increment = ({
   minValue = 0,
   maxValue = null,
   isBigButton = false,
+  keyboardType = 'numeric',
+  scale,
 }: IncrementProps) => {
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
 
   const [valueQty, setValueQty] = useState<string>();
 
+  const handleDecimal = useCallback(
+    (numberToFormat: string | number) => {
+      if (scale == null) {
+        return cutDecimalExcess(numberToFormat);
+      }
+
+      const _scale = Math.max(scale, 0);
+      const _value =
+        typeof numberToFormat === 'string'
+          ? parseFloat(numberToFormat)
+          : numberToFormat;
+
+      return _value.toFixed(_scale);
+    },
+    [cutDecimalExcess, scale],
+  );
+
   const format = useCallback(
     (number: number | string) => {
-      return _format(number, decimalSpacer, thousandSpacer, cutDecimalExcess);
+      return _format(number, decimalSpacer, thousandSpacer, handleDecimal);
     },
-    [cutDecimalExcess, decimalSpacer, thousandSpacer],
+    [handleDecimal, decimalSpacer, thousandSpacer],
   );
 
   const unformat = useCallback(
@@ -108,7 +129,7 @@ const Increment = ({
   );
 
   useEffect(() => {
-    handleValueFormatting(parseFloat(value)?.toString());
+    handleValueFormatting(parseFloat(value || '0')?.toString());
   }, [handleValueFormatting, value]);
 
   const handlePlus = () => {
@@ -156,7 +177,7 @@ const Increment = ({
           style={[styles.input, inputStyle]}
           value={valueQty}
           onChange={input => setValueQty(input)}
-          keyboardType="numeric"
+          keyboardType={keyboardType}
           onSelection={onFocus}
           onEndFocus={handleEndInput}
           readOnly={readonly}
