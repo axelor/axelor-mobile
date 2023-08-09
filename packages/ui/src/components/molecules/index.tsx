@@ -38,6 +38,7 @@ export {default as IconInput} from './IconInput/IconInput';
 export {default as Image} from './Image/Image';
 export {default as Increment} from './Increment/Increment';
 export {default as InfoBubble} from './InfoBubble/InfoBubble';
+export {default as Label} from './Label/Label';
 export {default as LabelText} from './LabelText/LabelText';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
