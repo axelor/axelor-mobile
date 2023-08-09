@@ -23,6 +23,8 @@ import {countAttachmentFiles} from '../features/attachedFilesSlice';
 import {countUnreadMailMessages} from '../features/mailMessageSlice';
 import {useTranslator} from '../i18n';
 import {checkNullString} from '../utils';
+import {useOnline} from '../features/onlineSlice';
+import {getNetInfo} from '../api/net-info-utils';
 
 export const useBasicActions = ({
   model,
@@ -33,12 +35,14 @@ export const useBasicActions = ({
 }) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
+  const online = useOnline();
   const dispatch = useDispatch();
 
   const {attachments} = useSelector(state => state.attachedFiles);
   const {unreadMessages} = useSelector(state => state.mailMessages);
 
   const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -113,13 +117,24 @@ export const useBasicActions = ({
     navigation,
   ]);
 
+  const checkInternetConnection = useCallback(async () => {
+    const {isConnected: _isConnected} = await getNetInfo();
+
+    setIsConnected(_isConnected);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(checkInternetConnection, 2000);
+    return () => clearInterval(interval.current);
+  }, [checkInternetConnection]);
+
   const jsonFieldsAction = useMemo(() => {
     return {
       key: 'metaJsonFields',
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
       iconName: 'object-group',
-      hideIf: disableJsonFields,
+      hideIf: disableJsonFields || !online.isEnabled || !isConnected,
       onPress: () =>
         navigation.navigate('JsonFieldScreen', {
           model,
@@ -127,7 +142,15 @@ export const useBasicActions = ({
         }),
       showInHeader: true,
     };
-  }, [I18n, disableJsonFields, model, navigation, modelId]);
+  }, [
+    I18n,
+    disableJsonFields,
+    online,
+    isConnected,
+    navigation,
+    model,
+    modelId,
+  ]);
 
   return useMemo(() => {
     if (modelConfigured) {
