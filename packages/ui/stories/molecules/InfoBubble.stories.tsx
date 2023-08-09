@@ -20,22 +20,49 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {InfoBubble} from '../../src/components/molecules';
-
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#000000',
-  background: '#3ECF8E',
-};
+import {lightTheme} from '../../src/theme/themes';
 
 storiesOf('ui/molecules/InfoBubble', module)
   .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('Default', () => (
-    <InfoBubble
-      iconName="info"
-      badgeColor={primary}
-      indication="This is some information."
-    />
-  ));
+  .add(
+    'default',
+    args => {
+      return (
+        <InfoBubble {...args} badgeColor={lightTheme.colors[args.color]} />
+      );
+    },
+    {
+      argTypes: {
+        iconName: {
+          control: {
+            type: 'text',
+          },
+          defaultValue: 'info',
+        },
+        color: {
+          control: {
+            type: 'select',
+          },
+          options: Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+          defaultValue: 'primaryColor',
+        },
+        indication: {
+          control: {
+            type: 'text',
+          },
+          defaultValue: 'This is an indication',
+        },
+        size: {
+          control: {
+            type: 'number',
+          },
+          default: 15,
+        },
+      },
+    },
+  );
 
 const styles = StyleSheet.create({
   decorator: {
