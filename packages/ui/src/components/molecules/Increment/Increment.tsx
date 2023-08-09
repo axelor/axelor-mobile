@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {
   formatNumber as _format,
   unformatNumber as _unformat,
@@ -53,6 +53,8 @@ interface IncrementProps {
   minValue?: number;
   maxValue?: number;
   isBigButton?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  scale?: number;
 }
 
 const Increment = ({
@@ -70,16 +72,35 @@ const Increment = ({
   minValue = 0,
   maxValue = null,
   isBigButton = false,
+  keyboardType = 'numeric',
+  scale,
 }: IncrementProps) => {
   const Colors = useThemeColor();
 
   const [valueQty, setValueQty] = useState<string>();
 
+  const handleDecimal = useCallback(
+    (numberToFormat: string | number) => {
+      if (scale == null) {
+        return cutDecimalExcess(numberToFormat);
+      }
+
+      const _scale = Math.max(scale, 0);
+      const _value =
+        typeof numberToFormat === 'string'
+          ? parseFloat(numberToFormat)
+          : numberToFormat;
+
+      return _value.toFixed(_scale);
+    },
+    [scale],
+  );
+
   const format = useCallback(
     (number: number | string) => {
-      return _format(cutDecimalExcess(number), decimalSpacer, thousandSpacer);
+      return _format(handleDecimal(number), decimalSpacer, thousandSpacer);
     },
-    [decimalSpacer, thousandSpacer],
+    [handleDecimal, decimalSpacer, thousandSpacer],
   );
 
   const unformat = useCallback(
@@ -118,7 +139,7 @@ const Increment = ({
   );
 
   useEffect(() => {
-    handleValueFormatting(parseFloat(value)?.toString());
+    handleValueFormatting(parseFloat(value || '0')?.toString());
   }, [handleValueFormatting, value]);
 
   const handlePlus = () => {
@@ -166,7 +187,7 @@ const Increment = ({
           style={[styles.input, inputStyle]}
           value={valueQty}
           onChange={input => setValueQty(input)}
-          keyboardType="numeric"
+          keyboardType={keyboardType}
           onSelection={onFocus}
           onEndFocus={handleEndInput}
         />

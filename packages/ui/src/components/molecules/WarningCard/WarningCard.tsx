@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Icon, Text} from '../../atoms';
+import React from 'react';
+import Label from '../Label/Label';
+import {StyleSheet} from 'react-native';
 
 interface WarningCardProps {
   style?: any;
@@ -27,45 +26,19 @@ interface WarningCardProps {
 }
 
 const WarningCard = ({style, errorMessage}: WarningCardProps) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => {
-    return getStyles(Colors.errorColor);
-  }, [Colors.errorColor]);
-
   return (
-    <View style={[styles.container, style]}>
-      <Icon
-        name="warning"
-        FontAwesome5={false}
-        color={Colors.errorColor.foreground}
-      />
-      <Text style={styles.text}>{errorMessage}</Text>
-    </View>
+    <Label
+      style={[styles.container, style]}
+      message={errorMessage}
+      type="error"
+    />
   );
 };
-const getStyles = color =>
-  StyleSheet.create({
-    container: {
-      width: '90%',
-      borderColor: color.background_light,
-      borderWidth: 1,
-      borderRadius: 13,
-      backgroundColor: '#f79696',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      marginVertical: 10,
-      marginHorizontal: 20,
-      paddingVertical: 10,
-      paddingHorizontal: 10,
-    },
-    text: {
-      marginLeft: 10,
-      color: color.foreground,
-      alignSelf: 'center',
-      width: '90%',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    marginHorizontal: 20,
+  },
+});
 
 export default WarningCard;

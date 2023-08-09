@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useCallback, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import React, {useMemo, useState} from 'react';
+import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
+import {useThemeColor, ThemeColors} from '../../../theme';
 import {Text} from '../../atoms';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import Increment from '../Increment/Increment';
@@ -27,6 +27,7 @@ interface FormIncrementInputProps {
   style?: any;
   title: string;
   readOnly?: boolean;
+  required?: boolean;
   defaultValue?: string;
   onChange: (value: any) => void;
   decimalSpacer?: string;
@@ -36,12 +37,15 @@ interface FormIncrementInputProps {
   minValue?: number;
   maxValue?: number;
   isBigButton?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  scale?: number;
 }
 
 const FormIncrementInput = ({
   style,
   title,
   readOnly = false,
+  required = false,
   defaultValue = null,
   decimalSpacer,
   thousandSpacer,
@@ -51,21 +55,26 @@ const FormIncrementInput = ({
   minValue = 0,
   maxValue = null,
   isBigButton = false,
+  keyboardType,
+  scale,
 }: FormIncrementInputProps) => {
   const Colors = useThemeColor();
-  const [value, setValue] = useState(defaultValue);
+
   const [isFocused, setIsFocused] = useState(false);
 
-  const onValueChange = useCallback(
-    _value => {
-      setValue(_value);
-      onChange(_value);
-    },
-    [onChange],
+  const _required = useMemo(
+    () => required && defaultValue == null,
+    [required, defaultValue],
   );
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -76,19 +85,19 @@ const FormIncrementInput = ({
   };
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
         style={[
           commonStyles.filter,
-          commonStyles.filterAlign,
           commonStyles.filterSize,
+          commonStyles.filterAlign,
           styles.content,
           isFocused && commonStyles.inputFocused,
         ]}>
         <Increment
-          value={value}
-          onValueChange={onValueChange}
+          value={defaultValue}
+          onValueChange={onChange}
           style={styles.increment}
           inputStyle={styles.containerInput}
           decimalSpacer={decimalSpacer}
@@ -101,16 +110,21 @@ const FormIncrementInput = ({
           minValue={minValue}
           maxValue={maxValue}
           isBigButton={isBigButton}
+          keyboardType={keyboardType}
+          scale={scale}
         />
       </View>
     </View>
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors, required: boolean) =>
   StyleSheet.create({
+    container: {
+      width: '100%',
+    },
     title: {
-      marginLeft: 28,
+      marginLeft: 10,
     },
     increment: {
       flexDirection: 'row',
@@ -118,9 +132,12 @@ const getStyles = Colors =>
       width: '100%',
     },
     content: {
-      borderColor: Colors.secondaryColor.background,
+      width: '100%',
+      borderColor: required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
       borderWidth: 1,
-      paddingHorizontal: 5,
+      marginHorizontal: 0,
     },
     containerInput: {
       fontSize: 15,

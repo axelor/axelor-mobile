@@ -78,12 +78,18 @@ const Picker = ({
   });
   const Colors = useThemeColor();
   const [selectedItem, setSelectedItem] = useState(
-    getFromList(listItems, valueField, defaultValue),
+    !isValueItem
+      ? getFromList(listItems, valueField, defaultValue)
+      : defaultValue,
   );
 
   useEffect(() => {
-    setSelectedItem(getFromList(listItems, valueField, defaultValue));
-  }, [defaultValue, listItems, valueField]);
+    setSelectedItem(
+      !isValueItem
+        ? getFromList(listItems, valueField, defaultValue)
+        : defaultValue,
+    );
+  }, [defaultValue, isValueItem, listItems, valueField]);
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
@@ -106,7 +112,7 @@ const Picker = ({
     itemValue
       ? onValueChange(
           isValueItem
-            ? getFromList(listItems, 'id', itemValue[valueField])
+            ? getFromList(listItems, valueField, itemValue[valueField])
             : itemValue[valueField],
         )
       : onValueChange(itemValue);

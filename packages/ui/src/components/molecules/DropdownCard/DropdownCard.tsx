@@ -21,34 +21,36 @@ import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {animationUtil} from '../../../tools/AnimationUtil';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Icon, Text} from '../../atoms';
+import {getCommonStyles} from '../../../utils/commons-styles';
 
 interface DropdownCardProps {
   style?: any;
   styleText?: any;
   title: string;
   children: any;
-  DropdownIsOpen?: boolean;
+  dropdownIsOpen?: boolean;
   onPress?: () => void;
+  showIcon?: boolean;
 }
 
 const DropdownCard = ({
   style,
   styleText,
   title,
-  DropdownIsOpen = false,
+  dropdownIsOpen = false,
   children,
   onPress,
+  showIcon = true,
 }: DropdownCardProps) => {
-  const [isOpen, setIsOpen] = useState(DropdownIsOpen);
+  const [isOpen, setIsOpen] = useState(dropdownIsOpen);
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const displayCard = useMemo(() => {
-    return onPress ? DropdownIsOpen : isOpen;
-  }, [DropdownIsOpen, isOpen, onPress]);
+    return onPress ? dropdownIsOpen : isOpen;
+  }, [dropdownIsOpen, isOpen, onPress]);
 
   const handleCardPress = () => {
     animationUtil.animateNext();
@@ -60,16 +62,25 @@ const DropdownCard = ({
       <TouchableOpacity
         style={styles.touchable}
         onPress={handleCardPress}
+        disabled={!showIcon}
         activeOpacity={0.95}>
-        <Card style={[styles.containerTouchable, style]}>
+        <View
+          style={[
+            commonStyles.filter,
+            commonStyles.filterAlign,
+            styles.content,
+            style,
+          ]}>
           <Text style={styleText} numberOfLines={1}>
             {title}
           </Text>
-          <Icon
-            name={displayCard ? 'chevron-up' : 'chevron-down'}
-            color={Colors.primaryColor.background}
-          />
-        </Card>
+          {showIcon && (
+            <Icon
+              name={displayCard ? 'chevron-up' : 'chevron-down'}
+              color={Colors.primaryColor.background}
+            />
+          )}
+        </View>
       </TouchableOpacity>
       {displayCard && <Card style={styles.containerChildren}>{children}</Card>}
     </View>
@@ -82,23 +93,17 @@ const getStyles = Colors =>
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      width: Dimensions.get('window').width * 0.9,
+      width: '90%',
     },
     touchable: {
-      zIndex: 2,
+      zIndex: 31,
     },
-    containerTouchable: {
-      width: Dimensions.get('window').width * 0.9,
+    content: {
+      width: Dimensions.get('window').width * 0.92,
+      borderColor: Colors.secondaryColor.background,
+      borderWidth: 1,
+      marginHorizontal: 0,
       height: 40,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: 5,
-      marginVertical: 4,
-      marginRight: 16,
-      marginLeft: 18,
-      paddingRight: 50,
-      paddingLeft: 10,
     },
     containerChildren: {
       backgroundColor: Colors.backgroundColor,
@@ -110,6 +115,7 @@ const getStyles = Colors =>
       marginTop: -20,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
+      zIndex: 30,
     },
   });
 
