@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import DocumentPicker, {
@@ -29,32 +29,48 @@ import {
   useThemeColor,
   ThemeColors,
 } from '@axelor/aos-mobile-ui';
-import {uploadFile} from '../../../api/metafile-api';
+import {deleteMetaFile, uploadFile} from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
+import {openFileInExternalApp} from '../../../tools';
+
+const isMetaFile = file => {
+  return (
+    typeof file === 'object' &&
+    file?.id != null &&
+    file?.version != null &&
+    file?.fileName != null
+  );
+};
 
 interface UploadFileInputProps {
   style?: any;
-  onUpload?: (file: any) => void;
+  title?: string;
+  defaultValue?: string | any;
+  onUpload?: (file?: any) => void;
   returnBase64String?: boolean;
   required?: boolean;
-  title?: string;
+  readonly?: boolean;
   documentTypesAllowed?: 'images' | 'pdf' | 'allFiles';
+  canDeleteFile?: boolean;
 }
 
 const UploadFileInput = ({
   style,
+  title,
+  defaultValue,
   onUpload = console.log,
   returnBase64String = false,
   required = false,
+  readonly = false,
   documentTypesAllowed = 'allFiles',
-  title,
+  canDeleteFile = true,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(defaultValue);
 
   const _required = useMemo(
     () => required && selectedFile == null,
@@ -74,8 +90,6 @@ const UploadFileInput = ({
         type: DocumentPicker.types[documentTypesAllowed],
       });
 
-      setSelectedFile(file);
-
       handleFileUpload(file);
     } catch (error) {
       console.log('Document picking error:', error);
@@ -90,29 +104,86 @@ const UploadFileInput = ({
         jsessionId,
         returnBase64String,
       });
+
+      setSelectedFile(returnBase64String ? file : response);
       onUpload(response);
     } catch (error) {
       console.log('Could not upload the file:', error);
     }
   };
 
+  const handleFileDelete = async () => {
+    if (isMetaFile(selectedFile)) {
+      try {
+        await deleteMetaFile(selectedFile?.id);
+
+        onUpload();
+      } catch (error) {
+        console.log('Could not delete the file:', error);
+      }
+    }
+
+    setSelectedFile(null);
+  };
+
+  const handleFileView = async () => {
+    await openFileInExternalApp(
+      {
+        fileName: selectedFile?.fileName,
+        id: selectedFile?.id,
+        isMetaFile: true,
+      },
+      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+      I18n,
+    );
+  };
+
+  useEffect(() => {
+    setSelectedFile(defaultValue);
+  }, [defaultValue]);
+
   return (
-    <View
-      style={[
-        styles.container,
-        commonStyles.filter,
-        commonStyles.filterSize,
-        commonStyles.filterAlign,
-        style,
-      ]}>
-      <Text style={styles.fileName}>
-        {selectedFile
-          ? selectedFile.name
-          : title
-          ? title
-          : I18n.t('Base_ChooseFile')}
-      </Text>
-      <CircleButton iconName="plus" size={30} onPress={handleDocumentPick} />
+    <View style={[styles.container, style]}>
+      <Text style={styles.title}>{title}</Text>
+      <View
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          commonStyles.filterAlign,
+          styles.content,
+        ]}>
+        <Text style={styles.fileName}>
+          {selectedFile
+            ? selectedFile.fileName || selectedFile.name
+            : I18n.t('Base_ChooseFile')}
+        </Text>
+        <View style={styles.buttons}>
+          {canDeleteFile && selectedFile != null && !readonly && (
+            <CircleButton
+              iconName="times"
+              size={30}
+              onPress={handleFileDelete}
+              style={styles.action}
+            />
+          )}
+          {isMetaFile(selectedFile) && (
+            <CircleButton
+              iconName="expand-alt"
+              size={30}
+              onPress={handleFileView}
+              style={styles.action}
+            />
+          )}
+          {selectedFile == null && !readonly && (
+            <CircleButton
+              iconName="plus"
+              size={30}
+              onPress={handleDocumentPick}
+              style={styles.action}
+            />
+          )}
+        </View>
+      </View>
     </View>
   );
 };
@@ -120,13 +191,30 @@ const UploadFileInput = ({
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
+      width: '90%',
+      alignSelf: 'center',
+    },
+    content: {
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+      marginHorizontal: 0,
+    },
+    title: {
+      marginLeft: 10,
     },
     fileName: {
-      width: '90%',
+      width: '80%',
+    },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    action: {
+      marginHorizontal: 2,
     },
   });
 
