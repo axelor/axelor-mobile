@@ -34,6 +34,7 @@
   "Base_Content": "Contenu",
   "Base_ViewAll": "Tout voir",
   "Base_ChooseFile": "Choisir un fichier",
+  "Base_FileSizeUploadError": "Le fichier est trop lourd, la taille maximale est {{maxSize}}.",
   "Base_NoAppConfigured": "Votre application n'est pas configurée, merci de contacter un administrateur.",
   "Base_MinimalRequiredVersion": "La version actuelle est en dessous de la version minimale requise, merci de mettre à jour votre application.",
   "Base_Contact_Admin": "Merci de contacter un administrateur.",

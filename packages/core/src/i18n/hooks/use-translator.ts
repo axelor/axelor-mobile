@@ -20,7 +20,7 @@ import {useMemo} from 'react';
 import {i18nProvider} from '../i18n';
 
 export interface TranslatorProps {
-  t: (key: string) => string;
+  t: (key: string, values?: any) => string;
 }
 
 function useTranslator(): TranslatorProps {
