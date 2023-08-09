@@ -58,7 +58,7 @@ export function formatNumber(
     counter++;
   }
 
-  return `${result}${decimalSpacer}${decimalPart ? decimalPart : '00'}`;
+  return decimalPart ? `${result}${decimalSpacer}${decimalPart}` : result;
 }
 
 export function unformatNumber(

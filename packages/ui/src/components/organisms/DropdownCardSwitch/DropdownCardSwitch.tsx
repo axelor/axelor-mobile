@@ -44,7 +44,7 @@ const DropdownCardSwitch = ({
             key={index}
             title={elt.title}
             onPress={() => setOpenedCardKey(elt.key)}
-            DropdownIsOpen={elt.key === openedCardKey}>
+            dropdownIsOpen={elt.key === openedCardKey}>
             {elt.childrenComp}
           </DropdownCard>
         );

@@ -28,7 +28,7 @@ interface IconButtonProps {
   color?: Color;
   title: string;
   iconName: string;
-  FontAwesome5: boolean;
+  FontAwesome5?: boolean;
   onPress: (any) => void;
   disabled?: boolean;
 }

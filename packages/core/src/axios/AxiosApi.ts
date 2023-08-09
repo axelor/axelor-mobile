@@ -37,6 +37,10 @@ class AxiosApiProvider {
   get({url}: ApiCallProps): Promise<any> {
     return axios.get(url);
   }
+
+  delete({url}: ApiCallProps): Promise<any> {
+    return axios.delete(url);
+  }
 }
 
 export const axiosApiProvider = new AxiosApiProvider();

@@ -65,7 +65,7 @@ export async function fetchFileDetails({
 
 export async function uploadFile(
   file: DocumentPickerResponse,
-  {baseUrl, jsessionId, token},
+  {baseUrl, jsessionId, token, returnBase64String},
 ) {
   if (file == null) {
     return;
@@ -74,6 +74,10 @@ export async function uploadFile(
   return new Promise<any>(async (resolve, reject) => {
     try {
       const base64Data = await RNFS.readFile(file.uri, 'base64');
+
+      if (returnBase64String) {
+        resolve(`data:${file.type};base64,${base64Data}`);
+      }
 
       const headers = {
         'Content-Type': 'application/octet-stream',
@@ -103,5 +107,11 @@ export async function uploadFile(
     } catch (error) {
       reject(error);
     }
+  });
+}
+
+export async function deleteMetaFile(fileId: number) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.meta.db.MetaFile/${fileId}`,
   });
 }

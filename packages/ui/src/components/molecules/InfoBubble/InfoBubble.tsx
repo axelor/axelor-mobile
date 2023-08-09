@@ -31,6 +31,7 @@ interface InfoBubbleProps {
   iconName: string;
   badgeColor: Color;
   indication: string;
+  size?: number;
 }
 
 const InfoBubble = ({
@@ -38,6 +39,7 @@ const InfoBubble = ({
   iconName,
   badgeColor,
   indication,
+  size = Dimensions.get('window').width * 0.07,
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -45,8 +47,8 @@ const InfoBubble = ({
   const clickOutside = useClickOutside({wrapperRef, visible: isOpen});
 
   const styles = useMemo(
-    () => getStyles(badgeColor, Colors),
-    [badgeColor, Colors],
+    () => getStyles(badgeColor, Colors, isOpen, size),
+    [badgeColor, Colors, isOpen, size],
   );
 
   useEffect(() => {
@@ -64,8 +66,9 @@ const InfoBubble = ({
       <TouchableOpacity onPress={onPress} activeOpacity={0.95}>
         <Icon
           name={iconName}
-          style={styles.imageStyle}
+          style={styles.icon}
           color={badgeColor.foreground}
+          size={size * 0.5}
         />
       </TouchableOpacity>
       {isOpen ? (
@@ -77,23 +80,23 @@ const InfoBubble = ({
   );
 };
 
-const getStyles = (badgeColor, Colors) =>
+const getStyles = (badgeColor, Colors, isOpen, size) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
       flexDirection: 'row',
       marginVertical: 5,
     },
-    imageStyle: {
+    icon: {
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: badgeColor.background_light,
       borderWidth: 2,
       borderColor: badgeColor.background,
-      borderRadius: Dimensions.get('window').width * 0.1,
-      width: Dimensions.get('window').width * 0.1,
-      height: Dimensions.get('window').width * 0.1,
+      borderRadius: size,
+      width: size,
+      height: size,
     },
     indicationCard: {
       position: 'absolute',
