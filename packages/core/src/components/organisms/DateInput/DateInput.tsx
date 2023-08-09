@@ -41,6 +41,7 @@ interface DateInputProps {
   onDateChange: (date: Date) => void;
   style?: any;
   readonly?: boolean;
+  required?: boolean;
 }
 
 const ACTION_ICON_SIZE = 30;
@@ -53,6 +54,7 @@ const DateInput = ({
   onDateChange,
   style,
   readonly = false,
+  required = false,
 }: DateInputProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -62,6 +64,11 @@ const DateInput = ({
   const [pickerWidth, setPickerWidth] = useState<number>();
   const [pickerIsOpen, setPickerIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(defaultDate);
+
+  const _required = useMemo(
+    () => required && selectedDate == null,
+    [required, selectedDate],
+  );
 
   useEffect(() => {
     setSelectedDate(defaultDate);
@@ -101,10 +108,13 @@ const DateInput = ({
     setPickerIsOpen(false);
   }, []);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
   const styles = useMemo(
-    () => getStyles(Colors, pickerIsOpen),
-    [Colors, pickerIsOpen],
+    () => getStyles(Colors, pickerIsOpen, _required),
+    [Colors, pickerIsOpen, _required],
   );
 
   return (
@@ -185,7 +195,11 @@ const DateInput = ({
   );
 };
 
-const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
+const getStyles = (
+  Colors: ThemeColors,
+  pickerIsOpen: boolean,
+  required: boolean,
+) =>
   StyleSheet.create({
     actionButton: {
       marginLeft: 10,
@@ -205,7 +219,9 @@ const getStyles = (Colors: ThemeColors, pickerIsOpen: boolean) =>
       flex: 1,
     },
     rightIconButton: {
-      borderColor: Colors.secondaryColor.background,
+      borderColor: required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
       borderWidth: 1,
       marginLeft: 0,
       width: '100%',

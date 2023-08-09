@@ -19,46 +19,54 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import {InfoBubble} from '../../src/components/molecules';
+import {Label} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme/themes';
 
-storiesOf('ui/molecules/InfoBubble', module)
+storiesOf('ui/molecules/Label', module)
   .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add(
     'default',
     args => {
       return (
-        <InfoBubble {...args} badgeColor={lightTheme.colors[args.color]} />
+        <Label
+          {...args}
+          color={
+            args.labelColor != null ? lightTheme.colors[args.labelColor] : null
+          }
+        />
       );
     },
     {
       argTypes: {
+        type: {
+          control: {
+            type: 'radio',
+          },
+          defaultValue: 'info',
+          options: ['info', 'success', 'danger', 'error'],
+        },
         iconName: {
           control: {
             type: 'text',
           },
-          defaultValue: 'info',
         },
-        color: {
+        labelColor: {
           control: {
             type: 'select',
           },
-          options: Object.entries(lightTheme.colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
+          options: [
+            null,
+            ...Object.entries(lightTheme.colors)
+              .filter(([, _color]) => typeof _color !== 'string')
+              .map(([key]) => key),
+          ],
           defaultValue: 'primaryColor',
         },
-        indication: {
+        message: {
           control: {
             type: 'text',
           },
           defaultValue: 'This is an indication',
-        },
-        size: {
-          control: {
-            type: 'number',
-          },
-          default: 15,
         },
       },
     },

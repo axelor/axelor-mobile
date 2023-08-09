@@ -26,13 +26,7 @@ storiesOf('ui/molecules/FormInput', module).add(
   args => {
     return (
       <View style={styles.container}>
-        <FormInput
-          title="Input Title"
-          defaultValue=""
-          required
-          onChange={console.log}
-          {...args}
-        />
+        <FormInput {...args} />
       </View>
     );
   },
@@ -50,14 +44,29 @@ storiesOf('ui/molecules/FormInput', module).add(
         },
         defaultValue: '',
       },
+      readOnly: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
       required: {
         control: {
           type: 'boolean',
         },
         defaultValue: true,
       },
-      onChange: {
-        action: 'onChange',
+      multiline: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
+      adjustHeightWithLines: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
       },
     },
   },

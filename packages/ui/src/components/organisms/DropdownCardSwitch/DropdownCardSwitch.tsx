@@ -55,7 +55,7 @@ const DropdownCardSwitch = ({
             title={elt.title}
             styleText={styleTitle}
             onPress={() => handlePress(elt.key)}
-            DropdownIsOpen={elt.key === openedCardKey}>
+            dropdownIsOpen={elt.key === openedCardKey}>
             {elt.childrenComp}
           </DropdownCard>
         );

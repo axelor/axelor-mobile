@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {ReactNode, useMemo} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -26,11 +26,21 @@ import {
 
 const DEFAULT_OFFSET = {ios: 70, android: 180};
 
+interface Offset {
+  ios: number;
+  android: number;
+}
+
 const KeyboardAvoidingScrollView = ({
   globalStyle,
   style,
   children,
-  keyboardOffset = {},
+  keyboardOffset = DEFAULT_OFFSET,
+}: {
+  globalStyle?: any;
+  style?: any;
+  children: ReactNode;
+  keyboardOffset?: Offset;
 }) => {
   const keyboardVerticalOffset = useMemo(() => {
     return {...DEFAULT_OFFSET, ...keyboardOffset};

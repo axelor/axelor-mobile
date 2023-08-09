@@ -45,6 +45,18 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
         },
         defaultValue: 'Increment Input',
       },
+      readOnly: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
+      required: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
       defaultValue: {
         control: {
           type: 'text',
@@ -62,15 +74,6 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
           type: 'text',
         },
         defaultValue: '.',
-      },
-      onChange: {
-        action: 'onChange',
-      },
-      readOnly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
       },
       defaultFormatting: {
         control: {
@@ -101,6 +104,12 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
           type: 'boolean',
         },
         defaultValue: false,
+      },
+      scale: {
+        control: {
+          type: 'number',
+        },
+        defaultValue: null,
       },
     },
   },

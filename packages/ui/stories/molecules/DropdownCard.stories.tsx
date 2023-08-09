@@ -26,19 +26,22 @@ const children = <Text>Some content in the dropdown</Text>;
 
 storiesOf('ui/molecules/DropdownCard', module)
   .addDecorator(getStory => <View style={styles.container}>{getStory()}</View>)
-  .add('closed', () => (
-    <DropdownCard
-      title="Closed Dropdown Card"
-      DropdownIsOpen={false}
-      onPress={() => console.log('Pressed')}>
-      {children}
-    </DropdownCard>
-  ))
-  .add('open', () => (
-    <DropdownCard title="Open Dropdown Card" DropdownIsOpen={true}>
-      {children}
-    </DropdownCard>
-  ));
+  .add('default', args => <DropdownCard {...args}>{children}</DropdownCard>, {
+    argTypes: {
+      title: {
+        control: {
+          type: 'text',
+        },
+        defaultValue: 'Dropdown Card title',
+      },
+      dropdownIsOpen: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
+    },
+  });
 
 const styles = StyleSheet.create({
   container: {padding: 20},

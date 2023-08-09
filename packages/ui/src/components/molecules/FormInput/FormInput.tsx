@@ -33,7 +33,7 @@ interface FormInputProps {
   onSelection?: () => void;
   onEndFocus?: () => void;
   keyboardType?: KeyboardTypeOptions;
-  multiline: boolean;
+  multiline?: boolean;
   adjustHeightWithLines?: boolean;
 }
 

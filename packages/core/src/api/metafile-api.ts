@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch, Criteria} from '../apiProviders';
+import {
+  axiosApiProvider,
+  createStandardSearch,
+  Criteria,
+} from '../apiProviders';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -100,5 +104,11 @@ export async function uploadFile(
     } catch (error) {
       reject(error);
     }
+  });
+}
+
+export async function deleteMetaFile(fileId: number) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.meta.db.MetaFile/${fileId}`,
   });
 }

@@ -35,9 +35,6 @@ storiesOf('ui/molecules/Increment', module)
             type: 'text',
           },
         },
-        onValueChange: {
-          action: 'value changed',
-        },
         decimalSpacer: {
           control: {
             type: 'text',
@@ -96,9 +93,16 @@ storiesOf('ui/molecules/Increment', module)
           },
           defaultValue: false,
         },
+        scale: {
+          control: {
+            type: 'number',
+          },
+          defaultValue: null,
+        },
       },
     },
   );
+
 const styles = StyleSheet.create({
   decorator: {
     flex: 1,
