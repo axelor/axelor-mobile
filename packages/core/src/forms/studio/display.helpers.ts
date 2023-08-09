@@ -259,6 +259,7 @@ const manageContentOfModel = (
 
           const config: Field = {
             titleKey: item.title,
+            helperKey: item.help,
             type: inputType || fieldType,
             required: item.required,
             readonly: item.readonly,

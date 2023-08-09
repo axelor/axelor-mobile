@@ -17,12 +17,20 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {Platform, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {
   Checkbox,
   FormHtmlInput,
   FormIncrementInput,
   FormInput,
+  InfoBubble,
   Label,
   StarScore,
   Text,
@@ -234,6 +242,19 @@ const Field = ({
         styles.container,
         Platform.OS === 'ios' ? styles.zIndexContainer : null,
       ]}>
+      {_field.helperKey != null && (
+        <InfoBubble
+          iconName="info"
+          indication={I18n.t(_field.helperKey)}
+          badgeColor={Colors.infoColor}
+          size={15}
+          style={[
+            styles.info,
+            _field.parentPanel != null ? styles.infoParent : null,
+          ]}
+          textIndicationStyle={styles.infoIndicator}
+        />
+      )}
       {getComponent()}
       {error != null && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
@@ -247,6 +268,7 @@ const Field = ({
 const styles = StyleSheet.create({
   checkbox: {
     marginVertical: 5,
+    marginLeft: 15,
   },
   container: {
     alignSelf: 'center',
@@ -254,6 +276,18 @@ const styles = StyleSheet.create({
   },
   zIndexContainer: {
     zIndex: 30,
+  },
+  info: {
+    position: 'absolute',
+    left: 10,
+    top: -2,
+  },
+  infoParent: {
+    left: -8,
+  },
+  infoIndicator: {
+    left: 20,
+    width: Dimensions.get('window').width * 0.7,
   },
   error: {
     marginLeft: 5,

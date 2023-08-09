@@ -44,6 +44,7 @@ export interface Field {
   parentPanel?: string;
   order?: number;
   titleKey?: string;
+  helperKey?: string;
   type: InputType;
   required?: boolean;
   readonly?: boolean;
