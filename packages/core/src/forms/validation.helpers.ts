@@ -127,6 +127,7 @@ const createValidationSchema = (config: Form): Schema => {
 
   fields
     .filter(_field => !_field.readonly)
+    .filter(_field => _field.widget !== 'label')
     .forEach(_field => {
       schemaConfig[_field.key] = getFieldSchema(_field);
     });

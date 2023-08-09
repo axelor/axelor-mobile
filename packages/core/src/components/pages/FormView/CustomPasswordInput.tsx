@@ -26,7 +26,7 @@ interface props extends customComponentOptions {
   style?: any;
   title?: string;
   defaultValue?: any;
-  onChange: () => any;
+  onChange: (value: any) => void;
   required?: boolean;
   readonly?: boolean;
 }

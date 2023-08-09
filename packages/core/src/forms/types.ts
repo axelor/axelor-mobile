@@ -72,6 +72,8 @@ export type Widget =
   | 'increment'
   | 'star'
   | 'HTML'
+  | 'label'
+  | 'password'
   | 'file'
   | 'date'
   | 'checkbox'

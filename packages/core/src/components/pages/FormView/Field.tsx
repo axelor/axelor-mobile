@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import React, {useCallback, useState, useMemo} from 'react';
+import {Platform, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {
   Checkbox,
   FormHtmlInput,
   FormIncrementInput,
   FormInput,
+  Label,
   StarScore,
   Text,
   useThemeColor,
@@ -38,8 +39,7 @@ import {useTranslator} from '../../../i18n';
 import {useSelector} from '../../../redux/hooks';
 import {UploadFileInput} from '../../molecules';
 import {DateInput} from '../../organisms';
-import {View} from 'react-native';
-import {useState} from 'react';
+import CustomPasswordInput from './CustomPasswordInput';
 
 interface FieldProps {
   handleFieldChange: (newValue: any, fieldName: string) => void;
@@ -161,6 +161,26 @@ const Field = ({
             {..._field.options}
           />
         );
+      case 'label':
+        return (
+          <Label
+            style={fieldStyle}
+            message={I18n.t(_field.titleKey)}
+            {..._field.options}
+          />
+        );
+      case 'password':
+        return (
+          <CustomPasswordInput
+            style={fieldStyle}
+            title={I18n.t(_field.titleKey)}
+            defaultValue={value}
+            onChange={handleChange}
+            required={_field.required}
+            readonly={isGlobalReadonly || _field.readonly}
+            {..._field.options}
+          />
+        );
       case 'HTML':
         return (
           <FormHtmlInput
@@ -209,7 +229,11 @@ const Field = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        Platform.OS === 'ios' ? styles.zIndexContainer : null,
+      ]}>
       {getComponent()}
       {error != null && (
         <Text textColor={Colors.errorColor.background} style={styles.error}>
@@ -227,7 +251,9 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     width: '100%',
-    zIndex: 40,
+  },
+  zIndexContainer: {
+    zIndex: 30,
   },
   error: {
     marginLeft: 5,

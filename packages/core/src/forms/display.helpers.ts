@@ -128,6 +128,10 @@ export const getWidget = (_field: DisplayField): Widget => {
     return 'file';
   }
 
+  if (_field.widget === 'label' && _field.type === 'string') {
+    return 'label';
+  }
+
   if (_field.type === 'boolean') {
     return 'checkbox';
   }
@@ -146,6 +150,10 @@ export const getWidget = (_field: DisplayField): Widget => {
     _field.type === 'time'
   ) {
     return 'date';
+  }
+
+  if (_field.widget === 'password' && _field.type === 'string') {
+    return 'password';
   }
 
   if (_field.widget === 'HTML' && _field.type === 'string') {
