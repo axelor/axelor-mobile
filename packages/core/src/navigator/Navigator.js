@@ -49,6 +49,7 @@ import AttachedFilesScreen from '../screens/AttachedFilesScreen';
 import MailMessageScreen from '../screens/MailMessageScreen';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
+import JsonFieldScreen from '../screens/JsonFieldScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -131,6 +132,14 @@ const Navigator = ({
           actionID: 'core_mailMessage_details',
           options: {
             shadedHeader: false,
+          },
+        },
+        JsonFieldScreen: {
+          title: 'Base_MetaJsonFields',
+          component: JsonFieldScreen,
+          actionID: 'core_metaJsonFields_details',
+          options: {
+            shadedHeader: true,
           },
         },
       }),
