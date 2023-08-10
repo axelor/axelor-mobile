@@ -42,12 +42,12 @@ import {
   getKeyboardType,
   getWidget,
   validateFieldSchema,
-} from '../../../forms';
-import {useTranslator} from '../../../i18n';
-import {useSelector} from '../../../redux/hooks';
-import {UploadFileInput} from '../../molecules';
-import {DateInput} from '../../organisms';
-import CustomPasswordInput from './CustomPasswordInput';
+} from '../../../../forms';
+import {useTranslator} from '../../../../i18n';
+import {useSelector} from '../../../../redux/hooks';
+import {UploadFileInput} from '../../../molecules';
+import {DateInput} from '../../../organisms';
+import {CustomPasswordInput} from '../Custom';
 
 interface FieldProps {
   handleFieldChange: (newValue: any, fieldName: string) => void;

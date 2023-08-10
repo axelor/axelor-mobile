@@ -25,7 +25,7 @@ import {
   UnorderedList,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
+import useTranslator from '../../../../i18n/hooks/use-translator';
 
 interface ErrorItem {
   attr?: string;

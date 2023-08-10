@@ -19,8 +19,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
-import {customComponentOptions} from '../../../forms/types';
-import {PasswordInput} from '../../organisms';
+import {customComponentOptions} from '../../../../forms/types';
+import {PasswordInput} from '../../../organisms';
 
 interface props extends customComponentOptions {
   style?: any;

@@ -19,8 +19,8 @@
 import React, {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import {customComponentOptions} from '../../../forms/types';
-import {executeButtonAction} from '../../../forms/studio/api.helpers';
+import {customComponentOptions} from '../../../../forms/types';
+import {executeButtonAction} from '../../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
   item: any;

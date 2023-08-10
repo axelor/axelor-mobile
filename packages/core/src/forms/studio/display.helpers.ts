@@ -18,10 +18,7 @@
 
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
-import CustomSearchBar from '../../components/pages/FormView/CustomSearchBar';
-import CustomPicker from '../../components/pages/FormView/CustomPicker';
-import CustomButton from '../../components/pages/FormView/CustomButton';
-import CustomPasswordInput from '../../components/pages/FormView/CustomPasswordInput';
+import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
 
 export const mapStudioFields = (
   items: any[],
@@ -113,6 +110,9 @@ const mapStudioWidgetToWidget = (
       break;
     case 'Html':
       result.widget = 'HTML';
+      break;
+    case 'Password':
+      result.widget = 'password';
       break;
     default:
       break;
@@ -276,11 +276,6 @@ const manageContentOfModel = (
               const targetValue = parseInt(item.contextFieldValue, 10);
               return obejctValue?.id !== targetValue;
             };
-          }
-
-          if (item.widget === 'Password') {
-            config.widget = 'custom';
-            config.customComponent = CustomPasswordInput;
           }
 
           if (item.type === 'integer') {

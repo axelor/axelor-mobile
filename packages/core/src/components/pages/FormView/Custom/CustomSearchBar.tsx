@@ -24,8 +24,11 @@ import {
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {customComponentOptions} from '../../../forms/types';
-import {fetchModelFields, fetchData} from '../../../forms/studio/api.helpers';
+import {customComponentOptions} from '../../../../forms/types';
+import {
+  fetchModelFields,
+  fetchData,
+} from '../../../../forms/studio/api.helpers';
 
 interface props extends customComponentOptions {
   item: any;

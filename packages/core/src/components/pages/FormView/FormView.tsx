@@ -42,9 +42,8 @@ import {
   useFormConfig,
   validateSchema,
 } from '../../../forms';
-import {default as FieldComponent} from './Field';
-import {default as PanelComponent} from './Panel';
-import {default as ConstraintsValidatorPopup} from './ConstraintsValidatorPopup';
+import {Field as FieldComponent, Panel as PanelComponent} from './Components';
+import {ConstraintsValidatorPopup} from './Alerts';
 import {
   clearRecord,
   createRecord,

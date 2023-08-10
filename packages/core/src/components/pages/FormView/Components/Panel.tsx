@@ -19,8 +19,8 @@
 import React, {ReactNode, useMemo} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
-import {DEFAULT_COLSPAN, DisplayField, DisplayPanel} from '../../../forms';
+import {useTranslator} from '../../../../i18n';
+import {DEFAULT_COLSPAN, DisplayField, DisplayPanel} from '../../../../forms';
 
 interface PanelProps {
   renderItem: (item: DisplayPanel | DisplayField) => ReactNode;

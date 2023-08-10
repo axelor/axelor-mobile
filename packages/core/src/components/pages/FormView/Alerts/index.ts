@@ -16,10 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as FormView} from './FormView/FormView';
-export * from './FormView/Alerts';
-export {
-  Field as FieldComponent,
-  Panel as PanelComponent,
-} from './FormView/Components';
-export * from './FormView/Custom';
+export {default as ConstraintsValidatorPopup} from './ConstraintsValidatorPopup';
