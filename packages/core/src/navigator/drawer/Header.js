@@ -87,6 +87,7 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
           actions={options.actions}
           attachedFileScreenTitle={options.attachedFileScreenTitle}
           disableMailMessages={options.disableMailMessages}
+          disableJsonFields={options.disableJsonFields}
         />
       ) : null}
     </View>
