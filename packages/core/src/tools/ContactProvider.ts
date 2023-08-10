@@ -18,38 +18,99 @@
 
 import {Platform} from 'react-native';
 import Toast from 'react-native-toast-message';
-import {PERMISSIONS, Permission, request} from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  Permission,
+  requestMultiple,
+} from 'react-native-permissions';
 import * as Contacts from 'react-native-contacts';
+import {isEmpty} from '../utils';
 
 interface ContactData {
   firstName: string;
   lastName?: string;
-  phoneNumbers?: {
-    mobilePhone: string;
-    fixedPhone: string;
-  };
+  mobilePhone?: string;
+  fixedPhone?: string;
   email?: string;
   address?: string;
   notes?: string;
 }
 
 enum PermissionResult {
-  UNAVAILABLE = 'unavailable',
-  BLOCKED = 'blocked',
   DENIED = 'denied',
   GRANTED = 'granted',
-  LIMITED = 'limited',
 }
 
 class ContactProvider {
+  CONTACT_MAPPER = {
+    firstName: {
+      key: 'givenName',
+      getData: (value: string) => value,
+      isArrayField: false,
+    },
+    lastName: {
+      key: 'familyName',
+      getData: (value: string) => value,
+      isArrayField: false,
+    },
+    notes: {
+      key: 'note',
+      getData: (value: string) => value,
+      isArrayField: false,
+    },
+    mobilePhone: {
+      key: 'phoneNumbers',
+      getData: (value: string) => ({
+        label: 'mobile',
+        number: value,
+      }),
+      isArrayField: true,
+    },
+    fixedPhone: {
+      key: 'phoneNumbers',
+      getData: (value: string) => ({
+        label: 'fixed',
+        number: value,
+      }),
+      isArrayField: true,
+    },
+    email: {
+      key: 'emailAddresses',
+      getData: (value: string) => ({
+        label: 'email',
+        email: value,
+      }),
+      isArrayField: true,
+    },
+    address: {
+      key: 'postalAddresses',
+      getData: (value: string) => ({
+        label: 'main address',
+        formattedAddress: value,
+        street: null,
+        pobox: null,
+        neighborhood: null,
+        city: null,
+        region: null,
+        state: null,
+        postCode: null,
+        country: null,
+      }),
+      isArrayField: true,
+    },
+  };
+
   constructor() {}
 
-  private _getReadContactPermission = (): Permission => {
+  private _getContactsPermission = (): Permission[] => {
     switch (Platform.OS) {
       case 'ios':
-        return PERMISSIONS.IOS.CONTACTS;
+        return [PERMISSIONS.IOS.CONTACTS];
       case 'android':
-        return PERMISSIONS.ANDROID.READ_CONTACTS;
+        return [
+          PERMISSIONS.ANDROID.WRITE_CONTACTS,
+          PERMISSIONS.ANDROID.READ_CONTACTS,
+        ];
       default:
         throw new Error('Unsupported device.');
     }
@@ -68,64 +129,35 @@ class ContactProvider {
   private _requestReadContactsPermission =
     async (): Promise<PermissionResult> => {
       try {
-        const reactContactPermission = this._getReadContactPermission();
-        const permissionStatus = await request(reactContactPermission);
-        return permissionStatus as PermissionResult;
+        const contactsPermission = this._getContactsPermission();
+        await requestMultiple(contactsPermission);
+        return PermissionResult.GRANTED;
       } catch (error) {
         console.error('Error requesting contacts permission:', error);
         return PermissionResult.DENIED;
       }
     };
 
-  private _createContactData = (
-    contactData: ContactData,
-  ): Partial<Contacts.Contact> => {
-    const {firstName, lastName, email, phoneNumbers, address, notes} =
-      contactData;
+  parseContactData = (contact: ContactData): Partial<Contacts.Contact> => {
+    if (isEmpty(contact)) {
+      return {};
+    }
 
-    const contact: Partial<Contacts.Contact> = {
-      givenName: firstName,
-      familyName: lastName || undefined,
-      emailAddresses: email
-        ? [
-            {
-              label: 'email',
-              email,
-            },
-          ]
-        : undefined,
-      phoneNumbers: phoneNumbers
-        ? [
-            {
-              label: 'mobile',
-              number: phoneNumbers.mobilePhone,
-            },
-            {
-              label: 'fixed',
-              number: phoneNumbers.fixedPhone,
-            },
-          ]
-        : undefined,
-      postalAddresses: address
-        ? [
-            {
-              label: 'main address',
-              formattedAddress: address,
-              street: null,
-              pobox: null,
-              neighborhood: null,
-              city: null,
-              region: null,
-              state: null,
-              postCode: null,
-              country: null,
-            },
-          ]
-        : undefined,
-      note: notes || undefined,
-    };
+    const result: Partial<Contacts.Contact> = {};
 
-    return contact;
+    Object.entries(this.CONTACT_MAPPER).forEach(([key, config]) => {
+      const value = contact[key];
+
+      if (value != null) {
+        const data = config.getData(value);
+
+        result[config.key] = config.isArrayField
+          ? (result[config.key] || []).concat(data)
+          : data;
+      }
+    });
+
+    return result;
   };
 
   saveContact = async (contactData: ContactData): Promise<boolean> => {
@@ -136,31 +168,22 @@ class ContactProvider {
 
       const permissionResult = await this._requestReadContactsPermission();
 
-      let toastType: string;
-      let toastMessage: string;
-
       switch (permissionResult) {
         case PermissionResult.GRANTED:
-        case PermissionResult.LIMITED:
-          const _contactData = this._createContactData(contactData);
+          const _contactData = this.parseContactData(contactData);
           await Contacts.addContact(_contactData);
-          toastType = 'success';
-          toastMessage = `Contact ${contactData.firstName} added successfully.`;
-          break;
+          this._showToast(
+            'success',
+            `Contact ${contactData.firstName} added successfully.`,
+          );
+          return true;
         case PermissionResult.DENIED:
-        case PermissionResult.BLOCKED:
-        case PermissionResult.UNAVAILABLE:
-          toastType = 'error';
-          toastMessage = 'Contacts permission denied.';
-          break;
+          this._showToast('error', 'Contacts permission denied.');
+          return false;
         default:
-          toastType = 'error';
-          toastMessage = 'Unknown permission result.';
-          break;
+          this._showToast('error', 'Unknown permission result.');
+          return false;
       }
-
-      this._showToast(toastType, toastMessage);
-      return toastType === 'success';
     } catch (error) {
       this._showToast('error', `Error adding contact: ${error}`);
       return false;
