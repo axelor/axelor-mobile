@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
   Text,
@@ -33,6 +33,7 @@ interface ExpenseLineCardProps {
   displayText?: string | number;
   onPress: () => void;
   onLongPress: () => void;
+  isSelectionMode?: boolean;
 }
 const ExpenseLineCard = ({
   style,
@@ -42,30 +43,55 @@ const ExpenseLineCard = ({
   displayText,
   onPress,
   onLongPress,
+  isSelectionMode,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
+  const [shiftAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    if (isSelectionMode) {
+      Animated.timing(shiftAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(shiftAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [isSelectionMode, shiftAnim]);
+
+  const marginLeft = shiftAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 50],
+  });
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <TouchableOpacity
-      onLongPress={onLongPress}
-      onPress={onPress}
-      activeOpacity={0.8}>
-      <Card style={[styles.container, styles.border, style]}>
-        <Text style={styles.date}>{expenseDate}</Text>
-        <View style={styles.verticalLine} />
-        <View style={styles.column}>
-          {!checkNullString(displayText) && (
-            <Text style={styles.bold}>{displayText}</Text>
+    <Animated.View style={{marginLeft}}>
+      <TouchableOpacity
+        onLongPress={onLongPress}
+        onPress={onPress}
+        activeOpacity={0.8}>
+        <Card style={[styles.container, styles.border, style]}>
+          <Text style={styles.date}>{expenseDate}</Text>
+          <View style={styles.verticalLine} />
+          <View style={styles.column}>
+            {!checkNullString(displayText) && (
+              <Text style={styles.bold}>{displayText}</Text>
+            )}
+            {!checkNullString(projectName) && <Text>{projectName}</Text>}
+          </View>
+          {!checkNullString(totalAmount) && (
+            <Text style={styles.bold}>{`${totalAmount}$`}</Text>
           )}
-          {!checkNullString(projectName) && <Text>{projectName}</Text>}
-        </View>
-        {!checkNullString(totalAmount) && (
-          <Text style={styles.bold}>{`${totalAmount}$`}</Text>
-        )}
-      </Card>
-    </TouchableOpacity>
+        </Card>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 

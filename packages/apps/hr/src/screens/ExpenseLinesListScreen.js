@@ -39,7 +39,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
   const I18n = useTranslator();
-  const [selectedState, setSelectedState] = useState(false);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
@@ -59,7 +59,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           key: 'newExpenseLines',
           order: 10,
           iconName: 'plus',
-          hideIf: selectedState,
+          hideIf: isSelectionMode,
           title: I18n.t('Hr_NewExpenseLine'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('ExpenseLineFormScreen', {}),
@@ -67,17 +67,17 @@ const ExpenseLinesListScreen = ({navigation}) => {
         },
       ],
     });
-  }, [Colors, I18n, navigation, selectedState]);
+  }, [Colors, I18n, navigation, isSelectionMode]);
 
   return (
-    <Screen fixedItems={selectedState && <ExpenseLineValidationButton />}>
+    <Screen fixedItems={isSelectionMode && <ExpenseLineValidationButton />}>
       <ScrollList
         loadingList={loadingExpenseLine}
         data={expenseLineList}
         renderItem={({item}) => (
           <ExpenseLineCard
             onLongPress={() => {
-              setSelectedState(current => !current);
+              setIsSelectionMode(current => !current);
             }}
             style={styles.item}
             expenseDate={item.expenseDate}
@@ -88,6 +88,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
                 ? item.expenseProduct?.fullName
                 : ExpenseLine.getStatus(item.kilometricTypeSelect, I18n)
             }
+            isSelectionMode={isSelectionMode}
           />
         )}
         fetchData={fetchExpenseLineAPI}
@@ -95,7 +96,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         isListEnd={isListEnd}
         translator={I18n.t}
       />
-      {!selectedState && (
+      {!isSelectionMode && (
         <CircleButton
           style={styles.floatingButton}
           iconName="camera"
