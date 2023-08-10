@@ -17,6 +17,7 @@
  */
 
 export {default as CatalogsSearchBar} from './CatalogsSearchBar/CatalogsSearchBar';
+export {default as CatalogTypePicker} from './CatalogTypePicker/CatalogTypePicker';
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';
 export {default as ClientSearchBar} from './ClientSearchBar/ClientSearchBar';
 export {default as ContactSearchBar} from './ContactSearchBar/ContactSearchBar';
