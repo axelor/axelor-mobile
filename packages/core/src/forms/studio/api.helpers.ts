@@ -27,11 +27,17 @@ export async function fetchJsonFieldsOfModel({modelName}: {modelName: string}) {
     url: 'ws/rest/com.axelor.meta.db.MetaJsonField/search',
     data: {
       data: {
+        operator: 'and',
         criteria: [
           {
             fieldName: 'model',
             operator: '=',
             value: modelName,
+          },
+          {
+            fieldName: 'isVisibleInMobileApp',
+            operator: '=',
+            value: true,
           },
         ],
       },
