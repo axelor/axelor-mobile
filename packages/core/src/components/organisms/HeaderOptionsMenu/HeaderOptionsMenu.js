@@ -29,17 +29,23 @@ const HeaderOptionsMenu = ({
   modelId,
   actions = [],
   disableMailMessages,
+  disableJsonFields,
   attachedFileScreenTitle,
   barcodeFieldname,
 }) => {
-  const {mailMessagesAction, attachedFilesAction, barcodeAction} =
-    useBasicActions({
-      model,
-      modelId,
-      disableMailMessages,
-      attachedFileScreenTitle,
-      barcodeFieldname,
-    });
+  const {
+    mailMessagesAction,
+    attachedFilesAction,
+    barcodeAction,
+    jsonFieldsAction,
+  } = useBasicActions({
+    model,
+    modelId,
+    disableMailMessages,
+    barcodeFieldname,
+    disableJsonFields,
+    attachedFileScreenTitle,
+  });
 
   const collapseMenuItems = useMemo(
     () => Dimensions.get('window').width <= SMALLEST_WINDOW_WIDTH,
@@ -53,10 +59,22 @@ const HeaderOptionsMenu = ({
 
   const allActions = useMemo(
     () =>
-      [attachedFilesAction, mailMessagesAction, barcodeAction, ...actions]
+      [
+        attachedFilesAction,
+        mailMessagesAction,
+        barcodeAction,
+        jsonFieldsAction,
+        ...actions,
+      ]
         .filter(_action => !_action.hideIf)
         .sort((a, b) => a.order - b.order),
-    [actions, attachedFilesAction, barcodeAction, mailMessagesAction],
+    [
+      actions,
+      attachedFilesAction,
+      barcodeAction,
+      jsonFieldsAction,
+      mailMessagesAction,
+    ],
   );
 
   const headerActions = useMemo(
