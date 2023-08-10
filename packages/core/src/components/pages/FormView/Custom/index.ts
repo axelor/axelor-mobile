@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './external';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+export {default as CustomButton} from './CustomButton';
+export {default as CustomPasswordInput} from './CustomPasswordInput';
+export {default as CustomPicker} from './CustomPicker';
+export {default as CustomSearchBar} from './CustomSearchBar';
