@@ -25,6 +25,7 @@ import {useTranslator} from '../i18n';
 import {checkNullString} from '../utils';
 import {useOnline} from '../features/onlineSlice';
 import {getNetInfo} from '../api/net-info-utils';
+import {fetchJsonFieldsOfModel} from '../forms';
 
 export const useBasicActions = ({
   model,
@@ -42,6 +43,7 @@ export const useBasicActions = ({
   const {unreadMessages} = useSelector(state => state.mailMessages);
 
   const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
+  const [disableCustomView, setDisableCustomView] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
 
   const modelConfigured = useMemo(
@@ -72,6 +74,14 @@ export const useBasicActions = ({
   useEffect(() => {
     setDisableAttachementFiles(attachments === 0);
   }, [attachments]);
+
+  useEffect(() => {
+    fetchJsonFieldsOfModel({modelName: model})
+      .catch(() => setDisableCustomView(true))
+      .then(res => {
+        setDisableCustomView(res?.data?.total == null || res.data.total === 0);
+      });
+  }, [model]);
 
   const mailMessagesAction = useMemo(() => {
     return {
@@ -134,7 +144,11 @@ export const useBasicActions = ({
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
       iconName: 'object-group',
-      hideIf: disableJsonFields || !online.isEnabled || !isConnected,
+      hideIf:
+        disableCustomView ||
+        disableJsonFields ||
+        !online.isEnabled ||
+        !isConnected,
       onPress: () =>
         navigation.navigate('JsonFieldScreen', {
           model,
@@ -144,8 +158,9 @@ export const useBasicActions = ({
     };
   }, [
     I18n,
+    disableCustomView,
     disableJsonFields,
-    online,
+    online.isEnabled,
     isConnected,
     navigation,
     model,
