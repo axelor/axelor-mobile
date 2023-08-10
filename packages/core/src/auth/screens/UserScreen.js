@@ -182,8 +182,8 @@ const UserScreen = ({children}) => {
           {/* TODO: to remove after test*/}
           <Button
             title="Add Contact"
-            onPress={async () => {
-              const res = await contactProvider.saveContact({
+            onPress={() =>
+              contactProvider.saveContact({
                 firstName: 'John',
                 lastName: 'Doe',
                 phoneNumbers: {
@@ -193,9 +193,8 @@ const UserScreen = ({children}) => {
                 email: 'john.doe@mail.com',
                 address: 'Wall street, no where city',
                 notes: 'test note',
-              });
-              console.log(res);
-            }}
+              })
+            }
           />
         </View>
       </ScrollView>

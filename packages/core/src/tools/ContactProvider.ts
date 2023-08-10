@@ -16,43 +16,61 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {PermissionsAndroid} from 'react-native';
+import {Platform} from 'react-native';
+import Toast from 'react-native-toast-message';
+import {PERMISSIONS, Permission, request} from 'react-native-permissions';
 import * as Contacts from 'react-native-contacts';
 
 interface ContactData {
-  lastName: string;
   firstName: string;
-  phoneNumbers: {
+  lastName?: string;
+  phoneNumbers?: {
     mobilePhone: string;
     fixedPhone: string;
   };
-  email: string;
-  address: string;
+  email?: string;
+  address?: string;
   notes?: string;
 }
 
 enum PermissionResult {
-  GRANTED = 'granted',
+  UNAVAILABLE = 'unavailable',
+  BLOCKED = 'blocked',
   DENIED = 'denied',
-  NEVER_ASK_AGAIN = 'never_ask_again',
+  GRANTED = 'granted',
+  LIMITED = 'limited',
 }
 
 class ContactProvider {
   constructor() {}
 
+  private _getReadContactPermission = (): Permission => {
+    switch (Platform.OS) {
+      case 'ios':
+        return PERMISSIONS.IOS.CONTACTS;
+      case 'android':
+        return PERMISSIONS.ANDROID.READ_CONTACTS;
+      default:
+        throw new Error('Unsupported device.');
+    }
+  };
+
+  private _showToast = (type: string, message: string): void => {
+    Toast.show({
+      type,
+      position: 'bottom',
+      bottomOffset: 20,
+      text1: type === 'success' ? 'Success' : 'Error',
+      text2: message,
+    });
+  };
+
   private _requestReadContactsPermission =
     async (): Promise<PermissionResult> => {
       try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-          {
-            title: 'Contacts',
-            message: 'This app would like to read your contacts.',
-            buttonPositive: 'OK',
-            buttonNegative: 'Cancel',
-          },
-        );
-        return granted as PermissionResult;
+        const reactContactPermission = this._getReadContactPermission();
+        const permissionStatus = await request(reactContactPermission);
+        return permissionStatus as PermissionResult;
       } catch (error) {
         console.error('Error requesting contacts permission:', error);
         return PermissionResult.DENIED;
@@ -62,70 +80,90 @@ class ContactProvider {
   private _createContactData = (
     contactData: ContactData,
   ): Partial<Contacts.Contact> => {
-    return {
-      emailAddresses: [
-        {
-          label: 'contact email address',
-          email: contactData.email,
-        },
-      ],
-      familyName: contactData.lastName,
-      givenName: contactData.firstName,
-      phoneNumbers: [
-        {
-          label: 'mobile',
-          number: contactData.phoneNumbers.mobilePhone,
-        },
-        {
-          label: 'fixed',
-          number: contactData.phoneNumbers.fixedPhone,
-        },
-      ],
-      postalAddresses: [
-        {
-          label: 'main address',
-          formattedAddress: contactData.address,
-          street: null,
-          pobox: null,
-          neighborhood: null,
-          city: null,
-          region: null,
-          state: null,
-          postCode: null,
-          country: null,
-        },
-      ],
-      note: contactData.notes,
+    const {firstName, lastName, email, phoneNumbers, address, notes} =
+      contactData;
+
+    const contact: Partial<Contacts.Contact> = {
+      givenName: firstName,
+      familyName: lastName || undefined,
+      emailAddresses: email
+        ? [
+            {
+              label: 'email',
+              email,
+            },
+          ]
+        : undefined,
+      phoneNumbers: phoneNumbers
+        ? [
+            {
+              label: 'mobile',
+              number: phoneNumbers.mobilePhone,
+            },
+            {
+              label: 'fixed',
+              number: phoneNumbers.fixedPhone,
+            },
+          ]
+        : undefined,
+      postalAddresses: address
+        ? [
+            {
+              label: 'main address',
+              formattedAddress: address,
+              street: null,
+              pobox: null,
+              neighborhood: null,
+              city: null,
+              region: null,
+              state: null,
+              postCode: null,
+              country: null,
+            },
+          ]
+        : undefined,
+      note: notes || undefined,
     };
+
+    return contact;
   };
 
-  saveContact = async (contactData: ContactData): Promise<string> => {
+  saveContact = async (contactData: ContactData): Promise<boolean> => {
     try {
-      if (
-        !contactData.firstName ||
-        !contactData.lastName ||
-        !contactData.phoneNumbers.mobilePhone
-      ) {
+      if (!contactData.firstName) {
         throw new Error('Required contact data is missing.');
       }
 
       const permissionResult = await this._requestReadContactsPermission();
 
+      let toastType: string;
+      let toastMessage: string;
+
       switch (permissionResult) {
         case PermissionResult.GRANTED:
+        case PermissionResult.LIMITED:
           const _contactData = this._createContactData(contactData);
           await Contacts.addContact(_contactData);
-          return 'Contact added successfully.';
+          toastType = 'success';
+          toastMessage = `Contact ${contactData.firstName} added successfully.`;
+          break;
         case PermissionResult.DENIED:
-          return 'Contacts permission denied.';
-        case PermissionResult.NEVER_ASK_AGAIN:
-          return 'Contacts permission denied permanently.';
+        case PermissionResult.BLOCKED:
+        case PermissionResult.UNAVAILABLE:
+          toastType = 'error';
+          toastMessage = 'Contacts permission denied.';
+          break;
         default:
-          return 'Unknown permission result.';
+          toastType = 'error';
+          toastMessage = 'Unknown permission result.';
+          break;
       }
+
+      this._showToast(toastType, toastMessage);
+      return toastType === 'success';
     } catch (error) {
-      console.error('Error adding contact:', error);
-      return 'Error adding contact: ' + error.message;
+      this._showToast('error', `Error adding contact: ${error}`);
+      return false;
     }
   };
 }
