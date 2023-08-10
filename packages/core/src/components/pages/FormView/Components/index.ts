@@ -16,8 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './external';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+export {default as Field} from './Field';
+export {default as Panel} from './Panel';
