@@ -16,4 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
 export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';

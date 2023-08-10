@@ -17,14 +17,37 @@
  */
 
 import React from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ExpenseLineValidationButton = ({}) => {
+const ExpenseLineValidationButton = ({
+  setAddPopuîsVisible,
+  selectedItems,
+  setIsSelectionMode,
+}) => {
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+
   return (
     <View style={styles.container}>
-      <Button title="cancel" style={styles.button} />
-      <Button title="save" style={styles.button} />
+      <Button
+        title={I18n.t('Base_Cancel')}
+        color={Colors.secondaryColor}
+        style={styles.button}
+        onPress={() => setIsSelectionMode(false)}
+      />
+      <Button
+        color={
+          selectedItems.length <= 0
+            ? Colors.secondaryColor
+            : Colors.primaryColor
+        }
+        title={I18n.t('Base_Add')}
+        style={styles.button}
+        disabled={selectedItems.length <= 0 ? true : false}
+        onPress={() => setAddPopuîsVisible(true)}
+      />
     </View>
   );
 };

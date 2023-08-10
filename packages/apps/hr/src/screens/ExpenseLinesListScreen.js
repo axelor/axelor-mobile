@@ -30,7 +30,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../features/expenseLineSlice';
-import {ExpenseLineCard} from '../components';
+import {ExpenseAddPopup, ExpenseLineCard} from '../components';
 import {Dimensions, StyleSheet} from 'react-native';
 import {ExpenseLine} from '../types';
 import {ExpenseLineValidationButton} from '../components/templates';
@@ -41,6 +41,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [addPopuîsVisible, setAddPopuîsVisible] = useState(false);
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
@@ -54,6 +55,11 @@ const ExpenseLinesListScreen = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    if (!isSelectionMode) {
+      setSelectedItems([]);
+    }
+  }, [isSelectionMode]);
   console.log(selectedItems);
 
   const fetchExpenseLineAPI = useCallback(
@@ -81,7 +87,16 @@ const ExpenseLinesListScreen = ({navigation}) => {
   }, [Colors, I18n, navigation, isSelectionMode]);
 
   return (
-    <Screen fixedItems={isSelectionMode && <ExpenseLineValidationButton />}>
+    <Screen
+      fixedItems={
+        isSelectionMode && (
+          <ExpenseLineValidationButton
+            setAddPopuîsVisible={setAddPopuîsVisible}
+            selectedItems={selectedItems}
+            setIsSelectionMode={setIsSelectionMode}
+          />
+        )
+      }>
       <ScrollList
         loadingList={loadingExpenseLine}
         data={expenseLineList}
@@ -116,6 +131,10 @@ const ExpenseLinesListScreen = ({navigation}) => {
           onPress={() => {}}
         />
       )}
+      <ExpenseAddPopup
+        visible={addPopuîsVisible}
+        setAddPopuîsVisible={setAddPopuîsVisible}
+      />
     </Screen>
   );
 };
