@@ -18,6 +18,7 @@
 
 import AttachedFilesScreen from './AttachedFilesScreen';
 import BarcodeDisplayScreen from './BarcodeDisplayScreen';
+import JsonFieldScreen from './JsonFieldScreen';
 import MailMessageScreen from './MailMessageScreen';
 
 export default {
@@ -41,6 +42,14 @@ export default {
     title: 'Base_Barcode',
     component: BarcodeDisplayScreen,
     actionID: 'core_barcode_details',
+    options: {
+      shadedHeader: true,
+    },
+  },
+  JsonFieldScreen: {
+    title: 'Base_MetaJsonFields',
+    component: JsonFieldScreen,
+    actionID: 'core_metaJsonFields_details',
     options: {
       shadedHeader: true,
     },
