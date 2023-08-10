@@ -268,7 +268,9 @@ const UploadFileInput = ({
           />
         ) : null}
         <Text style={styles.fileName} numberOfLines={1}>
-          {selectedFile ? selectedFile.name : I18n.t('Base_ChooseFile')}
+          {selectedFile
+            ? selectedFile.name || selectedFile.fileName
+            : I18n.t('Base_ChooseFile')}
         </Text>
         <View style={styles.buttons}>
           {canDeleteFile && selectedFile != null && !readonly && (
