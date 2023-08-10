@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
   Text,
   checkNullString,
   useThemeColor,
+  Checkbox,
 } from '@axelor/aos-mobile-ui';
 
 interface ExpenseLineCardProps {
@@ -33,7 +34,9 @@ interface ExpenseLineCardProps {
   displayText?: string | number;
   onPress: () => void;
   onLongPress: () => void;
+  onItemSelection: (itemId, isChecked) => void;
   isSelectionMode?: boolean;
+  itemId: number;
 }
 const ExpenseLineCard = ({
   style,
@@ -44,40 +47,46 @@ const ExpenseLineCard = ({
   onPress,
   onLongPress,
   isSelectionMode,
+  onItemSelection,
+  itemId,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
-  const [shiftAnim] = useState(new Animated.Value(0));
+  const translateXAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isSelectionMode) {
-      Animated.timing(shiftAnim, {
-        toValue: 1,
+      Animated.timing(translateXAnim, {
+        toValue: 60,
         duration: 300,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     } else {
-      Animated.timing(shiftAnim, {
+      Animated.timing(translateXAnim, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     }
-  }, [isSelectionMode, shiftAnim]);
-
-  const marginLeft = shiftAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 50],
-  });
+  }, [isSelectionMode, translateXAnim]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <Animated.View style={{marginLeft}}>
+    <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
       <TouchableOpacity
         onLongPress={onLongPress}
         onPress={onPress}
+        style={styles.container}
         activeOpacity={0.8}>
-        <Card style={[styles.container, styles.border, style]}>
+        {isSelectionMode && (
+          <Checkbox
+            style={styles.checkbox}
+            onChange={isChecked => {
+              onItemSelection(itemId, isChecked);
+            }}
+          />
+        )}
+        <Card style={[styles.containerCard, styles.border, style]}>
           <Text style={styles.date}>{expenseDate}</Text>
           <View style={styles.verticalLine} />
           <View style={styles.column}>
@@ -98,6 +107,10 @@ const ExpenseLineCard = ({
 const getStyles = Colors =>
   StyleSheet.create({
     container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    containerCard: {
       flexDirection: 'row',
     },
     bold: {
@@ -120,6 +133,9 @@ const getStyles = Colors =>
     border: {
       borderLeftWidth: 7,
       borderLeftColor: Colors.secondaryColor.background,
+    },
+    checkbox: {
+      marginRight: 10,
     },
   });
 

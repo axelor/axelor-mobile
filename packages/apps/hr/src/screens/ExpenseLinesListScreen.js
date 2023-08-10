@@ -40,10 +40,21 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
+
+  const handleItemSelection = (itemId, isSelected) => {
+    if (isSelected) {
+      setSelectedItems(prev => [...prev, itemId]);
+    } else {
+      setSelectedItems(prev => prev.filter(id => id !== itemId));
+    }
+  };
+
+  console.log(selectedItems);
 
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
@@ -80,6 +91,8 @@ const ExpenseLinesListScreen = ({navigation}) => {
               setIsSelectionMode(current => !current);
             }}
             style={styles.item}
+            itemId={item.id}
+            onItemSelection={handleItemSelection}
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
             totalAmount={item.totalAmount}
