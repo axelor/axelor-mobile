@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './external';
-export * from './molecules';
-export * from './organisms';
-export * from './templates';
-export * from './pages';
+export {default as FormView} from './FormView/FormView';
+export * from './FormView/Alerts';
+export {
+  Field as FieldComponent,
+  Panel as PanelComponent,
+} from './FormView/Components';
+export * from './FormView/Custom';
