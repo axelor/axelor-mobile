@@ -1,10 +1,13 @@
 {
   "Hr_HumanRessources": "Human ressources",
   "Hr_Hr": "HR",
+  "Hr_Expense": "Expense",
   "Hr_ExpenseLines": "Expense lines",
   "Hr_NewExpenseLine": "New expense line",
+  "Hr_NewExpense": "Create a new expense",
   "Hr_kilomectricTypeSelect_OneWay": "One-Way",
   "Hr_kilomectricTypeSelect_RoundTrip": "Round Trip",
 
-  "Hr_SliceAction_FetchExpenseLines": "fetch expense lines"
+  "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
+  "Hr_SliceAction_SearchDraftExpense": "fetch expense draft"
 }

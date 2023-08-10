@@ -16,5 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {expenseLineReducer as expenseLine} from './expenseLineSlice';
-export {expenseReducer as expense} from './expenseSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createExpenseDraftCriteria = () => {
+  const criteria = [
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: 1,
+    },
+  ];
+  return criteria;
+};
+
+export async function searchExpenseDraft() {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Expense',
+    criteria: createExpenseDraftCriteria(),
+    fieldKey: 'hr_expenseDraft',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}

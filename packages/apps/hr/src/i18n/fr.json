@@ -1,8 +1,13 @@
 {
   "Hr_HumanRessources": "Ressources humaines",
   "Hr_Hr": "RH",
-  "Hr_ExpenseLines": "Frais",
+  "Hr_Expense": "Frais",
+  "Hr_ExpenseLines": "ligne de frais",
   "Hr_NewExpenseLine": "Nouvelle ligne de frais",
+  "Hr_NewExpense": "Créer une nouvelle note de frais",
+  "Hr_kilomectricTypeSelect_OneWay": "Sens Unique",
+  "Hr_kilomectricTypeSelect_RoundTrip": "Aller-retour",
 
-  "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais"
+  "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
+  "Hr_SliceAction_SearchDraftExpense": "récupération des frais brouillon"
 }

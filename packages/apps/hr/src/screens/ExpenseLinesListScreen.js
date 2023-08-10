@@ -34,6 +34,7 @@ import {ExpenseAddPopup, ExpenseLineCard} from '../components';
 import {Dimensions, StyleSheet} from 'react-native';
 import {ExpenseLine} from '../types';
 import {ExpenseLineValidationButton} from '../components/templates';
+import {searchExpenseDraft} from '../features/expenseSlice';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
@@ -54,6 +55,10 @@ const ExpenseLinesListScreen = ({navigation}) => {
       setSelectedItems(prev => prev.filter(id => id !== itemId));
     }
   };
+
+  useEffect(() => {
+    dispatch(searchExpenseDraft());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!isSelectionMode) {

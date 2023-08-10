@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  Text,
   useThemeColor,
   PopUp,
   Button,
   LabelText,
+  Picker,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 
 interface ExpenseAddPopupProps {
   style?: any;
@@ -39,18 +39,35 @@ const ExpenseAddPopup = ({
 }: ExpenseAddPopupProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const [expenseSelected, setExpenseSelected] = useState(null);
+
+  const {expenseDraftList} = useSelector((state: any) => state.expense);
+
+  console.log('expenseDraft', expenseDraftList);
+  console.log('expenseSelected', expenseSelected);
+
   return (
-    <PopUp style={style} visible={visible}>
-      <View>
-        <Text>Test</Text>
-        <TouchableOpacity onPress={() => console.log('addExpense')}>
-          <LabelText
-            iconName="plus"
-            color={Colors.primaryColor.background}
-            title="ddddde"
-            size={16}
+    <PopUp style={[styles.popup, style]} visible={visible}>
+      <View style={styles.container}>
+        <View>
+          <Picker
+            listItems={expenseDraftList}
+            onValueChange={setExpenseSelected}
+            labelField="fullName"
+            valueField="id"
+            title={I18n.t('Hr_Expense')}
           />
-        </TouchableOpacity>
+        </View>
+        <View style={styles.labelText}>
+          <TouchableOpacity onPress={() => console.log('addExpense')}>
+            <LabelText
+              iconName="plus"
+              color={Colors.primaryColor.background}
+              title={I18n.t('Hr_NewExpense')}
+              size={16}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.buttonContainer}>
           <Button
             title={I18n.t('Base_Cancel')}
@@ -69,17 +86,25 @@ const ExpenseAddPopup = ({
   );
 };
 const styles = StyleSheet.create({
+  popup: {
+    width: '95%',
+  },
   container: {
     flexDirection: 'column',
+    width: '100%',
     alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
-    width: '100%',
+    width: '80%',
     justifyContent: 'space-between',
   },
+  labelText: {
+    alignSelf: 'flex-start',
+    marginVertical: 5,
+  },
   button: {
-    width: '45%',
+    width: '35%',
   },
 });
 
