@@ -33,10 +33,6 @@ class HeaderActionsProvider {
     this.refreshCallBack = callBack;
   }
 
-  private updateState() {
-    this.refreshCallBack(this.headerActions);
-  }
-
   registerModel(key: string, options: HeaderOptions) {
     if (!Object.keys(this.headerActions).includes(key)) {
       this.headerActions[key] = options;
@@ -48,7 +44,8 @@ class HeaderActionsProvider {
         actions: mergeActions(oldOptions.actions, options.actions),
       };
     }
-    this.updateState();
+
+    this.refreshCallBack(key, this.headerActions[key]);
   }
 
   getHeaderOptions(key: string): HeaderOptions {
@@ -58,20 +55,26 @@ class HeaderActionsProvider {
 
 export const headerActionsProvider = new HeaderActionsProvider();
 
-export const useHeaderOptions = (modelKey: string) => {
-  const [header, setHeader] = useState();
+export const useHeaderActions = (): {headers: HeaderActions} => {
+  const [headers, setHeaders] = useState<HeaderActions>();
 
-  useEffect(() => {
-    headerActionsProvider.register(setHeader);
+  const refreshData = useCallback((key: string, options: HeaderOptions) => {
+    setHeaders(_current => {
+      if (_current?.[key] === options) {
+        return _current;
+      }
+
+      const updatedHeaders = _current != null ? {..._current} : {};
+
+      updatedHeaders[key] = options;
+
+      return updatedHeaders;
+    });
   }, []);
 
-  const getHeaderOptionsOfModel = useCallback(
-    key => fetchOptionsOfHeaderKey(header, key),
-    [header],
-  );
+  useEffect(() => {
+    headerActionsProvider.register(refreshData);
+  }, [refreshData]);
 
-  return useMemo(
-    () => ({options: getHeaderOptionsOfModel(modelKey)}),
-    [getHeaderOptionsOfModel, modelKey],
-  );
+  return useMemo(() => ({headers}), [headers]);
 };

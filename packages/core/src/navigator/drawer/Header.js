@@ -16,25 +16,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerToggleButton from './DrawerToggleButton';
 import BackIcon from './BackIcon';
 import {useTranslator} from '../../i18n';
 import {HeaderOptionsMenu} from '../../components';
-import {headerActionsProvider, useHeaderOptions} from '../../header';
+import {
+  fetchOptionsOfHeaderKey,
+  headerActionsProvider,
+  useHeaderActions,
+} from '../../header';
+
+const TIME_BEFORE_RETRY = 500;
 
 const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const {options} = useHeaderOptions(actionID);
+  let timeOutRequestCall = useRef();
 
-  const headerOptions = useMemo(
-    () => options || headerActionsProvider.getHeaderOptions(actionID),
-    [actionID, options],
-  );
+  const {headers} = useHeaderActions();
+
+  const [options, setOptions] = useState();
+
+  useEffect(() => {
+    setOptions(fetchOptionsOfHeaderKey(headers, actionID));
+  }, [actionID, headers]);
+
+  const handleTimeOut = useCallback(() => {
+    setOptions(_current => {
+      if (_current == null) {
+        return headerActionsProvider.getHeaderOptions(actionID);
+      }
+
+      return _current;
+    });
+  }, [actionID]);
+
+  useEffect(() => {
+    const id = setTimeout(handleTimeOut, TIME_BEFORE_RETRY);
+    timeOutRequestCall.current = id;
+
+    return () => {
+      clearTimeout(timeOutRequestCall.current);
+    };
+  }, [handleTimeOut]);
 
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
@@ -48,17 +76,17 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
         )}
         <View>
           <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
-            {headerOptions?.headerTitle || I18n.t(title)}
+            {options?.headerTitle || I18n.t(title)}
           </Text>
         </View>
       </View>
-      {headerOptions != null ? (
+      {options != null ? (
         <HeaderOptionsMenu
-          model={headerOptions.model}
-          modelId={headerOptions.modelId}
-          actions={headerOptions.actions}
-          attachedFileScreenTitle={headerOptions.attachedFileScreenTitle}
-          disableMailMessages={headerOptions.disableMailMessages}
+          model={options.model}
+          modelId={options.modelId}
+          actions={options.actions}
+          attachedFileScreenTitle={options.attachedFileScreenTitle}
+          disableMailMessages={options.disableMailMessages}
         />
       ) : null}
     </View>

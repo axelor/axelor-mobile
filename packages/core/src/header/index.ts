@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {headerActionsProvider, useHeaderOptions} from './HeaderActionsProvider';
+export {headerActionsProvider, useHeaderActions} from './HeaderActionsProvider';
 export {useBasicActions} from './hooks';
 export {
   HeaderActions,
@@ -26,3 +26,4 @@ export {
 } from './types';
 export {HeaderBandProvider, useHeaderBand} from './HeaderBandContext';
 export {HeaderBandHelper} from './header-band-context.helper';
+export {fetchOptionsOfHeaderKey} from './utils';
