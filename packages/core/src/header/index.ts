@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {headerActionsProvider, useHeaderOptions} from './HeaderActionsProvider';
+export {headerActionsProvider, useHeaderActions} from './HeaderActionsProvider';
 export {useBasicActions} from './hooks';
 export {HeaderActions, HeaderOptions, ActionType} from './types';
+export {fetchOptionsOfHeaderKey} from './utils';
