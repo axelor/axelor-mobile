@@ -29,10 +29,10 @@ import {Icon} from '../../atoms';
 
 interface ImageProps {
   imageSize: StyleProp<ImageStyle>;
-  generalStyle: StyleProp<ImageStyle>;
+  generalStyle?: StyleProp<ImageStyle>;
   resizeMode: ImageResizeMode;
   source: ImageSourcePropType;
-  defaultIconSize: number;
+  defaultIconSize?: number;
 }
 
 const Image = ({
