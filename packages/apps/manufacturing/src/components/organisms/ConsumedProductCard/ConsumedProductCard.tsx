@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ConsumedProductCardProps {
@@ -48,6 +48,7 @@ const ConsumedProductCard = ({
 }: ConsumedProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyle = useMemo(() => {
     if (missingQty > 0) {
@@ -74,20 +75,18 @@ const ConsumedProductCard = ({
             {isTitle: true, displayText: productName},
             {
               indicatorText: `${I18n.t('Manufacturing_PlannedQty')}:`,
-              displayText: `${parseFloat(plannedQty.toString()).toFixed(2)} ${
+              displayText: `${formatNumber(plannedQty)} ${
                 unitName != null ? unitName : ''
               }`,
             },
             {
               indicatorText: `${I18n.t('Manufacturing_ConsumedQty')}:`,
-              displayText: `${
-                consumedQty == null
-                  ? parseFloat('0').toFixed(2)
-                  : parseFloat(consumedQty.toString()).toFixed(2)
-              } ${unitName != null ? unitName : ''}`,
+              displayText: `${formatNumber(consumedQty)} ${
+                unitName != null ? unitName : ''
+              }`,
             },
             {
-              iconName: 'qrCode',
+              iconName: 'qrcode',
               displayText: trackingNumber,
               indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
               hideIf: trackingNumber == null,
