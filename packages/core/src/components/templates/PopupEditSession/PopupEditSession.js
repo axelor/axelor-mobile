@@ -147,19 +147,22 @@ const PopupEditSession = ({
   }, [onScanPress]);
 
   useEffect(() => {
-    setUpdateSession(
-      sessionList?.find(item => item.sessionId === session?.sessionId),
-    );
-    setSessionName(updateSession?.id);
-    setUrl(updateSession?.url);
-    setUsername(updateSession?.username);
-    setIsDefault(updateSession?.isDefault);
-  }, [session, sessionList, updateSession]);
+    setUpdateSession(() => {
+      const _updatedSession = sessionList?.find(
+        item => item.sessionId === session?.sessionId,
+      );
+      setSessionName(_updatedSession?.id);
+      setUrl(_updatedSession?.url);
+      setUsername(_updatedSession?.username);
+      setIsDefault(_updatedSession?.isDefault);
+      return _updatedSession;
+    });
+  }, [session, sessionList]);
 
   return (
     <PopUp
       visible={isOpen}
-      title={I18n.t('Auth_Edit_Session')}
+      title={I18n.t('Auth_EditSession')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
         {sessionList?.length > 0 && (
@@ -176,7 +179,7 @@ const PopupEditSession = ({
           {!loading && nameSessionAlreadyExist && (
             <WarningCard
               style={styles.warningCard}
-              errorMessage={I18n.t('Auth_Session_Name_Aleary_Exist')}
+              errorMessage={I18n.t('Auth_SessionNameAlreadyExist')}
             />
           )}
         </View>
@@ -219,10 +222,10 @@ const PopupEditSession = ({
           showRequiredFields={showRequiredFields}
         />
         <Checkbox
-          title={I18n.t('Auth_Always_Active')}
+          title={I18n.t('Auth_AlwaysActive')}
           isDefaultChecked={isDefault}
           onChange={setIsDefault}
-          iconSize={20}
+          iconSize={30}
           style={styles.checkbox}
         />
         {loading ? (

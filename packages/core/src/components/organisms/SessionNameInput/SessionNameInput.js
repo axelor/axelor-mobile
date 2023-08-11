@@ -48,7 +48,7 @@ const SessionNameInput = ({
       value={value}
       onChange={onChange}
       readOnly={readOnly}
-      placeholder={I18n.t('Auth_Session_Name')}
+      placeholder={I18n.t('Auth_SessionName')}
       leftIconsList={[<Icon name="tag" size={17} style={styles.icon} />]}
     />
   );

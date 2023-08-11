@@ -61,7 +61,7 @@ const PopupSessionList = ({
   }
 
   return (
-    <PopUp visible={popupIsOpen} title={I18n.t('Auth_Saved_Sessions')}>
+    <PopUp visible={popupIsOpen} title={I18n.t('Auth_SavedSessions')}>
       <View style={styles.popupContainer}>
         {sessions.map((_session, index) => {
           return (

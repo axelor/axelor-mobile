@@ -207,7 +207,7 @@ const PopupCreateSession = ({
   return (
     <PopUp
       visible={isOpen}
-      title={I18n.t('Auth_Create_Session')}
+      title={I18n.t('Auth_CreateSession')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
         {sessionList?.length > 0 && (
@@ -224,7 +224,7 @@ const PopupCreateSession = ({
           {!loading && nameSessionAlreadyExist && (
             <WarningCard
               style={styles.warningCard}
-              errorMessage={I18n.t('Auth_Session_Name_Aleary_Exist')}
+              errorMessage={I18n.t('Auth_SessionNameAlreadyExist')}
             />
           )}
         </View>
@@ -275,10 +275,10 @@ const PopupCreateSession = ({
           showRequiredFields={showRequiredFields}
         />
         <Checkbox
-          title={I18n.t('Auth_Always_Active')}
+          title={I18n.t('Auth_AlwaysActive')}
           isDefaultChecked={isDefault}
           onChange={setIsDefault}
-          iconSize={20}
+          iconSize={30}
           style={styles.checkbox}
         />
         {loading ? (
