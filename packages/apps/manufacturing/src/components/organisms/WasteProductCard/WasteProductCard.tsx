@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {ObjectCard} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface WasteProductCardProps {
@@ -36,6 +36,7 @@ const WasteProductCard = ({
   onPress,
 }: WasteProductCardProps) => {
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   return (
     <ObjectCard
@@ -46,11 +47,9 @@ const WasteProductCard = ({
           {displayText: productName, isTitle: true},
           {
             indicatorText: `${I18n.t('Manufacturing_WasteQty')}:`,
-            displayText: `${
-              wasteQty == null
-                ? parseFloat('0').toFixed(2)
-                : parseFloat(wasteQty.toString()).toFixed(2)
-            } ${unitName != null ? unitName : ''}`,
+            displayText: `${formatNumber(wasteQty)} ${
+              unitName != null ? unitName : ''
+            }`,
           },
         ],
       }}

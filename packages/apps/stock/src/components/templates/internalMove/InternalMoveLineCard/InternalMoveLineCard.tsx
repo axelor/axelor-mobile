@@ -23,6 +23,7 @@ import {
   ObjectCard,
   Text,
   checkNullString,
+  useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -57,6 +58,7 @@ const InternalMoveLineCard = ({
 }: InternalMoveLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const {stockConfig} = useSelector((state: any) => state.stockAppConfig);
 
@@ -85,11 +87,11 @@ const InternalMoveLineCard = ({
         items: [
           {displayText: productName, isTitle: true},
           {
-            displayText: parseFloat(expectedQty.toString()).toFixed(2),
+            displayText: formatNumber(expectedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
           },
           {
-            displayText: parseFloat(movedQty.toString()).toFixed(2),
+            displayText: formatNumber(movedQty),
             indicatorText: `${I18n.t('Stock_MovedQty')} :`,
           },
           {
