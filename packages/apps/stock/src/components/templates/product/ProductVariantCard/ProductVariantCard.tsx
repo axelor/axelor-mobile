@@ -18,7 +18,7 @@
 
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useMetafileUri, useTranslator} from '@axelor/aos-mobile-core';
 import Product from '../../../../types/product';
 
@@ -51,6 +51,7 @@ const ProductVariantCard = ({
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const formatMetaFile = useMetafileUri();
+  const formatNumber = useDigitFormat();
 
   const renderAttrItems = useCallback(() => {
     if (!Array.isArray(attributesList?.attributes)) {
@@ -71,7 +72,7 @@ const ProductVariantCard = ({
               ? `(${Product.getApplicationPriceSelect(
                   attr.applicationPriceSelect,
                   I18n,
-                )} : +${parseFloat(attr.priceExtra.toString()).toFixed(2)})`
+                )} : +${formatNumber(attr.priceExtra)})`
               : ''
           }`,
         });
@@ -79,7 +80,7 @@ const ProductVariantCard = ({
     }
 
     return items?.length > 0 ? {items} : null;
-  }, [I18n, attributesList?.attributes]);
+  }, [I18n, attributesList?.attributes, formatNumber]);
 
   return (
     <ObjectCard

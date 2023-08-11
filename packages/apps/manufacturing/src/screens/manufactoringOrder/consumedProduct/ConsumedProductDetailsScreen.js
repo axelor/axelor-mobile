@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {HeaderContainer, Screen, ScrollView, Text} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  Screen,
+  ScrollView,
+  Text,
+  useDigitFormat,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
@@ -39,6 +45,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const manufOrder = route.params.manufOrder;
   const consumedProduct = route.params.consumedProduct;
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
   const {loadingProductFromId, productFromId} = useSelector(
@@ -192,9 +199,9 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           }
           isBigButton={true}>
           <Text>
-            {`${I18n.t('Manufacturing_PlannedQty')}: ${parseFloat(
-              consumedProduct ? consumedProduct.plannedQty : 0,
-            ).toFixed(2)} ${
+            {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
+              consumedProduct?.plannedQty,
+            )} ${
               consumedProduct
                 ? consumedProduct.unit?.unitName
                 : product.unit?.name
