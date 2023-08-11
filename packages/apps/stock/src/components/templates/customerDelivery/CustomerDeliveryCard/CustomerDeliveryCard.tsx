@@ -76,7 +76,7 @@ const CustomerDeliveryCard = ({
       lowerTexts={{
         items: [
           {displayText: reference, isTitle: true},
-          {displayText: client},
+          {displayText: client, hideIfNull: true},
           {
             displayText: origin,
             iconName: 'tag',
