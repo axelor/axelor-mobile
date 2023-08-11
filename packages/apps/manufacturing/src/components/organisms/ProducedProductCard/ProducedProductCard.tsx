@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ProducedProductCardProps {
@@ -42,6 +42,7 @@ const ProducedProductCard = ({
 }: ProducedProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyles = useMemo(() => {
     if (plannedQty > producedQty) {
@@ -59,17 +60,15 @@ const ProducedProductCard = ({
           {isTitle: true, displayText: productName},
           {
             indicatorText: `${I18n.t('Manufacturing_PlannedQty')}:`,
-            displayText: `${parseFloat(plannedQty.toString()).toFixed(2)} ${
+            displayText: `${formatNumber(plannedQty)} ${
               unitName != null ? unitName : ''
             }`,
           },
           {
             indicatorText: `${I18n.t('Manufacturing_ProducedQty')}:`,
-            displayText: `${
-              producedQty == null
-                ? parseFloat('0').toFixed(2)
-                : parseFloat(producedQty.toString()).toFixed(2)
-            } ${unitName != null ? unitName : ''}`,
+            displayText: `${formatNumber(producedQty)} ${
+              unitName != null ? unitName : ''
+            }`,
           },
           {
             indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
