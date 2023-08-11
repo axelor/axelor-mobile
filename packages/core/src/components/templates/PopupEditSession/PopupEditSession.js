@@ -205,7 +205,6 @@ const PopupEditSession = ({
           style={styles.input}
           showRequiredFields={showRequiredFields}
         />
-
         <UsernameInput
           value={username}
           onChange={setUsername}

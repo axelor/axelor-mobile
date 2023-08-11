@@ -19,7 +19,13 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, PopUp, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
+import {
+  Icon,
+  PopUp,
+  useThemeColor,
+  LabelText,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {PasswordInput} from '../../organisms';
 import {ErrorText, LoginButton} from '../../molecules';
 import {login} from '../../../features/authSlice';
@@ -48,6 +54,14 @@ const PopupSession = ({
       setPassword(modeDebug ? testInstanceConfig?.defaultPassword : '');
     }
   }, [modeDebug, sessionActive, testInstanceConfig?.defaultPassword]);
+
+  const disabledLogin = useMemo(
+    () =>
+      checkNullString(sessionActive?.username) ||
+      checkNullString(password) ||
+      loading,
+    [loading, password, sessionActive?.username],
+  );
 
   const onPressLogin = useCallback(() => {
     dispatch(
@@ -110,6 +124,7 @@ const PopupSession = ({
           <LoginButton
             onPress={onPressLogin}
             onDisabledPress={() => setShowRequiredFields(true)}
+            disabled={disabledLogin}
           />
         )}
         <Icon

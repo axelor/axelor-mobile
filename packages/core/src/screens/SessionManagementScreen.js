@@ -22,7 +22,6 @@ import {useDispatch} from 'react-redux';
 import {Text, KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
-  PopupSessionList,
   PopupCreateSession,
   PopupSession,
   SessionListCard,
@@ -52,7 +51,6 @@ const SessionManagementScreen = ({route}) => {
 
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
-  const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
   const [popupEditIsOpen, setPopupEditIsOpen] = useState(false);
   const [session, setSession] = useState(
     sessionDefault != null ? sessionDefault : sessionActive,
@@ -111,13 +109,6 @@ const SessionManagementScreen = ({route}) => {
             setPopupIsOpen={setPopupConnectionIsOpen}
             showUrlInput={showUrlInput}
             testInstanceConfig={testInstanceConfig}
-          />
-          <PopupSessionList
-            sessionList={sessionList}
-            popupIsOpen={popupSessionListIsOpen}
-            setPopupIsOpen={setPopupSessionListIsOpen}
-            setPopupSessionIsOpen={setPopupConnectionIsOpen}
-            onChange={setSession}
           />
           <PopupEditSession
             session={session}

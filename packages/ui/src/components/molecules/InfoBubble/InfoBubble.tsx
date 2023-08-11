@@ -33,6 +33,7 @@ interface InfoBubbleProps {
   badgeColor: Color;
   indication: string;
   size?: number;
+  position?: 'left' | 'right';
 }
 
 const InfoBubble = ({
@@ -42,6 +43,7 @@ const InfoBubble = ({
   indication,
   textIndicationStyle,
   size = Dimensions.get('window').width * 0.07,
+  position = 'left',
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -52,7 +54,6 @@ const InfoBubble = ({
     () => getStyles(badgeColor, Colors, isOpen, size),
     [badgeColor, Colors, isOpen, size],
   );
-
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
       setIsOpen(false);
@@ -74,7 +75,13 @@ const InfoBubble = ({
         />
       </TouchableOpacity>
       {isOpen ? (
-        <Card style={[styles.indicationCard, textIndicationStyle]}>
+        <Card
+          style={[
+            position === 'right'
+              ? styles.indicationCardRight
+              : styles.indicationCardLeft,
+            textIndicationStyle,
+          ]}>
           <Text>{indication}</Text>
         </Card>
       ) : null}
@@ -101,9 +108,18 @@ const getStyles = (badgeColor, Colors, isOpen, size) =>
       width: size,
       height: size,
     },
-    indicationCard: {
+    indicationCardLeft: {
       position: 'absolute',
       left: Dimensions.get('window').width * 0.08,
+      paddingLeft: 10,
+      paddingVertical: 10,
+      paddingRight: 10,
+      zIndex: 99,
+      backgroundColor: Colors.backgroundColor,
+    },
+    indicationCardRight: {
+      position: 'absolute',
+      right: Dimensions.get('window').width * 0.08,
       paddingLeft: 10,
       paddingVertical: 10,
       paddingRight: 10,

@@ -35,7 +35,7 @@ import {
 import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 import {LogoImage} from '../../organisms';
-import {SessionNumberIndicator} from '../../molecules';
+import {SessionNumberIndicator, SquareIcon} from '../../molecules';
 import {useSwipe} from '../../../hooks/useSwipe';
 
 const SessionListCard = ({
@@ -74,8 +74,6 @@ const SessionListCard = ({
       duration: 200,
       useNativeDriver: true,
     }).start();
-    setPopupSessionIsOpen(false);
-    setShowButton(true);
     setPopupSessionIsOpen(false);
     setShowButton(true);
   }
@@ -165,6 +163,7 @@ const SessionListCard = ({
           badgeColor={Colors.cautionColor}
           textIndicationStyle={styles.textIndicationStyle}
           style={styles.icon}
+          position="right"
         />
         <SessionNumberIndicator number={sessionList?.length} />
         <Icon
@@ -230,18 +229,15 @@ const SessionListCard = ({
                     styles.squareIconContainer,
                     {transform: [{translateX: translateXAnim}]},
                   ]}>
-                  <Icon
-                    name="pencil-alt"
-                    style={styles.iconPen}
-                    touchable={true}
+                  <SquareIcon
+                    iconName="pencil-alt"
+                    borderColor={Colors.infoColor.background}
                     onPress={() => setPopupEditIsOpen(true)}
                   />
-                  <Icon
-                    name="trash-alt"
-                    style={styles.iconTrash}
-                    touchable={true}
+                  <SquareIcon
+                    iconName="trash-alt"
+                    borderColor={Colors.errorColor.background}
                     onPress={() => animateRemoval(index)}
-                    color={Colors.errorColor.background}
                   />
                 </Animated.View>
               )}
@@ -328,32 +324,6 @@ const getStyles = Colors =>
       flexDirection: 'column',
       position: 'absolute',
       right: -Dimensions.get('window').height * 0.07 - 10,
-    },
-    iconTrash: {
-      marginHorizontal: 4,
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
-      borderColor: Colors.errorColor.background,
-      borderRadius: 10,
-      width: Dimensions.get('window').height * 0.07,
-      height: Dimensions.get('window').height * 0.07,
-      marginVertical: 3,
-    },
-    iconPen: {
-      marginHorizontal: 4,
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
-      borderColor: Colors.infoColor.background,
-      borderRadius: 10,
-      width: Dimensions.get('window').height * 0.07,
-      height: Dimensions.get('window').height * 0.07,
-      marginVertical: 3,
     },
     textIndicationStyle: {
       width: Dimensions.get('window').width * 0.7,
