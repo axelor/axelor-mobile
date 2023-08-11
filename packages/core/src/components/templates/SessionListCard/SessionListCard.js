@@ -63,7 +63,7 @@ const SessionListCard = ({
   const translateYAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  const selectedIndex = sessions.findIndex(
+  const selectedIndex = sessions?.findIndex(
     _session => _session?.sessionId === session?.sessionId,
   );
 
