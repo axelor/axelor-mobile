@@ -24,82 +24,13 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import * as Contacts from 'react-native-contacts';
-import {isEmpty} from '../utils';
-
-interface ContactData {
-  firstName: string;
-  lastName?: string;
-  mobilePhone?: string;
-  fixedPhone?: string;
-  email?: string;
-  address?: string;
-  notes?: string;
-}
-
-enum PermissionResult {
-  DENIED = 'denied',
-  GRANTED = 'granted',
-}
+import {
+  ContactData,
+  PermissionResult,
+  parseContactData,
+} from './contact.helper';
 
 class ContactProvider {
-  CONTACT_MAPPER = {
-    firstName: {
-      key: 'givenName',
-      getData: (value: string) => value,
-      isArrayField: false,
-    },
-    lastName: {
-      key: 'familyName',
-      getData: (value: string) => value,
-      isArrayField: false,
-    },
-    notes: {
-      key: 'note',
-      getData: (value: string) => value,
-      isArrayField: false,
-    },
-    mobilePhone: {
-      key: 'phoneNumbers',
-      getData: (value: string) => ({
-        label: 'mobile',
-        number: value,
-      }),
-      isArrayField: true,
-    },
-    fixedPhone: {
-      key: 'phoneNumbers',
-      getData: (value: string) => ({
-        label: 'fixed',
-        number: value,
-      }),
-      isArrayField: true,
-    },
-    email: {
-      key: 'emailAddresses',
-      getData: (value: string) => ({
-        label: 'email',
-        email: value,
-      }),
-      isArrayField: true,
-    },
-    address: {
-      key: 'postalAddresses',
-      getData: (value: string) => ({
-        label: 'main address',
-        formattedAddress: value,
-        street: null,
-        pobox: null,
-        neighborhood: null,
-        city: null,
-        region: null,
-        state: null,
-        postCode: null,
-        country: null,
-      }),
-      isArrayField: true,
-    },
-  };
-
   constructor() {}
 
   private _getContactsPermission = (): Permission[] => {
@@ -138,28 +69,6 @@ class ContactProvider {
       }
     };
 
-  parseContactData = (contact: ContactData): Partial<Contacts.Contact> => {
-    if (isEmpty(contact)) {
-      return {};
-    }
-
-    const result: Partial<Contacts.Contact> = {};
-
-    Object.entries(this.CONTACT_MAPPER).forEach(([key, config]) => {
-      const value = contact[key];
-
-      if (value != null) {
-        const data = config.getData(value);
-
-        result[config.key] = config.isArrayField
-          ? (result[config.key] || []).concat(data)
-          : data;
-      }
-    });
-
-    return result;
-  };
-
   saveContact = async (contactData: ContactData): Promise<boolean> => {
     try {
       if (!contactData.firstName) {
@@ -170,7 +79,7 @@ class ContactProvider {
 
       switch (permissionResult) {
         case PermissionResult.GRANTED:
-          const _contactData = this.parseContactData(contactData);
+          const _contactData = parseContactData(contactData);
           await Contacts.addContact(_contactData);
           this._showToast(
             'success',

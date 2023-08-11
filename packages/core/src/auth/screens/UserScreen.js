@@ -186,10 +186,8 @@ const UserScreen = ({children}) => {
               contactProvider.saveContact({
                 firstName: 'John',
                 lastName: 'Doe',
-                phoneNumbers: {
-                  mobilePhone: '123456789',
-                  fixedPhone: '987654321',
-                },
+                mobilePhone: '123456789',
+                fixedPhone: '987654321',
                 email: 'john.doe@mail.com',
                 address: 'Wall street, no where city',
                 notes: 'test note',

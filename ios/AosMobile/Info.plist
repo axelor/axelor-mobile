@@ -88,6 +88,6 @@
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false />
 		<key>NSContactsUsageDescription</key>
-		<string>This app would like to create your contacts.</string>
+		<string>Allow access to your contacts to save contact from the server to your phone.</string>
 	</dict>
 </plist>
