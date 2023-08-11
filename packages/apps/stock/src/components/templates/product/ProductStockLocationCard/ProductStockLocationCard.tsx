@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ProductStockLocationCardProps {
@@ -40,6 +40,7 @@ const ProductStockLocationCard = ({
 }: ProductStockLocationCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyle = useMemo(() => {
     if (availability == null) {
@@ -63,16 +64,16 @@ const ProductStockLocationCard = ({
             style: styles.title,
           },
           {
-            displayText: `${realQty} ${unit}`,
+            displayText: `${formatNumber(realQty)} ${unit}`,
             indicatorText: `${I18n.t('Stock_RealQty')} :`,
           },
           {
-            displayText: `${futureQty} ${unit}`,
+            displayText: `${formatNumber(futureQty)} ${unit}`,
             indicatorText: `${I18n.t('Stock_FutureQty')} :`,
           },
           {
-            displayText: `${reservedQty} ${unit}`,
-            hideIf: reservedQty > 0,
+            displayText: `${formatNumber(reservedQty)} ${unit}`,
+            hideIf: !reservedQty,
             indicatorText: `${I18n.t('Stock_AllocatedQty')} :`,
             iconName: 'user-tag',
           },
