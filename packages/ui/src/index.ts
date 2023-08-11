@@ -28,3 +28,4 @@ export {
 } from './hooks/use-click-outside';
 export {animationUtil} from './tools/AnimationUtil';
 export {useDigitFormat} from './hooks/use-digit-format';
+export {useSwipe} from './hooks/useSwipe';

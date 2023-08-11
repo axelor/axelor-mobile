@@ -31,12 +31,12 @@ import {
   Text,
   InfoBubble,
   Icon,
+  useSwipe,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 import {LogoImage} from '../../organisms';
 import {SessionNumberIndicator, SquareIcon} from '../../molecules';
-import {useSwipe} from '../../../hooks/useSwipe';
 
 const SessionListCard = ({
   sessionList,
