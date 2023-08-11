@@ -18,7 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  Badge,
+  useThemeColor,
+  useDigitFormat,
+} from '@axelor/aos-mobile-ui';
 import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
 import {QuantityCard} from '../../../organisms';
@@ -31,6 +36,7 @@ const SupplierArrivalLineQuantityCard = ({
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const formatNumber = useDigitFormat();
 
   const {productFromId: product} = useSelector((state: any) => state.product);
 
@@ -48,12 +54,12 @@ const SupplierArrivalLineQuantityCard = ({
 
   const askedQty = useMemo(
     () =>
-      isEmpty(supplierArrivalLine)
-        ? `${parseFloat('0').toFixed(2)} ${product?.unit?.name}`
-        : `${parseFloat(supplierArrivalLine.qty).toFixed(2)} ${
-            supplierArrivalLine.unit?.name
-          }`,
-    [supplierArrivalLine, product?.unit?.name],
+      `${formatNumber(supplierArrivalLine?.qty)} ${
+        isEmpty(supplierArrivalLine)
+          ? product?.unit?.name
+          : supplierArrivalLine.unit?.name
+      }`,
+    [formatNumber, supplierArrivalLine, product?.unit?.name],
   );
 
   return (
