@@ -18,7 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 
@@ -47,6 +47,7 @@ const ManufacturingOrderCard = ({
 }: ManufacturingOrderCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -78,7 +79,7 @@ const ManufacturingOrderCard = ({
           },
           {
             iconName: 'hammer',
-            indicatorText: `${parseFloat(qty.toString()).toFixed(2)} ${
+            indicatorText: `${formatNumber(qty)} ${
               unit != null ? unit.name : ''
             }`,
           },
