@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   ObjectCard,
   checkNullString,
+  useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -48,6 +49,7 @@ const InventoryLineCard = ({
 }: InventoryLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyle = useMemo(() => {
     if (realQty == null) {
@@ -68,13 +70,11 @@ const InventoryLineCard = ({
         items: [
           {displayText: productName, isTitle: true},
           {
-            displayText: `${parseFloat(currentQty.toString()).toFixed(
-              2,
-            )} ${unit}`,
+            displayText: `${formatNumber(currentQty)} ${unit}`,
             indicatorText: `${I18n.t('Stock_DatabaseQty')} :`,
           },
           {
-            displayText: `${parseFloat(realQty.toString()).toFixed(2)} ${unit}`,
+            displayText: `${formatNumber(realQty)} ${unit}`,
             indicatorText: `${I18n.t('Stock_PhysicalQty')} :`,
           },
           {
