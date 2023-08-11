@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {
   ObjectCard,
   checkNullString,
+  useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -48,6 +49,7 @@ const SupplierArrivalLineCard = ({
 }: SupplierArrivalLineCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const {stockConfig} = useSelector((state: any) => state.stockAppConfig);
 
@@ -76,11 +78,11 @@ const SupplierArrivalLineCard = ({
         items: [
           {displayText: productName, isTitle: true},
           {
-            displayText: parseFloat(askedQty.toString()).toFixed(2),
+            displayText: formatNumber(askedQty),
             indicatorText: `${I18n.t('Stock_AskedQty')} :`,
           },
           {
-            displayText: parseFloat(deliveredQty.toString()).toFixed(2),
+            displayText: formatNumber(deliveredQty),
             indicatorText: `${I18n.t('Stock_DeliveredQty')} :`,
           },
           {
