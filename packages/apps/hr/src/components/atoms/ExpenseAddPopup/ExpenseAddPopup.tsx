@@ -43,9 +43,6 @@ const ExpenseAddPopup = ({
 
   const {expenseDraftList} = useSelector((state: any) => state.expense);
 
-  console.log('expenseDraft', expenseDraftList);
-  console.log('expenseSelected', expenseSelected);
-
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
       <View style={styles.container}>
@@ -78,7 +75,7 @@ const ExpenseAddPopup = ({
           <Button
             title={I18n.t('Base_Add')}
             style={styles.button}
-            //onPress={() => setAddPopuîsVisible(true)}
+            onPress={() => console.log(expenseSelected)}
           />
         </View>
       </View>

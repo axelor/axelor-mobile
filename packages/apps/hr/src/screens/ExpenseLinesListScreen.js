@@ -65,7 +65,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
       setSelectedItems([]);
     }
   }, [isSelectionMode]);
-  console.log(selectedItems);
 
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
