@@ -17,5 +17,6 @@
  */
 
 export {clipboardProvider} from './ClipboardProvider';
+export {contactProvider} from './ContactProvider';
 export {openFileInExternalApp} from './FileViewer';
 export {linkingProvider} from './LinkingProvider';
