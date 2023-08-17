@@ -18,6 +18,7 @@
 
 import * as Contacts from 'react-native-contacts';
 import {isEmpty} from '../utils';
+import {Platform} from 'react-native';
 
 export interface ContactData {
   firstName: string;
@@ -26,7 +27,12 @@ export interface ContactData {
   mobilePhone?: string;
   fixedPhone?: string;
   email?: string;
-  address?: string;
+  address?: {
+    street?: string;
+    postCode?: string;
+    city?: string;
+    country?: string;
+  };
   notes?: string;
 }
 
@@ -71,13 +77,27 @@ const CONTACT_MAPPER: {
   email: {
     key: 'emailAddresses',
     type: 'email',
-    label: 'email',
+    label: 'work',
   },
   address: {
     key: 'postalAddresses',
     type: 'address',
     label: 'main address',
   },
+};
+
+const manageAndroidName = (data: ContactData) => {
+  let result = '';
+
+  if (data.firstName != null) {
+    result = result.concat(data.firstName);
+  }
+
+  if (data.lastName != null) {
+    result = result.concat(' ').concat(data.lastName);
+  }
+
+  return result;
 };
 
 const manageArrayField = (array: Array<any>, value?: any) => {
@@ -96,18 +116,26 @@ const manageEmailField = (value, label) => ({
   email: value,
 });
 
-const manageAddressField = (value, label) => ({
-  label: label,
-  formattedAddress: value,
-  street: null,
-  pobox: null,
-  neighborhood: null,
-  city: null,
-  region: null,
-  state: null,
-  postCode: null,
-  country: null,
-});
+const manageAddressField = (value, label) => {
+  const DEFAULT = '';
+  const street = value?.street || DEFAULT;
+  const postCode = value?.postCode || DEFAULT;
+  const city = value?.city || DEFAULT;
+  const country = value?.country || DEFAULT;
+
+  return {
+    label: label,
+    formattedAddress: `${street} ${postCode} ${city} ${country}`,
+    street,
+    pobox: DEFAULT,
+    neighborhood: DEFAULT,
+    city,
+    region: DEFAULT,
+    state: DEFAULT,
+    postCode,
+    country,
+  };
+};
 
 export const parseContactData = (
   contact: ContactData,
@@ -149,6 +177,10 @@ export const parseContactData = (
       }
     }
   });
+
+  if (Platform.OS === 'android') {
+    result.displayName = manageAndroidName(contact);
+  }
 
   return result;
 };

@@ -189,7 +189,11 @@ const UserScreen = ({children}) => {
                 mobilePhone: '123456789',
                 fixedPhone: '987654321',
                 email: 'john.doe@mail.com',
-                address: 'Wall street, no where city',
+                address: {
+                  street: 'Wall street, no where city',
+                  country: 'France',
+                  postCode: '77600',
+                },
                 notes: 'test note',
               })
             }

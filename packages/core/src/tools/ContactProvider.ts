@@ -16,13 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Platform} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 import Toast from 'react-native-toast-message';
-import {
-  PERMISSIONS,
-  Permission,
-  requestMultiple,
-} from 'react-native-permissions';
 import * as Contacts from 'react-native-contacts';
 import {
   ContactData,
@@ -33,17 +28,39 @@ import {
 class ContactProvider {
   constructor() {}
 
-  private _getContactsPermission = (): Permission[] => {
-    switch (Platform.OS) {
-      case 'ios':
-        return [PERMISSIONS.IOS.CONTACTS];
-      case 'android':
-        return [
-          PERMISSIONS.ANDROID.WRITE_CONTACTS,
-          PERMISSIONS.ANDROID.READ_CONTACTS,
-        ];
-      default:
-        throw new Error('Unsupported device.');
+  private _getContactsPermission = async () => {
+    try {
+      switch (Platform.OS) {
+        case 'ios':
+          const _permIOS = await Contacts.requestPermission();
+          switch (_permIOS) {
+            case 'authorized':
+              return PermissionResult.GRANTED;
+            default:
+              return PermissionResult.DENIED;
+          }
+        case 'android':
+          const _permAndroid = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+            PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
+          ]);
+
+          if (
+            Object.values(_permAndroid).every(
+              _perm => _perm === PermissionsAndroid.RESULTS.GRANTED,
+            )
+          ) {
+            return PermissionResult.GRANTED;
+          } else {
+            return PermissionResult.DENIED;
+          }
+
+        default:
+          throw new Error('Unsupported device.');
+      }
+    } catch (error) {
+      console.error('Error requesting contacts permission:', error);
+      return PermissionResult.DENIED;
     }
   };
 
@@ -57,35 +74,32 @@ class ContactProvider {
     });
   };
 
-  private _requestReadContactsPermission =
-    async (): Promise<PermissionResult> => {
-      try {
-        const contactsPermission = this._getContactsPermission();
-        await requestMultiple(contactsPermission);
-        return PermissionResult.GRANTED;
-      } catch (error) {
-        console.error('Error requesting contacts permission:', error);
-        return PermissionResult.DENIED;
-      }
-    };
-
   saveContact = async (contactData: ContactData): Promise<boolean> => {
     try {
       if (!contactData.firstName) {
         throw new Error('Required contact data is missing.');
       }
 
-      const permissionResult = await this._requestReadContactsPermission();
+      const permissionResult = await this._getContactsPermission();
 
       switch (permissionResult) {
         case PermissionResult.GRANTED:
-          const _contactData = parseContactData(contactData);
-          await Contacts.addContact(_contactData);
-          this._showToast(
-            'success',
-            `Contact ${contactData.firstName} added successfully.`,
-          );
-          return true;
+          const contactAdded: boolean = await Contacts.openContactForm(
+            parseContactData(contactData),
+          ).then(_contact => {
+            if (_contact != null) {
+              this._showToast(
+                'success',
+                `Contact ${_contact.givenName} added successfully.`,
+              );
+              return true;
+            } else {
+              this._showToast('error', 'Contact addition was canceled.');
+              return false;
+            }
+          });
+
+          return contactAdded;
         case PermissionResult.DENIED:
           this._showToast('error', 'Contacts permission denied.');
           return false;
