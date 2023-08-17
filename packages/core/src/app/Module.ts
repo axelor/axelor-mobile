@@ -35,6 +35,7 @@ interface MenuWithSubMenus extends MenuBase {
 
 interface MenuWithScreen extends MenuBase {
   screen: string;
+  isDefault?: boolean;
 }
 
 export type Menu = MenuWithSubMenus | MenuWithScreen;

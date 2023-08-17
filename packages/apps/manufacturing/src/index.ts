@@ -43,6 +43,7 @@ export const ManufacturingModule: Module = {
       title: 'Manufacturing_ManufacturingOrder',
       icon: 'clipboard-list',
       screen: 'ManufacturingOrderListScreen',
+      isDefault: true,
     },
     manufacturing_menu_operation_order: {
       title: 'Manufacturing_OperationOrder',

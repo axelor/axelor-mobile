@@ -195,3 +195,15 @@ export function cleanEmptyMenusAndSubMenus(modules) {
 
   return cleanedModules;
 }
+
+export function getDefaultMenuKey(module) {
+  const {menus} = module;
+  if (menus == null) {
+    return null;
+  }
+
+  const defaultMenuEntry = Object.entries(menus).find(
+    ([_key, menu]) => menu.isDefault === true,
+  );
+  return defaultMenuEntry ? defaultMenuEntry[0] : null;
+}
