@@ -31,6 +31,10 @@ interface ManufacturingOrderCardProps {
   qty: number;
   unit?: any;
   link?: {ordersRef: any[]; client: any};
+  plannedStartDate?: string;
+  plannedEndDate?: string;
+  realStartDate?: string;
+  realEndDate?: string;
   onPress: () => void;
 }
 
@@ -43,6 +47,10 @@ const ManufacturingOrderCard = ({
   qty,
   unit,
   link = {ordersRef: [null], client: null},
+  plannedStartDate,
+  plannedEndDate,
+  realStartDate,
+  realEndDate,
   onPress,
 }: ManufacturingOrderCardProps) => {
   const Colors = useThemeColor();
@@ -54,6 +62,15 @@ const ManufacturingOrderCard = ({
       ManufacturingOrder.getStatusColor(status, Colors).background,
     )?.border;
   }, [Colors, status]);
+
+  const [startDate, endDate] = ManufacturingOrder.getDates(
+    status,
+    plannedStartDate,
+    plannedEndDate,
+    realStartDate,
+    realEndDate,
+    I18n,
+  );
 
   return (
     <ObjectCard
@@ -87,6 +104,17 @@ const ManufacturingOrderCard = ({
             hideIf: link.client == null || link.ordersRef?.length <= 0,
             iconName: 'tag',
             indicatorText: link.ordersRef[0]?.fullName,
+          },
+          {
+            displayText: `${startDate.title} ${startDate.value}`,
+            hideIf: startDate == null,
+          },
+          {
+            displayText: `${endDate.title} ${endDate.value}`,
+            hideIf:
+              status === ManufacturingOrder.status.InProgress ||
+              status === ManufacturingOrder.status.StandBy ||
+              endDate == null,
           },
         ],
       }}
