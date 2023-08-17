@@ -107,6 +107,7 @@ const LoginScreen = ({route}) => {
   const [password, setPassword] = useState(
     modeDebug ? testInstanceConfig?.defaultPassword : '',
   );
+  const [isMounted, setIsMounted] = useState(false);
 
   const parseQrCode = useCallback(scanValue => {
     if (scanValue.includes('username') === true) {
@@ -128,6 +129,13 @@ const LoginScreen = ({route}) => {
   );
 
   useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  useEffect(() => {
     if (scannedValue) {
       parseQrCode(scannedValue);
     } else if (scanData?.value != null) {
@@ -136,17 +144,23 @@ const LoginScreen = ({route}) => {
   }, [parseQrCode, scanData, scannedValue]);
 
   const onPressLogin = useCallback(() => {
-    dispatch(login({url, username, password}));
-
-    sessionStorage.addSession({
-      session: {
-        id: DeviceInfo.getApplicationName(),
-        url: url,
-        username: username,
-        isActive: true,
-      },
+    dispatch(login({url, username, password})).then(res => {
+      if (res.error == null && error == null) {
+        if (error == null && isMounted) {
+          sessionStorage.addSession({
+            session: {
+              sessionId: `session-${Date.now()}`,
+              id: DeviceInfo.getApplicationName(),
+              url: url,
+              username: username,
+              isActive: true,
+              isDefault: true,
+            },
+          });
+        }
+      }
     });
-  }, [dispatch, password, url, username]);
+  }, [dispatch, password, url, username, error, isMounted]);
 
   const handleTestUrl = useCallback(() => {
     dispatch(isUrlValid({url}));

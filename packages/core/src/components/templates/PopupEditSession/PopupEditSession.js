@@ -43,7 +43,7 @@ import {sessionStorage} from '../../../sessions';
 import {checkNullString} from '../../../utils';
 import DeviceInfo from 'react-native-device-info';
 
-const urlScanKey = 'urlUsername_createSession_login';
+const urlScanKey = 'urlUsername_updateSession';
 
 const PopupEditSession = ({
   session,

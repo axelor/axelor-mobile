@@ -51,9 +51,10 @@ const InfoBubble = ({
   const clickOutside = useClickOutside({wrapperRef, visible: isOpen});
 
   const styles = useMemo(
-    () => getStyles(badgeColor, Colors, isOpen, size),
-    [badgeColor, Colors, isOpen, size],
+    () => getStyles(badgeColor, Colors, isOpen, size, position),
+    [badgeColor, Colors, isOpen, size, position],
   );
+
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
       setIsOpen(false);
@@ -75,13 +76,7 @@ const InfoBubble = ({
         />
       </TouchableOpacity>
       {isOpen ? (
-        <Card
-          style={[
-            position === 'right'
-              ? styles.indicationCardRight
-              : styles.indicationCardLeft,
-            textIndicationStyle,
-          ]}>
+        <Card style={[styles.indicationCard, textIndicationStyle]}>
           <Text>{indication}</Text>
         </Card>
       ) : null}
@@ -89,7 +84,7 @@ const InfoBubble = ({
   );
 };
 
-const getStyles = (badgeColor, Colors, isOpen, size) =>
+const getStyles = (badgeColor, Colors, isOpen, size, position) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -108,23 +103,15 @@ const getStyles = (badgeColor, Colors, isOpen, size) =>
       width: size,
       height: size,
     },
-    indicationCardLeft: {
+    indicationCard: {
       position: 'absolute',
-      left: Dimensions.get('window').width * 0.08,
       paddingLeft: 10,
       paddingVertical: 10,
       paddingRight: 10,
       zIndex: 99,
       backgroundColor: Colors.backgroundColor,
-    },
-    indicationCardRight: {
-      position: 'absolute',
-      right: Dimensions.get('window').width * 0.08,
-      paddingLeft: 10,
-      paddingVertical: 10,
-      paddingRight: 10,
-      zIndex: 99,
-      backgroundColor: Colors.backgroundColor,
+      [position === 'left' ? 'left' : 'right']:
+        Dimensions.get('window').width * 0.08,
     },
   });
 

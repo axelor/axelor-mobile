@@ -32,11 +32,12 @@ import {
   InfoBubble,
   Icon,
   useSwipe,
+  SquareIcon,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 import {LogoImage} from '../../organisms';
-import {SessionNumberIndicator, SquareIcon} from '../../molecules';
+import {SessionNumberIndicator} from '../../molecules';
 
 const SessionListCard = ({
   sessionList,
@@ -278,7 +279,6 @@ const getStyles = Colors =>
     },
     selectBorderCard: {
       borderWidth: 1,
-      borderColor: Colors.infoColor.background,
     },
     borderIsDefaultCard: {
       borderWidth: 1,

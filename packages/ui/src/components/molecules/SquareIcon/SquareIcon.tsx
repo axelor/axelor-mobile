@@ -18,7 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-import {Icon, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ThemeColors, useThemeColor} from '../../../theme';
+import {Icon} from '../../atoms';
 
 interface squareIconProps {
   style?: any;

@@ -24,6 +24,5 @@ export {default as InputBarCodeCard} from './InputBarCodeCard/InputBarCodeCard';
 export {default as LoginButton} from './LoginButton/LoginButton';
 export {default as MailMessageReadIcon} from './MailMessageReadIcon/MailMessageReadIcon';
 export {default as SessionNumberIndicator} from './SessionNumberIndicator/SessionNumberIndicator';
-export {default as SquareIcon} from './SquareIcon/SquareIcon';
 export {default as TrackItem} from './TrackItem/TrackItem';
 export {default as UploadFileInput} from './UploadFileInput/UploadFileInput';
