@@ -25,6 +25,7 @@ import {
   useThemeColor,
   Checkbox,
 } from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
   style?: any;
@@ -50,6 +51,8 @@ const ExpenseLineCard = ({
   onItemSelection,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
+
+  const {user} = useSelector((state: any) => state.user);
 
   const translateXAnim = useRef(new Animated.Value(0)).current;
 
@@ -91,7 +94,10 @@ const ExpenseLineCard = ({
             {!checkNullString(projectName) && <Text>{projectName}</Text>}
           </View>
           {!checkNullString(totalAmount) && (
-            <Text style={styles.bold}>{`${totalAmount}$`}</Text>
+            <Text
+              style={
+                styles.bold
+              }>{`${totalAmount} ${user?.activeCompany?.currency?.code}`}</Text>
           )}
         </Card>
       </TouchableOpacity>
