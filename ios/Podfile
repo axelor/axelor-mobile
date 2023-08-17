@@ -20,6 +20,7 @@ target 'AosMobile' do
   )
 
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 
   target 'AosMobileTests' do
     inherit! :complete
@@ -36,4 +37,5 @@ target 'AosMobile' do
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
+
 end
