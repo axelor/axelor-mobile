@@ -24,7 +24,6 @@ import {
   View,
   Dimensions,
   Animated,
-  PanResponder,
 } from 'react-native';
 import {
   useThemeColor,
@@ -53,7 +52,6 @@ const SessionListCard = ({
   const I18n = useTranslator();
 
   const {onTouchStart, onTouchEnd} = useSwipe(onSwipeLeft, onSwipeRight, 6);
-  const [selectedSessionId, setSelectedSessionId] = useState(null);
 
   const [showButton, setShowButton] = useState(false);
 
@@ -64,39 +62,12 @@ const SessionListCard = ({
   const translateXAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const position = useRef(new Animated.ValueXY()).current;
 
   const selectedIndex = sessions?.findIndex(
     _session => _session?.sessionId === session?.sessionId,
   );
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event([null, {dx: position.x}], {
-      useNativeDriver: false,
-    }),
-    onPanResponderRelease: (evt, gestureState) => {
-      const currentXValue = position.x.__getValue();
-      console.log('currentXValue', currentXValue);
-
-      if (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy) < 5) {
-        // tappp
-        changeActiveSession(selectedSessionId);
-      }
-      if (currentXValue < -60) {
-        onSwipeLeft();
-      } else {
-        setShowButton(false);
-      }
-      Animated.spring(position, {
-        toValue: {x: currentXValue < -60 ? -60 : 0, y: 0},
-        useNativeDriver: false,
-      }).start();
-    },
-  });
-
   function onSwipeLeft() {
-    console.log('left');
     setAuthorizePopupToOpen(false);
     Animated.timing(translateXAnim, {
       toValue: -60,
@@ -132,7 +103,6 @@ const SessionListCard = ({
       sessionStorage.changeActiveSession({sessionId});
       onChange(sessionStorage.getActiveSession());
       setPopupSessionIsOpen(true);
-      setShowButton(false);
     },
     [
       setAuthorizePopupToOpen,
@@ -142,13 +112,6 @@ const SessionListCard = ({
       translateXAnim,
       translateYAnim,
     ],
-  );
-  const changeActiveSessionTest = useCallback(
-    sessionId => {
-      sessionStorage.changeActiveSession({sessionId});
-      onChange(sessionStorage.getActiveSession());
-    },
-    [onChange],
   );
 
   const animateRemoval = useCallback(
@@ -211,10 +174,6 @@ const SessionListCard = ({
         />
       </View>
       <ScrollView
-        disableScrollViewPanResponder={true}
-        onScroll={() => {
-          setShowButton(false);
-        }}
         contentContainerStyle={styles.contentContainer}
         style={styles.scrollView}>
         {sessions.map((_session, index) => {
@@ -226,29 +185,14 @@ const SessionListCard = ({
                   onSwipeLeft();
                 }}
                 onPress={() => {
-                  console.log('onpress', _session.sessionId);
                   onSwipeRight();
                   changeActiveSession(_session.sessionId);
                 }}
                 activeOpacity={0.9}>
                 <Animated.View
-                  {...panResponder.panHandlers}
-                  onTouchStart={e => {
-                    setSelectedSessionId(_session.sessionId);
-                    onTouchStart(e);
-                  }}
-                  onTouchEnd={e => {
-                    onTouchEnd(e);
-                    changeActiveSessionTest(_session.sessionId);
-                  }}
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
                   style={[
-                    _session?.sessionId === selectedSessionId
-                      ? {
-                          transform: [{translateX: position.x}],
-                        }
-                      : null,
-                  ]}
-                  /*style={[
                     selectedIndex === index
                       ? {
                           transform: [
@@ -258,8 +202,7 @@ const SessionListCard = ({
                           ],
                         }
                       : null,
-                  ]}*/
-                >
+                  ]}>
                   <Card
                     style={[
                       styles.cardContainer,
