@@ -34,6 +34,7 @@ import {
   ManufacturingOrderSaleOrderSetView,
   ManufacturingOrderHalfLabelCardList,
   ManufacturingOrderNotesCardList,
+  ManufacturingOrderDatesCard,
 } from '../../components';
 import {fetchManufOrder} from '../../features/manufacturingOrderSlice';
 import {fetchOperationOrders} from '../../features/operationOrderSlice';
@@ -122,6 +123,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         expandableFilter={false}
       />
       <ScrollView>
+        <ManufacturingOrderDatesCard />
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={product?.picture}
