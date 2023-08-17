@@ -105,7 +105,7 @@ const SessionManagementScreen = ({route}) => {
           />
           <PopupSession
             sessionActive={session}
-            popupIsOpen={popupConnectionIsOpen}
+            popupIsOpen={authorizePopupToOpen && popupConnectionIsOpen}
             setPopupIsOpen={setPopupConnectionIsOpen}
             showUrlInput={showUrlInput}
             testInstanceConfig={testInstanceConfig}

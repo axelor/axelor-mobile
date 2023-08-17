@@ -38,6 +38,7 @@ import {useTranslator} from '../../../i18n';
 import {sessionStorage} from '../../../sessions';
 import {LogoImage} from '../../organisms';
 import {SessionNumberIndicator} from '../../molecules';
+import {useEffect} from 'react';
 
 const SessionListCard = ({
   sessionList,
@@ -68,26 +69,37 @@ const SessionListCard = ({
     _session => _session?.sessionId === session?.sessionId,
   );
 
+  useEffect(() => {
+    if (showButton) {
+      Animated.timing(translateXAnim, {
+        toValue: -60,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(translateXAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [
+    setAuthorizePopupToOpen,
+    setPopupSessionIsOpen,
+    showButton,
+    translateXAnim,
+  ]);
+
   function onSwipeLeft() {
     setAuthorizePopupToOpen(false);
-    Animated.timing(translateXAnim, {
-      toValue: -60,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-    setPopupSessionIsOpen(false);
     setShowButton(true);
+    setPopupSessionIsOpen(false);
   }
 
   function onSwipeRight() {
-    setAuthorizePopupToOpen(false);
-    Animated.timing(translateXAnim, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-    setPopupSessionIsOpen(false);
     setShowButton(false);
+    setAuthorizePopupToOpen(false);
+    setPopupSessionIsOpen(false);
   }
 
   const removeSession = useCallback(sessionId => {
@@ -96,23 +108,20 @@ const SessionListCard = ({
 
   const changeActiveSession = useCallback(
     sessionId => {
-      setAuthorizePopupToOpen(true);
-      translateXAnim.setValue(0);
-      translateYAnim.setValue(0);
-      scaleAnim.setValue(1);
+      sessionStorage.changeActiveSession({sessionId});
+      onChange(sessionStorage.getActiveSession());
+    },
+    [onChange],
+  );
 
+  const changeActiveSessionPopup = useCallback(
+    sessionId => {
+      setAuthorizePopupToOpen(true);
       sessionStorage.changeActiveSession({sessionId});
       onChange(sessionStorage.getActiveSession());
       setPopupSessionIsOpen(true);
     },
-    [
-      setAuthorizePopupToOpen,
-      onChange,
-      scaleAnim,
-      setPopupSessionIsOpen,
-      translateXAnim,
-      translateYAnim,
-    ],
+    [setAuthorizePopupToOpen, onChange, setPopupSessionIsOpen],
   );
 
   const animateRemoval = useCallback(
@@ -187,7 +196,7 @@ const SessionListCard = ({
                 }}
                 onPress={() => {
                   onSwipeRight();
-                  changeActiveSession(_session.sessionId);
+                  changeActiveSessionPopup(_session.sessionId);
                 }}
                 activeOpacity={0.9}>
                 <Animated.View
