@@ -137,7 +137,9 @@ const ExpenseLinesListScreen = ({navigation}) => {
       )}
       <ExpenseAddPopup
         visible={addPopuîsVisible}
-        setAddPopuîsVisible={setAddPopuîsVisible}
+        onClose={() => {
+          setAddPopuîsVisible(false);
+        }}
       />
     </Screen>
   );

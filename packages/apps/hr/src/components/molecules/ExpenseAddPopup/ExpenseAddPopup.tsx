@@ -30,18 +30,16 @@ import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 interface ExpenseAddPopupProps {
   style?: any;
   visible: boolean;
-  setAddPopuîsVisible: (isVisible: boolean) => void;
+  onClose: () => void;
 }
-const ExpenseAddPopup = ({
-  style,
-  visible,
-  setAddPopuîsVisible,
-}: ExpenseAddPopupProps) => {
+
+const ExpenseAddPopup = ({style, visible, onClose}: ExpenseAddPopupProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const [expenseSelected, setExpenseSelected] = useState(null);
 
   const {expenseDraftList} = useSelector((state: any) => state.expense);
+
+  const [expenseSelected, setExpenseSelected] = useState(null);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
@@ -70,7 +68,7 @@ const ExpenseAddPopup = ({
             title={I18n.t('Base_Cancel')}
             color={Colors.secondaryColor}
             style={styles.button}
-            onPress={() => setAddPopuîsVisible(false)}
+            onPress={onClose}
           />
           <Button
             title={I18n.t('Base_Add')}
@@ -82,6 +80,7 @@ const ExpenseAddPopup = ({
     </PopUp>
   );
 };
+
 const styles = StyleSheet.create({
   popup: {
     width: '95%',

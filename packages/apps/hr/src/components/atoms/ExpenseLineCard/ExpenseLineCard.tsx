@@ -38,6 +38,7 @@ interface ExpenseLineCardProps {
   isSelectionMode?: boolean;
   itemId: number;
 }
+
 const ExpenseLineCard = ({
   style,
   expenseDate,

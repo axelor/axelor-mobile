@@ -17,13 +17,14 @@
  */
 
 import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {Expense} from '../types';
 
 const createExpenseDraftCriteria = () => {
   const criteria = [
     {
       fieldName: 'statusSelect',
       operator: '=',
-      value: 1,
+      value: Expense.statusSelect.Draft,
     },
   ];
   return criteria;
