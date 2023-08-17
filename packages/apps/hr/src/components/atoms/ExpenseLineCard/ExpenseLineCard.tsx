@@ -25,7 +25,6 @@ import {
   useThemeColor,
   Checkbox,
 } from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
   style?: any;
@@ -51,6 +50,7 @@ const ExpenseLineCard = ({
   onItemSelection,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
+
   const translateXAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

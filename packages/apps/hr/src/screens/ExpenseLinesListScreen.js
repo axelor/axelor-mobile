@@ -53,11 +53,11 @@ const ExpenseLinesListScreen = ({navigation}) => {
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const handleItemSelection = (itemId, isSelected) => {
-    if (isSelected) {
-      setSelectedItems(prev => [...prev, itemId]);
-    } else {
+  const handleItemSelection = itemId => {
+    if (selectedItems.includes(itemId)) {
       setSelectedItems(prev => prev.filter(id => id !== itemId));
+    } else {
+      setSelectedItems(prev => [...prev, itemId]);
     }
   };
 
@@ -66,6 +66,11 @@ const ExpenseLinesListScreen = ({navigation}) => {
       setSelectedItems([]);
     }
   }, [isSelectionMode]);
+
+  const handleCancelButton = () => {
+    setSelectedItems([]);
+    setIsSelectionMode(false);
+  };
 
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
@@ -98,7 +103,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           <ExpenseLineValidationButton
             onOpen={() => setAddPopupIsVisible(true)}
             selectedItems={selectedItems}
-            onChangeMode={() => setIsSelectionMode(false)}
+            onChangeMode={handleCancelButton}
           />
         )
       }>
@@ -111,9 +116,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
               setIsSelectionMode(current => !current);
             }}
             style={styles.item}
-            onItemSelection={isSelected =>
-              handleItemSelection(item.id, isSelected)
-            }
+            onItemSelection={() => handleItemSelection(item.id)}
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
             totalAmount={item.totalAmount}
