@@ -22,7 +22,6 @@ import frTranslations from './i18n/fr.json';
 import HrScreens from './screens/';
 import {hr_modelAPI, hr_searchFields, hr_sortFields} from './models';
 import * as hrReducers from './features';
-import {useHrHeaders} from './hooks/use-hr-header-actions';
 
 export const HrModule: Module = {
   name: 'app-hr',
@@ -52,7 +51,6 @@ export const HrModule: Module = {
     objectFields: {...hr_modelAPI},
     sortFields: {...hr_sortFields},
     searchFields: {...hr_searchFields},
-    headerRegisters: useHrHeaders,
   },
 };
 

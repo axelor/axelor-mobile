@@ -17,4 +17,4 @@
  */
 
 export {default as Expense} from './expense';
-export {default as ExpenseLine} from './expenseLines';
+export {default as ExpenseLine} from './expenseLine';

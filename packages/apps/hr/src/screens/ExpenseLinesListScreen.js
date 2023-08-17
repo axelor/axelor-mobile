@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, useMemo} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   CircleButton,
   Screen,
@@ -30,23 +31,27 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {fetchExpenseLine} from '../features/expenseLineSlice';
-import {ExpenseAddPopup, ExpenseLineCard} from '../components';
-import {Dimensions, StyleSheet} from 'react-native';
+import {
+  ExpenseAddPopup,
+  ExpenseLineCard,
+  ExpenseLineValidationButton,
+} from '../components';
 import {ExpenseLine} from '../types';
-import {ExpenseLineValidationButton} from '../components/templates';
-import {searchExpenseDraft} from '../features/expenseSlice';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
   const I18n = useTranslator();
-  const [isSelectionMode, setIsSelectionMode] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [addPopuîsVisible, setAddPopuîsVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
+
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleItemSelection = (itemId, isSelected) => {
     if (isSelected) {
@@ -55,10 +60,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
       setSelectedItems(prev => prev.filter(id => id !== itemId));
     }
   };
-
-  useEffect(() => {
-    dispatch(searchExpenseDraft());
-  }, [dispatch]);
 
   useEffect(() => {
     if (!isSelectionMode) {
@@ -95,9 +96,9 @@ const ExpenseLinesListScreen = ({navigation}) => {
       fixedItems={
         isSelectionMode && (
           <ExpenseLineValidationButton
-            setAddPopuîsVisible={setAddPopuîsVisible}
+            onOpen={() => setAddPopupIsVisible(true)}
             selectedItems={selectedItems}
-            setIsSelectionMode={setIsSelectionMode}
+            onChangeMode={() => setIsSelectionMode(false)}
           />
         )
       }>
@@ -110,15 +111,19 @@ const ExpenseLinesListScreen = ({navigation}) => {
               setIsSelectionMode(current => !current);
             }}
             style={styles.item}
-            itemId={item.id}
-            onItemSelection={handleItemSelection}
+            onItemSelection={isSelected =>
+              handleItemSelection(item.id, isSelected)
+            }
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
             totalAmount={item.totalAmount}
             displayText={
               item.fromCity == null && item.toCity == null
                 ? item.expenseProduct?.fullName
-                : ExpenseLine.getStatus(item.kilometricTypeSelect, I18n)
+                : ExpenseLine.getKilomectricTypeSelect(
+                    item.kilometricTypeSelect,
+                    I18n,
+                  )
             }
             isSelectionMode={isSelectionMode}
           />
@@ -136,27 +141,28 @@ const ExpenseLinesListScreen = ({navigation}) => {
         />
       )}
       <ExpenseAddPopup
-        visible={addPopuîsVisible}
+        visible={addPopupIsVisible}
         onClose={() => {
-          setAddPopuîsVisible(false);
+          setAddPopupIsVisible(false);
         }}
       />
     </Screen>
   );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-  floatingButton: {
-    backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 25,
-    elevation: 2,
-    left: Dimensions.get('window').width / 2 - 25,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    item: {
+      marginHorizontal: 12,
+      marginVertical: 4,
+    },
+    floatingButton: {
+      backgroundColor: Colors.secondaryColor_dark.foreground,
+      position: 'absolute',
+      bottom: 25,
+      elevation: 2,
+      left: Dimensions.get('window').width / 2 - 25,
+    },
+  });
 
 export default ExpenseLinesListScreen;

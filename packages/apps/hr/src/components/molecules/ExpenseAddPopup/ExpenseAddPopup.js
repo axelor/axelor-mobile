@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useThemeColor,
@@ -25,21 +25,21 @@ import {
   LabelText,
   Picker,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {searchExpenseDraft} from '../../../features/expenseSlice';
 
-interface ExpenseAddPopupProps {
-  style?: any;
-  visible: boolean;
-  onClose: () => void;
-}
-
-const ExpenseAddPopup = ({style, visible, onClose}: ExpenseAddPopupProps) => {
+const ExpenseAddPopup = ({style, visible, onClose}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
-  const {expenseDraftList} = useSelector((state: any) => state.expense);
+  const {expenseDraftList} = useSelector(state => state.expense);
 
   const [expenseSelected, setExpenseSelected] = useState(null);
+
+  useEffect(() => {
+    dispatch(searchExpenseDraft());
+  }, [dispatch]);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>

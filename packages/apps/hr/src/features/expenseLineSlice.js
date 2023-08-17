@@ -41,7 +41,6 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   expenseLineList: [],
-  expenseLine: {},
 };
 
 const expenseLineSlice = createSlice({

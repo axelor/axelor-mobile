@@ -22,7 +22,10 @@ class ExpenseLineType {
     RoundTrip: 2,
   };
 
-  static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
+  static getKilomectricTypeSelect = (
+    select: number,
+    I18n: {t: (key: string) => string},
+  ) => {
     if (I18n) {
       switch (select) {
         case this.kilomectricTypeSelect.OneWay:
@@ -31,7 +34,7 @@ class ExpenseLineType {
           return I18n.t('Hr_kilomectricTypeSelect_RoundTrip');
         default:
           console.warn(
-            `Status provided with value ${select} is not supported by Ticket`,
+            `KilomectricTypeSelect provided with value ${select} is not supported by ExpenseLine`,
           );
           return null;
       }

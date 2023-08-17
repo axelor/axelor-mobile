@@ -21,11 +21,7 @@ import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ExpenseLineValidationButton = ({
-  setAddPopuîsVisible,
-  selectedItems,
-  setIsSelectionMode,
-}) => {
+const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -35,7 +31,7 @@ const ExpenseLineValidationButton = ({
         title={I18n.t('Base_Cancel')}
         color={Colors.secondaryColor}
         style={styles.button}
-        onPress={() => setIsSelectionMode(false)}
+        onPress={onChangeMode}
       />
       <Button
         color={
@@ -46,7 +42,7 @@ const ExpenseLineValidationButton = ({
         title={I18n.t('Base_Add')}
         style={styles.button}
         disabled={selectedItems.length <= 0 ? true : false}
-        onPress={() => setAddPopuîsVisible(true)}
+        onPress={onOpen}
       />
     </View>
   );

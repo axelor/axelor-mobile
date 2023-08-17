@@ -25,6 +25,7 @@ import {
   useThemeColor,
   Checkbox,
 } from '@axelor/aos-mobile-ui';
+import {useSelector} from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
   style?: any;
@@ -34,9 +35,8 @@ interface ExpenseLineCardProps {
   displayText?: string | number;
   onPress: () => void;
   onLongPress: () => void;
-  onItemSelection: (itemId, isChecked) => void;
+  onItemSelection: () => void;
   isSelectionMode?: boolean;
-  itemId: number;
 }
 
 const ExpenseLineCard = ({
@@ -49,7 +49,6 @@ const ExpenseLineCard = ({
   onLongPress,
   isSelectionMode,
   onItemSelection,
-  itemId,
 }: ExpenseLineCardProps) => {
   const Colors = useThemeColor();
   const translateXAnim = useRef(new Animated.Value(0)).current;
@@ -57,7 +56,7 @@ const ExpenseLineCard = ({
   useEffect(() => {
     if (isSelectionMode) {
       Animated.timing(translateXAnim, {
-        toValue: 60,
+        toValue: 30,
         duration: 300,
         useNativeDriver: true,
       }).start();
@@ -80,12 +79,7 @@ const ExpenseLineCard = ({
         style={styles.container}
         activeOpacity={0.8}>
         {isSelectionMode && (
-          <Checkbox
-            style={styles.checkbox}
-            onChange={isChecked => {
-              onItemSelection(itemId, isChecked);
-            }}
-          />
+          <Checkbox style={styles.checkbox} onChange={onItemSelection} />
         )}
         <Card style={[styles.containerCard, styles.border, style]}>
           <Text style={styles.date}>{expenseDate}</Text>
@@ -126,10 +120,11 @@ const getStyles = Colors =>
       alignSelf: 'center',
     },
     verticalLine: {
-      height: '100%',
-      width: 1,
-      backgroundColor: Colors.secondaryColor.background,
+      borderRightColor: Colors.secondaryColor.background,
+      borderRightWidth: 1,
+      height: 50,
       marginHorizontal: 10,
+      alignSelf: 'center',
     },
     border: {
       borderLeftWidth: 7,

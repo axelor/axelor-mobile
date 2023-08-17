@@ -9,5 +9,5 @@
   "Hr_kilomectricTypeSelect_RoundTrip": "Round Trip",
 
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
-  "Hr_SliceAction_SearchDraftExpense": "fetch expense draft"
+  "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses"
 }
