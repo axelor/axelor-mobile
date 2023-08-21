@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Text, KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
@@ -27,7 +27,7 @@ import {
   SessionListCard,
   PopupEditSession,
 } from '../components';
-import {useSessions} from '../sessions';
+import {sessionStorage, useSessions} from '../sessions';
 import {clearError} from '../features/authSlice';
 
 const SessionManagementScreen = ({route}) => {
@@ -55,7 +55,6 @@ const SessionManagementScreen = ({route}) => {
   const [session, setSession] = useState(
     sessionDefault != null ? sessionDefault : sessionActive,
   );
-  const [authorizePopupToOpen, setAuthorizePopupToOpen] = useState(true);
 
   useEffect(() => {
     if (!popupCreateIsOpen && !popupConnectionIsOpen) {
@@ -64,16 +63,21 @@ const SessionManagementScreen = ({route}) => {
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
   useEffect(() => {
-    if (sessionDefault != null && authorizePopupToOpen) {
+    if (sessionDefault != null) {
       setPopupConnectionIsOpen(true);
     }
-  }, [sessionDefault, authorizePopupToOpen]);
+  }, [sessionDefault]);
 
   useEffect(() => {
     if (sessionList <= 0 || sessionList == null) {
       setPopupCreateIsOpen(true);
     }
   }, [sessionList]);
+
+  const changeActiveSession = useCallback(sessionId => {
+    sessionStorage.changeActiveSession({sessionId});
+    setSession(sessionStorage.getActiveSession());
+  }, []);
 
   return (
     <Screen>
@@ -84,38 +88,38 @@ const SessionManagementScreen = ({route}) => {
           </View>
           <SessionListCard
             logoFile={logoFile}
-            onChange={setSession}
             sessionList={sessionList}
-            sessionActive={sessionActive}
-            setPopupSessionIsOpen={setPopupConnectionIsOpen}
-            setPopupCreateIsOpen={setPopupCreateIsOpen}
+            changeActiveSession={changeActiveSession}
+            openConnection={() => setPopupConnectionIsOpen(true)}
+            openEdition={() => setPopupEditIsOpen(true)}
+            openCreation={() => setPopupCreateIsOpen(true)}
             session={session}
-            setAuthorizePopupToOpen={setAuthorizePopupToOpen}
-            setPopupEditIsOpen={setPopupEditIsOpen}
           />
           <PopupCreateSession
             sessionList={sessionList}
-            modeDebug={modeDebug}
             popupIsOpen={popupCreateIsOpen}
-            setPopupIsOpen={setPopupCreateIsOpen}
-            setPopupCreateIsOpen={setPopupCreateIsOpen}
+            handleClose={() => setPopupCreateIsOpen(false)}
             showUrlInput={showUrlInput}
+            modeDebug={modeDebug}
             testInstanceConfig={testInstanceConfig}
             releaseInstanceConfig={releaseInstanceConfig}
           />
           <PopupSession
             sessionActive={session}
-            popupIsOpen={authorizePopupToOpen && popupConnectionIsOpen}
-            setPopupIsOpen={setPopupConnectionIsOpen}
+            popupIsOpen={!popupEditIsOpen && popupConnectionIsOpen}
+            handleClose={() => setPopupConnectionIsOpen(false)}
             showUrlInput={showUrlInput}
             testInstanceConfig={testInstanceConfig}
           />
           <PopupEditSession
             session={session}
             sessionList={sessionList}
-            modeDebug={modeDebug}
             popupIsOpen={popupEditIsOpen}
-            setPopupIsOpen={setPopupEditIsOpen}
+            handleClose={() => {
+              setPopupConnectionIsOpen(false);
+              setPopupEditIsOpen(false);
+            }}
+            modeDebug={modeDebug}
           />
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>

@@ -49,7 +49,7 @@ const PopupEditSession = ({
   session,
   sessionList,
   popupIsOpen,
-  setPopupIsOpen,
+  handleClose,
   showUrlInput,
 }) => {
   const Colors = useThemeColor();
@@ -121,8 +121,8 @@ const PopupEditSession = ({
         isDefault: isDefault,
       },
     });
-    setPopupIsOpen(false);
-  }, [isDefault, sessionName, url, username, setPopupIsOpen, updateSession]);
+    handleClose();
+  }, [isDefault, sessionName, url, username, handleClose, updateSession]);
 
   const handleTestUrl = useCallback(() => {
     dispatch(isUrlValid({url}));
@@ -170,7 +170,7 @@ const PopupEditSession = ({
             name="times"
             size={20}
             touchable={true}
-            onPress={() => setPopupIsOpen(false)}
+            onPress={handleClose}
             style={styles.closeIcon}
           />
         )}

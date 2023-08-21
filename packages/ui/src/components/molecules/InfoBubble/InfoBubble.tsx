@@ -43,7 +43,7 @@ const InfoBubble = ({
   indication,
   textIndicationStyle,
   size = Dimensions.get('window').width * 0.07,
-  position = 'left',
+  position = 'right',
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -110,7 +110,7 @@ const getStyles = (badgeColor, Colors, isOpen, size, position) =>
       paddingRight: 10,
       zIndex: 99,
       backgroundColor: Colors.backgroundColor,
-      [position === 'left' ? 'left' : 'right']:
+      [position === 'left' ? 'right' : 'left']:
         Dimensions.get('window').width * 0.08,
     },
   });

@@ -53,7 +53,7 @@ const urlScanKey = 'urlUsername_createSession_login';
 const PopupCreateSession = ({
   sessionList,
   popupIsOpen,
-  setPopupIsOpen,
+  handleClose,
   showUrlInput,
   modeDebug,
   testInstanceConfig,
@@ -215,7 +215,7 @@ const PopupCreateSession = ({
             name="times"
             size={20}
             touchable={true}
-            onPress={() => setPopupIsOpen(false)}
+            onPress={handleClose}
             style={styles.closeIcon}
           />
         )}

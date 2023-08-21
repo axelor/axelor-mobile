@@ -32,10 +32,10 @@ import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../../../sessions';
 
 const PopupSession = ({
-  popupIsOpen,
-  setPopupIsOpen,
-  showUrlInput,
   sessionActive,
+  popupIsOpen,
+  handleClose,
+  showUrlInput,
   testInstanceConfig,
 }) => {
   const Colors = useThemeColor();
@@ -75,8 +75,8 @@ const PopupSession = ({
 
   const deleteSession = useCallback(() => {
     sessionStorage.removeSession({sessionId: sessionActive?.sessionId});
-    setPopupIsOpen(false);
-  }, [sessionActive?.sessionId, setPopupIsOpen]);
+    handleClose();
+  }, [sessionActive?.sessionId, handleClose]);
 
   useEffect(() => {
     setIsOpen(popupIsOpen);
@@ -93,7 +93,7 @@ const PopupSession = ({
           name="times"
           size={20}
           touchable={true}
-          onPress={() => setPopupIsOpen(false)}
+          onPress={handleClose}
           style={styles.closeIcon}
         />
         <ErrorText error={error} />
