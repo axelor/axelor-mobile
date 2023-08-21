@@ -44,3 +44,19 @@ export const getStorageUrl = (): string => {
 export const saveUrlInStorage = (url: string): void => {
   storage.setItem(URL_STORAGE_KEY, url);
 };
+
+export const migrateOldSessionToNewSystem = (data: any[]): Session[] => {
+  return data.map((_item, index) => {
+    if (_item?.name == null) {
+      return {
+        id: `session-${Date.now()}-${index}`,
+        name: _item.id,
+        url: _item.url,
+        username: _item.username,
+        isDefault: _item.isActive,
+      };
+    } else {
+      return _item as Session;
+    }
+  });
+};

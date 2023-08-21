@@ -18,7 +18,7 @@
 
 import {storage, Storage} from '../storage/Storage';
 import {Session} from './type';
-import {manageDefaultSession} from './utils';
+import {manageDefaultSession, migrateOldSessionToNewSystem} from './utils';
 
 const SESSION_KEY = 'ConnectionSessions';
 
@@ -47,8 +47,17 @@ class SessionStorage {
   }
 
   getSessionList(): Session[] {
-    const item = this.localStorage.getItem(SESSION_KEY);
-    return item;
+    const storageData = this.localStorage.getItem(SESSION_KEY);
+
+    if (storageData.some(_item => _item?.name == null)) {
+      this.localStorage.setItem(
+        SESSION_KEY,
+        migrateOldSessionToNewSystem(storageData),
+      );
+      return this.getSessionList();
+    }
+
+    return storageData;
   }
 
   getDefaultSession(): Session {
