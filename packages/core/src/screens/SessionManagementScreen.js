@@ -143,13 +143,21 @@ const styles = StyleSheet.create({
   container: {
     marginTop: '15%',
     alignItems: 'center',
-    height: Dimensions.get('window').height * 0.9,
+    height:
+      Dimensions.get('window').height < 950
+        ? Dimensions.get('window').height * 0.9
+        : Dimensions.get('window').height * 0.85,
   },
   imageContainer: {
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
+    marginTop:
+      Dimensions.get('window').height < 500
+        ? '10%'
+        : Dimensions.get('window').height > 950
+        ? '15%'
+        : '40%',
     marginBottom: 10,
   },
   copyright: {
