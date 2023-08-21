@@ -93,12 +93,14 @@ const ExpenseLineCard = ({
             )}
             {!checkNullString(projectName) && <Text>{projectName}</Text>}
           </View>
-          {!checkNullString(totalAmount) && (
-            <Text
-              style={
-                styles.bold
-              }>{`${totalAmount} ${user?.activeCompany?.currency?.code}`}</Text>
-          )}
+          <View style={styles.amount}>
+            {!checkNullString(totalAmount) && (
+              <Text
+                style={
+                  styles.bold
+                }>{`${totalAmount} ${user?.activeCompany?.currency?.code}`}</Text>
+            )}
+          </View>
         </Card>
       </TouchableOpacity>
     </Animated.View>
@@ -113,17 +115,21 @@ const getStyles = Colors =>
     },
     containerCard: {
       flexDirection: 'row',
+      width: '90%',
     },
     bold: {
       fontWeight: 'bold',
     },
     column: {
       flexDirection: 'column',
-      flex: 6,
+      width: '40%',
     },
     date: {
-      flex: 3,
       alignSelf: 'center',
+      width: '30%',
+    },
+    amount: {
+      width: '30%',
     },
     verticalLine: {
       borderRightColor: Colors.secondaryColor.background,

@@ -42,10 +42,11 @@ const ExpenseAddPopup = ({style, visible, onClose}) => {
   }, [dispatch]);
 
   return (
-    <PopUp style={[styles.popup, style]} visible={visible}>
+    <PopUp style={[style, styles.popup]} visible={visible}>
       <View style={styles.container}>
-        <View>
+        <View style={styles.pickerContainer}>
           <Picker
+            pickerStyle={styles.picker}
             listItems={expenseDraftList}
             onValueChange={setExpenseSelected}
             labelField="fullName"
@@ -83,24 +84,32 @@ const ExpenseAddPopup = ({style, visible, onClose}) => {
 
 const styles = StyleSheet.create({
   popup: {
-    width: '95%',
+    alignItems: 'flex-start',
   },
   container: {
     flexDirection: 'column',
     width: '100%',
-    alignItems: 'center',
+  },
+  pickerContainer: {
+    marginHorizontal: -18,
+  },
+  picker: {
+    width: '110%',
   },
   buttonContainer: {
     flexDirection: 'row',
-    width: '80%',
-    justifyContent: 'space-between',
+    width: '140%',
+    justifyContent: 'space-evenly',
+    marginLeft: -10,
+    marginTop: 4,
   },
   labelText: {
     alignSelf: 'flex-start',
     marginVertical: 5,
   },
   button: {
-    width: '35%',
+    width: '50%',
+    marginHorizontal: 12,
   },
 });
 
