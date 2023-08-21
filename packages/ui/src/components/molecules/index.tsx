@@ -48,7 +48,6 @@ export {default as NotesCard} from './NotesCard/NotesCard';
 export {default as PanelTabs} from './PanelTabs/PanelTabs';
 export {default as PopUp} from './PopUp/PopUp';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
-export {default as SquareIcon} from './SquareIcon/SquareIcon';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';
 export {default as StarScore} from './StarScore/StarScore';
 export {default as SwitchCard} from './SwitchCard/SwitchCard';
