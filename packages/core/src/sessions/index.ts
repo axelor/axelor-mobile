@@ -19,4 +19,5 @@
 export {useSessions} from './hook';
 export {Session, URL_STORAGE_KEY} from './type';
 export {sessionStorage} from './SessionStorage';
-export {setActiveSession, getStorageUrl, saveUrlInStorage} from './utils';
+export {getStorageUrl, saveUrlInStorage} from './utils';
+export * from './components';

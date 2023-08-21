@@ -17,35 +17,47 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {Text, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet, View} from 'react-native';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '../../../i18n';
 
-const SessionNumberIndicator = ({number}) => {
+const DisabledButton = ({
+  title,
+  onPress,
+  onDisabledPress = () => {},
+  disabled,
+}) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <View style={styles.bubble}>
-      <Text>{number}</Text>
+    <View style={styles.container}>
+      <Button
+        style={styles.button}
+        title={I18n.t(title)}
+        onPress={disabled ? onDisabledPress : onPress}
+        color={disabled ? Colors.secondaryColor : Colors.primaryColor}
+      />
     </View>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = Colors =>
   StyleSheet.create({
-    bubble: {
-      alignSelf: 'center',
-      justifyContent: 'center',
+    container: {
       alignItems: 'center',
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
-      borderColor: Colors.infoColor.background_light,
-      borderRadius: Dimensions.get('window').width * 0.07,
-      width: Dimensions.get('window').width * 0.07,
-      height: Dimensions.get('window').width * 0.07,
-      marginHorizontal: 4,
+    },
+    button: {
+      marginTop: 15,
+      width: 150,
+      height: 30,
+      elevation: 5,
+      shadowOpacity: 0.5,
+      shadowColor: Colors.secondaryColor.background,
+      shadowOffset: {width: 0, height: 0},
     },
   });
 
-export default SessionNumberIndicator;
+export default DisabledButton;

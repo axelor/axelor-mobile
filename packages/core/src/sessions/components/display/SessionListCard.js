@@ -18,10 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {ScrollView, StyleSheet, View, Dimensions} from 'react-native';
-import {useThemeColor, InfoBubble, Icon} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '../../../i18n';
-import {SessionCard} from '../../organisms';
-import {SessionNumberIndicator} from '../../molecules';
+import {useThemeColor, Icon} from '@axelor/aos-mobile-ui';
+import {SessionCard} from '../../components';
 
 const SessionListCard = ({
   logoFile,
@@ -33,7 +31,6 @@ const SessionListCard = ({
   session,
 }) => {
   const Colors = useThemeColor();
-  const I18n = useTranslator();
 
   const sessions = useMemo(() => sessionList, [sessionList]);
 
@@ -46,15 +43,6 @@ const SessionListCard = ({
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <InfoBubble
-          indication={I18n.t('Auth_InfoSession')}
-          iconName="info"
-          badgeColor={Colors.cautionColor}
-          textIndicationStyle={styles.textIndicationStyle}
-          style={styles.icon}
-          position="left"
-        />
-        <SessionNumberIndicator number={sessionList?.length} />
         <Icon
           name="plus"
           style={styles.iconPlus}
@@ -67,12 +55,12 @@ const SessionListCard = ({
         style={styles.scrollView}>
         {sessions.map(_session => (
           <SessionCard
-            key={_session.sessionId}
+            key={_session.id}
             session={_session}
             changeActiveSession={changeActiveSession}
             openConnection={openConnection}
             openEdition={openEdition}
-            isUnactive={_session.sessionId !== session?.sessionId}
+            isUnactive={_session.id !== session?.id}
             logoFile={logoFile}
           />
         ))}
@@ -106,16 +94,16 @@ const getStyles = Colors =>
       fontStyle: 'italic',
     },
     iconPlus: {
-      marginHorizontal: 4,
+      margin: 4,
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
+      borderWidth: 1,
       borderColor: Colors.primaryColor.background,
-      borderRadius: Dimensions.get('window').width * 0.07,
-      width: Dimensions.get('window').width * 0.07,
-      height: Dimensions.get('window').width * 0.07,
+      borderRadius: 10,
+      width: 30,
+      height: 30,
     },
     textIndicationStyle: {
       width: Dimensions.get('window').width * 0.65,

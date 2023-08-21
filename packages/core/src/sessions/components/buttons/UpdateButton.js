@@ -16,31 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {storage} from '../storage/Storage';
-import {URL_STORAGE_KEY} from './type';
-import {Session} from './type';
+import React from 'react';
+import DisabledButton from './DisabledButton';
 
-export const manageDefaultSession = (
-  sessionList: Session[],
-  session: Session,
-): Session[] => {
-  if (session.isDefault) {
-    return sessionList.map(_session => {
-      if (_session.id === session.id) {
-        return {..._session, isDefault: true};
-      }
-
-      return {..._session, isDefault: false};
-    });
-  }
-
-  return sessionList;
+const UpdateButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
+  return (
+    <DisabledButton
+      title="Base_Connection_Update"
+      onPress={onPress}
+      disabled={disabled}
+      onDisabledPress={onDisabledPress}
+    />
+  );
 };
 
-export const getStorageUrl = (): string => {
-  return storage.getItem(URL_STORAGE_KEY);
-};
-
-export const saveUrlInStorage = (url: string): void => {
-  storage.setItem(URL_STORAGE_KEY, url);
-};
+export default UpdateButton;

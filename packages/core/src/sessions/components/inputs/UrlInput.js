@@ -22,21 +22,23 @@ import {
   getCommonStyles,
   Icon,
   IconInput,
+  LabelText,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {checkNullString} from '../../../utils';
 
-const UsernameInput = ({
+const UrlInput = ({
+  style,
   value,
   onChange,
   readOnly,
-  showScanIcon = true,
   onScanPress,
   onSelection = () => {},
+  onEndFocus = () => {},
   scanIconColor,
-  style,
   showRequiredFields = false,
+  hidden = false,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -46,6 +48,21 @@ const UsernameInput = ({
     [Colors, value],
   );
 
+  if (hidden) {
+    return null;
+  }
+
+  if (readOnly) {
+    return (
+      <LabelText
+        iconName="link"
+        title={value}
+        style={styles.labText}
+        size={20}
+      />
+    );
+  }
+
   return (
     <IconInput
       style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
@@ -53,28 +70,25 @@ const UsernameInput = ({
       onChange={onChange}
       readOnly={readOnly}
       required={true}
-      onSelection={showScanIcon ? onSelection : () => {}}
-      placeholder={I18n.t('Auth_Username')}
-      leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
-      rightIconsList={
-        showScanIcon
-          ? [
-              <Icon
-                name="qrcode"
-                size={20}
-                color={
-                  scanIconColor == null
-                    ? Colors.secondaryColor_dark.background
-                    : scanIconColor
-                }
-                touchable={true}
-                style={styles.icon}
-                onPress={onScanPress}
-                FontAwesome5={false}
-              />,
-            ]
-          : []
-      }
+      onSelection={onSelection}
+      onEndFocus={onEndFocus}
+      placeholder={I18n.t('Base_Connection_Url')}
+      leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
+      rightIconsList={[
+        <Icon
+          name="qrcode"
+          size={20}
+          color={
+            scanIconColor == null
+              ? Colors.secondaryColor_dark.background
+              : scanIconColor
+          }
+          touchable={true}
+          style={styles.icon}
+          onPress={onScanPress}
+          FontAwesome5={false}
+        />,
+      ]}
     />
   );
 };
@@ -84,6 +98,11 @@ const styles = StyleSheet.create({
     width: '7%',
     margin: 3,
   },
+  labText: {
+    width: '95%',
+    marginVertical: 10,
+    marginLeft: 20,
+  },
 });
 
-export default UsernameInput;
+export default UrlInput;

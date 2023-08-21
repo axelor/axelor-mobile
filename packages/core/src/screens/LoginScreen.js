@@ -147,13 +147,11 @@ const LoginScreen = ({route}) => {
     dispatch(login({url, username, password})).then(res => {
       if (res.error == null && error == null) {
         if (error == null && isMounted) {
-          sessionStorage.addSession({
+          sessionStorage.registerSession({
             session: {
-              sessionId: `session-${Date.now()}`,
-              id: DeviceInfo.getApplicationName(),
+              name: DeviceInfo.getApplicationName(),
               url: url,
               username: username,
-              isActive: true,
               isDefault: true,
             },
           });

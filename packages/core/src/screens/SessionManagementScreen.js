@@ -26,8 +26,8 @@ import {
   PopupSession,
   SessionListCard,
   PopupEditSession,
-} from '../components';
-import {sessionStorage, useSessions} from '../sessions';
+  useSessions,
+} from '../sessions';
 import {clearError} from '../features/authSlice';
 
 const SessionManagementScreen = ({route}) => {
@@ -39,7 +39,7 @@ const SessionManagementScreen = ({route}) => {
 
   const modeDebug = useMemo(() => __DEV__, []);
 
-  const {sessionList, sessionActive, sessionDefault} = useSessions();
+  const {sessionList, sessionDefault} = useSessions();
 
   const showUrlInput = useMemo(() => {
     if (modeDebug) {
@@ -49,11 +49,12 @@ const SessionManagementScreen = ({route}) => {
     }
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
+  const [isMounted, setIsMounted] = useState(false);
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
   const [popupEditIsOpen, setPopupEditIsOpen] = useState(false);
   const [session, setSession] = useState(
-    sessionDefault != null ? sessionDefault : sessionActive,
+    sessionDefault != null ? sessionDefault : null,
   );
 
   useEffect(() => {
@@ -63,20 +64,26 @@ const SessionManagementScreen = ({route}) => {
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
   useEffect(() => {
-    if (sessionDefault != null) {
-      setPopupConnectionIsOpen(true);
-    }
-  }, [sessionDefault]);
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
 
   useEffect(() => {
-    if (sessionList <= 0 || sessionList == null) {
+    if (sessionDefault != null && isMounted) {
+      setPopupConnectionIsOpen(true);
+    }
+  }, [isMounted, sessionDefault]);
+
+  useEffect(() => {
+    if (!Array.isArray(sessionList) || sessionList.length === 0) {
       setPopupCreateIsOpen(true);
     }
   }, [sessionList]);
 
-  const changeActiveSession = useCallback(sessionId => {
-    sessionStorage.changeActiveSession({sessionId});
-    setSession(sessionStorage.getActiveSession());
+  const changeActiveSession = useCallback(_session => {
+    setSession(_session);
   }, []);
 
   return (
@@ -84,7 +91,7 @@ const SessionManagementScreen = ({route}) => {
       <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
-            <LogoImage logoFile={logoFile} url={sessionActive?.url} />
+            <LogoImage logoFile={logoFile} url={session?.url} />
           </View>
           <SessionListCard
             logoFile={logoFile}
@@ -115,6 +122,7 @@ const SessionManagementScreen = ({route}) => {
             session={session}
             sessionList={sessionList}
             popupIsOpen={popupEditIsOpen}
+            showUrlInput={showUrlInput}
             handleClose={() => {
               setPopupConnectionIsOpen(false);
               setPopupEditIsOpen(false);

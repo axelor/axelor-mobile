@@ -28,8 +28,8 @@ import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useThemeColor, Card, Text} from '@axelor/aos-mobile-ui';
-import LogoImage from '../LogoImage/LogoImage';
-import {sessionStorage} from '../../../sessions';
+import LogoImage from './LogoImage';
+import {sessionStorage} from '../..';
 
 const SessionCard = ({
   session,
@@ -52,15 +52,15 @@ const SessionCard = ({
 
   const handleConnection = useCallback(() => {
     handleCloseSwipe();
-    changeActiveSession(session.sessionId);
+    changeActiveSession(session);
     openConnection();
   }, [changeActiveSession, openConnection, session]);
 
   const handleEdition = useCallback(() => {
     handleCloseSwipe();
-    changeActiveSession(session.sessionId);
+    changeActiveSession(session);
     openEdition();
-  }, [changeActiveSession, openEdition, session.sessionId]);
+  }, [changeActiveSession, openEdition, session]);
 
   const animateRemoval = useCallback(() => {
     handleCloseSwipe();
@@ -81,7 +81,7 @@ const SessionCard = ({
         useNativeDriver: true,
       }),
     ]).start(() => {
-      sessionStorage.removeSession({sessionId: session.sessionId});
+      sessionStorage.removeSession({sessionId: session.id});
       scaleAnim.setValue(1);
       translateXAnim.setValue(0);
       translateYAnim.setValue(0);
@@ -170,11 +170,11 @@ const SessionCard = ({
                 },
               ]}>
               <View style={styles.imageContainer}>
-                <LogoImage logoFile={logoFile} url={session?.url} />
+                <LogoImage logoFile={logoFile} url={session.url} />
               </View>
               <View style={styles.textContainer}>
                 <Text writingType="title" fontSize={18}>
-                  {session.id}
+                  {session.name}
                 </Text>
                 <Text
                   writingType="details"

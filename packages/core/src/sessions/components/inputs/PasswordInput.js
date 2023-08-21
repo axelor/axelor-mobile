@@ -33,6 +33,7 @@ const PasswordInput = ({
   onChange,
   readOnly,
   showRequiredFields = false,
+  hidden = false,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -44,6 +45,10 @@ const PasswordInput = ({
     [Colors, value],
   );
 
+  if (hidden) {
+    return null;
+  }
+
   return (
     <IconInput
       style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
@@ -52,7 +57,7 @@ const PasswordInput = ({
       readOnly={readOnly}
       required={true}
       secureTextEntry={!visible}
-      placeholder={I18n.t('Auth_Password')}
+      placeholder={I18n.t('Base_Connection_Password')}
       leftIconsList={[<Icon name="key" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon

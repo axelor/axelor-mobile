@@ -17,11 +17,10 @@
  */
 
 export interface Session {
-  sessionId: string;
   id: string;
+  name: string;
   url: string;
   username: string;
-  isActive: boolean;
   isDefault?: boolean;
 }
 

@@ -17,21 +17,15 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  Icon,
-  PopUp,
-  useThemeColor,
-  LabelText,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
-import {PasswordInput} from '../../organisms';
-import {ErrorText, LoginButton} from '../../molecules';
+import {Icon, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ErrorText, SessionInputs} from '../../components';
 import {login} from '../../../features/authSlice';
-import {sessionStorage} from '../../../sessions';
+import {sessionStorage} from '../..';
 
 const PopupSession = ({
+  sessionList,
   sessionActive,
   popupIsOpen,
   handleClose,
@@ -44,39 +38,26 @@ const PopupSession = ({
   const {loading, error} = useSelector(state => state.auth);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [showRequiredFields, setShowRequiredFields] = useState(false);
-  const [password, setPassword] = useState('');
 
   const modeDebug = useMemo(() => __DEV__, []);
 
-  useEffect(() => {
-    if (sessionActive != null) {
-      setPassword(modeDebug ? testInstanceConfig?.defaultPassword : '');
-    }
-  }, [modeDebug, sessionActive, testInstanceConfig?.defaultPassword]);
-
-  const disabledLogin = useMemo(
-    () =>
-      checkNullString(sessionActive?.username) ||
-      checkNullString(password) ||
-      loading,
-    [loading, password, sessionActive?.username],
+  const onPressLogin = useCallback(
+    ({password}) => {
+      dispatch(
+        login({
+          url: sessionActive.url,
+          username: sessionActive.username,
+          password,
+        }),
+      );
+    },
+    [dispatch, sessionActive],
   );
 
-  const onPressLogin = useCallback(() => {
-    dispatch(
-      login({
-        url: sessionActive.url,
-        username: sessionActive.username,
-        password,
-      }),
-    );
-  }, [dispatch, password, sessionActive]);
-
   const deleteSession = useCallback(() => {
-    sessionStorage.removeSession({sessionId: sessionActive?.sessionId});
+    sessionStorage.removeSession({sessionId: sessionActive?.id});
     handleClose();
-  }, [sessionActive?.sessionId, handleClose]);
+  }, [sessionActive, handleClose]);
 
   useEffect(() => {
     setIsOpen(popupIsOpen);
@@ -87,7 +68,7 @@ const PopupSession = ({
   }
 
   return (
-    <PopUp visible={isOpen} title={sessionActive?.id} style={styles.popup}>
+    <PopUp visible={isOpen} title={sessionActive?.name} style={styles.popup}>
       <View style={styles.popupContainer}>
         <Icon
           name="times"
@@ -97,36 +78,18 @@ const PopupSession = ({
           style={styles.closeIcon}
         />
         <ErrorText error={error} />
-        {showUrlInput && (
-          <LabelText
-            iconName="link"
-            title={sessionActive.url}
-            style={styles.labText}
-            size={20}
-          />
-        )}
-        <LabelText
-          iconName="user"
-          title={sessionActive.username}
-          style={styles.labText}
-          size={20}
+        <SessionInputs
+          sessionList={sessionList}
+          session={{
+            ...sessionActive,
+            password: modeDebug ? testInstanceConfig?.defaultPassword : '',
+          }}
+          showUrlInput={showUrlInput}
+          loading={loading}
+          mode="connection"
+          showPopup={setIsOpen}
+          onValidation={onPressLogin}
         />
-        <PasswordInput
-          value={password}
-          onChange={setPassword}
-          readOnly={loading}
-          style={styles.input}
-          showRequiredFields={showRequiredFields}
-        />
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <LoginButton
-            onPress={onPressLogin}
-            onDisabledPress={() => setShowRequiredFields(true)}
-            disabled={disabledLogin}
-          />
-        )}
         <Icon
           name="trash-alt"
           size={20}
@@ -155,19 +118,12 @@ const styles = StyleSheet.create({
   closeIcon: {
     position: 'absolute',
     right: 0,
-    top: '-10%',
+    top: -30,
   },
   binIcon: {
     position: 'absolute',
     right: '1%',
     bottom: '5%',
-  },
-  input: {
-    width: '100%',
-  },
-  labText: {
-    width: '95%',
-    marginVertical: 10,
   },
 });
 

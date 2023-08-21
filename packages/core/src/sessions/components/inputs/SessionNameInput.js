@@ -17,42 +17,53 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {
+  getCommonStyles,
+  Icon,
+  IconInput,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
+import {checkNullString} from '../../../utils';
 
-const LoginButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
+const SessionNameInput = ({
+  style,
+  value,
+  onChange,
+  readOnly,
+  showRequiredFields = false,
+  hidden = false,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, checkNullString(value)),
+    [Colors, value],
+  );
+
+  if (hidden) {
+    return null;
+  }
 
   return (
-    <View style={styles.container}>
-      <Button
-        style={styles.button}
-        title={I18n.t('Auth_LOGIN')}
-        onPress={disabled ? onDisabledPress : onPress}
-        color={disabled ? Colors.secondaryColor : Colors.primaryColor}
-      />
-    </View>
+    <IconInput
+      style={[style, showRequiredFields ? commonStyles.inputFocused : null]}
+      value={value}
+      onChange={onChange}
+      readOnly={readOnly}
+      placeholder={I18n.t('Base_Connection_SessionName')}
+      leftIconsList={[<Icon name="tag" size={17} style={styles.icon} />]}
+    />
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      alignItems: 'center',
-    },
-    button: {
-      marginTop: 15,
-      width: 150,
-      height: 30,
-      elevation: 5,
-      shadowOpacity: 0.5,
-      shadowColor: Colors.secondaryColor.background,
-      shadowOffset: {width: 0, height: 0},
-    },
-  });
+const styles = StyleSheet.create({
+  icon: {
+    width: '7%',
+    margin: 3,
+  },
+});
 
-export default LoginButton;
+export default SessionNameInput;
