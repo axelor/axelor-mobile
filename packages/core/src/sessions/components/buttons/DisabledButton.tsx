@@ -19,9 +19,14 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
-import useTranslator from '../../../i18n/hooks/use-translator';
+import {useTranslator} from '../../../i18n';
 
-const LoginButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
+const DisabledButton = ({
+  title,
+  onPress,
+  onDisabledPress = () => {},
+  disabled,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -31,7 +36,7 @@ const LoginButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
     <View style={styles.container}>
       <Button
         style={styles.button}
-        title={I18n.t('Auth_LOGIN')}
+        title={I18n.t(title)}
         onPress={disabled ? onDisabledPress : onPress}
         color={disabled ? Colors.secondaryColor : Colors.primaryColor}
       />
@@ -55,4 +60,4 @@ const getStyles = Colors =>
     },
   });
 
-export default LoginButton;
+export default DisabledButton;

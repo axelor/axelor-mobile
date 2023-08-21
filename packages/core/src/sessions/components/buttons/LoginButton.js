@@ -16,8 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useSessions} from './hook';
-export {Session, URL_STORAGE_KEY} from './type';
-export {sessionStorage} from './SessionStorage';
-export {getStorageUrl, saveUrlInStorage} from './utils';
-export * from './components';
+import React from 'react';
+import DisabledButton from './DisabledButton';
+
+const LoginButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
+  return (
+    <DisabledButton
+      title="Base_Connection_Login"
+      onPress={onPress}
+      disabled={disabled}
+      onDisabledPress={onDisabledPress}
+    />
+  );
+};
+
+export default LoginButton;

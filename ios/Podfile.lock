@@ -367,7 +367,7 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.4.1):
+  - RNGestureHandler (2.9.0):
     - React-Core
   - RNReanimated (2.10.0):
     - DoubleConversion
@@ -640,7 +640,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 25d818c85db769cc0e7083d39efaa01a6f450df3
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 4f4986408310a43f1606c391f38f76e0d6e790d5
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReanimated: 5bdcbcc3a72aedeee7bb099604262403aa75a1e5
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNStaticSafeAreaInsets: 055ddbf5e476321720457cdaeec0ff2ba40ec1b8
@@ -649,6 +649,6 @@ SPEC CHECKSUMS:
   VisionCamera: bba0d9e344a4ac5d3336585bbbf16f1f14be43d1
   Yoga: 17cd9a50243093b547c1e539c749928dd68152da
 
-PODFILE CHECKSUM: 59b5f4d0178e9f37b4bc06c6bffa7fa6ef94f79b
+PODFILE CHECKSUM: 29e4ec06862b856cd5bf5ad64a57d818e182d654
 
 COCOAPODS: 1.12.0

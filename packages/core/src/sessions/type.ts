@@ -18,9 +18,10 @@
 
 export interface Session {
   id: string;
+  name: string;
   url: string;
   username: string;
-  isActive: boolean;
+  isDefault?: boolean;
 }
 
 export const URL_STORAGE_KEY = 'LastConnectionUrl';

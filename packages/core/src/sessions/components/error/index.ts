@@ -16,8 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {useSessions} from './hook';
-export {Session, URL_STORAGE_KEY} from './type';
-export {sessionStorage} from './SessionStorage';
-export {getStorageUrl, saveUrlInStorage} from './utils';
-export * from './components';
+export {default as ErrorText} from './ErrorText';

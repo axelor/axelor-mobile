@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Text, KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   LogoImage,
-  PopupSessionList,
   PopupCreateSession,
   PopupSession,
-  ConnectSessionButton,
-  NoActiveSessionButton,
-  ChooseSessionButton,
-  CreateSessionButton,
-} from '../components';
-import {useSessions} from '../sessions';
+  SessionListCard,
+  PopupEditSession,
+  useSessions,
+} from '../sessions';
 import {clearError} from '../features/authSlice';
 
 const SessionManagementScreen = ({route}) => {
@@ -42,7 +39,7 @@ const SessionManagementScreen = ({route}) => {
 
   const modeDebug = useMemo(() => __DEV__, []);
 
-  const {sessionList, sessionActive} = useSessions();
+  const {sessionList, sessionDefault} = useSessions();
 
   const showUrlInput = useMemo(() => {
     if (modeDebug) {
@@ -52,9 +49,13 @@ const SessionManagementScreen = ({route}) => {
     }
   }, [modeDebug, releaseInstanceConfig?.showUrlInput]);
 
+  const [isMounted, setIsMounted] = useState(false);
   const [popupCreateIsOpen, setPopupCreateIsOpen] = useState(false);
   const [popupConnectionIsOpen, setPopupConnectionIsOpen] = useState(false);
-  const [popupSessionListIsOpen, setPopupSessionListIsOpen] = useState(false);
+  const [popupEditIsOpen, setPopupEditIsOpen] = useState(false);
+  const [session, setSession] = useState(
+    sessionDefault != null ? sessionDefault : null,
+  );
 
   useEffect(() => {
     if (!popupCreateIsOpen && !popupConnectionIsOpen) {
@@ -62,53 +63,71 @@ const SessionManagementScreen = ({route}) => {
     }
   }, [dispatch, popupConnectionIsOpen, popupCreateIsOpen]);
 
+  useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (sessionDefault != null && isMounted) {
+      setPopupConnectionIsOpen(true);
+    }
+  }, [isMounted, sessionDefault]);
+
+  useEffect(() => {
+    if (!Array.isArray(sessionList) || sessionList.length === 0) {
+      setPopupCreateIsOpen(true);
+    }
+  }, [sessionList]);
+
+  const changeActiveSession = useCallback(_session => {
+    setSession(_session);
+  }, []);
+
   return (
     <Screen>
       <KeyboardAvoidingScrollView keyboardOffset={{ios: 0, android: 180}}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
-            <LogoImage logoFile={logoFile} url={sessionActive?.url} />
+            <LogoImage logoFile={logoFile} url={session?.url} />
           </View>
-          <View style={styles.buttonContainer}>
-            <ConnectSessionButton
-              sessionActive={sessionActive}
-              onPress={() => setPopupConnectionIsOpen(true)}
-            />
-            <NoActiveSessionButton
-              numberSessions={sessionList?.length}
-              sessionActive={sessionActive}
-            />
-            <ChooseSessionButton
-              sessionActive={sessionActive}
-              numberSessions={sessionList?.length}
-              onPress={() => setPopupSessionListIsOpen(true)}
-            />
-            <CreateSessionButton
-              numberSessions={sessionList?.length}
-              onPress={() => setPopupCreateIsOpen(true)}
-            />
-          </View>
+          <SessionListCard
+            logoFile={logoFile}
+            sessionList={sessionList}
+            changeActiveSession={changeActiveSession}
+            openConnection={() => setPopupConnectionIsOpen(true)}
+            openEdition={() => setPopupEditIsOpen(true)}
+            openCreation={() => setPopupCreateIsOpen(true)}
+            session={session}
+          />
           <PopupCreateSession
             sessionList={sessionList}
-            modeDebug={modeDebug}
             popupIsOpen={popupCreateIsOpen}
-            setPopupIsOpen={setPopupCreateIsOpen}
+            handleClose={() => setPopupCreateIsOpen(false)}
             showUrlInput={showUrlInput}
+            modeDebug={modeDebug}
             testInstanceConfig={testInstanceConfig}
             releaseInstanceConfig={releaseInstanceConfig}
           />
           <PopupSession
-            sessionActive={sessionActive}
-            popupIsOpen={popupConnectionIsOpen}
-            setPopupIsOpen={setPopupConnectionIsOpen}
+            sessionActive={session}
+            popupIsOpen={!popupEditIsOpen && popupConnectionIsOpen}
+            handleClose={() => setPopupConnectionIsOpen(false)}
             showUrlInput={showUrlInput}
             testInstanceConfig={testInstanceConfig}
           />
-          <PopupSessionList
+          <PopupEditSession
+            session={session}
             sessionList={sessionList}
-            popupIsOpen={popupSessionListIsOpen}
-            setPopupIsOpen={setPopupSessionListIsOpen}
-            setPopupSessionIsOpen={setPopupConnectionIsOpen}
+            popupIsOpen={popupEditIsOpen}
+            showUrlInput={showUrlInput}
+            handleClose={() => {
+              setPopupConnectionIsOpen(false);
+              setPopupEditIsOpen(false);
+            }}
+            modeDebug={modeDebug}
           />
           <View style={styles.copyright}>
             <Text>{`© 2005 - ${new Date().getFullYear()} Axelor. All rights reserved.`}</Text>
@@ -124,18 +143,22 @@ const styles = StyleSheet.create({
   container: {
     marginTop: '15%',
     alignItems: 'center',
-    height: Dimensions.get('window').height * 0.9,
+    height:
+      Dimensions.get('window').height < 950
+        ? Dimensions.get('window').height * 0.9
+        : Dimensions.get('window').height * 0.85,
   },
   imageContainer: {
     alignItems: 'center',
     width: '100%',
     height: '15%',
-    marginTop: Dimensions.get('window').height < 500 ? '10%' : '40%',
+    marginTop:
+      Dimensions.get('window').height < 500
+        ? '10%'
+        : Dimensions.get('window').height > 950
+        ? '15%'
+        : '40%',
     marginBottom: 10,
-  },
-  buttonContainer: {
-    width: '70%',
-    marginTop: Dimensions.get('window').height < 500 ? '15%' : '35%',
   },
   copyright: {
     position: 'absolute',
