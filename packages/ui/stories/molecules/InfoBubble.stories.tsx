@@ -58,7 +58,14 @@ storiesOf('ui/molecules/InfoBubble', module)
           control: {
             type: 'number',
           },
-          default: 15,
+          defaultValue: 15,
+        },
+        position: {
+          control: {
+            type: 'select',
+          },
+          options: ['right', 'left'],
+          defaultValue: 'right',
         },
       },
     },

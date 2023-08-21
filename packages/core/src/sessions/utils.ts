@@ -20,17 +20,21 @@ import {storage} from '../storage/Storage';
 import {URL_STORAGE_KEY} from './type';
 import {Session} from './type';
 
-export const setActiveSession = (
+export const manageDefaultSession = (
   sessionList: Session[],
-  activeSessionId: string,
+  session: Session,
 ): Session[] => {
-  return sessionList.map(_session => {
-    if (_session.id === activeSessionId) {
-      return {..._session, isActive: true};
-    }
+  if (session.isDefault) {
+    return sessionList.map(_session => {
+      if (_session.id === session.id) {
+        return {..._session, isDefault: true};
+      }
 
-    return {..._session, isActive: false};
-  });
+      return {..._session, isDefault: false};
+    });
+  }
+
+  return sessionList;
 };
 
 export const getStorageUrl = (): string => {
@@ -39,4 +43,20 @@ export const getStorageUrl = (): string => {
 
 export const saveUrlInStorage = (url: string): void => {
   storage.setItem(URL_STORAGE_KEY, url);
+};
+
+export const migrateOldSessionToNewSystem = (data: any[]): Session[] => {
+  return data.map((_item, index) => {
+    if (_item?.name == null) {
+      return {
+        id: `session-${Date.now()}-${index}`,
+        name: _item.id,
+        url: _item.url,
+        username: _item.username,
+        isDefault: _item.isActive,
+      };
+    } else {
+      return _item as Session;
+    }
+  });
 };

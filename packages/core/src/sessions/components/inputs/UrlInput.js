@@ -16,33 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   getCommonStyles,
   Icon,
   IconInput,
+  LabelText,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {checkNullString} from '../../../utils';
 
-const PasswordInput = ({
+const UrlInput = ({
   style,
   value,
   onChange,
   readOnly,
+  onScanPress,
+  onSelection = () => {},
+  onEndFocus = () => {},
+  scanIconColor,
   showRequiredFields = false,
+  hidden = false,
 }) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
-
-  const [visible, setVisible] = useState(false);
+  const I18n = useTranslator();
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, checkNullString(value)),
     [Colors, value],
   );
+
+  if (hidden) {
+    return null;
+  }
+
+  if (readOnly) {
+    return (
+      <LabelText
+        iconName="link"
+        title={value}
+        style={styles.labText}
+        size={20}
+      />
+    );
+  }
 
   return (
     <IconInput
@@ -51,16 +70,23 @@ const PasswordInput = ({
       onChange={onChange}
       readOnly={readOnly}
       required={true}
-      secureTextEntry={!visible}
-      placeholder={I18n.t('Auth_Password')}
-      leftIconsList={[<Icon name="key" size={17} style={styles.icon} />]}
+      onSelection={onSelection}
+      onEndFocus={onEndFocus}
+      placeholder={I18n.t('Base_Connection_Url')}
+      leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
-          name={visible ? 'eye' : 'eye-slash'}
-          size={17}
+          name="qrcode"
+          size={20}
+          color={
+            scanIconColor == null
+              ? Colors.secondaryColor_dark.background
+              : scanIconColor
+          }
           touchable={true}
-          onPress={() => setVisible(!visible)}
           style={styles.icon}
+          onPress={onScanPress}
+          FontAwesome5={false}
         />,
       ]}
     />
@@ -72,6 +98,11 @@ const styles = StyleSheet.create({
     width: '7%',
     margin: 3,
   },
+  labText: {
+    width: '95%',
+    marginVertical: 10,
+    marginLeft: 20,
+  },
 });
 
-export default PasswordInput;
+export default UrlInput;

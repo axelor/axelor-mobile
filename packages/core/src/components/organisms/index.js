@@ -21,18 +21,8 @@ export {default as AOSImageBubble} from './AOSImageBubble/AOSImageBubble';
 export {default as DateInput} from './DateInput/DateInput';
 export {default as HeaderBandList} from './HeaderBandList/HeaderBandList';
 export {default as HeaderOptionsMenu} from './HeaderOptionsMenu/HeaderOptionsMenu';
-export {default as LogoImage} from './LogoImage/LogoImage';
+export {default as LogoImage} from '../../sessions/components/display/LogoImage';
 export {default as MailMessageCard} from './MailMessageCard/MailMessageCard';
 export {default as MailMessageCommentCard} from './MailMessageCommentCard/MailMessageCommentCard';
 export {default as MailMessageNotificationCard} from './MailMessageNotificationCard/MailMessageNotificationCard';
-export {default as PasswordInput} from './PasswordInput/PasswordInput';
 export {default as ScannerAutocompleteSearch} from './ScannerAutocompleteSearch/ScannerAutocompleteSearch';
-export {
-  ChooseSessionButton,
-  ConnectSessionButton,
-  CreateSessionButton,
-  NoActiveSessionButton,
-} from './SessionButtons/SessionButtons';
-export {default as SessionNameInput} from './SessionNameInput/SessionNameInput';
-export {default as UrlInput} from './UrlInput/UrlInput';
-export {default as UsernameInput} from './UsernameInput/UsernameInput';

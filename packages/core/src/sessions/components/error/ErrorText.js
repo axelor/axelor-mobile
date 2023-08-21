@@ -40,11 +40,11 @@ const ErrorText = ({error, style}) => {
 
   const errorMessage = useMemo(() => {
     if (errorCode === LOGIN_ERROR) {
-      return I18n.t('Auth_WrongPasswordOrUserName');
+      return I18n.t('Base_Connection_WrongPasswordOrUserName');
     }
 
     if (errorCode === URL_ERROR) {
-      return `${I18n.t('Auth_InvalidUrl')}: ${error.url}`;
+      return `${I18n.t('Base_Connection_InvalidUrl')}: ${error.url}`;
     }
 
     return error?.message;

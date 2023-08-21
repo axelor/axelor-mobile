@@ -33,6 +33,7 @@ interface InfoBubbleProps {
   badgeColor: Color;
   indication: string;
   size?: number;
+  position?: 'left' | 'right';
 }
 
 const InfoBubble = ({
@@ -42,6 +43,7 @@ const InfoBubble = ({
   indication,
   textIndicationStyle,
   size = Dimensions.get('window').width * 0.07,
+  position = 'right',
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -49,8 +51,8 @@ const InfoBubble = ({
   const clickOutside = useClickOutside({wrapperRef, visible: isOpen});
 
   const styles = useMemo(
-    () => getStyles(badgeColor, Colors, isOpen, size),
-    [badgeColor, Colors, isOpen, size],
+    () => getStyles(badgeColor, Colors, isOpen, size, position),
+    [badgeColor, Colors, isOpen, size, position],
   );
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const InfoBubble = ({
   );
 };
 
-const getStyles = (badgeColor, Colors, isOpen, size) =>
+const getStyles = (badgeColor, Colors, isOpen, size, position) =>
   StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -103,12 +105,13 @@ const getStyles = (badgeColor, Colors, isOpen, size) =>
     },
     indicationCard: {
       position: 'absolute',
-      left: Dimensions.get('window').width * 0.08,
       paddingLeft: 10,
       paddingVertical: 10,
       paddingRight: 10,
       zIndex: 99,
       backgroundColor: Colors.backgroundColor,
+      [position === 'left' ? 'right' : 'left']:
+        Dimensions.get('window').width * 0.08,
     },
   });
 

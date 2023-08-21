@@ -22,19 +22,19 @@ import {Session} from './type';
 
 export const useSessions = (): {
   sessionList: Session[];
-  sessionActive: Session;
+  sessionDefault: Session;
 } => {
   const [sessionList, setSessionList] = useState(
     sessionStorage.getSessionList(),
   );
 
-  const [sessionActive, setSessionActive] = useState(
-    sessionStorage.getActiveSession(),
+  const [sessionDefault, setSessionDefault] = useState(
+    sessionStorage.getDefaultSession(),
   );
 
-  const refreshData = useCallback(({sessionList: sessions, activeSession}) => {
-    setSessionActive(activeSession);
+  const refreshData = useCallback(({sessionList: sessions, defaultSession}) => {
     setSessionList(sessions);
+    setSessionDefault(defaultSession);
   }, []);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const useSessions = (): {
   return useMemo(() => {
     return {
       sessionList: sessionList,
-      sessionActive: sessionActive,
+      sessionDefault: sessionDefault,
     };
-  }, [sessionActive, sessionList]);
+  }, [sessionList, sessionDefault]);
 };

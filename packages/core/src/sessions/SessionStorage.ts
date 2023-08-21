@@ -18,17 +18,17 @@
 
 import {storage, Storage} from '../storage/Storage';
 import {Session} from './type';
-import {setActiveSession} from './utils';
+import {manageDefaultSession, migrateOldSessionToNewSystem} from './utils';
 
 const SESSION_KEY = 'ConnectionSessions';
 
 class SessionStorage {
   private refreshCallBack: ({
     sessionList,
-    activeSession,
+    defaultSession,
   }: {
     sessionList: Session[];
-    activeSession: Session;
+    defaultSession: Session;
   }) => void;
 
   constructor(private localStorage: Storage) {}
@@ -41,35 +41,52 @@ class SessionStorage {
     if (this.refreshCallBack != null) {
       this.refreshCallBack({
         sessionList: this.getSessionList(),
-        activeSession: this.getActiveSession(),
+        defaultSession: this.getDefaultSession(),
       });
     }
   }
 
   getSessionList(): Session[] {
-    const item = this.localStorage.getItem(SESSION_KEY);
-    return item;
+    const storageData = this.localStorage.getItem(SESSION_KEY);
+
+    if (storageData.some(_item => _item?.name == null)) {
+      this.localStorage.setItem(
+        SESSION_KEY,
+        migrateOldSessionToNewSystem(storageData),
+      );
+      return this.getSessionList();
+    }
+
+    return storageData;
   }
 
-  getActiveSession(): Session {
+  getDefaultSession(): Session {
     const sessionList = this.getSessionList();
 
     if (!Array.isArray(sessionList) || sessionList.length === 0) {
       return null;
     }
 
-    return sessionList.find(_session => _session.isActive === true);
+    return sessionList.find(_session => _session.isDefault === true);
   }
 
-  addSession({session}: {session: Session}) {
-    let sessionList = this.getSessionList();
-
-    if (!Array.isArray(sessionList) || sessionList.length === 0) {
-      this.localStorage.setItem(SESSION_KEY, [session]);
+  registerSession({session}: {session: Session}) {
+    if (session == null) {
       return;
     }
 
-    if (sessionList.find(_item => _item.id === session.id)) {
+    let sessionList = this.getSessionList();
+    const id = session?.id || `session-${Date.now()}`;
+    const _session = {...session, id};
+
+    if (!Array.isArray(sessionList) || sessionList.length === 0) {
+      sessionList = [];
+    }
+
+    if (
+      session.id != null &&
+      sessionList.find(_item => _item.id === session.id)
+    ) {
       sessionList = sessionList.map(_item => {
         if (_item.id === session.id) {
           return {..._item, ...session};
@@ -78,24 +95,12 @@ class SessionStorage {
         return _item;
       });
     } else {
-      sessionList.push(session);
+      sessionList.push(_session);
     }
 
-    const activeSessionList = setActiveSession(sessionList, session.id);
-    this.localStorage.setItem(SESSION_KEY, activeSessionList);
+    sessionList = manageDefaultSession(sessionList, _session);
 
-    this.updateState();
-  }
-
-  changeActiveSession({sessionId}: {sessionId: string}) {
-    const sessionList = this.getSessionList();
-
-    if (!Array.isArray(sessionList) || sessionList.length === 0) {
-      return;
-    }
-
-    const activeSessionList = setActiveSession(sessionList, sessionId);
-    this.localStorage.setItem(SESSION_KEY, activeSessionList);
+    this.localStorage.setItem(SESSION_KEY, sessionList);
 
     this.updateState();
   }

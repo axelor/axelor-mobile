@@ -27,24 +27,25 @@ import {
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {checkNullString} from '../../../utils';
 
-const UrlInput = ({
+const SessionNameInput = ({
   style,
   value,
   onChange,
   readOnly,
-  onScanPress,
-  onSelection = () => {},
-  onEndFocus = () => {},
-  scanIconColor,
   showRequiredFields = false,
+  hidden = false,
 }) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, checkNullString(value)),
     [Colors, value],
   );
+
+  if (hidden) {
+    return null;
+  }
 
   return (
     <IconInput
@@ -52,26 +53,8 @@ const UrlInput = ({
       value={value}
       onChange={onChange}
       readOnly={readOnly}
-      required={true}
-      onSelection={onSelection}
-      onEndFocus={onEndFocus}
-      placeholder={I18n.t('Auth_URL')}
-      leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
-      rightIconsList={[
-        <Icon
-          name="qrcode"
-          size={20}
-          color={
-            scanIconColor == null
-              ? Colors.secondaryColor_dark.background
-              : scanIconColor
-          }
-          touchable={true}
-          style={styles.icon}
-          onPress={onScanPress}
-          FontAwesome5={false}
-        />,
-      ]}
+      placeholder={I18n.t('Base_Connection_SessionName')}
+      leftIconsList={[<Icon name="tag" size={17} style={styles.icon} />]}
     />
   );
 };
@@ -83,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UrlInput;
+export default SessionNameInput;
