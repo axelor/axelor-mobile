@@ -41,6 +41,7 @@ interface ExpenseLineCardProps {
   onLongPress: () => void;
   onItemSelection: () => void;
   isSelectionMode?: boolean;
+  isSelected?: boolean;
 }
 
 const ExpenseLineCard = ({
@@ -52,6 +53,7 @@ const ExpenseLineCard = ({
   onLongPress,
   isSelectionMode,
   onItemSelection,
+  isSelected,
 }: ExpenseLineCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -81,12 +83,16 @@ const ExpenseLineCard = ({
   return (
     <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
       <TouchableOpacity
-        onLongPress={() => onLongPress()}
+        onLongPress={onLongPress}
         onPress={onPress}
         style={styles.container}
         activeOpacity={0.8}>
         {isSelectionMode && (
-          <Checkbox style={styles.checkbox} onChange={onItemSelection} />
+          <Checkbox
+            style={styles.checkbox}
+            isChecked={isSelected}
+            onChange={onItemSelection}
+          />
         )}
         <Card style={[styles.containerCard, styles.border]}>
           <View style={styles.date}>

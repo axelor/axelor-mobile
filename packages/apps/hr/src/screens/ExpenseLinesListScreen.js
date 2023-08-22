@@ -46,6 +46,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
+  const [selectedOnLongPress, setSelectedOnLongPress] = useState(null);
 
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -62,8 +63,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
       }
     });
   };
-
-  console.log(selectedItems);
 
   const handleCancelButton = () => {
     setSelectedItems([]);
@@ -113,7 +112,14 @@ const ExpenseLinesListScreen = ({navigation}) => {
           <ExpenseLineCard
             onLongPress={() => {
               setIsSelectionMode(current => !current);
+              setSelectedItems([]);
+              setSelectedOnLongPress(item.id);
+              handleItemSelection(item.id);
             }}
+            isSelected={
+              selectedItems.includes(item.id) || item.id === selectedOnLongPress
+            }
+            itemId={item.id}
             style={styles.item}
             onItemSelection={() => handleItemSelection(item.id)}
             expenseDate={item.expenseDate}
