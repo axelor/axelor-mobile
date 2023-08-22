@@ -42,7 +42,6 @@ export interface TabsScreenProps {
   viewStyle?: any;
   position?: TabsPosition;
   tabHeight?: number;
-  tabWidth?: number;
   items?: Tab[];
 }
 

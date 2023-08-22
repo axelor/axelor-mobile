@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, ScrollView, StyleSheet, View} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {useThemeColor} from '../../../theme';
 import {
@@ -27,6 +27,9 @@ import {
 } from './tabs.helper';
 import Tab from './Tab';
 import {useConfig} from '../../../config/ConfigContext';
+import {Icon} from '../../atoms';
+
+const MIN_TAB_WIDTH = 100;
 
 const immersiveMode = async () => {
   await SystemNavigationBar.navigationHide();
@@ -35,15 +38,16 @@ const immersiveMode = async () => {
 const TabsScreen = ({
   style,
   viewStyle,
-  position = TabsPosition.Top,
+  position = Platform.OS === 'ios' ? TabsPosition.Bottom : TabsPosition.Top,
   tabHeight = 60,
-  tabWidth = 100,
   items,
 }: TabsScreenProps) => {
   const Colors = useThemeColor();
 
   const {showActivityIndicator} = useConfig();
 
+  const [showLeftIcon, setShowLeftIcon] = useState(false);
+  const [showRightIcon, setShowRightIcon] = useState(false);
   const [panels, setPanels] = useState(items?.filter(_tab => !_tab.hidden));
 
   useEffect(() => {
@@ -75,20 +79,72 @@ const TabsScreen = ({
   }, []);
 
   const getTabStyle = useCallback(
-    () => ({
-      [`border${capitalizeFirstLetter(
-        position === TabsPosition.Top ? TabsPosition.Bottom : TabsPosition.Top,
-      )}Width`]: 3,
-      height: tabHeight,
-      width: tabWidth,
-    }),
-    [position, tabHeight, tabWidth],
+    nbTabs => {
+      const tabWidth = Dimensions.get('window').width / nbTabs;
+      return {
+        [`border${capitalizeFirstLetter(
+          position === TabsPosition.Top
+            ? TabsPosition.Bottom
+            : TabsPosition.Top,
+        )}Width`]: 3,
+        height: tabHeight,
+        width: tabWidth < MIN_TAB_WIDTH ? MIN_TAB_WIDTH : tabWidth,
+        minWidth: 100,
+      };
+    },
+    [position, tabHeight],
   );
 
   const tabsScroll = useMemo(() => {
+    const getIconStyle = side => [
+      styles.icon,
+      {top: tabHeight / 3, [side]: 15},
+    ];
+
+    const tabsLength = panels.length;
+
     return (
-      <View style={{height: tabHeight}}>
-        <ScrollView horizontal={true}>
+      <View
+        style={[
+          {height: tabHeight, backgroundColor: Colors.backgroundColor},
+          styles.scroll,
+        ]}>
+        {showLeftIcon && (
+          <Icon name="angle-left" style={getIconStyle('left')} />
+        )}
+        <ScrollView
+          horizontal={true}
+          onContentSizeChange={width => {
+            if (
+              parseInt(width.toString(), 10) < Dimensions.get('window').width
+            ) {
+              setShowRightIcon(false);
+            } else {
+              setShowRightIcon(true);
+            }
+          }}
+          onScroll={({nativeEvent}) => {
+            const {contentOffset, layoutMeasurement, contentSize} = nativeEvent;
+            if (contentSize.width <= Dimensions.get('window').width) {
+              setShowRightIcon(false);
+              setShowLeftIcon(false);
+            } else {
+              if (
+                contentOffset.x >
+                contentSize.width * 0.9 - layoutMeasurement.width
+              ) {
+                setShowRightIcon(false);
+              } else {
+                setShowRightIcon(true);
+              }
+
+              if (contentOffset.x < contentSize.width * 0.1) {
+                setShowLeftIcon(false);
+              } else {
+                setShowLeftIcon(true);
+              }
+            }
+          }}>
           {panels?.map(_item => (
             <Tab
               key={_item.key}
@@ -98,13 +154,24 @@ const TabsScreen = ({
               count={_item.count}
               showBadge={_item.showBadge}
               onPress={() => swicthTab(_item.key)}
-              style={getTabStyle()}
+              style={getTabStyle(tabsLength)}
             />
           ))}
         </ScrollView>
+        {showRightIcon && (
+          <Icon name="angle-right" style={getIconStyle('right')} />
+        )}
       </View>
     );
-  }, [getTabStyle, panels, swicthTab, tabHeight]);
+  }, [
+    Colors,
+    getTabStyle,
+    panels,
+    showLeftIcon,
+    showRightIcon,
+    swicthTab,
+    tabHeight,
+  ]);
 
   const activeView = useMemo(() => {
     if (!Array.isArray(panels) || panels.length === 0) {
@@ -146,6 +213,19 @@ const styles = StyleSheet.create({
   container: {
     height: '98%',
     width: Dimensions.get('window').width,
+  },
+  scroll: {
+    flexDirection: 'row',
+  },
+  icon: {
+    position: 'absolute',
+    zIndex: 15,
+  },
+  leftIcon: {
+    left: 20,
+  },
+  rightIcon: {
+    right: 10,
   },
   view: {
     height: '95%',
