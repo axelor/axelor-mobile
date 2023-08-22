@@ -108,6 +108,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
       <ScrollList
         loadingList={loadingExpenseLine}
         data={expenseLineList}
+        disabledRefresh={isSelectionMode}
         renderItem={({item}) => (
           <ExpenseLineCard
             onLongPress={() => {

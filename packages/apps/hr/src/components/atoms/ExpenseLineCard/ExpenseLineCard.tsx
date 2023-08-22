@@ -33,7 +33,6 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
-  style?: any;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
@@ -45,7 +44,6 @@ interface ExpenseLineCardProps {
 }
 
 const ExpenseLineCard = ({
-  style,
   expenseDate,
   projectName,
   totalAmount,
