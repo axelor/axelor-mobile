@@ -25,7 +25,12 @@ import {
   useThemeColor,
   Checkbox,
 } from '@axelor/aos-mobile-ui';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useTranslator,
+  getDay,
+  getMonth,
+} from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
   style?: any;
@@ -50,6 +55,7 @@ const ExpenseLineCard = ({
   isSelectionMode,
   onItemSelection,
 }: ExpenseLineCardProps) => {
+  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {user} = useSelector((state: any) => state.user);
@@ -77,15 +83,22 @@ const ExpenseLineCard = ({
   return (
     <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
       <TouchableOpacity
-        onLongPress={onLongPress}
+        onLongPress={() => onLongPress()}
         onPress={onPress}
         style={styles.container}
         activeOpacity={0.8}>
         {isSelectionMode && (
           <Checkbox style={styles.checkbox} onChange={onItemSelection} />
         )}
-        <Card style={[styles.containerCard, styles.border, style]}>
-          <Text style={styles.date}>{expenseDate}</Text>
+        <Card style={[styles.containerCard, styles.border]}>
+          <View style={styles.date}>
+            <Text>{getDay(expenseDate, I18n)}</Text>
+            <Text>{`${new Date(expenseDate).getDay()} ${getMonth(
+              expenseDate,
+              I18n,
+            )}`}</Text>
+            <Text>{`${new Date(expenseDate).getFullYear()}`}</Text>
+          </View>
           <View style={styles.verticalLine} />
           <View style={styles.column}>
             {!checkNullString(displayText) && (
@@ -112,31 +125,36 @@ const getStyles = Colors =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginVertical: 4,
+      alignSelf: 'center',
     },
     containerCard: {
       flexDirection: 'row',
-      width: '90%',
+      width: '92%',
     },
     bold: {
       fontWeight: 'bold',
     },
     column: {
       flexDirection: 'column',
-      width: '40%',
+      width: '60%',
     },
     date: {
       alignSelf: 'center',
-      width: '30%',
+      marginLeft: '-5%',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
     amount: {
-      width: '30%',
+      alignSelf: 'center',
+      marginLeft: 10,
     },
     verticalLine: {
       borderRightColor: Colors.secondaryColor.background,
       borderRightWidth: 1,
       height: 50,
-      marginHorizontal: 10,
       alignSelf: 'center',
+      marginHorizontal: 10,
     },
     border: {
       borderLeftWidth: 7,

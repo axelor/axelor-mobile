@@ -29,7 +29,7 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
     <View style={styles.container}>
       <Button
         title={I18n.t('Base_Cancel')}
-        color={Colors.secondaryColor}
+        color={Colors.errorColor}
         style={styles.button}
         onPress={onChangeMode}
       />

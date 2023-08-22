@@ -54,18 +54,16 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleItemSelection = itemId => {
-    if (selectedItems.includes(itemId)) {
-      setSelectedItems(prev => prev.filter(id => id !== itemId));
-    } else {
-      setSelectedItems(prev => [...prev, itemId]);
-    }
+    setSelectedItems(_current => {
+      if (_current.includes(itemId)) {
+        return _current.filter(id => id !== itemId);
+      } else {
+        return [..._current, itemId];
+      }
+    });
   };
 
-  useEffect(() => {
-    if (!isSelectionMode) {
-      setSelectedItems([]);
-    }
-  }, [isSelectionMode]);
+  console.log(selectedItems);
 
   const handleCancelButton = () => {
     setSelectedItems([]);
@@ -141,12 +139,14 @@ const ExpenseLinesListScreen = ({navigation}) => {
           style={styles.floatingButton}
           iconName="camera"
           onPress={() => {}}
+          size={70}
         />
       )}
       <ExpenseAddPopup
         visible={addPopupIsVisible}
         onClose={() => {
           setAddPopupIsVisible(false);
+          handleCancelButton();
         }}
       />
     </Screen>
