@@ -42,7 +42,7 @@ const ExpenseAddPopup = ({style, visible, onClose}) => {
   }, [dispatch]);
 
   return (
-    <PopUp style={[style, styles.popup]} visible={visible}>
+    <PopUp style={[styles.popup, style]} visible={visible}>
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <Picker
@@ -85,6 +85,9 @@ const ExpenseAddPopup = ({style, visible, onClose}) => {
 const styles = StyleSheet.create({
   popup: {
     alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
   },
   container: {
     flexDirection: 'column',
@@ -97,10 +100,12 @@ const styles = StyleSheet.create({
     width: '110%',
   },
   buttonContainer: {
+    width: '100%',
     flexDirection: 'row',
-    width: '140%',
-    justifyContent: 'space-evenly',
-    marginLeft: -10,
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     marginTop: 4,
   },
   labelText: {
@@ -108,8 +113,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   button: {
-    width: '50%',
-    marginHorizontal: 12,
+    width: '60%',
+    marginHorizontal: 3,
   },
 });
 
