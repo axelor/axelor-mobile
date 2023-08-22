@@ -180,6 +180,7 @@ const TicketFormScreen = ({navigation, route}) => {
               _ticket?.startDateT != null ? new Date(_ticket?.startDateT) : null
             }
             style={styles.input}
+            nullable={true}
           />
           <DateInput
             onDateChange={value => handleTicketFieldChange(value, 'endDateT')}
@@ -188,6 +189,7 @@ const TicketFormScreen = ({navigation, route}) => {
               _ticket?.endDateT != null ? new Date(_ticket?.endDateT) : null
             }
             style={styles.input}
+            nullable={true}
           />
           <DateInput
             onDateChange={value =>
@@ -200,6 +202,7 @@ const TicketFormScreen = ({navigation, route}) => {
                 : null
             }
             style={styles.input}
+            nullable={true}
           />
           <DurationFormInput
             duration={_ticket?.duration}
