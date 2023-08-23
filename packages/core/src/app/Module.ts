@@ -35,10 +35,13 @@ interface MenuWithSubMenus extends MenuBase {
 
 interface MenuWithScreen extends MenuBase {
   screen: string;
+}
+
+interface RootMenuWithScreen extends MenuWithScreen {
   isDefault?: boolean;
 }
 
-export type Menu = MenuWithSubMenus | MenuWithScreen;
+export type Menu = MenuWithSubMenus | RootMenuWithScreen;
 
 export interface SubMenu extends MenuWithScreen {}
 

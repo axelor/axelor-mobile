@@ -170,7 +170,7 @@ const DrawerContent = ({
       return;
     }
 
-    const isMenuActive =
+    const focused =
       state.routes.indexOf(route) === state.index &&
       Object.keys(activeModule.menus).includes(route.name);
 
@@ -181,12 +181,10 @@ const DrawerContent = ({
     });
 
     if (!event.defaultPrevented) {
-      const navigationAction = isMenuActive
-        ? DrawerActions.closeDrawer()
-        : CommonActions.navigate({name: route.name, merge: true});
-
       navigation.dispatch({
-        ...navigationAction,
+        ...(focused
+          ? DrawerActions.closeDrawer()
+          : CommonActions.navigate({name: route.name, merge: true})),
         target: state.key,
       });
     }

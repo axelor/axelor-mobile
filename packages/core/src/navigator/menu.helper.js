@@ -198,12 +198,14 @@ export function cleanEmptyMenusAndSubMenus(modules) {
 
 export function getDefaultMenuKey(module) {
   const {menus} = module;
+
   if (menus == null) {
     return null;
   }
 
-  const defaultMenuEntry = Object.entries(menus).find(
-    ([_key, menu]) => menu.isDefault === true,
-  );
-  return defaultMenuEntry ? defaultMenuEntry[0] : null;
+  const defaultMenuEntry = Object.entries(menus)
+    .map(([key, menu]) => ({...menu, key}))
+    .find(menu => menu.isDefault === true);
+
+  return defaultMenuEntry ? defaultMenuEntry.key : null;
 }
