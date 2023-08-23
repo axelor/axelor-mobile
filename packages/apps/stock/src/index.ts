@@ -44,7 +44,6 @@ export const StockModule: Module = {
       title: 'Stock_Product',
       icon: 'shopping-cart',
       screen: 'ProductListScreen',
-      isDefault: true,
     },
     stock_menu_stock_correction: {
       title: 'Stock_StockCorrection',
