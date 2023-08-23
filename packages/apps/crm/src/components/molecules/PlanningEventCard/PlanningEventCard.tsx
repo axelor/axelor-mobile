@@ -18,6 +18,8 @@
 
 import React from 'react';
 import {ObjectCard} from '@axelor/aos-mobile-ui';
+import EventType from '../../../types/event-type';
+
 interface PlanningEventCardProps {
   style?: any;
   onPress: () => void;
@@ -25,6 +27,9 @@ interface PlanningEventCardProps {
   id: string | number;
   contactPartner?: string;
   location?: string;
+  partner?: string;
+  eventLead?: string;
+  partnerTypeSelect?: number;
 }
 
 const PlanningEventCard = ({
@@ -34,6 +39,9 @@ const PlanningEventCard = ({
   id,
   contactPartner,
   location,
+  partner,
+  eventLead,
+  partnerTypeSelect,
 }: PlanningEventCardProps) => {
   return (
     <ObjectCard
@@ -43,7 +51,24 @@ const PlanningEventCard = ({
       upperTexts={{
         items: [
           {displayText: subject, isTitle: true},
-          {indicatorText: contactPartner, hideIfNull: true, iconName: 'user'},
+          {
+            indicatorText: partner,
+            hideIfNull: true,
+            iconName:
+              partnerTypeSelect === EventType.partnerTypeSelect.Company
+                ? 'building'
+                : 'user',
+          },
+          {
+            indicatorText: eventLead,
+            hideIfNull: true,
+            iconName: 'address-card',
+          },
+          {
+            indicatorText: contactPartner,
+            hideIfNull: true,
+            iconName: 'handshake',
+          },
           {indicatorText: location, hideIfNull: true, iconName: 'map-pin'},
         ],
       }}
