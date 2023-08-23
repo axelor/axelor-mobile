@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '../../apiProviders';
+import {axiosApiProvider, createStandardFetch} from '../../apiProviders';
 
 export async function getLoggedUser(userId) {
-  return axiosApiProvider.get({
-    url: `/ws/rest/com.axelor.auth.db.User/${userId}`,
+  return createStandardFetch({
+    model: 'com.axelor.auth.db.User',
+    id: userId,
+    fieldKey: 'auth_user',
   });
 }
 

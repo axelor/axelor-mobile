@@ -23,4 +23,18 @@ export const auth_modelAPI: ObjectFields = {
     code: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
+  auth_user: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+    activeCompany: schemaContructor.subObject(),
+    'activeCompany.currency': schemaContructor.subObject(),
+    'activeCompany.currency.symbol': schemaContructor.string(),
+    activeTeam: schemaContructor.subObject(),
+    workshopStockLocation: schemaContructor.subObject(),
+    roles: schemaContructor.array(),
+    group: schemaContructor.subObject(),
+    employee: schemaContructor.subObject(),
+    language: schemaContructor.string(),
+    todayDateT: schemaContructor.string(),
+  }),
 };
