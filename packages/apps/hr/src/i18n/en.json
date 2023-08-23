@@ -2,12 +2,23 @@
   "Hr_HumanRessources": "Human ressources",
   "Hr_Hr": "HR",
   "Hr_Expense": "Expense",
+  "Hr_Expenses": "Expenses",
   "Hr_ExpenseLines": "Expense lines",
   "Hr_NewExpenseLine": "New expense line",
   "Hr_NewExpense": "Create a new expense",
-  "Hr_kilomectricTypeSelect_OneWay": "One-Way",
-  "Hr_kilomectricTypeSelect_RoundTrip": "Round Trip",
-
+  "Hr_KilomectricTypeSelect_OneWay": "One-Way",
+  "Hr_KilomectricTypeSelect_RoundTrip": "Round Trip",
+  "Hr_ExpenseStatus_Draft": "Draft",
+  "Hr_ExpenseStatus_WaitingValidation": "Waiting validation",
+  "Hr_ExpenseStatus_Validate": "Validated",
+  "Hr_ExpenseStatus_Reimbursed": "Reimbursed",
+  "Hr_ExpenseStatus_Refused": "Refused",
+  "Hr_ExpenseStatus_Canceled": "Canceled",
+  "Hr_MyExpenses": "My expenses",
+  "Hr_ToValidate": "To validate",
+  "Hr_Period": "Period",
+  "Hr_Status": "Status",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
-  "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses"
+  "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
+  "Hr_SliceAction_FetchExpense": "fetch expenses"
 }

@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {createStandardSearch} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 import {Expense} from '../types';
 
 const createExpenseDraftCriteria = () => {
@@ -37,5 +40,15 @@ export async function searchExpenseDraft() {
     fieldKey: 'hr_expenseDraft',
     numberElementsByPage: null,
     page: 0,
+  });
+}
+
+export async function searchExpense({searchValue = null, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Expense',
+    criteria: [getSearchCriterias('hr_expense', searchValue)],
+    fieldKey: 'hr_expense',
+    sortKey: 'hr_expense',
+    page,
   });
 }

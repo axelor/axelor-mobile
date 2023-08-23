@@ -17,8 +17,14 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchExpenseDraft as _searchExpenseDraft} from '../api/expense-api';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
+import {
+  searchExpenseDraft as _searchExpenseDraft,
+  searchExpense as _searchExpense,
+} from '../api/expense-api';
 
 export const searchExpenseDraft = createAsyncThunk(
   'expense/searchExpenseDraft',
@@ -33,15 +39,38 @@ export const searchExpenseDraft = createAsyncThunk(
   },
 );
 
+export const searchExpense = createAsyncThunk(
+  'expense/searchExpense',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchExpense,
+      data,
+      action: 'Hr_SliceAction_FetchExpense',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   expenseDraftList: [],
+  loadingExpense: true,
+  moreLoading: false,
+  isListEnd: false,
+  expenseList: [],
 };
 
 const expenseSlice = createSlice({
   name: 'expense',
   initialState,
   extraReducers: builder => {
+    generateInifiniteScrollCases(builder, searchExpense, {
+      loading: 'loadingExpense',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'expenseList',
+    });
     builder.addCase(searchExpenseDraft.pending, state => {
       state.loading = true;
     });
