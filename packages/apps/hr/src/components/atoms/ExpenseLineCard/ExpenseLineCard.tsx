@@ -65,7 +65,7 @@ const ExpenseLineCard = ({
   useEffect(() => {
     if (isSelectionMode) {
       Animated.timing(translateXAnim, {
-        toValue: 30,
+        toValue: 7,
         duration: 300,
         useNativeDriver: true,
       }).start();
@@ -79,6 +79,8 @@ const ExpenseLineCard = ({
   }, [isSelectionMode, translateXAnim]);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
+
+  console.log(user);
 
   return (
     <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
@@ -112,10 +114,11 @@ const ExpenseLineCard = ({
           </View>
           <View style={styles.amount}>
             {!checkNullString(totalAmount) && (
-              <Text
-                style={
-                  styles.bold
-                }>{`${totalAmount} ${user?.activeCompany?.currency?.code}`}</Text>
+              <Text style={styles.bold}>{`${totalAmount} ${
+                user?.activeCompany?.currency?.symbol != null
+                  ? user?.activeCompany?.currency?.symbol
+                  : user?.activeCompany?.currency?.code
+              }`}</Text>
             )}
           </View>
         </Card>
@@ -164,7 +167,6 @@ const getStyles = Colors =>
       height: 50,
       alignSelf: 'center',
       marginRight: 10,
-      //marginLeft: 10,
     },
     border: {
       borderLeftWidth: 7,
