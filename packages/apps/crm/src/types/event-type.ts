@@ -33,6 +33,11 @@ class EventType {
     Note: 5,
   };
 
+  static partnerTypeSelect = {
+    Company: 1,
+    Individual: 2,
+  };
+
   static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
     if (I18n) {
       switch (select) {
@@ -132,6 +137,9 @@ class EventType {
           contactPartner: _e.contactPartner?.fullName,
           location: _e.location,
           border: this.getCategoryColor(_e.typeSelect, Colors).background,
+          partner: _e.partner?.fullName,
+          eventLead: _e.eventLead?.fullName,
+          partnerTypeSelect: _e['partner.partnerTypeSelect'],
         },
       };
     });
