@@ -63,3 +63,60 @@ export const diffDate = (start: Date, end: Date): number => {
 export const incrementDate = (date: Date, days: number): Date => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 };
+
+const dayOfWeek = [
+  'Base_Day_Sun',
+  'Base_Day_Mon',
+  'Base_Day_Tue',
+  'Base_Day_Wed',
+  'Base_Day_Thu',
+  'Base_Day_Fri',
+  'Base_Day_Sat',
+];
+
+const month = [
+  'Base_Month_Jan',
+  'Base_Month_Feb',
+  'Base_Month_Mar',
+  'Base_Month_Apr',
+  'Base_Month_May',
+  'Base_Month_Jun',
+  'Base_Month_Jul',
+  'Base_Month_Aug',
+  'Base_Month_Sep',
+  'Base_Month_Oct',
+  'Base_Month_Nov',
+  'Base_Month_Dec',
+];
+
+export const getDay = (
+  date: Date,
+  I18n: {t: (key: string) => string},
+): string => {
+  return I18n.t(dayOfWeek[date.getDay()]);
+};
+
+export const getMonth = (
+  date: Date,
+  I18n: {t: (key: string) => string},
+): string => {
+  return I18n.t(month[date.getMonth()]);
+};
+
+export const getFullDateItems = (
+  date: string,
+  I18n: {t: (key: string) => string},
+): {day: string; date: number; month: string; year: number} => {
+  if (date == null) {
+    return null;
+  }
+
+  const _date = new Date(date);
+
+  return {
+    day: getDay(_date, I18n),
+    date: _date.getDate(),
+    month: getMonth(_date, I18n),
+    year: _date.getFullYear(),
+  };
+};

@@ -25,6 +25,9 @@ export {
   diffDate,
   sameDate,
   incrementDate,
+  getDay,
+  getMonth,
+  getFullDateItems,
 } from './date';
 export {displayItemName} from './displayers';
 export {
