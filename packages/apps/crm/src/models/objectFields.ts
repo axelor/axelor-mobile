@@ -79,6 +79,8 @@ export const crm_modelAPI: ObjectFields = {
     partner: schemaContructor.subObject(),
     contactPartner: schemaContructor.subObject(),
     description: schemaContructor.string(),
+    eventLead: schemaContructor.subObject(),
+    'partner.partnerTypeSelect': schemaContructor.number(),
   }),
   crm_lead: schemaContructor.object({
     name: schemaContructor.string(),
