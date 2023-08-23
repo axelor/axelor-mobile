@@ -1,0 +1,77 @@
+/*
+ * Axelor Business Solutions
+ *
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
+ *
+ * This program is free software: you can redistribute it and/or  modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import {ThemeColors} from '@axelor/aos-mobile-ui';
+
+class ExpenseType {
+  static statusSelect = {
+    Draft: 1,
+    WaitingValidation: 2,
+    Validate: 3,
+    Reimbursed: 4,
+    Refused: 5,
+    Canceled: 6,
+  };
+
+  static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
+    if (I18n) {
+      switch (select) {
+        case this.statusSelect.Draft:
+          return I18n.t('Hr_ExpenseStatus_Draft');
+        case this.statusSelect.WaitingValidation:
+          return I18n.t('Hr_ExpenseStatus_WaitingValidation');
+        case this.statusSelect.Validate:
+          return I18n.t('Hr_ExpenseStatus_Validate');
+        case this.statusSelect.Reimbursed:
+          return I18n.t('Hr_ExpenseStatus_Reimbursed');
+        case this.statusSelect.Refused:
+          return I18n.t('Hr_ExpenseStatus_Refused');
+        case this.statusSelect.Canceled:
+          return I18n.t('Hr_ExpenseStatus_Canceled');
+        default:
+          console.warn(
+            `Status provided with value ${select} is not supported by Expense`,
+          );
+          return null;
+      }
+    }
+  };
+  static getStatusColor = (status: number, Colors: ThemeColors) => {
+    switch (status) {
+      case this.statusSelect.Draft:
+        return Colors.secondaryColor;
+      case this.statusSelect.WaitingValidation:
+        return Colors.cautionColor;
+      case this.statusSelect.Validate:
+        return Colors.primaryColor;
+      case this.statusSelect.Reimbursed:
+        return Colors.priorityColor;
+      case this.statusSelect.Refused:
+        return Colors.importantColor;
+      case this.statusSelect.Canceled:
+        return Colors.plannedColor;
+      default:
+        console.warn(
+          `Status provided with value ${status} is not supported by Expense`,
+        );
+        return {};
+    }
+  };
+}
+
+export default ExpenseType;
