@@ -17,3 +17,4 @@
  */
 
 export {default as ObjectCard} from './ObjectCard/ObjectCard';
+export {default as TabsScreen} from './TabsScreen/TabsScreen';
