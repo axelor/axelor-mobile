@@ -27,7 +27,6 @@ import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as stockReducers from './features';
 import UserScreen from './screens/auth/UserScreen';
-import TestScreen from './screens/auth/TestScreen';
 import {stock_modelAPI, stock_searchFields, stock_sortFields} from './models';
 import {useStockHeaders} from './hooks/use-stock-header-actions';
 
@@ -71,11 +70,6 @@ export const StockModule: Module = {
       icon: 'warehouse',
       screen: 'InventoryListScreen',
     },
-    test: {
-      title: 'Test',
-      icon: 'warehouse',
-      screen: 'TestScreen',
-    },
   },
   screens: {
     ...CustomerDeliveryScreens,
@@ -88,10 +82,6 @@ export const StockModule: Module = {
       title: 'User_UserProfile',
       component: UserScreen,
       actionID: 'auth_user_profile',
-    },
-    TestScreen: {
-      title: 'Test',
-      component: TestScreen,
     },
   },
   translations: {
