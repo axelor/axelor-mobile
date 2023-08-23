@@ -20,8 +20,9 @@ import React, {useCallback, useState} from 'react';
 import {View} from 'react-native';
 import {animationUtil} from '@axelor/aos-mobile-ui';
 import MenuItemEntry from './MenuItemEntry';
-import {resolveSubMenus} from '../menu.helper';
+import {getMenuTitle, resolveSubMenus} from '../menu.helper';
 import SubMenuItem from './SubMenuItem';
+import {useTranslator} from '../../i18n';
 
 const SubMenuItemList = ({
   state,
@@ -32,6 +33,8 @@ const SubMenuItemList = ({
   onPress = () => {},
   disabled,
 }) => {
+  const I18n = useTranslator();
+
   const [dropdown, setDropdown] = useState(false);
 
   const handleDropdownPress = useCallback(() => {
@@ -48,7 +51,7 @@ const SubMenuItemList = ({
         route={route}
         navigation={navigation}
         icon={menuItem.icon}
-        title={menuItem.title}
+        title={getMenuTitle(menuItem, {I18n})}
         disabled={menuItem.disabled || disabled}
         onPress={handleDropdownPress}
         isDropdown={true}

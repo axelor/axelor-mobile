@@ -34,6 +34,7 @@ export const authModule: Module = {
       title: 'User_UserProfile',
       icon: 'user',
       screen: 'UserScreen',
+      isDefault: true,
     },
   },
   screens: {

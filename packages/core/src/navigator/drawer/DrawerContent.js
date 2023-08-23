@@ -41,7 +41,7 @@ import {
 } from '../../components';
 import MenuTitle from './MenuTitle';
 import {formatVersionString} from '../../utils/string';
-import {hasSubMenus} from '../menu.helper';
+import {getDefaultMenuKey, hasSubMenus} from '../menu.helper';
 
 const DrawerContent = ({
   state,
@@ -151,12 +151,24 @@ const DrawerContent = ({
     [externalMenuIsVisible, secondaryMenusLeft],
   );
 
-  const handleAuthModuleClick = () => {
-    onModuleClick(authModule.name);
+  const handleModuleClick = _module => {
+    onModuleClick(_module.name);
+    navigateToDefaultMenu(_module);
+  };
 
-    const route = state.routes.find(
-      _route => (_route.name = Object.keys(authModule.menus)[0]),
-    );
+  const navigateToDefaultMenu = selectedModule => {
+    const defaultMenuKey = getDefaultMenuKey(selectedModule);
+    if (defaultMenuKey) {
+      navigateToMenu(defaultMenuKey);
+    }
+  };
+
+  const navigateToMenu = menuKey => {
+    const route = state.routes.find(_route => _route.name === menuKey);
+
+    if (route == null) {
+      return;
+    }
 
     const focused =
       state.routes.indexOf(route) === state.index &&
@@ -211,7 +223,7 @@ const DrawerContent = ({
                       ? Colors.primaryColor.background_light
                       : null
                   }
-                  onPress={() => onModuleClick(_module.name)}
+                  onPress={() => handleModuleClick(_module)}
                   compatibility={_module.compatibilityAOS}
                 />
               </View>
@@ -221,7 +233,7 @@ const DrawerContent = ({
             <AuthMenuIconButton
               isActive={authModule.name === activeModule.name}
               showModulesSubtitle={showSubtitles}
-              onPress={handleAuthModuleClick}
+              onPress={() => handleModuleClick(authModule)}
             />
           </View>
         </View>
@@ -232,7 +244,7 @@ const DrawerContent = ({
             <MenuTitle
               key={_module.name}
               module={_module}
-              onPress={() => onModuleClick(_module.name)}
+              onPress={() => handleModuleClick(_module)}
             />
           ))}
         </View>
@@ -254,7 +266,7 @@ const DrawerContent = ({
                 <AuthMenuIconButton
                   isActive={authModule.name === activeModule.name}
                   showModulesSubtitle={showSubtitles}
-                  onPress={handleAuthModuleClick}
+                  onPress={() => handleModuleClick(authModule)}
                 />
               ) : null
             }
