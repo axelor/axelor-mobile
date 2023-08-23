@@ -31,6 +31,7 @@ interface ScrollListProps {
   filter: boolean;
   translator?: (translationKey: string) => string;
   horizontal?: boolean;
+  disabledRefresh?: boolean;
 }
 
 const ScrollList = ({
@@ -44,6 +45,7 @@ const ScrollList = ({
   filter = false,
   translator,
   horizontal = false,
+  disabledRefresh = false,
 }: ScrollListProps) => {
   const [page, setPage] = useState(0);
 
@@ -92,7 +94,7 @@ const ScrollList = ({
     <FlatList
       style={[styles.scrollView, style]}
       data={data}
-      onRefresh={updateData}
+      onRefresh={disabledRefresh ? null : updateData}
       refreshing={loadingList}
       horizontal={horizontal}
       onEndReached={onEndReached}
