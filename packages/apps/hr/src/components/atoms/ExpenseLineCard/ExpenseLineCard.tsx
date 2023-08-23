@@ -80,8 +80,6 @@ const ExpenseLineCard = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  console.log(user);
-
   return (
     <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
       <TouchableOpacity
