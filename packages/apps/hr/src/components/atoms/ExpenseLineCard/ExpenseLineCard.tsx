@@ -97,7 +97,7 @@ const ExpenseLineCard = ({
         <Card style={[styles.containerCard, styles.border]}>
           <View style={styles.date}>
             <Text>{getDay(expenseDate, I18n)}</Text>
-            <Text>{`${new Date(expenseDate).getDay()} ${getMonth(
+            <Text>{`${new Date(expenseDate).getDate()} ${getMonth(
               expenseDate,
               I18n,
             )}`}</Text>
