@@ -151,6 +151,8 @@ function EventPlanningScreen({navigation}) {
         subject={event.subject}
         contactPartner={event.contactPartner}
         location={event.location}
+        partner={event.partner}
+        eventLead={event.eventLead}
       />
     );
   };

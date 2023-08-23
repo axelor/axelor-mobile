@@ -25,6 +25,8 @@ interface PlanningEventCardProps {
   id: string | number;
   contactPartner?: string;
   location?: string;
+  partner?: string;
+  eventLead?: string;
 }
 
 const PlanningEventCard = ({
@@ -34,6 +36,8 @@ const PlanningEventCard = ({
   id,
   contactPartner,
   location,
+  partner,
+  eventLead,
 }: PlanningEventCardProps) => {
   return (
     <ObjectCard
@@ -44,6 +48,8 @@ const PlanningEventCard = ({
         items: [
           {displayText: subject, isTitle: true},
           {indicatorText: contactPartner, hideIfNull: true, iconName: 'user'},
+          {indicatorText: partner, hideIfNull: true, iconName: 'handshake'},
+          {indicatorText: eventLead, hideIfNull: true, iconName: 'user-tie'},
           {indicatorText: location, hideIfNull: true, iconName: 'map-pin'},
         ],
       }}

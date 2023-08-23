@@ -132,6 +132,8 @@ class EventType {
           contactPartner: _e.contactPartner?.fullName,
           location: _e.location,
           border: this.getCategoryColor(_e.typeSelect, Colors).background,
+          partner: _e.partner?.fullName,
+          eventLead: _e.eventLead?.fullName,
         },
       };
     });
