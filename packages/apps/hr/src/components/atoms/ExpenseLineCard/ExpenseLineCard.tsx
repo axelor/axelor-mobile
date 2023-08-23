@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
@@ -26,10 +26,9 @@ import {
   Checkbox,
 } from '@axelor/aos-mobile-ui';
 import {
+  getFullDateItems,
   useSelector,
   useTranslator,
-  getDay,
-  getMonth,
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
@@ -60,68 +59,95 @@ const ExpenseLineCard = ({
 
   const {user} = useSelector((state: any) => state.user);
 
+  const [cardHeight, setCardHeight] = useState<number>();
+
   const translateXAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isSelectionMode) {
       Animated.timing(translateXAnim, {
-        toValue: 7,
-        duration: 300,
-        useNativeDriver: true,
+        toValue: 10,
+        duration: 800,
+        useNativeDriver: false,
       }).start();
     } else {
       Animated.timing(translateXAnim, {
         toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
+        duration: 800,
+        useNativeDriver: false,
       }).start();
     }
   }, [isSelectionMode, translateXAnim]);
 
+  const cardPosition = useMemo(
+    () =>
+      isSelectionMode
+        ? translateXAnim.interpolate({
+            inputRange: [0, 10],
+            outputRange: ['0%', '10%'],
+          })
+        : 0,
+    [isSelectionMode, translateXAnim],
+  );
+
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const _date = useMemo(
+    () => getFullDateItems(expenseDate, I18n),
+    [I18n, expenseDate],
+  );
+
   return (
-    <Animated.View style={{transform: [{translateX: translateXAnim}]}}>
-      <TouchableOpacity
-        onLongPress={onLongPress}
-        onPress={onPress}
-        style={styles.container}
-        activeOpacity={0.8}>
-        {isSelectionMode && (
-          <Checkbox
-            style={styles.checkbox}
-            isChecked={isSelected}
-            onChange={onItemSelection}
-          />
-        )}
-        <Card style={[styles.containerCard, styles.border]}>
-          <View style={styles.date}>
-            <Text>{getDay(expenseDate, I18n)}</Text>
-            <Text>{`${new Date(expenseDate).getDate()} ${getMonth(
-              expenseDate,
-              I18n,
-            )}`}</Text>
-            <Text>{`${new Date(expenseDate).getFullYear()}`}</Text>
-          </View>
-          <View style={styles.verticalLine} />
-          <View style={styles.column}>
-            {!checkNullString(displayText) && (
-              <Text style={styles.bold}>{displayText}</Text>
+    <View style={[styles.container, {height: cardHeight}]}>
+      <Checkbox
+        style={styles.checkbox}
+        isDefaultChecked={isSelected}
+        onChange={onItemSelection}
+      />
+      <Animated.View
+        style={[
+          styles.animatedCard,
+          {
+            left: cardPosition,
+          },
+        ]}>
+        <TouchableOpacity
+          onLongPress={onLongPress}
+          onPress={onPress}
+          delayLongPress={200}
+          activeOpacity={1}
+          onLayout={event => {
+            const {height} = event.nativeEvent.layout;
+            setCardHeight(_current => (_current == null ? height : _current));
+          }}>
+          <Card style={[styles.containerCard, styles.border]}>
+            {_date != null && (
+              <View style={styles.date}>
+                <Text>{_date.day}</Text>
+                <Text>{`${_date.date} ${_date.month}`}</Text>
+                <Text>{`${_date.year}`}</Text>
+              </View>
             )}
-            {!checkNullString(projectName) && <Text>{projectName}</Text>}
-          </View>
-          <View style={styles.amount}>
-            {!checkNullString(totalAmount) && (
-              <Text style={styles.bold}>{`${totalAmount} ${
-                user?.activeCompany?.currency?.symbol != null
-                  ? user?.activeCompany?.currency?.symbol
-                  : user?.activeCompany?.currency?.code
-              }`}</Text>
-            )}
-          </View>
-        </Card>
-      </TouchableOpacity>
-    </Animated.View>
+            <View style={styles.verticalLine} />
+            <View style={styles.column}>
+              {!checkNullString(displayText) && (
+                <Text style={styles.bold}>{displayText}</Text>
+              )}
+              {!checkNullString(projectName) && <Text>{projectName}</Text>}
+            </View>
+            <View style={styles.amount}>
+              {!checkNullString(totalAmount) && (
+                <Text style={styles.bold}>{`${totalAmount} ${
+                  user?.activeCompany?.currency?.symbol != null
+                    ? user?.activeCompany?.currency?.symbol
+                    : user?.activeCompany?.currency?.code
+                }`}</Text>
+              )}
+            </View>
+          </Card>
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   );
 };
 
@@ -134,6 +160,13 @@ const getStyles = Colors =>
       alignSelf: 'center',
       width: '96%',
       marginHorizontal: '2%',
+      minHeight: 90,
+    },
+    animatedCard: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '100%',
     },
     containerCard: {
       paddingHorizontal: 0,

@@ -38,6 +38,8 @@ import {
 } from '../components';
 import {ExpenseLine} from '../types';
 
+const BUTTON_SIZE = 70;
+
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -46,7 +48,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const {expenseLineList, loadingExpenseLine, moreLoading, isListEnd} =
     useSelector(state => state.expenseLine);
   const {userId} = useSelector(state => state.auth);
-  const [selectedOnLongPress, setSelectedOnLongPress] = useState(null);
 
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -93,8 +94,23 @@ const ExpenseLinesListScreen = ({navigation}) => {
     });
   }, [Colors, I18n, navigation, isSelectionMode]);
 
+  const handleModeChange = itemId => {
+    setIsSelectionMode(current => {
+      const mode = !current;
+
+      if (mode) {
+        setSelectedItems([itemId]);
+      } else {
+        setSelectedItems([]);
+      }
+
+      return mode;
+    });
+  };
+
   return (
     <Screen
+      removeSpaceOnTop={true}
       fixedItems={
         isSelectionMode && (
           <ExpenseLineValidationButton
@@ -110,18 +126,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
         disabledRefresh={isSelectionMode}
         renderItem={({item}) => (
           <ExpenseLineCard
-            onLongPress={() => {
-              setIsSelectionMode(current => !current);
-              setSelectedItems([]);
-              setSelectedOnLongPress(item.id);
-              handleItemSelection(item.id);
-            }}
-            isSelected={
-              selectedItems.includes(item.id) || item.id === selectedOnLongPress
-            }
-            itemId={item.id}
-            style={styles.item}
-            onItemSelection={() => handleItemSelection(item.id)}
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
             totalAmount={item.totalAmount}
@@ -133,7 +137,10 @@ const ExpenseLinesListScreen = ({navigation}) => {
                     I18n,
                   )
             }
+            onLongPress={() => handleModeChange(item.id)}
+            onItemSelection={() => handleItemSelection(item.id)}
             isSelectionMode={isSelectionMode}
+            isSelected={selectedItems.includes(item.id)}
           />
         )}
         fetchData={fetchExpenseLineAPI}
@@ -146,7 +153,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           style={styles.floatingButton}
           iconName="camera"
           onPress={() => {}}
-          size={70}
+          size={BUTTON_SIZE}
         />
       )}
       <ExpenseAddPopup
@@ -162,16 +169,12 @@ const ExpenseLinesListScreen = ({navigation}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    item: {
-      marginHorizontal: 12,
-      marginVertical: 4,
-    },
     floatingButton: {
       backgroundColor: Colors.secondaryColor_dark.foreground,
       position: 'absolute',
       bottom: 25,
       elevation: 2,
-      left: Dimensions.get('window').width / 2 - 25,
+      left: Dimensions.get('window').width / 2 - BUTTON_SIZE / 2,
     },
   });
 
