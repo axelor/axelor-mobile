@@ -19,6 +19,9 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
+import HrScreens from './screens/';
+import {hr_modelAPI, hr_searchFields, hr_sortFields} from './models';
+import * as hrReducers from './features';
 
 export const HrModule: Module = {
   name: 'app-hr',
@@ -26,11 +29,30 @@ export const HrModule: Module = {
   subtitle: 'Hr_Hr',
   icon: 'sitemap',
   compatibilityAOS: {
-    moduleName: 'axelor-hr',
+    moduleName: 'axelor-human-resource',
     downToVersion: '7.2.0',
   },
   translations: {
     en: enTranslations,
     fr: frTranslations,
   },
+  menus: {
+    hr_menu_expenseLines: {
+      title: 'Hr_ExpenseLines',
+      icon: 'receipt',
+      screen: 'ExpenseLinesListScreen',
+    },
+  },
+  screens: {
+    ...HrScreens,
+  },
+  reducers: {...hrReducers},
+  models: {
+    objectFields: {...hr_modelAPI},
+    sortFields: {...hr_sortFields},
+    searchFields: {...hr_searchFields},
+  },
 };
+
+export * from './types';
+export * from './components';
