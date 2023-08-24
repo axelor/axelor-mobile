@@ -37,6 +37,7 @@ interface ExpenseCardProps {
   onSend: () => void;
   periodeCode?: string;
   inTaxTotal?: string;
+  employeeManagerId?: number;
 }
 
 const ExpenseCard = ({
@@ -48,6 +49,7 @@ const ExpenseCard = ({
   expenseSeq,
   periodeCode,
   inTaxTotal,
+  employeeManagerId,
 }: ExpenseCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -56,19 +58,13 @@ const ExpenseCard = ({
 
   const userCanValidate = useMemo(() => {
     if (
-      (user?.employee?.hrManager ||
-        user.employee?.managerUser?.id === user.id) &&
+      (user?.employee?.hrManager || employeeManagerId === user.id) &&
       statusSelect === Expense.statusSelect.WaitingValidation
     ) {
       return true;
     }
     return false;
-  }, [
-    statusSelect,
-    user.employee?.hrManager,
-    user.employee?.managerUser?.id,
-    user.id,
-  ]);
+  }, [employeeManagerId, statusSelect, user?.employee?.hrManager, user.id]);
 
   const isDefaultDisplay = useMemo(() => {
     if (

@@ -156,7 +156,7 @@ const ExpenseListScreen = ({}) => {
               }
               onSwitch={() =>
                 setMode(_mode => {
-                  setSelectedStatus([]);
+                  setSelectedStatus(null);
                   return _mode === My_Expense_Mode
                     ? To_Validate_Mode
                     : My_Expense_Mode;
@@ -185,6 +185,7 @@ const ExpenseListScreen = ({}) => {
             expenseSeq={item.expenseSeq}
             periodeCode={item['period.code']}
             inTaxTotal={item.inTaxTotal}
+            employeeManagerId={item['employee.managerUser']?.id}
           />
         )}
         fetchData={fetchExpenseAPI}
