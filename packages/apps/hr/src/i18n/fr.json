@@ -20,5 +20,7 @@
   "Hr_Status": "Statut",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
-  "Hr_SliceAction_FetchExpense": "récupération des notes de frais"
+  "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
+  "Hr_SliceAction_FetchMyExpense": "récupération de mes notes de frais",
+  "Hr_SliceAction_FetchExpenseToValidate": "récupération des notes de frais à valider"
 }

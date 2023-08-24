@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
   Screen,
@@ -30,7 +30,10 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseCard} from '../components';
-import {searchExpense} from '../features/expenseSlice';
+import {
+  searchExpenseToValidate,
+  searchMyExpense,
+} from '../features/expenseSlice';
 import {Expense} from '../types';
 
 const My_Expense_Mode = 'myExpenseMode';
@@ -42,81 +45,75 @@ const ExpenseListScreen = ({}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {loadingExpense, moreLoading, isListEnd, expenseList} = useSelector(
-    state => state.expense,
-  );
+  const {
+    MyexpenseList,
+    loadingMyExpense,
+    moreLoadingMyExpense,
+    isListEndMyExpense,
+    loadingExpenseToValidate,
+    moreLoadingExpenseToValidate,
+    isListEndExpenseToValidate,
+    expenseToValidateList,
+    totalNumberExpenseToValidate,
+  } = useSelector(state => state.expense);
 
   const [mode, setMode] = useState(My_Expense_Mode);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const expenseStatusListItems = useMemo(() => {
     return Expense.getStatusList(Colors, I18n);
   }, [Colors, I18n]);
 
-  const fetchExpenseAPI = useCallback(
+  useEffect(() => {
+    dispatch(searchExpenseToValidate({page: 0, user: user}));
+  }, [dispatch, user]);
+
+  const fetchMyExpenseAPI = useCallback(
     (page = 0) => {
-      dispatch(searchExpense({page: page}));
+      dispatch(searchMyExpense({page: page, userId: user.id}));
     },
-    [dispatch],
+    [dispatch, user.id],
+  );
+  const fetchExpenseToValidateAPI = useCallback(
+    (page = 0) => {
+      dispatch(searchExpenseToValidate({page: page, user: user}));
+    },
+    [dispatch, user],
   );
 
-  const numberToValidate = useMemo(() => {
-    if (expenseList == null || expenseList === []) {
-      return 0;
-    }
-    if (user?.employee?.hrManager) {
-      const filterList = expenseList?.filter(
-        item => item.statusSelect === Expense.statusSelect.WaitingValidation,
-      );
-      return filterList.length;
+  const ObjectToDisplay = useMemo(() => {
+    if (mode === My_Expense_Mode) {
+      return {
+        list: MyexpenseList,
+        loading: loadingMyExpense,
+        moreLoading: moreLoadingMyExpense,
+        isListEnd: isListEndMyExpense,
+        functionApi: fetchMyExpenseAPI,
+      };
     } else {
-      const filterList = expenseList?.filter(item => {
-        return (
-          user.employee?.managerUser?.id === user.id &&
-          item.statusSelect === Expense.statusSelect.WaitingValidation
-        );
-      });
-      return filterList.length;
+      return {
+        list: expenseToValidateList,
+        functionApi: fetchExpenseToValidateAPI,
+        loading: loadingExpenseToValidate,
+        moreLoading: moreLoadingExpenseToValidate,
+        isListEnd: isListEndExpenseToValidate,
+      };
     }
   }, [
-    expenseList,
-    user.employee?.hrManager,
-    user.employee?.managerUser?.id,
-    user.id,
+    MyexpenseList,
+    expenseToValidateList,
+    fetchExpenseToValidateAPI,
+    fetchMyExpenseAPI,
+    isListEndExpenseToValidate,
+    isListEndMyExpense,
+    loadingExpenseToValidate,
+    loadingMyExpense,
+    mode,
+    moreLoadingExpenseToValidate,
+    moreLoadingMyExpense,
   ]);
-
-  const filterOnMode = useCallback(
-    list => {
-      if (list == null || list === []) {
-        return list;
-      } else {
-        if (mode === My_Expense_Mode) {
-          return list?.filter(item => {
-            return item['employee.user.id'] === user.id;
-          });
-        }
-        if (mode === To_Validate_Mode) {
-          if (user?.employee?.hrManager) {
-            return list?.filter(
-              item =>
-                item.statusSelect === Expense.statusSelect.WaitingValidation,
-            );
-          } else {
-            return list?.filter(item => {
-              return (
-                user.employee?.managerUser?.id === user.id &&
-                item.statusSelect === Expense.statusSelect.WaitingValidation
-              );
-            });
-          }
-        }
-      }
-    },
-    [mode, user.employee?.hrManager, user.employee?.managerUser?.id, user.id],
-  );
 
   const filterOnStatus = useCallback(
     list => {
@@ -134,8 +131,8 @@ const ExpenseListScreen = ({}) => {
   );
 
   const filteredList = useMemo(
-    () => filterOnMode(filterOnStatus(expenseList)),
-    [filterOnMode, filterOnStatus, expenseList],
+    () => filterOnStatus(ObjectToDisplay.list),
+    [ObjectToDisplay.list, filterOnStatus],
   );
 
   return (
@@ -151,7 +148,7 @@ const ExpenseListScreen = ({}) => {
               rightTitle={I18n.t('Hr_ToValidate')}
               rigthElement={
                 <NumberBubble
-                  number={numberToValidate}
+                  number={totalNumberExpenseToValidate}
                   backgroundColor={Colors.secondaryColor_dark.foreground}
                   borderColor={Colors.cautionColor.background_light}
                 />
@@ -178,7 +175,7 @@ const ExpenseListScreen = ({}) => {
         }
       />
       <ScrollList
-        loadingList={loadingExpense}
+        loadingList={ObjectToDisplay.loading}
         data={filteredList}
         renderItem={({item}) => (
           <ExpenseCard
@@ -190,32 +187,31 @@ const ExpenseListScreen = ({}) => {
             employeeManagerId={item['employee.managerUser']?.id}
           />
         )}
-        fetchData={fetchExpenseAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
+        fetchData={ObjectToDisplay.functionApi}
+        moreLoading={ObjectToDisplay.moreLoading}
+        isListEnd={ObjectToDisplay.isListEnd}
         translator={I18n.t}
       />
     </Screen>
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    item: {
-      marginVertical: 4,
-    },
-    headerContainer: {
-      alignItems: 'center',
-    },
-    toggleSwitchContainer: {
-      width: '90%',
-      height: 40,
-    },
-    toggle: {
-      width: '54%',
-      height: 38,
-      borderRadius: 13,
-    },
-  });
+const styles = StyleSheet.create({
+  item: {
+    marginVertical: 4,
+  },
+  headerContainer: {
+    alignItems: 'center',
+  },
+  toggleSwitchContainer: {
+    width: '90%',
+    height: 40,
+  },
+  toggle: {
+    width: '54%',
+    height: 38,
+    borderRadius: 13,
+  },
+});
 
 export default ExpenseListScreen;

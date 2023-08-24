@@ -33,6 +33,56 @@ const createExpenseDraftCriteria = () => {
   return criteria;
 };
 
+const createMyExpenseCriteria = (searchValue, userId) => {
+  const criteria = [getSearchCriterias('hr_expense', searchValue)];
+  if (userId != null) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'employee.user.id',
+          operator: '=',
+          value: userId,
+        },
+      ],
+    });
+  }
+  return criteria;
+};
+
+const createExpenseToValidateCriteria = (searchValue, user) => {
+  const criteria = [getSearchCriterias('hr_expense', searchValue)];
+  if (user?.employee?.hrManager) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: Expense.statusSelect.WaitingValidation,
+        },
+      ],
+    });
+  } else {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'employee.managerUser.id',
+          operator: '=',
+          value: user.id,
+        },
+        {
+          fieldName: 'statusSelect',
+          operator: '=',
+          value: Expense.statusSelect.WaitingValidation,
+        },
+      ],
+    });
+  }
+  return criteria;
+};
+
 export async function searchExpenseDraft() {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
@@ -43,10 +93,24 @@ export async function searchExpenseDraft() {
   });
 }
 
-export async function searchExpense({searchValue = null, page = 0}) {
+export async function searchMyExpense({searchValue = null, page = 0, userId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
-    criteria: [getSearchCriterias('hr_expense', searchValue)],
+    criteria: createMyExpenseCriteria(searchValue, userId),
+    fieldKey: 'hr_expense',
+    sortKey: 'hr_expense',
+    page,
+  });
+}
+
+export async function searchExpenseToValidate({
+  searchValue = null,
+  page = 0,
+  user,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Expense',
+    criteria: createExpenseToValidateCriteria(searchValue, user),
     fieldKey: 'hr_expense',
     sortKey: 'hr_expense',
     page,
