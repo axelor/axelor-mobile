@@ -33,13 +33,14 @@ const OperationOrderStopwatch = ({}) => {
   const dispatch = useDispatch();
 
   const {operationOrder} = useSelector(state => state.operationOrder);
+  const {user} = useSelector(state => state.user);
 
   const {status: timerStatus, time} = useMemo(() => {
     if (!isEmpty(operationOrder)) {
-      return OperationOrder.getTimerState(operationOrder);
+      return OperationOrder.getTimerState(operationOrder, user?.id);
     }
     return {status: StopwatchType.status.Ready, time: 0};
-  }, [operationOrder]);
+  }, [operationOrder, user]);
 
   const updateStatus = useCallback(
     status => {
@@ -63,10 +64,8 @@ const OperationOrderStopwatch = ({}) => {
       onPause={() => updateStatus(OperationOrder.status.StandBy)}
       onStop={() => updateStatus(OperationOrder.status.Finished)}
       disableStop={
-        operationOrder?.statusSelect === OperationOrder.status.StandBy
-      }
-      disableCancel={
-        operationOrder?.statusSelect === OperationOrder.status.Finished
+        timerStatus !== StopwatchType.status.InProgress ||
+        timerStatus !== StopwatchType.status.Paused
       }
       hideCancel={true}
     />
