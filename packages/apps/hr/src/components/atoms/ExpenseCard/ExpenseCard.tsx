@@ -81,10 +81,6 @@ const ExpenseCard = ({
     return getBorderStyle(Expense.getStatusColor(statusSelect, Colors)).border;
   }, [Colors, statusSelect]);
 
-  const styles = useMemo(() => {
-    return getStyles(isDefaultDisplay);
-  }, [isDefaultDisplay]);
-
   return (
     <View style={[styles.container, style]}>
       <View style={styles.containerCard}>
@@ -111,8 +107,8 @@ const ExpenseCard = ({
           }}
         />
       </View>
-      <View style={styles.iconContainer}>
-        {!isDefaultDisplay && (
+      {!isDefaultDisplay && (
+        <View style={styles.iconContainer}>
           <CardIconButton
             iconName={
               statusSelect === Expense.statusSelect.Draft
@@ -127,8 +123,8 @@ const ExpenseCard = ({
             }}
             style={styles.cardIconButton}
           />
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -141,26 +137,24 @@ const getBorderStyle = Colors =>
     },
   });
 
-const getStyles = isDefaultDisplay =>
-  StyleSheet.create({
-    container: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-      width: '92%',
-      marginHorizontal: 14,
-      justifyContent: 'space-evenly',
-      alignSelf: 'center',
-    },
-    containerCard: {
-      flex: 6,
-    },
-    cardIconButton: {
-      flex: 1,
-      //marginLeft: '-5%',
-    },
-    iconContainer: {flex: 1},
-  });
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    width: '92%',
+    marginHorizontal: 14,
+    justifyContent: 'space-evenly',
+    alignSelf: 'center',
+  },
+  containerCard: {
+    flex: 6,
+  },
+  cardIconButton: {
+    flex: 1,
+  },
+  iconContainer: {flex: 1},
+});
 
 export default ExpenseCard;
