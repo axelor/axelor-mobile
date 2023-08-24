@@ -46,7 +46,7 @@ const ExpenseListScreen = ({}) => {
 
   const {user} = useSelector(state => state.user);
   const {
-    MyexpenseList,
+    myExpenseList,
     loadingMyExpense,
     moreLoadingMyExpense,
     isListEndMyExpense,
@@ -86,7 +86,7 @@ const ExpenseListScreen = ({}) => {
   const ObjectToDisplay = useMemo(() => {
     if (mode === My_Expense_Mode) {
       return {
-        list: MyexpenseList,
+        list: myExpenseList,
         loading: loadingMyExpense,
         moreLoading: moreLoadingMyExpense,
         isListEnd: isListEndMyExpense,
@@ -95,14 +95,14 @@ const ExpenseListScreen = ({}) => {
     } else {
       return {
         list: expenseToValidateList,
-        functionApi: fetchExpenseToValidateAPI,
         loading: loadingExpenseToValidate,
         moreLoading: moreLoadingExpenseToValidate,
         isListEnd: isListEndExpenseToValidate,
+        functionApi: fetchExpenseToValidateAPI,
       };
     }
   }, [
-    MyexpenseList,
+    myExpenseList,
     expenseToValidateList,
     fetchExpenseToValidateAPI,
     fetchMyExpenseAPI,
@@ -202,10 +202,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-  },
-  toggleSwitchContainer: {
-    width: '90%',
-    height: 40,
   },
   toggle: {
     width: '54%',

@@ -73,8 +73,7 @@ const initialState = {
   loadingMyExpense: true,
   moreLoadingMyExpense: false,
   isListEndMyExpense: false,
-  MyexpenseList: [],
-  totalNumberMyExpense: 0,
+  myExpenseList: [],
 
   loadingExpenseToValidate: true,
   moreLoadingExpenseToValidate: false,
@@ -91,8 +90,7 @@ const expenseSlice = createSlice({
       loading: 'loadingMyExpense',
       moreLoading: 'moreLoadingMyExpense',
       isListEnd: 'isListEndMyExpense',
-      list: 'MyexpenseList',
-      total: 'totalNumberMyExpense',
+      list: 'myExpenseList',
     });
     generateInifiniteScrollCases(
       builder,

@@ -35,51 +35,36 @@ const createExpenseDraftCriteria = () => {
 
 const createMyExpenseCriteria = (searchValue, userId) => {
   const criteria = [getSearchCriterias('hr_expense', searchValue)];
+
   if (userId != null) {
     criteria.push({
-      operator: 'and',
-      criteria: [
-        {
-          fieldName: 'employee.user.id',
-          operator: '=',
-          value: userId,
-        },
-      ],
+      fieldName: 'employee.user.id',
+      operator: '=',
+      value: userId,
     });
   }
+
   return criteria;
 };
 
 const createExpenseToValidateCriteria = (searchValue, user) => {
-  const criteria = [getSearchCriterias('hr_expense', searchValue)];
-  if (user?.employee?.hrManager) {
+  const criteria = [
+    getSearchCriterias('hr_expense', searchValue),
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: Expense.statusSelect.WaitingValidation,
+    },
+  ];
+
+  if (!user?.employee?.hrManager) {
     criteria.push({
-      operator: 'and',
-      criteria: [
-        {
-          fieldName: 'statusSelect',
-          operator: '=',
-          value: Expense.statusSelect.WaitingValidation,
-        },
-      ],
-    });
-  } else {
-    criteria.push({
-      operator: 'and',
-      criteria: [
-        {
-          fieldName: 'employee.managerUser.id',
-          operator: '=',
-          value: user.id,
-        },
-        {
-          fieldName: 'statusSelect',
-          operator: '=',
-          value: Expense.statusSelect.WaitingValidation,
-        },
-      ],
+      fieldName: 'employee.managerUser.id',
+      operator: '=',
+      value: user?.id,
     });
   }
+
   return criteria;
 };
 
