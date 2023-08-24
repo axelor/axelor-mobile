@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {
   Screen,
   ScrollList,
@@ -26,7 +26,7 @@ import {
   getCommonStyles,
   useThemeColor,
   Picker,
-  Text,
+  NumberBubble,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseCard} from '../components';
@@ -150,9 +150,11 @@ const ExpenseListScreen = ({}) => {
               leftTitle={I18n.t('Hr_MyExpenses')}
               rightTitle={I18n.t('Hr_ToValidate')}
               rigthElement={
-                <View style={styles.bubble}>
-                  <Text>{numberToValidate}</Text>
-                </View>
+                <NumberBubble
+                  number={numberToValidate}
+                  backgroundColor={Colors.secondaryColor_dark.foreground}
+                  borderColor={Colors.cautionColor.background_light}
+                />
               }
               onSwitch={() =>
                 setMode(_mode => {
@@ -213,19 +215,6 @@ const getStyles = Colors =>
       width: '54%',
       height: 38,
       borderRadius: 13,
-    },
-    bubble: {
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      borderWidth: 2,
-      borderColor: Colors.cautionColor.background_light,
-      borderRadius: Dimensions.get('window').width * 0.07,
-      width: Dimensions.get('window').width * 0.07,
-      height: Dimensions.get('window').width * 0.07,
-      position: 'absolute',
-      right: '5%',
     },
   });
 
