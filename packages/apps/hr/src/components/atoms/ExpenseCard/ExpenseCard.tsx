@@ -17,14 +17,13 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
-  Card,
   Text,
   useThemeColor,
   checkNullString,
-  Icon,
   CardIconButton,
+  ObjectCard,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
@@ -34,6 +33,8 @@ interface ExpenseCardProps {
   statusSelect: number;
   expenseSeq?: string;
   onPress: () => void;
+  onValidate: () => void;
+  onSend: () => void;
   periodeCode?: string;
   inTaxTotal?: string;
 }
@@ -41,6 +42,8 @@ interface ExpenseCardProps {
 const ExpenseCard = ({
   style,
   onPress,
+  onValidate = () => {},
+  onSend = () => {},
   statusSelect,
   expenseSeq,
   periodeCode,
@@ -88,38 +91,48 @@ const ExpenseCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-        <Card style={[styles.containerCard, borderStyle]}>
-          <View style={styles.column}>
-            {!checkNullString(expenseSeq) && (
-              <Text style={styles.bold}>{expenseSeq}</Text>
-            )}
-            {!checkNullString(periodeCode) && (
-              <Text>{`${I18n.t('Hr_Period')} : ${periodeCode}`}</Text>
-            )}
-          </View>
-          <View style={styles.middleCard}>
-            {!checkNullString(inTaxTotal) && <Text>{inTaxTotal}</Text>}
-          </View>
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </Card>
-      </TouchableOpacity>
-      {(userCanValidate || statusSelect === Expense.statusSelect.Draft) && (
-        <CardIconButton
-          iconName={
-            statusSelect === Expense.statusSelect.Draft
-              ? 'paper-plane'
-              : 'check'
-          }
-          iconColor={Colors.primaryColor.foreground}
-          onPress={() => {}}
-          style={styles.cardIconButton}
+      <View style={styles.containerCard}>
+        <ObjectCard
+          onPress={onPress}
+          style={borderStyle}
+          upperTexts={{
+            items: [
+              {displayText: expenseSeq, isTitle: true},
+              {
+                displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
+                hideIf: checkNullString(periodeCode),
+              },
+            ],
+          }}
+          sideBadges={{
+            items: [
+              {
+                customComponent: !checkNullString(inTaxTotal) && (
+                  <Text>{inTaxTotal}</Text>
+                ),
+              },
+            ],
+          }}
         />
-      )}
+      </View>
+      <View style={styles.iconContainer}>
+        {!isDefaultDisplay && (
+          <CardIconButton
+            iconName={
+              statusSelect === Expense.statusSelect.Draft
+                ? 'paper-plane'
+                : 'check'
+            }
+            iconColor={Colors.primaryColor.foreground}
+            onPress={() => {
+              statusSelect === Expense.statusSelect.Draft
+                ? onValidate()
+                : onSend();
+            }}
+            style={styles.cardIconButton}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -141,28 +154,17 @@ const getStyles = isDefaultDisplay =>
       flex: 1,
       width: '92%',
       marginHorizontal: 14,
+      justifyContent: 'space-evenly',
       alignSelf: 'center',
     },
-    middleCard: {
-      width: '25%',
-    },
     containerCard: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: isDefaultDisplay ? '98%' : '92%',
-      flex: 5,
-    },
-    column: {
-      flexDirection: 'column',
-      width: '75%',
-    },
-    bold: {
-      fontWeight: 'bold',
+      flex: 6,
     },
     cardIconButton: {
       flex: 1,
-      marginLeft: '-5%',
+      //marginLeft: '-5%',
     },
+    iconContainer: {flex: 1},
   });
 
 export default ExpenseCard;

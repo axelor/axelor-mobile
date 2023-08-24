@@ -25,13 +25,16 @@ import {
   ToggleSwitch,
   getCommonStyles,
   useThemeColor,
-  MultiValuePicker,
+  Picker,
   Text,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseCard} from '../components';
 import {searchExpense} from '../features/expenseSlice';
 import {Expense} from '../types';
+
+const My_Expense_Mode = 'myExpenseMode';
+const To_Validate_Mode = 'toValidateMode';
 
 const ExpenseListScreen = ({}) => {
   const I18n = useTranslator();
@@ -43,8 +46,8 @@ const ExpenseListScreen = ({}) => {
     state => state.expense,
   );
 
-  const [mode, setMode] = useState('myExpense');
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [mode, setMode] = useState(My_Expense_Mode);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -90,12 +93,12 @@ const ExpenseListScreen = ({}) => {
       if (list == null || list === []) {
         return list;
       } else {
-        if (mode === 'myExpense') {
+        if (mode === My_Expense_Mode) {
           return list?.filter(item => {
             return item['employee.user.id'] === user.id;
           });
         }
-        if (mode === 'toValidate') {
+        if (mode === To_Validate_Mode) {
           if (user?.employee?.hrManager) {
             return list?.filter(
               item =>
@@ -120,10 +123,8 @@ const ExpenseListScreen = ({}) => {
       if (list == null || list === []) {
         return list;
       } else {
-        if (selectedStatus.length > 0) {
-          return list?.filter(item =>
-            selectedStatus.find(status => item?.statusSelect === status.key),
-          );
+        if (selectedStatus != null) {
+          return list?.filter(item => item?.statusSelect === selectedStatus);
         } else {
           return list;
         }
@@ -156,15 +157,19 @@ const ExpenseListScreen = ({}) => {
               onSwitch={() =>
                 setMode(_mode => {
                   setSelectedStatus([]);
-                  return _mode === 'myExpense' ? 'toValidate' : 'myExpense';
+                  return _mode === My_Expense_Mode
+                    ? To_Validate_Mode
+                    : My_Expense_Mode;
                 })
               }
             />
-            {mode === 'myExpense' && (
-              <MultiValuePicker
+            {mode === My_Expense_Mode && (
+              <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
                 onValueChange={statusList => setSelectedStatus(statusList)}
+                labelField="title"
+                valueField="key"
               />
             )}
           </View>
