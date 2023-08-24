@@ -51,6 +51,7 @@ const MODE = {
   creation: 'creation',
   edition: 'edition',
   connection: 'connection',
+  unique: 'unique',
 };
 
 const FIELDS = {
@@ -62,6 +63,7 @@ const FIELDS = {
 };
 
 const SessionInputs = ({
+  style,
   sessionList,
   session,
   showUrlInput,
@@ -93,7 +95,12 @@ const SessionInputs = ({
   });
 
   useEffect(() => {
-    if (session != null && !loading && mode !== MODE.creation) {
+    if (
+      session != null &&
+      !loading &&
+      mode !== MODE.creation &&
+      mode !== MODE.unique
+    ) {
       setForm({...session});
     }
   }, [loading, mode, session]);
@@ -102,6 +109,10 @@ const SessionInputs = ({
     (value, fieldName) => {
       setForm(_current => {
         const old = _current == null ? {} : {..._current};
+        if (mode === MODE.unique) {
+          return {...old, [fieldName]: value};
+        }
+
         if (fieldName !== FIELDS.password && mode !== MODE.connection) {
           return {...old, [fieldName]: value};
         }
@@ -191,7 +202,7 @@ const SessionInputs = ({
   }
 
   return (
-    <View>
+    <View style={style}>
       <View>
         {!loading && nameSessionAlreadyExist && (
           <WarningCard
@@ -205,7 +216,7 @@ const SessionInputs = ({
         onChange={_value => handleFieldChange(_value, FIELDS.name)}
         style={styles.input}
         showRequiredFields={showRequiredFields}
-        hidden={mode === MODE.connection}
+        hidden={mode === MODE.connection || mode === MODE.unique}
       />
       <UrlInput
         value={form?.url}
@@ -249,7 +260,7 @@ const SessionInputs = ({
       <DefaultCheckbox
         value={form?.isDefault}
         onChange={_value => handleFieldChange(_value, FIELDS.isDefault)}
-        hidden={mode === MODE.connection}
+        hidden={mode === MODE.connection || mode === MODE.unique}
       />
       {loading ? (
         <ActivityIndicator size="large" />

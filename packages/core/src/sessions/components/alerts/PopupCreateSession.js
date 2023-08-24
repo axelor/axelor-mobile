@@ -77,16 +77,14 @@ const PopupCreateSession = ({
   const onPressLogin = useCallback(
     session => {
       dispatch(login({...session})).then(res => {
-        if (res.error == null && error == null) {
-          if (error == null && isMounted) {
-            sessionStorage.registerSession({
-              session,
-            });
-          }
+        if (res.error == null && isMounted) {
+          sessionStorage.registerSession({
+            session,
+          });
         }
       });
     },
-    [dispatch, error, isMounted],
+    [dispatch, isMounted],
   );
 
   useEffect(() => {

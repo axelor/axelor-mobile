@@ -47,7 +47,7 @@ class SessionStorage {
   }
 
   getSessionList(): Session[] {
-    const storageData = this.localStorage.getItem(SESSION_KEY);
+    const storageData = this.localStorage.getItem(SESSION_KEY) || [];
 
     if (storageData.some(_item => _item?.name == null)) {
       this.localStorage.setItem(
@@ -70,24 +70,16 @@ class SessionStorage {
     return sessionList.find(_session => _session.isDefault === true);
   }
 
-  registerSession({session}: {session: Session}) {
-    if (session == null) {
-      return;
-    }
-
-    let sessionList = this.getSessionList();
+  private saveSession(session: Session, list: Session[]) {
     const id = session?.id || `session-${Date.now()}`;
     const _session = {...session, id};
 
-    if (!Array.isArray(sessionList) || sessionList.length === 0) {
-      sessionList = [];
+    if (!Array.isArray(list) || list.length === 0) {
+      list = [];
     }
 
-    if (
-      session.id != null &&
-      sessionList.find(_item => _item.id === session.id)
-    ) {
-      sessionList = sessionList.map(_item => {
+    if (session.id != null && list.find(_item => _item.id === session.id)) {
+      list = list.map(_item => {
         if (_item.id === session.id) {
           return {..._item, ...session};
         }
@@ -95,12 +87,29 @@ class SessionStorage {
         return _item;
       });
     } else {
-      sessionList.push(_session);
+      list.push(_session);
     }
 
-    sessionList = manageDefaultSession(sessionList, _session);
+    list = manageDefaultSession(list, _session);
 
-    this.localStorage.setItem(SESSION_KEY, sessionList);
+    this.localStorage.setItem(SESSION_KEY, list);
+  }
+
+  saveHiddenSession(session: Session) {
+    if (session == null) {
+      return;
+    }
+
+    this.saveSession(session, []);
+  }
+
+  registerSession({session}: {session: Session}) {
+    if (session == null) {
+      return;
+    }
+
+    let sessionList = this.getSessionList();
+    this.saveSession(session, sessionList);
 
     this.updateState();
   }
