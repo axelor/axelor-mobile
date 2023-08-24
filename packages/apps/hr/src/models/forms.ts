@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {hr_formsRegister} from './forms';
-export {hr_searchFields} from './searchFields';
-export {hr_sortFields} from './sortFields';
-export {hr_modelAPI} from './objectFields';
+import {FormConfigs} from '@axelor/aos-mobile-core';
+
+export const hr_formsRegister: FormConfigs = {
+  hr_Expenseline: {
+    modelName: 'com.axelor.apps.hr.db.ExpenseLine',
+    fields: {
+      name: {
+        titleKey: 'test',
+        type: 'string',
+        required: true,
+      },
+    },
+  },
+};

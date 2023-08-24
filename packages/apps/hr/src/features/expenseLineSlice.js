@@ -20,11 +20,13 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchExpenseLines as _searchExpenseLines,
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
+  createExpenseLine as _createExpenseLine,
 } from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
@@ -62,6 +64,19 @@ export const searchGeneralExpenseLines = createAsyncThunk(
       action: 'Hr_SliceAction_SearchGeneralExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
+export const createExpenseLine = createAsyncThunk(
+  'catalog/createCatalog',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createExpenseLine,
+      data,
+      action: 'Hr_SliceAction_CreateExpenseLine',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -123,6 +138,11 @@ const expenseLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(createExpenseLine.fulfilled, (state, action) => {
+      state.expenseLineList = updateAgendaItems(state.expenseLineList, [
+        action.payload,
+      ]);
+    });
   },
 });
 

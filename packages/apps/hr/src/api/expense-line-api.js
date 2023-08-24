@@ -123,3 +123,4 @@ export async function searchKilometricExpenseLines({
     page: page,
   });
 }
+export async function createCatalog({}) {}
