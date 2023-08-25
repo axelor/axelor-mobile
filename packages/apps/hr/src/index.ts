@@ -42,6 +42,11 @@ export const HrModule: Module = {
       icon: 'receipt',
       screen: 'ExpenseLinesListScreen',
     },
+    hr_menu_expenses: {
+      title: 'Hr_Expenses',
+      icon: 'credit-card',
+      screen: 'ExpenseListScreen',
+    },
   },
   screens: {
     ...HrScreens,
