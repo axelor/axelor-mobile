@@ -38,6 +38,7 @@ interface ExpenseCardProps {
   periodeCode?: string;
   inTaxTotal?: string;
   employeeManagerId?: number;
+  employeeName?: string;
 }
 
 const ExpenseCard = ({
@@ -50,6 +51,7 @@ const ExpenseCard = ({
   periodeCode,
   inTaxTotal,
   employeeManagerId,
+  employeeName,
 }: ExpenseCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -94,13 +96,22 @@ const ExpenseCard = ({
                 displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
                 hideIf: checkNullString(periodeCode),
               },
+              {
+                iconName: 'user',
+                indicatorText: employeeName,
+                hideIfNull: true,
+              },
             ],
           }}
           sideBadges={{
             items: [
               {
                 customComponent: !checkNullString(inTaxTotal) && (
-                  <Text>{inTaxTotal}</Text>
+                  <Text>{`${inTaxTotal} ${
+                    user?.activeCompany?.currency?.symbol != null
+                      ? user?.activeCompany?.currency?.symbol
+                      : user?.activeCompany?.currency?.code
+                  }`}</Text>
                 ),
               },
             ],
@@ -155,6 +166,7 @@ const styles = StyleSheet.create({
   },
   cardIconButton: {
     flex: 1,
+    margin: 0,
   },
   iconContainer: {flex: 1},
 });

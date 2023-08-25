@@ -18,6 +18,7 @@
   "Hr_ToValidate": "To validate",
   "Hr_Period": "Period",
   "Hr_Status": "Status",
+  "Hr_employee": "employee",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",

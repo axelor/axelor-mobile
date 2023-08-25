@@ -29,7 +29,7 @@ import {
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseCard} from '../components';
+import {ExpenseCard, ExpenseSearchBar} from '../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
@@ -162,13 +162,19 @@ const ExpenseListScreen = ({}) => {
                 })
               }
             />
-            {mode === My_Expense_Mode && (
+            {mode === My_Expense_Mode ? (
               <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
                 onValueChange={statusList => setSelectedStatus(statusList)}
                 labelField="title"
                 valueField="key"
+              />
+            ) : (
+              <ExpenseSearchBar
+                showDetailsPopup={false}
+                oneFilter={true}
+                isFocus={true}
               />
             )}
           </View>
@@ -185,6 +191,9 @@ const ExpenseListScreen = ({}) => {
             periodeCode={item['period.code']}
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
+            employeeName={
+              mode === To_Validate_Mode ? item.employee?.name : null
+            }
           />
         )}
         fetchData={ObjectToDisplay.functionApi}

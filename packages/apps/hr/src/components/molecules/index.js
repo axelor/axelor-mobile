@@ -18,3 +18,4 @@
 
 export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
 export {default as ExpenseLineValidationButton} from './ExpenseLineValidationButton/ExpenseLineValidationButton';
+export {default as ExpenseSearchBar} from './ExpenseSearchBar/ExpenseSearchBar';

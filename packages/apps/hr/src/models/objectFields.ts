@@ -39,6 +39,7 @@ export const hr_modelAPI: ObjectFields = {
     period: schemaContructor.subObject(),
     'period.code': schemaContructor.string(),
     inTaxTotal: schemaContructor.string(),
+    employee: schemaContructor.subObject(),
     'employee.managerUser': schemaContructor.subObject(),
   }),
   auth_user: schemaContructor.object({
