@@ -72,6 +72,17 @@ class ExpenseType {
         return {};
     }
   };
+
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.entries(this.statusSelect).map(([key, value]) => ({
+      title: I18n.t(`Hr_ExpenseStatus_${key}`),
+      color: this.getStatusColor(value, Colors),
+      key: value,
+    }));
+  };
 }
 
 export default ExpenseType;
