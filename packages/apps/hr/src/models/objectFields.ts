@@ -32,4 +32,17 @@ export const hr_modelAPI: ObjectFields = {
   hr_expenseDraft: schemaContructor.object({
     fullName: schemaContructor.string(),
   }),
+  hr_expense: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    statusSelect: schemaContructor.number(),
+    expenseSeq: schemaContructor.string(),
+    period: schemaContructor.subObject(),
+    'period.code': schemaContructor.string(),
+    inTaxTotal: schemaContructor.string(),
+    employee: schemaContructor.subObject(),
+    'employee.managerUser': schemaContructor.subObject(),
+  }),
+  auth_user: schemaContructor.object({
+    'employee.hrManager': schemaContructor.boolean(),
+  }),
 };
