@@ -17,11 +17,19 @@
  */
 
 import ExpenseLinesListScreen from './ExpenseLinesListScreen';
+import ExpenseListScreen from './ExpenseListScreen';
 
 export default {
   ExpenseLinesListScreen: {
     title: 'Hr_ExpenseLines',
     component: ExpenseLinesListScreen,
     actionID: 'hr_expenseLine_list',
+  },
+  ExpenseListScreen: {
+    title: 'Hr_Expenses',
+    component: ExpenseListScreen,
+    options: {
+      shadedHeader: false,
+    },
   },
 };

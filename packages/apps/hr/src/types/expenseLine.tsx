@@ -29,9 +29,9 @@ class ExpenseLineType {
     if (I18n) {
       switch (select) {
         case this.kilomectricTypeSelect.OneWay:
-          return I18n.t('Hr_kilomectricTypeSelect_OneWay');
+          return I18n.t('Hr_KilomectricTypeSelect_OneWay');
         case this.kilomectricTypeSelect.RoundTrip:
-          return I18n.t('Hr_kilomectricTypeSelect_RoundTrip');
+          return I18n.t('Hr_KilomectricTypeSelect_RoundTrip');
         default:
           console.warn(
             `KilomectricTypeSelect provided with value ${select} is not supported by ExpenseLine`,
