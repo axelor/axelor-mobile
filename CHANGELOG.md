@@ -3,6 +3,62 @@ title: 6.4.0
 tags: Changelog
 ---
 
+## [6.4.6] (2023-08-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Improve UploadFileInput with new props :
+  - `title` : title to display above file picker
+  - `defaultValue` : default file
+  - `returnBase64String` : return base64 string instead on uploading Metafile (default false)
+  - `required` : define if file is required (default false)
+  - `readonly` : define if input should be read only (default false)
+  - `documentTypesAllowed` : define allowed types of documents (values 'images', 'pdf' or 'allFiles' and default is 'allFiles')
+  - `canDeleteFile` : define if file can be deleted after selection (default true)
+  - `displayPreview` : define if input should diplay preview of the selected file (default false)
+  - `maxSize` : define if max size for file selection (default 5Mo)
+- Add possibility to send DELETE request with axiosApiProvider
+- Add `required` props on DateInput component
+- Add helper to get full translated date
+
+#### Fixes
+
+- Type issues :
+  - Translator
+  - Image component props
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- DropdownCard :
+  - add props `showIcon` to define if up/down icon should be displayed
+  - improve style to use standards
+- Improve Increment with new props :
+  - `keyboardType` : define keyboard type (default 'numeric')
+  - `scale` : define scale for input value (default is base config on AOS)
+- Improve FormIncrementInput with new props :
+  - spread new Increment props
+  - `required` : define if input is required (default false)
+- Improve ScrollList with new props :
+  - `horizontal` : define if scroll should be horizontal or not
+  - `disabledRefresh` : disabled top refresh to avoid data changes
+- Enable to define InfoBubble `size` from props.
+- New component Label with basic types : error, danger, info, success
+- New component NumberBubble
+
+#### Fixes
+
+- DropdownCard :
+  - rename props `DropdownIsOpen` to `dropdownIsOpen`
+- IconButton : mark FontAwesome5 as optionnal
+- Picker : fix `isValueItem` mode logic
+- Checkbow :
+  - style issue on value change
+  - define `title` and `isDefaultChecked` as optionnal
+
 ## [6.4.5] (2023-07-31)
 
 ### @axelor/aos-mobile-ui
@@ -274,6 +330,7 @@ There are two functional packages available for Axelor Open Mobile.
   - _Operation order_: view, change of status with management of the stopwatch, view of the production file
   - _Planning vision_ of operation orders
 
+[6.4.6]: https://github.com/axelor/axelor-mobile/compare/6.4.5...6.4.6
 [6.4.5]: https://github.com/axelor/axelor-mobile/compare/6.4.4...6.4.5
 [6.4.4]: https://github.com/axelor/axelor-mobile/compare/6.4.3...6.4.4
 [6.4.3]: https://github.com/axelor/axelor-mobile/compare/6.4.2...6.4.3
