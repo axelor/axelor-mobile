@@ -17,8 +17,15 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {searchExpenseDraft as _searchExpenseDraft} from '../api/expense-api';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
+import {
+  searchExpenseDraft as _searchExpenseDraft,
+  searchMyExpense as _searchMyExpense,
+  searchExpenseToValidate as _searchExpenseToValidate,
+} from '../api/expense-api';
 
 export const searchExpenseDraft = createAsyncThunk(
   'expense/searchExpenseDraft',
@@ -33,15 +40,72 @@ export const searchExpenseDraft = createAsyncThunk(
   },
 );
 
+export const searchMyExpense = createAsyncThunk(
+  'expense/searchMyExpense',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchMyExpense,
+      data,
+      action: 'Hr_SliceAction_FetchMyExpense',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchExpenseToValidate = createAsyncThunk(
+  'expense/searchExpenseToValidate',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchExpenseToValidate,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseToValidate',
+      getState,
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   expenseDraftList: [],
+
+  loadingMyExpense: true,
+  moreLoadingMyExpense: false,
+  isListEndMyExpense: false,
+  myExpenseList: [],
+
+  loadingExpenseToValidate: true,
+  moreLoadingExpenseToValidate: false,
+  isListEndExpenseToValidate: false,
+  expenseToValidateList: [],
+  totalNumberExpenseToValidate: 0,
 };
 
 const expenseSlice = createSlice({
   name: 'expense',
   initialState,
   extraReducers: builder => {
+    generateInifiniteScrollCases(builder, searchMyExpense, {
+      loading: 'loadingMyExpense',
+      moreLoading: 'moreLoadingMyExpense',
+      isListEnd: 'isListEndMyExpense',
+      list: 'myExpenseList',
+    });
+    generateInifiniteScrollCases(
+      builder,
+      searchExpenseToValidate,
+      {
+        loading: 'loadingExpenseToValidate',
+        moreLoading: 'moreLoadingExpenseToValidate',
+        isListEnd: 'isListEndExpenseToValidate',
+        list: 'expenseToValidateList',
+        total: 'totalNumberExpenseToValidate',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     builder.addCase(searchExpenseDraft.pending, state => {
       state.loading = true;
     });
