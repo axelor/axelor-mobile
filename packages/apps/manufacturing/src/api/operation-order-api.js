@@ -166,7 +166,11 @@ export async function fetchOperationOrder({operationOrderId}) {
     data: {
       fields: operationOrderListFields,
       related: {
-        operationOrderDurationList: ['startingDateTime', 'stoppingDateTime'],
+        operationOrderDurationList: [
+          'startingDateTime',
+          'stoppingDateTime',
+          'startedBy',
+        ],
         prodProcessLine: ['objectDescriptionList'],
       },
     },
