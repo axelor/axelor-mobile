@@ -147,7 +147,18 @@ class OperationOrder {
 
   static getTimerState = (
     operationOrder: any,
+    userId?: number,
   ): {status?: number; time?: number} => {
+    const _durationList = operationOrder?.operationOrderDurationList?.filter(
+      _duration => {
+        if (userId != null) {
+          return _duration.startedBy?.id === userId;
+        }
+
+        return true;
+      },
+    );
+
     switch (operationOrder.statusSelect) {
       case OperationOrder.status.Draft:
       case OperationOrder.status.Planned:
@@ -157,17 +168,13 @@ class OperationOrder {
         };
       case OperationOrder.status.InProgress:
         return {
-          status: StopwatchType.status.InProgress,
-          time: this.getTotalDuration(
-            operationOrder?.operationOrderDurationList,
-          ),
+          status: this.getTimerStatus(_durationList),
+          time: this.getTotalDuration(_durationList),
         };
       case OperationOrder.status.StandBy:
         return {
-          status: StopwatchType.status.Paused,
-          time: this.getTotalDuration(
-            operationOrder?.operationOrderDurationList,
-          ),
+          status: this.getTimerStatus(_durationList),
+          time: this.getTotalDuration(_durationList),
         };
       case OperationOrder.status.Finished:
         return {
@@ -184,19 +191,33 @@ class OperationOrder {
 
   static getTotalDuration = (operationOrderDurationList: any): number => {
     if (operationOrderDurationList == null) {
-      console.warn('Operation order duration list cannot be null');
       return 0;
     }
 
     let totalDuration = 0;
-    operationOrderDurationList.forEach(duration => {
+
+    operationOrderDurationList.forEach(_duration => {
       let diff = calculateDiff(
-        duration.startingDateTime,
-        duration.stoppingDateTime,
+        _duration.startingDateTime,
+        _duration.stoppingDateTime,
       );
       totalDuration += diff;
     });
+
     return totalDuration;
+  };
+
+  private static getTimerStatus = (_durationList: any): number => {
+    if (!Array.isArray(_durationList) || _durationList.length === 0) {
+      return StopwatchType.status.Ready;
+    } else if (
+      _durationList.find(_duration => _duration.stoppingDateTime == null) !=
+      null
+    ) {
+      return StopwatchType.status.InProgress;
+    } else {
+      return StopwatchType.status.Paused;
+    }
   };
 
   static getCalendarListItems = (list: any[], Colors: ThemeColors): any[] => {

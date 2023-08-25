@@ -32,7 +32,10 @@ export const getApiResponseData = (response, {isArrayResponse = true}) => {
 };
 
 const getApiResponseMessage = response =>
-  response?.data?.messageStatus || response?.statusTxt;
+  response?.data?.messageStatus || response?.status;
+
+const getApiResponseCode = response =>
+  response?.data?.codeStatus || response?.statusTxt;
 
 const getApiResponseTotal = response => response?.data?.total || 0;
 
@@ -77,19 +80,13 @@ const manageError = (
         )}: ${message}.`,
       });
     }
+
+    return error.response;
   }
 };
 
-export const handlerError = (
-  message,
-  {getState = () => {}},
-  {showErrorToast, errorTracing}: errorOptionsProps,
-) => {
-  return error =>
-    manageError(error, message, getUser({getState}), {
-      showErrorToast,
-      errorTracing,
-    });
+export const handlerError = (message, {getState = () => {}}, options) => {
+  return error => manageError(error, message, getUser({getState}), options);
 };
 
 const manageSucess = (
@@ -100,10 +97,12 @@ const manageSucess = (
     isArrayResponse,
     returnTotal = false,
     resturnTotalWithData = false,
+    returnResponseMessage = false,
   },
 ) => {
   const data = getApiResponseData(response, {isArrayResponse});
   const message = getApiResponseMessage(response);
+  const code = getApiResponseCode(response);
   const total = getApiResponseTotal(response);
 
   if (showToast) {
@@ -116,8 +115,8 @@ const manageSucess = (
     });
   }
 
-  if (resturnTotalWithData) {
-    return {total, data};
+  if (resturnTotalWithData || returnResponseMessage) {
+    return {total, data, message, code};
   }
 
   if (returnTotal) {
@@ -127,17 +126,8 @@ const manageSucess = (
   return data;
 };
 
-const handlerSuccess = (
-  action,
-  {showToast, isArrayResponse, returnTotal, resturnTotalWithData},
-) => {
-  return response =>
-    manageSucess(response, action, {
-      showToast,
-      isArrayResponse,
-      returnTotal,
-      resturnTotalWithData,
-    });
+const handlerSuccess = (action, options) => {
+  return response => manageSucess(response, action, options);
 };
 
 interface ApiHandlerProps {
@@ -150,13 +140,12 @@ interface ApiHandlerProps {
     isArrayResponse?: boolean;
     returnTotal?: boolean;
     resturnTotalWithData?: boolean;
+    returnResponseMessage?: boolean;
   };
-  errorOptions?: errorOptionsProps;
-}
-
-interface errorOptionsProps {
-  showErrorToast?: boolean;
-  errorTracing?: boolean;
+  errorOptions?: {
+    showErrorToast?: boolean;
+    errorTracing?: boolean;
+  };
 }
 
 export const handlerApiCall = ({
@@ -164,24 +153,18 @@ export const handlerApiCall = ({
   data,
   action,
   getState,
-  responseOptions: {
-    showToast = false,
-    isArrayResponse = false,
-    returnTotal = false,
-    resturnTotalWithData = false,
+  responseOptions = {
+    showToast: false,
+    isArrayResponse: false,
+    returnTotal: false,
+    resturnTotalWithData: false,
+    returnResponseMessage: false,
   },
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(
-      handlerSuccess(action, {
-        showToast,
-        isArrayResponse,
-        returnTotal,
-        resturnTotalWithData,
-      }),
-    );
+    .then(handlerSuccess(action, responseOptions));
 };
 
 type InfiniteScrollStateKeys = {
