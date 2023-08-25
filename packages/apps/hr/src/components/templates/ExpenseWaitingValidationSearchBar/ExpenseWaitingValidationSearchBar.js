@@ -26,8 +26,8 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchExpenseToValidate} from '../../../features/expenseSlice';
 
-const ExpenseSearchBar = ({
-  placeholderKey = 'Hr_employee',
+const ExpenseWaitingValidationSearchBar = ({
+  placeholderKey = 'Hr_Employee',
   defaultValue = '',
   onChange = () => {},
   scanKey,
@@ -76,4 +76,4 @@ const ExpenseSearchBar = ({
   );
 };
 
-export default ExpenseSearchBar;
+export default ExpenseWaitingValidationSearchBar;

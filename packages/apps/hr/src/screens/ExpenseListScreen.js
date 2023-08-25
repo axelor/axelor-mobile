@@ -29,15 +29,17 @@ import {
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseCard, ExpenseSearchBar} from '../components';
+import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
 } from '../features/expenseSlice';
 import {Expense} from '../types';
 
-const My_Expense_Mode = 'myExpenseMode';
-const To_Validate_Mode = 'toValidateMode';
+const MODE = {
+  personnal: 'myExpenseMode',
+  validation: 'toValidateMode',
+};
 
 const ExpenseListScreen = ({}) => {
   const I18n = useTranslator();
@@ -57,7 +59,7 @@ const ExpenseListScreen = ({}) => {
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
 
-  const [mode, setMode] = useState(My_Expense_Mode);
+  const [mode, setMode] = useState(MODE.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -84,7 +86,7 @@ const ExpenseListScreen = ({}) => {
   );
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === My_Expense_Mode) {
+    if (mode === MODE.personnal) {
       return {
         list: myExpenseList,
         loading: loadingMyExpense,
@@ -148,30 +150,31 @@ const ExpenseListScreen = ({}) => {
               rightTitle={I18n.t('Hr_ToValidate')}
               rigthElement={
                 <NumberBubble
+                  style={styles.indicator}
                   number={totalNumberExpenseToValidate}
-                  backgroundColor={Colors.secondaryColor_dark.foreground}
-                  borderColor={Colors.cautionColor.background_light}
+                  color={Colors.cautionColor}
+                  isNeutralBackground={true}
                 />
               }
               onSwitch={() =>
                 setMode(_mode => {
                   setSelectedStatus(null);
-                  return _mode === My_Expense_Mode
-                    ? To_Validate_Mode
-                    : My_Expense_Mode;
+                  return _mode === MODE.personnal
+                    ? MODE.validation
+                    : MODE.personnal;
                 })
               }
             />
-            {mode === My_Expense_Mode ? (
+            {mode === MODE.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
-                onValueChange={statusList => setSelectedStatus(statusList)}
+                onValueChange={setSelectedStatus}
                 labelField="title"
                 valueField="key"
               />
             ) : (
-              <ExpenseSearchBar
+              <ExpenseWaitingValidationSearchBar
                 showDetailsPopup={false}
                 oneFilter={true}
                 isFocus={true}
@@ -191,9 +194,7 @@ const ExpenseListScreen = ({}) => {
             periodeCode={item['period.code']}
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
-            employeeName={
-              mode === To_Validate_Mode ? item.employee?.name : null
-            }
+            employeeName={mode === MODE.validation ? item.employee?.name : null}
           />
         )}
         fetchData={ObjectToDisplay.functionApi}
@@ -216,6 +217,10 @@ const styles = StyleSheet.create({
     width: '54%',
     height: 38,
     borderRadius: 13,
+  },
+  indicator: {
+    position: 'absolute',
+    right: '5%',
   },
 });
 
