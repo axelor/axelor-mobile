@@ -3,6 +3,76 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.4] (2023-08-25)
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Improve UploadFileInput with new props :
+  - `title` : title to display above file picker
+  - `defaultValue` : default file
+  - `returnBase64String` : return base64 string instead on uploading Metafile (default false)
+  - `required` : define if file is required (default false)
+  - `readonly` : define if input should be read only (default false)
+  - `documentTypesAllowed` : define allowed types of documents (values 'images', 'pdf' or 'allFiles' and default is 'allFiles')
+  - `canDeleteFile` : define if file can be deleted after selection (default true)
+  - `displayPreview` : define if input should diplay preview of the selected file (default false)
+  - `maxSize` : define if max size for file selection (default 5Mo)
+- Add possibility to send DELETE request with axiosApiProvider
+- Add `required` props on DateInput component
+- Add helper to get full translated date
+- Add management of submenus and default menu entries
+- Add contact tool to save a contact on user's phone
+- Manage compatibility with AOS modules override
+
+#### Fixes
+
+- Type issues :
+  - Translator
+  - Image component props
+- Refresh logic of header actions
+
+#### Changes
+
+- Change Android target version from 31 to 33
+- Use fetch with model fields instead of get to load user informations
+- Manage compatibility with AOS modules when there is only one app installed
+- Improve system of sessions with new design
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- DropdownCard :
+  - add props `showIcon` to define if up/down icon should be displayed
+  - improve style to use standards
+- Improve Increment with new props :
+  - `keyboardType` : define keyboard type (default 'numeric')
+  - `scale` : define scale for input value (default is base config on AOS)
+- Improve FormIncrementInput with new props :
+  - spread new Increment props
+  - `required` : define if input is required (default false)
+- Improve FormInput with new props :
+  - `multiline` : define if input should allow multilines input (default false)
+  - `adjustHeightWithLines` : define if input show adjust its height to content (default false)
+- Improve ScrollList with new props :
+  - `disabledRefresh` : disable top refresh to avoid data changes
+- Enable to define InfoBubble `size` from props.
+- New component Label with basic types : error, danger, info, success
+- New component TabsScreen
+- New component NumberBubble
+
+#### Fixes
+
+- DropdownCard :
+  - rename props `DropdownIsOpen` to `dropdownIsOpen`
+- IconButton : mark FontAwesome5 as optionnal
+- Picker : fix `isValueItem` mode logic
+- Checkbow :
+  - style issue on value change
+  - define `title` and `isDefaultChecked` as optionnal
+
 ## [7.0.3] (2023-07-31)
 
 ### @axelor/aos-mobile-core
@@ -218,6 +288,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.4]: https://github.com/axelor/axelor-mobile/compare/7.0.3...7.0.4
 [7.0.3]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.0.3
 [7.0.2]: https://github.com/axelor/axelor-mobile/compare/7.0.1...7.0.2
 [7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1

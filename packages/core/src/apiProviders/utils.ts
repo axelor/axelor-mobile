@@ -32,10 +32,10 @@ export const getApiResponseData = (response, {isArrayResponse = true}) => {
 };
 
 const getApiResponseMessage = response =>
-  response?.data?.messageStatus || response?.status;
+  response?.data?.messageStatus || response?.statusTxt;
 
 const getApiResponseCode = response =>
-  response?.data?.codeStatus || response?.statusTxt;
+  response?.data?.codeStatus || response?.status;
 
 const getApiResponseTotal = response => response?.data?.total || 0;
 
