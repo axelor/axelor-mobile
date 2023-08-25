@@ -68,20 +68,33 @@ export const updateOperationOrder = createAsyncThunk(
   'OperationOrder/updateOperationOrderStatus',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: updateOperationOrderStatus,
-      data: data,
-      action: 'Manufacturing_SliceAction_UpdateOperationOrderStatus',
-      getState: getState,
-      responseOptions: {showToast: false},
-    }).then(object =>
-      handlerApiCall({
-        fetchFunction: fetchOperationOrder,
-        data: {operationOrderId: object.id},
-        action: 'Manufacturing_SliceAction_FetchOperationOrderById',
-        getState: getState,
-        responseOptions: {isArrayResponse: false},
-      }),
-    );
+      fetchFunction: fetchOperationOrder,
+      data,
+      action: 'Manufacturing_SliceAction_FetchOperationOrderById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    })
+      .then(res =>
+        handlerApiCall({
+          fetchFunction: updateOperationOrderStatus,
+          data: {...data, version: res?.version},
+          action: 'Manufacturing_SliceAction_UpdateOperationOrderStatus',
+          getState: getState,
+          responseOptions: {showToast: false, returnResponseMessage: true},
+          errorOptions: {showErrorToast: false},
+        }),
+      )
+      .then(async res => {
+        const _data = await handlerApiCall({
+          fetchFunction: fetchOperationOrder,
+          data: {operationOrderId: data.operationOrderId},
+          action: 'Manufacturing_SliceAction_FetchOperationOrderById',
+          getState: getState,
+          responseOptions: {isArrayResponse: false},
+        });
+
+        return {...res, data: _data};
+      });
   },
 );
 
@@ -92,6 +105,7 @@ const initialState = {
   operationOrderList: [],
   loadingOrder: false,
   operationOrder: {},
+  updateMessage: null,
   plannedOperationOrderList: [],
 };
 
@@ -136,13 +150,18 @@ const operationOrderSlice = createSlice({
     });
     builder.addCase(fetchOperationOrderById.pending, state => {
       state.loadingOrder = true;
+      state.updateMessage = null;
     });
     builder.addCase(fetchOperationOrderById.fulfilled, (state, action) => {
       state.loadingOrder = false;
       state.operationOrder = action.payload;
     });
     builder.addCase(updateOperationOrder.fulfilled, (state, action) => {
-      state.operationOrder = action.payload;
+      state.operationOrder = action.payload?.data;
+      state.updateMessage = {
+        message: action.payload?.message,
+        code: action.payload?.code,
+      };
     });
   },
 });

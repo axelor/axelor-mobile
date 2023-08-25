@@ -32,6 +32,9 @@ export const getApiResponseData = (response, {isArrayResponse = true}) => {
 const getApiResponseMessage = response =>
   response?.data?.messageStatus || response?.statusTxt;
 
+const getApiResponseCode = response =>
+  response?.data?.codeStatus || response?.status;
+
 const getApiResponseTotal = response => response?.data?.total || 0;
 
 export const getFirstData = data => {
@@ -75,28 +78,28 @@ const manageError = (
         )}: ${message}.`,
       });
     }
+
+    return error.response;
   }
 };
 
-export const handlerError = (
-  message,
-  {getState = () => {}},
-  {showErrorToast, errorTracing}: errorOptionsProps,
-) => {
-  return error =>
-    manageError(error, message, getUser({getState}), {
-      showErrorToast,
-      errorTracing,
-    });
+export const handlerError = (message, {getState = () => {}}, options) => {
+  return error => manageError(error, message, getUser({getState}), options);
 };
 
 const manageSucess = (
   response,
   action,
-  {showToast = false, isArrayResponse, returnTotal = false},
+  {
+    showToast = false,
+    isArrayResponse,
+    returnTotal = false,
+    returnResponseMessage = false,
+  },
 ) => {
   const data = getApiResponseData(response, {isArrayResponse});
   const message = getApiResponseMessage(response);
+  const code = getApiResponseCode(response);
   const total = getApiResponseTotal(response);
 
   if (showToast) {
@@ -109,12 +112,19 @@ const manageSucess = (
     });
   }
 
-  return returnTotal ? total : data;
+  if (returnResponseMessage) {
+    return {total, data, message, code};
+  }
+
+  if (returnTotal) {
+    return total;
+  }
+
+  return data;
 };
 
-const handlerSuccess = (action, {showToast, isArrayResponse, returnTotal}) => {
-  return response =>
-    manageSucess(response, action, {showToast, isArrayResponse, returnTotal});
+const handlerSuccess = (action, options) => {
+  return response => manageSucess(response, action, options);
 };
 
 interface ApiHandlerProps {
@@ -126,13 +136,12 @@ interface ApiHandlerProps {
     showToast?: boolean;
     isArrayResponse?: boolean;
     returnTotal?: boolean;
+    returnResponseMessage?: boolean;
   };
-  errorOptions?: errorOptionsProps;
-}
-
-interface errorOptionsProps {
-  showErrorToast?: boolean;
-  errorTracing?: boolean;
+  errorOptions?: {
+    showErrorToast?: boolean;
+    errorTracing?: boolean;
+  };
 }
 
 export const handlerApiCall = ({
@@ -140,14 +149,15 @@ export const handlerApiCall = ({
   data,
   action,
   getState,
-  responseOptions: {
-    showToast = false,
-    isArrayResponse = false,
-    returnTotal = false,
+  responseOptions = {
+    showToast: false,
+    isArrayResponse: false,
+    returnTotal: false,
+    returnResponseMessage: false,
   },
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
     .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess(action, {showToast, isArrayResponse, returnTotal}));
+    .then(handlerSuccess(action, responseOptions));
 };
