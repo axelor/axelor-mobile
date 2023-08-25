@@ -23,6 +23,7 @@ import {
 
 const createExpenseLinesCriteria = (searchValue, userId) => {
   const criteria = [getSearchCriterias('hr_expenseLines', searchValue)];
+
   if (userId != null) {
     criteria.push({
       operator: 'and',
@@ -39,6 +40,7 @@ const createExpenseLinesCriteria = (searchValue, userId) => {
       ],
     });
   }
+
   return criteria;
 };
 

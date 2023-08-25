@@ -1,13 +1,27 @@
 {
   "Hr_HumanRessources": "Ressources humaines",
   "Hr_Hr": "RH",
-  "Hr_Expense": "Frais",
   "Hr_ExpenseLines": "Ligne de frais",
+  "Hr_Expense": "Note de frais",
+  "Hr_Expenses": "Notes de frais",
   "Hr_NewExpenseLine": "Nouvelle ligne de frais",
   "Hr_NewExpense": "Créer une nouvelle note de frais",
-  "Hr_kilomectricTypeSelect_OneWay": "Sens Unique",
-  "Hr_kilomectricTypeSelect_RoundTrip": "Aller-retour",
-
+  "Hr_KilomectricTypeSelect_OneWay": "Aller-simple",
+  "Hr_KilomectricTypeSelect_RoundTrip": "Aller-retour",
+  "Hr_ExpenseStatus_Draft": "Brouillon",
+  "Hr_ExpenseStatus_WaitingValidation": "Attente validation",
+  "Hr_ExpenseStatus_Validate": "Validé",
+  "Hr_ExpenseStatus_Reimbursed": "Remboursé",
+  "Hr_ExpenseStatus_Refused": "Refusé",
+  "Hr_ExpenseStatus_Canceled": "Annulé",
+  "Hr_MyExpenses": "Mes notes de frais",
+  "Hr_ToValidate": "À valider",
+  "Hr_Period": "Période",
+  "Hr_Status": "Statut",
+  "Hr_Employee": "Employé",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
-  "Hr_SliceAction_SearchDraftExpense": "récupération des frais brouillon"
+  "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
+  "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
+  "Hr_SliceAction_FetchMyExpense": "récupération de mes notes de frais",
+  "Hr_SliceAction_FetchExpenseToValidate": "récupération des notes de frais à valider"
 }
