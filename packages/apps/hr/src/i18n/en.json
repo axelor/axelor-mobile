@@ -19,9 +19,15 @@
   "Hr_Period": "Period",
   "Hr_Status": "Status",
   "Hr_Employee": "Employee",
+  "Hr_General": "General",
+  "Hr_Kilometric": "Kilometric",
+  "Hr_TicketNumber": "Ticket n°",
+  "Hr_TotalTTC": "Total TTC",
+  "Hr_send": "Send",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
   "Hr_SliceAction_FetchMyExpense": "fetch my expense",
-  "Hr_SliceAction_FetchExpenseToValidate": "fetch expense to validate"
+  "Hr_SliceAction_FetchExpenseToValidate": "fetch expense to validate",
+  "Hr_SliceAction_FetchExpenseById": "fetch expense by id"
 }

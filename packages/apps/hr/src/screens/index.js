@@ -18,6 +18,7 @@
 
 import ExpenseLinesListScreen from './ExpenseLinesListScreen';
 import ExpenseListScreen from './ExpenseListScreen';
+import ExpenseDetailsScreen from './ExpenseDetailsScreen';
 
 export default {
   ExpenseLinesListScreen: {
@@ -28,6 +29,13 @@ export default {
   ExpenseListScreen: {
     title: 'Hr_Expenses',
     component: ExpenseListScreen,
+    options: {
+      shadedHeader: false,
+    },
+  },
+  ExpenseDetailsScreen: {
+    title: 'Hr_Expenses',
+    component: ExpenseDetailsScreen,
     options: {
       shadedHeader: false,
     },

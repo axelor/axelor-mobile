@@ -41,6 +41,12 @@ export const hr_modelAPI: ObjectFields = {
     inTaxTotal: schemaContructor.string(),
     employee: schemaContructor.subObject(),
     'employee.managerUser': schemaContructor.subObject(),
+    kilometricExpenseLineList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    generalExpenseLineList: schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
