@@ -222,23 +222,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: '5%',
   },
-  cardIconButton: {
-    flex: 1,
-    margin: 0,
-    marginRight: '2%',
-  },
-  containerCard: {
-    flex: 6,
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'space-evenly',
-    alignSelf: 'center',
-    marginVertical: 4,
-  },
 });
 
 export default ExpenseDetailsScreen;
