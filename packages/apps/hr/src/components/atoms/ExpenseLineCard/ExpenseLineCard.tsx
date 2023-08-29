@@ -24,6 +24,7 @@ import {
   checkNullString,
   useThemeColor,
   Checkbox,
+  Icon,
 } from '@axelor/aos-mobile-ui';
 import {
   getFullDateItems,
@@ -41,6 +42,7 @@ interface ExpenseLineCardProps {
   onItemSelection: () => void;
   isSelectionMode?: boolean;
   isSelected?: boolean;
+  linkIcon?: boolean;
 }
 
 const ExpenseLineCard = ({
@@ -53,6 +55,7 @@ const ExpenseLineCard = ({
   isSelectionMode,
   onItemSelection,
   isSelected,
+  linkIcon = false,
 }: ExpenseLineCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -144,6 +147,13 @@ const ExpenseLineCard = ({
                 }`}</Text>
               )}
             </View>
+            {linkIcon && (
+              <Icon
+                style={styles.linkIcon}
+                name="external-link-alt"
+                size={10}
+              />
+            )}
           </Card>
         </TouchableOpacity>
       </Animated.View>
@@ -207,6 +217,7 @@ const getStyles = Colors =>
     checkbox: {
       marginRight: 10,
     },
+    linkIcon: {position: 'absolute', bottom: 5, right: 15},
   });
 
 export default ExpenseLineCard;

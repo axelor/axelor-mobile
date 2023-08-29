@@ -198,6 +198,7 @@ const ExpenseDetailsScreen = ({route}) => {
                       I18n,
                     )
               }
+              linkIcon={true}
             />
           )}
           fetchData={fetchExpenseGeneralLineAPI}
