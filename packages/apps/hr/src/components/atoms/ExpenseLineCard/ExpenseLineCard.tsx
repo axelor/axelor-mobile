@@ -33,6 +33,7 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
+  style?: any;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
@@ -46,6 +47,7 @@ interface ExpenseLineCardProps {
 }
 
 const ExpenseLineCard = ({
+  style,
   expenseDate,
   projectName,
   totalAmount,
@@ -101,7 +103,7 @@ const ExpenseLineCard = ({
   );
 
   return (
-    <View style={[styles.container, {height: cardHeight}]}>
+    <View style={[styles.container, {height: cardHeight}, style]}>
       <Checkbox
         style={styles.checkbox}
         isDefaultChecked={isSelected}
@@ -166,7 +168,6 @@ const getStyles = Colors =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 4,
       alignSelf: 'center',
       width: '96%',
       marginHorizontal: '2%',

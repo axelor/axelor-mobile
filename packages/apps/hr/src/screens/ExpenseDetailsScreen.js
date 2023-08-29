@@ -29,6 +29,7 @@ import {
   Text,
   Badge,
   Button,
+  CardIconButton,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLineCard} from '../components';
@@ -52,7 +53,6 @@ const ExpenseDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {loadingExpense, expense} = useSelector(state => state.expense);
-
   const {
     loadingExpenseLineByIds,
     moreLoadingExpenseLineByIds,
@@ -61,7 +61,6 @@ const ExpenseDetailsScreen = ({route}) => {
     totalNumberExpenseKilomectric,
     totalNumberExpenseGeneral,
   } = useSelector(state => state.expenseLine);
-
   const {user} = useSelector(state => state.user);
 
   const [mode, setMode] = useState(MODE.general);
@@ -120,7 +119,11 @@ const ExpenseDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<Button title={I18n.t('Hr_send')} onPress={() => {}} />}>
+      fixedItems={
+        expense.statusSelect === Expense.statusSelect.Draft && (
+          <Button title={I18n.t('Hr_send')} onPress={() => {}} />
+        )
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -186,20 +189,32 @@ const ExpenseDetailsScreen = ({route}) => {
           loadingList={loadingExpenseLineByIds}
           data={expenseLineListByIds}
           renderItem={({item}) => (
-            <ExpenseLineCard
-              expenseDate={item.expenseDate}
-              projectName={item.project?.fullName}
-              totalAmount={item.totalAmount}
-              displayText={
-                item.fromCity == null && item.toCity == null
-                  ? item.expenseProduct?.fullName
-                  : ExpenseLine.getKilomectricTypeSelect(
-                      item.kilometricTypeSelect,
-                      I18n,
-                    )
-              }
-              linkIcon={true}
-            />
+            <View style={styles.container}>
+              <View style={styles.containerCard}>
+                <ExpenseLineCard
+                  expenseDate={item.expenseDate}
+                  projectName={item.project?.fullName}
+                  totalAmount={item.totalAmount}
+                  displayText={
+                    item.fromCity == null && item.toCity == null
+                      ? item.expenseProduct?.fullName
+                      : ExpenseLine.getKilomectricTypeSelect(
+                          item.kilometricTypeSelect,
+                          I18n,
+                        )
+                  }
+                  linkIcon={true}
+                />
+              </View>
+              {expense.statusSelect === Expense.statusSelect.Draft && (
+                <CardIconButton
+                  iconName={'pencil-alt'}
+                  iconColor={Colors.primaryColor.foreground}
+                  onPress={() => {}}
+                  style={styles.cardIconButton}
+                />
+              )}
+            </View>
           )}
           fetchData={fetchExpenseGeneralLineAPI}
           moreLoading={moreLoadingExpenseLineByIds}
@@ -234,6 +249,23 @@ const styles = StyleSheet.create({
   indicator: {
     position: 'absolute',
     right: '5%',
+  },
+  cardIconButton: {
+    flex: 1,
+    margin: 0,
+    marginRight: '2%',
+  },
+  containerCard: {
+    flex: 6,
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'space-evenly',
+    alignSelf: 'center',
+    marginVertical: 4,
   },
 });
 
