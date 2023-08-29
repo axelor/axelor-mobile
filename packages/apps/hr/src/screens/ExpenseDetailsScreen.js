@@ -28,13 +28,14 @@ import {
   NumberBubble,
   Text,
   Badge,
-  Button,
-  CardIconButton,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseLineCard} from '../components';
+import {
+  ExpenseDetailsValidationButton,
+  ExpenseLineDetailCard,
+} from '../components';
 import {fetchExpenseById} from '../features/expenseSlice';
-import {Expense, ExpenseLine} from '../types';
+import {Expense} from '../types';
 import {
   searchExpenseLineByIds,
   searchGeneralByIds,
@@ -119,18 +120,7 @@ const ExpenseDetailsScreen = ({route}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={
-        <>
-          {expense.statusSelect === Expense.statusSelect.Draft && (
-            <Button title={I18n.t('Hr_send')} onPress={() => {}} />
-          )}
-          {(user?.employee?.hrManager ||
-            expense.employee?.managerUser?.id === user.id) &&
-            expense.statusSelect === Expense.statusSelect.WaitingValidation && (
-              <Button title={I18n.t('Hr_Validate')} onPress={() => {}} />
-            )}
-        </>
-      }>
+      fixedItems={<ExpenseDetailsValidationButton expense={expense} />}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -139,7 +129,7 @@ const ExpenseDetailsScreen = ({route}) => {
               <View style={styles.headerChildrenContainer}>
                 <View>
                   <Text style={styles.bold}>
-                    {`${I18n.t('Hr_TicketNumber')} ${expense.expenseSeq} `}
+                    {`${I18n.t('Hr_ExpenseNumber')} ${expense.expenseSeq} `}
                   </Text>
                 </View>
                 {!loadingExpense && (
@@ -168,7 +158,7 @@ const ExpenseDetailsScreen = ({route}) => {
                 <NumberBubble
                   style={styles.indicator}
                   number={totalNumberExpenseGeneral}
-                  color={Colors.cautionColor}
+                  color={Colors.inverseColor}
                   isNeutralBackground={true}
                 />
               }
@@ -176,7 +166,7 @@ const ExpenseDetailsScreen = ({route}) => {
                 <NumberBubble
                   style={styles.indicator}
                   number={totalNumberExpenseKilomectric}
-                  color={Colors.cautionColor}
+                  color={Colors.inverseColor}
                   isNeutralBackground={true}
                 />
               }
@@ -196,37 +186,7 @@ const ExpenseDetailsScreen = ({route}) => {
           loadingList={loadingExpenseLineByIds}
           data={expenseLineListByIds}
           renderItem={({item}) => (
-            <View style={styles.container}>
-              <View style={styles.containerCard}>
-                <ExpenseLineCard
-                  expenseDate={item.expenseDate}
-                  projectName={item.project?.fullName}
-                  totalAmount={item.totalAmount}
-                  displayText={
-                    item.fromCity == null && item.toCity == null
-                      ? item.expenseProduct?.fullName
-                      : ExpenseLine.getKilomectricTypeSelect(
-                          item.kilometricTypeSelect,
-                          I18n,
-                        )
-                  }
-                  linkIcon={
-                    item.fromCity == null &&
-                    item.toCity == null &&
-                    item.justificationMetaFile != null
-                  }
-                  pdfFile={item.justificationMetaFile}
-                />
-              </View>
-              {expense.statusSelect === Expense.statusSelect.Draft && (
-                <CardIconButton
-                  iconName={'pencil-alt'}
-                  iconColor={Colors.primaryColor.foreground}
-                  onPress={() => {}}
-                  style={styles.cardIconButton}
-                />
-              )}
-            </View>
+            <ExpenseLineDetailCard expense={expense} item={item} />
           )}
           fetchData={fetchExpenseGeneralLineAPI}
           moreLoading={moreLoadingExpenseLineByIds}
