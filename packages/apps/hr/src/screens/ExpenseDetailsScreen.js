@@ -120,9 +120,16 @@ const ExpenseDetailsScreen = ({route}) => {
     <Screen
       removeSpaceOnTop={true}
       fixedItems={
-        expense.statusSelect === Expense.statusSelect.Draft && (
-          <Button title={I18n.t('Hr_send')} onPress={() => {}} />
-        )
+        <>
+          {expense.statusSelect === Expense.statusSelect.Draft && (
+            <Button title={I18n.t('Hr_send')} onPress={() => {}} />
+          )}
+          {(user?.employee?.hrManager ||
+            expense.employee?.managerUser?.id === user.id) &&
+            expense.statusSelect === Expense.statusSelect.WaitingValidation && (
+              <Button title={I18n.t('Hr_Validate')} onPress={() => {}} />
+            )}
+        </>
       }>
       <HeaderContainer
         expandableFilter={false}

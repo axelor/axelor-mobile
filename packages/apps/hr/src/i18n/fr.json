@@ -24,6 +24,7 @@
   "Hr_TicketNumber": "Ticket n°",
   "Hr_TotalTTC": "TTC total",
   "Hr_send": "Envoyer",
+  "Hr_Validate": "Valider",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
