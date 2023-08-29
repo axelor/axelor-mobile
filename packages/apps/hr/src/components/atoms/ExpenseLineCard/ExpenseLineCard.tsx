@@ -181,6 +181,7 @@ const getStyles = Colors =>
     column: {
       flexDirection: 'column',
       flex: 3,
+      alignSelf: 'center',
     },
     date: {
       alignSelf: 'center',
