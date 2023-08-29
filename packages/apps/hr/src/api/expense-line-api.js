@@ -57,3 +57,22 @@ export async function searchExpenseLines({
     page,
   });
 }
+
+export async function searchGeneralByIds({idList, page}) {
+  if (idList.length > 0) {
+    return createStandardSearch({
+      model: 'com.axelor.apps.hr.db.ExpenseLine',
+      criteria: [
+        {
+          fieldName: 'id',
+          operator: 'in',
+          value: idList,
+        },
+      ],
+      fieldKey: 'hr_expenseLines',
+      page: page,
+    });
+  } else {
+    return [];
+  }
+}

@@ -31,9 +31,10 @@ import {
   Button,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../components';
+import {ExpenseLineCard} from '../components';
 import {fetchExpenseById} from '../features/expenseSlice';
-import {Expense} from '../types';
+import {Expense, ExpenseLine} from '../types';
+import {searchGeneralByIds} from '../features/expenseLineSlice';
 
 const MODE = {
   general: 'GeneralMode',
@@ -47,9 +48,18 @@ const ExpenseDetailsScreen = ({route}) => {
   const dispatch = useDispatch();
 
   const {loadingExpense, expense} = useSelector(state => state.expense);
+
+  const {
+    loadingExpenseGeneralLine,
+    moreLoadingExpenseGeneralLine,
+    isListEndExpenseGeneralLine,
+    expenseGeneralLineList,
+    totalNumberExpenseGeneral,
+  } = useSelector(state => state.expenseLine);
+
   const {user} = useSelector(state => state.user);
 
-  const [mode, setMode] = useState(MODE.personnal);
+  const [mode, setMode] = useState(MODE.general);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -57,33 +67,34 @@ const ExpenseDetailsScreen = ({route}) => {
     dispatch(fetchExpenseById({ExpenseId: idExpense}));
   }, [dispatch, idExpense]);
 
-  const fetchExpenseAPI = useCallback(
-    (page = 0) => {
-      dispatch(fetchExpenseById({ExpenseId: idExpense}));
-    },
-    [dispatch, idExpense],
-  );
-
   const ObjectToDisplay = useMemo(() => {
     if (mode === MODE.general) {
       return {
-        list: expense.kilometricExpenseLineList,
+        list: expense.generalExpenseLineList,
       };
     } else {
       return {
-        list: expense.generalExpenseLineList,
+        list: expense.kilometricExpenseLineList,
       };
     }
   }, [expense, mode]);
 
-  console.log('expense', expense);
+  const idToSend = useMemo(() => {
+    let idList = [];
+    if (ObjectToDisplay?.list?.length > 0) {
+      idList = ObjectToDisplay?.list?.map(item => item.id);
+    }
+    return idList;
+  }, [ObjectToDisplay.list]);
 
-  const filteredList = useMemo(
-    () => ObjectToDisplay.list,
-    [ObjectToDisplay.list],
+  const fetchExpenseGeneralLineAPI = useCallback(
+    (page = 0) => {
+      if (idToSend != null) {
+        dispatch(searchGeneralByIds({idList: idToSend, page: page}));
+      }
+    },
+    [dispatch, idToSend],
   );
-
-  console.log(expense);
 
   return (
     <Screen
@@ -122,45 +133,54 @@ const ExpenseDetailsScreen = ({route}) => {
               styleToogle={styles.toggle}
               leftTitle={I18n.t('Hr_General')}
               rightTitle={I18n.t('Hr_Kilometric')}
-              onSwitch={() =>
+              leftElement={
+                <NumberBubble
+                  style={styles.indicator}
+                  number={totalNumberExpenseGeneral}
+                  color={Colors.cautionColor}
+                  isNeutralBackground={true}
+                />
+              }
+              onSwitch={() => {
                 setMode(_mode => {
                   return _mode === MODE.general
-                    ? MODE.general
-                    : MODE.kilometric;
-                })
-              }
+                    ? MODE.kilometric
+                    : MODE.general;
+                });
+              }}
             />
           </View>
         }
       />
-      {/* <ScrollList
-        loadingList={loadingExpense}
-        data={filteredList}
+
+      <ScrollList
+        loadingList={loadingExpenseGeneralLine}
+        data={expenseGeneralLineList}
         renderItem={({item}) => (
-          <ExpenseCard
-            style={styles.item}
-            statusSelect={item.statusSelect}
-            expenseSeq={item.expenseSeq}
-            periodeCode={item['period.code']}
-            inTaxTotal={item.inTaxTotal}
-            employeeManagerId={item['employee.managerUser']?.id}
-            employeeName={mode === MODE.validation ? item.employee?.name : null}
+          <ExpenseLineCard
+            expenseDate={item.expenseDate}
+            projectName={item.project?.fullName}
+            totalAmount={item.totalAmount}
+            displayText={
+              item.fromCity == null && item.toCity == null
+                ? item.expenseProduct?.fullName
+                : ExpenseLine.getKilomectricTypeSelect(
+                    item.kilometricTypeSelect,
+                    I18n,
+                  )
+            }
           />
         )}
-        disabledRefresh={true}
-        fetchData={fetchExpenseAPI}
-        //moreLoading={ObjectToDisplay.moreLoading}
-        //isListEnd={ObjectToDisplay.isListEnd}
+        fetchData={fetchExpenseGeneralLineAPI}
+        moreLoading={moreLoadingExpenseGeneralLine}
+        isListEnd={isListEndExpenseGeneralLine}
         translator={I18n.t}
-      />*/}
+      />
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginVertical: 4,
-  },
   headerContainer: {
     marginHorizontal: 24,
   },

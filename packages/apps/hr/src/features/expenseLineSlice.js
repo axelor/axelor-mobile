@@ -21,7 +21,10 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {searchExpenseLines as _searchExpenseLines} from '../api/expense-line-api';
+import {
+  searchExpenseLines as _searchExpenseLines,
+  searchGeneralByIds as _searchGeneralByIds,
+} from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -36,11 +39,30 @@ export const fetchExpenseLine = createAsyncThunk(
   },
 );
 
+export const searchGeneralByIds = createAsyncThunk(
+  'expenseLine/searchGeneralByIds',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchGeneralByIds,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseLinesGeneralByIds',
+      getState,
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
 const initialState = {
   loadingExpenseLine: true,
   moreLoading: false,
   isListEnd: false,
   expenseLineList: [],
+
+  loadingExpenseGeneralLine: true,
+  moreLoadingExpenseGeneralLine: false,
+  isListEndExpenseGeneralLine: false,
+  expenseGeneralLineList: [],
+  totalNumberExpenseGeneral: 0,
 };
 
 const expenseLineSlice = createSlice({
@@ -53,6 +75,20 @@ const expenseLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'expenseLineList',
     });
+    generateInifiniteScrollCases(
+      builder,
+      searchGeneralByIds,
+      {
+        loading: 'loadingExpenseGeneralLine',
+        moreLoading: 'moreLoadingExpenseGeneralLine',
+        isListEnd: 'isListEndExpenseGeneralLine',
+        list: 'expenseGeneralLineList',
+        total: 'totalNumberExpenseGeneral',
+      },
+      {
+        manageTotal: true,
+      },
+    );
   },
 });
 
