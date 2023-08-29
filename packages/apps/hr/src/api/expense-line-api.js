@@ -58,7 +58,7 @@ export async function searchExpenseLines({
   });
 }
 
-export async function searchGeneralByIds({idList, page}) {
+export async function searchExpenseLineByIds({idList, page}) {
   if (idList.length > 0) {
     return createStandardSearch({
       model: 'com.axelor.apps.hr.db.ExpenseLine',

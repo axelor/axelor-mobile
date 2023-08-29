@@ -29,5 +29,8 @@
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
   "Hr_SliceAction_FetchMyExpense": "récupération de mes notes de frais",
   "Hr_SliceAction_FetchExpenseToValidate": "récupération des notes de frais à valider",
-  "Hr_SliceAction_FetchExpenseById": "récupération des expenses par id"
+  "Hr_SliceAction_FetchExpenseById": "récupération des expenses par id",
+  "Hr_SliceAction_FetchExpenseLinesByIds:": "récupération des lignes d'expense par id",
+  "Hr_SliceAction_FetchExpenseLinesKilometricByIds:": "récupération des lignes d'expense kilometriques par id",
+  "Hr_SliceAction_FetchExpenseLinesGeneralByIds": "récupération des lignes d'expense générales par id"
 }

@@ -23,7 +23,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   searchExpenseLines as _searchExpenseLines,
-  searchGeneralByIds as _searchGeneralByIds,
+  searchExpenseLineByIds as _searchExpenseLineByIds,
 } from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
@@ -39,11 +39,37 @@ export const fetchExpenseLine = createAsyncThunk(
   },
 );
 
+export const searchExpenseLineByIds = createAsyncThunk(
+  'expenseLine/searchExpenseLineByIds',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchExpenseLineByIds,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseLinesByIds',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchKilometricByIds = createAsyncThunk(
+  'expenseLine/searchKilometricByIds',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchExpenseLineByIds,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseLinesKilometricByIds',
+      getState,
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
 export const searchGeneralByIds = createAsyncThunk(
   'expenseLine/searchGeneralByIds',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchGeneralByIds,
+      fetchFunction: _searchExpenseLineByIds,
       data,
       action: 'Hr_SliceAction_FetchExpenseLinesGeneralByIds',
       getState,
@@ -58,10 +84,12 @@ const initialState = {
   isListEnd: false,
   expenseLineList: [],
 
-  loadingExpenseGeneralLine: true,
-  moreLoadingExpenseGeneralLine: false,
-  isListEndExpenseGeneralLine: false,
-  expenseGeneralLineList: [],
+  loadingExpenseLineByIds: true,
+  moreLoadingExpenseLineByIds: false,
+  isListEndExpenseLineByIds: false,
+  expenseLineListByIds: [],
+
+  totalNumberExpenseKilomectric: 0,
   totalNumberExpenseGeneral: 0,
 };
 
@@ -75,14 +103,26 @@ const expenseLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'expenseLineList',
     });
+    generateInifiniteScrollCases(builder, searchExpenseLineByIds, {
+      loading: 'loadingExpenseLineByIds',
+      moreLoading: 'moreLoadingExpenseLineByIds',
+      isListEnd: 'isListEndExpenseLineByIds',
+      list: 'expenseLineListByIds',
+    });
+    generateInifiniteScrollCases(
+      builder,
+      searchKilometricByIds,
+      {
+        total: 'totalNumberExpenseKilomectric',
+      },
+      {
+        manageTotal: true,
+      },
+    );
     generateInifiniteScrollCases(
       builder,
       searchGeneralByIds,
       {
-        loading: 'loadingExpenseGeneralLine',
-        moreLoading: 'moreLoadingExpenseGeneralLine',
-        isListEnd: 'isListEndExpenseGeneralLine',
-        list: 'expenseGeneralLineList',
         total: 'totalNumberExpenseGeneral',
       },
       {

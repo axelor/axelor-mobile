@@ -34,7 +34,11 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLineCard} from '../components';
 import {fetchExpenseById} from '../features/expenseSlice';
 import {Expense, ExpenseLine} from '../types';
-import {searchGeneralByIds} from '../features/expenseLineSlice';
+import {
+  searchExpenseLineByIds,
+  searchGeneralByIds,
+  searchKilometricByIds,
+} from '../features/expenseLineSlice';
 
 const MODE = {
   general: 'GeneralMode',
@@ -50,10 +54,11 @@ const ExpenseDetailsScreen = ({route}) => {
   const {loadingExpense, expense} = useSelector(state => state.expense);
 
   const {
-    loadingExpenseGeneralLine,
-    moreLoadingExpenseGeneralLine,
-    isListEndExpenseGeneralLine,
-    expenseGeneralLineList,
+    loadingExpenseLineByIds,
+    moreLoadingExpenseLineByIds,
+    isListEndExpenseLineByIds,
+    expenseLineListByIds,
+    totalNumberExpenseKilomectric,
     totalNumberExpenseGeneral,
   } = useSelector(state => state.expenseLine);
 
@@ -62,6 +67,22 @@ const ExpenseDetailsScreen = ({route}) => {
   const [mode, setMode] = useState(MODE.general);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  useEffect(() => {
+    const KilomectricLineIdList = expense.kilometricExpenseLineList?.map(
+      item => item.id,
+    );
+    dispatch(searchKilometricByIds({idList: KilomectricLineIdList, page: 0}));
+
+    const generalLineIdList = expense.generalExpenseLineList?.map(
+      item => item.id,
+    );
+    dispatch(searchGeneralByIds({idList: generalLineIdList, page: 0}));
+  }, [
+    dispatch,
+    expense.generalExpenseLineList,
+    expense.kilometricExpenseLineList,
+  ]);
 
   useEffect(() => {
     dispatch(fetchExpenseById({ExpenseId: idExpense}));
@@ -90,7 +111,7 @@ const ExpenseDetailsScreen = ({route}) => {
   const fetchExpenseGeneralLineAPI = useCallback(
     (page = 0) => {
       if (idToSend != null) {
-        dispatch(searchGeneralByIds({idList: idToSend, page: page}));
+        dispatch(searchExpenseLineByIds({idList: idToSend, page: page}));
       }
     },
     [dispatch, idToSend],
@@ -141,6 +162,14 @@ const ExpenseDetailsScreen = ({route}) => {
                   isNeutralBackground={true}
                 />
               }
+              rigthElement={
+                <NumberBubble
+                  style={styles.indicator}
+                  number={totalNumberExpenseKilomectric}
+                  color={Colors.cautionColor}
+                  isNeutralBackground={true}
+                />
+              }
               onSwitch={() => {
                 setMode(_mode => {
                   return _mode === MODE.general
@@ -152,30 +181,31 @@ const ExpenseDetailsScreen = ({route}) => {
           </View>
         }
       />
-
-      <ScrollList
-        loadingList={loadingExpenseGeneralLine}
-        data={expenseGeneralLineList}
-        renderItem={({item}) => (
-          <ExpenseLineCard
-            expenseDate={item.expenseDate}
-            projectName={item.project?.fullName}
-            totalAmount={item.totalAmount}
-            displayText={
-              item.fromCity == null && item.toCity == null
-                ? item.expenseProduct?.fullName
-                : ExpenseLine.getKilomectricTypeSelect(
-                    item.kilometricTypeSelect,
-                    I18n,
-                  )
-            }
-          />
-        )}
-        fetchData={fetchExpenseGeneralLineAPI}
-        moreLoading={moreLoadingExpenseGeneralLine}
-        isListEnd={isListEndExpenseGeneralLine}
-        translator={I18n.t}
-      />
+      {!loadingExpense && (
+        <ScrollList
+          loadingList={loadingExpenseLineByIds}
+          data={expenseLineListByIds}
+          renderItem={({item}) => (
+            <ExpenseLineCard
+              expenseDate={item.expenseDate}
+              projectName={item.project?.fullName}
+              totalAmount={item.totalAmount}
+              displayText={
+                item.fromCity == null && item.toCity == null
+                  ? item.expenseProduct?.fullName
+                  : ExpenseLine.getKilomectricTypeSelect(
+                      item.kilometricTypeSelect,
+                      I18n,
+                    )
+              }
+            />
+          )}
+          fetchData={fetchExpenseGeneralLineAPI}
+          moreLoading={moreLoadingExpenseLineByIds}
+          isListEnd={isListEndExpenseLineByIds}
+          translator={I18n.t}
+        />
+      )}
     </Screen>
   );
 };
