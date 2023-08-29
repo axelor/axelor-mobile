@@ -203,7 +203,12 @@ const ExpenseDetailsScreen = ({route}) => {
                           I18n,
                         )
                   }
-                  linkIcon={true}
+                  linkIcon={
+                    item.fromCity == null &&
+                    item.toCity == null &&
+                    item.justificationMetaFile != null
+                  }
+                  pdfFile={item.justificationMetaFile}
                 />
               </View>
               {expense.statusSelect === Expense.statusSelect.Draft && (

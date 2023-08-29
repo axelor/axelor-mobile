@@ -30,6 +30,7 @@ import {
   getFullDateItems,
   useSelector,
   useTranslator,
+  openFileInExternalApp,
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
@@ -38,12 +39,12 @@ interface ExpenseLineCardProps {
   projectName?: string;
   totalAmount?: string;
   displayText?: string | number;
-  onPress: () => void;
   onLongPress: () => void;
   onItemSelection: () => void;
   isSelectionMode?: boolean;
   isSelected?: boolean;
   linkIcon?: boolean;
+  pdfFile?: any;
 }
 
 const ExpenseLineCard = ({
@@ -52,17 +53,18 @@ const ExpenseLineCard = ({
   projectName,
   totalAmount,
   displayText,
-  onPress,
   onLongPress,
   isSelectionMode,
   onItemSelection,
   isSelected,
   linkIcon = false,
+  pdfFile,
 }: ExpenseLineCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {user} = useSelector((state: any) => state.user);
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [cardHeight, setCardHeight] = useState<number>();
 
@@ -102,6 +104,14 @@ const ExpenseLineCard = ({
     [I18n, expenseDate],
   );
 
+  const handleShowFile = async () => {
+    await openFileInExternalApp(
+      {fileName: pdfFile?.fileName, id: pdfFile?.id, isMetaFile: true},
+      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+      I18n,
+    );
+  };
+
   return (
     <View style={[styles.container, {height: cardHeight}, style]}>
       <Checkbox
@@ -118,7 +128,7 @@ const ExpenseLineCard = ({
         ]}>
         <TouchableOpacity
           onLongPress={onLongPress}
-          onPress={onPress}
+          onPress={pdfFile != null ? handleShowFile : null}
           delayLongPress={200}
           activeOpacity={1}
           onLayout={event => {
