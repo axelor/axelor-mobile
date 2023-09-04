@@ -69,14 +69,14 @@ export const searchGeneralExpenseLines = createAsyncThunk(
 );
 
 export const createExpenseLine = createAsyncThunk(
-  'catalog/createCatalog',
+  'expenseLine/createExpenseLine',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: _createExpenseLine,
       data,
       action: 'Hr_SliceAction_CreateExpenseLine',
       getState,
-      responseOptions: {isArrayResponse: false},
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

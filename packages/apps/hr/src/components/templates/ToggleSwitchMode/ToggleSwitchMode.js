@@ -25,13 +25,23 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ToggleSwitchMode = ({defaultValue = true, onChange = console.log}) => {
+const MODES = {
+  general: 'GeneralMode',
+  kilometric: 'KilometricMode',
+};
+
+const ToggleSwitchMode = ({
+  defaultValue = MODES.general,
+  onChange = console.log,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const [, setMode] = useState(defaultValue);
+  const [mode, setMode] = useState(defaultValue);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  console.log(mode);
 
   return (
     <ToggleSwitch
@@ -43,12 +53,15 @@ const ToggleSwitchMode = ({defaultValue = true, onChange = console.log}) => {
       styleToogle={styles.toggle}
       leftTitle={I18n.t('Hr_General')}
       rightTitle={I18n.t('Hr_Kilometric')}
-      onSwitch={() =>
-        setMode(_current => {
-          onChange(!_current);
-          return !_current;
-        })
-      }
+      onSwitch={() => {
+        setMode(_mode => {
+          const newMode =
+            _mode === MODES.general ? MODES.kilometric : MODES.general;
+          console.log('newMede', newMode);
+          onChange(newMode);
+          return newMode;
+        });
+      }}
     />
   );
 };

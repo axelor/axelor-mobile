@@ -17,7 +17,16 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {ProjectSearchBar, ToggleSwitchMode} from '../components';
+import {
+  ExpenseTypeSearchBar,
+  ProjectSearchBar,
+  ToggleSwitchMode,
+} from '../components';
+
+const MODES = {
+  general: 'GeneralMode',
+  kilometric: 'KilometricMode',
+};
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -34,7 +43,7 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         hideIf: ({objectState}) => {
           console.log(objectState);
-          return objectState.manageMode;
+          return objectState.manageMode === MODES.kilometric;
         },
       },
       project: {
@@ -42,6 +51,58 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+      },
+      expenseType: {
+        titleKey: 'Hr_ExpenseType',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ExpenseTypeSearchBar,
+        /*hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.kilometric;
+        },*/
+      },
+      expenseDate: {
+        titleKey: 'Hr_ExpenseDate',
+        type: 'date',
+        widget: 'date',
+        required: true,
+      },
+      totalAmount: {
+        titleKey: 'Hr_TotalAmount',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.kilometric;
+        },
+      },
+      totalTax: {
+        titleKey: 'Hr_TotalTax',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.kilometric;
+        },
+      },
+      justificationMetaFile: {
+        titleKey: 'Hr_Justification',
+        type: 'object',
+        widget: 'file',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.kilometric;
+        },
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
       },
     },
   },

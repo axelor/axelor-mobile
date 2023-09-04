@@ -22,4 +22,5 @@ export const hr_searchFields: SearchFields = {
   hr_expenseLines: ['expenseDate', 'project.fullName'],
   hr_expense: ['employee.name', 'expenseSeq'],
   hr_project: ['name', 'fullName'],
+  hr_expenseType: ['name', 'fullName'],
 };

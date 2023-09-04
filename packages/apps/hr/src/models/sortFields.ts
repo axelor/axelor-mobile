@@ -22,4 +22,5 @@ export const hr_sortFields: SortFields = {
   hr_expenseLines: ['expenseDate', 'createdOn'],
   hr_expense: ['createdOn'],
   hr_project: ['name', 'fullName'],
+  hr_expenseType: ['name', 'fullName'],
 };
