@@ -37,10 +37,14 @@ import {
   useScannerDeviceActivator,
 } from '../../../hooks/use-scan-activator';
 import {
+  clearScan,
   useScannedValueByKey,
   useScannerSelector,
 } from '../../../features/scannerSlice';
-import {useCameraScannerValueByKey} from '../../../features/cameraScannerSlice';
+import {
+  clearBarcode,
+  useCameraScannerValueByKey,
+} from '../../../features/cameraScannerSlice';
 import {isUrlValid} from '../../../features/authSlice';
 import {LoginButton, UpdateButton} from '../buttons';
 import {useTranslator} from '../../../i18n';
@@ -72,6 +76,7 @@ const SessionInputs = ({
   showPopup,
   onValidation,
   hidden,
+  saveBeforeScan = () => {},
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -144,12 +149,16 @@ const SessionInputs = ({
   useEffect(() => {
     if (scannedValue) {
       parseQrCode(scannedValue);
+      dispatch(clearScan());
     } else if (scanData?.value != null) {
       parseQrCode(scanData?.value);
+      dispatch(clearBarcode());
     }
-  }, [parseQrCode, scanData, scannedValue]);
+  }, [dispatch, parseQrCode, scanData, scannedValue]);
 
   const handleScanPress = useCallback(() => {
+    saveBeforeScan(form);
+
     DeviceInfo.getManufacturer()
       .then(manufacturer => {
         if (manufacturer !== 'Zebra Technologies') {
@@ -157,7 +166,7 @@ const SessionInputs = ({
         }
       })
       .then(() => onScanPress());
-  }, [onScanPress, showPopup]);
+  }, [form, onScanPress, saveBeforeScan, showPopup]);
 
   const handleTestUrl = useCallback(() => {
     dispatch(isUrlValid({url: form?.url}));
