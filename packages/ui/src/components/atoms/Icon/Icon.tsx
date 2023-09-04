@@ -31,7 +31,6 @@ interface IconProps {
   touchable?: boolean;
   visible?: boolean;
   onPress?: () => void;
-  disabled?: boolean;
 }
 
 const Icon = ({
@@ -43,18 +42,15 @@ const Icon = ({
   touchable = false,
   visible = true,
   onPress = () => {},
-  disabled = false,
 }: IconProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => {
     return getStyles(
-      Colors,
-      color == null ? Colors.secondaryColor_dark.background : color,
-      touchable ? disabled : false,
+      color === null ? Colors.secondaryColor_dark.background : color,
       size,
     );
-  }, [Colors, color, disabled, size, touchable]);
+  }, [Colors, color, size]);
 
   if (!visible) {
     return null;
@@ -64,7 +60,7 @@ const Icon = ({
     <TouchableOpacity
       style={[styles.container, style]}
       onPress={onPress}
-      disabled={!touchable || disabled}>
+      disabled={!touchable}>
       {FontAwesome5 ? (
         <Icon5 name={name} style={styles.icon} />
       ) : (
@@ -74,10 +70,10 @@ const Icon = ({
   );
 };
 
-const getStyles = (Colors, color, disabled, size) =>
+const getStyles = (color, size) =>
   StyleSheet.create({
     icon: {
-      color: disabled ? Colors.secondaryColor.background_light : color,
+      color: color,
       fontSize: size,
     },
     container: {

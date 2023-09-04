@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {AppState, StyleSheet, View} from 'react-native';
 import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {StopwatchType} from '../../../types';
 import {Timer} from '../../external';
 
+const APP_STATE = {
+  inactiveRegex: /inactive|background/,
+  activeMode: 'active',
+};
+
 interface StopwatchProps {
   startTime: number;
   status: number;
+  getTimerState?: () => {status: number; time: number};
   timerFormat: string;
   disable?: boolean;
   disablePlay?: boolean;
@@ -38,11 +44,13 @@ interface StopwatchProps {
   onPause: () => void;
   onStop: () => void;
   onCancel?: () => void;
+  useObjectStatus?: boolean;
 }
 
 const Stopwatch = ({
   startTime = 0,
   status = StopwatchType.status.Ready,
+  getTimerState = () => ({status: null, time: null}),
   timerFormat,
   disable = false,
   disablePlay = false,
@@ -55,16 +63,55 @@ const Stopwatch = ({
   onPause = () => {},
   onStop = () => {},
   onCancel = () => {},
+  useObjectStatus = false,
 }: StopwatchProps) => {
+  const appState = useRef(AppState.currentState);
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const [state, setState] = useState(status);
   const [time, setTime] = useState(startTime);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(APP_STATE.inactiveRegex) &&
+        nextAppState === APP_STATE.activeMode
+      ) {
+        const {status: _status, time: _time} = getTimerState();
+        _status != null && setState(_status);
+        _time != null && setTime(_time);
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState, getTimerState]);
+
+  useEffect(() => {
+    setTime(startTime);
+  }, [startTime]);
+
+  useEffect(() => {
+    setState(status);
+  }, [status]);
+
+  const stopwatchStatus = useMemo(() => {
+    if (useObjectStatus) {
+      return status;
+    }
+
+    return state;
+  }, [state, status, useObjectStatus]);
+
   const borderStyle = useMemo(() => {
-    return getStyles(StopwatchType.getStatusBorderColor(state, Colors)).border;
-  }, [Colors, state]);
+    return getStyles(
+      StopwatchType.getStatusBorderColor(stopwatchStatus, Colors),
+    ).border;
+  }, [Colors, stopwatchStatus]);
 
   const handlePlayBtn = () => {
     setState(StopwatchType.status.InProgress);
@@ -85,72 +132,87 @@ const Stopwatch = ({
     onCancel();
   };
 
+  const TimerButton = ({
+    name,
+    disabled,
+    onPress,
+  }: {
+    name: string;
+    disabled: boolean;
+    onPress: () => void;
+  }) => {
+    return (
+      <Icon
+        name={name}
+        size={25}
+        color={
+          disabled
+            ? Colors.secondaryColor.background_light
+            : Colors.secondaryColor_dark.background
+        }
+        touchable={!disabled}
+        onPress={onPress}
+        style={styles.btn}
+      />
+    );
+  };
+
   return (
     <Card style={[styles.container, borderStyle, style]}>
       <View style={styles.row}>
         <Text style={styles.status}>
-          {StopwatchType.getStatus(state, I18n)}
+          {StopwatchType.getStatus(stopwatchStatus, I18n)}
         </Text>
         <Icon name="stopwatch" size={18} style={styles.icon} />
       </View>
       <View style={styles.row}>
         <View style={styles.btnContainer}>
-          {state !== StopwatchType.status.InProgress && (
-            <Icon
+          {stopwatchStatus !== StopwatchType.status.InProgress && (
+            <TimerButton
               name="play"
-              size={25}
               disabled={
                 disable ||
                 disablePlay ||
-                state === StopwatchType.status.InProgress ||
-                state === StopwatchType.status.Finished
+                stopwatchStatus === StopwatchType.status.InProgress ||
+                stopwatchStatus === StopwatchType.status.Finished
               }
-              touchable={true}
               onPress={handlePlayBtn}
-              style={styles.btn}
             />
           )}
-          {state === StopwatchType.status.InProgress && (
-            <Icon
+          {stopwatchStatus === StopwatchType.status.InProgress && (
+            <TimerButton
               name="pause"
-              size={25}
               disabled={disable || disablePause}
-              touchable={true}
               onPress={handlePauseBtn}
-              style={styles.btn}
             />
           )}
-          <Icon
+          <TimerButton
             name="power-off"
-            size={25}
             disabled={
               disable ||
               disableStop ||
-              state === StopwatchType.status.Ready ||
-              state === StopwatchType.status.Finished
+              stopwatchStatus === StopwatchType.status.Ready ||
+              stopwatchStatus === StopwatchType.status.Finished
             }
-            touchable={true}
             onPress={handleStopBtn}
-            style={styles.btn}
           />
           {!hideCancel && (
-            <Icon
+            <TimerButton
               name="undo"
-              size={25}
               disabled={
-                disable || disableCancel || state === StopwatchType.status.Ready
+                disable ||
+                disableCancel ||
+                stopwatchStatus === StopwatchType.status.Ready
               }
-              touchable={true}
               onPress={handleCancelBtn}
-              style={styles.btn}
             />
           )}
         </View>
         <Timer
           time={time}
-          onCount={setTime}
+          addCount={timeToAdd => setTime(_current => _current + timeToAdd)}
           style={styles.timer}
-          isPaused={state !== StopwatchType.status.InProgress}
+          isPaused={stopwatchStatus !== StopwatchType.status.InProgress}
           timerFormat={timerFormat}
         />
       </View>
