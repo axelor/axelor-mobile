@@ -53,11 +53,18 @@ const cameraScannerSlice = createSlice({
       state.cameraKey = null;
       state.barcode = null;
     },
+    clearBarcode(state) {
+      state.barcode = null;
+    },
   },
 });
 
-export const {enableCameraScanner, scanBarcode, disableCameraScanner} =
-  cameraScannerSlice.actions;
+export const {
+  enableCameraScanner,
+  scanBarcode,
+  disableCameraScanner,
+  clearBarcode,
+} = cameraScannerSlice.actions;
 
 const selectCameraScanner = state => state.cameraScanner;
 

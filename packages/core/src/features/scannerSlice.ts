@@ -47,10 +47,14 @@ const scannerSlice = createSlice({
       state.scanKey = null;
       state.scannedValue = null;
     },
+    clearScan(state) {
+      state.scannedValue = null;
+    },
   },
 });
 
-export const {enableScan, scanValue, disableScan} = scannerSlice.actions;
+export const {enableScan, scanValue, disableScan, clearScan} =
+  scannerSlice.actions;
 
 const selectScanner = state => state.scanner;
 
