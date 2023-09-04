@@ -24,40 +24,47 @@ import {
   checkNullString,
   useThemeColor,
   Checkbox,
+  Icon,
 } from '@axelor/aos-mobile-ui';
 import {
   getFullDateItems,
   useSelector,
   useTranslator,
+  openFileInExternalApp,
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
+  style?: any;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
   displayText?: string | number;
-  onPress: () => void;
   onLongPress: () => void;
   onItemSelection: () => void;
   isSelectionMode?: boolean;
   isSelected?: boolean;
+  linkIcon?: boolean;
+  pdfFile?: any;
 }
 
 const ExpenseLineCard = ({
+  style,
   expenseDate,
   projectName,
   totalAmount,
   displayText,
-  onPress,
   onLongPress,
   isSelectionMode,
   onItemSelection,
   isSelected,
+  linkIcon = false,
+  pdfFile,
 }: ExpenseLineCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {user} = useSelector((state: any) => state.user);
+  const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [cardHeight, setCardHeight] = useState<number>();
 
@@ -97,8 +104,16 @@ const ExpenseLineCard = ({
     [I18n, expenseDate],
   );
 
+  const handleShowFile = async () => {
+    await openFileInExternalApp(
+      {fileName: pdfFile?.fileName, id: pdfFile?.id, isMetaFile: true},
+      {baseUrl: baseUrl, token: token, jsessionId: jsessionId},
+      I18n,
+    );
+  };
+
   return (
-    <View style={[styles.container, {height: cardHeight}]}>
+    <View style={[styles.container, {height: cardHeight}, style]}>
       <Checkbox
         style={styles.checkbox}
         isDefaultChecked={isSelected}
@@ -113,7 +128,7 @@ const ExpenseLineCard = ({
         ]}>
         <TouchableOpacity
           onLongPress={onLongPress}
-          onPress={onPress}
+          onPress={pdfFile != null ? handleShowFile : null}
           delayLongPress={200}
           activeOpacity={1}
           onLayout={event => {
@@ -144,6 +159,13 @@ const ExpenseLineCard = ({
                 }`}</Text>
               )}
             </View>
+            {linkIcon && (
+              <Icon
+                style={styles.linkIcon}
+                name="external-link-alt"
+                size={10}
+              />
+            )}
           </Card>
         </TouchableOpacity>
       </Animated.View>
@@ -156,7 +178,6 @@ const getStyles = Colors =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 4,
       alignSelf: 'center',
       width: '96%',
       marginHorizontal: '2%',
@@ -181,6 +202,7 @@ const getStyles = Colors =>
     column: {
       flexDirection: 'column',
       flex: 3,
+      alignSelf: 'center',
     },
     date: {
       alignSelf: 'center',
@@ -206,6 +228,7 @@ const getStyles = Colors =>
     checkbox: {
       marginRight: 10,
     },
+    linkIcon: {position: 'absolute', bottom: 5, right: 15},
   });
 
 export default ExpenseLineCard;
