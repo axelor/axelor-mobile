@@ -67,6 +67,8 @@ const PopupEditSession = ({
       mode: 'edition',
       showPopup: value => setIsBackground(!value),
       onValidation: onpressUpdate,
+      saveBeforeScan: value =>
+        setUpdateSession(_current => ({..._current, ...value})),
     }),
     [loading, onpressUpdate, sessionList, showUrlInput, updateSession],
   );

@@ -104,8 +104,8 @@ const SessionManagementScreen = ({route}) => {
           />
           <PopupCreateSession
             sessionList={sessionList}
-            popupIsOpen={popupCreateIsOpen}
-            handleClose={() => setPopupCreateIsOpen(false)}
+            visible={popupCreateIsOpen}
+            handleVisibility={setPopupCreateIsOpen}
             showUrlInput={showUrlInput}
             modeDebug={modeDebug}
             testInstanceConfig={testInstanceConfig}
