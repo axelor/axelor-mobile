@@ -17,4 +17,6 @@
  */
 
 export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
+export {default as ExpenseDetailsValidationButton} from './ExpenseDetailsValidationButton/ExpenseDetailsValidationButton';
+export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseLineDetailCard';
 export {default as ExpenseLineValidationButton} from './ExpenseLineValidationButton/ExpenseLineValidationButton';

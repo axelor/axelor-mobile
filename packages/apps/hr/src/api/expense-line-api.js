@@ -21,8 +21,12 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
+const createExpenseLineSearchCriteria = searchValue => {
+  return [getSearchCriterias('hr_expenseLines', searchValue)];
+};
+
 const createExpenseLinesCriteria = (searchValue, userId) => {
-  const criteria = [getSearchCriterias('hr_expenseLines', searchValue)];
+  const criteria = createExpenseLineSearchCriteria(searchValue);
 
   if (userId != null) {
     criteria.push({
@@ -44,6 +48,42 @@ const createExpenseLinesCriteria = (searchValue, userId) => {
   return criteria;
 };
 
+const createExpenseLineCriteria = (searchValue, expenseId) => {
+  const criteria = createExpenseLineSearchCriteria(searchValue);
+
+  if (expenseId != null) {
+    criteria.push({
+      fieldName: 'expense.id',
+      operator: '=',
+      value: expenseId,
+    });
+  }
+
+  return criteria;
+};
+
+const createGeneralExpenseLineCriteria = (searchValue, expenseId) => {
+  const criteria = createExpenseLineCriteria(searchValue, expenseId);
+
+  criteria.push({
+    fieldName: 'generalExpense',
+    operator: 'notNull',
+  });
+
+  return criteria;
+};
+
+const createKilomectricExpenseLineCriteria = (searchValue, expenseId) => {
+  const criteria = createExpenseLineCriteria(searchValue, expenseId);
+
+  criteria.push({
+    fieldName: 'kilometricExpense',
+    operator: 'notNull',
+  });
+
+  return criteria;
+};
+
 export async function searchExpenseLines({
   searchValue = null,
   userId,
@@ -55,5 +95,31 @@ export async function searchExpenseLines({
     fieldKey: 'hr_expenseLines',
     sortKey: 'hr_expenseLines',
     page,
+  });
+}
+
+export async function searchGeneralExpenseLines({
+  searchValue = null,
+  expenseId,
+  page,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.ExpenseLine',
+    criteria: createGeneralExpenseLineCriteria(searchValue, expenseId),
+    fieldKey: 'hr_expenseLines',
+    page: page,
+  });
+}
+
+export async function searchKilometricExpenseLines({
+  searchValue = null,
+  expenseId,
+  page,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.ExpenseLine',
+    criteria: createKilomectricExpenseLineCriteria(searchValue, expenseId),
+    fieldKey: 'hr_expenseLines',
+    page: page,
   });
 }
