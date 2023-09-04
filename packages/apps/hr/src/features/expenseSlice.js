@@ -25,6 +25,7 @@ import {
   searchExpenseDraft as _searchExpenseDraft,
   searchMyExpense as _searchMyExpense,
   searchExpenseToValidate as _searchExpenseToValidate,
+  getExpense,
 } from '../api/expense-api';
 
 export const searchExpenseDraft = createAsyncThunk(
@@ -66,6 +67,19 @@ export const searchExpenseToValidate = createAsyncThunk(
   },
 );
 
+export const fetchExpenseById = createAsyncThunk(
+  'expense/fetchExpenseById',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: getExpense,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseById',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 const initialState = {
   loading: true,
   expenseDraftList: [],
@@ -80,6 +94,9 @@ const initialState = {
   isListEndExpenseToValidate: false,
   expenseToValidateList: [],
   totalNumberExpenseToValidate: 0,
+
+  loadingExpense: true,
+  expense: {},
 };
 
 const expenseSlice = createSlice({
@@ -112,6 +129,13 @@ const expenseSlice = createSlice({
     builder.addCase(searchExpenseDraft.fulfilled, (state, action) => {
       state.loading = false;
       state.expenseDraftList = action.payload;
+    });
+    builder.addCase(fetchExpenseById.pending, (state, action) => {
+      state.loadingExpense = true;
+    });
+    builder.addCase(fetchExpenseById.fulfilled, (state, action) => {
+      state.loadingExpense = false;
+      state.expense = action.payload;
     });
   },
 });
