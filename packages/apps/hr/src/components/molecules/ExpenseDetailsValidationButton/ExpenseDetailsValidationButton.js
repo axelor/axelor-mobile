@@ -30,18 +30,19 @@ const ExpenseDetailsValidationButton = ({
 
   const {user} = useSelector(state => state.user);
 
-  return (
-    <>
-      {expense.statusSelect === Expense.statusSelect.Draft && (
-        <Button title={I18n.t('Hr_Send')} onPress={onSend} />
-      )}
-      {(user?.employee?.hrManager ||
-        expense.employee?.managerUser?.id === user.id) &&
-        expense.statusSelect === Expense.statusSelect.WaitingValidation && (
-          <Button title={I18n.t('Hr_Validate')} onPress={onValidate} />
-        )}
-    </>
-  );
+  if (expense.statusSelect === Expense.statusSelect.Draft) {
+    return <Button title={I18n.t('Hr_Send')} onPress={onSend} />;
+  }
+
+  if (
+    (user?.employee?.hrManager ||
+      expense.employee?.managerUser?.id === user.id) &&
+    expense.statusSelect === Expense.statusSelect.WaitingValidation
+  ) {
+    <Button title={I18n.t('Hr_Validate')} onPress={onValidate} />;
+  }
+
+  return null;
 };
 
 export default ExpenseDetailsValidationButton;

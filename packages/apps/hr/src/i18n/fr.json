@@ -22,7 +22,7 @@
   "Hr_General": "Généraux",
   "Hr_Kilometric": "Kilométriques",
   "Hr_ExpenseNumber": "Note de frais n°",
-  "Hr_TotalTTC": "TTC total",
+  "Hr_TotalATI": "Total TTC",
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",

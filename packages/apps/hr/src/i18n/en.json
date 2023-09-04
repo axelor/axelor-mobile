@@ -22,7 +22,7 @@
   "Hr_General": "General",
   "Hr_Kilometric": "Kilometric",
   "Hr_ExpenseNumber": "Expense n°",
-  "Hr_TotalTTC": "Total TTC",
+  "Hr_TotalATI": "Total A.T.I.",
   "Hr_Send": "Send",
   "Hr_Validate": "Validate",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
