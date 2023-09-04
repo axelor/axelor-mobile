@@ -25,6 +25,8 @@
   "Hr_TotalATI": "Total A.T.I.",
   "Hr_Send": "Send",
   "Hr_Validate": "Validate",
+  "Hr_Project": "Project",
+  "Hr_CreateExpenseLine": "Create expense line",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",

@@ -21,14 +21,21 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = searchValue => {
-  return [getSearchCriterias('hr_project', searchValue)];
+const createProjectCriteria = (searchValue, activeCompanyId) => {
+  const criteria = [getSearchCriterias('hr_project', searchValue)];
+  criteria.push({
+    fieldName: 'company.id',
+    operator: '=',
+    value: activeCompanyId,
+  });
+
+  return criteria;
 };
 
-export async function searchProject({searchValue, page = 0}) {
+export async function searchProject({searchValue, page = 0, activeCompanyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
-    criteria: createProjectCriteria(searchValue),
+    criteria: createProjectCriteria(searchValue, activeCompanyId),
     fieldKey: 'hr_project',
     sortKey: 'hr_project',
     page: page,

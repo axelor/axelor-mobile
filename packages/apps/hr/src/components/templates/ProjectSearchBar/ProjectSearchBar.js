@@ -30,14 +30,21 @@ const ProjectSearchBar = ({defaultValue = null, onChange = console.log}) => {
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
     state => state.project,
   );
+  const {user} = useSelector(state => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(searchProject({page, searchValue}));
+      dispatch(
+        searchProject({
+          page,
+          searchValue,
+          activeCompanyId: user?.activeCompany?.id,
+        }),
+      );
     },
-    [dispatch],
+    [dispatch, user?.activeCompany?.id],
   );
 
   const displayItemFullname = item => item.fullName;

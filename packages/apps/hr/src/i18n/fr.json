@@ -25,6 +25,8 @@
   "Hr_TotalATI": "Total TTC",
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
+  "Hr_Project": "Projet",
+  "Hr_CreateExpenseLine": "créer une ligne de note de frais",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
