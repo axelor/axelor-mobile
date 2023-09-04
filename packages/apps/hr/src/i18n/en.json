@@ -23,7 +23,7 @@
   "Hr_Kilometric": "Kilometric",
   "Hr_ExpenseNumber": "Expense n°",
   "Hr_TotalTTC": "Total TTC",
-  "Hr_send": "Send",
+  "Hr_Send": "Send",
   "Hr_Validate": "Validate",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",

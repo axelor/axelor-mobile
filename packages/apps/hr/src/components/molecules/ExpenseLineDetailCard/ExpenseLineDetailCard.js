@@ -17,12 +17,11 @@
  */
 
 import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {useThemeColor, CardIconButton} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {Expense, ExpenseLine} from '../../../types';
-import {View} from 'react-native';
 import {ExpenseLineCard} from '../../atoms';
-import {StyleSheet} from 'react-native';
 
 const ExpenseLineDetailCard = ({item, expense}) => {
   const I18n = useTranslator();

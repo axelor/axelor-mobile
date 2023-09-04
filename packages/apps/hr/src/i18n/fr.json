@@ -21,17 +21,17 @@
   "Hr_Employee": "Employé",
   "Hr_General": "Généraux",
   "Hr_Kilometric": "Kilométriques",
-  "Hr_ExpenseNumber": "note de frais n°",
+  "Hr_ExpenseNumber": "Note de frais n°",
   "Hr_TotalTTC": "TTC total",
-  "Hr_send": "Envoyer",
+  "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
   "Hr_SliceAction_FetchMyExpense": "récupération de mes notes de frais",
   "Hr_SliceAction_FetchExpenseToValidate": "récupération des notes de frais à valider",
-  "Hr_SliceAction_FetchExpenseById": "récupération des expenses par id",
-  "Hr_SliceAction_FetchExpenseLinesByIds:": "récupération des lignes d'expense par id",
-  "Hr_SliceAction_SearchKilometricExpenseLines:": "récupération des lignes d'expense kilometriques",
-  "Hr_SliceAction_SearchGeneralExpenseLines": "récupération des lignes d'expense générales"
+  "Hr_SliceAction_FetchExpenseById": "récupération des note de frais par id",
+  "Hr_SliceAction_FetchExpenseLinesByIds:": "récupération des lignes de note de frais par id",
+  "Hr_SliceAction_SearchKilometricExpenseLines:": "récupération des lignes de note de frais kilometriques",
+  "Hr_SliceAction_SearchGeneralExpenseLines": "récupération des lignes de note de frais générales"
 }

@@ -33,7 +33,7 @@ const ExpenseDetailsValidationButton = ({
   return (
     <>
       {expense.statusSelect === Expense.statusSelect.Draft && (
-        <Button title={I18n.t('Hr_send')} onPress={onSend} />
+        <Button title={I18n.t('Hr_Send')} onPress={onSend} />
       )}
       {(user?.employee?.hrManager ||
         expense.employee?.managerUser?.id === user.id) &&
