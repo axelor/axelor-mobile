@@ -14,6 +14,7 @@ const ExpenseLineFormScreen = ({navigation}) => {
 
   return (
     <FormView
+      defaultValue={{manageMode: false}}
       actions={[
         {
           key: 'create-expenseLine',

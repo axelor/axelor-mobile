@@ -20,67 +20,46 @@ import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
-import {fetchContact} from '../../../features/contactSlice';
-import {displayItemFullname} from '../../../utils/displayers';
+import {searchProject} from '../../../features/projectSlice';
 
-const ProjectSearchBar = ({
-  placeholderKey = 'Hr_Project',
-  defaultValue = null,
-  onChange = () => {},
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = true,
-  style,
-  styleTxt,
-  titleKey = 'Crm_Contact',
-  required,
-}) => {
+const ProjectSearchBar = ({defaultValue = null, onChange = console.log}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
 
-  const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+  const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
+    state => state.project,
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const fetchContactSearchBarAPI = useCallback(
+  const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchContact({page, searchValue}));
+      dispatch(searchProject({page, searchValue}));
     },
     [dispatch],
   );
 
+  const displayItemFullname = item => item.fullName;
+
   return (
-    <View
-      style={[
-        styles.searchBar,
-        Platform.OS === 'ios' ? styles.container : null,
-        style,
-      ]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      <Text style={styles.title}>{I18n.t('Hr_Project')}</Text>
       <AutoCompleteSearch
-        style={[
-          defaultValue == null && required ? styles.requiredBorder : null,
-        ]}
-        objectList={contactList}
+        style={[defaultValue == null ? styles.requiredBorder : null]}
+        objectList={projectList}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={fetchContactSearchBarAPI}
+        fetchData={searchProjectAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingContact}
+        placeholder={I18n.t('Hr_Project')}
+        showDetailsPopup={true}
+        loadingList={loadingProject}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        navigate={false}
+        oneFilter={false}
+        isFocus={false}
       />
     </View>
   );

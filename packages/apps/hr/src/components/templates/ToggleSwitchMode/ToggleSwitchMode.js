@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ToggleSwitch,
@@ -25,14 +25,11 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
-const ToggleSwitchMode = ({
-  defaultValue = null,
-  onChange = console.log,
-  readonly = false,
-  required = false,
-}) => {
+const ToggleSwitchMode = ({defaultValue = true, onChange = console.log}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+
+  const [, setMode] = useState(defaultValue);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -46,7 +43,12 @@ const ToggleSwitchMode = ({
       styleToogle={styles.toggle}
       leftTitle={I18n.t('Hr_General')}
       rightTitle={I18n.t('Hr_Kilometric')}
-      onSwitch={onChange}
+      onSwitch={() =>
+        setMode(_current => {
+          onChange(!_current);
+          return !_current;
+        })
+      }
     />
   );
 };

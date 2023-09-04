@@ -17,7 +17,7 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {ToggleSwitchMode} from '../components';
+import {ProjectSearchBar, ToggleSwitchMode} from '../components';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -25,19 +25,23 @@ export const hr_formsRegister: FormConfigs = {
     fields: {
       manageMode: {
         titleKey: 'Hr_Manage_Mode',
-        type: 'object',
+        type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
       },
       name: {
         titleKey: 'test',
         type: 'string',
-        dependsOn: {
-          fieldName: 'manageMode',
-          onChange: e => {
-            console.log(e);
-          },
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode;
         },
+      },
+      project: {
+        titleKey: 'Hr_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
       },
     },
   },

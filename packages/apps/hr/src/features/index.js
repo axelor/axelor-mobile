@@ -18,3 +18,4 @@
 
 export {expenseLineReducer as expenseLine} from './expenseLineSlice';
 export {expenseReducer as expense} from './expenseSlice';
+export {projectReducer as project} from './projectSlice';

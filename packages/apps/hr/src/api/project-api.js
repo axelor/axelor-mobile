@@ -16,10 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
 
-export const hr_sortFields: SortFields = {
-  hr_expenseLines: ['expenseDate', 'createdOn'],
-  hr_expense: ['createdOn'],
-  hr_project: ['name', 'fullName'],
+const createProjectCriteria = searchValue => {
+  return [getSearchCriterias('hr_project', searchValue)];
 };
+
+export async function searchProject({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.Project',
+    criteria: createProjectCriteria(searchValue),
+    fieldKey: 'hr_project',
+    sortKey: 'hr_project',
+    page: page,
+  });
+}

@@ -49,6 +49,10 @@ export const hr_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
+  hr_project: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
   }),
