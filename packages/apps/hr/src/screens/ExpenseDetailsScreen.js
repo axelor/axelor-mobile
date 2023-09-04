@@ -37,9 +37,8 @@ import {
 import {fetchExpenseById} from '../features/expenseSlice';
 import {Expense} from '../types';
 import {
-  searchExpenseLineByIds,
-  searchGeneralByIds,
-  searchKilometricByIds,
+  searchGeneralExpenseLines,
+  searchKilometricExpenseLines,
 } from '../features/expenseLineSlice';
 
 const MODE = {
@@ -55,12 +54,17 @@ const ExpenseDetailsScreen = ({route}) => {
 
   const {loadingExpense, expense} = useSelector(state => state.expense);
   const {
-    loadingExpenseLineByIds,
-    moreLoadingExpenseLineByIds,
-    isListEndExpenseLineByIds,
-    expenseLineListByIds,
-    totalNumberExpenseKilomectric,
+    generalExpenseLineList,
+    isListEndGeneralExpenseLine,
+    moreLoadingGeneralExpenseLine,
+    loadingGeneralExpenseLine,
     totalNumberExpenseGeneral,
+
+    loadingKilometricExpenseLine,
+    moreLoadingKilometricExpenseLine,
+    isListEndKilometricExpenseLine,
+    kilometricExpenseLineList,
+    totalNumberExpenseKilomectric,
   } = useSelector(state => state.expenseLine);
   const {user} = useSelector(state => state.user);
 
@@ -69,18 +73,13 @@ const ExpenseDetailsScreen = ({route}) => {
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   useEffect(() => {
-    const KilomectricLineIdList = expense.kilometricExpenseLineList?.map(
-      item => item.id,
-    );
-    dispatch(searchKilometricByIds({idList: KilomectricLineIdList, page: 0}));
+    dispatch(searchKilometricExpenseLines({expenseId: expense?.id, page: 0}));
 
-    const generalLineIdList = expense.generalExpenseLineList?.map(
-      item => item.id,
-    );
-    dispatch(searchGeneralByIds({idList: generalLineIdList, page: 0}));
+    dispatch(searchGeneralExpenseLines({expenseId: expense?.id, page: 0}));
   }, [
     dispatch,
     expense.generalExpenseLineList,
+    expense?.id,
     expense.kilometricExpenseLineList,
   ]);
 
@@ -91,31 +90,51 @@ const ExpenseDetailsScreen = ({route}) => {
   const ObjectToDisplay = useMemo(() => {
     if (mode === MODE.general) {
       return {
-        list: expense.generalExpenseLineList,
+        loading: loadingGeneralExpenseLine,
+        moreLoading: moreLoadingGeneralExpenseLine,
+        isListEnd: isListEndGeneralExpenseLine,
+        list: generalExpenseLineList,
       };
     } else {
       return {
-        list: expense.kilometricExpenseLineList,
+        loading: loadingKilometricExpenseLine,
+        moreLoading: moreLoadingKilometricExpenseLine,
+        isListEnd: isListEndKilometricExpenseLine,
+        list: kilometricExpenseLineList,
       };
     }
-  }, [expense, mode]);
+  }, [
+    generalExpenseLineList,
+    isListEndGeneralExpenseLine,
+    isListEndKilometricExpenseLine,
+    kilometricExpenseLineList,
+    loadingGeneralExpenseLine,
+    loadingKilometricExpenseLine,
+    mode,
+    moreLoadingGeneralExpenseLine,
+    moreLoadingKilometricExpenseLine,
+  ]);
 
-  const idToSend = useMemo(() => {
-    let idList = [];
-    if (ObjectToDisplay?.list?.length > 0) {
-      idList = ObjectToDisplay?.list?.map(item => item.id);
-    }
-    return idList;
-  }, [ObjectToDisplay.list]);
-
-  const fetchExpenseGeneralLineAPI = useCallback(
+  const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
-      if (idToSend != null) {
-        dispatch(searchExpenseLineByIds({idList: idToSend, page: page}));
+      if (mode === MODE.general) {
+        dispatch(
+          searchGeneralExpenseLines({expenseId: expense?.id, page: page}),
+        );
+      }
+
+      if (mode === MODE.kilometric) {
+        dispatch(
+          searchKilometricExpenseLines({expenseId: expense?.id, page: page}),
+        );
       }
     },
-    [dispatch, idToSend],
+    [dispatch, expense, mode],
   );
+
+  if (expense?.id !== idExpense) {
+    return null;
+  }
 
   return (
     <Screen
@@ -181,19 +200,17 @@ const ExpenseDetailsScreen = ({route}) => {
           </View>
         }
       />
-      {!loadingExpense && (
-        <ScrollList
-          loadingList={loadingExpenseLineByIds}
-          data={expenseLineListByIds}
-          renderItem={({item}) => (
-            <ExpenseLineDetailCard expense={expense} item={item} />
-          )}
-          fetchData={fetchExpenseGeneralLineAPI}
-          moreLoading={moreLoadingExpenseLineByIds}
-          isListEnd={isListEndExpenseLineByIds}
-          translator={I18n.t}
-        />
-      )}
+      <ScrollList
+        loadingList={ObjectToDisplay.loading}
+        data={ObjectToDisplay.list}
+        renderItem={({item}) => (
+          <ExpenseLineDetailCard expense={expense} item={item} />
+        )}
+        fetchData={fetchExpenseLineAPI}
+        moreLoading={ObjectToDisplay.moreLoading}
+        isListEnd={ObjectToDisplay.isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };

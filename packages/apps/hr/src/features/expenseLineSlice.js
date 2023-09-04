@@ -23,7 +23,8 @@ import {
 } from '@axelor/aos-mobile-core';
 import {
   searchExpenseLines as _searchExpenseLines,
-  searchExpenseLineByIds as _searchExpenseLineByIds,
+  searchGeneralExpenseLines as _searchGeneralExpenseLines,
+  searchKilometricExpenseLines as _searchKilometricExpenseLines,
 } from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
@@ -39,39 +40,26 @@ export const fetchExpenseLine = createAsyncThunk(
   },
 );
 
-export const searchExpenseLineByIds = createAsyncThunk(
-  'expenseLine/searchExpenseLineByIds',
+export const searchKilometricExpenseLines = createAsyncThunk(
+  'expenseLine/searchKilometricExpenseLines',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchExpenseLineByIds,
+      fetchFunction: _searchKilometricExpenseLines,
       data,
-      action: 'Hr_SliceAction_FetchExpenseLinesByIds',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
-export const searchKilometricByIds = createAsyncThunk(
-  'expenseLine/searchKilometricByIds',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchExpenseLineByIds,
-      data,
-      action: 'Hr_SliceAction_FetchExpenseLinesKilometricByIds',
+      action: 'Hr_SliceAction_SearchKilometricExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
   },
 );
 
-export const searchGeneralByIds = createAsyncThunk(
-  'expenseLine/searchGeneralByIds',
+export const searchGeneralExpenseLines = createAsyncThunk(
+  'expenseLine/searchGeneralExpenseLines',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchExpenseLineByIds,
+      fetchFunction: _searchGeneralExpenseLines,
       data,
-      action: 'Hr_SliceAction_FetchExpenseLinesGeneralByIds',
+      action: 'Hr_SliceAction_SearchGeneralExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
@@ -84,13 +72,17 @@ const initialState = {
   isListEnd: false,
   expenseLineList: [],
 
-  loadingExpenseLineByIds: true,
-  moreLoadingExpenseLineByIds: false,
-  isListEndExpenseLineByIds: false,
-  expenseLineListByIds: [],
-
-  totalNumberExpenseKilomectric: 0,
+  loadingGeneralExpenseLine: true,
+  moreLoadingGeneralExpenseLine: false,
+  isListEndGeneralExpenseLine: false,
+  generalExpenseLineList: [],
   totalNumberExpenseGeneral: 0,
+
+  loadingKilometricExpenseLine: true,
+  moreLoadingKilometricExpenseLine: false,
+  isListEndKilometricExpenseLine: false,
+  kilometricExpenseLineList: [],
+  totalNumberExpenseKilomectric: 0,
 };
 
 const expenseLineSlice = createSlice({
@@ -103,16 +95,14 @@ const expenseLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'expenseLineList',
     });
-    generateInifiniteScrollCases(builder, searchExpenseLineByIds, {
-      loading: 'loadingExpenseLineByIds',
-      moreLoading: 'moreLoadingExpenseLineByIds',
-      isListEnd: 'isListEndExpenseLineByIds',
-      list: 'expenseLineListByIds',
-    });
     generateInifiniteScrollCases(
       builder,
-      searchKilometricByIds,
+      searchKilometricExpenseLines,
       {
+        loading: 'loadingKilometricExpenseLine',
+        moreLoading: 'moreLoadingKilometricExpenseLine',
+        isListEnd: 'isListEndKilometricExpenseLine',
+        list: 'kilometricExpenseLineList',
         total: 'totalNumberExpenseKilomectric',
       },
       {
@@ -121,8 +111,12 @@ const expenseLineSlice = createSlice({
     );
     generateInifiniteScrollCases(
       builder,
-      searchGeneralByIds,
+      searchGeneralExpenseLines,
       {
+        loading: 'loadingGeneralExpenseLine',
+        moreLoading: 'moreLoadingGeneralExpenseLine',
+        isListEnd: 'isListEndGeneralExpenseLine',
+        list: 'generalExpenseLineList',
         total: 'totalNumberExpenseGeneral',
       },
       {

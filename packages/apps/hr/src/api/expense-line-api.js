@@ -44,6 +44,52 @@ const createExpenseLinesCriteria = (searchValue, userId) => {
   return criteria;
 };
 
+const createGeneralExpenseLinesCriteria = expenseId => {
+  const criteria = [];
+
+  if (expenseId != null) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'expense.id',
+          operator: '=',
+          value: expenseId,
+        },
+        {
+          fieldName: 'generalExpense',
+          operator: 'notNull',
+        },
+      ],
+    });
+  }
+
+  return criteria;
+};
+
+const createKilomectricExpenseLinesCriteria = expenseId => {
+  const criteria = [];
+
+  if (expenseId != null) {
+    criteria.push({
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'expense.id',
+          operator: '=',
+          value: expenseId,
+        },
+        {
+          fieldName: 'kilometricExpense',
+          operator: 'notNull',
+        },
+      ],
+    });
+  }
+
+  return criteria;
+};
+
 export async function searchExpenseLines({
   searchValue = null,
   userId,
@@ -58,21 +104,20 @@ export async function searchExpenseLines({
   });
 }
 
-export async function searchExpenseLineByIds({idList, page}) {
-  if (idList.length > 0) {
-    return createStandardSearch({
-      model: 'com.axelor.apps.hr.db.ExpenseLine',
-      criteria: [
-        {
-          fieldName: 'id',
-          operator: 'in',
-          value: idList,
-        },
-      ],
-      fieldKey: 'hr_expenseLines',
-      page: page,
-    });
-  } else {
-    return [];
-  }
+export async function searchGeneralExpenseLines({expenseId, page}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.ExpenseLine',
+    criteria: createGeneralExpenseLinesCriteria(expenseId),
+    fieldKey: 'hr_expenseLines',
+    page: page,
+  });
+}
+
+export async function searchKilometricExpenseLines({expenseId, page}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.ExpenseLine',
+    criteria: createKilomectricExpenseLinesCriteria(expenseId),
+    fieldKey: 'hr_expenseLines',
+    page: page,
+  });
 }

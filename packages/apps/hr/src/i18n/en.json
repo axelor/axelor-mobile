@@ -32,6 +32,6 @@
   "Hr_SliceAction_FetchExpenseToValidate": "fetch expense to validate",
   "Hr_SliceAction_FetchExpenseById": "fetch expense by id",
   "Hr_SliceAction_FetchExpenseLinesByIds:": "fetch expense lines by ids",
-  "Hr_SliceAction_FetchExpenseLinesKilometricByIds:": "fetch expense lines kilometric by ids",
-  "Hr_SliceAction_FetchExpenseLinesGeneralByIds": "fetch expense lines general by ids"
+  "Hr_SliceAction_SearchKilometricExpenseLines:": "fetch kilometric expense lines",
+  "Hr_SliceAction_SearchGeneralExpenseLines": "search general expense lines"
 }
