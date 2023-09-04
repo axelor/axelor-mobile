@@ -126,6 +126,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         disabledRefresh={isSelectionMode}
         renderItem={({item}) => (
           <ExpenseLineCard
+            style={styles.item}
             expenseDate={item.expenseDate}
             projectName={item.project?.fullName}
             totalAmount={item.totalAmount}
@@ -169,6 +170,9 @@ const ExpenseLinesListScreen = ({navigation}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
+    item: {
+      marginVertical: 4,
+    },
     floatingButton: {
       backgroundColor: Colors.secondaryColor_dark.foreground,
       position: 'absolute',
