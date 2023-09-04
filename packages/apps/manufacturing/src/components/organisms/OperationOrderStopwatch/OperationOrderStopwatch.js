@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Label} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
@@ -30,6 +30,9 @@ import {OperationOrder} from '../../../types';
 import {updateOperationOrder} from '../../../features/operationOrderSlice';
 import {StyleSheet, View} from 'react-native';
 
+const DEFAULT_STATUS = StopwatchType.status.Ready;
+const DEFAULT_TIME = 0;
+
 const OperationOrderStopwatch = ({}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -40,13 +43,23 @@ const OperationOrderStopwatch = ({}) => {
   const {user} = useSelector(state => state.user);
 
   const [labelVisible, setLabelVisible] = useState(false);
+  const [timerStatus, setTimerStatus] = useState(DEFAULT_STATUS);
+  const [time, setTime] = useState(DEFAULT_TIME);
 
-  const {status: timerStatus, time} = useMemo(() => {
-    if (!isEmpty(operationOrder)) {
-      return OperationOrder.getTimerState(operationOrder, user?.id);
-    }
-    return {status: StopwatchType.status.Ready, time: 0};
+  const getTimerState = useCallback(() => {
+    const timerState = !isEmpty(operationOrder)
+      ? OperationOrder.getTimerState(operationOrder, user?.id)
+      : {status: DEFAULT_STATUS, time: DEFAULT_TIME};
+
+    setTimerStatus(timerState.status);
+    setTime(timerState.time);
+
+    return timerState;
   }, [operationOrder, user]);
+
+  useEffect(() => {
+    getTimerState();
+  }, [getTimerState]);
 
   const updateStatus = useCallback(
     status => {
@@ -79,6 +92,7 @@ const OperationOrderStopwatch = ({}) => {
         style={styles.timer}
         startTime={time}
         status={timerStatus}
+        getTimerState={getTimerState}
         timerFormat={I18n.t('Stopwatch_TimerFormat')}
         onPlay={() => updateStatus(OperationOrder.status.InProgress)}
         onPause={() => updateStatus(OperationOrder.status.StandBy)}
