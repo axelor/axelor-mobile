@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ThemeColors} from '@axelor/aos-mobile-ui';
+import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class ExpenseType {
   static statusSelect = {
@@ -28,7 +28,10 @@ class ExpenseType {
     Canceled: 6,
   };
 
-  static getStatus = (select: number, I18n: {t: (key: string) => string}) => {
+  static getStatus = (
+    select: number,
+    I18n: {t: (key: string) => string},
+  ): string => {
     if (I18n) {
       switch (select) {
         case this.statusSelect.Draft:
@@ -51,7 +54,7 @@ class ExpenseType {
       }
     }
   };
-  static getStatusColor = (status: number, Colors: ThemeColors) => {
+  static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.statusSelect.Draft:
         return Colors.secondaryColor;
@@ -69,7 +72,7 @@ class ExpenseType {
         console.warn(
           `Status provided with value ${status} is not supported by Expense`,
         );
-        return {};
+        return null;
     }
   };
 

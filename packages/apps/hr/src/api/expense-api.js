@@ -19,6 +19,7 @@
 import {
   createStandardSearch,
   getSearchCriterias,
+  createStandardFetch,
 } from '@axelor/aos-mobile-core';
 import {Expense} from '../types';
 
@@ -99,5 +100,13 @@ export async function searchExpenseToValidate({
     fieldKey: 'hr_expense',
     sortKey: 'hr_expense',
     page,
+  });
+}
+
+export async function getExpense({ExpenseId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.hr.db.Expense',
+    id: ExpenseId,
+    fieldKey: 'hr_expense',
   });
 }

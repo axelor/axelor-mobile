@@ -41,7 +41,7 @@ const MODE = {
   validation: 'toValidateMode',
 };
 
-const ExpenseListScreen = ({}) => {
+const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -188,6 +188,11 @@ const ExpenseListScreen = ({}) => {
         data={filteredList}
         renderItem={({item}) => (
           <ExpenseCard
+            onPress={() =>
+              navigation.navigate('ExpenseDetailsScreen', {
+                idExpense: item.id,
+              })
+            }
             style={styles.item}
             statusSelect={item.statusSelect}
             expenseSeq={item.expenseSeq}
