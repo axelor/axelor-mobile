@@ -5,6 +5,7 @@ import {createExpenseLine} from '../features/expenseLineSlice';
 const ExpenseLineFormScreen = ({navigation}) => {
   const createExpenseLineAPI = useCallback(
     (expense, dispatch) => {
+      console.log(expense);
       dispatch(createExpenseLine(expense));
       navigation.navigate('ExpenseLinesListScreen');
     },

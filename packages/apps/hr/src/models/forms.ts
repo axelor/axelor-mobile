@@ -17,15 +17,27 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
+import {ToggleSwitchMode} from '../components';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
     fields: {
+      manageMode: {
+        titleKey: 'Hr_Manage_Mode',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ToggleSwitchMode,
+      },
       name: {
         titleKey: 'test',
         type: 'string',
-        required: true,
+        dependsOn: {
+          fieldName: 'manageMode',
+          onChange: e => {
+            console.log(e);
+          },
+        },
       },
     },
   },

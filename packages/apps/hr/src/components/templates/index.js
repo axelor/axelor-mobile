@@ -19,3 +19,5 @@
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
 export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
+export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
+export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';
