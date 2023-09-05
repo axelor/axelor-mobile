@@ -91,18 +91,18 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'default',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.general;
         },
+        required: true,
       },
       toCity: {
         titleKey: 'Hr_toCity',
         type: 'string',
         widget: 'default',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.general;
         },
+        required: true,
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',
@@ -115,7 +115,6 @@ export const hr_formsRegister: FormConfigs = {
         type: 'number',
         widget: 'increment',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.kilometric;
         },
       },
@@ -124,7 +123,6 @@ export const hr_formsRegister: FormConfigs = {
         type: 'number',
         widget: 'increment',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.kilometric;
         },
       },
@@ -133,7 +131,6 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'file',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.kilometric;
         },
       },

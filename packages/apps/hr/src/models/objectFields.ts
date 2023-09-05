@@ -63,5 +63,11 @@ export const hr_modelAPI: ObjectFields = {
   }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
+    'employee.employeeVehicleList': schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
+    /*'employee.employeeVehicleList.kilometricAllowParam': schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),*/
   }),
 };

@@ -41,22 +41,25 @@ const KilometricAllowParamSearchBar = ({
     moreLoadingKilometricAllowParam,
     isListEndKilometricAllowParam,
   } = useSelector(state => state.expenseLine);
+  const {user} = useSelector(state => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchKilometricAllowParamAPI = useCallback(
     ({page = 0, searchValue}) => {
+      const idListToSend = user.employee?.employeeVehicleList.map(
+        element => element.kilometricAllowParam?.id,
+      );
       dispatch(
         searchKilometricAllowParam({
           page,
           searchValue,
+          idList: idListToSend,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user.employee?.employeeVehicleList],
   );
-
-  console.log(kilometricAllowParamList);
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>

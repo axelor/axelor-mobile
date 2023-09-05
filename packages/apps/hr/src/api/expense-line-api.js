@@ -84,8 +84,18 @@ const createKilomectricExpenseLineCriteria = (searchValue, expenseId) => {
 
   return criteria;
 };
-const createKilometricAllowParamCriteria = searchValue => {
-  return [getSearchCriterias('hr_kilomectricAllowParam', searchValue)];
+
+const createKilometricAllowParamCriteria = (searchValue, idList) => {
+  const criteria = [
+    getSearchCriterias('hr_kilomectricAllowParam', searchValue),
+  ];
+  criteria.push({
+    fieldName: 'id',
+    operator: 'in',
+    value: idList,
+  });
+
+  return criteria;
 };
 
 export async function searchExpenseLines({
@@ -131,20 +141,22 @@ export async function createCatalog({}) {}
 export async function searchKilometricAllowParam({
   searchValue = null,
   page = 0,
+  idList = [],
 }) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.hr.db.KilometricAllowParam',
-    criteria: createKilometricAllowParamCriteria(searchValue),
-    fieldKey: 'hr_kilomectricAllowParam',
-    sortKey: 'hr_kilomectricAllowParam',
-    page,
-  });
+  if (idList.length > 0) {
+    return createStandardSearch({
+      model: 'com.axelor.apps.hr.db.KilometricAllowParam',
+      criteria: createKilometricAllowParamCriteria(searchValue, idList),
+      fieldKey: 'hr_kilomectricAllowParam',
+      sortKey: 'hr_kilomectricAllowParam',
+      page,
+    });
+  } else {
+    return [];
+  }
 }
 
 export async function createExpenseLine({expenseLine}) {
-  console.log(
-    '------------------------------------------------------------------',
-  );
   return axiosApiProvider.post({
     url: 'ws/aos/expense-line/',
     data: expenseLine,

@@ -37,11 +37,9 @@ const ToggleSwitchMode = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const [mode, setMode] = useState(defaultValue);
+  const [, setMode] = useState(defaultValue);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
-  console.log(mode);
 
   return (
     <ToggleSwitch

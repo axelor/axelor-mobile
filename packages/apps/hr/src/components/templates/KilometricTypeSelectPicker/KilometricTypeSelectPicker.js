@@ -23,7 +23,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
 const KilometricTypeSelectPicker = ({
-  title = 'Crm_Catalog_Type',
+  title = 'Hr_KilometricTypeSelect',
   defaultValue = null,
   onChange = console.log,
   readonly = false,

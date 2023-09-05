@@ -53,7 +53,6 @@ const ProjectSearchBar = ({defaultValue = null, onChange = console.log}) => {
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
       <Text style={styles.title}>{I18n.t('Hr_Project')}</Text>
       <AutoCompleteSearch
-        style={[defaultValue == null ? styles.requiredBorder : null]}
         objectList={projectList}
         value={defaultValue}
         onChangeValue={onChange}

@@ -40,15 +40,14 @@ const ExpenseLineFormScreen = ({navigation}) => {
         totalTax: expenseLine.totalTax,
         comments: expenseLine.comments,
         justificationFileId: expenseLine.justificationMetaFile?.id,
-        //kilometricAllowParamId: number,
-        //kilometricTypeSelect: number,
-        //distance: number,
-        //fromCity: string,
-        //toCity: string,
+        kilometricAllowParamId: expenseLine.kilometricAllowParam?.id,
+        kilometricTypeSelect: expenseLine.kilometricTypeSelect?.key,
+        distance: expenseLine.distance,
+        fromCity: expenseLine.fromCity,
+        toCity: expenseLine.toCity,
         expenseLineType: expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
-      console.log('expenseLine', dataToSend);
       dispatch(createExpenseLine({expenseLine: dataToSend}));
       navigation.navigate('ExpenseLinesListScreen');
     },
