@@ -44,6 +44,7 @@
   "Base_Real": "Réelle",
   "Base_Large": "Large",
   "Base_Small": "Petit",
+  "Base_Barcode": "Code-barre",
   "Base_MailMessages": "Suivi des notifications",
   "Base_Comment": "Commentaire",
   "Base_MailMessages_CommentInput_Placeholder": "Entrez votre commentaire",
