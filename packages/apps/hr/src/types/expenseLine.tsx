@@ -40,6 +40,15 @@ class ExpenseLineType {
       }
     }
   };
+
+  static getKilomectricTypeSelectList = (I18n: {
+    t: (key: string) => string;
+  }) => {
+    return Object.entries(this.kilomectricTypeSelect).map(([key, value]) => ({
+      title: I18n.t(`Hr_KilomectricTypeSelect_${key}`),
+      key: value,
+    }));
+  };
 }
 
 export default ExpenseLineType;

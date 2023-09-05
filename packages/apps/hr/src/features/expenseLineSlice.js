@@ -27,6 +27,7 @@ import {
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
   createExpenseLine as _createExpenseLine,
+  searchKilometricAllowParam as _searchKilometricAllowParam,
 } from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
@@ -81,6 +82,19 @@ export const createExpenseLine = createAsyncThunk(
   },
 );
 
+export const searchKilometricAllowParam = createAsyncThunk(
+  'expenseLine/kilometricAllowParam',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchKilometricAllowParam,
+      data,
+      action: 'Helpdesk_SliceAction_SearchKilometricAllowParam',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingExpenseLine: true,
   moreLoading: false,
@@ -98,6 +112,10 @@ const initialState = {
   isListEndKilometricExpenseLine: false,
   kilometricExpenseLineList: [],
   totalNumberExpenseKilomectric: 0,
+  loadingKilometricAllowParam: true,
+  moreLoadingKilometricAllowParam: false,
+  isListEndKilometricAllowParam: false,
+  kilometricAllowParamList: [],
 };
 
 const expenseLineSlice = createSlice({
@@ -138,6 +156,12 @@ const expenseLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    generateInifiniteScrollCases(builder, searchKilometricAllowParam, {
+      loading: 'loadingKilometricAllowParam',
+      moreLoading: 'moreLoadingKilometricAllowParam',
+      isListEnd: 'isListEndKilometricAllowParam',
+      list: 'kilometricAllowParamList',
+    });
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
       state.expenseLineList = updateAgendaItems(state.expenseLineList, [
         action.payload,

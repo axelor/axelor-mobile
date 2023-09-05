@@ -26,8 +26,8 @@ import {
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 const MODES = {
-  general: 'GeneralMode',
-  kilometric: 'KilometricMode',
+  general: 'general',
+  kilometric: 'kilometric',
 };
 
 const ToggleSwitchMode = ({

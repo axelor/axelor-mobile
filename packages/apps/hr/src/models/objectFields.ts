@@ -57,6 +57,10 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
   }),
+  hr_kilomectricAllowParam: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+  }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
   }),

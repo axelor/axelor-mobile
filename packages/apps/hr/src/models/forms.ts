@@ -19,13 +19,15 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   ExpenseTypeSearchBar,
+  KilometricAllowParamSearchBar,
+  KilometricTypeSelectPicker,
   ProjectSearchBar,
   ToggleSwitchMode,
 } from '../components';
 
 const MODES = {
-  general: 'GeneralMode',
-  kilometric: 'KilometricMode',
+  general: 'general',
+  kilometric: 'kilometric',
 };
 
 export const hr_formsRegister: FormConfigs = {
@@ -37,14 +39,6 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
-      },
-      name: {
-        titleKey: 'test',
-        type: 'string',
-        hideIf: ({objectState}) => {
-          console.log(objectState);
-          return objectState.manageMode === MODES.kilometric;
-        },
       },
       project: {
         titleKey: 'Hr_Project',
@@ -61,6 +55,54 @@ export const hr_formsRegister: FormConfigs = {
           console.log(objectState);
           return objectState.manageMode === MODES.kilometric;
         },*/
+      },
+      kilometricAllowParam: {
+        titleKey: 'Hr_KilomectricAllowParam',
+        type: 'object',
+        widget: 'custom',
+        customComponent: KilometricAllowParamSearchBar,
+        /*hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.general;
+        },*/
+        //required:,
+      },
+      kilometricTypeSelect: {
+        titleKey: 'Hr_KilometricTypeSelect',
+        type: 'object',
+        widget: 'custom',
+        customComponent: KilometricTypeSelectPicker,
+        /*hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.general;
+        },*/
+      },
+      distance: {
+        titleKey: 'Hr_Distance',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.general;
+        },
+      },
+      fromCity: {
+        titleKey: 'Hr_FromCity',
+        type: 'string',
+        widget: 'default',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.general;
+        },
+      },
+      toCity: {
+        titleKey: 'Hr_toCity',
+        type: 'string',
+        widget: 'default',
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.general;
+        },
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',

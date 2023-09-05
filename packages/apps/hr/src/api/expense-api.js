@@ -17,7 +17,6 @@
  */
 
 import {
-  axiosApiProvider,
   createStandardSearch,
   getSearchCriterias,
   createStandardFetch,
@@ -144,15 +143,5 @@ export async function searchExpenseType({searchValue = null, page = 0}) {
     fieldKey: 'hr_expenseType',
     sortKey: 'hr_expenseType',
     page,
-  });
-}
-
-export async function createExpenseLine({expenseLine}) {
-  console.log(
-    '------------------------------------------------------------------',
-  );
-  return axiosApiProvider.put({
-    url: 'ws/rest/com.axelor.apps.hr.db.ExpenseLine',
-    data: {data: expenseLine},
   });
 }
