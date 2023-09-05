@@ -96,6 +96,13 @@ const Field = ({
     return _field.hideIf({objectState: object, storeState: storeState});
   }, [_field, object, storeState]);
 
+  const isRequired = useMemo(() => {
+    return (
+      _field.required ||
+      _field.requiredIf({objectState: object, storeState: storeState})
+    );
+  }, [_field, object, storeState]);
+
   const isGlobalReadonly = useMemo(() => {
     return globalReadonly({objectState: object, storeState: storeState});
   }, [globalReadonly, object, storeState]);
@@ -116,7 +123,7 @@ const Field = ({
           title: I18n.t(_field.titleKey),
           defaultValue: value,
           onChange: handleChange,
-          required: _field.required,
+          required: isRequired,
           readonly: isGlobalReadonly || _field.readonly,
           ..._field.options,
         });
@@ -148,7 +155,7 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onUpload={handleChange}
-            required={_field.required}
+            required={isRequired}
             readonly={isGlobalReadonly || _field.readonly}
             {..._field.options}
           />
@@ -163,7 +170,7 @@ const Field = ({
             onDateChange={_date =>
               handleChange(_date.toISOString()?.split('T')[0])
             }
-            required={_field.required}
+            required={isRequired}
             readonly={isGlobalReadonly || _field.readonly}
             nullable={true}
             {..._field.options}
@@ -184,7 +191,7 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onChange={handleChange}
-            required={_field.required}
+            required={isRequired}
             readonly={isGlobalReadonly || _field.readonly}
             {..._field.options}
           />
@@ -196,7 +203,7 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onChange={handleChange}
-            required={_field.required}
+            required={isRequired}
             readonly={isGlobalReadonly || _field.readonly}
             {..._field.options}
           />
@@ -210,7 +217,7 @@ const Field = ({
             onChange={handleChange}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
-            required={_field.required}
+            required={isRequired}
             readOnly={isGlobalReadonly || _field.readonly}
             keyboardType={getKeyboardType(_field)}
             {..._field.options}
@@ -223,7 +230,7 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             defaultValue={value}
             onChange={handleChange}
-            required={_field.required}
+            required={isRequired}
             readOnly={isGlobalReadonly || _field.readonly}
             keyboardType={getKeyboardType(_field)}
             {..._field.options}
