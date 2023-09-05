@@ -23,12 +23,14 @@ import {countAttachmentFiles} from '../features/attachedFilesSlice';
 import {countUnreadMailMessages} from '../features/mailMessageSlice';
 import {useTranslator} from '../i18n';
 import {checkNullString} from '../utils';
+import {fetchModel} from '../api/model-api';
 
 export const useBasicActions = ({
   model,
   modelId,
   disableMailMessages,
   attachedFileScreenTitle,
+  barcodeFieldname = 'barCode',
 }) => {
   const navigation = useNavigation();
   const I18n = useTranslator();
@@ -38,6 +40,7 @@ export const useBasicActions = ({
   const {unreadMessages} = useSelector(state => state.mailMessages);
 
   const [disableAttachementFiles, setDisableAttachementFiles] = useState(true);
+  const [disableBarcode, setDisableBarcode] = useState(true);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -67,6 +70,14 @@ export const useBasicActions = ({
   useEffect(() => {
     setDisableAttachementFiles(attachments === 0);
   }, [attachments]);
+
+  useEffect(() => {
+    fetchModel({model, modelId})
+      .catch(() => {
+        setDisableBarcode(true);
+      })
+      .then(object => setDisableBarcode(object?.[barcodeFieldname] == null));
+  }, [barcodeFieldname, model, modelId]);
 
   const mailMessagesAction = useMemo(() => {
     return {
@@ -112,17 +123,36 @@ export const useBasicActions = ({
     navigation,
   ]);
 
+  const barcodeAction = useMemo(() => {
+    return {
+      key: 'barcode',
+      order: 30,
+      title: I18n.t('Base_Barcode'),
+      iconName: 'qrcode',
+      hideIf: disableBarcode,
+      onPress: () =>
+        navigation.navigate('BarcodeDisplayScreen', {
+          model,
+          modelId,
+          barcodeFieldname,
+        }),
+      showInHeader: true,
+    };
+  }, [I18n, barcodeFieldname, disableBarcode, model, modelId, navigation]);
+
   return useMemo(() => {
     if (modelConfigured) {
       return {
         mailMessagesAction,
         attachedFilesAction,
+        barcodeAction,
       };
     }
 
     return {
       mailMessagesAction: {key: 'mailMessages', hideIf: true},
       attachedFilesAction: {key: 'attachedFiles', hideIf: true},
+      barcodeAction: {key: 'barcode', hideIf: true},
     };
-  }, [attachedFilesAction, mailMessagesAction, modelConfigured]);
+  }, [attachedFilesAction, mailMessagesAction, modelConfigured, barcodeAction]);
 };
