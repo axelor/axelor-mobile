@@ -20,6 +20,7 @@ import React, {ReactNode, useMemo} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
 } from 'react-native';
@@ -31,16 +32,23 @@ interface Offset {
   android: number;
 }
 
+interface Refresh {
+  loading: boolean;
+  fetcher: () => void;
+}
+
 const KeyboardAvoidingScrollView = ({
   globalStyle,
   style,
   children,
   keyboardOffset = DEFAULT_OFFSET,
+  refresh,
 }: {
   globalStyle?: any;
   style?: any;
   children: ReactNode;
   keyboardOffset?: Offset;
+  refresh?: Refresh;
 }) => {
   const keyboardVerticalOffset = useMemo(() => {
     return {...DEFAULT_OFFSET, ...keyboardOffset};
@@ -62,7 +70,15 @@ const KeyboardAvoidingScrollView = ({
           styles.scrollContent,
           getZIndexStyles(10),
           style,
-        ]}>
+        ]}
+        refreshControl={
+          refresh != null && (
+            <RefreshControl
+              refreshing={refresh.loading}
+              onRefresh={refresh.fetcher}
+            />
+          )
+        }>
         {children}
       </ScrollView>
     </KeyboardAvoidingView>
