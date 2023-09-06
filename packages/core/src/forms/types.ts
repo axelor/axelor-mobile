@@ -47,10 +47,11 @@ export interface Field {
   helperKey?: string;
   type: InputType;
   required?: boolean;
+  requiredIf?: (values?: States) => boolean;
   readonly?: boolean;
   hideIf?: (values?: States) => boolean;
   dependsOn?: {
-    fieldName: string;
+    fieldName: string | string[];
     onChange: (values: DependsOnStates) => any;
   };
   widget?: Widget;
