@@ -40,6 +40,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+  },
   ExpenseLineFormScreen: {
     title: 'Hr_CreateExpenseLine',
     component: ExpenseLineFormScreen,
