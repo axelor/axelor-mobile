@@ -55,6 +55,9 @@ export const hr_formsRegister: FormConfigs = {
           console.log(objectState);
           return objectState.manageMode === MODES.kilometric;
         },*/
+        requiredIf: ({objectState}) => {
+          return objectState.manageMode === MODES.general;
+        },
       },
       kilometricAllowParam: {
         titleKey: 'Hr_KilomectricAllowParam',
@@ -65,7 +68,9 @@ export const hr_formsRegister: FormConfigs = {
           console.log(objectState);
           return objectState.manageMode === MODES.general;
         },*/
-        //required:,
+        requiredIf: ({objectState}) => {
+          return objectState.manageMode === MODES.kilometric;
+        },
       },
       kilometricTypeSelect: {
         titleKey: 'Hr_KilometricTypeSelect',
@@ -76,13 +81,15 @@ export const hr_formsRegister: FormConfigs = {
           console.log(objectState);
           return objectState.manageMode === MODES.general;
         },*/
+        requiredIf: ({objectState}) => {
+          return objectState.manageMode === MODES.kilometric;
+        },
       },
       distance: {
         titleKey: 'Hr_Distance',
         type: 'number',
         widget: 'increment',
         hideIf: ({objectState}) => {
-          console.log(objectState);
           return objectState.manageMode === MODES.general;
         },
       },
@@ -93,7 +100,9 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState}) => {
           return objectState.manageMode === MODES.general;
         },
-        required: true,
+        requiredIf: ({objectState}) => {
+          return objectState.manageMode === MODES.kilometric;
+        },
       },
       toCity: {
         titleKey: 'Hr_toCity',
@@ -102,7 +111,9 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState}) => {
           return objectState.manageMode === MODES.general;
         },
-        required: true,
+        requiredIf: ({objectState}) => {
+          return objectState.manageMode === MODES.kilometric;
+        },
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',

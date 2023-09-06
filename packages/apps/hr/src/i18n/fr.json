@@ -26,13 +26,15 @@
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_Project": "Projet",
-  "Hr_ExpenseType": "Type de note de frais",
+  "Hr_ExpenseType": "Type de frais",
   "Hr_ExpenseDate": "Date de dépense",
   "Hr_TotalAmount": "Montant total",
   "Hr_TotalTax": "Taxe totale",
   "Hr_Justification": "Justification",
   "Hr_Comments": "Commentaires",
-  "Hr_CreateExpenseLine": "créer une ligne de note de frais",
+  "Hr_CreateExpenseLine": "Créer une ligne de note de frais",
+  "Hr_KilometricTypeSelect": "Type",
+  "Hr_KilomectricAllowParam": "Puissance fislcales",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -41,5 +43,9 @@
   "Hr_SliceAction_FetchExpenseById": "récupération des note de frais par id",
   "Hr_SliceAction_FetchExpenseLinesByIds:": "récupération des lignes de note de frais par id",
   "Hr_SliceAction_SearchKilometricExpenseLines:": "récupération des lignes de note de frais kilometriques",
-  "Hr_SliceAction_SearchGeneralExpenseLines": "récupération des lignes de note de frais générales"
+  "Hr_SliceAction_SearchGeneralExpenseLines": "récupération des lignes de note de frais générales",
+  "Hr_SliceAction_CreateExpenseLine": "creation d'une ligne de frais",
+  "Hr_SliceAction_SearchKilometricAllowParam": "recherche sur les puissances fislcales",
+  "Hr_SliceAction_FetchExpenseType": "récuperation des types de frais",
+  "Hr_SliceAction_FetchProjects": "récupération des projets"
 }

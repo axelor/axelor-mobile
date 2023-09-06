@@ -20,7 +20,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchExpenseLines as _searchExpenseLines,
@@ -78,6 +77,14 @@ export const createExpenseLine = createAsyncThunk(
       action: 'Hr_SliceAction_CreateExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchExpenseLines,
+        data,
+        action: 'Hr_SliceAction_FetchExpenseLines',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -88,7 +95,7 @@ export const searchKilometricAllowParam = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchKilometricAllowParam,
       data,
-      action: 'Helpdesk_SliceAction_SearchKilometricAllowParam',
+      action: 'Hr_SliceAction_SearchKilometricAllowParam',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -162,10 +169,12 @@ const expenseLineSlice = createSlice({
       isListEnd: 'isListEndKilometricAllowParam',
       list: 'kilometricAllowParamList',
     });
+    builder.addCase(createExpenseLine.pending, (state, action) => {
+      state.loadingExpenseLine = true;
+    });
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
-      state.expenseLineList = updateAgendaItems(state.expenseLineList, [
-        action.payload,
-      ]);
+      state.loadingExpenseLine = false;
+      state.expenseLineList = action.payload;
     });
   },
 });

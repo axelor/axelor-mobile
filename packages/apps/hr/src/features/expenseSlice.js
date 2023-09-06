@@ -87,7 +87,7 @@ export const searchExpenseType = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchExpenseType,
       data,
-      action: 'Helpdesk_SliceAction_FetchExpenseType',
+      action: 'Hr_SliceAction_FetchExpenseType',
       getState,
       responseOptions: {isArrayResponse: true},
     });

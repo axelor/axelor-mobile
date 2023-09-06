@@ -25,7 +25,7 @@ import {ExpenseLine} from '../../../types';
 const KilometricTypeSelectPicker = ({
   title = 'Hr_KilometricTypeSelect',
   defaultValue = null,
-  onChange = console.log,
+  onChange = () => {},
   readonly = false,
   required = false,
 }) => {

@@ -22,7 +22,7 @@ import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
-const ProjectSearchBar = ({defaultValue = null, onChange = console.log}) => {
+const ProjectSearchBar = ({defaultValue = null, onChange = () => {}}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();

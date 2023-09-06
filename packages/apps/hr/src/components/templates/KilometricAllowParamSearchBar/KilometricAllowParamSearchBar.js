@@ -29,7 +29,7 @@ import {searchKilometricAllowParam} from '../../../features/expenseLineSlice';
 
 const KilometricAllowParamSearchBar = ({
   defaultValue = null,
-  onChange = console.log,
+  onChange = () => {},
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();

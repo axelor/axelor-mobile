@@ -32,7 +32,7 @@ const MODES = {
 
 const ToggleSwitchMode = ({
   defaultValue = MODES.general,
-  onChange = console.log,
+  onChange = () => {},
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -55,7 +55,6 @@ const ToggleSwitchMode = ({
         setMode(_mode => {
           const newMode =
             _mode === MODES.general ? MODES.kilometric : MODES.general;
-          console.log('newMede', newMode);
           onChange(newMode);
           return newMode;
         });

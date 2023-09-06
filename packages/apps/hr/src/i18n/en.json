@@ -33,6 +33,8 @@
   "Hr_Justification": "Justification",
   "Hr_Comments": "Comments",
   "Hr_CreateExpenseLine": "Create expense line",
+  "Hr_KilomectricAllowParam": "Kilometric allow param",
+  "Hr_KilometricTypeSelect": "Type",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -41,5 +43,9 @@
   "Hr_SliceAction_FetchExpenseById": "fetch expense by id",
   "Hr_SliceAction_FetchExpenseLinesByIds:": "fetch expense lines by ids",
   "Hr_SliceAction_SearchKilometricExpenseLines:": "fetch kilometric expense lines",
-  "Hr_SliceAction_SearchGeneralExpenseLines": "search general expense lines"
+  "Hr_SliceAction_SearchGeneralExpenseLines": "search general expense lines",
+  "Hr_SliceAction_CreateExpenseLine": "create expense line",
+  "Hr_SliceAction_SearchKilometricAllowParam": "seach kilometric allow param",
+  "Hr_SliceAction_FetchExpenseType": "fetch expense types",
+  "Hr_SliceAction_FetchProjects": "fetch projects"
 }
