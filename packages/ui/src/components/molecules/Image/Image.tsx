@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Image as ReactNativeImage,
   ImageResizeMode,
@@ -42,18 +42,29 @@ const Image = ({
   source,
   defaultIconSize = 60,
 }: ImageProps) => {
+  let timeOutReload = useRef<any>();
   const Colors = useThemeColor();
+
   const [isValid, setValid] = useState(true);
 
   const handleURIError = () => {
-    if (isValid) {
-      setValid(false);
-    }
+    setValid(_current => {
+      if (_current) {
+        return false;
+      }
+
+      return _current;
+    });
   };
 
   useEffect(() => {
     if (source != null) {
-      setValid(true);
+      const id = setTimeout(() => setValid(true));
+      timeOutReload.current = id;
+
+      return () => {
+        clearTimeout(timeOutReload.current);
+      };
     }
   }, [source]);
 

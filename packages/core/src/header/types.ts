@@ -27,6 +27,7 @@ export interface HeaderOptions {
   modelId?: number;
   disableMailMessages?: boolean;
   attachedFileScreenTitle?: string;
+  barcodeFieldname?: string;
   headerTitle?: string;
   actions?: ActionType[];
 }
