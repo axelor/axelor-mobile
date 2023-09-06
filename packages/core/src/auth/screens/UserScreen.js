@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import DeviceInfo from 'react-native-device-info';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import {
+  Button,
   Icon,
   ImageBubble,
   Picker,
@@ -30,7 +31,13 @@ import {
   useTheme,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {logout, useDispatch, useSelector, useTranslator} from '../../index';
+import {
+  contactProvider,
+  logout,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '../../index';
 import {fetchCompanies} from '../features/companySlice';
 import {fetchLanguages} from '../features/languageSlice';
 import {
@@ -172,6 +179,26 @@ const UserScreen = ({children}) => {
               emptyValue={false}
             />
           )}
+
+          <Button
+            title="Add Contact"
+            onPress={() =>
+              contactProvider.saveContact({
+                firstName: 'John',
+                lastName: 'Doe',
+                company: 'Axelor',
+                mobilePhone: '123456789',
+                fixedPhone: '987654321',
+                email: 'john.doe@mail.com',
+                address: {
+                  street: 'Wall street, no where city',
+                  country: 'France',
+                  postCode: '77600',
+                },
+                notes: 'test note bis',
+              })
+            }
+          />
         </View>
       </ScrollView>
     </Screen>
