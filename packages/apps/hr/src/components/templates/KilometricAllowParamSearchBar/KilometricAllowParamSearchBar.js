@@ -27,7 +27,7 @@ import {
 import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import {searchKilometricAllowParam} from '../../../features/expenseLineSlice';
 
-const KilometricAllowParamSearchBar = ({
+const KilometricAllowParamSearchBarAux = ({
   defaultValue = null,
   onChange = () => {},
 }) => {
@@ -81,6 +81,18 @@ const KilometricAllowParamSearchBar = ({
         isFocus={false}
       />
     </View>
+  );
+};
+
+const KilometricAllowParamSearchBar = ({
+  defaultValue = null,
+  onChange = () => {},
+}) => {
+  return (
+    <KilometricAllowParamSearchBarAux
+      defaultValue={defaultValue}
+      onChange={onChange}
+    />
   );
 };
 

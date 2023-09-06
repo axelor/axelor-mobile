@@ -27,7 +27,10 @@ import {
 import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
 import {searchExpenseType} from '../../../features/expenseSlice';
 
-const ExpenseTypeSearchBar = ({defaultValue = null, onChange = () => {}}) => {
+const ExpenseTypeSearchBarAux = ({
+  defaultValue = null,
+  onChange = () => {},
+}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
@@ -73,6 +76,12 @@ const ExpenseTypeSearchBar = ({defaultValue = null, onChange = () => {}}) => {
         isFocus={false}
       />
     </View>
+  );
+};
+
+const ExpenseTypeSearchBar = ({defaultValue, onChange}) => {
+  return (
+    <ExpenseTypeSearchBarAux defaultValue={defaultValue} onChange={onChange} />
   );
 };
 

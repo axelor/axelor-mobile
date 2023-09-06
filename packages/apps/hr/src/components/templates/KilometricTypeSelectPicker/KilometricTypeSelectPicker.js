@@ -22,7 +22,7 @@ import {Picker} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
-const KilometricTypeSelectPicker = ({
+const KilometricTypeSelectPickerAux = ({
   title = 'Hr_KilometricTypeSelect',
   defaultValue = null,
   onChange = () => {},
@@ -49,6 +49,24 @@ const KilometricTypeSelectPicker = ({
       disabled={readonly}
       disabledValue={defaultValue?.name}
       isValueItem={true}
+    />
+  );
+};
+
+const KilometricTypeSelectPicker = ({
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}) => {
+  return (
+    <KilometricTypeSelectPickerAux
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
     />
   );
 };

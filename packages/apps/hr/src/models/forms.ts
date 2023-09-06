@@ -51,69 +51,48 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ExpenseTypeSearchBar,
-        /*hideIf: ({objectState}) => {
-          console.log(objectState);
-          return objectState.manageMode === MODES.kilometric;
-        },*/
-        requiredIf: ({objectState}) => {
-          return objectState.manageMode === MODES.general;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
+        requiredIf: ({objectState}) => objectState.manageMode === MODES.general,
       },
       kilometricAllowParam: {
         titleKey: 'Hr_KilomectricAllowParam',
         type: 'object',
         widget: 'custom',
         customComponent: KilometricAllowParamSearchBar,
-        /*hideIf: ({objectState}) => {
-          console.log(objectState);
-          return objectState.manageMode === MODES.general;
-        },*/
-        requiredIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === MODES.kilometric,
       },
       kilometricTypeSelect: {
         titleKey: 'Hr_KilometricTypeSelect',
         type: 'object',
         widget: 'custom',
         customComponent: KilometricTypeSelectPicker,
-        /*hideIf: ({objectState}) => {
-          console.log(objectState);
-          return objectState.manageMode === MODES.general;
-        },*/
-        requiredIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === MODES.kilometric,
       },
       distance: {
         titleKey: 'Hr_Distance',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.general;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
       },
       fromCity: {
         titleKey: 'Hr_FromCity',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.general;
-        },
-        requiredIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === MODES.kilometric,
       },
       toCity: {
         titleKey: 'Hr_toCity',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.general;
-        },
-        requiredIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === MODES.kilometric,
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',
@@ -125,24 +104,21 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_TotalAmount',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
       },
       totalTax: {
         titleKey: 'Hr_TotalTax',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
-        },
+        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
       },
       justificationMetaFile: {
         titleKey: 'Hr_Justification',
         type: 'object',
         widget: 'file',
-        hideIf: ({objectState}) => {
-          return objectState.manageMode === MODES.kilometric;
+        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
+        options: {
+          displayPreview: true,
         },
       },
       comments: {
