@@ -23,9 +23,14 @@ import {createURLParams, mapURLBuilder, TransportType} from './linking.helper';
 class LinkingProvider {
   constructor() {}
 
-  async openURL(url: string, error: {title: string; message: string}) {
+  async openURL(
+    url: string,
+    error: {title: string; message: string},
+    checkSupport: boolean = true,
+  ) {
     const supported = await Linking.canOpenURL(url);
-    if (supported) {
+
+    if (supported || !checkSupport) {
       try {
         await Linking.openURL(url);
       } catch (e) {
@@ -48,11 +53,15 @@ class LinkingProvider {
     }
   }
 
-  async openBrowser(url: string) {
-    await this.openURL(url, {
-      title: 'Could not open the url',
-      message: `Error while opening ${url} in the browser`,
-    });
+  async openBrowser(url: string, checkSupport: boolean = true) {
+    await this.openURL(
+      url,
+      {
+        title: 'Could not open the url',
+        message: `Error while opening ${url} in the browser`,
+      },
+      checkSupport,
+    );
   }
 
   async openCallApp(tel: string) {
