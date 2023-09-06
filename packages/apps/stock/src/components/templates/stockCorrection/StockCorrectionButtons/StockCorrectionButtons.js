@@ -132,6 +132,10 @@ const StockCorrectionButtons = ({
     }
   };
 
+  if (reason?.id == null) {
+    return null;
+  }
+
   return (
     <>
       <PopUpOneButton
