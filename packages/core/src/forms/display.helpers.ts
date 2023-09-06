@@ -38,6 +38,7 @@ export const getFields = (config: Form): DisplayField[] => {
       key: fieldName,
       order: _field.order != null ? _field.order : index * 10,
       hideIf: _field.hideIf != null ? _field.hideIf : () => false,
+      requiredIf: _field.requiredIf != null ? _field.requiredIf : () => false,
     }))
     .sort((a, b) => a.order - b.order);
 };
