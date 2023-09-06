@@ -74,7 +74,10 @@ class ContactProvider {
     });
   };
 
-  saveContact = async (contactData: ContactData): Promise<boolean> => {
+  saveContact = async (
+    contactData: ContactData,
+    editIfExist: boolean = true,
+  ): Promise<boolean> => {
     try {
       if (!contactData.firstName) {
         throw new Error('Required contact data is missing.');
@@ -84,13 +87,33 @@ class ContactProvider {
 
       switch (permissionResult) {
         case PermissionResult.GRANTED:
-          const contactAdded: boolean = await Contacts.openContactForm(
-            parseContactData(contactData),
+          let record: Contacts.Contact = null;
+
+          if (editIfExist) {
+            record = await Contacts.getContactsMatchingString(
+              contactData.firstName,
+            ).then(_contacts => {
+              if (Array.isArray(_contacts) && _contacts.length > 0) {
+                console.log(_contacts);
+                return _contacts[0];
+              }
+
+              return null;
+            });
+          }
+
+          const _data = parseContactData(contactData);
+
+          const contactAdded: boolean = await (record != null
+            ? Contacts.editExistingContact({...record, ..._data})
+            : Contacts.openContactForm(_data)
           ).then(_contact => {
             if (_contact != null) {
               this._showToast(
                 'success',
-                `Contact ${_contact.givenName} added successfully.`,
+                `Contact ${_contact.givenName} ${
+                  record != null ? 'updated' : 'added'
+                } successfully.`,
               );
               return true;
             } else {
