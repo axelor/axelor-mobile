@@ -38,6 +38,7 @@ const StockCorrectionButtons = ({
   const Colors = useThemeColor();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const {mobileSettings} = useSelector(state => state.config);
 
   const handleAPI = useCallback(
@@ -66,6 +67,10 @@ const StockCorrectionButtons = ({
     () => handleAPI(StockCorrection.status.Validated),
     [handleAPI],
   );
+
+  if (reason?.id == null) {
+    return null;
+  }
 
   return (
     <>
