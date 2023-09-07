@@ -19,7 +19,8 @@
 import React, {useCallback} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 import {createExpenseLine} from '../features/expenseLineSlice';
-import {useSelector} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {ExpenseLine} from '../types';
 
 const MODES = {
   general: 'general',
@@ -29,6 +30,7 @@ const MODES = {
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const expenseLine = route?.params?.expenseLine;
   const mode = route?.params?.mode;
+  const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
 
@@ -66,6 +68,22 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         manageMode: expenseLine != null ? mode : MODES.general,
         fromCity: expenseLine != null ? expenseLine.fromCity : null,
         toCity: expenseLine != null ? expenseLine.toCity : null,
+        comments: expenseLine != null ? expenseLine.comments : null,
+        expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
+        project: expenseLine != null ? expenseLine.project : null,
+        kilometricAllowParam:
+          expenseLine != null ? expenseLine.kilometricAllowParam : null,
+        distance: expenseLine != null ? expenseLine.distance : null,
+        kilometricTypeSelect:
+          expenseLine != null
+            ? {
+                key: expenseLine.kilometricTypeSelect,
+                title: ExpenseLine.getKilomectricTypeSelect(
+                  expenseLine.kilometricTypeSelect,
+                  I18n,
+                ),
+              }
+            : null,
       }}
       actions={[
         {
