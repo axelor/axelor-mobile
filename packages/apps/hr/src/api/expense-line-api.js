@@ -137,7 +137,7 @@ export async function searchKilometricExpenseLines({
     page: page,
   });
 }
-export async function createCatalog({}) {}
+
 export async function searchKilometricAllowParam({
   searchValue = null,
   page = 0,

@@ -26,26 +26,32 @@ const MODES = {
   kilometric: 'kilometric',
 };
 
-const ExpenseLineFormScreen = ({navigation}) => {
+const ExpenseLineFormScreen = ({route, navigation}) => {
+  const expenseLine = route?.params?.expenseLine;
+  const mode = route?.params?.mode;
+
   const {user} = useSelector(state => state.user);
 
+  console.log(expenseLine);
+  console.log('mode', mode);
+
   const createExpenseLineAPI = useCallback(
-    (expenseLine, dispatch) => {
+    (_expenseLine, dispatch) => {
       const dataToSend = {
-        projectId: expenseLine.project?.id,
-        expenseProductId: expenseLine.expenseType?.id,
-        expenseDate: expenseLine.expenseDate,
+        projectId: _expenseLine.project?.id,
+        expenseProductId: _expenseLine.expenseType?.id,
+        expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
-        totalAmount: expenseLine.totalAmount,
-        totalTax: expenseLine.totalTax,
-        comments: expenseLine.comments,
-        justificationFileId: expenseLine.justificationMetaFile?.id,
-        kilometricAllowParamId: expenseLine.kilometricAllowParam?.id,
-        kilometricTypeSelect: expenseLine.kilometricTypeSelect?.key,
-        distance: expenseLine.distance,
-        fromCity: expenseLine.fromCity,
-        toCity: expenseLine.toCity,
-        expenseLineType: expenseLine.manageMode,
+        totalAmount: _expenseLine.totalAmount,
+        totalTax: _expenseLine.totalTax,
+        comments: _expenseLine.comments,
+        justificationFileId: _expenseLine.justificationMetaFile?.id,
+        kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
+        kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
+        distance: _expenseLine.distance,
+        fromCity: _expenseLine.fromCity,
+        toCity: _expenseLine.toCity,
+        expenseLineType: _expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
       dispatch(createExpenseLine({expenseLine: dataToSend}));
@@ -56,7 +62,11 @@ const ExpenseLineFormScreen = ({navigation}) => {
 
   return (
     <FormView
-      defaultValue={{manageMode: MODES.general}}
+      defaultValue={{
+        manageMode: expenseLine != null ? mode : MODES.general,
+        fromCity: expenseLine != null ? expenseLine.fromCity : null,
+        toCity: expenseLine != null ? expenseLine.toCity : null,
+      }}
       actions={[
         {
           key: 'create-expenseLine',

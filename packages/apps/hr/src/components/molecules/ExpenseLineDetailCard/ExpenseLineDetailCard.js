@@ -23,7 +23,7 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {Expense, ExpenseLine} from '../../../types';
 import {ExpenseLineCard} from '../../atoms';
 
-const ExpenseLineDetailCard = ({item, expense}) => {
+const ExpenseLineDetailCard = ({item, expense, navigation, mode}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -54,7 +54,12 @@ const ExpenseLineDetailCard = ({item, expense}) => {
         <CardIconButton
           iconName={'pencil-alt'}
           iconColor={Colors.primaryColor.foreground}
-          onPress={() => {}}
+          onPress={() =>
+            navigation.navigate('ExpenseLineFormScreen', {
+              expenseLine: item,
+              mode: mode,
+            })
+          }
           style={styles.cardIconButton}
         />
       )}

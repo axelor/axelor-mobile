@@ -40,6 +40,12 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ToggleSwitchMode,
       },
+      expenseDate: {
+        titleKey: 'Hr_ExpenseDate',
+        type: 'date',
+        widget: 'date',
+        required: true,
+      },
       project: {
         titleKey: 'Hr_Project',
         type: 'object',
@@ -87,18 +93,14 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === MODES.kilometric,
       },
       toCity: {
-        titleKey: 'Hr_toCity',
+        titleKey: 'Hr_ToCity',
         type: 'string',
         widget: 'default',
         hideIf: ({objectState}) => objectState.manageMode === MODES.general,
-        requiredIf: ({objectState}) =>
-          objectState.manageMode === MODES.kilometric,
-      },
-      expenseDate: {
-        titleKey: 'Hr_ExpenseDate',
-        type: 'date',
-        widget: 'date',
-        required: true,
+        requiredIf: ({objectState}) => {
+          console.log(objectState);
+          return objectState.manageMode === MODES.kilometric;
+        },
       },
       totalAmount: {
         titleKey: 'Hr_TotalAmount',

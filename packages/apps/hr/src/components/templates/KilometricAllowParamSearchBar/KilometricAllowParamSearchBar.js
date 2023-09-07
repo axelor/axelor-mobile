@@ -109,7 +109,7 @@ const getStyles = Colors =>
       zIndex: 41,
     },
     title: {
-      marginHorizontal: 24,
+      marginHorizontal: 30,
     },
   });
 

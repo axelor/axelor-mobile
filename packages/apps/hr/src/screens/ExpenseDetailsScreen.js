@@ -33,11 +33,11 @@ import {
 } from '../features/expenseLineSlice';
 
 const MODE = {
-  general: 'GeneralMode',
-  kilometric: 'KilometricMode',
+  general: 'general',
+  kilometric: 'kilometric',
 };
 
-const ExpenseDetailsScreen = ({route}) => {
+const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -120,7 +120,12 @@ const ExpenseDetailsScreen = ({route}) => {
         loadingList={ObjectToDisplay.loading}
         data={ObjectToDisplay.list}
         renderItem={({item}) => (
-          <ExpenseLineDetailCard expense={expense} item={item} />
+          <ExpenseLineDetailCard
+            expense={expense}
+            item={item}
+            navigation={navigation}
+            mode={mode}
+          />
         )}
         fetchData={fetchExpenseLineAPI}
         moreLoading={ObjectToDisplay.moreLoading}

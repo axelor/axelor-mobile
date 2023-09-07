@@ -35,6 +35,9 @@
   "Hr_CreateExpenseLine": "Create expense line",
   "Hr_KilomectricAllowParam": "Kilometric allow param",
   "Hr_KilometricTypeSelect": "Type",
+  "Hr_Distance": "Distance",
+  "Hr_FromCity": "Starting city",
+  "Hr_ToCity": "Arriving city",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -47,5 +50,6 @@
   "Hr_SliceAction_CreateExpenseLine": "create expense line",
   "Hr_SliceAction_SearchKilometricAllowParam": "seach kilometric allow param",
   "Hr_SliceAction_FetchExpenseType": "fetch expense types",
-  "Hr_SliceAction_FetchProjects": "fetch projects"
+  "Hr_SliceAction_FetchProjects": "fetch projects",
+  "Hr_SliceAction_FetchExpenseLineById": "fetch expense line by id"
 }
