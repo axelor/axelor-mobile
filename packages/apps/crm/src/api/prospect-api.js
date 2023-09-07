@@ -60,6 +60,9 @@ export async function getProspect({partnerId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: partnerId,
     fieldKey: 'crm_prospect',
+    relatedFields: {
+      mainAddress: ['fullName', 'addressL4', 'addressL7Country', 'city', 'zip'],
+    },
   });
 }
 

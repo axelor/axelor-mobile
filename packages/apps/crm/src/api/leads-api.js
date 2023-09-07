@@ -50,6 +50,9 @@ export async function getLead({leadId}) {
     model: 'com.axelor.apps.crm.db.Lead',
     id: leadId,
     fieldKey: 'crm_lead',
+    relatedFields: {
+      mainAddress: ['fullName', 'addressL4', 'addressL7Country', 'city', 'zip'],
+    },
   });
 }
 

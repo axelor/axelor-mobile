@@ -77,11 +77,11 @@ const useClientDetailsActions = () => {
               address: {
                 street:
                   client.mainAddress?.addressL4 ?? client.mainAddress?.fullName,
-                country: client.mainAddress?.addressL7Country,
-                city: client.mainAddress?.primaryCity,
+                country: client.mainAddress?.addressL7Country?.name,
+                city: client.mainAddress?.city?.name,
                 postCode: client.mainAddress?.zip,
               },
-              notes: client.notes,
+              notes: client.description,
             }),
           showInHeader: true,
         },
@@ -118,11 +118,11 @@ const useContactDetailsActions = () => {
                 street:
                   contact.mainAddress?.addressL4 ??
                   contact.mainAddress?.fullName,
-                country: contact.mainAddress?.addressL7Country,
-                city: contact.mainAddress?.primaryCity,
+                country: contact.mainAddress?.addressL7Country?.name,
+                city: contact.mainAddress?.city?.name,
                 postCode: contact.mainAddress?.zip,
               },
-              notes: contact.notes,
+              notes: contact.description,
             }),
           showInHeader: true,
         },
@@ -180,11 +180,11 @@ const useLeadDetailsActions = () => {
               address: {
                 street:
                   lead.mainAddress?.addressL4 ?? lead.mainAddress?.fullName,
-                country: lead.mainAddress?.addressL7Country,
-                city: lead.mainAddress?.primaryCity,
+                country: lead.mainAddress?.addressL7Country?.name,
+                city: lead.mainAddress?.city?.name,
                 postCode: lead.mainAddress?.zip,
               },
-              notes: lead.notes,
+              notes: lead.description,
             }),
           showInHeader: true,
         },
@@ -242,7 +242,7 @@ const useProspectDetailsActions = () => {
       attachedFileScreenTitle: prospect?.simpleFullName,
       actions: [
         {
-          key: 'contact-saveContact',
+          key: 'prospect-saveContact',
           order: 10,
           iconName: 'user-plus',
           title: I18n.t('Crm_SaveContact'),
@@ -256,11 +256,11 @@ const useProspectDetailsActions = () => {
                 street:
                   prospect.mainAddress?.addressL4 ??
                   prospect.mainAddress?.fullName,
-                country: prospect.mainAddress?.addressL7Country,
-                city: prospect.mainAddress?.primaryCity,
+                country: prospect.mainAddress?.addressL7Country?.name,
+                city: prospect.mainAddress?.city?.name,
                 postCode: prospect.mainAddress?.zip,
               },
-              notes: prospect.notes,
+              notes: prospect.description,
             }),
           showInHeader: true,
         },
