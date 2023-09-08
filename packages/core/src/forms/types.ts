@@ -49,6 +49,7 @@ export interface Field {
   required?: boolean;
   requiredIf?: (values?: States) => boolean;
   readonly?: boolean;
+  readonlyIf?: (values?: States) => boolean;
   hideIf?: (values?: States) => boolean;
   dependsOn?: {
     fieldName: string | string[];
