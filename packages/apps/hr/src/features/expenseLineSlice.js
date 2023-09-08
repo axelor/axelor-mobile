@@ -27,6 +27,7 @@ import {
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
   createExpenseLine as _createExpenseLine,
   searchKilometricAllowParam as _searchKilometricAllowParam,
+  updateExpenseLine as _updateExpenseLine,
 } from '../api/expense-line-api';
 
 export const fetchExpenseLine = createAsyncThunk(
@@ -85,6 +86,19 @@ export const createExpenseLine = createAsyncThunk(
         getState,
         responseOptions: {isArrayResponse: true},
       });
+    });
+  },
+);
+
+export const updateExpenseLine = createAsyncThunk(
+  'expenseLine/updateExpenseLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateExpenseLine,
+      data,
+      action: 'Hr_SliceAction_SearchKilometricAllowParam',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );

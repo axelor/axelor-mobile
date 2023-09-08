@@ -162,3 +162,13 @@ export async function createExpenseLine({expenseLine}) {
     data: expenseLine,
   });
 }
+
+export async function updateExpenseLine({expenseLine}) {
+  console.log('update -------------------------------------------');
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.hr.db.ExpenseLine',
+    data: {
+      data: expenseLine,
+    },
+  });
+}

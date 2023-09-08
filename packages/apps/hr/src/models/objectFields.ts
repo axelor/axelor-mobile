@@ -27,6 +27,7 @@ export const hr_modelAPI: ObjectFields = {
     project: schemaContructor.subObject(),
     totalAmount: schemaContructor.string(),
     expenseProduct: schemaContructor.subObject(),
+    'expenseProduct.name': schemaContructor.string(),
     kilometricTypeSelect: schemaContructor.number(),
     justificationMetaFile: schemaContructor.subObject(),
     comments: schemaContructor.string(),
