@@ -103,9 +103,13 @@ const Field = ({
     );
   }, [_field, object, storeState]);
 
-  const isGlobalReadonly = useMemo(() => {
-    return globalReadonly({objectState: object, storeState: storeState});
-  }, [globalReadonly, object, storeState]);
+  const isReadonly = useMemo(() => {
+    return (
+      globalReadonly({objectState: object, storeState: storeState}) ||
+      _field.readonly ||
+      _field.readonlyIf({objectState: object, storeState: storeState})
+    );
+  }, [_field, globalReadonly, object, storeState]);
 
   const fieldStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -124,7 +128,7 @@ const Field = ({
           defaultValue: value,
           onChange: handleChange,
           required: isRequired,
-          readonly: isGlobalReadonly || _field.readonly,
+          readonly: isReadonly,
           ..._field.options,
         });
       case 'checkbox':
@@ -134,7 +138,7 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             isDefaultChecked={value}
             onChange={handleChange}
-            disabled={isGlobalReadonly || _field.readonly}
+            disabled={isReadonly}
             {..._field.options}
           />
         );
@@ -143,7 +147,7 @@ const Field = ({
           <StarScore
             score={value}
             onPress={handleChange}
-            editMode={!isGlobalReadonly && !_field.readonly}
+            editMode={!isReadonly}
             showMissingStar={true}
             {..._field.options}
           />
@@ -156,7 +160,7 @@ const Field = ({
             defaultValue={value}
             onUpload={handleChange}
             required={isRequired}
-            readonly={isGlobalReadonly || _field.readonly}
+            readonly={isReadonly}
             {..._field.options}
           />
         );
@@ -171,7 +175,7 @@ const Field = ({
               handleChange(_date.toISOString()?.split('T')[0])
             }
             required={isRequired}
-            readonly={isGlobalReadonly || _field.readonly}
+            readonly={isReadonly}
             nullable={true}
             {..._field.options}
           />
@@ -192,7 +196,7 @@ const Field = ({
             defaultValue={value}
             onChange={handleChange}
             required={isRequired}
-            readonly={isGlobalReadonly || _field.readonly}
+            readonly={isReadonly}
             {..._field.options}
           />
         );
@@ -204,7 +208,7 @@ const Field = ({
             defaultValue={value}
             onChange={handleChange}
             required={isRequired}
-            readonly={isGlobalReadonly || _field.readonly}
+            readonly={isReadonly}
             {..._field.options}
           />
         );
@@ -218,7 +222,7 @@ const Field = ({
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             required={isRequired}
-            readOnly={isGlobalReadonly || _field.readonly}
+            readOnly={isReadonly}
             keyboardType={getKeyboardType(_field)}
             {..._field.options}
           />
@@ -231,7 +235,7 @@ const Field = ({
             defaultValue={value}
             onChange={handleChange}
             required={isRequired}
-            readOnly={isGlobalReadonly || _field.readonly}
+            readOnly={isReadonly}
             keyboardType={getKeyboardType(_field)}
             {..._field.options}
           />
