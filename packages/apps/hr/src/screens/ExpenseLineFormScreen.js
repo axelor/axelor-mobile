@@ -37,6 +37,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const {user} = useSelector(state => state.user);
 
+  console.log('expenseLine', expenseLine);
+
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
       const dataToSend = {
@@ -66,6 +68,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     (_expenseLine, dispatch) => {
       const dataToSend = {
         id: expenseLine.id,
+        version: expenseLine.version,
         projectId: _expenseLine.project?.id,
         expenseProductId: _expenseLine.expenseType?.id,
         expenseDate: _expenseLine.expenseDate,
@@ -84,7 +87,12 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       };
       dispatch(updateExpenseLine({expenseLine: dataToSend}));
     },
-    [expenseLine.id, user?.activeCompany?.id, user?.employee?.id],
+    [
+      expenseLine.id,
+      expenseLine.version,
+      user?.activeCompany?.id,
+      user?.employee?.id,
+    ],
   );
 
   const defaultValue = useMemo(() => {
