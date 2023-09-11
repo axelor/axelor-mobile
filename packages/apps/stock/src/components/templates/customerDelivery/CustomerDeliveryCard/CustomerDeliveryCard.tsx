@@ -94,7 +94,7 @@ const CustomerDeliveryCard = ({
         ],
       }}
       sideBadges={
-        availability == null
+        availability == null || availability === 0
           ? null
           : {
               items: [

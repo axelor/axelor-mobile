@@ -97,7 +97,7 @@ const InternalMoveCard = ({
         ],
       }}
       sideBadges={
-        availability == null
+        availability == null || availability === 0
           ? null
           : {
               items: [
