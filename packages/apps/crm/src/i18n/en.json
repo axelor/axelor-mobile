@@ -81,6 +81,7 @@
   "Crm_NewCatalog": "New catalog",
   "Crm_Image": "Image",
   "Crm_PdfFile": "PDF file",
+  "Crm_SaveContact": "Save contact",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
