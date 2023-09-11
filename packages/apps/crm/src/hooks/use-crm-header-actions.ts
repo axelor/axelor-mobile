@@ -111,6 +111,7 @@ const useContactDetailsActions = () => {
             contactProvider.saveContact({
               firstName: contact.firstName,
               lastName: contact.name,
+              company: contact.mainPartner?.fullName,
               mobilePhone: contact.mobilePhone,
               fixedPhone: contact.fixedPhone,
               email: contact.emailAddress?.address,
@@ -174,15 +175,12 @@ const useLeadDetailsActions = () => {
             contactProvider.saveContact({
               firstName: lead.firstName,
               lastName: lead.name,
+              company: lead.enterpriseName,
               mobilePhone: lead.mobilePhone,
               fixedPhone: lead.fixedPhone,
               email: lead.emailAddress?.address,
               address: {
-                street:
-                  lead.mainAddress?.addressL4 ?? lead.mainAddress?.fullName,
-                country: lead.mainAddress?.addressL7Country?.name,
-                city: lead.mainAddress?.city?.name,
-                postCode: lead.mainAddress?.zip,
+                street: lead.primaryAddress,
               },
               notes: lead.description,
             }),

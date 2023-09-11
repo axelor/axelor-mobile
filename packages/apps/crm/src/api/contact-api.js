@@ -86,9 +86,6 @@ export async function getContact({contactId}) {
     model: 'com.axelor.apps.base.db.Partner',
     id: contactId,
     fieldKey: 'crm_contact',
-    relatedFields: {
-      mainAddress: ['fullName', 'addressL4', 'addressL7Country', 'city', 'zip'],
-    },
   });
 }
 
