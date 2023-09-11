@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Picker,
@@ -45,12 +45,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const {stockConfig} = useSelector(state => state.stockAppConfig);
-  const {loadingSupplierCatalog} = useSelector(state => state.supplierCatalog);
+  const {productFromId: product} = useSelector(state => state.product);
   const {loadingSupplierArrivalLine, supplierArrivalLine} = useSelector(
     state => state.supplierArrivalLine,
-  );
-  const {loadingProductFromId, productFromId: product} = useSelector(
-    state => state.product,
   );
 
   const trackingNumber = useMemo(
@@ -94,15 +91,17 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     );
   }, [dispatch, productId, supplierArrival, supplierArrivalLine]);
 
-  useEffect(() => {
-    if (supplierArrivalLineId) {
-      dispatch(
-        fetchSupplierArrivalLine({
-          supplierArrivalLineId: supplierArrivalLineId,
-        }),
-      );
-    }
+  const getSupplierArrivalLine = useCallback(() => {
+    dispatch(
+      fetchSupplierArrivalLine({
+        supplierArrivalLineId: supplierArrivalLineId,
+      }),
+    );
   }, [dispatch, supplierArrivalLineId]);
+
+  useEffect(() => {
+    getSupplierArrivalLine();
+  }, [getSupplierArrivalLine]);
 
   const handleConformityChange = item => {
     if (item === null) {
@@ -132,11 +131,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           supplierArrival={supplierArrival}
           supplierArrivalLine={supplierArrivalLine}
         />
-      }
-      loading={
-        loadingProductFromId ||
-        loadingSupplierCatalog ||
-        loadingSupplierArrivalLine
       }>
       <HeaderContainer
         expandableFilter={false}
@@ -152,7 +146,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView
+        refresh={{
+          loading: loadingSupplierArrivalLine,
+          fetcher: getSupplierArrivalLine,
+        }}>
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={product?.picture}
