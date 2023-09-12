@@ -101,7 +101,6 @@ export const updateExpenseLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      console.log('data', data?.expenseLine?.mode);
       return handlerApiCall({
         fetchFunction:
           data?.expenseLine?.mode === ExpenseLine.modes.general
@@ -207,23 +206,26 @@ const expenseLineSlice = createSlice({
       state.expenseLineList = action.payload;
     });
     builder.addCase(updateExpenseLine.pending, (state, action) => {
-      state.loadingGeneralExpenseLine = true;
-      state.loadingKilometricExpenseLine = true;
+      if (action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.general) {
+        state.loadingGeneralExpenseLine = true;
+      }
+      if (
+        action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.kilometric
+      ) {
+        state.loadingKilometricExpenseLine = true;
+      }
     });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
-      state.loadingGeneralExpenseLine = false;
-      state.loadingKilometricExpenseLine = false;
-      state.generalExpenseLineList = action.payload;
-      state.kilometricExpenseLineList = action.payload;
-      console.log('state', state);
-      console.log('action', action);
-      /*if(action.payload.generalExpense != null){
-        loadingGeneralExpenseLine = false
-      }else{
-
-      }*/
-      //state.loadingExpenseLine = false;
-      //state.expenseLineList = action.payload;
+      if (action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.general) {
+        state.loadingGeneralExpenseLine = false;
+        state.generalExpenseLineList = action.payload;
+      }
+      if (
+        action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.kilometric
+      ) {
+        state.loadingKilometricExpenseLine = false;
+        state.kilometricExpenseLineList = action.payload;
+      }
     });
   },
 });

@@ -38,8 +38,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const {user} = useSelector(state => state.user);
 
-  console.log('expenseLine', expenseLine);
-
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
       const dataToSend = {

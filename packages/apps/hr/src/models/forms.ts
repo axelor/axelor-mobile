@@ -98,10 +98,8 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'default',
         hideIf: ({objectState}) => objectState.manageMode === MODES.general,
-        requiredIf: ({objectState}) => {
-          console.log(objectState);
-          return objectState.manageMode === MODES.kilometric;
-        },
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === MODES.kilometric,
       },
       totalAmount: {
         titleKey: 'Hr_TotalAmount',
