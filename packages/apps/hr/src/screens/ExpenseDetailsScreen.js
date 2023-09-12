@@ -31,11 +31,7 @@ import {
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
 } from '../features/expenseLineSlice';
-
-const MODE = {
-  general: 'general',
-  kilometric: 'kilometric',
-};
+import {ExpenseLine} from '../types';
 
 const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense} = route.params;
@@ -54,14 +50,14 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
     kilometricExpenseLineList,
   } = useSelector(state => state.expenseLine);
 
-  const [mode, setMode] = useState(MODE.general);
+  const [mode, setMode] = useState(ExpenseLine.modes.general);
 
   useEffect(() => {
     dispatch(fetchExpenseById({ExpenseId: idExpense}));
   }, [dispatch, idExpense]);
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === MODE.general) {
+    if (mode === ExpenseLine.modes.general) {
       return {
         loading: loadingGeneralExpenseLine,
         moreLoading: moreLoadingGeneralExpenseLine,
@@ -91,7 +87,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
       dispatch(
-        (mode === MODE.general
+        (mode === ExpenseLine.modes.general
           ? searchGeneralExpenseLines
           : searchKilometricExpenseLines)({expenseId: expense?.id, page: page}),
       );
@@ -112,7 +108,10 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
         fixedItems={
           <View>
             <ExpenseHeader />
-            <ExpenseLineTypeSwitch onChange={setMode} MODES={MODE} />
+            <ExpenseLineTypeSwitch
+              onChange={setMode}
+              MODES={ExpenseLine.modes}
+            />
           </View>
         }
       />

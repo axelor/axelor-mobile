@@ -25,11 +25,6 @@ import {
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 
-const MODES = {
-  general: 'general',
-  kilometric: 'kilometric',
-};
-
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const expenseLine = route?.params?.expenseLine;
   const mode = route?.params?.mode;
@@ -105,9 +100,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const defaultValue = useMemo(() => {
     if (expenseLine !== null) {
-      if (mode === MODES.general) {
+      if (mode === ExpenseLine.modes.general) {
         return {
-          manageMode: expenseLine != null ? mode : MODES.general,
+          manageMode: expenseLine != null ? mode : ExpenseLine.modes.general,
           hideToggle: true,
           expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
           project: expenseLine != null ? expenseLine.project : null,
@@ -126,9 +121,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           comments: expenseLine != null ? expenseLine.comments : null,
         };
       }
-      if (mode === MODES.kilometric) {
+      if (mode === ExpenseLine.modes.kilometric) {
         return {
-          manageMode: expenseLine != null ? mode : MODES.general,
+          manageMode: expenseLine != null ? mode : ExpenseLine.modes.general,
           hideToggle: true,
           expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
           fromCity: expenseLine != null ? expenseLine.fromCity : null,
@@ -137,7 +132,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           kilometricAllowParam:
             expenseLine != null ? expenseLine.kilometricAllowParam : null,
           kilometricTypeSelect:
-            expenseLine != null && mode === MODES.kilometric
+            expenseLine != null && mode === ExpenseLine.modes.kilometric
               ? {
                   key: expenseLine.kilometricTypeSelect,
                   title: ExpenseLine.getKilomectricTypeSelect(
@@ -151,12 +146,12 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       }
     } else {
       return {
-        manageMode: MODES.general,
+        manageMode: ExpenseLine.modes.general,
         hideToggle: false,
       };
     }
     return {
-      manageMode: MODES.general,
+      manageMode: ExpenseLine.modes.general,
       hideToggle: false,
     };
   }, [I18n, expenseLine, mode]);
