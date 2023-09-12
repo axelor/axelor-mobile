@@ -22,6 +22,11 @@ class ExpenseLineType {
     RoundTrip: 2,
   };
 
+  static modes = {
+    general: 'general',
+    kilometric: 'kilometric',
+  };
+
   static getKilomectricTypeSelect = (
     select: number,
     I18n: {t: (key: string) => string},

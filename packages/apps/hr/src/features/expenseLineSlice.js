@@ -29,6 +29,7 @@ import {
   searchKilometricAllowParam as _searchKilometricAllowParam,
   updateExpenseLine as _updateExpenseLine,
 } from '../api/expense-line-api';
+import {ExpenseLine} from '../types';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -81,7 +82,7 @@ export const createExpenseLine = createAsyncThunk(
     }).then(() => {
       return handlerApiCall({
         fetchFunction: _searchExpenseLines,
-        data,
+        data: {userId: data?.userId},
         action: 'Hr_SliceAction_FetchExpenseLines',
         getState,
         responseOptions: {isArrayResponse: true},
@@ -99,6 +100,21 @@ export const updateExpenseLine = createAsyncThunk(
       action: 'Hr_SliceAction_SearchKilometricAllowParam',
       getState,
       responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      console.log('data', data?.expenseLine?.mode);
+      return handlerApiCall({
+        fetchFunction:
+          data?.expenseLine?.mode === ExpenseLine.modes.general
+            ? _searchGeneralExpenseLines
+            : _searchKilometricExpenseLines,
+        action:
+          data?.expenseLine?.mode === ExpenseLine.modes.general
+            ? 'Hr_SliceAction_SearchGeneralExpenseLines'
+            : 'Hr_SliceAction_SearchKilometricExpenseLines',
+        getState,
+        data: {expenseId: data?.expenseLine?.expenseId},
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -189,6 +205,25 @@ const expenseLineSlice = createSlice({
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
       state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
+    });
+    builder.addCase(updateExpenseLine.pending, (state, action) => {
+      state.loadingGeneralExpenseLine = true;
+      state.loadingKilometricExpenseLine = true;
+    });
+    builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
+      state.loadingGeneralExpenseLine = false;
+      state.loadingKilometricExpenseLine = false;
+      state.generalExpenseLineList = action.payload;
+      state.kilometricExpenseLineList = action.payload;
+      console.log('state', state);
+      console.log('action', action);
+      /*if(action.payload.generalExpense != null){
+        loadingGeneralExpenseLine = false
+      }else{
+
+      }*/
+      //state.loadingExpenseLine = false;
+      //state.expenseLineList = action.payload;
     });
   },
 });

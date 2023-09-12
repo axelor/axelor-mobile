@@ -39,6 +39,7 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
+        hideIf: ({objectState}) => objectState.hideToggle,
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',

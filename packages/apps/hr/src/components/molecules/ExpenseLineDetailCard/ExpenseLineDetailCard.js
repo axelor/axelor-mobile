@@ -23,7 +23,13 @@ import {useTranslator} from '@axelor/aos-mobile-core';
 import {Expense, ExpenseLine} from '../../../types';
 import {ExpenseLineCard} from '../../atoms';
 
-const ExpenseLineDetailCard = ({item, expense, navigation, mode}) => {
+const ExpenseLineDetailCard = ({
+  item,
+  expense,
+  navigation,
+  mode,
+  idExpense,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
@@ -58,6 +64,7 @@ const ExpenseLineDetailCard = ({item, expense, navigation, mode}) => {
             navigation.navigate('ExpenseLineFormScreen', {
               expenseLine: item,
               mode: mode,
+              idExpense: idExpense,
             })
           }
           style={styles.cardIconButton}

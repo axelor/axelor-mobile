@@ -33,6 +33,7 @@ export const hr_modelAPI: ObjectFields = {
     comments: schemaContructor.string(),
     kilometricAllowParam: schemaContructor.subObject(),
     distance: schemaContructor.number(),
+    totalTax: schemaContructor.string(),
   }),
   hr_expenseDraft: schemaContructor.object({
     fullName: schemaContructor.string(),

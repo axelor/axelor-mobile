@@ -33,6 +33,7 @@ const MODES = {
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const expenseLine = route?.params?.expenseLine;
   const mode = route?.params?.mode;
+  const idExpense = route?.params?.idExpense;
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -58,26 +59,31 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         expenseLineType: _expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
-      dispatch(createExpenseLine({expenseLine: dataToSend}));
+      dispatch(createExpenseLine({expenseLine: dataToSend, userId: user?.id}));
       navigation.navigate('ExpenseLinesListScreen');
     },
-    [navigation, user?.activeCompany?.id, user?.employee?.id],
+    [navigation, user?.activeCompany?.id, user?.employee?.id, user?.id],
   );
 
   const updateExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
       const dataToSend = {
-        id: expenseLine.id,
-        version: expenseLine.version,
-        projectId: _expenseLine.project?.id,
-        expenseProductId: _expenseLine.expenseType?.id,
+        mode: mode,
+        id: expenseLine?.id,
+        expenseId: idExpense,
+        version: expenseLine?.version,
+        project: {id: _expenseLine.project?.id},
+        expenseProduct: {id: _expenseLine.expenseType?.id},
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
         comments: _expenseLine.comments,
-        justificationFileId: _expenseLine.justificationMetaFile?.id,
-        kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
+        justificationMetaFile:
+          mode === ExpenseLine.modes.general
+            ? {id: _expenseLine.justificationMetaFile?.id}
+            : null,
+        kilometricAllowParam: {id: _expenseLine.kilometricAllowParam?.id},
         kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
         distance: _expenseLine.distance,
         fromCity: _expenseLine.fromCity,
@@ -86,10 +92,14 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         companyId: user?.activeCompany?.id,
       };
       dispatch(updateExpenseLine({expenseLine: dataToSend}));
+      navigation.navigate('ExpenseDetailsScreen', {idExpense: idExpense});
     },
     [
-      expenseLine.id,
-      expenseLine.version,
+      expenseLine?.id,
+      expenseLine?.version,
+      idExpense,
+      mode,
+      navigation,
       user?.activeCompany?.id,
       user?.employee?.id,
     ],
@@ -100,6 +110,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       if (mode === MODES.general) {
         return {
           manageMode: expenseLine != null ? mode : MODES.general,
+          hideToggle: true,
           expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
           project: expenseLine != null ? expenseLine.project : null,
           expenseType:
@@ -120,6 +131,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       if (mode === MODES.kilometric) {
         return {
           manageMode: expenseLine != null ? mode : MODES.general,
+          hideToggle: true,
           expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
           fromCity: expenseLine != null ? expenseLine.fromCity : null,
           toCity: expenseLine != null ? expenseLine.toCity : null,
@@ -142,10 +154,12 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     } else {
       return {
         manageMode: MODES.general,
+        hideToggle: false,
       };
     }
     return {
       manageMode: MODES.general,
+      hideToggle: false,
     };
   }, [I18n, expenseLine, mode]);
 
@@ -155,7 +169,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       actions={[
         {
           key: 'create-expenseLine',
-          type: 'create',
+          type: expenseLine != null ? 'update' : 'create',
           needValidation: true,
           needRequiredFields: true,
           customAction: ({dispatch, objectState}) => {

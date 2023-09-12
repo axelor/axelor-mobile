@@ -125,6 +125,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
             item={item}
             navigation={navigation}
             mode={mode}
+            idExpense={idExpense}
           />
         )}
         fetchData={fetchExpenseLineAPI}
