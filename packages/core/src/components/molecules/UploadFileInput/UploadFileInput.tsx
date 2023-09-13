@@ -49,12 +49,7 @@ const DEFAULT_MAX_FILE_SIZE = 5000000;
 const BUTTON_SIZE = 35;
 
 const isMetaFile = file => {
-  return (
-    typeof file === 'object' &&
-    file?.id != null &&
-    file?.version != null &&
-    file?.fileName != null
-  );
+  return typeof file === 'object' && file?.id != null && file?.fileName != null;
 };
 
 const formatFileSize = (size: number): string => {
@@ -218,14 +213,13 @@ const UploadFileInput = ({
     if (isMetaFile(selectedFile)) {
       try {
         await deleteMetaFile(selectedFile?.id);
-
-        onUpload();
       } catch (error) {
         console.log('Could not delete the file:', error);
       }
     }
 
     setSelectedFile(null);
+    onUpload(null);
   };
 
   const handleFileView = async () => {
