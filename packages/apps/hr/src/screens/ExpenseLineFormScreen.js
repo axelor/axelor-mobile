@@ -27,7 +27,6 @@ import {ExpenseLine} from '../types';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const expenseLine = route?.params?.expenseLine;
-  const mode = route?.params?.mode;
   const idExpense = route?.params?.idExpense;
   const I18n = useTranslator();
 
@@ -37,7 +36,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     (_expenseLine, dispatch) => {
       const dataToSend = {
         projectId: _expenseLine.project?.id,
-        expenseProductId: _expenseLine.expenseType?.id,
+        expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
@@ -53,6 +52,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         companyId: user?.activeCompany?.id,
       };
       dispatch(createExpenseLine({expenseLine: dataToSend, userId: user?.id}));
+
       navigation.navigate('ExpenseLinesListScreen');
     },
     [navigation, user?.activeCompany?.id, user?.employee?.id, user?.id],
@@ -60,13 +60,13 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const updateExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
+      const mode = ExpenseLine.getExpenseMode(expenseLine);
+
       const dataToSend = {
-        mode: mode,
         id: expenseLine?.id,
-        expenseId: idExpense,
         version: expenseLine?.version,
-        project: {id: _expenseLine.project?.id},
-        expenseProduct: {id: _expenseLine.expenseType?.id},
+        project: _expenseLine?.project,
+        expenseProduct: _expenseLine.expenseProduct,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
@@ -74,9 +74,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         comments: _expenseLine.comments,
         justificationMetaFile:
           mode === ExpenseLine.modes.general
-            ? {id: _expenseLine.justificationMetaFile?.id}
+            ? _expenseLine.justificationMetaFile
             : null,
-        kilometricAllowParam: {id: _expenseLine.kilometricAllowParam?.id},
+        kilometricAllowParam: _expenseLine.kilometricAllowParam,
         kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
         distance: _expenseLine.distance,
         fromCity: _expenseLine.fromCity,
@@ -84,77 +84,69 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         expenseLineType: _expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
-      dispatch(updateExpenseLine({expenseLine: dataToSend}));
-      navigation.navigate('ExpenseDetailsScreen', {idExpense: idExpense});
+      dispatch(
+        updateExpenseLine({
+          expenseLine: dataToSend,
+          expenseId: idExpense,
+          mode: mode,
+          userId: user?.id,
+        }),
+      );
+
+      if (idExpense == null) {
+        navigation.navigate('ExpenseLinesListScreen');
+      } else {
+        navigation.navigate('ExpenseDetailsScreen', {idExpense: idExpense});
+      }
     },
-    [
-      expenseLine?.id,
-      expenseLine?.version,
-      idExpense,
-      mode,
-      navigation,
-      user?.activeCompany?.id,
-      user?.employee?.id,
-    ],
+    [expenseLine, idExpense, navigation, user],
   );
 
   const defaultValue = useMemo(() => {
-    if (expenseLine !== null) {
+    if (expenseLine != null) {
+      const mode = ExpenseLine.getExpenseMode(expenseLine);
       if (mode === ExpenseLine.modes.general) {
         return {
-          manageMode: expenseLine != null ? mode : ExpenseLine.modes.general,
+          manageMode: mode,
           hideToggle: true,
-          expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
-          project: expenseLine != null ? expenseLine.project : null,
-          expenseType:
-            expenseLine != null
-              ? {
-                  id: expenseLine.expenseProduct?.id,
-                  name: expenseLine['expenseProduct.name'],
-                }
-              : null,
-          totalAmount: expenseLine != null ? expenseLine.totalAmount : 0,
-          totalTax: expenseLine != null ? expenseLine.totalTax : 0,
-
-          justificationMetaFile:
-            expenseLine != null ? expenseLine.justificationMetaFile : null,
-          comments: expenseLine != null ? expenseLine.comments : null,
+          expenseDate: expenseLine.expenseDate,
+          project: expenseLine.project,
+          expenseProduct: {
+            id: expenseLine.expenseProduct?.id,
+            name: expenseLine['expenseProduct.name'],
+          },
+          totalAmount: expenseLine.totalAmount || 0,
+          totalTax: expenseLine.totalTax || 0,
+          justificationMetaFile: expenseLine.justificationMetaFile,
+          comments: expenseLine.comments,
         };
-      }
-      if (mode === ExpenseLine.modes.kilometric) {
+      } else if (mode === ExpenseLine.modes.kilometric) {
         return {
-          manageMode: expenseLine != null ? mode : ExpenseLine.modes.general,
+          manageMode: mode,
           hideToggle: true,
-          expenseDate: expenseLine != null ? expenseLine.expenseDate : null,
-          fromCity: expenseLine != null ? expenseLine.fromCity : null,
-          toCity: expenseLine != null ? expenseLine.toCity : null,
-          project: expenseLine != null ? expenseLine.project : null,
-          kilometricAllowParam:
-            expenseLine != null ? expenseLine.kilometricAllowParam : null,
-          kilometricTypeSelect:
-            expenseLine != null && mode === ExpenseLine.modes.kilometric
-              ? {
-                  key: expenseLine.kilometricTypeSelect,
-                  title: ExpenseLine.getKilomectricTypeSelect(
-                    expenseLine.kilometricTypeSelect,
-                    I18n,
-                  ),
-                }
-              : null,
-          comments: expenseLine != null ? expenseLine.comments : null,
+          expenseDate: expenseLine.expenseDate,
+          project: expenseLine.project,
+          fromCity: expenseLine.fromCity,
+          toCity: expenseLine.toCity,
+          distance: expenseLine.distance || 0,
+          kilometricAllowParam: expenseLine.kilometricAllowParam,
+          kilometricTypeSelect: {
+            key: expenseLine.kilometricTypeSelect,
+            title: ExpenseLine.getKilomectricTypeSelect(
+              expenseLine.kilometricTypeSelect,
+              I18n,
+            ),
+          },
+          comments: expenseLine.comments,
         };
       }
-    } else {
-      return {
-        manageMode: ExpenseLine.modes.general,
-        hideToggle: false,
-      };
     }
+
     return {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
     };
-  }, [I18n, expenseLine, mode]);
+  }, [I18n, expenseLine]);
 
   return (
     <FormView
@@ -162,15 +154,22 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       actions={[
         {
           key: 'create-expenseLine',
-          type: expenseLine != null ? 'update' : 'create',
+          type: 'create',
           needValidation: true,
           needRequiredFields: true,
+          hideIf: () => expenseLine != null,
           customAction: ({dispatch, objectState}) => {
-            if (expenseLine != null) {
-              return updateExpenseLineAPI(objectState, dispatch);
-            } else {
-              return createExpenseLineAPI(objectState, dispatch);
-            }
+            return createExpenseLineAPI(objectState, dispatch);
+          },
+        },
+        {
+          key: 'update-expenseLine',
+          type: 'update',
+          needValidation: true,
+          needRequiredFields: true,
+          hideIf: () => expenseLine == null,
+          customAction: ({dispatch, objectState}) => {
+            return updateExpenseLineAPI(objectState, dispatch);
           },
         },
       ]}

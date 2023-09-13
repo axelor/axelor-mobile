@@ -27,6 +27,18 @@ class ExpenseLineType {
     kilometric: 'kilometric',
   };
 
+  static getExpenseMode = (item: any): string => {
+    if (item == null) {
+      return this.modes.general;
+    }
+
+    if (item.fromCity != null && item.toCity != null) {
+      return this.modes.kilometric;
+    }
+
+    return this.modes.general;
+  };
+
   static getKilomectricTypeSelect = (
     select: number,
     I18n: {t: (key: string) => string},

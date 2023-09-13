@@ -24,22 +24,27 @@ import {
   ProjectSearchBar,
   ToggleSwitchMode,
 } from '../components';
-
-const MODES = {
-  general: 'general',
-  kilometric: 'kilometric',
-};
+import {ExpenseLine} from '../types';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
     fields: {
       manageMode: {
-        titleKey: 'Hr_Manage_Mode',
         type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
         hideIf: ({objectState}) => objectState.hideToggle,
+      },
+      justificationMetaFile: {
+        titleKey: 'Hr_Justification',
+        type: 'object',
+        widget: 'file',
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.kilometric,
+        options: {
+          displayPreview: true,
+        },
       },
       expenseDate: {
         titleKey: 'Hr_ExpenseDate',
@@ -53,74 +58,74 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
       },
-      expenseType: {
+      expenseProduct: {
         titleKey: 'Hr_ExpenseType',
         type: 'object',
         widget: 'custom',
         customComponent: ExpenseTypeSearchBar,
-        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
-        requiredIf: ({objectState}) => objectState.manageMode === MODES.general,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.kilometric,
+        requiredIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
       },
       kilometricAllowParam: {
-        titleKey: 'Hr_KilomectricAllowParam',
+        titleKey: 'Hr_KilometricAllowParam',
         type: 'object',
         widget: 'custom',
         customComponent: KilometricAllowParamSearchBar,
-        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
-          objectState.manageMode === MODES.kilometric,
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
       kilometricTypeSelect: {
         titleKey: 'Hr_KilometricTypeSelect',
         type: 'object',
         widget: 'custom',
         customComponent: KilometricTypeSelectPicker,
-        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
-          objectState.manageMode === MODES.kilometric,
-      },
-      distance: {
-        titleKey: 'Hr_Distance',
-        type: 'number',
-        widget: 'increment',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
       fromCity: {
         titleKey: 'Hr_FromCity',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
-          objectState.manageMode === MODES.kilometric,
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
       toCity: {
         titleKey: 'Hr_ToCity',
         type: 'string',
         widget: 'default',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.general,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
-          objectState.manageMode === MODES.kilometric,
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
-      totalAmount: {
-        titleKey: 'Hr_TotalAmount',
+      distance: {
+        titleKey: 'Hr_Distance',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.general,
+      },
+      totalAmount: {
+        titleKey: 'Hr_TotalATI',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
       totalTax: {
         titleKey: 'Hr_TotalTax',
         type: 'number',
         widget: 'increment',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
-      },
-      justificationMetaFile: {
-        titleKey: 'Hr_Justification',
-        type: 'object',
-        widget: 'file',
-        hideIf: ({objectState}) => objectState.manageMode === MODES.kilometric,
-        options: {
-          displayPreview: true,
-        },
+        hideIf: ({objectState}) =>
+          objectState.manageMode === ExpenseLine.modes.kilometric,
       },
       comments: {
         titleKey: 'Hr_Comments',

@@ -33,10 +33,9 @@ import {
 import {fetchExpenseLine} from '../features/expenseLineSlice';
 import {
   ExpenseAddPopup,
-  ExpenseLineCard,
+  ExpenseLineDetailCard,
   ExpenseLineValidationButton,
 } from '../components';
-import {ExpenseLine} from '../types';
 
 const BUTTON_SIZE = 70;
 
@@ -125,18 +124,13 @@ const ExpenseLinesListScreen = ({navigation}) => {
         data={expenseLineList}
         disabledRefresh={isSelectionMode}
         renderItem={({item}) => (
-          <ExpenseLineCard
+          <ExpenseLineDetailCard
             style={styles.item}
-            expenseDate={item.expenseDate}
-            projectName={item.project?.fullName}
-            totalAmount={item.totalAmount}
-            displayText={
-              item.fromCity == null && item.toCity == null
-                ? item.expenseProduct?.fullName
-                : ExpenseLine.getKilomectricTypeSelect(
-                    item.kilometricTypeSelect,
-                    I18n,
-                  )
+            item={item}
+            onEdit={() =>
+              navigation.navigate('ExpenseLineFormScreen', {
+                expenseLine: item,
+              })
             }
             onLongPress={() => handleModeChange(item.id)}
             onItemSelection={() => handleItemSelection(item.id)}

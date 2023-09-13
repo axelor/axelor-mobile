@@ -22,56 +22,75 @@ import {
   displayItemName,
   useDispatch,
   useSelector,
-  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
-import {searchKilometricAllowParam} from '../../../features/expenseLineSlice';
+import {
+  AutoCompleteSearch,
+  useThemeColor,
+  Text,
+  FormInput,
+} from '@axelor/aos-mobile-ui';
+import {searchKilometricAllowParam} from '../../../features/kilometricAllowParamSlice';
 
 const KilometricAllowParamSearchBarAux = ({
+  style = null,
+  title = 'Hr_KilometricAllowParam',
   defaultValue = null,
   onChange = () => {},
+  readonly = false,
+  required = false,
 }) => {
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {
     kilometricAllowParamList,
     loadingKilometricAllowParam,
     moreLoadingKilometricAllowParam,
     isListEndKilometricAllowParam,
-  } = useSelector(state => state.expenseLine);
+  } = useSelector(state => state.kilometricAllowParam);
   const {user} = useSelector(state => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchKilometricAllowParamAPI = useCallback(
     ({page = 0, searchValue}) => {
-      const idListToSend = user.employee?.employeeVehicleList.map(
-        element => element.kilometricAllowParam?.id,
-      );
       dispatch(
         searchKilometricAllowParam({
           page,
           searchValue,
-          idList: idListToSend,
+          idList: user.employee?.employeeVehicleList.map(
+            element => element.kilometricAllowParam?.id,
+          ),
         }),
       );
     },
-    [dispatch, user.employee?.employeeVehicleList],
+    [dispatch, user],
   );
+
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={title}
+        readOnly={true}
+        defaultValue={defaultValue}
+      />
+    );
+  }
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{I18n.t('Hr_KilomectricAllowParam')}</Text>
+      <Text style={styles.title}>{title}</Text>
       <AutoCompleteSearch
-        style={[defaultValue == null ? styles.requiredBorder : null]}
+        style={[
+          required && defaultValue == null ? styles.requiredBorder : null,
+        ]}
         objectList={kilometricAllowParamList}
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchKilometricAllowParamAPI}
         displayValue={displayItemName}
-        placeholder={I18n.t('Hr_KilomectricAllowParam')}
+        placeholder={title}
         showDetailsPopup={true}
         loadingList={loadingKilometricAllowParam}
         moreLoading={moreLoadingKilometricAllowParam}
@@ -85,23 +104,27 @@ const KilometricAllowParamSearchBarAux = ({
 };
 
 const KilometricAllowParamSearchBar = ({
+  style = null,
+  title = 'Hr_KilometricAllowParam',
   defaultValue = null,
   onChange = () => {},
+  readonly = false,
+  required = false,
 }) => {
   return (
     <KilometricAllowParamSearchBarAux
+      style={style}
+      title={title}
       defaultValue={defaultValue}
       onChange={onChange}
+      readonly={readonly}
+      required={required}
     />
   );
 };
 
 const getStyles = Colors =>
   StyleSheet.create({
-    searchBar: {
-      width: '100%',
-      marginLeft: 5,
-    },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
     },

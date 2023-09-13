@@ -18,14 +18,25 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  AutoCompleteSearch,
+  useThemeColor,
+  Text,
+  FormInput,
+} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
-const ProjectSearchBar = ({defaultValue = null, onChange = () => {}}) => {
-  const I18n = useTranslator();
-  const dispatch = useDispatch();
+const ProjectSearchBar = ({
+  style = null,
+  title = 'Hr_Project',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}) => {
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
     state => state.project,
@@ -49,16 +60,30 @@ const ProjectSearchBar = ({defaultValue = null, onChange = () => {}}) => {
 
   const displayItemFullname = item => item.fullName;
 
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={title}
+        readOnly={true}
+        defaultValue={defaultValue}
+      />
+    );
+  }
+
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{I18n.t('Hr_Project')}</Text>
+      <Text style={styles.title}>{title}</Text>
       <AutoCompleteSearch
+        style={[
+          required && defaultValue == null ? styles.requiredBorder : null,
+        ]}
         objectList={projectList}
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchProjectAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t('Hr_Project')}
+        placeholder={title}
         showDetailsPopup={true}
         loadingList={loadingProject}
         moreLoading={moreLoading}
@@ -73,10 +98,6 @@ const ProjectSearchBar = ({defaultValue = null, onChange = () => {}}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    searchBar: {
-      width: '100%',
-      marginLeft: 5,
-    },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
     },

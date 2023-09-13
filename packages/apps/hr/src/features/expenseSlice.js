@@ -26,7 +26,6 @@ import {
   searchMyExpense as _searchMyExpense,
   searchExpenseToValidate as _searchExpenseToValidate,
   getExpense,
-  searchExpenseType as _searchExpenseType,
 } from '../api/expense-api';
 
 export const searchExpenseDraft = createAsyncThunk(
@@ -81,19 +80,6 @@ export const fetchExpenseById = createAsyncThunk(
   },
 );
 
-export const searchExpenseType = createAsyncThunk(
-  'expense/searchExpenseType',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchExpenseType,
-      data,
-      action: 'Hr_SliceAction_FetchExpenseType',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 const initialState = {
   loading: true,
   expenseDraftList: [],
@@ -111,10 +97,6 @@ const initialState = {
 
   loadingExpense: true,
   expense: {},
-  loadingExpenseType: true,
-  moreLoadingExpenseType: false,
-  isListEndExpenseType: false,
-  expenseTypeList: [],
 };
 
 const expenseSlice = createSlice({
@@ -126,12 +108,6 @@ const expenseSlice = createSlice({
       moreLoading: 'moreLoadingMyExpense',
       isListEnd: 'isListEndMyExpense',
       list: 'myExpenseList',
-    });
-    generateInifiniteScrollCases(builder, searchExpenseType, {
-      loading: 'loadingExpenseType',
-      moreLoading: 'moreLoadingExpenseType',
-      isListEnd: 'isListEndExpenseType',
-      list: 'expenseTypeList',
     });
     generateInifiniteScrollCases(
       builder,

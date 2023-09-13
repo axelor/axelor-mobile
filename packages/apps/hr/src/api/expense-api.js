@@ -48,31 +48,6 @@ const createMyExpenseCriteria = (searchValue, userId) => {
   return criteria;
 };
 
-const createExpenseType = searchValue => {
-  const criteria = [getSearchCriterias('hr_expenseType', searchValue)];
-  criteria.push({
-    operator: 'and',
-    criteria: [
-      {
-        fieldName: 'isModel',
-        operator: '=',
-        value: false,
-      },
-      {
-        fieldName: 'expense',
-        operator: '=',
-        value: true,
-      },
-      {
-        fieldName: 'dtype',
-        operator: '=',
-        value: 'Product',
-      },
-    ],
-  });
-  return criteria;
-};
-
 const createExpenseToValidateCriteria = (searchValue, user) => {
   const criteria = [
     getSearchCriterias('hr_expense', searchValue),
@@ -133,15 +108,5 @@ export async function getExpense({ExpenseId}) {
     model: 'com.axelor.apps.hr.db.Expense',
     id: ExpenseId,
     fieldKey: 'hr_expense',
-  });
-}
-
-export async function searchExpenseType({searchValue = null, page = 0}) {
-  return createStandardSearch({
-    model: 'com.axelor.apps.base.db.Product',
-    criteria: createExpenseType(searchValue),
-    fieldKey: 'hr_expenseType',
-    sortKey: 'hr_expenseType',
-    page,
   });
 }

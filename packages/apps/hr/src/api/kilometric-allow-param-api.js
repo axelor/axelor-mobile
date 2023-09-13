@@ -21,26 +21,36 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = (searchValue, activeCompanyId) => {
-  const criteria = [getSearchCriterias('hr_project', searchValue)];
+const createKilometricAllowParamCriteria = (searchValue, idList) => {
+  const criteria = [
+    getSearchCriterias('hr_kilomectricAllowParam', searchValue),
+  ];
 
-  if (activeCompanyId != null) {
+  if (Array.isArray(idList)) {
     criteria.push({
-      fieldName: 'company.id',
-      operator: '=',
-      value: activeCompanyId,
+      fieldName: 'id',
+      operator: 'in',
+      value: idList,
     });
   }
 
   return criteria;
 };
 
-export async function searchProject({searchValue, page = 0, activeCompanyId}) {
+export async function searchKilometricAllowParam({
+  searchValue = null,
+  page = 0,
+  idList = [],
+}) {
+  if (!Array.isArray(idList) || idList.length === 0) {
+    return [];
+  }
+
   return createStandardSearch({
-    model: 'com.axelor.apps.project.db.Project',
-    criteria: createProjectCriteria(searchValue, activeCompanyId),
-    fieldKey: 'hr_project',
-    sortKey: 'hr_project',
+    model: 'com.axelor.apps.hr.db.KilometricAllowParam',
+    criteria: createKilometricAllowParamCriteria(searchValue, idList),
+    fieldKey: 'hr_kilomectricAllowParam',
+    sortKey: 'hr_kilomectricAllowParam',
     page,
   });
 }

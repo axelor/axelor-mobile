@@ -26,7 +26,6 @@ import {
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
   createExpenseLine as _createExpenseLine,
-  searchKilometricAllowParam as _searchKilometricAllowParam,
   updateExpenseLine as _updateExpenseLine,
 } from '../api/expense-line-api';
 import {ExpenseLine} from '../types';
@@ -103,30 +102,21 @@ export const updateExpenseLine = createAsyncThunk(
     }).then(() => {
       return handlerApiCall({
         fetchFunction:
-          data?.expenseLine?.mode === ExpenseLine.modes.general
+          data?.idExpense == null
+            ? _searchExpenseLines
+            : data.mode === ExpenseLine.modes.general
             ? _searchGeneralExpenseLines
             : _searchKilometricExpenseLines,
         action:
-          data?.expenseLine?.mode === ExpenseLine.modes.general
+          data?.idExpense == null
+            ? 'Hr_SliceAction_FetchExpenseLines'
+            : data?.mode === ExpenseLine.modes.general
             ? 'Hr_SliceAction_SearchGeneralExpenseLines'
             : 'Hr_SliceAction_SearchKilometricExpenseLines',
         getState,
-        data: {expenseId: data?.expenseLine?.expenseId},
+        data: {expenseId: data.expenseId, userId: data?.userId},
         responseOptions: {isArrayResponse: true},
       });
-    });
-  },
-);
-
-export const searchKilometricAllowParam = createAsyncThunk(
-  'expenseLine/kilometricAllowParam',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchKilometricAllowParam,
-      data,
-      action: 'Hr_SliceAction_SearchKilometricAllowParam',
-      getState,
-      responseOptions: {isArrayResponse: true},
     });
   },
 );
@@ -148,10 +138,6 @@ const initialState = {
   isListEndKilometricExpenseLine: false,
   kilometricExpenseLineList: [],
   totalNumberExpenseKilomectric: 0,
-  loadingKilometricAllowParam: true,
-  moreLoadingKilometricAllowParam: false,
-  isListEndKilometricAllowParam: false,
-  kilometricAllowParamList: [],
 };
 
 const expenseLineSlice = createSlice({
@@ -192,12 +178,6 @@ const expenseLineSlice = createSlice({
         manageTotal: true,
       },
     );
-    generateInifiniteScrollCases(builder, searchKilometricAllowParam, {
-      loading: 'loadingKilometricAllowParam',
-      moreLoading: 'moreLoadingKilometricAllowParam',
-      isListEnd: 'isListEndKilometricAllowParam',
-      list: 'kilometricAllowParamList',
-    });
     builder.addCase(createExpenseLine.pending, (state, action) => {
       state.loadingExpenseLine = true;
     });
@@ -205,26 +185,18 @@ const expenseLineSlice = createSlice({
       state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
     });
-    builder.addCase(updateExpenseLine.pending, (state, action) => {
-      if (action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.general) {
-        state.loadingGeneralExpenseLine = true;
-      }
-      if (
-        action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.kilometric
-      ) {
-        state.loadingKilometricExpenseLine = true;
-      }
-    });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
-      if (action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.general) {
-        state.loadingGeneralExpenseLine = false;
-        state.generalExpenseLineList = action.payload;
-      }
-      if (
-        action?.meta?.arg?.expenseLine?.mode === ExpenseLine.modes.kilometric
-      ) {
-        state.loadingKilometricExpenseLine = false;
-        state.kilometricExpenseLineList = action.payload;
+      if (action?.meta?.arg?.expenseId == null) {
+        state.expenseLineList = action.payload;
+      } else {
+        if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
+          state.loadingGeneralExpenseLine = false;
+          state.generalExpenseLineList = action.payload;
+        }
+        if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
+          state.loadingKilometricExpenseLine = false;
+          state.kilometricExpenseLineList = action.payload;
+        }
       }
     });
   },

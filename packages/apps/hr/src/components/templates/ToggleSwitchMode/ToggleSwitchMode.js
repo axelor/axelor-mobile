@@ -24,14 +24,10 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-
-const MODES = {
-  general: 'general',
-  kilometric: 'kilometric',
-};
+import {ExpenseLine} from '../../../types';
 
 const ToggleSwitchMode = ({
-  defaultValue = MODES.general,
+  defaultValue = ExpenseLine.modes.general,
   onChange = () => {},
 }) => {
   const I18n = useTranslator();
@@ -54,7 +50,9 @@ const ToggleSwitchMode = ({
       onSwitch={() => {
         setMode(_mode => {
           const newMode =
-            _mode === MODES.general ? MODES.kilometric : MODES.general;
+            _mode === ExpenseLine.modes.general
+              ? ExpenseLine.modes.kilometric
+              : ExpenseLine.modes.general;
           onChange(newMode);
           return newMode;
         });

@@ -25,7 +25,7 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
-import {searchExpenseType} from '../../../features/expenseSlice';
+import {searchExpenseType} from '../../../features/expenseTypeSlice';
 
 const ExpenseTypeSearchBarAux = ({
   defaultValue = null,
@@ -40,7 +40,7 @@ const ExpenseTypeSearchBarAux = ({
     loadingExpenseType,
     moreLoadingExpenseType,
     isListEndExpenseType,
-  } = useSelector(state => state.expense);
+  } = useSelector(state => state.expenseType);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 

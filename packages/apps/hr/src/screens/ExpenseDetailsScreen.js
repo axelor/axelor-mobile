@@ -108,10 +108,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
         fixedItems={
           <View>
             <ExpenseHeader />
-            <ExpenseLineTypeSwitch
-              onChange={setMode}
-              MODES={ExpenseLine.modes}
-            />
+            <ExpenseLineTypeSwitch onChange={setMode} />
           </View>
         }
       />
@@ -122,9 +119,12 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
           <ExpenseLineDetailCard
             expense={expense}
             item={item}
-            navigation={navigation}
-            mode={mode}
-            idExpense={idExpense}
+            onEdit={() =>
+              navigation.navigate('ExpenseLineFormScreen', {
+                expenseLine: item,
+                idExpense: idExpense,
+              })
+            }
           />
         )}
         fetchData={fetchExpenseLineAPI}
