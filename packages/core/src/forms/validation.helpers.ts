@@ -140,7 +140,7 @@ const getRequiredCondition = (schema: Schema, _field: DisplayField): Schema => {
     return schema.required();
   }
 
-  return schema;
+  return schema.nullable();
 };
 
 const getFieldSchema = (field: DisplayField): Schema => {
