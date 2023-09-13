@@ -20,10 +20,20 @@ import {useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {createSlice} from '@reduxjs/toolkit';
 
+export interface CameraPhoto {
+  name: string;
+  pictureExtention: string;
+  dateTime: string;
+  type: string;
+  size: number;
+  base64: string;
+  fullBase64: string;
+}
+
 interface CameraSliceState {
   isEnabled: boolean;
   cameraKey: string | null;
-  photo: string | null;
+  photo: CameraPhoto | null;
 }
 
 const cameraSlice = createSlice({
@@ -42,6 +52,9 @@ const cameraSlice = createSlice({
     takePhoto(state, action) {
       state.photo = action.payload;
     },
+    clearPhoto(state) {
+      state.photo = null;
+    },
     disableCamera(state) {
       state.isEnabled = false;
       state.cameraKey = null;
@@ -50,14 +63,15 @@ const cameraSlice = createSlice({
   },
 });
 
-export const {enableCamera, takePhoto, disableCamera} = cameraSlice.actions;
+export const {enableCamera, takePhoto, disableCamera, clearPhoto} =
+  cameraSlice.actions;
 
 const selectCamera = state => state.camera;
 
 export const useCameraSelector: () => CameraSliceState = () =>
   useSelector(selectCamera);
 
-export const useCameraValueByKey: (key: string) => string | null = key => {
+export const useCameraValueByKey: (key: string) => CameraPhoto | null = key => {
   const {cameraKey, photo} = useCameraSelector();
   return useMemo(
     () => (key === cameraKey ? photo : null),

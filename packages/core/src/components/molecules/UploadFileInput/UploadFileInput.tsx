@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
@@ -30,12 +30,23 @@ import {
   ThemeColors,
   Image,
 } from '@axelor/aos-mobile-ui';
-import {deleteMetaFile, uploadFile} from '../../../api/metafile-api';
+import {
+  deleteMetaFile,
+  uploadBase64,
+  uploadFile,
+} from '../../../api/metafile-api';
 import {useTranslator} from '../../../i18n';
 import {openFileInExternalApp} from '../../../tools';
 import {useMetafileUri} from '../../../utils';
+import {
+  useCameraValueByKey,
+  enableCamera,
+  clearPhoto,
+  CameraPhoto,
+} from '../../../features/cameraSlice';
 
 const DEFAULT_MAX_FILE_SIZE = 5000000;
+const BUTTON_SIZE = 35;
 
 const isMetaFile = file => {
   return (
@@ -70,6 +81,8 @@ interface UploadFileInputProps {
   canDeleteFile?: boolean;
   displayPreview?: boolean;
   maxSize?: number;
+  canTakePicture?: boolean;
+  getFileName?: (extension: string, dateTime: string) => string;
 }
 
 const UploadFileInput = ({
@@ -84,11 +97,17 @@ const UploadFileInput = ({
   canDeleteFile = true,
   displayPreview = false,
   maxSize = DEFAULT_MAX_FILE_SIZE,
+  canTakePicture = true,
+  getFileName = (extension, dateTime) => `picture_${dateTime}.${extension}`,
 }: UploadFileInputProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const formatMetafileURI = useMetafileUri();
+  const dispatch = useDispatch();
 
+  const cameraKey = useMemo(() => `${title}camera_upload`, [title]);
+
+  const cameraPicture = useCameraValueByKey(cameraKey);
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(defaultValue);
@@ -106,12 +125,24 @@ const UploadFileInput = ({
     return maxSize;
   }, [maxSize]);
 
+  const _enablePicture = useMemo(() => {
+    if (!canTakePicture) {
+      return false;
+    }
+
+    return documentTypesAllowed !== 'pdf';
+  }, [canTakePicture, documentTypesAllowed]);
+
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const styles = useMemo(
     () => getStyles(Colors, _required),
     [Colors, _required],
   );
+
+  const handleCamera = () => {
+    dispatch(enableCamera(cameraKey));
+  };
 
   const handleDocumentPick = async () => {
     try {
@@ -150,6 +181,39 @@ const UploadFileInput = ({
     }
   };
 
+  const handleCameraUpload = useCallback(
+    async (photo: CameraPhoto) => {
+      try {
+        const _file = {
+          name: getFileName
+            ? getFileName(photo.pictureExtention, photo.dateTime)
+            : `picture_${photo.dateTime}.${photo.pictureExtention}`,
+          type: photo.type,
+          size: photo.size,
+          base64: returnBase64String ? photo.fullBase64 : photo.base64,
+        };
+
+        if (returnBase64String) {
+          setSelectedFile(_file);
+          onUpload(_file.base64);
+          return;
+        }
+
+        const response = await uploadBase64(_file, {
+          baseUrl,
+          token,
+          jsessionId,
+        });
+
+        setSelectedFile({..._file, ...response});
+        onUpload(response);
+      } catch (error) {
+        console.log('Could not upload the file:', error);
+      }
+    },
+    [baseUrl, getFileName, jsessionId, onUpload, returnBase64String, token],
+  );
+
   const handleFileDelete = async () => {
     if (isMetaFile(selectedFile)) {
       try {
@@ -175,6 +239,13 @@ const UploadFileInput = ({
       I18n,
     );
   };
+
+  useEffect(() => {
+    if (cameraPicture) {
+      handleCameraUpload(cameraPicture);
+      dispatch(clearPhoto());
+    }
+  }, [cameraPicture, dispatch, handleCameraUpload]);
 
   useEffect(() => {
     setSelectedFile(defaultValue);
@@ -209,7 +280,7 @@ const UploadFileInput = ({
           {canDeleteFile && selectedFile != null && !readonly && (
             <CircleButton
               iconName="times"
-              size={30}
+              size={BUTTON_SIZE}
               onPress={handleFileDelete}
               style={styles.action}
             />
@@ -217,15 +288,23 @@ const UploadFileInput = ({
           {isMetaFile(selectedFile) && (
             <CircleButton
               iconName="expand-alt"
-              size={30}
+              size={BUTTON_SIZE}
               onPress={handleFileView}
+              style={styles.action}
+            />
+          )}
+          {selectedFile == null && !readonly && _enablePicture && (
+            <CircleButton
+              iconName="camera"
+              size={BUTTON_SIZE}
+              onPress={handleCamera}
               style={styles.action}
             />
           )}
           {selectedFile == null && !readonly && (
             <CircleButton
               iconName="plus"
-              size={30}
+              size={BUTTON_SIZE}
               onPress={handleDocumentPick}
               style={styles.action}
             />
