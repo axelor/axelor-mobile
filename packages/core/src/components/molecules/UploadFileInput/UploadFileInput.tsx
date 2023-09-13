@@ -267,7 +267,7 @@ const UploadFileInput = ({
             resizeMode="contain"
             source={
               isMetaFile(selectedFile)
-                ? formatMetafileURI(selectedFile)
+                ? formatMetafileURI(selectedFile?.id)
                 : {uri: selectedFile?.base64}
             }
             defaultIconSize={60}
