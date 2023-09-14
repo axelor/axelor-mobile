@@ -29,8 +29,9 @@ import {
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
 } from '../../../features/expenseLineSlice';
+import {ExpenseLine} from '../../../types';
 
-const ExpenseLineTypeSwitch = ({onChange, MODES}) => {
+const ExpenseLineTypeSwitch = ({onChange}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -79,7 +80,9 @@ const ExpenseLineTypeSwitch = ({onChange, MODES}) => {
       }
       onSwitch={() => {
         onChange(_mode => {
-          return _mode === MODES.general ? MODES.kilometric : MODES.general;
+          return _mode === ExpenseLine.modes.general
+            ? ExpenseLine.modes.kilometric
+            : ExpenseLine.modes.general;
         });
       }}
     />
