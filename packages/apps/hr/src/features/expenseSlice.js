@@ -33,25 +33,31 @@ import {
   validateExpense as _validateExpense,
 } from '../api/expense-api';
 import {Expense} from '../types';
+import {fetchExpenseLine} from './expenseLineSlice';
 
 export const createExpense = createAsyncThunk(
   'expense/createExpense',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createExpense,
       data,
       action: 'Hr_SliceAction_CreateExpense',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchMyExpense,
-        data: {userId: data.userId},
-        action: 'Hr_SliceAction_FetchMyExpense',
-        getState,
-        responseOptions: {isArrayResponse: true},
+    })
+      .then(() => {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      })
+      .then(res => {
+        dispatch(fetchExpenseLine({userId: data.userId}));
+        return res;
       });
-    });
   },
 );
 
