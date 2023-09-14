@@ -155,7 +155,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
           handleCancelButton();
         }}
         selectedItems={selectedItems}
-        navigation={navigation}
       />
     </Screen>
   );

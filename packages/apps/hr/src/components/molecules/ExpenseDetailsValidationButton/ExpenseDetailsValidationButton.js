@@ -28,45 +28,29 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
 
   const {user} = useSelector(state => state.user);
 
-  const sendExpenseAPI = useCallback(
-    (expenseId, version) => {
-      dispatch(
-        sendExpense({
-          expenseId: expenseId,
-          version: version,
-          userId: user?.id,
-          onExpense: true,
-        }),
-      );
-    },
-    [dispatch, user],
-  );
+  const sendExpenseAPI = useCallback(() => {
+    dispatch(
+      sendExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        onExpense: true,
+      }),
+    );
+  }, [dispatch, expense]);
 
-  const validateExpenseAPI = useCallback(
-    (expenseId, version) => {
-      dispatch(
-        validateExpense({
-          expenseId: expenseId,
-          version: version,
-          userId: user?.id,
-          onExpense: true,
-          user: user,
-          mode: mode,
-        }),
-      );
-    },
-    [dispatch, mode, user],
-  );
+  const validateExpenseAPI = useCallback(() => {
+    dispatch(
+      validateExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        onExpense: true,
+        mode: mode,
+      }),
+    );
+  }, [dispatch, mode, expense]);
 
   if (expense.statusSelect === Expense.statusSelect.Draft) {
-    return (
-      <Button
-        title={I18n.t('Hr_Send')}
-        onPress={() => {
-          sendExpenseAPI(expense.id, expense.version);
-        }}
-      />
-    );
+    return <Button title={I18n.t('Hr_Send')} onPress={sendExpenseAPI} />;
   }
 
   if (
@@ -75,12 +59,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     expense.statusSelect === Expense.statusSelect.WaitingValidation
   ) {
     return (
-      <Button
-        title={I18n.t('Hr_Validate')}
-        onPress={() => {
-          validateExpenseAPI(expense.id, expense.version);
-        }}
-      />
+      <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
     );
   }
 

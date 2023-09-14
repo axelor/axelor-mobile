@@ -25,27 +25,25 @@ import {
   LabelText,
   Picker,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useDispatch,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {
   createExpense,
-  fetchExpenseById,
   searchExpenseDraft,
   updateExpense,
 } from '../../../features/expenseSlice';
 
-const ExpenseAddPopup = ({
-  style,
-  visible,
-  onClose,
-  selectedItems,
-  navigation,
-}) => {
+const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const {expenseDraftList} = useSelector(state => state.expense);
-  const {expense} = useSelector(state => state.expense);
   const {user} = useSelector(state => state.user);
 
   const [expenseSelected, setExpenseSelected] = useState(null);
@@ -53,12 +51,6 @@ const ExpenseAddPopup = ({
   useEffect(() => {
     dispatch(searchExpenseDraft());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (expenseSelected != null) {
-      dispatch(fetchExpenseById({ExpenseId: expenseSelected}));
-    }
-  }, [dispatch, expenseSelected]);
 
   const createExpenseAPI = useCallback(() => {
     const _expense = {
@@ -75,15 +67,15 @@ const ExpenseAddPopup = ({
   const updateExpenseAPI = useCallback(() => {
     dispatch(
       updateExpense({
-        expenseId: expense.id,
-        version: expense.version,
+        expenseId: expenseSelected.id,
+        version: expenseSelected.version,
         userId: user.id,
         expenseLineIdList: selectedItems,
       }),
     );
     navigation.navigate('ExpenseListScreen');
     onClose();
-  }, [dispatch, onClose, expense, navigation, selectedItems, user.id]);
+  }, [dispatch, onClose, expenseSelected, navigation, selectedItems, user.id]);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
@@ -92,12 +84,11 @@ const ExpenseAddPopup = ({
           <Picker
             pickerStyle={styles.picker}
             listItems={expenseDraftList}
-            onValueChange={e => {
-              setExpenseSelected(e);
-            }}
+            onValueChange={setExpenseSelected}
             labelField="fullName"
             valueField="id"
             title={I18n.t('Hr_Expense')}
+            isValueItem={true}
           />
         </View>
         <View style={styles.labelText}>
