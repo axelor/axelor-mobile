@@ -133,7 +133,7 @@ export const validateExpense = createAsyncThunk(
 
 export const updateExpense = createAsyncThunk(
   'expense/updateExpense',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateExpense,
       data,
@@ -147,6 +147,9 @@ export const updateExpense = createAsyncThunk(
         action: 'Hr_SliceAction_FetchMyExpense',
         getState,
         responseOptions: {isArrayResponse: true},
+      }).then(res => {
+        dispatch(fetchExpenseLine({userId: data.userId}));
+        return res;
       });
     });
   },
