@@ -37,6 +37,7 @@ export {
   useCameraValueByKey,
   enableCamera,
   takePhoto,
+  clearPhoto,
   disableCamera,
   default as cameraReducer,
 } from './features/cameraSlice';
@@ -47,7 +48,7 @@ export {
   disable as disableOnline,
 } from './features/onlineSlice';
 export {getNetInfo} from './api/net-info-utils';
-export {uploadFile} from './api/metafile-api';
+export {uploadFile, uploadBase64} from './api/metafile-api';
 export {useDispatch, useSelector} from './redux/hooks';
 export * from './components';
 export * from './tools';
