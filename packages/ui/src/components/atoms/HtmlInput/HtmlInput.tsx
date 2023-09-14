@@ -73,7 +73,7 @@ const HtmlInput = ({
 
   return (
     <ScrollView contentContainerStyle={containerStyle}>
-      <ScrollView style={[style]}>
+      <ScrollView style={style}>
         <View>
           {title != null ? <Text>{title}</Text> : null}
           <RichEditor
