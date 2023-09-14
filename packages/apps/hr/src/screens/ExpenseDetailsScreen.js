@@ -34,7 +34,7 @@ import {
 import {ExpenseLine} from '../types';
 
 const ExpenseDetailsScreen = ({route, navigation}) => {
-  const {idExpense} = route.params;
+  const {idExpense, expenseMode} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -102,7 +102,9 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<ExpenseDetailsValidationButton expense={expense} />}>
+      fixedItems={
+        <ExpenseDetailsValidationButton expense={expense} mode={expenseMode} />
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
