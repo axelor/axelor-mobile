@@ -1,8 +1,5 @@
-const {modulePackageNameMapping} = require('./axelor-module-name-mapper');
-
 module.exports = {
   preset: 'react-native',
-  testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFiles: ['./jest/setup.js'],
   setupFilesAfterEnv: ['./jest/setup-tests.js'],
@@ -14,5 +11,4 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(@react-native|(jest-)?react-native|react-native-toast-message|react-clone-referenced-element|@react-native-community|rollbar-react-native|@fontawesome|@react-native|@react-navigation|react-native-pell-rich-editor|react-native-vector-icons/FontAwesome|react-native-vector-icons/FontAwesome5)/|react-native-webview|react-native-render-html)',
   ],
-  moduleNameMapper: modulePackageNameMapping,
 };
