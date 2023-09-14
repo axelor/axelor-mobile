@@ -16,7 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {hr_formsRegister} from './forms';
-export {hr_searchFields} from './searchFields';
-export {hr_sortFields} from './sortFields';
-export {hr_modelAPI} from './objectFields';
+import {
+  createStandardSearch,
+  getSearchCriterias,
+} from '@axelor/aos-mobile-core';
+
+const createProjectCriteria = (searchValue, activeCompanyId) => {
+  const criteria = [getSearchCriterias('hr_project', searchValue)];
+
+  if (activeCompanyId != null) {
+    criteria.push({
+      fieldName: 'company.id',
+      operator: '=',
+      value: activeCompanyId,
+    });
+  }
+
+  return criteria;
+};
+
+export async function searchProject({searchValue, page = 0, activeCompanyId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.Project',
+    criteria: createProjectCriteria(searchValue, activeCompanyId),
+    fieldKey: 'hr_project',
+    sortKey: 'hr_project',
+    page,
+  });
+}
