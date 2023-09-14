@@ -37,6 +37,7 @@ export const hr_modelAPI: ObjectFields = {
   }),
   hr_expenseDraft: schemaContructor.object({
     fullName: schemaContructor.string(),
+    expenseSeq: schemaContructor.string(),
   }),
   hr_expense: schemaContructor.object({
     fullName: schemaContructor.string(),
