@@ -37,7 +37,7 @@
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_CreateExpenseLine": "Créer une ligne de note de frais",
-  "Hr_Refused": "Refuser",
+  "Hr_Refuse": "Refuser",
   "Hr_ReasonRefusal": "Motif de refus",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",

@@ -37,7 +37,7 @@
   "Hr_Send": "Send",
   "Hr_Validate": "Validate",
   "Hr_CreateExpenseLine": "Create expense line",
-  "Hr_Refused": "Refused",
+  "Hr_Refuse": "Refuse",
   "Hr_ReasonRefusal": "Reason for refusal",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",

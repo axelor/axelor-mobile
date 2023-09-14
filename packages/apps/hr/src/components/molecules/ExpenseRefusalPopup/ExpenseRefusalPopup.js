@@ -17,17 +17,25 @@
  */
 
 import React, {useCallback} from 'react';
-import {Button, FormInput, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {
+  Button,
+  FormInput,
+  Icon,
+  PopUp,
+  checkNullString,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {refuseExpense} from '../../../features/expenseSlice';
 
-const ExpenseLineValidationButton = ({
+const ExpenseRefusalPopup = ({
   refusalPopupIsOpen,
   setRefusalMessage,
   expense,
   mode,
   refusalMessage,
+  onClose,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -45,28 +53,50 @@ const ExpenseLineValidationButton = ({
   }, [dispatch, expense, refusalMessage, mode]);
 
   return (
-    <PopUp visible={refusalPopupIsOpen}>
+    <PopUp visible={refusalPopupIsOpen} childrenStyle={styles.container}>
       <View>
+        <Icon
+          name="times"
+          size={20}
+          touchable={true}
+          onPress={onClose}
+          style={styles.closeIcon}
+        />
         <FormInput
           title={I18n.t('Hr_ReasonRefusal')}
           multiline={true}
           adjustHeightWithLines={true}
           required={true}
           onChange={setRefusalMessage}
+          style={styles.input}
         />
-        <Button
-          title={'Ok'}
-          onPress={refuseExpenseAPI}
+        <Icon
+          name="check"
           color={
-            refusalMessage == null || refusalMessage === ''
-              ? Colors.secondaryColor
-              : Colors.primaryColor
+            checkNullString(refusalMessage)
+              ? Colors.secondaryColor.background
+              : Colors.primaryColor.background
           }
-          disabled={refusalMessage == null || refusalMessage === ''}
+          disabled={checkNullString(refusalMessage)}
+          touchable={true}
+          onPress={refuseExpenseAPI}
         />
       </View>
     </PopUp>
   );
 };
 
-export default ExpenseLineValidationButton;
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  closeIcon: {
+    alignSelf: 'flex-end',
+    marginRight: 5,
+  },
+});
+
+export default ExpenseRefusalPopup;

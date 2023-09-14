@@ -17,11 +17,14 @@
  */
 
 import React, {useCallback, useState} from 'react';
+import {View} from 'react-native';
+
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
 import {sendExpense, validateExpense} from '../../../features/expenseSlice';
-import {ExpenseRefusalPopup} from '..';
+import ExpenseRefusalPopup from '../ExpenseRefusalPopup/ExpenseRefusalPopup';
+import {StyleSheet} from 'react-native';
 
 const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
@@ -65,20 +68,31 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
   ) {
     return (
       <>
-        <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
-        <Button
-          title={I18n.t('Hr_Refused')}
-          onPress={() => {
-            setRefusalPopupIsOpen(true);
-          }}
-          color={Colors.errorColor}
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            title={I18n.t('Hr_Refuse')}
+            onPress={() => {
+              setRefusalPopupIsOpen(true);
+            }}
+            color={Colors.errorColor}
+          />
+          <Button
+            title={I18n.t('Hr_Validate')}
+            onPress={validateExpenseAPI}
+            style={styles.button}
+          />
+        </View>
         <ExpenseRefusalPopup
           expense={expense}
           mode={mode}
           refusalMessage={refusalMessage}
           refusalPopupIsOpen={refusalPopupIsOpen}
           setRefusalMessage={setRefusalMessage}
+          onClose={() => {
+            setRefusalMessage('');
+            setRefusalPopupIsOpen(false);
+          }}
         />
       </>
     );
@@ -86,5 +100,15 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
 
   return null;
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  button: {
+    width: '50%',
+  },
+});
 
 export default ExpenseDetailsValidationButton;
