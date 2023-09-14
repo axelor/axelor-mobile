@@ -17,15 +17,11 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View} from 'react-native';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import {Button, FormInput, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
-import {
-  refuseExpense,
-  sendExpense,
-  validateExpense,
-} from '../../../features/expenseSlice';
+import {sendExpense, validateExpense} from '../../../features/expenseSlice';
+import {ExpenseRefusalPopup} from '..';
 
 const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
@@ -58,17 +54,6 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     );
   }, [dispatch, mode, expense]);
 
-  const refuseExpenseAPI = useCallback(() => {
-    dispatch(
-      refuseExpense({
-        expenseId: expense.id,
-        version: expense.version,
-        groundForRefusal: refusalMessage,
-        mode: mode,
-      }),
-    );
-  }, [dispatch, expense, refusalMessage, mode]);
-
   if (expense.statusSelect === Expense.statusSelect.Draft) {
     return <Button title={I18n.t('Hr_Send')} onPress={sendExpenseAPI} />;
   }
@@ -83,32 +68,18 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
         <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
         <Button
           title={I18n.t('Hr_Refused')}
-          onPress={refuseExpenseAPI}
+          onPress={() => {
+            setRefusalPopupIsOpen(true);
+          }}
           color={Colors.errorColor}
         />
-        <PopUp visible={refusalPopupIsOpen}>
-          <View>
-            <FormInput
-              title={I18n.t('Hr_ReasonRefusal')}
-              multiline={true}
-              adjustHeightWithLines={true}
-              required={true}
-              onChange={setRefusalMessage}
-            />
-            <Button
-              title={'Ok'}
-              onPress={() => {
-                console.log(refusalMessage);
-              }}
-              color={
-                refusalMessage == null || refusalMessage === ''
-                  ? Colors.secondaryColor
-                  : Colors.primaryColor
-              }
-              disabled={refusalMessage == null || refusalMessage === ''}
-            />
-          </View>
-        </PopUp>
+        <ExpenseRefusalPopup
+          expense={expense}
+          mode={mode}
+          refusalMessage={refusalMessage}
+          refusalPopupIsOpen={refusalPopupIsOpen}
+          setRefusalMessage={setRefusalMessage}
+        />
       </>
     );
   }
