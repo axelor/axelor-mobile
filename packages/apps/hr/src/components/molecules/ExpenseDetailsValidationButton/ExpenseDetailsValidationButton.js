@@ -16,22 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
+import {sendExpense, validateExpense} from '../../../features/expenseSlice';
 
-const ExpenseDetailsValidationButton = ({
-  expense,
-  onValidate = () => {},
-  onSend = () => {},
-}) => {
+const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
 
+  const sendExpenseAPI = useCallback(() => {
+    dispatch(
+      sendExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        onExpense: true,
+      }),
+    );
+  }, [dispatch, expense]);
+
+  const validateExpenseAPI = useCallback(() => {
+    dispatch(
+      validateExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        onExpense: true,
+        mode: mode,
+      }),
+    );
+  }, [dispatch, mode, expense]);
+
   if (expense.statusSelect === Expense.statusSelect.Draft) {
-    return <Button title={I18n.t('Hr_Send')} onPress={onSend} />;
+    return <Button title={I18n.t('Hr_Send')} onPress={sendExpenseAPI} />;
   }
 
   if (
@@ -39,7 +58,9 @@ const ExpenseDetailsValidationButton = ({
       expense.employee?.managerUser?.id === user.id) &&
     expense.statusSelect === Expense.statusSelect.WaitingValidation
   ) {
-    <Button title={I18n.t('Hr_Validate')} onPress={onValidate} />;
+    return (
+      <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
+    );
   }
 
   return null;
