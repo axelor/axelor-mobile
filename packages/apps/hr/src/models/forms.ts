@@ -134,6 +134,7 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
+          style: {marginBottom: 20, width: '90%', alignSelf: 'center'},
         },
       },
     },

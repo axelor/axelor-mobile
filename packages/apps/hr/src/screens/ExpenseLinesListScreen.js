@@ -16,15 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState, useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
-  CircleButton,
-  Screen,
-  ScrollList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
+  CameraButton,
   headerActionsProvider,
   useDispatch,
   useSelector,
@@ -36,8 +32,6 @@ import {
   ExpenseLineDetailCard,
   ExpenseLineValidationButton,
 } from '../components';
-
-const BUTTON_SIZE = 70;
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
@@ -51,8 +45,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [addPopupIsVisible, setAddPopupIsVisible] = useState(false);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const handleItemSelection = itemId => {
     setSelectedItems(_current => {
@@ -144,11 +136,16 @@ const ExpenseLinesListScreen = ({navigation}) => {
         translator={I18n.t}
       />
       {!isSelectionMode && (
-        <CircleButton
-          style={styles.floatingButton}
-          iconName="camera"
-          onPress={() => {}}
-          size={BUTTON_SIZE}
+        <CameraButton
+          cameraKey="expense-line_justication_picture"
+          onUpload={_file =>
+            navigation.navigate('ExpenseLineFormScreen', {
+              justificationMetaFile: _file,
+            })
+          }
+          getFileName={({user, extension, dateTime}) =>
+            `Expense_${user.name}_${dateTime}.${extension}`
+          }
         />
       )}
       <ExpenseAddPopup
@@ -162,18 +159,10 @@ const ExpenseLinesListScreen = ({navigation}) => {
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    item: {
-      marginVertical: 4,
-    },
-    floatingButton: {
-      backgroundColor: Colors.secondaryColor_dark.foreground,
-      position: 'absolute',
-      bottom: 25,
-      elevation: 2,
-      left: Dimensions.get('window').width / 2 - BUTTON_SIZE / 2,
-    },
-  });
+const styles = StyleSheet.create({
+  item: {
+    marginVertical: 4,
+  },
+});
 
 export default ExpenseLinesListScreen;

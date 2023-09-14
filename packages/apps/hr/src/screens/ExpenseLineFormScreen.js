@@ -26,8 +26,7 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
-  const expenseLine = route?.params?.expenseLine;
-  const idExpense = route?.params?.idExpense;
+  const {expenseLine, idExpense, justificationMetaFile} = route?.params;
   const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
@@ -96,15 +95,22 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       if (idExpense == null) {
         navigation.navigate('ExpenseLinesListScreen');
       } else {
-        navigation.navigate('ExpenseDetailsScreen', {idExpense: idExpense});
+        navigation.navigate('ExpenseDetailsScreen', {idExpense});
       }
     },
     [expenseLine, idExpense, navigation, user],
   );
 
   const defaultValue = useMemo(() => {
-    if (expenseLine != null) {
+    if (justificationMetaFile != null) {
+      return {
+        manageMode: ExpenseLine.modes.general,
+        hideToggle: true,
+        justificationMetaFile,
+      };
+    } else if (expenseLine != null) {
       const mode = ExpenseLine.getExpenseMode(expenseLine);
+
       if (mode === ExpenseLine.modes.general) {
         return {
           manageMode: mode,
@@ -146,7 +152,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
     };
-  }, [I18n, expenseLine]);
+  }, [I18n, expenseLine, justificationMetaFile]);
 
   return (
     <FormView
