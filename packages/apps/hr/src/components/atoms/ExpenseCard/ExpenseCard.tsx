@@ -129,8 +129,8 @@ const ExpenseCard = ({
             iconColor={Colors.primaryColor.foreground}
             onPress={() => {
               statusSelect === Expense.statusSelect.Draft
-                ? onValidate()
-                : onSend();
+                ? onSend()
+                : onValidate();
             }}
             style={styles.cardIconButton}
           />
