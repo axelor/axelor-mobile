@@ -21,11 +21,16 @@ import {View} from 'react-native';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Button, FormInput, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
-import {sendExpense, validateExpense} from '../../../features/expenseSlice';
+import {
+  refuseExpense,
+  sendExpense,
+  validateExpense,
+} from '../../../features/expenseSlice';
 
 const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
 
@@ -52,7 +57,17 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
       }),
     );
   }, [dispatch, mode, expense]);
-  const Colors = useThemeColor();
+
+  const refuseExpenseAPI = useCallback(() => {
+    dispatch(
+      refuseExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        groundForRefusal: refusalMessage,
+        mode: mode,
+      }),
+    );
+  }, [dispatch, expense, refusalMessage, mode]);
 
   if (expense.statusSelect === Expense.statusSelect.Draft) {
     return <Button title={I18n.t('Hr_Send')} onPress={sendExpenseAPI} />;
@@ -68,9 +83,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
         <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
         <Button
           title={I18n.t('Hr_Refused')}
-          onPress={() => {
-            setRefusalPopupIsOpen(true);
-          }}
+          onPress={refuseExpenseAPI}
           color={Colors.errorColor}
         />
         <PopUp visible={refusalPopupIsOpen}>

@@ -56,5 +56,6 @@
   "Hr_SliceAction_CreateExpense": "create expense",
   "Hr_SliceAction_UpdateExpense": "update expense",
   "Hr_SliceAction_SendExpense": "send expense",
-  "Hr_SliceAction_ValidateExpense": "validate expense"
+  "Hr_SliceAction_ValidateExpense": "validate expense",
+  "Hr_SliceAction_RefuseExpense": "refuse expense"
 }
