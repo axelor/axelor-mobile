@@ -38,11 +38,6 @@ import {
 } from '../features/expenseSlice';
 import {Expense} from '../types';
 
-const MODE = {
-  personnal: 'myExpenseMode',
-  validation: 'toValidateMode',
-};
-
 const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -61,7 +56,7 @@ const ExpenseListScreen = ({navigation}) => {
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
 
-  const [mode, setMode] = useState(MODE.personnal);
+  const [mode, setMode] = useState(Expense.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -103,14 +98,16 @@ const ExpenseListScreen = ({navigation}) => {
           expenseId: expenseId,
           version: version,
           userId: user?.id,
+          user: user,
+          mode: mode,
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, user, mode],
   );
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === MODE.personnal) {
+    if (mode === Expense.mode.personnal) {
       return {
         list: myExpenseList,
         loading: loadingMyExpense,
@@ -183,13 +180,13 @@ const ExpenseListScreen = ({navigation}) => {
               onSwitch={() =>
                 setMode(_mode => {
                   setSelectedStatus(null);
-                  return _mode === MODE.personnal
-                    ? MODE.validation
-                    : MODE.personnal;
+                  return _mode === Expense.mode.personnal
+                    ? Expense.mode.validation
+                    : Expense.mode.personnal;
                 })
               }
             />
-            {mode === MODE.personnal ? (
+            {mode === Expense.mode.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
@@ -223,7 +220,9 @@ const ExpenseListScreen = ({navigation}) => {
             periodeCode={item['period.code']}
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
-            employeeName={mode === MODE.validation ? item.employee?.name : null}
+            employeeName={
+              mode === Expense.mode.validation ? item.employee?.name : null
+            }
             onSend={() => sendExpenseAPI(item.id, item.version)}
             onValidate={() => validateExpenseAPI(item.id, item.version)}
           />

@@ -32,6 +32,7 @@ import {
   sendExpense as _sendExpense,
   validateExpense as _validateExpense,
 } from '../api/expense-api';
+import {Expense} from '../types';
 
 export const createExpense = createAsyncThunk(
   'expense/createExpense',
@@ -102,6 +103,14 @@ export const validateExpense = createAsyncThunk(
           action: 'Hr_SliceAction_FetchExpenseById',
           getState,
           responseOptions: {isArrayResponse: false},
+        });
+      } else if (data.mode === Expense.mode.validation) {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseToValidate,
+          data: {user: data.user},
+          action: 'Hr_SliceAction_FetchExpenseToValidate',
+          getState,
+          responseOptions: {isArrayResponse: true},
         });
       } else {
         return handlerApiCall({
@@ -290,9 +299,19 @@ const expenseSlice = createSlice({
       if (action?.meta?.arg?.onExpense) {
         state.loadingExpense = false;
         state.expense = action.payload;
-        state.myExpenseList = updateAgendaItems(state.myExpenseList, [
-          action.payload,
-        ]);
+        if (action?.meta?.arg?.mode === Expense.mode.validation) {
+          state.expenseToValidateList = updateAgendaItems(
+            state.expenseToValidateList,
+            [action.payload],
+          );
+        } else {
+          state.myExpenseList = updateAgendaItems(state.myExpenseList, [
+            action.payload,
+          ]);
+        }
+      } else if (action?.meta?.arg?.mode === Expense.mode.validation) {
+        state.loadingExpenseToValidate = false;
+        state.expenseToValidateList = action.payload;
       } else {
         state.loadingMyExpense = false;
         state.myExpenseList = action.payload;

@@ -28,6 +28,11 @@ class ExpenseType {
     Canceled: 6,
   };
 
+  static mode = {
+    personnal: 'myExpenseMode',
+    validation: 'toValidateMode',
+  };
+
   static getStatus = (
     select: number,
     I18n: {t: (key: string) => string},
