@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button} from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
+import {sendExpense, validateExpense} from '../../../features/expenseSlice';
 
 const ExpenseDetailsValidationButton = ({
   expense,
@@ -27,11 +28,47 @@ const ExpenseDetailsValidationButton = ({
   onSend = () => {},
 }) => {
   const I18n = useTranslator();
+  const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
 
+  const sendExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        sendExpense({
+          expenseId: expenseId,
+          version: version,
+          userId: user?.id,
+          onExpense: true,
+        }),
+      );
+    },
+    [dispatch, user],
+  );
+
+  const validateExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        validateExpense({
+          expenseId: expenseId,
+          version: version,
+          userId: user?.id,
+          onExpense: true,
+        }),
+      );
+    },
+    [dispatch, user],
+  );
+
   if (expense.statusSelect === Expense.statusSelect.Draft) {
-    return <Button title={I18n.t('Hr_Send')} onPress={onSend} />;
+    return (
+      <Button
+        title={I18n.t('Hr_Send')}
+        onPress={() => {
+          sendExpenseAPI(expense.id, expense.version);
+        }}
+      />
+    );
   }
 
   if (
@@ -39,7 +76,14 @@ const ExpenseDetailsValidationButton = ({
       expense.employee?.managerUser?.id === user.id) &&
     expense.statusSelect === Expense.statusSelect.WaitingValidation
   ) {
-    <Button title={I18n.t('Hr_Validate')} onPress={onValidate} />;
+    return (
+      <Button
+        title={I18n.t('Hr_Validate')}
+        onPress={() => {
+          validateExpenseAPI(expense.id, expense.version);
+        }}
+      />
+    );
   }
 
   return null;
