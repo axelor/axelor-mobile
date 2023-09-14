@@ -68,8 +68,9 @@ const ExpenseAddPopup = ({
       currencyId: user?.activeCompany?.currency?.id,
     };
     dispatch(createExpense({expense: _expense, userId: user.id}));
+    onClose();
     navigation.navigate('ExpenseListScreen');
-  }, [dispatch, navigation, selectedItems, user]);
+  }, [dispatch, onClose, navigation, selectedItems, user]);
 
   const updateExpenseAPI = useCallback(() => {
     dispatch(
@@ -81,7 +82,8 @@ const ExpenseAddPopup = ({
       }),
     );
     navigation.navigate('ExpenseListScreen');
-  }, [dispatch, expense, navigation, selectedItems, user.id]);
+    onClose();
+  }, [dispatch, onClose, expense, navigation, selectedItems, user.id]);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
