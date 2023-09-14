@@ -25,7 +25,10 @@ import {
   searchExpenseLines as _searchExpenseLines,
   searchGeneralExpenseLines as _searchGeneralExpenseLines,
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
+  createExpenseLine as _createExpenseLine,
+  updateExpenseLine as _updateExpenseLine,
 } from '../api/expense-line-api';
+import {ExpenseLine} from '../types';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -62,6 +65,58 @@ export const searchGeneralExpenseLines = createAsyncThunk(
       action: 'Hr_SliceAction_SearchGeneralExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
+export const createExpenseLine = createAsyncThunk(
+  'expenseLine/createExpenseLine',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createExpenseLine,
+      data,
+      action: 'Hr_SliceAction_CreateExpenseLine',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchExpenseLines,
+        data: {userId: data?.userId},
+        action: 'Hr_SliceAction_FetchExpenseLines',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
+
+export const updateExpenseLine = createAsyncThunk(
+  'expenseLine/updateExpenseLine',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateExpenseLine,
+      data,
+      action: 'Hr_SliceAction_SearchKilometricAllowParam',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction:
+          data?.idExpense == null
+            ? _searchExpenseLines
+            : data.mode === ExpenseLine.modes.general
+            ? _searchGeneralExpenseLines
+            : _searchKilometricExpenseLines,
+        action:
+          data?.idExpense == null
+            ? 'Hr_SliceAction_FetchExpenseLines'
+            : data?.mode === ExpenseLine.modes.general
+            ? 'Hr_SliceAction_SearchGeneralExpenseLines'
+            : 'Hr_SliceAction_SearchKilometricExpenseLines',
+        getState,
+        data: {expenseId: data.expenseId, userId: data?.userId},
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -123,6 +178,27 @@ const expenseLineSlice = createSlice({
         manageTotal: true,
       },
     );
+    builder.addCase(createExpenseLine.pending, (state, action) => {
+      state.loadingExpenseLine = true;
+    });
+    builder.addCase(createExpenseLine.fulfilled, (state, action) => {
+      state.loadingExpenseLine = false;
+      state.expenseLineList = action.payload;
+    });
+    builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
+      if (action?.meta?.arg?.expenseId == null) {
+        state.expenseLineList = action.payload;
+      } else {
+        if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
+          state.loadingGeneralExpenseLine = false;
+          state.generalExpenseLineList = action.payload;
+        }
+        if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
+          state.loadingKilometricExpenseLine = false;
+          state.kilometricExpenseLineList = action.payload;
+        }
+      }
+    });
   },
 });
 

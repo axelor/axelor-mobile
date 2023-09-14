@@ -19,6 +19,7 @@
 import ExpenseLinesListScreen from './ExpenseLinesListScreen';
 import ExpenseListScreen from './ExpenseListScreen';
 import ExpenseDetailsScreen from './ExpenseDetailsScreen';
+import ExpenseLineFormScreen from './ExpenseLineFormScreen';
 
 export default {
   ExpenseLinesListScreen: {
@@ -39,5 +40,9 @@ export default {
     options: {
       shadedHeader: false,
     },
+  },
+  ExpenseLineFormScreen: {
+    title: 'Hr_CreateExpenseLine',
+    component: ExpenseLineFormScreen,
   },
 };
