@@ -31,13 +31,9 @@ import {
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
 } from '../features/expenseLineSlice';
+import {ExpenseLine} from '../types';
 
-const MODE = {
-  general: 'GeneralMode',
-  kilometric: 'KilometricMode',
-};
-
-const ExpenseDetailsScreen = ({route}) => {
+const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -54,14 +50,14 @@ const ExpenseDetailsScreen = ({route}) => {
     kilometricExpenseLineList,
   } = useSelector(state => state.expenseLine);
 
-  const [mode, setMode] = useState(MODE.general);
+  const [mode, setMode] = useState(ExpenseLine.modes.general);
 
   useEffect(() => {
     dispatch(fetchExpenseById({ExpenseId: idExpense}));
   }, [dispatch, idExpense]);
 
   const ObjectToDisplay = useMemo(() => {
-    if (mode === MODE.general) {
+    if (mode === ExpenseLine.modes.general) {
       return {
         loading: loadingGeneralExpenseLine,
         moreLoading: moreLoadingGeneralExpenseLine,
@@ -91,7 +87,7 @@ const ExpenseDetailsScreen = ({route}) => {
   const fetchExpenseLineAPI = useCallback(
     (page = 0) => {
       dispatch(
-        (mode === MODE.general
+        (mode === ExpenseLine.modes.general
           ? searchGeneralExpenseLines
           : searchKilometricExpenseLines)({expenseId: expense?.id, page: page}),
       );
@@ -112,7 +108,7 @@ const ExpenseDetailsScreen = ({route}) => {
         fixedItems={
           <View>
             <ExpenseHeader />
-            <ExpenseLineTypeSwitch onChange={setMode} MODES={MODE} />
+            <ExpenseLineTypeSwitch onChange={setMode} />
           </View>
         }
       />
@@ -120,7 +116,16 @@ const ExpenseDetailsScreen = ({route}) => {
         loadingList={ObjectToDisplay.loading}
         data={ObjectToDisplay.list}
         renderItem={({item}) => (
-          <ExpenseLineDetailCard expense={expense} item={item} />
+          <ExpenseLineDetailCard
+            expense={expense}
+            item={item}
+            onEdit={() =>
+              navigation.navigate('ExpenseLineFormScreen', {
+                expenseLine: item,
+                idExpense: idExpense,
+              })
+            }
+          />
         )}
         fetchData={fetchExpenseLineAPI}
         moreLoading={ObjectToDisplay.moreLoading}
