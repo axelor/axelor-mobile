@@ -49,8 +49,8 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   const [expenseSelected, setExpenseSelected] = useState(null);
 
   useEffect(() => {
-    dispatch(searchExpenseDraft());
-  }, [dispatch]);
+    dispatch(searchExpenseDraft({userId: user?.id}));
+  }, [dispatch, user?.id]);
 
   const createExpenseAPI = useCallback(() => {
     const _expense = {
@@ -85,7 +85,7 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
             pickerStyle={styles.picker}
             listItems={expenseDraftList}
             onValueChange={setExpenseSelected}
-            labelField="fullName"
+            labelField="expenseSeq"
             valueField="id"
             title={I18n.t('Hr_Expense')}
             isValueItem={true}

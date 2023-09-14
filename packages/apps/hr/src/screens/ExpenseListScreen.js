@@ -218,7 +218,7 @@ const ExpenseListScreen = ({navigation}) => {
             style={styles.item}
             statusSelect={item.statusSelect}
             expenseSeq={item.expenseSeq}
-            periodeCode={item['period.code']}
+            periodeCode={item['period.code'] || item?.period?.code}
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
             employeeName={

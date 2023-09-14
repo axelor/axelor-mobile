@@ -24,7 +24,7 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Expense} from '../types';
 
-const createExpenseDraftCriteria = () => {
+const createExpenseDraftCriteria = userId => {
   const criteria = [
     {
       fieldName: 'statusSelect',
@@ -32,6 +32,14 @@ const createExpenseDraftCriteria = () => {
       value: Expense.statusSelect.Draft,
     },
   ];
+
+  if (userId != null) {
+    criteria.push({
+      fieldName: 'employee.user.id',
+      operator: '=',
+      value: userId,
+    });
+  }
   return criteria;
 };
 
@@ -70,10 +78,10 @@ const createExpenseToValidateCriteria = (searchValue, user) => {
   return criteria;
 };
 
-export async function searchExpenseDraft() {
+export async function searchExpenseDraft({userId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Expense',
-    criteria: createExpenseDraftCriteria(),
+    criteria: createExpenseDraftCriteria(userId),
     fieldKey: 'hr_expenseDraft',
     numberElementsByPage: null,
     page: 0,
