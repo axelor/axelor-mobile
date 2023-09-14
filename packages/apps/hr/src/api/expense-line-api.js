@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
@@ -121,5 +122,19 @@ export async function searchKilometricExpenseLines({
     criteria: createKilomectricExpenseLineCriteria(searchValue, expenseId),
     fieldKey: 'hr_expenseLines',
     page: page,
+  });
+}
+
+export async function createExpenseLine({expenseLine}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/expense-line/',
+    data: expenseLine,
+  });
+}
+
+export async function updateExpenseLine({expenseLine}) {
+  return axiosApiProvider.post({
+    url: `ws/rest/com.axelor.apps.hr.db.ExpenseLine/${expenseLine.id}`,
+    data: {data: expenseLine},
   });
 }
