@@ -22,11 +22,7 @@ import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
 import {sendExpense, validateExpense} from '../../../features/expenseSlice';
 
-const ExpenseDetailsValidationButton = ({
-  expense,
-  onValidate = () => {},
-  onSend = () => {},
-}) => {
+const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -54,10 +50,12 @@ const ExpenseDetailsValidationButton = ({
           version: version,
           userId: user?.id,
           onExpense: true,
+          user: user,
+          mode: mode,
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, mode, user],
   );
 
   if (expense.statusSelect === Expense.statusSelect.Draft) {

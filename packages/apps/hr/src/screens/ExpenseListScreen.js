@@ -212,6 +212,7 @@ const ExpenseListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ExpenseDetailsScreen', {
                 idExpense: item.id,
+                expenseMode: mode,
               })
             }
             style={styles.item}
