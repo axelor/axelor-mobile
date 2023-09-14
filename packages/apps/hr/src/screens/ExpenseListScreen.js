@@ -33,13 +33,10 @@ import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
+  sendExpense,
+  validateExpense,
 } from '../features/expenseSlice';
 import {Expense} from '../types';
-
-const MODE = {
-  personnal: 'myExpenseMode',
-  validation: 'toValidateMode',
-};
 
 const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -59,7 +56,7 @@ const ExpenseListScreen = ({navigation}) => {
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
 
-  const [mode, setMode] = useState(MODE.personnal);
+  const [mode, setMode] = useState(Expense.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -85,8 +82,32 @@ const ExpenseListScreen = ({navigation}) => {
     [dispatch, user],
   );
 
+  const sendExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        sendExpense({expenseId: expenseId, version: version, userId: user?.id}),
+      );
+    },
+    [dispatch, user],
+  );
+
+  const validateExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        validateExpense({
+          expenseId: expenseId,
+          version: version,
+          userId: user?.id,
+          user: user,
+          mode: mode,
+        }),
+      );
+    },
+    [dispatch, user, mode],
+  );
+
   const ObjectToDisplay = useMemo(() => {
-    if (mode === MODE.personnal) {
+    if (mode === Expense.mode.personnal) {
       return {
         list: myExpenseList,
         loading: loadingMyExpense,
@@ -159,13 +180,13 @@ const ExpenseListScreen = ({navigation}) => {
               onSwitch={() =>
                 setMode(_mode => {
                   setSelectedStatus(null);
-                  return _mode === MODE.personnal
-                    ? MODE.validation
-                    : MODE.personnal;
+                  return _mode === Expense.mode.personnal
+                    ? Expense.mode.validation
+                    : Expense.mode.personnal;
                 })
               }
             />
-            {mode === MODE.personnal ? (
+            {mode === Expense.mode.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
                 title={I18n.t('Hr_Status')}
@@ -191,15 +212,20 @@ const ExpenseListScreen = ({navigation}) => {
             onPress={() =>
               navigation.navigate('ExpenseDetailsScreen', {
                 idExpense: item.id,
+                expenseMode: mode,
               })
             }
             style={styles.item}
             statusSelect={item.statusSelect}
             expenseSeq={item.expenseSeq}
-            periodeCode={item['period.code']}
+            periodeCode={item['period.code'] || item?.period?.code}
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
-            employeeName={mode === MODE.validation ? item.employee?.name : null}
+            employeeName={
+              mode === Expense.mode.validation ? item.employee?.name : null
+            }
+            onSend={() => sendExpenseAPI(item.id, item.version)}
+            onValidate={() => validateExpenseAPI(item.id, item.version)}
           />
         )}
         fetchData={ObjectToDisplay.functionApi}
