@@ -28,7 +28,9 @@ import {
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpense,
+  fetchExpenseById,
   searchExpenseDraft,
+  updateExpense,
 } from '../../../features/expenseSlice';
 
 const ExpenseAddPopup = ({
@@ -43,6 +45,7 @@ const ExpenseAddPopup = ({
   const dispatch = useDispatch();
 
   const {expenseDraftList} = useSelector(state => state.expense);
+  const {expense} = useSelector(state => state.expense);
   const {user} = useSelector(state => state.user);
 
   const [expenseSelected, setExpenseSelected] = useState(null);
@@ -51,16 +54,34 @@ const ExpenseAddPopup = ({
     dispatch(searchExpenseDraft());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (expenseSelected != null) {
+      dispatch(fetchExpenseById({ExpenseId: expenseSelected}));
+    }
+  }, [dispatch, expenseSelected]);
+
   const createExpenseAPI = useCallback(() => {
-    const expense = {
+    const _expense = {
       expenseLineIdList: selectedItems,
       employeeId: user?.employee?.id,
       companyId: user?.activeCompany?.id,
       currencyId: user?.activeCompany?.currency?.id,
     };
-    dispatch(createExpense({expense: expense, userId: user.id}));
+    dispatch(createExpense({expense: _expense, userId: user.id}));
     navigation.navigate('ExpenseListScreen');
   }, [dispatch, navigation, selectedItems, user]);
+
+  const updateExpenseAPI = useCallback(() => {
+    dispatch(
+      updateExpense({
+        expenseId: expense.id,
+        version: expense.version,
+        userId: user.id,
+        expenseLineIdList: selectedItems,
+      }),
+    );
+    navigation.navigate('ExpenseListScreen');
+  }, [dispatch, expense, navigation, selectedItems, user.id]);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
@@ -69,7 +90,9 @@ const ExpenseAddPopup = ({
           <Picker
             pickerStyle={styles.picker}
             listItems={expenseDraftList}
-            onValueChange={setExpenseSelected}
+            onValueChange={e => {
+              setExpenseSelected(e);
+            }}
             labelField="fullName"
             valueField="id"
             title={I18n.t('Hr_Expense')}
@@ -95,7 +118,7 @@ const ExpenseAddPopup = ({
           <Button
             title={I18n.t('Base_Add')}
             style={styles.button}
-            onPress={() => console.log(expenseSelected)}
+            onPress={updateExpenseAPI}
           />
         </View>
       </View>

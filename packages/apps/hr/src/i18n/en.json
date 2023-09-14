@@ -51,5 +51,6 @@
   "Hr_SliceAction_FetchExpenseType": "fetch expense types",
   "Hr_SliceAction_FetchProjects": "fetch projects",
   "Hr_SliceAction_FetchExpenseLineById": "fetch expense line by id",
-  "Hr_SliceAction_CreateExpense": "create expense"
+  "Hr_SliceAction_CreateExpense": "create expense",
+  "Hr_SliceAction_UpdateExpense": "update expense"
 }

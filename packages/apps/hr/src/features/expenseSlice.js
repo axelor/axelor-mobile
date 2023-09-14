@@ -27,6 +27,7 @@ import {
   searchExpenseToValidate as _searchExpenseToValidate,
   getExpense,
   createExpense as _createExpense,
+  updateExpense as _updateExpense,
 } from '../api/expense-api';
 
 export const createExpense = createAsyncThunk(
@@ -36,6 +37,27 @@ export const createExpense = createAsyncThunk(
       fetchFunction: _createExpense,
       data,
       action: 'Hr_SliceAction_CreateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
+
+export const updateExpense = createAsyncThunk(
+  'expense/updateExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateExpense,
+      data,
+      action: 'Hr_SliceAction_UpdateExpense',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
@@ -163,6 +185,13 @@ const expenseSlice = createSlice({
       state.loadingMyExpense = true;
     });
     builder.addCase(createExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
+    });
+    builder.addCase(updateExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(updateExpense.fulfilled, (state, action) => {
       state.loadingMyExpense = false;
       state.myExpenseList = action.payload;
     });

@@ -118,3 +118,13 @@ export async function createExpense({expense}) {
     data: expense,
   });
 }
+
+export async function updateExpense({expenseId, version, expenseLineIdList}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/expense/add-line/${expenseId}`,
+    data: {
+      version: version,
+      expenseLineIdList: expenseLineIdList,
+    },
+  });
+}

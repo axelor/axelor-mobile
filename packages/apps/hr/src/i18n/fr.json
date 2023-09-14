@@ -51,5 +51,6 @@
   "Hr_SliceAction_FetchExpenseType": "récuperation des types de frais",
   "Hr_SliceAction_FetchProjects": "récupération des projets",
   "Hr_SliceAction_FetchExpenseLineById": "récuperation de la ligne de frais par id",
-  "Hr_SliceAction_CreateExpense": "création d'une note de frais"
+  "Hr_SliceAction_CreateExpense": "création d'une note de frais",
+  "Hr_SliceAction_UpdateExpense": "mise à jour de la note de frais"
 }
