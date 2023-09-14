@@ -27,8 +27,13 @@ export const hr_modelAPI: ObjectFields = {
     project: schemaContructor.subObject(),
     totalAmount: schemaContructor.string(),
     expenseProduct: schemaContructor.subObject(),
+    'expenseProduct.name': schemaContructor.string(),
     kilometricTypeSelect: schemaContructor.number(),
     justificationMetaFile: schemaContructor.subObject(),
+    comments: schemaContructor.string(),
+    kilometricAllowParam: schemaContructor.subObject(),
+    distance: schemaContructor.number(),
+    totalTax: schemaContructor.string(),
   }),
   hr_expenseDraft: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -49,7 +54,22 @@ export const hr_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
+  hr_project: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  hr_expenseType: schemaContructor.object({
+    name: schemaContructor.string(),
+    fullName: schemaContructor.string(),
+  }),
+  hr_kilomectricAllowParam: schemaContructor.object({
+    name: schemaContructor.string(),
+    code: schemaContructor.string(),
+  }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
+    'employee.employeeVehicleList': schemaContructor
+      .array()
+      .of(schemaContructor.subObject()),
   }),
 };
