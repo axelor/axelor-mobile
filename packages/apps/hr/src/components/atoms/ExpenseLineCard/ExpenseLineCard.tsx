@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useMemo} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Card,
   Text,
   checkNullString,
   useThemeColor,
-  Checkbox,
   Icon,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -34,68 +33,31 @@ import {
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
-  style?: any;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
   displayText?: string | number;
-  onLongPress: () => void;
-  onItemSelection: () => void;
-  isSelectionMode?: boolean;
-  isSelected?: boolean;
   linkIcon?: boolean;
   pdfFile?: any;
+  onLongPress: () => void;
+  setCardHeight: (height: any) => void;
 }
 
 const ExpenseLineCard = ({
-  style,
   expenseDate,
   projectName,
   totalAmount,
   displayText,
-  onLongPress,
-  isSelectionMode,
-  onItemSelection,
-  isSelected,
   linkIcon = false,
   pdfFile,
+  onLongPress,
+  setCardHeight,
 }: ExpenseLineCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {user} = useSelector((state: any) => state.user);
   const {baseUrl, token, jsessionId} = useSelector((state: any) => state.auth);
-
-  const [cardHeight, setCardHeight] = useState<number>();
-
-  const translateXAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isSelectionMode) {
-      Animated.timing(translateXAnim, {
-        toValue: 10,
-        duration: 800,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.timing(translateXAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: false,
-      }).start();
-    }
-  }, [isSelectionMode, translateXAnim]);
-
-  const cardPosition = useMemo(
-    () =>
-      isSelectionMode
-        ? translateXAnim.interpolate({
-            inputRange: [0, 10],
-            outputRange: ['0%', '10%'],
-          })
-        : 0,
-    [isSelectionMode, translateXAnim],
-  );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -113,82 +75,49 @@ const ExpenseLineCard = ({
   };
 
   return (
-    <View style={[styles.container, {height: cardHeight}, style]}>
-      <Checkbox
-        style={styles.checkbox}
-        isDefaultChecked={isSelected}
-        onChange={onItemSelection}
-      />
-      <Animated.View
-        style={[
-          styles.animatedCard,
-          {
-            left: cardPosition,
-          },
-        ]}>
-        <TouchableOpacity
-          onLongPress={onLongPress}
-          onPress={pdfFile != null ? handleShowFile : null}
-          delayLongPress={200}
-          activeOpacity={1}
-          onLayout={event => {
-            const {height} = event.nativeEvent.layout;
-            setCardHeight(_current => (_current == null ? height : _current));
-          }}>
-          <Card style={[styles.containerCard, styles.border]}>
-            {_date != null && (
-              <View style={styles.date}>
-                <Text>{_date.day}</Text>
-                <Text>{`${_date.date} ${_date.month}`}</Text>
-                <Text>{`${_date.year}`}</Text>
-              </View>
-            )}
-            <View style={styles.verticalLine} />
-            <View style={styles.column}>
-              {!checkNullString(displayText) && (
-                <Text style={styles.bold}>{displayText}</Text>
-              )}
-              {!checkNullString(projectName) && <Text>{projectName}</Text>}
-            </View>
-            <View style={styles.amount}>
-              {!checkNullString(totalAmount) && (
-                <Text style={styles.bold}>{`${totalAmount} ${
-                  user?.activeCompany?.currency?.symbol != null
-                    ? user?.activeCompany?.currency?.symbol
-                    : user?.activeCompany?.currency?.code
-                }`}</Text>
-              )}
-            </View>
-            {linkIcon && (
-              <Icon
-                style={styles.linkIcon}
-                name="external-link-alt"
-                size={10}
-              />
-            )}
-          </Card>
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+    <TouchableOpacity
+      onLongPress={onLongPress}
+      onPress={pdfFile != null ? handleShowFile : null}
+      delayLongPress={200}
+      activeOpacity={1}
+      onLayout={event => {
+        const {height} = event.nativeEvent.layout;
+        setCardHeight(_current => (_current == null ? height : _current));
+      }}>
+      <Card style={[styles.containerCard, styles.border]}>
+        {_date != null && (
+          <View style={styles.date}>
+            <Text>{_date.day}</Text>
+            <Text>{`${_date.date} ${_date.month}`}</Text>
+            <Text>{`${_date.year}`}</Text>
+          </View>
+        )}
+        <View style={styles.verticalLine} />
+        <View style={styles.column}>
+          {!checkNullString(displayText) && (
+            <Text style={styles.bold}>{displayText}</Text>
+          )}
+          {!checkNullString(projectName) && <Text>{projectName}</Text>}
+        </View>
+        <View style={styles.amount}>
+          {!checkNullString(totalAmount) && (
+            <Text style={styles.bold}>{`${totalAmount} ${
+              user?.activeCompany?.currency?.symbol != null
+                ? user?.activeCompany?.currency?.symbol
+                : user?.activeCompany?.currency?.code
+            }`}</Text>
+          )}
+        </View>
+        {linkIcon && (
+          <Icon style={styles.linkIcon} name="external-link-alt" size={10} />
+        )}
+      </Card>
+    </TouchableOpacity>
   );
 };
 
 const getStyles = Colors =>
   StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      alignSelf: 'center',
-      width: '96%',
-      marginHorizontal: '2%',
-      minHeight: 90,
-    },
-    animatedCard: {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: '100%',
-    },
     containerCard: {
       paddingHorizontal: 0,
       paddingRight: 0,
@@ -225,10 +154,11 @@ const getStyles = Colors =>
       borderLeftWidth: 7,
       borderLeftColor: Colors.secondaryColor.background,
     },
-    checkbox: {
-      marginRight: 10,
+    linkIcon: {
+      position: 'absolute',
+      bottom: 5,
+      right: 15,
     },
-    linkIcon: {position: 'absolute', bottom: 5, right: 15},
   });
 
 export default ExpenseLineCard;
