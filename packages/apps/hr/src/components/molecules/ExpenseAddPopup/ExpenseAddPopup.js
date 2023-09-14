@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   useThemeColor,
@@ -26,20 +26,41 @@ import {
   Picker,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
-import {searchExpenseDraft} from '../../../features/expenseSlice';
+import {
+  createExpense,
+  searchExpenseDraft,
+} from '../../../features/expenseSlice';
 
-const ExpenseAddPopup = ({style, visible, onClose}) => {
+const ExpenseAddPopup = ({
+  style,
+  visible,
+  onClose,
+  selectedItems,
+  navigation,
+}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {expenseDraftList} = useSelector(state => state.expense);
+  const {user} = useSelector(state => state.user);
 
   const [expenseSelected, setExpenseSelected] = useState(null);
 
   useEffect(() => {
     dispatch(searchExpenseDraft());
   }, [dispatch]);
+
+  const createExpenseAPI = useCallback(() => {
+    const expense = {
+      expenseLineIdList: selectedItems,
+      employeeId: user?.employee?.id,
+      companyId: user?.activeCompany?.id,
+      currencyId: user?.activeCompany?.currency?.id,
+    };
+    dispatch(createExpense({expense: expense, userId: user.id}));
+    navigation.navigate('ExpenseListScreen');
+  }, [dispatch, navigation, selectedItems, user]);
 
   return (
     <PopUp style={[styles.popup, style]} visible={visible}>
@@ -55,7 +76,7 @@ const ExpenseAddPopup = ({style, visible, onClose}) => {
           />
         </View>
         <View style={styles.labelText}>
-          <TouchableOpacity onPress={() => console.log('addExpense')}>
+          <TouchableOpacity onPress={createExpenseAPI}>
             <LabelText
               iconName="plus"
               color={Colors.primaryColor.background}

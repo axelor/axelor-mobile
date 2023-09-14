@@ -20,6 +20,7 @@ import {
   createStandardSearch,
   getSearchCriterias,
   createStandardFetch,
+  axiosApiProvider,
 } from '@axelor/aos-mobile-core';
 import {Expense} from '../types';
 
@@ -108,5 +109,12 @@ export async function getExpense({ExpenseId}) {
     model: 'com.axelor.apps.hr.db.Expense',
     id: ExpenseId,
     fieldKey: 'hr_expense',
+  });
+}
+
+export async function createExpense({expense}) {
+  return axiosApiProvider.post({
+    url: 'ws/aos/expense/',
+    data: expense,
   });
 }

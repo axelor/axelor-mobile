@@ -26,7 +26,29 @@ import {
   searchMyExpense as _searchMyExpense,
   searchExpenseToValidate as _searchExpenseToValidate,
   getExpense,
+  createExpense as _createExpense,
 } from '../api/expense-api';
+
+export const createExpense = createAsyncThunk(
+  'expense/createExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _createExpense,
+      data,
+      action: 'Hr_SliceAction_CreateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
 
 export const searchExpenseDraft = createAsyncThunk(
   'expense/searchExpenseDraft',
@@ -136,6 +158,13 @@ const expenseSlice = createSlice({
     builder.addCase(fetchExpenseById.fulfilled, (state, action) => {
       state.loadingExpense = false;
       state.expense = action.payload;
+    });
+    builder.addCase(createExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(createExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
     });
   },
 });
