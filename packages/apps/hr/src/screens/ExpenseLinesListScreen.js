@@ -154,6 +154,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           setAddPopupIsVisible(false);
           handleCancelButton();
         }}
+        selectedItems={selectedItems}
       />
     </Screen>
   );
