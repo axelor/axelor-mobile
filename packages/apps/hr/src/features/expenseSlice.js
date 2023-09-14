@@ -20,13 +20,140 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   searchExpenseDraft as _searchExpenseDraft,
   searchMyExpense as _searchMyExpense,
   searchExpenseToValidate as _searchExpenseToValidate,
   getExpense,
+  createExpense as _createExpense,
+  updateExpense as _updateExpense,
+  sendExpense as _sendExpense,
+  validateExpense as _validateExpense,
 } from '../api/expense-api';
+import {Expense} from '../types';
+import {fetchExpenseLine} from './expenseLineSlice';
+
+export const createExpense = createAsyncThunk(
+  'expense/createExpense',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createExpense,
+      data,
+      action: 'Hr_SliceAction_CreateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    })
+      .then(() => {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      })
+      .then(res => {
+        dispatch(fetchExpenseLine({userId: data.userId}));
+        return res;
+      });
+  },
+);
+
+export const sendExpense = createAsyncThunk(
+  'expense/sendExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _sendExpense,
+      data,
+      action: 'Hr_SliceAction_SendExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      if (data.onExpense) {
+        return handlerApiCall({
+          fetchFunction: getExpense,
+          data: {ExpenseId: data.expenseId},
+          action: 'Hr_SliceAction_FetchExpenseById',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        });
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      }
+    });
+  },
+);
+
+export const validateExpense = createAsyncThunk(
+  'expense/validateExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _validateExpense,
+      data,
+      action: 'Hr_SliceAction_ValidateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      if (data.onExpense) {
+        return handlerApiCall({
+          fetchFunction: getExpense,
+          data: {ExpenseId: data.expenseId},
+          action: 'Hr_SliceAction_FetchExpenseById',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        });
+      } else if (data.mode === Expense.mode.validation) {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseToValidate,
+          data: {user: data.user},
+          action: 'Hr_SliceAction_FetchExpenseToValidate',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      }
+    });
+  },
+);
+
+export const updateExpense = createAsyncThunk(
+  'expense/updateExpense',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _updateExpense,
+      data,
+      action: 'Hr_SliceAction_UpdateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      }).then(res => {
+        dispatch(fetchExpenseLine({userId: data.userId}));
+        return res;
+      });
+    });
+  },
+);
 
 export const searchExpenseDraft = createAsyncThunk(
   'expense/searchExpenseDraft',
@@ -136,6 +263,68 @@ const expenseSlice = createSlice({
     builder.addCase(fetchExpenseById.fulfilled, (state, action) => {
       state.loadingExpense = false;
       state.expense = action.payload;
+    });
+    builder.addCase(createExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(createExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
+    });
+    builder.addCase(updateExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(updateExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
+    });
+    builder.addCase(sendExpense.pending, (state, action) => {
+      if (action?.meta?.arg?.onExpense) {
+        state.loadingExpense = true;
+      } else {
+        state.loadingMyExpense = true;
+      }
+    });
+    builder.addCase(sendExpense.fulfilled, (state, action) => {
+      if (action?.meta?.arg?.onExpense) {
+        state.loadingExpense = false;
+        state.expense = action.payload;
+        state.myExpenseList = updateAgendaItems(state.myExpenseList, [
+          action.payload,
+        ]);
+      } else {
+        state.loadingMyExpense = false;
+        state.myExpenseList = action.payload;
+      }
+    });
+    builder.addCase(validateExpense.pending, (state, action) => {
+      if (action?.meta?.arg?.onExpense) {
+        state.loadingExpense = true;
+      } else {
+        state.loadingMyExpense = true;
+      }
+    });
+    builder.addCase(validateExpense.fulfilled, (state, action) => {
+      if (action?.meta?.arg?.onExpense) {
+        state.loadingExpense = false;
+        state.expense = action.payload;
+        if (action?.meta?.arg?.mode === Expense.mode.validation) {
+          state.expenseToValidateList = updateAgendaItems(
+            state.expenseToValidateList,
+            [action.payload],
+          );
+        } else {
+          state.myExpenseList = updateAgendaItems(state.myExpenseList, [
+            action.payload,
+          ]);
+        }
+      } else if (action?.meta?.arg?.mode === Expense.mode.validation) {
+        state.loadingExpenseToValidate = false;
+        state.expenseToValidateList = action.payload;
+      } else {
+        state.loadingMyExpense = false;
+        state.myExpenseList = action.payload;
+      }
     });
   },
 });
