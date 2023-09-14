@@ -33,6 +33,8 @@ import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
+  sendExpense,
+  validateExpense,
 } from '../features/expenseSlice';
 import {Expense} from '../types';
 
@@ -81,6 +83,28 @@ const ExpenseListScreen = ({navigation}) => {
   const fetchExpenseToValidateAPI = useCallback(
     (page = 0) => {
       dispatch(searchExpenseToValidate({page: page, user: user}));
+    },
+    [dispatch, user],
+  );
+
+  const sendExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        sendExpense({expenseId: expenseId, version: version, userId: user?.id}),
+      );
+    },
+    [dispatch, user],
+  );
+
+  const validateExpenseAPI = useCallback(
+    (expenseId, version) => {
+      dispatch(
+        validateExpense({
+          expenseId: expenseId,
+          version: version,
+          userId: user?.id,
+        }),
+      );
     },
     [dispatch, user],
   );
@@ -200,6 +224,8 @@ const ExpenseListScreen = ({navigation}) => {
             inTaxTotal={item.inTaxTotal}
             employeeManagerId={item['employee.managerUser']?.id}
             employeeName={mode === MODE.validation ? item.employee?.name : null}
+            onSend={() => sendExpenseAPI(item.id, item.version)}
+            onValidate={() => validateExpenseAPI(item.id, item.version)}
           />
         )}
         fetchData={ObjectToDisplay.functionApi}

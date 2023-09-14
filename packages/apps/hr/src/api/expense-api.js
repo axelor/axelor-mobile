@@ -128,3 +128,17 @@ export async function updateExpense({expenseId, version, expenseLineIdList}) {
     },
   });
 }
+
+export async function sendExpense({expenseId, version}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/expense/send/${expenseId}`,
+    data: {version: version},
+  });
+}
+
+export async function validateExpense({expenseId, version}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/expense/validate/${expenseId}`,
+    data: {version: version},
+  });
+}

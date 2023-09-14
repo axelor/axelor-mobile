@@ -28,6 +28,8 @@ import {
   getExpense,
   createExpense as _createExpense,
   updateExpense as _updateExpense,
+  sendExpense as _sendExpense,
+  validateExpense as _validateExpense,
 } from '../api/expense-api';
 
 export const createExpense = createAsyncThunk(
@@ -37,6 +39,48 @@ export const createExpense = createAsyncThunk(
       fetchFunction: _createExpense,
       data,
       action: 'Hr_SliceAction_CreateExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
+
+export const sendExpense = createAsyncThunk(
+  'expense/sendExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _sendExpense,
+      data,
+      action: 'Hr_SliceAction_SendExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
+    });
+  },
+);
+
+export const validateExpense = createAsyncThunk(
+  'expense/validateExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _validateExpense,
+      data,
+      action: 'Hr_SliceAction_ValidateExpense',
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
@@ -192,6 +236,20 @@ const expenseSlice = createSlice({
       state.loadingMyExpense = true;
     });
     builder.addCase(updateExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
+    });
+    builder.addCase(sendExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(sendExpense.fulfilled, (state, action) => {
+      state.loadingMyExpense = false;
+      state.myExpenseList = action.payload;
+    });
+    builder.addCase(validateExpense.pending, (state, action) => {
+      state.loadingMyExpense = true;
+    });
+    builder.addCase(validateExpense.fulfilled, (state, action) => {
       state.loadingMyExpense = false;
       state.myExpenseList = action.payload;
     });
