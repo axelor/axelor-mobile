@@ -21,16 +21,26 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createKilometricAllowParamCriteria = (searchValue, idList) => {
+const createKilometricAllowParamCriteria = (
+  searchValue,
+  idList,
+  expenseDateTest,
+  user,
+) => {
   const criteria = [
     getSearchCriterias('hr_kilomectricAllowParam', searchValue),
   ];
 
   if (Array.isArray(idList)) {
     criteria.push({
-      fieldName: 'id',
-      operator: 'in',
-      value: idList,
+      operator: 'and',
+      criteria: [
+        {
+          fieldName: 'id',
+          operator: 'in',
+          value: idList,
+        },
+      ],
     });
   }
 
@@ -41,6 +51,8 @@ export async function searchKilometricAllowParam({
   searchValue = null,
   page = 0,
   idList = [],
+  expenseDateTest,
+  user,
 }) {
   if (!Array.isArray(idList) || idList.length === 0) {
     return [];
@@ -48,7 +60,12 @@ export async function searchKilometricAllowParam({
 
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.KilometricAllowParam',
-    criteria: createKilometricAllowParamCriteria(searchValue, idList),
+    criteria: createKilometricAllowParamCriteria(
+      searchValue,
+      idList,
+      expenseDateTest,
+      user,
+    ),
     fieldKey: 'hr_kilomectricAllowParam',
     sortKey: 'hr_kilomectricAllowParam',
     page,

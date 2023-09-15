@@ -25,6 +25,7 @@ import {
   ToggleSwitchMode,
 } from '../components';
 import {ExpenseLine} from '../types';
+import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -77,6 +78,14 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        dependsOn: {
+          fieldName: 'expenseDate',
+          onChange: ({newValue, dispatch}) => {
+            console.log('newValue', newValue);
+            dispatch(updateExpenseDate(newValue));
+            //return 'test';
+          },
+        },
       },
       kilometricTypeSelect: {
         titleKey: 'Hr_KilometricTypeSelect',

@@ -47,6 +47,7 @@ const KilometricAllowParamSearchBarAux = ({
     loadingKilometricAllowParam,
     moreLoadingKilometricAllowParam,
     isListEndKilometricAllowParam,
+    expenseDateTest,
   } = useSelector(state => state.kilometricAllowParam);
   const {user} = useSelector(state => state.user);
 
@@ -58,13 +59,22 @@ const KilometricAllowParamSearchBarAux = ({
         searchKilometricAllowParam({
           page,
           searchValue,
-          idList: user.employee?.employeeVehicleList.map(
-            element => element.kilometricAllowParam?.id,
-          ),
+          idList: user.employee?.employeeVehicleList.map(element => {
+            if (expenseDateTest != null) {
+              if (
+                new Date(expenseDateTest) >= new Date(element.startDate) &&
+                new Date(expenseDateTest) <= new Date(element.endDate)
+              ) {
+                return element.kilometricAllowParam?.id;
+              }
+            }
+          }),
+          expenseDate: expenseDateTest,
+          user,
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, user, expenseDateTest],
   );
 
   if (readonly) {
