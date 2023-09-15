@@ -124,7 +124,6 @@ const ExpenseLineDetailCard = ({
               />
               {expense == null && (
                 <>
-                  <View style={styles.separator} />
                   <CardIconButton
                     iconName={'trash-alt'}
                     iconColor={Colors.primaryColor.foreground}
@@ -173,16 +172,12 @@ const styles = StyleSheet.create({
   },
   cardIconButton: {
     flex: 1,
-    margin: 0,
     marginRight: '2%',
     marginLeft: 5,
   },
   iconContainer: {
     flexDirection: 'column',
-  },
-  separator: {
-    width: 5,
-    height: 5,
+    flex: 1,
   },
 });
 
