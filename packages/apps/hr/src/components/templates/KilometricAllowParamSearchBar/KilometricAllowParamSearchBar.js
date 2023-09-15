@@ -61,10 +61,24 @@ const KilometricAllowParamSearchBarAux = ({
           searchValue,
           idList: user.employee?.employeeVehicleList.map(element => {
             if (expenseDate != null) {
+              if (element.startDate == null) {
+                if (new Date(expenseDate) <= new Date(element.endDate)) {
+                  return element.kilometricAllowParam?.id;
+                }
+              }
+              if (element.endDate == null) {
+                if (new Date(expenseDate) >= new Date(element.startDate)) {
+                  return element.kilometricAllowParam?.id;
+                }
+              }
+              if (element.endDate == null && element.startDate == null) {
+                return element.kilometricAllowParam?.id;
+              }
               if (
                 new Date(expenseDate) >= new Date(element.startDate) &&
                 new Date(expenseDate) <= new Date(element.endDate)
               ) {
+                console.log('ici');
                 return element.kilometricAllowParam?.id;
               }
             }
