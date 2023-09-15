@@ -16,13 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  ToggleSwitch,
-  getCommonStyles,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useState} from 'react';
+import {SwitchCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
@@ -31,23 +26,13 @@ const ToggleSwitchMode = ({
   onChange = () => {},
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const [, setMode] = useState(defaultValue);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
   return (
-    <ToggleSwitch
-      styleContainer={[
-        commonStyles.filter,
-        commonStyles.filterSize,
-        styles.toggleSwitchContainer,
-      ]}
-      styleToogle={styles.toggle}
-      leftTitle={I18n.t('Hr_General')}
-      rightTitle={I18n.t('Hr_Kilometric')}
-      onSwitch={() => {
+    <SwitchCard
+      title={I18n.t('Hr_Kilometric')}
+      onToggle={() => {
         setMode(_mode => {
           const newMode =
             _mode === ExpenseLine.modes.general
@@ -60,16 +45,5 @@ const ToggleSwitchMode = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  toggleSwitchContainer: {
-    alignSelf: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
-  },
-});
 
 export default ToggleSwitchMode;
