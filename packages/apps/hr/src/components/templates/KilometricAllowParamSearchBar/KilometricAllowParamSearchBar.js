@@ -75,6 +75,16 @@ const KilometricAllowParamSearchBarAux = ({
     [dispatch, user, expenseDateTest],
   );
 
+  console.log(kilometricAllowParamList);
+
+  const defaultKap = useMemo(() => {
+    if (kilometricAllowParamList?.length === 1) {
+      return kilometricAllowParamList[0];
+    } else {
+      return defaultValue;
+    }
+  }, [defaultValue, kilometricAllowParamList]);
+
   if (readonly) {
     return (
       <FormInput
@@ -94,7 +104,7 @@ const KilometricAllowParamSearchBarAux = ({
           required && defaultValue == null ? styles.requiredBorder : null,
         ]}
         objectList={kilometricAllowParamList}
-        value={defaultValue}
+        value={defaultKap}
         onChangeValue={onChange}
         fetchData={searchKilometricAllowParamAPI}
         displayValue={displayItemName}
