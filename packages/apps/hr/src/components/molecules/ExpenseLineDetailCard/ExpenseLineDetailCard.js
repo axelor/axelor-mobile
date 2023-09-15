@@ -122,13 +122,17 @@ const ExpenseLineDetailCard = ({
                 onPress={onEdit}
                 style={styles.cardIconButton}
               />
-              <View style={styles.separator} />
-              <CardIconButton
-                iconName={'trash-alt'}
-                iconColor={Colors.primaryColor.foreground}
-                onPress={onDeleteExpenseLineApi}
-                style={styles.cardIconButton}
-              />
+              {expense == null && (
+                <>
+                  <View style={styles.separator} />
+                  <CardIconButton
+                    iconName={'trash-alt'}
+                    iconColor={Colors.primaryColor.foreground}
+                    onPress={onDeleteExpenseLineApi}
+                    style={styles.cardIconButton}
+                  />
+                </>
+              )}
             </View>
           ) : null}
         </View>
