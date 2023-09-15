@@ -119,3 +119,19 @@ export async function createOpportunity({opportunity}) {
     },
   });
 }
+
+export async function getProspectOpportunities(prospectId) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.crm.db.Opportunity',
+    criteria: [
+      {
+        fieldName: 'partner.id',
+        operator: '=',
+        value: prospectId,
+      },
+    ],
+    fieldKey: 'crm_opportunity',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}

@@ -21,7 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {EventCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
-import {getLastEvent, getNextEvent} from '../../../utils/dateEvent';
+import {getLastItem, getNextItem} from '../../../utils/list';
 
 type Event = {
   id: number;
@@ -41,11 +41,11 @@ const DropdownEventView = ({eventList}: DropdownEventViewProps) => {
   const navigation = useNavigation();
 
   const lastEvent = useMemo(() => {
-    return getLastEvent(eventList);
+    return getLastItem(eventList);
   }, [eventList]);
 
   const nextEvent = useMemo(() => {
-    return getNextEvent(eventList);
+    return getNextItem(eventList);
   }, [eventList]);
 
   if (lastEvent == null && nextEvent == null) {

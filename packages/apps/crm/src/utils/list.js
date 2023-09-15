@@ -16,10 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const getLastEvent = listEvent => {
+export const getLastItem = listItem => {
+  if (
+    listItem == null ||
+    Array.isArray(listItem) === false ||
+    listItem.length === 0
+  ) {
+    return null;
+  }
+
+  if (listItem.length === 1) {
+    return listItem[0];
+  }
+
   const today = new Date();
-  if (listEvent && listEvent.length > 0) {
-    const filtredList = listEvent.filter(
+  if (listItem && listItem.length > 0) {
+    const filtredList = listItem.filter(
       event => new Date(event.startDateTime) < today,
     );
     const getLatest = arr =>
@@ -30,10 +42,23 @@ export const getLastEvent = listEvent => {
   }
 };
 
-export const getNextEvent = listEvent => {
+export const getNextItem = listItem => {
+  if (
+    listItem == null ||
+    Array.isArray(listItem) === false ||
+    listItem.length === 0
+  ) {
+    return null;
+  }
+
+  // if listItem contains one item so there is no next item.
+  if (listItem.length === 1) {
+    return null;
+  }
+
   const today = new Date();
-  if (listEvent && listEvent.length > 0) {
-    const filtredList = listEvent.filter(
+  if (listItem && listItem.length > 0) {
+    const filtredList = listItem.filter(
       event => new Date(event.startDateTime) > today,
     );
     const getRecent = arr =>

@@ -30,6 +30,7 @@ import {
   updateOpportunity as _updateOpportunity,
   updateOpportunityScoring as _updateOpportunityScoring,
   createOpportunity as _createOpportunity,
+  getProspectOpportunities as _getProspectOpportunities,
 } from '../api/opportunities-api';
 
 export const fetchOpportunities = createAsyncThunk(
@@ -155,6 +156,19 @@ export const createOpportunity = createAsyncThunk(
   },
 );
 
+export const getProspectOpportunities = createAsyncThunk(
+  'opportunity/getProspectOpportunities',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getProspectOpportunities,
+      data,
+      action: 'Crm_SliceAction_getProspectOpportunities',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   loadingOpportunity: false,
@@ -164,6 +178,7 @@ const initialState = {
   opportunityList: [],
   opportunityStatusList: [],
   opportunity: {},
+  prospectOpportunityList: {},
 };
 
 const opportunitySlice = createSlice({
@@ -226,6 +241,13 @@ const opportunitySlice = createSlice({
     builder.addCase(createOpportunity.fulfilled, (state, action) => {
       state.loading = false;
       state.opportunityList = action.payload;
+    });
+    builder.addCase(getProspectOpportunities.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getProspectOpportunities.fulfilled, (state, action) => {
+      state.loading = false;
+      state.prospectOpportunityList = action.payload;
     });
   },
 });
