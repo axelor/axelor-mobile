@@ -69,8 +69,6 @@ const KilometricAllowParamSearchBarAux = ({
               }
             }
           }),
-          expenseDate: expenseDateTest,
-          user,
         }),
       );
     },
