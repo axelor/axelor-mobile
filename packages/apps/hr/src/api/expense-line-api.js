@@ -138,3 +138,9 @@ export async function updateExpenseLine({expenseLine}) {
     data: {data: expenseLine},
   });
 }
+
+export async function deleteExpenseLine({ExpenseLineId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.ExpenseLine/${ExpenseLineId}`,
+  });
+}

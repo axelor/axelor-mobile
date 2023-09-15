@@ -27,6 +27,7 @@ import {
   searchKilometricExpenseLines as _searchKilometricExpenseLines,
   createExpenseLine as _createExpenseLine,
   updateExpenseLine as _updateExpenseLine,
+  deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
 import {ExpenseLine} from '../types';
 
@@ -65,6 +66,27 @@ export const searchGeneralExpenseLines = createAsyncThunk(
       action: 'Hr_SliceAction_SearchGeneralExpenseLines',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
+export const deleteExpenseLine = createAsyncThunk(
+  'expenseLine/deleteExpenseLine',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteExpenseLine,
+      data,
+      action: 'Hr_SliceAction_DeleteExpenseLine',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchExpenseLines,
+        data: {userId: data?.userId},
+        action: 'Hr_SliceAction_FetchExpenseLines',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -182,6 +204,13 @@ const expenseLineSlice = createSlice({
       state.loadingExpenseLine = true;
     });
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
+      state.loadingExpenseLine = false;
+      state.expenseLineList = action.payload;
+    });
+    builder.addCase(deleteExpenseLine.pending, (state, action) => {
+      state.loadingExpenseLine = true;
+    });
+    builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
     });
