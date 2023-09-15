@@ -81,9 +81,7 @@ export const hr_formsRegister: FormConfigs = {
         dependsOn: {
           fieldName: 'expenseDate',
           onChange: ({newValue, dispatch}) => {
-            console.log('newValue', newValue);
             dispatch(updateExpenseDate(newValue));
-            //return 'test';
           },
         },
       },
