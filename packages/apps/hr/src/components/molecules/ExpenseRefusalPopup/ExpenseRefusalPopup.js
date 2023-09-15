@@ -19,9 +19,8 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
-  Button,
   FormInput,
-  Icon,
+  IconButton,
   PopUp,
   checkNullString,
   useThemeColor,
@@ -54,32 +53,33 @@ const ExpenseRefusalPopup = ({
 
   return (
     <PopUp visible={refusalPopupIsOpen} childrenStyle={styles.container}>
-      <View>
-        <Icon
-          name="times"
-          size={20}
-          touchable={true}
+      <FormInput
+        title={I18n.t('Hr_ReasonRefusal')}
+        multiline={true}
+        adjustHeightWithLines={true}
+        required={true}
+        onChange={setRefusalMessage}
+        style={styles.input}
+      />
+      <View style={styles.buttonContainer}>
+        <IconButton
+          iconName="times"
+          title={I18n.t('Hr_Cancel')}
           onPress={onClose}
-          style={styles.closeIcon}
+          style={styles.button}
+          color={Colors.errorColor}
         />
-        <FormInput
-          title={I18n.t('Hr_ReasonRefusal')}
-          multiline={true}
-          adjustHeightWithLines={true}
-          required={true}
-          onChange={setRefusalMessage}
-          style={styles.input}
-        />
-        <Icon
-          name="check"
+        <IconButton
+          iconName="check"
+          title={I18n.t('Hr_Ok')}
+          onPress={refuseExpenseAPI}
+          style={styles.button}
           color={
             checkNullString(refusalMessage)
-              ? Colors.secondaryColor.background
-              : Colors.primaryColor.background
+              ? Colors.secondaryColor
+              : Colors.primaryColor
           }
           disabled={checkNullString(refusalMessage)}
-          touchable={true}
-          onPress={refuseExpenseAPI}
         />
       </View>
     </PopUp>
@@ -96,6 +96,14 @@ const styles = StyleSheet.create({
   closeIcon: {
     alignSelf: 'flex-end',
     marginRight: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: '45%',
   },
 });
 
