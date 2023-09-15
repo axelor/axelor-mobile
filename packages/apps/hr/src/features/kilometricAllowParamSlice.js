@@ -41,7 +41,7 @@ const initialState = {
   moreLoadingKilometricAllowParam: false,
   isListEndKilometricAllowParam: false,
   kilometricAllowParamList: [],
-  expenseDateTest: null,
+  expenseDate: null,
 };
 
 const kilometricAllowParamSlice = createSlice({
@@ -49,7 +49,7 @@ const kilometricAllowParamSlice = createSlice({
   initialState,
   reducers: {
     updateExpenseDate: (state, action) => {
-      state.expenseDateTest = action.payload;
+      state.expenseDate = action.payload;
     },
   },
   extraReducers: builder => {

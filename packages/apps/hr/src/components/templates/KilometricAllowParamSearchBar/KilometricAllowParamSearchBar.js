@@ -47,7 +47,7 @@ const KilometricAllowParamSearchBarAux = ({
     loadingKilometricAllowParam,
     moreLoadingKilometricAllowParam,
     isListEndKilometricAllowParam,
-    expenseDateTest,
+    expenseDate,
   } = useSelector(state => state.kilometricAllowParam);
   const {user} = useSelector(state => state.user);
 
@@ -60,10 +60,10 @@ const KilometricAllowParamSearchBarAux = ({
           page,
           searchValue,
           idList: user.employee?.employeeVehicleList.map(element => {
-            if (expenseDateTest != null) {
+            if (expenseDate != null) {
               if (
-                new Date(expenseDateTest) >= new Date(element.startDate) &&
-                new Date(expenseDateTest) <= new Date(element.endDate)
+                new Date(expenseDate) >= new Date(element.startDate) &&
+                new Date(expenseDate) <= new Date(element.endDate)
               ) {
                 return element.kilometricAllowParam?.id;
               }
@@ -72,10 +72,8 @@ const KilometricAllowParamSearchBarAux = ({
         }),
       );
     },
-    [dispatch, user, expenseDateTest],
+    [dispatch, user, expenseDate],
   );
-
-  console.log(kilometricAllowParamList);
 
   const defaultKap = useMemo(() => {
     if (kilometricAllowParamList?.length === 1) {
