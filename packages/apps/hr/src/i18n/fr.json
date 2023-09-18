@@ -37,6 +37,10 @@
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
   "Hr_CreateExpenseLine": "Créer une ligne de note de frais",
+  "Hr_Refuse": "Refuser",
+  "Hr_ReasonRefusal": "Motif de refus",
+  "Hr_Ok": "Ok",
+  "Hr_Cancel": "Annuler",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -54,5 +58,6 @@
   "Hr_SliceAction_CreateExpense": "création d'une note de frais",
   "Hr_SliceAction_UpdateExpense": "mise à jour de la note de frais",
   "Hr_SliceAction_SendExpense": "envoie de la note de frais",
-  "Hr_SliceAction_ValidateExpense": "validation de la note de frais"
+  "Hr_SliceAction_ValidateExpense": "validation de la note de frais",
+  "Hr_SliceAction_RefuseExpense": "refus de la note de frais"
 }
