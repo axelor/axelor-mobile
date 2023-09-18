@@ -16,17 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useState} from 'react';
+import {View} from 'react-native';
+
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
 import {sendExpense, validateExpense} from '../../../features/expenseSlice';
+import ExpenseRefusalPopup from '../ExpenseRefusalPopup/ExpenseRefusalPopup';
+import {StyleSheet} from 'react-native';
 
 const ExpenseDetailsValidationButton = ({expense, mode}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
+
+  const [refusalPopupIsOpen, setRefusalPopupIsOpen] = useState(false);
+  const [refusalMessage, setRefusalMessage] = useState('');
 
   const sendExpenseAPI = useCallback(() => {
     dispatch(
@@ -59,11 +67,50 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     expense.statusSelect === Expense.statusSelect.WaitingValidation
   ) {
     return (
-      <Button title={I18n.t('Hr_Validate')} onPress={validateExpenseAPI} />
+      <>
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            title={I18n.t('Hr_Refuse')}
+            onPress={() => {
+              setRefusalPopupIsOpen(true);
+            }}
+            color={Colors.errorColor}
+          />
+          <Button
+            title={I18n.t('Hr_Validate')}
+            onPress={validateExpenseAPI}
+            style={styles.button}
+          />
+        </View>
+        <ExpenseRefusalPopup
+          expense={expense}
+          mode={mode}
+          refusalMessage={refusalMessage}
+          refusalPopupIsOpen={refusalPopupIsOpen}
+          setRefusalMessage={setRefusalMessage}
+          onClose={() => {
+            setRefusalMessage('');
+            setRefusalPopupIsOpen(false);
+          }}
+        />
+      </>
     );
   }
 
   return null;
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 2,
+    marginBottom: 10,
+  },
+});
 
 export default ExpenseDetailsValidationButton;
