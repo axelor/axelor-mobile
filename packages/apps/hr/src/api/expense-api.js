@@ -150,3 +150,13 @@ export async function validateExpense({expenseId, version}) {
     data: {version: version},
   });
 }
+
+export async function refuseExpense({expenseId, version, groundForRefusal}) {
+  return axiosApiProvider.put({
+    url: `ws/aos/expense/refuse/${expenseId}`,
+    data: {
+      version: version,
+      groundForRefusal: groundForRefusal,
+    },
+  });
+}
