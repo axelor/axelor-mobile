@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   FormInput,
@@ -51,6 +51,11 @@ const ExpenseRefusalPopup = ({
     );
   }, [dispatch, expense, refusalMessage, mode]);
 
+  const isDisabled = useMemo(
+    () => checkNullString(refusalMessage),
+    [refusalMessage],
+  );
+
   return (
     <PopUp visible={refusalPopupIsOpen} childrenStyle={styles.container}>
       <FormInput
@@ -59,7 +64,6 @@ const ExpenseRefusalPopup = ({
         adjustHeightWithLines={true}
         required={true}
         onChange={setRefusalMessage}
-        style={styles.input}
       />
       <View style={styles.buttonContainer}>
         <IconButton
@@ -74,12 +78,8 @@ const ExpenseRefusalPopup = ({
           title={I18n.t('Hr_Ok')}
           onPress={refuseExpenseAPI}
           style={styles.button}
-          color={
-            checkNullString(refusalMessage)
-              ? Colors.secondaryColor
-              : Colors.primaryColor
-          }
-          disabled={checkNullString(refusalMessage)}
+          color={isDisabled ? Colors.secondaryColor : Colors.primaryColor}
+          disabled={isDisabled}
         />
       </View>
     </PopUp>
@@ -93,17 +93,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  closeIcon: {
-    alignSelf: 'flex-end',
-    marginRight: 5,
-  },
   buttonContainer: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
   },
   button: {
-    width: '45%',
+    flex: 1,
+    marginHorizontal: 2,
   },
 });
 

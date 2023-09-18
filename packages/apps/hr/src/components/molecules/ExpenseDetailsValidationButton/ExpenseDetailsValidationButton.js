@@ -107,7 +107,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    width: '50%',
+    flex: 1,
+    marginHorizontal: 2,
+    marginBottom: 10,
   },
 });
 
