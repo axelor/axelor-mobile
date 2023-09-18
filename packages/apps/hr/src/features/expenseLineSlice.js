@@ -207,11 +207,7 @@ const expenseLineSlice = createSlice({
       state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
     });
-    builder.addCase(deleteExpenseLine.pending, (state, action) => {
-      state.loadingExpenseLine = true;
-    });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
-      state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
     });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {

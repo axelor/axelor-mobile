@@ -38,9 +38,9 @@ const ExpenseLineDetailCard = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {userId} = useSelector(state => state.auth);
+  const {userId} = useSelector((state: any) => state.auth);
 
-  const [cardHeight, setCardHeight] = useState();
+  const [cardHeight, setCardHeight] = useState<number>();
 
   const translateXAnim = useRef(new Animated.Value(0)).current;
 
@@ -72,7 +72,9 @@ const ExpenseLineDetailCard = ({
   );
 
   const onDeleteExpenseLineApi = useCallback(() => {
-    dispatch(deleteExpenseLine({ExpenseLineId: item.id, userId: userId}));
+    dispatch(
+      (deleteExpenseLine as any)({ExpenseLineId: item.id, userId: userId}),
+    );
   }, [dispatch, item, userId]);
 
   return (
