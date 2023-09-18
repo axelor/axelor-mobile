@@ -31,6 +31,7 @@ import {
   updateExpense as _updateExpense,
   sendExpense as _sendExpense,
   validateExpense as _validateExpense,
+  refuseExpense as _refuseExpense,
 } from '../api/expense-api';
 import {Expense} from '../types';
 import {fetchExpenseLine} from './expenseLineSlice';
@@ -127,6 +128,27 @@ export const validateExpense = createAsyncThunk(
           responseOptions: {isArrayResponse: true},
         });
       }
+    });
+  },
+);
+
+export const refuseExpense = createAsyncThunk(
+  'expense/refuseExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _refuseExpense,
+      data,
+      action: 'Hr_SliceAction_RefuseExpense',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: getExpense,
+        data: {ExpenseId: data.expenseId},
+        action: 'Hr_SliceAction_FetchExpenseById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
     });
   },
 );
@@ -324,6 +346,23 @@ const expenseSlice = createSlice({
       } else {
         state.loadingMyExpense = false;
         state.myExpenseList = action.payload;
+      }
+    });
+    builder.addCase(refuseExpense.pending, (state, action) => {
+      state.loadloadingExpenseingMyExpense = true;
+    });
+    builder.addCase(refuseExpense.fulfilled, (state, action) => {
+      state.loadingExpense = false;
+      state.expense = action.payload;
+      if (action?.meta?.arg?.mode === Expense.mode.validation) {
+        state.expenseToValidateList = updateAgendaItems(
+          state.expenseToValidateList,
+          [action.payload],
+        );
+      } else {
+        state.myExpenseList = updateAgendaItems(state.myExpenseList, [
+          action.payload,
+        ]);
       }
     });
   },
