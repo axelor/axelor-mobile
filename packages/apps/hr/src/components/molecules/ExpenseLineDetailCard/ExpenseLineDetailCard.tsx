@@ -71,7 +71,7 @@ const ExpenseLineDetailCard = ({
     [isSelectionMode, translateXAnim],
   );
 
-  const onDeleteExpenseLineApi = useCallback(() => {
+  const handleDelete = useCallback(() => {
     dispatch(
       (deleteExpenseLine as any)({ExpenseLineId: item.id, userId: userId}),
     );
@@ -125,14 +125,12 @@ const ExpenseLineDetailCard = ({
                 style={styles.cardIconButton}
               />
               {expense == null && (
-                <>
-                  <CardIconButton
-                    iconName={'trash-alt'}
-                    iconColor={Colors.primaryColor.foreground}
-                    onPress={onDeleteExpenseLineApi}
-                    style={styles.cardIconButton}
-                  />
-                </>
+                <CardIconButton
+                  iconName={'trash-alt'}
+                  iconColor={Colors.primaryColor.foreground}
+                  onPress={handleDelete}
+                  style={styles.cardIconButton}
+                />
               )}
             </View>
           ) : null}
@@ -150,6 +148,7 @@ const styles = StyleSheet.create({
     width: '96%',
     marginHorizontal: '2%',
     minHeight: 90,
+    marginVertical: 4,
   },
   checkbox: {
     marginRight: 10,
@@ -171,14 +170,13 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     flex: 6,
-  },
-  cardIconButton: {
-    flex: 1,
-    marginRight: '2%',
-    marginLeft: 5,
+    margin: 2,
   },
   iconContainer: {
     flexDirection: 'column',
+    flex: 1,
+  },
+  cardIconButton: {
     flex: 1,
   },
 });
