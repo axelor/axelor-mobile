@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   CameraButton,
@@ -117,7 +116,6 @@ const ExpenseLinesListScreen = ({navigation}) => {
         disabledRefresh={isSelectionMode}
         renderItem={({item}) => (
           <ExpenseLineDetailCard
-            style={styles.item}
             item={item}
             onEdit={() =>
               navigation.navigate('ExpenseLineFormScreen', {
@@ -159,11 +157,5 @@ const ExpenseLinesListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginVertical: 4,
-  },
-});
 
 export default ExpenseLinesListScreen;

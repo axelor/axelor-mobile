@@ -59,5 +59,6 @@
   "Hr_SliceAction_UpdateExpense": "mise à jour de la note de frais",
   "Hr_SliceAction_SendExpense": "envoie de la note de frais",
   "Hr_SliceAction_ValidateExpense": "validation de la note de frais",
-  "Hr_SliceAction_RefuseExpense": "refus de la note de frais"
+  "Hr_SliceAction_RefuseExpense": "refus de la note de frais",
+  "Hr_SliceAction_DeleteExpenseLine": "suppression d'un ligne de frais orpheline"
 }
