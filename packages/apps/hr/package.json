@@ -35,7 +35,7 @@
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
     "@react-native-community/eslint-config": "^2.0.0",
-    "@types/react": "18.0.20",
+    "@types/react": "18.2.0",
     "@types/react-native": "0.68.1",
     "cpx2": "^4.2.0",
     "eslint": "^7.32.0",
@@ -45,6 +45,6 @@
     "react-native": "0.68.1"
   },
   "resolutions": {
-    "@types/react": "18.0.20"
+    "@types/react": "18.2.0"
   }
 }
