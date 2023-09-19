@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {useThemeColor, CardIconButton, Checkbox} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {Expense, ExpenseLine} from '../../../types';
 import {ExpenseLineCard} from '../../atoms';
+import {deleteExpenseLine} from '../../../features/expenseLineSlice';
 
 const ExpenseLineDetailCard = ({
   style,
@@ -35,6 +36,9 @@ const ExpenseLineDetailCard = ({
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
+  const {userId} = useSelector((state: any) => state.auth);
 
   const [cardHeight, setCardHeight] = useState<number>();
 
@@ -66,6 +70,12 @@ const ExpenseLineDetailCard = ({
         : 0,
     [isSelectionMode, translateXAnim],
   );
+
+  const handleDelete = useCallback(() => {
+    dispatch(
+      (deleteExpenseLine as any)({ExpenseLineId: item.id, userId: userId}),
+    );
+  }, [dispatch, item, userId]);
 
   return (
     <View style={[styles.globalContainer, {height: cardHeight}, style]}>
@@ -107,12 +117,22 @@ const ExpenseLineDetailCard = ({
           </View>
           {expense == null ||
           expense.statusSelect === Expense.statusSelect.Draft ? (
-            <CardIconButton
-              iconName={'pencil-alt'}
-              iconColor={Colors.primaryColor.foreground}
-              onPress={onEdit}
-              style={styles.cardIconButton}
-            />
+            <View style={styles.iconContainer}>
+              <CardIconButton
+                iconName={'pencil-alt'}
+                iconColor={Colors.primaryColor.foreground}
+                onPress={onEdit}
+                style={styles.cardIconButton}
+              />
+              {expense == null && (
+                <CardIconButton
+                  iconName={'trash-alt'}
+                  iconColor={Colors.primaryColor.foreground}
+                  onPress={handleDelete}
+                  style={styles.cardIconButton}
+                />
+              )}
+            </View>
           ) : null}
         </View>
       </Animated.View>
@@ -128,6 +148,7 @@ const styles = StyleSheet.create({
     width: '96%',
     marginHorizontal: '2%',
     minHeight: 90,
+    marginVertical: 4,
   },
   checkbox: {
     marginRight: 10,
@@ -149,12 +170,14 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     flex: 6,
+    margin: 2,
+  },
+  iconContainer: {
+    flexDirection: 'column',
+    flex: 1,
   },
   cardIconButton: {
     flex: 1,
-    margin: 0,
-    marginRight: '2%',
-    marginLeft: 5,
   },
 });
 
