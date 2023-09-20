@@ -59,27 +59,39 @@ const KilometricAllowParamSearchBarAux = ({
         searchKilometricAllowParam({
           page,
           searchValue,
-          idList: user.employee?.employeeVehicleList.map(element => {
+          idList: user.employee?.employeeVehicleList.map(_vehicle => {
             if (expenseDate != null) {
-              if (element.startDate == null) {
-                if (new Date(expenseDate) <= new Date(element.endDate)) {
-                  return element.kilometricAllowParam?.id;
+              const _expenseDate = new Date(expenseDate);
+
+              const _endDate = _vehicle.endDate
+                ? new Date(_vehicle.endDate)
+                : null;
+
+              if (_vehicle.startDate == null) {
+                if (_vehicle.endDate == null) {
+                  // Vehicle has no period, always valid
+                  return _vehicle.kilometricAllowParam.id;
+                } else if (_expenseDate <= _endDate) {
+                  // Vehicle has end date, expense date should be before end date
+                  return _vehicle.kilometricAllowParam.id;
                 }
-              }
-              if (element.endDate == null) {
-                if (new Date(expenseDate) >= new Date(element.startDate)) {
-                  return element.kilometricAllowParam?.id;
+              } else {
+                const _startDate = _vehicle.startDate
+                  ? new Date(_vehicle.startDate)
+                  : null;
+
+                if (_vehicle.endDate == null) {
+                  if (_expenseDate >= _startDate) {
+                    // Vehicle has start date, expense date should be after start date
+                    return _vehicle.kilometricAllowParam.id;
+                  }
+                } else if (
+                  _expenseDate >= _startDate &&
+                  _expenseDate <= _endDate
+                ) {
+                  // Vehicle has a period, expense date should be after start date and before end date
+                  return _vehicle.kilometricAllowParam.id;
                 }
-              }
-              if (element.endDate == null && element.startDate == null) {
-                return element.kilometricAllowParam?.id;
-              }
-              if (
-                new Date(expenseDate) >= new Date(element.startDate) &&
-                new Date(expenseDate) <= new Date(element.endDate)
-              ) {
-                console.log('ici');
-                return element.kilometricAllowParam?.id;
               }
             }
           }),
