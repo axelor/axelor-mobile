@@ -47,6 +47,7 @@ const KilometricAllowParamSearchBarAux = ({
     loadingKilometricAllowParam,
     moreLoadingKilometricAllowParam,
     isListEndKilometricAllowParam,
+    expenseDate,
   } = useSelector(state => state.kilometricAllowParam);
   const {user} = useSelector(state => state.user);
 
@@ -58,14 +59,55 @@ const KilometricAllowParamSearchBarAux = ({
         searchKilometricAllowParam({
           page,
           searchValue,
-          idList: user.employee?.employeeVehicleList.map(
-            element => element.kilometricAllowParam?.id,
-          ),
+          idList: user.employee?.employeeVehicleList.map(_vehicle => {
+            if (expenseDate != null) {
+              const _expenseDate = new Date(expenseDate);
+
+              const _endDate = _vehicle.endDate
+                ? new Date(_vehicle.endDate)
+                : null;
+
+              if (_vehicle.startDate == null) {
+                if (_vehicle.endDate == null) {
+                  // Vehicle has no period, always valid
+                  return _vehicle.kilometricAllowParam.id;
+                } else if (_expenseDate <= _endDate) {
+                  // Vehicle has end date, expense date should be before end date
+                  return _vehicle.kilometricAllowParam.id;
+                }
+              } else {
+                const _startDate = _vehicle.startDate
+                  ? new Date(_vehicle.startDate)
+                  : null;
+
+                if (_vehicle.endDate == null) {
+                  if (_expenseDate >= _startDate) {
+                    // Vehicle has start date, expense date should be after start date
+                    return _vehicle.kilometricAllowParam.id;
+                  }
+                } else if (
+                  _expenseDate >= _startDate &&
+                  _expenseDate <= _endDate
+                ) {
+                  // Vehicle has a period, expense date should be after start date and before end date
+                  return _vehicle.kilometricAllowParam.id;
+                }
+              }
+            }
+          }),
         }),
       );
     },
-    [dispatch, user],
+    [dispatch, user, expenseDate],
   );
+
+  const defaultKap = useMemo(() => {
+    if (kilometricAllowParamList?.length === 1) {
+      return kilometricAllowParamList[0];
+    } else {
+      return defaultValue;
+    }
+  }, [defaultValue, kilometricAllowParamList]);
 
   if (readonly) {
     return (
@@ -86,7 +128,7 @@ const KilometricAllowParamSearchBarAux = ({
           required && defaultValue == null ? styles.requiredBorder : null,
         ]}
         objectList={kilometricAllowParamList}
-        value={defaultValue}
+        value={defaultKap}
         onChangeValue={onChange}
         fetchData={searchKilometricAllowParamAPI}
         displayValue={displayItemName}
