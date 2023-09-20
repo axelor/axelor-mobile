@@ -81,7 +81,7 @@ function AttachedFilesView({
 
   const filterOnSelectExtension = useCallback(
     list => {
-      if (list == null || list === []) {
+      if (!Array.isArray(list) || list.length === 0) {
         return list;
       } else if (selectedStatus.length > 0) {
         return list.filter(item =>
