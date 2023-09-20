@@ -124,6 +124,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
             newValue,
             storeState,
             objectState: updatedObject,
+            dispatch,
           });
         });
 
