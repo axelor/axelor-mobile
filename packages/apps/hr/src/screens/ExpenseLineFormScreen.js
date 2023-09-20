@@ -106,6 +106,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       return {
         manageMode: ExpenseLine.modes.general,
         hideToggle: true,
+        expenseDate: new Date().toISOString(),
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
@@ -151,6 +152,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     return {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
+      expenseDate: new Date().toISOString(),
     };
   }, [I18n, expenseLine, justificationMetaFile]);
 
