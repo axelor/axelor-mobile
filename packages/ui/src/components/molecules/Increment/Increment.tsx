@@ -112,7 +112,7 @@ const Increment = ({
   );
 
   const handleResult = useCallback(
-    (_value: number | string) => {
+    (_value: number) => {
       let resultValue;
       if (minValue != null && _value <= minValue) {
         resultValue = minValue;
@@ -141,7 +141,7 @@ const Increment = ({
 
   const handleMinus = () => {
     const unformatedValue = defaultFormatting ? unformat(valueQty) : valueQty;
-    const newValue = parseFloat(unformatedValue) - stepSize;
+    const newValue: number = parseFloat(unformatedValue) - stepSize;
 
     handleResult(newValue);
   };
@@ -154,7 +154,7 @@ const Increment = ({
     if (valueQty === '' || valueQty === null) {
       handleResult(0);
     } else {
-      handleResult(valueQty);
+      handleResult(parseFloat(valueQty));
     }
 
     onBlur();
