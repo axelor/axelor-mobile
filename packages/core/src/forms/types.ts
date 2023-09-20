@@ -29,6 +29,7 @@ export interface States {
 
 export interface DependsOnStates extends States {
   newValue?: any;
+  dispatch?: any;
 }
 
 export interface customComponentOptions {
