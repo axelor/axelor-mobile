@@ -16,60 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  ToggleSwitch,
-  getCommonStyles,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useState} from 'react';
+import {RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
 const ToggleSwitchMode = ({
+  style = null,
   defaultValue = ExpenseLine.modes.general,
   onChange = () => {},
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const [, setMode] = useState(defaultValue);
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-
   return (
-    <ToggleSwitch
-      styleContainer={[
-        commonStyles.filter,
-        commonStyles.filterSize,
-        styles.toggleSwitchContainer,
+    <RadioSelect
+      style={style}
+      defaultValue={defaultValue}
+      items={[
+        {id: ExpenseLine.modes.general, title: I18n.t('Hr_General')},
+        {id: ExpenseLine.modes.kilometric, title: I18n.t('Hr_Kilometric')},
       ]}
-      styleToogle={styles.toggle}
-      leftTitle={I18n.t('Hr_General')}
-      rightTitle={I18n.t('Hr_Kilometric')}
-      onSwitch={() => {
-        setMode(_mode => {
-          const newMode =
-            _mode === ExpenseLine.modes.general
-              ? ExpenseLine.modes.kilometric
-              : ExpenseLine.modes.general;
-          onChange(newMode);
-          return newMode;
-        });
+      onChange={_mode => {
+        onChange(_mode);
+        setMode(_mode);
       }}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  toggleSwitchContainer: {
-    alignSelf: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
-  },
-});
 
 export default ToggleSwitchMode;
