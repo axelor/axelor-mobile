@@ -41,11 +41,17 @@ const initialState = {
   moreLoadingKilometricAllowParam: false,
   isListEndKilometricAllowParam: false,
   kilometricAllowParamList: [],
+  expenseDate: null,
 };
 
 const kilometricAllowParamSlice = createSlice({
   name: 'kilometricAllowParam',
   initialState,
+  reducers: {
+    updateExpenseDate: (state, action) => {
+      state.expenseDate = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchKilometricAllowParam, {
       loading: 'loadingKilometricAllowParam',
@@ -55,5 +61,7 @@ const kilometricAllowParamSlice = createSlice({
     });
   },
 });
+
+export const {updateExpenseDate} = kilometricAllowParamSlice.actions;
 
 export const kilometricAllowParamReducer = kilometricAllowParamSlice.reducer;
