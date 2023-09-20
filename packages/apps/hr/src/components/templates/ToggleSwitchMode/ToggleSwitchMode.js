@@ -17,11 +17,12 @@
  */
 
 import React, {useState} from 'react';
-import {SwitchCard} from '@axelor/aos-mobile-ui';
+import {RadioSelect} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
 const ToggleSwitchMode = ({
+  style = null,
   defaultValue = ExpenseLine.modes.general,
   onChange = () => {},
 }) => {
@@ -30,17 +31,16 @@ const ToggleSwitchMode = ({
   const [, setMode] = useState(defaultValue);
 
   return (
-    <SwitchCard
-      title={I18n.t('Hr_Kilometric')}
-      onToggle={() => {
-        setMode(_mode => {
-          const newMode =
-            _mode === ExpenseLine.modes.general
-              ? ExpenseLine.modes.kilometric
-              : ExpenseLine.modes.general;
-          onChange(newMode);
-          return newMode;
-        });
+    <RadioSelect
+      style={style}
+      defaultValue={defaultValue}
+      items={[
+        {id: ExpenseLine.modes.general, title: I18n.t('Hr_General')},
+        {id: ExpenseLine.modes.kilometric, title: I18n.t('Hr_Kilometric')},
+      ]}
+      onChange={_mode => {
+        onChange(_mode);
+        setMode(_mode);
       }}
     />
   );

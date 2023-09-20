@@ -30,28 +30,6 @@ export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
     fields: {
-      labelGeneral: {
-        type: 'string',
-        widget: 'label',
-        titleKey: 'Hr_General',
-        hideIf: ({objectState}) =>
-          objectState.hideToggle ||
-          objectState.manageMode === ExpenseLine.modes.kilometric,
-        options: {
-          type: 'info',
-        },
-      },
-      labelKilometric: {
-        type: 'string',
-        widget: 'label',
-        titleKey: 'Hr_Kilometric',
-        hideIf: ({objectState}) =>
-          objectState.hideToggle ||
-          objectState.manageMode === ExpenseLine.modes.general,
-        options: {
-          type: 'info',
-        },
-      },
       manageMode: {
         type: 'string',
         widget: 'custom',
