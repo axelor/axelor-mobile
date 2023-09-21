@@ -115,6 +115,7 @@ const ExpenseLineDetailCard = ({
               expenseDate={item.expenseDate}
               projectName={item.project?.fullName}
               totalAmount={item.totalAmount}
+              currency={item['currency.symbol'] || item.currency?.name}
               displayText={
                 item.fromCity == null && item.toCity == null
                   ? item['expenseProduct.name']
