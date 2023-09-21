@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
@@ -36,11 +36,13 @@ import {
 const stockLocationScanKey = 'stock-location_product-indicators';
 
 const ProductStockDetailsScreen = ({route}) => {
-  const routeProduct = route.params.product;
+  const productId = route.params.product?.id;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {productFromId: product} = useSelector(state => state.product);
+  const {loadingProductFromId, productFromId: product} = useSelector(
+    state => state.product,
+  );
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
@@ -51,28 +53,35 @@ const ProductStockDetailsScreen = ({route}) => {
   );
   const [companyId, setCompany] = useState(user.activeCompany?.id);
 
-  useEffect(() => {
-    dispatch(fetchProductWithId(routeProduct.id));
-  }, [dispatch, routeProduct]);
+  const fetchProductFromId = useCallback(() => {
+    dispatch(fetchProductWithId(productId));
+  }, [dispatch, productId]);
 
   useEffect(() => {
-    dispatch(
-      fetchProductIndicators({
-        version: routeProduct.version,
-        productId: routeProduct.id,
-        companyId: companyId,
-        stockLocationId: stockLocation?.id,
-      }),
-    );
-    if (stockLocation != null) {
+    fetchProductFromId();
+  }, [fetchProductFromId]);
+
+  useEffect(() => {
+    if (product?.id != null) {
       dispatch(
-        fetchStockLocationLine({
-          stockId: stockLocation.id,
-          productId: routeProduct.id,
+        fetchProductIndicators({
+          version: product.version,
+          productId: product.id,
+          companyId: companyId,
+          stockLocationId: stockLocation?.id,
         }),
       );
+
+      if (stockLocation != null) {
+        dispatch(
+          fetchStockLocationLine({
+            stockId: stockLocation.id,
+            productId: product.id,
+          }),
+        );
+      }
     }
-  }, [companyId, dispatch, routeProduct, stockLocation]);
+  }, [companyId, dispatch, product, stockLocation]);
 
   const handleLockerChange = input => {
     if (stockLocation != null) {
@@ -89,7 +98,9 @@ const ProductStockDetailsScreen = ({route}) => {
 
   return (
     <Screen>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refresh={{fetcher: fetchProductFromId, loading: loadingProductFromId}}>
         <ProductStockHeader
           product={product}
           companyId={companyId}
