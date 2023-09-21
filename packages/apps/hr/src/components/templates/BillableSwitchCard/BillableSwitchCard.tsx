@@ -16,13 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {SwitchCard} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['createdOn'],
-  hr_expenseLines: ['expenseDate', 'createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_project: ['name', 'fullName'],
+const BillableSwitchCard = ({
+  style = null,
+  title = 'Hr_ToInvoice',
+  defaultValue = null,
+  onChange = () => {},
+}) => {
+  const I18n = useTranslator();
+
+  return (
+    <SwitchCard
+      style={style}
+      defaultValue={defaultValue}
+      title={I18n.t(title)}
+      onToggle={onChange}
+    />
+  );
 };
+
+export default BillableSwitchCard;
