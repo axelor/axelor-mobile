@@ -116,6 +116,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       hideToggle: false,
       expenseDate: new Date().toISOString().split('T')[0],
       companyName: user.activeCompany?.name,
+      totalAmount: 0,
+      totalTax: 0,
+      distance: 0,
     };
     if (justificationMetaFile != null) {
       return {
