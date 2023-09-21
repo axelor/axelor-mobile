@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
   updateExpenseLine,
@@ -28,8 +28,13 @@ import {ExpenseLine} from '../types';
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
   const I18n = useTranslator();
+  const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
+
+  useEffect(() => {
+    _dispatch(fetchCompanies());
+  }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
@@ -106,11 +111,16 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const defaultValue = useMemo(() => {
+    const _default = {
+      manageMode: ExpenseLine.modes.general,
+      hideToggle: false,
+      expenseDate: new Date().toISOString(),
+      companyName: user.activeCompany?.name,
+    };
     if (justificationMetaFile != null) {
       return {
-        manageMode: ExpenseLine.modes.general,
+        ..._default,
         hideToggle: true,
-        expenseDate: new Date().toISOString(),
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
@@ -118,6 +128,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
       if (mode === ExpenseLine.modes.general) {
         return {
+          ..._default,
           manageMode: mode,
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
@@ -135,6 +146,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
         return {
+          ..._default,
           manageMode: mode,
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
@@ -156,12 +168,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       }
     }
 
-    return {
-      manageMode: ExpenseLine.modes.general,
-      hideToggle: false,
-      expenseDate: new Date().toISOString(),
-    };
-  }, [I18n, expenseLine, justificationMetaFile]);
+    return _default;
+  }, [I18n, expenseLine, justificationMetaFile, user]);
 
   return (
     <FormView

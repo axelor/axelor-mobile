@@ -33,6 +33,15 @@ export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
     fields: {
+      companyName: {
+        titleKey: 'User_ActiveCompany',
+        type: 'string',
+        widget: 'default',
+        readonly: true,
+        hideIf: ({storeState}) =>
+          !storeState.config.baseConfig.enableMultiCompany ||
+          storeState.company.companyList?.length === 1,
+      },
       manageMode: {
         type: 'string',
         widget: 'custom',
