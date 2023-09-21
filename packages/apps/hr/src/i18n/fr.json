@@ -24,7 +24,9 @@
   "Hr_ExpenseNumber": "Note de frais n°",
   "Hr_TotalATI": "Total TTC",
   "Hr_TotalTax": "Montant TVA",
+  "Hr_Currency": "Devise",
   "Hr_Project": "Projet",
+  "Hr_ToInvoice": "À facturer",
   "Hr_ExpenseType": "Type de frais",
   "Hr_ExpenseDate": "Date de dépense",
   "Hr_Justification": "Justificatif",
@@ -60,5 +62,6 @@
   "Hr_SliceAction_SendExpense": "envoie de la note de frais",
   "Hr_SliceAction_ValidateExpense": "validation de la note de frais",
   "Hr_SliceAction_RefuseExpense": "refus de la note de frais",
-  "Hr_SliceAction_DeleteExpenseLine": "suppression d'un ligne de frais orpheline"
+  "Hr_SliceAction_DeleteExpenseLine": "suppression d'un ligne de frais orpheline",
+  "Hr_SliceAction_FetchCurrencies": "récupération des devises"
 }
