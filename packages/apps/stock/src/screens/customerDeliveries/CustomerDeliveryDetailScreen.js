@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Screen,
   ScrollView,
@@ -37,11 +37,17 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {customerDelivery} = useSelector(state => state.customerDelivery);
+  const {loading, customerDelivery} = useSelector(
+    state => state.customerDelivery,
+  );
 
-  useEffect(() => {
+  const getCustomerDelivery = useCallback(() => {
     dispatch(fetchCustomerDelivery({customerDeliveryId: customerDeliveryId}));
   }, [customerDeliveryId, dispatch]);
+
+  useEffect(() => {
+    getCustomerDelivery();
+  }, [getCustomerDelivery]);
 
   if (customerDelivery?.id !== customerDeliveryId) {
     return null;
@@ -59,7 +65,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           <CustomerDeliveryHeader customerDelivery={customerDelivery} />
         }
       />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getCustomerDelivery}}>
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />

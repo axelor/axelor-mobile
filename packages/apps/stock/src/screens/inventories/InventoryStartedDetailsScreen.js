@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
@@ -33,9 +33,13 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
 
   const {loading, inventory} = useSelector(state => state.inventory);
 
-  useEffect(() => {
+  const getInventory = useCallback(() => {
     dispatch(fetchInventoryById({inventoryId: inventoryId}));
   }, [dispatch, inventoryId]);
+
+  useEffect(() => {
+    getInventory();
+  }, [getInventory]);
 
   if (inventory?.id !== inventoryId) {
     return null;
@@ -50,7 +54,7 @@ const InventoryStartedDetailsScreen = ({route, navigation}) => {
         expandableFilter={false}
         fixedItems={<InventoryDetailsHeader />}
       />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getInventory}}>
         <InventoryLocationsMoveCard />
         <InventorySearchLineContainer />
       </ScrollView>
