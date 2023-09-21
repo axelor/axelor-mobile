@@ -19,25 +19,10 @@
 import {ObjectFields, schemaContructor} from '@axelor/aos-mobile-core';
 
 export const hr_modelAPI: ObjectFields = {
-  hr_expenseLines: schemaContructor.object({
-    expense: schemaContructor.subObject(),
-    expenseDate: schemaContructor.string(),
-    fromCity: schemaContructor.string(),
-    toCity: schemaContructor.string(),
-    project: schemaContructor.subObject(),
-    totalAmount: schemaContructor.string(),
-    expenseProduct: schemaContructor.subObject(),
-    'expenseProduct.name': schemaContructor.string(),
-    kilometricTypeSelect: schemaContructor.number(),
-    justificationMetaFile: schemaContructor.subObject(),
-    comments: schemaContructor.string(),
-    kilometricAllowParam: schemaContructor.subObject(),
-    distance: schemaContructor.number(),
-    totalTax: schemaContructor.string(),
-  }),
-  hr_expenseDraft: schemaContructor.object({
-    fullName: schemaContructor.string(),
-    expenseSeq: schemaContructor.string(),
+  hr_currency: schemaContructor.object({
+    name: schemaContructor.string(),
+    symbol: schemaContructor.string(),
+    code: schemaContructor.string(),
   }),
   hr_expense: schemaContructor.object({
     fullName: schemaContructor.string(),
@@ -55,9 +40,28 @@ export const hr_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject()),
   }),
-  hr_project: schemaContructor.object({
+  hr_expenseDraft: schemaContructor.object({
     fullName: schemaContructor.string(),
-    name: schemaContructor.string(),
+    expenseSeq: schemaContructor.string(),
+  }),
+  hr_expenseLines: schemaContructor.object({
+    expense: schemaContructor.subObject(),
+    expenseDate: schemaContructor.string(),
+    fromCity: schemaContructor.string(),
+    toCity: schemaContructor.string(),
+    project: schemaContructor.subObject(),
+    totalAmount: schemaContructor.string(),
+    expenseProduct: schemaContructor.subObject(),
+    'expenseProduct.name': schemaContructor.string(),
+    kilometricTypeSelect: schemaContructor.number(),
+    justificationMetaFile: schemaContructor.subObject(),
+    comments: schemaContructor.string(),
+    kilometricAllowParam: schemaContructor.subObject(),
+    distance: schemaContructor.number(),
+    totalTax: schemaContructor.string(),
+    toInvoice: schemaContructor.boolean(),
+    currency: schemaContructor.subObject(),
+    'currency.symbol': schemaContructor.string(),
   }),
   hr_expenseType: schemaContructor.object({
     name: schemaContructor.string(),
@@ -66,6 +70,10 @@ export const hr_modelAPI: ObjectFields = {
   hr_kilomectricAllowParam: schemaContructor.object({
     name: schemaContructor.string(),
     code: schemaContructor.string(),
+  }),
+  hr_project: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
   }),
   auth_user: schemaContructor.object({
     'employee.hrManager': schemaContructor.boolean(),
