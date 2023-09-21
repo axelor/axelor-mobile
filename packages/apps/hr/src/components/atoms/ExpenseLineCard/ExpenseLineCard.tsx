@@ -29,6 +29,7 @@ interface ExpenseLineCardProps {
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
+  currency?: string;
   displayText?: string;
   onLongPress: () => void;
   setCardHeight: (height: any) => void;
@@ -38,6 +39,7 @@ const ExpenseLineCard = ({
   expenseDate,
   projectName,
   totalAmount,
+  currency,
   displayText,
   onLongPress,
   setCardHeight,
@@ -90,7 +92,6 @@ const ExpenseLineCard = ({
           ],
         }}
         sideBadges={{
-          //fixedOnRightSide: true,
           items: [
             {
               customComponent: (
@@ -98,9 +99,10 @@ const ExpenseLineCard = ({
                   fontSize={22}
                   style={styles.bold}
                   textColor={Colors.primaryColor.background}>{`${totalAmount} ${
-                  user?.activeCompany?.currency?.symbol != null
-                    ? user?.activeCompany?.currency?.symbol
-                    : user?.activeCompany?.currency?.code
+                  currency != null
+                    ? currency
+                    : user.activeCompany?.currency?.symbol ||
+                      user.activeCompany?.currency.name
                 }`}</Text>
               ),
             },
