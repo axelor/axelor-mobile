@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
   updateExpenseLine,
@@ -28,18 +28,25 @@ import {ExpenseLine} from '../types';
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
   const I18n = useTranslator();
+  const _dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
+
+  useEffect(() => {
+    _dispatch(fetchCompanies());
+  }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
       const dataToSend = {
         projectId: _expenseLine.project?.id,
+        toInvoice: _expenseLine.toInvoice,
         expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
+        currencyId: _expenseLine.currency?.id,
         comments: _expenseLine.comments,
         justificationFileId: _expenseLine.justificationMetaFile?.id,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
@@ -64,12 +71,14 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       const dataToSend = {
         id: expenseLine?.id,
         version: expenseLine?.version,
-        project: _expenseLine?.project,
+        project: _expenseLine.project,
+        toInvoice: _expenseLine.toInvoice,
         expenseProduct: _expenseLine.expenseProduct,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
+        currency: _expenseLine.currency,
         comments: _expenseLine.comments,
         justificationMetaFile:
           mode === ExpenseLine.modes.general
@@ -102,11 +111,19 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const defaultValue = useMemo(() => {
+    const _default = {
+      manageMode: ExpenseLine.modes.general,
+      hideToggle: false,
+      expenseDate: new Date().toISOString().split('T')[0],
+      companyName: user.activeCompany?.name,
+      totalAmount: 0,
+      totalTax: 0,
+      distance: 0,
+    };
     if (justificationMetaFile != null) {
       return {
-        manageMode: ExpenseLine.modes.general,
+        ..._default,
         hideToggle: true,
-        expenseDate: new Date().toISOString(),
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
@@ -114,25 +131,30 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
       if (mode === ExpenseLine.modes.general) {
         return {
+          ..._default,
           manageMode: mode,
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          toInvoice: expenseLine.toInvoice,
           expenseProduct: {
             id: expenseLine.expenseProduct?.id,
             name: expenseLine['expenseProduct.name'],
           },
           totalAmount: expenseLine.totalAmount || 0,
           totalTax: expenseLine.totalTax || 0,
+          currency: expenseLine.currency,
           justificationMetaFile: expenseLine.justificationMetaFile,
           comments: expenseLine.comments,
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
         return {
+          ..._default,
           manageMode: mode,
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          toInvoice: expenseLine.toInvoice,
           fromCity: expenseLine.fromCity,
           toCity: expenseLine.toCity,
           distance: expenseLine.distance || 0,
@@ -149,12 +171,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       }
     }
 
-    return {
-      manageMode: ExpenseLine.modes.general,
-      hideToggle: false,
-      expenseDate: new Date().toISOString(),
-    };
-  }, [I18n, expenseLine, justificationMetaFile]);
+    return _default;
+  }, [I18n, expenseLine, justificationMetaFile, user]);
 
   return (
     <FormView
