@@ -114,7 +114,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     const _default = {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
-      expenseDate: new Date().toISOString(),
+      expenseDate: new Date().toISOString().split('T')[0],
       companyName: user.activeCompany?.name,
     };
     if (justificationMetaFile != null) {

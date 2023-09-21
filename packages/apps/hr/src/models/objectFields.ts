@@ -61,6 +61,7 @@ export const hr_modelAPI: ObjectFields = {
     totalTax: schemaContructor.string(),
     toInvoice: schemaContructor.boolean(),
     currency: schemaContructor.subObject(),
+    'currency.symbol': schemaContructor.string(),
   }),
   hr_expenseType: schemaContructor.object({
     name: schemaContructor.string(),
