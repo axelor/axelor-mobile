@@ -16,22 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   SwitchCard,
   useConfig,
   useTheme,
-  RightIconButton,
-  Icon,
-  useThemeColor,
   Text,
 } from '@axelor/aos-mobile-ui';
-import {clearMessage, uploadTranslations} from '../features/configSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {getTranslations, selectLanguage, useTranslator} from '../../i18n';
-import {showToastMessage} from '../../utils';
+import {useTranslator} from '../../i18n';
 import {
   disable,
   enable,
@@ -39,9 +34,9 @@ import {
   useOnline,
 } from '../../features/onlineSlice';
 import {ApiProviderConfig} from '../../apiProviders/config';
+import {TranslationsButton} from '../components';
 
 const SettingsScreen = ({children}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const Theme = useTheme();
   const online = useOnline();
@@ -50,25 +45,13 @@ const SettingsScreen = ({children}) => {
   const {
     showFilter,
     hideVirtualKeyboard,
-    setActivityIndicator,
     toggleFilterConfig,
     toggleVirtualKeyboardConfig,
     setShowSubtitles,
     showSubtitles,
   } = useConfig();
-  const language = useSelector(selectLanguage);
 
-  const {message} = useSelector(state => state.config);
-  const {user} = useSelector(state => state.user);
   const {baseUrl} = useSelector(state => state.auth);
-
-  useEffect(() => {
-    if (message) {
-      showToastMessage({type: 'success', position: 'bottom', text1: message});
-      setActivityIndicator(false);
-      dispatch(clearMessage());
-    }
-  }, [message, dispatch, setActivityIndicator]);
 
   const handleToggleConnection = useCallback(
     state => {
@@ -101,12 +84,6 @@ const SettingsScreen = ({children}) => {
     [setShowSubtitles],
   );
 
-  const handleSendTranslations = useCallback(() => {
-    setActivityIndicator(true);
-    const translations = getTranslations(language);
-    dispatch(uploadTranslations({language, translations}));
-  }, [dispatch, language, setActivityIndicator]);
-
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
@@ -138,19 +115,7 @@ const SettingsScreen = ({children}) => {
           onToggle={handleToggleSubtitles}
         />
         {children}
-        {user?.group?.code !== 'admins' ? null : (
-          <RightIconButton
-            icon={
-              <Icon
-                name="chevron-right"
-                color={Colors.primaryColor.background}
-              />
-            }
-            style={styles.RightIconButton}
-            title={I18n.t('User_SendTranslations')}
-            onPress={handleSendTranslations}
-          />
-        )}
+        <TranslationsButton />
       </View>
       <View style={styles.footerContainer}>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
@@ -169,13 +134,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
-  },
-  RightIconButton: {
-    width: Dimensions.get('window').width * 0.9,
-    height: 40,
-    marginLeft: 18,
-    paddingRight: 50,
-    paddingLeft: 10,
   },
   footerContainer: {
     justifyContent: 'center',
