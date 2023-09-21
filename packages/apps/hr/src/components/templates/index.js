@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CurrencySearchBar} from './CurrencySearchBar/CurrencySearchBar';
+export {default as BillableSwitchCard} from './BillableSwitchCard/BillableSwitchCard';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';
