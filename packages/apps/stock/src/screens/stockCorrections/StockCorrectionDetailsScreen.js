@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Screen,
@@ -40,7 +40,9 @@ const StockCorrectionDetailsScreen = ({route}) => {
   const stockCorrectionId = route.params.stockCorrectionId;
   const dispatch = useDispatch();
 
-  const {stockCorrection} = useSelector(state => state.stockCorrection);
+  const {loading, stockCorrection} = useSelector(
+    state => state.stockCorrection,
+  );
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
@@ -58,9 +60,13 @@ const StockCorrectionDetailsScreen = ({route}) => {
     return productIndicators?.realQty;
   }, [productIndicators?.realQty, stockCorrection]);
 
-  useEffect(() => {
+  const getStockCorrection = useCallback(() => {
     dispatch(fetchStockCorrection({id: stockCorrectionId}));
   }, [dispatch, stockCorrectionId]);
+
+  useEffect(() => {
+    getStockCorrection();
+  }, [getStockCorrection]);
 
   useEffect(() => {
     if (stockCorrection != null) {
@@ -113,7 +119,8 @@ const StockCorrectionDetailsScreen = ({route}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView
+        refresh={{fetcher: getStockCorrection, loading}}>
         <StockCorrectionProductCardInfo
           stockProduct={product}
           trackingNumber={stockCorrection.trackingNumber}
