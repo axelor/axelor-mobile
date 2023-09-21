@@ -46,7 +46,9 @@ export const hr_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
-        hideIf: ({objectState}) => objectState.hideToggle,
+        hideIf: ({objectState, storeState}) =>
+          objectState.hideToggle ||
+          !storeState.config.mobileSettings.isKilometricExpenseLineAllowed,
       },
       justificationMetaFile: {
         titleKey: 'Hr_Justification',
@@ -69,12 +71,16 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
         type: 'boolean',
         widget: 'custom',
         customComponent: BillableSwitchCard,
+        hideIf: ({storeState}) =>
+          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',
@@ -142,8 +148,9 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: CurrencySearchBar,
-        hideIf: ({objectState}) =>
-          objectState.manageMode !== ExpenseLine.modes.general,
+        hideIf: ({objectState, storeState}) =>
+          objectState.manageMode !== ExpenseLine.modes.general ||
+          !storeState.config.mobileSettings.isMultiCurrencyEnabled,
       },
       totalAmount: {
         titleKey: 'Hr_TotalATI',
