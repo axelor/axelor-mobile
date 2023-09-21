@@ -37,7 +37,7 @@ const OpportunityValidateButton = ({_opportunity, idOpportunity, disabled}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-  const {company} = useSelector(state => state.company);
+  const {company} = useSelector(state => state.crm_company);
 
   const createOpportinityAPI = useCallback(() => {
     dispatch(
