@@ -24,7 +24,9 @@
   "Hr_ExpenseNumber": "Expense n°",
   "Hr_TotalATI": "Total A.T.I.",
   "Hr_TotalTax": "Total tax",
+  "Hr_Currency": "Currency",
   "Hr_Project": "Project",
+  "Hr_ToInvoice": "To invoice",
   "Hr_ExpenseType": "Expense type",
   "Hr_ExpenseDate": "Expense date",
   "Hr_Justification": "Justification",
@@ -60,5 +62,6 @@
   "Hr_SliceAction_SendExpense": "send expense",
   "Hr_SliceAction_ValidateExpense": "validate expense",
   "Hr_SliceAction_RefuseExpense": "refuse expense",
-  "Hr_SliceAction_DeleteExpenseLine": "delete orphan expense line"
+  "Hr_SliceAction_DeleteExpenseLine": "delete orphan expense line",
+  "Hr_SliceAction_FetchCurrencies": "fetch currencies"
 }
