@@ -41,6 +41,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
+        currencyId: _expenseLine.currency?.id,
         comments: _expenseLine.comments,
         justificationFileId: _expenseLine.justificationMetaFile?.id,
         kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
@@ -72,6 +73,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         employeeId: user?.employee?.id,
         totalAmount: _expenseLine.totalAmount,
         totalTax: _expenseLine.totalTax,
+        currency: _expenseLine.currency,
         comments: _expenseLine.comments,
         justificationMetaFile:
           mode === ExpenseLine.modes.general
@@ -127,6 +129,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           },
           totalAmount: expenseLine.totalAmount || 0,
           totalTax: expenseLine.totalTax || 0,
+          currency: expenseLine.currency,
           justificationMetaFile: expenseLine.justificationMetaFile,
           comments: expenseLine.comments,
         };

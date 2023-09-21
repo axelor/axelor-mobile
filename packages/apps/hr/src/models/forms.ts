@@ -19,6 +19,7 @@
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   BillableSwitchCard,
+  CurrencySearchBar,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -127,6 +128,14 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
       },
+      currency: {
+        titleKey: 'Hr_Currency',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CurrencySearchBar,
+        hideIf: ({objectState}) =>
+          objectState.manageMode !== ExpenseLine.modes.general,
+      },
       totalAmount: {
         titleKey: 'Hr_TotalATI',
         type: 'number',
@@ -148,7 +157,7 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 20, width: '90%', alignSelf: 'center'},
+          style: {marginBottom: 40, width: '90%', alignSelf: 'center'},
         },
       },
     },
