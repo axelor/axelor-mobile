@@ -18,6 +18,7 @@
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
+  BillableSwitchCard,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -58,6 +59,12 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+      },
+      toInvoice: {
+        titleKey: 'Hr_ToInvoice',
+        type: 'boolean',
+        widget: 'custom',
+        customComponent: BillableSwitchCard,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',

@@ -35,6 +35,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     (_expenseLine, dispatch) => {
       const dataToSend = {
         projectId: _expenseLine.project?.id,
+        toInvoice: _expenseLine.toInvoice,
         expenseProductId: _expenseLine.expenseProduct?.id,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
@@ -64,7 +65,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       const dataToSend = {
         id: expenseLine?.id,
         version: expenseLine?.version,
-        project: _expenseLine?.project,
+        project: _expenseLine.project,
+        toInvoice: _expenseLine.toInvoice,
         expenseProduct: _expenseLine.expenseProduct,
         expenseDate: _expenseLine.expenseDate,
         employeeId: user?.employee?.id,
@@ -118,6 +120,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          toInvoice: expenseLine.toInvoice,
           expenseProduct: {
             id: expenseLine.expenseProduct?.id,
             name: expenseLine['expenseProduct.name'],
@@ -133,6 +136,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           hideToggle: true,
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
+          toInvoice: expenseLine.toInvoice,
           fromCity: expenseLine.fromCity,
           toCity: expenseLine.toCity,
           distance: expenseLine.distance || 0,
