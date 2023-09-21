@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   EditableInput,
   HeaderContainer,
@@ -42,9 +42,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
-  );
+  const {productFromId} = useSelector(state => state.product);
   const {inventoryLine, loadingInventoryLine} = useSelector(
     state => state.inventoryLine,
   );
@@ -87,11 +85,15 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
     });
   };
 
-  useEffect(() => {
-    if (inventoryLineId && inventoryLine?.id !== inventoryLineId) {
+  const getInventoryLine = useCallback(() => {
+    if (inventoryLineId != null) {
       dispatch(fetchInventoryLine({inventoryLineId}));
     }
-  }, [dispatch, inventoryLine, inventoryLineId]);
+  }, [dispatch, inventoryLineId]);
+
+  useEffect(() => {
+    getInventoryLine();
+  }, [getInventoryLine]);
 
   return (
     <Screen
@@ -107,7 +109,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           visible={!isTrackingNumberSelectVisible}
         />
       }
-      loading={loading || loadingProductFromId || loadingInventoryLine}>
+      loading={loading}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -123,7 +125,12 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView
+        refresh={
+          inventoryLineId != null
+            ? {loading: loadingInventoryLine, fetcher: getInventoryLine}
+            : undefined
+        }>
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={productFromId?.picture}
