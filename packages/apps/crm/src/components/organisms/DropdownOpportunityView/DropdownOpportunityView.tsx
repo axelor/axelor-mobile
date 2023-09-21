@@ -16,42 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '@axelor/aos-mobile-ui';
-import {isEmpty, useNavigation, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {OpportunityCard} from '../../molecules';
+import {getProspectOpportunities} from '../../../features/opportunitySlice';
 import {getLastItem} from '../../../utils/list';
 
-interface Opportunity {
-  id: number;
-  amount: string;
-  expectedCloseDate: string;
-  name: string;
-  opportunityRating: number;
-  opportunitySeq: string;
-  allOpportunityStatus?: any;
-  currencySymbol?: string;
-  opportunityStatus?: any;
-}
-
 interface DropdownOpportunityViewProps {
-  opportunityList: Opportunity[];
-  opportunityStatusList?: any;
+  prospectId: number;
 }
 
 const DropdownOpportunityView = ({
-  opportunityList,
-  opportunityStatusList,
+  prospectId,
 }: DropdownOpportunityViewProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {prospectOpportunityList} = useSelector(
+    (state: any) => state.opportunity,
+  );
 
   const lastOpportunity = useMemo(() => {
-    return getLastItem(opportunityList);
-  }, [opportunityList]);
+    return getLastItem(prospectOpportunityList, 'expectedCloseDate');
+  }, [prospectOpportunityList]);
 
-  if (lastOpportunity == null || isEmpty(lastOpportunity)) {
+  useEffect(() => {
+    dispatch((getProspectOpportunities as any)(prospectId));
+  }, [dispatch, prospectId]);
+
+  if (isEmpty(lastOpportunity)) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoOpportunityAssociated')}</Text>
@@ -68,9 +70,6 @@ const DropdownOpportunityView = ({
         name={lastOpportunity.name}
         opportunityScoring={lastOpportunity.opportunityRating}
         reference={lastOpportunity.opportunitySeq}
-        allOpportunityStatus={opportunityStatusList}
-        currencySymbol={lastOpportunity.currencySymbol}
-        opportunityStatus={lastOpportunity.opportunityStatus}
         onPress={() =>
           navigation.navigate('OpportunityDetailsScreen', {
             opportunityId: lastOpportunity.id,

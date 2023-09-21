@@ -16,55 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const getLastItem = listItem => {
-  if (
-    listItem == null ||
-    Array.isArray(listItem) === false ||
-    listItem.length === 0
-  ) {
-    return null;
-  }
-
-  if (listItem.length === 1) {
-    return listItem[0];
-  }
-
-  const today = new Date();
-  if (listItem && listItem.length > 0) {
-    const filtredList = listItem.filter(
-      event => new Date(event.startDateTime) < today,
-    );
-    const getLatest = arr =>
-      arr.sort(
-        (a, b) => new Date(b.startDateTime) - new Date(a.startDateTime),
-      )[0];
-    return getLatest(filtredList);
-  }
+export const getLastItem = (listItem, orderField) => {
+  return findItem(
+    listItem,
+    event => new Date(event[orderField]) < new Date(),
+    (prev, current) =>
+      new Date(current[orderField]) > new Date(prev[orderField])
+        ? current
+        : prev,
+  );
 };
 
-export const getNextItem = listItem => {
-  if (
-    listItem == null ||
-    Array.isArray(listItem) === false ||
-    listItem.length === 0
-  ) {
+export const getNextItem = (listItem, orderField) => {
+  return findItem(
+    listItem,
+    event => new Date(event[orderField]) > new Date(),
+    (prev, current) =>
+      new Date(current[orderField]) < new Date(prev[orderField])
+        ? current
+        : prev,
+  );
+};
+
+const findItem = (listItem, filterFunc, reduceFunc) => {
+  if (!Array.isArray(listItem) || listItem.length === 0) {
     return null;
   }
 
-  // if listItem contains one item so there is no next item.
-  if (listItem.length === 1) {
+  const filteredList = listItem.filter(filterFunc);
+
+  if (filteredList.length === 0) {
     return null;
   }
 
-  const today = new Date();
-  if (listItem && listItem.length > 0) {
-    const filtredList = listItem.filter(
-      event => new Date(event.startDateTime) > today,
-    );
-    const getRecent = arr =>
-      arr.sort(
-        (a, b) => new Date(a.startDateTime) - new Date(b.startDateTime),
-      )[0];
-    return getRecent(filtredList);
-  }
+  return filteredList.reduce(reduceFunc);
 };

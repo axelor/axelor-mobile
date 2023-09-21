@@ -29,7 +29,6 @@ import {
 } from '../../../organisms';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
-import {getProspectOpportunities} from '../../../../features/opportunitySlice';
 
 const ProspectDropdownCards = ({}) => {
   const I18n = useTranslator();
@@ -38,9 +37,6 @@ const ProspectDropdownCards = ({}) => {
   const {prospect} = useSelector(state => state.prospect);
   const {listContactById} = useSelector(state => state.contact);
   const {listEventPartner} = useSelector(state => state.event);
-  const {prospectOpportunityList, opportunityStatusList} = useSelector(
-    state => state.opportunity,
-  );
 
   useEffect(() => {
     const idList = prospect.contactPartnerSet?.map(item => item.id);
@@ -49,10 +45,6 @@ const ProspectDropdownCards = ({}) => {
 
   useEffect(() => {
     dispatch(fetchPartnerEventById(prospect?.id));
-  }, [dispatch, prospect?.id]);
-
-  useEffect(() => {
-    dispatch(getProspectOpportunities(prospect?.id));
   }, [dispatch, prospect?.id]);
 
   return (
@@ -98,12 +90,7 @@ const ProspectDropdownCards = ({}) => {
           {
             title: I18n.t('Crm_Opportunity'),
             key: 5,
-            childrenComp: (
-              <DropdownOpportunityView
-                opportunityList={prospectOpportunityList}
-                opportunityStatusList={opportunityStatusList}
-              />
-            ),
+            childrenComp: <DropdownOpportunityView prospectId={prospect?.id} />,
           },
         ]}
       />
