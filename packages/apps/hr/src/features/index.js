@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {currencyReducer as currency} from './currencySlice';
 export {expenseLineReducer as expenseLine} from './expenseLineSlice';
 export {expenseReducer as expense} from './expenseSlice';
 export {expenseTypeReducer as expenseType} from './expenseTypeSlice';

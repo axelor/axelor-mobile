@@ -18,6 +18,8 @@
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
+  BillableSwitchCard,
+  CurrencySearchBar,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -31,11 +33,22 @@ export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
     modelName: 'com.axelor.apps.hr.db.ExpenseLine',
     fields: {
+      companyName: {
+        titleKey: 'User_ActiveCompany',
+        type: 'string',
+        widget: 'default',
+        readonly: true,
+        hideIf: ({storeState}) =>
+          !storeState.config.baseConfig.enableMultiCompany ||
+          storeState.company.companyList?.length === 1,
+      },
       manageMode: {
         type: 'string',
         widget: 'custom',
         customComponent: ToggleSwitchMode,
-        hideIf: ({objectState}) => objectState.hideToggle,
+        hideIf: ({objectState, storeState}) =>
+          objectState.hideToggle ||
+          !storeState.config.mobileSettings.isKilometricExpenseLineAllowed,
       },
       justificationMetaFile: {
         titleKey: 'Hr_Justification',
@@ -58,6 +71,16 @@ export const hr_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+        hideIf: ({storeState}) =>
+          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
+      },
+      toInvoice: {
+        titleKey: 'Hr_ToInvoice',
+        type: 'boolean',
+        widget: 'custom',
+        customComponent: BillableSwitchCard,
+        hideIf: ({storeState}) =>
+          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',
@@ -120,6 +143,15 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
       },
+      currency: {
+        titleKey: 'Hr_Currency',
+        type: 'object',
+        widget: 'custom',
+        customComponent: CurrencySearchBar,
+        hideIf: ({objectState, storeState}) =>
+          objectState.manageMode !== ExpenseLine.modes.general ||
+          !storeState.config.mobileSettings.isMultiCurrencyEnabled,
+      },
       totalAmount: {
         titleKey: 'Hr_TotalATI',
         type: 'number',
@@ -141,7 +173,7 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           multiline: true,
           adjustHeightWithLines: true,
-          style: {marginBottom: 20, width: '90%', alignSelf: 'center'},
+          style: {marginBottom: 40, width: '90%', alignSelf: 'center'},
         },
       },
     },
