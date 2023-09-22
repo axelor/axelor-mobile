@@ -168,7 +168,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
     case 'object':
       schema = object().shape({
         id: getRequiredCondition(number().positive().integer(), field),
-        version: getRequiredCondition(number().min(0).integer(), field),
+        version: number().min(0).integer().nullable(),
       });
       break;
     default:

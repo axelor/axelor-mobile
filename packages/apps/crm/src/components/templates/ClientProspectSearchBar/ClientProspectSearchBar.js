@@ -18,26 +18,30 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ClientProspectSearchBar = ({
-  placeholderKey = 'Crm_ClientProspect',
-  titleKey = 'Crm_ClientProspect',
+  style = null,
+  title = 'Crm_ClientProspect',
   defaultValue = null,
   onChange = () => {},
+  readonly = false,
+  required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  style,
-  styleTxt,
+  styleTxt = null,
   showTitle = true,
-  required = false,
 }) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -54,11 +58,19 @@ const ClientProspectSearchBar = ({
     [dispatch],
   );
 
+  if (readonly) {
+    return (
+      <FormInput
+        title={title}
+        readOnly={true}
+        defaultValue={defaultValue?.fullName}
+      />
+    );
+  }
+
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      {showTitle && <Text style={[styles.title, styleTxt]}>{title}</Text>}
       <AutoCompleteSearch
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
@@ -68,7 +80,7 @@ const ClientProspectSearchBar = ({
         onChangeValue={onChange}
         fetchData={searchClientAndProspectAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
+        placeholder={title}
         showDetailsPopup={showDetailsPopup}
         loadingList={loading}
         moreLoading={moreLoading}
@@ -87,7 +99,7 @@ const getStyles = Colors =>
       zIndex: 41,
     },
     title: {
-      marginHorizontal: 24,
+      marginHorizontal: 30,
     },
     requiredBorder: {
       borderColor: Colors.errorColor.background,

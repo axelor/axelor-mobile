@@ -17,7 +17,11 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {CatalogTypePicker} from '../components';
+import {
+  CatalogTypePicker,
+  CivilityPicker,
+  ClientProspectSearchBar,
+} from '../components';
 
 export const crm_formsRegister: FormConfigs = {
   crm_catalog: {
@@ -75,6 +79,59 @@ export const crm_formsRegister: FormConfigs = {
       },
       fixedPhone: {
         titleKey: 'Crm_Phone',
+        type: 'phone',
+        widget: 'default',
+      },
+      email: {
+        titleKey: 'Crm_Email',
+        type: 'email',
+        widget: 'default',
+      },
+      webSite: {
+        titleKey: 'Crm_WebSite',
+        type: 'url',
+        widget: 'default',
+      },
+      description: {
+        titleKey: 'Crm_Notes',
+        type: 'string',
+        widget: 'HTML',
+      },
+    },
+  },
+  crm_contact: {
+    modelName: 'com.axelor.apps.base.db.Partner',
+    fields: {
+      titleSelect: {
+        titleKey: 'Crm_Civility',
+        type: 'string',
+        widget: 'custom',
+        customComponent: CivilityPicker,
+      },
+      firstName: {
+        titleKey: 'Crm_FirstName',
+        type: 'string',
+        widget: 'default',
+      },
+      name: {
+        titleKey: 'Crm_Name',
+        type: 'string',
+        widget: 'default',
+      },
+      mainPartner: {
+        titleKey: 'Crm_ClientProspect',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ClientProspectSearchBar,
+        required: true,
+      },
+      fixedPhone: {
+        titleKey: 'Crm_Phone',
+        type: 'phone',
+        widget: 'default',
+      },
+      mobilePhone: {
+        titleKey: 'Crm_MobilePhone',
         type: 'phone',
         widget: 'default',
       },
