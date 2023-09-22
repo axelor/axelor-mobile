@@ -21,7 +21,9 @@ import {
   CatalogTypePicker,
   CivilityPicker,
   ClientProspectSearchBar,
+  ContactSearchBar,
   FunctionSearchBar,
+  OpportunityStatusPicker,
 } from '../components';
 
 export const crm_formsRegister: FormConfigs = {
@@ -253,6 +255,80 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Notes',
         type: 'string',
         widget: 'HTML',
+      },
+    },
+  },
+  crm_opportunity: {
+    modelName: 'com.axelor.apps.crm.db.Opportunity',
+    panels: {
+      header: {
+        direction: 'row',
+        colSpan: 12,
+      },
+      headerLeft: {
+        direction: 'column',
+        colSpan: 8,
+        parent: 'header',
+      },
+      headerRight: {
+        direction: 'column',
+        colSpan: 4,
+        parent: 'header',
+      },
+    },
+    fields: {
+      opportunityRating: {
+        type: 'number',
+        widget: 'star',
+        parentPanel: 'headerRight',
+      },
+      name: {
+        titleKey: 'Crm_Name',
+        type: 'string',
+        widget: 'default',
+      },
+      partner: {
+        titleKey: 'Crm_ClientProspect',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ClientProspectSearchBar,
+        required: true,
+      },
+      contact: {
+        titleKey: 'Crm_Contact',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ContactSearchBar,
+        required: true,
+      },
+      expectedCloseDate: {
+        titleKey: 'Crm_Opportunity_ExpectedCloseDate',
+        type: 'date',
+        widget: 'date',
+      },
+      amount: {
+        titleKey: 'Crm_Opportunity_Amount',
+        type: 'number',
+        widget: 'increment',
+      },
+      recurrentAmount: {
+        titleKey: 'Crm_Opportunity_RecurrentAmount',
+        type: 'number',
+        widget: 'increment',
+        hideIf: ({storeState}) =>
+          !storeState.crmConfig.crmConfig?.isManageRecurrent,
+      },
+      description: {
+        titleKey: 'Base_Description',
+        type: 'string',
+        widget: 'HTML',
+      },
+      opportunityStatus: {
+        titleKey: 'Crm_Opportunity_Status',
+        type: 'object',
+        widget: 'custom',
+        customComponent: OpportunityStatusPicker,
+        required: true,
       },
     },
   },

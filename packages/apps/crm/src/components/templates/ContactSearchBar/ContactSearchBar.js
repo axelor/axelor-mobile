@@ -19,27 +19,32 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  useThemeColor,
+  Text,
+  FormInput,
+} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactSearchBar = ({
-  placeholderKey = 'Crm_Contacts',
+  style = null,
+  title = 'Crm_Contacts',
   defaultValue = null,
   onChange = () => {},
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
   showTitle = true,
-  style,
-  styleTxt,
-  titleKey = 'Crm_Contact',
-  required,
+  styleTxt = null,
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
 
   const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
     state => state.contact,
@@ -54,15 +59,21 @@ const ContactSearchBar = ({
     [dispatch],
   );
 
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={title}
+        readOnly={true}
+        defaultValue={defaultValue?.fullName}
+      />
+    );
+  }
+
   return (
-    <View
-      style={[
-        styles.searchBar,
-        Platform.OS === 'ios' ? styles.container : null,
-        style,
-      ]}>
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
       {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
+        <Text style={[styles.title, styleTxt]}>{I18n.t(title)}</Text>
       )}
       <AutoCompleteSearch
         style={[
@@ -73,7 +84,7 @@ const ContactSearchBar = ({
         onChangeValue={onChange}
         fetchData={fetchContactSearchBarAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
+        placeholder={I18n.t(title)}
         showDetailsPopup={showDetailsPopup}
         loadingList={loadingContact}
         moreLoading={moreLoading}
@@ -88,10 +99,6 @@ const ContactSearchBar = ({
 
 const getStyles = Colors =>
   StyleSheet.create({
-    searchBar: {
-      width: '100%',
-      marginLeft: 5,
-    },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
     },

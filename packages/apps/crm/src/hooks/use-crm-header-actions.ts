@@ -22,9 +22,11 @@ import {
   useSelector,
   useNavigation,
   useTranslator,
+  useDispatch,
 } from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
+import {fetchCrmConfigApi} from '../features/crmConfigSlice';
 
 const useCatalogListActions = () => {
   const Colors = useThemeColor();
@@ -281,6 +283,12 @@ const useEventDetailsActions = () => {
 };
 
 export const useCRMHeaders = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch((fetchCrmConfigApi as any)());
+  }, [dispatch]);
+
   useCatalogListActions();
   useClientDetailsActions();
   useContactDetailsActions();

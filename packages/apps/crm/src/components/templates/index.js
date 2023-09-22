@@ -26,4 +26,5 @@ export {default as EventSearchBar} from './EventSearchBar/EventSearchBar';
 export {default as FunctionSearchBar} from './FunctionSearchBar/FunctionSearchBar';
 export {default as LeadSearchBar} from './LeadSearchBar/LeadSearchBar';
 export {default as OpportunitySearchBar} from './OpportunitySearchBar/OpportunitySearchBar';
+export {default as OpportunityStatusPicker} from './OpportunityStatusPicker/OpportunityStatusPicker';
 export {default as ProspectSearchBar} from './ProspectSearchBar/ProspectSearchBar';
