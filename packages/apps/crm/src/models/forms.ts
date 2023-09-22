@@ -332,4 +332,55 @@ export const crm_formsRegister: FormConfigs = {
       },
     },
   },
+  crm_prospect: {
+    modelName: 'com.axelor.apps.base.db.Partner',
+    panels: {
+      header: {
+        direction: 'row',
+        colSpan: 12,
+      },
+      headerLeft: {
+        direction: 'column',
+        colSpan: 8,
+        parent: 'header',
+      },
+      headerRight: {
+        direction: 'column',
+        colSpan: 4,
+        parent: 'header',
+      },
+    },
+    fields: {
+      leadScoringSelect: {
+        type: 'number',
+        widget: 'star',
+        parentPanel: 'headerRight',
+      },
+      name: {
+        titleKey: 'Crm_Name',
+        type: 'string',
+        widget: 'default',
+      },
+      fixedPhone: {
+        titleKey: 'Crm_Phone',
+        type: 'phone',
+        widget: 'default',
+      },
+      email: {
+        titleKey: 'Crm_Email',
+        type: 'email',
+        widget: 'default',
+      },
+      webSite: {
+        titleKey: 'Crm_WebSite',
+        type: 'url',
+        widget: 'default',
+      },
+      description: {
+        titleKey: 'Crm_Notes',
+        type: 'string',
+        widget: 'HTML',
+      },
+    },
+  },
 };
