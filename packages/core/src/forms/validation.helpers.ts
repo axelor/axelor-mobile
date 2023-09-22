@@ -185,7 +185,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
         break;
       case 'phone':
         schema = schema.matches(
-          /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/g,
+          /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g,
           'Base_FormValidation_PhoneNumber',
         );
         break;

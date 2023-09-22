@@ -65,4 +65,34 @@ export const crm_formsRegister: FormConfigs = {
       },
     },
   },
+  crm_client: {
+    modelName: 'com.axelor.apps.base.db.Partner',
+    fields: {
+      name: {
+        titleKey: 'Crm_Name',
+        type: 'string',
+        widget: 'default',
+      },
+      fixedPhone: {
+        titleKey: 'Crm_Phone',
+        type: 'phone',
+        widget: 'default',
+      },
+      email: {
+        titleKey: 'Crm_Email',
+        type: 'email',
+        widget: 'default',
+      },
+      webSite: {
+        titleKey: 'Crm_WebSite',
+        type: 'url',
+        widget: 'default',
+      },
+      description: {
+        titleKey: 'Crm_Notes',
+        type: 'string',
+        widget: 'HTML',
+      },
+    },
+  },
 };

@@ -6111,14 +6111,14 @@ browserify-zlib@^0.2.0:
     pako "~1.0.5"
 
 browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.21.10, browserslist@^4.21.9:
-  version "4.21.10"
-  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.21.10.tgz#dbbac576628c13d3b2231332cb2ec5a46e015bb0"
-  integrity sha512-bipEBdZfVH5/pwrvqc+Ub0kUPVfGUhlKxbvfD+z1BDnPEO/X98ruXGA1WP5ASpAFKan7Qr6j736IacbZQuAlKQ==
+  version "4.21.11"
+  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.21.11.tgz#35f74a3e51adc4d193dcd76ea13858de7b8fecb8"
+  integrity sha512-xn1UXOKUz7DjdGlg9RrUr0GGiWzI97UQJnugHtH0OLDfJB7jMgoIkYvRIEO1l9EeEERVqeqLYOcFBW9ldjypbQ==
   dependencies:
-    caniuse-lite "^1.0.30001517"
-    electron-to-chromium "^1.4.477"
+    caniuse-lite "^1.0.30001538"
+    electron-to-chromium "^1.4.526"
     node-releases "^2.0.13"
-    update-browserslist-db "^1.0.11"
+    update-browserslist-db "^1.0.13"
 
 bser@2.1.1:
   version "2.1.1"
@@ -6325,7 +6325,7 @@ camelize@^1.0.0:
   resolved "https://registry.npmjs.org/camelize/-/camelize-1.0.1.tgz#89b7e16884056331a35d6b5ad064332c91daa6c3"
   integrity sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==
 
-caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001517:
+caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001538:
   version "1.0.30001538"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001538.tgz#9dbc6b9af1ff06b5eb12350c2012b3af56744f3f"
   integrity sha512-HWJnhnID+0YMtGlzcp3T9drmBJUVDchPJ08tpUGFLs9CYlwWPH2uLgpHn8fND5pCgXVtnGS3H4QR9XLMHVNkHw==
@@ -7551,10 +7551,10 @@ ee-first@1.1.1:
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-electron-to-chromium@^1.4.477:
-  version "1.4.526"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.526.tgz#1bcda5f2b8238e497c20fcdb41af5da907a770e2"
-  integrity sha512-tjjTMjmZAx1g6COrintLTa2/jcafYKxKoiEkdQOrVdbLaHh2wCt2nsAF8ZHweezkrP+dl/VG9T5nabcYoo0U5Q==
+electron-to-chromium@^1.4.526:
+  version "1.4.527"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.527.tgz#5acf0bcc5bf015eb31dd2279989a3712e341a554"
+  integrity sha512-EafxEiEDzk2aLrdbtVczylHflHdHkNrpGNHIgDyA63sUQLQVS2ayj2hPw3RsVB42qkwURH+T2OxV7kGPUuYszA==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -8613,9 +8613,9 @@ flatted@^3.2.7:
   integrity sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==
 
 flow-parser@0.*:
-  version "0.216.1"
-  resolved "https://registry.npmjs.org/flow-parser/-/flow-parser-0.216.1.tgz#eeba9b0b689deeccc34a6b7d2b1f97b8f943afc0"
-  integrity sha512-wstw46/C/8bRv/8RySCl15lK376j8DHxm41xFjD9eVL+jSS1UmVpbdLdA0LzGuS2v5uGgQiBLEj6mgSJQwW+MA==
+  version "0.217.0"
+  resolved "https://registry.npmjs.org/flow-parser/-/flow-parser-0.217.0.tgz#0e6bed214151fa3240dc9fd83ac8a9e050e523c5"
+  integrity sha512-hEa5n0dta1RcaDwJDWbnyelw07PK7+Vx0f9kDht28JOt2hXgKdKGaT3wM45euWV2DxOXtzDSTaUgGSD/FPvC2Q==
 
 flow-parser@^0.121.0:
   version "0.121.0"
@@ -15965,10 +15965,10 @@ upath@^1.1.1:
   resolved "https://registry.npmjs.org/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
-update-browserslist-db@^1.0.11:
-  version "1.0.12"
-  resolved "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.0.12.tgz#868ce670ac09b4a4d4c86b608701c0dee2dc41cd"
-  integrity sha512-tE1smlR58jxbFMtrMpFNRmsrOXlpNXss965T1CrpwuZUzUAg/TBQc94SpyhDLSzrqrJS9xTRBthnZAGcE1oaxg==
+update-browserslist-db@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.0.13.tgz#3c5e4f5c083661bd38ef64b6328c26ed6c8248c4"
+  integrity sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==
   dependencies:
     escalade "^3.1.1"
     picocolors "^1.0.0"
