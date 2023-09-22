@@ -18,19 +18,22 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  displayItemName,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
   FormInput,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {fetchClientAndProspect} from '../../../features/partnerSlice';
-import {displayItemFullname} from '../../../utils/displayers';
+import {fetchFunction} from '../../../features/functionSlice';
 
-const ClientProspectSearchBar = ({
+const FunctionSearchBar = ({
   style = null,
-  title = 'Crm_ClientProspect',
+  title = 'Crm_JobTitle',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -45,15 +48,15 @@ const ClientProspectSearchBar = ({
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, clientAndProspectList} = useSelector(
-    state => state.partner,
+  const {loading, moreLoading, isListEnd, functionList} = useSelector(
+    state => state.function,
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const searchClientAndProspectAPI = useCallback(
+  const searchFunctionAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchClientAndProspect({page, searchValue}));
+      dispatch(fetchFunction({page, searchValue}));
     },
     [dispatch],
   );
@@ -76,11 +79,11 @@ const ClientProspectSearchBar = ({
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
         ]}
-        objectList={clientAndProspectList}
+        objectList={functionList}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={searchClientAndProspectAPI}
-        displayValue={displayItemFullname}
+        fetchData={searchFunctionAPI}
+        displayValue={displayItemName}
         placeholder={title}
         showDetailsPopup={showDetailsPopup}
         loadingList={loading}
@@ -107,4 +110,4 @@ const getStyles = Colors =>
     },
   });
 
-export default ClientProspectSearchBar;
+export default FunctionSearchBar;

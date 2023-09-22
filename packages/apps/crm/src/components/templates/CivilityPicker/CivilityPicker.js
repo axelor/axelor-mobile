@@ -22,6 +22,7 @@ import {Picker} from '@axelor/aos-mobile-ui';
 import {useCivilityList} from '../../../hooks/use-civility-list';
 
 const CivilityPicker = ({
+  style = null,
   title = 'Crm_Civility',
   defaultValue = null,
   onChange = console.log,
@@ -32,7 +33,8 @@ const CivilityPicker = ({
 
   return (
     <Picker
-      style={styles.picker}
+      style={style}
+      pickerStyle={styles.picker}
       styleTxt={styles.pickerTitle}
       title={title}
       defaultValue={defaultValue}
@@ -54,10 +56,10 @@ const CivilityPicker = ({
 const styles = StyleSheet.create({
   picker: {
     width: '100%',
-    marginLeft: 3,
+    marginLeft: 0,
   },
   pickerTitle: {
-    marginLeft: 5,
+    marginLeft: -15,
   },
 });
 

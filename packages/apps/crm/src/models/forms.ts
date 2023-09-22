@@ -21,6 +21,7 @@ import {
   CatalogTypePicker,
   CivilityPicker,
   ClientProspectSearchBar,
+  FunctionSearchBar,
 } from '../components';
 
 export const crm_formsRegister: FormConfigs = {
@@ -124,6 +125,109 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ClientProspectSearchBar,
         required: true,
+      },
+      fixedPhone: {
+        titleKey: 'Crm_Phone',
+        type: 'phone',
+        widget: 'default',
+      },
+      mobilePhone: {
+        titleKey: 'Crm_MobilePhone',
+        type: 'phone',
+        widget: 'default',
+      },
+      email: {
+        titleKey: 'Crm_Email',
+        type: 'email',
+        widget: 'default',
+      },
+      webSite: {
+        titleKey: 'Crm_WebSite',
+        type: 'url',
+        widget: 'default',
+      },
+      description: {
+        titleKey: 'Crm_Notes',
+        type: 'string',
+        widget: 'HTML',
+      },
+    },
+  },
+  crm_lead: {
+    modelName: 'com.axelor.apps.crm.db.Lead',
+    panels: {
+      header: {
+        direction: 'row',
+        colSpan: 12,
+      },
+      headerLeft: {
+        direction: 'column',
+        colSpan: 6,
+        parent: 'header',
+      },
+      headerRight: {
+        direction: 'column',
+        colSpan: 6,
+        parent: 'header',
+      },
+    },
+    fields: {
+      titleSelect: {
+        titleKey: 'Crm_Civility',
+        type: 'string',
+        widget: 'custom',
+        customComponent: CivilityPicker,
+        parentPanel: 'headerLeft',
+      },
+      leadScoringSelect: {
+        type: 'number',
+        widget: 'star',
+        parentPanel: 'headerRight',
+      },
+      isDoNotSendEmail: {
+        titleKey: 'Crm_NoEmail',
+        type: 'boolean',
+        widget: 'checkbox',
+        parentPanel: 'headerRight',
+        options: {
+          iconSize: 20,
+        },
+      },
+      isDoNotCall: {
+        titleKey: 'Crm_NoPhoneCall',
+        type: 'boolean',
+        widget: 'checkbox',
+        parentPanel: 'headerRight',
+        options: {
+          iconSize: 20,
+        },
+      },
+      firstName: {
+        titleKey: 'Crm_FirstName',
+        type: 'string',
+        widget: 'default',
+      },
+      name: {
+        titleKey: 'Crm_Name',
+        type: 'string',
+        widget: 'default',
+        required: true,
+      },
+      enterpriseName: {
+        titleKey: 'Crm_Company',
+        type: 'string',
+        widget: 'default',
+      },
+      jobTitleFunction: {
+        titleKey: 'Crm_JobTitle',
+        type: 'object',
+        widget: 'custom',
+        customComponent: FunctionSearchBar,
+      },
+      primaryAddress: {
+        titleKey: 'Crm_Adress',
+        type: 'string',
+        widget: 'default',
       },
       fixedPhone: {
         titleKey: 'Crm_Phone',

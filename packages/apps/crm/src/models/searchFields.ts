@@ -36,6 +36,7 @@ export const crm_searchFields: SearchFields = {
     'emailAddress.name',
   ],
   crm_event: ['contactPartner.fullName'],
+  crm_function: ['code', 'name'],
   crm_lead: [
     'simpleFullName',
     'enterpriseName',
