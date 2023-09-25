@@ -17,12 +17,28 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
+import {ProgressFormInput, ProjectSearchBar} from '../components';
 
 export const helpdesk_formsRegister: FormConfigs = {
   helpdesk_ticket: {
     modelName: 'com.axelor.apps.helpdesk.db.Ticket',
     fields: {
-      test: {type: 'string'},
+      subject: {
+        type: 'string',
+        widget: 'default',
+        titleKey: 'Hepdesk_Subject',
+      },
+      progressSelect: {
+        type: 'number',
+        widget: 'custom',
+        customComponent: ProgressFormInput,
+      },
+      project: {
+        type: 'object',
+        titleKey: 'Helpdesk_Project',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+      },
     },
   },
 };
