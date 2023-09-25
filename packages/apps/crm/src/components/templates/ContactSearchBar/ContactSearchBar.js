@@ -23,17 +23,17 @@ import {fetchContact} from '../../../features/contactSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactSearchBar = ({
-  placeholderKey = 'Crm_Contacts',
+  style = null,
+  title = 'Crm_Contacts',
   defaultValue = null,
   onChange = () => {},
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
   showTitle = true,
-  style,
-  titleKey = 'Crm_Contact',
-  required,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -51,14 +51,15 @@ const ContactSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(titleKey)}
+      title={showTitle && I18n.t(title)}
       objectList={contactList}
       value={defaultValue}
       required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={fetchContactSearchBarAPI}
       displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingContact}
       moreLoading={moreLoading}
