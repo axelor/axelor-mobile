@@ -68,23 +68,16 @@ export async function uploadFile(
     return;
   }
 
-  return new Promise<any>(async (resolve, reject) => {
-    try {
-      const base64Data = await RNFS.readFile(file.uri, 'base64');
+  const base64Data = await RNFS.readFile(file.uri, 'base64');
 
-      if (returnBase64String) {
-        resolve(`data:${file.type};base64,${base64Data}`);
-        return;
-      }
+  if (returnBase64String) {
+    return `data:${file.type};base64,${base64Data}`;
+  }
 
-      return uploadBase64(
-        {...file, base64: base64Data},
-        {baseUrl, jsessionId, token},
-      );
-    } catch (error) {
-      reject(error);
-    }
-  });
+  return uploadBase64(
+    {...file, base64: base64Data},
+    {baseUrl, jsessionId, token},
+  );
 }
 
 export async function uploadBase64(
