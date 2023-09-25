@@ -23,6 +23,7 @@ export const crm_sortFields: SortFields = {
   crm_client: ['name', 'partnerSeq', 'createdOn'],
   crm_contact: ['name', 'createdOn'],
   crm_event: ['startDateTime'],
+  crm_function: ['name'],
   crm_lead: ['leadStatus', 'enterpriseName', 'createdOn'],
   crm_opportunity: ['opportunityStatus.sequence', 'expectedCloseDate'],
   crm_opportunityStatus: ['sequence'],

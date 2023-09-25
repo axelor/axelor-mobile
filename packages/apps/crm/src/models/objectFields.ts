@@ -90,6 +90,7 @@ export const crm_modelAPI: ObjectFields = {
     eventLead: schemaContructor.subObject(),
     'partner.partnerTypeSelect': schemaContructor.number(),
   }),
+  crm_function: schemaContructor.subObject('name'),
   crm_lead: schemaContructor.object({
     name: schemaContructor.string(),
     enterpriseName: schemaContructor.string(),

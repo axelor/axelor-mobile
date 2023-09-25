@@ -44,7 +44,7 @@ export async function getCatalogType() {
 
 export async function createCatalog({
   name,
-  idCatalogType,
+  catalogType,
   pdfFile,
   image,
   description,
@@ -53,11 +53,11 @@ export async function createCatalog({
     url: '/ws/rest/com.axelor.apps.crm.db.Catalog/',
     data: {
       data: {
-        name: name,
-        catalogType: {id: idCatalogType},
-        pdfFile: {id: pdfFile?.id},
-        image: image,
-        description: description,
+        name,
+        catalogType,
+        pdfFile,
+        image,
+        description,
       },
     },
   });
