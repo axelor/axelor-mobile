@@ -91,14 +91,14 @@ export async function updateProspectScoring({
 }
 
 export async function updateProspect({
-  prospectId,
-  prospectVersion,
-  prospectScore,
-  prospectName,
-  prospectFixedPhone,
-  prospectEmail,
-  prospectWebsite,
-  prospectDescription,
+  id,
+  version,
+  leadScoringSelect,
+  name,
+  fixedPhone,
+  webSite,
+  description,
+  email,
   emailId,
   emailVersion,
 }) {
@@ -111,22 +111,22 @@ export async function updateProspect({
         data: {
           id: emailId,
           version: emailVersion,
-          address: prospectEmail,
+          address: email,
         },
       },
     })
-    .then(res =>
+    .then(() =>
       axiosApiProvider.post({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
         data: {
           data: {
-            id: prospectId,
-            version: prospectVersion,
-            leadScoringSelect: prospectScore,
-            name: prospectName,
-            fixedPhone: prospectFixedPhone,
-            webSite: prospectWebsite,
-            description: prospectDescription,
+            id,
+            version,
+            leadScoringSelect,
+            name,
+            fixedPhone,
+            webSite,
+            description,
           },
         },
       }),
