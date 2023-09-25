@@ -23,12 +23,12 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import {
-  CircleButton,
   Text,
   getCommonStyles,
   useThemeColor,
   ThemeColors,
   Image,
+  Icon,
 } from '@axelor/aos-mobile-ui';
 import {
   deleteMetaFile,
@@ -46,10 +46,15 @@ import {
 } from '../../../features/cameraSlice';
 
 const DEFAULT_MAX_FILE_SIZE = 5000000;
-const BUTTON_SIZE = 35;
+const BUTTON_SIZE = 28;
 
 const isMetaFile = file => {
-  return typeof file === 'object' && file?.id != null && file?.fileName != null;
+  return (
+    file != null &&
+    typeof file === 'object' &&
+    file?.id != null &&
+    file?.fileName != null
+  );
 };
 
 const formatFileSize = (size: number): string => {
@@ -245,6 +250,14 @@ const UploadFileInput = ({
     setSelectedFile(defaultValue);
   }, [defaultValue]);
 
+  const canDisplayPreview = useMemo(() => {
+    if (isMetaFile(selectedFile) && selectedFile.fileName.includes('pdf')) {
+      return false;
+    }
+
+    return displayPreview && selectedFile != null;
+  }, [displayPreview, selectedFile]);
+
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
@@ -255,7 +268,7 @@ const UploadFileInput = ({
           commonStyles.filterAlign,
           styles.content,
         ]}>
-        {displayPreview && selectedFile != null ? (
+        {canDisplayPreview ? (
           <Image
             imageSize={styles.imageSize}
             resizeMode="contain"
@@ -272,33 +285,38 @@ const UploadFileInput = ({
         </Text>
         <View style={styles.buttons}>
           {canDeleteFile && selectedFile != null && !readonly && (
-            <CircleButton
-              iconName="times"
+            <Icon
+              name="times"
               size={BUTTON_SIZE}
+              touchable={true}
               onPress={handleFileDelete}
               style={styles.action}
             />
           )}
           {isMetaFile(selectedFile) && (
-            <CircleButton
-              iconName="expand-alt"
+            <Icon
+              name="expand-alt"
               size={BUTTON_SIZE}
+              touchable={true}
               onPress={handleFileView}
               style={styles.action}
             />
           )}
           {selectedFile == null && !readonly && _enablePicture && (
-            <CircleButton
-              iconName="camera"
+            <Icon
+              name="camera"
               size={BUTTON_SIZE}
+              touchable={true}
               onPress={handleCamera}
               style={styles.action}
             />
           )}
           {selectedFile == null && !readonly && (
-            <CircleButton
-              iconName="plus"
+            <Icon
+              name="upload"
+              FontAwesome5={false}
               size={BUTTON_SIZE}
+              touchable={true}
               onPress={handleDocumentPick}
               style={styles.action}
             />
@@ -344,7 +362,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
       alignItems: 'center',
     },
     action: {
-      marginHorizontal: 2,
+      marginHorizontal: 4,
     },
     imageSize: {
       height: 60,
