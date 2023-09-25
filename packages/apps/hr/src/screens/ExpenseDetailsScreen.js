@@ -18,18 +18,8 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
-import {
-  Screen,
-  ScrollList,
-  HeaderContainer,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  headerActionsProvider,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ExpenseDetailsValidationButton,
   ExpenseHeader,
@@ -47,7 +37,6 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense, expenseMode} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {expense} = useSelector(state => state.expense);
   const {
@@ -105,23 +94,6 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
     },
     [dispatch, expense, mode],
   );
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('hr_expense_details', {
-      actions: [
-        {
-          key: 'refreshExpenseDetails',
-          order: 10,
-          iconName: 'refresh',
-          title: I18n.t('Hr_RefreshExpenseDetails'),
-          FontAwesome5: false,
-          iconColor: Colors.primaryColor.background,
-          onPress: () => fetchExpenseLineAPI(),
-          showInHeader: true,
-        },
-      ],
-    });
-  }, [Colors, I18n, fetchExpenseLineAPI, navigation]);
 
   if (expense?.id !== idExpense) {
     return null;
