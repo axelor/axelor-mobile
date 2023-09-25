@@ -16,16 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {Picker} from '@axelor/aos-mobile-ui';
+import {useCivilityList} from '../../../hooks/use-civility-list';
 
-export const crm_sortFields: SortFields = {
-  crm_catalog: ['name', 'catalogType.name', 'createdOn'],
-  crm_client: ['name', 'partnerSeq', 'createdOn'],
-  crm_contact: ['name', 'createdOn'],
-  crm_event: ['startDateTime'],
-  crm_function: ['name'],
-  crm_lead: ['leadStatus', 'enterpriseName', 'createdOn'],
-  crm_opportunity: ['opportunityStatus.sequence', 'expectedCloseDate'],
-  crm_opportunityStatus: ['sequence'],
-  crm_prospect: ['name', 'partnerSeq', 'createdOn'],
+const CivilityPicker = ({
+  style = null,
+  title = 'Crm_Civility',
+  defaultValue = null,
+  onChange = console.log,
+  readonly = false,
+  required = false,
+}) => {
+  const {civilityList} = useCivilityList();
+
+  return (
+    <Picker
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      listItems={civilityList}
+      labelField="name"
+      valueField="id"
+      emptyValue={false}
+      onValueChange={onChange}
+      required={required}
+      readonly={readonly}
+      isValueItem={false}
+    />
+  );
 };
+
+export default CivilityPicker;
