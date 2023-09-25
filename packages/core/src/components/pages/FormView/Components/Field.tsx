@@ -145,6 +145,7 @@ const Field = ({
       case 'star':
         return (
           <StarScore
+            size={25}
             score={value}
             onPress={handleChange}
             editMode={!isReadonly}

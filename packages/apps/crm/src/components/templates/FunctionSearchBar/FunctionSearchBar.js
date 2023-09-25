@@ -17,14 +17,17 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemName,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchClientAndProspect} from '../../../features/partnerSlice';
-import {displayItemFullname} from '../../../utils/displayers';
+import {fetchFunction} from '../../../features/functionSlice';
 
-const ClientProspectSearchBar = ({
+const FunctionSearchBar = ({
   style = null,
-  title = 'Crm_ClientProspect',
+  title = 'Crm_JobTitle',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
@@ -35,31 +38,31 @@ const ClientProspectSearchBar = ({
   isFocus = false,
   showTitle = true,
 }) => {
-  const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, clientAndProspectList} = useSelector(
-    state => state.partner,
+  const {loading, moreLoading, isListEnd, functionList} = useSelector(
+    state => state.function,
   );
 
-  const searchClientAndProspectAPI = useCallback(
+  const searchFunctionAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchClientAndProspect({page, searchValue}));
+      dispatch(fetchFunction({page, searchValue}));
     },
     [dispatch],
   );
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(title)}
-      objectList={clientAndProspectList}
-      value={defaultValue}
-      required={required}
+      style={style}
+      title={showTitle && title}
       readonly={readonly}
+      required={required}
+      objectList={functionList}
+      value={defaultValue}
       onChangeValue={onChange}
-      fetchData={searchClientAndProspectAPI}
-      displayValue={displayItemFullname}
-      placeholder={I18n.t(title)}
+      fetchData={searchFunctionAPI}
+      displayValue={displayItemName}
+      placeholder={title}
       showDetailsPopup={showDetailsPopup}
       loadingList={loading}
       moreLoading={moreLoading}
@@ -67,9 +70,8 @@ const ClientProspectSearchBar = ({
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
-      style={style}
     />
   );
 };
 
-export default ClientProspectSearchBar;
+export default FunctionSearchBar;
