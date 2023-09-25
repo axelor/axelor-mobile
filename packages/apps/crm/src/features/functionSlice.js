@@ -17,7 +17,10 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '@axelor/aos-mobile-core';
+import {
+  generateInifiniteScrollCases,
+  handlerApiCall,
+} from '@axelor/aos-mobile-core';
 import {getFunction} from '../api/function-api';
 
 export const fetchFunction = createAsyncThunk(
@@ -33,7 +36,9 @@ export const fetchFunction = createAsyncThunk(
   },
 );
 const initialState = {
-  loadingFunction: true,
+  loading: false,
+  moreLoading: false,
+  isListEnd: false,
   functionList: [],
 };
 
@@ -41,12 +46,11 @@ const functionSlice = createSlice({
   name: 'function',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchFunction.pending, state => {
-      state.loadingFunction = true;
-    });
-    builder.addCase(fetchFunction.fulfilled, (state, action) => {
-      state.loadingFunction = false;
-      state.functionList = action.payload;
+    generateInifiniteScrollCases(builder, fetchFunction, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'functionList',
     });
   },
 });

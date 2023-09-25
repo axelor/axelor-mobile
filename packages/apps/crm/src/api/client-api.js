@@ -64,13 +64,13 @@ export async function getClient({clientId}) {
 }
 
 export async function updateClient({
-  clientId,
-  clientVersion,
-  clientName,
-  clientFixedPhone,
-  clientWebsite,
-  clientDescription,
-  clientEmail,
+  id,
+  version,
+  name,
+  fixedPhone,
+  website,
+  description,
+  email,
   emailId,
   emailVersion,
 }) {
@@ -83,7 +83,7 @@ export async function updateClient({
         data: {
           id: emailId,
           version: emailVersion,
-          address: clientEmail,
+          address: email,
         },
       },
     })
@@ -92,12 +92,12 @@ export async function updateClient({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
         data: {
           data: {
-            id: clientId,
-            version: clientVersion,
-            name: clientName,
-            fixedPhone: clientFixedPhone,
-            webSite: clientWebsite,
-            description: clientDescription,
+            id,
+            version,
+            name,
+            fixedPhone,
+            website,
+            description,
           },
         },
       }),
