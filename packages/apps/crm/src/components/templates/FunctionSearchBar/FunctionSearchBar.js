@@ -18,43 +18,45 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemName,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
-  useThemeColor,
-  Text,
   FormInput,
+  Text,
+  useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {fetchContact} from '../../../features/contactSlice';
-import {displayItemFullname} from '../../../utils/displayers';
+import {fetchFunction} from '../../../features/functionSlice';
 
-const ContactSearchBar = ({
+const FunctionSearchBar = ({
   style = null,
-  title = 'Crm_Contacts',
+  title = 'Crm_JobTitle',
   defaultValue = null,
   onChange = () => {},
-  required = false,
   readonly = false,
+  required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
   styleTxt = null,
+  showTitle = true,
 }) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+  const {loading, moreLoading, isListEnd, functionList} = useSelector(
+    state => state.function,
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const fetchContactSearchBarAPI = useCallback(
+  const searchFunctionAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchContact({page, searchValue}));
+      dispatch(fetchFunction({page, searchValue}));
     },
     [dispatch],
   );
@@ -72,21 +74,19 @@ const ContactSearchBar = ({
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(title)}</Text>
-      )}
+      {showTitle && <Text style={[styles.title, styleTxt]}>{title}</Text>}
       <AutoCompleteSearch
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
         ]}
-        objectList={contactList}
+        objectList={functionList}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={fetchContactSearchBarAPI}
-        displayValue={displayItemFullname}
-        placeholder={I18n.t(title)}
+        fetchData={searchFunctionAPI}
+        displayValue={displayItemName}
+        placeholder={title}
         showDetailsPopup={showDetailsPopup}
-        loadingList={loadingContact}
+        loadingList={loading}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         navigate={navigate}
@@ -99,15 +99,15 @@ const ContactSearchBar = ({
 
 const getStyles = Colors =>
   StyleSheet.create({
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
     container: {
       zIndex: 41,
     },
     title: {
-      marginHorizontal: 24,
+      marginHorizontal: 30,
+    },
+    requiredBorder: {
+      borderColor: Colors.errorColor.background,
     },
   });
 
-export default ContactSearchBar;
+export default FunctionSearchBar;

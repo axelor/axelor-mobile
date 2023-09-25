@@ -168,7 +168,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
     case 'object':
       schema = object().shape({
         id: getRequiredCondition(number().positive().integer(), field),
-        version: getRequiredCondition(number().min(0).integer(), field),
+        version: number().min(0).integer().nullable(),
       });
       break;
     default:
@@ -185,7 +185,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
         break;
       case 'phone':
         schema = schema.matches(
-          /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/g,
+          /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/g,
           'Base_FormValidation_PhoneNumber',
         );
         break;
