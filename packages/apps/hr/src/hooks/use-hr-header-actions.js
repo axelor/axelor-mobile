@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useCallback, useEffect} from 'react';
+import {useEffect} from 'react';
 import {
   headerActionsProvider,
   useSelector,
-  useNavigation,
   useTranslator,
   useDispatch,
 } from '@axelor/aos-mobile-core';
@@ -29,18 +28,17 @@ import {fetchExpenseById} from '../features/expenseSlice';
 
 const useExpenseDetailsAction = () => {
   const Colors = useThemeColor();
-  const navigation = useNavigation();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {expense} = useSelector(state => state.expense);
-
-  const fetchExpenseLineAPI = useCallback(() => {
-    dispatch(fetchExpenseById({ExpenseId: expense.id}));
-  }, [dispatch, expense.id]);
+  const {mobileSettings} = useSelector(state => state.config);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expense_details', {
+      model: 'com.axelor.apps.hr.db.Expense',
+      modelId: expense?.id,
+      disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       actions: [
         {
           key: 'refreshExpenseDetails',
@@ -49,12 +47,14 @@ const useExpenseDetailsAction = () => {
           title: I18n.t('Hr_RefreshExpenseDetails'),
           FontAwesome5: false,
           iconColor: Colors.primaryColor.background,
-          onPress: () => fetchExpenseLineAPI(),
+          onPress: () => {
+            dispatch(fetchExpenseById({ExpenseId: expense?.id}));
+          },
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n, fetchExpenseLineAPI, navigation]);
+  }, [Colors, I18n, dispatch, expense, mobileSettings]);
 };
 
 export const useHrHeaders = () => {
