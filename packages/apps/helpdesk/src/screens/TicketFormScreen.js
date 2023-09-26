@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -69,7 +69,36 @@ const TicketFormScreen = ({navigation, route}) => {
     isObjectMissingRequiredField(_ticket),
   );
 
+  const defaultValue = useMemo(() => {
+    const _default = {
+      duration: 0,
+    };
+    if (idTicket != null) {
+      return {
+        ..._default,
+        id: ticket?.id,
+        version: ticket?.version,
+        subject: ticket?.subject,
+        progressSelect: ticket?.progressSelect,
+        project: ticket.project,
+        customerPartner: ticket?.customerPartner,
+        contactPartner: ticket?.contactPartner,
+        ticketType: ticket?.ticketType,
+        prioritySelect: ticket?.prioritySelect,
+        startDateT: ticket?.startDateT,
+        endDateT: ticket?.endDateT,
+        deadlineDateT: ticket?.deadlineDateT,
+        duration: ticket?.dureation,
+        assignedToUser: ticket?.assignedToUser,
+        responsibleUser: ticket?.responsibleUser,
+        description: ticket?.description,
+      };
+    }
+    return _default;
+  }, [idTicket, ticket]);
+
   const createTicketAPI = useCallback((__ticket, dispatch) => {
+    console.log('___ticket', __ticket);
     dispatch(
       createTicket({
         ticket: __ticket,
@@ -77,13 +106,20 @@ const TicketFormScreen = ({navigation, route}) => {
     );
   }, []);
 
-  const updateTicketAPI = useCallback((__ticket, dispatch) => {
-    dispatch(
-      createTicket({
-        ticket: __ticket,
-      }),
-    );
-  }, []);
+  const updateTicketAPI = useCallback(
+    (__ticket, dispatch) => {
+      dispatch(
+        updateTicket({
+          ticket: __ticket,
+          ticketId: ticket?.id,
+        }),
+      );
+      navigation.navigate('TicketDetailsScreen', {
+        idTicket: ticket.id,
+      });
+    },
+    [navigation, ticket],
+  );
 
   /*const handleTicketFieldChange = useCallback((newValue, fieldName) => {
     setTicket(current => {
@@ -263,6 +299,7 @@ const TicketFormScreen = ({navigation, route}) => {
     (
       <FormView
         formKey="helpdesk_ticket"
+        defaultValue={defaultValue}
         actions={[
           {
             key: 'create-ticket',
