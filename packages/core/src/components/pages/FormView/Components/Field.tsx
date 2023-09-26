@@ -172,9 +172,15 @@ const Field = ({
             title={I18n.t(_field.titleKey)}
             mode={_field.type as 'date' | 'datetime' | 'time'}
             defaultDate={value ? new Date(value) : null}
-            onDateChange={_date =>
-              handleChange(_date.toISOString()?.split('T')[0])
-            }
+            onDateChange={_date => {
+              const isoDate = _date.toISOString();
+              if (_field.type === 'datetime') {
+                handleChange(isoDate);
+              } else {
+                const tmp = isoDate?.split('T');
+                handleChange(_field.type === 'date' ? tmp[0] : tmp[1]);
+              }
+            }}
             required={isRequired}
             readonly={isReadonly}
             nullable={true}
