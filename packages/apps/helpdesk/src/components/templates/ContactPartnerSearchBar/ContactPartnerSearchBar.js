@@ -27,18 +27,11 @@ import {
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactPartnerSearchBar = ({
-  placeholderKey = 'Helpdesk_ContactPartner',
-  titleKey = 'Helpdesk_ContactPartner',
+  title = 'Helpdesk_ContactPartner',
   defaultValue = null,
   onChange = () => {},
-  showDetailsPopup = true,
-  style,
-  styleTxt,
-  showTitle = true,
-  client,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
+  style = null,
+  //client,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -51,11 +44,11 @@ const ContactPartnerSearchBar = ({
     customerContactList,
   } = useSelector(state => state.customer);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (client?.id != null) {
       dispatch(getCustomerbyId({customerId: client?.id}));
     }
-  }, [dispatch, client?.id]);
+  }, [dispatch, client?.id]);*/
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -64,43 +57,39 @@ const ContactPartnerSearchBar = ({
     [dispatch],
   );
 
-  if (client?.id != null) {
+  /*if (client?.id != null) {
     return (
-      <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-        {showTitle && (
-          <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-        )}
+      <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+        <Text style={styles.title}>{I18n.t(title)}</Text>
         <AutoCompleteSearch
           objectList={customer?.contactPartnerSet}
           value={defaultValue}
           onChangeValue={onChange}
-          placeholder={I18n.t(placeholderKey)}
+          placeholder={I18n.t(title)}
           displayValue={displayItemFullname}
-          showDetailsPopup={showDetailsPopup}
+          showDetailsPopup={true}
         />
       </View>
     );
-  }
+  }*/
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      <Text style={styles.title}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
         objectList={customerContactList}
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchContactAPI}
-        placeholder={I18n.t(placeholderKey)}
+        placeholder={I18n.t(title)}
         displayValue={displayItemFullname}
-        showDetailsPopup={showDetailsPopup}
+        showDetailsPopup={true}
         loadingList={loadingCustomerContact}
         moreLoading={moreLoadingCustomerContact}
         isListEnd={isListEndCustomerContact}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        navigate={false}
+        oneFilter={false}
+        isFocus={false}
       />
     </View>
   );

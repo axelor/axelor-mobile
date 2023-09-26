@@ -17,7 +17,15 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {ProgressFormInput, ProjectSearchBar} from '../components';
+import {
+  ContactPartnerSearchBar,
+  CustomerSearchBar,
+  DurationFormInput,
+  ProgressFormInput,
+  ProjectSearchBar,
+  TicketTypeSearchBar,
+  UserSearchBar,
+} from '../components';
 
 export const helpdesk_formsRegister: FormConfigs = {
   helpdesk_ticket: {
@@ -27,8 +35,10 @@ export const helpdesk_formsRegister: FormConfigs = {
         type: 'string',
         widget: 'default',
         titleKey: 'Hepdesk_Subject',
+        required: true,
       },
       progressSelect: {
+        titleKey: 'Helpdesk_Progress',
         type: 'number',
         widget: 'custom',
         customComponent: ProgressFormInput,
@@ -38,6 +48,84 @@ export const helpdesk_formsRegister: FormConfigs = {
         titleKey: 'Helpdesk_Project',
         widget: 'custom',
         customComponent: ProjectSearchBar,
+      },
+      customerPartner: {
+        type: 'object',
+        titleKey: 'Helpdesk_CustomPartner',
+        widget: 'custom',
+        customComponent: CustomerSearchBar,
+      },
+      contactPartner: {
+        type: 'object',
+        titleKey: 'Helpdesk_ContactPartner',
+        widget: 'custom',
+        customComponent: ContactPartnerSearchBar,
+        dependsOn: {
+          fieldName: 'customerPartner',
+          onChange: ({newValue, dispatch}) => {
+            //dispatch(getCustomerbyId({customerId: newValue?.id}));
+          },
+        },
+        hideIf: ({objectState}) => {
+          console.log(objectState);
+          return false;
+        },
+      },
+      ticketType: {
+        titleKey: 'Helpdesk_Type',
+        type: 'object',
+        widget: 'custom',
+        customComponent: TicketTypeSearchBar,
+      },
+      startDateT: {
+        type: 'datetime',
+        widget: 'date',
+        titleKey: 'Helpdesk_StartDate',
+        options: {
+          mode: 'datetime',
+          nullable: true,
+        },
+      },
+      endDateT: {
+        type: 'datetime',
+        widget: 'date',
+        titleKey: 'Helpdesk_EndDate',
+        options: {
+          mode: 'datetime',
+          nullable: true,
+        },
+      },
+      deadlineDateT: {
+        type: 'datetime',
+        widget: 'date',
+        titleKey: 'Helpdesk_DeadlineDate',
+        options: {
+          mode: 'datetime',
+          nullable: true,
+        },
+      },
+      duration: {
+        titleKey: 'Helpdesk_Duration',
+        type: 'string',
+        widget: 'custom',
+        customComponent: DurationFormInput,
+      },
+      assignedToUser: {
+        titleKey: 'Helpdesk_AssignedToUser',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+      },
+      responsibleUser: {
+        titleKey: 'Helpdesk_ResponsibleUser',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+      },
+      description: {
+        type: 'string',
+        widget: 'HTML',
+        titleKey: 'Base_Description',
       },
     },
   },

@@ -77,6 +77,14 @@ const TicketFormScreen = ({navigation, route}) => {
     );
   }, []);
 
+  const updateTicketAPI = useCallback((__ticket, dispatch) => {
+    dispatch(
+      createTicket({
+        ticket: __ticket,
+      }),
+    );
+  }, []);
+
   /*const handleTicketFieldChange = useCallback((newValue, fieldName) => {
     setTicket(current => {
       if (current?.[fieldName] === newValue) {
@@ -264,6 +272,16 @@ const TicketFormScreen = ({navigation, route}) => {
             hideIf: () => idTicket != null,
             customAction: ({dispatch, objectState}) => {
               return createTicketAPI(objectState, dispatch);
+            },
+          },
+          {
+            key: 'update-ticket',
+            type: 'update',
+            needValidation: true,
+            needRequiredFields: true,
+            hideIf: () => idTicket == null,
+            customAction: ({dispatch, objectState}) => {
+              return updateTicketAPI(objectState, dispatch);
             },
           },
         ]}

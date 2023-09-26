@@ -19,23 +19,22 @@
 import React, {useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {searchUser} from '../../../features/userSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 import {Platform} from 'react-native';
 
 const UserSearchBar = ({
-  placeholderKey = 'Helpdesk_User',
-  titleKey = 'Helpdesk_User',
+  title = 'Helpdesk_User',
   defaultValue = null,
   onChange = () => {},
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  style,
-  styleTxt,
-  showTitle = true,
+  style = null,
+  readonly = false,
   required = false,
 }) => {
   const I18n = useTranslator();
@@ -55,11 +54,20 @@ const UserSearchBar = ({
     [dispatch],
   );
 
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={I18n.t(title)}
+        readOnly={true}
+        defaultValue={defaultValue?.name}
+      />
+    );
+  }
+
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      <Text style={styles.title}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
@@ -69,14 +77,14 @@ const UserSearchBar = ({
         onChangeValue={onChange}
         fetchData={searchUserTypeAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
+        placeholder={I18n.t(title)}
+        showDetailsPopup={true}
         loadingList={loadingUser}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        navigate={false}
+        oneFilter={true}
+        isFocus={false}
       />
     </View>
   );
