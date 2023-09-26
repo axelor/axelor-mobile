@@ -16,14 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
-import {
-  getCustomerbyId,
-  searchCustomerContact,
-} from '../../../features/customerSlice';
+import {searchCustomerContact} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactPartnerSearchBar = ({
@@ -31,24 +28,19 @@ const ContactPartnerSearchBar = ({
   defaultValue = null,
   onChange = () => {},
   style = null,
-  //client,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {
-    customer,
+    formCustomer,
     loadingCustomerContact,
     moreLoadingCustomerContact,
     isListEndCustomerContact,
     customerContactList,
   } = useSelector(state => state.customer);
 
-  /*useEffect(() => {
-    if (client?.id != null) {
-      dispatch(getCustomerbyId({customerId: client?.id}));
-    }
-  }, [dispatch, client?.id]);*/
+  console.log('_customer', formCustomer);
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -57,12 +49,12 @@ const ContactPartnerSearchBar = ({
     [dispatch],
   );
 
-  /*if (client?.id != null) {
+  if (formCustomer?.id != null) {
     return (
       <View style={[Platform.OS === 'ios' ? styles.container : null]}>
         <Text style={styles.title}>{I18n.t(title)}</Text>
         <AutoCompleteSearch
-          objectList={customer?.contactPartnerSet}
+          objectList={formCustomer?.contactPartnerSet}
           value={defaultValue}
           onChangeValue={onChange}
           placeholder={I18n.t(title)}
@@ -71,7 +63,7 @@ const ContactPartnerSearchBar = ({
         />
       </View>
     );
-  }*/
+  }
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>

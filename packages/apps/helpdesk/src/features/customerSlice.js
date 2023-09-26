@@ -76,11 +76,17 @@ const initialState = {
   moreLoadingCustomerContact: false,
   isListEndCustomerContact: false,
   customerContactList: [],
+  formCustomer: {},
 };
 
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
+  reducers: {
+    updateCustomer: (state, action) => {
+      state.formCustomer = action.payload;
+    },
+  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchCustomer, {
       loading: 'loading',
@@ -103,5 +109,7 @@ const customerSlice = createSlice({
     });
   },
 });
+
+export const {updateCustomer} = customerSlice.actions;
 
 export const customerReducer = customerSlice.reducer;

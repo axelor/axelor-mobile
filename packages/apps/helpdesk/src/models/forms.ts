@@ -26,6 +26,7 @@ import {
   TicketTypeSearchBar,
   UserSearchBar,
 } from '../components';
+import {updateCustomer} from '../features/customerSlice';
 
 export const helpdesk_formsRegister: FormConfigs = {
   helpdesk_ticket: {
@@ -54,6 +55,12 @@ export const helpdesk_formsRegister: FormConfigs = {
         titleKey: 'Helpdesk_CustomPartner',
         widget: 'custom',
         customComponent: CustomerSearchBar,
+        dependsOn: {
+          fieldName: 'project',
+          onChange: ({newValue}) => {
+            return newValue?.clientPartner;
+          },
+        },
       },
       contactPartner: {
         type: 'object',
@@ -63,12 +70,8 @@ export const helpdesk_formsRegister: FormConfigs = {
         dependsOn: {
           fieldName: 'customerPartner',
           onChange: ({newValue, dispatch}) => {
-            //dispatch(getCustomerbyId({customerId: newValue?.id}));
+            dispatch(updateCustomer(newValue));
           },
-        },
-        hideIf: ({objectState}) => {
-          console.log(objectState);
-          return false;
         },
       },
       ticketType: {
