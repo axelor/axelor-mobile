@@ -40,6 +40,7 @@ export default {
     options: {
       shadedHeader: false,
     },
+    actionID: 'hr_expense_details',
   },
   ExpenseLineFormScreen: {
     title: 'Hr_CreateExpenseLine',
