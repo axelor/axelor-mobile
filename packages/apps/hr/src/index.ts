@@ -27,6 +27,7 @@ import {
   hr_formsRegister,
 } from './models';
 import * as hrReducers from './features';
+import {useHrHeaders} from './hooks/use-hr-header-actions';
 
 export const HrModule: Module = {
   name: 'app-hr',
@@ -62,6 +63,7 @@ export const HrModule: Module = {
     sortFields: {...hr_sortFields},
     searchFields: {...hr_searchFields},
     formsRegister: {...hr_formsRegister},
+    headerRegisters: useHrHeaders,
   },
 };
 
