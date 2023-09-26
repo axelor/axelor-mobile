@@ -136,6 +136,8 @@
   "Base_FormValidation_Number_Positive": "must be a positive number",
   "Base_FormValidation_Number_Negative": "must be a negative number",
   "Base_FormValidation_Number_Integer": "must be an integer",
+  "Base_FormValidation_Date": "must be a date",
+  "Base_FormValidation_DateTime": "must be a datetime",
   "Base_FormValidation_Date_Min": "must be later than {{min}}",
   "Base_FormValidation_Date_Max": "must be at earlier than {{max}}",
   "Base_FormValidation_Boolean_IsValue": "must be {{value}}",
