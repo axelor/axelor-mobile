@@ -40,8 +40,6 @@ const ContactPartnerSearchBar = ({
     customerContactList,
   } = useSelector(state => state.customer);
 
-  console.log('_customer', formCustomer);
-
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(searchCustomerContact({page, searchValue}));

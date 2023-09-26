@@ -55,10 +55,10 @@ const TicketFormScreen = ({navigation, route}) => {
     return _default;
   }, [idTicket, ticket]);
 
-  const createTicketAPI = useCallback((__ticket, dispatch) => {
+  const createTicketAPI = useCallback((_ticket, dispatch) => {
     dispatch(
       createTicket({
-        ticket: __ticket,
+        ticket: _ticket,
       }),
     );
   }, []);
