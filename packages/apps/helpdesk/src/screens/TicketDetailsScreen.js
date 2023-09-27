@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchTicketById} from '../features/ticketSlice';
 import {
@@ -35,15 +39,19 @@ const TicketDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {ticket} = useSelector(state => state.ticket);
+  const {loadingTicket, ticket} = useSelector(state => state.ticket);
+
+  const fetchTicket = useCallback(() => {
+    dispatch(fetchTicketById({ticketId: idTicket}));
+  }, [dispatch, idTicket]);
 
   useEffect(() => {
     dispatch(fetchHelpdeskConfig());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchTicketById({ticketId: idTicket}));
-  }, [dispatch, idTicket]);
+    fetchTicket();
+  }, [fetchTicket]);
 
   if (ticket?.id !== idTicket) {
     return null;
@@ -52,7 +60,7 @@ const TicketDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<TicketHeader />} />
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingTicket, fetcher: fetchTicket}}>
         <NotesCard
           title={I18n.t('Base_Description')}
           data={ticket.description}
