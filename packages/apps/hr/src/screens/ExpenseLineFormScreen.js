@@ -137,10 +137,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           expenseDate: expenseLine.expenseDate,
           project: expenseLine.project,
           toInvoice: expenseLine.toInvoice,
-          expenseProduct: {
-            id: expenseLine.expenseProduct?.id,
-            name: expenseLine['expenseProduct.name'],
-          },
+          expenseProduct: expenseLine.expenseProduct,
           totalAmount: expenseLine.totalAmount || 0,
           totalTax: expenseLine.totalTax || 0,
           currency: expenseLine.currency,

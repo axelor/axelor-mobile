@@ -28,11 +28,13 @@ export const hr_modelAPI: ObjectFields = {
     fullName: schemaContructor.string(),
     statusSelect: schemaContructor.number(),
     expenseSeq: schemaContructor.string(),
-    period: schemaContructor.subObject(),
-    'period.code': schemaContructor.string(),
+    period: schemaContructor.subObject('code'),
     inTaxTotal: schemaContructor.string(),
-    employee: schemaContructor.subObject(),
-    'employee.managerUser': schemaContructor.subObject(),
+    employee: schemaContructor
+      .subObject()
+      .concat(
+        schemaContructor.object({managerUser: schemaContructor.subObject()}),
+      ),
     kilometricExpenseLineList: schemaContructor
       .array()
       .of(schemaContructor.subObject()),
@@ -51,8 +53,7 @@ export const hr_modelAPI: ObjectFields = {
     toCity: schemaContructor.string(),
     project: schemaContructor.subObject(),
     totalAmount: schemaContructor.string(),
-    expenseProduct: schemaContructor.subObject(),
-    'expenseProduct.name': schemaContructor.string(),
+    expenseProduct: schemaContructor.subObject('name'),
     kilometricTypeSelect: schemaContructor.number(),
     justificationMetaFile: schemaContructor.subObject(),
     comments: schemaContructor.string(),
@@ -60,8 +61,7 @@ export const hr_modelAPI: ObjectFields = {
     distance: schemaContructor.number(),
     totalTax: schemaContructor.string(),
     toInvoice: schemaContructor.boolean(),
-    currency: schemaContructor.subObject(),
-    'currency.symbol': schemaContructor.string(),
+    currency: schemaContructor.subObject('symbol'),
   }),
   hr_expenseType: schemaContructor.object({
     name: schemaContructor.string(),
@@ -76,9 +76,13 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
   }),
   auth_user: schemaContructor.object({
-    'employee.hrManager': schemaContructor.boolean(),
-    'employee.employeeVehicleList': schemaContructor
-      .array()
-      .of(schemaContructor.subObject()),
+    employee: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        hrManager: schemaContructor.boolean(),
+        employeeVehicleList: schemaContructor
+          .array()
+          .of(schemaContructor.subObject()),
+      }),
+    ),
   }),
 };
