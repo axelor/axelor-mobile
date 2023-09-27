@@ -64,18 +64,18 @@ const TicketFormScreen = ({navigation, route}) => {
   }, []);
 
   const updateTicketAPI = useCallback(
-    (__ticket, dispatch) => {
+    (_ticket, dispatch) => {
       dispatch(
         updateTicket({
-          ticket: __ticket,
-          ticketId: ticket?.id,
+          ticket: _ticket,
+          ticketId: _ticket?.id,
         }),
       );
       navigation.navigate('TicketDetailsScreen', {
-        idTicket: ticket.id,
+        idTicket: _ticket.id,
       });
     },
-    [navigation, ticket],
+    [navigation],
   );
 
   useEffect(() => {

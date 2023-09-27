@@ -59,7 +59,7 @@ const CustomerSearchBar = ({
         style={style}
         title={I18n.t(title)}
         readOnly={true}
-        defaultValue={defaultValue?.name}
+        defaultValue={() => displayItemFullname(defaultValue)}
       />
     );
   }

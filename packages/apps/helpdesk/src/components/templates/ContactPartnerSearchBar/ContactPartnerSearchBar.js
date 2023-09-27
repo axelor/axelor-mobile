@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {searchCustomerContact} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
@@ -28,9 +33,12 @@ const ContactPartnerSearchBar = ({
   defaultValue = null,
   onChange = () => {},
   style = null,
+  required = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {
     formCustomer,
@@ -40,12 +48,25 @@ const ContactPartnerSearchBar = ({
     customerContactList,
   } = useSelector(state => state.customer);
 
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
+
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(searchCustomerContact({page, searchValue}));
     },
     [dispatch],
   );
+
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={I18n.t(title)}
+        readOnly={true}
+        defaultValue={() => displayItemFullname(defaultValue)}
+      />
+    );
+  }
 
   if (formCustomer?.id != null) {
     return (
@@ -67,6 +88,9 @@ const ContactPartnerSearchBar = ({
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
       <Text style={styles.title}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
+        style={[
+          defaultValue == null && required ? styles.requiredBorder : null,
+        ]}
         objectList={customerContactList}
         value={defaultValue}
         onChangeValue={onChange}
@@ -84,14 +108,17 @@ const ContactPartnerSearchBar = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 41,
-  },
-  title: {
-    marginHorizontal: 24,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      zIndex: 41,
+    },
+    title: {
+      marginHorizontal: 24,
+    },
+    requiredBorder: {
+      borderColor: Colors.errorColor.background,
+    },
+  });
 
 export default ContactPartnerSearchBar;

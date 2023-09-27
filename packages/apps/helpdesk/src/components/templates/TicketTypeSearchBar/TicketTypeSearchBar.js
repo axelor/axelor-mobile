@@ -67,7 +67,7 @@ const TicketTypeSearchBar = ({
         style={style}
         title={I18n.t(title)}
         readOnly={true}
-        defaultValue={defaultValue?.name}
+        defaultValue={() => displayItemName(defaultValue)}
       />
     );
   }
@@ -90,7 +90,7 @@ const TicketTypeSearchBar = ({
         moreLoading={moreLoadingTicketType}
         isListEnd={isListEndTicketType}
         navigate={false}
-        oneFilter={true}
+        oneFilter={false}
         isFocus={false}
       />
     </View>

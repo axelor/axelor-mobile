@@ -28,6 +28,7 @@ import {
 } from './models';
 import * as helpdeskReducers from './features';
 import {useHelpdeskHeaders} from './hooks/use-helpdesk-header-actions';
+
 export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
   title: 'Helpdesk_Helpdesk',

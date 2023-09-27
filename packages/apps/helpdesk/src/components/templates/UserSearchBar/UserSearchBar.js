@@ -83,7 +83,7 @@ const UserSearchBar = ({
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         navigate={false}
-        oneFilter={true}
+        oneFilter={false}
         isFocus={false}
       />
     </View>
