@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {HeaderContainer, Screen} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   OperationOrderDatesCard,
@@ -35,13 +34,17 @@ function OperationOrderDetailsScreen({route}) {
     state => state.operationOrder,
   );
 
-  useEffect(() => {
+  const getOperationOrder = useCallback(() => {
     dispatch(
       fetchOperationOrderById({
         operationOrderId: route.params.operationOrderId,
       }),
     );
   }, [dispatch, route.params.operationOrderId]);
+
+  useEffect(() => {
+    getOperationOrder();
+  }, [getOperationOrder]);
 
   return (
     <Screen removeSpaceOnTop={true} loading={loadingOrder}>
@@ -56,19 +59,13 @@ function OperationOrderDetailsScreen({route}) {
         }
         expandableFilter={false}
       />
-      <View style={styles.contentContainer}>
+      <ScrollView refresh={{loadingOrder, fetcher: getOperationOrder}}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         <OperationOrderStopwatch />
-      </View>
+      </ScrollView>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingTop: 10,
-  },
-});
 
 export default OperationOrderDetailsScreen;
