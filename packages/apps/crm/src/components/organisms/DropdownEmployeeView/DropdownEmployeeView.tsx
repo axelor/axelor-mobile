@@ -22,15 +22,8 @@ import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 import {LiteContactCard} from '../../molecules';
 
-type Contact = {
-  id: number;
-  simpleFullName: string;
-  fixedPhone: string;
-  'emailAddress.address': string;
-};
-
 interface DropdownEmployeeViewProps {
-  contactList?: Contact[];
+  contactList?: any[];
 }
 
 const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
@@ -51,7 +44,7 @@ const DropdownEmployeeView = ({contactList}: DropdownEmployeeViewProps) => {
         key={index}
         contactFullname={contact.simpleFullName}
         fixedPhoneNumber={contact.fixedPhone}
-        email={contact['emailAddress.address']}
+        email={contact.emailAddress?.address}
         onPress={() =>
           navigation.navigate('ContactDetailsScreen', {
             idContact: contact.id,
