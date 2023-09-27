@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
@@ -28,11 +32,15 @@ const LeadDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {lead} = useSelector(state => state.lead);
+  const {loadingLead, lead} = useSelector(state => state.lead);
 
-  useEffect(() => {
+  const getLead = useCallback(() => {
     dispatch(fetchLeadById({leadId: idLead}));
   }, [dispatch, idLead]);
+
+  useEffect(() => {
+    getLead();
+  }, [getLead]);
 
   if (lead?.id !== idLead) {
     return null;
@@ -50,7 +58,7 @@ const LeadDetailsScreen = ({route}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingLead, fetcher: getLead}}>
         <NotesCard title={I18n.t('Crm_Description')} data={lead.description} />
         <LeadDropdownCards />
       </ScrollView>

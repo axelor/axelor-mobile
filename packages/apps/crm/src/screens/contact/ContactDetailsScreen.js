@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ContactBottom,
@@ -33,11 +37,15 @@ const ContactDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {contact} = useSelector(state => state.contact);
+  const {loading, contact} = useSelector(state => state.contact);
 
-  useEffect(() => {
+  const getContactAPI = useCallback(() => {
     dispatch(getContact({contactId: idContact}));
   }, [dispatch, idContact]);
+
+  useEffect(() => {
+    getContactAPI();
+  }, [getContactAPI]);
 
   if (contact?.id !== idContact) {
     return null;
@@ -49,7 +57,7 @@ const ContactDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ContactHeader />}
       />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getContactAPI}}>
         <ContactPartnerCard />
         <NotesCard title={I18n.t('Crm_Notes')} data={contact.description} />
         <ContactDropdownCards />
