@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
 import {
@@ -35,11 +39,15 @@ function EventDetailsScreen({route}) {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {event} = useSelector(state => state.event);
+  const {loadingEvent, event} = useSelector(state => state.event);
 
-  useEffect(() => {
+  const fetchEvent = useCallback(() => {
     dispatch(fetchEventById({eventId: eventId}));
   }, [dispatch, eventId]);
+
+  useEffect(() => {
+    fetchEvent();
+  }, [fetchEvent]);
 
   if (event?.id !== eventId) {
     return null;
@@ -48,7 +56,7 @@ function EventDetailsScreen({route}) {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<EventHeader />} />
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingEvent, fetcher: fetchEvent}}>
         <EventDatesCard />
         <EventLabelsCard />
         <EventLeadCard />
