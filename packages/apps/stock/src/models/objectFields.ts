@@ -41,7 +41,13 @@ export const stock_modelAPI: ObjectFields = {
     isIspmRequired: schemaContructor.boolean(),
   }),
   stock_customerDeliveryLine: schemaContructor.object({
-    product: schemaContructor.subObject('fullName'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
@@ -51,9 +57,6 @@ export const stock_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     productName: schemaContructor.string(),
     'saleOrderLine.pickingOrderInfo': schemaContructor.string(),
-    'product.name': schemaContructor.string(),
-    'product.trackingNumberConfiguration':
-      schemaContructor.subObject('fullName'),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     fromStockLocation: schemaContructor.subObject('name'),
   }),
@@ -75,16 +78,19 @@ export const stock_modelAPI: ObjectFields = {
     pickingOrderComments: schemaContructor.string(),
   }),
   stock_internalMoveLine: schemaContructor.object({
-    product: schemaContructor.subObject('fullName'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
     availableStatusSelect: schemaContructor.number(),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
     realQty: schemaContructor.number(),
     productName: schemaContructor.string(),
-    'product.name': schemaContructor.string(),
-    'product.trackingNumberConfiguration':
-      schemaContructor.subObject('fullName'),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     fromStockLocation: schemaContructor.subObject('name'),
     toStockLocation: schemaContructor.subObject('name'),
@@ -109,16 +115,19 @@ export const stock_modelAPI: ObjectFields = {
     productFamily: schemaContructor.subObject('name'),
   }),
   stock_inventoryLine: schemaContructor.object({
-    product: schemaContructor.subObject('fullName'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
     currentQty: schemaContructor.number(),
     realQty: schemaContructor.number(),
     description: schemaContructor.string(),
     rack: schemaContructor.string(),
-    'product.name': schemaContructor.string(),
-    'product.trackingNumberConfiguration':
-      schemaContructor.subObject('fullName'),
   }),
   stock_partner: schemaContructor.object({
     partnerSeq: schemaContructor.string(),
@@ -132,7 +141,7 @@ export const stock_modelAPI: ObjectFields = {
     code: schemaContructor.string(),
     fullName: schemaContructor.string(),
     picture: schemaContructor.subObject('fileName'),
-    trackingNumberConfiguration: schemaContructor.subObject('fullName'),
+    trackingNumberConfiguration: schemaContructor.subObject(),
     unit: schemaContructor.subObject('name'),
     salesUnit: schemaContructor.subObject('name'),
     purchasesUnit: schemaContructor.subObject('name'),
@@ -182,12 +191,16 @@ export const stock_modelAPI: ObjectFields = {
   }),
   stock_availableProducts: schemaContructor.object({
     currentQty: schemaContructor.number(),
-    product: schemaContructor.subObject('fullName'),
-    'product.name': schemaContructor.string(),
-    'product.code': schemaContructor.string(),
-    'product.unit': schemaContructor.subObject('name'),
-    'product.picture': schemaContructor.subObject('fileName'),
-    'product.trackingNumberConfiguration': schemaContructor.subObject(),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        unit: schemaContructor.subObject('name'),
+        picture: schemaContructor.subObject('fileName'),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
   }),
   stock_supplierArrival: schemaContructor.object({
@@ -208,7 +221,6 @@ export const stock_modelAPI: ObjectFields = {
     statusSelect: schemaContructor.number(),
   }),
   stock_supplierArrivalLine: schemaContructor.object({
-    product: schemaContructor.subObject('fullName'),
     trackingNumber: schemaContructor.subObject('trackingNumberSeq'),
     unit: schemaContructor.subObject('name'),
     qty: schemaContructor.number(),
@@ -217,9 +229,14 @@ export const stock_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     conformitySelect: schemaContructor.number(),
     productName: schemaContructor.string(),
-    'product.name': schemaContructor.string(),
-    'product.trackingNumberConfiguration':
-      schemaContructor.subObject('fullName'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        fullName: schemaContructor.string(),
+        name: schemaContructor.string(),
+        code: schemaContructor.string(),
+        trackingNumberConfiguration: schemaContructor.subObject(),
+      }),
+    ),
     isRealQtyModifiedByUser: schemaContructor.boolean(),
     toStockLocation: schemaContructor.subObject('name'),
   }),
