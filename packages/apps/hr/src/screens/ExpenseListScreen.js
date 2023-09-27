@@ -218,9 +218,9 @@ const ExpenseListScreen = ({navigation}) => {
             style={styles.item}
             statusSelect={item.statusSelect}
             expenseSeq={item.expenseSeq}
-            periodeCode={item['period.code'] || item?.period?.code}
+            periodeCode={item?.period?.code}
             inTaxTotal={item.inTaxTotal}
-            employeeManagerId={item['employee.managerUser']?.id}
+            employeeManagerId={item.employee?.managerUser?.id}
             employeeName={
               mode === Expense.mode.validation ? item.employee?.name : null
             }
