@@ -17,8 +17,11 @@
  */
 
 import axios from 'axios';
-import {provider} from '../apiProviders';
-import {translationMiddleware} from '../apiProviders/middlewares/translation';
+import {
+  fieldsParserMiddleware,
+  provider,
+  translationMiddleware,
+} from '../apiProviders';
 
 const loginPath = '/callback';
 
@@ -48,7 +51,7 @@ export async function loginApi(
       });
 
       const responseInterceptorId = axios.interceptors.response.use(_response =>
-        translationMiddleware(_response),
+        fieldsParserMiddleware(translationMiddleware(_response)),
       );
 
       provider.getModelApi()?.init();
