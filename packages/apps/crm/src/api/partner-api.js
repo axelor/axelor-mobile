@@ -63,6 +63,16 @@ const createClientAndProspectCriteria = searchValue => {
   ];
 };
 
+const createClientForContactCriteria = contactId => {
+  return [
+    {
+      fieldName: 'contactPartnerSet.id',
+      operator: '=',
+      value: contactId,
+    },
+  ];
+};
+
 export async function getPartner({partnerId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.base.db.Partner',
@@ -77,5 +87,14 @@ export async function searchClientAndProspect({searchValue, page = 0}) {
     criteria: createClientAndProspectCriteria(searchValue),
     fieldKey: 'crm_partner',
     page,
+  });
+}
+
+export async function searchClientForContact({contactId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createClientForContactCriteria(contactId),
+    fieldKey: 'crm_partner',
+    page: 0,
   });
 }
