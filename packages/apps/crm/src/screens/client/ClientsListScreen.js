@@ -54,8 +54,8 @@ const CLientsListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -98,7 +98,7 @@ const CLientsListScreen = ({navigation}) => {
             partnerReference={item.partnerSeq}
             partnerAdress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
-            partnerEmail={item['emailAddress.address']}
+            partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}
             onPress={() =>
               navigation.navigate('ClientDetailsScreen', {

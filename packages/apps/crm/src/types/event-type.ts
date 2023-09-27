@@ -139,7 +139,7 @@ class EventType {
           border: this.getCategoryColor(_e.typeSelect, Colors).background,
           partner: _e.partner?.fullName,
           eventLead: _e.eventLead?.fullName,
-          partnerTypeSelect: _e['partner.partnerTypeSelect'],
+          partnerTypeSelect: _e.partner?.partnerTypeSelect,
         },
       };
     });

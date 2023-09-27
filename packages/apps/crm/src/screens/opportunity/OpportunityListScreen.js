@@ -149,7 +149,7 @@ const OpportunityListScreen = ({navigation}) => {
             opportunityScoring={item.opportunityRating}
             reference={item.opportunitySeq}
             allOpportunityStatus={opportunityStatusList}
-            currencySymbol={item.currencySymbol}
+            currencySymbol={item.currency?.symbol || item.currency?.name}
             opportunityStatus={item.opportunityStatus}
             onPress={() =>
               navigation.navigate('OpportunityDetailsScreen', {
