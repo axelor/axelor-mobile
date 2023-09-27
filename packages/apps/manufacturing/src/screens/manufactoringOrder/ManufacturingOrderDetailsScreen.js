@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
@@ -43,7 +43,9 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {operationOrderList} = useSelector(state => state.operationOrder);
+  const {loading, operationOrderList} = useSelector(
+    state => state.operationOrder,
+  );
   const {productFromId: product} = useSelector(state => state.product);
   const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
@@ -55,7 +57,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     }
   }, [manufOrder, dispatch]);
 
-  useEffect(() => {
+  const fetchManufOrderAndOperation = useCallback(() => {
     dispatch(
       fetchManufOrder({manufOrderId: route.params.manufacturingOrderId}),
     );
@@ -63,6 +65,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
     );
   }, [dispatch, route.params.manufacturingOrderId]);
+
+  useEffect(() => {
+    fetchManufOrderAndOperation();
+  }, [fetchManufOrderAndOperation]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -122,7 +128,11 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         }
         expandableFilter={false}
       />
-      <ScrollView>
+      <ScrollView
+        refresh={{
+          loading: loadingOrder || loading,
+          fetcher: fetchManufOrderAndOperation,
+        }}>
         <ManufacturingOrderDatesCard />
         <ProductCardInfo
           onPress={handleShowProduct}
