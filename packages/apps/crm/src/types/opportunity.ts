@@ -37,17 +37,6 @@ class Opportunity {
         return Colors.secondaryColor;
     }
   };
-
-  static responseParser = (response: any): any => {
-    const _currencySymbol = response['currency.symbol'];
-
-    delete response['currency.symbol'];
-
-    Object.assign(response, {
-      currencySymbol: _currencySymbol,
-    });
-
-    return response;
-  };
 }
+
 export default Opportunity;

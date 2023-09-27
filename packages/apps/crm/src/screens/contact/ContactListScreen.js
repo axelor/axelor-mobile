@@ -53,8 +53,8 @@ const ContactListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -102,9 +102,7 @@ const ContactListScreen = ({navigation}) => {
             partnerReference={item.partnerSeq}
             partnerAdress={item.mainAddress?.fullName}
             partnerFixedPhone={item.fixedPhone}
-            partnerEmail={
-              item['emailAddress.address'] || item.emailAddress?.address
-            }
+            partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}
             partnerCompany={item.mainPartner?.fullName}
             onPress={() =>

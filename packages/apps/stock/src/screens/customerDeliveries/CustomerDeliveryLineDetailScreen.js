@@ -180,7 +180,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         />
         <NotesCard
           title={I18n.t('Stock_LineComment')}
-          data={customerDeliveryLine?.['saleOrderLine.pickingOrderInfo']}
+          data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
       </ScrollView>
     </Screen>
