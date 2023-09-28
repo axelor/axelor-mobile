@@ -63,7 +63,7 @@ const createClientAndProspectCriteria = searchValue => {
   ];
 };
 
-const createClientForContactCriteria = contactId => {
+const createLinkedPartnersOfContactCriteria = contactId => {
   return [
     {
       fieldName: 'contactPartnerSet.id',
@@ -90,11 +90,12 @@ export async function searchClientAndProspect({searchValue, page = 0}) {
   });
 }
 
-export async function searchClientForContact({contactId}) {
+export async function searchLinkedPartnersOfContact({contactId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Partner',
-    criteria: createClientForContactCriteria(contactId),
+    criteria: createLinkedPartnersOfContactCriteria(contactId),
     fieldKey: 'crm_partner',
     page: 0,
+    numberElementsByPage: null,
   });
 }

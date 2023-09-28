@@ -24,6 +24,7 @@
   "Crm_Events": "Événements",
   "Crm_Event": "Événement",
   "Crm_Clients": "Clients",
+  "Crm_LinkedPartnersOfContact": "Clients et/ou prospects associés",
   "Crm_PriceList": "Liste de prix",
   "Crm_Employees": "Employés",
   "Crm_Sun": "Dim",
@@ -120,5 +121,5 @@
   "Crm_SliceAction_FetchCompanyById": "récupération de la société par id",
   "Crm_SliceAction_CreateCatalog": "Création d'un catalogue",
   "Crm_SliceAction_FetchProspectStatus": "récupération des statuts des prospect",
-  "Crm_SliceAction_FetchClientForContact": "récuperation des clients pour les contacts"
+  "Crm_SliceAction_FetchLinkedPartnersOfContact": "récuperation des partenaires pour les contacts"
 }

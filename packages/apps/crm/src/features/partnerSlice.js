@@ -24,7 +24,7 @@ import {
 import {
   getPartner,
   searchClientAndProspect,
-  searchClientForContact as _searchClientForContact,
+  searchLinkedPartnersOfContact as _searchLinkedPartnersOfContact,
 } from '../api/partner-api';
 
 export const fetchPartner = createAsyncThunk(
@@ -53,13 +53,13 @@ export const fetchClientAndProspect = createAsyncThunk(
   },
 );
 
-export const searchClientForContact = createAsyncThunk(
-  'client/searchClientForContact',
+export const searchLinkedPartnersOfContact = createAsyncThunk(
+  'client/searchLinkedPartnersOfContact',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchClientForContact,
+      fetchFunction: _searchLinkedPartnersOfContact,
       data,
-      action: 'Crm_SliceAction_FetchClientForContact',
+      action: 'Crm_SliceAction_FetchLinkedPartnersOfContact',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -73,7 +73,7 @@ const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
-  clientForContact: [],
+  linkedPartnersOfContact: [],
 };
 
 const partnerSlice = createSlice({
@@ -87,13 +87,12 @@ const partnerSlice = createSlice({
       state.loadingPartner = false;
       state.partner = action.payload;
     });
-    builder.addCase(searchClientForContact.pending, state => {
-      state.loadingPartner = true;
-    });
-    builder.addCase(searchClientForContact.fulfilled, (state, action) => {
-      state.loadingPartner = false;
-      state.clientForContact = action.payload;
-    });
+    builder.addCase(
+      searchLinkedPartnersOfContact.fulfilled,
+      (state, action) => {
+        state.linkedPartnersOfContact = action.payload;
+      },
+    );
     generateInifiniteScrollCases(builder, fetchClientAndProspect, {
       loading: 'loading',
       moreLoading: 'moreLoading',

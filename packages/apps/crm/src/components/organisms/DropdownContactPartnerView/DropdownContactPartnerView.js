@@ -19,17 +19,17 @@
 import React, {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import {useDispatch, useSelector, useNavigation} from '@axelor/aos-mobile-core';
-import {searchClientForContact} from '../../../features/partnerSlice';
+import {searchLinkedPartnersOfContact} from '../../../features/partnerSlice';
 import {PartnerCard} from '../../molecules';
 
 const DropdownContactPartnerView = ({idContact}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {clientForContact} = useSelector(state => state.partner);
+  const {linkedPartnersOfContact} = useSelector(state => state.partner);
 
   useEffect(() => {
-    dispatch(searchClientForContact({contactId: idContact}));
+    dispatch(searchLinkedPartnersOfContact({contactId: idContact}));
   }, [dispatch, idContact]);
 
   const handleCardPress = useCallback(
@@ -51,7 +51,7 @@ const DropdownContactPartnerView = ({idContact}) => {
 
   return (
     <View>
-      {clientForContact?.map((item, index) => {
+      {linkedPartnersOfContact?.map((item, index) => {
         return (
           <PartnerCard
             key={index}

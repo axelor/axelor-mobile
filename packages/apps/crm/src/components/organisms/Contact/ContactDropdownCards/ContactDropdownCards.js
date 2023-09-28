@@ -73,7 +73,7 @@ const ContactDropdownCards = ({}) => {
             childrenComp: <DropdownEventView eventList={listEventContact} />,
           },
           {
-            title: I18n.t('Crm_Clients'),
+            title: I18n.t('Crm_LinkedPartnersOfContact'),
             key: 30,
             childrenComp: <DropdownContactPartnerView idContact={contact.id} />,
           },
