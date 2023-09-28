@@ -39,6 +39,7 @@ const TicketFormScreen = ({navigation, route}) => {
     const _default = {
       duration: 0,
     };
+
     if (idTicket != null) {
       return {
         ..._default,
@@ -63,6 +64,7 @@ const TicketFormScreen = ({navigation, route}) => {
         description: ticket?.description,
       };
     }
+
     return _default;
   }, [idTicket, ticket, I18n]);
 
@@ -114,8 +116,9 @@ const TicketFormScreen = ({navigation, route}) => {
           needValidation: true,
           needRequiredFields: true,
           hideIf: () => idTicket != null,
-          customAction: ({dispatch, objectState}) => {
-            return createTicketAPI(objectState, dispatch);
+          customAction: ({dispatch, objectState, handleReset}) => {
+            createTicketAPI(objectState, dispatch);
+            handleReset();
           },
         },
         {
