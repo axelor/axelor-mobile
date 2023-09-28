@@ -25,6 +25,7 @@ import {
   ProjectSearchBar,
   TicketTypeSearchBar,
   UserSearchBar,
+  TicketPriorityPicker,
 } from '../components';
 import {updateCustomer} from '../features/customerSlice';
 
@@ -80,6 +81,12 @@ export const helpdesk_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: TicketTypeSearchBar,
+      },
+      prioritySelect: {
+        type: 'object',
+        widget: 'custom',
+        titleKey: 'Helpdesk_Priority',
+        customComponent: TicketPriorityPicker,
       },
       startDateT: {
         type: 'datetime',

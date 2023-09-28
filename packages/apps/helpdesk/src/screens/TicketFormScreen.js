@@ -17,13 +17,21 @@
  */
 
 import React, {useCallback, useMemo, useEffect} from 'react';
-import {useSelector, useDispatch, FormView} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useTranslator,
+  useDispatch,
+  FormView,
+} from '@axelor/aos-mobile-core';
 import {createTicket, updateTicket} from '../features/ticketSlice';
 import {updateCustomer} from '../features/customerSlice';
+import {Ticket} from '../types';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route?.params?.idTicket;
+
   const _dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {ticket} = useSelector(state => state.ticket);
 
@@ -42,7 +50,10 @@ const TicketFormScreen = ({navigation, route}) => {
         customerPartner: ticket?.customerPartner,
         contactPartner: ticket?.contactPartner,
         ticketType: ticket?.ticketType,
-        prioritySelect: ticket?.prioritySelect,
+        prioritySelect: {
+          title: Ticket.getPriority(ticket?.prioritySelect, I18n),
+          key: ticket.prioritySelect,
+        },
         startDateT: ticket?.startDateT,
         endDateT: ticket?.endDateT,
         deadlineDateT: ticket?.deadlineDateT,
@@ -53,21 +64,31 @@ const TicketFormScreen = ({navigation, route}) => {
       };
     }
     return _default;
-  }, [idTicket, ticket]);
+  }, [idTicket, ticket, I18n]);
 
   const createTicketAPI = useCallback((_ticket, dispatch) => {
+    const dataToSend = {
+      ..._ticket,
+      prioritySelect: _ticket?.prioritySelect?.key,
+    };
     dispatch(
       createTicket({
-        ticket: _ticket,
+        ticket: dataToSend,
       }),
     );
   }, []);
 
   const updateTicketAPI = useCallback(
     (_ticket, dispatch) => {
+      const dataToSend = {
+        ..._ticket,
+        prioritySelect: _ticket?.prioritySelect?.key,
+        ticket: _ticket,
+        ticketId: _ticket?.id,
+      };
       dispatch(
         updateTicket({
-          ticket: _ticket,
+          ticket: dataToSend,
           ticketId: _ticket?.id,
         }),
       );
