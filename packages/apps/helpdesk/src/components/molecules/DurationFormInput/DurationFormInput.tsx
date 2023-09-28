@@ -40,7 +40,7 @@ interface DurationFormInputProps {
 }
 
 const DurationFormInput = ({
-  style = null,
+  style,
   title = 'Helpdesk_Duration',
   defaultValue,
   onChange,
@@ -96,8 +96,6 @@ const DurationFormInput = ({
     setFormattedDuration(formatDurationFromSeconds(defaultValue ?? 0));
   }, [defaultValue]);
 
-  console.log('defaultValue', defaultValue);
-
   if (readonly) {
     return (
       <FormInput
@@ -111,10 +109,8 @@ const DurationFormInput = ({
 
   return (
     <FormInput
-      style={[
-        defaultValue == null && required ? styles.requiredBorder : null,
-        styles.input,
-      ]}
+      style={[styles.input, style]}
+      required={required}
       title={I18n.t(title)}
       onChange={handleDurationChange}
       onEndFocus={handleEndFocus}

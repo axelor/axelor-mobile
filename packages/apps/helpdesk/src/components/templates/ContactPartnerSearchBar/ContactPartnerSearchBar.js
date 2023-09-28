@@ -68,22 +68,6 @@ const ContactPartnerSearchBar = ({
     );
   }
 
-  if (formCustomer?.id != null) {
-    return (
-      <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-        <Text style={styles.title}>{I18n.t(title)}</Text>
-        <AutoCompleteSearch
-          objectList={formCustomer?.contactPartnerSet}
-          value={defaultValue}
-          onChangeValue={onChange}
-          placeholder={I18n.t(title)}
-          displayValue={displayItemFullname}
-          showDetailsPopup={true}
-        />
-      </View>
-    );
-  }
-
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
       <Text style={styles.title}>{I18n.t(title)}</Text>
@@ -91,16 +75,22 @@ const ContactPartnerSearchBar = ({
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
         ]}
-        objectList={customerContactList}
+        objectList={
+          formCustomer?.id != null
+            ? formCustomer?.contactPartnerSet
+            : customerContactList
+        }
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={searchContactAPI}
+        fetchData={formCustomer?.id != null ? () => {} : searchContactAPI}
         placeholder={I18n.t(title)}
         displayValue={displayItemFullname}
         showDetailsPopup={true}
-        loadingList={loadingCustomerContact}
-        moreLoading={moreLoadingCustomerContact}
-        isListEnd={isListEndCustomerContact}
+        loadingList={formCustomer?.id != null ? false : loadingCustomerContact}
+        moreLoading={
+          formCustomer?.id != null ? false : moreLoadingCustomerContact
+        }
+        isListEnd={formCustomer?.id != null ? false : isListEndCustomerContact}
         navigate={false}
         oneFilter={false}
         isFocus={false}
