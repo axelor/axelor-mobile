@@ -42,26 +42,12 @@ const TicketFormScreen = ({navigation, route}) => {
 
     if (idTicket != null) {
       return {
-        ..._default,
-        id: ticket?.id,
-        version: ticket?.version,
-        subject: ticket?.subject,
-        progressSelect: ticket?.progressSelect,
-        project: ticket.project,
-        customerPartner: ticket?.customerPartner,
-        contactPartner: ticket?.contactPartner,
-        ticketType: ticket?.ticketType,
+        ...ticket,
+        duration: ticket.duration || _default.duration,
         prioritySelect: {
           title: Ticket.getPriority(ticket?.prioritySelect, I18n),
           key: ticket.prioritySelect,
         },
-        startDateT: ticket?.startDateT,
-        endDateT: ticket?.endDateT,
-        deadlineDateT: ticket?.deadlineDateT,
-        duration: ticket?.duration,
-        assignedToUser: ticket?.assignedToUser,
-        responsibleUser: ticket?.responsibleUser,
-        description: ticket?.description,
       };
     }
 
