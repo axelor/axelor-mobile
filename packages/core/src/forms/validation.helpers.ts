@@ -197,7 +197,7 @@ const getFieldSchema = (field: DisplayField): Schema => {
         break;
       case 'datetime':
         schema = schema.matches(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/g,
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{3})?)?Z$/g,
           'Base_FormValidation_DateTime',
         );
         break;
