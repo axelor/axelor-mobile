@@ -46,7 +46,7 @@ const TicketFormScreen = ({navigation, route}) => {
         startDateT: ticket?.startDateT,
         endDateT: ticket?.endDateT,
         deadlineDateT: ticket?.deadlineDateT,
-        duration: ticket?.dureation,
+        duration: ticket?.duration,
         assignedToUser: ticket?.assignedToUser,
         responsibleUser: ticket?.responsibleUser,
         description: ticket?.description,

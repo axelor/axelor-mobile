@@ -71,6 +71,7 @@ export const helpdesk_formsRegister: FormConfigs = {
           fieldName: 'customerPartner',
           onChange: ({newValue, dispatch}) => {
             dispatch(updateCustomer(newValue));
+            /// changer le dependson avec {['nom du champs a dependre',onChange]}return newValue?.contactPartner;
           },
         },
       },
@@ -85,7 +86,6 @@ export const helpdesk_formsRegister: FormConfigs = {
         widget: 'date',
         titleKey: 'Helpdesk_StartDate',
         options: {
-          mode: 'datetime',
           nullable: true,
         },
       },
@@ -94,7 +94,6 @@ export const helpdesk_formsRegister: FormConfigs = {
         widget: 'date',
         titleKey: 'Helpdesk_EndDate',
         options: {
-          mode: 'datetime',
           nullable: true,
         },
       },
@@ -103,7 +102,6 @@ export const helpdesk_formsRegister: FormConfigs = {
         widget: 'date',
         titleKey: 'Helpdesk_DeadlineDate',
         options: {
-          mode: 'datetime',
           nullable: true,
         },
       },
