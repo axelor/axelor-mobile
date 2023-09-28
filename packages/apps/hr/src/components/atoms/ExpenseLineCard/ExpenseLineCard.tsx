@@ -66,6 +66,7 @@ const ExpenseLineCard = ({
         setCardHeight(_current => (_current == null ? height : _current));
       }}>
       <ObjectCard
+        touchable={false}
         showArrow={false}
         style={styles.border}
         upperTexts={{
