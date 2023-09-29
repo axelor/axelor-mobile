@@ -27,7 +27,7 @@ import {
   UserSearchBar,
   TicketPriorityPicker,
 } from '../components';
-import {updateCustomer} from '../features/customerSlice';
+import {getCustomerbyId} from '../features/customerSlice';
 
 export const helpdesk_formsRegister: FormConfigs = {
   helpdesk_ticket: {
@@ -57,8 +57,8 @@ export const helpdesk_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: CustomerSearchBar,
         dependsOn: {
-          fieldName: 'project',
-          onChange: ({newValue}) => {
+          project: ({newValue}) => {
+            console.log('project2');
             return newValue?.clientPartner;
           },
         },
@@ -69,10 +69,12 @@ export const helpdesk_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ContactPartnerSearchBar,
         dependsOn: {
-          fieldName: 'customerPartner',
-          onChange: ({newValue, dispatch}) => {
-            dispatch(updateCustomer(newValue));
-            /// changer le dependson avec {['nom du champs a dependre',onChange]}return newValue?.contactPartner;
+          customerPartner: ({newValue, dispatch}) => {
+            dispatch((getCustomerbyId as any)({customerId: newValue?.id}));
+          },
+          project: ({newValue, dispatch}) => {
+            dispatch((getCustomerbyId as any)({customerId: newValue?.id}));
+            return newValue?.contactPartner;
           },
         },
       },

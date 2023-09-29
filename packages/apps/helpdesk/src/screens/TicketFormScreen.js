@@ -24,7 +24,7 @@ import {
   FormView,
 } from '@axelor/aos-mobile-core';
 import {createTicket, updateTicket} from '../features/ticketSlice';
-import {updateCustomer} from '../features/customerSlice';
+import {getCustomerbyId} from '../features/customerSlice';
 import {Ticket} from '../types';
 
 const TicketFormScreen = ({navigation, route}) => {
@@ -88,7 +88,7 @@ const TicketFormScreen = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    _dispatch(updateCustomer(null));
+    _dispatch(getCustomerbyId(null));
   }, [_dispatch]);
 
   return (

@@ -90,7 +90,7 @@ const ContactPartnerSearchBar = ({
         moreLoading={
           formCustomer?.id != null ? false : moreLoadingCustomerContact
         }
-        isListEnd={formCustomer?.id != null ? false : isListEndCustomerContact}
+        isListEnd={formCustomer?.id != null ? true : isListEndCustomerContact}
         navigate={false}
         oneFilter={false}
         isFocus={false}

@@ -71,7 +71,6 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   customerList: [],
-  customer: {},
   loadingCustomerContact: false,
   moreLoadingCustomerContact: false,
   isListEndCustomerContact: false,
@@ -82,11 +81,6 @@ const initialState = {
 const customerSlice = createSlice({
   name: 'customer',
   initialState,
-  reducers: {
-    updateCustomer: (state, action) => {
-      state.formCustomer = action.payload;
-    },
-  },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchCustomer, {
       loading: 'loading',
@@ -100,16 +94,10 @@ const customerSlice = createSlice({
       isListEnd: 'isListEndCustomerContact',
       list: 'customerContactList',
     });
-    builder.addCase(getCustomerbyId.pending, state => {
-      state.loading = true;
-    });
     builder.addCase(getCustomerbyId.fulfilled, (state, action) => {
-      state.loading = false;
-      state.customer = action.payload;
+      state.formCustomer = action.payload;
     });
   },
 });
-
-export const {updateCustomer} = customerSlice.actions;
 
 export const customerReducer = customerSlice.reducer;
