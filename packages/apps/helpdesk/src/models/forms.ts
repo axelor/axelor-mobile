@@ -72,7 +72,11 @@ export const helpdesk_formsRegister: FormConfigs = {
             dispatch((getCustomerbyId as any)({customerId: newValue?.id}));
           },
           project: ({newValue, dispatch}) => {
-            dispatch((getCustomerbyId as any)({customerId: newValue?.id}));
+            dispatch(
+              (getCustomerbyId as any)({
+                customerId: newValue?.clientPartner?.id,
+              }),
+            );
             return newValue?.contactPartner;
           },
         },
