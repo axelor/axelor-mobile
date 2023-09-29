@@ -58,7 +58,6 @@ export const helpdesk_formsRegister: FormConfigs = {
         customComponent: CustomerSearchBar,
         dependsOn: {
           project: ({newValue}) => {
-            console.log('project2');
             return newValue?.clientPartner;
           },
         },
