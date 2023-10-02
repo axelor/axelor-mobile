@@ -174,5 +174,6 @@
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "update supplier arrival line with new tracking number",
   "Stock_SliceAction_FetchUnits": "fetch units",
   "Stock_SliceAction_FetchConsumedProductWithId": "fetch consumed product with id",
-  "Stock_SliceAction_FetchProducedProductWithId": "fetch produced product with id"
+  "Stock_SliceAction_FetchProducedProductWithId": "fetch produced product with id",
+  "Stock_SliceAction_FetchWastedProductWithId": "fetch wasted product with id"
 }

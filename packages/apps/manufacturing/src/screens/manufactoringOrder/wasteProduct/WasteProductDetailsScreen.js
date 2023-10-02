@@ -26,7 +26,6 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  fetchProductWithId,
   fetchUnit,
   ProductCardInfo,
   QuantityCard,
@@ -40,32 +39,35 @@ import {
   addWasteProductToManufOrder,
   updateWasteProductOfManufOrder,
 } from '../../../features/wasteProductsSlice';
+import {fetchWastedProductWithId} from '../../../features/prodProductSlice';
+import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+  const manufOrderId = route.params.manufOrderId;
   const wasteProduct = route.params.wasteProduct;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {unitList} = useSelector(state => state.unit);
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
+
+  const {wastedProductFromId, loadingWastedProductFromId} = useSelector(
+    state => state.prodProducts,
+  );
+  const {manufOrder, loadingOrder} = useSelector(
+    state => state.manufacturingOrder,
   );
 
   const [unit, setUnit] = useState(wasteProduct ? wasteProduct?.unit : null);
   const [wasteQty, setWasteQty] = useState(wasteProduct ? wasteProduct.qty : 0);
 
   const product = useMemo(
-    () => (wasteProduct ? productFromId : route.params.product),
-    [productFromId, route.params.product, wasteProduct],
+    () => (wasteProduct ? wastedProductFromId : route.params.product),
+    [wastedProductFromId, route.params.product, wasteProduct],
   );
 
   useEffect(() => {
-    dispatch(fetchUnit());
-    if (wasteProduct != null) {
-      dispatch(fetchProductWithId(wasteProduct?.product?.id));
-    }
-  }, [wasteProduct, dispatch]);
+    getManufOrderAndWasteProduct();
+  }, [getManufOrderAndWasteProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -78,6 +80,14 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   }, [manufOrder, navigation]);
+
+  const getManufOrderAndWasteProduct = useCallback(() => {
+    dispatch(fetchUnit());
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    if (wasteProduct != null) {
+      dispatch(fetchWastedProductWithId(wasteProduct?.product?.id));
+    }
+  }, [dispatch, manufOrderId, wasteProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
     dispatch(
@@ -129,8 +139,12 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
-        {(product || !loadingProductFromId) && (
+      <ScrollView
+        refresh={{
+          loading: loadingOrder,
+          fetcher: getManufOrderAndWasteProduct,
+        }}>
+        {(product || !loadingWastedProductFromId) && (
           <ProductCardInfo
             name={product.name}
             code={product.code}

@@ -96,7 +96,7 @@ const WasteProductListScreen = ({route, navigation}) => {
   const handleViewItem = item => {
     if (item) {
       navigation.navigate('WasteProductDetailsScreen', {
-        manufOrder: manufOrder,
+        manufOrderId: manufOrder?.id,
         wasteProduct: item,
       });
     }
