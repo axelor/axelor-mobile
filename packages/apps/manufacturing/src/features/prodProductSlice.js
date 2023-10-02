@@ -51,7 +51,7 @@ export const fetchConsumedProductWithId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductWithId,
       data: productId,
-      action: 'Stock_SliceAction_FetchfetchConsumedProductWithId',
+      action: 'Stock_SliceAction_FetchConsumedProductWithId',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -67,6 +67,19 @@ export const fetchProducedProducts = createAsyncThunk(
       action: 'Manufacturing_SliceAction_FetchProducedProducts',
       getState,
       responseOptions: {},
+    });
+  },
+);
+
+export const fetchProducedProductWithId = createAsyncThunk(
+  'product/fetchCProducedProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProductWithId,
+      data: productId,
+      action: 'Stock_SliceAction_FetchProducedProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -149,6 +162,8 @@ const initialState = {
   producedProductList: [],
   loadingConsumedProductFromId: false,
   consumedProductFromId: {},
+  loadingProducedProductFromId: false,
+  producedProductFromId: {},
 };
 
 const prodProductsSlice = createSlice({
@@ -196,6 +211,13 @@ const prodProductsSlice = createSlice({
     builder.addCase(fetchConsumedProductWithId.fulfilled, (state, action) => {
       state.loadingConsumedProductFromId = false;
       state.consumedProductFromId = action.payload;
+    });
+    builder.addCase(fetchProducedProductWithId.pending, state => {
+      state.loadingProducedProductFromId = true;
+    });
+    builder.addCase(fetchProducedProductWithId.fulfilled, (state, action) => {
+      state.loadingProducedProductFromId = false;
+      state.producedProductFromId = action.payload;
     });
   },
 });
