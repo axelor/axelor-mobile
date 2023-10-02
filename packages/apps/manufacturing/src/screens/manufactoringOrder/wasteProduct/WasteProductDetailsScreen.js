@@ -39,7 +39,10 @@ import {
   addWasteProductToManufOrder,
   updateWasteProductOfManufOrder,
 } from '../../../features/wasteProductsSlice';
-import {fetchWastedProductWithId} from '../../../features/prodProductSlice';
+import {
+  fetchProdProductWithId,
+  fetchWastedProductWithId,
+} from '../../../features/prodProductSlice';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
@@ -50,9 +53,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const {unitList} = useSelector(state => state.unit);
 
-  const {wastedProductFromId, loadingWastedProductFromId} = useSelector(
-    state => state.prodProducts,
-  );
+  const {wastedProductFromId, loadingWastedProductFromId, prodProduct} =
+    useSelector(state => state.prodProducts);
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
@@ -82,12 +84,17 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   }, [manufOrder, navigation]);
 
   const getManufOrderAndWasteProduct = useCallback(() => {
+    dispatch(fetchProdProductWithId({productId: wasteProduct.id}));
     dispatch(fetchUnit());
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (wasteProduct != null) {
       dispatch(fetchWastedProductWithId(wasteProduct?.product?.id));
     }
   }, [dispatch, manufOrderId, wasteProduct]);
+
+  useEffect(() => {
+    setWasteQty(prodProduct.qty);
+  }, [prodProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
     dispatch(

@@ -26,6 +26,7 @@ import {
   createProdProduct,
   fetchManufacturingOrderConsumedProducts,
   fetchManufacturingOrderProducedProducts,
+  searchProdProductWithId,
   updateProdProduct,
 } from '../api/prod-product-api';
 
@@ -78,6 +79,19 @@ export const fetchProducedProductWithId = createAsyncThunk(
       fetchFunction: searchProductWithId,
       data: productId,
       action: 'Stock_SliceAction_FetchProducedProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const fetchProdProductWithId = createAsyncThunk(
+  'product/fetchProdProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProdProductWithId,
+      data: productId,
+      action: 'Stock_SliceAction_fetchProdProductWithId',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -179,6 +193,8 @@ const initialState = {
   producedProductFromId: {},
   loadingWastedProductFromId: false,
   wastedProductFromId: {},
+  loadingProdProduct: false,
+  prodProduct: {},
 };
 
 const prodProductsSlice = createSlice({
@@ -240,6 +256,13 @@ const prodProductsSlice = createSlice({
     builder.addCase(fetchWastedProductWithId.fulfilled, (state, action) => {
       state.loadingWastedProductFromId = false;
       state.wastedProductFromId = action.payload;
+    });
+    builder.addCase(fetchProdProductWithId.pending, state => {
+      state.loadingProdProduct = true;
+    });
+    builder.addCase(fetchProdProductWithId.fulfilled, (state, action) => {
+      state.loadingProdProduct = false;
+      state.prodProduct = action.payload;
     });
   },
 });
