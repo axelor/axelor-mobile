@@ -98,19 +98,6 @@ export const fetchProdProductWithId = createAsyncThunk(
   },
 );
 
-export const fetchWastedProductWithId = createAsyncThunk(
-  'product/fetchWastedProductWithId',
-  async function (productId, {getState}) {
-    return handlerApiCall({
-      fetchFunction: searchProductWithId,
-      data: productId,
-      action: 'Stock_SliceAction_FetchWastedProductWithId',
-      getState,
-      responseOptions: {isArrayResponse: false},
-    });
-  },
-);
-
 export const addProdProductToManufOrder = createAsyncThunk(
   'prodProducts/addProdProductToManufOrder',
   async function (data, {getState}) {
@@ -191,8 +178,6 @@ const initialState = {
   consumedProductFromId: {},
   loadingProducedProductFromId: false,
   producedProductFromId: {},
-  loadingWastedProductFromId: false,
-  wastedProductFromId: {},
   loadingProdProduct: false,
   prodProduct: {},
 };
@@ -249,13 +234,6 @@ const prodProductsSlice = createSlice({
     builder.addCase(fetchProducedProductWithId.fulfilled, (state, action) => {
       state.loadingProducedProductFromId = false;
       state.producedProductFromId = action.payload;
-    });
-    builder.addCase(fetchWastedProductWithId.pending, state => {
-      state.loadingWastedProductFromId = true;
-    });
-    builder.addCase(fetchWastedProductWithId.fulfilled, (state, action) => {
-      state.loadingWastedProductFromId = false;
-      state.wastedProductFromId = action.payload;
     });
     builder.addCase(fetchProdProductWithId.pending, state => {
       state.loadingProdProduct = true;

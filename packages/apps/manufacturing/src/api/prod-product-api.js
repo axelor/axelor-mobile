@@ -45,7 +45,6 @@ export async function fetchManufacturingOrderProducedProducts({
 }
 
 export async function searchProdProductWithId({productId}) {
-  console.log('ici');
   return createStandardFetch({
     model: 'com.axelor.apps.production.db.ProdProduct',
     id: productId,

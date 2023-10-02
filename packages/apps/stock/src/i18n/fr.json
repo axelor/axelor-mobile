@@ -174,6 +174,5 @@
   "Stock_SliceAction_UpdateSupplierArrivalLineWithTrackingNumber": "mise à jour d'une ligne de réception fournisseur avec un nouveau numéro de suivi",
   "Stock_SliceAction_FetchUnits": "récupération des unités",
   "Stock_SliceAction_FetchConsumedProductWithId": "récupération du produit consommé avec id",
-  "Stock_SliceAction_FetchProducedProductWithId": "récupération du produit finit avec id",
-  "Stock_SliceAction_FetchWastedProductWithId": "fetch wasted product with id"
+  "Stock_SliceAction_FetchProducedProductWithId": "récupération du produit finit avec id"
 }

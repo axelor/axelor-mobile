@@ -39,10 +39,7 @@ import {
   addWasteProductToManufOrder,
   updateWasteProductOfManufOrder,
 } from '../../../features/wasteProductsSlice';
-import {
-  fetchProdProductWithId,
-  fetchWastedProductWithId,
-} from '../../../features/prodProductSlice';
+import {fetchProdProductWithId} from '../../../features/prodProductSlice';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
@@ -53,8 +50,9 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const {unitList} = useSelector(state => state.unit);
 
-  const {wastedProductFromId, loadingWastedProductFromId, prodProduct} =
-    useSelector(state => state.prodProducts);
+  const {loadingProdProduct, prodProduct} = useSelector(
+    state => state.prodProducts,
+  );
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
@@ -63,8 +61,11 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   const [wasteQty, setWasteQty] = useState(wasteProduct ? wasteProduct.qty : 0);
 
   const product = useMemo(
-    () => (wasteProduct ? wastedProductFromId : route.params.product),
-    [wastedProductFromId, route.params.product, wasteProduct],
+    () =>
+      prodProduct != null && Object.keys(prodProduct).length > 0
+        ? prodProduct.product
+        : route.params.product,
+    [prodProduct, route.params.product],
   );
 
   useEffect(() => {
@@ -84,16 +85,19 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   }, [manufOrder, navigation]);
 
   const getManufOrderAndWasteProduct = useCallback(() => {
-    dispatch(fetchProdProductWithId({productId: wasteProduct.id}));
     dispatch(fetchUnit());
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (wasteProduct != null) {
-      dispatch(fetchWastedProductWithId(wasteProduct?.product?.id));
+      dispatch(fetchProdProductWithId({productId: wasteProduct.id}));
     }
   }, [dispatch, manufOrderId, wasteProduct]);
 
   useEffect(() => {
     setWasteQty(prodProduct.qty);
+  }, [prodProduct]);
+
+  useEffect(() => {
+    setUnit(prodProduct.unit);
   }, [prodProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
@@ -148,10 +152,10 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={{
-          loading: loadingOrder,
+          loading: loadingOrder && loadingProdProduct,
           fetcher: getManufOrderAndWasteProduct,
         }}>
-        {(product || !loadingWastedProductFromId) && (
+        {product != null && (
           <ProductCardInfo
             name={product.name}
             code={product.code}
