@@ -59,11 +59,8 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
-    if (producedProduct != null) {
-      dispatch(fetchProducedProductWithId(producedProduct.productId));
-    }
-  }, [producedProduct, dispatch, manufOrderId]);
+    getManufOrderAndProducedProduct();
+  }, [getManufOrderAndProducedProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -77,7 +74,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     });
   }, [manufOrder, navigation]);
 
-  const refresh = useCallback(() => {
+  const getManufOrderAndProducedProduct = useCallback(() => {
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (producedProduct != null) {
       dispatch(fetchProducedProductWithId(producedProduct?.productId));
@@ -152,7 +149,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
       <ScrollView
         refresh={{
           loading: loadingOrder,
-          fetcher: refresh,
+          fetcher: getManufOrderAndProducedProduct,
         }}>
         {(product || !loadingProducedProductFromId) && (
           <ProductCardInfo

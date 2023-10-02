@@ -40,7 +40,7 @@ import {ManufacturingOrder} from '../../../types';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
-  const manufOrderId = route.params.manufOrder?.id;
+  const manufOrderId = route.params.manufOrderId;
   const consumedProduct = route.params.consumedProduct;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
@@ -83,11 +83,8 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
-    if (consumedProduct != null) {
-      dispatch(fetchConsumedProductWithId(consumedProduct.productId));
-    }
-  }, [consumedProduct, dispatch, manufOrderId]);
+    getManufOrderAndConsumedProduct();
+  }, [getManufOrderAndConsumedProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -101,7 +98,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     });
   }, [manufOrder, navigation]);
 
-  const refresh = useCallback(() => {
+  const getManufOrderAndConsumedProduct = useCallback(() => {
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (consumedProduct != null) {
       dispatch(fetchConsumedProductWithId(consumedProduct?.productId));
@@ -180,7 +177,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       <ScrollView
         refresh={{
           loading: loadingOrder,
-          fetcher: refresh,
+          fetcher: getManufOrderAndConsumedProduct,
         }}>
         {(product || !loadingConsumedProductFromId) && (
           <ProductCardInfo
