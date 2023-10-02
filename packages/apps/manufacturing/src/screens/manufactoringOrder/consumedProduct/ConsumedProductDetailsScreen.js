@@ -25,11 +25,7 @@ import {
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  fetchProductWithId,
-  QuantityCard,
-  ProductCardInfo,
-} from '@axelor/aos-mobile-stock';
+import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ConsumedProductTrackingNumberSelect,
   ManufacturingOrderHeader,
@@ -37,25 +33,31 @@ import {
 } from '../../../components';
 import {
   addProdProductToManufOrder,
+  fetchConsumedProductWithId,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
+import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
+  const manufOrderId = route.params.manufOrder?.id;
   const consumedProduct = route.params.consumedProduct;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
-  );
-  const {consumedProductStockMoveLine} = useSelector(
-    state => state.prodProducts,
+  const {
+    consumedProductStockMoveLine,
+    consumedProductFromId,
+    loadingConsumedProductFromId,
+  } = useSelector(state => state.prodProducts);
+  const {manufOrder, loadingOrder} = useSelector(
+    state => state.manufacturingOrder,
   );
 
-  const product = consumedProduct ? productFromId : route.params.product;
+  const product = consumedProduct
+    ? consumedProductFromId
+    : route.params.product;
   const [consumedQty, setConsumedQty] = useState(
     consumedProduct ? consumedProduct.realQty : 0,
   );
@@ -81,10 +83,11 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
     if (consumedProduct != null) {
-      dispatch(fetchProductWithId(consumedProduct.productId));
+      dispatch(fetchConsumedProductWithId(consumedProduct.productId));
     }
-  }, [consumedProduct, dispatch]);
+  }, [consumedProduct, dispatch, manufOrderId]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -97,6 +100,13 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   }, [manufOrder, navigation]);
+
+  const refresh = useCallback(() => {
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    if (consumedProduct != null) {
+      dispatch(fetchConsumedProductWithId(consumedProduct?.productId));
+    }
+  }, [consumedProduct, dispatch, manufOrderId]);
 
   const handleCreateConsumedProduct = useCallback(() => {
     dispatch(
@@ -167,8 +177,12 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
-        {(product || !loadingProductFromId) && (
+      <ScrollView
+        refresh={{
+          loading: loadingOrder,
+          fetcher: refresh,
+        }}>
+        {(product || !loadingConsumedProductFromId) && (
           <ProductCardInfo
             name={product.name}
             code={product.code}

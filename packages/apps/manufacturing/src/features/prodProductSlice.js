@@ -18,7 +18,10 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {updateStockMoveLineTrackingNumber} from '@axelor/aos-mobile-stock';
+import {
+  searchProductWithId,
+  updateStockMoveLineTrackingNumber,
+} from '@axelor/aos-mobile-stock';
 import {
   createProdProduct,
   fetchManufacturingOrderConsumedProducts,
@@ -38,6 +41,19 @@ export const fetchConsumedProducts = createAsyncThunk(
       action: 'Manufacturing_SliceAction_FetchComsumedProducts',
       getState,
       responseOptions: {},
+    });
+  },
+);
+
+export const fetchConsumedProductWithId = createAsyncThunk(
+  'product/fetchConsumedProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProductWithId,
+      data: productId,
+      action: 'Stock_SliceAction_FetchfetchConsumedProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -131,6 +147,8 @@ const initialState = {
   consumedProductStockMoveLine: {},
   loadingProducedProducts: false,
   producedProductList: [],
+  loadingConsumedProductFromId: false,
+  consumedProductFromId: {},
 };
 
 const prodProductsSlice = createSlice({
@@ -172,6 +190,13 @@ const prodProductsSlice = createSlice({
         state.consumedProductStockMoveLine = action.payload?.stockMoveLine;
       },
     );
+    builder.addCase(fetchConsumedProductWithId.pending, state => {
+      state.loadingConsumedProductFromId = true;
+    });
+    builder.addCase(fetchConsumedProductWithId.fulfilled, (state, action) => {
+      state.loadingConsumedProductFromId = false;
+      state.consumedProductFromId = action.payload;
+    });
   },
 });
 
