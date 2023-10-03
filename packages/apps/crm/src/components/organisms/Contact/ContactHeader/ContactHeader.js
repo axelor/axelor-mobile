@@ -19,26 +19,41 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, LabelText} from '@axelor/aos-mobile-ui';
-import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  AOSImageBubble,
+  SocialNetworkLinks,
+} from '@axelor/aos-mobile-core';
 
 const ContactHeader = ({}) => {
   const {contact} = useSelector(state => state.contact);
 
   return (
-    <View style={styles.headerContainerChildren}>
-      <AOSImageBubble metaFileId={contact?.picture?.id} />
-      <View style={styles.headerInfo}>
-        <Text style={styles.textTitle} fontSize={16}>
-          {contact.simpleFullName}
-        </Text>
-        <LabelText iconName="building" title={contact.mainPartner?.fullName} />
-        {contact?.jobTitleFunction != null && (
+    <View style={styles.headerContainer}>
+      <View style={styles.headerContainerChildren}>
+        <AOSImageBubble metaFileId={contact?.picture?.id} />
+        <View style={styles.headerInfo}>
+          <Text style={styles.textTitle} fontSize={16}>
+            {contact.simpleFullName}
+          </Text>
           <LabelText
-            iconName="suitcase"
-            title={contact?.jobTitleFunction?.name}
+            iconName="building"
+            title={contact.mainPartner?.fullName}
           />
-        )}
+          {contact?.jobTitleFunction != null && (
+            <LabelText
+              iconName="suitcase"
+              title={contact?.jobTitleFunction?.name}
+            />
+          )}
+        </View>
       </View>
+      <SocialNetworkLinks
+        style={styles.networksLink}
+        data={{
+          fullName: contact.simpleFullName,
+        }}
+      />
     </View>
   );
 };
@@ -55,6 +70,14 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontWeight: 'bold',
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  networksLink: {
+    marginRight: '7%',
   },
 });
 
