@@ -97,7 +97,7 @@ const WasteProductListScreen = ({route, navigation}) => {
     if (item) {
       navigation.navigate('WasteProductDetailsScreen', {
         manufOrderId: manufOrder?.id,
-        wasteProduct: item,
+        wasteProductId: item?.id,
       });
     }
   };

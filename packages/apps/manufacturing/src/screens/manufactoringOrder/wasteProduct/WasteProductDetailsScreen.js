@@ -44,7 +44,7 @@ import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
   const manufOrderId = route.params.manufOrderId;
-  const wasteProduct = route.params.wasteProduct;
+  const wasteProductId = route.params.wasteProductId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -57,10 +57,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
     state => state.manufacturingOrder,
   );
 
-  const [unit, setUnit] = useState(wasteProduct ? wasteProduct?.unit : null);
-  const [wasteQty, setWasteQty] = useState(
-    wasteProduct ? wasteProduct?.qty : 0,
-  );
+  const [unit, setUnit] = useState(null);
+  const [wasteQty, setWasteQty] = useState(0);
 
   const product = useMemo(
     () =>
@@ -89,10 +87,10 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   const getManufOrderAndWasteProduct = useCallback(() => {
     dispatch(fetchUnit());
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
-    if (wasteProduct != null) {
-      dispatch(fetchProdProductWithId({productId: wasteProduct.id}));
+    if (wasteProductId != null) {
+      dispatch(fetchProdProductWithId({productId: wasteProductId}));
     }
-  }, [dispatch, manufOrderId, wasteProduct]);
+  }, [dispatch, manufOrderId, wasteProductId]);
 
   useEffect(() => {
     setWasteQty(prodProduct?.qty);
@@ -119,13 +117,13 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       updateWasteProductOfManufOrder({
         manufOrderId: manufOrder?.id,
         page: 0,
-        prodProductVersion: wasteProduct.version,
-        prodProductId: wasteProduct.id,
+        prodProductVersion: prodProduct.version,
+        prodProductId: prodProduct.id,
         qty: wasteQty,
       }),
     );
     handleNavigateBackToList();
-  }, [dispatch, handleNavigateBackToList, manufOrder, wasteProduct, wasteQty]);
+  }, [dispatch, handleNavigateBackToList, manufOrder, prodProduct, wasteQty]);
 
   return (
     <Screen
@@ -136,7 +134,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
             manufOrder?.wasteStockMove == null
           }
-          prodProduct={wasteProduct}
+          prodProduct={prodProduct}
           onPressCreate={handleCreateWasteProduct}
           onPressUpdate={handleUpdateWasteProduct}
         />
