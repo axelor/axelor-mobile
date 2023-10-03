@@ -390,6 +390,7 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Subject',
         type: 'string',
         widget: 'default',
+        required: true,
       },
     },
   },

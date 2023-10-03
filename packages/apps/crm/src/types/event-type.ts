@@ -56,6 +56,20 @@ class EventType {
     }
   };
 
+  static getCategoryList = (I18n: {t: (key: string) => string}) => {
+    return Object.entries(this.category).map(([key, value]) => ({
+      title: I18n.t(`Crm_Event_Category_${key}`),
+      key: value,
+    }));
+  };
+
+  static getStatusList = (I18n: {t: (key: string) => string}) => {
+    return Object.entries(this.category).map(([key, value]) => ({
+      title: I18n.t(`Crm_Event_Status_${key}`),
+      key: value,
+    }));
+  };
+
   static getStatusBorderColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.status.Planned:
