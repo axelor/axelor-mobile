@@ -383,4 +383,14 @@ export const crm_formsRegister: FormConfigs = {
       },
     },
   },
+  crm_event: {
+    modelName: 'com.axelor.apps.crm.db.Event',
+    fields: {
+      subject: {
+        titleKey: 'Crm_Subject',
+        type: 'string',
+        widget: 'default',
+      },
+    },
+  },
 };

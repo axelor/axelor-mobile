@@ -86,6 +86,8 @@
   "Crm_NoOpportunityAssociated": "Aucune opportunité associée",
   "Crm_LastOpportunity": "Dernière opportunité",
   "Crm_SocialNetworks": "Réseaux sociaux",
+  "Crm_CreateEvent": "Créer un événement",
+  "Crm_Subject": "Subject",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",
