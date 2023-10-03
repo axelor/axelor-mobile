@@ -52,7 +52,7 @@ const getFirstNameAndName = nameToSplit => {
   if (fullName?.length === 2) {
     return {firstName: fullName[0], lastName: fullName[1]};
   } else {
-    return {firstName: '', lastName: ''};
+    return {firstName: fullName, lastName: ''};
   }
 };
 

@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     zIndex: 30,
+    alignItems: 'center',
   },
   headerLeft: {
     flexDirection: 'column',
