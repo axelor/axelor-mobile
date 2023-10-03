@@ -50,6 +50,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const {loadingProducedProductFromId, producedProductFromId} = useSelector(
     state => state.prodProducts,
   );
+
   const product = producedProduct
     ? producedProductFromId
     : route.params.product;
@@ -148,7 +149,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={{
-          loading: loadingOrder,
+          loading: loadingOrder && loadingProducedProductFromId,
           fetcher: getManufOrderAndProducedProduct,
         }}>
         {(product || !loadingProducedProductFromId) && (

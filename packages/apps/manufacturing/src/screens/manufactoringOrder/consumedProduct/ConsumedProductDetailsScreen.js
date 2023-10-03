@@ -58,6 +58,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const product = consumedProduct
     ? consumedProductFromId
     : route.params.product;
+
   const [consumedQty, setConsumedQty] = useState(
     consumedProduct ? consumedProduct.realQty : 0,
   );
@@ -176,7 +177,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={{
-          loading: loadingOrder,
+          loading: loadingOrder && loadingConsumedProductFromId,
           fetcher: getManufOrderAndConsumedProduct,
         }}>
         {(product || !loadingConsumedProductFromId) && (
