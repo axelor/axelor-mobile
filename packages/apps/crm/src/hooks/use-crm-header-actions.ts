@@ -22,11 +22,9 @@ import {
   useSelector,
   useNavigation,
   useTranslator,
-  linkingProvider,
 } from '@axelor/aos-mobile-core';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
-import {getFirstNameAndName} from '../utils/split';
 
 const useCatalogListActions = () => {
   const Colors = useThemeColor();
@@ -161,11 +159,6 @@ const useLeadDetailsActions = () => {
   const Colors = useThemeColor();
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {lead} = useSelector((state: any) => state.lead);
-  const [objectName, setObjectName] = useState({firstName: '', lastName: ''});
-
-  useEffect(() => {
-    setObjectName(getFirstNameAndName(lead?.simpleFullName));
-  }, [lead?.simpleFullName]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_lead_details', {
@@ -194,33 +187,9 @@ const useLeadDetailsActions = () => {
             }),
           showInHeader: true,
         },
-        {
-          key: 'lead-openGoogle',
-          order: 20,
-          iconName: 'google',
-          FontAwesome5: false,
-          title: I18n.t('Crm_OpenGoogle'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () =>
-            linkingProvider.openBrowser(
-              `https://www.google.com/search?q=${lead?.enterpriseName}+${lead?.simpleFullName}`,
-            ),
-        },
-        {
-          key: 'lead-openLinkedin',
-          order: 30,
-          iconName: 'linkedin',
-          FontAwesome5: false,
-          title: I18n.t('Crm_OpenLinkedin'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () =>
-            linkingProvider.openBrowser(
-              `https://www.linkedin.com/search/results/people/?firstName=${objectName?.firstName}&lastName=${objectName?.lastName}&origin=SEO_PSERP&sid=_xa`,
-            ),
-        },
       ],
     });
-  }, [mobileSettings, lead, I18n, Colors.primaryColor.background, objectName]);
+  }, [mobileSettings, lead, I18n, Colors.primaryColor.background]);
 };
 
 const useOpportunityListActions = () => {

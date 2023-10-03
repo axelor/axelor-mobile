@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Text,
@@ -28,9 +28,15 @@ import {
   StarScore,
   checkNullString,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useDispatch,
+  SocialNetworkLinks,
+} from '@axelor/aos-mobile-core';
 import {Lead} from '../../../../types';
 import {updateLeadScore} from '../../../../features/leadSlice';
+import {getFirstNameAndName} from '../../../../utils/split';
 
 const LeadHeader = ({idLead, versionLead, colorIndex}) => {
   const Colors = useThemeColor();
@@ -55,27 +61,35 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
 
   return (
     <View style={styles.headerContainer}>
-      <ImageBubble
-        source={{
-          uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${idLead}/picture/download?v=${versionLead}&parentId=${idLead}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
-        }}
-        listComponent={[
-          lead.isDoNotSendEmail ? (
-            <InfoBubble
-              iconName="user-alt-slash"
-              badgeColor={Colors.cautionColor}
-              indication={I18n.t('Crm_ThisLeadDoesNotAcceptEmails')}
-            />
-          ) : null,
-          lead.isDoNotCall ? (
-            <InfoBubble
-              iconName="phone-slash"
-              badgeColor={Colors.cautionColor}
-              indication={I18n.t('Crm_ThisLeadDoesNotAcceptCall')}
-            />
-          ) : null,
-        ]}
-      />
+      <View style={styles.headerLeft}>
+        <ImageBubble
+          source={{
+            uri: `${baseUrl}ws/rest/com.axelor.apps.crm.db.Lead/${idLead}/picture/download?v=${versionLead}&parentId=${idLead}&parentModel=com.axelor.apps.crm.db.Lead&image=true`,
+          }}
+          listComponent={[
+            lead.isDoNotSendEmail ? (
+              <InfoBubble
+                iconName="user-alt-slash"
+                badgeColor={Colors.cautionColor}
+                indication={I18n.t('Crm_ThisLeadDoesNotAcceptEmails')}
+              />
+            ) : null,
+            lead.isDoNotCall ? (
+              <InfoBubble
+                iconName="phone-slash"
+                badgeColor={Colors.cautionColor}
+                indication={I18n.t('Crm_ThisLeadDoesNotAcceptCall')}
+              />
+            ) : null,
+          ]}
+        />
+        <SocialNetworkLinks
+          data={{
+            fullName: lead?.simpleFullName,
+            company: lead?.enterpriseName,
+          }}
+        />
+      </View>
       <View style={styles.headerInfo}>
         <Text style={styles.textTitle}>{lead.simpleFullName}</Text>
         {!checkNullString(lead.enterpriseName) && (
@@ -109,6 +123,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     zIndex: 30,
+  },
+  headerLeft: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   headerInfo: {
     flexDirection: 'column',

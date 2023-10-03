@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '../../../tools';
@@ -47,7 +47,17 @@ const formatLinkedinSearch = (name, lastName, company) => {
   return '';
 };
 
+const getFirstNameAndName = nameToSplit => {
+  const fullName = nameToSplit?.split(' ');
+  if (fullName?.length === 2) {
+    return {firstName: fullName[0], lastName: fullName[1]};
+  } else {
+    return {firstName: '', lastName: ''};
+  }
+};
+
 const SocialNetworkLinks = ({
+  style,
   size = 20,
   data,
   googleColor,
@@ -55,17 +65,33 @@ const SocialNetworkLinks = ({
   linkedinColor,
   hideLinkedin = false,
 }: {
+  style?: any;
   size?: number;
-  data: {name?: string; lastName?: string; company?: string};
+  data: {
+    fullName?: string;
+    name?: string;
+    lastName?: string;
+    company?: string;
+  };
   googleColor?: string;
   hideGoogle?: boolean;
   linkedinColor?: string;
   hideLinkedin?: boolean;
 }) => {
   const Colors = useThemeColor();
+  const [objectName, setObjectName] = useState({
+    firstName: data?.name,
+    lastName: data?.lastName,
+  });
+
+  useEffect(() => {
+    if (data?.fullName != null) {
+      setObjectName(getFirstNameAndName(data?.fullName));
+    }
+  }, [data]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {!hideGoogle && (
         <Icon
           style={styles.icon}
@@ -77,8 +103,8 @@ const SocialNetworkLinks = ({
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.google.com/search?q=${formatGoogleSearch(
-                data.name,
-                data.lastName,
+                objectName.firstName,
+                objectName.lastName,
                 data.company,
               )}&gws_rd=cr`,
             )
@@ -96,8 +122,8 @@ const SocialNetworkLinks = ({
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.linkedin.com/pub/dir/${formatLinkedinSearch(
-                data.name,
-                data.lastName,
+                objectName.firstName,
+                objectName.lastName,
                 data.company,
               )}`,
               false,
