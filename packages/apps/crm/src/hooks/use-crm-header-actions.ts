@@ -156,7 +156,6 @@ const useLeadListActions = () => {
 
 const useLeadDetailsActions = () => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {lead} = useSelector((state: any) => state.lead);
 
@@ -189,7 +188,7 @@ const useLeadDetailsActions = () => {
         },
       ],
     });
-  }, [mobileSettings, lead, I18n, Colors.primaryColor.background]);
+  }, [mobileSettings, lead, I18n]);
 };
 
 const useOpportunityListActions = () => {

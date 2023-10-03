@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Text,
@@ -36,7 +36,6 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Lead} from '../../../../types';
 import {updateLeadScore} from '../../../../features/leadSlice';
-import {getFirstNameAndName} from '../../../../utils/split';
 
 const LeadHeader = ({idLead, versionLead, colorIndex}) => {
   const Colors = useThemeColor();
