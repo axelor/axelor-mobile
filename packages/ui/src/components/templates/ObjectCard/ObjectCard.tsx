@@ -249,7 +249,7 @@ const ObjectCard = ({
                   imageSize={[styles.imageSize, image.imageSize]}
                   resizeMode={image.resizeMode ?? 'contain'}
                   source={image.source}
-                  defaultIconSize={image.defaultIconSize ?? 60}
+                  defaultIconSize={image.defaultIconSize ?? 50}
                 />
               ) : null}
               {upperTexts != null && (
