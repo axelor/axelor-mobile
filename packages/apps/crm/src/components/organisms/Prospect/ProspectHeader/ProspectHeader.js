@@ -62,7 +62,9 @@ const ProspectHeader = ({colorIndex}) => {
           <SocialNetworkLinks
             data={{
               fullName: prospect?.simpleFullName,
+              company: prospect?.simpleFullName,
             }}
+            linkedinEnterprise={true}
           />
         </View>
         <View style={styles.headerInfo}>

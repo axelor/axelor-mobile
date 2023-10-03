@@ -43,7 +43,9 @@ const ClientHeader = ({}) => {
         style={styles.networksLink}
         data={{
           fullName: client.simpleFullName,
+          company: client.simpleFullName,
         }}
+        linkedinEnterprise={true}
       />
     </View>
   );

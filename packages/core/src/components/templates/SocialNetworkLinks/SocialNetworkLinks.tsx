@@ -21,27 +21,26 @@ import {StyleSheet, View} from 'react-native';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '../../../tools';
 
-const formatGoogleSearch = (name, lastName, company) => {
+const formatGoogleSearch = (name, lastName, company, linkedinEnterprise) => {
   let result = '';
 
   if (name != null && lastName != null) {
     result = result.concat(name).concat('+').concat(lastName);
   }
 
-  if (company != null) {
+  if (company != null && !linkedinEnterprise) {
     result = result.concat('+').concat(company).concat('+');
   }
 
   return result;
 };
 
-const formatLinkedinSearch = (name, lastName, company) => {
-  if (name != null && lastName != null) {
-    return `${name}/${lastName}`;
+const formatLinkedinSearch = (name, lastName, company, linkedinEnterprise) => {
+  if (company != null && linkedinEnterprise) {
+    return `company/${company}`;
   }
-
-  if (company != null) {
-    return company;
+  if (name != null && lastName != null) {
+    return `pub/dir/${name}/${lastName}`;
   }
 
   return '';
@@ -64,6 +63,7 @@ const SocialNetworkLinks = ({
   hideGoogle = false,
   linkedinColor,
   hideLinkedin = false,
+  linkedinEnterprise = false,
 }: {
   style?: any;
   size?: number;
@@ -77,6 +77,7 @@ const SocialNetworkLinks = ({
   hideGoogle?: boolean;
   linkedinColor?: string;
   hideLinkedin?: boolean;
+  linkedinEnterprise?: boolean;
 }) => {
   const Colors = useThemeColor();
   const [objectName, setObjectName] = useState({
@@ -106,6 +107,7 @@ const SocialNetworkLinks = ({
                 objectName.firstName,
                 objectName.lastName,
                 data.company,
+                linkedinEnterprise,
               )}&gws_rd=cr`,
             )
           }
@@ -121,10 +123,11 @@ const SocialNetworkLinks = ({
           size={size}
           onPress={() =>
             linkingProvider.openBrowser(
-              `https://www.linkedin.com/pub/dir/${formatLinkedinSearch(
+              `https://www.linkedin.com/${formatLinkedinSearch(
                 objectName.firstName,
                 objectName.lastName,
                 data.company,
+                linkedinEnterprise,
               )}`,
               false,
             )
