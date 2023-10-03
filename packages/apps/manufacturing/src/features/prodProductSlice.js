@@ -52,7 +52,7 @@ export const fetchConsumedProductWithId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductWithId,
       data: productId,
-      action: 'Stock_SliceAction_FetchConsumedProductWithId',
+      action: 'Manufacturing_SliceAction_FetchConsumedProductWithId',
       getState,
       responseOptions: {isArrayResponse: false},
     });
@@ -78,7 +78,7 @@ export const fetchProducedProductWithId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProductWithId,
       data: productId,
-      action: 'Stock_SliceAction_FetchProducedProductWithId',
+      action: 'Manufacturing_SliceAction_FetchProducedProductWithId',
       getState,
       responseOptions: {isArrayResponse: false},
     });

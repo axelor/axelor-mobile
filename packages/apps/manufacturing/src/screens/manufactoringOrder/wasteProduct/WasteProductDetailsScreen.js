@@ -58,7 +58,9 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   );
 
   const [unit, setUnit] = useState(wasteProduct ? wasteProduct?.unit : null);
-  const [wasteQty, setWasteQty] = useState(wasteProduct ? wasteProduct.qty : 0);
+  const [wasteQty, setWasteQty] = useState(
+    wasteProduct ? wasteProduct?.qty : 0,
+  );
 
   const product = useMemo(
     () =>
@@ -93,11 +95,11 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   }, [dispatch, manufOrderId, wasteProduct]);
 
   useEffect(() => {
-    setWasteQty(prodProduct.qty);
+    setWasteQty(prodProduct?.qty);
   }, [prodProduct]);
 
   useEffect(() => {
-    setUnit(prodProduct.unit);
+    setUnit(prodProduct?.unit);
   }, [prodProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
