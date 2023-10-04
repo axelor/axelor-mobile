@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DropdownContactPartnerView} from './DropdownContactPartnerView/DropdownContactPartnerView';
 export {default as DropdownContactView} from './DropdownContactView/DropdownContactView';
 export {default as DropdownEmployeeView} from './DropdownEmployeeView/DropdownEmployeeView';
 export {default as DropdownEventView} from './DropdownEventView/DropdownEventView';

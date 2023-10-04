@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
+  DropdownContactPartnerView,
   DropdownContactView,
   DropdownEventView,
   DropdownGeneralView,
@@ -70,6 +71,11 @@ const ContactDropdownCards = ({}) => {
             title: I18n.t('Crm_Events'),
             key: 20,
             childrenComp: <DropdownEventView eventList={listEventContact} />,
+          },
+          {
+            title: I18n.t('Crm_LinkedPartnersOfContact'),
+            key: 30,
+            childrenComp: <DropdownContactPartnerView idContact={contact.id} />,
           },
         ]}
       />

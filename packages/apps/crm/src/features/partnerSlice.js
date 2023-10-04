@@ -21,7 +21,11 @@ import {
   generateInifiniteScrollCases,
   handlerApiCall,
 } from '@axelor/aos-mobile-core';
-import {getPartner, searchClientAndProspect} from '../api/partner-api';
+import {
+  getPartner,
+  searchClientAndProspect,
+  searchLinkedPartnersOfContact as _searchLinkedPartnersOfContact,
+} from '../api/partner-api';
 
 export const fetchPartner = createAsyncThunk(
   'partner/fetchPartner',
@@ -49,6 +53,19 @@ export const fetchClientAndProspect = createAsyncThunk(
   },
 );
 
+export const searchLinkedPartnersOfContact = createAsyncThunk(
+  'client/searchLinkedPartnersOfContact',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchLinkedPartnersOfContact,
+      data,
+      action: 'Crm_SliceAction_FetchLinkedPartnersOfContact',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loadingPartner: true,
   partner: {},
@@ -56,6 +73,7 @@ const initialState = {
   loading: false,
   moreLoading: false,
   isListEnd: false,
+  linkedPartnersOfContact: [],
 };
 
 const partnerSlice = createSlice({
@@ -69,6 +87,12 @@ const partnerSlice = createSlice({
       state.loadingPartner = false;
       state.partner = action.payload;
     });
+    builder.addCase(
+      searchLinkedPartnersOfContact.fulfilled,
+      (state, action) => {
+        state.linkedPartnersOfContact = action.payload;
+      },
+    );
     generateInifiniteScrollCases(builder, fetchClientAndProspect, {
       loading: 'loading',
       moreLoading: 'moreLoading',
