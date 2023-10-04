@@ -117,7 +117,7 @@ export const updateTicket = createAsyncThunk(
     }).then(() => {
       return handlerApiCall({
         fetchFunction: getTicket,
-        data: {ticketId: data?.ticketId},
+        data: {ticketId: data?.ticket?.id},
         action: 'Helpdesk_SliceAction_FetchTicketById',
         getState,
         responseOptions: {isArrayResponse: false},

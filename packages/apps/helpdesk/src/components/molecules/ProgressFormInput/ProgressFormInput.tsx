@@ -24,6 +24,7 @@ interface ProgressFormInputProps {
   title: string;
   readOnly?: boolean;
   defaultValue?: number;
+  required?: boolean;
   onChange: (value: any) => void;
 }
 
@@ -32,6 +33,7 @@ const ProgressFormInput = ({
   title,
   readOnly = false,
   defaultValue = null,
+  required = false,
   onChange,
 }: ProgressFormInputProps) => {
   const round = useCallback(value => {
@@ -57,6 +59,7 @@ const ProgressFormInput = ({
       readOnly={readOnly}
       stepSize={10}
       maxValue={100}
+      required={required}
     />
   );
 };

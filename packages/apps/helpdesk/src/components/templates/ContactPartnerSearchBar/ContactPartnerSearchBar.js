@@ -57,6 +57,33 @@ const ContactPartnerSearchBar = ({
     [dispatch],
   );
 
+  const ObjectToDisplay = useMemo(() => {
+    if (formCustomer?.id) {
+      return {
+        loading: false,
+        moreLoading: false,
+        isListEnd: true,
+        list: formCustomer?.contactPartnerSet,
+        fetchData: () => {},
+      };
+    } else {
+      return {
+        loading: loadingCustomerContact,
+        moreLoading: moreLoadingCustomerContact,
+        isListEnd: isListEndCustomerContact,
+        list: customerContactList,
+        fetchData: searchContactAPI,
+      };
+    }
+  }, [
+    customerContactList,
+    formCustomer,
+    isListEndCustomerContact,
+    loadingCustomerContact,
+    moreLoadingCustomerContact,
+    searchContactAPI,
+  ]);
+
   if (readonly) {
     return (
       <FormInput
@@ -75,22 +102,16 @@ const ContactPartnerSearchBar = ({
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
         ]}
-        objectList={
-          formCustomer?.id != null
-            ? formCustomer?.contactPartnerSet
-            : customerContactList
-        }
+        objectList={ObjectToDisplay.list}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={formCustomer?.id != null ? () => {} : searchContactAPI}
+        fetchData={ObjectToDisplay.fetchData}
         placeholder={I18n.t(title)}
         displayValue={displayItemFullname}
         showDetailsPopup={true}
-        loadingList={formCustomer?.id != null ? false : loadingCustomerContact}
-        moreLoading={
-          formCustomer?.id != null ? false : moreLoadingCustomerContact
-        }
-        isListEnd={formCustomer?.id != null ? true : isListEndCustomerContact}
+        loadingList={ObjectToDisplay.loading}
+        moreLoading={ObjectToDisplay.moreLoading}
+        isListEnd={ObjectToDisplay.isListEnd}
         navigate={false}
         oneFilter={false}
         isFocus={false}

@@ -71,13 +71,10 @@ const TicketFormScreen = ({navigation, route}) => {
       const dataToSend = {
         ..._ticket,
         prioritySelect: _ticket?.prioritySelect?.key,
-        ticket: _ticket,
-        ticketId: _ticket?.id,
       };
       dispatch(
         updateTicket({
           ticket: dataToSend,
-          ticketId: _ticket?.id,
         }),
       );
       navigation.navigate('TicketDetailsScreen', {
