@@ -88,6 +88,8 @@
   "Crm_SocialNetworks": "Réseaux sociaux",
   "Crm_CreateEvent": "Créer un événement",
   "Crm_Subject": "Subject",
+  "Crm_Type": "Type",
+  "Crm_Status": "Statut",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",

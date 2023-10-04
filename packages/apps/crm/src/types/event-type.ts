@@ -64,7 +64,7 @@ class EventType {
   };
 
   static getStatusList = (I18n: {t: (key: string) => string}) => {
-    return Object.entries(this.category).map(([key, value]) => ({
+    return Object.entries(this.status).map(([key, value]) => ({
       title: I18n.t(`Crm_Event_Status_${key}`),
       key: value,
     }));

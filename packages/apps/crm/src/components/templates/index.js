@@ -23,6 +23,8 @@ export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/Clie
 export {default as ClientSearchBar} from './ClientSearchBar/ClientSearchBar';
 export {default as ContactSearchBar} from './ContactSearchBar/ContactSearchBar';
 export {default as EventSearchBar} from './EventSearchBar/EventSearchBar';
+export {default as EventStatusPicker} from './EventStatusPicker/EventStatusPicker';
+export {default as EventTypePicker} from './EventTypePicker/EventTypePicker';
 export {default as FunctionSearchBar} from './FunctionSearchBar/FunctionSearchBar';
 export {default as LeadSearchBar} from './LeadSearchBar/LeadSearchBar';
 export {default as OpportunitySearchBar} from './OpportunitySearchBar/OpportunitySearchBar';
