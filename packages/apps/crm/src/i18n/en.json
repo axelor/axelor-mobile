@@ -24,6 +24,7 @@
   "Crm_Events": "Events",
   "Crm_Event": "Event",
   "Crm_Clients": "Clients",
+  "Crm_LinkedPartnersOfContact": "Linked clients and/or prospects",
   "Crm_PriceList": "Price list",
   "Crm_Employees": "Employees",
   "Crm_Sun": "Sun",
@@ -119,5 +120,6 @@
   "Crm_SliceAction_CreateOpportunity": "create opportunity",
   "Crm_SliceAction_FetchCompanyById": "get company by id",
   "Crm_SliceAction_CreateCatalog": "Create catalog",
-  "Crm_SliceAction_FetchProspectStatus": "fetch prospect status"
+  "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
+  "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact"
 }
