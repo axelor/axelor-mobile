@@ -61,6 +61,7 @@ export async function getCustomer({customerId}) {
   if (customerId == null) {
     return null;
   }
+
   return createStandardFetch({
     model: 'com.axelor.apps.base.db.Partner',
     id: customerId,
