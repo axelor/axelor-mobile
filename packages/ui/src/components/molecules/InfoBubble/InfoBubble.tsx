@@ -34,6 +34,7 @@ interface InfoBubbleProps {
   indication: string;
   size?: number;
   position?: 'left' | 'right';
+  coloredBubble?: boolean;
 }
 
 const InfoBubble = ({
@@ -44,6 +45,7 @@ const InfoBubble = ({
   textIndicationStyle,
   size = Dimensions.get('window').width * 0.07,
   position = 'right',
+  coloredBubble = true,
 }: InfoBubbleProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -70,9 +72,9 @@ const InfoBubble = ({
       <TouchableOpacity onPress={onPress} activeOpacity={0.95}>
         <Icon
           name={iconName}
-          style={styles.icon}
-          color={badgeColor.foreground}
-          size={size * 0.5}
+          style={coloredBubble ? styles.icon : null}
+          color={coloredBubble ? badgeColor.foreground : badgeColor.background}
+          size={coloredBubble ? size * 0.5 : size}
         />
       </TouchableOpacity>
       {isOpen ? (
