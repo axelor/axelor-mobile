@@ -42,15 +42,7 @@ export const updateActiveUser = createAsyncThunk(
       action: 'Auth_SliceAction_UpdateActiveUser',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() =>
-      handlerApiCall({
-        fetchFunction: getLoggedUser,
-        data: user.id,
-        action: 'Auth_SliceAction_FetchActiveUser',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      }),
-    );
+    });
   },
 );
 
@@ -85,11 +77,7 @@ const userSlice = createSlice({
         state.canModifyCompany = true;
       }
     });
-    builder.addCase(updateActiveUser.pending, state => {
-      state.loadingUser = true;
-    });
     builder.addCase(updateActiveUser.fulfilled, (state, action) => {
-      state.loadingUser = false;
       state.user = action.payload;
       if (state.user.activeCompany == null) {
         state.canModifyCompany = true;

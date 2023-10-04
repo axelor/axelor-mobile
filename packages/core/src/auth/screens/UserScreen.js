@@ -79,10 +79,6 @@ const UserScreen = ({children}) => {
     setFilterConfig(Dimensions.get('window').height > SMALL_SCREEN_HEIGHT);
   }, [setFilterConfig, setVirtualKeyboardConfig]);
 
-  useEffect(() => {
-    dispatch(fetchActiveUser(userId));
-  }, [user.language, dispatch, userId]);
-
   const styles = useMemo(() => {
     return getStyles(Colors);
   }, [Colors]);
