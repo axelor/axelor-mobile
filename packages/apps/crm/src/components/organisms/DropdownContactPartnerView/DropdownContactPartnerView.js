@@ -62,9 +62,7 @@ const DropdownContactPartnerView = ({idContact}) => {
             partnerFixedPhone={item.fixedPhone}
             partnerEmail={item.emailAddress?.address}
             partnerPicture={item.picture}
-            onPress={() => {
-              handleCardPress(item);
-            }}
+            onPress={() => handleCardPress(item)}
           />
         );
       })}

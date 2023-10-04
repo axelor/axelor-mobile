@@ -121,5 +121,5 @@
   "Crm_SliceAction_FetchCompanyById": "get company by id",
   "Crm_SliceAction_CreateCatalog": "Create catalog",
   "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
-  "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch partners for contact"
+  "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact"
 }
