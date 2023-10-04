@@ -90,7 +90,7 @@ const ContactPartnerSearchBar = ({
         style={style}
         title={I18n.t(title)}
         readOnly={true}
-        defaultValue={() => displayItemFullname(defaultValue)}
+        defaultValue={displayItemFullname(defaultValue)}
       />
     );
   }

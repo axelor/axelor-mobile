@@ -67,7 +67,7 @@ const TicketTypeSearchBar = ({
         style={style}
         title={I18n.t(title)}
         readOnly={true}
-        defaultValue={() => displayItemName(defaultValue)}
+        defaultValue={displayItemName(defaultValue)}
       />
     );
   }

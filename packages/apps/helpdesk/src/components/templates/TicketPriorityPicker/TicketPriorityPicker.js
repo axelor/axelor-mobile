@@ -40,7 +40,6 @@ const TicketPriorityPicker = ({
       listItems={Ticket.getPriorityList(Colors, I18n)}
       valueField="key"
       defaultValue={defaultValue}
-      isValueItem={true}
       disabled={readonly}
     />
   );

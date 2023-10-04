@@ -17,21 +17,14 @@
  */
 
 import React, {useCallback, useMemo, useEffect} from 'react';
-import {
-  useSelector,
-  useTranslator,
-  useDispatch,
-  FormView,
-} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, FormView} from '@axelor/aos-mobile-core';
 import {createTicket, updateTicket} from '../features/ticketSlice';
 import {getCustomerbyId} from '../features/customerSlice';
-import {Ticket} from '../types';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route?.params?.idTicket;
 
   const _dispatch = useDispatch();
-  const I18n = useTranslator();
 
   const {ticket} = useSelector(state => state.ticket);
 
@@ -44,37 +37,26 @@ const TicketFormScreen = ({navigation, route}) => {
       return {
         ...ticket,
         duration: ticket.duration || _default.duration,
-        prioritySelect: {
-          title: Ticket.getPriority(ticket?.prioritySelect, I18n),
-          key: ticket.prioritySelect,
-        },
+        prioritySelect: ticket.prioritySelect,
       };
     }
 
     return _default;
-  }, [idTicket, ticket, I18n]);
+  }, [idTicket, ticket]);
 
   const createTicketAPI = useCallback((_ticket, dispatch) => {
-    const dataToSend = {
-      ..._ticket,
-      prioritySelect: _ticket?.prioritySelect?.key,
-    };
     dispatch(
       createTicket({
-        ticket: dataToSend,
+        ticket: _ticket,
       }),
     );
   }, []);
 
   const updateTicketAPI = useCallback(
     (_ticket, dispatch) => {
-      const dataToSend = {
-        ..._ticket,
-        prioritySelect: _ticket?.prioritySelect?.key,
-      };
       dispatch(
         updateTicket({
-          ticket: dataToSend,
+          ticket: _ticket,
         }),
       );
       navigation.navigate('TicketDetailsScreen', {

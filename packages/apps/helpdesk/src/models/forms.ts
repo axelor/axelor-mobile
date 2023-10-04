@@ -88,7 +88,7 @@ export const helpdesk_formsRegister: FormConfigs = {
         customComponent: TicketTypeSearchBar,
       },
       prioritySelect: {
-        type: 'object',
+        type: 'number',
         widget: 'custom',
         titleKey: 'Helpdesk_Priority',
         customComponent: TicketPriorityPicker,
