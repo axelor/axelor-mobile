@@ -42,7 +42,15 @@ export const updateActiveUser = createAsyncThunk(
       action: 'Auth_SliceAction_UpdateActiveUser',
       getState,
       responseOptions: {isArrayResponse: false},
-    });
+    }).then(() =>
+      handlerApiCall({
+        fetchFunction: getLoggedUser,
+        data: user.id,
+        action: 'Auth_SliceAction_FetchActiveUser',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      }),
+    );
   },
 );
 

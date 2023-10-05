@@ -22,8 +22,7 @@ import {fetchTranslation} from '../api/translation';
 import {reduceTranslationsToI18nResources} from '../helpers/translations';
 import {storage} from '../../storage/Storage';
 import {i18nProvider} from '../i18n';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchActiveUser} from '../../auth/features/userSlice';
+import {useSelector} from 'react-redux';
 
 export const selectLanguage = createSelector(
   state => state?.user,
@@ -34,15 +33,12 @@ const DEFAULT_NAMESPACE = 'translation';
 
 const useLanguageEffect = callback => {
   const language = useSelector(selectLanguage);
-  const {userId} = useSelector(state => state.auth);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (language) {
       callback(language);
-      dispatch(fetchActiveUser(userId));
     }
-  }, [language, callback, dispatch, userId]);
+  }, [language, callback]);
 };
 
 const Translator = () => {
