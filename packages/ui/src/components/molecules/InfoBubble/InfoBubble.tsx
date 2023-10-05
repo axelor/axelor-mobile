@@ -74,7 +74,7 @@ const InfoBubble = ({
           name={iconName}
           style={coloredBubble ? styles.icon : null}
           color={coloredBubble ? badgeColor.foreground : badgeColor.background}
-          size={coloredBubble ? size * 0.5 : size}
+          size={coloredBubble ? size * 0.5 : size * 0.8}
         />
       </TouchableOpacity>
       {isOpen ? (
