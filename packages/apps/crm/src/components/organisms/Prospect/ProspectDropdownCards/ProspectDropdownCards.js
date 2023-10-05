@@ -69,7 +69,7 @@ const ProspectDropdownCards = ({}) => {
             childrenComp: (
               <DropdownGeneralView
                 assignedUser={prospect.user?.fullName}
-                category={prospect.type?.name}
+                category={prospect.partnerCategory?.name}
                 industrySector={prospect.industrySector?.name}
               />
             ),
