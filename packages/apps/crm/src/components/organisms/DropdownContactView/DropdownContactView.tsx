@@ -39,7 +39,7 @@ const DropdownContactView = ({
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
-  if (!fixedPhone && !address && !mobilePhone && !emailAddress && !webSite) {
+  if (!address && !fixedPhone && !mobilePhone && !emailAddress && !webSite) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoContactInformation')}</Text>
