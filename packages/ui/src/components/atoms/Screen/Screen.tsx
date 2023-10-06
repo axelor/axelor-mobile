@@ -85,6 +85,7 @@ const getStyles = (Colors: ThemeColors) =>
       backgroundColor: Colors.backgroundColor,
       borderTopLeftRadius: 13,
       borderTopRightRadius: 13,
+      paddingVertical: 10,
     },
     smallTopShadow: {
       borderTopWidth: 0.5,
