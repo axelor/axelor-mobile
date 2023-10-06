@@ -58,7 +58,7 @@ const ContactPartnerSearchBar = ({
   );
 
   const ObjectToDisplay = useMemo(() => {
-    if (formCustomer?.id) {
+    if (formCustomer?.id != null) {
       return {
         loading: false,
         moreLoading: false,

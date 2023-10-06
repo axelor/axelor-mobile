@@ -23,7 +23,6 @@ import {getCustomerbyId} from '../features/customerSlice';
 
 const TicketFormScreen = ({navigation, route}) => {
   const idTicket = route?.params?.idTicket;
-
   const _dispatch = useDispatch();
 
   const {ticket} = useSelector(state => state.ticket);
@@ -37,7 +36,6 @@ const TicketFormScreen = ({navigation, route}) => {
       return {
         ...ticket,
         duration: ticket.duration || _default.duration,
-        prioritySelect: ticket.prioritySelect,
       };
     }
 
@@ -59,6 +57,7 @@ const TicketFormScreen = ({navigation, route}) => {
           ticket: _ticket,
         }),
       );
+
       navigation.navigate('TicketDetailsScreen', {
         idTicket: _ticket.id,
       });
@@ -93,7 +92,7 @@ const TicketFormScreen = ({navigation, route}) => {
           needRequiredFields: true,
           hideIf: () => idTicket == null,
           customAction: ({dispatch, objectState}) => {
-            return updateTicketAPI(objectState, dispatch);
+            updateTicketAPI(objectState, dispatch);
           },
         },
       ]}
