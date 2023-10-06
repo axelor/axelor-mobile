@@ -276,6 +276,7 @@ const ObjectCard = ({
               name="chevron-right"
               color={Colors.secondaryColor.background_light}
               size={20}
+              style={styles.arrowIcon}
             />
           )}
         </View>
@@ -347,6 +348,7 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
+  arrowIcon: {marginLeft: 25},
   text: {
     width: '100%',
   },
