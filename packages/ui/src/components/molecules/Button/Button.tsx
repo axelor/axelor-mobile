@@ -34,7 +34,7 @@ interface ButtonProps {
   style?: any;
   styleTxt?: any;
   title?: string;
-  width?: string;
+  width?: string | number;
 }
 
 const Button = ({
@@ -109,7 +109,7 @@ const Button = ({
   );
 };
 
-const getStyles = (color: Color, width: string) =>
+const getStyles = (color: Color, width: string | number) =>
   StyleSheet.create({
     colorButton: {
       backgroundColor: color.background_light,
