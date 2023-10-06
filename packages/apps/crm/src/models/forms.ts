@@ -25,6 +25,7 @@ import {
   EventStatusPicker,
   EventTypePicker,
   FunctionSearchBar,
+  LeadSearchBar,
   OpportunityStatusPicker,
   PartnerSearchBar,
 } from '../components';
@@ -413,8 +414,55 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Partner',
         type: 'object',
         widget: 'custom',
-        required: true,
         customComponent: PartnerSearchBar,
+      },
+      contact: {
+        titleKey: 'Crm_Contact',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ContactSearchBar,
+      },
+      eventLead: {
+        titleKey: 'Crm_Lead',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LeadSearchBar,
+      },
+      startDateTime: {
+        titleKey: 'Crm_StartDate',
+        type: 'date',
+        widget: 'date',
+      },
+      endDateTime: {
+        titleKey: 'Crm_EndDate',
+        type: 'date',
+        widget: 'date',
+      },
+      allDay: {
+        titleKey: 'Crm_AllDay',
+        type: 'boolean',
+        widget: 'checkbox',
+        options: {
+          iconSize: 20,
+        },
+      },
+      description: {
+        titleKey: 'Crm_Description',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+      },
+      location: {
+        titleKey: 'Crm_Location',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
       },
     },
   },
