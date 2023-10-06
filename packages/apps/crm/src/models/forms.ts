@@ -26,6 +26,7 @@ import {
   EventTypePicker,
   FunctionSearchBar,
   OpportunityStatusPicker,
+  PartnerSearchBar,
 } from '../components';
 
 export const crm_formsRegister: FormConfigs = {
@@ -407,6 +408,13 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         required: true,
         customComponent: EventStatusPicker,
+      },
+      partner: {
+        titleKey: 'Crm_Partner',
+        type: 'object',
+        widget: 'custom',
+        required: true,
+        customComponent: PartnerSearchBar,
       },
     },
   },

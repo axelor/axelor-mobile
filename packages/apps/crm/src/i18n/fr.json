@@ -87,9 +87,10 @@
   "Crm_LastOpportunity": "Dernière opportunité",
   "Crm_SocialNetworks": "Réseaux sociaux",
   "Crm_CreateEvent": "Créer un événement",
-  "Crm_Subject": "Subject",
+  "Crm_Subject": "Sujet",
   "Crm_Type": "Type",
   "Crm_Status": "Statut",
+  "Crm_Partner": "Tiers",
   "Crm_SliceAction_FetchCatalog": "récupération des catalogues",
   "Crm_SliceAction_FetchCatalogType": "récupération des types de catalogue",
   "Crm_SliceAction_FetchClient": "récupération des clients",
@@ -129,5 +130,6 @@
   "Crm_SliceAction_CreateCatalog": "Création d'un catalogue",
   "Crm_SliceAction_FetchProspectStatus": "récupération des statuts des prospect",
   "Crm_SliceAction_FetchLinkedPartnersOfContact": "récupération des clients/prospects associés au contact",
-  "Crm_SliceAction_GetPartnerOpportunities": "récupération des opportunités du partenaire"
+  "Crm_SliceAction_GetPartnerOpportunities": "récupération des opportunités du partenaire",
+  "Crm_SliceAction_SearchPartner": "recherche des partenaires"
 }

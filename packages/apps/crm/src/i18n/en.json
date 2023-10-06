@@ -90,6 +90,7 @@
   "Crm_Subject": "Subject",
   "Crm_Type": "Type",
   "Crm_Status": "Statut",
+  "Crm_Partner": "Partner",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -129,5 +130,6 @@
   "Crm_SliceAction_CreateCatalog": "Create catalog",
   "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
   "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact",
-  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities"
+  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities",
+  "Crm_SliceAction_SearchPartner": "search partner"
 }
