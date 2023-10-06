@@ -122,11 +122,3 @@ jest.mock('react-native-pell-rich-editor', () => ({
   RichEditor: jest.fn(),
   RichToolbar: jest.fn(),
 }));
-
-jest.mock('react-native-vector-icons/FontAwesome', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('react-native-vector-icons/FontAwesome5', () => ({
-  default: jest.fn(),
-}));
