@@ -62,14 +62,6 @@ storiesOf('ui/molecules/Button', module).add(
         defaultValue: false,
         control: {type: 'boolean'},
       },
-      onDisabledPress: {
-        action: 'clicked',
-        table: {disable: true},
-      },
-      onPress: {
-        action: 'clicked',
-        table: {disable: true},
-      },
       title: {
         type: 'string',
         defaultValue: 'Press me',
