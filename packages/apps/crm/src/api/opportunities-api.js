@@ -120,14 +120,14 @@ export async function createOpportunity({opportunity}) {
   });
 }
 
-export async function getProspectOpportunities(prospectId) {
+export async function getPartnerOpportunities(partnerId) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Opportunity',
     criteria: [
       {
         fieldName: 'partner.id',
         operator: '=',
-        value: prospectId,
+        value: partnerId,
       },
     ],
     fieldKey: 'crm_opportunity',

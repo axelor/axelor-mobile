@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {isDate} from '@axelor/aos-mobile-core';
+
 export const getLastItem = (listItem, orderField) => {
   return findItem(
     listItem,
-    event => new Date(event[orderField]) < new Date(),
+    item => isDate(item[orderField]) && new Date(item[orderField]) < new Date(),
     (prev, current) =>
       new Date(current[orderField]) > new Date(prev[orderField])
         ? current
@@ -30,7 +32,7 @@ export const getLastItem = (listItem, orderField) => {
 export const getNextItem = (listItem, orderField) => {
   return findItem(
     listItem,
-    event => new Date(event[orderField]) > new Date(),
+    item => isDate(item[orderField]) && new Date(item[orderField]) > new Date(),
     (prev, current) =>
       new Date(current[orderField]) < new Date(prev[orderField])
         ? current
@@ -44,7 +46,6 @@ const findItem = (listItem, filterFunc, reduceFunc) => {
   }
 
   const filteredList = listItem.filter(filterFunc);
-
   if (filteredList.length === 0) {
     return null;
   }

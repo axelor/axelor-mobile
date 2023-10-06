@@ -27,31 +27,36 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {OpportunityCard} from '../../molecules';
-import {getProspectOpportunities} from '../../../features/opportunitySlice';
+import {
+  fetchOpportunityStatus,
+  getPartnerOpportunities,
+} from '../../../features/opportunitySlice';
 import {getLastItem} from '../../../utils/list';
 
 interface DropdownOpportunityViewProps {
-  prospectId: number;
+  partnerId: number;
 }
 
-const DropdownOpportunityView = ({
-  prospectId,
-}: DropdownOpportunityViewProps) => {
+const DropdownOpportunityView = ({partnerId}: DropdownOpportunityViewProps) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {prospectOpportunityList} = useSelector(
+  const {partnerOpportunityList, opportunityStatusList} = useSelector(
     (state: any) => state.opportunity,
   );
 
   const lastOpportunity = useMemo(() => {
-    return getLastItem(prospectOpportunityList, 'expectedCloseDate');
-  }, [prospectOpportunityList]);
+    return getLastItem(partnerOpportunityList, 'expectedCloseDate');
+  }, [partnerOpportunityList]);
 
   useEffect(() => {
-    dispatch((getProspectOpportunities as any)(prospectId));
-  }, [dispatch, prospectId]);
+    dispatch((getPartnerOpportunities as any)(partnerId));
+  }, [dispatch, partnerId]);
+
+  useEffect(() => {
+    dispatch((fetchOpportunityStatus as any)());
+  }, [dispatch]);
 
   if (isEmpty(lastOpportunity)) {
     return (
@@ -70,6 +75,9 @@ const DropdownOpportunityView = ({
         name={lastOpportunity.name}
         opportunityScoring={lastOpportunity.opportunityRating}
         reference={lastOpportunity.opportunitySeq}
+        allOpportunityStatus={opportunityStatusList}
+        currencySymbol={lastOpportunity.currencySymbol}
+        opportunityStatus={lastOpportunity.opportunityStatus}
         onPress={() =>
           navigation.navigate('OpportunityDetailsScreen', {
             opportunityId: lastOpportunity.id,

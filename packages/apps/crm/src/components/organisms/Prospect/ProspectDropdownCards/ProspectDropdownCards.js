@@ -90,7 +90,7 @@ const ProspectDropdownCards = ({}) => {
           {
             title: I18n.t('Crm_Opportunity'),
             key: 5,
-            childrenComp: <DropdownOpportunityView prospectId={prospect?.id} />,
+            childrenComp: <DropdownOpportunityView partnerId={prospect?.id} />,
           },
         ]}
       />
