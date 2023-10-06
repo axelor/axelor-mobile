@@ -18,8 +18,9 @@
 
 import React from 'react';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {Picker, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Picker, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Ticket} from '../../../types';
+import {StyleSheet, View} from 'react-native';
 
 const TicketPriorityPicker = ({
   title = 'Helpdesk_CustomPartner',
@@ -32,17 +33,25 @@ const TicketPriorityPicker = ({
   const Colors = useThemeColor();
 
   return (
-    <Picker
-      required={required}
-      onValueChange={onChange}
-      labelField="title"
-      title={I18n.t(title)}
-      listItems={Ticket.getPriorityList(Colors, I18n)}
-      valueField="key"
-      defaultValue={defaultValue}
-      disabled={readonly}
-    />
+    <View>
+      <Text style={styles.title}>{I18n.t(title)}</Text>
+      <Picker
+        required={required}
+        onValueChange={onChange}
+        labelField="title"
+        listItems={Ticket.getPriorityList(Colors, I18n)}
+        valueField="key"
+        defaultValue={defaultValue}
+        disabled={readonly}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    marginHorizontal: '8%',
+  },
+});
 
 export default TicketPriorityPicker;

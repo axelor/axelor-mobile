@@ -28,6 +28,7 @@ import {
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {ThemeColors} from '../../../theme';
+import {checkNullString} from '../../../utils/strings';
 
 const ITEM_HEIGHT = 40;
 
@@ -35,7 +36,7 @@ interface PickerProps {
   style?: any;
   pickerStyle?: any;
   styleTxt?: any;
-  title: string;
+  title?: string;
   onValueChange: (any) => void;
   defaultValue?: string;
   listItems: any[];
@@ -149,7 +150,7 @@ const Picker = ({
     <View
       ref={wrapperRef}
       style={[Platform.OS === 'ios' ? styles.containerZIndex : null, style]}>
-      {!disabled && (
+      {!disabled && !checkNullString(title) && (
         <View style={styles.titleContainer}>
           <Text style={styleTxt}>{title}</Text>
         </View>
@@ -163,15 +164,17 @@ const Picker = ({
             styles.infosCard,
             pickerStyle,
           ]}>
-          <LabelText
-            value={
-              disabledValue == null || disabledValue === ''
-                ? '-'
-                : disabledValue
-            }
-            title={`${title} :`}
-            iconName={iconName}
-          />
+          {!checkNullString(title) && (
+            <LabelText
+              value={
+                disabledValue == null || disabledValue === ''
+                  ? '-'
+                  : disabledValue
+              }
+              title={`${title} :`}
+              iconName={iconName}
+            />
+          )}
         </View>
       ) : (
         <View
