@@ -23,7 +23,14 @@ import {Text, Screen, Image, Button} from '@axelor/aos-mobile-ui';
 const ErrorScreen = ({errorMessage, onReloadPress}) => {
   return (
     <Screen
-      fixedItems={<Button title="RELOAD SCREEN" onPress={onReloadPress} />}>
+      fixedItems={
+        <Button
+          title="RELOAD SCREEN"
+          onPress={onReloadPress}
+          FontAwesome5={false}
+          iconName="refresh"
+        />
+      }>
       <ScrollView contentContainerStyle={styles.container}>
         <Image
           resizeMode="contain"
