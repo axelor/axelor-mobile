@@ -33,20 +33,11 @@ storiesOf('ui/molecules/Button', module).add(
   },
   {
     argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
       color: {
         options: Object.keys(lightTheme.colors),
         mapping: lightTheme.colors,
         control: {
           type: 'select',
-          labels: {
-            primary: 'Primary',
-            secondary: 'Secondary',
-          },
         },
       },
       disabled: {
@@ -54,9 +45,50 @@ storiesOf('ui/molecules/Button', module).add(
         defaultValue: false,
         control: {type: 'boolean'},
       },
+      FontAwesome5: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      iconName: {
+        type: 'string',
+        defaultValue: 'check',
+        control: {type: 'text'},
+      },
+      isNeutralBackground: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      onDisabledPress: {
+        action: 'clicked',
+        table: {disable: true},
+      },
       onPress: {
         action: 'clicked',
         table: {disable: true},
+      },
+      style: {
+        control: {
+          type: 'object',
+        },
+        defaultValue: {},
+      },
+      styleTxt: {
+        control: {
+          type: 'object',
+        },
+        defaultValue: {},
+      },
+      title: {
+        type: 'string',
+        defaultValue: 'Press me',
+        control: {type: 'text'},
+      },
+      width: {
+        type: 'string',
+        defaultValue: '',
+        control: {type: 'text'},
       },
     },
   },
