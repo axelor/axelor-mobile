@@ -27,26 +27,19 @@ storiesOf('ui/molecules/Button', module).add(
   args => {
     return (
       <View style={styles.container}>
-        <Button title={'Press me'} {...args} />
+        <Button {...args} color={lightTheme.colors[args.color]} />
       </View>
     );
   },
   {
     argTypes: {
-      title: {
-        type: 'string',
-        defaultValue: 'Press me',
-        control: {type: 'text'},
-      },
       color: {
-        options: Object.keys(lightTheme.colors),
-        mapping: lightTheme.colors,
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
         control: {
           type: 'select',
-          labels: {
-            primary: 'Primary',
-            secondary: 'Secondary',
-          },
         },
       },
       disabled: {
@@ -54,9 +47,30 @@ storiesOf('ui/molecules/Button', module).add(
         defaultValue: false,
         control: {type: 'boolean'},
       },
-      onPress: {
-        action: 'clicked',
-        table: {disable: true},
+      FontAwesome5: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      iconName: {
+        type: 'string',
+        defaultValue: '?',
+        control: {type: 'text'},
+      },
+      isNeutralBackground: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      title: {
+        type: 'string',
+        defaultValue: 'Press me',
+        control: {type: 'text'},
+      },
+      width: {
+        type: 'number',
+        defaultValue: 300,
+        control: {type: 'number'},
       },
     },
   },
