@@ -34,6 +34,7 @@ const TicketPriorityPicker = ({
 
   return (
     <Picker
+      style={styles.picker}
       title={I18n.t(title)}
       required={required}
       onValueChange={onChange}
@@ -42,14 +43,18 @@ const TicketPriorityPicker = ({
       valueField="key"
       defaultValue={defaultValue}
       disabled={readonly}
-      styleTxt={styles.title}
+      styleTxt={styles.pickerTitle}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginHorizontal: '8%',
+  picker: {
+    width: '100%',
+    marginLeft: 3,
+  },
+  pickerTitle: {
+    marginLeft: 5,
   },
 });
 

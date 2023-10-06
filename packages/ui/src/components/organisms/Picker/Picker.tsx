@@ -28,7 +28,6 @@ import {
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {ThemeColors} from '../../../theme';
-import {checkNullString} from '../../../utils/strings';
 
 const ITEM_HEIGHT = 40;
 

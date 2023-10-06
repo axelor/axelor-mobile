@@ -125,7 +125,7 @@ const getStyles = Colors =>
       zIndex: 41,
     },
     title: {
-      marginHorizontal: '8%',
+      marginHorizontal: 30,
     },
     requiredBorder: {
       borderColor: Colors.errorColor.background,
