@@ -85,11 +85,7 @@ const userSlice = createSlice({
         state.canModifyCompany = true;
       }
     });
-    builder.addCase(updateActiveUser.pending, state => {
-      state.loadingUser = true;
-    });
     builder.addCase(updateActiveUser.fulfilled, (state, action) => {
-      state.loadingUser = false;
       state.user = action.payload;
       if (state.user.activeCompany == null) {
         state.canModifyCompany = true;
