@@ -18,9 +18,8 @@
 
 import React, {useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator, displayItemFullname} from '@axelor/aos-mobile-core';
 import {FormInput, Picker, useThemeColor} from '@axelor/aos-mobile-ui';
-import {displayItemFullname} from '../../../utils/displayers';
 import {EventType} from '../../../types';
 
 const EventTypePicker = ({

@@ -119,7 +119,11 @@ const LeadListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <LeadSearchBar showDetailsPopup={false} oneFilter={true} />
+            <LeadSearchBar
+              showDetailsPopup={false}
+              oneFilter={true}
+              showTitle={false}
+            />
             <MultiValuePicker
               listItems={leadStatusListItems}
               title={I18n.t('Base_Status')}

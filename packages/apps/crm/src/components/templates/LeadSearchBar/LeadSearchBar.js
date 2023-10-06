@@ -16,31 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {
-  displayItemName,
+  displayItemFullname,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {fetchLeads} from '../../../features/leadSlice';
+import {Platform, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const LeadSearchBar = ({
-  placeholderKey = 'Crm_Leads',
+  style = null,
+  readonly = false,
+  title = 'Crm_Leads',
   defaultValue = '',
   onChange = () => {},
+  required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  showTitle = true,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
     state => state.lead,
   );
+
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const fetchLeadSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -49,23 +63,53 @@ const LeadSearchBar = ({
     [dispatch],
   );
 
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={title}
+        readOnly={true}
+        defaultValue={defaultValue?.fullName}
+      />
+    );
+  }
+
   return (
-    <AutoCompleteSearch
-      objectList={leadList}
-      value={defaultValue}
-      onChangeValue={onChange}
-      fetchData={fetchLeadSearchBarAPI}
-      displayValue={displayItemName}
-      placeholder={I18n.t(placeholderKey)}
-      showDetailsPopup={showDetailsPopup}
-      loadingList={loadingLead}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      isFocus={isFocus}
-    />
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      {showTitle && <Text style={styles.title}>{I18n.t(title)}</Text>}
+      <AutoCompleteSearch
+        style={[
+          defaultValue == null && required ? styles.requiredBorder : null,
+        ]}
+        objectList={leadList}
+        value={defaultValue}
+        onChangeValue={onChange}
+        fetchData={fetchLeadSearchBarAPI}
+        displayValue={displayItemFullname}
+        placeholder={I18n.t(title)}
+        showDetailsPopup={showDetailsPopup}
+        loadingList={loadingLead}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        navigate={navigate}
+        oneFilter={oneFilter}
+        isFocus={isFocus}
+      />
+    </View>
   );
 };
+
+const getStyles = Colors =>
+  StyleSheet.create({
+    requiredBorder: {
+      borderColor: Colors.errorColor.background,
+    },
+    container: {
+      zIndex: 41,
+    },
+    title: {
+      marginHorizontal: 24,
+    },
+  });
 
 export default LeadSearchBar;

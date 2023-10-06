@@ -18,14 +18,18 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  displayItemFullname,
+} from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
   useThemeColor,
   Text,
   FormInput,
 } from '@axelor/aos-mobile-ui';
-import {displayItemFullname} from '../../../utils/displayers';
 import {searchPartner} from '../../../features/partnerSlice';
 
 const PartnerSearchBar = ({
