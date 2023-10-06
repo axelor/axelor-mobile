@@ -21,7 +21,6 @@ import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
-  IconButton,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
@@ -202,28 +201,10 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
         ? isObjectMissingRequiredField(object, config)
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
-    if (_action.iconName != null) {
-      return (
-        <IconButton
-          key={_action.key}
-          iconName={_action.iconName}
-          color={
-            isDisabled
-              ? Colors.secondaryColor
-              : _action.color || Colors.primaryColor
-          }
-          title={I18n.t(buttonConfig.title)}
-          onPress={() =>
-            handleValidate(buttonConfig.onPress, _action.needValidation)
-          }
-          disabled={isDisabled}
-        />
-      );
-    }
-
     return (
       <Button
         key={_action.key}
+        iconName={_action.iconName}
         color={
           isDisabled
             ? Colors.secondaryColor
