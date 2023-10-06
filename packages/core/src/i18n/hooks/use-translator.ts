@@ -26,7 +26,8 @@ export interface TranslatorProps {
 function useTranslator(): TranslatorProps {
   return useMemo(
     () => ({t: i18nProvider?.i18n ? i18nProvider.i18n.t : value => value}),
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [i18nProvider.i18n.language],
   );
 }
 
