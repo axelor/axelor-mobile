@@ -21,6 +21,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 import {
+  Button,
   WarningCard,
   checkNullString,
   useThemeColor,
@@ -46,7 +47,6 @@ import {
   useCameraScannerValueByKey,
 } from '../../../features/cameraScannerSlice';
 import {isUrlValid} from '../../../features/authSlice';
-import {LoginButton, UpdateButton} from '../buttons';
 import {useTranslator} from '../../../i18n';
 
 const getScanKey = mode => `urlUsername_${mode}_inputs`;
@@ -274,17 +274,28 @@ const SessionInputs = ({
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        (mode === MODE.edition ? UpdateButton : LoginButton)({
-          onPress: () => onValidation(form),
-          onDisabledPress: () => setShowRequiredFields(true),
-          disabled,
-        })
+        <Button
+          title={I18n.t(
+            mode === MODE.edition
+              ? 'Base_Connection_Update'
+              : 'Base_Connection_Login',
+          )}
+          onPress={() => onValidation(form)}
+          disabled={disabled}
+          onDisabledPress={() => setShowRequiredFields(true)}
+          style={styles.button}
+        />
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+    marginTop: 15,
+    width: 150,
+    height: 30,
+  },
   input: {
     width: '100%',
   },

@@ -18,12 +18,10 @@
 
 import React from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
-import {checkNullString} from '../../../utils/strings';
 import {useConfig} from '../../../config/ConfigContext';
 import {BlockInteractionScreen, Card} from '../../atoms';
 import Button from '../Button/Button';
 import WarningCard from '../WarningCard/WarningCard';
-import IconButton from '../IconButton/IconButton';
 
 /**
  * @description To use this component, please use
@@ -60,18 +58,9 @@ const BlockInteractionMessage = ({}) => {
           blockInteractionConfig.actionItems.length > 0 && (
             <View style={styles.buttonContainer}>
               {blockInteractionConfig.actionItems.map((action, index) => {
-                return !checkNullString(action.iconName) ? (
-                  <IconButton
-                    iconName={action.iconName}
-                    FontAwesome5={true}
-                    key={index}
-                    title={action.title}
-                    onPress={action.onPress}
-                    color={action.color}
-                    style={styles.width}
-                  />
-                ) : (
+                return (
                   <Button
+                    iconName={action.iconName}
                     key={index}
                     title={action.title}
                     onPress={action.onPress}
