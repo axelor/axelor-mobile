@@ -41,36 +41,34 @@ import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const manufOrderId = route.params.manufOrderId;
-  const consumedProduct = route.params.consumedProduct;
+  const consumedProdProduct = route.params.consumedProdProduct;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
-  const {consumedProductStockMoveLine, consumedProductFromId} = useSelector(
+  const {consumedProductStockMoveLine, consumedProduct} = useSelector(
     state => state.prodProducts,
   );
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
 
-  const product = consumedProduct
-    ? consumedProductFromId
-    : route.params.product;
+  const product = consumedProdProduct ? consumedProduct : route.params.product;
 
   const [consumedQty, setConsumedQty] = useState(
-    consumedProduct ? consumedProduct.realQty : 0,
+    consumedProdProduct ? consumedProdProduct.realQty : 0,
   );
 
   const trackingNumber = useMemo(
     () =>
       route.params.trackingNumber ||
-      consumedProduct.trackingNumber ||
-      (consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+      consumedProdProduct.trackingNumber ||
+      (consumedProdProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
         ? consumedProductStockMoveLine.trackingNumber
         : null),
     [
       route.params.trackingNumber,
-      consumedProduct,
+      consumedProdProduct,
       consumedProductStockMoveLine,
     ],
   );
@@ -99,10 +97,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
 
   const getManufOrderAndConsumedProduct = useCallback(() => {
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
-    if (consumedProduct != null) {
-      dispatch(fetchConsumedProductWithId(consumedProduct?.productId));
+    if (consumedProdProduct != null) {
+      dispatch(fetchConsumedProductWithId(consumedProdProduct?.productId));
     }
-  }, [consumedProduct, dispatch, manufOrderId]);
+  }, [consumedProdProduct, dispatch, manufOrderId]);
 
   const handleCreateConsumedProduct = useCallback(() => {
     dispatch(
@@ -129,10 +127,11 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     dispatch(
       updateProdProductOfManufOrder({
         stockMoveLineVersion:
-          consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+          consumedProdProduct?.stockMoveLineId ===
+          consumedProductStockMoveLine?.id
             ? consumedProductStockMoveLine.version
-            : consumedProduct?.stockMoveLineVersion,
-        stockMoveLineId: consumedProduct?.stockMoveLineId,
+            : consumedProdProduct?.stockMoveLineVersion,
+        stockMoveLineId: consumedProdProduct?.stockMoveLineId,
         prodProductQty: consumedQty,
         type: 'consumed',
         manufOrderId: manufOrder?.id,
@@ -141,7 +140,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     );
     handleNavigateBackToList();
   }, [
-    consumedProduct,
+    consumedProdProduct,
     consumedProductStockMoveLine,
     consumedQty,
     dispatch,
@@ -157,7 +156,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           show={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
-          prodProduct={consumedProduct}
+          prodProduct={consumedProdProduct}
           onPressCreate={handleCreateConsumedProduct}
           onPressUpdate={handleUpdateConsumedProduct}
         />
@@ -175,7 +174,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={
-          consumedProduct != null
+          consumedProdProduct != null
             ? {
                 loading: loadingOrder,
                 fetcher: getManufOrderAndConsumedProduct,
@@ -196,8 +195,8 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
         />
         <ConsumedProductTrackingNumberSelect
           product={product}
-          stockMoveLineId={consumedProduct?.stockMoveLineId}
-          stockMoveLineVersion={consumedProduct?.stockMoveLineVersion}
+          stockMoveLineId={consumedProdProduct?.stockMoveLineId}
+          stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
           manufOrderId={manufOrder?.id}
           manufOrderVersion={manufOrder?.version}
           visible={isTrackingNumberSelectVisible}
@@ -212,10 +211,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              consumedProduct?.plannedQty,
+              consumedProdProduct?.plannedQty,
             )} ${
-              consumedProduct
-                ? consumedProduct.unit?.unitName
+              consumedProdProduct
+                ? consumedProdProduct.unit?.unitName
                 : product.unit?.name
             }`}
           </Text>

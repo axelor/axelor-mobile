@@ -39,7 +39,7 @@ import {ManufacturingOrder} from '../../../types';
 import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ProducedProductDetailsScreen = ({route, navigation}) => {
-  const {manufOrderId, producedProduct, trackingNumber} = route.params;
+  const {manufOrderId, producedProdProduct, trackingNumber} = route.params;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
@@ -47,14 +47,12 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {producedProductFromId} = useSelector(state => state.prodProducts);
+  const {producedProduct} = useSelector(state => state.prodProducts);
 
-  const product = producedProduct
-    ? producedProductFromId
-    : route.params.product;
+  const product = producedProdProduct ? producedProduct : route.params.product;
 
   const [producedQty, setProducedQty] = useState(
-    producedProduct ? producedProduct.realQty : 0,
+    producedProdProduct ? producedProdProduct.realQty : 0,
   );
 
   useEffect(() => {
@@ -75,10 +73,10 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
 
   const getManufOrderAndProducedProduct = useCallback(() => {
     dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
-    if (producedProduct != null) {
-      dispatch(fetchProducedProductWithId(producedProduct?.productId));
+    if (producedProdProduct != null) {
+      dispatch(fetchProducedProductWithId(producedProdProduct?.productId));
     }
-  }, [dispatch, manufOrderId, producedProduct]);
+  }, [dispatch, manufOrderId, producedProdProduct]);
 
   const handleCreateProducedProduct = useCallback(() => {
     dispatch(
@@ -104,8 +102,8 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const handleUpdateProducedProduct = useCallback(() => {
     dispatch(
       updateProdProductOfManufOrder({
-        stockMoveLineVersion: producedProduct?.stockMoveLineVersion,
-        stockMoveLineId: producedProduct?.stockMoveLineId,
+        stockMoveLineVersion: producedProdProduct?.stockMoveLineVersion,
+        stockMoveLineId: producedProdProduct?.stockMoveLineId,
         prodProductQty: producedQty,
         type: 'produced',
         manufOrderId: manufOrder?.id,
@@ -114,7 +112,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     );
     handleNavigateBackToList();
   }, [
-    producedProduct,
+    producedProdProduct,
     producedQty,
     dispatch,
     handleNavigateBackToList,
@@ -129,7 +127,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           show={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
-          prodProduct={producedProduct}
+          prodProduct={producedProdProduct}
           onPressCreate={handleCreateProducedProduct}
           onPressUpdate={handleUpdateProducedProduct}
         />
@@ -147,7 +145,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={
-          producedProduct != null
+          producedProdProduct != null
             ? {
                 loading: loadingOrder,
                 fetcher: getManufOrderAndProducedProduct,
@@ -177,10 +175,10 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              producedProduct?.plannedQty,
+              producedProdProduct?.plannedQty,
             )} ${
-              producedProduct
-                ? producedProduct.unit?.unitName
+              producedProdProduct
+                ? producedProdProduct.unit?.unitName
                 : product.unit?.name
             }`}
           </Text>

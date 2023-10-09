@@ -174,10 +174,10 @@ const initialState = {
   consumedProductStockMoveLine: {},
   loadingProducedProducts: false,
   producedProductList: [],
-  loadingConsumedProductFromId: false,
-  consumedProductFromId: {},
-  loadingProducedProductFromId: false,
-  producedProductFromId: {},
+  loadingConsumedProduct: false,
+  consumedProduct: {},
+  loadingProducedProduct: false,
+  producedProduct: {},
   loadingProdProduct: false,
   prodProduct: {},
 };
@@ -222,18 +222,18 @@ const prodProductsSlice = createSlice({
       },
     );
     builder.addCase(fetchConsumedProductWithId.pending, state => {
-      state.loadingConsumedProductFromId = true;
+      state.loadingConsumedProduct = true;
     });
     builder.addCase(fetchConsumedProductWithId.fulfilled, (state, action) => {
-      state.loadingConsumedProductFromId = false;
-      state.consumedProductFromId = action.payload;
+      state.loadingConsumedProduct = false;
+      state.consumedProduct = action.payload;
     });
     builder.addCase(fetchProducedProductWithId.pending, state => {
-      state.loadingProducedProductFromId = true;
+      state.loadingProducedProduct = true;
     });
     builder.addCase(fetchProducedProductWithId.fulfilled, (state, action) => {
-      state.loadingProducedProductFromId = false;
-      state.producedProductFromId = action.payload;
+      state.loadingProducedProduct = false;
+      state.producedProduct = action.payload;
     });
     builder.addCase(fetchProdProductWithId.pending, state => {
       state.loadingProdProduct = true;

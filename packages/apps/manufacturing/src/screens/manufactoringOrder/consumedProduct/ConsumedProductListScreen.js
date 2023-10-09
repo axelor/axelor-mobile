@@ -130,7 +130,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
   const handleViewItem = item => {
     navigation.navigate('ConsumedProductDetailsScreen', {
       manufOrderId: manufOrder.id,
-      consumedProduct: item,
+      consumedProdProduct: item,
     });
   };
 
