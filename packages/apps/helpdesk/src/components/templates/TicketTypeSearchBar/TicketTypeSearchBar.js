@@ -27,17 +27,17 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchTicketType} from '../../../features/ticketSlice';
 
 const TicketTypeSearchBar = ({
-  placeholderKey = 'Helpdesk_Type',
-  titleKey = 'Helpdesk_Type',
+  style = null,
+  title = 'Helpdesk_Type',
   defaultValue = null,
   onChange = () => {},
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  style,
   showTitle = true,
-  required = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -58,14 +58,15 @@ const TicketTypeSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(titleKey)}
+      title={showTitle && I18n.t(title)}
       objectList={ticketTypeList}
       value={defaultValue}
       required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchTicketTypeAPI}
       displayValue={displayItemName}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingTicketType}
       moreLoading={moreLoadingTicketType}
