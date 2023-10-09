@@ -91,7 +91,7 @@ export const fetchProdProductWithId = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: searchProdProductWithId,
       data: productId,
-      action: 'Stock_SliceAction_fetchProdProductWithId',
+      action: 'Manufacturing_SliceAction_FetchProdProductWithId',
       getState,
       responseOptions: {isArrayResponse: false},
     });

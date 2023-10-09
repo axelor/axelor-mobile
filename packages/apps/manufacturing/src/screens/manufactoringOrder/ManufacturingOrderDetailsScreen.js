@@ -43,9 +43,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, operationOrderList} = useSelector(
-    state => state.operationOrder,
-  );
+  const {operationOrderList} = useSelector(state => state.operationOrder);
   const {productFromId: product} = useSelector(state => state.product);
   const {loadingOrder, manufOrder} = useSelector(
     state => state.manufacturingOrder,
@@ -130,7 +128,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       />
       <ScrollView
         refresh={{
-          loading: loadingOrder || loading,
+          loading: loadingOrder,
           fetcher: fetchManufOrderAndOperation,
         }}>
         <ManufacturingOrderDatesCard />

@@ -47,9 +47,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {loadingProducedProductFromId, producedProductFromId} = useSelector(
-    state => state.prodProducts,
-  );
+  const {producedProductFromId} = useSelector(state => state.prodProducts);
 
   const product = producedProduct
     ? producedProductFromId
@@ -148,24 +146,27 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
         }
       />
       <ScrollView
-        refresh={{
-          loading: loadingOrder && loadingProducedProductFromId,
-          fetcher: getManufOrderAndProducedProduct,
-        }}>
-        {(product || !loadingProducedProductFromId) && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            trackingNumber={
-              product.trackingNumberConfiguration == null ||
-              trackingNumber == null
-                ? null
-                : trackingNumber.trackingNumberSeq
-            }
-            onPress={handleShowProduct}
-          />
-        )}
+        refresh={
+          producedProduct != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndProducedProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          trackingNumber={
+            product?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.trackingNumberSeq
+          }
+          onPress={handleShowProduct}
+        />
+
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ProducedQty')}
           defaultValue={producedQty}

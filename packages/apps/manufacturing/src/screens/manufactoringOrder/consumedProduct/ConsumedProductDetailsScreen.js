@@ -46,11 +46,9 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
-  const {
-    consumedProductStockMoveLine,
-    consumedProductFromId,
-    loadingConsumedProductFromId,
-  } = useSelector(state => state.prodProducts);
+  const {consumedProductStockMoveLine, consumedProductFromId} = useSelector(
+    state => state.prodProducts,
+  );
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
@@ -176,24 +174,26 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
         }
       />
       <ScrollView
-        refresh={{
-          loading: loadingOrder && loadingConsumedProductFromId,
-          fetcher: getManufOrderAndConsumedProduct,
-        }}>
-        {(product || !loadingConsumedProductFromId) && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            trackingNumber={
-              product.trackingNumberConfiguration == null ||
-              trackingNumber == null
-                ? null
-                : trackingNumber.trackingNumberSeq
-            }
-            onPress={handleShowProduct}
-          />
-        )}
+        refresh={
+          consumedProduct != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndConsumedProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          trackingNumber={
+            product?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.trackingNumberSeq
+          }
+          onPress={handleShowProduct}
+        />
         <ConsumedProductTrackingNumberSelect
           product={product}
           stockMoveLineId={consumedProduct?.stockMoveLineId}

@@ -24,7 +24,12 @@ import {
   ScrollView,
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  isEmpty,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   fetchUnit,
   ProductCardInfo,
@@ -50,9 +55,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const {unitList} = useSelector(state => state.unit);
 
-  const {loadingProdProduct, prodProduct} = useSelector(
-    state => state.prodProducts,
-  );
+  const {prodProduct} = useSelector(state => state.prodProducts);
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
   );
@@ -62,7 +65,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const product = useMemo(
     () =>
-      prodProduct != null && Object.keys(prodProduct).length > 0
+      prodProduct != null && !isEmpty(prodProduct)
         ? prodProduct.product
         : route.params.product,
     [prodProduct, route.params.product],
@@ -94,9 +97,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     setWasteQty(prodProduct?.qty);
-  }, [prodProduct]);
-
-  useEffect(() => {
     setUnit(prodProduct?.unit);
   }, [prodProduct]);
 
@@ -151,18 +151,20 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
         }
       />
       <ScrollView
-        refresh={{
-          loading: loadingOrder && loadingProdProduct,
-          fetcher: getManufOrderAndWasteProduct,
-        }}>
-        {product != null && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            onPress={handleShowProduct}
-          />
-        )}
+        refresh={
+          wasteProductId != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndWasteProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          onPress={handleShowProduct}
+        />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_WasteQty')}
           defaultValue={wasteQty}

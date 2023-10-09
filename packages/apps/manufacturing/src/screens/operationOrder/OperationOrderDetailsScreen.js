@@ -47,7 +47,7 @@ function OperationOrderDetailsScreen({route}) {
   }, [getOperationOrder]);
 
   return (
-    <Screen removeSpaceOnTop={true} loading={loadingOrder}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         fixedItems={
           <OperationOrderHeader
