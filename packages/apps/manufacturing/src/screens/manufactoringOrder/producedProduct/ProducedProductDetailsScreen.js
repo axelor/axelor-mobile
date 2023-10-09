@@ -25,41 +25,39 @@ import {
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  fetchProductWithId,
-  QuantityCard,
-  ProductCardInfo,
-} from '@axelor/aos-mobile-stock';
+import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   ProdProductFixedItems,
 } from '../../../components';
 import {
   addProdProductToManufOrder,
+  fetchProducedProductWithId,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
+import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ProducedProductDetailsScreen = ({route, navigation}) => {
-  const {manufOrder, producedProduct, trackingNumber} = route.params;
+  const {manufOrderId, producedProdProduct, trackingNumber} = route.params;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
+  const {manufOrder, loadingOrder} = useSelector(
+    state => state.manufacturingOrder,
   );
-  const product = producedProduct ? productFromId : route.params.product;
+  const {producedProduct} = useSelector(state => state.prodProducts);
+
+  const product = producedProdProduct ? producedProduct : route.params.product;
 
   const [producedQty, setProducedQty] = useState(
-    producedProduct ? producedProduct.realQty : 0,
+    producedProdProduct ? producedProdProduct.realQty : 0,
   );
 
   useEffect(() => {
-    if (producedProduct != null) {
-      dispatch(fetchProductWithId(producedProduct.productId));
-    }
-  }, [producedProduct, dispatch]);
+    getManufOrderAndProducedProduct();
+  }, [getManufOrderAndProducedProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -72,6 +70,13 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   }, [manufOrder, navigation]);
+
+  const getManufOrderAndProducedProduct = useCallback(() => {
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    if (producedProdProduct != null) {
+      dispatch(fetchProducedProductWithId(producedProdProduct?.productId));
+    }
+  }, [dispatch, manufOrderId, producedProdProduct]);
 
   const handleCreateProducedProduct = useCallback(() => {
     dispatch(
@@ -97,8 +102,8 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
   const handleUpdateProducedProduct = useCallback(() => {
     dispatch(
       updateProdProductOfManufOrder({
-        stockMoveLineVersion: producedProduct?.stockMoveLineVersion,
-        stockMoveLineId: producedProduct?.stockMoveLineId,
+        stockMoveLineVersion: producedProdProduct?.stockMoveLineVersion,
+        stockMoveLineId: producedProdProduct?.stockMoveLineId,
         prodProductQty: producedQty,
         type: 'produced',
         manufOrderId: manufOrder?.id,
@@ -107,7 +112,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
     );
     handleNavigateBackToList();
   }, [
-    producedProduct,
+    producedProdProduct,
     producedQty,
     dispatch,
     handleNavigateBackToList,
@@ -122,7 +127,7 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           show={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
-          prodProduct={producedProduct}
+          prodProduct={producedProdProduct}
           onPressCreate={handleCreateProducedProduct}
           onPressUpdate={handleUpdateProducedProduct}
         />
@@ -138,21 +143,28 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
-        {(product || !loadingProductFromId) && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            trackingNumber={
-              product.trackingNumberConfiguration == null ||
-              trackingNumber == null
-                ? null
-                : trackingNumber.trackingNumberSeq
-            }
-            onPress={handleShowProduct}
-          />
-        )}
+      <ScrollView
+        refresh={
+          producedProdProduct != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndProducedProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          trackingNumber={
+            product?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.trackingNumberSeq
+          }
+          onPress={handleShowProduct}
+        />
+
         <QuantityCard
           labelQty={I18n.t('Manufacturing_ProducedQty')}
           defaultValue={producedQty}
@@ -163,10 +175,10 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              producedProduct?.plannedQty,
+              producedProdProduct?.plannedQty,
             )} ${
-              producedProduct
-                ? producedProduct.unit?.unitName
+              producedProdProduct
+                ? producedProdProduct.unit?.unitName
                 : product.unit?.name
             }`}
           </Text>
