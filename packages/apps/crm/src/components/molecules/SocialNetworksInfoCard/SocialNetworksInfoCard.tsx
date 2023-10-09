@@ -28,7 +28,8 @@ interface SocialNetworksInfoCardProps {
   FontAwesome5HeaderIcon?: boolean;
   border?: boolean;
   styleBorder?: any;
-  fullName?: string;
+  name?: string;
+  lastName?: string;
   company?: string;
 }
 
@@ -36,7 +37,8 @@ const SocialNetworksInfoCard = ({
   style,
   headerIconName,
   title,
-  fullName,
+  name,
+  lastName = '',
   company,
   FontAwesome5HeaderIcon = true,
   border = false,
@@ -47,7 +49,7 @@ const SocialNetworksInfoCard = ({
     return getStyles(Colors);
   }, [Colors]);
 
-  if (checkNullString(fullName) && checkNullString(company)) {
+  if (checkNullString(name) && checkNullString(company)) {
     return null;
   }
 
@@ -65,7 +67,9 @@ const SocialNetworksInfoCard = ({
         <SocialNetworkLinks
           size={25}
           data={{
-            fullName: fullName,
+            name: name,
+            lastName: lastName,
+            company: company,
           }}
         />
       </View>
@@ -85,14 +89,7 @@ const getStyles = Colors =>
       alignItems: 'center',
       marginTop: '2%',
     },
-    rightIcon: {
-      marginRight: '2%',
-    },
     textTitle: {
-      fontSize: 14,
-    },
-    textData: {
-      width: '85%',
       fontSize: 14,
     },
     borderBottom: {

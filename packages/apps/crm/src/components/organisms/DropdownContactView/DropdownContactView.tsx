@@ -28,8 +28,9 @@ interface DropdownContactViewProps {
   mobilePhone?: string;
   emailAddress: string;
   webSite: string;
-  fullName: string;
-  company: string;
+  name?: string;
+  lastName?: string;
+  company?: string;
 }
 
 const DropdownContactView = ({
@@ -38,7 +39,8 @@ const DropdownContactView = ({
   mobilePhone,
   emailAddress,
   webSite,
-  fullName,
+  name,
+  lastName = '',
   company,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
@@ -63,7 +65,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          fullName != null ||
+          name != null ||
           company != null
         }
         styleBorder={styles.borderInfoCard}
@@ -78,7 +80,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          fullName != null ||
+          name != null ||
           company != null
         }
         styleBorder={styles.borderInfoCard}
@@ -92,7 +94,7 @@ const DropdownContactView = ({
         border={
           emailAddress != null ||
           webSite != null ||
-          fullName != null ||
+          name != null ||
           company != null
         }
         styleBorder={styles.borderInfoCard}
@@ -104,7 +106,7 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={webSite != null || fullName != null || company != null}
+        border={webSite != null || name != null || company != null}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -114,11 +116,12 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
-        border={fullName != null || company != null}
+        border={name != null || company != null}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
       <SocialNetworksInfoCard
-        fullName={fullName}
+        name={name}
+        lastName={lastName}
         company={company}
         headerIconName={'globe'}
         title={I18n.t('Crm_SocialNetworks')}

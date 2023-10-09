@@ -16,43 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Icon, checkNullString, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '../../../tools';
 
-const formatGoogleSearch = (name, lastName, company, linkedinEnterprise) => {
+const formatGoogleSearch = (name, lastName, company) => {
   let result = '';
 
   if (name != null && lastName != null) {
     result = result.concat(name).concat('+').concat(lastName);
   }
 
-  if (company != null && !linkedinEnterprise) {
+  if (company != null) {
     result = result.concat('+').concat(company).concat('+');
   }
 
   return result;
 };
 
-const formatLinkedinSearch = (name, lastName, company, linkedinEnterprise) => {
-  if (company != null && linkedinEnterprise) {
+const formatLinkedinSearch = (name, lastName, company) => {
+  if (
+    !checkNullString(company) &&
+    checkNullString(name) &&
+    checkNullString(lastName)
+  ) {
     return `company/${company}`;
   }
-  if (name != null && lastName != null) {
+  if (name != null || lastName != null) {
     return `pub/dir/${name}/${lastName}`;
   }
 
   return '';
-};
-
-const getFirstNameAndName = nameToSplit => {
-  const fullName = nameToSplit?.split(' ');
-  if (fullName?.length === 2) {
-    return {firstName: fullName[0], lastName: fullName[1]};
-  } else {
-    return {firstName: fullName, lastName: ''};
-  }
 };
 
 const SocialNetworkLinks = ({
@@ -63,12 +58,10 @@ const SocialNetworkLinks = ({
   hideGoogle = false,
   linkedinColor,
   hideLinkedin = false,
-  linkedinEnterprise = false,
 }: {
   style?: any;
   size?: number;
   data: {
-    fullName?: string;
     name?: string;
     lastName?: string;
     company?: string;
@@ -77,19 +70,8 @@ const SocialNetworkLinks = ({
   hideGoogle?: boolean;
   linkedinColor?: string;
   hideLinkedin?: boolean;
-  linkedinEnterprise?: boolean;
 }) => {
   const Colors = useThemeColor();
-  const [objectName, setObjectName] = useState({
-    firstName: data?.name,
-    lastName: data?.lastName,
-  });
-
-  useEffect(() => {
-    if (data?.fullName != null) {
-      setObjectName(getFirstNameAndName(data?.fullName));
-    }
-  }, [data]);
 
   return (
     <View style={[styles.container, style]}>
@@ -104,10 +86,9 @@ const SocialNetworkLinks = ({
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.google.com/search?q=${formatGoogleSearch(
-                objectName.firstName,
-                objectName.lastName,
+                data.name,
+                data.lastName,
                 data.company,
-                linkedinEnterprise,
               )}&gws_rd=cr`,
             )
           }
@@ -124,10 +105,9 @@ const SocialNetworkLinks = ({
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.linkedin.com/${formatLinkedinSearch(
-                objectName.firstName,
-                objectName.lastName,
+                data.name,
+                data.lastName,
                 data.company,
-                linkedinEnterprise,
               )}`,
               false,
             )

@@ -61,7 +61,6 @@ const ProspectHeader = ({colorIndex}) => {
           <AOSImageBubble metaFileId={prospect?.picture?.id} />
           <SocialNetworkLinks
             data={{
-              fullName: prospect?.simpleFullName,
               company: prospect?.simpleFullName,
             }}
             linkedinEnterprise={true}

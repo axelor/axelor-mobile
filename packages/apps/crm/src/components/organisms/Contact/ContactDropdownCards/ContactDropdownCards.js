@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DropdownCardSwitch} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useSelector,
+  useTranslator,
+  splitFullName,
+} from '@axelor/aos-mobile-core';
 import {
   DropdownContactPartnerView,
   DropdownContactView,
@@ -34,6 +39,10 @@ const ContactDropdownCards = ({}) => {
 
   const {contact} = useSelector(state => state.contact);
   const {listEventContact} = useSelector(state => state.event);
+
+  const fullName = useMemo(() => {
+    return splitFullName(contact?.simpleFullName);
+  }, [contact?.simpleFullName]);
 
   useEffect(() => {
     dispatch(fetchContactEventById(contact?.id));
@@ -54,7 +63,8 @@ const ContactDropdownCards = ({}) => {
                 mobilePhone={contact.mobilePhone}
                 emailAddress={contact.emailAddress?.address}
                 webSite={contact.webSite}
-                fullName={contact.simpleFullName}
+                name={fullName?.firstName}
+                lastName={fullName?.lastName}
               />
             ),
           },
