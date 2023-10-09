@@ -18,11 +18,15 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-import {updateStockMoveLineTrackingNumber} from '@axelor/aos-mobile-stock';
+import {
+  searchProductWithId,
+  updateStockMoveLineTrackingNumber,
+} from '@axelor/aos-mobile-stock';
 import {
   createProdProduct,
   fetchManufacturingOrderConsumedProducts,
   fetchManufacturingOrderProducedProducts,
+  searchProdProductWithId,
   updateProdProduct,
 } from '../api/prod-product-api';
 
@@ -42,6 +46,19 @@ export const fetchConsumedProducts = createAsyncThunk(
   },
 );
 
+export const fetchConsumedProductWithId = createAsyncThunk(
+  'product/fetchConsumedProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProductWithId,
+      data: productId,
+      action: 'Manufacturing_SliceAction_FetchConsumedProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
 export const fetchProducedProducts = createAsyncThunk(
   'prodProducts/fetchProducedProducts',
   async function (data, {getState}) {
@@ -51,6 +68,32 @@ export const fetchProducedProducts = createAsyncThunk(
       action: 'Manufacturing_SliceAction_FetchProducedProducts',
       getState,
       responseOptions: {},
+    });
+  },
+);
+
+export const fetchProducedProductWithId = createAsyncThunk(
+  'product/fetchCProducedProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProductWithId,
+      data: productId,
+      action: 'Manufacturing_SliceAction_FetchProducedProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const fetchProdProductWithId = createAsyncThunk(
+  'product/fetchProdProductWithId',
+  async function (productId, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchProdProductWithId,
+      data: productId,
+      action: 'Manufacturing_SliceAction_FetchProdProductWithId',
+      getState,
+      responseOptions: {isArrayResponse: false},
     });
   },
 );
@@ -131,6 +174,12 @@ const initialState = {
   consumedProductStockMoveLine: {},
   loadingProducedProducts: false,
   producedProductList: [],
+  loadingConsumedProduct: false,
+  consumedProduct: {},
+  loadingProducedProduct: false,
+  producedProduct: {},
+  loadingProdProduct: false,
+  prodProduct: {},
 };
 
 const prodProductsSlice = createSlice({
@@ -172,6 +221,27 @@ const prodProductsSlice = createSlice({
         state.consumedProductStockMoveLine = action.payload?.stockMoveLine;
       },
     );
+    builder.addCase(fetchConsumedProductWithId.pending, state => {
+      state.loadingConsumedProduct = true;
+    });
+    builder.addCase(fetchConsumedProductWithId.fulfilled, (state, action) => {
+      state.loadingConsumedProduct = false;
+      state.consumedProduct = action.payload;
+    });
+    builder.addCase(fetchProducedProductWithId.pending, state => {
+      state.loadingProducedProduct = true;
+    });
+    builder.addCase(fetchProducedProductWithId.fulfilled, (state, action) => {
+      state.loadingProducedProduct = false;
+      state.producedProduct = action.payload;
+    });
+    builder.addCase(fetchProdProductWithId.pending, state => {
+      state.loadingProdProduct = true;
+    });
+    builder.addCase(fetchProdProductWithId.fulfilled, (state, action) => {
+      state.loadingProdProduct = false;
+      state.prodProduct = action.payload;
+    });
   },
 });
 

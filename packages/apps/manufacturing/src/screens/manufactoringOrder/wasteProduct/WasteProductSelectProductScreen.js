@@ -29,7 +29,7 @@ const WasteProductSelectProductScreen = ({route, navigation}) => {
   const handleSelectProduct = product => {
     if (product != null) {
       navigation.navigate('WasteProductDetailsScreen', {
-        manufOrder: manufOrder,
+        manufOrderId: manufOrder?.id,
         product: product,
       });
     }
