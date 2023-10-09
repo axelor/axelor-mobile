@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {helpdesk_formsRegister} from './forms';
 export {helpdesk_searchFields} from './searchFields';
 export {helpdesk_sortFields} from './sortFields';
 export {helpdesk_modelAPI} from './objectFields';

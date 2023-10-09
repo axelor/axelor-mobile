@@ -23,17 +23,16 @@ import {searchProject} from '../../../features/projectSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ProjectSearchBar = ({
-  placeholderKey = 'Helpdesk_Project',
-  titleKey = 'Helpdesk_Project',
+  style = null,
+  title = 'Helpdesk_Project',
   defaultValue = null,
   onChange = () => {},
+  readonly = false,
+  required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  style,
-  required = false,
-  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -51,7 +50,7 @@ const ProjectSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(titleKey)}
+      title={I18n.t(title)}
       objectList={projectList}
       value={defaultValue}
       required={required}
@@ -59,7 +58,7 @@ const ProjectSearchBar = ({
       onChangeValue={onChange}
       fetchData={searchProjectAPI}
       displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingProject}
       moreLoading={moreLoading}
