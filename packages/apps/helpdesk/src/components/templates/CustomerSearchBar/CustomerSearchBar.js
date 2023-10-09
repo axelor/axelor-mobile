@@ -23,17 +23,17 @@ import {searchCustomer} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const CustomerSearchBar = ({
-  placeholderKey = 'Helpdesk_CustomPartner',
-  titleKey = 'Helpdesk_CustomPartner',
+  style = null,
+  title = 'Helpdesk_CustomPartner',
   defaultValue = null,
   onChange = () => {},
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  style,
   showTitle = true,
-  required = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -51,14 +51,15 @@ const CustomerSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(titleKey)}
+      title={showTitle && I18n.t(title)}
       objectList={customerList}
       value={defaultValue}
       required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchCustomerAPI}
       displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loading}
       moreLoading={moreLoading}

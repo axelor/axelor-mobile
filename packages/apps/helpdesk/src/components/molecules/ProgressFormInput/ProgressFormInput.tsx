@@ -22,16 +22,18 @@ import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 interface ProgressFormInputProps {
   style?: any;
   title: string;
-  readOnly?: boolean;
   defaultValue?: number;
+  required?: boolean;
+  readonly?: boolean;
   onChange: (value: any) => void;
 }
 
 const ProgressFormInput = ({
   style,
   title,
-  readOnly = false,
   defaultValue = null,
+  required = false,
+  readonly = false,
   onChange,
 }: ProgressFormInputProps) => {
   const round = useCallback(value => {
@@ -54,9 +56,10 @@ const ProgressFormInput = ({
       defaultFormatting={false}
       defaultValue={_defaultValue}
       onChange={onChangeValue}
-      readOnly={readOnly}
+      readOnly={readonly}
       stepSize={10}
       maxValue={100}
+      required={required}
     />
   );
 };

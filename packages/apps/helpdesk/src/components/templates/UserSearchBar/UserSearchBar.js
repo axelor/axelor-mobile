@@ -23,17 +23,17 @@ import {searchUser} from '../../../features/userSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const UserSearchBar = ({
-  placeholderKey = 'Helpdesk_User',
-  titleKey = 'Helpdesk_User',
+  style = null,
+  title = 'Helpdesk_User',
   defaultValue = null,
   onChange = () => {},
+  readonly = false,
+  required = false,
   showDetailsPopup = true,
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  style,
   showTitle = true,
-  required = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -51,14 +51,15 @@ const UserSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={showTitle && I18n.t(titleKey)}
+      title={showTitle && I18n.t(title)}
       objectList={userList}
       value={defaultValue}
       required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchUserTypeAPI}
       displayValue={displayItemFullname}
-      placeholder={I18n.t(placeholderKey)}
+      placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
       loadingList={loadingUser}
       moreLoading={moreLoading}
