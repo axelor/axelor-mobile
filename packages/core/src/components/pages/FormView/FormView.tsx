@@ -110,14 +110,10 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
       updatedObject[fieldName] = newValue;
 
       getFields(config)
-        .filter(_field => _field.dependsOn?.fieldName != null)
-        .filter(_field =>
-          Array.isArray(_field.dependsOn.fieldName)
-            ? _field.dependsOn.fieldName.includes(fieldName)
-            : _field.dependsOn.fieldName === fieldName,
-        )
+        .filter(_field => _field.dependsOn != null)
+        .filter(_field => Object.keys(_field.dependsOn).includes(fieldName))
         .forEach(_field => {
-          updatedObject[_field.key] = _field.dependsOn.onChange({
+          updatedObject[_field.key] = _field.dependsOn[fieldName]({
             newValue,
             storeState,
             objectState: updatedObject,
