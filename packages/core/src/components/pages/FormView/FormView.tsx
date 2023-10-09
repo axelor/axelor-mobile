@@ -21,11 +21,9 @@ import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
-  IconButton,
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
@@ -60,7 +58,6 @@ interface FormProps {
 
 const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
@@ -202,33 +199,11 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
         ? isObjectMissingRequiredField(object, config)
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
-    if (_action.iconName != null) {
-      return (
-        <IconButton
-          key={_action.key}
-          iconName={_action.iconName}
-          color={
-            isDisabled
-              ? Colors.secondaryColor
-              : _action.color || Colors.primaryColor
-          }
-          title={I18n.t(buttonConfig.title)}
-          onPress={() =>
-            handleValidate(buttonConfig.onPress, _action.needValidation)
-          }
-          disabled={isDisabled}
-        />
-      );
-    }
-
     return (
       <Button
         key={_action.key}
-        color={
-          isDisabled
-            ? Colors.secondaryColor
-            : _action.color || Colors.primaryColor
-        }
+        iconName={_action.iconName}
+        color={_action.color}
         title={I18n.t(buttonConfig.title)}
         onPress={() =>
           handleValidate(buttonConfig.onPress, _action.needValidation)
