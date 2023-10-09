@@ -76,7 +76,11 @@ const InventoryButtons = ({}) => {
 
   if (inventory?.statusSelect === Inventory.status.Planned) {
     return (
-      <Button title={I18n.t('Base_Start')} onPress={handleStartInventory} />
+      <Button
+        title={I18n.t('Base_Start')}
+        iconName="play"
+        onPress={handleStartInventory}
+      />
     );
   }
 
@@ -84,6 +88,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Complete')}
+        iconName="check"
         onPress={handleCompleteInventory}
       />
     );
@@ -96,6 +101,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Validate')}
+        iconName="check"
         onPress={handleValidateInventory}
       />
     );
