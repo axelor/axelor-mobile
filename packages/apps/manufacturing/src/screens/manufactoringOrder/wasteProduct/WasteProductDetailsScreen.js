@@ -26,7 +26,6 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
-  fetchProductWithId,
   fetchUnit,
   ProductCardInfo,
   QuantityCard,
@@ -40,32 +39,33 @@ import {
   addWasteProductToManufOrder,
   updateWasteProductOfManufOrder,
 } from '../../../features/wasteProductsSlice';
+import {fetchProdProductWithId} from '../../../features/prodProductSlice';
+import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const WasteProductDetailsScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
-  const wasteProduct = route.params.wasteProduct;
+  const manufOrderId = route.params.manufOrderId;
+  const wasteProductId = route.params.wasteProductId;
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {unitList} = useSelector(state => state.unit);
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
+  const {prodProduct} = useSelector(state => state.prodProducts);
+  const {manufOrder, loadingOrder} = useSelector(
+    state => state.manufacturingOrder,
   );
 
-  const [unit, setUnit] = useState(wasteProduct ? wasteProduct?.unit : null);
-  const [wasteQty, setWasteQty] = useState(wasteProduct ? wasteProduct.qty : 0);
+  const [unit, setUnit] = useState(null);
+  const [wasteQty, setWasteQty] = useState(0);
 
   const product = useMemo(
-    () => (wasteProduct ? productFromId : route.params.product),
-    [productFromId, route.params.product, wasteProduct],
+    () =>
+      wasteProductId != null ? prodProduct?.product : route.params.product,
+    [prodProduct?.product, route.params.product, wasteProductId],
   );
 
   useEffect(() => {
-    dispatch(fetchUnit());
-    if (wasteProduct != null) {
-      dispatch(fetchProductWithId(wasteProduct?.product?.id));
-    }
-  }, [wasteProduct, dispatch]);
+    getManufOrderAndWasteProduct();
+  }, [getManufOrderAndWasteProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -78,6 +78,19 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   }, [manufOrder, navigation]);
+
+  const getManufOrderAndWasteProduct = useCallback(() => {
+    dispatch(fetchUnit());
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    if (wasteProductId != null) {
+      dispatch(fetchProdProductWithId({productId: wasteProductId}));
+    }
+  }, [dispatch, manufOrderId, wasteProductId]);
+
+  useEffect(() => {
+    setWasteQty(prodProduct?.qty);
+    setUnit(prodProduct?.unit);
+  }, [prodProduct]);
 
   const handleCreateWasteProduct = useCallback(() => {
     dispatch(
@@ -96,13 +109,13 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
       updateWasteProductOfManufOrder({
         manufOrderId: manufOrder?.id,
         page: 0,
-        prodProductVersion: wasteProduct.version,
-        prodProductId: wasteProduct.id,
+        prodProductVersion: prodProduct.version,
+        prodProductId: prodProduct.id,
         qty: wasteQty,
       }),
     );
     handleNavigateBackToList();
-  }, [dispatch, handleNavigateBackToList, manufOrder, wasteProduct, wasteQty]);
+  }, [dispatch, handleNavigateBackToList, manufOrder, prodProduct, wasteQty]);
 
   return (
     <Screen
@@ -113,7 +126,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
             manufOrder?.wasteStockMove == null
           }
-          prodProduct={wasteProduct}
+          prodProduct={wasteProductId != null ? prodProduct : null}
           onPressCreate={handleCreateWasteProduct}
           onPressUpdate={handleUpdateWasteProduct}
         />
@@ -129,15 +142,21 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
-        {(product || !loadingProductFromId) && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            onPress={handleShowProduct}
-          />
-        )}
+      <ScrollView
+        refresh={
+          wasteProductId != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndWasteProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          onPress={handleShowProduct}
+        />
         <QuantityCard
           labelQty={I18n.t('Manufacturing_WasteQty')}
           defaultValue={wasteQty}
