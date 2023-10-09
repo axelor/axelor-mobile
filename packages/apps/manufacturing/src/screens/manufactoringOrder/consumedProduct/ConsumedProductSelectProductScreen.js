@@ -30,7 +30,7 @@ const ConsumedProductSelectProductScreen = ({route, navigation}) => {
     if (product != null) {
       if (product.trackingNumberConfiguration == null) {
         navigation.navigate('ConsumedProductDetailsScreen', {
-          manufOrder: manufOrder,
+          manufOrderId: manufOrder.id,
           product: product,
         });
       } else {
