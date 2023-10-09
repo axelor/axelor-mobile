@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
-import {IconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   Stopwatch,
@@ -127,7 +127,7 @@ const TicketStopwatch = ({}) => {
       )}
       {ticket?.statusSelect !== Ticket.status.Closed &&
         ticket?.statusSelect !== Ticket.status.New && (
-          <IconButton
+          <Button
             title={I18n.t('Helpdesk_Close')}
             iconName="power-off"
             onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
