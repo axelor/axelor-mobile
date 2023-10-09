@@ -24,7 +24,6 @@ import {
   KeyboardAvoidingScrollView,
   Screen,
   WarningCard,
-  useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {
@@ -59,7 +58,6 @@ interface FormProps {
 
 const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {config} = useFormConfig(formKey);
@@ -205,11 +203,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
       <Button
         key={_action.key}
         iconName={_action.iconName}
-        color={
-          isDisabled
-            ? Colors.secondaryColor
-            : _action.color || Colors.primaryColor
-        }
+        color={_action.color}
         title={I18n.t(buttonConfig.title)}
         onPress={() =>
           handleValidate(buttonConfig.onPress, _action.needValidation)
