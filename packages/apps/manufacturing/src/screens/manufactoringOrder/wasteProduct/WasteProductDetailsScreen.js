@@ -24,12 +24,7 @@ import {
   ScrollView,
   HeaderContainer,
 } from '@axelor/aos-mobile-ui';
-import {
-  isEmpty,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchUnit,
   ProductCardInfo,
@@ -54,7 +49,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const {unitList} = useSelector(state => state.unit);
-
   const {prodProduct} = useSelector(state => state.prodProducts);
   const {manufOrder, loadingOrder} = useSelector(
     state => state.manufacturingOrder,
@@ -65,10 +59,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 
   const product = useMemo(
     () =>
-      prodProduct != null && !isEmpty(prodProduct)
-        ? prodProduct.product
-        : route.params.product,
-    [prodProduct, route.params.product],
+      wasteProductId != null ? prodProduct?.product : route.params.product,
+    [prodProduct?.product, route.params.product, wasteProductId],
   );
 
   useEffect(() => {
@@ -134,7 +126,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress &&
             manufOrder?.wasteStockMove == null
           }
-          prodProduct={prodProduct}
+          prodProduct={wasteProductId != null ? prodProduct : null}
           onPressCreate={handleCreateWasteProduct}
           onPressUpdate={handleUpdateWasteProduct}
         />

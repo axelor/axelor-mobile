@@ -20,7 +20,7 @@ import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   HeaderContainer,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
@@ -113,8 +113,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<ManufacturingOrderIconButtonList />}
-      loading={loadingOrder}>
+      fixedItems={<ManufacturingOrderIconButtonList />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader
@@ -126,7 +125,8 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         }
         expandableFilter={false}
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
+        style={styles.scroll}
         refresh={{
           loading: loadingOrder,
           fetcher: fetchManufOrderAndOperation,
@@ -167,7 +167,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           />
         )}
         <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
@@ -176,6 +176,9 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
+  },
+  scroll: {
+    paddingVertical: 10,
   },
 });
 

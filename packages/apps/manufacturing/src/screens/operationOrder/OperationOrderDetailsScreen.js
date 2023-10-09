@@ -59,7 +59,7 @@ function OperationOrderDetailsScreen({route}) {
         }
         expandableFilter={false}
       />
-      <ScrollView refresh={{loadingOrder, fetcher: getOperationOrder}}>
+      <ScrollView refresh={{loading: loadingOrder, fetcher: getOperationOrder}}>
         <OperationOrderDatesCard />
         <OperationOrderLabelTextList />
         <OperationOrderStopwatch />
