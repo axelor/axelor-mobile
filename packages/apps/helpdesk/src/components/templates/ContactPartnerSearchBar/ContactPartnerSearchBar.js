@@ -16,24 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {
-  getCustomerbyId,
-  searchCustomerContact,
-} from '../../../features/customerSlice';
+import {searchCustomerContact} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactPartnerSearchBar = ({
-  placeholderKey = 'Helpdesk_ContactPartner',
-  titleKey = 'Helpdesk_ContactPartner',
+  style = null,
+  title = 'Helpdesk_ContactPartner',
   defaultValue = null,
   onChange = () => {},
+  required = false,
+  readonly = false,
   showDetailsPopup = true,
-  style,
   showTitle = true,
-  client,
   navigate = false,
   oneFilter = false,
   isFocus = false,
@@ -42,18 +39,12 @@ const ContactPartnerSearchBar = ({
   const dispatch = useDispatch();
 
   const {
-    customer,
+    formCustomer,
     loadingCustomerContact,
     moreLoadingCustomerContact,
     isListEndCustomerContact,
     customerContactList,
   } = useSelector(state => state.customer);
-
-  useEffect(() => {
-    if (client?.id != null) {
-      dispatch(getCustomerbyId({customerId: client?.id}));
-    }
-  }, [dispatch, client?.id]);
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -62,38 +53,52 @@ const ContactPartnerSearchBar = ({
     [dispatch],
   );
 
-  if (client?.id != null) {
-    return (
-      <AutoCompleteSearch
-        title={showTitle && I18n.t(titleKey)}
-        objectList={customer?.contactPartnerSet}
-        value={defaultValue}
-        onChangeValue={onChange}
-        placeholder={I18n.t(placeholderKey)}
-        displayValue={displayItemFullname}
-        showDetailsPopup={showDetailsPopup}
-        style={style}
-      />
-    );
-  }
+  const ObjectToDisplay = useMemo(() => {
+    if (formCustomer?.id != null) {
+      return {
+        loading: false,
+        moreLoading: false,
+        isListEnd: true,
+        list: formCustomer?.contactPartnerSet,
+        fetchData: () => {},
+      };
+    } else {
+      return {
+        loading: loadingCustomerContact,
+        moreLoading: moreLoadingCustomerContact,
+        isListEnd: isListEndCustomerContact,
+        list: customerContactList,
+        fetchData: searchContactAPI,
+      };
+    }
+  }, [
+    customerContactList,
+    formCustomer,
+    isListEndCustomerContact,
+    loadingCustomerContact,
+    moreLoadingCustomerContact,
+    searchContactAPI,
+  ]);
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(titleKey)}
-      objectList={customerContactList}
+      title={showTitle && I18n.t(title)}
+      objectList={ObjectToDisplay.list}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={searchContactAPI}
-      placeholder={I18n.t(placeholderKey)}
+      fetchData={ObjectToDisplay.fetchData}
+      placeholder={I18n.t(title)}
       displayValue={displayItemFullname}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingCustomerContact}
-      moreLoading={moreLoadingCustomerContact}
-      isListEnd={isListEndCustomerContact}
+      loadingList={ObjectToDisplay.loading}
+      moreLoading={ObjectToDisplay.moreLoading}
+      isListEnd={ObjectToDisplay.isListEnd}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
       style={style}
+      readonly={readonly}
+      required={required}
     />
   );
 };
