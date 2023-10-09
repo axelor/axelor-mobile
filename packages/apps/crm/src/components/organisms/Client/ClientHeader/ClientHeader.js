@@ -57,9 +57,6 @@ const styles = StyleSheet.create({
   textTitle: {
     fontWeight: 'bold',
   },
-  networksLink: {
-    marginRight: '7%',
-  },
 });
 
 export default ClientHeader;

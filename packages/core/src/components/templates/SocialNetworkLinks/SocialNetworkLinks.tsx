@@ -43,7 +43,7 @@ const formatLinkedinSearch = (name, lastName, company) => {
   ) {
     return `company/${company}`;
   }
-  if (name != null || lastName != null) {
+  if (!checkNullString(name) || !checkNullString(lastName)) {
     return `pub/dir/${name}/${lastName}`;
   }
 

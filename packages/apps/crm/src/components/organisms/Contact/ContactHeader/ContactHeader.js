@@ -66,9 +66,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  networksLink: {
-    marginRight: '7%',
-  },
 });
 
 export default ContactHeader;
