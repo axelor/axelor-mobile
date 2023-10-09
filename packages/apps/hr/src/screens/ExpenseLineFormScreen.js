@@ -24,6 +24,7 @@ import {
 } from '../features/expenseLineSlice';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
+import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
@@ -111,10 +112,11 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const defaultValue = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
     const _default = {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
-      expenseDate: new Date().toISOString().split('T')[0],
+      expenseDate: today,
       companyName: user.activeCompany?.name,
       totalAmount: 0,
       totalTax: 0,
@@ -127,6 +129,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
+      _dispatch(updateExpenseDate(expenseLine?.expenseDate));
       const mode = ExpenseLine.getExpenseMode(expenseLine);
 
       if (mode === ExpenseLine.modes.general) {
@@ -166,10 +169,18 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           comments: expenseLine.comments,
         };
       }
+    } else {
+      _dispatch(updateExpenseDate(today));
     }
 
     return _default;
-  }, [I18n, expenseLine, justificationMetaFile, user]);
+  }, [
+    I18n,
+    _dispatch,
+    expenseLine,
+    justificationMetaFile,
+    user.activeCompany?.name,
+  ]);
 
   return (
     <FormView
