@@ -24,6 +24,7 @@ import {
 } from '../features/expenseLineSlice';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
+import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
@@ -111,15 +112,18 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const defaultValue = useMemo(() => {
+    const _defaultDate = new Date().toISOString().split('T')[0];
+
     const _default = {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
-      expenseDate: new Date().toISOString().split('T')[0],
+      expenseDate: _defaultDate,
       companyName: user.activeCompany?.name,
       totalAmount: 0,
       totalTax: 0,
       distance: 0,
     };
+
     if (justificationMetaFile != null) {
       return {
         ..._default,
@@ -145,6 +149,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           comments: expenseLine.comments,
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
+        _dispatch(updateExpenseDate(expenseLine?.expenseDate));
+
         return {
           ..._default,
           manageMode: mode,
@@ -166,10 +172,18 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           comments: expenseLine.comments,
         };
       }
+    } else {
+      _dispatch(updateExpenseDate(_defaultDate));
     }
 
     return _default;
-  }, [I18n, expenseLine, justificationMetaFile, user]);
+  }, [
+    I18n,
+    _dispatch,
+    expenseLine,
+    justificationMetaFile,
+    user.activeCompany?.name,
+  ]);
 
   return (
     <FormView
