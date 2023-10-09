@@ -112,16 +112,18 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   );
 
   const defaultValue = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const _defaultDate = new Date().toISOString().split('T')[0];
+
     const _default = {
       manageMode: ExpenseLine.modes.general,
       hideToggle: false,
-      expenseDate: today,
+      expenseDate: _defaultDate,
       companyName: user.activeCompany?.name,
       totalAmount: 0,
       totalTax: 0,
       distance: 0,
     };
+
     if (justificationMetaFile != null) {
       return {
         ..._default,
@@ -129,7 +131,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         justificationMetaFile,
       };
     } else if (expenseLine != null) {
-      _dispatch(updateExpenseDate(expenseLine?.expenseDate));
       const mode = ExpenseLine.getExpenseMode(expenseLine);
 
       if (mode === ExpenseLine.modes.general) {
@@ -148,6 +149,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           comments: expenseLine.comments,
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
+        _dispatch(updateExpenseDate(expenseLine?.expenseDate));
+
         return {
           ..._default,
           manageMode: mode,
@@ -170,7 +173,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         };
       }
     } else {
-      _dispatch(updateExpenseDate(today));
+      _dispatch(updateExpenseDate(_defaultDate));
     }
 
     return _default;
