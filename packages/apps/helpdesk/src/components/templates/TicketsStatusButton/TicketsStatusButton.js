@@ -23,7 +23,7 @@ import {
   useTranslator,
   getNowDateZonesISOString,
 } from '@axelor/aos-mobile-core';
-import {IconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Ticket} from '../../../types';
 import {updateTicketStatus} from '../../../features/ticketSlice';
 
@@ -50,7 +50,7 @@ const TicketsStatusButton = ({}) => {
 
   if (ticket?.statusSelect === Ticket.status.New) {
     return (
-      <IconButton
+      <Button
         title={I18n.t('Helpdesk_Start')}
         iconName="play"
         onPress={() => updateStatus(Ticket.stopWatchStatus.start)}
@@ -61,7 +61,7 @@ const TicketsStatusButton = ({}) => {
 
   if (ticket?.statusSelect === Ticket.status.In_Progress) {
     return (
-      <IconButton
+      <Button
         title={I18n.t('Helpdesk_Resolve')}
         iconName="check"
         onPress={() => updateStatus(Ticket.stopWatchStatus.stop)}
