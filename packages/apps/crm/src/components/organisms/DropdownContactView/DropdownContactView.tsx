@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslator, linkingProvider} from '@axelor/aos-mobile-core';
-import {ContactInfoCard} from '../../molecules';
+import {ContactInfoCard, SocialNetworksInfoCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
 
 interface DropdownContactViewProps {
@@ -28,6 +28,8 @@ interface DropdownContactViewProps {
   mobilePhone?: string;
   emailAddress: string;
   webSite: string;
+  fullName: string;
+  company: string;
 }
 
 const DropdownContactView = ({
@@ -36,6 +38,8 @@ const DropdownContactView = ({
   mobilePhone,
   emailAddress,
   webSite,
+  fullName,
+  company,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
@@ -58,7 +62,9 @@ const DropdownContactView = ({
           fixedPhone != null ||
           mobilePhone != null ||
           emailAddress != null ||
-          webSite != null
+          webSite != null ||
+          fullName != null ||
+          company != null
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMapApp(address)}
@@ -68,7 +74,13 @@ const DropdownContactView = ({
         title={I18n.t('Crm_Phone')}
         data={fixedPhone}
         rightIconName={'phone-alt'}
-        border={mobilePhone != null || emailAddress != null || webSite != null}
+        border={
+          mobilePhone != null ||
+          emailAddress != null ||
+          webSite != null ||
+          fullName != null ||
+          company != null
+        }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(fixedPhone)}
       />
@@ -77,7 +89,12 @@ const DropdownContactView = ({
         title={I18n.t('Crm_MobilePhone')}
         data={mobilePhone}
         rightIconName={'phone-alt'}
-        border={emailAddress != null || webSite != null}
+        border={
+          emailAddress != null ||
+          webSite != null ||
+          fullName != null ||
+          company != null
+        }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(mobilePhone)}
       />
@@ -87,7 +104,7 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={webSite != null}
+        border={webSite != null || fullName != null || company != null}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -97,7 +114,15 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
+        border={fullName != null || company != null}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
+      />
+      <SocialNetworksInfoCard
+        fullName={fullName}
+        company={company}
+        headerIconName={'globe'}
+        title={I18n.t('Crm_SocialNetworks')}
+        styleBorder={styles.borderInfoCard}
       />
     </View>
   );

@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   icon: {
-    marginHorizontal: 2,
+    marginHorizontal: 7,
   },
 });
 

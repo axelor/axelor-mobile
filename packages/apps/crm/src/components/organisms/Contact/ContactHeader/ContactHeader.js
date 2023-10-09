@@ -19,11 +19,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, LabelText} from '@axelor/aos-mobile-ui';
-import {
-  useSelector,
-  AOSImageBubble,
-  SocialNetworkLinks,
-} from '@axelor/aos-mobile-core';
+import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
 
 const ContactHeader = ({}) => {
   const {contact} = useSelector(state => state.contact);
@@ -48,12 +44,6 @@ const ContactHeader = ({}) => {
           )}
         </View>
       </View>
-      <SocialNetworkLinks
-        style={styles.networksLink}
-        data={{
-          fullName: contact.simpleFullName,
-        }}
-      />
     </View>
   );
 };

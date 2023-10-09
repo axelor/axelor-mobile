@@ -54,6 +54,7 @@ const ContactDropdownCards = ({}) => {
                 mobilePhone={contact.mobilePhone}
                 emailAddress={contact.emailAddress?.address}
                 webSite={contact.webSite}
+                fullName={contact.simpleFullName}
               />
             ),
           },

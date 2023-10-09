@@ -18,11 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  useSelector,
-  AOSImageBubble,
-  SocialNetworkLinks,
-} from '@axelor/aos-mobile-core';
+import {useSelector, AOSImageBubble} from '@axelor/aos-mobile-core';
 import {Text} from '@axelor/aos-mobile-ui';
 
 const ClientHeader = ({}) => {
@@ -39,14 +35,6 @@ const ClientHeader = ({}) => {
           <Text fontSize={14}>{client.partnerSeq}</Text>
         </View>
       </View>
-      <SocialNetworkLinks
-        style={styles.networksLink}
-        data={{
-          fullName: client.simpleFullName,
-          company: client.simpleFullName,
-        }}
-        linkedinEnterprise={true}
-      />
     </View>
   );
 };
