@@ -53,8 +53,7 @@ export interface Field {
   readonlyIf?: (values?: States) => boolean;
   hideIf?: (values?: States) => boolean;
   dependsOn?: {
-    fieldName: string | string[];
-    onChange: (values: DependsOnStates) => any;
+    [fieldName: string]: (values: DependsOnStates) => any;
   };
   widget?: Widget;
   customComponent?: (
