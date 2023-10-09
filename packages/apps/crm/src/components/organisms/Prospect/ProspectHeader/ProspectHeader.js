@@ -63,7 +63,6 @@ const ProspectHeader = ({colorIndex}) => {
             data={{
               company: prospect?.simpleFullName,
             }}
-            linkedinEnterprise={true}
           />
         </View>
         <View style={styles.headerInfo}>
