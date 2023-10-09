@@ -162,7 +162,7 @@ export const getPartnerOpportunities = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _getPartnerOpportunities,
       data,
-      action: 'Crm_SliceAction_getPartnerOpportunities',
+      action: 'Crm_SliceAction_GetPartnerOpportunities',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -242,11 +242,7 @@ const opportunitySlice = createSlice({
       state.loading = false;
       state.opportunityList = action.payload;
     });
-    builder.addCase(getPartnerOpportunities.pending, (state, action) => {
-      state.loading = true;
-    });
     builder.addCase(getPartnerOpportunities.fulfilled, (state, action) => {
-      state.loading = false;
       state.partnerOpportunityList = action.payload;
     });
   },

@@ -33,11 +33,7 @@ import {
 } from '../../../features/opportunitySlice';
 import {getLastItem} from '../../../utils/list';
 
-interface DropdownOpportunityViewProps {
-  partnerId: number;
-}
-
-const DropdownOpportunityView = ({partnerId}: DropdownOpportunityViewProps) => {
+const DropdownOpportunityView = ({partnerId}: {partnerId: number}) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -51,7 +47,7 @@ const DropdownOpportunityView = ({partnerId}: DropdownOpportunityViewProps) => {
   }, [partnerOpportunityList]);
 
   useEffect(() => {
-    dispatch((getPartnerOpportunities as any)(partnerId));
+    dispatch((getPartnerOpportunities as any)({partnerId}));
   }, [dispatch, partnerId]);
 
   useEffect(() => {
@@ -76,7 +72,9 @@ const DropdownOpportunityView = ({partnerId}: DropdownOpportunityViewProps) => {
         opportunityScoring={lastOpportunity.opportunityRating}
         reference={lastOpportunity.opportunitySeq}
         allOpportunityStatus={opportunityStatusList}
-        currencySymbol={lastOpportunity.currencySymbol}
+        currencySymbol={
+          lastOpportunity.currency?.symbol || lastOpportunity.currency?.name
+        }
         opportunityStatus={lastOpportunity.opportunityStatus}
         onPress={() =>
           navigation.navigate('OpportunityDetailsScreen', {

@@ -124,5 +124,5 @@
   "Crm_SliceAction_CreateCatalog": "Create catalog",
   "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
   "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact",
-  "Crm_SliceAction_getPartnerOpportunities": "get opportunity by partner"
+  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities"
 }

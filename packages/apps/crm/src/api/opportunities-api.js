@@ -120,7 +120,7 @@ export async function createOpportunity({opportunity}) {
   });
 }
 
-export async function getPartnerOpportunities(partnerId) {
+export async function getPartnerOpportunities({partnerId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.crm.db.Opportunity',
     criteria: [
