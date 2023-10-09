@@ -19,22 +19,21 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ProjectSearchBar = ({
-  placeholderKey = 'Helpdesk_Project',
-  titleKey = 'Helpdesk_Project',
+  style = null,
+  title = 'Helpdesk_Project',
   defaultValue = null,
   onChange = () => {},
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  style,
-  styleTxt,
-  showTitle = true,
+  readonly = false,
   required = false,
 }) => {
   const I18n = useTranslator();
@@ -54,28 +53,37 @@ const ProjectSearchBar = ({
     [dispatch],
   );
 
+  if (readonly) {
+    return (
+      <FormInput
+        style={style}
+        title={I18n.t(title)}
+        readOnly={true}
+        defaultValue={displayItemFullname(defaultValue)}
+      />
+    );
+  }
+
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      <Text style={[styles.title]}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
         style={[
-          defaultValue == null && required ? styles.requiredBorder : null,
+          required && defaultValue == null ? styles.requiredBorder : null,
         ]}
         objectList={projectList}
         value={defaultValue}
         onChangeValue={onChange}
         fetchData={searchProjectAPI}
         displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
+        placeholder={I18n.t(title)}
+        showDetailsPopup={true}
         loadingList={loadingProject}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        navigate={false}
+        oneFilter={false}
+        isFocus={false}
       />
     </View>
   );
@@ -87,7 +95,7 @@ const getStyles = Colors =>
       zIndex: 41,
     },
     title: {
-      marginHorizontal: 24,
+      marginHorizontal: 30,
     },
     requiredBorder: {
       borderColor: Colors.errorColor.background,

@@ -32,21 +32,25 @@ import {
 
 interface DurationFormInputProps {
   style?: any;
-  titleKey?: string;
-  duration: number;
+  title?: string;
+  defaultValue: number;
   onChange: (value: number) => void;
+  required?: boolean;
+  readonly?: boolean;
 }
 
 const DurationFormInput = ({
   style,
-  titleKey = 'Helpdesk_Duration',
-  duration,
+  title = 'Helpdesk_Duration',
+  defaultValue,
   onChange,
+  required = false,
+  readonly = false,
 }: DurationFormInputProps) => {
   const I18n = useTranslator();
 
   const [formattedDuration, setFormattedDuration] = useState(
-    formatDurationFromSeconds(duration),
+    formatDurationFromSeconds(defaultValue),
   );
 
   const handleDurationChange = (value: string) => {
@@ -86,13 +90,15 @@ const DurationFormInput = ({
   };
 
   useEffect(() => {
-    setFormattedDuration(formatDurationFromSeconds(duration ?? 0));
-  }, [duration]);
+    setFormattedDuration(formatDurationFromSeconds(defaultValue ?? 0));
+  }, [defaultValue]);
 
   return (
     <FormInput
       style={[styles.input, style]}
-      title={I18n.t(titleKey)}
+      required={required}
+      readOnly={readonly}
+      title={I18n.t(title)}
       onChange={handleDurationChange}
       onEndFocus={handleEndFocus}
       defaultValue={formattedDuration}

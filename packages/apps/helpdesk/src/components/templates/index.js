@@ -22,6 +22,7 @@ export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
 export {default as TicketDropdownCards} from './TicketDropdownCards/TicketDropdownCards';
 export {default as TicketEditButton} from './TicketEditButton/TicketEditButton';
 export {default as TicketHeader} from './TicketHeader/TicketHeader';
+export {default as TicketPriorityPicker} from './TicketPriorityPicker/TicketPriorityPicker';
 export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
 export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
 export {default as TicketStopwatch} from './TicketStopwatch/TicketStopwatch';
