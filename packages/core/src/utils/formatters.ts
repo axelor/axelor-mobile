@@ -142,12 +142,3 @@ export const getDateZonesISOString = (dateString: string) => {
 
   return `${date}T${time}`;
 };
-
-export const splitFullName = nameToSplit => {
-  const fullName = nameToSplit?.split(' ');
-  if (fullName?.length === 2) {
-    return {firstName: fullName[0], lastName: fullName[1]};
-  } else {
-    return {firstName: fullName, lastName: ''};
-  }
-};
