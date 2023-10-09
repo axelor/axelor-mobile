@@ -25,11 +25,7 @@ import {
   useDigitFormat,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  fetchProductWithId,
-  QuantityCard,
-  ProductCardInfo,
-} from '@axelor/aos-mobile-stock';
+import {QuantityCard, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ConsumedProductTrackingNumberSelect,
   ManufacturingOrderHeader,
@@ -37,39 +33,42 @@ import {
 } from '../../../components';
 import {
   addProdProductToManufOrder,
+  fetchConsumedProductWithId,
   updateProdProductOfManufOrder,
 } from '../../../features/prodProductSlice';
 import {ManufacturingOrder} from '../../../types';
+import {fetchManufOrder} from '../../../features/manufacturingOrderSlice';
 
 const ConsumedProductDetailsScreen = ({route, navigation}) => {
-  const manufOrder = route.params.manufOrder;
-  const consumedProduct = route.params.consumedProduct;
+  const manufOrderId = route.params.manufOrderId;
+  const consumedProdProduct = route.params.consumedProdProduct;
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
   const dispatch = useDispatch();
 
-  const {loadingProductFromId, productFromId} = useSelector(
-    state => state.product,
-  );
-  const {consumedProductStockMoveLine} = useSelector(
+  const {consumedProductStockMoveLine, consumedProduct} = useSelector(
     state => state.prodProducts,
   );
+  const {manufOrder, loadingOrder} = useSelector(
+    state => state.manufacturingOrder,
+  );
 
-  const product = consumedProduct ? productFromId : route.params.product;
+  const product = consumedProdProduct ? consumedProduct : route.params.product;
+
   const [consumedQty, setConsumedQty] = useState(
-    consumedProduct ? consumedProduct.realQty : 0,
+    consumedProdProduct ? consumedProdProduct.realQty : 0,
   );
 
   const trackingNumber = useMemo(
     () =>
       route.params.trackingNumber ||
-      consumedProduct.trackingNumber ||
-      (consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+      consumedProdProduct.trackingNumber ||
+      (consumedProdProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
         ? consumedProductStockMoveLine.trackingNumber
         : null),
     [
       route.params.trackingNumber,
-      consumedProduct,
+      consumedProdProduct,
       consumedProductStockMoveLine,
     ],
   );
@@ -81,10 +80,8 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
   );
 
   useEffect(() => {
-    if (consumedProduct != null) {
-      dispatch(fetchProductWithId(consumedProduct.productId));
-    }
-  }, [consumedProduct, dispatch]);
+    getManufOrderAndConsumedProduct();
+  }, [getManufOrderAndConsumedProduct]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -97,6 +94,13 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
       manufOrder: manufOrder,
     });
   }, [manufOrder, navigation]);
+
+  const getManufOrderAndConsumedProduct = useCallback(() => {
+    dispatch(fetchManufOrder({manufOrderId: manufOrderId}));
+    if (consumedProdProduct != null) {
+      dispatch(fetchConsumedProductWithId(consumedProdProduct?.productId));
+    }
+  }, [consumedProdProduct, dispatch, manufOrderId]);
 
   const handleCreateConsumedProduct = useCallback(() => {
     dispatch(
@@ -123,10 +127,11 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     dispatch(
       updateProdProductOfManufOrder({
         stockMoveLineVersion:
-          consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
+          consumedProdProduct?.stockMoveLineId ===
+          consumedProductStockMoveLine?.id
             ? consumedProductStockMoveLine.version
-            : consumedProduct?.stockMoveLineVersion,
-        stockMoveLineId: consumedProduct?.stockMoveLineId,
+            : consumedProdProduct?.stockMoveLineVersion,
+        stockMoveLineId: consumedProdProduct?.stockMoveLineId,
         prodProductQty: consumedQty,
         type: 'consumed',
         manufOrderId: manufOrder?.id,
@@ -135,7 +140,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     );
     handleNavigateBackToList();
   }, [
-    consumedProduct,
+    consumedProdProduct,
     consumedProductStockMoveLine,
     consumedQty,
     dispatch,
@@ -151,7 +156,7 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           show={
             manufOrder?.statusSelect === ManufacturingOrder.status.InProgress
           }
-          prodProduct={consumedProduct}
+          prodProduct={consumedProdProduct}
           onPressCreate={handleCreateConsumedProduct}
           onPressUpdate={handleUpdateConsumedProduct}
         />
@@ -167,25 +172,31 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
-        {(product || !loadingProductFromId) && (
-          <ProductCardInfo
-            name={product.name}
-            code={product.code}
-            picture={product.picture}
-            trackingNumber={
-              product.trackingNumberConfiguration == null ||
-              trackingNumber == null
-                ? null
-                : trackingNumber.trackingNumberSeq
-            }
-            onPress={handleShowProduct}
-          />
-        )}
+      <ScrollView
+        refresh={
+          consumedProdProduct != null
+            ? {
+                loading: loadingOrder,
+                fetcher: getManufOrderAndConsumedProduct,
+              }
+            : null
+        }>
+        <ProductCardInfo
+          name={product?.name}
+          code={product?.code}
+          picture={product?.picture}
+          trackingNumber={
+            product?.trackingNumberConfiguration == null ||
+            trackingNumber == null
+              ? null
+              : trackingNumber.trackingNumberSeq
+          }
+          onPress={handleShowProduct}
+        />
         <ConsumedProductTrackingNumberSelect
           product={product}
-          stockMoveLineId={consumedProduct?.stockMoveLineId}
-          stockMoveLineVersion={consumedProduct?.stockMoveLineVersion}
+          stockMoveLineId={consumedProdProduct?.stockMoveLineId}
+          stockMoveLineVersion={consumedProdProduct?.stockMoveLineVersion}
           manufOrderId={manufOrder?.id}
           manufOrderVersion={manufOrder?.version}
           visible={isTrackingNumberSelectVisible}
@@ -200,10 +211,10 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}>
           <Text>
             {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
-              consumedProduct?.plannedQty,
+              consumedProdProduct?.plannedQty,
             )} ${
-              consumedProduct
-                ? consumedProduct.unit?.unitName
+              consumedProdProduct
+                ? consumedProdProduct.unit?.unitName
                 : product.unit?.name
             }`}
           </Text>
