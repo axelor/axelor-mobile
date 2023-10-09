@@ -107,8 +107,8 @@ const ProducedProductListScreen = ({route, navigation}) => {
 
   const handleViewItem = item => {
     navigation.navigate('ProducedProductDetailsScreen', {
-      manufOrder: manufOrder,
-      producedProduct: item,
+      manufOrderId: manufOrder.id,
+      producedProdProduct: item,
     });
   };
 
