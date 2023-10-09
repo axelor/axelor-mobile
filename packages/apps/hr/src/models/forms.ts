@@ -102,8 +102,7 @@ export const hr_formsRegister: FormConfigs = {
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
         dependsOn: {
-          fieldName: 'expenseDate',
-          onChange: ({newValue, dispatch}) => {
+          expenseDate: ({newValue, dispatch}) => {
             dispatch(updateExpenseDate(newValue));
           },
         },
