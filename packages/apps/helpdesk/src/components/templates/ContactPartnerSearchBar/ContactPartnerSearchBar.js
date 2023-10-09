@@ -16,46 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
 import {
-  getCustomerbyId,
-  searchCustomerContact,
-} from '../../../features/customerSlice';
+  AutoCompleteSearch,
+  FormInput,
+  Text,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
+import {searchCustomerContact} from '../../../features/customerSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactPartnerSearchBar = ({
-  placeholderKey = 'Helpdesk_ContactPartner',
-  titleKey = 'Helpdesk_ContactPartner',
+  title = 'Helpdesk_ContactPartner',
   defaultValue = null,
   onChange = () => {},
-  showDetailsPopup = true,
-  style,
-  styleTxt,
-  showTitle = true,
-  client,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
+  style = null,
+  required = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {
-    customer,
+    formCustomer,
     loadingCustomerContact,
     moreLoadingCustomerContact,
     isListEndCustomerContact,
     customerContactList,
   } = useSelector(state => state.customer);
 
-  useEffect(() => {
-    if (client?.id != null) {
-      dispatch(getCustomerbyId({customerId: client?.id}));
-    }
-  }, [dispatch, client?.id]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchContactAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -64,55 +57,79 @@ const ContactPartnerSearchBar = ({
     [dispatch],
   );
 
-  if (client?.id != null) {
+  const ObjectToDisplay = useMemo(() => {
+    if (formCustomer?.id != null) {
+      return {
+        loading: false,
+        moreLoading: false,
+        isListEnd: true,
+        list: formCustomer?.contactPartnerSet,
+        fetchData: () => {},
+      };
+    } else {
+      return {
+        loading: loadingCustomerContact,
+        moreLoading: moreLoadingCustomerContact,
+        isListEnd: isListEndCustomerContact,
+        list: customerContactList,
+        fetchData: searchContactAPI,
+      };
+    }
+  }, [
+    customerContactList,
+    formCustomer,
+    isListEndCustomerContact,
+    loadingCustomerContact,
+    moreLoadingCustomerContact,
+    searchContactAPI,
+  ]);
+
+  if (readonly) {
     return (
-      <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-        {showTitle && (
-          <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-        )}
-        <AutoCompleteSearch
-          objectList={customer?.contactPartnerSet}
-          value={defaultValue}
-          onChangeValue={onChange}
-          placeholder={I18n.t(placeholderKey)}
-          displayValue={displayItemFullname}
-          showDetailsPopup={showDetailsPopup}
-        />
-      </View>
+      <FormInput
+        style={style}
+        title={I18n.t(title)}
+        readOnly={true}
+        defaultValue={displayItemFullname(defaultValue)}
+      />
     );
   }
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
+    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
+      <Text style={styles.title}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
-        objectList={customerContactList}
+        style={[
+          defaultValue == null && required ? styles.requiredBorder : null,
+        ]}
+        objectList={ObjectToDisplay.list}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={searchContactAPI}
-        placeholder={I18n.t(placeholderKey)}
+        fetchData={ObjectToDisplay.fetchData}
+        placeholder={I18n.t(title)}
         displayValue={displayItemFullname}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingCustomerContact}
-        moreLoading={moreLoadingCustomerContact}
-        isListEnd={isListEndCustomerContact}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        showDetailsPopup={true}
+        loadingList={ObjectToDisplay.loading}
+        moreLoading={ObjectToDisplay.moreLoading}
+        isListEnd={ObjectToDisplay.isListEnd}
+        navigate={false}
+        oneFilter={false}
+        isFocus={false}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 41,
-  },
-  title: {
-    marginHorizontal: 24,
-  },
-});
+const getStyles = Colors =>
+  StyleSheet.create({
+    container: {
+      zIndex: 41,
+    },
+    title: {
+      marginHorizontal: 30,
+    },
+    requiredBorder: {
+      borderColor: Colors.errorColor.background,
+    },
+  });
 
 export default ContactPartnerSearchBar;
