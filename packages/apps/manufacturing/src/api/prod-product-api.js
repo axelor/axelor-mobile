@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider, createStandardFetch} from '@axelor/aos-mobile-core';
 
 export async function fetchManufacturingOrderConsumedProducts({
   manufOrderId,
@@ -41,6 +41,14 @@ export async function fetchManufacturingOrderProducedProducts({
       manufOrderId: manufOrderId,
       manufOrderVersion: manufOrderVersion,
     },
+  });
+}
+
+export async function searchProdProductWithId({productId}) {
+  return createStandardFetch({
+    model: 'com.axelor.apps.production.db.ProdProduct',
+    id: productId,
+    fieldKey: 'manufacturing_prodProduct',
   });
 }
 

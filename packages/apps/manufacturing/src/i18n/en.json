@@ -64,5 +64,8 @@
   "Manufacturing_SliceAction_UpdateWasteProductQty": "update waste product qty",
   "Manufacturing_SliceAction_DeclareWasteProducts": "declare waste products",
   "Manufacturing_SliceAction_FilterWorkCenter": "filter work center",
-  "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "add tracking number to consumed product stock move line"
+  "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "add tracking number to consumed product stock move line",
+  "Manufacturing_SliceAction_FetchConsumedProductWithId": "fetch consumed product with id",
+  "Manufacturing_SliceAction_FetchProducedProductWithId": "fetch produced product with id",
+  "Manufacturing_SliceAction_FetchProdProductWithId": "fetch prod product with id"
 }

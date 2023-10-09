@@ -82,7 +82,12 @@ export const manufacturing_modelAPI: ObjectFields = {
     description: schemaContructor.string(),
   }),
   manufacturing_prodProduct: schemaContructor.object({
-    product: schemaContructor.subObject('fullName'),
+    product: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        picture: schemaContructor.subObject(),
+      }),
+    ),
     qty: schemaContructor.number(),
     unit: schemaContructor.subObject('name'),
   }),

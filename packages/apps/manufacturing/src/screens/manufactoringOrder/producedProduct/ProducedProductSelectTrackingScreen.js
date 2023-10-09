@@ -43,7 +43,7 @@ const ProducedProductSelectTrackingScreen = ({route, navigation}) => {
   const handleTrackingNumberSelection = item => {
     if (item != null) {
       navigation.navigate('ProducedProductDetailsScreen', {
-        manufOrder: manufOrder,
+        manufOrderId: manufOrder.id,
         product: product,
         trackingNumber: item,
       });

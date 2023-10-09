@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   HeaderContainer,
   ViewAllContainer,
 } from '@axelor/aos-mobile-ui';
@@ -55,7 +55,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
     }
   }, [manufOrder, dispatch]);
 
-  useEffect(() => {
+  const fetchManufOrderAndOperation = useCallback(() => {
     dispatch(
       fetchManufOrder({manufOrderId: route.params.manufacturingOrderId}),
     );
@@ -63,6 +63,10 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
       fetchOperationOrders({manufOrderId: route.params.manufacturingOrderId}),
     );
   }, [dispatch, route.params.manufacturingOrderId]);
+
+  useEffect(() => {
+    fetchManufOrderAndOperation();
+  }, [fetchManufOrderAndOperation]);
 
   const handleShowProduct = () => {
     navigation.navigate('ProductStockDetailsScreen', {
@@ -109,8 +113,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   return (
     <Screen
       removeSpaceOnTop={true}
-      fixedItems={<ManufacturingOrderIconButtonList />}
-      loading={loadingOrder}>
+      fixedItems={<ManufacturingOrderIconButtonList />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader
@@ -122,7 +125,12 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
         }
         expandableFilter={false}
       />
-      <ScrollView>
+      <KeyboardAvoidingScrollView
+        style={styles.scroll}
+        refresh={{
+          loading: loadingOrder,
+          fetcher: fetchManufOrderAndOperation,
+        }}>
         <ManufacturingOrderDatesCard />
         <ProductCardInfo
           onPress={handleShowProduct}
@@ -159,7 +167,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
           />
         )}
         <ManufacturingOrderNotesCardList manufOrder={manufOrder} />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
@@ -168,6 +176,9 @@ const styles = StyleSheet.create({
   item: {
     marginHorizontal: 1,
     marginVertical: 4,
+  },
+  scroll: {
+    paddingVertical: 10,
   },
 });
 
