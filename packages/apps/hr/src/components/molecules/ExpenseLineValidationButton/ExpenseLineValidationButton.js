@@ -30,19 +30,14 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
       <Button
         title={I18n.t('Base_Cancel')}
         color={Colors.errorColor}
-        style={styles.button}
         onPress={onChangeMode}
+        width="45%"
       />
       <Button
-        color={
-          selectedItems.length <= 0
-            ? Colors.secondaryColor
-            : Colors.primaryColor
-        }
         title={I18n.t('Base_Add')}
-        style={styles.button}
-        disabled={selectedItems.length <= 0 ? true : false}
+        disabled={selectedItems.length <= 0}
         onPress={onOpen}
+        width="45%"
       />
     </View>
   );
@@ -51,11 +46,7 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '100%',
     justifyContent: 'space-evenly',
-  },
-  button: {
-    width: '45%',
   },
 });
 
