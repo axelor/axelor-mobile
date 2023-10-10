@@ -18,9 +18,16 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, linkingProvider} from '@axelor/aos-mobile-core';
+import {useTranslator, linkingProvider, isEmpty} from '@axelor/aos-mobile-core';
 import {ContactInfoCard, SocialNetworksInfoCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
+
+interface NetworkDataProps {
+  name?: string;
+  lastName?: string;
+  fullName?: string;
+  company?: string;
+}
 
 interface DropdownContactViewProps {
   address: string;
@@ -28,10 +35,7 @@ interface DropdownContactViewProps {
   mobilePhone?: string;
   emailAddress: string;
   webSite: string;
-  name?: string;
-  lastName?: string;
-  company?: string;
-  fullName?: string;
+  netWorkData?: NetworkDataProps;
 }
 
 const DropdownContactView = ({
@@ -40,10 +44,7 @@ const DropdownContactView = ({
   mobilePhone,
   emailAddress,
   webSite,
-  name,
-  lastName,
-  fullName,
-  company,
+  netWorkData,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
@@ -53,9 +54,7 @@ const DropdownContactView = ({
     !mobilePhone &&
     !emailAddress &&
     !webSite &&
-    !company &&
-    !name &&
-    !fullName
+    isEmpty(netWorkData)
   ) {
     return (
       <View>
@@ -76,9 +75,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          fullName != null ||
-          name != null ||
-          company != null
+          !isEmpty(netWorkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMapApp(address)}
@@ -92,9 +89,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          fullName != null ||
-          name != null ||
-          company != null
+          !isEmpty(netWorkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(fixedPhone)}
@@ -105,11 +100,7 @@ const DropdownContactView = ({
         data={mobilePhone}
         rightIconName={'phone-alt'}
         border={
-          emailAddress != null ||
-          webSite != null ||
-          fullName != null ||
-          name != null ||
-          company != null
+          emailAddress != null || webSite != null || !isEmpty(netWorkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(mobilePhone)}
@@ -120,9 +111,7 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={
-          webSite != null || fullName != null || name != null || company != null
-        }
+        border={webSite != null || !isEmpty(netWorkData)}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -132,14 +121,14 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
-        border={fullName != null || name != null || company != null}
+        border={!isEmpty(netWorkData)}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
       <SocialNetworksInfoCard
-        name={name}
-        fullName={fullName}
-        lastName={lastName}
-        company={company}
+        name={netWorkData.name}
+        fullName={netWorkData.fullName}
+        lastName={netWorkData.lastName}
+        company={netWorkData.company}
       />
     </View>
   );
