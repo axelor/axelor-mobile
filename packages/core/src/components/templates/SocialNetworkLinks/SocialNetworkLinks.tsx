@@ -21,11 +21,31 @@ import {StyleSheet, View} from 'react-native';
 import {Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {linkingProvider} from '../../../tools';
 
-const formatGoogleSearch = (name, lastName, company) => {
+const splitFullName = _data => {
+  const fullName = _data?.split(' ');
+  if (fullName?.length === 2) {
+    return {firstName: fullName[0], lastName: fullName[1]};
+  } else {
+    return {firstName: fullName, lastName: ''};
+  }
+};
+
+const formatGoogleSearch = ({
+  name,
+  lastName,
+  fullName,
+  company,
+}: ContactData) => {
   let result = '';
 
   if (name != null && lastName != null) {
     result = result.concat(name).concat('+').concat(lastName);
+  } else if (fullName != null) {
+    const _names = splitFullName(fullName);
+    result = result
+      .concat(_names.firstName)
+      .concat('+')
+      .concat(_names.lastName);
   }
 
   if (company != null) {
@@ -35,19 +55,35 @@ const formatGoogleSearch = (name, lastName, company) => {
   return result;
 };
 
-const formatLinkedinSearch = (name, lastName, company) => {
+const formatLinkedinSearch = ({
+  name,
+  lastName,
+  fullName,
+  company,
+}: ContactData) => {
   if (name != null && lastName != null) {
-    return `${name}/${lastName}`;
+    return `pub/dir/${name}/${lastName}`;
+  } else if (fullName != null) {
+    const _names = splitFullName(fullName);
+    return `pub/dir/${_names.firstName}/${_names.lastName}`;
   }
 
-  if (company != null) {
-    return company;
+  if (company) {
+    return `company/${company}`;
   }
 
   return '';
 };
 
+interface ContactData {
+  name?: string;
+  lastName?: string;
+  fullName?: string;
+  company?: string;
+}
+
 const SocialNetworkLinks = ({
+  style,
   size = 20,
   data,
   googleColor,
@@ -55,8 +91,9 @@ const SocialNetworkLinks = ({
   linkedinColor,
   hideLinkedin = false,
 }: {
+  style?: any;
   size?: number;
-  data: {name?: string; lastName?: string; company?: string};
+  data: ContactData;
   googleColor?: string;
   hideGoogle?: boolean;
   linkedinColor?: string;
@@ -65,7 +102,7 @@ const SocialNetworkLinks = ({
   const Colors = useThemeColor();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {!hideGoogle && (
         <Icon
           style={styles.icon}
@@ -77,9 +114,7 @@ const SocialNetworkLinks = ({
           onPress={() =>
             linkingProvider.openBrowser(
               `https://www.google.com/search?q=${formatGoogleSearch(
-                data.name,
-                data.lastName,
-                data.company,
+                data,
               )}&gws_rd=cr`,
             )
           }
@@ -95,11 +130,7 @@ const SocialNetworkLinks = ({
           size={size}
           onPress={() =>
             linkingProvider.openBrowser(
-              `https://www.linkedin.com/pub/dir/${formatLinkedinSearch(
-                data.name,
-                data.lastName,
-                data.company,
-              )}`,
+              `https://www.linkedin.com/${formatLinkedinSearch(data)}`,
               false,
             )
           }
@@ -115,7 +146,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   icon: {
-    marginHorizontal: 2,
+    marginHorizontal: 7,
   },
 });
 
