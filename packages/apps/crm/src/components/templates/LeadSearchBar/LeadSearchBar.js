@@ -33,7 +33,7 @@ import {fetchLeads} from '../../../features/leadSlice';
 import {Platform, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 
-const LeadSearchBar = ({
+const LeadSearchBarAux = ({
   style = null,
   readonly = false,
   title = 'Crm_Leads',
@@ -96,6 +96,36 @@ const LeadSearchBar = ({
         isFocus={isFocus}
       />
     </View>
+  );
+};
+
+const LeadSearchBar = ({
+  style = null,
+  readonly = false,
+  title = 'Crm_Leads',
+  defaultValue = '',
+  onChange = () => {},
+  required = false,
+  showDetailsPopup = true,
+  navigate = false,
+  oneFilter = false,
+  isFocus = false,
+  showTitle = true,
+}) => {
+  return (
+    <LeadSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+      showDetailsPopup={showDetailsPopup}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      showTitle={showTitle}
+    />
   );
 };
 

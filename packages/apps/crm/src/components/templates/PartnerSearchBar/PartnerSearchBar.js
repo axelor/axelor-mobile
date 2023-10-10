@@ -32,7 +32,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {searchPartner} from '../../../features/partnerSlice';
 
-const PartnerSearchBar = ({
+const PartnerSearchBarAux = ({
   style = null,
   title = 'Crm_Partner',
   defaultValue = null,
@@ -90,6 +90,26 @@ const PartnerSearchBar = ({
         isFocus={false}
       />
     </View>
+  );
+};
+
+const PartnerSearchBar = ({
+  style = null,
+  title = 'Crm_Partner',
+  defaultValue = null,
+  onChange = () => {},
+  required = false,
+  readonly = false,
+}) => {
+  return (
+    <PartnerSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+    />
   );
 };
 

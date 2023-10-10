@@ -22,6 +22,7 @@ import {EventType} from '../../types';
 
 const EventFormScreen = ({navigation, route}) => {
   const event = route?.params?.event;
+  const lead = route?.params?.lead;
 
   const {user} = useSelector(state => state.user);
 

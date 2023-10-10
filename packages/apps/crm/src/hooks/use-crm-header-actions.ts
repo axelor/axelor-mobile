@@ -213,7 +213,7 @@ const useLeadDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus',
           title: I18n.t('Crm_CreateEvent'),
-          onPress: () => navigation.navigate('EventFormScreen'),
+          onPress: () => navigation.navigate('EventFormScreen', {lead: lead}),
           showInHeader: true,
         },
       ],

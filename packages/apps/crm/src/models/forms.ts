@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar, isEmpty} from '@axelor/aos-mobile-core';
 import {
   CatalogTypePicker,
   CivilityPicker,
@@ -415,18 +415,22 @@ export const crm_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: PartnerSearchBar,
+        hideIf: ({objectState}) => !isEmpty(objectState.eventLead),
       },
       contactPartner: {
         titleKey: 'Crm_Contact',
         type: 'object',
         widget: 'custom',
         customComponent: ContactSearchBar,
+        hideIf: ({objectState}) => !isEmpty(objectState.eventLead),
       },
       eventLead: {
         titleKey: 'Crm_Lead',
         type: 'object',
         widget: 'custom',
         customComponent: LeadSearchBar,
+        hideIf: ({objectState}) =>
+          !isEmpty(objectState.contactPartner) || !isEmpty(objectState.partner),
       },
       startDateTime: {
         titleKey: 'Crm_StartDate',
