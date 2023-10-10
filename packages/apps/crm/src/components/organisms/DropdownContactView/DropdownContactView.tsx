@@ -22,7 +22,7 @@ import {useTranslator, linkingProvider, isEmpty} from '@axelor/aos-mobile-core';
 import {ContactInfoCard, SocialNetworksInfoCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
 
-interface NetworkDataProps {
+interface NetworkData {
   name?: string;
   lastName?: string;
   fullName?: string;
@@ -30,12 +30,12 @@ interface NetworkDataProps {
 }
 
 interface DropdownContactViewProps {
-  address: string;
+  address?: string;
   fixedPhone?: string;
   mobilePhone?: string;
-  emailAddress: string;
-  webSite: string;
-  networkData?: NetworkDataProps;
+  emailAddress?: string;
+  webSite?: string;
+  networkData?: NetworkData;
 }
 
 const DropdownContactView = ({
@@ -124,12 +124,7 @@ const DropdownContactView = ({
         border={!isEmpty(networkData)}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
-      <SocialNetworksInfoCard
-        name={networkData.name}
-        fullName={networkData.fullName}
-        lastName={networkData.lastName}
-        company={networkData.company}
-      />
+      <SocialNetworksInfoCard {...networkData} />
     </View>
   );
 };

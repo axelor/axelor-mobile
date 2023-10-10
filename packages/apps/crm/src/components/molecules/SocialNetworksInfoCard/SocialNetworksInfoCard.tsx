@@ -40,6 +40,7 @@ const SocialNetworksInfoCard = ({
 
   if (
     checkNullString(name) &&
+    checkNullString(lastName) &&
     checkNullString(company) &&
     checkNullString(fullName)
   ) {
@@ -50,9 +51,8 @@ const SocialNetworksInfoCard = ({
     <View style={[styles.container, style]}>
       <LabelText
         title={I18n.t('Crm_SocialNetworks')}
-        iconName={'globe'}
+        iconName="globe"
         size={15}
-        textStyle={styles.textTitle}
       />
       <View style={styles.containerBody}>
         <SocialNetworkLinks
@@ -79,9 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: '2%',
-  },
-  textTitle: {
-    fontSize: 14,
   },
 });
 
