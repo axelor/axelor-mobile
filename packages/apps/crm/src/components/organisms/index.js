@@ -21,6 +21,7 @@ export {default as DropdownContactView} from './DropdownContactView/DropdownCont
 export {default as DropdownEmployeeView} from './DropdownEmployeeView/DropdownEmployeeView';
 export {default as DropdownEventView} from './DropdownEventView/DropdownEventView';
 export {default as DropdownGeneralView} from './DropdownGeneralView/DropdownGeneralView';
+export {default as DropdownOpportunityView} from './DropdownOpportunityView/DropdownOpportunityView';
 export {default as EditButton} from './EditButton/EditButton';
 
 export * from './Client';
