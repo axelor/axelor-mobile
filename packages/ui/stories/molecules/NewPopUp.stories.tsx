@@ -20,26 +20,30 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {NewPopUp} from '../../src/components/molecules';
+import {lightTheme} from '../../src/theme';
 
 storiesOf('ui/molecules/NewPopUp', module).add(
   'Default',
   args => {
-    const confirmButtonConfig = {
-      title: 'Ok',
-      iconName: '?',
-    };
-
-    const cancelButtonConfig = {
-      title: 'Cancel',
-      iconName: '?',
-    };
-
     return (
       <View style={styles.container}>
         <NewPopUp
           {...args}
-          confirmButtonConfig={confirmButtonConfig}
-          cancelButtonConfig={cancelButtonConfig}>
+          cancelButtonConfig={{
+            title: args.cancelButtonConfig_title,
+            color: lightTheme.colors[args.cancelButtonConfig_color],
+            iconName: args.cancelButtonConfig_iconName,
+            hide: args.cancelButtonConfig_hide,
+            showInHeader: args.cancelButtonConfig_showInHeader,
+            width: args.cancelButtonConfig_width,
+          }}
+          confirmButtonConfig={{
+            title: args.confirmButtonConfig_title,
+            color: lightTheme.colors[args.confirmButtonConfig_color],
+            iconName: args.confirmButtonConfig_iconName,
+            hide: args.confirmButtonConfig_hide,
+            width: args.confirmButtonConfig_width,
+          }}>
           TEST
         </NewPopUp>
       </View>
@@ -56,6 +60,69 @@ storiesOf('ui/molecules/NewPopUp', module).add(
         type: 'string',
         defaultValue: 'Title',
         control: {type: 'text'},
+      },
+      cancelButtonConfig_title: {
+        type: 'string',
+        defaultValue: 'Cancel',
+        control: {type: 'text'},
+      },
+      cancelButtonConfig_color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'errorColor',
+        control: {
+          type: 'select',
+        },
+      },
+      cancelButtonConfig_iconName: {
+        type: 'string',
+        defaultValue: '?',
+        control: {type: 'text'},
+      },
+      cancelButtonConfig_hide: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      cancelButtonConfig_showInHeader: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      cancelButtonConfig_width: {
+        type: 'number',
+        defaultValue: 115,
+        control: {type: 'number'},
+      },
+      confirmButtonConfig_title: {
+        type: 'string',
+        defaultValue: 'Ok',
+        control: {type: 'text'},
+      },
+      confirmButtonConfig_color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+        control: {
+          type: 'select',
+        },
+      },
+      confirmButtonConfig_iconName: {
+        type: 'string',
+        defaultValue: '?',
+        control: {type: 'text'},
+      },
+      confirmButtonConfig_hide: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      confirmButtonConfig_width: {
+        type: 'number',
+        defaultValue: 115,
+        control: {type: 'number'},
       },
     },
   },

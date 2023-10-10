@@ -22,6 +22,8 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Text, Icon} from '../../atoms';
 import Button, {ButtonProps} from '../Button/Button';
 
+const buttonsDefaultWidth = 115;
+
 interface ButtonConfig extends ButtonProps {
   hide?: boolean;
 }
@@ -41,12 +43,12 @@ interface PopUpProps {
 
 const PopUp = ({
   style,
-  visible,
+  visible = false,
   title,
   children,
   cancelButtonConfig,
   confirmButtonConfig,
-  translator,
+  translator = key => key,
 }: PopUpProps) => {
   const Colors = useThemeColor();
 
@@ -56,15 +58,15 @@ const PopUp = ({
     }
 
     return {
+      title: translator('Base_Cancel'),
+      color: Colors.errorColor,
+      iconName: 'times',
+      hide: false,
+      showInHeader: false,
+      width: buttonsDefaultWidth,
       ...cancelButtonConfig,
-      title: cancelButtonConfig.title ?? translator('Base_Cancel'),
-      color: cancelButtonConfig.color ?? Colors.errorColor,
-      iconName: cancelButtonConfig.iconName ?? 'times',
-      hide: cancelButtonConfig.hide ?? false,
-      showInHeader: cancelButtonConfig.showInHeader ?? false,
-      width: cancelButtonConfig.width ?? 115,
     };
-  }, [cancelButtonConfig, translator, Colors]);
+  }, [translator, Colors, cancelButtonConfig]);
 
   const _confirmButtonConfig = useMemo(() => {
     if (!confirmButtonConfig) {
@@ -72,14 +74,14 @@ const PopUp = ({
     }
 
     return {
+      title: translator('Base_Ok'),
+      color: Colors.primaryColor,
+      iconName: 'check',
+      hide: false,
+      width: buttonsDefaultWidth,
       ...confirmButtonConfig,
-      title: confirmButtonConfig.title ?? translator('Base_Ok'),
-      color: confirmButtonConfig.color ?? Colors.primaryColor,
-      iconName: confirmButtonConfig.iconName ?? 'check',
-      hide: confirmButtonConfig.hide ?? false,
-      width: confirmButtonConfig.width ?? 115,
     };
-  }, [confirmButtonConfig, translator, Colors]);
+  }, [translator, Colors, confirmButtonConfig]);
 
   return (
     <Modal
@@ -92,7 +94,7 @@ const PopUp = ({
           <View style={styles.headerContainer}>
             {!!title && (
               <Text writingType="title" fontSize={20}>
-                {translator ? translator(title) : title}
+                {title}
               </Text>
             )}
             {!_cancelButtonConfig?.hide &&
@@ -107,15 +109,20 @@ const PopUp = ({
               )}
           </View>
           {children}
-          <View style={styles.buttonsContainer}>
-            {!_cancelButtonConfig?.hide &&
-              !_cancelButtonConfig?.showInHeader && (
-                <Button {..._cancelButtonConfig} style={styles.cancelButton} />
+          {(!_cancelButtonConfig?.hide || !_confirmButtonConfig?.hide) && (
+            <View style={styles.buttonsContainer}>
+              {!_cancelButtonConfig?.hide &&
+                !_cancelButtonConfig?.showInHeader && (
+                  <Button
+                    {..._cancelButtonConfig}
+                    style={styles.cancelButton}
+                  />
+                )}
+              {!_confirmButtonConfig?.hide && (
+                <Button {..._confirmButtonConfig} />
               )}
-            {!_confirmButtonConfig?.hide && (
-              <Button {..._confirmButtonConfig} />
-            )}
-          </View>
+            </View>
+          )}
         </Card>
       </View>
     </Modal>
