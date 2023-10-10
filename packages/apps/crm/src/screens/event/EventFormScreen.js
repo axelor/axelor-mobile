@@ -16,9 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 const EventFormScreen = ({navigation, route}) => {
+  const createEventAPI = useCallback((_event, dispatch) => {
+    console.log(_event);
+    /*dispatch(
+      createTicket({
+        ticket: _ticket,
+      }),
+    );*/
+  }, []);
+
   return (
     <FormView
       formKey="crm_event"
@@ -29,8 +38,9 @@ const EventFormScreen = ({navigation, route}) => {
           needRequiredFields: true,
           needValidation: true,
           //hideIf: () => idEvent != null,
-          customAction: ({dispatch, objectState}) => {},
-          //createEventAPI(objectState, dispatch),
+          customAction: ({dispatch, objectState}) => {
+            createEventAPI(objectState, dispatch);
+          },
         },
         {
           key: 'update-lead',

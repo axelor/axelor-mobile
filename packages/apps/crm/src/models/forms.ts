@@ -400,14 +400,14 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Type',
         type: 'object',
         widget: 'custom',
-        required: true,
+        //required: true,
         customComponent: EventTypePicker,
       },
       status: {
         titleKey: 'Crm_Status',
         type: 'object',
         widget: 'custom',
-        required: true,
+        //required: true,
         customComponent: EventStatusPicker,
       },
       partner: {

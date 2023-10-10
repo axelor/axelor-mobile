@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {useTranslator, displayItemFullname} from '@axelor/aos-mobile-core';
-import {FormInput, Picker, useThemeColor} from '@axelor/aos-mobile-ui';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Picker} from '@axelor/aos-mobile-ui';
 import {EventType} from '../../../types';
 
 const EventTypePicker = ({
-  style = null,
   title = 'Crm_Type',
   defaultValue = null,
   onChange = () => {},
@@ -31,48 +30,32 @@ const EventTypePicker = ({
   readonly = false,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={I18n.t(title)}
-        readOnly={true}
-        defaultValue={() => displayItemFullname(defaultValue)}
-      />
-    );
-  }
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Picker
-        required={required}
-        onValueChange={onChange}
-        labelField="title"
-        title={I18n.t(title)}
-        listItems={EventType.getCategoryList(I18n)}
-        valueField="key"
-        defaultValue={defaultValue}
-        isValueItem={true}
-      />
-    </View>
+    <Picker
+      style={styles.picker}
+      styleTxt={styles.pickerTitle}
+      required={required}
+      onValueChange={onChange}
+      labelField="title"
+      title={I18n.t(title)}
+      listItems={EventType.getCategoryList(I18n)}
+      valueField="key"
+      defaultValue={defaultValue}
+      isValueItem={true}
+      disabled={readonly}
+    />
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: '8%',
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-  });
+const styles = StyleSheet.create({
+  picker: {
+    width: '100%',
+    marginLeft: 3,
+  },
+  pickerTitle: {
+    marginLeft: 5,
+  },
+});
 
 export default EventTypePicker;
