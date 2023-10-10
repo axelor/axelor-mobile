@@ -92,7 +92,8 @@ const useClientDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus',
           title: I18n.t('Crm_CreateEvent'),
-          onPress: () => navigation.navigate('EventFormScreen'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {client: client}),
           showInHeader: true,
         },
       ],
@@ -144,7 +145,8 @@ const useContactDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus',
           title: I18n.t('Crm_CreateEvent'),
-          onPress: () => navigation.navigate('EventFormScreen'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {contact: contact}),
           showInHeader: true,
         },
       ],
@@ -299,7 +301,8 @@ const useProspectDetailsActions = () => {
           order: 20,
           iconName: 'calendar-plus',
           title: I18n.t('Crm_CreateEvent'),
-          onPress: () => navigation.navigate('EventFormScreen'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {prospect: prospect}),
           showInHeader: true,
         },
       ],

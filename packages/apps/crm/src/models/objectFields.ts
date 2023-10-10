@@ -175,6 +175,7 @@ export const crm_modelAPI: ObjectFields = {
       .of(schemaContructor.subObject()),
   }),
   crm_prospect: schemaContructor.object({
+    fullName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     name: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),

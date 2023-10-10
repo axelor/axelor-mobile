@@ -23,8 +23,13 @@ import {EventType} from '../../types';
 const EventFormScreen = ({navigation, route}) => {
   const event = route?.params?.event;
   const lead = route?.params?.lead;
+  const prospect = route?.params?.prospect;
+  const client = route?.params?.client;
+  const contact = route?.params?.contact;
 
   const {user} = useSelector(state => state.user);
+
+  console.log(contact);
 
   const defaultValue = useMemo(() => {
     const _defaultStartDate = new Date().toISOString();
@@ -45,10 +50,29 @@ const EventFormScreen = ({navigation, route}) => {
         ..._default,
         ...event,
       };
+    } else if (lead != null) {
+      return {..._default, eventLead: lead, leadReadonly: true};
+    } else if (prospect != null) {
+      return {
+        ..._default,
+        partner: prospect,
+        partnerReadonly: true,
+        hideContactPartner: true,
+      };
+    } else if (client != null) {
+      return {
+        ..._default,
+        partner: client,
+        partnerReadonly: true,
+      };
+    } else if (contact != null) {
+      return {
+        ..._default,
+      };
     }
 
     return _default;
-  }, [event, user]);
+  }, [user, event, lead, prospect, client, contact]);
 
   const createEventAPI = useCallback((_event, dispatch) => {
     console.log(_event);
@@ -64,7 +88,7 @@ const EventFormScreen = ({navigation, route}) => {
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
-          //hideIf: () => idEvent != null,
+          hideIf: () => lead == null,
           customAction: ({dispatch, objectState}) => {
             createEventAPI(objectState, dispatch);
           },
@@ -74,7 +98,7 @@ const EventFormScreen = ({navigation, route}) => {
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
-          //hideIf: () => idEvent == null,
+          hideIf: () => lead != null,
           customAction: ({dispatch, objectState}) => {},
           //updateEventAPI(objectState, dispatch),
         },

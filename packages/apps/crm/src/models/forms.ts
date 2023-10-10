@@ -416,13 +416,16 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: PartnerSearchBar,
         hideIf: ({objectState}) => !isEmpty(objectState.eventLead),
+        readonlyIf: ({objectState}) => objectState.partnerReadonly,
       },
       contactPartner: {
         titleKey: 'Crm_Contact',
         type: 'object',
         widget: 'custom',
         customComponent: ContactSearchBar,
-        hideIf: ({objectState}) => !isEmpty(objectState.eventLead),
+        hideIf: ({objectState}) =>
+          !isEmpty(objectState.eventLead) || objectState.hideContactPartner,
+        readonlyIf: ({objectState}) => objectState.contactPartnerReadonly,
       },
       eventLead: {
         titleKey: 'Crm_Lead',
@@ -431,6 +434,7 @@ export const crm_formsRegister: FormConfigs = {
         customComponent: LeadSearchBar,
         hideIf: ({objectState}) =>
           !isEmpty(objectState.contactPartner) || !isEmpty(objectState.partner),
+        readonlyIf: ({objectState}) => objectState.leadReadonly,
       },
       startDateTime: {
         titleKey: 'Crm_StartDate',
