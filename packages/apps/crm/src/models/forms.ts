@@ -396,14 +396,14 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'default',
         required: true,
       },
-      type: {
+      typeSelect: {
         titleKey: 'Crm_Type',
         type: 'number',
         widget: 'custom',
         required: true,
         customComponent: EventTypePicker,
       },
-      status: {
+      statusSelect: {
         titleKey: 'Crm_Status',
         type: 'number',
         widget: 'custom',
@@ -416,7 +416,7 @@ export const crm_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: PartnerSearchBar,
       },
-      contact: {
+      contactPartner: {
         titleKey: 'Crm_Contact',
         type: 'object',
         widget: 'custom',

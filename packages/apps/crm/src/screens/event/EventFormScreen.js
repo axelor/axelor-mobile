@@ -21,6 +21,8 @@ import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {EventType} from '../../types';
 
 const EventFormScreen = ({navigation, route}) => {
+  const event = route?.params?.event;
+
   const {user} = useSelector(state => state.user);
 
   const defaultValue = useMemo(() => {
@@ -29,21 +31,27 @@ const EventFormScreen = ({navigation, route}) => {
       new Date().setHours(new Date().getHours() + 1),
     ).toISOString();
     const _default = {
-      type: EventType.category.Meeting,
-      status: EventType.status.Planned,
+      typeSelect: EventType.category.Meeting,
+      statusSelect: EventType.status.Planned,
       startDateTime: _defaultStartDate,
       endDateTime: _defaultEndDate,
       user: user,
       //relatedToSelect : default to origin object (Lead or Tiers/Contact)
     };
 
+    if (event != null) {
+      return {
+        ..._default,
+        ...event,
+      };
+    }
+
     return _default;
-  }, [user]);
+  }, [event, user]);
+
   const createEventAPI = useCallback((_event, dispatch) => {
     console.log(_event);
   }, []);
-
-  console.log('defaultValue', defaultValue);
 
   return (
     <FormView
