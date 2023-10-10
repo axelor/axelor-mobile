@@ -29,6 +29,7 @@ import {
   useSelector,
   AOSImageBubble,
   useDispatch,
+  SocialNetworkLinks,
 } from '@axelor/aos-mobile-core';
 import {updateProspectScore} from '../../../../features/prospectSlice';
 import {Prospect} from '../../../../types';
@@ -56,7 +57,16 @@ const ProspectHeader = ({colorIndex}) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerContainerChildren}>
-        <AOSImageBubble metaFileId={prospect?.picture?.id} />
+        <View style={styles.leftHeader}>
+          <AOSImageBubble metaFileId={prospect?.picture?.id} />
+          <SocialNetworkLinks
+            data={{
+              [prospect.partnerTypeSelect === Prospect.partnerTypeSelect.Company
+                ? 'company'
+                : 'fullName']: prospect?.simpleFullName,
+            }}
+          />
+        </View>
         <View style={styles.headerInfo}>
           <Text style={styles.textTitle} fontSize={16}>
             {prospect.simpleFullName}
@@ -98,10 +108,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  leftHeader: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   headerContainerChildren: {
     flexDirection: 'row',
     marginLeft: '5%',
+    alignSelf: 'center',
     alignItems: 'center',
   },
   headerInfo: {
