@@ -61,6 +61,7 @@ const ClientDropdownCards = ({}) => {
                 fixedPhone={client.fixedPhone}
                 emailAddress={client.emailAddress?.address}
                 webSite={client.webSite}
+                networkData={{company: client.simpleFullName}}
               />
             ),
           },
