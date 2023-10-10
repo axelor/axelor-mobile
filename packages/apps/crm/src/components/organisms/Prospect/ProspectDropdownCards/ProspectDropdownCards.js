@@ -25,6 +25,7 @@ import {
   DropdownEmployeeView,
   DropdownEventView,
   DropdownGeneralView,
+  DropdownOpportunityView,
 } from '../../../organisms';
 import {searchContactById} from '../../../../features/contactSlice';
 import {fetchPartnerEventById} from '../../../../features/eventSlice';
@@ -85,6 +86,11 @@ const ProspectDropdownCards = ({}) => {
             title: I18n.t('Crm_Events'),
             key: 4,
             childrenComp: <DropdownEventView eventList={listEventPartner} />,
+          },
+          {
+            title: I18n.t('Crm_Opportunity'),
+            key: 5,
+            childrenComp: <DropdownOpportunityView partnerId={prospect?.id} />,
           },
         ]}
       />
