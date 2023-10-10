@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import {Switch as RNSwitch} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
@@ -26,12 +26,10 @@ interface SwitchProps {
 }
 
 const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
-  const [enabled, setEnabled] = useState(isEnabled);
   const Colors = useThemeColor();
 
   const toggleSwitch = () => {
-    handleToggle(!enabled);
-    setEnabled(previousState => !previousState);
+    handleToggle(!isEnabled);
   };
 
   return (
@@ -43,7 +41,7 @@ const Switch = ({isEnabled, handleToggle}: SwitchProps) => {
       thumbColor={Colors.secondaryColor_dark.background}
       ios_backgroundColor={Colors.backgroundColor}
       onValueChange={toggleSwitch}
-      value={enabled}
+      value={isEnabled}
     />
   );
 };
