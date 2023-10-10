@@ -17,12 +17,12 @@
  */
 
 import React, {useCallback} from 'react';
-import {IconButton, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 import {updateStatusOfManufOrder} from '../../../features/manufacturingOrderSlice';
 
-const ManufacturingOrderIconButtonList = ({}) => {
+const ManufacturingOrderButtons = ({}) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const ManufacturingOrderIconButtonList = ({}) => {
 
   if (manufOrder.statusSelect === ManufacturingOrder.status.Planned) {
     return (
-      <IconButton
+      <Button
         title={I18n.t('Base_Start')}
         onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
         iconName="play"
@@ -55,13 +55,13 @@ const ManufacturingOrderIconButtonList = ({}) => {
   if (manufOrder.statusSelect === ManufacturingOrder.status.InProgress) {
     return (
       <>
-        <IconButton
+        <Button
           title={I18n.t('Base_Pause')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.StandBy)}
           iconName="pause"
           color={Colors.secondaryColor}
         />
-        <IconButton
+        <Button
           title={I18n.t('Base_Finish')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.Finished)}
           iconName="power-off"
@@ -72,7 +72,7 @@ const ManufacturingOrderIconButtonList = ({}) => {
 
   if (manufOrder.statusSelect === ManufacturingOrder.status.StandBy) {
     return (
-      <IconButton
+      <Button
         title={I18n.t('Base_Continue')}
         onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
         iconName="step-forward"
@@ -83,4 +83,4 @@ const ManufacturingOrderIconButtonList = ({}) => {
   return null;
 };
 
-export default ManufacturingOrderIconButtonList;
+export default ManufacturingOrderButtons;

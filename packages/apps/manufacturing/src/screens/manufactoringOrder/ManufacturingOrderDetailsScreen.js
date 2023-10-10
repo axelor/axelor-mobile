@@ -29,7 +29,7 @@ import {fetchProductWithId, ProductCardInfo} from '@axelor/aos-mobile-stock';
 import {
   ManufacturingOrderHeader,
   OperationOrderCard,
-  ManufacturingOrderIconButtonList,
+  ManufacturingOrderButtons,
   ManufacturingOrderProductionOrderSetView,
   ManufacturingOrderSaleOrderSetView,
   ManufacturingOrderHalfLabelCardList,
@@ -111,9 +111,7 @@ const ManufacturingOrderDetailsScreen = ({route, navigation}) => {
   };
 
   return (
-    <Screen
-      removeSpaceOnTop={true}
-      fixedItems={<ManufacturingOrderIconButtonList />}>
+    <Screen removeSpaceOnTop={true} fixedItems={<ManufacturingOrderButtons />}>
       <HeaderContainer
         fixedItems={
           <ManufacturingOrderHeader
