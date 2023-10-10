@@ -19,10 +19,10 @@
 export {default as ConsumedProductCard} from './ConsumedProductCard/ConsumedProductCard';
 export {default as ConsumedProductGlobalCard} from './ConsumedProductGlobalCard/ConsumedProductGlobalCard';
 export {default as LinkedManufacturingOrderCard} from './LinkedManufacturingOrderCard/LinkedManufacturingOrderCard';
+export {default as ManufacturingOrderButtons} from './ManufacturingOrderButtons/ManufacturingOrderButtons';
 export {default as ManufacturingOrderCard} from './ManufacturingOrderCard/ManufacturingOrderCard';
 export {default as ManufacturingOrderHalfLabelCardList} from './ManufacturingOrderHalfLabelCardList/ManufacturingOrderHalfLabelCardList';
 export {default as ManufacturingOrderHeader} from './ManufacturingOrderHeader/ManufacturingOrderHeader';
-export {default as ManufacturingOrderButtons} from './ManufacturingOrderButtons/ManufacturingOrderButtons';
 export {default as ManufacturingOrderNotesCardList} from './ManufacturingOrderNotesCardList/ManufacturingOrderNotesCardList';
 export {default as ManufacturingOrderProductionOrderSetView} from './ManufacturingOrderProductionOrderSetView/ManufacturingOrderProductionOrderSetView';
 export {default as ManufacturingOrderSaleOrderSetView} from './ManufacturingOrderSaleOrderSetView/ManufacturingOrderSaleOrderSetView';
