@@ -83,6 +83,8 @@
   "Crm_Image": "Image",
   "Crm_PdfFile": "PDF file",
   "Crm_SaveContact": "Save contact",
+  "Crm_NoOpportunityAssociated": "No opportunity is associated",
+  "Crm_LastOpportunity": "Last opportunity",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -121,5 +123,6 @@
   "Crm_SliceAction_FetchCompanyById": "get company by id",
   "Crm_SliceAction_CreateCatalog": "Create catalog",
   "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
-  "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact"
+  "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact",
+  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities"
 }
