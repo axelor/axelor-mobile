@@ -19,6 +19,11 @@
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
 class Prospect {
+  static partnerTypeSelect = {
+    Individual: 2,
+    Company: 1,
+  };
+
   static getStatusColor = (index: number, Colors: ThemeColors): Color => {
     if (index === 0) {
       return Colors.primaryColor;
@@ -39,4 +44,5 @@ class Prospect {
     }
   };
 }
+
 export default Prospect;
