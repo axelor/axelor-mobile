@@ -76,11 +76,13 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
             }}
             color={Colors.errorColor}
             width="45%"
+            iconName="times"
           />
           <Button
             title={I18n.t('Hr_Validate')}
             onPress={validateExpenseAPI}
             width="45%"
+            iconName="check"
           />
         </View>
         <ExpenseRefusalPopup
