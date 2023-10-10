@@ -60,9 +60,13 @@ const ProspectHeader = ({colorIndex}) => {
         <View style={styles.leftHeader}>
           <AOSImageBubble metaFileId={prospect?.picture?.id} />
           <SocialNetworkLinks
-            data={{
-              company: prospect?.simpleFullName,
-            }}
+            data={
+              prospect.partnerTypeSelect === Prospect.partnerTypeSelect.Company
+                ? {
+                    company: prospect?.simpleFullName,
+                  }
+                : {fullName: prospect?.simpleFullName}
+            }
           />
         </View>
         <View style={styles.headerInfo}>
