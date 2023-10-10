@@ -35,7 +35,7 @@ interface DropdownContactViewProps {
   mobilePhone?: string;
   emailAddress: string;
   webSite: string;
-  netWorkData?: NetworkDataProps;
+  networkData?: NetworkDataProps;
 }
 
 const DropdownContactView = ({
@@ -44,7 +44,7 @@ const DropdownContactView = ({
   mobilePhone,
   emailAddress,
   webSite,
-  netWorkData,
+  networkData,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
@@ -54,7 +54,7 @@ const DropdownContactView = ({
     !mobilePhone &&
     !emailAddress &&
     !webSite &&
-    isEmpty(netWorkData)
+    isEmpty(networkData)
   ) {
     return (
       <View>
@@ -75,7 +75,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          !isEmpty(netWorkData)
+          !isEmpty(networkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMapApp(address)}
@@ -89,7 +89,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
-          !isEmpty(netWorkData)
+          !isEmpty(networkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(fixedPhone)}
@@ -100,7 +100,7 @@ const DropdownContactView = ({
         data={mobilePhone}
         rightIconName={'phone-alt'}
         border={
-          emailAddress != null || webSite != null || !isEmpty(netWorkData)
+          emailAddress != null || webSite != null || !isEmpty(networkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(mobilePhone)}
@@ -111,7 +111,7 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={webSite != null || !isEmpty(netWorkData)}
+        border={webSite != null || !isEmpty(networkData)}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -121,14 +121,14 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
-        border={!isEmpty(netWorkData)}
+        border={!isEmpty(networkData)}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
       <SocialNetworksInfoCard
-        name={netWorkData.name}
-        fullName={netWorkData.fullName}
-        lastName={netWorkData.lastName}
-        company={netWorkData.company}
+        name={networkData.name}
+        fullName={networkData.fullName}
+        lastName={networkData.lastName}
+        company={networkData.company}
       />
     </View>
   );
