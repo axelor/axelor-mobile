@@ -18,16 +18,24 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTranslator, linkingProvider} from '@axelor/aos-mobile-core';
-import {ContactInfoCard} from '../../molecules';
+import {useTranslator, linkingProvider, isEmpty} from '@axelor/aos-mobile-core';
+import {ContactInfoCard, SocialNetworksInfoCard} from '../../molecules';
 import {Text} from '@axelor/aos-mobile-ui';
 
+interface NetworkData {
+  name?: string;
+  lastName?: string;
+  fullName?: string;
+  company?: string;
+}
+
 interface DropdownContactViewProps {
-  address: string;
+  address?: string;
   fixedPhone?: string;
   mobilePhone?: string;
-  emailAddress: string;
-  webSite: string;
+  emailAddress?: string;
+  webSite?: string;
+  networkData?: NetworkData;
 }
 
 const DropdownContactView = ({
@@ -36,10 +44,18 @@ const DropdownContactView = ({
   mobilePhone,
   emailAddress,
   webSite,
+  networkData,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
-  if (!address && !fixedPhone && !mobilePhone && !emailAddress && !webSite) {
+  if (
+    !address &&
+    !fixedPhone &&
+    !mobilePhone &&
+    !emailAddress &&
+    !webSite &&
+    isEmpty(networkData)
+  ) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoContactInformation')}</Text>
@@ -58,7 +74,8 @@ const DropdownContactView = ({
           fixedPhone != null ||
           mobilePhone != null ||
           emailAddress != null ||
-          webSite != null
+          webSite != null ||
+          !isEmpty(networkData)
         }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMapApp(address)}
@@ -68,7 +85,12 @@ const DropdownContactView = ({
         title={I18n.t('Crm_Phone')}
         data={fixedPhone}
         rightIconName={'phone-alt'}
-        border={mobilePhone != null || emailAddress != null || webSite != null}
+        border={
+          mobilePhone != null ||
+          emailAddress != null ||
+          webSite != null ||
+          !isEmpty(networkData)
+        }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(fixedPhone)}
       />
@@ -77,7 +99,9 @@ const DropdownContactView = ({
         title={I18n.t('Crm_MobilePhone')}
         data={mobilePhone}
         rightIconName={'phone-alt'}
-        border={emailAddress != null || webSite != null}
+        border={
+          emailAddress != null || webSite != null || !isEmpty(networkData)
+        }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openCallApp(mobilePhone)}
       />
@@ -87,7 +111,7 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={webSite != null}
+        border={webSite != null || !isEmpty(networkData)}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -97,8 +121,10 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
+        border={!isEmpty(networkData)}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
+      <SocialNetworksInfoCard {...networkData} />
     </View>
   );
 };
