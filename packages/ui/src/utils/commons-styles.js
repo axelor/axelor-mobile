@@ -53,9 +53,8 @@ export const getCommonStyles = (Colors, _required = false) =>
       marginVertical: 5,
       borderRadius: 13,
       borderWidth: 2,
-      height: Dimensions.get('window').height * 0.075,
+      height: 50,
       minHeight: 40,
-      maxHeight: 50,
     },
     inputFocused: {
       borderWidth: 1,
