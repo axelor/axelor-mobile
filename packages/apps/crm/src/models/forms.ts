@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
 import {
   CatalogTypePicker,
   CivilityPicker,
@@ -463,6 +463,12 @@ export const crm_formsRegister: FormConfigs = {
           multiline: true,
           adjustHeightWithLines: true,
         },
+      },
+      user: {
+        titleKey: 'Crm_User',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
       },
     },
   },
