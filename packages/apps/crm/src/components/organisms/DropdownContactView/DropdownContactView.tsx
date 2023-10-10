@@ -31,6 +31,7 @@ interface DropdownContactViewProps {
   name?: string;
   lastName?: string;
   company?: string;
+  fullName?: string;
 }
 
 const DropdownContactView = ({
@@ -40,12 +41,22 @@ const DropdownContactView = ({
   emailAddress,
   webSite,
   name,
-  lastName = '',
+  lastName,
+  fullName,
   company,
 }: DropdownContactViewProps) => {
   const I18n = useTranslator();
 
-  if (!address && !fixedPhone && !mobilePhone && !emailAddress && !webSite) {
+  if (
+    !address &&
+    !fixedPhone &&
+    !mobilePhone &&
+    !emailAddress &&
+    !webSite &&
+    !company &&
+    !name &&
+    !fullName
+  ) {
     return (
       <View>
         <Text>{I18n.t('Crm_NoContactInformation')}</Text>
@@ -65,6 +76,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
+          fullName != null ||
           name != null ||
           company != null
         }
@@ -80,6 +92,7 @@ const DropdownContactView = ({
           mobilePhone != null ||
           emailAddress != null ||
           webSite != null ||
+          fullName != null ||
           name != null ||
           company != null
         }
@@ -94,6 +107,7 @@ const DropdownContactView = ({
         border={
           emailAddress != null ||
           webSite != null ||
+          fullName != null ||
           name != null ||
           company != null
         }
@@ -106,7 +120,9 @@ const DropdownContactView = ({
         data={emailAddress}
         rightIconName={'send'}
         FontAwesome5RightIcon={false}
-        border={webSite != null || name != null || company != null}
+        border={
+          webSite != null || fullName != null || name != null || company != null
+        }
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
@@ -116,16 +132,14 @@ const DropdownContactView = ({
         data={webSite}
         rightIconName={'external-link-alt'}
         styleBorder={styles.borderInfoCard}
-        border={name != null || company != null}
+        border={fullName != null || name != null || company != null}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}
       />
       <SocialNetworksInfoCard
         name={name}
+        fullName={fullName}
         lastName={lastName}
         company={company}
-        headerIconName={'globe'}
-        title={I18n.t('Crm_SocialNetworks')}
-        styleBorder={styles.borderInfoCard}
       />
     </View>
   );

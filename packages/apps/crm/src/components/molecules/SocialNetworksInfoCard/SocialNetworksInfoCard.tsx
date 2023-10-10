@@ -16,57 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {LabelText, checkNullString, useThemeColor} from '@axelor/aos-mobile-ui';
-import {SocialNetworkLinks} from '@axelor/aos-mobile-core';
+import {LabelText, checkNullString} from '@axelor/aos-mobile-ui';
+import {SocialNetworkLinks, useTranslator} from '@axelor/aos-mobile-core';
 
 interface SocialNetworksInfoCardProps {
   style?: any;
-  title: string;
-  headerIconName: string;
-  FontAwesome5HeaderIcon?: boolean;
-  border?: boolean;
-  styleBorder?: any;
   name?: string;
   lastName?: string;
+  fullName?: string;
   company?: string;
 }
 
 const SocialNetworksInfoCard = ({
   style,
-  headerIconName,
-  title,
+  fullName,
   name,
-  lastName = '',
+  lastName,
   company,
-  FontAwesome5HeaderIcon = true,
-  border = false,
-  styleBorder,
 }: SocialNetworksInfoCardProps) => {
-  const Colors = useThemeColor();
-  const styles = useMemo(() => {
-    return getStyles(Colors);
-  }, [Colors]);
+  const I18n = useTranslator();
 
-  if (checkNullString(name) && checkNullString(company)) {
+  if (
+    checkNullString(name) &&
+    checkNullString(company) &&
+    checkNullString(fullName)
+  ) {
     return null;
   }
 
   return (
     <View style={[styles.container, style]}>
       <LabelText
-        title={title}
-        iconName={headerIconName}
+        title={I18n.t('Crm_SocialNetworks')}
+        iconName={'globe'}
         size={15}
         textStyle={styles.textTitle}
-        FontAwesome5={FontAwesome5HeaderIcon}
       />
-      {border && <View style={[styles.borderBottom, styleBorder]} />}
       <View style={styles.containerBody}>
         <SocialNetworkLinks
           size={25}
           data={{
+            fullName: fullName,
             name: name,
             lastName: lastName,
             company: company,
@@ -76,28 +68,21 @@ const SocialNetworksInfoCard = ({
     </View>
   );
 };
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      width: '95%',
-      marginHorizontal: 5,
-    },
-    containerBody: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: '2%',
-    },
-    textTitle: {
-      fontSize: 14,
-    },
-    borderBottom: {
-      width: '100%',
-      borderBottomWidth: 1.5,
-      borderBottomColor: Colors.secondaryColor.background,
-      marginVertical: '3%',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    width: '95%',
+    marginHorizontal: 5,
+  },
+  containerBody: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '2%',
+  },
+  textTitle: {
+    fontSize: 14,
+  },
+});
 
 export default SocialNetworksInfoCard;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Text,
@@ -33,7 +33,6 @@ import {
   useSelector,
   useDispatch,
   SocialNetworkLinks,
-  splitFullName,
 } from '@axelor/aos-mobile-core';
 import {Lead} from '../../../../types';
 import {updateLeadScore} from '../../../../features/leadSlice';
@@ -45,10 +44,6 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
 
   const {baseUrl} = useSelector(state => state.auth);
   const {lead} = useSelector(state => state.lead);
-
-  const fullName = useMemo(() => {
-    return splitFullName(lead?.simpleFullName);
-  }, [lead?.simpleFullName]);
 
   const updateScoreLeadAPI = useCallback(
     newScore => {
@@ -89,8 +84,7 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
         />
         <SocialNetworkLinks
           data={{
-            name: fullName?.firstName,
-            lastName: fullName?.lastName,
+            fullName: lead?.simpleFullName,
             company: lead?.enterpriseName,
           }}
         />

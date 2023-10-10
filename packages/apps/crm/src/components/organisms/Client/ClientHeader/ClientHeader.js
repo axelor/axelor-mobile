@@ -25,26 +25,19 @@ const ClientHeader = ({}) => {
   const {client} = useSelector(state => state.client);
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.headerContainerChildren}>
-        <AOSImageBubble metaFileId={client?.picture?.id} />
-        <View style={styles.headerInfo}>
-          <Text style={styles.textTitle} fontSize={16}>
-            {client.simpleFullName}
-          </Text>
-          <Text fontSize={14}>{client.partnerSeq}</Text>
-        </View>
+    <View style={styles.headerContainerChildren}>
+      <AOSImageBubble metaFileId={client?.picture?.id} />
+      <View style={styles.headerInfo}>
+        <Text style={styles.textTitle} fontSize={16}>
+          {client.simpleFullName}
+        </Text>
+        <Text fontSize={14}>{client.partnerSeq}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   headerContainerChildren: {
     flexDirection: 'row',
     marginLeft: '5%',
