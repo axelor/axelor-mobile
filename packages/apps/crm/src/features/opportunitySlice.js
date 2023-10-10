@@ -30,6 +30,7 @@ import {
   updateOpportunity as _updateOpportunity,
   updateOpportunityScoring as _updateOpportunityScoring,
   createOpportunity as _createOpportunity,
+  getPartnerOpportunities as _getPartnerOpportunities,
 } from '../api/opportunities-api';
 
 export const fetchOpportunities = createAsyncThunk(
@@ -155,6 +156,19 @@ export const createOpportunity = createAsyncThunk(
   },
 );
 
+export const getPartnerOpportunities = createAsyncThunk(
+  'opportunity/getPartnerOpportunities',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _getPartnerOpportunities,
+      data,
+      action: 'Crm_SliceAction_GetPartnerOpportunities',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   loadingOpportunity: false,
@@ -164,6 +178,7 @@ const initialState = {
   opportunityList: [],
   opportunityStatusList: [],
   opportunity: {},
+  partnerOpportunityList: {},
 };
 
 const opportunitySlice = createSlice({
@@ -226,6 +241,9 @@ const opportunitySlice = createSlice({
     builder.addCase(createOpportunity.fulfilled, (state, action) => {
       state.loading = false;
       state.opportunityList = action.payload;
+    });
+    builder.addCase(getPartnerOpportunities.fulfilled, (state, action) => {
+      state.partnerOpportunityList = action.payload;
     });
   },
 });
