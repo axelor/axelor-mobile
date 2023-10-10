@@ -70,17 +70,19 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
       <>
         <View style={styles.buttonContainer}>
           <Button
-            style={styles.button}
             title={I18n.t('Hr_Refuse')}
             onPress={() => {
               setRefusalPopupIsOpen(true);
             }}
             color={Colors.errorColor}
+            width="45%"
+            iconName="times"
           />
           <Button
             title={I18n.t('Hr_Validate')}
             onPress={validateExpenseAPI}
-            style={styles.button}
+            width="45%"
+            iconName="check"
           />
         </View>
         <ExpenseRefusalPopup
@@ -104,12 +106,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
-    width: '100%',
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 2,
-    marginBottom: 10,
+    justifyContent: 'space-evenly',
   },
 });
 
