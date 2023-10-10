@@ -42,7 +42,6 @@ const EventTypePicker = ({
       listItems={EventType.getCategoryList(I18n)}
       valueField="key"
       defaultValue={defaultValue}
-      isValueItem={true}
       disabled={readonly}
     />
   );

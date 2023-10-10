@@ -16,20 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
-import {FormView} from '@axelor/aos-mobile-core';
+import React, {useCallback, useMemo} from 'react';
+import {FormView, useSelector} from '@axelor/aos-mobile-core';
+import {EventType} from '../../types';
+
 const EventFormScreen = ({navigation, route}) => {
+  const {user} = useSelector(state => state.user);
+
+  const defaultValue = useMemo(() => {
+    const _defaultStartDate = new Date().toISOString();
+    const _defaultEndDate = new Date(
+      new Date().setHours(new Date().getHours() + 1),
+    ).toISOString();
+    const _default = {
+      type: EventType.category.Meeting,
+      status: EventType.status.Planned,
+      startDateTime: _defaultStartDate,
+      endDateTime: _defaultEndDate,
+      user: user,
+      //relatedToSelect : default to origin object (Lead or Tiers/Contact)
+    };
+
+    return _default;
+  }, [user]);
   const createEventAPI = useCallback((_event, dispatch) => {
     console.log(_event);
-    /*dispatch(
-      createTicket({
-        ticket: _ticket,
-      }),
-    );*/
   }, []);
+
+  console.log('defaultValue', defaultValue);
 
   return (
     <FormView
+      defaultValue={defaultValue}
       formKey="crm_event"
       actions={[
         {

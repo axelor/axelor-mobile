@@ -42,7 +42,6 @@ const EventStatusPicker = ({
       listItems={EventType.getStatusList(I18n)}
       valueField="key"
       defaultValue={defaultValue}
-      isValueItem={true}
       disabled={readonly}
     />
   );

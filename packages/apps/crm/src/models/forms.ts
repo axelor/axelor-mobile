@@ -398,16 +398,16 @@ export const crm_formsRegister: FormConfigs = {
       },
       type: {
         titleKey: 'Crm_Type',
-        type: 'object',
+        type: 'number',
         widget: 'custom',
-        //required: true,
+        required: true,
         customComponent: EventTypePicker,
       },
       status: {
         titleKey: 'Crm_Status',
-        type: 'object',
+        type: 'number',
         widget: 'custom',
-        //required: true,
+        required: true,
         customComponent: EventStatusPicker,
       },
       partner: {
@@ -430,12 +430,12 @@ export const crm_formsRegister: FormConfigs = {
       },
       startDateTime: {
         titleKey: 'Crm_StartDate',
-        type: 'date',
+        type: 'datetime',
         widget: 'date',
       },
       endDateTime: {
         titleKey: 'Crm_EndDate',
-        type: 'date',
+        type: 'datetime',
         widget: 'date',
       },
       allDay: {
