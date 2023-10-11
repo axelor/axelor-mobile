@@ -20,29 +20,66 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {CircleButton} from '../../src/components/molecules';
+import {lightTheme} from '../../src/theme';
 
-const icons = ['heart', 'star', 'camera'];
-
-storiesOf('ui/molecules/CircleButton', module).add('Default', () => {
-  return (
-    <View style={styles.container}>
-      {icons.map(icon => (
-        <CircleButton
-          key={icon}
-          iconName={icon}
-          onPress={() => console.log(`Pressed ${icon} button`)}
-        />
-      ))}
-    </View>
-  );
-});
+storiesOf('ui/molecules/CircleButton', module).add(
+  'Default',
+  args => {
+    return (
+      <View style={styles.container}>
+        <CircleButton {...args} color={lightTheme.colors[args.color]} />
+      </View>
+    );
+  },
+  {
+    argTypes: {
+      square: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      size: {
+        type: 'number',
+        defaultValue: 50,
+        control: {type: 'number'},
+      },
+      color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+        control: {
+          type: 'select',
+        },
+      },
+      isNeutralBackground: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      iconName: {
+        type: 'string',
+        defaultValue: '?',
+        control: {type: 'text'},
+      },
+      FontAwesome5: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      disabled: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    paddingVertical: 50,
   },
 });
