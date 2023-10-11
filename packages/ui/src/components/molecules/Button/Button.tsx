@@ -23,7 +23,7 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Text} from '../../atoms';
 import {Color} from '../../../theme/themes';
 
-interface ButtonProps {
+export interface ButtonProps {
   color?: Color;
   disabled?: boolean;
   FontAwesome5?: boolean;
