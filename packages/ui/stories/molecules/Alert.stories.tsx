@@ -19,15 +19,15 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import {NewPopUp} from '../../src/components/molecules';
+import {Alert, Text} from '../../src/components';
 import {lightTheme} from '../../src/theme';
 
-storiesOf('ui/molecules/NewPopUp', module).add(
+storiesOf('ui/molecules/Alert', module).add(
   'Default',
   args => {
     return (
       <View style={styles.container}>
-        <NewPopUp
+        <Alert
           {...args}
           cancelButtonConfig={{
             title: args.cancelButtonConfig_title,
@@ -44,8 +44,8 @@ storiesOf('ui/molecules/NewPopUp', module).add(
             hide: args.confirmButtonConfig_hide,
             width: args.confirmButtonConfig_width,
           }}>
-          TEST
-        </NewPopUp>
+          <Text>TEST</Text>
+        </Alert>
       </View>
     );
   },
