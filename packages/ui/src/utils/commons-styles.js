@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {hexToRgb} from './commons-utlis';
 
 export const getCommonStyles = (Colors, _required = false) =>
