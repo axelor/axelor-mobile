@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as Alert} from './Alert/Alert';
 export {default as AttachmentCard} from './AttachmentCard/AttachmentCard';
 export {default as Badge} from './Badge/Badge';
 export {default as BlockInteractionMessage} from './BlockInteractionMessage/BlockInteractionMessage';
