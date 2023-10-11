@@ -27,7 +27,9 @@ import {
   contactEventById,
   getPlannedEvent,
   getEvent,
+  createEvent as _createEvent,
 } from '../api/event-api';
+import {fetchLeadById} from './leadSlice';
 
 export const searchEventById = createAsyncThunk(
   'event/searchEventById',
@@ -90,6 +92,24 @@ export const fetchEventById = createAsyncThunk(
       action: 'Crm_SliceAction_FetchEventById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const createEvent = createAsyncThunk(
+  'event/createEvent',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createEvent,
+      data,
+      action: 'Crm_SliceAction_CreateEvent',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      if (data?.event?.isLead) {
+        dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
+      }
+      return res;
     });
   },
 );

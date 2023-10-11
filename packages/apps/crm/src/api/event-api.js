@@ -17,6 +17,7 @@
  */
 
 import {
+  axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
   getNextMonth,
@@ -137,5 +138,14 @@ export async function getEvent({eventId}) {
     model: 'com.axelor.apps.crm.db.Event',
     id: eventId,
     fieldKey: 'crm_event',
+  });
+}
+
+export async function createEvent({event}) {
+  return axiosApiProvider.put({
+    url: '/ws/rest/com.axelor.apps.crm.db.Event',
+    data: {
+      data: event,
+    },
   });
 }

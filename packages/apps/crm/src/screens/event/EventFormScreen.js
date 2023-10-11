@@ -19,6 +19,7 @@
 import React, {useCallback, useMemo} from 'react';
 import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {EventType} from '../../types';
+import {createEvent} from '../../features/eventSlice';
 
 const EventFormScreen = ({navigation, route}) => {
   const event = route?.params?.event;
@@ -49,19 +50,21 @@ const EventFormScreen = ({navigation, route}) => {
         ...event,
       };
     } else if (lead != null) {
-      return {..._default, eventLead: lead, leadReadonly: true};
+      return {..._default, eventLead: lead, leadReadonly: true, isLead: true};
     } else if (prospect != null) {
       return {
         ..._default,
         partner: prospect,
         partnerReadonly: true,
         hideContactPartner: true,
+        isProspect: true,
       };
     } else if (client != null) {
       return {
         ..._default,
         partner: client,
         partnerReadonly: true,
+        isPartner: true,
       };
     } else if (contact != null) {
       return {
@@ -70,15 +73,24 @@ const EventFormScreen = ({navigation, route}) => {
         partnerReadonly: true,
         contactPartner: contact?.mainPartner,
         contactPartnerReadonly: true,
+        isContact: true,
       };
     }
 
     return _default;
   }, [user, event, lead, prospect, client, contact]);
 
-  const createEventAPI = useCallback((_event, dispatch) => {
-    console.log(_event);
-  }, []);
+  const createEventAPI = useCallback(
+    (_event, dispatch) => {
+      dispatch(createEvent({event: _event}));
+      if (_event?.isLead) {
+        navigation.navigate('LeadDetailsScreen', {
+          idLead: _event?.eventLead?.id,
+        });
+      }
+    },
+    [navigation],
+  );
 
   return (
     <FormView
