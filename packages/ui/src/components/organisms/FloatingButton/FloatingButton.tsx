@@ -52,7 +52,7 @@ const FloatingActionButton = ({
   actionKey,
   title,
   iconName,
-  size,
+  buttonParams,
   disabled = false,
   onPress,
   translator,
@@ -60,7 +60,7 @@ const FloatingActionButton = ({
   actionKey: number;
   title: string;
   iconName: string;
-  size: number;
+  buttonParams: any;
   disabled?: boolean;
   onPress: (actionKey: number) => void;
   translator: (translationKey: string) => string;
@@ -77,9 +77,10 @@ const FloatingActionButton = ({
     <View style={styles.actionButtonContainer}>
       <CircleButton
         iconName={iconName}
-        size={size}
+        size={buttonParams.size}
         onPress={handleActionPress}
         disabled={disabled}
+        style={{marginRight: buttonParams.marginRight}}
       />
       <View style={styles.actionTitleContainer}>
         <Text fontSize={16} style={styles.actionTitle}>
@@ -113,10 +114,15 @@ const FloatingButton = ({
     }
   }, [clickOutside, isOpen]);
 
-  const actionSize = useMemo(
-    () => Math.floor(size * ACTION_BUTTON_SIZE_PERCENTAGE),
-    [size],
-  );
+  const actionButtonParams = useMemo(() => {
+    const actionButtonSize = Math.floor(size * ACTION_BUTTON_SIZE_PERCENTAGE);
+    const actionButtonMarginRight = Math.floor((size - actionButtonSize) / 2);
+
+    return {
+      size: actionButtonSize,
+      marginRight: actionButtonMarginRight,
+    };
+  }, [size]);
 
   const onActionPress = useCallback(actionPress => {
     actionPress();
@@ -133,13 +139,13 @@ const FloatingButton = ({
             actionKey={action.key}
             title={action.title}
             iconName={action.iconName}
-            size={actionSize}
+            buttonParams={actionButtonParams}
             disabled={action.disabled}
             onPress={() => onActionPress(action.onPress)}
             translator={translator}
           />
         )),
-    [actions, actionSize, onActionPress, translator],
+    [actions, actionButtonParams, onActionPress, translator],
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -162,6 +168,7 @@ const FloatingButton = ({
         iconName={isOpen ? 'times' : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
+        style={styles.floatingButton}
       />
     </View>
   );
@@ -174,11 +181,10 @@ const getStyles = (Colors: ThemeColors) =>
       marginTop: 7,
     },
     actionsContainer: {
-      marginVertical: 10,
-      paddingHorizontal: 7,
+      marginBottom: 10,
     },
     actionTitleContainer: {
-      backgroundColor: Colors.screenBackgroundColor,
+      backgroundColor: Colors.backgroundColor,
       marginHorizontal: 15,
       marginVertical: 10,
       justifyContent: 'center',
@@ -196,8 +202,9 @@ const getStyles = (Colors: ThemeColors) =>
     container: {
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
-      marginVertical: 10,
-      marginHorizontal: 20,
+    },
+    floatingButton: {
+      alignSelf: 'flex-end',
     },
   });
 

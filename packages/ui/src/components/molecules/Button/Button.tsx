@@ -24,31 +24,35 @@ import {Icon, Text} from '../../atoms';
 import {Color} from '../../../theme/themes';
 
 export interface ButtonProps {
-  color?: Color;
-  disabled?: boolean;
-  FontAwesome5?: boolean;
-  iconName?: string;
-  isNeutralBackground?: boolean;
-  onDisabledPress?: () => void;
-  onPress?: () => void;
-  style?: any;
-  styleTxt?: any;
-  title?: string;
   width?: string | number;
+  color?: Color;
+  isNeutralBackground?: boolean;
+  iconName?: string;
+  iconSize?: number;
+  FontAwesome5?: boolean;
+  title?: string;
+  style?: any;
+  styleIcon?: any;
+  styleTxt?: any;
+  onPress?: () => void;
+  disabled?: boolean;
+  onDisabledPress?: () => void;
 }
 
 const Button = ({
-  color,
-  disabled = false,
-  FontAwesome5 = true,
-  iconName,
-  isNeutralBackground = false,
-  onDisabledPress = null,
-  onPress = () => {},
-  style,
-  styleTxt,
-  title,
   width = '90%',
+  color,
+  isNeutralBackground = false,
+  iconName,
+  iconSize = 15,
+  FontAwesome5 = true,
+  title,
+  style,
+  styleIcon,
+  styleTxt,
+  onPress = () => {},
+  disabled = false,
+  onDisabledPress = null,
 }: ButtonProps) => {
   const Colors = useThemeColor();
 
@@ -92,9 +96,9 @@ const Button = ({
         <Icon
           name={iconName}
           FontAwesome5={FontAwesome5}
-          size={15}
+          size={iconSize}
           color={buttonColor.foreground}
-          style={styles.icon}
+          style={[styles.icon, styleIcon]}
         />
       )}
       {!!title && (
