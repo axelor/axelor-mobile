@@ -29,8 +29,6 @@ const EventFormScreen = ({navigation, route}) => {
 
   const {user} = useSelector(state => state.user);
 
-  console.log(contact);
-
   const defaultValue = useMemo(() => {
     const _defaultStartDate = new Date().toISOString();
     const _defaultEndDate = new Date(
@@ -68,6 +66,10 @@ const EventFormScreen = ({navigation, route}) => {
     } else if (contact != null) {
       return {
         ..._default,
+        partner: contact,
+        partnerReadonly: true,
+        contactPartner: contact?.mainPartner,
+        contactPartnerReadonly: true,
       };
     }
 
