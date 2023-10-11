@@ -18,11 +18,12 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Modal} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Card, Text, Icon} from '../../atoms';
 import Button, {ButtonProps} from '../Button/Button';
+import {checkNullString} from '../../../utils';
 
-const buttonsDefaultWidth = 115;
+const DEFAULT_BUTTON_WIDTH = 115;
 
 interface ButtonConfig extends ButtonProps {
   hide?: boolean;
@@ -31,7 +32,7 @@ interface CancelButtonConfig extends ButtonConfig {
   showInHeader?: boolean;
 }
 
-interface PopUpProps {
+interface AlertProps {
   style?: any;
   visible: boolean;
   title?: string;
@@ -41,7 +42,7 @@ interface PopUpProps {
   translator?: (key: string) => string;
 }
 
-const PopUp = ({
+const Alert = ({
   style,
   visible = false,
   title,
@@ -49,7 +50,7 @@ const PopUp = ({
   cancelButtonConfig,
   confirmButtonConfig,
   translator = key => key,
-}: PopUpProps) => {
+}: AlertProps) => {
   const Colors = useThemeColor();
 
   const _cancelButtonConfig = useMemo(() => {
@@ -63,7 +64,7 @@ const PopUp = ({
       iconName: 'times',
       hide: false,
       showInHeader: false,
-      width: buttonsDefaultWidth,
+      width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };
   }, [translator, Colors, cancelButtonConfig]);
@@ -74,11 +75,11 @@ const PopUp = ({
     }
 
     return {
-      title: translator('Base_Ok'),
+      title: translator('Base_OK'),
       color: Colors.primaryColor,
       iconName: 'check',
       hide: false,
-      width: buttonsDefaultWidth,
+      width: DEFAULT_BUTTON_WIDTH,
       ...confirmButtonConfig,
     };
   }, [translator, Colors, confirmButtonConfig]);
@@ -92,7 +93,7 @@ const PopUp = ({
       <View style={styles.modalBackground}>
         <Card style={[styles.container, style]}>
           <View style={styles.headerContainer}>
-            {!!title && (
+            {!checkNullString(title) && (
               <Text writingType="title" fontSize={20}>
                 {title}
               </Text>
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
   headerCancelButton: {
     position: 'absolute',
     right: 0,
+    top: 0,
   },
   buttonsContainer: {
     width: '100%',
@@ -165,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopUp;
+export default Alert;
