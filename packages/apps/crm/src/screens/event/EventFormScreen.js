@@ -88,6 +88,11 @@ const EventFormScreen = ({navigation, route}) => {
           idLead: _event?.eventLead?.id,
         });
       }
+      if (_event?.isProspect) {
+        navigation.navigate('ProspectDetailsScreen', {
+          idProspect: _event?.partner?.id,
+        });
+      }
     },
     [navigation],
   );
@@ -102,7 +107,7 @@ const EventFormScreen = ({navigation, route}) => {
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
-          hideIf: () => lead == null,
+          hideIf: () => event != null,
           customAction: ({dispatch, objectState}) => {
             createEventAPI(objectState, dispatch);
           },
@@ -112,7 +117,7 @@ const EventFormScreen = ({navigation, route}) => {
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
-          hideIf: () => lead != null,
+          hideIf: () => event == null,
           customAction: ({dispatch, objectState}) => {},
           //updateEventAPI(objectState, dispatch),
         },

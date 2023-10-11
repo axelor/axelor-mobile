@@ -30,6 +30,7 @@ import {
   createEvent as _createEvent,
 } from '../api/event-api';
 import {fetchLeadById} from './leadSlice';
+import {fetchProspectById} from './prospectSlice';
 
 export const searchEventById = createAsyncThunk(
   'event/searchEventById',
@@ -108,6 +109,9 @@ export const createEvent = createAsyncThunk(
     }).then(res => {
       if (data?.event?.isLead) {
         dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
+      }
+      if (data?.event?.isProspect) {
+        dispatch(fetchProspectById({partnerId: data?.event?.partner?.id}));
       }
       return res;
     });
