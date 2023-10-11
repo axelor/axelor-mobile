@@ -17,67 +17,68 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {StyleSheet} from 'react-native';
+import {Button} from '../../molecules';
 import {Color} from '../../../theme/themes';
-import {Icon} from '../../atoms';
 
 const BUTTON_SIZE = 50;
 
-const CircleButton = ({
-  style,
-  disabled = false,
-  iconName,
-  size = BUTTON_SIZE,
-  onPress,
-}: {
-  style?: any;
-  disabled?: boolean;
-  iconName: string;
+interface CircleButtonProps {
+  square?: boolean;
   size?: number;
-  onPress: () => void;
-}) => {
-  const Colors = useThemeColor();
-  const color: Color = useMemo(
-    () => (disabled ? Colors.secondaryColor : Colors.primaryColor),
-    [Colors, disabled],
-  );
+  color?: Color;
+  isNeutralBackground?: boolean;
+  iconName: string;
+  FontAwesome5?: boolean;
+  style?: any;
+  onPress?: () => void;
+  disabled?: boolean;
+  onDisabledPress?: () => void;
+}
 
-  const styles = useMemo(
-    () => getStyles(color.background, size),
-    [color, size],
-  );
+const CircleButton = ({
+  square = true,
+  size = BUTTON_SIZE,
+  color,
+  isNeutralBackground = false,
+  iconName,
+  FontAwesome5 = true,
+  style,
+  onPress = () => {},
+  disabled = false,
+  onDisabledPress = null,
+}: CircleButtonProps) => {
+  const styles = useMemo(() => {
+    return getStyles(size, square);
+  }, [size, square]);
+
   const iconSize = useMemo(() => Math.floor(size / 2), [size]);
 
   return (
-    <TouchableOpacity
-      style={[styles.container, style]}
+    <Button
+      color={color}
+      isNeutralBackground={isNeutralBackground}
+      iconName={iconName}
+      iconSize={iconSize}
+      FontAwesome5={FontAwesome5}
+      style={[styles.button, style]}
+      styleIcon={styles.icon}
       onPress={onPress}
       disabled={disabled}
-      activeOpacity={0.8}>
-      <Icon
-        name={iconName}
-        color={color.foreground}
-        size={iconSize}
-        style={styles.icon}
-      />
-    </TouchableOpacity>
+      onDisabledPress={onDisabledPress}
+    />
   );
 };
 
-const getStyles = (color, size) =>
+const getStyles = (size: number, square: boolean) =>
   StyleSheet.create({
-    container: {
-      backgroundColor: color,
-      borderRadius: size,
+    button: {
       width: size,
       height: size,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
+      borderRadius: square ? 13 : size,
     },
     icon: {
-      alignSelf: 'center',
+      marginHorizontal: 0,
     },
   });
 
