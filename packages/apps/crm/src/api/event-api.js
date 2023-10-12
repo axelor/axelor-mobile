@@ -161,6 +161,17 @@ export async function updateEvent({event}) {
         $version: event?.eventLead?.$version,
       },
     };
+  } else {
+    dataToSend = {
+      ...event,
+      partner:
+        event?.partner != null
+          ? {
+              id: event?.partner?.id,
+              partnerTypeSelect: event?.partnerTypeSelect,
+            }
+          : null,
+    };
   }
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
