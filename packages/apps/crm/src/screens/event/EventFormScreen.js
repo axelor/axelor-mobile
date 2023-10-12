@@ -19,7 +19,7 @@
 import React, {useCallback, useMemo} from 'react';
 import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {EventType} from '../../types';
-import {createEvent} from '../../features/eventSlice';
+import {createEvent, updateEvent} from '../../features/eventSlice';
 
 const EventFormScreen = ({navigation, route}) => {
   const event = route?.params?.event;
@@ -107,6 +107,16 @@ const EventFormScreen = ({navigation, route}) => {
     [navigation],
   );
 
+  const updateEventAPI = useCallback(
+    (_event, dispatch) => {
+      dispatch(updateEvent({event: _event}));
+      navigation.navigate('EventDetailsScreen', {
+        eventId: _event.id,
+      });
+    },
+    [navigation],
+  );
+
   return (
     <FormView
       defaultValue={defaultValue}
@@ -128,8 +138,9 @@ const EventFormScreen = ({navigation, route}) => {
           needRequiredFields: true,
           needValidation: true,
           hideIf: () => event == null,
-          customAction: ({dispatch, objectState}) => {},
-          //updateEventAPI(objectState, dispatch),
+          customAction: ({dispatch, objectState}) => {
+            updateEventAPI(objectState, dispatch);
+          },
         },
       ]}
     />

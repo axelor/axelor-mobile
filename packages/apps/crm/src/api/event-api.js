@@ -149,3 +149,23 @@ export async function createEvent({event}) {
     },
   });
 }
+
+export async function updateEvent({event}) {
+  let dataToSend = event;
+  if (event?.eventLead != null) {
+    dataToSend = {
+      ...event,
+      eventLead: {
+        fullName: event?.eventLead?.fullName,
+        id: event?.eventLead?.id,
+        $version: event?.eventLead?.$version,
+      },
+    };
+  }
+  return axiosApiProvider.post({
+    url: '/ws/rest/com.axelor.apps.crm.db.Event',
+    data: {
+      data: dataToSend,
+    },
+  });
+}

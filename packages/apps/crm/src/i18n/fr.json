@@ -137,5 +137,6 @@
   "Crm_SliceAction_FetchLinkedPartnersOfContact": "récupération des clients/prospects associés au contact",
   "Crm_SliceAction_GetPartnerOpportunities": "récupération des opportunités du partenaire",
   "Crm_SliceAction_SearchPartner": "recherche des partenaires",
-  "Crm_SliceAction_CreateEvent": "création de l'événement"
+  "Crm_SliceAction_CreateEvent": "création de l'événement",
+  "Crm_SliceAction_UpdateEvent": "mise à jour de l'événement"
 }
