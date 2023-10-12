@@ -17,11 +17,11 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, Platform} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
+  Alert,
+  Button,
   checkNullString,
-  IconButton,
-  PopUp,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
@@ -29,6 +29,8 @@ import useTranslator from '../../../i18n/hooks/use-translator';
 import {linkingProvider} from '../../../tools/LinkingProvider';
 import {logout} from '../../../features/authSlice';
 import {useDispatch} from '../../../redux/hooks';
+
+const BUTTON_WIDTH = 250;
 
 const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   const I18n = useTranslator();
@@ -48,62 +50,45 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
   };
 
   return (
-    <PopUp
-      visible={true}
-      title={I18n.t('Base_Information')}
-      data={I18n.t('Base_MinimalRequiredVersion')}
-      style={styles.popup}
-      childrenStyle={styles.btnContainer}>
-      {checkNullString(url) ? (
-        <Text style={styles.text}>{I18n.t('Base_Contact_Admin')}</Text>
-      ) : (
-        <IconButton
-          title={I18n.t('Base_Update')}
-          iconName="angle-double-up"
-          color={Colors.primaryColor}
-          onPress={handleUpdate}
-          style={styles.btn}
+    <Alert visible={true} title={I18n.t('Base_Information')}>
+      <Text>{I18n.t('Base_MinimalRequiredVersion')}</Text>
+      <View style={styles.buttonsContainer}>
+        {!checkNullString(url) ? (
+          <Text style={styles.noURLText}>{I18n.t('Base_Contact_Admin')}</Text>
+        ) : (
+          <Button
+            width={BUTTON_WIDTH}
+            title={I18n.t('Base_Update')}
+            iconName="angle-double-up"
+            onPress={handleUpdate}
+          />
+        )}
+        <Button
+          width={BUTTON_WIDTH}
+          color={Colors.secondaryColor}
+          title={I18n.t('Base_Refresh')}
+          iconName="refresh"
+          FontAwesome5={false}
+          onPress={onRefresh}
         />
-      )}
-      <IconButton
-        title={I18n.t('Base_Refresh')}
-        iconName="refresh"
-        FontAwesome5={false}
-        color={Colors.secondaryColor}
-        onPress={onRefresh}
-        style={styles.btn}
-      />
-      <IconButton
-        title={I18n.t('Base_Logout')}
-        iconName="power-off"
-        color={Colors.errorColor}
-        onPress={() => dispatch(logout())}
-        style={styles.btn}
-      />
-    </PopUp>
+        <Button
+          width={BUTTON_WIDTH}
+          color={Colors.errorColor}
+          title={I18n.t('Base_Logout')}
+          iconName="power-off"
+          onPress={() => dispatch(logout())}
+        />
+      </View>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popup: {
-    width: '90%',
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 15,
+  buttonsContainer: {
+    marginTop: 10,
   },
-  btnContainer: {
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btn: {
-    height: 70,
-    marginVertical: '1%',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 16,
+  noURLText: {
+    marginBottom: 10,
   },
 });
 
