@@ -110,7 +110,9 @@ const Alert = ({
               )}
           </View>
           {children}
-          {(!_cancelButtonConfig?.hide || !_confirmButtonConfig?.hide) && (
+          {((!_cancelButtonConfig?.hide &&
+            !_cancelButtonConfig?.showInHeader) ||
+            !_confirmButtonConfig?.hide) && (
             <View style={styles.buttonsContainer}>
               {!_cancelButtonConfig?.hide &&
                 !_cancelButtonConfig?.showInHeader && (
@@ -141,8 +143,8 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingRight: 15,
+    paddingHorizontal: 20,
+    paddingRight: 20,
     paddingVertical: 15,
   },
   headerContainer: {
