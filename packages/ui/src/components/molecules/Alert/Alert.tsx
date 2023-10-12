@@ -84,6 +84,14 @@ const Alert = ({
     };
   }, [translator, Colors, confirmButtonConfig]);
 
+  const isCancelButtonDisplayedBottom = useMemo(() => {
+    return !_cancelButtonConfig?.hide && !_cancelButtonConfig?.showInHeader;
+  }, [_cancelButtonConfig]);
+
+  const isConfirmButtonDisplayedBottom = useMemo(() => {
+    return !_confirmButtonConfig?.hide;
+  }, [_confirmButtonConfig]);
+
   return (
     <Modal
       visible={visible}
@@ -110,18 +118,13 @@ const Alert = ({
               )}
           </View>
           {children}
-          {((!_cancelButtonConfig?.hide &&
-            !_cancelButtonConfig?.showInHeader) ||
-            !_confirmButtonConfig?.hide) && (
+          {(isCancelButtonDisplayedBottom ||
+            isConfirmButtonDisplayedBottom) && (
             <View style={styles.buttonsContainer}>
-              {!_cancelButtonConfig?.hide &&
-                !_cancelButtonConfig?.showInHeader && (
-                  <Button
-                    {..._cancelButtonConfig}
-                    style={styles.cancelButton}
-                  />
-                )}
-              {!_confirmButtonConfig?.hide && (
+              {isCancelButtonDisplayedBottom && (
+                <Button {..._cancelButtonConfig} style={styles.cancelButton} />
+              )}
+              {isConfirmButtonDisplayedBottom && (
                 <Button {..._confirmButtonConfig} />
               )}
             </View>

@@ -53,7 +53,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
     <Alert visible={true} title={I18n.t('Base_Information')}>
       <Text>{I18n.t('Base_MinimalRequiredVersion')}</Text>
       <View style={styles.buttonsContainer}>
-        {!checkNullString(url) ? (
+        {checkNullString(url) ? (
           <Text style={styles.noURLText}>{I18n.t('Base_Contact_Admin')}</Text>
         ) : (
           <Button
