@@ -69,9 +69,9 @@ const EventFormScreen = ({navigation, route}) => {
     } else if (contact != null) {
       return {
         ..._default,
-        partner: contact,
+        contactPartner: contact,
         partnerReadonly: true,
-        contactPartner: contact?.mainPartner,
+        partner: contact?.mainPartner,
         contactPartnerReadonly: true,
         isContact: true,
       };
@@ -91,6 +91,16 @@ const EventFormScreen = ({navigation, route}) => {
       if (_event?.isProspect) {
         navigation.navigate('ProspectDetailsScreen', {
           idProspect: _event?.partner?.id,
+        });
+      }
+      if (_event?.isPartner) {
+        navigation.navigate('ClientDetailsScreen', {
+          idClient: _event?.partner?.id,
+        });
+      }
+      if (_event?.isContact) {
+        navigation.navigate('ContactDetailsScreen', {
+          idContact: _event?.contactPartner?.id,
         });
       }
     },
