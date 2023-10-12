@@ -18,13 +18,7 @@
 
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Card,
-  PopUpOneButton,
-  Text,
-  useDigitFormat,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {Alert, Card, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 interface SmallPropertyCardProps {
   style?: any;
@@ -44,7 +38,6 @@ const SmallPropertyCard = ({
   interactive = false,
 }: SmallPropertyCardProps) => {
   const [popUp, setPopUp] = useState(false);
-  const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
   const handlePress = () => {
@@ -58,13 +51,16 @@ const SmallPropertyCard = ({
 
   return (
     <Card style={[styles.card, style]}>
-      <PopUpOneButton
+      <Alert
         visible={popUp}
-        data={unit == null ? `${_value}` : `${_value} ${unit}`}
         title={title}
-        btnTitle={I18n.t('Auth_Close')}
-        onPress={() => setPopUp(!popUp)}
-      />
+        confirmButtonConfig={{
+          width: 50,
+          title: null,
+          onPress: () => setPopUp(!popUp),
+        }}>
+        <Text>{unit == null ? `${_value}` : `${_value} ${unit}`}</Text>
+      </Alert>
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={handlePress}
