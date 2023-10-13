@@ -69,6 +69,8 @@ export const manufacturing_modelAPI: ObjectFields = {
     priority: schemaContructor.number(),
     workCenter: schemaContructor.subObject('name'),
     plannedDuration: schemaContructor.string(),
+    plannedHumanDuration: schemaContructor.string(),
+    plannedMachineDuration: schemaContructor.string(),
     manufOrder: schemaContructor.subObject('manufOrderSeq'),
     machine: schemaContructor.subObject('name'),
     plannedStartDateT: schemaContructor.string(),
