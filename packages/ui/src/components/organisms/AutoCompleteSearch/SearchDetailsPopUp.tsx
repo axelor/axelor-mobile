@@ -17,10 +17,9 @@
  */
 
 import React, {useState, useCallback, useEffect} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {checkNullString} from '../../../utils/strings';
-import {Icon} from '../../atoms';
-import {PopUp} from '../../molecules';
+import {Alert} from '../../molecules';
 import {AutoCompleteSearch, ScrollList} from '../../organisms';
 import ItemCard from './ItemCard';
 
@@ -86,67 +85,57 @@ const SearchDetailsPopUp = ({
   }
 
   return (
-    <PopUp
+    <Alert
       visible={isVisible}
       style={styles.popup}
-      childrenStyle={styles.container}>
-      <Icon
-        name="times"
-        size={20}
-        touchable={true}
-        onPress={onClose}
-        style={styles.closeIcon}
-      />
-      <AutoCompleteSearch
-        objectList={objectList}
-        onChangeValue={onSelect}
-        fetchData={filterAPI}
-        displayValue={displayValue}
-        placeholder={placeholder}
-        oneFilter={true}
-        showDetailsPopup={false}
-        style={styles.input}
-      />
-      <ScrollList
-        style={styles.scroll}
-        loadingList={loadingList}
-        data={objectList}
-        renderItem={({item}) => (
-          <ItemCard
-            onSelect={() => onSelect(item)}
-            title={displayValue(item)}
-            isSelected={value === displayValue(item)}
-          />
-        )}
-        fetchData={scrollAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        filter={!checkNullString(searchText)}
-        translator={translator}
-      />
-    </PopUp>
+      cancelButtonConfig={{
+        showInHeader: true,
+        onPress: onClose,
+      }}>
+      <View style={styles.container}>
+        <AutoCompleteSearch
+          objectList={objectList}
+          onChangeValue={onSelect}
+          fetchData={filterAPI}
+          displayValue={displayValue}
+          placeholder={placeholder}
+          oneFilter={true}
+          showDetailsPopup={false}
+          style={styles.input}
+        />
+        <ScrollList
+          style={styles.scroll}
+          loadingList={loadingList}
+          data={objectList}
+          renderItem={({item}) => (
+            <ItemCard
+              onSelect={() => onSelect(item)}
+              title={displayValue(item)}
+              isSelected={value === displayValue(item)}
+            />
+          )}
+          fetchData={scrollAPI}
+          moreLoading={moreLoading}
+          isListEnd={isListEnd}
+          filter={!checkNullString(searchText)}
+          translator={translator}
+        />
+      </View>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
   popup: {
     height: Dimensions.get('window').height * 0.9,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingVertical: 5,
+    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingVertical: 10,
     position: 'absolute',
     top: '5%',
   },
   container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  closeIcon: {
-    alignSelf: 'flex-end',
-    marginRight: 5,
+    marginTop: 10,
   },
   input: {
     width: '90%',
