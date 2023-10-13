@@ -27,6 +27,8 @@ import {View, StyleSheet} from 'react-native';
 
 interface OperationOrderLabelTextListProps {
   showDuration?: boolean;
+  showHumanDuration?: boolean;
+  showMachineDuration?: boolean;
   showWorkCenter?: boolean;
   showMachine?: boolean;
   children: ReactNode;
@@ -34,6 +36,8 @@ interface OperationOrderLabelTextListProps {
 
 const OperationOrderLabelTextList = ({
   showDuration = true,
+  showHumanDuration = true,
+  showMachineDuration = true,
   showWorkCenter = true,
   showMachine = true,
   children,
@@ -50,6 +54,22 @@ const OperationOrderLabelTextList = ({
           size={20}
           title={I18n.t('Manufacturing_PlannedDuration') + ':'}
           value={formatDuration(operationOrder?.plannedDuration)}
+        />
+      )}
+      {showHumanDuration && !!operationOrder?.plannedHumanDuration && (
+        <LabelText
+          iconName="user-clock"
+          size={20}
+          title={I18n.t('Manufacturing_PlannedHumanDuration') + ':'}
+          value={formatDuration(operationOrder?.plannedHumanDuration)}
+        />
+      )}
+      {showMachineDuration && !!operationOrder?.plannedMachineDuration && (
+        <LabelText
+          iconName="cog"
+          size={20}
+          title={I18n.t('Manufacturing_PlannedMachineDuration') + ':'}
+          value={formatDuration(operationOrder?.plannedMachineDuration)}
         />
       )}
       {showWorkCenter && operationOrder?.workCenter && (

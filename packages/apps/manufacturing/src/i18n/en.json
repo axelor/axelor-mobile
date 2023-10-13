@@ -17,6 +17,8 @@
   "Manufacturing_Ref": "Ref.",
   "Manufacturing_ToProduceQty": "Quantity to produce",
   "Manufacturing_PlannedDuration": "Planned duration",
+  "Manufacturing_PlannedHumanDuration": "Planned human duration",
+  "Manufacturing_PlannedMachineDuration": "Planned machine duration",
   "Manufacturing_Notes": "Notes",
   "Manufacturing_ConsumedProduct": "Consumed products",
   "Manufacturing_ProducedProduct": "Finished products",
