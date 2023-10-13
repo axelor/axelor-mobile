@@ -27,10 +27,11 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  ScrollList,
-  Screen,
+  Alert,
   MessageBox,
-  PopUpTwoButton,
+  Screen,
+  ScrollList,
+  Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {MailMessageCard} from '../../../components';
@@ -176,15 +177,18 @@ const MailMessageView = ({model, modelId}) => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 85}
       style={styles.container}>
       <Screen removeSpaceOnTop={true}>
-        <PopUpTwoButton
+        <Alert
           visible={popUp}
           title={I18n.t('Base_Question')}
-          data={I18n.t('Base_Unfollow_Confirmation')}
-          PrimaryBtnTitle={I18n.t('Base_OK')}
-          SecondaryBtnTitle={I18n.t('Base_Cancel')}
-          onPressPrimary={handleUnfollowConfirmation}
-          onPressSecondary={() => setPopUp(false)}
-        />
+          cancelButtonConfig={{
+            onPress: () => setPopUp(false),
+          }}
+          confirmButtonConfig={{
+            onPress: handleUnfollowConfirmation,
+          }}
+          translator={I18n.t}>
+          <Text>{I18n.t('Base_Unfollow_Confirmation')}</Text>
+        </Alert>
         <View style={styles.scrollListContainer}>
           <ScrollList
             loadingList={loading}
