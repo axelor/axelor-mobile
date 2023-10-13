@@ -38,22 +38,22 @@ describe('Switch Component', () => {
 
   it('should call handleToggle function with value true when switching on', () => {
     const handleToggle = jest.fn();
-    const props = {
-      isEnabled: false,
-      handleToggle,
-    };
-    const wrapper = shallow(<Switch {...props} />);
+    const isEnabled = false;
+
+    const wrapper = shallow(
+      <Switch isEnabled={isEnabled} handleToggle={handleToggle} />,
+    );
     wrapper.find(RNSwitch).simulate('valueChange');
     expect(handleToggle).toHaveBeenCalledWith(true);
   });
 
   it('should call handleToggle function with value false when switching off', () => {
     const handleToggle = jest.fn();
-    const props = {
-      isEnabled: true,
-      handleToggle,
-    };
-    const wrapper = shallow(<Switch {...props} />);
+    const isEnabled = true;
+
+    const wrapper = shallow(
+      <Switch isEnabled={isEnabled} handleToggle={handleToggle} />,
+    );
     wrapper.find(RNSwitch).simulate('valueChange');
     expect(handleToggle).toHaveBeenCalledWith(false);
   });

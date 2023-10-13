@@ -19,28 +19,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
-import {RadioButton} from '@axelor/aos-mobile-ui';
-
-const Colors = {
-  backgroundColor: 'white',
-  text: 'black',
-  primaryColor: {
-    background_light: 'gray',
-    background: 'blue',
-    foreground: 'white',
-  },
-  secondaryColor: {
-    background_light: 'gray',
-    background: 'green',
-    foreground: 'gray',
-  },
-};
-
-jest.mock('../../../lib/theme/ThemeContext', () => ({
-  useThemeColor: () => Colors,
-}));
+import {RadioButton, lightTheme} from '@axelor/aos-mobile-ui';
 
 describe('RadioButton Component', () => {
+  const Colors = lightTheme.colors;
   const onPressMock = jest.fn();
 
   it('should render without crashing', () => {

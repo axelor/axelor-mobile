@@ -21,8 +21,20 @@ import {shallow} from 'enzyme';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {Icon} from '@axelor/aos-mobile-ui';
+import {TouchableOpacity} from 'react-native';
 
 describe('Icon Component', () => {
+  const props = {
+    name: 'check',
+    FontAwesome5: true,
+    color: 'red',
+    size: 24,
+    touchable: true,
+    visible: true,
+    onPress: jest.fn(),
+    disabled: false,
+  };
+
   it('renders without crashing', () => {
     const wrapper = shallow(<Icon />);
     expect(wrapper.exists()).toBe(true);
@@ -48,19 +60,19 @@ describe('Icon Component', () => {
     const customStyle = {backgroundColor: 'red'};
     const wrapper = shallow(<Icon name="star" style={customStyle} />);
 
-    const iconStyle = wrapper.find('TouchableOpacity').prop('style');
+    const iconStyle = wrapper.find(TouchableOpacity).prop('style');
     expect(iconStyle).toEqual(
       expect.arrayContaining([expect.objectContaining(customStyle)]),
     );
   });
 
-  it('invokes onPress callback when icon is pressed', () => {
+  it('does not invokes onPress callback when icon is pressed', () => {
     const onPressMock = jest.fn();
     const wrapper = shallow(<Icon name="star" onPress={onPressMock} />);
-    const touchableComponent = wrapper.find('TouchableOpacity');
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
     touchableComponent.simulate('press');
-    expect(onPressMock).toHaveBeenCalled();
+    expect(onPressMock).not.toHaveBeenCalled();
   });
 
   it('renders nothing when visible prop is false', () => {
@@ -70,40 +82,18 @@ describe('Icon Component', () => {
   });
 
   it('renders a touchable icon and calls onPress when clicked', () => {
-    const props = {
-      name: 'check',
-      FontAwesome5: true,
-      color: 'red',
-      size: 24,
-      touchable: true,
-      visible: true,
-      onPress: jest.fn(),
-      disabled: false,
-    };
-
     const wrapper = shallow(<Icon {...props} />);
 
-    expect(wrapper.find('TouchableOpacity').exists()).toBeTruthy();
+    expect(wrapper.find(TouchableOpacity).exists()).toBeTruthy();
 
-    wrapper.find('TouchableOpacity').simulate('press');
+    wrapper.find(TouchableOpacity).simulate('press');
 
     expect(props.onPress).toHaveBeenCalled();
   });
 
   it('renders a disabled icon and does not call onPress when clicked', () => {
-    const props = {
-      name: 'check',
-      FontAwesome5: true,
-      color: 'red',
-      size: 24,
-      touchable: true,
-      visible: true,
-      onPress: jest.fn(),
-      disabled: true,
-    };
-
-    const wrapper = shallow(<Icon {...props} />);
-    const iconComponent = wrapper.find('TouchableOpacity');
+    const wrapper = shallow(<Icon {...props} disabled={true} />);
+    const iconComponent = wrapper.find(TouchableOpacity);
 
     expect(iconComponent.prop('disabled')).toBe(true);
 

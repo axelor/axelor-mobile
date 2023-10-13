@@ -56,7 +56,6 @@ describe('HtmlInput Component', () => {
 
     wrapper.find(RichEditor).prop('editorInitializedCallback')();
 
-    // Check if RichToolbar is rendered
     expect(wrapper.find(RichToolbar).exists()).toBe(true);
     expect(wrapper.find(RichToolbar).prop('style')).toMatchObject(
       customToolbarStyle,

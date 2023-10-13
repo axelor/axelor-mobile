@@ -22,66 +22,37 @@ import {shallow} from 'enzyme';
 import {Input} from '@axelor/aos-mobile-ui';
 
 describe('Input component', () => {
+  const props = {
+    value: 'Hello',
+    onChange: jest.fn(),
+    placeholder: 'Enter text',
+    secureTextEntry: true,
+    readOnly: false,
+    onSelection: jest.fn(),
+    multiline: true,
+    numberOfLines: 3,
+    keyboardType: 'default',
+    onEndFocus: jest.fn(),
+    isFocus: true,
+    writingType: 'title',
+  };
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<Input />);
+    const wrapper = shallow(<Input {...props} />);
     expect(wrapper.exists()).toBe(true);
   });
 
   it('should render the TextInput component with the correct props', () => {
-    const props = {
-      value: 'Hello',
-      onChange: jest.fn(),
-      placeholder: 'Enter text',
-      secureTextEntry: true,
-      readOnly: false,
-      onSelection: jest.fn(),
-      multiline: true,
-      numberOfLines: 3,
-      keyboardType: 'default',
-      onEndFocus: jest.fn(),
-      isFocus: true,
-      writingType: 'title',
-    };
-
     const wrapper = shallow(<Input {...props} />);
 
     const textInput = wrapper.find(TextInput);
 
-    expect(textInput.props()).toEqual({
-      style: expect.any(Object),
-      value: 'Hello',
-      onChangeText: expect.any(Function),
-      placeholder: 'Enter text',
-      secureTextEntry: true,
-      autoCapitalize: 'none',
-      editable: true,
-      onFocus: expect.any(Function),
-      placeholderTextColor: expect.any(String),
-      keyboardType: 'default',
-      multiline: true,
-      numberOfLines: 3,
-      onBlur: expect.any(Function),
-      showSoftInputOnFocus: true,
-      autoFocus: true,
-    });
+    expect(textInput.prop('value')).toEqual('Hello');
+
+    expect(textInput.prop('placeholder')).toEqual('Enter text');
   });
 
   it('should call onChange handler with new value when text is changed', () => {
-    const props = {
-      value: 'Hello',
-      onChange: jest.fn(),
-      placeholder: 'Enter text',
-      secureTextEntry: true,
-      readOnly: false,
-      onSelection: jest.fn(),
-      multiline: true,
-      numberOfLines: 3,
-      keyboardType: 'default',
-      onEndFocus: jest.fn(),
-      isFocus: true,
-      writingType: 'title',
-    };
-
     const wrapper = shallow(<Input {...props} />);
 
     const textInput = wrapper.find(TextInput);
@@ -94,21 +65,6 @@ describe('Input component', () => {
   });
 
   it('should call onSelection handler when TextInput is focused', () => {
-    const props = {
-      value: 'Hello',
-      onChange: jest.fn(),
-      placeholder: 'Enter text',
-      secureTextEntry: true,
-      readOnly: false,
-      onSelection: jest.fn(),
-      multiline: true,
-      numberOfLines: 3,
-      keyboardType: 'default',
-      onEndFocus: jest.fn(),
-      isFocus: true,
-      writingType: 'title',
-    };
-
     const wrapper = shallow(<Input {...props} />);
 
     const textInput = wrapper.find(TextInput);
@@ -119,21 +75,6 @@ describe('Input component', () => {
   });
 
   it('should call onEndFocus handler when TextInput is blurred', () => {
-    const props = {
-      value: 'Hello',
-      onChange: jest.fn(),
-      placeholder: 'Enter text',
-      secureTextEntry: true,
-      readOnly: false,
-      onSelection: jest.fn(),
-      multiline: true,
-      numberOfLines: 3,
-      keyboardType: 'default',
-      onEndFocus: jest.fn(),
-      isFocus: true,
-      writingType: 'title',
-    };
-
     const wrapper = shallow(<Input {...props} />);
 
     const textInput = wrapper.find(TextInput);

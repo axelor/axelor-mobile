@@ -33,7 +33,6 @@ describe('BlockInteractionScreen Component', () => {
       <BlockInteractionScreen>{children}</BlockInteractionScreen>,
     );
 
-    // Check if children are rendered
     expect(wrapper.find('[testID="children"]').exists()).toBe(true);
   });
 
@@ -51,13 +50,26 @@ describe('BlockInteractionScreen Component', () => {
     expect(onPressMock).not.toHaveBeenCalled();
   });
 
+  it('renders without hidden the header', () => {
+    const children = <View testID="children" />;
+    const wrapper = shallow(
+      <BlockInteractionScreen>{children}</BlockInteractionScreen>,
+    );
+
+    const container = wrapper.find(View).at(0);
+
+    const topStyle = container.prop('style')?.top;
+
+    expect(topStyle).toBe(115);
+  });
+
   it('hides the header if specified', () => {
     const children = <View testID="children" />;
     const wrapper = shallow(
       <BlockInteractionScreen hideHeader>{children}</BlockInteractionScreen>,
     );
 
-    const container = wrapper.find('View').at(0);
+    const container = wrapper.find(View).at(0);
 
     const topStyle = container.prop('style')?.top;
 
