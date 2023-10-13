@@ -17,14 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {
-  FormInput,
-  IconButton,
-  PopUp,
-  checkNullString,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Alert, FormInput, checkNullString} from '@axelor/aos-mobile-ui';
 import {useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {refuseExpense} from '../../../features/expenseSlice';
 
@@ -37,7 +30,6 @@ const ExpenseRefusalPopup = ({
   onClose,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const refuseExpenseAPI = useCallback(() => {
@@ -57,7 +49,11 @@ const ExpenseRefusalPopup = ({
   );
 
   return (
-    <PopUp visible={refusalPopupIsOpen} childrenStyle={styles.container}>
+    <Alert
+      visible={refusalPopupIsOpen}
+      cancelButtonConfig={{onPress: onClose}}
+      confirmButtonConfig={{onPress: refuseExpenseAPI, disabled: isDisabled}}
+      translator={I18n.t}>
       <FormInput
         title={I18n.t('Hr_ReasonRefusal')}
         multiline={true}
@@ -65,43 +61,8 @@ const ExpenseRefusalPopup = ({
         required={true}
         onChange={setRefusalMessage}
       />
-      <View style={styles.buttonContainer}>
-        <IconButton
-          iconName="times"
-          title={I18n.t('Hr_Cancel')}
-          onPress={onClose}
-          style={styles.button}
-          color={Colors.errorColor}
-        />
-        <IconButton
-          iconName="check"
-          title={I18n.t('Hr_Ok')}
-          onPress={refuseExpenseAPI}
-          style={styles.button}
-          color={isDisabled ? Colors.secondaryColor : Colors.primaryColor}
-          disabled={isDisabled}
-        />
-      </View>
-    </PopUp>
+    </Alert>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 2,
-  },
-});
 
 export default ExpenseRefusalPopup;
