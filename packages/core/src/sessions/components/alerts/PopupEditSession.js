@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Icon, PopUp} from '@axelor/aos-mobile-ui';
+import {Alert} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {ErrorText, SessionInputs} from '../../components';
 import {sessionStorage} from '../..';
@@ -78,43 +78,27 @@ const PopupEditSession = ({
   }
 
   return (
-    <PopUp
+    <Alert
       visible={popupIsOpen}
       title={I18n.t('Base_Connection_EditSession')}
-      style={styles.popup}>
+      cancelButtonConfig={{
+        hide: sessionList?.length <= 0,
+        showInHeader: true,
+        onPress: handleClose,
+      }}>
       <View style={styles.popupContainer}>
-        {sessionList?.length > 0 && (
-          <Icon
-            name="times"
-            size={20}
-            touchable={true}
-            onPress={handleClose}
-            style={styles.closeIcon}
-          />
-        )}
         <ErrorText error={error} />
         <SessionInputs {...inputProps} />
       </View>
-    </PopUp>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popup: {
-    width: '90%',
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 15,
-  },
   popupContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    width: '120%',
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: 0,
-    top: -30,
+    width: '100%',
   },
 });
 
