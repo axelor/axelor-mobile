@@ -21,6 +21,11 @@ import {FormView, useSelector} from '@axelor/aos-mobile-core';
 import {EventType} from '../../types';
 import {createEvent, updateEvent} from '../../features/eventSlice';
 
+const MODELS = {
+  lead: 'com.axelor.apps.crm.db.Lead',
+  partner: 'com.axelor.apps.base.db.Partner',
+};
+
 const EventFormScreen = ({navigation, route}) => {
   const event = route?.params?.event;
   const lead = route?.params?.lead;
@@ -41,7 +46,6 @@ const EventFormScreen = ({navigation, route}) => {
       startDateTime: _defaultStartDate,
       endDateTime: _defaultEndDate,
       user: user,
-      //relatedToSelect : default to origin object (Lead or Tiers/Contact)
     };
 
     if (event != null) {
@@ -55,6 +59,8 @@ const EventFormScreen = ({navigation, route}) => {
         eventLead: lead,
         leadReadonly: true,
         isLead: true,
+        relatedToSelect: MODELS.lead,
+        relatedToSelectId: lead?.id,
       };
     } else if (prospect != null) {
       return {
@@ -63,6 +69,8 @@ const EventFormScreen = ({navigation, route}) => {
         partnerReadonly: true,
         hideContactPartner: true,
         isProspect: true,
+        relatedToSelect: MODELS.partner,
+        relatedToSelectId: prospect?.id,
       };
     } else if (client != null) {
       return {
@@ -70,6 +78,8 @@ const EventFormScreen = ({navigation, route}) => {
         partner: client,
         partnerReadonly: true,
         isPartner: true,
+        relatedToSelect: MODELS.partner,
+        relatedToSelectId: client?.id,
       };
     } else if (contact != null) {
       return {
@@ -79,6 +89,8 @@ const EventFormScreen = ({navigation, route}) => {
         partner: contact?.mainPartner,
         contactPartnerReadonly: true,
         isContact: true,
+        relatedToSelect: MODELS.partner,
+        relatedToSelectId: contact?.id,
       };
     }
 
@@ -114,7 +126,23 @@ const EventFormScreen = ({navigation, route}) => {
 
   const updateEventAPI = useCallback(
     (_event, dispatch) => {
-      dispatch(updateEvent({event: _event}));
+      let dataToSend = {
+        ..._event,
+      };
+      if (_event?.eventLead != null) {
+        dataToSend = {
+          ..._event,
+          relatedToSelect: MODELS.lead,
+          relatedToSelectId: _event?.eventLead?.id,
+        };
+      } else if (_event?.contactPartner != null || _event?.partner != null) {
+        dataToSend = {
+          ..._event,
+          relatedToSelect: MODELS.partner,
+          relatedToSelectId: _event?.partner?.id,
+        };
+      }
+      dispatch(updateEvent({event: dataToSend}));
       navigation.pop();
     },
     [navigation],
