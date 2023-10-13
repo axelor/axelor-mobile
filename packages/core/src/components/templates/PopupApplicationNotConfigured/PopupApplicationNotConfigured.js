@@ -18,10 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {IconButton, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Alert, Button, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import {logout} from '../../../features/authSlice';
 import {useDispatch} from '../../../redux/hooks';
+
+const BUTTON_WIDTH = 225;
 
 const PopupApplicationNotConfigured = ({onRefresh}) => {
   const I18n = useTranslator();
@@ -29,39 +31,32 @@ const PopupApplicationNotConfigured = ({onRefresh}) => {
   const dispatch = useDispatch();
 
   return (
-    <PopUp
-      visible={true}
-      title={I18n.t('Base_Information')}
-      data={I18n.t('Base_NoAppConfigured')}>
-      <View style={styles.btnContainer}>
-        <IconButton
+    <Alert visible={true} title={I18n.t('Base_Information')}>
+      <Text>{I18n.t('Base_NoAppConfigured')}</Text>
+      <View style={styles.buttonsContainer}>
+        <Button
+          width={BUTTON_WIDTH}
+          color={Colors.secondaryColor}
           title={I18n.t('Base_Refresh')}
           iconName="refresh"
           FontAwesome5={false}
-          color={Colors.secondaryColor}
           onPress={onRefresh}
-          style={styles.btn}
         />
-        <IconButton
+        <Button
+          width={BUTTON_WIDTH}
+          color={Colors.errorColor}
           title={I18n.t('Base_Logout')}
           iconName="power-off"
-          color={Colors.errorColor}
           onPress={() => dispatch(logout())}
-          style={styles.btn}
         />
       </View>
-    </PopUp>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  btnContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btn: {
-    width: '100%',
+  buttonsContainer: {
+    marginTop: 10,
   },
 });
 

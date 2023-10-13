@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, PopUp, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Alert, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 import {ErrorText, SessionInputs} from '../../components';
 import {login} from '../../../features/authSlice';
 import {sessionStorage} from '../..';
@@ -68,15 +68,14 @@ const PopupSession = ({
   }
 
   return (
-    <PopUp visible={isOpen} title={sessionActive?.name} style={styles.popup}>
+    <Alert
+      visible={isOpen}
+      title={sessionActive?.name}
+      cancelButtonConfig={{
+        showInHeader: true,
+        onPress: handleClose,
+      }}>
       <View style={styles.popupContainer}>
-        <Icon
-          name="times"
-          size={20}
-          touchable={true}
-          onPress={handleClose}
-          style={styles.closeIcon}
-        />
         <ErrorText error={error} />
         <SessionInputs
           sessionList={sessionList}
@@ -99,26 +98,15 @@ const PopupSession = ({
           style={styles.binIcon}
         />
       </View>
-    </PopUp>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popup: {
-    width: '90%',
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 15,
-  },
   popupContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    width: '120%',
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: 0,
-    top: -30,
+    width: '100%',
   },
   binIcon: {
     position: 'absolute',

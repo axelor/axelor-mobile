@@ -17,14 +17,7 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {
-  Button,
-  PopUp,
-  Text,
-  UnorderedList,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {Alert, Text, UnorderedList} from '@axelor/aos-mobile-ui';
 import useTranslator from '../../../../i18n/hooks/use-translator';
 
 interface ErrorItem {
@@ -42,15 +35,14 @@ const ConstraintsValidatorPopup = ({
   errors: ErrorItem[];
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   return (
-    <PopUp
+    <Alert
       visible={true}
       title={I18n.t('Base_Error')}
-      data={I18n.t('Base_InvalidConstraints')}
-      style={styles.popup}
-      childrenStyle={styles.btnContainer}>
+      confirmButtonConfig={{width: 50, title: null, onPress: onContinue}}
+      translator={I18n.t}>
+      <Text>{I18n.t('Base_InvalidConstraints')}</Text>
       <UnorderedList
         data={errors}
         renderItem={({item}: {item: ErrorItem}) => (
@@ -61,33 +53,8 @@ const ConstraintsValidatorPopup = ({
           </Text>
         )}
       />
-      <Button
-        title={I18n.t('Base_OK')}
-        color={Colors.primaryColor}
-        onPress={onContinue}
-        style={styles.btn}
-      />
-    </PopUp>
+    </Alert>
   );
 };
-
-const styles = StyleSheet.create({
-  popup: {
-    width: '90%',
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 15,
-  },
-  btnContainer: {
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btn: {
-    height: 70,
-    marginVertical: '1%',
-  },
-});
 
 export default ConstraintsValidatorPopup;
