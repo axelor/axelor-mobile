@@ -50,7 +50,12 @@ const EventFormScreen = ({navigation, route}) => {
         ...event,
       };
     } else if (lead != null) {
-      return {..._default, eventLead: lead, leadReadonly: true, isLead: true};
+      return {
+        ..._default,
+        eventLead: lead,
+        leadReadonly: true,
+        isLead: true,
+      };
     } else if (prospect != null) {
       return {
         ..._default,
@@ -110,9 +115,7 @@ const EventFormScreen = ({navigation, route}) => {
   const updateEventAPI = useCallback(
     (_event, dispatch) => {
       dispatch(updateEvent({event: _event}));
-      navigation.navigate('EventDetailsScreen', {
-        eventId: _event.id,
-      });
+      navigation.pop();
     },
     [navigation],
   );
