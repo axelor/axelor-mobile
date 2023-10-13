@@ -18,13 +18,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  useThemeColor,
-  PopUp,
-  Button,
-  LabelText,
-  Picker,
-} from '@axelor/aos-mobile-ui';
+import {Alert, useThemeColor, LabelText, Picker} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
@@ -78,7 +72,16 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   }, [dispatch, onClose, expenseSelected, navigation, selectedItems, user.id]);
 
   return (
-    <PopUp style={[styles.popup, style]} visible={visible}>
+    <Alert
+      style={style}
+      visible={visible}
+      cancelButtonConfig={{onPress: onClose}}
+      confirmButtonConfig={{
+        title: I18n.t('Base_Add'),
+        onPress: updateExpenseAPI,
+        disabled: expenseSelected == null,
+      }}
+      translator={I18n.t}>
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <Picker
@@ -101,31 +104,12 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={I18n.t('Base_Cancel')}
-            color={Colors.secondaryColor}
-            style={styles.button}
-            onPress={onClose}
-          />
-          <Button
-            title={I18n.t('Base_Add')}
-            style={styles.button}
-            onPress={updateExpenseAPI}
-          />
-        </View>
       </View>
-    </PopUp>
+    </Alert>
   );
 };
 
 const styles = StyleSheet.create({
-  popup: {
-    alignItems: 'flex-start',
-    paddingHorizontal: 10,
-    paddingRight: 10,
-    paddingVertical: 10,
-  },
   container: {
     flexDirection: 'column',
     width: '100%',
@@ -134,24 +118,11 @@ const styles = StyleSheet.create({
     marginHorizontal: -18,
   },
   picker: {
-    width: '110%',
-  },
-  buttonContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginTop: 4,
+    width: '90%',
   },
   labelText: {
     alignSelf: 'flex-start',
     marginVertical: 5,
-  },
-  button: {
-    width: '60%',
-    marginHorizontal: 3,
   },
 });
 
