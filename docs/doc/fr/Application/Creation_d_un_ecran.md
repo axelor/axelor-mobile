@@ -85,8 +85,7 @@ interface Field {
   readonlyIf?: (values?: States) => boolean;
   hideIf?: (values?: States) => boolean;
   dependsOn?: {
-    fieldName: string | string[];
-    onChange: (values: DependsOnStates) => any;
+    [fieldName: string]: (values: DependsOnStates) => any;
   };
   widget?: Widget;
   customComponent?: (
@@ -129,7 +128,7 @@ Un field est défini à travers plusieurs attribut :
 
 - *required* et *readonly* permettent de définir un champs comme requis ou en lecture seule.
 - *requiredIf*, *readonlyIf* et *hideIf* permettent de définir une condition pour laquelle le champs doit être requis, en lecture seule ou caché. Ces trois functions reçoivent en argument les états de l’objet du formulaire et du store global et elles doivent renvoyer un booléen.
-- *dependsOn* : définition d’une condition de mise à jour de la valeur du champs en fonction de la mise à jour d’un autre champs. Il s’agit d’un champs json qui contient le nom du champs duquel dépend le champs actuel et la fonction qui vient définir la nouvelle valeur du champs en fonction des états de l’objet du formulaire, du store global et de la valeur qui vient d’être modifiée.
+- *dependsOn* : définition d’une condition de mise à jour de la valeur du champs en fonction de la mise à jour d’un autre champs. Il s’agit d’un champs json qui associe le nom du champs duquel dépend le champs actuel en tant que clé et la fonction qui vient définir la nouvelle valeur du champs en fonction des états de l’objet du formulaire, du store global et de la valeur qui vient d’être modifiée.
 - *widget* : définition d’un widget d’affichage pour le champs. Le formulaire assigne par défaut un widget associé au type de champs mais il est possible de demander un autre widget compatible ou bien de définir un widget `‘custom’` qui permet ensuite de définir un composant personnalisé.
 
     ```tsx
