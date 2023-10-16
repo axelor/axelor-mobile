@@ -135,7 +135,10 @@ const WasteProductListScreen = ({route, navigation}) => {
         visible={isVisible}
         title={I18n.t('Manufacturing_WasteDeclaration')}
         cancelButtonConfig={{onPress: () => setVisible(false)}}
-        confirmButtonConfig={{onPress: handleDeclareWasteProduct}}
+        confirmButtonConfig={{
+          title: I18n.t('Base_Confirm'),
+          onPress: handleDeclareWasteProduct,
+        }}
         translator={I18n.t}>
         <Text>{I18n.t('Manufacturing_ConfirmWasteDeclaration')}</Text>
       </Alert>
