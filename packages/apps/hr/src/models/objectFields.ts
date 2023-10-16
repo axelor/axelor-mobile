@@ -53,7 +53,12 @@ export const hr_modelAPI: ObjectFields = {
     toCity: schemaContructor.string(),
     project: schemaContructor.subObject(),
     totalAmount: schemaContructor.string(),
-    expenseProduct: schemaContructor.subObject('name'),
+    expenseProduct: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        name: schemaContructor.string(),
+        blockExpenseTax: schemaContructor.boolean(),
+      }),
+    ),
     kilometricTypeSelect: schemaContructor.number(),
     justificationMetaFile: schemaContructor.subObject(),
     comments: schemaContructor.string(),
@@ -67,7 +72,6 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     fullName: schemaContructor.string(),
     blockExpenseTax: schemaContructor.boolean(),
-    unavailableToUsers: schemaContructor.boolean(),
   }),
   hr_kilomectricAllowParam: schemaContructor.object({
     name: schemaContructor.string(),
