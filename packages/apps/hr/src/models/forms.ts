@@ -17,6 +17,7 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
+import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
   CurrencySearchBar,
@@ -28,6 +29,7 @@ import {
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
+import {getDistance} from '../features/distanceSlice';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -141,6 +143,31 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'increment',
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
+        dependsOn: {
+          fromCity: ({newValue, objectState, storeState, dispatch}) => {
+            if (
+              storeState?.expenseAppConfig?.expenseConfig
+                ?.computeDistanceWithWebService &&
+              !checkNullString(objectState?.fromCity) &&
+              !checkNullString(objectState?.toCity)
+            ) {
+              console.log('ici');
+              dispatch();
+              /*getDistance({
+                  fromCity: objectState?.fromCity,
+                  toCity: objectState?.toCity,
+                }),*/
+            }
+            console.log(newValue);
+            console.log(objectState);
+            //dispatch(updateExpenseDate(newValue));
+          },
+          toCity: ({newValue, objectState, dispatch}) => {
+            //console.log(newValue);
+            //console.log(objectState);
+            //dispatch(updateExpenseDate(newValue));
+          },
+        },
       },
       currency: {
         titleKey: 'Hr_Currency',

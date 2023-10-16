@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {currencyReducer as currency} from './currencySlice';
-export {distanceReducer as distance} from './distanceSlice';
-export {expenseAppConfigReducer as expenseAppConfig} from './expenseAppConfigSlice';
-export {expenseLineReducer as expenseLine} from './expenseLineSlice';
-export {expenseReducer as expense} from './expenseSlice';
-export {expenseTypeReducer as expenseType} from './expenseTypeSlice';
-export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricAllowParamSlice';
-export {projectReducer as project} from './projectSlice';
+import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
+
+export async function fetchExpenseConfig() {
+  const route = await RouterProvider.get('AppExpense');
+
+  return axiosApiProvider.get({url: route});
+}
