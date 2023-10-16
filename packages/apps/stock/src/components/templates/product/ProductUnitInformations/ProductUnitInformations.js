@@ -31,6 +31,7 @@ const ProductUnitInformations = ({product}) => {
           style={styles.stockCard}
           title={I18n.t('Stock_Stock')}
           value={product.unit?.name}
+          formatValueToNumber={false}
         />
         <SmallPropertyCard
           style={styles.stockCard}
@@ -38,6 +39,7 @@ const ProductUnitInformations = ({product}) => {
           value={
             product.salesUnit ? product.salesUnit?.name : product.unit?.name
           }
+          formatValueToNumber={false}
         />
         <SmallPropertyCard
           style={styles.stockCard}
@@ -47,6 +49,7 @@ const ProductUnitInformations = ({product}) => {
               ? product.purchasesUnit?.name
               : product.unit?.name
           }
+          formatValueToNumber={false}
         />
       </View>
     );
