@@ -55,7 +55,7 @@ const SmallPropertyCard = ({
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={handlePress}
-        disabled={interactive}>
+        disabled={!interactive}>
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.value}>{value}</Text>
