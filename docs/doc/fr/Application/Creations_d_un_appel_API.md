@@ -45,8 +45,6 @@ export const stock_sortFields: SortFields = {
 
 - Les champs à récupérer pour chaque objet au format *ObjectFields*. Il s’agit d’un objet au format json associant une clé à un **schéma [YUP](https://www.npmjs.com/package/yup?activeTab=readme).** Pour construire un schéma pour un objet, il suffit d’utiliser l’outil *schemaConstructor* du package CORE qui permet de donner accès à l’ensemble des types de définition proposés par la librairie YUP.
 
-  Il est possible de venir ajouter des contraintes sur chacun des attributs en fonction de son type: value minimal ou maximale, requis, nullable,… (voir la documentation de la librairie pour plus de détails sur les contraintes disponibles et leur utilisation)
-
     - *Object* : un objet json dans lequel il faut définir l’ensemble des attributs ainsi que leur type.
 
         ```tsx
@@ -123,6 +121,29 @@ export const stock_sortFields: SortFields = {
         })
         ```
 
+Lorsque l'objectif est de récupérer les champs d'un sous-objet, il est possible de les renseigner en tant que structure du sous-objet. Lors de la récupération des noms de champs pour l'appel API, le système fera une transmission automatique des champs relationnels.
+
+    ```tsx
+    schemaContructor.object({
+      name: schemaContructor.string(),
+      object: schemaContructor.subObject().concat(
+        schemaContructor.object({
+          props1: schemaContructor.string(),
+          props2: schemaContructor.number(),
+          props3: schemaContructor.boolean(),
+        }),
+      ),
+    });
+
+    // Equivalent to :
+    schemaContructor.object({
+      name: schemaContructor.string(),
+      object: schemaContructor.subObject(),
+      'object.props1': schemaContructor.string(),
+      'object.props2': schemaContructor.number(),
+      'object.props3': schemaContructor.boolean(),
+    });
+    ```
 
 ##  Récupération des champs API 
 
