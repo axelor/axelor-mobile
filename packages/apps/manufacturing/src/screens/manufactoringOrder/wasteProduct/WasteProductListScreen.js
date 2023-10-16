@@ -19,10 +19,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  Alert,
   Button,
   HeaderContainer,
   Icon,
-  PopUpTwoButton,
   Screen,
   ScrollList,
   Text,
@@ -131,15 +131,17 @@ const WasteProductListScreen = ({route, navigation}) => {
           />
         )
       }>
-      <PopUpTwoButton
+      <Alert
         visible={isVisible}
         title={I18n.t('Manufacturing_WasteDeclaration')}
-        data={I18n.t('Manufacturing_ConfirmWasteDeclaration')}
-        PrimaryBtnTitle={I18n.t('Base_Confirm')}
-        onPressPrimary={handleDeclareWasteProduct}
-        SecondaryBtnTitle={I18n.t('Base_Cancel')}
-        onPressSecondary={() => setVisible(false)}
-      />
+        cancelButtonConfig={{onPress: () => setVisible(false)}}
+        confirmButtonConfig={{
+          title: I18n.t('Base_Confirm'),
+          onPress: handleDeclareWasteProduct,
+        }}
+        translator={I18n.t}>
+        <Text>{I18n.t('Manufacturing_ConfirmWasteDeclaration')}</Text>
+      </Alert>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
