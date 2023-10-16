@@ -18,6 +18,29 @@
 
 import {Color} from '@axelor/aos-mobile-ui';
 
+interface Anomaly {
+  version: number;
+  message: string;
+  checkType: string;
+  modelName: string;
+}
+
+export function filterAnomaly(anomalyList: Anomaly[]) {
+  const BEFORE = -1;
+  const EQUAL = 0;
+  const AFTER = 1;
+
+  return anomalyList.sort((a, b) => {
+    if (a.checkType === b.checkType) {
+      return EQUAL;
+    } else if (a.checkType === 'error' && b.checkType === 'alert') {
+      return BEFORE;
+    } else {
+      return AFTER;
+    }
+  });
+}
+
 interface Chip {
   isActive?: boolean;
   color: Color;
