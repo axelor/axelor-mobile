@@ -185,7 +185,7 @@ const SessionInputs = ({
   const disabled = useMemo(() => {
     if (
       loading ||
-      checkNullString(form?.name) ||
+      (mode !== MODE.unique && checkNullString(form?.name)) ||
       checkNullString(form?.url) ||
       checkNullString(form?.username) ||
       nameSessionAlreadyExist
