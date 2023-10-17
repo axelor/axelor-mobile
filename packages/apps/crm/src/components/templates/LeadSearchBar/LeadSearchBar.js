@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
+import {StyleSheet, Platform, View} from 'react-native';
 import {
   displayItemFullname,
   useDispatch,
@@ -30,8 +31,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchLeads} from '../../../features/leadSlice';
-import {Platform, View} from 'react-native';
-import {StyleSheet} from 'react-native';
 
 const LeadSearchBarAux = ({
   style = null,
