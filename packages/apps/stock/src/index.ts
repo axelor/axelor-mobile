@@ -112,18 +112,4 @@ export * from './screens/products';
 export * from './screens/stockCorrections';
 export * from './screens/supplierArrivals';
 export * from './types';
-export {
-  displayInventorySeq,
-  displayItemTrackingNumber,
-  displayPartner,
-  displayStockMoveSeq,
-} from './utils/displayers';
-export {
-  filterInventoryByRef,
-  filterItemByStockMoveSeq,
-  filterPartner,
-  filterProduct,
-  filterStockLocation,
-  filterTrackingNumber,
-} from './utils/filters';
-export {showLine} from './utils/line-navigation';
+export * from './utils';
