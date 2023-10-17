@@ -18,7 +18,7 @@
 
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
+import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ProductSearchBar, StockMoveHeader} from '../../components';
 import StockMove from '../../types/stock-move';
@@ -81,13 +81,16 @@ const CustomerDeliverySelectProductScreen = ({route, navigation}) => {
           changeScreenAfter={true}
         />
       </View>
-      <PopUpOneButton
+      <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
-        data={I18n.t('Stock_ErrorProduct')}
-        btnTitle={I18n.t('Auth_Close')}
-        onPress={() => setVisible(false)}
-      />
+        confirmButtonConfig={{
+          width: 50,
+          title: null,
+          onPress: () => setVisible(false),
+        }}>
+        <Text>{I18n.t('Stock_ErrorProduct')}</Text>
+      </Alert>
     </Screen>
   );
 };
