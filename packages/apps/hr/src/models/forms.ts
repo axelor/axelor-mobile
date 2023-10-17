@@ -21,6 +21,7 @@ import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
   CurrencySearchBar,
+  DistanceIncrement,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -140,7 +141,9 @@ export const hr_formsRegister: FormConfigs = {
       distance: {
         titleKey: 'Hr_Distance',
         type: 'number',
-        widget: 'increment',
+        //widget: 'increment',
+        widget: 'custom',
+        customComponent: DistanceIncrement,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         dependsOn: {
@@ -152,21 +155,24 @@ export const hr_formsRegister: FormConfigs = {
               !checkNullString(objectState?.toCity)
             ) {
               console.log('ici');
-              dispatch();
-              /*getDistance({
+              dispatch(
+                (getDistance as any)({
                   fromCity: objectState?.fromCity,
                   toCity: objectState?.toCity,
-                }),*/
+                }),
+              ); /*.then(res => {
+                console.log(res);
+                console.log(Number(res?.payload?.distance));
+                if (res?.payload != null) {
+                  return Number(res?.payload?.distance);
+                }
+                return res;
+              });*/
             }
             console.log(newValue);
             console.log(objectState);
-            //dispatch(updateExpenseDate(newValue));
           },
-          toCity: ({newValue, objectState, dispatch}) => {
-            //console.log(newValue);
-            //console.log(objectState);
-            //dispatch(updateExpenseDate(newValue));
-          },
+          toCity: ({newValue, objectState, dispatch}) => {},
         },
       },
       currency: {
