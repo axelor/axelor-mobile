@@ -20,6 +20,7 @@ import {
   axiosApiProvider,
   createStandardFetch,
   createStandardSearch,
+  formatRequestBody,
   getNextMonth,
   getPreviousMonth,
   getSearchCriterias,
@@ -145,38 +146,16 @@ export async function createEvent({event}) {
   return axiosApiProvider.put({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
     data: {
-      data: event,
+      data: formatRequestBody(event),
     },
   });
 }
 
 export async function updateEvent({event}) {
-  let dataToSend = event;
-  if (event?.eventLead != null) {
-    dataToSend = {
-      ...event,
-      eventLead: {
-        fullName: event?.eventLead?.fullName,
-        id: event?.eventLead?.id,
-        $version: event?.eventLead?.$version,
-      },
-    };
-  } else {
-    dataToSend = {
-      ...event,
-      partner:
-        event?.partner != null
-          ? {
-              id: event?.partner?.id,
-              partnerTypeSelect: event?.partnerTypeSelect,
-            }
-          : null,
-    };
-  }
   return axiosApiProvider.post({
     url: '/ws/rest/com.axelor.apps.crm.db.Event',
     data: {
-      data: dataToSend,
+      data: formatRequestBody(event),
     },
   });
 }
