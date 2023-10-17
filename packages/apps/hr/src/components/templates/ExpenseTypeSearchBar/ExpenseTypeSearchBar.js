@@ -41,6 +41,7 @@ const ExpenseTypeSearchBarAux = ({
     moreLoadingExpenseType,
     isListEndExpenseType,
   } = useSelector(state => state.expenseType);
+  const {user} = useSelector(state => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -50,10 +51,11 @@ const ExpenseTypeSearchBarAux = ({
         searchExpenseType({
           page,
           searchValue,
+          user,
         }),
       );
     },
-    [dispatch],
+    [dispatch, user],
   );
 
   return (

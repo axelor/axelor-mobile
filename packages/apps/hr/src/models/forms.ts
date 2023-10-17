@@ -164,6 +164,8 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'increment',
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        readonlyIf: ({objectState}) =>
+          objectState?.expenseProduct?.blockExpenseTax === true,
       },
       comments: {
         titleKey: 'Hr_Comments',
