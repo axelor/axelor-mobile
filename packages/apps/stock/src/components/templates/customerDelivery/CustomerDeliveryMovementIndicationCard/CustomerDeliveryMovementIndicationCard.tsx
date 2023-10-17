@@ -19,9 +19,10 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {
+  Alert,
   Icon,
   MovementIndicationCard,
-  PopUpOneButton,
+  Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -38,16 +39,19 @@ const CustomerDeliveryMovementIndicationCard = ({
   return (
     <View>
       {showPopupOnCLick && (
-        <PopUpOneButton
-          title={I18n.t('Stock_DestinationAdress')}
-          data={
-            customerDelivery.toAddress?.fullName ||
-            customerDelivery.toAddressStr
-          }
+        <Alert
           visible={isPopupVisible}
-          btnTitle={I18n.t('Base_OK')}
-          onPress={() => setVisiblePopup(false)}
-        />
+          title={I18n.t('Stock_DestinationAdress')}
+          confirmButtonConfig={{
+            width: 50,
+            title: null,
+            onPress: () => setVisiblePopup(false),
+          }}>
+          <Text>
+            {customerDelivery.toAddress?.fullName ||
+              customerDelivery.toAddressStr}
+          </Text>
+        </Alert>
       )}
       <MovementIndicationCard
         titleTop={customerDelivery.fromStockLocation?.name}
