@@ -17,7 +17,7 @@
  */
 
 import React, {useState} from 'react';
-import {HeaderContainer, PopUpOneButton, Screen} from '@axelor/aos-mobile-ui';
+import {Alert, HeaderContainer, Screen, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {
   StockMoveHeader,
@@ -60,13 +60,16 @@ const SupplierArrivalSelectTrackingScreen = ({route, navigation}) => {
         supplierArrival={supplierArrival}
         supplierArrivalLine={supplierArrivalLine}
       />
-      <PopUpOneButton
+      <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
-        data={I18n.t('Stock_ErrorTrackingNumber')}
-        btnTitle={I18n.t('Auth_Close')}
-        onPress={() => setVisible(false)}
-      />
+        confirmButtonConfig={{
+          width: 50,
+          title: null,
+          onPress: () => setVisible(false),
+        }}>
+        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
+      </Alert>
     </Screen>
   );
 };

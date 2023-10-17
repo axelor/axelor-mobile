@@ -18,13 +18,7 @@
 
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {
-  Card,
-  PopUpOneButton,
-  Text,
-  useDigitFormat,
-} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {Alert, Card, Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 
 interface CardStockIndicatorProps {
   title: string;
@@ -32,7 +26,6 @@ interface CardStockIndicatorProps {
 }
 
 const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
-  const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
   const [popUp, setPopUp] = useState(false);
@@ -43,13 +36,20 @@ const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
 
   return (
     <Card style={styles.card}>
-      <PopUpOneButton
+      <Alert
+        style={styles.alert}
         visible={popUp}
-        data={formatNumber(number)}
         title={title}
-        btnTitle={I18n.t('Auth_Close')}
-        onPress={() => setPopUp(!popUp)}
-      />
+        noBoldTitle
+        cancelButtonConfig={{
+          showInHeader: true,
+          headerSize: 25,
+          onPress: () => setPopUp(!popUp),
+        }}>
+        <Text writingType="important" fontSize={25}>
+          {formatNumber(number)}
+        </Text>
+      </Alert>
       <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
         <View style={styles.infos}>
           <Text style={styles.text} numberOfLines={2}>
@@ -65,6 +65,9 @@ const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    width: '70%',
+  },
   card: {
     paddingHorizontal: 0,
     paddingVertical: 8,
