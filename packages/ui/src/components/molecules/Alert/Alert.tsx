@@ -36,8 +36,10 @@ interface AlertProps {
   style?: any;
   visible: boolean;
   title?: string;
+  noBoldTitle?: boolean;
   children: any;
   cancelButtonConfig?: CancelButtonConfig;
+  cancelButtonSize?: number;
   confirmButtonConfig?: ButtonConfig;
   translator?: (key: string) => string;
 }
@@ -46,8 +48,10 @@ const Alert = ({
   style,
   visible = false,
   title,
+  noBoldTitle = false,
   children,
   cancelButtonConfig,
+  cancelButtonSize = 20,
   confirmButtonConfig,
   translator = key => key,
 }: AlertProps) => {
@@ -102,7 +106,10 @@ const Alert = ({
         <Card style={[styles.container, style]}>
           <View style={styles.headerContainer}>
             {!checkNullString(title) && (
-              <Text writingType="title" fontSize={20}>
+              <Text
+                writingType={noBoldTitle ? null : 'title'}
+                fontSize={20}
+                style={{marginHorizontal: cancelButtonSize}}>
                 {title}
               </Text>
             )}
@@ -110,7 +117,7 @@ const Alert = ({
               _cancelButtonConfig?.showInHeader && (
                 <Icon
                   name="times"
-                  size={20}
+                  size={cancelButtonSize}
                   style={styles.headerCancelButton}
                   touchable
                   onPress={_cancelButtonConfig?.onPress}
