@@ -16,31 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from '../../../index';
 import {Label, useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchAnomalies as _fetchAnomalies} from '../../../features/anomalySlice';
+import {fetchAnomalies} from '../../../api/anomaly-api';
 import {filterAnomaly} from '../../../utils';
 
-const AnomalyList = ({objectName, objectId, style}) => {
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
+interface AnomalyListProps {
+  objectName: string;
+  objectId: number;
+  style?: any;
+}
 
-  const {anomalyList} = useSelector(state => state.anomaly);
+const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
+  const Colors = useThemeColor();
+
+  const [anomalyList, setAnomalyList] = useState([]);
+
+  useEffect(() => {
+    fetchAnomalies({objectName, objectId}).then(response => {
+      if (response?.data?.object?.checks) {
+        const checks = response?.data?.object?.checks;
+        setAnomalyList(checks);
+      }
+    });
+  }, [objectName, objectId]);
 
   const filteredAnomalyList = useMemo(
     () => filterAnomaly(anomalyList),
     [anomalyList],
   );
-
-  const fetchAnomalies = useCallback(() => {
-    dispatch(_fetchAnomalies({objectName, objectId}));
-  }, [dispatch, objectId, objectName]);
-
-  useEffect(() => {
-    fetchAnomalies();
-  }, [fetchAnomalies]);
 
   if (filteredAnomalyList.length === 0) {
     return null;

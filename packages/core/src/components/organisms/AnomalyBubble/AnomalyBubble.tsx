@@ -16,38 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {View} from 'react-native';
-import {useDispatch, useSelector} from '../../../index';
 import {InfoBubble, useThemeColor} from '@axelor/aos-mobile-ui';
-import {fetchAnomalies as _fetchAnomalies} from '../../../features/anomalySlice';
+import {fetchAnomalies} from '../../../api/anomaly-api';
 import {filterAnomaly} from '../../../utils';
+
+interface AnomalyBubbleProps {
+  objectName: string;
+  objectId: number;
+  isIndicationDisabled?: boolean;
+  indicatorPosition?: 'left' | 'right';
+  size?: number;
+  style?: any;
+  indicatorStyle?: any;
+}
 
 const AnomalyBubble = ({
   objectName,
   objectId,
+  isIndicationDisabled = false,
   indicatorPosition,
   size,
   style,
   indicatorStyle,
-}) => {
+}: AnomalyBubbleProps) => {
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
-  const {anomalyList} = useSelector(state => state.anomaly);
+  const [anomalyList, setAnomalyList] = useState([]);
+
+  useEffect(() => {
+    fetchAnomalies({objectName, objectId}).then(response => {
+      if (response?.data?.object?.checks) {
+        const checks = response?.data?.object?.checks;
+        const otherChecks = response?.data?.object?.otherChecks?.flatMap(
+          otherCheck => otherCheck.checks,
+        );
+        setAnomalyList([...checks, ...otherChecks]);
+      }
+    });
+  }, [objectName, objectId]);
 
   const filteredAnomalyList = useMemo(
     () => filterAnomaly(anomalyList),
     [anomalyList],
   );
-
-  const fetchAnomalies = useCallback(() => {
-    dispatch(_fetchAnomalies({objectName, objectId}));
-  }, [dispatch, objectId, objectName]);
-
-  useEffect(() => {
-    fetchAnomalies();
-  }, [fetchAnomalies]);
 
   if (filteredAnomalyList.length === 0) {
     return null;
@@ -63,7 +76,9 @@ const AnomalyBubble = ({
             ? Colors.errorColor
             : Colors.warningColor
         }
-        indication={filteredAnomalyList[0].message}
+        indication={
+          isIndicationDisabled ? null : filteredAnomalyList[0].message
+        }
         size={size}
         position={indicatorPosition}
         coloredBubble={false}

@@ -77,7 +77,7 @@ const InfoBubble = ({
           size={coloredBubble ? size * 0.5 : size * 0.8}
         />
       </TouchableOpacity>
-      {isOpen ? (
+      {indication && isOpen ? (
         <Card style={[styles.indicationCard, textIndicationStyle]}>
           <Text>{indication}</Text>
         </Card>

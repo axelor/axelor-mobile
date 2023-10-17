@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {anomalyReducer as anomaly} from './anomalySlice';
 export {attachedFilesReducer as attachedFiles} from './attachedFilesSlice';
 export {authReducer as auth} from './authSlice';
 export {default as cameraScanner} from './cameraScannerSlice';

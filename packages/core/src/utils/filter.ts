@@ -30,7 +30,7 @@ export function filterAnomaly(anomalyList: Anomaly[]) {
   const EQUAL = 0;
   const AFTER = 1;
 
-  return anomalyList.sort((a, b) => {
+  return anomalyList.sort((a: Anomaly, b: Anomaly) => {
     if (a.checkType === b.checkType) {
       return EQUAL;
     } else if (a.checkType === 'error' && b.checkType === 'alert') {
