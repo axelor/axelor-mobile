@@ -36,7 +36,13 @@ export {
   updateInternalMoveLine as updateInternalMoveLineApi,
 } from './internal-move-line-api';
 export * from './inventory-api';
-export * from './inventory-line-api';
+export {
+  addTrackingNumber,
+  createInventoryLine,
+  fetchInventoryLine as fetchInventoryLineApi,
+  searchInventoryLines,
+  updateInventoryLineDetails,
+} from './inventory-line-api';
 export * from './partner-api';
 export * from './product-api';
 export {
@@ -47,7 +53,10 @@ export {
 } from './stock-correction-api';
 export * from './stock-correction-reason-api';
 export * from './stock-location-api';
-export * from './stock-location-line-api';
+export {
+  searchAvailableProducts as searchAvailableProductsApi,
+  searchStockLocationLine,
+} from './stock-location-line-api';
 export {
   searchSupplierArrivalFilter,
   addLineStockMove as addSupplierArrivalLine,
@@ -58,6 +67,9 @@ export {
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
-export * from './supplychain-config-api';
+export {
+  fetchStockConfig as fetchStockConfigApi,
+  fetchSupplychainConfig,
+} from './supplychain-config-api';
 export * from './tracking-number-api';
 export * from './unit-api';

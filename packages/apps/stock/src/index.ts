@@ -101,10 +101,8 @@ export const StockModule: Module = {
 
 export * from './api';
 export * from './components';
-export * from './features';
 export * from './features/asyncFunctions-index';
 export * from './hooks';
-export * from './models';
 export * from './screens/customerDeliveries';
 export * from './screens/internalMoves';
 export * from './screens/inventories';
