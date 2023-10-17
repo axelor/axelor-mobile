@@ -37,14 +37,18 @@ const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
   return (
     <Card style={styles.card}>
       <Alert
+        style={styles.alert}
         visible={popUp}
         title={title}
-        confirmButtonConfig={{
-          width: 50,
-          title: null,
+        noBoldTitle
+        cancelButtonConfig={{
+          showInHeader: true,
           onPress: () => setPopUp(!popUp),
-        }}>
-        <Text>{formatNumber(number)}</Text>
+        }}
+        cancelButtonSize={25}>
+        <Text writingType="important" fontSize={20}>
+          {formatNumber(number)}
+        </Text>
       </Alert>
       <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
         <View style={styles.infos}>
@@ -61,6 +65,9 @@ const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    width: '70%',
+  },
   card: {
     paddingHorizontal: 0,
     paddingVertical: 8,

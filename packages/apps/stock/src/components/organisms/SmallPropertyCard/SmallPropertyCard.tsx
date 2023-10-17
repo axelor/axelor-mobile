@@ -52,14 +52,18 @@ const SmallPropertyCard = ({
   return (
     <Card style={[styles.card, style]}>
       <Alert
+        style={styles.alert}
         visible={popUp}
         title={title}
-        confirmButtonConfig={{
-          width: 50,
-          title: null,
+        noBoldTitle
+        cancelButtonConfig={{
+          showInHeader: true,
           onPress: () => setPopUp(!popUp),
-        }}>
-        <Text>{unit == null ? `${_value}` : `${_value} ${unit}`}</Text>
+        }}
+        cancelButtonSize={25}>
+        <Text writingType="important" fontSize={20}>
+          {unit == null ? `${_value}` : `${_value} ${unit}`}
+        </Text>
       </Alert>
       <TouchableOpacity
         activeOpacity={0.9}
@@ -76,6 +80,9 @@ const SmallPropertyCard = ({
 };
 
 const styles = StyleSheet.create({
+  alert: {
+    width: '70%',
+  },
   card: {
     paddingHorizontal: 0,
     paddingVertical: 4,
