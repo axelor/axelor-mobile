@@ -99,8 +99,19 @@ export const StockModule: Module = {
   },
 };
 
+export * from './api';
 export * from './components';
-
+export * from './features';
+export * from './features/asyncFunctions-index';
+export * from './hooks';
+export * from './models';
+export * from './screens/customerDeliveries';
+export * from './screens/internalMoves';
+export * from './screens/inventories';
+export * from './screens/products';
+export * from './screens/stockCorrections';
+export * from './screens/supplierArrivals';
+export * from './types';
 export {
   displayInventorySeq,
   displayItemTrackingNumber,
@@ -115,14 +126,4 @@ export {
   filterStockLocation,
   filterTrackingNumber,
 } from './utils/filters';
-
-export * from './types';
-export * from './api';
-export * from './features/asyncFunctions-index';
-
-export * from './screens/customerDeliveries';
-export * from './screens/internalMoves';
-export * from './screens/inventories';
-export * from './screens/products';
-export * from './screens/stockCorrections';
-export * from './screens/supplierArrivals';
+export {showLine} from './utils/line-navigation';
