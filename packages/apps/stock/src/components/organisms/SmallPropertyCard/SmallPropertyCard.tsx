@@ -30,6 +30,7 @@ interface SmallPropertyCardProps {
   style?: any;
   title: string;
   value: string;
+  formatValueToNumber?: boolean;
   unit?: string;
   interactive?: boolean;
 }
@@ -38,6 +39,7 @@ const SmallPropertyCard = ({
   style,
   title,
   value,
+  formatValueToNumber = true,
   unit = null,
   interactive = false,
 }: SmallPropertyCardProps) => {
@@ -49,7 +51,10 @@ const SmallPropertyCard = ({
     setPopUp(true);
   };
 
-  const _value = useMemo(() => formatNumber(value), [formatNumber, value]);
+  const _value = useMemo(
+    () => (formatValueToNumber ? formatNumber(value) : value),
+    [formatNumber, formatValueToNumber, value],
+  );
 
   return (
     <Card style={[styles.card, style]}>
