@@ -21,7 +21,7 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createExpenseType = searchValue => {
+const createExpenseType = (searchValue, user) => {
   const criteria = [
     {
       fieldName: 'isModel',
@@ -40,14 +40,20 @@ const createExpenseType = searchValue => {
     },
     getSearchCriterias('hr_expenseType', searchValue),
   ];
-
+  if (!user?.employee?.hrManager) {
+    criteria.push({
+      fieldName: 'unavailableToUsers',
+      operator: '=',
+      value: false,
+    });
+  }
   return criteria;
 };
 
-export async function searchExpenseType({searchValue = null, page = 0}) {
+export async function searchExpenseType({searchValue = null, page = 0, user}) {
   return createStandardSearch({
     model: 'com.axelor.apps.base.db.Product',
-    criteria: createExpenseType(searchValue),
+    criteria: createExpenseType(searchValue, user),
     fieldKey: 'hr_expenseType',
     sortKey: 'hr_expenseType',
     page,
