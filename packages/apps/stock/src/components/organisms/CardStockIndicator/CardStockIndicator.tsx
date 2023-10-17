@@ -43,10 +43,10 @@ const CardStockIndicator = ({title, number}: CardStockIndicatorProps) => {
         noBoldTitle
         cancelButtonConfig={{
           showInHeader: true,
+          headerSize: 25,
           onPress: () => setPopUp(!popUp),
-        }}
-        cancelButtonSize={25}>
-        <Text writingType="important" fontSize={20}>
+        }}>
+        <Text writingType="important" fontSize={25}>
           {formatNumber(number)}
         </Text>
       </Alert>

@@ -58,9 +58,9 @@ const SmallPropertyCard = ({
         noBoldTitle
         cancelButtonConfig={{
           showInHeader: true,
+          headerSize: 25,
           onPress: () => setPopUp(!popUp),
-        }}
-        cancelButtonSize={25}>
+        }}>
         <Text writingType="important" fontSize={20}>
           {unit == null ? `${_value}` : `${_value} ${unit}`}
         </Text>

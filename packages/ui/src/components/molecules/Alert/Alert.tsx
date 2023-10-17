@@ -30,6 +30,7 @@ interface ButtonConfig extends ButtonProps {
 }
 interface CancelButtonConfig extends ButtonConfig {
   showInHeader?: boolean;
+  headerSize?: number;
 }
 
 interface AlertProps {
@@ -39,7 +40,6 @@ interface AlertProps {
   noBoldTitle?: boolean;
   children: any;
   cancelButtonConfig?: CancelButtonConfig;
-  cancelButtonSize?: number;
   confirmButtonConfig?: ButtonConfig;
   translator?: (key: string) => string;
 }
@@ -51,7 +51,6 @@ const Alert = ({
   noBoldTitle = false,
   children,
   cancelButtonConfig,
-  cancelButtonSize = 20,
   confirmButtonConfig,
   translator = key => key,
 }: AlertProps) => {
@@ -68,6 +67,7 @@ const Alert = ({
       iconName: 'times',
       hide: false,
       showInHeader: false,
+      headerSize: 20,
       width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };
@@ -109,7 +109,10 @@ const Alert = ({
               <Text
                 writingType={noBoldTitle ? null : 'title'}
                 fontSize={20}
-                style={{marginHorizontal: cancelButtonSize}}>
+                style={[
+                  styles.title,
+                  {marginHorizontal: _cancelButtonConfig?.headerSize},
+                ]}>
                 {title}
               </Text>
             )}
@@ -117,7 +120,7 @@ const Alert = ({
               _cancelButtonConfig?.showInHeader && (
                 <Icon
                   name="times"
-                  size={cancelButtonSize}
+                  size={_cancelButtonConfig?.headerSize}
                   style={styles.headerCancelButton}
                   touchable
                   onPress={_cancelButtonConfig?.onPress}
@@ -162,6 +165,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  title: {
+    textAlign: 'center',
   },
   headerCancelButton: {
     position: 'absolute',
