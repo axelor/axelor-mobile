@@ -44,7 +44,7 @@ import {
   validateFieldSchema,
 } from '../../../../forms';
 import {useTranslator} from '../../../../i18n';
-import {useSelector} from '../../../../redux/hooks';
+import {useDispatch, useSelector} from '../../../../redux/hooks';
 import {UploadFileInput} from '../../../molecules';
 import {DateInput} from '../../../organisms';
 import {CustomPasswordInput} from '../Custom';
@@ -64,6 +64,8 @@ const Field = ({
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const value = object?.[_field.key];
 
   const storeState = useSelector((state: any) => state);
@@ -102,6 +104,10 @@ const Field = ({
       _field.requiredIf({objectState: object, storeState: storeState})
     );
   }, [_field, object, storeState]);
+
+  const handleEndFocus = useCallback(() => {
+    _field.onEndFocus({objectState: object, storeState: storeState, dispatch});
+  }, [_field, dispatch, object, storeState]);
 
   const isReadonly = useMemo(() => {
     return (
@@ -243,6 +249,7 @@ const Field = ({
             onChange={handleChange}
             required={isRequired}
             readOnly={isReadonly}
+            onEndFocus={handleEndFocus}
             keyboardType={getKeyboardType(_field)}
             {..._field.options}
           />

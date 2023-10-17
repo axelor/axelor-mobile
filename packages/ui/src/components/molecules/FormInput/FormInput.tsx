@@ -86,6 +86,7 @@ const FormInput = ({
 
   const handleEndFocus = () => {
     setIsFocused(false);
+    console.log('freve');
     onEndFocus();
   };
 

@@ -32,6 +32,10 @@ export interface DependsOnStates extends States {
   dispatch?: any;
 }
 
+export interface EndFocusStates extends States {
+  dispatch?: any;
+}
+
 export interface customComponentOptions {
   style?: any;
   title?: string;
@@ -55,6 +59,7 @@ export interface Field {
   dependsOn?: {
     [fieldName: string]: (values: DependsOnStates) => any;
   };
+  onEndFocus?: (values?: EndFocusStates) => void;
   widget?: Widget;
   customComponent?: (
     options?: customComponentOptions,

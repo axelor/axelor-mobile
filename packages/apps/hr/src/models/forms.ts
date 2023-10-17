@@ -128,6 +128,23 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        onEndFocus: ({objectState, storeState, dispatch}) => {
+          console.log('onEndFocus');
+          if (
+            storeState?.expenseAppConfig?.expenseConfig
+              ?.computeDistanceWithWebService &&
+            !checkNullString(objectState?.fromCity) &&
+            !checkNullString(objectState?.toCity)
+          ) {
+            console.log('ici');
+            dispatch(
+              (getDistance as any)({
+                fromCity: objectState?.fromCity,
+                toCity: objectState?.toCity,
+              }),
+            );
+          }
+        },
       },
       toCity: {
         titleKey: 'Hr_ToCity',
@@ -137,43 +154,31 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        onEndFocus: ({objectState, storeState, dispatch}) => {
+          console.log('onEndFocus');
+          if (
+            storeState?.expenseAppConfig?.expenseConfig
+              ?.computeDistanceWithWebService &&
+            !checkNullString(objectState?.fromCity) &&
+            !checkNullString(objectState?.toCity)
+          ) {
+            console.log('ici');
+            dispatch(
+              (getDistance as any)({
+                fromCity: objectState?.fromCity,
+                toCity: objectState?.toCity,
+              }),
+            );
+          }
+        },
       },
       distance: {
         titleKey: 'Hr_Distance',
         type: 'number',
-        //widget: 'increment',
         widget: 'custom',
         customComponent: DistanceIncrement,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
-        dependsOn: {
-          fromCity: ({newValue, objectState, storeState, dispatch}) => {
-            if (
-              storeState?.expenseAppConfig?.expenseConfig
-                ?.computeDistanceWithWebService &&
-              !checkNullString(objectState?.fromCity) &&
-              !checkNullString(objectState?.toCity)
-            ) {
-              console.log('ici');
-              dispatch(
-                (getDistance as any)({
-                  fromCity: objectState?.fromCity,
-                  toCity: objectState?.toCity,
-                }),
-              ); /*.then(res => {
-                console.log(res);
-                console.log(Number(res?.payload?.distance));
-                if (res?.payload != null) {
-                  return Number(res?.payload?.distance);
-                }
-                return res;
-              });*/
-            }
-            console.log(newValue);
-            console.log(objectState);
-          },
-          toCity: ({newValue, objectState, dispatch}) => {},
-        },
       },
       currency: {
         titleKey: 'Hr_Currency',
