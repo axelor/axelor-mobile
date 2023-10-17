@@ -19,9 +19,9 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
+  Alert,
   Card,
   HeaderContainer,
-  PopUpOneButton,
   Screen,
   Text,
 } from '@axelor/aos-mobile-ui';
@@ -81,13 +81,16 @@ const InternalMoveSelectTrackingScreen = ({navigation, route}) => {
         changeScreenAfter={true}
         product={product}
       />
-      <PopUpOneButton
+      <Alert
         visible={isVisible}
         title={I18n.t('Auth_Warning')}
-        data={I18n.t('Stock_ErrorTrackingNumber')}
-        btnTitle={I18n.t('Auth_Close')}
-        onPress={() => setVisible(false)}
-      />
+        confirmButtonConfig={{
+          width: 50,
+          title: null,
+          onPress: () => setVisible(false),
+        }}>
+        <Text>{I18n.t('Stock_ErrorTrackingNumber')}</Text>
+      </Alert>
     </Screen>
   );
 };

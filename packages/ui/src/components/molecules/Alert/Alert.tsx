@@ -30,12 +30,14 @@ interface ButtonConfig extends ButtonProps {
 }
 interface CancelButtonConfig extends ButtonConfig {
   showInHeader?: boolean;
+  headerSize?: number;
 }
 
 interface AlertProps {
   style?: any;
   visible: boolean;
   title?: string;
+  noBoldTitle?: boolean;
   children: any;
   cancelButtonConfig?: CancelButtonConfig;
   confirmButtonConfig?: ButtonConfig;
@@ -46,6 +48,7 @@ const Alert = ({
   style,
   visible = false,
   title,
+  noBoldTitle = false,
   children,
   cancelButtonConfig,
   confirmButtonConfig,
@@ -64,6 +67,7 @@ const Alert = ({
       iconName: 'times',
       hide: false,
       showInHeader: false,
+      headerSize: 20,
       width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };
@@ -102,7 +106,13 @@ const Alert = ({
         <Card style={[styles.container, style]}>
           <View style={styles.headerContainer}>
             {!checkNullString(title) && (
-              <Text writingType="title" fontSize={20}>
+              <Text
+                writingType={noBoldTitle ? null : 'title'}
+                fontSize={20}
+                style={[
+                  styles.title,
+                  {marginHorizontal: _cancelButtonConfig?.headerSize},
+                ]}>
                 {title}
               </Text>
             )}
@@ -110,7 +120,7 @@ const Alert = ({
               _cancelButtonConfig?.showInHeader && (
                 <Icon
                   name="times"
-                  size={20}
+                  size={_cancelButtonConfig?.headerSize}
                   style={styles.headerCancelButton}
                   touchable
                   onPress={_cancelButtonConfig?.onPress}
@@ -155,6 +165,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  title: {
+    textAlign: 'center',
   },
   headerCancelButton: {
     position: 'absolute',
