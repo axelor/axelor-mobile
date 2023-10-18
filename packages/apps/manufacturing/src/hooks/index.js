@@ -16,10 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {machinesReducer as machines} from './machinesSlice';
-export {manufacturingOrderReducer as manufacturingOrder} from './manufacturingOrderSlice';
-export {operationOrderReducer as operationOrder} from './operationOrderSlice';
-export {prodProductsReducer as prodProducts} from './prodProductSlice';
-export {productionFileReducer as productionFile} from './productionFileSlice';
-export {wasteProductsReducer as wasteProducts} from './wasteProductsSlice';
-export {workCentersReducer as workCenters} from './workCentersSlice';
+export {useManufacturingHeaders} from './use-manufacturing-headers';

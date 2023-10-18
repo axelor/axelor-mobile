@@ -20,25 +20,28 @@ export {searchMachines} from './machinesSlice';
 export {
   fetchChildrenOfManufacturingOrder,
   fetchLinkedManufOrders,
-  fetchManufOrder,
   fetchManufacturingOrders,
+  fetchManufOrder,
+  updateStatusOfManufOrder,
 } from './manufacturingOrderSlice';
 export {
   fetchOperationOrderById,
   fetchOperationOrders,
+  fetchPlannedOperationOrder,
   updateOperationOrder,
 } from './operationOrderSlice';
 export {
   addProdProductToManufOrder,
-  updateProdProductOfManufOrder,
+  addTrackingNumberToConsumedProduct,
   fetchConsumedProducts,
   fetchProducedProducts,
+  updateProdProductOfManufOrder,
 } from './prodProductSlice';
 export {fetchProductionFile} from './productionFileSlice';
 export {
-  fetchWasteProducts,
   addWasteProductToManufOrder,
-  updateWasteProductOfManufOrder,
   declareWasteProductsOfManufOrder,
+  fetchWasteProducts,
+  updateWasteProductOfManufOrder,
 } from './wasteProductsSlice';
 export {searchWorkCenters} from './workCentersSlice';

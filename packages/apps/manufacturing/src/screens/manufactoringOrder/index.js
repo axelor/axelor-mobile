@@ -66,3 +66,9 @@ export default {
   ...ProducedProductScreens,
   ...WasteProductScreens,
 };
+
+export {ManufacturingOrderDetailsScreen};
+export {ManufacturingOrderListSaleOrderScreen};
+export {ManufacturingOrderListScreen};
+export {ManufacturingOrderOperationListScreen};
+export {ManufacturingOrderListProductionOrderScreen};
