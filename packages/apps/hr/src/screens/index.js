@@ -47,3 +47,8 @@ export default {
     component: ExpenseLineFormScreen,
   },
 };
+
+export {ExpenseLinesListScreen};
+export {ExpenseListScreen};
+export {ExpenseDetailsScreen};
+export {ExpenseLineFormScreen};
