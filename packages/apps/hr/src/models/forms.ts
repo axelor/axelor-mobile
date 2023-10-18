@@ -166,6 +166,15 @@ export const hr_formsRegister: FormConfigs = {
           objectState.manageMode === ExpenseLine.modes.kilometric,
         readonlyIf: ({objectState}) =>
           objectState?.expenseProduct?.blockExpenseTax === true,
+        dependsOn: {
+          expenseProduct: ({objectState, newValue}) => {
+            if (newValue?.blockExpenseTax === true) {
+              return 0;
+            } else {
+              return objectState?.totalTax;
+            }
+          },
+        },
       },
       comments: {
         titleKey: 'Hr_Comments',
