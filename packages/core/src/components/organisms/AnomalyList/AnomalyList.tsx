@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {Label, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchAnomalies} from '../../../api/anomaly-api';
-import {filterAnomaly} from '../../../utils';
+import {Anomaly} from '../../../types';
 
 interface AnomalyListProps {
   objectName: string;
@@ -34,37 +34,30 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
   const [anomalyList, setAnomalyList] = useState([]);
 
   useEffect(() => {
-    fetchAnomalies({objectName, objectId}).then(response => {
-      if (response?.data?.object?.checks) {
-        const checks = response?.data?.object?.checks;
-        setAnomalyList(checks);
-      }
-    });
+    fetchAnomalies({objectName, objectId})
+      .then(response => {
+        if (response?.data?.object?.checks) {
+          const checks = response?.data?.object?.checks;
+          setAnomalyList(Anomaly.sortType(checks));
+        }
+      })
+      .catch(() => setAnomalyList([]));
   }, [objectName, objectId]);
 
-  const filteredAnomalyList = useMemo(
-    () => filterAnomaly(anomalyList),
-    [anomalyList],
-  );
-
-  if (filteredAnomalyList.length === 0) {
+  if (anomalyList.length === 0) {
     return null;
   }
 
   return (
     <FlatList
       style={style}
-      data={filteredAnomalyList}
+      data={anomalyList}
       renderItem={({item}) => (
         <Label
           style={styles.label}
           message={item?.message}
           iconName="exclamation-triangle"
-          color={
-            item?.checkType === 'error'
-              ? Colors.errorColor
-              : Colors.warningColor
-          }
+          color={Anomaly.getTypeColor(item?.checkType, Colors)}
           showClose
         />
       )}

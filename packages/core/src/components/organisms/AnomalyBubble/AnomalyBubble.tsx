@@ -20,7 +20,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {View} from 'react-native';
 import {InfoBubble, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchAnomalies} from '../../../api/anomaly-api';
-import {filterAnomaly} from '../../../utils';
+import {Anomaly} from '../../../types';
 
 interface AnomalyBubbleProps {
   objectName: string;
@@ -46,23 +46,28 @@ const AnomalyBubble = ({
   const [anomalyList, setAnomalyList] = useState([]);
 
   useEffect(() => {
-    fetchAnomalies({objectName, objectId}).then(response => {
-      if (response?.data?.object?.checks) {
-        const checks = response?.data?.object?.checks;
-        const otherChecks = response?.data?.object?.otherChecks?.flatMap(
-          otherCheck => otherCheck.checks,
-        );
-        setAnomalyList([...checks, ...otherChecks]);
-      }
-    });
+    fetchAnomalies({objectName, objectId})
+      .then(response => {
+        if (response?.data?.object?.checks) {
+          const checks = response?.data?.object?.checks;
+          const otherChecks = response?.data?.object?.otherChecks?.flatMap(
+            otherCheck => otherCheck.checks,
+          );
+          setAnomalyList(Anomaly.sortType([...checks, ...otherChecks]));
+        }
+      })
+      .catch(() => setAnomalyList([]));
   }, [objectName, objectId]);
 
-  const filteredAnomalyList = useMemo(
-    () => filterAnomaly(anomalyList),
-    [anomalyList],
-  );
+  const displayAnomaly = useMemo(() => {
+    if (Array.isArray(anomalyList) && anomalyList.length !== 0) {
+      return anomalyList[0];
+    } else {
+      return null;
+    }
+  }, [anomalyList]);
 
-  if (filteredAnomalyList.length === 0) {
+  if (!displayAnomaly) {
     return null;
   }
 
@@ -71,14 +76,8 @@ const AnomalyBubble = ({
       <InfoBubble
         style={indicatorStyle}
         iconName="exclamation-triangle"
-        badgeColor={
-          filteredAnomalyList[0].checkType === 'error'
-            ? Colors.errorColor
-            : Colors.warningColor
-        }
-        indication={
-          isIndicationDisabled ? null : filteredAnomalyList[0].message
-        }
+        badgeColor={Anomaly.getTypeColor(displayAnomaly.checkType, Colors)}
+        indication={isIndicationDisabled ? null : displayAnomaly.message}
         size={size}
         position={indicatorPosition}
         coloredBubble={false}
