@@ -41,3 +41,7 @@ export default {
     component: ProspectFormScreen,
   },
 };
+
+export {ProspectsListScreen};
+export {ProspectDetailsScreen};
+export {ProspectFormScreen};

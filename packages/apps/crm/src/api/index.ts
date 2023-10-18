@@ -16,4 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './leads-api';
+export {
+  createCatalog as createCatalogApi,
+  getCatalogType,
+  searchCatalog,
+} from './catalog-api';
+export {
+  getClient,
+  searchClient,
+  updateClient as updateClientApi,
+} from './client-api';
+export * from './company-api';
+export {
+  getContact as getContactApi,
+  searchContact,
+  searchContactWithIds,
+  updateContact as updateContactApi,
+} from './contact-api';
+export * from './crm-config-api';
+export * from './event-api';
+export * from './function-api';
+export {
+  createLead as createLeadApi,
+  getLead,
+  getLeadStatus,
+  searchLeads,
+  updateLead as updateLeadApi,
+  updateLeadScoring,
+} from './leads-api';
+export {
+  createOpportunity as createOpportunityApi,
+  getOpportunity as getOpportunityApi,
+  getOpportunityStatus,
+  searchOpportunities,
+  updateOpportunity as updateOpportunityApi,
+  updateOpportunityScoring,
+  updateOpportunityStatus as updateOpportunityStatusApi,
+} from './opportunities-api';
+export * from './partner-api';
+export {
+  getProspect,
+  getProspectStatus,
+  searchProspect,
+  updateProspect as updateProspectApi,
+  updateProspectScoring,
+} from './prospect-api';

@@ -42,3 +42,7 @@ export default {
     component: LeadFormScreen,
   },
 };
+
+export {LeadListScreen};
+export {LeadDetailsScreen};
+export {LeadFormScreen};

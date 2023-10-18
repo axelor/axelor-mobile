@@ -41,3 +41,7 @@ export default {
     component: ClientFormScreen,
   },
 };
+
+export {ClientsListScreen};
+export {ClientDetailsScreen};
+export {ClientFormScreen};

@@ -16,4 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {fetchLeads} from './leadSlice';
+export {createCatalog, fetchCatalog, fetchCatalogType} from './catalogSlice';
+export {fetchClients, getClientbyId, updateClient} from './clientSlice';
+export {fetchCompanyById} from './companySlice';
+export {
+  fetchContact,
+  getContact,
+  searchContactById,
+  updateContact,
+} from './contactSlice';
+export {fetchCrmConfigApi} from './crmConfigSlice';
+export {
+  fetchContactEventById,
+  fetchEventById,
+  fetchPartnerEventById,
+  fetchPlannedEvent,
+  searchEventById,
+} from './eventSlice';
+export {fetchFunction} from './functionSlice';
+export {
+  createLead,
+  fetchLeadById,
+  fetchLeads,
+  fetchLeadStatus,
+  updateLead,
+  updateLeadScore,
+} from './leadSlice';
+export {
+  createOpportunity,
+  fetchOpportunities,
+  fetchOpportunityStatus,
+  getOpportunity,
+  updateOpportunity,
+  updateOpportunityScore,
+  updateOpportunityStatus,
+} from './opportunitySlice';
+export {fetchClientAndProspect, fetchPartner} from './partnerSlice';
+export {
+  fetchProspectById,
+  fetchProspects,
+  fetchProspectStatus,
+  updateProspect,
+  updateProspectScore,
+} from './prospectSlice';
