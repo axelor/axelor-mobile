@@ -58,4 +58,4 @@ export {
 } from './object';
 export {showToastMessage} from './show-toast-message';
 export {checkNullString, isHtml, splitInTwo, stringNoAccent} from './string';
-export {filterChip} from './filter';
+export {filterChip, filterChipCriteria} from './filter';

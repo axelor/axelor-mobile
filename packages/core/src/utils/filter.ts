@@ -42,3 +42,22 @@ export function filterChip(
     return listSelectedChip.find(chip => chip?.key === item[objectParam]);
   });
 }
+
+export function filterChipCriteria(
+  listSelectedChip: Chip[],
+  criteriaFieldName: string,
+) {
+  const criteria = [];
+
+  if (Array.isArray(listSelectedChip) && listSelectedChip?.length > 0) {
+    listSelectedChip.forEach(chip => {
+      criteria.push({
+        fieldName: criteriaFieldName,
+        operator: '=',
+        value: chip?.key,
+      });
+    });
+  }
+
+  return {operator: 'OR', criteria};
+}
