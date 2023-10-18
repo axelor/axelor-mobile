@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {customerDeliveryLineReducer as customerDeliveryLine} from './customerDeliveryLineSlice';
 export {customerDeliveryReducer as customerDelivery} from './customerDeliverySlice';
 export {internalMoveLineReducer as internalMoveLine} from './internalMoveLineSlice';
 export {internalMoveReducer as internalMove} from './internalMoveSlice';
-export {inventoryReducer as inventory} from './inventorySlice';
 export {inventoryLineReducer as inventoryLine} from './inventoryLineSlice';
+export {inventoryReducer as inventory} from './inventorySlice';
 export {partnerReducer as stock_partner} from './partnerSlice';
 export {productIndicatorsReducer as productIndicators} from './productIndicatorsSlice';
 export {productReducer as product} from './productSlice';
 export {productTrackingNumberReducer as productTrackingNumber} from './productTrackingNumberSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';
+export {rackReducer as rack} from './racksListSlice';
 export {stockAppConfigReducer as stockAppConfig} from './stockAppConfigSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';
 export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
@@ -36,5 +38,3 @@ export {supplierArrivalReducer as supplierArrival} from './supplierArrivalSlice'
 export {supplierCatalogReducer as supplierCatalog} from './supplierCatalogSlice';
 export {trackingNumberReducer as trackingNumber} from './trackingNumberSlice';
 export {unitReducer as unit} from './unitSlice';
-export {customerDeliveryLineReducer as customerDeliveryLine} from './customerDeliveryLineSlice';
-export {rackReducer as rack} from './racksListSlice';

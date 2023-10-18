@@ -17,79 +17,93 @@
  */
 
 export {
+  addTrackingNumber as addTrackingNumberToCustomerDeliveryLine,
+  fetchCustomerDeliveryLine,
   fetchCustomerDeliveryLines,
   updateCustomerDeliveryLine,
 } from './customerDeliveryLineSlice';
 export {
   addNewLine as addNewCustomerDeliveryLine,
+  fetchCustomerDelivery,
   realizeCustomerDelivery,
   searchDeliveries,
-  fetchCustomerDelivery,
 } from './customerDeliverySlice';
 export {
+  addTrackingNumber as addTrackingNumberToInternalMoveLine,
+  fetchInternalMoveLine,
   fetchInternalMoveLines,
   updateInternalMoveLine,
 } from './internalMoveLineSlice';
 export {
-  searchInternalMoves,
   createInternalMove,
-  realizeInternalMove,
   fetchInternalMove,
+  realizeInternalMove,
+  searchInternalMoves,
 } from './internalMoveSlice';
 export {
+  addTrackingNumber as addTrackingNumberToInventoryLine,
   createNewInventoryLine,
+  fetchInventoryLine,
   fetchInventoryLines,
   updateInventoryLine,
 } from './inventoryLineSlice';
 export {
-  searchInventories,
-  modifyDescription,
-  updateInventory,
   fetchInventoryById,
+  modifyDescription,
+  searchInventories,
+  updateInventory,
 } from './inventorySlice';
 export {filterClients, filterSuppliers} from './partnerSlice';
 export {
+  fetchProductsAvailability,
   fetchProductDistribution,
   fetchProductIndicators,
-  fetchProductsAvailability,
 } from './productIndicatorsSlice';
 export {
-  searchProducts,
   fetchProductWithId,
+  searchProducts,
   updateProductLocker,
 } from './productSlice';
+export {searchProductTrackingNumber} from './productTrackingNumberSlice';
 export {
-  fetchProductVariants,
   fetchProductsAttributes,
+  fetchProductVariants,
 } from './productVariantSlice';
 export {getRacks} from './racksListSlice';
-export {fetchSupplychainConfigForStockApp} from './stockAppConfigSlice';
+export {
+  fetchStockConfig,
+  fetchSupplychainConfigForStockApp,
+} from './stockAppConfigSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
-  searchStockCorrections,
   createCorrection,
-  updateCorrection,
   fetchStockCorrection,
+  searchStockCorrections,
+  updateCorrection,
 } from './stockCorrectionSlice';
-export {fetchStockLocationLine} from './stockLocationLineSlice';
+export {
+  fetchStockLocationLine,
+  searchAvailableProducts,
+} from './stockLocationLineSlice';
 export {
   searchStockLocations,
   filterSecondStockLocations,
 } from './stockLocationSlice';
 export {
   fetchSupplierArrivalLines,
+  fetchSupplierArrivalLine,
   updateSupplierArrivalLine,
 } from './supplierArrivalLineSlice';
 export {
-  searchSupplierArrivals,
   addNewLine as addNewSupplierArrivalLine,
-  realizeSupplierArrival,
   fetchSupplierArrival,
+  realizeSupplierArrival,
+  searchSupplierArrivals,
 } from './supplierArrivalSlice';
 export {fetchProductForSupplier} from './supplierCatalogSlice';
 export {
-  filterTrackingNumber,
   createTrackingNumberSeq,
+  filterTrackingNumber,
   updateSupplierTrackingNumber,
 } from './trackingNumberSlice';
 export {fetchUnit} from './unitSlice';

@@ -82,3 +82,12 @@ export default {
     },
   },
 };
+
+export {InternalMoveCreationScreen};
+export {InternalMoveDetailsGeneralScreen};
+export {InternalMoveLineCreationScreen};
+export {InternalMoveLineDetailsScreen};
+export {InternalMoveLineListScreen};
+export {InternalMoveListScreen};
+export {InternalMoveSelectProductScreen};
+export {InternalMoveSelectTrackingScreen};

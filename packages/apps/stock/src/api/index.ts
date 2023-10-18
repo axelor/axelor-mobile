@@ -18,46 +18,64 @@
 
 export {
   addLineStockMove as addCustomerDeliveryLine,
-  searchDeliveryFilter,
+  fetchCustomerDelivery as fetchCustomerDeliveryApi,
   realizeSockMove as realizeCustomerDeliveryApi,
+  searchDeliveryFilter,
 } from './customer-delivery-api';
 export {
   searchCustomerDeliveryLines,
   updateLine as updateCustomerDeliveryLineApi,
+  fetchCustomerDeliveryLine as fetchCustomerDeliveryLineApi,
 } from './customer-delivery-line-api';
 export {
-  fetchInternalMove as fetchInternalMoveApi,
-  searchInternalMoveFilter,
-  realizeInternalMove as realizeInternalMoveApi,
   createInternalStockMove,
+  fetchInternalMove as fetchInternalMoveApi,
+  modifyInternalMoveNotes,
+  realizeInternalMove as realizeInternalMoveApi,
+  searchInternalMoveFilter,
 } from './internal-move-api';
 export {
+  fetchInternalMoveLine as fetchInternalMoveLineApi,
   searchInternalMoveLines,
   updateInternalMoveLine as updateInternalMoveLineApi,
 } from './internal-move-line-api';
 export * from './inventory-api';
-export * from './inventory-line-api';
+export {
+  addTrackingNumber,
+  createInventoryLine,
+  fetchInventoryLine as fetchInventoryLineApi,
+  searchInventoryLines,
+  updateInventoryLineDetails,
+} from './inventory-line-api';
 export * from './partner-api';
 export * from './product-api';
 export {
-  fetchStockCorrection as fetchStockCorrectionApi,
   createStockCorrection,
-  updateStockCorrection,
+  fetchStockCorrection as fetchStockCorrectionApi,
   searchStockCorrection,
+  updateStockCorrection,
 } from './stock-correction-api';
 export * from './stock-correction-reason-api';
 export * from './stock-location-api';
-export * from './stock-location-line-api';
 export {
-  searchSupplierArrivalFilter,
+  searchAvailableProducts as searchAvailableProductsApi,
+  searchStockLocationLine,
+} from './stock-location-line-api';
+export {
   addLineStockMove as addSupplierArrivalLine,
+  fetchSupplierArrival as fetchSupplierArrivalApi,
   realizeSockMove as realizeSupplierArrivalApi,
+  searchSupplierArrivalFilter,
 } from './supplier-arrival-api';
 export {
+  fetchSupplierArrivalLine as fetchSupplierArrivalLineApi,
   searchSupplierArrivalLines,
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
-export * from './supplychain-config-api';
+export {
+  fetchStockConfig as fetchStockConfigApi,
+  fetchSupplychainConfig,
+} from './supplychain-config-api';
 export * from './tracking-number-api';
 export * from './unit-api';

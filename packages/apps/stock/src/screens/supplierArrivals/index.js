@@ -85,3 +85,12 @@ export default {
     },
   },
 };
+
+export {SupplierArrivalAddTrackingScreen};
+export {SupplierArrivalDetailsScreen};
+export {SupplierArrivalLineCreationScreen};
+export {SupplierArrivalLineDetailScreen};
+export {SupplierArrivalLineListScreen};
+export {SupplierArrivalListScreen};
+export {SupplierArrivalSelectProductScreen};
+export {SupplierArrivalSelectTrackingScreen};
