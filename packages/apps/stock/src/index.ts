@@ -103,6 +103,7 @@ export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
 export * from './hooks';
+export * from './screens/auth/UserScreen';
 export * from './screens/customerDeliveries';
 export * from './screens/internalMoves';
 export * from './screens/inventories';

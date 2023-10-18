@@ -42,3 +42,7 @@ export default {
     component: StockCorrectionCreationScreen,
   },
 };
+
+export {StockCorrectionCreationScreen};
+export {StockCorrectionDetailsScreen};
+export {StockCorrectionListScreen};
