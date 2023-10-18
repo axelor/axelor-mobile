@@ -50,6 +50,10 @@ class Anomaly {
     const EQUAL = 0;
     const AFTER = 1;
 
+    if (!Array.isArray(anomalyList) || anomalyList.length === 0) {
+      return [];
+    }
+
     return anomalyList.sort((a: Anomaly, b: Anomaly) => {
       if (a.checkType === b.checkType) {
         return EQUAL;

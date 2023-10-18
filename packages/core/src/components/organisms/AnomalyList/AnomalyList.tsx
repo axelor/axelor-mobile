@@ -44,7 +44,7 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
       .catch(() => setAnomalyList([]));
   }, [objectName, objectId]);
 
-  if (anomalyList.length === 0) {
+  if (!Array.isArray(anomalyList) || anomalyList.length === 0) {
     return null;
   }
 
