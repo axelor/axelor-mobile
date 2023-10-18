@@ -4,39 +4,37 @@ sidebar_position: 7
 sidebar_class_name: icon gestion de la camera
 ---
 
+# Using the camera and/or scanner
 
+## Taking photos with the camera
 
-# Gestion de la caméra et/ou du scanner
+The application can open the phone's camera to take a photo. Opening the camera and obtaining photo data are managed via a slice.
 
-## Prise de photo avec la caméra
+For each use of the camera, a key must be defined to target the sending of photo data and avoid conflicts. This key must be unique and ideally describe the use (e.g. *'expense-line_justication_picture'*).
 
-L’application a la possibilité d’ouvrir la caméra du téléphone afin d’effectuer une photo. L’ouverture de la caméra aisni que l’obtention des données de la photo sont gérées via un slice.
-
-Pour toute utilisation de la caméra, il faut définir une clé pour cibler l’envoi des données de la photo et éviter les conflits. Cette clé doit être unique et idéalement décrire l’utilisation (exemple : *‘expense-line_justication_picture’*).
-
-Pour ouvrir la caméra il suffit d’utiliser le reducer *enableCamera* avec le clé. De la même manière pour récupérer les informations de la photo, il faut utiliser le selector de la caméra avec la même clé. En mettant en place un useEffect il est alors possible d’initier une action dès qu’une photo est prise. La prise de photo ferme automatiquement la caméra. Une fois l’action initiée suite à la prise de photo, il faut penser à nettoyer le state de la caméra avec *clearPhoto* pour éviter les problèmes de refresh.
+To open the camera, simply use the *enableCamera* reducer with the key. Similarly, to retrieve information from the photo, use the camera selector with the same key. By setting up a useEffect, you can then initiate an action as soon as a photo is taken. Taking a photo automatically closes the camera. Once the action has been initiated, remember to clean the camera state with *clearPhoto* to avoid refresh problems.
 
 ```tsx
-// Récupération des données
+// Data recovery
 const cameraPicture = useCameraValueByKey(cameraKey);
 
-// Format de la photo récupérée 
+// Recovered photo format
 interface CameraPhoto {
-  name: string; // nom par défaut : `camera.${pictureExtension}`
-  pictureExtention: string; // pour faciliter le nommage du fichier
-  dateTime: string; // pour faciliter le nommage du fichier
-  type: string; // nécessaire pour l'upload de la photo 
-  size: number; // nécessaire pour l'upload de la photo (en octets)
-  base64: string; // fichier au format base64
-  fullBase64: string; // base64 avec le header pour définir le type de document
+	name: string; // default name: `camera.${pictureExtension}`.
+  pictureExtention: string; // to facilitate file naming
+  dateTime: string; // to facilitate file naming
+  type: string; // necessary for photo upload 
+  size: number; // required for photo upload (in bytes)
+  base64: string; // file in base64 format
+  fullBase64: string; // base64 with header to define document type
 }
 
-// Activation de la caméra
+// Camera activation
 const handleCameraPress = useCallback(() => {
   dispatch(enableCamera(cameraKey));
 }, [cameraKey, dispatch]);
 
-// Traitement des données
+// Data processing
 useEffect(() => {
   if (cameraPicture) {
     handlePhoto(cameraPicture);
@@ -45,31 +43,28 @@ useEffect(() => {
 }, [cameraPicture, dispatch, handlePhoto]);
 ```
 
-Il existe déjà deux composants qui utilisent la caméra :
+There are already two components that use the camera:
 
-- **UploadFileInput** : offre la possibilité à l’utilisateur de sélectionner une image du stockage du téléphone ou de prendre une photo. Cette photo peut ensuite être transformé en MetaFile ou rester au format base64.
-- **CameraPhoto** : offre la possibilié d’ouvrir la caméra au clique puis de permettre une action sur la prise de photo. Cette photo peut être renvoyée sous forme de MetaFile ou au format base64 en fonction de la configuration donnée au composant.
-  Thème principal de l’application
+- **UploadFileInput**: allows the user to select an image from the phone's storage or to take a photo. This photo can then be transformed into a MetaFile or remain in base64 format.
+- **CameraPhoto**: offers the possibility of opening the camera at the click of a button, then taking a photo. This photo can be returned as a MetaFile or in base64 format, depending on the component's configuration.
 
-Sauf pour les couleurs par défaut pour les écritures ou les couleurs de fond de l’application, toutes les coleurs sont donc composés de trois attributs :
+## Recovering information from a scan
 
-## Récupération des informations d’un scan
-
-Il existe deux types de scan : avec la caméra du téléphone ou bien avec un appareil Zebra. Les deux scans sont gérés à travers deux slices sur le même principe.
+There are two types of scan: with the phone's camera or with a Zebra device. Both scans are managed through two slices based on the same principle.
 
 ```tsx
-// Récupération des données du scanner Zebra
+// Retrieve data from Zebra scanner
 const {isEnabled, scanKey} = useScannerSelector();
 const scannedValue = useScannedValueByKey(scanKeySearch);
 
-// Récupération des données du scanner caméra
+// Retrieve scanner camera data
 const scanData = useCameraScannerValueByKey(scanKeySearch);
 
-// Activation des scan 
-const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Caméra depending on device
+// Scan activation 
+const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Camera depending on device
 const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch); // Enable Zebra only
 
-// Traitement des données
+// Data processing
 useEffect(() => {
   if (scannedValue) {
     handleScan(scannedValue);
@@ -79,4 +74,4 @@ useEffect(() => {
 }, [scanData, scannedValue, handleScan]);
 ```
 
-Il existe déjà plusieurs composants qui utilisent le scan comme le **ScannerAutocompleteSearch** par exemple.
+There are already several components that use scanning, such as **ScannerAutocompleteSearch**.

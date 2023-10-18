@@ -4,9 +4,9 @@ sidebar_position: 2
 sidebar_class_name: icon themes
 ---
 
-## Theme management
+# Theme management
 
-### Colors
+## Colors
 
 The UI package offers theme management with a main theme. It's important to use this theme when creating components, to standardize the application's design and make it easy to modify the theme.
 
@@ -75,7 +75,7 @@ With the exception of default colors for writing and application background colo
 
 It is also possible to customize the application by adding other themes and/or redefining the default theme via the themes (Theme[]) and defaultTheme (Theme) attributes of the **Application** component.
 
-### Writing
+## Writing
 
 There's a similar system for writing styles to simplify code.
 

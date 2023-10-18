@@ -4,15 +4,15 @@ sidebar_position: 6
 sidebar_class_name: icon gestions des headers
 ---
 
-# Gestion des headers
+# Header management
 
 ## Actions
 
-Afin de faciliter la surcharge avec l’ajout ou la modification des actions disponibles en haut à droite de l’écran, les headers sont gérés avec un système de clé. Il faut venir enregistrer, via un provider disponible dans le package core, pour chaque écran les actions qui doivent être affichées.
+To facilitate overloading with the addition or modification of actions available in the top right-hand corner of the screen, headers are managed using a key system. For each screen, the actions to be displayed must be registered via a provider available in the core package.
 
-Ces enregistrements sont réalisés par des hook permettant ainsi d’accéder à différents outils mis à disposition dans les packages (traductions, thèmes, store,…) mais également d’avoir une mise à jour des headers lorsque c’est nécessaire.
+These registrations are carried out by hooks, enabling access to the various tools provided in the packages (translations, themes, store, etc.), as well as the updating of headers when necessary.
 
-Chaque module doit donc fournir son hook permettant d’enregistrer les actions du header pour ses écrans.
+Each module must therefore provide its own hook to record header actions for its screens.
 
 ```tsx
 const useCustomerDeliveryDetailsActions = () => {
@@ -29,11 +29,11 @@ const useCustomerDeliveryDetailsActions = () => {
 };
 ```
 
-Il faut donc utiliser l’outil `headerActionsProvider` pour associer une clé à un objet contenant l’ensemble des informations nécessaires aux différentes actions du header.
+The `headerActionsProvider` tool must therefore be used to associate a key with an object containing all the information required for the various header actions.
 
-Un nomenclature a été mise en place pour aider à la compréhension de l’origine d’une clé :  `<Module>_<Object>_<Type d’écran>`.
+A nomenclature has been set up to help understand the origin of a key: *<Module><Object><Screen type>.*.
 
-Les actions sont donc définies à travers une structure nommée `HeaderOptions` :
+Actions are defined through a structure named `HeaderOptions` :
 
 ```tsx
 export interface HeaderActions {
@@ -52,19 +52,19 @@ export interface HeaderOptions {
 }
 ```
 
-Le package core fournit par défaut deux actions pour le header qui sont les messages de suivi sur chaque objet ainsi que les fichiers joints. Elles sont paramétrables via les props suivantes :
+By default, the core package provides two actions for the header: follow-up messages on each object and attached files. These can be configured via the following props:
 
-- *model* : nom complet du modèle sur l’ERP.
-- *modelId* : identifiant de l’objet.
-- *disableMailMessages* : condition pour l'affichage ou non des messages de suivi sur l'objet.
-- *disableJsonFields* : condition pour l’affichage ou non des champs studio.
-- *attachedFileScreenTitle* : nom de l'écran pour les fichiers joints.
-- *barcodeFieldname* : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
-- *headerTitle* : nom de l'écran pour permettre les titres dynamiques.
+- *model*: full name of the ERP model.
+- *modelId*: object identifier.
+- *disableMailMessages*: condition for displaying or not displaying follow-up messages on the object.
+- *disableJsonFields*: condition for displaying studio fields.
+- *attachedFileScreenTitle*: screen name for attached files.
+- *barcodeFieldname*: name of attribute containing barcode file on ERP (default `barCode`).
+- *headerTitle*: screen name for dynamic titles.
 
-Les fichiers joints s’affichent uniquement si l’objet actuel en possède avec un indicateur sur leur nombre. Les messages de suivi eux n’affichent lorsque `model` et `modelId` sont renseignés et qu’il ne sont pas désactivés par l’attribut `disableMailMessages`.
+Attached files are displayed only if the current object has them, with an indicator of their number. Follow-up messages are only displayed when `model` and `modelId` are set and not disabled by the `disableMailMessages` attribute.
 
-Il est ensuite possible d’ajouter des actions supplémentaires avec l’attribut `actions`. Chaque action possède alors la structure suivante :
+Additional actions can then be added using the `actions` attribute. Each action then has the following structure:
 
 ```tsx
 export interface ActionType {
@@ -82,39 +82,39 @@ export interface ActionType {
 }
 ```
 
-Les différents attributs mis à disposition sont donc :
+The various attributes available are :
 
-- **key** : ***[Required]*** permet de donner un identifiant à l’action afin de permettre la modification à travers une surcharge.
-- **order** : ***[Required]*** permet d’ordonner l’affichage des actions
-- **title** : ***[Required]*** titre de l’action lorsque celle-ci est réduite dans le `DropdownMenu`
-- **iconName** : ***[Required]*** nom de l’icone associé à cette action
-- **iconColor** : couleur de l’icone, par défaut celle-ci est fixée à `secondaryColor_dark.background`
-- **FontAwesome5** : booléen pour savoir si l’icone appartient à la base de FontAwesome4 ou FontAwesome5. Par défaut cette valeur est fixée à `true` ce qui correspond donc à FontAwesome5.
-- **indicator** : chiffre à afficher en petit en haut de l’icone de l’action (ex: nombre de fichiers joints ou de messages en attente)
-- **hideIf** : condition d’affichage de l’action
-- **disableIf** : condition de désactivation de l’action
-- **onPress** : ***[Required]*** action à exécuter lorsque l’utilisateur clique sur l’icone
-- **showInHeader** : condition pour savoir si l’action peut s’afficher directement dans le header ou si elle doit toujours être présente dans les actions déroulantes. Par défaut, les actions sont paramétrées pour s’afficher dans la liste déroulante.
+- **key** : *[Required]* is used to give an identifier to the action so that it can be modified via an overload.
+- **order** : *[Required]* is used to order the display of actions.
+- **title** : *[Required]* title of the action when reduced in the `DropdownMenu`.
+- **iconName** : *[Required]* name of the icon associated with this action
+- **iconColor** : icon color, set to `secondaryColor_dark.background` by default.
+- **FontAwesome5** : Boolean indicating whether the icon belongs to FontAwesome4 or FontAwesome5. By default, this value is set to `true`, which corresponds to FontAwesome5.
+- **indicator**: small number to be displayed at the top of the action icon (e.g. number of attached files or pending messages).
+- **hideIf**: condition for displaying the action.
+- **disableIf**: action deactivation condition
+- **onPress** : *[Required]* action to be executed when user clicks on icon
+- **showInHeader**: condition for whether the action can be displayed directly in the header or whether it must always be present in the drop-down actions. By default, actions are set to be displayed in the drop-down list.
 
-D’un point de vue fonctionnel, l’ensemble des actions est transmis au composant `HeaderOptionsMenu` qui va ensuite réaliser les étapes suivantes:
+From a functional point of view, the set of actions is passed to the `HeaderOptionsMenu` component, which then performs the following steps:
 
-- récuprérer les deux actions par défaut paramétrées avec les informations renseignées
-- retirer de la liste les actions cachées
-- trier la liste par `order` croissant
-- afficher les deux premières actions avec l’attribut `showInHeader` à true directement dans le header
-- afficher le reste des actions dans le `DropdownMenu`
+- retrieve the two default actions set with the information provided
+- remove hidden actions from the list
+- sort the list by ascending `order`
+- display the first two actions with the `showInHeader` attribute set to true directly in the header
+- display the rest of the actions in the `DropdownMenu`.
 
-Pour les petits écrans, toutes les actions sont affichées dans la liste déroulante.
+For small screens, all actions are displayed in the drop-down list.
 
-## Bandeaux
+## Banners
 
-Il est possible de venir renseigner des bandeaux à afficher au-dessus du header pour informer l’utilisateur d’une situation globale de l’application (mode hors-ligne, perte de connexion ou encore environnement de test).
+It is possible to add banners to be displayed above the header to inform the user of a global application situation (offline mode, loss of connection or test environment).
 
-Afin de faciliter l’ajout et/ou la modification d’un bandeau, cette fonctionnalité est gérée avec un sytème de clé. Il faut venir enregistrer, via un contexte disponible dans le package core, les bandeaux lorsqu’ils doivent s’afficher ou disparaître.
+To facilitate the addition and/or modification of a banner, this functionality is managed by a key system. A context available in the core package is used to register banners when they are to appear or disappear.
 
-Ces enregistrements sont réalisés par des hook permettant ainsi d’accéder à différents outils mis à disposition dans les packages (traductions, thèmes, store,…) mais également d’avoir une mise à jour des headers lorsque c’est nécessaire.
+These registrations are carried out by hooks, providing access to the various tools available in the packages (translations, themes, store, etc.), as well as updating headers when necessary.
 
-Les bandeaux sont gérés par un contexte afin de permettre une mise à jour au moindre changement. Pour récupérer la fonction d’enregistrement, il faut utiliser le hook *useHeaderBand*.
+Headers are managed by a context to enable updating at the slightest change. To retrieve the registration function, use the *useHeaderBand* hook.
 
 ```tsx
 const {registerHeaderBand} = useHeaderBand();
@@ -139,16 +139,16 @@ const checkInternetConnection = useCallback(async () => {
   }, [checkInternetConnection]);
 ```
 
-Pour enregistrer un bandeau, il suffit alors d’utiliser la fonction *registerHeaderBand* en fournissant toutes les informations nécessaire à l’affichage, à savoir :
+To register a banner, simply use the *registerHeaderBand* function, providing all the information required for display:
 
 ```tsx
 export interface HeaderBandItem {
-  key: string; // Clé du bandeau
-  color: Color; // Couleur du bandeau
-  text: string; // Test à afficher
-  showIf: boolean; // Condition pour laquelle le bandeau doit s'afficher
-  order?: number; // Ordre d'affichage du bandeau dans la liste
+  key: string; // Banner key
+  color: Color; // Banner color
+  text: string; // Text to display
+  showIf: boolean; // Display condition
+  order?: number; // Display order in the list
 }
 ```
 
-Pour mettre à jour / modifier un bandeau, il suffit alors d’utiliser la même fonction d’enregistrement en utilisant la même clé et en modifiant les informations nécessaires.
+To update/modify a banner, simply use the same registration function, using the same key and modifying the necessary information.

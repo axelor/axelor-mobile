@@ -4,7 +4,7 @@ sidebar_position: 3
 sidebar_class_name: icon gestions des erreurs
 ---
 
-## Error handling
+# Error handling
 
 The ***ERROR*** library contains the *ErrorBoundary* component, which displays an emergency screen in the event of a technical error during execution of the mobile application. This component detects errors and sends a traceback to the web ERP.
 

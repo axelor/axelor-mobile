@@ -3,67 +3,67 @@ id: Gestion des composants
 sidebar_position: 1
 sidebar_class_name: icon 
 ---
-# Gestion des composants
+
+# Component management
 
 ## Architecture
 
-La librairie *UI* contient l’ensemble des composants de base pour le développement d’interfaces sur l’application mobile.
+The *UI* library contains all the basic components needed to develop interfaces for the mobile application.
 
-Le package core fournit également plusieurs composants, plus spécialisés ou nécessitant une libraire externe complexe (*Camera*, *Scanner*, *DatePicker*, composants liés aux *MailMessages*, …).
+The core package also provides several more specialized components, or those requiring a complex external library (*Camera*, *Scanner*, *DatePicker*, components linked to *MailMessages*, ...).
 
-Le développement de ces composants est basé sur le principe d’[Atomic Design](https://blog-ux.com/quest-ce-que-latomic-design/). Les composants sont donc divisés entre **atomes**, **molécules**, **organismes** et **templates** :
+The development of these components is based on the principle of [Atomic Design](https://blog-ux.com/quest-ce-que-latomic-design/). Components are divided into **atoms**, **molecules**, **organisms** and **templates**:
 
-![Untitled](/img/fr/Untitled1.png)
+![Untitled](/img/en/Untitled1.png)
 
-Les trois premiers types (*atomes*, *molécules* et *organismes*) correspondent à des composants généralistes qui peuvent être utilisés dans n’importe quel contexte. Le dernier type (*templates*) est utilisé pour des composants spécialisés et responsabilisés, qui possèdent un contexte particulier et parfois même réalisent eux-mêmes des requêtes API ou des actions de navigation.
+The first three types (*atoms*, *molecules* and *organisms*) correspond to generalist components that can be used in any context. The last type (*templates*) is used for specialized, empowered components, which have a particular context and sometimes even perform API requests or navigation actions themselves.
 
-![Untitled](/img/fr/Untitled2.png)
+![Untitled](/img/en/Untitled2.png)
 
-D’un point de vue de l’architecture, chaque module doit comporter un dossier *components*  avec les différents types de composants présents dans le module. Chaque type de composants est séparé dans un dossier dédié avec un index pour exporter les composants afin de faciliter leur utilisation plus tard.
+From an architectural point of view, each module must include a *components* folder with the different types of components present in the module. Each type of component is separated into a dedicated folder, with an index file for exporting components to facilitate their use later.
 
-Il faut également ajouter un fichier index à la racine du dossier *components* pour centraliser l’utilisation des composants dans les écrans mais également faciliter l’export. En effet, les composants peuvent également servir dans d’autres modules qui en dépendent, il faut donc exporter l’ensemble des composants dans le fichier index à la racine du dossier *src.*
+An index file should also be added to the root of the *components* folder to centralize the use of components in screens, but also to facilitate exporting. Indeed, components can also be used in other modules that depend on them, so all components must be exported to the index file at the root of the *src.* folder.
 
 ```jsx
-// Index dans un dossier type d'un composant
+// Index in component type folder
 export {default as ComponentName} from './ComponentName/ComponentName';
 
-// Index dans le dossier components 
+// Index in components folder
 export * from './atoms';
 export * from './molecules';
 export * from './organisms';
 export * from './templates';
 
-//Index du module
-
+//Index in package root
 export * from './components';
 ```
 
-Pour chaque type de l’atomic design, chaque composant doit être séparé dans un dossier dédié. Les noms du dossier, du fichier, du composant à l’intérieur et de l’export doivent être les mêmes.
+For each atomic design type, each component must be separated into a dedicated folder. The names of the folder, the file, the component inside and the export must be the same.
 
-## Documentation Storybook
+## Storybook documentation
 
-Afin de documenter les composants disponibles dans l’application, le projet possède une Storybook avec la librairie [React Storybook](https://storybook.js.org/docs/react/writing-stories/introduction).
+In order to document the components available in the application, the project has a Storybook with the [React Storybook](https://storybook.js.org/docs/react/writing-stories/introduction) librairy.
 
-À la création ou la modification d’un composant, il faut donc mettre à jour la storybook pour garder une documentation à jour. Pour le moment, le périmètre d’action du storybook est restreint au package UI.
+When a component is created or modified, the storybook must be updated to keep the documentation up to date. For the moment, the storybook's scope of action is restricted to the UI package.
 
-D’un point de vue architecture, afin de ne pas surcharger les sources compilées avec des fichiers inutiles, il existe un dossier *stories* au même niveau que le dossier *src* dans le package UI. C’est ce dossier qui va contenir toutes les stories du package.
+From an architectural point of view, so as not to overload the compiled sources with useless files, there is a *stories* folder at the same level as the *src* folder in the UI package. This folder will contain all the stories in the package.
 
 ```bash
 axelor-mobile/
-├── .storybook/ [*Configuration du storybook*]
+├── .storybook/ [*Storybook configuration*]
 ├── packages/
 │   ├── ui/
 │   │   ├── src/
-│   │   └── stories
+│   │   └── stories/
 │   └── ..
 └── ...
 ```
 
-Une fois dans le dossier stories, les composants sont triés par type (atoms, molecules, organisms & templates) sur le même principe que dans les sources du package.
+Once in the stories folder, components are sorted by type (atoms, molecules, organisms & templates) in the same way as in the package sources.
 
-Une storie est un cas d’utilisation du composant. Dans la storybook, il faut donc réussir à re-créer tous les cas d’utilisation du composant pour permettre une meilleure documentation. Pour créer une storie, il faut donc créer un nouveau fichier dans le dossier *stories* dans la bonne catégorie de composant. La nomenclature pour le nom du fichier est `<nom du composant>.stories.tsx`.
+A story is a component use case. In the storybook, you need to successfully re-create all the component's use cases to enable better documentation. To create a story, you need to create a new file in the *stories* folder, in the right component category. The nomenclature for the file name is *<component name>.stories.tsx*.
 
-Il peut ensuite y avoir deux types de stories : les stories fixes dans le style d’un catalogue ou alors les stories paramétrables où l’utilisateur peut modifier chaque attribut pour faire les combinaisons de son choix.
+There can then be two types of stories: fixed stories in the style of a catalog, or customizable stories where the user can modify each attribute to make the combinations of his choice.
 
 ```tsx
 import React from 'react';
@@ -104,16 +104,16 @@ storiesOf('ui/<type>/<Component>', module).add(
 );
 ```
 
-Il est ensuite possible d’ajouter autant de stories fixes que nécessaire mais également de mélanger stories fixes et paramétrables. Cependant, il faut toujours ajouter une storie “default” pour que la storybook puisse compiler correctement. Pour les stories paramétrables, il est possible d’ajouter autant d’atttribut en argument que nécessaire.
+It is then possible to add as many fixed stories as required, and also to mix fixed and customizable stories. However, a "default" story must always be added for the storybook to compile correctly. For parametrizable stories, it is possible to add as many atttributes as required.
 
-Les [différents types d’argument disponibles](https://storybook.js.org/docs/react/essentials/controls#configuration) :
+The [different types of argument available](https://storybook.js.org/docs/react/essentials/controls#configuration):
 
-- sans besoin de configuration supplémentaire : text, boolean, object
-- possibilité d'ajouter des options : number / range (définition du min, max, step)
-- définition des valeurs possibles : select / radio
+- no additional configuration required: text, boolean, object
+- possibility of adding options: number / range (definition of min, max, step)
+- definition of possible values: select / radio
 
 ```tsx
-// Paramétrage d'un number
+// Number configuration
 size: {
   control: {
     type: 'number',
@@ -124,7 +124,7 @@ size: {
   defaultValue: 1,
 },
 
-// Select basique 
+// Basic select
 position: {
   control: {
     type: 'radio',
@@ -133,8 +133,8 @@ position: {
   defaultValue: 'right',
 },
 
-// Travail avec le thème de l'application. Bien penser à faire le mapping ensuite 
-// dans les props du composant : color={lightTheme.colors[args._color]}
+// Work with the application theme. Don't forget to do the mapping 
+// afterwards in the component props: color={lightTheme.colors[args._color]}
 _color: {
   control: {
     type: 'select',
@@ -147,16 +147,16 @@ _color: {
 ```
 
 <aside>
-⚠️ La gestion des champs object n’est pas très bien faite sur le storybook. Il n’est pas possible de définir la structure de l’objet attendu et pour l’utilisateur, modifier un champs de type object est assez difficile car il faut reconstruire l’objet json dans un éditeur texte. Dans le cas où le format de l’objet attendu est connu, il est plutôt conseiller de créer un attribut par champs attendu de l’objet puis reconstruire l’objet dans les props du composant par la suite. Un exemple avec l’objet suivant :
+⚠️ Object fields are not handled very well in the storybook. It's not possible to define the structure of the expected object, and for the user, modifying an object field is rather difficult, as the json object has to be rebuilt in a text editor. In cases where the format of the expected object is known, it is advisable to create an attribute for each expected field of the object and then rebuild the object in the component props. An example with the following object:
 
 ```tsx
-// Structure de l'objet attendu
+// Expected object structure
 icon ?: {
 	color: string;
 	name: string;
 }
 
-// Création des paramètres pour la storie
+// Parameters creation for the story
 _iconColor: {
   control: {
     type: 'text',
@@ -170,27 +170,27 @@ _iconName: {
   defaultValue: 'qrCode',
 },
 
-// Mapping dans les props du composant 
+// Component props mapping
 <Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
 ```
 
 </aside>
 
-Quelques commandes importantes à exécuter à la racine du projet pour la storybook :
+Some important commands to run in the project root for the storybook :
 
-- ouvrir la storybook : `yarn storybook`
-- build la storybook : `yarn build-storybook`
+- open storybook : `yarn storybook`
+- build storybook : `yarn build-storybook`
 
 <aside>
-💡 Ne pas hésiter à regarder les stories existantes lors de la création d’une nouvelle storie, elles représentent déjà un certain nombre de cas d’utilisation qui peuvent être utiles.
+💡 Don't hesitate to look at existing stories when creating a new one, as they already represent a number of use cases that may be useful.
 
 </aside>
 
-## Création d’une card
+## Creating a card
 
-Il est souvent nécessaire pour la création des différents écrans de créer un composant card. Afin de standardiser ces components et faciliter leur création, l’application propose un component standard auquel il suffit de configurer les informations à afficher : **ObjectCard**.
+When creating screens, it is often necessary to create a card component. In order to standardize these components and facilitate their creation, the application offers a standard component to which all you need to do is configure the information to be displayed: **ObjectCard**.
 
-Il existe deux types d’éléments pour la carte :
+There are two types of card components:
 
 ```tsx
 interface TextElement {
@@ -210,13 +210,13 @@ interface TextElement {
 }
 ```
 
-L’élément **TextElement** permet d’afficher des informations textuelles dans les compartiments *upperTexts* et *lowerTexts*.
+The **TextElement** is used to display textual information in the *upperTexts* and *lowerTexts* compartments.
 
-L’information textuelle peut être transmise à travers les attributs *indicatorText* et/ou *displayText* qui l’affichera en gras. Il est également possible de définir l’élément comme étant un titre (*isTitle*) afin de l’afficher en gras et en plus gros. Pour les titres, il faut donner l’information à travers l'attribut *displayText*.
+Textual information can be transmitted via the *indicatorText* and/or *displayText* attributes, which will display it in bold. It is also possible to define the element as a title (*isTitle*) in order to display it bold and larger. For titles, the information must be given through the *displayText* attribute.
 
-L’élément peut être personnalisé avec un icon, la taille d’écriture et/ou la couleur du texte et de l’icône.
+The element can be customized with an icon, font size and/or text and icon color.
 
-Finalement un affichage texte peut être personnalisé avec un composant différent avec l’attribut *customComponent*
+Finally, a text display can be customized with a different component using the *customComponent* attribute.
 
 ```tsx
 interface BadgeElement {
@@ -229,17 +229,17 @@ interface BadgeElement {
 }
 ```
 
-L’élément **BadgeElement** permet d’afficher des informations dans les compartiments *upperBadges* et *lowerBadges*.
+The **BadgeElement** displays information in the *upperBadges* and *lowerBadges* compartments.
 
-Il est possible de personnaliser la texte et la couleur du badge, à travers les attribut *displayText* et *color*, mais également de définir un composant de remplacement avec l’attribut *customComponent*.
+The text and color of the badge can be customized, using the *displayText* and *color* attributes, and a replacement component can be defined using the *customComponent* attribute.
 
-La card est donc divisée est plusieurs compartiments, tous paramétrables et facultatif. La card affichera seulement les compartiments contenant de la données.
+The card is therefore divided into several compartments, all of which are configurable and optional. The card will only display compartments containing data.
 
-![Untitled](/img/fr/Untitled3.png)
+![Untitled](/img/en/Untitled3.png)
 
-Les compartiments **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** et **lowerBadges** prennent en structure d’entrée une liste d’éléments du bon type en fonction de l’attribut (*TextElement* ou *BadgeElement*) ainsi qu’un attribut de style afin de personnaliser le conteneur. Il est également possible d’inverser le sens d’affichage des badges dans les compartiments **upperBadges** et **lowerBadges** avec l’attribut *fixedOnRightSide*.
+The **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** and **lowerBadges** compartments take as input structure a list of elements of the right type according to the attribute (*TextElement* or *BadgeElement*) as well as a style attribute to customize the container. It's also possible to reverse the display direction of badges in the **upperBadges** and **lowerBadges** compartments with the *fixedOnRightSide* attribute.
 
-Le dernier compartiment permet de contenir une **image**, facultative, en définissant les prorpiétés de base d’une image :
+The last compartment can contain an optional **image**, by defining the basic properties of an image:
 
 ```tsx
 interface ImageElement {
@@ -251,29 +251,28 @@ interface ImageElement {
 }
 ```
 
-Afin de faciliter l’intégration d’image sur les cards, le package core fournit trois fonctions utilitaires qui permettent d’obtenir l’URI d’une image provenant d’AOS en fonction du type :
+To facilitate image integration on cards, the core package provides three utility functions that obtain the URI of an image from AOS according to type:
 
-- **useMetafileUri** : pour le formatteur d’une URI à partir d’un MetaFile
-- **useBinaryImageUri** et **useBinaryPictureUri** : pour le formatteur d’une URI à partir d’une image binaire.
+- **useMetafileUri**: for formatting a URI from a MetaFile
+- **useBinaryImageUri** and **useBinaryPictureUri**: for formatting a URI from a binary image.
 
-## Points sensibles iOS
+## iOS hot spots
 
-Afin de permettre un support sur la plateforme iOS, il faut noter plusieurs points sur lesquels porter une attention particulière :
+In order to enable support on the iOS platform, there are several points to note and pay particular attention to:
 
-- La propriété de style **elevation** n'est pas supportée sur iOS, il faut donc utiliser les propriétés "*shadow*...” :
-
+- The **elevation** style property is not supported on iOS, so the "*shadow*..." properties must be used. :
+    
     ```css
     elevation: 3,
     shadowOpacity: 0.5,
     shadowColor: Colors.secondaryColor.background,
     shadowOffset: {width: 0, height: 2},
     ```
-
-- La propriété de style **zIndex** ne fonctionne pas pour les vues imbriquées, il faut bien faire attention à ce que toutes les vues au-dessus possèdent également un attribut *zIndex* avec une valeur inférieure pour que cela fonctionne.
-- Un nouveau composant **KeyboardAvoidingScrollView** a été créé afin de ne pas avoir à redéfinir les propriétés iOS/Android etc pour la position du clavier. Il faut donc favoriser l'utilisation de ce composant plutôt que le *KeyboardAvoidingView* de react-native.
-- Les styles de bordure **dotted** ou **dashed** ne sont pas supportés par iOS, il faut donc ajuster le comportement pour la plateforme iOS :
-
+    
+- The **zIndex** style property doesn't work for nested views, so care must be taken to ensure that all views above it also have a *zIndex* attribute with a lower value for this to work.
+- A new **KeyboardAvoidingScrollView** component has been created to avoid having to redefine iOS/Android etc. properties for keyboard position. We therefore recommend using this component rather than react-native's *KeyboardAvoidingView*.
+- The **dotted** or **dashed** border styles are not supported by iOS, so the behavior must be adjusted for the iOS platform:
+    
     ```css
     borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted'
     ```
-

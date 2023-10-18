@@ -4,19 +4,19 @@ sidebar_position: 2
 sidebar_class_name: icon 
 ---
 
-# Création d’un appel API
+# Creating an API call
 
-##  Gestion des champs 
+## Field management
 
-![Untitled](/img/fr/Untitled3.png)
+To make it easy to override the various characteristics of API requests, it is possible to create configurations for each template via three objects.
 
-Afin de permettre de surcharger facilement les différentes caractéristiques des requêtes API, il est possible de créer des configurations pour chaque modèle via trois objets.
+Each module is responsible for generating its own templates, and for overriding the templates of another module if necessary.
 
-Chaque module a la responsabilité de générer ses propres modèles et de surcharger les modèles d’un autre module si nécessaire.
+We therefore need to add a models folder to the architecture, which will contain a file for each configuration type, as well as an index file to facilitate export.
 
-Il faut donc aujouter dans l’architecture un dossier models qui va contenir un fichier par type de configuration ainsi qu’un fichier index afin de faciliter l’export.
+![Untitled](/img/en/Untitled3.png)
 
-- Les champs de recherche pour chaque objet au format *SearchFields.* Il s’agit en réalité d’un objet format json associant une clé à une liste de string, chacun correspondant à un champ de l’objet. Pour surcharger ces champs de recherche, il suffit de venir définir une nouvelle liste associée à la même clé avec les champs de recherche à ajouter.
+- Search fields for each object in *SearchFields* format. This is actually a json format object associating a key with a list of strings, each corresponding to a field in the object. To override these search fields, simply define a new list associated with the same key and the search fields to be added.
 
 ```tsx
 import {SearchFields} from '@axelor/aos-mobile-core';
@@ -31,7 +31,7 @@ export const stock_searchFields: SearchFields = {
 };
 ```
 
-- Les champs de tri pour chaque objet au format *SortFields*. Il s’agit en réalité d’un objet format json associant une clé à une liste de string, chacun correspondant à un champ de l’objet. Pour définir un ordre décroissant sur un champ, il suffit d’ajouter un ‘-’ devant le nom du champ. Ainsi, “name” va classer les éléments récupérés par ordre croissant alors que “-name” va les classer dans l’ordre décroissant. Il est possible d’indiquer plusieurs règles de tri pour un même objet. Les éléments récupérés seront alors classés par chaque règle définie par ordre d’apparition dans la liste. Par exemple, pour la liste de règles [”-name”, “createdOn”], les éléments sont classés par ordre décroissant du nom puis par ordre croissant de date de création. Pour surcharger ces règles de tri, il suffit de venir définir une nouvelle liste associée à la même clé avec les nouvelles règles. Cette nouvelle liste remplace la précédente.
+- Sort fields for each object in *SortFields* format. This is actually a json format object associating a key with a list of strings, each corresponding to a field in the object. To define a descending order on a field, simply add a '-' in front of the field name. Thus, "name" will sort retrieved elements in ascending order, while "-name" will sort them in descending order. It is possible to specify several sorting rules for a single object. The items retrieved will then be sorted by each defined rule in order of appearance in the list. For example, for the rule list ["-name", "createdOn"], items are sorted in descending order of name, then in ascending order of creation date. To override these sorting rules, simply define a new list associated with the same key and the new rules. This new list replaces the previous one.
 
 ```tsx
 import {SortFields} from '@axelor/aos-mobile-core';
@@ -43,10 +43,9 @@ export const stock_sortFields: SortFields = {
 };
 ```
 
-- Les champs à récupérer pour chaque objet au format *ObjectFields*. Il s’agit d’un objet au format json associant une clé à un **schéma [YUP](https://www.npmjs.com/package/yup?activeTab=readme).** Pour construire un schéma pour un objet, il suffit d’utiliser l’outil *schemaConstructor* du package CORE qui permet de donner accès à l’ensemble des types de définition proposés par la librairie YUP.
-
-    - *Object* : un objet json dans lequel il faut définir l’ensemble des attributs ainsi que leur type.
-
+- The fields to be retrieved for each object in *ObjectFields* format. This is an object in json format associating a key with a **schema [YUP](https://www.npmjs.com/package/yup?activeTab=readme)**. To build a schema for an object, simply use the *schemaConstructor* tool in the CORE package, which provides access to all the definition types offered by the YUP library.
+    - *Object*: a json object in which to define all attributes and their type.
+        
         ```tsx
         schemaContructor.object({
             props1: schemaContructor.string(),
@@ -55,39 +54,39 @@ export const stock_sortFields: SortFields = {
             ...
         })
         ```
-
-    - *Array* : un tableau d’éléments, il est nécessaire de définir le type des éléments à l’intérieur
-
+        
+    - *Array* : an array of elements, it is necessary to define the type of the elements inside.
+        
         ```tsx
         schemaContructor.array().of(schemaContructor.string())
         ```
-
-    - *Date* : un objet Date de javascript
-
+        
+    - *Date* : a javascript Date object
+        
         ```tsx
         schemaContructor.date()
         ```
-
-    - *String* : un string
-
+        
+    - *String* : a string
+        
         ```tsx
         schemaContructor.string()
         ```
-
-    - *Number* : un nombre
-
+        
+    - *Number* : a number
+        
         ```tsx
         schemaContructor.number()
         ```
-
-    - *Boolean* : un booléen
-
+        
+    - *Boolean* : a boolean
+        
         ```tsx
         schemaContructor.boolean()
         ```
-
-    - *SubObject* : un objet avec les pré-requis d’AOP à savoir l’id et la version
-
+        
+    - *SubObject* : an object with AOP prerequisites, i.e. id and version
+        
         ```tsx
         schemaContructor.subObject() 
         // Equivalent to :
@@ -120,36 +119,37 @@ export const stock_sortFields: SortFields = {
           props3: schemaContructor.boolean(),
         })
         ```
+        
 
-Lorsque l'objectif est de récupérer les champs d'un sous-objet, il est possible de les renseigner en tant que structure du sous-objet. Lors de la récupération des noms de champs pour l'appel API, le système fera une transmission automatique des champs relationnels.
+When the aim is to retrieve the fields of a sub-object, it is possible to enter them as a sub-object structure. When retrieving field names for the API call, the system will automatically transmit relational fields.
 
-    ```tsx
-    schemaContructor.object({
-      name: schemaContructor.string(),
-      object: schemaContructor.subObject().concat(
-        schemaContructor.object({
-          props1: schemaContructor.string(),
-          props2: schemaContructor.number(),
-          props3: schemaContructor.boolean(),
-        }),
-      ),
-    });
+```tsx
+schemaContructor.object({
+	name: schemaContructor.string(),
+	object: schemaContructor.subObject().concat(
+		schemaContructor.object({
+			props1: schemaContructor.string(),
+			props2: schemaContructor.number(),
+			props3: schemaContructor.boolean(),
+		}),
+	),
+});
 
-    // Equivalent to :
-    schemaContructor.object({
-      name: schemaContructor.string(),
-      object: schemaContructor.subObject(),
-      'object.props1': schemaContructor.string(),
-      'object.props2': schemaContructor.number(),
-      'object.props3': schemaContructor.boolean(),
-    });
-    ```
+// Equivalent to :
+schemaContructor.object({
+	name: schemaContructor.string(),
+	object: schemaContructor.subObject(),
+	'object.props1': schemaContructor.string(),
+	'object.props2': schemaContructor.number(),
+	'object.props3': schemaContructor.boolean(),
+});
+```
 
-##  Récupération des champs API 
+## Get API fields
 
-Signature de la fonction : `getObjectFields(objectKey: string): string[]`
+Function signature: `getObjectFields(objectKey: string): string[]`
 
-Cet helper récupère le schéma défini pour la clé donnée en argument puis renvoie la liste des noms des attributs définis à l’intérieur. Dans le cas où le schéma n’est pas trouvé ou qu’il ne contient aucune clé alors cette fonction renvoie une liste vide.
+This helper retrieves the schema defined for the key given as argument, then returns the list of attribute names defined inside. If the schema is not found or does not contain any keys, this function returns an empty list.
 
 ```tsx
 const fetchStockMoveFromId = ({id}): Promise<any> => {
@@ -162,11 +162,11 @@ const fetchStockMoveFromId = ({id}): Promise<any> => {
 };
 ```
 
-##  Récupération des règles de tri 
+## Fetch sorting rules
 
-Signature de la fonction : `getSortFields(objectKey: string): string[]`
+Function signature: `getSortFields(objectKey: string): string[]`
 
-Cet helper récupère les règles définies pour la clé donnée en argument. Dans le cas où l’objet n’est pas trouvé alors cette fonction renvoie une liste avec pour seul élément l’attribut id.
+This helper retrieves the rules defined for the key given as an argument. If the object is not found, this function returns a list with the id attribute as the only element.
 
 ```tsx
 const searchStockMoveFrom = ({page}): Promise<any> => {
@@ -182,11 +182,11 @@ const searchStockMoveFrom = ({page}): Promise<any> => {
 };
 ```
 
-##  Récupération des critères de recherche 
+## Fetch search criteria
 
-Signature de la fonction : `getSearchCriterias(objectKey: string, searchValue: string): CriteriaGroup`
+Function signature : `getSearchCriterias(objectKey: string, searchValue: string): CriteriaGroup`
 
-Cet helper permet de récupérer une liste de critères par rapport aux champs de recherche associés à la à la clé fournie en argument. Les critères sont construits en mettant en relation chaque champ présent dans la liste avec la valeur de recherche fournie en argument avec un opérateur *like.* La liste contenant l’ensemble des critères est ensuite entouré d’un opérator *or* :
+This helper allows you to retrieve a list of criteria in relation to the search fields associated with the key supplied as an argument. The criteria are constructed by relating each field in the list to the search value supplied as an argument with a *like.* operator. The list containing all the criteria is then surrounded by an *or* operator:
 
 ```jsx
 {
@@ -201,20 +201,20 @@ Cet helper permet de récupérer une liste de critères par rapport aux champs d
 }
 ```
 
-##  Création d’une requête de recherche standard 
+## Creating a standard search query
 
-Signature de la fonction :
+Function signature :
 
 ```tsx
 interface SearchProps {
-  model: string; // Nom du modèle
-  criteria?: Criteria[]; // Liste de critères
-  domain?: string; // Domain si nécessaire
-  domainContext?: any; // Context du domain si nécessaire
-  fieldKey: string; // Clé pour accéder aux champs de l'objet
-  sortKey?: string; // Clé pour accéder aux règles de tri 
-  page: number; // Page courante de la recherche
-  numberElementsByPage?: number; // Nombre d'éléments à récupérer par page
+  model: string; // Model name
+  criteria?: Criteria[]; // List of criteria
+  domain?: string; // Domain if required
+  domainContext?: any; // Domain context if required
+  fieldKey: string; // Key to access object fields
+  sortKey?: string; // Key to sort rules 
+  page: number; // Current search page
+  numberElementsByPage?: number; // Number of elements to retrieve per page
 }
 
 createStandardSearch = ({
@@ -229,18 +229,18 @@ createStandardSearch = ({
   }: SearchProps): Promise<any>
 ```
 
-Cet helper permet de créer une requête de recherche standard, en lien avec les web services AOP, de façon simplifiée en n’indiquant que les éléments importants. Le nombre d’éléments par page est par défaut défini à 10 et mais cette valeur peut être modifiée dans [le fichier de configuration de l’application](https://www.notion.so/Documentation-technique-AOM-FR-7-2-607af4650bfa4ae086926122a4435c9a?pvs=21). Par ailleurs, si une requête a besoin de supprimer cette limite de récupération d’éléments, il suffit d’indiquer explicitement `numberElementsByPage: null` dans la définition de la requête. La valeur par défaut n’intervient que si *numberElementsByPage* est ***undefined***.
+This helper allows you to create a standard search query, in conjunction with AOP web services, in a simplified way by indicating only the important elements. The number of items per page is set to 10 by default, but this value can be modified in [the application configuration file](https://www.notion.so/Technical-documentation-AOM-EN-7-2-de9eaf94e6914158bff12eacdf5e33b2?pvs=21). Alternatively, if a query needs to remove this element retrieval limit, simply specify `numberElementsByPage: null` explicitly in the query definition. The default value only comes into play if *numberElementsByPage* is ***undefined***.
 
-##  Création d’une requête de récupération standard 
+## Creating a standard recovery request
 
-Signature de la fonction :
+Function signature :
 
 ```tsx
 interface FetchProps {
-  model: string; // Nom du modèle
-  fieldKey: string; // Clé pour accéder aux champs de l'objet
-  id: number; // Id de l'objet
-  relatedFields?: any; // Champs relationnel supplémentaire si nécessaire
+  model: string; // Model name
+  fieldKey: string; // Key to access object's fields
+  id: number; // Object id
+  relatedFields?: any; // Additional relational fields if required
 }
 
 createStandardFetch = ({
@@ -251,4 +251,4 @@ createStandardFetch = ({
   }: FetchProps): Promise<any>
 ```
 
-Cet helper permet de créer une requête de récupération standard, en lien avec les web services AOP, de façon simplifiée en n’indiquant que les éléments importants.
+This helper allows you to create a standard retrieval request, linked to AOP web services, in a simplified way by indicating only the important elements.

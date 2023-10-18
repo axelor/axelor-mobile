@@ -4,7 +4,7 @@ sidebar_position: 5
 sidebar_class_name: icon gestion de store
 ---
 
-## Store management
+# Store management
 
 The creation of the store and its access from the outside are managed by the core library. The store corresponds to the storage of information retrieved from API calls. The link between the state of the store and the data retrieved from API calls is made using reducers. These reducers are asynchronous functions that can be used to perform queries and dispatch data to the various objects in the store.
 

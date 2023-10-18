@@ -4,13 +4,14 @@ sidebar_position: 4
 sidebar_class_name: icon 
 ---
 
-# Création d’un menu
 
-La définition d’un menu nécessite la définition en amont d’un écran à afficher lorsque l’utilisateur choisit l’entrée de menu dans le drawer.
+## Creating a menu
 
-Seuls les modules possédant des menus apparaissent dans le drawer. La définition des menus d’un module se fait grâce à un objet json lors de l’export du module.
+The definition of a menu requires the definition of a screen to be displayed when the user selects the menu entry in the drawer.
 
-Une entrée de menu basique possède un ensemble d’attributs :
+Only modules with menus appear in the drawer. A module's menus are defined using a json object when the module is exported.
+
+A basic menu entry has a set of attributes:
 
 ```tsx
 export interface MenuBase {
@@ -22,17 +23,17 @@ export interface MenuBase {
 }
 ```
 
-**tittle** : [required] une clé de traduction pour le titre à afficher sur le drawer
+**tittle** : [required] a translation key for the title to be displayed on the drawer
 
-**icon** : [required] le nom de l’icon à afficher dans le drawer
+**icon** : [required] the name of the icon to be displayed in the drawer
 
-**disabled** : permet de désactiver l’entrée de menu
+**disabled**: to disable the menu entry
 
-**parent** : le nom du module parent dans le cadre d’une surcharge. Attention, le menu est ajouté sur le module parent seulement si le module courant est ajouté après le module parent dans la liste des modules du composant *Application*.
+**parent**: the name of the parent module in the case of overloading. Note that the menu is added to the parent module only if the current module is added after the parent module in the list of modules in the *Application* component.
 
-**order** : l’ordre de l’entrée de menu dans le drawer. Afin de permettre aux menus venant d’autres modules de s’insérer entre deux entrées de menu existantes, la convention exige que les ordres soient séparés de 10 (ex: 0, 10, 20, 30…). SI aucun ordre n’est défini, la valeur par défaut est l’index du menu lors de sa définition dans le module.
+**order**: the order of menu entries in the drawer. To allow menus from other modules to be inserted between two existing menu entries, the convention requires that orders be separated by 10 (e.g. 0, 10, 20, 30...). If no order is defined, the default value is the menu index when defined in the module.
 
-Il existe ensuite deux types d’entrée de menu : les menus avec sous-menu et les menus avec écran.
+There are then two types of menu entry: menus with submenu and menus with screen.
 
 ```tsx
 interface MenuWithSubMenus extends MenuBase {
@@ -54,8 +55,8 @@ interface RootMenuWithScreen extends MenuWithScreen {
 type Menu = MenuWithSubMenus | RootMenuWithScreen;
 ```
 
-Pour définir une entrée de menu avec sous-menus, il suffit en fait de fournir un objet json avec des entrées de menu basique à l’attribut *subMenus* du menu parent. Les sous-menus peuvent seulement être des entrées de menu avec un écran, c’est-à-dire une entrée de menu basique à laquelle on a fourni la clé de l’écran qu’il faut afficher à l’utilisateur lors du clic.
+To define a menu entry with submenus, you simply need to supply a json object with basic menu entries to the *subMenus* attribute of the parent menu. Submenus can only be menu entries with a screen, i.e. a basic menu entry to which the key to the screen to be displayed to the user on click has been supplied.
 
-Pour définir une entrée de menu avec écran, il faut donc fournir en plus des attributs du menu basique, la clé de l’écran à afficher. Il est également possible de venir définir pour ce type de menu, un menu par défaut, c’est-à-dire l’entrée de menu qui s’affichera directement à l’utilisateur lors du clic sur l’icône du module. Il ne peut y avoir qu’une seule entrée de menu par défaut par module. Dans le cas où deux menus ou plus possèdent l’attribut *isDefault* à true, c’est le premier de la liste qui est utilisé.
+To define a menu entry with a screen, in addition to the attributes of the basic menu, the key of the screen to be displayed must be supplied. It is also possible to define a default menu for this type of menu, i.e. the menu entry that will be displayed directly to the user when the module icon is clicked. There can be only one default menu entry per module. If two or more menus have the *isDefault* attribute set to true, the first in the list is used.
 
-La librairie core fournit également une gestion des permissions sur l’accès aux différents menus en lien avec le module de configuration **axelor-mobile-settings**. Afin de pouvoir vérifier les droits d’accès à un item du menu, la clé de ce dernier dans l’index du module doit correspondre au **technicalName** donné pour l’objet *com.axelor.apps.mobilesettings.db.MobileMenu.* Si sa clé n’est pas trouvé, le menu sera accessible à tous.
+The core library also provides permissions management for access to the various menus linked to the **axelor-mobile-settings** configuration module. In order to check the access rights to a menu item, its key in the module index must match the **technicalName** given for the com.axelor.apps.mobilesettings.db.MobileMenu object. If its key is not found, the menu will be accessible to all.

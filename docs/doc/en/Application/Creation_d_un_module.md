@@ -4,11 +4,11 @@ sidebar_position: 5
 sidebar_class_name: icon 
 ---
 
-# Création d’un module
+## Creating a module
 
-L’application fonctionne avec une structure de module. Ainsi, chaque package fonctionnel doit exporter un objet au format *Module* défini dans le package **CORE.**
+The application uses a module structure. Each functional package must export an object in the *Module* format defined in the **CORE** package.
 
-Un module est défini avec les éléments suivants :
+A module is defined with the following elements:
 
 ```tsx
 export interface Module {
@@ -50,16 +50,16 @@ export interface Module {
 }
 ```
 
-Un module possède donc :
+A module therefore has :
 
-- un nom (*name*) permettant de donner une clé d’identité au module. Ce nom doit être unique entre les modules utilisés sur l’application pour éviter les confusions.
-- un titre (*title*) à afficher à l’utilisateur sur le drawer lorsqu’aucune app n’est sélectionnée.
-- un sous-titre (*subtitle*) à afficher à l’utilisateur sous le bouton du module dans le drawer pour aider à la compréhension. L’affichage de ses sous-titres est paramétrable depuis le composant *Application* par l’attribut *showModulesSubtitle.*
-- un nom d’icône (*icon*) à afficher sur le bouton du module dans le drawer. Attention, cet icône doit appartenir à la base FontAwesome 5 ([https://oblador.github.io/react-native-vector-icons/](https://oblador.github.io/react-native-vector-icons/)).
-- les information de compatibilité avec l’instance web (*compatibilityAOS*). Il est possible de surcharger ses informations depuis un autre module en indiquant pour un même nom de module web des versions différentes. Une version doit être un string composé de trois numéros. La version du module web est récupérée et renseignée automatiquement depuis les informations du serveur.
-- un ensemble de menus (*menus*) à afficher dans le drawer.
-- un ensemble d’écrans appartenant au module (*screens*).
-- un ensemble de traductions pour le module (*translations*). il faut fournir les traductions au format clé-valeur pour chaque langue supportée.
-- un ensemble de reducers pour le module (*reducers*). Un reducer est un simple fonction qui permet de mettre à jour l’état d’un objet en fonction de l’action qui lui est transmise. Dans notre contexte, les reducers sont les fonctions redux qui permettent de mettre à jour le store lors des appels API par exemple. Il faut obligatoirement exporter tous les reducers créés dans le module pour accéder à la partie du store correspondante dans les différents écrans.
-- une liste de fonctions à exécuter en arrière plan si nécessaire (*backgroundFunctions*). Ces fonctions sont exécutées toutes les 5 minutes.
-- une configuration de modèles pour les appels API (*models*), pour plus d’explications voir la section [Création d'un appel API](https://www.notion.so/Documentation-technique-AOM-FR-7-2-607af4650bfa4ae086926122a4435c9a?pvs=21). b
+- a name (*name*) to give the module an identity key. This name must be unique among the modules used in the application, to avoid confusion.
+- a title (*title*) to be displayed to the user on the drawer when no app is selected.
+- a subtitle (*subtitle*) to be displayed to the user under the module button in the drawer to aid comprehension. The display of these subtitles can be configured in the *Application* component using the *showModulesSubtitle.* attribute.
+- an icon name (*icon*) to be displayed on the module button in the drawer. Please note that this icon must belong to the FontAwesome 5 database ([https://oblador.github.io/react-native-vector-icons/](https://oblador.github.io/react-native-vector-icons/)).
+- web instance compatibility information (*compatibilityAOS*). It's possible to overload this information from another module by indicating different versions of the same web module name. A version must be a string composed of three numbers. The web module version is automatically retrieved from the server information.
+- a set of menus (*menus*) to be displayed in the drawer.
+- a set of screens belonging to the module (*screens*).
+- a set of translations for the module (*translations*). Translations must be supplied in key-value format for each supported language.
+- a set of reducers for the module (*reducers*). A reducer is a simple function that updates the state of an object according to the action passed to it. In our context, reducers are the redux functions that update the store during API calls, for example. All reducers created in the module must be exported to access the corresponding part of the store in the various screens.
+- a list of functions to be executed in the background if necessary (*backgroundFunctions*). These functions are executed every 5 minutes.
+- a configuration of templates for API calls (*models*).

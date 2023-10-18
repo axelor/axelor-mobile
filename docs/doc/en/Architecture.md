@@ -4,7 +4,7 @@ sidebar_position: 3
 sidebar_class_name: icon architecture
 ---
 
-# **Application architecture**
+# Application architecture
 
 The main objective when building the application architecture was to have a high degree of flexibility to facilitate customization of the application and adaptation to customer projects.
 

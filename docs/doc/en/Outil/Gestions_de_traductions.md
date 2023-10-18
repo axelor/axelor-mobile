@@ -4,7 +4,7 @@ sidebar_position: 1
 sidebar_class_name: icon  traductions
 ---
 
-## Translation management
+# Translation management
 
 The translations required by the application are saved in the phone's storage. Each module is responsible for generating its own translations.
 

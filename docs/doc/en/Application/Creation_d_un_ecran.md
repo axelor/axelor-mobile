@@ -3,15 +3,16 @@ id: Création d’un écran
 sidebar_position: 3
 sidebar_class_name: icon 
 ---
-# Création d’un écran
+
+# Screen creation
 
 ## Architecture
 
-Un écran dans l’application est en fait simplement un composant. La librairie UI fournit un composant `Screen` qui permet de faire une base de l’écran. Il suffit ensuite de fournir l’ensemble du contenu de l’écran en tant qu’enfants.
+A screen in an application is simply a component. The UI library provides a `Screen` component, which is used to create a screen base. All that's then required is to provide all the screen content as children.
 
-Au niveau de l’architecture, afin de bien distinguer les écrans des composants standards, tous les écrans sont stockés dans un dossier **screens** qui peut ensuite être redivisé en fonction des fonctionnalités pour ajouter un peu d’ordre dans le dossier. Chaque dossier d’écrans doit contenir un fichier index afin de faciliter l’export.
+In terms of architecture, in order to distinguish screens from standard components, all screens are stored in a **screens** folder which can then be redivided according to functionality to add a little order to the folder. Each screen folder must contain an index file to facilitate export.
 
-La librairie core fournit un typage pour la structure des écrans avec les informations nécessaires à l’enregistrement dans la navigation des différents écrans. Un écran est définit par une clé puis différents attributs :
+The core library provides a typing scheme for the screen structure, with the information required to register the various screens in the navigation. A screen is defined by a key and various attributes:
 
 ```tsx
 export interface Screen {
@@ -25,11 +26,11 @@ interface ScreenOptions {
 }
 ```
 
-- un titre (*title*) à afficher dans le header lorsque l’utilisateur se trouve sur la page. Il doit s’agir en réalité d’une clé de traduction afin de faciliter l’internationalisation de l’application.
-- le composant correspondant au contenu de l’écran (*component)*
-- des options pour l’affichage de l’écran comme par exemple la possibilité d’avoir ou non un header avec une ombre. Le header a par défaut une ombre, il n’est donc pas nécessaire de fournir cet attribut lorsque l’ombre est voulue.
+- a title (*title*) to be displayed in the header when the user is on the page. This must actually be a translation key to facilitate internationalization of the application.
+- the component corresponding to the screen content (*component*).
+- options for displaying the screen, such as whether or not to have a header with a shadow. The header has a shadow by default, so there's no need to supply this attribute when a shadow is required.
 
-Il suffit ensuite d’exporter tous les écrans sous cette forme :
+Then simply export all the screens in this form:
 
 ```tsx
 import ContactListScreen from './ContactListScreen';
@@ -60,17 +61,17 @@ export default {
 ```
 
 <aside>
-⚠️ Attention, tous les écrans définis dans le module doivent être exportés sinon l’application ne sera pas capable d’y accéder.
+⚠️ Please note that all screens defined in the module must be exported, otherwise the application will not be able to access them.
 
 </aside>
 
-Lors de la surcharge d’un écran, il suffit de venir créer un nouvel écran en modifiant les éléments à changer sur l’écran de base. Puis, une fois le composant créé, venir l’exporter avec la même clé que dans le module d’origine. Ainsi, lors de l’enregistrement dans la navigation, seul le dernier écran avec la même clé sera pris en compte.
+When overloading a screen, simply create a new screen by modifying the elements to be changed on the basic screen. Then, once the component has been created, export it with the same key as in the original module. This way, when you save it in the navigation system, only the last screen with the same key will be taken into account.
 
-## Création d’une vue formulaire
+## Creating a form view
 
-Afin de faciliter et standardiser la création de vues formulaires, l’application propose un outil générique permettant de générer des vues formulaires par rapport à une configuration donnée.
+To facilitate and standardize the creation of form views, the application provides a generic tool for generating form views based on a given configuration.
 
-Définir une configuration correspond à associer une clé à un ensemble de **fields** et **panels**.
+Defining a configuration corresponds to associating a key with a set of **fields** and **panels**.
 
 ```tsx
 interface Field {
@@ -85,8 +86,8 @@ interface Field {
   readonlyIf?: (values?: States) => boolean;
   hideIf?: (values?: States) => boolean;
   dependsOn?: {
-    [fieldName: string]: (values: DependsOnStates) => any;
-  };
+	  - *dependsOn* : définition d’une condition de mise à jour de la valeur du champs en fonction de la mise à jour d’un autre champs. Il s’agit d’un champs json qui associe le nom du champs duquel dépend le champs actuel en tant que clé et la fonction qui vient définir la nouvelle valeur du champs en fonction des états de l’objet du formulaire, du store global et de la valeur qui vient d’être modifiée.- *dependsOn* : définition d’une condition de mise à jour de la valeur du champs en fonction de la mise à jour d’un autre champs. Il s’agit d’un champs json qui associe le nom du champs duquel dépend le champs actuel en tant que clé et la fonction qui vient définir la nouvelle valeur du champs en fonction des états de l’objet du formulaire, du store global et de la valeur qui vient d’être modifiée.[fieldName: string]: (values: DependsOnStates) => any;
+	};
   widget?: Widget;
   customComponent?: (
     options?: customComponentOptions,
@@ -103,14 +104,14 @@ interface Field {
 }
 ```
 
-Un field est défini à travers plusieurs attribut :
+A field is defined by several attributes:
 
-- *parentPanel* : le nom du panel dans lequel le champs doit s’afficher
-- *order* : ordre du champs dans la vue / le panel.
-- *titleKey* : clé de traduction pour le titre du champs.
-- *helperKey* : clé de traduction pour le helper qui sera affiché à côté du champs. Ce helper permet d’expliquer l’utilité du champs à l’utilisateur si cela est nécessaire.
-- *type* : définition du typage du champs pour définir l’affichage par défaut mais aussi permettre la vérification de l’intégrité des données du formulaire. Les typages acceptés dans la vue formulaire sont :
-
+- *parentPanel*: the name of the panel in which the field is to be displayed
+- *order*: order of the field in the view/panel.
+- *titleKey*: translation key for field title.
+- *helperKey*: translation key for the helper that will be displayed next to the field. This helper is used to explain the purpose of the field to the user, if necessary.
+- *type*: definition of field typing to define default display but also to enable form data integrity checking. The types accepted in the form view are :
+    
     ```tsx
     type InputType =
       | 'string'
@@ -125,12 +126,12 @@ Un field est défini à travers plusieurs attribut :
       | 'array'
       | 'object';
     ```
-
-- *required* et *readonly* permettent de définir un champs comme requis ou en lecture seule.
-- *requiredIf*, *readonlyIf* et *hideIf* permettent de définir une condition pour laquelle le champs doit être requis, en lecture seule ou caché. Ces trois functions reçoivent en argument les états de l’objet du formulaire et du store global et elles doivent renvoyer un booléen.
-- *dependsOn* : définition d’une condition de mise à jour de la valeur du champs en fonction de la mise à jour d’un autre champs. Il s’agit d’un champs json qui associe le nom du champs duquel dépend le champs actuel en tant que clé et la fonction qui vient définir la nouvelle valeur du champs en fonction des états de l’objet du formulaire, du store global et de la valeur qui vient d’être modifiée.
-- *widget* : définition d’un widget d’affichage pour le champs. Le formulaire assigne par défaut un widget associé au type de champs mais il est possible de demander un autre widget compatible ou bien de définir un widget `‘custom’` qui permet ensuite de définir un composant personnalisé.
-
+    
+- *required* and *readonly* define a field as required or read-only.
+- *requiredIf*, *readonlyIf* and *hideIf* are used to define a condition for which the field must be required, read-only or hidden. These three functions receive the states of the form object and the global store as arguments, and must return a Boolean.
+- *dependsOn*: defines a condition for updating the value of the field according to the update of another field. This is a json field that associates the name of the field on which the current field depends as a key and the function that defines the new field value according to the states of the form object, the global store and the value that has just been modified.
+- *widget*: definition of a display widget for the field. By default, the form assigns a widget associated with the field type, but it is possible to request another compatible widget, or to define a custom widget which can then be used to define a `‘custom'` component.
+    
     ```tsx
     type Widget =
       | 'default'
@@ -144,9 +145,9 @@ Un field est défini à travers plusieurs attribut :
       | 'checkbox'
       | 'custom';
     ```
-
-- *customComponent* : définition d’un composant d’affichage personnalisé. Cela permet notamment d’afficher une barre de recherche ou bien encore une sélection. Les composants personnalisés doivent avoir uns structure précise pour permettre de transmettre les valeurs au composant.
-
+    
+- *customComponent*: definition of a custom display component. This can be used, for example, to display a search bar or a selection. Custom components must have a precise structure to enable values to be passed to the component.
+    
     ```tsx
     interface customComponentOptions {
       style?: any;
@@ -157,12 +158,12 @@ Un field est défini à travers plusieurs attribut :
       readonly?: boolean;
     }
     ```
-
+    
     <aside>
-    ⚠️ Il faut faire attention lors de l’utilisation des composants custom avec l’attribut **hideIf**. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
-
-  L’astuce est donc de créer un composant auxiliaire qui va gérer l’ensemble des hooks puis de créer un composant au-dessus qui transmet seulement les valeurs au composant auxiliaire.
-
+    ⚠️ Care must be taken when using custom components with the **hideIf** attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
+    
+    The trick is to create an auxiliary component that will manage all the hooks, then create a component above it that transmits only the values to the auxiliary component.
+    
     ```tsx
     const ComponentAux = ({
       style,
@@ -199,11 +200,11 @@ Un field est défini à travers plusieurs attribut :
     
     export default Component;
     ```
-
+    
     </aside>
-
-- *options* : permet de transmettrre des options personnalisées aux différents composants afin de personnaliser l’affichage.
-- *validationOptions* : permet de définir des options de validations (valeurs maximale et minimale, entier ou décimal, …). Il s’agit en fait de définir plus précisément le typage du champs avec l’outil [YUP](https://www.npmjs.com/package/yup). Certaines options de typage propose de redéfinir le message d’erreur. Dans le cas où il faut redéfinir un message d’erreur spécifique, il faut penser à utiliser une clé de traduction afin de ne pas nuir à l’internationalisation de l’application.
+    
+- *options*: transmit customized options to the various components to personalize the display.
+- *validationOptions*: allows you to define validation options (maximum and minimum values, integer or decimal, etc.). In fact, it's a matter of defining field typing more precisely with the [YUP](https://www.npmjs.com/package/yup) tool. Some typing options suggest redefining the error message. If you need to redefine a specific error message, remember to use a translation key so as not to jeopardize the internationalization of the application.
 
 ```tsx
 interface Panel {
@@ -216,14 +217,14 @@ interface Panel {
 }
 ```
 
-Un panel est défini à travers plusieurs attributs :
+A panel is defined by several attributes:
 
-- *titleKey* : clé de traduction pour le titre du panel.
-- *isCollaspible* : permet de définir si un panel doit pouvoir être collapsible.
-- *order* : order du panel dans la vue.
-- *colSpan* : largeur du panel sur la vue. Par défaut, le panel prend toute la largeur de la vue.
-- *direction* : direction d’affichage des éléments (`’row’` affiche les éléments en ligne, `‘column’` affiche les éléments en colonne)
-- *parent* : nom du panel parent.
+- *titleKey*: translation key for the panel title.
+- *isCollaspible*: defines whether a panel should be collapsible.
+- *order*: panel order in the view.
+- *colSpan*: panel width in the view. By default, the panel takes up the entire width of the view.
+- *direction*: element display direction (`'row'` displays elements in rows, `'column'` displays elements in columns).
+- *parent*: name of parent panel.
 
 ```tsx
 interface Form {
@@ -238,7 +239,7 @@ interface Form {
 }
 ```
 
-Un formulaire est ensuite donc composé d’un ensemble de *panels* fourni sous la forme d’un objet JSON, d’un ensemble de *fields* de la même manière, du nom du modèle pour la construction des actions ainsi que d’une fonction *readonlyIf* permettant de rendre la vue en lecture seule en fonction de l’état du formulaire et des valeurs du store.
+A form is then composed of a set of *panels* supplied in the form of a JSON object, a set of *fields* in the same way, the name of the model for building the actions, and a *readonlyIf* function for making the view read-only according to the state of the form and the values of the store.
 
 ```tsx
 interface FormConfigs {
@@ -246,17 +247,17 @@ interface FormConfigs {
 }
 ```
 
-Ainsi, chaque module peut venir définir autant de configuration de formulaires que nécessaire sous un format clé-valeur qu’il faut ensuite exporter dans la définition du module dans la catégorie *models* sous l’attribut **formsRegister**.
+In this way, each module can define as many form configurations as required in a key-value format, which is then exported to the module definition in the *models* category under the **formsRegister** attribute.
 
-Une fois les configurations de formulaire définies, il faut ensuite venir créer l’écran de formulaire de la même manière qu’un écran basique puis utiliser un composant pré-construit pour l’affichage : `FormView`.
+Once the form configurations have been defined, the next step is to create the form screen in the same way as a basic screen, then use a pre-built component for display: `FormView`.
 
-Ce composant prend en argument trois éléments :
+This component takes three elements as arguments:
 
-- defaultValue : la valeur par défaut à afficher sur le formulaire.
-- formKey : la clé de la configuration du formulaire définie lors de l’export du module.
-- actions : l’ensemble des actions à afficher en bas de la page. Les actions sont construite à travers un template de la même manière que l’ensemble des éléments du formulaire.
-
-
+- defaultValue: the default value to be displayed on the form.
+- formKey : the form configuration key defined when exporting the module.
+- actions: the set of actions to be displayed at the bottom of the page. Actions are built through a template in the same way as all form elements.
+    
+    
     ```tsx
     interface Action {
       key: string;
@@ -287,14 +288,14 @@ Ce composant prend en argument trois éléments :
       | 'custom';
     ```
     
-    Une action est définir à travers plusieurs attributs :
+    An action is defined by several attributes:
     
-    - *key* : clé de l’action pour l’unicité des actions
-    - *type* : définition du type d’action pour les configurations par défaut. Cela permet de définir automatiquement le titre et l’action à effectuer lors du clique sur le bouton.
-    - *titleKey* : clé de traduction pour le titre du bouton.
-    - *iconName* : nom de l’icône de la librairie FontAwesome5 à afficher à côté du titre sur le bouton.
-    - *color* : couleur du bouton.
-    - *hideIf* / *disabledIf* : fonctions permettant d’ajouter une condition d’affichage / de disponibilité pour le bouton en fonction de l’état du formulaire et des valeurs du store.
-    - *customAction* : action personnalisée à effectuer au clique.
-    - *needValidation* : permet de demander au formulaire de vérifier si les valeurs remplies par l’utilisateur répondent aux contraintes avant d’effectuer l’action. Si le formulaire est correcte alors l’action est effectuée. Dans le cas contraire, l’utilisateur obtient un récapitulatif des éléments à corriger.
-    - *needRequiredFields* : empêche l’utilisateur de cliquer sur le bouton si certains champs requis ne sont pas remplis.
+    - *key*: action key for action uniqueness
+    - *type*: action type definition for default configurations. This automatically defines the title and action to be performed when the button is clicked.
+    - *titleKey*: translation key for button title.
+    - *iconName*: name of the FontAwesome5 library icon to be displayed next to the button title.
+    - *color*: button color.
+    - *hideIf* / *disabledIf*: functions for adding a display/availability condition for the button, depending on the state of the form and store values.
+    - *customAction*: custom action to be performed on click.
+    - *needValidation*: allows you to ask the form to check whether the values filled in by the user meet the constraints before performing the action. If the form is correct, the action is performed. If not, the user receives a summary of the elements to be corrected.
+    - *needRequiredFields*: prevents the user from clicking on the button if certain required fields are not filled in.

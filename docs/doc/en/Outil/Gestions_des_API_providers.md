@@ -4,9 +4,9 @@ sidebar_position: 4
 sidebar_class_name: icon API providers
 ---
 
-## API provider management
+# API provider management
 
-### ***Standard***
+## Standard
 
 To communicate with the ERP web instance, the various modules use *axios* to make API calls. When connecting to the application, axios will retrieve and save the instance's url and the connection tokens sent by the ERP, so that future requests can be made.
 
@@ -25,7 +25,7 @@ To use it, simply retrieve the provider from the core package and call the appro
 
 There are two other types of provider that allow you to generalize the use of queries, but also to enable a module to modify this provider to use a specific tool. This system has been implemented for model data retrieval queries and for action execution queries. Each provider has a specific interface with the methods required for its operation, as well as a gateway for switching between several providers depending on their availability.
 
-### Model
+## Model
 
 Specialized data recovery providers must follow the following interface in order to offer the same functionality and avoid errors:
 
@@ -103,7 +103,7 @@ So, when using a Gateway, you need to register the new ModelApi.
 registerModelApi(new GatewayModelApi(modelApi1, modelApi2, ...));
 ```
 
-### Action
+## Action
 
 Specialized providers for actions must follow the following interface in order to offer the same functionality and avoid errors:
 
