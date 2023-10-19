@@ -45,40 +45,36 @@ const ChipSelect = ({
   marginHorizontal,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
-  const [selectdChipSwitch, setSelectdChipSwitch] = useState({
-    key: selectionItems.find(item => item.isActive === true)?.key,
-  });
+  const [selectedChip, setSelectedChip] = useState<Item[]>([]);
 
-  const [selectedChipMulti, setSelectedChipMulti] = useState(
-    selectionItems.filter(item => item.isActive === true),
-  );
+  const updateChip = (chip: Item) => {
+    let updatedChip = [];
 
-  const updateChip = chip => {
     if (mode === 'multi') {
       if (chipIsSelected(chip)) {
-        setSelectedChipMulti(
-          selectedChipMulti?.filter(activeChip => activeChip.key !== chip.key),
+        updatedChip = selectedChip?.filter(
+          activeChip => activeChip.key !== chip.key,
         );
-        onChangeValue(
-          selectedChipMulti?.filter(activeChip => activeChip.key !== chip.key),
-        );
-      } else if (selectedChipMulti.length + 1 === selectionItems.length) {
-        setSelectedChipMulti([]);
-        onChangeValue([]);
-      } else {
-        setSelectedChipMulti([...selectedChipMulti, chip]);
-        onChangeValue([...selectedChipMulti, chip]);
+      } else if (selectedChip?.length + 1 !== selectionItems?.length) {
+        updatedChip = [...selectedChip, chip];
       }
     }
+
     if (mode === 'switch') {
-      setSelectdChipSwitch(chip.key === selectdChipSwitch?.key ? null : chip);
-      onChangeValue(chip.key === selectdChipSwitch?.key ? null : [chip]);
+      if (chipIsSelected(chip)) {
+        updatedChip = [];
+      } else {
+        updatedChip = [chip];
+      }
     }
+
+    setSelectedChip(updatedChip);
+    onChangeValue(updatedChip);
   };
 
-  const chipIsSelected = chip => {
+  const chipIsSelected = (chip: Item) => {
     return (
-      selectedChipMulti?.find(activeChip => activeChip.key === chip.key) != null
+      selectedChip?.find(activeChip => activeChip.key === chip.key) != null
     );
   };
 
@@ -92,11 +88,7 @@ const ChipSelect = ({
         {selectionItems?.map((item, index) => (
           <Chip
             key={index}
-            selected={
-              mode === 'switch'
-                ? item.key === selectdChipSwitch?.key
-                : chipIsSelected(item)
-            }
+            selected={chipIsSelected(item)}
             title={item.title}
             selectedColor={item.color}
             onPress={() => updateChip(item)}
