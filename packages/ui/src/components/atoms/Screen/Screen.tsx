@@ -63,7 +63,7 @@ const Screen = ({
         style,
       ]}>
       {children}
-      {React.Children.count(fixedItems) > 0 && (
+      {!!fixedItems && (
         <View style={[styles.fixedContainer, styles.smallTopShadow]}>
           {fixedItems}
         </View>
