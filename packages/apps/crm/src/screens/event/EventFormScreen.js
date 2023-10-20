@@ -108,23 +108,7 @@ const EventFormScreen = ({navigation, route}) => {
 
   const updateEventAPI = useCallback(
     (_event, dispatch) => {
-      let dataToSend = {
-        ..._event,
-      };
-      if (_event?.eventLead != null) {
-        dataToSend = {
-          ..._event,
-          relatedToSelect: MODELS.lead,
-          relatedToSelectId: _event?.eventLead?.id,
-        };
-      } else if (_event?.contactPartner != null || _event?.partner != null) {
-        dataToSend = {
-          ..._event,
-          relatedToSelect: MODELS.partner,
-          relatedToSelectId: _event?.partner?.id,
-        };
-      }
-      dispatch(updateEvent({event: dataToSend}));
+      dispatch(updateEvent({event: _event}));
       navigation.pop();
     },
     [navigation],

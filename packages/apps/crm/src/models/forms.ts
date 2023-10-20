@@ -30,6 +30,11 @@ import {
   PartnerSearchBar,
 } from '../components';
 
+const MODELS = {
+  lead: 'com.axelor.apps.crm.db.Lead',
+  partner: 'com.axelor.apps.base.db.Partner',
+};
+
 export const crm_formsRegister: FormConfigs = {
   crm_catalog: {
     modelName: 'com.axelor.apps.crm.db.Catalog',
@@ -486,6 +491,40 @@ export const crm_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: UserSearchBar,
+      },
+      relatedToSelect: {
+        type: 'string',
+        hideIf: () => {
+          return true;
+        },
+        dependsOn: {
+          eventLead: () => {
+            return MODELS.lead;
+          },
+          contactPartner: () => {
+            return MODELS.partner;
+          },
+          partner: () => {
+            return MODELS.partner;
+          },
+        },
+      },
+      relatedToSelectId: {
+        type: 'number',
+        hideIf: () => {
+          return true;
+        },
+        dependsOn: {
+          eventLead: ({newValue}) => {
+            return newValue?.id;
+          },
+          contactPartner: ({newValue}) => {
+            return newValue?.id;
+          },
+          partner: ({newValue}) => {
+            return newValue?.id;
+          },
+        },
       },
     },
   },
