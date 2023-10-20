@@ -57,18 +57,22 @@ class EventType {
   };
 
   static getStatusBorderColor = (status: number, Colors: ThemeColors) => {
+    return this.getStatusolor(status, Colors)?.background;
+  };
+
+  static getStatusolor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.status.Planned:
-        return Colors.secondaryColor.background;
+        return Colors.secondaryColor;
       case this.status.Realized:
-        return Colors.primaryColor.background;
+        return Colors.primaryColor;
       case this.status.Canceled:
-        return Colors.cautionColor.background;
+        return Colors.cautionColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by Event`,
         );
-        return {};
+        return null;
     }
   };
 
@@ -79,7 +83,7 @@ class EventType {
     return Object.entries(this.status).map(([key, value]) => ({
       title: I18n.t(`Crm_Event_Status_${key}`),
       key: value,
-      color: this.getStatusBorderColor(value, Colors),
+      color: this.getStatusolor(value, Colors),
     }));
   };
 
