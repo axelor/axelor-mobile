@@ -32,6 +32,7 @@ interface ChipSelectProps {
   style?: any;
   selectionItems: Item[];
   mode: 'multi' | 'switch';
+  isRefresh?: boolean;
   width?: number;
   marginHorizontal?: number;
   onChangeValue?: (value: any) => void;
@@ -41,17 +42,23 @@ const ChipSelect = ({
   style,
   selectionItems,
   mode,
+  isRefresh = false,
   width,
   marginHorizontal,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
-  const [selectedChip, setSelectedChip] = useState<Item[]>([]);
+  const [selectedChip, setSelectedChip] = useState<Item[]>(
+    selectionItems.filter(item => item.isActive === true),
+  );
 
   useEffect(() => {
-    if (selectionItems.every(el => Object.keys(el).includes('isActive'))) {
+    if (
+      isRefresh &&
+      selectionItems.every(el => Object.keys(el).includes('isActive'))
+    ) {
       setSelectedChip(selectionItems.filter(item => item.isActive === true));
     }
-  }, [selectionItems]);
+  }, [isRefresh, selectionItems]);
 
   const updateChip = (chip: Item) => {
     let updatedChip = [];
