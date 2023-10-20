@@ -169,5 +169,6 @@
   "Base_SliceAction_RefreshRecord": "actualisation de l'objet",
   "Base_SliceAction_FetchJsonFieldsOfModel": "récupération des champs studio du modèle",
   "Base_SliceAction_FetchDataOfModel": "récupération des données du model",
-  "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet"
+  "Base_SliceAction_UpdateJsonFieldsObject": "mise à jour des champs studio de l'objet",
+  "Base_SliceAction_FetchAnomalies": "récupération des anomalies d'un object"
 }
