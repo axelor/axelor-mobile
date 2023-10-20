@@ -33,3 +33,6 @@ export default {
     component: CatalogFormScreen,
   },
 };
+
+export {CatalogListScreen};
+export {CatalogFormScreen};

@@ -98,12 +98,16 @@ export const CrmModule: Module = {
   },
 };
 
-export * from './types';
-export * from './components';
 export * from './api';
+export * from './components';
 export * from './features/asyncFunctions-index';
-
-export * from './screens/lead';
-export * from './screens/prospect';
-export * from './screens/opportunity';
+export * from './hooks';
+export * from './screens/catalog';
 export * from './screens/client';
+export * from './screens/contact';
+export * from './screens/event';
+export * from './screens/lead';
+export * from './screens/opportunity';
+export * from './screens/prospect';
+export * from './types';
+export * from './utils';

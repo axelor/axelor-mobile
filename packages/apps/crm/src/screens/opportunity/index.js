@@ -42,3 +42,7 @@ export default {
     component: OpportunityFormScreen,
   },
 };
+
+export {OpportunityDetailsScreen};
+export {OpportunityListScreen};
+export {OpportunityFormScreen};
