@@ -43,7 +43,7 @@ const ContactSearchBarAux = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
+  showTitle = false,
   styleTxt = null,
 }) => {
   const I18n = useTranslator();
@@ -112,7 +112,7 @@ const ContactSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
+  showTitle = false,
   styleTxt = null,
 }) => {
   return (

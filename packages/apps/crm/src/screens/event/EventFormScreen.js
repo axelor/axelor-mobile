@@ -37,14 +37,15 @@ const EventFormScreen = ({navigation, route}) => {
 
   const defaultValue = useMemo(() => {
     const _defaultStartDate = new Date();
-    const _defaultEndDate = new Date().setHours(
-      _defaultStartDate.getHours() + 1,
-    );
+    const _defaultEndDate = new Date();
+
+    _defaultEndDate.setHours(_defaultStartDate.getHours() + 1);
+
     const _default = {
       typeSelect: EventType.category.Meeting,
       statusSelect: EventType.status.Planned,
-      startDateTime: _defaultStartDate,
-      endDateTime: _defaultEndDate,
+      startDateTime: _defaultStartDate.toISOString(),
+      endDateTime: _defaultEndDate.toISOString(),
       user: user,
     };
 

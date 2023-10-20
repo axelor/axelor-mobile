@@ -43,7 +43,7 @@ const LeadSearchBarAux = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
+  showTitle = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -109,7 +109,7 @@ const LeadSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
+  showTitle = false,
 }) => {
   return (
     <LeadSearchBarAux
