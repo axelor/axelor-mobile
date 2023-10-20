@@ -17,4 +17,3 @@
  */
 
 export {useCivilityList} from './use-civility-list';
-export {useCRMHeaders} from './use-crm-header-actions';
