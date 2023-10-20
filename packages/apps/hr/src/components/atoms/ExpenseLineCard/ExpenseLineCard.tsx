@@ -20,12 +20,14 @@ import React, {useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
+  AnomalyBubble,
   getFullDateItems,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
+  expenseId: number;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
@@ -36,6 +38,7 @@ interface ExpenseLineCardProps {
 }
 
 const ExpenseLineCard = ({
+  expenseId,
   expenseDate,
   projectName,
   totalAmount,
@@ -107,6 +110,16 @@ const ExpenseLineCard = ({
                 }`}</Text>
               ),
             },
+            {
+              customComponent: (
+                <AnomalyBubble
+                  objectName="expense-line"
+                  objectId={expenseId}
+                  indicatorPosition="left"
+                  style={styles.anoBubble}
+                />
+              ),
+            },
           ],
         }}
       />
@@ -139,6 +152,9 @@ const getStyles = Colors =>
       marginHorizontal: 0,
       marginVertical: 0,
       paddingRight: 5,
+    },
+    anoBubble: {
+      alignSelf: 'flex-end',
     },
   });
 
