@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as AnomalyBubble} from './AnomalyBubble/AnomalyBubble';
+export {default as AnomalyList} from './AnomalyList/AnomalyList';
 export {default as AOSImage} from './AOSImage/AOSImage';
 export {default as AOSImageBubble} from './AOSImageBubble/AOSImageBubble';
 export {default as DateInput} from './DateInput/DateInput';
