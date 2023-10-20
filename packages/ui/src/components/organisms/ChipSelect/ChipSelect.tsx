@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {Color} from '../../../theme/themes';
 import {Chip} from '../../molecules';
@@ -46,6 +46,12 @@ const ChipSelect = ({
   onChangeValue = () => {},
 }: ChipSelectProps) => {
   const [selectedChip, setSelectedChip] = useState<Item[]>([]);
+
+  useEffect(() => {
+    if (selectionItems.every(el => Object.keys(el).includes('isActive'))) {
+      setSelectedChip(selectionItems.filter(item => item.isActive === true));
+    }
+  }, [selectionItems]);
 
   const updateChip = (chip: Item) => {
     let updatedChip = [];
