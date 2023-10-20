@@ -25,6 +25,7 @@ import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
+import {checkNullString} from '../../../utils';
 
 interface InfoBubbleProps {
   style?: any;
@@ -77,7 +78,7 @@ const InfoBubble = ({
           size={coloredBubble ? size * 0.5 : size * 0.8}
         />
       </TouchableOpacity>
-      {isOpen ? (
+      {!checkNullString(indication) && isOpen ? (
         <Card style={[styles.indicationCard, textIndicationStyle]}>
           <Text>{indication}</Text>
         </Card>
