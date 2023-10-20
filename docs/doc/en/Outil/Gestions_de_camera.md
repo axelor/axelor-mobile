@@ -10,9 +10,9 @@ sidebar_class_name: icon gestion de la camera
 
 The application can open the phone's camera to take a photo. Opening the camera and obtaining photo data are managed via a slice.
 
-For each use of the camera, a key must be defined to target the sending of photo data and avoid conflicts. This key must be unique and ideally describe the use (e.g. *'expense-line_justication_picture'*).
+For each use of the camera, a key must be defined to target the sending of photo data and avoid conflicts. This key must be unique and ideally describe the use (e.g. _'expense-line_justication_picture'_).
 
-To open the camera, simply use the *enableCamera* reducer with the key. Similarly, to retrieve information from the photo, use the camera selector with the same key. By setting up a useEffect, you can then initiate an action as soon as a photo is taken. Taking a photo automatically closes the camera. Once the action has been initiated, remember to clean the camera state with *clearPhoto* to avoid refresh problems.
+To open the camera, simply use the _enableCamera_ reducer with the key. Similarly, to retrieve information from the photo, use the camera selector with the same key. By setting up a useEffect, you can then initiate an action as soon as a photo is taken. Taking a photo automatically closes the camera. Once the action has been initiated, remember to clean the camera state with _clearPhoto_ to avoid refresh problems.
 
 ```tsx
 // Data recovery
@@ -20,10 +20,10 @@ const cameraPicture = useCameraValueByKey(cameraKey);
 
 // Recovered photo format
 interface CameraPhoto {
-	name: string; // default name: `camera.${pictureExtension}`.
+  name: string; // default name: `camera.${pictureExtension}`.
   pictureExtention: string; // to facilitate file naming
   dateTime: string; // to facilitate file naming
-  type: string; // necessary for photo upload 
+  type: string; // necessary for photo upload
   size: number; // required for photo upload (in bytes)
   base64: string; // file in base64 format
   fullBase64: string; // base64 with header to define document type
@@ -60,7 +60,7 @@ const scannedValue = useScannedValueByKey(scanKeySearch);
 // Retrieve scanner camera data
 const scanData = useCameraScannerValueByKey(scanKeySearch);
 
-// Scan activation 
+// Scan activation
 const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Camera depending on device
 const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch); // Enable Zebra only
 

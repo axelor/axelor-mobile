@@ -56,7 +56,7 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 Pour appliquer ses changements, il faut ensuite exécuter la commande `source .bashrc`. Cela met à jour les chemins, il est possible de vérifier que le processus a fonctionné avec la commande `echo $ANDROID_SDK_ROOT`.
 
-La prochaine étape est de configurer un émulateur si nécessaire avec l’outil **Virtual Device Manager** d’*Android Studio*.
+La prochaine étape est de configurer un émulateur si nécessaire avec l’outil **Virtual Device Manager** d’_Android Studio_.
 
 ## Configuration de l’application
 
@@ -83,7 +83,7 @@ Un example de fichier de configuration est [disponible sur Github](https://githu
 
 ### Ajouter ou retirer un module métier pour la génération d’APK
 
-Les modules peuvent être activés ou desactivés directement depuis le fichier App.js du dossier *example* ou alors depuis le module de configuration **Axelor mobile settings** d’[AOS](https://github.com/axelor/axelor-open-suite) disponible à partir de la version 7.0.0.
+Les modules peuvent être activés ou desactivés directement depuis le fichier App.js du dossier _example_ ou alors depuis le module de configuration **Axelor mobile settings** d’[AOS](https://github.com/axelor/axelor-open-suite) disponible à partir de la version 7.0.0.
 
 Pour gérer les modules directement depuis le composant Application, il suffit d’ajouter ou de retirer un objet `Module` de l’attribut **modules.**
 
@@ -96,14 +96,14 @@ import application_properties from '../package.json';
 import {app_config} from './app.config';
 
 const App = () => {
-    return (
-        <Application
-            modules={[StockModule, ManufacturingModule]}
-            mainMenu="auth_menu_user"
-            version={application_properties.version}
-            configuration={app_config}
-        />
-    );
+  return (
+    <Application
+      modules={[StockModule, ManufacturingModule]}
+      mainMenu="auth_menu_user"
+      version={application_properties.version}
+      configuration={app_config}
+    />
+  );
 };
 
 export default App;

@@ -1,5 +1,5 @@
 ---
-id: Architecture de l'application 
+id: Architecture de l'application
 sidebar_position: 3
 sidebar_class_name: icon architecture
 ---
@@ -10,10 +10,10 @@ The main objective when building the application architecture was to have a high
 
 A modular architecture was therefore implemented, with two main packages:
 
-- *@axelor/aos-mobile-ui*: a library of generic components for screen construction, plus a number of tools (themes, animations, useClickOutside, etc.).
-- *@axelor/aos-mobile-core*: a more technical library with the Application component, more complex components using external libraries, the connection system, store management, etc.
+- _@axelor/aos-mobile-ui_: a library of generic components for screen construction, plus a number of tools (themes, animations, useClickOutside, etc.).
+- _@axelor/aos-mobile-core_: a more technical library with the Application component, more complex components using external libraries, the connection system, store management, etc.
 
-The latter is based on a third package, *@axelor/aos-mobile-error*, which handles errors during rendering, including the display of an emergency screen.
+The latter is based on a third package, _@axelor/aos-mobile-error_, which handles errors during rendering, including the display of an emergency screen.
 
 ![Schéma des dépendances](/img/en/Schma_des_dpendances.png)
 
@@ -41,7 +41,7 @@ axelor-mobile
 │   └── **error** [*Error management*]
 │   │   └── ...
 │   └── ...
-├── src/ 
+├── src/
 │   ├── App.js [*Global application*]
 │   └── app.config.js [*Configurations file*]
 ├── android/ [*Android configurations*]

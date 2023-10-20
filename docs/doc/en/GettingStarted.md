@@ -56,7 +56,7 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 To apply these changes, run the command `source .bashrc`. This updates the paths, and you can check that the process has worked with the command `echo $ANDROID_SDK_ROOT`.
 
-The next step is to configure an emulator if necessary, using the **Virtual Device Manager** tool in *Android Studio*.
+The next step is to configure an emulator if necessary, using the **Virtual Device Manager** tool in _Android Studio_.
 
 ## Application configuration
 
@@ -83,7 +83,7 @@ An example configuration file is [available on Github](https://github.com/axelor
 
 ### Add or remove a functionnal module for APK generation
 
-Modules can be activated or deactivated directly from the App.js file in the *src* folder, or from the **Axelor mobile settings** configuration module in [AOS](https://github.com/axelor/axelor-open-suite) available from version 7.0.0.
+Modules can be activated or deactivated directly from the App.js file in the _src_ folder, or from the **Axelor mobile settings** configuration module in [AOS](https://github.com/axelor/axelor-open-suite) available from version 7.0.0.
 
 To manage modules directly from the Application component, simply add or remove a `Module` object from the **modules** attribute.
 

@@ -4,28 +4,26 @@ sidebar_position: 7
 sidebar_class_name: icon gestion de la camera
 ---
 
-
-
 # Gestion de la caméra et/ou du scanner
 
 ## Prise de photo avec la caméra
 
 L’application a la possibilité d’ouvrir la caméra du téléphone afin d’effectuer une photo. L’ouverture de la caméra aisni que l’obtention des données de la photo sont gérées via un slice.
 
-Pour toute utilisation de la caméra, il faut définir une clé pour cibler l’envoi des données de la photo et éviter les conflits. Cette clé doit être unique et idéalement décrire l’utilisation (exemple : *‘expense-line_justication_picture’*).
+Pour toute utilisation de la caméra, il faut définir une clé pour cibler l’envoi des données de la photo et éviter les conflits. Cette clé doit être unique et idéalement décrire l’utilisation (exemple : _‘expense-line_justication_picture’_).
 
-Pour ouvrir la caméra il suffit d’utiliser le reducer *enableCamera* avec le clé. De la même manière pour récupérer les informations de la photo, il faut utiliser le selector de la caméra avec la même clé. En mettant en place un useEffect il est alors possible d’initier une action dès qu’une photo est prise. La prise de photo ferme automatiquement la caméra. Une fois l’action initiée suite à la prise de photo, il faut penser à nettoyer le state de la caméra avec *clearPhoto* pour éviter les problèmes de refresh.
+Pour ouvrir la caméra il suffit d’utiliser le reducer _enableCamera_ avec le clé. De la même manière pour récupérer les informations de la photo, il faut utiliser le selector de la caméra avec la même clé. En mettant en place un useEffect il est alors possible d’initier une action dès qu’une photo est prise. La prise de photo ferme automatiquement la caméra. Une fois l’action initiée suite à la prise de photo, il faut penser à nettoyer le state de la caméra avec _clearPhoto_ pour éviter les problèmes de refresh.
 
 ```tsx
 // Récupération des données
 const cameraPicture = useCameraValueByKey(cameraKey);
 
-// Format de la photo récupérée 
+// Format de la photo récupérée
 interface CameraPhoto {
   name: string; // nom par défaut : `camera.${pictureExtension}`
   pictureExtention: string; // pour faciliter le nommage du fichier
   dateTime: string; // pour faciliter le nommage du fichier
-  type: string; // nécessaire pour l'upload de la photo 
+  type: string; // nécessaire pour l'upload de la photo
   size: number; // nécessaire pour l'upload de la photo (en octets)
   base64: string; // fichier au format base64
   fullBase64: string; // base64 avec le header pour définir le type de document
@@ -65,7 +63,7 @@ const scannedValue = useScannedValueByKey(scanKeySearch);
 // Récupération des données du scanner caméra
 const scanData = useCameraScannerValueByKey(scanKeySearch);
 
-// Activation des scan 
+// Activation des scan
 const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Caméra depending on device
 const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch); // Enable Zebra only
 

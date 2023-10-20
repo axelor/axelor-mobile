@@ -31,7 +31,7 @@ const useCustomerDeliveryDetailsActions = () => {
 
 The `headerActionsProvider` tool must therefore be used to associate a key with an object containing all the information required for the various header actions.
 
-A nomenclature has been set up to help understand the origin of a key: *<Module><Object><Screen type>.*.
+A nomenclature has been set up to help understand the origin of a key: _<Module><Object><Screen type>._.
 
 Actions are defined through a structure named `HeaderOptions` :
 
@@ -41,7 +41,7 @@ export interface HeaderActions {
 }
 
 export interface HeaderOptions {
-	model?: string;
+  model?: string;
   modelId?: number;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
@@ -54,13 +54,13 @@ export interface HeaderOptions {
 
 By default, the core package provides two actions for the header: follow-up messages on each object and attached files. These can be configured via the following props:
 
-- *model*: full name of the ERP model.
-- *modelId*: object identifier.
-- *disableMailMessages*: condition for displaying or not displaying follow-up messages on the object.
-- *disableJsonFields*: condition for displaying studio fields.
-- *attachedFileScreenTitle*: screen name for attached files.
-- *barcodeFieldname*: name of attribute containing barcode file on ERP (default `barCode`).
-- *headerTitle*: screen name for dynamic titles.
+- _model_: full name of the ERP model.
+- _modelId_: object identifier.
+- _disableMailMessages_: condition for displaying or not displaying follow-up messages on the object.
+- _disableJsonFields_: condition for displaying studio fields.
+- _attachedFileScreenTitle_: screen name for attached files.
+- _barcodeFieldname_: name of attribute containing barcode file on ERP (default `barCode`).
+- _headerTitle_: screen name for dynamic titles.
 
 Attached files are displayed only if the current object has them, with an indicator of their number. Follow-up messages are only displayed when `model` and `modelId` are set and not disabled by the `disableMailMessages` attribute.
 
@@ -68,7 +68,7 @@ Additional actions can then be added using the `actions` attribute. Each action 
 
 ```tsx
 export interface ActionType {
-	key: string;
+  key: string;
   order: number;
   title: string;
   iconName: string;
@@ -84,16 +84,16 @@ export interface ActionType {
 
 The various attributes available are :
 
-- **key** : *[Required]* is used to give an identifier to the action so that it can be modified via an overload.
-- **order** : *[Required]* is used to order the display of actions.
-- **title** : *[Required]* title of the action when reduced in the `DropdownMenu`.
-- **iconName** : *[Required]* name of the icon associated with this action
+- **key** : _[Required]_ is used to give an identifier to the action so that it can be modified via an overload.
+- **order** : _[Required]_ is used to order the display of actions.
+- **title** : _[Required]_ title of the action when reduced in the `DropdownMenu`.
+- **iconName** : _[Required]_ name of the icon associated with this action
 - **iconColor** : icon color, set to `secondaryColor_dark.background` by default.
 - **FontAwesome5** : Boolean indicating whether the icon belongs to FontAwesome4 or FontAwesome5. By default, this value is set to `true`, which corresponds to FontAwesome5.
 - **indicator**: small number to be displayed at the top of the action icon (e.g. number of attached files or pending messages).
 - **hideIf**: condition for displaying the action.
 - **disableIf**: action deactivation condition
-- **onPress** : *[Required]* action to be executed when user clicks on icon
+- **onPress** : _[Required]_ action to be executed when user clicks on icon
 - **showInHeader**: condition for whether the action can be displayed directly in the header or whether it must always be present in the drop-down actions. By default, actions are set to be displayed in the drop-down list.
 
 From a functional point of view, the set of actions is passed to the `HeaderOptionsMenu` component, which then performs the following steps:
@@ -114,7 +114,7 @@ To facilitate the addition and/or modification of a banner, this functionality i
 
 These registrations are carried out by hooks, providing access to the various tools available in the packages (translations, themes, store, etc.), as well as updating headers when necessary.
 
-Headers are managed by a context to enable updating at the slightest change. To retrieve the registration function, use the *useHeaderBand* hook.
+Headers are managed by a context to enable updating at the slightest change. To retrieve the registration function, use the _useHeaderBand_ hook.
 
 ```tsx
 const {registerHeaderBand} = useHeaderBand();
@@ -139,7 +139,7 @@ const checkInternetConnection = useCallback(async () => {
   }, [checkInternetConnection]);
 ```
 
-To register a banner, simply use the *registerHeaderBand* function, providing all the information required for display:
+To register a banner, simply use the _registerHeaderBand_ function, providing all the information required for display:
 
 ```tsx
 export interface HeaderBandItem {

@@ -1,33 +1,34 @@
 ---
 id: Gestion des composants
 sidebar_position: 1
-sidebar_class_name: icon 
+sidebar_class_name: icon
 ---
+
 # Gestion des composants
 
 ## Architecture
 
-La librairie *UI* contient l’ensemble des composants de base pour le développement d’interfaces sur l’application mobile.
+La librairie _UI_ contient l’ensemble des composants de base pour le développement d’interfaces sur l’application mobile.
 
-Le package core fournit également plusieurs composants, plus spécialisés ou nécessitant une libraire externe complexe (*Camera*, *Scanner*, *DatePicker*, composants liés aux *MailMessages*, …).
+Le package core fournit également plusieurs composants, plus spécialisés ou nécessitant une libraire externe complexe (_Camera_, _Scanner_, _DatePicker_, composants liés aux _MailMessages_, …).
 
 Le développement de ces composants est basé sur le principe d’[Atomic Design](https://blog-ux.com/quest-ce-que-latomic-design/). Les composants sont donc divisés entre **atomes**, **molécules**, **organismes** et **templates** :
 
 ![Untitled](/img/fr/Untitled1.png)
 
-Les trois premiers types (*atomes*, *molécules* et *organismes*) correspondent à des composants généralistes qui peuvent être utilisés dans n’importe quel contexte. Le dernier type (*templates*) est utilisé pour des composants spécialisés et responsabilisés, qui possèdent un contexte particulier et parfois même réalisent eux-mêmes des requêtes API ou des actions de navigation.
+Les trois premiers types (_atomes_, _molécules_ et _organismes_) correspondent à des composants généralistes qui peuvent être utilisés dans n’importe quel contexte. Le dernier type (_templates_) est utilisé pour des composants spécialisés et responsabilisés, qui possèdent un contexte particulier et parfois même réalisent eux-mêmes des requêtes API ou des actions de navigation.
 
 ![Untitled](/img/fr/Untitled2.png)
 
-D’un point de vue de l’architecture, chaque module doit comporter un dossier *components*  avec les différents types de composants présents dans le module. Chaque type de composants est séparé dans un dossier dédié avec un index pour exporter les composants afin de faciliter leur utilisation plus tard.
+D’un point de vue de l’architecture, chaque module doit comporter un dossier _components_ avec les différents types de composants présents dans le module. Chaque type de composants est séparé dans un dossier dédié avec un index pour exporter les composants afin de faciliter leur utilisation plus tard.
 
-Il faut également ajouter un fichier index à la racine du dossier *components* pour centraliser l’utilisation des composants dans les écrans mais également faciliter l’export. En effet, les composants peuvent également servir dans d’autres modules qui en dépendent, il faut donc exporter l’ensemble des composants dans le fichier index à la racine du dossier *src.*
+Il faut également ajouter un fichier index à la racine du dossier _components_ pour centraliser l’utilisation des composants dans les écrans mais également faciliter l’export. En effet, les composants peuvent également servir dans d’autres modules qui en dépendent, il faut donc exporter l’ensemble des composants dans le fichier index à la racine du dossier _src._
 
 ```jsx
 // Index dans un dossier type d'un composant
 export {default as ComponentName} from './ComponentName/ComponentName';
 
-// Index dans le dossier components 
+// Index dans le dossier components
 export * from './atoms';
 export * from './molecules';
 export * from './organisms';
@@ -46,7 +47,7 @@ Afin de documenter les composants disponibles dans l’application, le projet po
 
 À la création ou la modification d’un composant, il faut donc mettre à jour la storybook pour garder une documentation à jour. Pour le moment, le périmètre d’action du storybook est restreint au package UI.
 
-D’un point de vue architecture, afin de ne pas surcharger les sources compilées avec des fichiers inutiles, il existe un dossier *stories* au même niveau que le dossier *src* dans le package UI. C’est ce dossier qui va contenir toutes les stories du package.
+D’un point de vue architecture, afin de ne pas surcharger les sources compilées avec des fichiers inutiles, il existe un dossier _stories_ au même niveau que le dossier _src_ dans le package UI. C’est ce dossier qui va contenir toutes les stories du package.
 
 ```bash
 axelor-mobile/
@@ -61,7 +62,7 @@ axelor-mobile/
 
 Une fois dans le dossier stories, les composants sont triés par type (atoms, molecules, organisms & templates) sur le même principe que dans les sources du package.
 
-Une storie est un cas d’utilisation du composant. Dans la storybook, il faut donc réussir à re-créer tous les cas d’utilisation du composant pour permettre une meilleure documentation. Pour créer une storie, il faut donc créer un nouveau fichier dans le dossier *stories* dans la bonne catégorie de composant. La nomenclature pour le nom du fichier est `<nom du composant>.stories.tsx`.
+Une storie est un cas d’utilisation du composant. Dans la storybook, il faut donc réussir à re-créer tous les cas d’utilisation du composant pour permettre une meilleure documentation. Pour créer une storie, il faut donc créer un nouveau fichier dans le dossier _stories_ dans la bonne catégorie de composant. La nomenclature pour le nom du fichier est `<nom du composant>.stories.tsx`.
 
 Il peut ensuite y avoir deux types de stories : les stories fixes dans le style d’un catalogue ou alors les stories paramétrables où l’utilisateur peut modifier chaque attribut pour faire les combinaisons de son choix.
 
@@ -71,7 +72,7 @@ import {storiesOf} from '@storybook/react-native';
 import {Component} from '../../src/components';
 
 storiesOf('ui/<type>/<Component>', module)
-	.add('default', () => (
+  .add('default', () => (
     <Component>
       <View />
     </Component>
@@ -124,7 +125,7 @@ size: {
   defaultValue: 1,
 },
 
-// Select basique 
+// Select basique
 position: {
   control: {
     type: 'radio',
@@ -133,7 +134,7 @@ position: {
   defaultValue: 'right',
 },
 
-// Travail avec le thème de l'application. Bien penser à faire le mapping ensuite 
+// Travail avec le thème de l'application. Bien penser à faire le mapping ensuite
 // dans les props du composant : color={lightTheme.colors[args._color]}
 _color: {
   control: {
@@ -170,7 +171,7 @@ _iconName: {
   defaultValue: 'qrCode',
 },
 
-// Mapping dans les props du composant 
+// Mapping dans les props du composant
 <Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
 ```
 
@@ -210,13 +211,13 @@ interface TextElement {
 }
 ```
 
-L’élément **TextElement** permet d’afficher des informations textuelles dans les compartiments *upperTexts* et *lowerTexts*.
+L’élément **TextElement** permet d’afficher des informations textuelles dans les compartiments _upperTexts_ et _lowerTexts_.
 
-L’information textuelle peut être transmise à travers les attributs *indicatorText* et/ou *displayText* qui l’affichera en gras. Il est également possible de définir l’élément comme étant un titre (*isTitle*) afin de l’afficher en gras et en plus gros. Pour les titres, il faut donner l’information à travers l'attribut *displayText*.
+L’information textuelle peut être transmise à travers les attributs _indicatorText_ et/ou _displayText_ qui l’affichera en gras. Il est également possible de définir l’élément comme étant un titre (_isTitle_) afin de l’afficher en gras et en plus gros. Pour les titres, il faut donner l’information à travers l'attribut _displayText_.
 
 L’élément peut être personnalisé avec un icon, la taille d’écriture et/ou la couleur du texte et de l’icône.
 
-Finalement un affichage texte peut être personnalisé avec un composant différent avec l’attribut *customComponent*
+Finalement un affichage texte peut être personnalisé avec un composant différent avec l’attribut _customComponent_
 
 ```tsx
 interface BadgeElement {
@@ -229,15 +230,15 @@ interface BadgeElement {
 }
 ```
 
-L’élément **BadgeElement** permet d’afficher des informations dans les compartiments *upperBadges* et *lowerBadges*.
+L’élément **BadgeElement** permet d’afficher des informations dans les compartiments _upperBadges_ et _lowerBadges_.
 
-Il est possible de personnaliser la texte et la couleur du badge, à travers les attribut *displayText* et *color*, mais également de définir un composant de remplacement avec l’attribut *customComponent*.
+Il est possible de personnaliser la texte et la couleur du badge, à travers les attribut _displayText_ et _color_, mais également de définir un composant de remplacement avec l’attribut _customComponent_.
 
 La card est donc divisée est plusieurs compartiments, tous paramétrables et facultatif. La card affichera seulement les compartiments contenant de la données.
 
 ![Untitled](/img/fr/Untitled3.png)
 
-Les compartiments **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** et **lowerBadges** prennent en structure d’entrée une liste d’éléments du bon type en fonction de l’attribut (*TextElement* ou *BadgeElement*) ainsi qu’un attribut de style afin de personnaliser le conteneur. Il est également possible d’inverser le sens d’affichage des badges dans les compartiments **upperBadges** et **lowerBadges** avec l’attribut *fixedOnRightSide*.
+Les compartiments **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** et **lowerBadges** prennent en structure d’entrée une liste d’éléments du bon type en fonction de l’attribut (_TextElement_ ou _BadgeElement_) ainsi qu’un attribut de style afin de personnaliser le conteneur. Il est également possible d’inverser le sens d’affichage des badges dans les compartiments **upperBadges** et **lowerBadges** avec l’attribut _fixedOnRightSide_.
 
 Le dernier compartiment permet de contenir une **image**, facultative, en définissant les prorpiétés de base d’une image :
 
@@ -260,20 +261,19 @@ Afin de faciliter l’intégration d’image sur les cards, le package core four
 
 Afin de permettre un support sur la plateforme iOS, il faut noter plusieurs points sur lesquels porter une attention particulière :
 
-- La propriété de style **elevation** n'est pas supportée sur iOS, il faut donc utiliser les propriétés "*shadow*...” :
+- La propriété de style **elevation** n'est pas supportée sur iOS, il faut donc utiliser les propriétés "_shadow_...” :
 
-    ```css
-    elevation: 3,
-    shadowOpacity: 0.5,
-    shadowColor: Colors.secondaryColor.background,
-    shadowOffset: {width: 0, height: 2},
-    ```
+  ```css
+  elevation: 3,
+  shadowOpacity: 0.5,
+  shadowColor: Colors.secondaryColor.background,
+  shadowOffset: {width: 0, height: 2},
+  ```
 
-- La propriété de style **zIndex** ne fonctionne pas pour les vues imbriquées, il faut bien faire attention à ce que toutes les vues au-dessus possèdent également un attribut *zIndex* avec une valeur inférieure pour que cela fonctionne.
-- Un nouveau composant **KeyboardAvoidingScrollView** a été créé afin de ne pas avoir à redéfinir les propriétés iOS/Android etc pour la position du clavier. Il faut donc favoriser l'utilisation de ce composant plutôt que le *KeyboardAvoidingView* de react-native.
+- La propriété de style **zIndex** ne fonctionne pas pour les vues imbriquées, il faut bien faire attention à ce que toutes les vues au-dessus possèdent également un attribut _zIndex_ avec une valeur inférieure pour que cela fonctionne.
+- Un nouveau composant **KeyboardAvoidingScrollView** a été créé afin de ne pas avoir à redéfinir les propriétés iOS/Android etc pour la position du clavier. Il faut donc favoriser l'utilisation de ce composant plutôt que le _KeyboardAvoidingView_ de react-native.
 - Les styles de bordure **dotted** ou **dashed** ne sont pas supportés par iOS, il faut donc ajuster le comportement pour la plateforme iOS :
 
-    ```css
-    borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted'
-    ```
-
+  ```css
+  borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted'
+  ```

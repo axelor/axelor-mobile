@@ -1,7 +1,7 @@
 ---
 id: Création d’un écran
 sidebar_position: 3
-sidebar_class_name: icon 
+sidebar_class_name: icon
 ---
 
 # Screen creation
@@ -26,8 +26,8 @@ interface ScreenOptions {
 }
 ```
 
-- a title (*title*) to be displayed in the header when the user is on the page. This must actually be a translation key to facilitate internationalization of the application.
-- the component corresponding to the screen content (*component*).
+- a title (_title_) to be displayed in the header when the user is on the page. This must actually be a translation key to facilitate internationalization of the application.
+- the component corresponding to the screen content (_component_).
 - options for displaying the screen, such as whether or not to have a header with a shadow. The header has a shadow by default, so there's no need to supply this attribute when a shadow is required.
 
 Then simply export all the screens in this form:
@@ -106,59 +106,53 @@ interface Field {
 
 A field is defined by several attributes:
 
-- *parentPanel*: the name of the panel in which the field is to be displayed
-- *order*: order of the field in the view/panel.
-- *titleKey*: translation key for field title.
-- *helperKey*: translation key for the helper that will be displayed next to the field. This helper is used to explain the purpose of the field to the user, if necessary.
-- *type*: definition of field typing to define default display but also to enable form data integrity checking. The types accepted in the form view are :
-    
-    ```tsx
-    type InputType =
-      | 'string'
-      | 'email'
-      | 'url'
-      | 'phone'
-      | 'date'
-      | 'datetime'
-      | 'time'
-      | 'number'
-      | 'boolean'
-      | 'array'
-      | 'object';
-    ```
-    
-- *required* and *readonly* define a field as required or read-only.
-- *requiredIf*, *readonlyIf* and *hideIf* are used to define a condition for which the field must be required, read-only or hidden. These three functions receive the states of the form object and the global store as arguments, and must return a Boolean.
-- *dependsOn*: defines a condition for updating the value of the field according to the update of another field. This is a json field that associates the name of the field on which the current field depends as a key and the function that defines the new field value according to the states of the form object, the global store and the value that has just been modified.
-- *widget*: definition of a display widget for the field. By default, the form assigns a widget associated with the field type, but it is possible to request another compatible widget, or to define a custom widget which can then be used to define a `‘custom'` component.
-    
-    ```tsx
-    type Widget =
-      | 'default'
-      | 'increment'
-      | 'star'
-      | 'HTML'
-      | 'label'
-      | 'password'
-      | 'file'
-      | 'date'
-      | 'checkbox'
-      | 'custom';
-    ```
-    
-- *customComponent*: definition of a custom display component. This can be used, for example, to display a search bar or a selection. Custom components must have a precise structure to enable values to be passed to the component.
-    
-    ```tsx
-    interface customComponentOptions {
-      style?: any;
-      title?: string;
-      defaultValue?: any;
-      onChange: (value?: any) => void;
-      required?: boolean;
-      readonly?: boolean;
-    }
-    ```
-    
+- _parentPanel_: the name of the panel in which the field is to be displayed
+- _order_: order of the field in the view/panel.
+- _titleKey_: translation key for field title.
+- _helperKey_: translation key for the helper that will be displayed next to the field. This helper is used to explain the purpose of the field to the user, if necessary.
+- _type_: definition of field typing to define default display but also to enable form data integrity checking. The types accepted in the form view are :
+  ```tsx
+  type InputType =
+    | 'string'
+    | 'email'
+    | 'url'
+    | 'phone'
+    | 'date'
+    | 'datetime'
+    | 'time'
+    | 'number'
+    | 'boolean'
+    | 'array'
+    | 'object';
+  ```
+- _required_ and _readonly_ define a field as required or read-only.
+- _requiredIf_, _readonlyIf_ and _hideIf_ are used to define a condition for which the field must be required, read-only or hidden. These three functions receive the states of the form object and the global store as arguments, and must return a Boolean.
+- _dependsOn_: defines a condition for updating the value of the field according to the update of another field. This is a json field that associates the name of the field on which the current field depends as a key and the function that defines the new field value according to the states of the form object, the global store and the value that has just been modified.
+- _widget_: definition of a display widget for the field. By default, the form assigns a widget associated with the field type, but it is possible to request another compatible widget, or to define a custom widget which can then be used to define a `‘custom'` component.
+  ```tsx
+  type Widget =
+    | 'default'
+    | 'increment'
+    | 'star'
+    | 'HTML'
+    | 'label'
+    | 'password'
+    | 'file'
+    | 'date'
+    | 'checkbox'
+    | 'custom';
+  ```
+- _customComponent_: definition of a custom display component. This can be used, for example, to display a search bar or a selection. Custom components must have a precise structure to enable values to be passed to the component.
+  ```tsx
+  interface customComponentOptions {
+    style?: any;
+    title?: string;
+    defaultValue?: any;
+    onChange: (value?: any) => void;
+    required?: boolean;
+    readonly?: boolean;
+  }
+  ```
     <aside>
     ⚠️ Care must be taken when using custom components with the **hideIf** attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
     
@@ -202,9 +196,9 @@ A field is defined by several attributes:
     ```
     
     </aside>
-    
-- *options*: transmit customized options to the various components to personalize the display.
-- *validationOptions*: allows you to define validation options (maximum and minimum values, integer or decimal, etc.). In fact, it's a matter of defining field typing more precisely with the [YUP](https://www.npmjs.com/package/yup) tool. Some typing options suggest redefining the error message. If you need to redefine a specific error message, remember to use a translation key so as not to jeopardize the internationalization of the application.
+
+- _options_: transmit customized options to the various components to personalize the display.
+- _validationOptions_: allows you to define validation options (maximum and minimum values, integer or decimal, etc.). In fact, it's a matter of defining field typing more precisely with the [YUP](https://www.npmjs.com/package/yup) tool. Some typing options suggest redefining the error message. If you need to redefine a specific error message, remember to use a translation key so as not to jeopardize the internationalization of the application.
 
 ```tsx
 interface Panel {
@@ -219,12 +213,12 @@ interface Panel {
 
 A panel is defined by several attributes:
 
-- *titleKey*: translation key for the panel title.
-- *isCollaspible*: defines whether a panel should be collapsible.
-- *order*: panel order in the view.
-- *colSpan*: panel width in the view. By default, the panel takes up the entire width of the view.
-- *direction*: element display direction (`'row'` displays elements in rows, `'column'` displays elements in columns).
-- *parent*: name of parent panel.
+- _titleKey_: translation key for the panel title.
+- _isCollaspible_: defines whether a panel should be collapsible.
+- _order_: panel order in the view.
+- _colSpan_: panel width in the view. By default, the panel takes up the entire width of the view.
+- _direction_: element display direction (`'row'` displays elements in rows, `'column'` displays elements in columns).
+- _parent_: name of parent panel.
 
 ```tsx
 interface Form {
@@ -239,7 +233,7 @@ interface Form {
 }
 ```
 
-A form is then composed of a set of *panels* supplied in the form of a JSON object, a set of *fields* in the same way, the name of the model for building the actions, and a *readonlyIf* function for making the view read-only according to the state of the form and the values of the store.
+A form is then composed of a set of _panels_ supplied in the form of a JSON object, a set of _fields_ in the same way, the name of the model for building the actions, and a _readonlyIf_ function for making the view read-only according to the state of the form and the values of the store.
 
 ```tsx
 interface FormConfigs {
@@ -247,7 +241,7 @@ interface FormConfigs {
 }
 ```
 
-In this way, each module can define as many form configurations as required in a key-value format, which is then exported to the module definition in the *models* category under the **formsRegister** attribute.
+In this way, each module can define as many form configurations as required in a key-value format, which is then exported to the module definition in the _models_ category under the **formsRegister** attribute.
 
 Once the form configurations have been defined, the next step is to create the form screen in the same way as a basic screen, then use a pre-built component for display: `FormView`.
 
@@ -256,46 +250,37 @@ This component takes three elements as arguments:
 - defaultValue: the default value to be displayed on the form.
 - formKey : the form configuration key defined when exporting the module.
 - actions: the set of actions to be displayed at the bottom of the page. Actions are built through a template in the same way as all form elements.
-    
-    
-    ```tsx
-    interface Action {
-      key: string;
-      type: FormActionType;
-      titleKey?: string;
-      iconName?: string;
-      color?: Color;
-      hideIf?: (_states: States) => boolean;
-      disabledIf?: (_states: States) => boolean;
-      customAction?: (_options: ActionProps) => void;
-      needValidation?: boolean;
-      needRequiredFields?: boolean;
-    }
-    
-    interface ActionProps {
-      handleReset?: () => void;
-      objectState?: any;
-      storeState?: any;
-      handleObjectChange?: (newValue?: any) => void;
-      dispatch?: Dispatch<any>;
-    }
-    
-    type FormActionType =
-      | 'update'
-      | 'create'
-      | 'reset'
-      | 'refresh'
-      | 'custom';
-    ```
-    
-    An action is defined by several attributes:
-    
-    - *key*: action key for action uniqueness
-    - *type*: action type definition for default configurations. This automatically defines the title and action to be performed when the button is clicked.
-    - *titleKey*: translation key for button title.
-    - *iconName*: name of the FontAwesome5 library icon to be displayed next to the button title.
-    - *color*: button color.
-    - *hideIf* / *disabledIf*: functions for adding a display/availability condition for the button, depending on the state of the form and store values.
-    - *customAction*: custom action to be performed on click.
-    - *needValidation*: allows you to ask the form to check whether the values filled in by the user meet the constraints before performing the action. If the form is correct, the action is performed. If not, the user receives a summary of the elements to be corrected.
-    - *needRequiredFields*: prevents the user from clicking on the button if certain required fields are not filled in.
+  ```tsx
+  interface Action {
+    key: string;
+    type: FormActionType;
+    titleKey?: string;
+    iconName?: string;
+    color?: Color;
+    hideIf?: (_states: States) => boolean;
+    disabledIf?: (_states: States) => boolean;
+    customAction?: (_options: ActionProps) => void;
+    needValidation?: boolean;
+    needRequiredFields?: boolean;
+  }
+
+  interface ActionProps {
+    handleReset?: () => void;
+    objectState?: any;
+    storeState?: any;
+    handleObjectChange?: (newValue?: any) => void;
+    dispatch?: Dispatch<any>;
+  }
+
+  type FormActionType = 'update' | 'create' | 'reset' | 'refresh' | 'custom';
+  ```
+  An action is defined by several attributes:
+  - _key_: action key for action uniqueness
+  - _type_: action type definition for default configurations. This automatically defines the title and action to be performed when the button is clicked.
+  - _titleKey_: translation key for button title.
+  - _iconName_: name of the FontAwesome5 library icon to be displayed next to the button title.
+  - _color_: button color.
+  - _hideIf_ / _disabledIf_: functions for adding a display/availability condition for the button, depending on the state of the form and store values.
+  - _customAction_: custom action to be performed on click.
+  - _needValidation_: allows you to ask the form to check whether the values filled in by the user meet the constraints before performing the action. If the form is correct, the action is performed. If not, the user receives a summary of the elements to be corrected.
+  - _needRequiredFields_: prevents the user from clicking on the button if certain required fields are not filled in.
