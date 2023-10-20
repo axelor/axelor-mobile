@@ -34,7 +34,6 @@ export {default as FormIncrementInput} from './FormIncrementInput/FormIncrementI
 export {default as FormInput} from './FormInput/FormInput';
 export {default as FromTo} from './FromTo/FromTo';
 export {default as HalfLabelCard} from './HalfLabelCard/HalfLabelCard';
-export {default as IconButton} from './IconButton/IconButton';
 export {default as IconInput} from './IconInput/IconInput';
 export {default as Image} from './Image/Image';
 export {default as Increment} from './Increment/Increment';
