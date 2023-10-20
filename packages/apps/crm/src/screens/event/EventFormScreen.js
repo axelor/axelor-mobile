@@ -36,10 +36,10 @@ const EventFormScreen = ({navigation, route}) => {
   const {user} = useSelector(state => state.user);
 
   const defaultValue = useMemo(() => {
-    const _defaultStartDate = new Date().toISOString();
-    const _defaultEndDate = new Date(
-      new Date().setHours(new Date().getHours() + 1),
-    ).toISOString();
+    const _defaultStartDate = new Date();
+    const _defaultEndDate = new Date().setHours(
+      _defaultStartDate.getHours() + 1,
+    );
     const _default = {
       typeSelect: EventType.category.Meeting,
       statusSelect: EventType.status.Planned,
@@ -100,26 +100,7 @@ const EventFormScreen = ({navigation, route}) => {
   const createEventAPI = useCallback(
     (_event, dispatch) => {
       dispatch(createEvent({event: _event}));
-      if (_event?.isLead) {
-        navigation.navigate('LeadDetailsScreen', {
-          idLead: _event?.eventLead?.id,
-        });
-      }
-      if (_event?.isProspect) {
-        navigation.navigate('ProspectDetailsScreen', {
-          idProspect: _event?.partner?.id,
-        });
-      }
-      if (_event?.isPartner) {
-        navigation.navigate('ClientDetailsScreen', {
-          idClient: _event?.partner?.id,
-        });
-      }
-      if (_event?.isContact) {
-        navigation.navigate('ContactDetailsScreen', {
-          idContact: _event?.contactPartner?.id,
-        });
-      }
+      navigation.pop();
     },
     [navigation],
   );

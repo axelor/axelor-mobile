@@ -19,7 +19,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {Picker} from '@axelor/aos-mobile-ui';
+import {Picker, useThemeColor} from '@axelor/aos-mobile-ui';
 import {EventType} from '../../../types';
 
 const EventStatusPicker = ({
@@ -30,6 +30,7 @@ const EventStatusPicker = ({
   readonly = false,
 }) => {
   const I18n = useTranslator();
+  const Colors = useThemeColor();
 
   return (
     <Picker
@@ -39,7 +40,7 @@ const EventStatusPicker = ({
       onValueChange={onChange}
       labelField="title"
       title={I18n.t(title)}
-      listItems={EventType.getStatusList(I18n)}
+      listItems={EventType.getStatusList(Colors, I18n)}
       valueField="key"
       defaultValue={defaultValue}
       disabled={readonly}

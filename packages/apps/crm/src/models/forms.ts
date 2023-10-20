@@ -473,7 +473,7 @@ export const crm_formsRegister: FormConfigs = {
         },
       },
       user: {
-        titleKey: 'Crm_User',
+        titleKey: 'Crm_AssignedTo',
         type: 'object',
         widget: 'custom',
         customComponent: UserSearchBar,

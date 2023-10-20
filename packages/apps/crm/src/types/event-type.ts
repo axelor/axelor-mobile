@@ -56,20 +56,6 @@ class EventType {
     }
   };
 
-  static getCategoryList = (I18n: {t: (key: string) => string}) => {
-    return Object.entries(this.category).map(([key, value]) => ({
-      title: I18n.t(`Crm_Event_Category_${key}`),
-      key: value,
-    }));
-  };
-
-  static getStatusList = (I18n: {t: (key: string) => string}) => {
-    return Object.entries(this.status).map(([key, value]) => ({
-      title: I18n.t(`Crm_Event_Status_${key}`),
-      key: value,
-    }));
-  };
-
   static getStatusBorderColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.status.Planned:
@@ -84,6 +70,17 @@ class EventType {
         );
         return {};
     }
+  };
+
+  static getStatusList = (
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    return Object.entries(this.status).map(([key, value]) => ({
+      title: I18n.t(`Crm_Event_Status_${key}`),
+      key: value,
+      color: this.getStatusBorderColor(value, Colors),
+    }));
   };
 
   static getCategory = (
@@ -133,6 +130,13 @@ class EventType {
         );
         return Colors.warningColor;
     }
+  };
+
+  static getCategoryList = (I18n: {t: (key: string) => string}) => {
+    return Object.entries(this.category).map(([key, value]) => ({
+      title: I18n.t(`Crm_Event_Category_${key}`),
+      key: value,
+    }));
   };
 
   static getCalendarListItems = (list: any[], Colors: ThemeColors): any[] => {
