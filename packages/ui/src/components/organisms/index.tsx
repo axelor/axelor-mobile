@@ -25,8 +25,6 @@ export {default as HeaderContainer} from './HeaderContainer/HeaderContainer';
 export {default as ImageBubble} from './ImageBubble/ImageBubble';
 export {default as MultiValuePicker} from './MultiValuePicker/MultiValuePicker';
 export {default as Picker} from './Picker/Picker';
-export {default as PopUpOneButton} from './PopUpOneButton/PopUpOneButton';
-export {default as PopUpTwoButton} from './PopUpTwoButton/PopUpTwoButton';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
 export {default as ScrollList} from './ScrollList/ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
