@@ -120,7 +120,7 @@ Cette fonction permet donc de créer les trois états d’un reducer (pending, f
 
 Dans le fichier index du dossier features contenant l’ensemble des slices du module, il faut ensuite exporter ce reducer sous un nom plus simple permettant par la suite d’accéder à son state :
 
-![Capture d’écran du 2023-03-21 09-21-01.png](/img/fr/Capture_dcran_du_2023-03-21_09-21-01.png)
+![architecture_slices.png](/img/fr/architecture_slices.png)
 
 ```tsx
 export {catalogReducer as catalog} from './catalogSlice';
@@ -136,10 +136,9 @@ export {prospectReducer as prospect} from './prospectSlice';
 
 Une fois les reducers exportés sous un nouveau nom, il faut ensuite les exporter avec le module dans l’attribut dédiés pour que le module core puisse les ajouter au store.
 
-<aside>
-⚠️ **Attention**, si des reducers de modules différents ont le même nom alors ils seront écrasés par le dernier module pris en compte. Il est donc préférable d’identifier la provenance du reducer dans son nom afin d’éviter les erreurs.
-
-</aside>
+:::caution
+Si des reducers de modules différents ont le même nom alors ils seront écrasés par le dernier module pris en compte. Il est donc préférable d’identifier la provenance du reducer dans son nom afin d’éviter les erreurs.
+:::
 
 ```tsx
 import {Module} from '@axelor/aos-mobile-core';

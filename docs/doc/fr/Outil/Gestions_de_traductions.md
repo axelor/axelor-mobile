@@ -8,13 +8,13 @@ sidebar_class_name: icon  traductions
 
 Les traductions nécessaires à l’application sont sauvegardées dans le storage du téléphone. Chaque module a la responsabilité de générer ses propres traductions.
 
-![Untitled](/img/fr/Untitled.png)
+![architecture_translations](/img/fr/architecture_translations.png)
 
 Chaque module doit comporter dans son architecture un dossier i18n avec des fichiers json, un fichier par langage.
 
 Au sein des fichiers de traductions, les clés doivent suivre une nomenclature afin de structurer l’ensemble des traductions et en connaître l’origine.
 
-La nomenclature est la suivante : _`<Module>_<Signification>.`_
+La nomenclature est la suivante : _`<Module>_<Signification>.`\_
 
 L’ensemble des clés de traductions doivent être rédigées en **anglais** et permettre à l’utilisateur de pouvoir continuer à utiliser l’application même si la valeur de la traduction n’a pas été trouvée.
 

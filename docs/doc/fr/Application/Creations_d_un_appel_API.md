@@ -8,15 +8,15 @@ sidebar_class_name: icon
 
 ## Gestion des champs
 
-![Untitled](/img/fr/Untitled3.png)
-
 Afin de permettre de surcharger facilement les différentes caractéristiques des requêtes API, il est possible de créer des configurations pour chaque modèle via trois objets.
 
 Chaque module a la responsabilité de générer ses propres modèles et de surcharger les modèles d’un autre module si nécessaire.
 
 Il faut donc aujouter dans l’architecture un dossier models qui va contenir un fichier par type de configuration ainsi qu’un fichier index afin de faciliter l’export.
 
-- Les champs de recherche pour chaque objet au format _SearchFields._ Il s’agit en réalité d’un objet format json associant une clé à une liste de string, chacun correspondant à un champ de l’objet. Pour surcharger ces champs de recherche, il suffit de venir définir une nouvelle liste associée à la même clé avec les champs de recherche à ajouter.
+![architecture_fields.png](/img/fr/architecture_fields.png)
+
+- Les champs de recherche pour chaque objet au format _SearchFields_. Il s’agit en réalité d’un objet format json associant une clé à une liste de string, chacun correspondant à un champ de l’objet. Pour surcharger ces champs de recherche, il suffit de venir définir une nouvelle liste associée à la même clé avec les champs de recherche à ajouter.
 
 ```tsx
 import {SearchFields} from '@axelor/aos-mobile-core';
@@ -198,6 +198,7 @@ Cet helper permet de récupérer une liste de critères par rapport aux champs d
 			value: searchValue
     },
     ...
+  ]
 }
 ```
 
@@ -229,7 +230,7 @@ createStandardSearch = ({
   }: SearchProps): Promise<any>
 ```
 
-Cet helper permet de créer une requête de recherche standard, en lien avec les web services AOP, de façon simplifiée en n’indiquant que les éléments importants. Le nombre d’éléments par page est par défaut défini à 10 et mais cette valeur peut être modifiée dans [le fichier de configuration de l’application](https://www.notion.so/Documentation-technique-AOM-FR-7-2-607af4650bfa4ae086926122a4435c9a?pvs=21). Par ailleurs, si une requête a besoin de supprimer cette limite de récupération d’éléments, il suffit d’indiquer explicitement `numberElementsByPage: null` dans la définition de la requête. La valeur par défaut n’intervient que si _numberElementsByPage_ est **_undefined_**.
+Cet helper permet de créer une requête de recherche standard, en lien avec les web services AOP, de façon simplifiée en n’indiquant que les éléments importants. Le nombre d’éléments par page est par défaut défini à 10 et mais cette valeur peut être modifiée dans le fichier de configuration de l’application. Par ailleurs, si une requête a besoin de supprimer cette limite de récupération d’éléments, il suffit d’indiquer explicitement `numberElementsByPage: null` dans la définition de la requête. La valeur par défaut n’intervient que si _numberElementsByPage_ est **_undefined_**.
 
 ## Création d’une requête de récupération standard
 

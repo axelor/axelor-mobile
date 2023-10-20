@@ -63,7 +63,7 @@ export interface Theme {
 }
 ```
 
-![Thème principal de l’application](/img/fr/Thme_principal.png)
+![theme.png](/img/fr/theme.png)
 
 - _background_ : cette couleur doit correspondre à la couleur principale de l’objet.
 - _background_light_ : il s’agit ici de la couleur prinicpale avec une opacité plus faible (70%) permettant d’être plus discrète et plus facile pour la lecture.

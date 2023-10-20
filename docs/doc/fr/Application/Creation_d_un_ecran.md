@@ -60,10 +60,9 @@ export default {
 };
 ```
 
-<aside>
-⚠️ Attention, tous les écrans définis dans le module doivent être exportés sinon l’application ne sera pas capable d’y accéder.
-
-</aside>
+:::caution
+Tous les écrans définis dans le module doivent être exportés sinon l’application ne sera pas capable d’y accéder.
+:::
 
 Lors de la surcharge d’un écran, il suffit de venir créer un nouvel écran en modifiant les éléments à changer sur l’écran de base. Puis, une fois le composant créé, venir l’exporter avec la même clé que dans le module d’origine. Ainsi, lors de l’enregistrement dans la navigation, seul le dernier écran avec la même clé sera pris en compte.
 
@@ -159,49 +158,49 @@ Un field est défini à travers plusieurs attribut :
   }
   ```
 
-    <aside>
-    ⚠️ Il faut faire attention lors de l’utilisation des composants custom avec l’attribut **hideIf**. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
+:::caution
+Il faut faire attention lors de l’utilisation des composants custom avec l’attribut **hideIf**. En effet, l’affichage étant conditionnel, il ne faut pas que le composant utilise des hooks afin d’éviter les erreurs de rendu dus à un nombre de hooks différents entre les différents renders.
 
-  L’astuce est donc de créer un composant auxiliaire qui va gérer l’ensemble des hooks puis de créer un composant au-dessus qui transmet seulement les valeurs au composant auxiliaire.
+L’astuce est donc de créer un composant auxiliaire qui va gérer l’ensemble des hooks puis de créer un composant au-dessus qui transmet seulement les valeurs au composant auxiliaire.
 
-  ```tsx
-  const ComponentAux = ({
-    style,
-    title,
-    defaultValue,
-    onChange,
-    readonly,
-    required,
-  }) => {
-    [hooks ...]
+```tsx
+const ComponentAux = ({
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}) => {
+  [hooks ...]
 
-    return [render ...];
-  };
+  return [render ...];
+};
 
-  const Component = ({
-    style = null,
-    title = 'DefaultTitleKey',
-    defaultValue = null,
-    onChange = () => {},
-    readonly = false,
-    required = false,
-  }) => {
-    return (
-      <ComponentAux
-        style={style}
-        title={title}
-        defaultValue={defaultValue}
-        onChange={onChange}
-        readonly={readonly}
-        required={required}
-      />
-    );
-  };
+const Component = ({
+  style = null,
+  title = 'DefaultTitleKey',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}) => {
+  return (
+    <ComponentAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+    />
+  );
+};
 
-  export default Component;
-  ```
+export default Component;
+```
 
-    </aside>
+:::
 
 - _options_ : permet de transmettrre des options personnalisées aux différents composants afin de personnaliser l’affichage.
 - _validationOptions_ : permet de définir des options de validations (valeurs maximale et minimale, entier ou décimal, …). Il s’agit en fait de définir plus précisément le typage du champs avec l’outil [YUP](https://www.npmjs.com/package/yup). Certaines options de typage propose de redéfinir le message d’erreur. Dans le cas où il faut redéfinir un message d’erreur spécifique, il faut penser à utiliser une clé de traduction afin de ne pas nuir à l’internationalisation de l’application.

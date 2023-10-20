@@ -14,15 +14,15 @@ Le package core fournit également plusieurs composants, plus spécialisés ou n
 
 Le développement de ces composants est basé sur le principe d’[Atomic Design](https://blog-ux.com/quest-ce-que-latomic-design/). Les composants sont donc divisés entre **atomes**, **molécules**, **organismes** et **templates** :
 
-![Untitled](/img/fr/Untitled1.png)
+![atomic_design.png](/img/fr/atomic_design.png)
 
 Les trois premiers types (_atomes_, _molécules_ et _organismes_) correspondent à des composants généralistes qui peuvent être utilisés dans n’importe quel contexte. Le dernier type (_templates_) est utilisé pour des composants spécialisés et responsabilisés, qui possèdent un contexte particulier et parfois même réalisent eux-mêmes des requêtes API ou des actions de navigation.
 
-![Untitled](/img/fr/Untitled2.png)
-
 D’un point de vue de l’architecture, chaque module doit comporter un dossier _components_ avec les différents types de composants présents dans le module. Chaque type de composants est séparé dans un dossier dédié avec un index pour exporter les composants afin de faciliter leur utilisation plus tard.
 
-Il faut également ajouter un fichier index à la racine du dossier _components_ pour centraliser l’utilisation des composants dans les écrans mais également faciliter l’export. En effet, les composants peuvent également servir dans d’autres modules qui en dépendent, il faut donc exporter l’ensemble des composants dans le fichier index à la racine du dossier _src._
+Il faut également ajouter un fichier index à la racine du dossier _components_ pour centraliser l’utilisation des composants dans les écrans mais également faciliter l’export. En effet, les composants peuvent également servir dans d’autres modules qui en dépendent, il faut donc exporter l’ensemble des composants dans le fichier index à la racine du dossier _src_.
+
+![architecture_component.png](/img/fr/architecture_component.png)
 
 ```jsx
 // Index dans un dossier type d'un composant
@@ -147,8 +147,8 @@ _color: {
 },
 ```
 
-<aside>
-⚠️ La gestion des champs object n’est pas très bien faite sur le storybook. Il n’est pas possible de définir la structure de l’objet attendu et pour l’utilisateur, modifier un champs de type object est assez difficile car il faut reconstruire l’objet json dans un éditeur texte. Dans le cas où le format de l’objet attendu est connu, il est plutôt conseiller de créer un attribut par champs attendu de l’objet puis reconstruire l’objet dans les props du composant par la suite. Un exemple avec l’objet suivant :
+:::caution
+La gestion des champs object n’est pas très bien faite sur le storybook. Il n’est pas possible de définir la structure de l’objet attendu et pour l’utilisateur, modifier un champs de type object est assez difficile car il faut reconstruire l’objet json dans un éditeur texte. Dans le cas où le format de l’objet attendu est connu, il est plutôt conseiller de créer un attribut par champs attendu de l’objet puis reconstruire l’objet dans les props du composant par la suite. Un exemple avec l’objet suivant :
 
 ```tsx
 // Structure de l'objet attendu
@@ -175,17 +175,16 @@ _iconName: {
 <Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
 ```
 
-</aside>
+:::
 
 Quelques commandes importantes à exécuter à la racine du projet pour la storybook :
 
 - ouvrir la storybook : `yarn storybook`
 - build la storybook : `yarn build-storybook`
 
-<aside>
+:::info
 💡 Ne pas hésiter à regarder les stories existantes lors de la création d’une nouvelle storie, elles représentent déjà un certain nombre de cas d’utilisation qui peuvent être utiles.
-
-</aside>
+:::
 
 ## Création d’une card
 
@@ -217,7 +216,7 @@ L’information textuelle peut être transmise à travers les attributs _indicat
 
 L’élément peut être personnalisé avec un icon, la taille d’écriture et/ou la couleur du texte et de l’icône.
 
-Finalement un affichage texte peut être personnalisé avec un composant différent avec l’attribut _customComponent_
+Finalement un affichage texte peut être personnalisé avec un composant différent avec l’attribut _customComponent_.
 
 ```tsx
 interface BadgeElement {
@@ -236,7 +235,7 @@ Il est possible de personnaliser la texte et la couleur du badge, à travers les
 
 La card est donc divisée est plusieurs compartiments, tous paramétrables et facultatif. La card affichera seulement les compartiments contenant de la données.
 
-![Untitled](/img/fr/Untitled3.png)
+![explanation_objectCard.png](/img/fr/explanation_objectCard.png)
 
 Les compartiments **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** et **lowerBadges** prennent en structure d’entrée une liste d’éléments du bon type en fonction de l’attribut (_TextElement_ ou _BadgeElement_) ainsi qu’un attribut de style afin de personnaliser le conteneur. Il est également possible d’inverser le sens d’affichage des badges dans les compartiments **upperBadges** et **lowerBadges** avec l’attribut _fixedOnRightSide_.
 

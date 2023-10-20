@@ -47,9 +47,6 @@ Il existe déjà deux composants qui utilisent la caméra :
 
 - **UploadFileInput** : offre la possibilité à l’utilisateur de sélectionner une image du stockage du téléphone ou de prendre une photo. Cette photo peut ensuite être transformé en MetaFile ou rester au format base64.
 - **CameraPhoto** : offre la possibilié d’ouvrir la caméra au clique puis de permettre une action sur la prise de photo. Cette photo peut être renvoyée sous forme de MetaFile ou au format base64 en fonction de la configuration donnée au composant.
-  Thème principal de l’application
-
-Sauf pour les couleurs par défaut pour les écritures ou les couleurs de fond de l’application, toutes les coleurs sont donc composés de trois attributs :
 
 ## Récupération des informations d’un scan
 
@@ -64,7 +61,7 @@ const scannedValue = useScannedValueByKey(scanKeySearch);
 const scanData = useCameraScannerValueByKey(scanKeySearch);
 
 // Activation des scan
-const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Caméra depending on device
+const {enable: onScanPress} = useScanActivator(scanKeySearch); // Enable Zebra or Camera depending on device
 const {enable: enableScanner} = useScannerDeviceActivator(scanKeySearch); // Enable Zebra only
 
 // Traitement des données

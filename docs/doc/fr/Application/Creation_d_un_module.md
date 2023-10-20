@@ -6,7 +6,7 @@ sidebar_class_name: icon
 
 # Création d’un module
 
-L’application fonctionne avec une structure de module. Ainsi, chaque package fonctionnel doit exporter un objet au format _Module_ défini dans le package **CORE.**
+L’application fonctionne avec une structure de module. Ainsi, chaque package fonctionnel doit exporter un objet au format _Module_ défini dans le package **CORE**.
 
 Un module est défini avec les éléments suivants :
 
@@ -62,4 +62,4 @@ Un module possède donc :
 - un ensemble de traductions pour le module (_translations_). il faut fournir les traductions au format clé-valeur pour chaque langue supportée.
 - un ensemble de reducers pour le module (_reducers_). Un reducer est un simple fonction qui permet de mettre à jour l’état d’un objet en fonction de l’action qui lui est transmise. Dans notre contexte, les reducers sont les fonctions redux qui permettent de mettre à jour le store lors des appels API par exemple. Il faut obligatoirement exporter tous les reducers créés dans le module pour accéder à la partie du store correspondante dans les différents écrans.
 - une liste de fonctions à exécuter en arrière plan si nécessaire (_backgroundFunctions_). Ces fonctions sont exécutées toutes les 5 minutes.
-- une configuration de modèles pour les appels API (_models_), pour plus d’explications voir la section [Création d'un appel API](https://www.notion.so/Documentation-technique-AOM-FR-7-2-607af4650bfa4ae086926122a4435c9a?pvs=21). b
+- une configuration de modèles pour les appels API (_models_).
