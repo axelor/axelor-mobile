@@ -48,13 +48,19 @@ const AnomalyBubble = ({
   useEffect(() => {
     fetchAnomalies({objectName, objectId})
       .then(response => {
+        let checks = [];
+        let otherChecks = [];
+
         if (response?.data?.object?.checks) {
-          const checks = response?.data?.object?.checks;
-          const otherChecks = response?.data?.object?.otherChecks?.flatMap(
+          checks = response?.data?.object?.checks;
+        }
+        if (response?.data?.object?.otherChecks) {
+          otherChecks = response?.data?.object?.otherChecks?.flatMap(
             otherCheck => otherCheck.checks,
           );
-          setAnomalyList(Anomaly.sortType([...checks, ...otherChecks]));
         }
+
+        setAnomalyList(Anomaly.sortType([...checks, ...otherChecks]));
       })
       .catch(() => setAnomalyList([]));
   }, [objectName, objectId]);
