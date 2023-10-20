@@ -77,7 +77,6 @@ export const ManufacturingModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
-export * from './hooks';
 export * from './screens/manufactoringOrder/consumedProduct';
 export * from './screens/manufactoringOrder/producedProduct';
 export * from './screens/manufactoringOrder/wasteProduct';
