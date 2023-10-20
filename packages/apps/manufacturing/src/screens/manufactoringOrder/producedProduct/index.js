@@ -52,3 +52,8 @@ export default {
     },
   },
 };
+
+export {ProducedProductDetailsScreen};
+export {ProducedProductListScreen};
+export {ProducedProductSelectProductScreen};
+export {ProducedProductSelectTrackingScreen};

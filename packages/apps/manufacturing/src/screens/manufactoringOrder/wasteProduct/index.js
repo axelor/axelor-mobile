@@ -43,3 +43,7 @@ export default {
     },
   },
 };
+
+export {WasteProductDetailsScreen};
+export {WasteProductListScreen};
+export {WasteProductSelectProductScreen};

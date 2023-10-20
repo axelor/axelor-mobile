@@ -74,17 +74,13 @@ export const ManufacturingModule: Module = {
   },
 };
 
-export * from './components';
-
-export {displayManufOrderSeq} from './utils/displayers';
-export {splitSaleOrderRef} from './utils/formaters';
-
-export * from './types';
 export * from './api';
+export * from './components';
 export * from './features/asyncFunctions-index';
-
 export * from './screens/manufactoringOrder/consumedProduct';
 export * from './screens/manufactoringOrder/producedProduct';
 export * from './screens/manufactoringOrder/wasteProduct';
 export * from './screens/manufactoringOrder';
 export * from './screens/operationOrder';
+export * from './types';
+export * from './utils';
