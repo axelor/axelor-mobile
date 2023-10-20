@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Anomaly} from './anomaly-type';
-export {default as MailMessageNotificationType} from './mail-message-notification-type';
-export {default as StopwatchType} from './stopwatch-type';
+import {axiosApiProvider} from '../apiProviders';
+
+export async function fetchAnomalies({objectName, objectId}) {
+  return axiosApiProvider.get({
+    url: `ws/aos/${objectName}/check/${objectId}`,
+  });
+}
