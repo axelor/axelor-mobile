@@ -14,7 +14,7 @@
   },
   "scripts": {
     "clean": "find . -type d -name node_modules | xargs rm -rf && rm -rf yarn.lock && find . -type d -name lib | xargs rm -rf",
-    "dev": "nx run-many --target=dev",
+    "dev": "nx run-many --target=dev --maxParallel=10 ",
     "build": "nx run-many --target=build",
     "i18n": "nx run-many --target=i18n",
     "release": "nx run-many --target=npm-publish --verbose",
