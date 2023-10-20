@@ -67,5 +67,8 @@ export const HrModule: Module = {
   },
 };
 
-export * from './types';
+export * from './api';
 export * from './components';
+export * from './features/asyncFunctions-index';
+export * from './screens';
+export * from './types';
