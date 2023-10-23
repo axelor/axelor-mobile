@@ -18,7 +18,6 @@
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {handlerApiCall} from '@axelor/aos-mobile-core';
-
 import {getDistance as _getDistance} from '../api/distance-api';
 
 export const getDistance = createAsyncThunk(
@@ -51,6 +50,9 @@ const distanceSlice = createSlice({
     updateToCity: (state, action) => {
       state.toCity = action.payload;
     },
+    resetDistance: state => {
+      state.distance = {};
+    },
   },
   extraReducers: builder => {
     builder.addCase(getDistance.pending, (state, action) => {
@@ -64,5 +66,6 @@ const distanceSlice = createSlice({
 });
 export const {updateFromCity} = distanceSlice.actions;
 export const {updateToCity} = distanceSlice.actions;
+export const {resetDistance} = distanceSlice.actions;
 
 export const distanceReducer = distanceSlice.reducer;

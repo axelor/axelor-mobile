@@ -26,6 +26,7 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {fetchExpenseConfig} from '../features/expenseAppConfigSlice';
+import {resetDistance} from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
@@ -37,6 +38,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
   useEffect(() => {
     _dispatch(fetchCompanies());
     _dispatch(fetchExpenseConfig());
+    _dispatch(resetDistance());
   }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(

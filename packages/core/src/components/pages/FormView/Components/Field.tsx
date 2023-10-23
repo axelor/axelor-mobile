@@ -64,7 +64,6 @@ const Field = ({
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-
   const value = object?.[_field.key];
 
   const storeState = useSelector((state: any) => state);

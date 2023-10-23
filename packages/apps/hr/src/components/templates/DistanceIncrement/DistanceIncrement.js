@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSelector, isEmpty} from '@axelor/aos-mobile-core';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
@@ -28,15 +28,19 @@ const DistanceIncrementAux = ({
   readonly = false,
   required = false,
 }) => {
+  const [value, setValue] = useState(defaultValue);
+
   const {distance} = useSelector(state => state.distance);
 
-  const value = useMemo(() => {
+  useEffect(() => {
     if (!isEmpty(distance)) {
-      return Number(distance?.distance);
+      setValue(Number(distance?.distance));
+      onChange(Number(distance?.distance));
     } else {
-      return defaultValue;
+      setValue(defaultValue);
+      onChange(defaultValue);
     }
-  }, [defaultValue, distance]);
+  }, [defaultValue, distance, onChange]);
 
   return (
     <FormIncrementInput
