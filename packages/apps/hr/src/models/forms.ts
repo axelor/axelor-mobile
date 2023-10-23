@@ -17,11 +17,11 @@
  */
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
-import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   BillableSwitchCard,
   CurrencySearchBar,
   DistanceIncrement,
+  EventFormInput,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -30,7 +30,7 @@ import {
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
-import {getDistance} from '../features/distanceSlice';
+import {updateFromCity, updateToCity} from '../features/distanceSlice';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -123,53 +123,36 @@ export const hr_formsRegister: FormConfigs = {
       fromCity: {
         titleKey: 'Hr_FromCity',
         type: 'string',
-        widget: 'default',
+        widget: 'custom',
+        customComponent: EventFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
-        onEndFocus: ({objectState, storeState, dispatch}) => {
-          console.log('onEndFocus');
-          if (
-            storeState?.expenseAppConfig?.expenseConfig
-              ?.computeDistanceWithWebService &&
-            !checkNullString(objectState?.fromCity) &&
-            !checkNullString(objectState?.toCity)
-          ) {
-            console.log('ici');
-            dispatch(
-              (getDistance as any)({
-                fromCity: objectState?.fromCity,
-                toCity: objectState?.toCity,
-              }),
-            );
-          }
+        dependsOn: {
+          toCity: ({newValue, dispatch, objectState}) => {
+            dispatch(updateToCity(newValue));
+            return objectState?.fromCity;
+          },
+        },
+        options: {
+          isFromCity: true,
         },
       },
       toCity: {
         titleKey: 'Hr_ToCity',
         type: 'string',
-        widget: 'default',
+        widget: 'custom',
+        customComponent: EventFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
-        onEndFocus: ({objectState, storeState, dispatch}) => {
-          console.log('onEndFocus');
-          if (
-            storeState?.expenseAppConfig?.expenseConfig
-              ?.computeDistanceWithWebService &&
-            !checkNullString(objectState?.fromCity) &&
-            !checkNullString(objectState?.toCity)
-          ) {
-            console.log('ici');
-            dispatch(
-              (getDistance as any)({
-                fromCity: objectState?.fromCity,
-                toCity: objectState?.toCity,
-              }),
-            );
-          }
+        dependsOn: {
+          fromCity: ({newValue, dispatch, objectState}) => {
+            dispatch(updateFromCity(newValue));
+            return objectState?.toCity;
+          },
         },
       },
       distance: {

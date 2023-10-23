@@ -19,6 +19,7 @@
 export {default as CurrencySearchBar} from './CurrencySearchBar/CurrencySearchBar';
 export {default as BillableSwitchCard} from './BillableSwitchCard/BillableSwitchCard';
 export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncrement';
+export {default as EventFormInput} from './EventFormInput/EventFormInput';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';

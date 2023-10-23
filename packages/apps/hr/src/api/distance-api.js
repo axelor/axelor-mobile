@@ -19,8 +19,10 @@
 import {axiosApiProvider} from '@axelor/aos-mobile-core';
 
 export async function getDistance({fromCity, toCity}) {
-  return axiosApiProvider.post({
-    url: 'ws/aos/kilometric/distance',
-    data: {fromCity, toCity},
-  });
+  if (fromCity != null && toCity != null) {
+    return axiosApiProvider.post({
+      url: 'ws/aos/kilometric/distance',
+      data: {fromCity, toCity},
+    });
+  }
 }
