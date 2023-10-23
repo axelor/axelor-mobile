@@ -132,6 +132,31 @@ const Stopwatch = ({
     onCancel();
   };
 
+  const TimerButton = ({
+    name,
+    touchable,
+    onPress,
+  }: {
+    name: string;
+    touchable: boolean;
+    onPress: () => void;
+  }) => {
+    return (
+      <Icon
+        name={name}
+        size={25}
+        color={
+          touchable
+            ? Colors.secondaryColor_dark.background
+            : Colors.secondaryColor.background_light
+        }
+        touchable={touchable}
+        onPress={onPress}
+        style={styles.btn}
+      />
+    );
+  };
+
   return (
     <Card style={[styles.container, borderStyle, style]}>
       <View style={styles.row}>
@@ -143,55 +168,49 @@ const Stopwatch = ({
       <View style={styles.row}>
         <View style={styles.btnContainer}>
           {stopwatchStatus !== StopwatchType.status.InProgress && (
-            <Icon
+            <TimerButton
               name="play"
-              size={25}
-              disabled={
-                disable ||
-                disablePlay ||
-                stopwatchStatus === StopwatchType.status.InProgress ||
-                stopwatchStatus === StopwatchType.status.Finished
+              touchable={
+                !(
+                  disable ||
+                  disablePlay ||
+                  stopwatchStatus === StopwatchType.status.InProgress ||
+                  stopwatchStatus === StopwatchType.status.Finished
+                )
               }
-              touchable={true}
               onPress={handlePlayBtn}
-              style={styles.btn}
             />
           )}
           {stopwatchStatus === StopwatchType.status.InProgress && (
-            <Icon
+            <TimerButton
               name="pause"
-              size={25}
-              disabled={disable || disablePause}
-              touchable={true}
+              touchable={!(disable || disablePause)}
               onPress={handlePauseBtn}
-              style={styles.btn}
             />
           )}
-          <Icon
+          <TimerButton
             name="power-off"
-            size={25}
-            disabled={
-              disable ||
-              disableStop ||
-              stopwatchStatus === StopwatchType.status.Ready ||
-              stopwatchStatus === StopwatchType.status.Finished
+            touchable={
+              !(
+                disable ||
+                disableStop ||
+                stopwatchStatus === StopwatchType.status.Ready ||
+                stopwatchStatus === StopwatchType.status.Finished
+              )
             }
-            touchable={true}
             onPress={handleStopBtn}
-            style={styles.btn}
           />
           {!hideCancel && (
-            <Icon
+            <TimerButton
               name="undo"
-              size={25}
-              disabled={
-                disable ||
-                disableCancel ||
-                stopwatchStatus === StopwatchType.status.Ready
+              touchable={
+                !(
+                  disable ||
+                  disableCancel ||
+                  stopwatchStatus === StopwatchType.status.Ready
+                )
               }
-              touchable={true}
               onPress={handleCancelBtn}
-              style={styles.btn}
             />
           )}
         </View>
