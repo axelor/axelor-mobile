@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {ThemeColors, useThemeColor} from '../../../theme';
@@ -29,6 +29,9 @@ interface ScreenProps {
   removeSpaceOnTop?: boolean;
   loading?: boolean;
 }
+
+const FIXED_CONTAINER_PADDING_VERTICAL = 10;
+const FIXED_ITEMS_NOT_DISPLAY_HEIGHT = FIXED_CONTAINER_PADDING_VERTICAL * 2 + 1;
 
 const immersiveMode = async () => {
   await SystemNavigationBar.navigationHide();
@@ -45,6 +48,13 @@ const Screen = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const {showActivityIndicator} = useConfig();
+
+  const [fixedItemsHeight, setFixedItemsHeight] = useState(0);
+
+  const onLayout = event => {
+    const {height} = event.nativeEvent.layout;
+    setFixedItemsHeight(height);
+  };
 
   useEffect(() => {
     immersiveMode();
@@ -63,8 +73,15 @@ const Screen = ({
         style,
       ]}>
       {children}
-      {React.Children.count(fixedItems) > 0 && (
-        <View style={[styles.fixedContainer, styles.smallTopShadow]}>
+      {!!fixedItems && (
+        <View
+          style={
+            fixedItemsHeight > FIXED_ITEMS_NOT_DISPLAY_HEIGHT && [
+              styles.fixedContainer,
+              styles.smallTopShadow,
+            ]
+          }
+          onLayout={onLayout}>
           {fixedItems}
         </View>
       )}
@@ -85,7 +102,7 @@ const getStyles = (Colors: ThemeColors) =>
       backgroundColor: Colors.backgroundColor,
       borderTopLeftRadius: 13,
       borderTopRightRadius: 13,
-      paddingVertical: 10,
+      paddingVertical: FIXED_CONTAINER_PADDING_VERTICAL,
     },
     smallTopShadow: {
       borderTopWidth: 0.5,
