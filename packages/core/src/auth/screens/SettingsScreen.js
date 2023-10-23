@@ -24,7 +24,6 @@ import {
   useConfig,
   useTheme,
   Text,
-  PieChartDashboard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
@@ -117,31 +116,6 @@ const SettingsScreen = ({children}) => {
         />
         {children}
         <TranslationsButton />
-        <PieChartDashboard
-          data={[
-            {
-              value: 5,
-              color: '#FFDF00',
-              label: 'Draft',
-            },
-            {
-              value: 3,
-              color: '#ffa500',
-              label: 'Waiting',
-            },
-            {
-              value: 1,
-              color: '#008000',
-              label: 'Validate',
-            },
-            {
-              value: 1,
-              color: '#ff0000',
-              label: 'Refused',
-            },
-          ]}
-          legend={true}
-        />
       </View>
       <View style={styles.footerContainer}>
         <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
