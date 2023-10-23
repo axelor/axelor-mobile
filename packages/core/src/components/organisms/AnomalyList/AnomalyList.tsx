@@ -34,14 +34,23 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
   const [anomalyList, setAnomalyList] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     fetchAnomalies({objectName, objectId})
       .then(response => {
         if (response?.data?.object?.checks) {
           const checks = response?.data?.object?.checks;
-          setAnomalyList(Anomaly.sortType(checks));
+
+          if (isMounted) {
+            setAnomalyList(Anomaly.sortType(checks));
+          }
         }
       })
       .catch(() => setAnomalyList([]));
+
+    return () => {
+      isMounted = false;
+    };
   }, [objectName, objectId]);
 
   if (!Array.isArray(anomalyList) || anomalyList.length === 0) {

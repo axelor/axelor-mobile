@@ -17,7 +17,6 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {View} from 'react-native';
 import {InfoBubble, useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchAnomalies} from '../../../api/anomaly-api';
 import {Anomaly} from '../../../types';
@@ -29,7 +28,7 @@ interface AnomalyBubbleProps {
   indicatorPosition?: 'left' | 'right';
   size?: number;
   style?: any;
-  indicatorStyle?: any;
+  textIndicationStyle?: any;
 }
 
 const AnomalyBubble = ({
@@ -39,13 +38,15 @@ const AnomalyBubble = ({
   indicatorPosition,
   size,
   style,
-  indicatorStyle,
+  textIndicationStyle,
 }: AnomalyBubbleProps) => {
   const Colors = useThemeColor();
 
   const [anomalyList, setAnomalyList] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     fetchAnomalies({objectName, objectId})
       .then(response => {
         let checks = [];
@@ -60,9 +61,15 @@ const AnomalyBubble = ({
           );
         }
 
-        setAnomalyList(Anomaly.sortType([...checks, ...otherChecks]));
+        if (isMounted) {
+          setAnomalyList(Anomaly.sortType([...checks, ...otherChecks]));
+        }
       })
       .catch(() => setAnomalyList([]));
+
+    return () => {
+      isMounted = false;
+    };
   }, [objectName, objectId]);
 
   const displayAnomaly = useMemo(() => {
@@ -78,17 +85,16 @@ const AnomalyBubble = ({
   }
 
   return (
-    <View style={style}>
-      <InfoBubble
-        style={indicatorStyle}
-        iconName="exclamation-triangle"
-        badgeColor={Anomaly.getTypeColor(displayAnomaly.checkType, Colors)}
-        indication={isIndicationDisabled ? null : displayAnomaly.message}
-        size={size}
-        position={indicatorPosition}
-        coloredBubble={false}
-      />
-    </View>
+    <InfoBubble
+      style={style}
+      textIndicationStyle={textIndicationStyle}
+      iconName="exclamation-triangle"
+      badgeColor={Anomaly.getTypeColor(displayAnomaly.checkType, Colors)}
+      indication={isIndicationDisabled ? null : displayAnomaly.message}
+      size={size}
+      position={indicatorPosition}
+      coloredBubble={false}
+    />
   );
 };
 
