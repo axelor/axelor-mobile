@@ -239,7 +239,7 @@ La card est donc divisée est plusieurs compartiments, tous paramétrables et fa
 
 Les compartiments **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** et **lowerBadges** prennent en structure d’entrée une liste d’éléments du bon type en fonction de l’attribut (_TextElement_ ou _BadgeElement_) ainsi qu’un attribut de style afin de personnaliser le conteneur. Il est également possible d’inverser le sens d’affichage des badges dans les compartiments **upperBadges** et **lowerBadges** avec l’attribut _fixedOnRightSide_.
 
-Le dernier compartiment permet de contenir une **image**, facultative, en définissant les prorpiétés de base d’une image :
+Le dernier compartiment permet de contenir une **image**, facultative, en définissant les propriétés de base d’une image :
 
 ```tsx
 interface ImageElement {
