@@ -36,12 +36,23 @@ const EventFormInputAux = ({
 
   const [value, setValue] = useState(defaultValue);
 
-  const {toCity, fromCity} = useSelector(state => state.distance);
+  const {toCity, fromCity, needUpdateDistance} = useSelector(
+    state => state.distance,
+  );
+  const {expenseConfig} = useSelector(state => state.expenseAppConfig);
 
   useEffect(() => {
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => getDistanceApi(value), delay);
-  }, [delay, getDistanceApi, value]);
+    if (expenseConfig?.computeDistanceWithWebService && needUpdateDistance) {
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => getDistanceApi(value), delay);
+    }
+  }, [
+    delay,
+    expenseConfig?.computeDistanceWithWebService,
+    getDistanceApi,
+    needUpdateDistance,
+    value,
+  ]);
 
   const handleChange = e => {
     onChange(e);

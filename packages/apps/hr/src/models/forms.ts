@@ -30,7 +30,11 @@ import {
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
-import {updateFromCity, updateToCity} from '../features/distanceSlice';
+import {
+  needUpdateDistance,
+  updateFromCity,
+  updateToCity,
+} from '../features/distanceSlice';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -132,6 +136,7 @@ export const hr_formsRegister: FormConfigs = {
         dependsOn: {
           toCity: ({newValue, dispatch, objectState}) => {
             dispatch(updateToCity(newValue));
+            dispatch(needUpdateDistance(true));
             return objectState?.fromCity;
           },
         },
@@ -151,6 +156,7 @@ export const hr_formsRegister: FormConfigs = {
         dependsOn: {
           fromCity: ({newValue, dispatch, objectState}) => {
             dispatch(updateFromCity(newValue));
+            dispatch(needUpdateDistance(true));
             return objectState?.toCity;
           },
         },

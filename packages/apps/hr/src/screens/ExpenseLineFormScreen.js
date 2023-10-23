@@ -26,7 +26,13 @@ import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
 import {fetchExpenseConfig} from '../features/expenseAppConfigSlice';
-import {resetDistance} from '../features/distanceSlice';
+import {
+  needUpdateDistance,
+  resetDistance,
+  updateDistance,
+  updateFromCity,
+  updateToCity,
+} from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
@@ -39,10 +45,13 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     _dispatch(fetchCompanies());
     _dispatch(fetchExpenseConfig());
     _dispatch(resetDistance());
+    _dispatch(needUpdateDistance(false));
   }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
+      dispatch(needUpdateDistance(false));
+
       const dataToSend = {
         projectId: _expenseLine.project?.id,
         toInvoice: _expenseLine.toInvoice,
@@ -71,7 +80,11 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
 
   const updateExpenseLineAPI = useCallback(
     (_expenseLine, dispatch) => {
+      dispatch(needUpdateDistance(false));
+
       const mode = ExpenseLine.getExpenseMode(expenseLine);
+
+      console.log(_expenseLine);
 
       const dataToSend = {
         id: expenseLine?.id,
@@ -112,7 +125,14 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         navigation.navigate('ExpenseDetailsScreen', {idExpense});
       }
     },
-    [expenseLine, idExpense, navigation, user],
+    [
+      expenseLine,
+      idExpense,
+      navigation,
+      user?.activeCompany?.id,
+      user?.employee?.id,
+      user?.id,
+    ],
   );
 
   const defaultValue = useMemo(() => {
@@ -154,6 +174,10 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
         _dispatch(updateExpenseDate(expenseLine?.expenseDate));
+        //_dispatch(updateFromCity(null));
+        //_dispatch(updateToCity(null));
+        _dispatch(updateFromCity(expenseLine?.fromCity));
+        _dispatch(updateToCity(expenseLine?.toCity));
 
         return {
           ..._default,
@@ -178,6 +202,8 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       }
     } else {
       _dispatch(updateExpenseDate(_defaultDate));
+      _dispatch(updateFromCity(null));
+      _dispatch(updateToCity(null));
     }
 
     return _default;

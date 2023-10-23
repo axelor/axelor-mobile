@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useSelector, isEmpty} from '@axelor/aos-mobile-core';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
@@ -35,18 +35,22 @@ const DistanceIncrementAux = ({
   useEffect(() => {
     if (!isEmpty(distance)) {
       setValue(Number(distance?.distance));
-      onChange(Number(distance?.distance));
-    } else {
-      setValue(defaultValue);
-      onChange(defaultValue);
     }
-  }, [defaultValue, distance, onChange]);
+  }, [distance]);
+
+  const handleChange = useCallback(
+    e => {
+      setValue(e);
+      onChange(e);
+    },
+    [onChange],
+  );
 
   return (
     <FormIncrementInput
       title={title}
       style={styles.input}
-      onChange={onChange}
+      onChange={handleChange}
       defaultValue={value}
       readOnly={readonly}
       required={required}

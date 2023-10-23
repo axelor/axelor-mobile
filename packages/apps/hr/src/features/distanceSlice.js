@@ -38,6 +38,7 @@ const initialState = {
   distance: {},
   fromCity: null,
   toCity: null,
+  needUpdateDistance: false,
 };
 
 const distanceSlice = createSlice({
@@ -50,8 +51,14 @@ const distanceSlice = createSlice({
     updateToCity: (state, action) => {
       state.toCity = action.payload;
     },
+    updateDistance: (state, action) => {
+      state.distance = action.payload;
+    },
     resetDistance: state => {
       state.distance = {};
+    },
+    needUpdateDistance: (state, action) => {
+      state.needUpdateDistance = action.payload;
     },
   },
   extraReducers: builder => {
@@ -67,5 +74,7 @@ const distanceSlice = createSlice({
 export const {updateFromCity} = distanceSlice.actions;
 export const {updateToCity} = distanceSlice.actions;
 export const {resetDistance} = distanceSlice.actions;
+export const {updateDistance} = distanceSlice.actions;
+export const {needUpdateDistance} = distanceSlice.actions;
 
 export const distanceReducer = distanceSlice.reducer;
