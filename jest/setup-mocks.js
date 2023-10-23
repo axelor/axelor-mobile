@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {lightTheme} from '@axelor/aos-mobile-ui';
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
 
@@ -99,10 +100,6 @@ jest.mock('react-native-date-picker', () => ({
   default: jest.fn(),
 }));
 
-jest.mock('react-native/Libraries/StyleSheet/StyleSheet', () => ({
-  create: jest.fn(() => ({})),
-}));
-
 jest.mock('rn-fetch-blob', () => ({
   DocumentDir: 'FAKE-DIRECTORY-PATH',
 }));
@@ -121,12 +118,4 @@ jest.mock('react-native-pell-rich-editor', () => ({
   actions: jest.fn(),
   RichEditor: jest.fn(),
   RichToolbar: jest.fn(),
-}));
-
-jest.mock('react-native-vector-icons/FontAwesome', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('react-native-vector-icons/FontAwesome5', () => ({
-  default: jest.fn(),
 }));
