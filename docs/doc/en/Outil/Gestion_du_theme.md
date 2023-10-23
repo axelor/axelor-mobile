@@ -63,7 +63,7 @@ export interface Theme {
 }
 ```
 
-![Thème principal de l’application](/img/en/Thme_principal.png)
+![theme.png](/img/en/theme.png)
 
 Main theme of the application
 
@@ -82,6 +82,7 @@ There's a similar system for writing styles to simplify code.
 - It is therefore possible to create writing themes.
 - The active theme is accessed via the `useWritingStyle` hook. There's also a useWritingType hook, which returns the value of the active theme in relation to the key supplied as an argument (`'title' | 'subtitle' | 'important' | 'details' | undefined`).
 - The structure of the themes is as follows:
+
   ```tsx
   export interface Writing {
     key: string;
@@ -103,7 +104,9 @@ There's a similar system for writing styles to simplify code.
     fontStyle?: 'normal' | 'italic';
   }
   ```
+
 - The application features a main theme, but it is also possible to add themes and redefine the default theme using the **Application** component's writingThemes (Writing[]) and defaultWritingTheme (Writing) attributes.
+
   ```tsx
   export const writingDefaultTheme: Writing = {
     key: 'default',

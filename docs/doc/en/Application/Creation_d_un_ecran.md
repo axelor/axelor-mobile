@@ -60,10 +60,9 @@ export default {
 };
 ```
 
-<aside>
-⚠️ Please note that all screens defined in the module must be exported, otherwise the application will not be able to access them.
-
-</aside>
+:::caution
+Please note that all screens defined in the module must be exported, otherwise the application will not be able to access them.
+:::
 
 When overloading a screen, simply create a new screen by modifying the elements to be changed on the basic screen. Then, once the component has been created, export it with the same key as in the original module. This way, when you save it in the navigation system, only the last screen with the same key will be taken into account.
 
@@ -143,6 +142,7 @@ A field is defined by several attributes:
     | 'custom';
   ```
 - _customComponent_: definition of a custom display component. This can be used, for example, to display a search bar or a selection. Custom components must have a precise structure to enable values to be passed to the component.
+
   ```tsx
   interface customComponentOptions {
     style?: any;
@@ -153,49 +153,50 @@ A field is defined by several attributes:
     readonly?: boolean;
   }
   ```
-    <aside>
-    ⚠️ Care must be taken when using custom components with the **hideIf** attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
-    
-    The trick is to create an auxiliary component that will manage all the hooks, then create a component above it that transmits only the values to the auxiliary component.
-    
-    ```tsx
-    const ComponentAux = ({
-      style,
-      title,
-      defaultValue,
-      onChange,
-      readonly,
-      required,
-    }) => {
-      [hooks ...]
-    
-      return [render ...];
-    };
-    
-    const Component = ({
-      style = null,
-      title = 'DefaultTitleKey',
-      defaultValue = null,
-      onChange = () => {},
-      readonly = false,
-      required = false,
-    }) => {
-      return (
-        <ComponentAux
-          style={style}
-          title={title}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          readonly={readonly}
-          required={required}
-        />
-      );
-    };
-    
-    export default Component;
-    ```
-    
-    </aside>
+
+:::caution
+Care must be taken when using custom components with the **hideIf** attribute. As the display is conditional, the component must not use hooks to avoid rendering errors due to a different number of hooks between different renders.
+
+The trick is to create an auxiliary component that will manage all the hooks, then create a component above it that transmits only the values to the auxiliary component.
+
+```tsx
+const ComponentAux = ({
+  style,
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}) => {
+  [hooks ...]
+
+  return [render ...];
+};
+
+const Component = ({
+  style = null,
+  title = 'DefaultTitleKey',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}) => {
+  return (
+    <ComponentAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+    />
+  );
+};
+
+export default Component;
+```
+
+:::
 
 - _options_: transmit customized options to the various components to personalize the display.
 - _validationOptions_: allows you to define validation options (maximum and minimum values, integer or decimal, etc.). In fact, it's a matter of defining field typing more precisely with the [YUP](https://www.npmjs.com/package/yup) tool. Some typing options suggest redefining the error message. If you need to redefine a specific error message, remember to use a translation key so as not to jeopardize the internationalization of the application.
@@ -250,6 +251,7 @@ This component takes three elements as arguments:
 - defaultValue: the default value to be displayed on the form.
 - formKey : the form configuration key defined when exporting the module.
 - actions: the set of actions to be displayed at the bottom of the page. Actions are built through a template in the same way as all form elements.
+
   ```tsx
   interface Action {
     key: string;
@@ -274,7 +276,9 @@ This component takes three elements as arguments:
 
   type FormActionType = 'update' | 'create' | 'reset' | 'refresh' | 'custom';
   ```
+
   An action is defined by several attributes:
+
   - _key_: action key for action uniqueness
   - _type_: action type definition for default configurations. This automatically defines the title and action to be performed when the button is clicked.
   - _titleKey_: translation key for button title.

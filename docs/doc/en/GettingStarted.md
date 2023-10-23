@@ -35,16 +35,16 @@ sudo apt install openjdk-11-jre-headless
 
 The first step is to download [Android Studio](https://developer.android.com/studio/index.html) to manage SDKs and emulators.
 
-<aside>
-💡 In the event of version problems, use Android Studio's SDK Manager to configure the various installed tools.
+:::info
+In the event of version problems, use Android Studio's SDK Manager to configure the various installed tools.
 
 In the **SDK Platforms** tab, check that at least Android 10 is installed.
 
 In the **SDK Tools** tab, check the "Show package details" box and verify that CMake versions 3.18.1 and 3.22.1 are installed. Android SDK versions must be at least 30 and 31, and Android Emulator and Android SDK Platform-Tools must also be installed.
 
-![image1.png](/img/en/image1.png)
+![android_installation.png](/img/en/android_installation.png)
 
-</aside>
+:::
 
 Environment variables must then be set.
 

@@ -14,7 +14,7 @@ Each module is responsible for generating its own templates, and for overriding 
 
 We therefore need to add a models folder to the architecture, which will contain a file for each configuration type, as well as an index file to facilitate export.
 
-![Untitled](/img/en/Untitled3.png)
+![architecture_fields.png](/img/en/architecture_fields.png)
 
 - Search fields for each object in _SearchFields_ format. This is actually a json format object associating a key with a list of strings, each corresponding to a field in the object. To override these search fields, simply define a new list associated with the same key and the search fields to be added.
 
@@ -44,6 +44,7 @@ export const stock_sortFields: SortFields = {
 ```
 
 - The fields to be retrieved for each object in _ObjectFields_ format. This is an object in json format associating a key with a **schema [YUP](https://www.npmjs.com/package/yup?activeTab=readme)**. To build a schema for an object, simply use the _schemaConstructor_ tool in the CORE package, which provides access to all the definition types offered by the YUP library.
+
   - _Object_: a json object in which to define all attributes and their type.
     ```tsx
     schemaContructor.object({
@@ -74,6 +75,7 @@ export const stock_sortFields: SortFields = {
     schemaContructor.boolean();
     ```
   - _SubObject_ : an object with AOP prerequisites, i.e. id and version
+
     ```tsx
     schemaContructor.subObject();
     // Equivalent to :
@@ -215,7 +217,7 @@ createStandardSearch = ({
   }: SearchProps): Promise<any>
 ```
 
-This helper allows you to create a standard search query, in conjunction with AOP web services, in a simplified way by indicating only the important elements. The number of items per page is set to 10 by default, but this value can be modified in [the application configuration file](https://www.notion.so/Technical-documentation-AOM-EN-7-2-de9eaf94e6914158bff12eacdf5e33b2?pvs=21). Alternatively, if a query needs to remove this element retrieval limit, simply specify `numberElementsByPage: null` explicitly in the query definition. The default value only comes into play if _numberElementsByPage_ is **_undefined_**.
+This helper allows you to create a standard search query, in conjunction with AOP web services, in a simplified way by indicating only the important elements. The number of items per page is set to 10 by default, but this value can be modified in the application configuration file. Alternatively, if a query needs to remove this element retrieval limit, simply specify `numberElementsByPage: null` explicitly in the query definition. The default value only comes into play if _numberElementsByPage_ is **_undefined_**.
 
 ## Creating a standard recovery request
 

@@ -89,7 +89,7 @@ The various attributes available are :
 - **title** : _[Required]_ title of the action when reduced in the `DropdownMenu`.
 - **iconName** : _[Required]_ name of the icon associated with this action
 - **iconColor** : icon color, set to `secondaryColor_dark.background` by default.
-- **FontAwesome5** : Boolean indicating whether the icon belongs to FontAwesome4 or FontAwesome5. By default, this value is set to `true`, which corresponds to FontAwesome5.
+- **FontAwesome5** : boolean indicating whether the icon belongs to FontAwesome4 or FontAwesome5. By default, this value is set to `true`, which corresponds to FontAwesome5.
 - **indicator**: small number to be displayed at the top of the action icon (e.g. number of attached files or pending messages).
 - **hideIf**: condition for displaying the action.
 - **disableIf**: action deactivation condition

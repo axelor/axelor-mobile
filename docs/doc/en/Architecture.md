@@ -15,17 +15,13 @@ A modular architecture was therefore implemented, with two main packages:
 
 The latter is based on a third package, _@axelor/aos-mobile-error_, which handles errors during rendering, including the display of an emergency screen.
 
-![Schéma des dépendances](/img/en/Schma_des_dpendances.png)
-
-Dependency diagram
+![dependencies_base.png](/img/en/dependencies_base.png)
 
 Each functionnal application is then developed in its own module, allowing functionalities to be separated. It is then possible to choose which modules are required for the overall application.
 
 In order to benefit from the various tools provided by the basic packages, each functionnal module depends on the two main libraries presented above.
 
-![Schéma des dépendances avec l’ajout d’un module métier](/img/en/Schma_des_dpendances_module_mtier.png)
-
-Dependency diagram with the addition of a functionnal module
+![dependencies_functionnal.png](/img/en/dependencies_functionnal.png)
 
 From the point of view of code architecture in the standard project, the three generic packages are located at the root of the packages/ folder, while the functionnal modules are located in the packages/apps/ folder. AOM version 7.0.0 introduced a change in the application architecture. The android and ios folders are now at the root of the project. These folders are used to manage versions of the application on both platforms, as well as configurations and user permissions.
 

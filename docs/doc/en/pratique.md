@@ -4,12 +4,12 @@ sidebar_position: 6
 sidebar_class_name: icon pratique
 ---
 
-# Bonnes pratiques de développement
+# Good development practices
 
-Afin d’uniformiser le code source de l’application mobile, un certain nombre de bonnes pratiques de développement ont été mises en place :
+In order to standardize the mobile application's source code, a number of good development practices were implemented:
 
-- Aucune logique métier dans le code source.
-- Faire attention à respecter la nomenclature des clés de traductions.
-- Faciliter la compréhension du contenu d’un fichier en donnant le même nom au fichier qu’au composant à l’intérieur.
-- Généraliser le code le plus possible afin de pouvoir le réutiliser facilement.
-- Créer des composants responsabilisés à partir des composants génériques afin de permettre de simplifier la création des écrans et ainsi faciliter la surcharge.
+- No functionnal logic in the source code.
+- Be careful to respect the nomenclature of translation keys.
+- Make it easier to understand the contents of a file by giving the same name to the file as to the component inside.
+- Generalize code as much as possible for easy reuse.
+- Create empowered components from generic components to simplify screen creation and thus facilitate overloading.

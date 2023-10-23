@@ -14,11 +14,11 @@ The core package also provides several more specialized components, or those req
 
 The development of these components is based on the principle of [Atomic Design](https://blog-ux.com/quest-ce-que-latomic-design/). Components are divided into **atoms**, **molecules**, **organisms** and **templates**:
 
-![Untitled](/img/en/Untitled1.png)
+![atomic_design.png](/img/en/atomic_design.png)
 
 The first three types (_atoms_, _molecules_ and _organisms_) correspond to generalist components that can be used in any context. The last type (_templates_) is used for specialized, empowered components, which have a particular context and sometimes even perform API requests or navigation actions themselves.
 
-![Untitled](/img/en/Untitled2.png)
+![architecture_component.png](/img/en/architecture_component.png)
 
 From an architectural point of view, each module must include a _components_ folder with the different types of components present in the module. Each type of component is separated into a dedicated folder, with an index file for exporting components to facilitate their use later.
 
@@ -146,8 +146,8 @@ _color: {
 },
 ```
 
-<aside>
-⚠️ Object fields are not handled very well in the storybook. It's not possible to define the structure of the expected object, and for the user, modifying an object field is rather difficult, as the json object has to be rebuilt in a text editor. In cases where the format of the expected object is known, it is advisable to create an attribute for each expected field of the object and then rebuild the object in the component props. An example with the following object:
+:::caution
+Object fields are not handled very well in the storybook. It's not possible to define the structure of the expected object, and for the user, modifying an object field is rather difficult, as the json object has to be rebuilt in a text editor. In cases where the format of the expected object is known, it is advisable to create an attribute for each expected field of the object and then rebuild the object in the component props. An example with the following object:
 
 ```tsx
 // Expected object structure
@@ -174,17 +174,16 @@ _iconName: {
 <Component {...args} icon={{name: args._iconName, color: args._iconColor}} />
 ```
 
-</aside>
+:::
 
 Some important commands to run in the project root for the storybook :
 
 - open storybook : `yarn storybook`
 - build storybook : `yarn build-storybook`
 
-<aside>
-💡 Don't hesitate to look at existing stories when creating a new one, as they already represent a number of use cases that may be useful.
-
-</aside>
+:::info
+Don't hesitate to look at existing stories when creating a new one, as they already represent a number of use cases that may be useful.
+:::
 
 ## Creating a card
 
@@ -235,7 +234,7 @@ The text and color of the badge can be customized, using the _displayText_ and _
 
 The card is therefore divided into several compartments, all of which are configurable and optional. The card will only display compartments containing data.
 
-![Untitled](/img/en/Untitled3.png)
+![explanation_objectCard.png](/img/en/explanation_objectCard.png)
 
 The **upperBadges**, **upperTexts**, **sideBadges**, **lowerTexts** and **lowerBadges** compartments take as input structure a list of elements of the right type according to the attribute (_TextElement_ or _BadgeElement_) as well as a style attribute to customize the container. It's also possible to reverse the display direction of badges in the **upperBadges** and **lowerBadges** compartments with the _fixedOnRightSide_ attribute.
 

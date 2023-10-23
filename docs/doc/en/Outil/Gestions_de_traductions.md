@@ -8,7 +8,7 @@ sidebar_class_name: icon  traductions
 
 The translations required by the application are saved in the phone's storage. Each module is responsible for generating its own translations.
 
-![Untitled](/img/en/Untitled.png)
+![architecture_translations](/img/en/architecture_translations.png)
 
 Each module must include in its architecture an i18n folder with json files, one file per language.
 
