@@ -63,7 +63,7 @@ const MultiValuePickerButton = ({
                   }>
                   {item.title}
                 </Text>
-                <Icon name={'times'} color={item.color.foreground} size={14} />
+                <Icon name="times" color={item.color.foreground} size={14} />
               </TouchableOpacity>
             ))}
         </View>

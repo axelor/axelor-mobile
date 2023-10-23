@@ -119,3 +119,26 @@ jest.mock('react-native-pell-rich-editor', () => ({
   RichEditor: jest.fn(),
   RichToolbar: jest.fn(),
 }));
+
+jest.mock('../packages/ui/lib/config/ConfigContext', () => ({
+  useConfig: () => ({
+    blockInteractionConfig: {
+      visible: true,
+      message: 'Test Message',
+      style: {backgroundColor: 'blue'},
+      actionItems: [
+        {
+          iconName: 'check',
+          title: 'Action 1',
+          onPress: jest.fn(),
+          color: 'green',
+        },
+        {
+          title: 'Action 2',
+          onPress: jest.fn(),
+          color: 'red',
+        },
+      ],
+    },
+  }),
+}));
