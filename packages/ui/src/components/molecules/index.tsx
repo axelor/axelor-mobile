@@ -42,6 +42,7 @@ export {default as Increment} from './Increment/Increment';
 export {default as InfoBubble} from './InfoBubble/InfoBubble';
 export {default as Label} from './Label/Label';
 export {default as LabelText} from './LabelText/LabelText';
+export {default as LineChartDashboard} from './LineChartDashboard/LineChartDashboard';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
 export {default as MovementIndicationCard} from './MovementIndicationCard/MovementIndicationCard';

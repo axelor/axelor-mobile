@@ -110,6 +110,11 @@ jest.mock('react-native-webview', () => ({
   default: jest.fn(),
 }));
 
+jest.mock('react-native-gifted-charts', () => ({
+  LineChart: jest.fn(),
+  PieChart: jest.fn(),
+}));
+
 jest.mock('react-native-system-navigation-bar', () => ({
   default: jest.fn(),
 }));

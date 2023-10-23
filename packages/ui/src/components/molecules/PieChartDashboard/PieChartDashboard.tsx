@@ -23,17 +23,20 @@ import {PieChart} from 'react-native-gifted-charts';
 
 interface Data {
   value: number;
-  color: string;
-  focused: boolean;
+  color?: string;
   label: string;
 }
 
-interface PieChartProps {
+interface Dataset {
   data: Data[];
+}
+
+interface PieChartProps {
+  datasets: Dataset[];
   legend: boolean;
 }
 
-const PieChartDashboard = ({data, legend}: PieChartProps) => {
+const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
   const renderLegendBorderColor = color => {
     return {
       borderWidth: 5,
@@ -45,7 +48,7 @@ const PieChartDashboard = ({data, legend}: PieChartProps) => {
   return (
     <View style={style.container}>
       <PieChart
-        data={data}
+        data={datasets[0]?.data}
         donut={true}
         showGradient
         sectionAutoFocus
@@ -54,7 +57,7 @@ const PieChartDashboard = ({data, legend}: PieChartProps) => {
       />
       {legend && (
         <View style={style.legenContainer}>
-          {data?.map((_data, index) => {
+          {datasets[0]?.data?.map((_data, index) => {
             return (
               <View key={index} style={style.itemLegendContainer}>
                 <View style={renderLegendBorderColor(_data?.color)} />
