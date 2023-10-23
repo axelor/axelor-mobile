@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
@@ -101,7 +101,7 @@ const ExpenseLineCard = ({
               customComponent: (
                 <Text
                   fontSize={22}
-                  style={styles.bold}
+                  style={styles.amountText}
                   textColor={Colors.primaryColor.background}>{`${totalAmount} ${
                   currency != null
                     ? currency
@@ -117,6 +117,7 @@ const ExpenseLineCard = ({
                   objectId={expenseId}
                   indicatorPosition="left"
                   style={styles.anoBubble}
+                  textIndicationStyle={styles.anoBubbleText}
                 />
               ),
             },
@@ -132,7 +133,8 @@ const getStyles = Colors =>
     title: {
       marginBottom: 5,
     },
-    bold: {
+    amountText: {
+      alignSelf: 'flex-end',
       fontWeight: '900',
     },
     italic: {
@@ -154,7 +156,13 @@ const getStyles = Colors =>
       paddingRight: 5,
     },
     anoBubble: {
-      alignSelf: 'flex-end',
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+    },
+    anoBubbleText: {
+      width: Dimensions.get('window').width * 0.7,
+      bottom: 0,
     },
   });
 
