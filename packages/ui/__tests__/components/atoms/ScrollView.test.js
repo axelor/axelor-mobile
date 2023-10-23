@@ -24,6 +24,7 @@ import {ScrollView} from '@axelor/aos-mobile-ui';
 describe('ScrollView Component', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<ScrollView />);
+
     expect(wrapper.exists()).toBe(true);
   });
 

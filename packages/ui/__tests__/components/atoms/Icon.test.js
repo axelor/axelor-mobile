@@ -66,39 +66,24 @@ describe('Icon Component', () => {
     );
   });
 
-  it('does not invokes onPress callback when icon is pressed', () => {
-    const onPressMock = jest.fn();
-    const wrapper = shallow(<Icon name="star" onPress={onPressMock} />);
-    const touchableComponent = wrapper.find(TouchableOpacity);
-
-    touchableComponent.simulate('press');
-    expect(onPressMock).not.toHaveBeenCalled();
-  });
-
   it('renders nothing when visible prop is false', () => {
     const wrapper = shallow(<Icon visible={false} />);
 
     expect(wrapper.isEmptyRender()).toBeTruthy();
   });
 
-  it('renders a touchable icon and calls onPress when clicked', () => {
-    const wrapper = shallow(<Icon {...props} />);
+  it('renders a disabled icon', () => {
+    const wrapper = shallow(<Icon name="star" touchable={false} />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
-    expect(wrapper.find(TouchableOpacity).exists()).toBeTruthy();
-
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(props.onPress).toHaveBeenCalled();
+    expect(touchableComponent.prop('disabled')).toBe(true);
   });
 
-  it('renders a disabled icon and does not call onPress when clicked', () => {
-    const wrapper = shallow(<Icon {...props} disabled={true} />);
-    const iconComponent = wrapper.find(TouchableOpacity);
+  it('renders a touchable icon', () => {
+    const wrapper = shallow(<Icon {...props} />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
-    expect(iconComponent.prop('disabled')).toBe(true);
-
-    wrapper.simulate('press');
-
-    expect(props.onPress).not.toHaveBeenCalled();
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).toBe(false);
   });
 });

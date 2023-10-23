@@ -50,9 +50,7 @@ describe('HtmlInput Component', () => {
     expect(
       wrapper.find(ScrollView).at(0).prop('contentContainerStyle'),
     ).toMatchObject(customContainerStyle);
-    expect(wrapper.find(ScrollView).at(1).prop('style')).toMatchObject(
-      customStyle,
-    );
+    expect(wrapper.find(ScrollView).at(1).prop('style')).toContain(customStyle);
 
     wrapper.find(RichEditor).prop('editorInitializedCallback')();
 

@@ -22,38 +22,36 @@ import {Switch as RNSwitch} from 'react-native';
 import {Switch} from '@axelor/aos-mobile-ui';
 
 describe('Switch Component', () => {
+  const handleToggle = jest.fn();
+
   it('renders without crashing', () => {
     const wrapper = shallow(<Switch />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders the switch with the correct initial value', () => {
-    const props = {
-      isEnabled: true,
-      handleToggle: jest.fn(),
-    };
-    const wrapper = shallow(<Switch {...props} />);
+    const wrapper = shallow(
+      <Switch isEnabled={true} handleToggle={handleToggle} />,
+    );
+
     expect(wrapper.prop('value')).toBe(true);
   });
 
   it('should call handleToggle function with value true when switching on', () => {
-    const handleToggle = jest.fn();
-    const isEnabled = false;
-
     const wrapper = shallow(
-      <Switch isEnabled={isEnabled} handleToggle={handleToggle} />,
+      <Switch isEnabled={false} handleToggle={handleToggle} />,
     );
+
     wrapper.find(RNSwitch).simulate('valueChange');
     expect(handleToggle).toHaveBeenCalledWith(true);
   });
 
   it('should call handleToggle function with value false when switching off', () => {
-    const handleToggle = jest.fn();
-    const isEnabled = true;
-
     const wrapper = shallow(
-      <Switch isEnabled={isEnabled} handleToggle={handleToggle} />,
+      <Switch isEnabled={true} handleToggle={handleToggle} />,
     );
+
     wrapper.find(RNSwitch).simulate('valueChange');
     expect(handleToggle).toHaveBeenCalledWith(false);
   });

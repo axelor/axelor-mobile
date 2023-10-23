@@ -24,6 +24,7 @@ import {KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
 describe('KeyboardAvoidingScrollView Component', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<KeyboardAvoidingScrollView />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -33,18 +34,21 @@ describe('KeyboardAvoidingScrollView Component', () => {
         <View testID="child" />
       </KeyboardAvoidingScrollView>,
     );
+
     expect(wrapper.find('[testID="child"]').exists()).toBe(true);
   });
 
   it('sets correct behavior for iOS', () => {
     Platform.OS = 'ios';
     const wrapper = shallow(<KeyboardAvoidingScrollView />);
+
     expect(wrapper.prop('behavior')).toBe('padding');
   });
 
   it('sets correct behavior for Android', () => {
     Platform.OS = 'android';
     const wrapper = shallow(<KeyboardAvoidingScrollView />);
+
     expect(wrapper.prop('behavior')).toBe('height');
   });
 
@@ -53,6 +57,7 @@ describe('KeyboardAvoidingScrollView Component', () => {
     const wrapper = shallow(
       <KeyboardAvoidingScrollView keyboardOffset={{ios: 100}} />,
     );
+
     expect(wrapper.prop('keyboardVerticalOffset')).toBe(100);
   });
 
@@ -61,6 +66,7 @@ describe('KeyboardAvoidingScrollView Component', () => {
     const wrapper = shallow(
       <KeyboardAvoidingScrollView keyboardOffset={{android: 200}} />,
     );
+
     expect(wrapper.prop('keyboardVerticalOffset')).toBe(200);
   });
 });

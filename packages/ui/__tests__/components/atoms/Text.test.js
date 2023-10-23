@@ -24,6 +24,7 @@ import {Text} from '@axelor/aos-mobile-ui';
 describe('Text Component', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<Text />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -48,26 +49,29 @@ describe('Text Component', () => {
       <Text numberOfLines={numberOfLines}>Long Text</Text>,
     );
 
-    expect(wrapper.prop('numberOfLines')).toBe(numberOfLines);
+    expect(wrapper.find(ReactNativeText).prop('numberOfLines')).toBe(
+      numberOfLines,
+    );
   });
 
   it('adjusts font size to fit when enabled', () => {
     const wrapper = shallow(<Text adjustsFontSizeToFit>Resizable Text</Text>);
 
-    expect(wrapper.prop('adjustsFontSizeToFit')).toBe(true);
+    expect(wrapper.find(ReactNativeText).prop('adjustsFontSizeToFit')).toBe(
+      true,
+    );
   });
 
   it('invokes onTextLayout callback', () => {
     const onTextLayout = jest.fn();
+    const testLayoutInput = {nativeEvent: {layout: {height: 100}}};
     const wrapper = shallow(
       <Text onTextLayout={onTextLayout}>Text with Layout</Text>,
     );
 
-    wrapper.simulate('textLayout', {nativeEvent: {layout: {height: 100}}});
+    wrapper.simulate('textLayout', testLayoutInput);
 
     expect(onTextLayout).toHaveBeenCalledTimes(1);
-    expect(onTextLayout).toHaveBeenCalledWith({
-      nativeEvent: {layout: {height: 100}},
-    });
+    expect(onTextLayout).toHaveBeenCalledWith(testLayoutInput);
   });
 });

@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {RadioButton, lightTheme} from '@axelor/aos-mobile-ui';
 
 describe('RadioButton Component', () => {
@@ -29,6 +29,7 @@ describe('RadioButton Component', () => {
     const wrapper = shallow(
       <RadioButton onPress={onPressMock} selected={false} title="Option 1" />,
     );
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -36,6 +37,7 @@ describe('RadioButton Component', () => {
     const wrapper = shallow(
       <RadioButton onPress={onPressMock} selected={false} title="Option 2" />,
     );
+
     expect(wrapper.find('Text').prop('children')).toBe('Option 2');
   });
 
@@ -53,13 +55,11 @@ describe('RadioButton Component', () => {
       <RadioButton onPress={onPressMock} title="Option 4" selected />,
     );
 
-    expect(wrapper.find(TouchableOpacity).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.backgroundColor,
-          borderColor: Colors.secondaryColor.background,
-        }),
-      ]),
+    const selectedView = wrapper.find(View).at(1);
+
+    expect(selectedView.prop('style')).toHaveProperty(
+      'backgroundColor',
+      Colors.primaryColor.background,
     );
   });
 });
