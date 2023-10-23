@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {getDistance} from '../../../features/distanceSlice';
 import {StyleSheet} from 'react-native';
 
-const EventFormInputAux = ({
+const CityFormInputAux = ({
   title = '',
   defaultValue = null,
   readonly = false,
@@ -83,7 +83,7 @@ const EventFormInputAux = ({
   );
 };
 
-const EventFormInput = ({
+const CityFormInput = ({
   title,
   defaultValue,
   onChange,
@@ -92,7 +92,7 @@ const EventFormInput = ({
   isFromCity,
 }) => {
   return (
-    <EventFormInputAux
+    <CityFormInputAux
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventFormInput;
+export default CityFormInput;

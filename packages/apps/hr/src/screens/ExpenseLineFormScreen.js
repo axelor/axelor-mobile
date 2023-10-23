@@ -29,7 +29,6 @@ import {fetchExpenseConfig} from '../features/expenseAppConfigSlice';
 import {
   needUpdateDistance,
   resetDistance,
-  updateDistance,
   updateFromCity,
   updateToCity,
 } from '../features/distanceSlice';
@@ -83,8 +82,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       dispatch(needUpdateDistance(false));
 
       const mode = ExpenseLine.getExpenseMode(expenseLine);
-
-      console.log(_expenseLine);
 
       const dataToSend = {
         id: expenseLine?.id,
@@ -174,8 +171,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         };
       } else if (mode === ExpenseLine.modes.kilometric) {
         _dispatch(updateExpenseDate(expenseLine?.expenseDate));
-        //_dispatch(updateFromCity(null));
-        //_dispatch(updateToCity(null));
         _dispatch(updateFromCity(expenseLine?.fromCity));
         _dispatch(updateToCity(expenseLine?.toCity));
 

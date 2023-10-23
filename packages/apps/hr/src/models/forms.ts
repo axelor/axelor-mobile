@@ -21,7 +21,7 @@ import {
   BillableSwitchCard,
   CurrencySearchBar,
   DistanceIncrement,
-  EventFormInput,
+  CityFormInput,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -128,7 +128,7 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_FromCity',
         type: 'string',
         widget: 'custom',
-        customComponent: EventFormInput,
+        customComponent: CityFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
@@ -148,7 +148,7 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_ToCity',
         type: 'string',
         widget: 'custom',
-        customComponent: EventFormInput,
+        customComponent: CityFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
