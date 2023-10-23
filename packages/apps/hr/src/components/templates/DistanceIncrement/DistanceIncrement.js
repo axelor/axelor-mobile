@@ -22,15 +22,13 @@ import {useSelector, isEmpty} from '@axelor/aos-mobile-core';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 
 const DistanceIncrementAux = ({
-  title = 'Helpdesk_Project',
+  title = 'Hr_Distance',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
 }) => {
   const {distance} = useSelector(state => state.distance);
-
-  console.log('distance', distance);
 
   const value = useMemo(() => {
     if (!isEmpty(distance)) {
@@ -43,6 +41,7 @@ const DistanceIncrementAux = ({
   return (
     <FormIncrementInput
       title={title}
+      style={styles.input}
       onChange={onChange}
       defaultValue={value}
       readOnly={readonly}
@@ -72,11 +71,9 @@ const DistanceIncrement = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    zIndex: 41,
-  },
-  title: {
-    marginHorizontal: 30,
+  input: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 

@@ -40,7 +40,6 @@ export const getFields = (config: Form): DisplayField[] => {
       hideIf: _field.hideIf != null ? _field.hideIf : () => false,
       requiredIf: _field.requiredIf != null ? _field.requiredIf : () => false,
       readonlyIf: _field.readonlyIf != null ? _field.readonlyIf : () => false,
-      onEndFocus: _field.onEndFocus != null ? _field.onEndFocus : () => {},
     }))
     .sort((a, b) => a.order - b.order);
 };
