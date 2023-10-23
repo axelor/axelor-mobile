@@ -36,8 +36,11 @@ const TIME_BETWEEN_CALL = 1000;
 const ITEM_HEIGHT = 40;
 
 interface AutocompleteSearchProps {
+  title?: string;
   objectList: any[];
   value?: any;
+  required?: boolean;
+  readOnly?: boolean;
   onChangeValue?: (item: any) => void;
   fetchData?: ({
     page,
@@ -65,8 +68,11 @@ interface AutocompleteSearchProps {
 }
 
 const AutoCompleteSearch = ({
+  title,
   objectList,
   value = null,
+  required = false,
+  readOnly = false,
   onChangeValue,
   fetchData = () => {},
   displayValue,
@@ -274,10 +280,13 @@ const AutoCompleteSearch = ({
         Platform.OS === 'ios' ? styles.searchBarContainer : null,
       ]}>
       <SearchBar
+        title={title}
         inputRef={inputRef}
         style={[styles.alignContainer, style]}
         valueTxt={searchText}
         placeholder={placeholder}
+        required={required}
+        readOnly={readOnly}
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}

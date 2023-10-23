@@ -223,12 +223,11 @@ const getStyles = (
   StyleSheet.create({
     flatListContainer: {
       height: emptyValue ? listLength * 40 + 45 : listLength * 40 + 5,
-      width: '90%',
+      width: '100%',
       position: 'absolute',
       top: '95%',
       zIndex: 51,
       backgroundColor: Colors.backgroundColor,
-      marginLeft: 18,
       borderRadius: 10,
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,

@@ -124,17 +124,17 @@ const TicketFormScreen = ({navigation, route}) => {
             required={true}
           />
           <ProgressFormInput
+            style={styles.input}
             title={I18n.t('Helpdesk_Progress')}
             defaultValue={_ticket?.progressSelect}
             onChange={value => handleTicketFieldChange(value, 'progressSelect')}
           />
           <ProjectSearchBar
+            style={styles.input}
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
             defaultValue={_ticket?.[PROJECT_KEY]}
             onChange={value => handleTicketFieldChange(value, PROJECT_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
@@ -162,8 +162,7 @@ const TicketFormScreen = ({navigation, route}) => {
             styleTxt={styles.marginTitle}
           />
           <Picker
-            style={styles.picker}
-            styleTxt={styles.pickerTitle}
+            style={styles.input}
             title={I18n.t('Helpdesk_Priority')}
             onValueChange={value =>
               handleTicketFieldChange(value, 'prioritySelect')

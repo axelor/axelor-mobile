@@ -17,11 +17,11 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {Icon, Text} from '../../atoms';
-import {LabelText, SelectionContainer, RightIconButton} from '../../molecules';
+import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
 import {getFromList} from '../../../utils/list';
 import {
   OUTSIDE_INDICATOR,
@@ -44,6 +44,7 @@ interface PickerProps {
   emptyValue?: boolean;
   isValueItem?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
   disabledValue?: string;
   iconName?: string;
   required?: boolean;
@@ -63,25 +64,26 @@ const Picker = ({
   emptyValue = true,
   isValueItem = false,
   disabled = false,
+  readOnly = false,
   disabledValue = null,
-  iconName = null,
   required = false,
   isScrollViewContainer = false,
 }: PickerProps) => {
-  const [pickerIsOpen, setPickerIsOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-
-  const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
-    wrapperRef,
-    visible: pickerIsOpen,
-  });
   const Colors = useThemeColor();
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(
     !isValueItem
       ? getFromList(listItems, valueField, defaultValue)
       : defaultValue,
   );
+
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: isOpen,
+  });
 
   useEffect(() => {
     setSelectedItem(
@@ -92,21 +94,19 @@ const Picker = ({
   }, [defaultValue, isValueItem, listItems, valueField]);
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
-      setPickerIsOpen(false);
+    if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
+      setIsOpen(false);
       setIsFocused(false);
     }
-  }, [clickOutside, pickerIsOpen]);
-
-  const toggleValue = current => !current;
+  }, [clickOutside, isOpen]);
 
   const togglePicker = () => {
-    setPickerIsOpen(toggleValue);
-    setIsFocused(toggleValue);
+    setIsOpen(!isOpen);
+    setIsFocused(!isFocused);
   };
 
   const handleValueChange = itemValue => {
-    setPickerIsOpen(false);
+    setIsOpen(false);
     setIsFocused(false);
     setSelectedItem(itemValue);
     itemValue
@@ -118,22 +118,24 @@ const Picker = ({
       : onValueChange(itemValue);
   };
 
-  const _required = useMemo(
-    () => required && selectedItem == null,
-    [required, selectedItem],
-  );
-
   const marginBottom = useMemo(() => {
     const listLength = listItems?.length ?? 0;
 
-    if (isScrollViewContainer && pickerIsOpen) {
+    if (isScrollViewContainer && isOpen) {
       return emptyValue
         ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
         : listLength * ITEM_HEIGHT + 5;
     }
 
     return null;
-  }, [emptyValue, isScrollViewContainer, listItems, pickerIsOpen]);
+  }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
+
+  const _readOnly = useMemo(() => disabled || readOnly, [disabled, readOnly]);
+
+  const _required = useMemo(
+    () => (_readOnly || required) && selectedItem === null,
+    [_readOnly, required, selectedItem],
+  );
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, _required),
@@ -141,76 +143,62 @@ const Picker = ({
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, _required, marginBottom, pickerIsOpen),
-    [Colors, _required, marginBottom, pickerIsOpen],
+    () => getStyles(Colors, _required, marginBottom, isOpen),
+    [Colors, _required, marginBottom, isOpen],
   );
+
+  if (_readOnly) {
+    return (
+      <FormInput
+        style={[styles.container, style]}
+        title={title}
+        defaultValue={
+          disabledValue == null || disabledValue === '' ? '-' : disabledValue
+        }
+        readOnly
+      />
+    );
+  }
 
   return (
     <View
       ref={wrapperRef}
-      style={[Platform.OS === 'ios' ? styles.containerZIndex : null, style]}>
-      {!disabled && (
-        <View style={styles.titleContainer}>
-          <Text style={styleTxt}>{title}</Text>
-        </View>
-      )}
-      {disabled ? (
-        <View
-          style={[
-            commonStyles.filter,
-            commonStyles.filterSize,
-            commonStyles.filterAlign,
-            styles.infosCard,
-            pickerStyle,
-          ]}>
-          <LabelText
-            value={
-              disabledValue == null || disabledValue === ''
-                ? '-'
-                : disabledValue
-            }
-            title={`${title} :`}
-            iconName={iconName}
+      style={[
+        styles.marginContainer,
+        Platform.OS === 'ios' ? styles.containerZIndex : null,
+        style,
+      ]}>
+      {title && <Text style={[styles.title, styleTxt]}>{title}</Text>}
+      <RightIconButton
+        onPress={togglePicker}
+        icon={
+          <Icon
+            name="chevron-down"
+            color={Colors.secondaryColor_dark.background}
           />
-        </View>
-      ) : (
-        <View
-          style={[
-            styles.pickerContainerStyle,
-            Platform.OS === 'ios' ? styles.pickerContainerZIndex : null,
-          ]}>
-          <RightIconButton
-            onPress={togglePicker}
-            icon={
-              <Icon
-                name="chevron-down"
-                color={Colors.secondaryColor_dark.background}
-              />
-            }
-            title={selectedItem ? selectedItem[labelField] : ''}
-            styleText={styles.styleTextButton}
-            style={[
-              commonStyles.filter,
-              commonStyles.filterSize,
-              commonStyles.filterAlign,
-              styles.rightIconButton,
-              isFocused && commonStyles.inputFocused,
-              pickerStyle,
-            ]}
-          />
-          {pickerIsOpen ? (
-            <SelectionContainer
-              style={pickerStyle}
-              emptyValue={emptyValue}
-              objectList={listItems}
-              keyField={valueField}
-              displayValue={item => item[labelField]}
-              handleSelect={handleValueChange}
-              isPicker={true}
-              selectedItem={[selectedItem]}
-            />
-          ) : null}
-        </View>
+        }
+        title={selectedItem ? selectedItem[labelField] : ''}
+        styleText={styles.textPicker}
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          commonStyles.filterAlign,
+          isFocused && commonStyles.inputFocused,
+          styles.content,
+          pickerStyle,
+        ]}
+      />
+      {isOpen && (
+        <SelectionContainer
+          style={pickerStyle}
+          emptyValue={emptyValue}
+          objectList={listItems}
+          keyField={valueField}
+          displayValue={item => item[labelField]}
+          handleSelect={handleValueChange}
+          isPicker={true}
+          selectedItem={[selectedItem]}
+        />
       )}
     </View>
   );
@@ -219,35 +207,33 @@ const Picker = ({
 const getStyles = (
   Colors: ThemeColors,
   _required: boolean,
-  marginBottom,
-  pickerIsOpen: boolean,
+  marginBottom: number,
+  isOpen: boolean,
 ) =>
   StyleSheet.create({
+    container: {
+      width: '100%',
+    },
     containerZIndex: {
-      zIndex: pickerIsOpen ? 45 : 0,
+      zIndex: isOpen ? 45 : 0,
     },
-    titleContainer: {
-      marginHorizontal: 24,
-    },
-    rightIconButton: {
-      width: Dimensions.get('window').width * 0.9,
+    content: {
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+      marginHorizontal: 0,
+      minHeight: 40,
     },
-    styleTextButton: {
-      left: '-20%',
-    },
-    infosCard: {
-      justifyContent: 'flex-start',
-      width: Dimensions.get('window').width * 0.9,
-    },
-    pickerContainerStyle: {
+    marginContainer: {
       marginBottom: marginBottom,
     },
-    pickerContainerZIndex: {
-      zIndex: pickerIsOpen ? 50 : 0,
+    textPicker: {
+      left: '-20%',
+    },
+    title: {
+      marginLeft: 10,
     },
   });
 
