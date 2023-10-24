@@ -17,10 +17,10 @@
  */
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {FormInput} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {getDistance} from '../../../features/distanceSlice';
-import {StyleSheet} from 'react-native';
 
 const CityFormInputAux = ({
   title = '',

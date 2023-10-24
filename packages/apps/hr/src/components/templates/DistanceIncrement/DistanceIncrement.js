@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {useSelector, isEmpty} from '@axelor/aos-mobile-core';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {FormIncrementInput} from '@axelor/aos-mobile-ui';
 
 const DistanceIncrementAux = ({
@@ -33,8 +33,8 @@ const DistanceIncrementAux = ({
   const {distance} = useSelector(state => state.distance);
 
   useEffect(() => {
-    if (!isEmpty(distance)) {
-      setValue(Number(distance?.distance));
+    if (distance != null) {
+      setValue(Number(distance));
     }
   }, [distance]);
 

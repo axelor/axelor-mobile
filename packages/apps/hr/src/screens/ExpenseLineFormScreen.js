@@ -44,7 +44,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     _dispatch(fetchCompanies());
     _dispatch(fetchExpenseConfig());
     _dispatch(resetDistance());
-    _dispatch(needUpdateDistance(false));
   }, [_dispatch]);
 
   const createExpenseLineAPI = useCallback(
