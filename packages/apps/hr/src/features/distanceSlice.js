@@ -63,7 +63,6 @@ const distanceSlice = createSlice({
       state.loadingDistance = true;
     });
     builder.addCase(getDistance.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.loadingDistance = false;
       if (!isEmpty(action.payload?.distance)) {
         state.distance = action.payload?.distance;
