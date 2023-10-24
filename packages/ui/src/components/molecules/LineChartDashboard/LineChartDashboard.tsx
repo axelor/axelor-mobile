@@ -58,16 +58,56 @@ const LineChartDashboard = ({
           isAnimated={true}
           textShiftX={12}
           backgroundColor={backgroundColor}
-          dataPointsColor1={Color.primaryColor.background}
-          color1={Color.primaryColor.background}
-          dataPointsColor2={Color.infoColor.background}
-          color2={Color.infoColor.background}
-          dataPointsColor3={Color.errorColor.background}
-          color3={Color.errorColor.background}
-          dataPointsColor4={Color.progressColor.background}
-          color4={Color.progressColor.background}
-          dataPointsColor5={Color.secondaryColor.background}
-          color5={Color.secondaryColor.background}
+          dataPointsColor1={
+            datasets[0]?.data[0]?.color != null
+              ? datasets[0]?.data[0]?.color
+              : Color.primaryColor.background
+          }
+          color1={
+            datasets[0]?.data[0]?.color != null
+              ? datasets[0]?.data[0]?.color
+              : Color.primaryColor.background
+          }
+          dataPointsColor2={
+            datasets[1]?.data[0]?.color != null
+              ? datasets[1]?.data[0]?.color
+              : Color.infoColor.background
+          }
+          color2={
+            datasets[1]?.data[0]?.color != null
+              ? datasets[1]?.data[0]?.color
+              : Color.infoColor.background
+          }
+          dataPointsColor3={
+            datasets[2]?.data[0]?.color != null
+              ? datasets[2]?.data[0]?.color
+              : Color.errorColor.background
+          }
+          color3={
+            datasets[2]?.data[0]?.color != null
+              ? datasets[2]?.data[0]?.color
+              : Color.errorColor.background
+          }
+          dataPointsColor4={
+            datasets[3]?.data[0]?.color != null
+              ? datasets[3]?.data[0]?.color
+              : Color.progressColor.background
+          }
+          color4={
+            datasets[3]?.data[0]?.color != null
+              ? datasets[3]?.data[0]?.color
+              : Color.progressColor.background
+          }
+          dataPointsColor5={
+            datasets[4]?.data[0]?.color != null
+              ? datasets[4]?.data[0]?.color
+              : Color.secondaryColor.background
+          }
+          color5={
+            datasets[4]?.data[0]?.color != null
+              ? datasets[4]?.data[0]?.color
+              : Color.secondaryColor.background
+          }
         />
       </View>
     </Card>
@@ -75,7 +115,7 @@ const LineChartDashboard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {marginHorizontal: 30},
+  container: {marginHorizontal: 30, marginVertical: 5},
 });
 
 export default LineChartDashboard;

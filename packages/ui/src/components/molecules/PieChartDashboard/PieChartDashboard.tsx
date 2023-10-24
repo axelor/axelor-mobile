@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '../../atoms';
 import {PieChart} from 'react-native-gifted-charts';
+import {useThemeColor} from '../../../theme/ThemeContext';
+import {Text} from '../../atoms';
+import Chart from '../../../types/chart';
 
 interface Data {
   value: number;
@@ -37,6 +39,21 @@ interface PieChartProps {
 }
 
 const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
+  const Color = useThemeColor();
+
+  const [dataSet, setDataSet] = useState(datasets[0]?.data);
+
+  useEffect(() => {
+    console.log(datasets[0]?.data);
+    const newDatasets = datasets[0]?.data?.map((item, index) => {
+      if (item?.color == null) {
+        return {...item, color: Chart.getChartColor(index, Color).background};
+      }
+      return {...item};
+    });
+    setDataSet(newDatasets);
+  }, [Color, datasets]);
+
   const renderLegendBorderColor = color => {
     return {
       borderWidth: 5,
@@ -48,7 +65,7 @@ const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
   return (
     <View style={style.container}>
       <PieChart
-        data={datasets[0]?.data}
+        data={dataSet}
         donut={true}
         showGradient
         sectionAutoFocus
@@ -57,7 +74,7 @@ const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
       />
       {legend && (
         <View style={style.legenContainer}>
-          {datasets[0]?.data?.map((_data, index) => {
+          {dataSet?.map((_data, index) => {
             return (
               <View key={index} style={style.itemLegendContainer}>
                 <View style={renderLegendBorderColor(_data?.color)} />
