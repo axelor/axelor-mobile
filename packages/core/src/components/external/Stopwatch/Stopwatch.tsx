@@ -134,11 +134,11 @@ const Stopwatch = ({
 
   const TimerButton = ({
     name,
-    touchable,
+    disabled,
     onPress,
   }: {
     name: string;
-    touchable: boolean;
+    disabled: boolean;
     onPress: () => void;
   }) => {
     return (
@@ -146,11 +146,11 @@ const Stopwatch = ({
         name={name}
         size={25}
         color={
-          touchable
-            ? Colors.secondaryColor_dark.background
-            : Colors.secondaryColor.background_light
+          disabled
+            ? Colors.secondaryColor.background_light
+            : Colors.secondaryColor_dark.background
         }
-        touchable={touchable}
+        touchable={!disabled}
         onPress={onPress}
         style={styles.btn}
       />
@@ -170,13 +170,11 @@ const Stopwatch = ({
           {stopwatchStatus !== StopwatchType.status.InProgress && (
             <TimerButton
               name="play"
-              touchable={
-                !(
-                  disable ||
-                  disablePlay ||
-                  stopwatchStatus === StopwatchType.status.InProgress ||
-                  stopwatchStatus === StopwatchType.status.Finished
-                )
+              disabled={
+                disable ||
+                disablePlay ||
+                stopwatchStatus === StopwatchType.status.InProgress ||
+                stopwatchStatus === StopwatchType.status.Finished
               }
               onPress={handlePlayBtn}
             />
@@ -184,31 +182,27 @@ const Stopwatch = ({
           {stopwatchStatus === StopwatchType.status.InProgress && (
             <TimerButton
               name="pause"
-              touchable={!(disable || disablePause)}
+              disabled={disable || disablePause}
               onPress={handlePauseBtn}
             />
           )}
           <TimerButton
             name="power-off"
-            touchable={
-              !(
-                disable ||
-                disableStop ||
-                stopwatchStatus === StopwatchType.status.Ready ||
-                stopwatchStatus === StopwatchType.status.Finished
-              )
+            disabled={
+              disable ||
+              disableStop ||
+              stopwatchStatus === StopwatchType.status.Ready ||
+              stopwatchStatus === StopwatchType.status.Finished
             }
             onPress={handleStopBtn}
           />
           {!hideCancel && (
             <TimerButton
               name="undo"
-              touchable={
-                !(
-                  disable ||
-                  disableCancel ||
-                  stopwatchStatus === StopwatchType.status.Ready
-                )
+              disabled={
+                disable ||
+                disableCancel ||
+                stopwatchStatus === StopwatchType.status.Ready
               }
               onPress={handleCancelBtn}
             />
