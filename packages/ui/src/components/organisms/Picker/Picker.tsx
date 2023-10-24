@@ -44,9 +44,8 @@ interface PickerProps {
   emptyValue?: boolean;
   isValueItem?: boolean;
   disabled?: boolean;
-  readOnly?: boolean;
+  readonly?: boolean;
   disabledValue?: string;
-  iconName?: string;
   required?: boolean;
   isScrollViewContainer?: boolean;
 }
@@ -64,7 +63,7 @@ const Picker = ({
   emptyValue = true,
   isValueItem = false,
   disabled = false,
-  readOnly = false,
+  readonly = false,
   disabledValue = null,
   required = false,
   isScrollViewContainer = false,
@@ -130,11 +129,11 @@ const Picker = ({
     return null;
   }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
 
-  const _readOnly = useMemo(() => disabled || readOnly, [disabled, readOnly]);
+  const _readonly = useMemo(() => disabled || readonly, [disabled, readonly]);
 
   const _required = useMemo(
-    () => (_readOnly || required) && selectedItem === null,
-    [_readOnly, required, selectedItem],
+    () => required && selectedItem == null,
+    [required, selectedItem],
   );
 
   const commonStyles = useMemo(
@@ -147,14 +146,12 @@ const Picker = ({
     [Colors, _required, marginBottom, isOpen],
   );
 
-  if (_readOnly) {
+  if (_readonly) {
     return (
       <FormInput
         style={[styles.container, style]}
         title={title}
-        defaultValue={
-          disabledValue == null || disabledValue === '' ? '-' : disabledValue
-        }
+        defaultValue={disabledValue || ''}
         readOnly
       />
     );
@@ -164,7 +161,7 @@ const Picker = ({
     <View
       ref={wrapperRef}
       style={[
-        styles.marginContainer,
+        styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
       ]}>
@@ -212,7 +209,8 @@ const getStyles = (
 ) =>
   StyleSheet.create({
     container: {
-      width: '100%',
+      width: '90%',
+      marginBottom: marginBottom,
     },
     containerZIndex: {
       zIndex: isOpen ? 45 : 0,
@@ -225,9 +223,6 @@ const getStyles = (
       borderWidth: 1,
       marginHorizontal: 0,
       minHeight: 40,
-    },
-    marginContainer: {
-      marginBottom: marginBottom,
     },
     textPicker: {
       left: '-20%',

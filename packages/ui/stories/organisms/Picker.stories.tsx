@@ -27,27 +27,66 @@ const listItems = [
   {id: '2', label: 'Item 2'},
   {id: '3', label: 'Item 3'},
 ];
-
-storiesOf('ui/organisms/Picker', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('Default', () => (
-    <Picker
-      title="Select an item"
-      onValueChange={action('onValueChange')}
-      defaultValue="1"
-      listItems={listItems}
-      labelField="label"
-      valueField="id"
-    />
-  ));
-
+storiesOf('ui/organisms/Picker', module).add(
+  'Default',
+  args => {
+    return (
+      <View style={styles.container}>
+        <Picker
+          title={'Select an item'}
+          onValueChange={action('onValueChange')}
+          listItems={listItems}
+          labelField="label"
+          valueField="id"
+          style={styles.picker}
+          {...args}
+        />
+      </View>
+    );
+  },
+  {
+    argTypes: {
+      title: {
+        type: 'string',
+        defaultValue: 'Select an item',
+        control: {type: 'text'},
+      },
+      emptyValue: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      isValueItem: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      required: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      readonly: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      disabledValue: {
+        type: 'string',
+        defaultValue: 'Disabled',
+        control: {type: 'text'},
+      },
+    },
+  },
+);
 const styles = StyleSheet.create({
-  decorator: {
+  container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-    width: '15%',
-    marginLeft: '50%',
+    alignItems: 'center',
+    marginLeft: '25%',
+  },
+  picker: {
+    width: '50%',
   },
 });

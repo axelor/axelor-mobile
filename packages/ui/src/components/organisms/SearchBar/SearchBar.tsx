@@ -18,7 +18,7 @@
 
 import React, {LegacyRef, useMemo} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
+import {checkNullString, getCommonStyles} from '../../../utils';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
 import {Icon, Text} from '../../atoms';
@@ -31,7 +31,7 @@ interface SearchBarProps {
   valueTxt: string;
   placeholder: string;
   required?: boolean;
-  readOnly?: boolean;
+  readonly?: boolean;
   onClearPress: () => void;
   onChangeTxt: (any) => void;
   onSelection?: () => void;
@@ -49,7 +49,7 @@ const SearchBar = ({
   valueTxt,
   placeholder,
   required = false,
-  readOnly,
+  readonly,
   onClearPress,
   onChangeTxt,
   onSelection = () => {},
@@ -62,7 +62,7 @@ const SearchBar = ({
   const Colors = useThemeColor();
 
   const _required = useMemo(
-    () => required && (valueTxt === null || valueTxt === ''),
+    () => required && checkNullString(valueTxt),
     [required, valueTxt],
   );
 
@@ -76,7 +76,7 @@ const SearchBar = ({
     [Colors, _required],
   );
 
-  if (readOnly) {
+  if (readonly) {
     return (
       <FormInput
         style={[styles.container, style]}
@@ -110,7 +110,7 @@ const SearchBar = ({
             color={Colors.secondaryColor_dark.background}
             size={20}
             touchable={true}
-            visible={valueTxt != null && valueTxt !== ''}
+            visible={!checkNullString(valueTxt)}
             onPress={onClearPress}
           />,
           <Icon
@@ -132,7 +132,7 @@ const SearchBar = ({
             color={scanIconColor}
             size={20}
             touchable={true}
-            visible={scanIconColor != null}
+            visible={!checkNullString(scanIconColor)}
             onPress={onScanPress}
           />,
         ]}

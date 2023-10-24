@@ -40,7 +40,7 @@ interface AutocompleteSearchProps {
   objectList: any[];
   value?: any;
   required?: boolean;
-  readOnly?: boolean;
+  readonly?: boolean;
   onChangeValue?: (item: any) => void;
   fetchData?: ({
     page,
@@ -72,7 +72,7 @@ const AutoCompleteSearch = ({
   objectList,
   value = null,
   required = false,
-  readOnly = false,
+  readonly = false,
   onChangeValue,
   fetchData = () => {},
   displayValue,
@@ -276,17 +276,18 @@ const AutoCompleteSearch = ({
     <View
       ref={wrapperRef}
       style={[
-        styles.marginContainer,
-        Platform.OS === 'ios' ? styles.searchBarContainer : null,
+        styles.container,
+        Platform.OS === 'ios' ? styles.containerZIndex : null,
+        style,
       ]}>
       <SearchBar
         title={title}
         inputRef={inputRef}
-        style={[styles.alignContainer, style]}
+        style={styles.alignContainer}
         valueTxt={searchText}
         placeholder={placeholder}
         required={required}
-        readOnly={readOnly}
+        readonly={readonly}
         onClearPress={handleClear}
         onChangeTxt={handleSearchValueChange}
         onSelection={handleFocus}
@@ -297,7 +298,7 @@ const AutoCompleteSearch = ({
       />
       {displayList && !oneFilter && (
         <SelectionContainer
-          style={[styles.alignContainer, style]}
+          style={styles.alignContainer}
           objectList={objectList}
           displayValue={displayValue}
           handleSelect={handleSelect}
@@ -321,15 +322,15 @@ const AutoCompleteSearch = ({
   );
 };
 
-const getStyles = (displayList, marginBottom) =>
+const getStyles = (displayList: boolean, marginBottom: number) =>
   StyleSheet.create({
-    searchBarContainer: {
-      zIndex: displayList ? 45 : 0,
-    },
-    marginContainer: {
-      marginBottom: marginBottom,
-      width: '100%',
+    container: {
+      width: '90%',
       alignSelf: 'center',
+      marginBottom: marginBottom,
+    },
+    containerZIndex: {
+      zIndex: displayList ? 45 : 0,
     },
     alignContainer: {
       alignSelf: 'center',
