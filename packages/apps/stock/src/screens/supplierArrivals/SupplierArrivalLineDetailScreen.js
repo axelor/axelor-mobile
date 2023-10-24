@@ -17,6 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   Picker,
@@ -152,7 +153,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={product?.picture}
@@ -194,5 +195,11 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default SupplierArrivalLineDetailScreen;

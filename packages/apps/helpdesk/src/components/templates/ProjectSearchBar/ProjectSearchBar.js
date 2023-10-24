@@ -33,7 +33,7 @@ const ProjectSearchBar = ({
   isFocus = false,
   style,
   required = false,
-  readOnly = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const ProjectSearchBar = ({
       objectList={projectList}
       value={defaultValue}
       required={required}
-      readOnly={readOnly}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchProjectAPI}
       displayValue={displayItemFullname}

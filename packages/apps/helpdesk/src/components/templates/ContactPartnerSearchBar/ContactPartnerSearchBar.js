@@ -17,9 +17,8 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {
   getCustomerbyId,
   searchCustomerContact,
@@ -33,7 +32,6 @@ const ContactPartnerSearchBar = ({
   onChange = () => {},
   showDetailsPopup = true,
   style,
-  styleTxt,
   showTitle = true,
   client,
   navigate = false,
@@ -66,53 +64,38 @@ const ContactPartnerSearchBar = ({
 
   if (client?.id != null) {
     return (
-      <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-        {showTitle && (
-          <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-        )}
-        <AutoCompleteSearch
-          objectList={customer?.contactPartnerSet}
-          value={defaultValue}
-          onChangeValue={onChange}
-          placeholder={I18n.t(placeholderKey)}
-          displayValue={displayItemFullname}
-          showDetailsPopup={showDetailsPopup}
-        />
-      </View>
+      <AutoCompleteSearch
+        title={showTitle && I18n.t(titleKey)}
+        objectList={customer?.contactPartnerSet}
+        value={defaultValue}
+        onChangeValue={onChange}
+        placeholder={I18n.t(placeholderKey)}
+        displayValue={displayItemFullname}
+        showDetailsPopup={showDetailsPopup}
+        style={style}
+      />
     );
   }
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
-      <AutoCompleteSearch
-        objectList={customerContactList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchContactAPI}
-        placeholder={I18n.t(placeholderKey)}
-        displayValue={displayItemFullname}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingCustomerContact}
-        moreLoading={moreLoadingCustomerContact}
-        isListEnd={isListEndCustomerContact}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
-      />
-    </View>
+    <AutoCompleteSearch
+      title={I18n.t(titleKey)}
+      objectList={customerContactList}
+      value={defaultValue}
+      onChangeValue={onChange}
+      fetchData={searchContactAPI}
+      placeholder={I18n.t(placeholderKey)}
+      displayValue={displayItemFullname}
+      showDetailsPopup={showDetailsPopup}
+      loadingList={loadingCustomerContact}
+      moreLoading={moreLoadingCustomerContact}
+      isListEnd={isListEndCustomerContact}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      style={style}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 41,
-  },
-  title: {
-    marginHorizontal: 24,
-  },
-});
 
 export default ContactPartnerSearchBar;

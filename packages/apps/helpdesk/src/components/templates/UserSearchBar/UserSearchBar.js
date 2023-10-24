@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchUser} from '../../../features/userSlice';
 import {displayItemFullname} from '../../../utils/displayers';
-import {Platform} from 'react-native';
 
 const UserSearchBar = ({
   placeholderKey = 'Helpdesk_User',
@@ -34,19 +32,15 @@ const UserSearchBar = ({
   oneFilter = false,
   isFocus = false,
   style,
-  styleTxt,
   showTitle = true,
   required = false,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {userList, loadingUser, moreLoading, isListEnd} = useSelector(
     state => state.userList,
   );
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchUserTypeAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -56,43 +50,25 @@ const UserSearchBar = ({
   );
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
-      <AutoCompleteSearch
-        style={[
-          defaultValue == null && required ? styles.requiredBorder : null,
-        ]}
-        objectList={userList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchUserTypeAPI}
-        displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingUser}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
-      />
-    </View>
+    <AutoCompleteSearch
+      title={showTitle && I18n.t(titleKey)}
+      objectList={userList}
+      value={defaultValue}
+      required={required}
+      onChangeValue={onChange}
+      fetchData={searchUserTypeAPI}
+      displayValue={displayItemFullname}
+      placeholder={I18n.t(placeholderKey)}
+      showDetailsPopup={showDetailsPopup}
+      loadingList={loadingUser}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      style={style}
+    />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 24,
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-  });
 
 export default UserSearchBar;

@@ -235,11 +235,12 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  stockView: {
-    marginTop: '2%',
-  },
   scroll: {
     height: '100%',
+  },
+  stockView: {
+    alignItems: 'center',
+    marginTop: '2%',
   },
 });
 

@@ -129,7 +129,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {(product || !loadingProductFromId) && (
           <ProductCardInfo
             name={product.name}
@@ -149,7 +149,6 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}
         />
         <Picker
-          style={styles.picker}
           title={I18n.t('Stock_Unit')}
           onValueChange={setUnit}
           defaultValue={unit?.id}
@@ -169,8 +168,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  picker: {
-    marginBottom: '2%',
+  container: {
+    alignItems: 'center',
   },
 });
 

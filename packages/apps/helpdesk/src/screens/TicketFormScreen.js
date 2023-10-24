@@ -141,16 +141,12 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_CustomPartner"
             defaultValue={_ticket?.[CUSTOMER_KEY]}
             onChange={value => handleTicketFieldChange(value, CUSTOMER_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <ContactPartnerSearchBar
             titleKey={I18n.t('Helpdesk_ContactPartner')}
             placeholderKey={I18n.t('Helpdesk_ContactPartner')}
             defaultValue={_ticket?.[CONTACT_KEY]}
             onChange={value => handleTicketFieldChange(value, CONTACT_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
             client={_ticket?.[CUSTOMER_KEY]}
           />
           <TicketTypeSearchBar
@@ -158,8 +154,6 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_Type"
             defaultValue={_ticket?.ticketType}
             onChange={value => handleTicketFieldChange(value, 'ticketType')}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <Picker
             style={styles.input}
@@ -212,8 +206,6 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_AssignedToUser"
             defaultValue={_ticket?.assignedToUser}
             onChange={value => handleTicketFieldChange(value, 'assignedToUser')}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <UserSearchBar
             titleKey="Helpdesk_ResponsibleUser"
@@ -222,8 +214,6 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={value =>
               handleTicketFieldChange(value, 'responsibleUser')
             }
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <FormHtmlInput
             title={I18n.t('Base_Description')}

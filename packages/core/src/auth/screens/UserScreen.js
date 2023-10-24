@@ -145,7 +145,7 @@ const UserScreen = ({children}) => {
               valueField="id"
               onValueChange={updateActiveCompany}
               isValueItem={true}
-              disabled={!canModifyCompany}
+              readonly={!canModifyCompany}
               disabledValue={user?.activeCompany?.name}
             />
           )}
@@ -180,11 +180,11 @@ const UserScreen = ({children}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    container: {
-      justifyContent: 'center',
-    },
     alignContainer: {
       alignItems: 'center',
+    },
+    container: {
+      justifyContent: 'center',
     },
     imageIcon: {
       backgroundColor: Colors.backgroundColor,

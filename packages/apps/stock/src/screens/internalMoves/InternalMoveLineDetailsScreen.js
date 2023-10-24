@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   KeyboardAvoidingScrollView,
@@ -177,7 +178,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView style={styles.container}>
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_OriginalStockLocation"
@@ -240,5 +241,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default InternalMoveLineDetailsScreen;

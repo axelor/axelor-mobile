@@ -30,8 +30,11 @@ import {
 import {useTranslator} from '../../../i18n';
 
 interface AutocompleteSearchProps {
+  title?: string;
   objectList: any[];
   value?: string;
+  required?: boolean;
+  readonly?: boolean;
   onChangeValue?: (value: any) => void;
   fetchData?: ({
     page,
@@ -57,8 +60,11 @@ interface AutocompleteSearchProps {
 }
 
 const ScannerAutocompleteSearch = ({
+  title,
   objectList,
   value,
+  required = false,
+  readonly = false,
   onChangeValue,
   fetchData,
   displayValue,
@@ -115,9 +121,12 @@ const ScannerAutocompleteSearch = ({
 
   return (
     <AutoCompleteSearch
+      title={title}
       selectLastItem={selectLastItem}
       objectList={objectList}
       value={searchValue}
+      required={required}
+      readonly={readonly}
       onChangeValue={handleChangeValue}
       fetchData={fetchData}
       displayValue={displayValue}
