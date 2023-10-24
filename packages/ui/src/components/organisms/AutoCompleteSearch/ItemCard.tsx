@@ -54,15 +54,16 @@ const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
 const getStyles = (Colors: ThemeColors, isSelected: boolean) =>
   StyleSheet.create({
     item: {
-      height: 40,
+      minHeight: 40,
       flexDirection: 'row',
       justifyContent: 'space-between',
       position: 'relative',
       width: '100%',
     },
     text: {
+      alignSelf: 'center',
       width: isSelected ? '90%' : '100%',
-      marginTop: 10,
+      marginVertical: 7,
       marginLeft: 10,
     },
     border: {
