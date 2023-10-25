@@ -44,7 +44,6 @@ const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
   const [dataSet, setDataSet] = useState(datasets[0]?.data);
 
   useEffect(() => {
-    console.log(datasets[0]?.data);
     const newDatasets = datasets[0]?.data?.map((item, index) => {
       if (item?.color == null) {
         return {...item, color: Chart.getChartColor(index, Color).background};

@@ -52,11 +52,9 @@ const LineChartDashboard = ({
         <LineChart
           data={datasets[0]?.data}
           data2={datasets[1]?.data}
-          areaChart5
           spacing={spacing}
           width={Dimensions.get('window').width * 0.6}
           isAnimated={true}
-          textShiftX={12}
           backgroundColor={backgroundColor}
           dataPointsColor1={
             datasets[0]?.data[0]?.color != null

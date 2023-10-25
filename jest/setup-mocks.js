@@ -112,6 +112,7 @@ jest.mock('react-native-webview', () => ({
 
 jest.mock('react-native-gifted-charts', () => ({
   LineChart: jest.fn(),
+  BarChart: jest.fn(),
   PieChart: jest.fn(),
 }));
 
