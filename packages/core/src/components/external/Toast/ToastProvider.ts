@@ -16,12 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Camera} from './Camera/Camera';
-export {default as CameraScanner} from './CameraScanner/CameraScanner';
-export {default as CodeHighlighter} from './CodeHighlighter/CodeHighlighter';
-export * from './CodeHighlighter/code-highlighter.helper';
-export {default as PlanningView} from './PlanningView/PlanningView';
-export {default as Scanner} from './Scanner/Scanner';
-export {default as Stopwatch} from './Stopwatch/Stopwatch';
-export {default as Timer} from './Timer/Timer';
-export * from './Toast';
+class ToastProvider {
+  private title: string;
+  private message: string;
+  private type: string;
+
+  constructor() {
+    this.title = '';
+    this.message = '';
+    this.type = '';
+  }
+
+  public getTitle() {
+    return this.title;
+  }
+
+  public getMessage() {
+    return this.message;
+  }
+
+  public getType() {
+    return this.type;
+  }
+
+  public setTitle(title: string) {
+    this.title = title;
+  }
+
+  public setMessage(message: string) {
+    this.message = message;
+  }
+
+  public setType(type: string) {
+    this.type = type;
+  }
+}
+
+const toastProvider = new ToastProvider();
+
+export default toastProvider;
