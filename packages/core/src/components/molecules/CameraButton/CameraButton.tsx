@@ -113,6 +113,7 @@ const CameraButton = ({
 
   return (
     <CircleButton
+      isNeutralBackground
       style={styles.floatingButton}
       iconName="camera"
       onPress={handleCameraPress}
@@ -124,11 +125,11 @@ const CameraButton = ({
 const getStyles = (Colors, buttonSize) =>
   StyleSheet.create({
     floatingButton: {
-      backgroundColor: Colors.secondaryColor_dark.foreground,
       position: 'absolute',
+      left: Dimensions.get('window').width / 2 - buttonSize / 2,
       bottom: 25,
       elevation: 2,
-      left: Dimensions.get('window').width / 2 - buttonSize / 2,
+      borderWidth: 0,
     },
   });
 
