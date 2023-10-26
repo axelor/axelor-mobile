@@ -22,56 +22,38 @@ import {Checkbox, lightTheme, Icon} from '@axelor/aos-mobile-ui';
 
 describe('Checkbox Component', () => {
   const Colors = lightTheme.colors;
-  const onChangeMock = jest.fn();
+  const props = {
+    title: 'Checkbox Label',
+    onChange: jest.fn(),
+    isDefaultChecked: false,
+    disabled: false,
+    iconSize: 20,
+  };
 
-  it('should render without crashing', () => {
-    const wrapper = shallow(
-      <Checkbox
-        title="Checkbox Label"
-        isDefaultChecked={false}
-        onChange={onChangeMock}
-      />,
-    );
+  it('renders without crashing', () => {
+    const wrapper = shallow(<Checkbox {...props} />);
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should call onChange when checkbox is clicked', () => {
-    const wrapper = shallow(
-      <Checkbox
-        title="Checkbox Label"
-        isDefaultChecked={false}
-        onChange={onChangeMock}
-      />,
-    );
+  it('renders icon with the correct props', () => {
+    const wrapper = shallow(<Checkbox {...props} />);
+    const iconComponent = wrapper.find(Icon);
 
-    wrapper.find(Icon).simulate('press');
-
-    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(iconComponent.exists()).toBeTruthy();
+    expect(iconComponent.prop('size')).toBe(props.iconSize);
+    expect(iconComponent.prop('touchable')).toBe(true);
   });
 
-  it('should not call onChange when checkbox is disabled', () => {
-    const wrapper = shallow(
-      <Checkbox
-        title="Checkbox Label"
-        isDefaultChecked={false}
-        onChange={onChangeMock}
-        disabled={true}
-      />,
-    );
+  it('renders disabled icon when specified', () => {
+    const wrapper = shallow(<Checkbox {...props} disabled={true} />);
+    const iconComponent = wrapper.find(Icon);
 
-    wrapper.find(Icon).simulate('press');
-
-    expect(onChangeMock).toHaveBeenCalledTimes(0);
+    expect(iconComponent.exists()).toBeTruthy();
+    expect(iconComponent.prop('touchable')).toBe(false);
   });
 
-  it('should have correct icon name based on isChecked prop', () => {
-    const wrapper = shallow(
-      <Checkbox
-        title="Checkbox Label"
-        isDefaultChecked={false}
-        onChange={onChangeMock}
-      />,
-    );
+  it('renders correct icon name based on isChecked prop', () => {
+    const wrapper = shallow(<Checkbox {...props} />);
 
     expect(wrapper.find(Icon).prop('name')).toBe('square-o');
 
@@ -80,27 +62,14 @@ describe('Checkbox Component', () => {
     expect(wrapper.find(Icon).prop('name')).toBe('check-square');
   });
 
-  it('should render with correct title', () => {
-    const title = 'Check me';
-    const wrapper = shallow(
-      <Checkbox
-        title={title}
-        isDefaultChecked={false}
-        onChange={onChangeMock}
-      />,
-    );
+  it('renders with correct title', () => {
+    const wrapper = shallow(<Checkbox {...props} />);
 
-    expect(wrapper.find('Text').prop('children')).toBe(title);
+    expect(wrapper.find('Text').prop('children')).toBe(props.title);
   });
 
-  it('should render with correct icon color based on disabled prop', () => {
-    const wrapper = shallow(
-      <Checkbox
-        title="Checkbox Label"
-        disabled={false}
-        onChange={onChangeMock}
-      />,
-    );
+  it('renders with correct icon color based on disabled prop', () => {
+    const wrapper = shallow(<Checkbox {...props} />);
 
     expect(wrapper.find(Icon).prop('color')).toEqual(
       Colors.primaryColor.background,

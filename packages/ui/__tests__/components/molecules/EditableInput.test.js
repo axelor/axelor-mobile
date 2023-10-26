@@ -30,6 +30,7 @@ describe('EditableInput Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<EditableInput {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 

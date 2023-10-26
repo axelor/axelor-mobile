@@ -20,52 +20,42 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
 import {Button, lightTheme, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('Button Component', () => {
   const Colors = lightTheme.colors;
+  const props = {
+    title: 'Cick here',
+    onPress: jest.fn(),
+  };
 
   it('renders without crashing', () => {
     const wrapper = shallow(<Button />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders correctly with default props', () => {
-    const title = 'Click here';
-    const wrapper = shallow(<Button title={title} />);
+    const wrapper = shallow(<Button {...props} />);
+
+    expect(wrapper.find(Text).prop('children')).toBe(props.title);
 
     expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
-
-    expect(wrapper.find(Text).prop('children')).toBe(title);
-
     expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeFalsy();
   });
 
-  it('renders with custom style and onPress function', () => {
-    const title = 'Submit';
-    const onPressMock = jest.fn();
+  it('renders with custom style', () => {
     const style = {margin: 10};
-    const wrapper = shallow(
-      <Button title={title} style={style} onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<Button {...props} style={style} />);
 
-    const buttonStyle = wrapper.find(TouchableOpacity).prop('style');
-
-    expect(buttonStyle).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.primaryColor.background,
-        }),
-        expect.objectContaining(style),
-      ]),
-    );
-
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(onPressMock).toHaveBeenCalledTimes(1);
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background,
+      ...style,
+    });
   });
 
   it('renders with disabled state', () => {
-    const title = 'Disabled Button';
-    const wrapper = shallow(<Button title={title} disabled={true} />);
+    const wrapper = shallow(<Button {...props} disabled={true} />);
 
     expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
   });

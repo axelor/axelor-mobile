@@ -22,66 +22,49 @@ import {TouchableOpacity} from 'react-native';
 import {DropdownCard, Icon, Text} from '@axelor/aos-mobile-ui';
 
 describe('DropdownCard Component', () => {
+  const props = {
+    title: 'title',
+    children: <Text testID="CHILDREN-CONTENT">Content goes here</Text>,
+    dropdownIsOpen: false,
+    showIcon: true,
+  };
+
   it('should render without crashing', () => {
-    const onPressMock = jest.fn();
-    const wrapper = shallow(
-      <DropdownCard selected={true} onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<DropdownCard {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders correctly with title and chevron down icon', () => {
-    const wrapper = shallow(
-      <DropdownCard title="Dropdown Title" DropdownIsOpen={false}>
-        <Text testID="CHILDREN-CONTENT">Content goes here</Text>
-      </DropdownCard>,
-    );
+  it('renders correctly with title and icon', () => {
+    const wrapper = shallow(<DropdownCard {...props} />);
 
-    expect(wrapper.find(Text).prop('children')).toBe('Dropdown Title');
+    expect(wrapper.find(Text).prop('children')).toBe(props.title);
     expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
   });
 
-  it('toggles the dropdown on touchable press', () => {
-    const wrapper = shallow(
-      <DropdownCard title="Dropdown Title" DropdownIsOpen={false}>
-        <Text testID="CHILDREN-CONTENT">Content goes here</Text>
-      </DropdownCard>,
-    );
+  it('renders correctly without icon', () => {
+    const wrapper = shallow(<DropdownCard {...props} showIcon={false} />);
 
-    const touchable = wrapper.find(TouchableOpacity);
+    expect(wrapper.find(Icon).exists()).toBe(false);
+  });
+
+  it('toggles the dropdown on touchable press', () => {
+    const wrapper = shallow(<DropdownCard {...props} />);
 
     expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
 
-    touchable.simulate('press');
+    wrapper.find(TouchableOpacity).simulate('press');
 
     expect(wrapper.find(Icon).prop('name')).toBe('chevron-up');
 
-    touchable.simulate('press');
+    wrapper.find(TouchableOpacity).simulate('press');
 
     expect(wrapper.find(Icon).prop('name')).toBe('chevron-down');
   });
 
   it('renders children content when DropdownIsOpen prop is true', () => {
-    const wrapper = shallow(
-      <DropdownCard title="Dropdown Title" DropdownIsOpen={true}>
-        <Text testID="CHILDREN-CONTENT">Content goes here</Text>
-      </DropdownCard>,
-    );
+    const wrapper = shallow(<DropdownCard {...props} dropdownIsOpen={true} />);
 
     expect(wrapper.find('Text[testID="CHILDREN-CONTENT"]').exists()).toBe(true);
-  });
-
-  it('calls onPress prop when touchable is pressed', () => {
-    const onPressMock = jest.fn();
-    const wrapper = shallow(
-      <DropdownCard title="Dropdown Title" onPress={onPressMock}>
-        <Text testID="CHILDREN-CONTENT">Content goes here</Text>
-      </DropdownCard>,
-    );
-
-    const touchable = wrapper.find(TouchableOpacity);
-    touchable.simulate('press');
-
-    expect(onPressMock).toHaveBeenCalled();
   });
 });

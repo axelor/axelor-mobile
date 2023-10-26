@@ -25,29 +25,51 @@ import {
   IconButton,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
+import * as configContext from '../../../lib/config/ConfigContext';
+import {getGlobalStyles} from '../../tools';
 
 describe('BlockInteractionMessage Component', () => {
   it('renders without crashing', () => {
     const wrapper = shallow(<BlockInteractionMessage />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders the correct error message', () => {
+  it('does not render if blockInteractionConfig.visible is not defined', () => {
     const wrapper = shallow(<BlockInteractionMessage />);
+
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
+  it('renders the informations given in context', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      blockInteractionConfig: {
+        visible: true,
+        message: 'Test Message',
+        style: {backgroundColor: 'blue'},
+        actionItems: [
+          {
+            iconName: 'check',
+            title: 'Action 1',
+            onPress: jest.fn(),
+            color: 'green',
+          },
+          {
+            title: 'Action 2',
+            onPress: jest.fn(),
+            color: 'red',
+          },
+        ],
+      },
+    }));
+    const wrapper = shallow(<BlockInteractionMessage />);
+
     expect(wrapper.find(WarningCard).prop('errorMessage')).toBe('Test Message');
-  });
 
-  it('applies custom styles', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
-    expect(wrapper.find(Card).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({backgroundColor: 'blue'}),
-      ]),
-    );
-  });
+    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject({
+      backgroundColor: 'blue',
+    });
 
-  it('renders action items correctly', () => {
-    const wrapper = shallow(<BlockInteractionMessage />);
     const buttons = wrapper.find(IconButton);
     expect(buttons).toHaveLength(1);
     expect(buttons.at(0).prop('iconName')).toBe('check');
@@ -58,22 +80,5 @@ describe('BlockInteractionMessage Component', () => {
     expect(buttonsWithoutIcon).toHaveLength(1);
     expect(buttonsWithoutIcon.at(0).prop('title')).toBe('Action 2');
     expect(buttonsWithoutIcon.at(0).prop('color')).toBe('red');
-  });
-
-  it('does not render if blockInteractionConfig.visible is false', () => {
-    try {
-      jest.mock('../../../lib/config/ConfigContext', () => ({
-        useConfig: () => ({
-          blockInteractionConfig: {
-            visible: false,
-          },
-        }),
-      }));
-
-      const wrapper = shallow(<BlockInteractionMessage />);
-      expect(wrapper.isEmptyRender()).toBe(true);
-    } finally {
-      return;
-    }
   });
 });

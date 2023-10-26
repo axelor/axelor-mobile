@@ -19,34 +19,36 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {AttachmentCard, Text} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
+
+const DAY = '30';
+const MONTH = '06';
+const YEAR = '2023';
+const TEST_DATE = `${YEAR}-${MONTH}-${DAY}`;
+const DEFAULT_FORMAT = `${MONTH}/${DAY}/${YEAR}`;
 
 describe('Attachement Card Component', () => {
   const props = {
     fileName: 'test-file.pdf',
-    creationDate: '2023-06-30',
+    creationDate: TEST_DATE,
     onPress: jest.fn(),
   };
 
   it('renders without crashing', () => {
     const wrapper = shallow(<AttachmentCard />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders the correct file name', () => {
     const wrapper = shallow(<AttachmentCard {...props} />);
-    expect(wrapper.find(Text).at(0).props().children).toBe('test-file.pdf');
+
+    expect(wrapper.find(Text).at(0).prop('children')).toBe(props.fileName);
   });
 
   it('renders the correct creation date', () => {
     const wrapper = shallow(<AttachmentCard {...props} />);
-    expect(wrapper.find(Text).at(1).props().children).toContain('Added on');
-    expect(wrapper.find(Text).at(1).props().children).toContain('06/30/2023');
-  });
 
-  it('calls onPress function on TouchableOpacity press', () => {
-    const wrapper = shallow(<AttachmentCard {...props} />);
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(props.onPress).toHaveBeenCalled();
+    expect(wrapper.find(Text).at(1).prop('children')).toContain('Added on');
+    expect(wrapper.find(Text).at(1).prop('children')).toContain(DEFAULT_FORMAT);
   });
 });

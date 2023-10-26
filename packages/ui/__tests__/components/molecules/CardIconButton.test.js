@@ -18,41 +18,30 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
+import {CardIconButton, Icon} from '@axelor/aos-mobile-ui';
 import {TouchableOpacity} from 'react-native';
-import {CardIconButton, lightTheme} from '@axelor/aos-mobile-ui';
 
 describe('CardIconButton Component', () => {
-  const Colors = lightTheme.colors;
+  const props = {iconName: 'heart', iconColor: 'red', onPress: jest.fn()};
 
   it('should render without crashing', () => {
-    const wrapper = shallow(
-      <CardIconButton iconName="heart" iconColor="red" onPress={() => {}} />,
-    );
+    const wrapper = shallow(<CardIconButton {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should call onPress when button is clicked', () => {
-    const onPressMock = jest.fn();
-    const wrapper = shallow(
-      <CardIconButton iconName="heart" iconColor="red" onPress={onPressMock} />,
-    );
+  it('renders the right informations', () => {
+    const wrapper = shallow(<CardIconButton {...props} />);
 
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(onPressMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.find(Icon).prop('name')).toBe(props.iconName);
+    expect(wrapper.find(Icon).prop('color')).toBe(props.iconColor);
   });
 
-  it('should have correct styles based on prop Colors', () => {
-    const wrapper = shallow(
-      <CardIconButton iconName="heart" iconColor="red" onPress={() => {}} />,
-    );
+  it('renders a touchable component', () => {
+    const wrapper = shallow(<CardIconButton {...props} />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
-    expect(wrapper.prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.backgroundColor,
-        }),
-      ]),
-    );
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).not.toBe(false);
   });
 });

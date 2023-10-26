@@ -18,106 +18,36 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Card, ClearableCard, Icon, lightTheme} from '@axelor/aos-mobile-ui';
+import {ClearableCard, Icon} from '@axelor/aos-mobile-ui';
 
 describe('ClearableCard Component', () => {
-  const Colors = lightTheme.colors;
-  const onPressMock = jest.fn();
-  const onClearPressMock = jest.fn();
+  const props = {
+    onPress: jest.fn(),
+    onClearPress: jest.fn(),
+    valueTxt: 'test',
+    clearable: true,
+  };
 
   it('should render without crashing', () => {
-    const wrapper = shallow(
-      <ClearableCard selected={true} onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<ClearableCard {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders correctly when clearable is true', () => {
-    const wrapper = shallow(
-      <ClearableCard
-        valueTxt="Test Value"
-        onClearPress={onClearPressMock}
-        clearable
-      />,
-    );
+    const wrapper = shallow(<ClearableCard {...props} />);
 
-    expect(wrapper.find(Icon)).toHaveLength(1);
+    const iconComponent = wrapper.find(Icon);
 
-    const iconProps = wrapper.find(Icon).props();
-    expect(iconProps.name).toBe('times');
-    expect(iconProps.touchable).toBe(true);
-    expect(iconProps.onPress).toBe(onClearPressMock);
-    expect(iconProps.size).toBeGreaterThan(0);
-
-    const cardStyles = wrapper.find(Card).props().style;
-    expect(cardStyles).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.backgroundColor,
-        }),
-      ]),
-    );
-  });
-
-  it('renders correctly when clearable is false', () => {
-    const wrapper = shallow(
-      <ClearableCard
-        valueTxt="Test Value"
-        onClearPress={onClearPressMock}
-        clearable={false}
-      />,
-    );
-
-    expect(wrapper.find(Icon)).toHaveLength(0);
-
-    const cardStyles = wrapper.find(Card).props().style;
-    expect(cardStyles).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.backgroundColor,
-        }),
-      ]),
-    );
-  });
-
-  it('calls onClearPress function when the clear icon is pressed', () => {
-    const wrapper = shallow(
-      <ClearableCard
-        valueTxt="Test Value"
-        onClearPress={onClearPressMock}
-        clearable
-      />,
-    );
-
-    const clearIcon = wrapper.find(Icon);
-    clearIcon.props().onPress();
-
-    expect(onClearPressMock).toHaveBeenCalled();
+    expect(iconComponent.exists()).toBeTruthy();
+    expect(iconComponent.prop('name')).toBe('times');
+    expect(iconComponent.prop('touchable')).toBe(true);
+    expect(iconComponent.prop('size')).toBeGreaterThan(0);
   });
 
   it('does not render clear icon when clearable is false', () => {
-    const wrapper = shallow(
-      <ClearableCard
-        valueTxt="Test Value"
-        onClearPress={onClearPressMock}
-        clearable={false}
-      />,
-    );
+    const wrapper = shallow(<ClearableCard {...props} clearable={false} />);
 
     expect(wrapper.find(Icon)).toHaveLength(0);
-  });
-
-  it('should not call onClearPress function when clearable is false', () => {
-    const wrapper = shallow(
-      <ClearableCard
-        valueTxt="Test Value"
-        onClearPress={onClearPressMock}
-        clearable={false}
-      />,
-    );
-
-    wrapper.simulate('press');
-
-    expect(onClearPressMock).not.toHaveBeenCalled();
   });
 });

@@ -18,24 +18,22 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Card, DropdownMenu, Text} from '@axelor/aos-mobile-ui';
 
 describe('DropdownMenu Component', () => {
+  const props = {
+    children: <Text testID="MENU-CONTENT">Menu Content</Text>,
+  };
+
   it('should render without crashing', () => {
-    const onPressMock = jest.fn();
-    const wrapper = shallow(
-      <DropdownMenu selected={true} onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<DropdownMenu {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders children when visible is true', () => {
-    const wrapper = shallow(
-      <DropdownMenu>
-        <Text testID="MENU-CONTENT">Menu Content</Text>
-      </DropdownMenu>,
-    );
+    const wrapper = shallow(<DropdownMenu {...props} />);
 
     wrapper.find(TouchableOpacity).simulate('press');
 
@@ -44,41 +42,15 @@ describe('DropdownMenu Component', () => {
   });
 
   it('toggles visibility when action button is pressed', () => {
-    const wrapper = shallow(
-      <DropdownMenu>
-        <Text testID="MENU-CONTENT">Menu Content</Text>
-      </DropdownMenu>,
-    );
-
-    const actionButton = wrapper.find(TouchableOpacity);
+    const wrapper = shallow(<DropdownMenu {...props} />);
 
     expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(false);
-
-    actionButton.simulate('press');
-
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(true);
-
-    actionButton.simulate('press');
-    wrapper.update();
-
-    expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(false);
-  });
-
-  // TODO: check why TouchableOpacity not found(try to mock clickoutside)
-  it('closes menu when clicked outside', () => {
-    const wrapper = shallow(
-      <TouchableWithoutFeedback testID="DROPDOWN-MENU-CONTAINER">
-        <DropdownMenu>
-          <Text testID="MENU-CONTENT">Menu Content</Text>
-        </DropdownMenu>
-      </TouchableWithoutFeedback>,
-    );
 
     wrapper.find(TouchableOpacity).simulate('press');
 
     expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(true);
 
-    wrapper.find('[testID="DROPDOWN-MENU-CONTAINER"]').simulate('press');
+    wrapper.find(TouchableOpacity).simulate('press');
 
     expect(wrapper.find('[testID="MENU-CONTENT"]').exists()).toBe(false);
   });

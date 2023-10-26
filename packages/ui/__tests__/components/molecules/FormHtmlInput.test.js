@@ -25,6 +25,7 @@ import {
   lightTheme,
   Text,
 } from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('FormHtmlInput Component', () => {
   const Colors = lightTheme.colors;
@@ -37,6 +38,7 @@ describe('FormHtmlInput Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<FormHtmlInput {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -63,23 +65,16 @@ describe('FormHtmlInput Component', () => {
     const wrapper = shallow(<FormHtmlInput {...props} />);
 
     wrapper.find(HtmlInput).simulate('focus');
-    const htmlInputWrapperStyle = wrapper.find(View).at(1).props().style;
-    expect(htmlInputWrapperStyle).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.primaryColor.background,
-        }),
-      ]),
-    );
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.primaryColor.background,
+    });
 
     wrapper.find(HtmlInput).simulate('blur');
-    expect(htmlInputWrapperStyle).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.secondaryColor.background,
-        }),
-      ]),
-    );
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
   });
 
   it('applies required styling when field is required and empty', () => {
@@ -87,13 +82,22 @@ describe('FormHtmlInput Component', () => {
       <FormHtmlInput {...props} required={true} defaultValue={null} />,
     );
 
-    const htmlInputWrapperStyle = wrapper.find(View).at(1).props().style;
-    expect(htmlInputWrapperStyle).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.errorColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.errorColor.background,
+    });
+  });
+
+  it('does not apply required styling when field is required and not empty', () => {
+    const wrapper = shallow(<FormHtmlInput {...props} required={true} />);
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
+  });
+
+  it('renders readonly input when necessary', () => {
+    const wrapper = shallow(<FormHtmlInput {...props} readonly={true} />);
+
+    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
   });
 });

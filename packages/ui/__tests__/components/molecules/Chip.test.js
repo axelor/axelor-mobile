@@ -20,89 +20,81 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {TouchableOpacity, View} from 'react-native';
 import {Chip, lightTheme, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('Chip Component', () => {
   const Colors = lightTheme.colors;
-  const selectedColor = Colors.infoColor;
   const props = {
     onPressMock: jest.fn(),
-    title: 'Selected Chip',
+    title: 'Chip title',
     selected: true,
-    selectedColor,
+    selectedColor: Colors.infoColor,
   };
 
-  it('should render without crashing', () => {
+  it('renders without crashing', () => {
     const wrapper = shallow(<Chip {...props} />);
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should render correctly when selected is true', () => {
-    const wrapper = shallow(<Chip {...props} />);
-
-    expect(wrapper.find(View).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: selectedColor.background_light,
-          borderLeftWidth: 3,
-          borderLeftColor: selectedColor.background,
-          borderRightWidth: 3,
-          borderRightColor: selectedColor.background,
-        }),
-      ]),
-    );
-
-    expect(wrapper.find(Text).prop('textColor')).toEqual(
-      selectedColor.foreground,
-    );
-    expect(wrapper.find(Text).prop('fontSize')).toEqual(14);
-    expect(wrapper.find(Text).prop('children')).toEqual(props.title);
-  });
-
-  it('should render correctly when selected is true and selectedColor is null', () => {
+  it('renders a touchable component with a title', () => {
     const wrapper = shallow(<Chip {...props} selectedColor={null} />);
 
-    expect(wrapper.find(View).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.primaryColor.background_light,
-          borderLeftWidth: 3,
-          borderLeftColor: Colors.primaryColor.background,
-          borderRightWidth: 3,
-          borderRightColor: Colors.primaryColor.background,
-        }),
-      ]),
-    );
+    expect(wrapper.find(Text).prop('children')).toEqual(props.title);
+
+    expect(wrapper.find(TouchableOpacity).exists()).toBeTruthy();
+  });
+
+  it('renders wtih the default selected values', () => {
+    const wrapper = shallow(<Chip {...props} selectedColor={null} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background_light,
+      borderLeftColor: Colors.primaryColor.background,
+      borderRightColor: Colors.primaryColor.background,
+    });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(
       Colors.primaryColor.foreground,
     );
-    expect(wrapper.find(Text).prop('fontSize')).toEqual(14);
-    expect(wrapper.find(Text).prop('children')).toEqual(props.title);
   });
 
-  it('should render correctly when selected is false', () => {
+  it('renders correctly with custom selected color', () => {
+    const wrapper = shallow(<Chip {...props} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      backgroundColor: props.selectedColor.background_light,
+      borderLeftColor: props.selectedColor.background,
+      borderRightColor: props.selectedColor.background,
+    });
+
+    expect(wrapper.find(Text).prop('textColor')).toEqual(
+      props.selectedColor.foreground,
+    );
+  });
+
+  it('renders wtih the default not selected values', () => {
     const wrapper = shallow(
-      <Chip {...props} selected={false} title="Not Selected Chip" />,
+      <Chip {...props} selectedColor={null} selected={false} />,
     );
 
-    expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
-    expect(wrapper.find(View)).toHaveLength(1);
-    expect(wrapper.find(Text)).toHaveLength(1);
-
-    expect(wrapper.find(View).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.backgroundColor,
-          borderLeftWidth: 3,
-          borderLeftColor: selectedColor.background,
-          borderRightWidth: 3,
-          borderRightColor: selectedColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      backgroundColor: Colors.backgroundColor,
+      borderLeftColor: Colors.primaryColor.background,
+      borderRightColor: Colors.primaryColor.background,
+    });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(Colors.text);
-    expect(wrapper.find(Text).prop('fontSize')).toEqual(14);
-    expect(wrapper.find(Text).prop('children')).toEqual('Not Selected Chip');
+  });
+
+  it('renders correctly with custom not selected color', () => {
+    const wrapper = shallow(<Chip {...props} selected={false} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      backgroundColor: Colors.backgroundColor,
+      borderLeftColor: props.selectedColor.background,
+      borderRightColor: props.selectedColor.background,
+    });
+
+    expect(wrapper.find(Text).prop('textColor')).toEqual(Colors.text);
   });
 });

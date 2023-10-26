@@ -25,6 +25,7 @@ import {
   lightTheme,
 } from '@axelor/aos-mobile-ui';
 import {View} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('FormIncrementInput Component', () => {
   const Colors = lightTheme.colors;
@@ -37,6 +38,7 @@ describe('FormIncrementInput Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<FormIncrementInput {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -48,7 +50,7 @@ describe('FormIncrementInput Component', () => {
   });
 
   it('updates input value on change', () => {
-    const {defaultValue, stepSize, onChange} = props;
+    const {defaultValue, stepSize} = props;
 
     const wrapper = shallow(<FormIncrementInput {...props} />);
 
@@ -56,30 +58,23 @@ describe('FormIncrementInput Component', () => {
 
     wrapper.find(Increment).simulate('valueChange', newValue);
 
-    expect(onChange).toHaveBeenCalledWith(newValue);
+    expect(props.onChange).toHaveBeenCalledWith(newValue);
   });
 
   it('handles focus and blur', () => {
     const wrapper = shallow(<FormIncrementInput {...props} />);
 
     wrapper.find(Increment).simulate('focus');
-    const incrementWrapper = wrapper.find(View).at(1).props().style;
-    expect(incrementWrapper).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.primaryColor.background,
-        }),
-      ]),
-    );
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.primaryColor.background,
+    });
 
     wrapper.find(Increment).simulate('blur');
-    expect(incrementWrapper).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.secondaryColor.background,
-        }),
-      ]),
-    );
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
   });
 
   it('applies required styling when field is required and no default value', () => {
@@ -87,13 +82,22 @@ describe('FormIncrementInput Component', () => {
       <FormIncrementInput {...props} required={true} defaultValue={null} />,
     );
 
-    const incrementWrapper = wrapper.find(View).at(1).props().style;
-    expect(incrementWrapper).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.errorColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.errorColor.background,
+    });
+  });
+
+  it('does not apply required styling when field is required and not empty', () => {
+    const wrapper = shallow(<FormIncrementInput {...props} required={true} />);
+
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
+  });
+
+  it('renders readonly input when necessary', () => {
+    const wrapper = shallow(<FormIncrementInput {...props} readOnly={true} />);
+
+    expect(wrapper.find(Increment).prop('readonly')).toBe(true);
   });
 });

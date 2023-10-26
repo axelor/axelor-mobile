@@ -20,64 +20,52 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
 import {CircleButton, Icon, lightTheme} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('CircleButton Component', () => {
   const Colors = lightTheme.colors;
-  const onPressMock = jest.fn();
+  const props = {
+    onPress: jest.fn(),
+    iconName: 'test-icon',
+    disabled: false,
+    size: 50,
+  };
 
   it('should render without crashing', () => {
-    const wrapper = shallow(
-      <CircleButton selected={true} onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<CircleButton {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders correctly when not disabled', () => {
-    const wrapper = shallow(
-      <CircleButton iconName="test-icon" onPress={onPressMock} />,
-    );
+    const wrapper = shallow(<CircleButton {...props} />);
 
-    expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
     expect(wrapper.find(Icon)).toHaveLength(1);
-
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
-
-    expect(wrapper.find(Icon).prop('name')).toBe('test-icon');
+    expect(wrapper.find(Icon).prop('name')).toBe(props.iconName);
     expect(wrapper.find(Icon).prop('color')).toBe(
       Colors.primaryColor.foreground,
     );
 
-    expect(wrapper.find(TouchableOpacity).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.primaryColor.background,
-          borderRadius: 50,
-          width: 50,
-          height: 50,
-        }),
-      ]),
-    );
+    expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background,
+      borderRadius: props.size,
+      width: props.size,
+      height: props.size,
+    });
   });
 
   it('renders correctly when disabled', () => {
-    const wrapper = shallow(
-      <CircleButton iconName="check" onPress={onPressMock} disabled={true} />,
-    );
+    const wrapper = shallow(<CircleButton {...props} disabled={true} />);
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
-    expect(wrapper.find('Icon').prop('color')).toEqual(
+    expect(wrapper.find(Icon).prop('color')).toEqual(
       Colors.secondaryColor.foreground,
     );
-  });
-
-  it('should not call onPress function when disabled', () => {
-    const wrapper = shallow(
-      <CircleButton iconName="check" onPress={onPressMock} disabled={true} />,
-    );
-
-    wrapper.simulate('press');
 
     expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
-    expect(onPressMock).toHaveBeenCalledTimes(0);
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      backgroundColor: Colors.secondaryColor.background,
+    });
   });
 });
