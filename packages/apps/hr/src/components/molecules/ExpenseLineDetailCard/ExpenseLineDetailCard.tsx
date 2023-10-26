@@ -112,6 +112,7 @@ const ExpenseLineDetailCard = ({
         <View style={styles.container}>
           <View style={styles.containerCard}>
             <ExpenseLineCard
+              expenseId={item.id}
               expenseDate={item.expenseDate}
               projectName={item.project?.fullName}
               totalAmount={item.totalAmount}
