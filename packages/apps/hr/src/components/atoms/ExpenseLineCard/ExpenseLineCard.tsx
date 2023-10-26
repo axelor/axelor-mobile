@@ -17,15 +17,17 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {
+  AnomalyBubble,
   getFullDateItems,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
 
 interface ExpenseLineCardProps {
+  expenseId: number;
   expenseDate?: string;
   projectName?: string;
   totalAmount?: string;
@@ -36,6 +38,7 @@ interface ExpenseLineCardProps {
 }
 
 const ExpenseLineCard = ({
+  expenseId,
   expenseDate,
   projectName,
   totalAmount,
@@ -98,13 +101,24 @@ const ExpenseLineCard = ({
               customComponent: (
                 <Text
                   fontSize={22}
-                  style={styles.bold}
+                  style={styles.amountText}
                   textColor={Colors.primaryColor.background}>{`${totalAmount} ${
                   currency != null
                     ? currency
                     : user.activeCompany?.currency?.symbol ||
                       user.activeCompany?.currency.name
                 }`}</Text>
+              ),
+            },
+            {
+              customComponent: (
+                <AnomalyBubble
+                  objectName="expense-line"
+                  objectId={expenseId}
+                  indicatorPosition="left"
+                  style={styles.anoBubble}
+                  textIndicationStyle={styles.anoBubbleText}
+                />
               ),
             },
           ],
@@ -119,7 +133,8 @@ const getStyles = Colors =>
     title: {
       marginBottom: 5,
     },
-    bold: {
+    amountText: {
+      alignSelf: 'flex-end',
       fontWeight: '900',
     },
     italic: {
@@ -139,6 +154,15 @@ const getStyles = Colors =>
       marginHorizontal: 0,
       marginVertical: 0,
       paddingRight: 5,
+    },
+    anoBubble: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+    },
+    anoBubbleText: {
+      width: Dimensions.get('window').width * 0.7,
+      bottom: 0,
     },
   });
 
