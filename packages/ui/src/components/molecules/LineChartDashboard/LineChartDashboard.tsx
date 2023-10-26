@@ -106,6 +106,7 @@ const LineChartDashboard = ({
               ? datasets[4]?.data[0]?.color
               : Color.secondaryColor.background
           }
+          endSpacing={5}
         />
       </View>
     </Card>
