@@ -18,7 +18,7 @@
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {FormInput} from '@axelor/aos-mobile-ui';
+import {FormInput, InfoBubble, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {getDistance} from '../../../features/distanceSlice';
 
@@ -32,11 +32,12 @@ const CityFormInputAux = ({
   isFromCity = false,
 }) => {
   const dispatch = useDispatch();
+  const Colors = useThemeColor();
   const timerRef = useRef(null);
 
   const [value, setValue] = useState(defaultValue);
 
-  const {toCity, fromCity, needUpdateDistance} = useSelector(
+  const {toCity, fromCity, needUpdateDistance, distance} = useSelector(
     state => state.distance,
   );
   const {expenseConfig} = useSelector(state => state.expenseAppConfig);
@@ -72,14 +73,25 @@ const CityFormInputAux = ({
   );
 
   return (
-    <FormInput
-      title={title}
-      defaultValue={defaultValue}
-      readOnly={readonly}
-      style={styles.input}
-      required={required}
-      onChange={handleChange}
-    />
+    <>
+      <FormInput
+        title={title}
+        defaultValue={defaultValue}
+        readOnly={readonly}
+        style={styles.input}
+        required={required}
+        onChange={handleChange}
+      />
+      {distance?.error && (
+        <InfoBubble
+          style={styles.infoBubble}
+          iconName="exclamation-triangle"
+          coloredBubble={false}
+          badgeColor={Colors.errorColor}
+          indication={distance?.message}
+        />
+      )}
+    </>
   );
 };
 
@@ -107,6 +119,11 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     alignSelf: 'center',
+  },
+  infoBubble: {
+    position: 'absolute',
+    bottom: 6,
+    right: 30,
   },
 });
 

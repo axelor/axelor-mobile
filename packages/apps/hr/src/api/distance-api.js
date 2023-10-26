@@ -26,6 +26,7 @@ export async function getDistance({fromCity, toCity}) {
         data: {fromCity, toCity},
       })
       .catch(e => {
+        console.log('e', e);
         return {
           error: true,
           message: e,
