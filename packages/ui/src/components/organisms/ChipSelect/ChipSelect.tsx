@@ -21,6 +21,11 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 import {Color} from '../../../theme/themes';
 import {Chip} from '../../molecules';
 
+const MODES = {
+  switch: 'switch',
+  multi: 'multi',
+};
+
 interface Item {
   isActive?: boolean;
   color: Color;
@@ -63,7 +68,7 @@ const ChipSelect = ({
   const updateChip = (chip: Item) => {
     let updatedChip = [];
 
-    if (mode === 'multi') {
+    if (mode === MODES.multi) {
       if (chipIsSelected(chip)) {
         updatedChip = selectedChip?.filter(
           activeChip => activeChip.key !== chip.key,
@@ -73,10 +78,8 @@ const ChipSelect = ({
       }
     }
 
-    if (mode === 'switch') {
-      if (chipIsSelected(chip)) {
-        updatedChip = [];
-      } else {
+    if (mode === MODES.switch) {
+      if (!chipIsSelected(chip)) {
         updatedChip = [chip];
       }
     }
@@ -91,7 +94,7 @@ const ChipSelect = ({
     );
   };
 
-  if (mode !== 'multi' && mode !== 'switch') {
+  if (mode !== MODES.multi && mode !== MODES.switch) {
     return null;
   }
 
