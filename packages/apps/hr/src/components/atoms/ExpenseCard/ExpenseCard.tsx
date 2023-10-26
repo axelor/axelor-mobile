@@ -25,13 +25,18 @@ import {
   CardIconButton,
   ObjectCard,
 } from '@axelor/aos-mobile-ui';
-import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
+import {
+  AnomalyBubble,
+  useTranslator,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
 
 interface ExpenseCardProps {
   style?: any;
   statusSelect: number;
-  expenseSeq?: string;
+  expenseId: number;
+  expenseSeq: string;
   onPress: () => void;
   onValidate: () => void;
   onSend: () => void;
@@ -47,6 +52,7 @@ const ExpenseCard = ({
   onValidate = () => {},
   onSend = () => {},
   statusSelect,
+  expenseId,
   expenseSeq,
   periodeCode,
   inTaxTotal,
@@ -91,7 +97,20 @@ const ExpenseCard = ({
           style={borderStyle}
           upperTexts={{
             items: [
-              {displayText: expenseSeq, isTitle: true},
+              {
+                customComponent: (
+                  <View style={styles.titleContainer}>
+                    <AnomalyBubble
+                      objectName="expense"
+                      objectId={expenseId}
+                      isIndicationDisabled
+                    />
+                    <Text writingType="title" style={styles.titleText}>
+                      {expenseSeq}
+                    </Text>
+                  </View>
+                ),
+              },
               {
                 displayText: `${I18n.t('Hr_Period')} : ${periodeCode}`,
                 hideIf: checkNullString(periodeCode),
@@ -169,7 +188,16 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 5,
   },
-  iconContainer: {flex: 1},
+  iconContainer: {
+    flex: 1,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+  },
+  titleText: {
+    alignSelf: 'center',
+    marginLeft: 5,
+  },
 });
 
 export default ExpenseCard;

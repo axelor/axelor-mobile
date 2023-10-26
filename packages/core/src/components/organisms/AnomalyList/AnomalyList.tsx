@@ -34,14 +34,23 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
   const [anomalyList, setAnomalyList] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     fetchAnomalies({objectName, objectId})
       .then(response => {
         if (response?.data?.object?.checks) {
           const checks = response?.data?.object?.checks;
-          setAnomalyList(Anomaly.sortType(checks));
+
+          if (isMounted) {
+            setAnomalyList(Anomaly.sortType(checks));
+          }
         }
       })
       .catch(() => setAnomalyList([]));
+
+    return () => {
+      isMounted = false;
+    };
   }, [objectName, objectId]);
 
   if (!Array.isArray(anomalyList) || anomalyList.length === 0) {
@@ -50,7 +59,7 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
 
   return (
     <FlatList
-      style={style}
+      style={[styles.container, style]}
       data={anomalyList}
       renderItem={({item}) => (
         <Label
@@ -66,7 +75,13 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 0,
+    paddingTop: 5,
+  },
   label: {
+    width: '96%',
+    alignSelf: 'center',
     marginVertical: 5,
   },
 });
