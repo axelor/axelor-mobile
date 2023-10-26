@@ -19,7 +19,12 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  AnomalyList,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ExpenseDetailsValidationButton,
   ExpenseHeader,
@@ -114,6 +119,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
           </View>
         }
       />
+      <AnomalyList objectName="expense" objectId={expense.id} />
       <ScrollList
         loadingList={ObjectToDisplay.loading}
         data={ObjectToDisplay.list}
