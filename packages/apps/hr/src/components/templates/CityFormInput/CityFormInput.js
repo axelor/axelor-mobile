@@ -28,7 +28,7 @@ const CityFormInputAux = ({
   readonly = false,
   required = false,
   onChange = () => {},
-  delay = 2000,
+  delay = 1000,
   isFromCity = false,
 }) => {
   const dispatch = useDispatch();

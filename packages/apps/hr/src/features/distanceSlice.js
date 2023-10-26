@@ -72,9 +72,7 @@ const distanceSlice = createSlice({
     });
   },
 });
-export const {updateFromCity} = distanceSlice.actions;
-export const {updateToCity} = distanceSlice.actions;
-export const {resetDistance} = distanceSlice.actions;
-export const {needUpdateDistance} = distanceSlice.actions;
+export const {updateFromCity, updateToCity, resetDistance, needUpdateDistance} =
+  distanceSlice.actions;
 
 export const distanceReducer = distanceSlice.reducer;
