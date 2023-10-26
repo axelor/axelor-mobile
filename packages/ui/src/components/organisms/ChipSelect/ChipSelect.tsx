@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {Color} from '../../../theme/themes';
 import {Chip} from '../../molecules';
+
+const MODES = {
+  switch: 'switch',
+  multi: 'multi',
+};
 
 interface Item {
   isActive?: boolean;
@@ -32,6 +37,7 @@ interface ChipSelectProps {
   style?: any;
   selectionItems: Item[];
   mode: 'multi' | 'switch';
+  isRefresh?: boolean;
   width?: number;
   marginHorizontal?: number;
   onChangeValue?: (value: any) => void;
@@ -41,48 +47,54 @@ const ChipSelect = ({
   style,
   selectionItems,
   mode,
+  isRefresh = false,
   width,
   marginHorizontal,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
-  const [selectdChipSwitch, setSelectdChipSwitch] = useState({
-    key: selectionItems.find(item => item.isActive === true)?.key,
-  });
-
-  const [selectedChipMulti, setSelectedChipMulti] = useState(
+  const [selectedChip, setSelectedChip] = useState<Item[]>(
     selectionItems.filter(item => item.isActive === true),
   );
 
-  const updateChip = chip => {
-    if (mode === 'multi') {
+  useEffect(() => {
+    if (
+      isRefresh &&
+      selectionItems.every(el => Object.keys(el).includes('isActive'))
+    ) {
+      setSelectedChip(selectionItems.filter(item => item.isActive === true));
+    }
+  }, [isRefresh, selectionItems]);
+
+  const updateChip = (chip: Item) => {
+    let updatedChip = [];
+
+    if (mode === MODES.multi) {
       if (chipIsSelected(chip)) {
-        setSelectedChipMulti(
-          selectedChipMulti?.filter(activeChip => activeChip.key !== chip.key),
+        updatedChip = selectedChip?.filter(
+          activeChip => activeChip.key !== chip.key,
         );
-        onChangeValue(
-          selectedChipMulti?.filter(activeChip => activeChip.key !== chip.key),
-        );
-      } else if (selectedChipMulti.length + 1 === selectionItems.length) {
-        setSelectedChipMulti([]);
-        onChangeValue([]);
-      } else {
-        setSelectedChipMulti([...selectedChipMulti, chip]);
-        onChangeValue([...selectedChipMulti, chip]);
+      } else if (selectedChip?.length + 1 !== selectionItems?.length) {
+        updatedChip = [...selectedChip, chip];
       }
     }
-    if (mode === 'switch') {
-      setSelectdChipSwitch(chip.key === selectdChipSwitch?.key ? null : chip);
-      onChangeValue(chip.key === selectdChipSwitch?.key ? null : [chip]);
+
+    if (mode === MODES.switch) {
+      if (!chipIsSelected(chip)) {
+        updatedChip = [chip];
+      }
     }
+
+    setSelectedChip(updatedChip);
+    onChangeValue(updatedChip);
   };
 
-  const chipIsSelected = chip => {
+  const chipIsSelected = (chip: Item) => {
     return (
-      selectedChipMulti?.find(activeChip => activeChip.key === chip.key) != null
+      selectedChip?.find(activeChip => activeChip.key === chip.key) != null
     );
   };
 
-  if (mode !== 'multi' && mode !== 'switch') {
+  if (mode !== MODES.multi && mode !== MODES.switch) {
     return null;
   }
 
@@ -92,11 +104,7 @@ const ChipSelect = ({
         {selectionItems?.map((item, index) => (
           <Chip
             key={index}
-            selected={
-              mode === 'switch'
-                ? item.key === selectdChipSwitch?.key
-                : chipIsSelected(item)
-            }
+            selected={chipIsSelected(item)}
             title={item.title}
             selectedColor={item.color}
             onPress={() => updateChip(item)}
