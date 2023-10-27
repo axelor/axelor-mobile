@@ -120,7 +120,7 @@ const EventFormScreen = ({navigation, route}) => {
       formKey="crm_event"
       actions={[
         {
-          key: 'create-lead',
+          key: 'create-event',
           type: 'create',
           needRequiredFields: true,
           needValidation: true,
@@ -130,7 +130,7 @@ const EventFormScreen = ({navigation, route}) => {
           },
         },
         {
-          key: 'update-lead',
+          key: 'update-event',
           type: 'update',
           needRequiredFields: true,
           needValidation: true,
