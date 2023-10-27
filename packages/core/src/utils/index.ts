@@ -29,7 +29,7 @@ export {
   getMonth,
   getFullDateItems,
 } from './date';
-export {displayItemName} from './displayers';
+export {displayItemName, displayItemFullname} from './displayers';
 export {
   formatDate,
   formatDateTime,

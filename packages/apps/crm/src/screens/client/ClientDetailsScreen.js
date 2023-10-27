@@ -23,7 +23,12 @@ import {
   NotesCard,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useIsFocused,
+  useSelector,
+  useDispatch,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   ClientBottom,
   ClientDropdownCards,
@@ -34,6 +39,7 @@ import {getClientbyId} from '../../features/clientSlice';
 const ClientDetailsScreen = ({route}) => {
   const {idClient} = route.params;
   const I18n = useTranslator();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {loading, client} = useSelector(state => state.client);
@@ -43,10 +49,12 @@ const ClientDetailsScreen = ({route}) => {
   }, [dispatch, idClient]);
 
   useEffect(() => {
-    getClient();
-  }, [getClient]);
+    if (isFocused) {
+      getClient();
+    }
+  }, [getClient, isFocused]);
 
-  if (client?.id !== idClient) {
+  if (client?.id !== idClient || !isFocused) {
     return null;
   }
 
