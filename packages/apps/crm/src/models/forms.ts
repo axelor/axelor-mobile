@@ -16,15 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar, isEmpty} from '@axelor/aos-mobile-core';
 import {
   CatalogTypePicker,
   CivilityPicker,
   ClientProspectSearchBar,
   ContactSearchBar,
+  EventStatusPicker,
+  EventTypePicker,
   FunctionSearchBar,
+  LeadSearchBar,
   OpportunityStatusPicker,
+  PartnerSearchBar,
 } from '../components';
+
+const MODELS = {
+  lead: 'com.axelor.apps.crm.db.Lead',
+  partner: 'com.axelor.apps.base.db.Partner',
+};
 
 export const crm_formsRegister: FormConfigs = {
   crm_catalog: {
@@ -299,6 +308,9 @@ export const crm_formsRegister: FormConfigs = {
         type: 'object',
         widget: 'custom',
         customComponent: ContactSearchBar,
+        options: {
+          showTitle: true,
+        },
         required: true,
       },
       expectedCloseDate: {
@@ -380,6 +392,139 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Notes',
         type: 'string',
         widget: 'HTML',
+      },
+    },
+  },
+  crm_event: {
+    modelName: 'com.axelor.apps.crm.db.Event',
+    fields: {
+      subject: {
+        titleKey: 'Crm_Subject',
+        type: 'string',
+        widget: 'default',
+        required: true,
+      },
+      typeSelect: {
+        titleKey: 'Crm_Type',
+        type: 'number',
+        widget: 'custom',
+        required: true,
+        customComponent: EventTypePicker,
+      },
+      statusSelect: {
+        titleKey: 'Crm_Status',
+        type: 'number',
+        widget: 'custom',
+        required: true,
+        customComponent: EventStatusPicker,
+      },
+      partner: {
+        titleKey: 'Crm_Partner',
+        type: 'object',
+        widget: 'custom',
+        customComponent: PartnerSearchBar,
+        hideIf: ({objectState}) => !isEmpty(objectState.eventLead),
+        readonlyIf: ({objectState}) => objectState.partnerReadonly,
+      },
+      contactPartner: {
+        titleKey: 'Crm_Contact',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ContactSearchBar,
+        hideIf: ({objectState}) =>
+          !isEmpty(objectState.eventLead) || objectState.hideContactPartner,
+        readonlyIf: ({objectState}) => objectState.contactPartnerReadonly,
+        options: {
+          showTitle: true,
+        },
+      },
+      eventLead: {
+        titleKey: 'Crm_Lead',
+        type: 'object',
+        widget: 'custom',
+        customComponent: LeadSearchBar,
+        hideIf: ({objectState}) =>
+          !isEmpty(objectState.contactPartner) || !isEmpty(objectState.partner),
+        readonlyIf: ({objectState}) => objectState.leadReadonly,
+        options: {
+          showTitle: true,
+        },
+      },
+      startDateTime: {
+        titleKey: 'Crm_StartDate',
+        type: 'datetime',
+        widget: 'date',
+      },
+      endDateTime: {
+        titleKey: 'Crm_EndDate',
+        type: 'datetime',
+        widget: 'date',
+      },
+      allDay: {
+        titleKey: 'Crm_AllDay',
+        type: 'boolean',
+        widget: 'checkbox',
+        options: {
+          iconSize: 20,
+        },
+      },
+      description: {
+        titleKey: 'Crm_Description',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+      },
+      location: {
+        titleKey: 'Crm_Location',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+      },
+      user: {
+        titleKey: 'Crm_AssignedTo',
+        type: 'object',
+        widget: 'custom',
+        customComponent: UserSearchBar,
+      },
+      relatedToSelect: {
+        type: 'string',
+        hideIf: () => {
+          return true;
+        },
+        dependsOn: {
+          eventLead: () => {
+            return MODELS.lead;
+          },
+          contactPartner: () => {
+            return MODELS.partner;
+          },
+          partner: () => {
+            return MODELS.partner;
+          },
+        },
+      },
+      relatedToSelectId: {
+        type: 'number',
+        hideIf: () => {
+          return true;
+        },
+        dependsOn: {
+          eventLead: ({newValue}) => {
+            return newValue?.id;
+          },
+          contactPartner: ({newValue}) => {
+            return newValue?.id;
+          },
+          partner: ({newValue}) => {
+            return newValue?.id;
+          },
+        },
       },
     },
   },

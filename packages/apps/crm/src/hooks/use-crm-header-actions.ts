@@ -52,9 +52,11 @@ const useCatalogListActions = () => {
 };
 
 const useClientDetailsActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {client} = useSelector((state: any) => state.client);
-  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_client_details', {
@@ -85,15 +87,26 @@ const useClientDetailsActions = () => {
             }),
           showInHeader: true,
         },
+        {
+          key: 'client-openEventForm',
+          order: 20,
+          iconName: 'calendar-plus',
+          title: I18n.t('Crm_CreateEvent'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {client: client}),
+          showInHeader: true,
+        },
       ],
     });
-  }, [mobileSettings, client, I18n]);
+  }, [mobileSettings, client, I18n, navigation]);
 };
 
 const useContactDetailsActions = () => {
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {contact} = useSelector((state: any) => state.contact);
-  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_contact_details', {
@@ -127,9 +140,18 @@ const useContactDetailsActions = () => {
             }),
           showInHeader: true,
         },
+        {
+          key: 'contact-openEventForm',
+          order: 20,
+          iconName: 'calendar-plus',
+          title: I18n.t('Crm_CreateEvent'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {contact: contact}),
+          showInHeader: true,
+        },
       ],
     });
-  }, [mobileSettings, contact, I18n]);
+  }, [mobileSettings, contact, I18n, navigation]);
 };
 
 const useLeadListActions = () => {
@@ -156,6 +178,8 @@ const useLeadListActions = () => {
 
 const useLeadDetailsActions = () => {
   const I18n = useTranslator();
+  const navigation = useNavigation();
+
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {lead} = useSelector((state: any) => state.lead);
 
@@ -186,9 +210,17 @@ const useLeadDetailsActions = () => {
             }),
           showInHeader: true,
         },
+        {
+          key: 'lead-openEventForm',
+          order: 20,
+          iconName: 'calendar-plus',
+          title: I18n.t('Crm_CreateEvent'),
+          onPress: () => navigation.navigate('EventFormScreen', {lead: lead}),
+          showInHeader: true,
+        },
       ],
     });
-  }, [mobileSettings, lead, I18n]);
+  }, [mobileSettings, lead, I18n, navigation]);
 };
 
 const useOpportunityListActions = () => {
@@ -228,9 +260,11 @@ const useOpportunityDetailsActions = () => {
 };
 
 const useProspectDetailsActions = () => {
+  const navigation = useNavigation();
+  const I18n = useTranslator();
+
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {prospect} = useSelector((state: any) => state.prospect);
-  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_prospect_details', {
@@ -262,9 +296,18 @@ const useProspectDetailsActions = () => {
             }),
           showInHeader: true,
         },
+        {
+          key: 'prospect-openEventForm',
+          order: 20,
+          iconName: 'calendar-plus',
+          title: I18n.t('Crm_CreateEvent'),
+          onPress: () =>
+            navigation.navigate('EventFormScreen', {prospect: prospect}),
+          showInHeader: true,
+        },
       ],
     });
-  }, [mobileSettings, prospect, I18n]);
+  }, [mobileSettings, prospect, I18n, navigation]);
 };
 
 const useEventDetailsActions = () => {

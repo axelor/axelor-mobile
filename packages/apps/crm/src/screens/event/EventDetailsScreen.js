@@ -26,6 +26,7 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {fetchEventById} from '../../features/eventSlice';
 import {
+  EventBottom,
   EventContactCard,
   EventDatesCard,
   EventHeader,
@@ -63,6 +64,7 @@ function EventDetailsScreen({route}) {
         <EventPartnerCard />
         <EventContactCard />
         <NotesCard title={I18n.t('Crm_Description')} data={event.description} />
+        <EventBottom event={event} />
       </ScrollView>
     </Screen>
   );
