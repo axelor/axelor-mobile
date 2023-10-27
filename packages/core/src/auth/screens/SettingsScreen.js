@@ -24,6 +24,7 @@ import {
   useConfig,
   useTheme,
   Text,
+  Dashboard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslator} from '../../i18n';
@@ -85,42 +86,8 @@ const SettingsScreen = ({children}) => {
   );
 
   return (
-    <Screen style={styles.screen}>
-      <View style={styles.container}>
-        <SwitchCard
-          title={I18n.t('User_ShowFilter')}
-          defaultValue={showFilter}
-          onToggle={toggleFilterConfig}
-        />
-        <SwitchCard
-          title={I18n.t('User_VirtualKeyboardConfig')}
-          defaultValue={hideVirtualKeyboard}
-          onToggle={toggleVirtualKeyboardConfig}
-        />
-        <SwitchCard
-          title={I18n.t('User_ColorForColorBlind')}
-          defaultValue={Theme.isColorBlind}
-          onToggle={handleToggleColorBlind}
-        />
-        {ApiProviderConfig.allowConnectionBlock && (
-          <SwitchCard
-            title={I18n.t('User_BlockConnection')}
-            defaultValue={!online.isEnabled}
-            onToggle={handleToggleConnection}
-          />
-        )}
-        <SwitchCard
-          title={I18n.t('User_Show_Drawer_Subtitles')}
-          defaultValue={showSubtitles}
-          onToggle={handleToggleSubtitles}
-        />
-        {children}
-        <TranslationsButton />
-      </View>
-      <View style={styles.footerContainer}>
-        <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
-        <Text numberOfLines={1}>{baseUrl}</Text>
-      </View>
+    <Screen>
+      <Dashboard />
     </Screen>
   );
 };

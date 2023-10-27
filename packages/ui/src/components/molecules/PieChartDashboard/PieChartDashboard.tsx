@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
@@ -34,11 +34,16 @@ interface Dataset {
 }
 
 interface PieChartProps {
+  styleContainer?: any;
   datasets: Dataset[];
-  legend: boolean;
+  legend?: boolean;
 }
 
-const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
+const PieChartDashboard = ({
+  styleContainer,
+  datasets,
+  legend = false,
+}: PieChartProps) => {
   const Color = useThemeColor();
 
   const [dataSet, setDataSet] = useState(datasets[0]?.data);
@@ -53,6 +58,8 @@ const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
     setDataSet(newDatasets);
   }, [Color, datasets]);
 
+  console.log(Dimensions.get('window').width);
+
   const renderLegendBorderColor = color => {
     return {
       borderWidth: 5,
@@ -62,7 +69,7 @@ const PieChartDashboard = ({datasets, legend}: PieChartProps) => {
     };
   };
   return (
-    <View style={style.container}>
+    <View style={[style.container, styleContainer]}>
       <PieChart
         data={dataSet}
         donut={true}
@@ -93,6 +100,11 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
+    backgroundColor: 'red',
+    width:
+      Dimensions.get('window').width > 500
+        ? Dimensions.get('window').width / 4
+        : Dimensions.get('window').width / 2,
   },
   legenContainer: {
     flexDirection: 'column',

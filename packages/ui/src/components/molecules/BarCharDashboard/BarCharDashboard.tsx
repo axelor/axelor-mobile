@@ -51,11 +51,11 @@ const BarCharDashboard = ({datasets, spacing = 20}: BarCharDashboardProps) => {
               : Color?.primaryColor?.background
           }
           data={datasets[0]?.data}
-          width={Dimensions.get('window').width * 0.6}
+          //width={Dimensions.get('window').width * 0.6}
           spacing={spacing}
           isAnimated={true}
           initialSpacing={20}
-          endSpacing={0}
+          endSpacing={-60}
         />
       </View>
     </Card>
@@ -64,8 +64,13 @@ const BarCharDashboard = ({datasets, spacing = 20}: BarCharDashboardProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 30,
+    //marginHorizontal: 30,
     marginVertical: 5,
+    width:
+      Dimensions.get('window').width > 500
+        ? Dimensions.get('window').width / 4
+        : Dimensions.get('window').width / 2,
+    //backgroundColor: 'red',
   },
 });
 
