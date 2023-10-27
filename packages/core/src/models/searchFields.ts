@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {customerReducer as customer} from './customerSlice';
-export {helpdeskConfigReducer as helpdeskConfig} from './helpdeskConfigSlice';
-export {projectReducer as project} from './projectSlice';
-export {ticketReducer as ticket} from './ticketSlice';
-export {timerReducer as timer} from './timerSlice';
+import {SearchFields} from '../app';
+
+export const core_searchFields: SearchFields = {
+  core_user: ['fullName'],
+};

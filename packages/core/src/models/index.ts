@@ -17,3 +17,5 @@
  */
 
 export {core_modelAPI} from './objectFields';
+export {core_searchFields} from './searchFields';
+export {core_sortFields} from './sortFields';
