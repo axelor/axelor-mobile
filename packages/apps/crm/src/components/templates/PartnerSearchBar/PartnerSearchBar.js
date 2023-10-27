@@ -19,10 +19,10 @@
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {
-  displayItemFullname,
   useDispatch,
   useSelector,
   useTranslator,
+  displayItemFullname,
 } from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
@@ -30,35 +30,29 @@ import {
   Text,
   FormInput,
 } from '@axelor/aos-mobile-ui';
-import {fetchContact} from '../../../features/contactSlice';
+import {searchPartner} from '../../../features/partnerSlice';
 
-const ContactSearchBarAux = ({
+const PartnerSearchBarAux = ({
   style = null,
-  title = 'Crm_Contacts',
+  title = 'Crm_Partner',
   defaultValue = null,
   onChange = () => {},
   required = false,
   readonly = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
-  styleTxt = null,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {contactList, loadingContact, moreLoading, isListEnd} = useSelector(
-    state => state.contact,
+  const {partnerList, loading, moreLoading, isListEnd} = useSelector(
+    state => state.partner,
   );
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const fetchContactSearchBarAPI = useCallback(
+  const fetchPartnerSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchContact({page, searchValue}));
+      dispatch(searchPartner({page, searchValue}));
     },
     [dispatch],
   );
@@ -69,66 +63,52 @@ const ContactSearchBarAux = ({
         style={style}
         title={title}
         readOnly={true}
-        defaultValue={defaultValue?.fullName}
+        defaultValue={displayItemFullname(defaultValue)}
       />
     );
   }
 
   return (
     <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(title)}</Text>
-      )}
+      <Text style={styles.title}>{I18n.t(title)}</Text>
       <AutoCompleteSearch
         style={[
           defaultValue == null && required ? styles.requiredBorder : null,
         ]}
-        objectList={contactList}
+        objectList={partnerList}
         value={defaultValue}
         onChangeValue={onChange}
-        fetchData={fetchContactSearchBarAPI}
+        fetchData={fetchPartnerSearchBarAPI}
         displayValue={displayItemFullname}
         placeholder={I18n.t(title)}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingContact}
+        showDetailsPopup={true}
+        loadingList={loading}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
+        navigate={false}
+        oneFilter={false}
+        isFocus={false}
       />
     </View>
   );
 };
 
-const ContactSearchBar = ({
+const PartnerSearchBar = ({
   style = null,
-  title = 'Crm_Contacts',
+  title = 'Crm_Partner',
   defaultValue = null,
   onChange = () => {},
   required = false,
   readonly = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
-  styleTxt = null,
 }) => {
   return (
-    <ContactSearchBarAux
+    <PartnerSearchBarAux
       style={style}
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
       readonly={readonly}
       required={required}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      isFocus={isFocus}
-      showTitle={showTitle}
-      styleTxt={styleTxt}
     />
   );
 };
@@ -146,4 +126,4 @@ const getStyles = Colors =>
     },
   });
 
-export default ContactSearchBar;
+export default PartnerSearchBar;

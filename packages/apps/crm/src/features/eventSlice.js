@@ -27,7 +27,10 @@ import {
   contactEventById,
   getPlannedEvent,
   getEvent,
+  createEvent as _createEvent,
+  updateEvent as _updateEvent,
 } from '../api/event-api';
+import {fetchLeadById} from './leadSlice';
 
 export const searchEventById = createAsyncThunk(
   'event/searchEventById',
@@ -94,6 +97,45 @@ export const fetchEventById = createAsyncThunk(
   },
 );
 
+export const createEvent = createAsyncThunk(
+  'event/createEvent',
+  async function (data = {}, {getState, dispatch}) {
+    return handlerApiCall({
+      fetchFunction: _createEvent,
+      data,
+      action: 'Crm_SliceAction_CreateEvent',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(res => {
+      if (data?.event?.isLead) {
+        dispatch(fetchLeadById({leadId: data?.event?.eventLead?.id}));
+      }
+      return res;
+    });
+  },
+);
+
+export const updateEvent = createAsyncThunk(
+  'event/updateEvent',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _updateEvent,
+      data,
+      action: 'Crm_SliceAction_UpdateEvent',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: getEvent,
+        data: {eventId: data?.event?.id},
+        action: 'Crm_SliceAction_FetchEventById',
+        getState,
+        responseOptions: {isArrayResponse: false},
+      });
+    });
+  },
+);
+
 const initialState = {
   loading: false,
   listEventById: [],
@@ -141,6 +183,13 @@ const eventSlice = createSlice({
       state.loadingEvent = true;
     });
     builder.addCase(fetchEventById.fulfilled, (state, action) => {
+      state.loadingEvent = false;
+      state.event = action.payload;
+    });
+    builder.addCase(updateEvent.pending, (state, action) => {
+      state.loadingEvent = true;
+    });
+    builder.addCase(updateEvent.fulfilled, (state, action) => {
       state.loadingEvent = false;
       state.event = action.payload;
     });
