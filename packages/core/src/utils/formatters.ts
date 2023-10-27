@@ -18,6 +18,7 @@
 
 import moment from 'moment';
 import {checkNullString} from './string';
+import {isEmpty} from './object';
 
 export function formatDate(inputDate, format) {
   // Format must contains three parts : MM for the month, DD for the day and YYYY for the year
@@ -141,4 +142,22 @@ export const getDateZonesISOString = (dateString: string) => {
   const time = `${hours}:${minutes}:${seconds}.${milliseconds}`;
 
   return `${date}T${time}`;
+};
+
+export const formatRequestBody = (data: object) => {
+  if (isEmpty(data)) {
+    return null;
+  }
+
+  let _data = {};
+
+  Object.entries(data).map(([_key, _value]) => {
+    if (_value != null && typeof _value === 'object') {
+      _data[_key] = {id: _value.id};
+    } else {
+      _data[_key] = _value;
+    }
+  });
+
+  return _data;
 };
