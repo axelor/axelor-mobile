@@ -37,7 +37,7 @@ import {useBackgroundFunction} from '../hooks/use-background-function';
 import {addModuleModels} from './context.helper';
 import {objectFieldsProvider} from '../apiProviders';
 import {requestBuilder} from '../apiProviders/Standard/requests.helper';
-import {core_modelAPI} from '../models';
+import {core_modelAPI, core_searchFields, core_sortFields} from '../models';
 import {HeaderBandProvider} from '../header';
 import {addModuleForms, formConfigsProvider} from '../forms';
 
@@ -130,8 +130,8 @@ const ContextsProvider = ({
         .filter(_module => _module.models)
         .reduce(addModuleModels, {
           objectFields: {...core_modelAPI},
-          sortFields: {},
-          searchFields: {},
+          sortFields: {...core_sortFields},
+          searchFields: {...core_searchFields},
         }),
     [modules],
   );

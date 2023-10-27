@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {FormConfigs} from '@axelor/aos-mobile-core';
+import {FormConfigs, UserSearchBar} from '@axelor/aos-mobile-core';
 import {
   ContactPartnerSearchBar,
   CustomerSearchBar,
@@ -24,7 +24,6 @@ import {
   ProgressFormInput,
   ProjectSearchBar,
   TicketTypeSearchBar,
-  UserSearchBar,
   TicketPriorityPicker,
 } from '../components';
 import {getCustomerbyId} from '../features/customerSlice';

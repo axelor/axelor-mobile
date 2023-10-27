@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  createStandardSearch,
-  getSearchCriterias,
-} from '@axelor/aos-mobile-core';
+import {createStandardSearch, getSearchCriterias} from '../apiProviders';
 
 const createUserCriteria = searchValue => {
-  return [getSearchCriterias('helpdesk_user', searchValue)];
+  return [getSearchCriterias('core_user', searchValue)];
 };
 
 export async function searchUser({searchValue, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.auth.db.User',
     criteria: createUserCriteria(searchValue),
-    fieldKey: 'helpdesk_user',
-    sortKey: 'helpdesk_user',
+    fieldKey: 'core_user',
+    sortKey: 'core_user',
     page: page,
   });
 }

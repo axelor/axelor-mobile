@@ -33,4 +33,3 @@ export {
   updateTicketStatus,
 } from './ticketSlice';
 export {fetchTimerById, searchTimerHistoryById} from './timerSlice';
-export {searchUser} from './userSlice';

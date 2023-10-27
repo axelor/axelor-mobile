@@ -27,4 +27,3 @@ export {default as TicketSearchBar} from './TicketSearchBar/TicketSearchBar';
 export {default as TicketsStatusButton} from './TicketsStatusButton/TicketsStatusButton';
 export {default as TicketStopwatch} from './TicketStopwatch/TicketStopwatch';
 export {default as TicketTypeSearchBar} from './TicketTypeSearchBar/TicketTypeSearchBar';
-export {default as UserSearchBar} from './UserSearchBar/UserSearchBar';
