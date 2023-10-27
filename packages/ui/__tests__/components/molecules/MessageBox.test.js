@@ -32,35 +32,44 @@ describe('MessageBox Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<MessageBox {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('should render an HtmlInput component', () => {
     const wrapper = shallow(<MessageBox {...props} />);
+
     expect(wrapper.find(HtmlInput).exists()).toBe(true);
   });
 
   it('should render a TouchableOpacity with paper-plane Icon for sending', () => {
     const wrapper = shallow(<MessageBox {...props} />);
+
     expect(wrapper.find(TouchableOpacity).exists()).toBe(true);
     expect(wrapper.find('Icon[name="paper-plane"]').exists()).toBe(true);
   });
 
   it('should call onChange when input value changes', () => {
     const wrapper = shallow(<MessageBox {...props} />);
+
     wrapper.find(HtmlInput).simulate('change', 'New Message');
+
     expect(props.onChange).toHaveBeenCalledWith('New Message');
   });
 
   it('should call onSend when TouchableOpacity is pressed', () => {
     const wrapper = shallow(<MessageBox {...props} />);
+
     wrapper.find(TouchableOpacity).simulate('press');
+
     expect(props.onSend).toHaveBeenCalled();
   });
 
-  it('should not call onSend when disabled is true', () => {
+  it('should not render a touchable button when disabled is true', () => {
     const wrapper = shallow(<MessageBox {...props} disabled={true} />);
-    wrapper.find(TouchableOpacity).simulate('press');
-    expect(props.onSend).not.toHaveBeenCalled();
+    const touchableComponent = wrapper.find(TouchableOpacity);
+
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).toBe(true);
   });
 });

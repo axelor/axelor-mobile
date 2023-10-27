@@ -20,6 +20,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {Icon, IconButton, Text, lightTheme} from '@axelor/aos-mobile-ui';
 import {TouchableOpacity} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('IconButton Component', () => {
   const Colors = lightTheme.colors;
@@ -31,6 +32,7 @@ describe('IconButton Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<IconButton {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -41,48 +43,46 @@ describe('IconButton Component', () => {
 
     expect(wrapper.find(Text).prop('children')).toBe(props.title);
 
-    expect(wrapper.find(TouchableOpacity).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: Colors.primaryColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background,
+    });
   });
 
   it('applies custom color when provided', () => {
     const customColor = Colors.secondaryColor;
     const wrapper = shallow(<IconButton {...props} color={customColor} />);
 
-    expect(wrapper.find(TouchableOpacity).prop('style')).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          backgroundColor: customColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      backgroundColor: customColor.background,
+    });
 
-    expect(wrapper.find(Text).prop('style')).toEqual(
-      expect.objectContaining({
-        color: customColor.foreground,
-      }),
-    );
+    expect(getGlobalStyles(wrapper.find(Text))).toMatchObject({
+      color: customColor.foreground,
+    });
   });
 
-  it('calls onPress when the button is pressed', () => {
+  it('renders a touchable component', () => {
     const wrapper = shallow(<IconButton {...props} />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
-    wrapper.find(TouchableOpacity).simulate('press');
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).not.toBe(true);
+  });
 
-    expect(props.onPress).toHaveBeenCalled();
+  it('renders a non touchable component when disabled', () => {
+    const wrapper = shallow(<IconButton {...props} disabled />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
+
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).not.toBe(false);
   });
 
   it('applies custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<IconButton {...props} style={customStyle} />);
 
-    expect(wrapper.find(TouchableOpacity).prop('style')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject(
+      customStyle,
     );
   });
 });

@@ -18,10 +18,18 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Card, HalfLabelCard, Icon, Text} from '@axelor/aos-mobile-ui';
+import {
+  Card,
+  HalfLabelCard,
+  Icon,
+  lightTheme,
+  Text,
+} from '@axelor/aos-mobile-ui';
 import {TouchableOpacity} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('HalfLabelCard Component', () => {
+  const Colors = lightTheme.colors;
   const props = {
     title: 'Card Title',
     iconName: 'star',
@@ -30,6 +38,7 @@ describe('HalfLabelCard Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<HalfLabelCard {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -43,20 +52,18 @@ describe('HalfLabelCard Component', () => {
     expect(wrapper.find(Icon).at(1).prop('name')).toBe('chevron-right');
   });
 
-  it('calls onPress when the card is pressed', () => {
+  it('renders a touchable component', () => {
     const wrapper = shallow(<HalfLabelCard {...props} />);
+    const touchableComponent = wrapper.find(TouchableOpacity);
 
-    wrapper.find(TouchableOpacity).simulate('press');
-
-    expect(props.onPress).toHaveBeenCalled();
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).not.toBe(true);
   });
 
   it('applies custom style when provided', () => {
-    const customStyle = {backgroundColor: 'red'};
+    const customStyle = {backgroundColor: Colors.primaryColor.background_light};
     const wrapper = shallow(<HalfLabelCard {...props} style={customStyle} />);
 
-    expect(wrapper.find(Card).prop('style')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
-    );
+    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
   });
 });

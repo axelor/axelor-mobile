@@ -31,10 +31,11 @@ describe('InfoBubble Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders with the correct badge color', () => {
+  it('should render with the correct badge color', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
 
     expect(wrapper.find(Icon).prop('color')).toBe(
@@ -42,25 +43,23 @@ describe('InfoBubble Component', () => {
     );
   });
 
-  it('displays the indication when clicked', () => {
+  it('should display the indication when clicked', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
 
     expect(wrapper.find(Card).exists()).toBe(false);
-
     wrapper.find(TouchableOpacity).simulate('press');
 
     expect(wrapper.find(Icon).exists()).toBe(true);
     expect(wrapper.find(Text).prop('children')).toBe(props.indication);
   });
 
-  it('hides the indication when clicked twice', () => {
+  it('should hide the indication when clicked twice', () => {
     const wrapper = shallow(<InfoBubble {...props} />);
 
     wrapper.find(TouchableOpacity).simulate('press');
     expect(wrapper.find(Card).exists()).toBe(true);
 
     wrapper.find(TouchableOpacity).simulate('press');
-
     expect(wrapper.find(Card).exists()).toBe(false);
   });
 });

@@ -14,4 +14,5 @@ module.exports = {
     'node_modules/(?!(@react-native|(jest-)?react-native|react-native-toast-message|react-clone-referenced-element|@react-native-community|rollbar-react-native|@fontawesome|@react-native|@react-navigation|react-native-pell-rich-editor|react-native-vector-icons/FontAwesome|react-native-vector-icons/FontAwesome5)/|react-native-webview)',
   ],
   moduleNameMapper: modulePackageNameMapping,
+  modulePathIgnorePatterns: ['__tests__/tools'],
 };

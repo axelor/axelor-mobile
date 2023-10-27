@@ -35,52 +35,67 @@ describe('MovementIndicationCard Component', () => {
 
   it('should render without crashing', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('should render two TouchableOpacity components', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     expect(wrapper.find(TouchableOpacity).length).toBe(2);
   });
 
   it('should render two titles', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     expect(wrapper.find(Text).length).toBe(2);
   });
 
   it('should render top Icon', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     expect(wrapper.find('Icon[name="top-icon"]').exists()).toBe(true);
   });
 
   it('should render down Icon', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     expect(wrapper.find('Icon[name="down-icon"]').exists()).toBe(true);
   });
 
   it('should call onPressTitleTop when the top title is pressed', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     wrapper.find(TouchableOpacity).at(0).simulate('press');
+
     expect(props.onPressTitleTop).toHaveBeenCalled();
   });
 
   it('should call onPressTitleDown when the down title is pressed', () => {
     const wrapper = shallow(<MovementIndicationCard {...props} />);
+
     wrapper.find(TouchableOpacity).at(1).simulate('press');
+
     expect(props.onPressTitleDown).toHaveBeenCalled();
   });
 
-  it('should not call onPressTitleTop when the top title is pressed', () => {
-    const wrapper = shallow(<MovementIndicationCard {...props} />);
-    wrapper.find(TouchableOpacity).at(0).simulate('press');
-    expect(props.onPressTitleTop).not.toHaveBeenCalled();
+  it('should not render a touchable titleTop when disabledTop is true', () => {
+    const wrapper = shallow(
+      <MovementIndicationCard {...props} disabledTop={true} />,
+    );
+    const touchableComponent = wrapper.find(TouchableOpacity).at(0);
+
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).toBe(true);
   });
 
-  it('should not call onPressTitleDown when the down title is pressed', () => {
+  it('should not render a touchable titleDown when disabledDown is true', () => {
     const wrapper = shallow(
       <MovementIndicationCard {...props} disabledDown={true} />,
     );
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
-    expect(props.onPressTitleDown).not.toHaveBeenCalled();
+    const touchableComponent = wrapper.find(TouchableOpacity).at(1);
+
+    expect(touchableComponent.exists()).toBeTruthy();
+    expect(touchableComponent.prop('disabled')).toBe(true);
   });
 });

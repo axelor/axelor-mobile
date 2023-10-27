@@ -20,65 +20,46 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {LoadingIndicator, lightTheme} from '@axelor/aos-mobile-ui';
 import {ActivityIndicator} from 'react-native';
-
-jest.mock('../../../lib/config/ConfigContext', () => ({
-  useConfig: () => ({
-    showActivityIndicator: true,
-  }),
-}));
+import * as configContext from '../../../lib/config/ConfigContext';
 
 describe('LoadingIndicator Component', () => {
   const Colors = lightTheme.colors;
 
   it('should render without crashing', () => {
     const wrapper = shallow(<LoadingIndicator />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should not render when showActivityIndicator is false', () => {
-    try {
-      jest.mock('../../../lib/config/ConfigContext', () => ({
-        useConfig: () => ({
-          showActivityIndicator: false,
-        }),
-      }));
+  it('should not render an ActivityIndicator when showActivityIndicator is false', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showActivityIndicator: false,
+    }));
 
-      const wrapper = shallow(<LoadingIndicator />);
-      expect(wrapper.exists()).toBe(false);
-    } finally {
-      return;
-    }
+    const wrapper = shallow(<LoadingIndicator />);
+
+    expect(wrapper.find(ActivityIndicator).exists()).toBe(false);
   });
 
   it('should render an ActivityIndicator when showActivityIndicator is true', () => {
-    try {
-      jest.mock('../../../lib/config/ConfigContext', () => ({
-        useConfig: () => ({
-          showActivityIndicator: true,
-        }),
-      }));
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showActivityIndicator: true,
+    }));
 
-      const wrapper = shallow(<LoadingIndicator />);
-      expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
-    } finally {
-      return;
-    }
+    const wrapper = shallow(<LoadingIndicator />);
+
+    expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
   });
 
   it('should pass the correct color prop to ActivityIndicator', () => {
-    try {
-      jest.mock('../../../lib/config/ConfigContext', () => ({
-        useConfig: () => ({
-          showActivityIndicator: true,
-        }),
-      }));
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showActivityIndicator: true,
+    }));
 
-      const wrapper = shallow(<LoadingIndicator />);
-      expect(wrapper.find(ActivityIndicator).prop('color')).toBe(
-        Colors.primaryColor.background,
-      );
-    } finally {
-      return;
-    }
+    const wrapper = shallow(<LoadingIndicator />);
+
+    expect(wrapper.find(ActivityIndicator).prop('color')).toBe(
+      Colors.primaryColor.background,
+    );
   });
 });

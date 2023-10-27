@@ -42,6 +42,6 @@ describe('CardIconButton Component', () => {
     const touchableComponent = wrapper.find(TouchableOpacity);
 
     expect(touchableComponent.exists()).toBeTruthy();
-    expect(touchableComponent.prop('disabled')).not.toBe(false);
+    expect(touchableComponent.prop('disabled')).not.toBe(true);
   });
 });

@@ -20,6 +20,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {IconInput, Icon, lightTheme, Input} from '@axelor/aos-mobile-ui';
 import {View} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('IconInput Component', () => {
   const Colors = lightTheme.colors;
@@ -27,10 +28,13 @@ describe('IconInput Component', () => {
     placeholder: 'Enter text',
     value: 'Initial value',
     onChange: jest.fn(),
+    onSelection: jest.fn(),
+    onEndFocus: jest.fn(),
   };
 
   it('should render without crashing', () => {
     const wrapper = shallow(<IconInput {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -68,27 +72,55 @@ describe('IconInput Component', () => {
     });
   });
 
-  it('applies focused style when focused', () => {
+  it('handles selection and end focus', () => {
     const wrapper = shallow(<IconInput {...props} />);
 
     wrapper.find(Input).simulate('selection');
 
-    const inputWrapper = wrapper.find(View).prop('style');
-    expect(inputWrapper).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          borderColor: Colors.primaryColor.background,
-        }),
-      ]),
-    );
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      borderColor: Colors.primaryColor.background,
+    });
+    expect(props.onSelection).toHaveBeenCalled();
+
+    wrapper.find(Input).simulate('endFocus');
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
+    expect(props.onEndFocus).toHaveBeenCalled();
   });
 
-  it('calls onChange when input value changes', () => {
+  it('updates input value on change', () => {
     const wrapper = shallow(<IconInput {...props} />);
 
     const newValue = 'New Value';
     wrapper.find(Input).simulate('change', newValue);
 
     expect(props.onChange).toHaveBeenCalledWith(newValue);
+  });
+
+  it('applies required styling when field is required, focus and has no value', () => {
+    const wrapper = shallow(
+      <IconInput {...props} required={true} value={null} />,
+    );
+    wrapper.find(Input).simulate('selection');
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      borderColor: Colors.errorColor.background,
+    });
+  });
+
+  it('does not apply required styling when field is required and not empty', () => {
+    const wrapper = shallow(<IconInput {...props} required={true} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
+      borderColor: Colors.secondaryColor.background,
+    });
+  });
+
+  it('renders readonly input when necessary', () => {
+    const wrapper = shallow(<IconInput {...props} readOnly={true} />);
+
+    expect(wrapper.find(Input).prop('readOnly')).toBe(true);
   });
 });

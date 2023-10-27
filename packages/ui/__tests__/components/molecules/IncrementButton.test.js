@@ -20,12 +20,15 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {IncrementButton} from '@axelor/aos-mobile-ui';
 
-// NOTE: IncrementButton is not imported.
 describe('IncrementButton Component', () => {
+  const props = {
+    iconName: 'plus',
+    onPress: jest.fn(),
+  };
+
   it('should render without crashing', () => {
-    const wrapper = shallow(
-      <IncrementButton iconName="plus" onPress={() => {}} />,
-    );
+    const wrapper = shallow(<IncrementButton {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 });

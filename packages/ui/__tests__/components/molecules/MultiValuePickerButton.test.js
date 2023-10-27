@@ -40,46 +40,36 @@ describe('MultiValuePickerButton Component', () => {
       key: '3',
     },
   ];
+  const props = {
+    onPress: jest.fn(),
+    listItem: listItem,
+    onPressItem: jest.fn(),
+  };
 
   it('should render without crashing', () => {
-    const wrapper = shallow(<MultiValuePickerButton />);
+    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should render Text elements for each listItem', () => {
-    const wrapper = shallow(
-      <MultiValuePickerButton
-        onPress={() => {}}
-        listItem={listItem}
-        onPressItem={() => {}}
-      />,
-    );
+  it('should render Text component for each listItem', () => {
+    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+
     expect(wrapper.find(Text).length).toBe(listItem.length);
   });
 
-  it('should render Icon elements for each listItem', () => {
-    const wrapper = shallow(
-      <MultiValuePickerButton
-        onPress={() => {}}
-        listItem={listItem}
-        onPressItem={() => {}}
-      />,
-    );
+  it('should render Icon component for each listItem', () => {
+    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+
     expect(wrapper.find('Icon[name="times"]').length).toBe(listItem.length);
   });
 
   it('should render the correct listItem titles and colors', () => {
-    const wrapper = shallow(
-      <MultiValuePickerButton
-        onPress={() => {}}
-        listItem={listItem}
-        onPressItem={() => {}}
-      />,
-    );
+    const wrapper = shallow(<MultiValuePickerButton {...props} />);
 
     listItem.forEach((item, index) => {
       const textElement = wrapper.find(Text).at(index);
-      const iconElement = wrapper.find('Icon').at(index);
+      const iconElement = wrapper.find('Icon[name="times"]').at(index);
 
       expect(textElement.prop('children')).toBe(item.title);
       expect(textElement.prop('textColor')).toBe(item.color.foreground);
@@ -88,15 +78,9 @@ describe('MultiValuePickerButton Component', () => {
   });
 
   it('should call onPressItem when a listItem is pressed', () => {
-    const onPressItem = jest.fn();
-    const wrapper = shallow(
-      <MultiValuePickerButton
-        onPress={() => {}}
-        listItem={listItem}
-        onPressItem={onPressItem}
-      />,
-    );
+    const wrapper = shallow(<MultiValuePickerButton {...props} />);
+
     wrapper.find(TouchableOpacity).at(1).simulate('press');
-    expect(onPressItem).toHaveBeenCalledWith(listItem[0]);
+    expect(props.onPressItem).toHaveBeenCalledWith(listItem[0]);
   });
 });

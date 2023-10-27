@@ -18,18 +18,21 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {FromTo, Icon, Text} from '@axelor/aos-mobile-ui';
+import {FromTo, Icon, lightTheme, Text} from '@axelor/aos-mobile-ui';
+import {View} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('FromTo Component', () => {
+  const Colors = lightTheme.colors;
   const props = {
-    onChange: jest.fn(),
     fromComponent: <Text>From</Text>,
     toComponent: <Text>To</Text>,
-    style: {backgroundColor: 'red'},
+    style: {borderColor: Colors.primaryColor.background_light},
   };
 
   it('should render without crashing', () => {
     const wrapper = shallow(<FromTo {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -45,8 +48,8 @@ describe('FromTo Component', () => {
   it('applies custom style when provided', () => {
     const wrapper = shallow(<FromTo {...props} />);
 
-    expect(wrapper.prop('style')).toEqual(
-      expect.arrayContaining([expect.objectContaining(props.style)]),
+    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
+      props.style,
     );
   });
 });
