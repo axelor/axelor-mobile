@@ -16,8 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useNavigation as useReactNavigation} from '@react-navigation/native';
+import {
+  useNavigation as useReactNavigation,
+  useIsFocused as useReactIsFocused,
+} from '@react-navigation/native';
 
 export const useNavigation = (): any => {
   return useReactNavigation();
+};
+
+export const useIsFocused = (): boolean => {
+  return useReactIsFocused();
 };

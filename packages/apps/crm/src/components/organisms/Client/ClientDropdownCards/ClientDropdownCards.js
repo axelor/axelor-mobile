@@ -45,7 +45,7 @@ const ClientDropdownCards = ({}) => {
 
   useEffect(() => {
     dispatch(fetchPartnerEventById(client?.id));
-  }, [dispatch, client?.id]);
+  }, [dispatch, client]);
 
   return (
     <View style={styles.container}>
