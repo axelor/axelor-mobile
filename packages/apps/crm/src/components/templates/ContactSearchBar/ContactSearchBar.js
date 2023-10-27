@@ -26,7 +26,7 @@ import {
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
 
-const ContactSearchBar = ({
+const ContactSearchBarAux = ({
   style = null,
   title = 'Crm_Contacts',
   defaultValue = null,
@@ -37,7 +37,7 @@ const ContactSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
-  showTitle = true,
+  showTitle = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -72,6 +72,36 @@ const ContactSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       style={style}
+    />
+  );
+};
+
+const ContactSearchBar = ({
+  style = null,
+  title = 'Crm_Contacts',
+  defaultValue = null,
+  onChange = () => {},
+  required = false,
+  readonly = false,
+  showDetailsPopup = true,
+  navigate = false,
+  oneFilter = false,
+  isFocus = false,
+  showTitle = false,
+}) => {
+  return (
+    <ContactSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+      showDetailsPopup={showDetailsPopup}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      showTitle={showTitle}
     />
   );
 };
