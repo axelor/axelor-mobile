@@ -17,13 +17,19 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   default as ReactNativeToast,
   BaseToast,
   ErrorToast,
 } from 'react-native-toast-message';
-import {Alert, Text, ThemeColors, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Alert,
+  Icon,
+  Text,
+  ThemeColors,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../i18n';
 import toastProvider from './ToastProvider';
 
@@ -31,9 +37,20 @@ const Toast = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const toastData = toastProvider.getData();
 
-  const isError = toastProvider.getType() === 'error';
+  const isError = useMemo(() => toastData.type === 'error', [toastData]);
+
+  const toastColor = useMemo(
+    () =>
+      isError ? Colors.errorColor.background : Colors.successColor.background,
+    [Colors, isError],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, toastColor),
+    [Colors, toastColor],
+  );
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
@@ -41,7 +58,7 @@ const Toast = () => {
     success: (props: any) => (
       <BaseToast
         {...props}
-        style={[styles.success, styles.toast]}
+        style={styles.toast}
         contentContainerStyle={styles.toastContent}
         text1Style={styles.title}
         text2Style={styles.detail}
@@ -51,7 +68,7 @@ const Toast = () => {
     error: (props: any) => (
       <ErrorToast
         {...props}
-        style={[styles.error, styles.toast]}
+        style={styles.toast}
         contentContainerStyle={styles.toastContent}
         text1Style={styles.title}
         text2Style={styles.detail}
@@ -67,51 +84,35 @@ const Toast = () => {
         onPress={() => setIsAlertVisible(true)}
       />
       <Alert
-        style={isError ? styles.errorAlert : styles.successAlert}
         visible={isAlertVisible}
-        title={toastProvider.getTitle()}
+        title={toastData.title}
+        titleStyle={styles.alertTitle}
         cancelButtonConfig={{
-          width: 50,
-          title: null,
-          hide: !isError,
-          onPress: () => setIsAlertVisible(false),
-        }}
-        confirmButtonConfig={{
-          width: 50,
-          title: null,
-          hide: isError,
+          showInHeader: true,
           onPress: () => setIsAlertVisible(false),
         }}
         translator={I18n.t}>
-        <Text>{toastProvider.getMessage()}</Text>
+        <View style={styles.alertContainer}>
+          <View style={styles.iconContainer}>
+            <Icon
+              name={isError ? 'times' : 'check'}
+              size={25}
+              color={toastColor}
+            />
+          </View>
+          <Text style={styles.alertText}>{toastData.message}</Text>
+        </View>
       </Alert>
     </>
   );
 };
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (Colors: ThemeColors, toastColor: string) =>
   StyleSheet.create({
-    error: {
-      borderLeftColor: Colors.errorColor.background,
-    },
-    errorAlert: {
-      borderLeftWidth: 7,
-      borderLeftColor: Colors.errorColor.background,
-      paddingLeft: 13,
-      paddingRight: 20,
-    },
-    success: {
-      borderLeftColor: Colors.successColor.background,
-    },
-    successAlert: {
-      borderLeftWidth: 7,
-      borderLeftColor: Colors.successColor.background,
-      paddingLeft: 13,
-      paddingRight: 20,
-    },
     toast: {
       width: '90%',
       height: 90,
+      borderLeftColor: toastColor,
     },
     toastContent: {
       paddingVertical: 5,
@@ -125,6 +126,25 @@ const getStyles = (Colors: ThemeColors) =>
       fontSize: 16,
       color: Colors.text,
       flex: 3,
+    },
+    alertContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    iconContainer: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      marginRight: 15,
+      justifyContent: 'center',
+      borderWidth: 3,
+      borderColor: toastColor,
+    },
+    alertTitle: {
+      color: toastColor,
+    },
+    alertText: {
+      flexShrink: 1,
     },
   });
 

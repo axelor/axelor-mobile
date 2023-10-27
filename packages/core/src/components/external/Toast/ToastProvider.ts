@@ -16,39 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+interface ToastDataProps {
+  title: string;
+  message: string;
+  type: string;
+}
+
 class ToastProvider {
-  private title: string;
-  private message: string;
-  private type: string;
+  private data: ToastDataProps;
 
   constructor() {
-    this.title = '';
-    this.message = '';
-    this.type = '';
+    this.data = {title: '', message: '', type: ''};
   }
 
-  public getTitle() {
-    return this.title;
+  public getData() {
+    return this.data;
   }
 
-  public getMessage() {
-    return this.message;
-  }
-
-  public getType() {
-    return this.type;
-  }
-
-  public setTitle(title: string) {
-    this.title = title;
-  }
-
-  public setMessage(message: string) {
-    this.message = message;
-  }
-
-  public setType(type: string) {
-    this.type = type;
+  public setData(data: ToastDataProps) {
+    this.data = data;
   }
 }
 
