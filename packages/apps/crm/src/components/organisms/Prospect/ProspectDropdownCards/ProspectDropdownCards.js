@@ -45,7 +45,7 @@ const ProspectDropdownCards = ({}) => {
 
   useEffect(() => {
     dispatch(fetchPartnerEventById(prospect?.id));
-  }, [dispatch, prospect?.id]);
+  }, [dispatch, prospect]);
 
   return (
     <View style={styles.container}>

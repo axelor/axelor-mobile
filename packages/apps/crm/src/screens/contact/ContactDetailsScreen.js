@@ -23,7 +23,12 @@ import {
   NotesCard,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  useIsFocused,
+} from '@axelor/aos-mobile-core';
 import {
   ContactBottom,
   ContactDropdownCards,
@@ -36,6 +41,7 @@ const ContactDetailsScreen = ({route}) => {
   const {idContact} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const {loading, contact} = useSelector(state => state.contact);
 
@@ -44,10 +50,12 @@ const ContactDetailsScreen = ({route}) => {
   }, [dispatch, idContact]);
 
   useEffect(() => {
-    getContactAPI();
-  }, [getContactAPI]);
+    if (isFocused) {
+      getContactAPI();
+    }
+  }, [getContactAPI, isFocused]);
 
-  if (contact?.id !== idContact) {
+  if (contact?.id !== idContact || !isFocused) {
     return null;
   }
 
