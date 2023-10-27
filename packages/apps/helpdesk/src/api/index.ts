@@ -33,4 +33,3 @@ export {
   updateTicket as updateTicketApi,
 } from './ticket-api';
 export * from './timer-api';
-export {searchUser as searchUserApi} from './user-api';
