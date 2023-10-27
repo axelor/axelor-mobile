@@ -17,14 +17,15 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from '../../../redux/hooks';
+import {useTranslator} from '../../../i18n';
 import {searchUser} from '../../../features/userSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
 const UserSearchBar = ({
   style = null,
-  title = 'Helpdesk_User',
+  title = 'Base_User',
   defaultValue = null,
   onChange = () => {},
   readonly = false,

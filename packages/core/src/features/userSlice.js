@@ -20,7 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
-} from '@axelor/aos-mobile-core';
+} from '../apiProviders/utils';
 import {searchUser as _searchUser} from '../api/user-api';
 
 export const searchUser = createAsyncThunk(
@@ -29,7 +29,7 @@ export const searchUser = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _searchUser,
       data,
-      action: 'Helpdesk_SliceAction_SearchUser',
+      action: 'Base_SliceAction_SearchUser',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -38,9 +38,9 @@ export const searchUser = createAsyncThunk(
 
 const initialState = {
   loadingUser: true,
-  userList: [],
   moreLoading: false,
   isListEnd: false,
+  userList: [],
 };
 
 const userSlice = createSlice({
