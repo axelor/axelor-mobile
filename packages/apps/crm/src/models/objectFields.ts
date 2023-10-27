@@ -96,10 +96,12 @@ export const crm_modelAPI: ObjectFields = {
     contactPartner: schemaContructor.subObject(),
     description: schemaContructor.string(),
     eventLead: schemaContructor.subObject(),
+    allDay: schemaContructor.boolean(),
   }),
   crm_function: schemaContructor.subObject('name'),
   crm_lead: schemaContructor.object({
     name: schemaContructor.string(),
+    fullName: schemaContructor.string(),
     enterpriseName: schemaContructor.string(),
     firstName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
@@ -173,6 +175,7 @@ export const crm_modelAPI: ObjectFields = {
       .of(schemaContructor.subObject()),
   }),
   crm_prospect: schemaContructor.object({
+    fullName: schemaContructor.string(),
     simpleFullName: schemaContructor.string(),
     name: schemaContructor.string(),
     partnerSeq: schemaContructor.string(),

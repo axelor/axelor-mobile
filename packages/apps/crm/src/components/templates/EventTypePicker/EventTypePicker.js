@@ -16,10 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as EventBottom} from './EventBottom/EventBottom';
-export {default as EventContactCard} from './EventContactCard/EventContactCard';
-export {default as EventDatesCard} from './EventDatesCard/EventDatesCard';
-export {default as EventHeader} from './EventHeader/EventHeader';
-export {default as EventLabelsCard} from './EventLabelsCard/EventLabelsCard';
-export {default as EventLeadCard} from './EventLeadCard/EventLeadCard';
-export {default as EventPartnerCard} from './EventPartnerCard/EventPartnerCard';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Picker} from '@axelor/aos-mobile-ui';
+import {EventType} from '../../../types';
+
+const EventTypePicker = ({
+  style = null,
+  title = 'Crm_Type',
+  defaultValue = null,
+  onChange = () => {},
+  required = false,
+  readonly = false,
+}) => {
+  const I18n = useTranslator();
+
+  return (
+    <Picker
+      style={style}
+      title={I18n.t(title)}
+      listItems={EventType.getCategoryList(I18n)}
+      valueField="key"
+      labelField="title"
+      defaultValue={defaultValue}
+      onValueChange={onChange}
+      required={required}
+      readonly={readonly}
+    />
+  );
+};
+
+export default EventTypePicker;

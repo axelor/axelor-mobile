@@ -73,11 +73,51 @@ const createLinkedPartnersOfContactCriteria = contactId => {
   ];
 };
 
+const createPartnerCriteria = searchValue => {
+  return [
+    {
+      fieldName: 'isEmployee',
+      operator: '=',
+      value: false,
+    },
+    getSearchCriterias('crm_partner', searchValue),
+    {
+      operator: 'or',
+      criteria: [
+        {
+          fieldName: 'isCustomer',
+          operator: '=',
+          value: true,
+        },
+        {
+          fieldName: 'isSupplier',
+          operator: '=',
+          value: true,
+        },
+        {
+          fieldName: 'isProspect',
+          operator: '=',
+          value: true,
+        },
+      ],
+    },
+  ];
+};
+
 export async function getPartner({partnerId}) {
   return createStandardFetch({
     model: 'com.axelor.apps.base.db.Partner',
     id: partnerId,
     fieldKey: 'crm_partner',
+  });
+}
+
+export async function searchPartner({searchValue, page = 0}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.base.db.Partner',
+    criteria: createPartnerCriteria(searchValue),
+    fieldKey: 'crm_partner',
+    page,
   });
 }
 
