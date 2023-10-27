@@ -46,7 +46,6 @@
   "Helpdesk_SliceAction_FetchTimerHistory": "fetch timer history",
   "Helpdesk_SliceAction_UpdateTicketStatus": "update ticket status",
   "Helpdesk_SliceAction_FetchHelpdeskConfig": "fetch helpdesk config",
-  "Helpdesk_SliceAction_SearchUser": "fetch user",
   "Helpdesk_SliceAction_FetchCustomer": "fetch customer",
   "Helpdesk_SliceAction_FetchCustomerById": "fetch customer by id",
   "Helpdesk_SliceAction_FetchProjects": "fetch projects",

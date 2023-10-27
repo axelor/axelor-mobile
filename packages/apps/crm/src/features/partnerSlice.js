@@ -25,6 +25,7 @@ import {
   getPartner,
   searchClientAndProspect,
   searchLinkedPartnersOfContact as _searchLinkedPartnersOfContact,
+  searchPartner as _searchPartner,
 } from '../api/partner-api';
 
 export const fetchPartner = createAsyncThunk(
@@ -36,6 +37,19 @@ export const fetchPartner = createAsyncThunk(
       action: 'Crm_SliceAction_FetchPartner',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const searchPartner = createAsyncThunk(
+  'partner/searchPartner',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchPartner,
+      data,
+      action: 'Crm_SliceAction_SearchPartner',
+      getState,
+      responseOptions: {isArrayResponse: true},
     });
   },
 );
@@ -74,6 +88,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   linkedPartnersOfContact: [],
+  partnerList: [],
 };
 
 const partnerSlice = createSlice({
@@ -98,6 +113,12 @@ const partnerSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'clientAndProspectList',
+    });
+    generateInifiniteScrollCases(builder, searchPartner, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'partnerList',
     });
   },
 });
