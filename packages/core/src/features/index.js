@@ -29,3 +29,4 @@ export {metaModuleReducer as metaModule} from './metaModuleSlice';
 export {mobileConfigReducer as mobileConfig} from './mobileConfigSlice';
 export {onlineReducer as online} from './onlineSlice';
 export {default as scanner} from './scannerSlice';
+export {userListReducer as userList} from './userSlice';
