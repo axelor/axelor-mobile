@@ -18,37 +18,32 @@
 
 import React, {useCallback} from 'react';
 import {
-  displayItemFullname,
   useDispatch,
   useSelector,
   useTranslator,
+  displayItemFullname,
 } from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchLeads} from '../../../features/leadSlice';
+import {searchPartner} from '../../../features/partnerSlice';
 
-const LeadSearchBarAux = ({
+const PartnerSearchBarAux = ({
   style = null,
-  title = 'Crm_Leads',
-  defaultValue = '',
+  title = 'Crm_Partner',
+  defaultValue = null,
   onChange = () => {},
   required = false,
   readonly = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {leadList, loadingLead, moreLoading, isListEnd} = useSelector(
-    state => state.lead,
+  const {partnerList, loading, moreLoading, isListEnd} = useSelector(
+    state => state.partner,
   );
 
-  const fetchLeadSearchBarAPI = useCallback(
+  const fetchPartnerSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(fetchLeads({page, searchValue}));
+      dispatch(searchPartner({page, searchValue}));
     },
     [dispatch],
   );
@@ -56,54 +51,44 @@ const LeadSearchBarAux = ({
   return (
     <AutoCompleteSearch
       style={style}
-      title={showTitle && I18n.t(title)}
-      objectList={leadList}
+      title={I18n.t(title)}
+      objectList={partnerList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchLeadSearchBarAPI}
+      fetchData={fetchPartnerSearchBarAPI}
       displayValue={displayItemFullname}
       placeholder={I18n.t(title)}
-      showDetailsPopup={showDetailsPopup}
-      loadingList={loadingLead}
+      showDetailsPopup={true}
+      loadingList={loading}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      isFocus={isFocus}
-      required={required}
+      navigate={false}
+      oneFilter={false}
+      isFocus={false}
       readonly={readonly}
+      required={required}
     />
   );
 };
 
-const LeadSearchBar = ({
+const PartnerSearchBar = ({
   style = null,
-  readonly = false,
-  title = 'Crm_Leads',
-  defaultValue = '',
+  title = 'Crm_Partner',
+  defaultValue = null,
   onChange = () => {},
   required = false,
-  showDetailsPopup = true,
-  navigate = false,
-  oneFilter = false,
-  isFocus = false,
-  showTitle = false,
+  readonly = false,
 }) => {
   return (
-    <LeadSearchBarAux
+    <PartnerSearchBarAux
       style={style}
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
       readonly={readonly}
       required={required}
-      showDetailsPopup={showDetailsPopup}
-      navigate={navigate}
-      oneFilter={oneFilter}
-      isFocus={isFocus}
-      showTitle={showTitle}
     />
   );
 };
 
-export default LeadSearchBar;
+export default PartnerSearchBar;

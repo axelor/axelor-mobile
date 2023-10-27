@@ -86,6 +86,15 @@
   "Crm_NoOpportunityAssociated": "No opportunity is associated",
   "Crm_LastOpportunity": "Last opportunity",
   "Crm_SocialNetworks": "Social networks",
+  "Crm_CreateEvent": "Create event",
+  "Crm_Subject": "Subject",
+  "Crm_Type": "Type",
+  "Crm_Status": "Status",
+  "Crm_Partner": "Partner",
+  "Crm_StartDate": "Start date",
+  "Crm_EndDate": "End date",
+  "Crm_AllDay": "All day ?",
+  "Crm_Location": "Location",
   "Crm_SliceAction_FetchCatalog": "fetch catalogs",
   "Crm_SliceAction_FetchCatalogType": "fetch catalog types",
   "Crm_SliceAction_FetchClient": "fetch clients",
@@ -125,5 +134,8 @@
   "Crm_SliceAction_CreateCatalog": "Create catalog",
   "Crm_SliceAction_FetchProspectStatus": "fetch prospect status",
   "Crm_SliceAction_FetchLinkedPartnersOfContact": "fetch clients/prospects linked to contact",
-  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities"
+  "Crm_SliceAction_GetPartnerOpportunities": "get partner's opportunities",
+  "Crm_SliceAction_SearchPartner": "search partner",
+  "Crm_SliceAction_CreateEvent": "create event",
+  "Crm_SliceAction_UpdateEvent": "update event"
 }

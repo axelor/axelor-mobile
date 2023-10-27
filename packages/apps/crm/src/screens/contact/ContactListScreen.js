@@ -84,11 +84,7 @@ const ContactListScreen = ({navigation}) => {
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
             />
-            <ContactSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              showTitle={false}
-            />
+            <ContactSearchBar showDetailsPopup={false} oneFilter={true} />
           </View>
         }
       />
