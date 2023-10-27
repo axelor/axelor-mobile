@@ -17,10 +17,14 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemFullname,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
-import {displayItemFullname} from '../../../utils/displayers';
 
 const ClientProspectSearchBar = ({
   style = null,
