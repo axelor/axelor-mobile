@@ -18,7 +18,11 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {
+  displayItemFullname,
+  useDispatch,
+  useSelector,
+} from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
   FormInput,
@@ -26,7 +30,6 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {fetchClientAndProspect} from '../../../features/partnerSlice';
-import {displayItemFullname} from '../../../utils/displayers';
 
 const ClientProspectSearchBar = ({
   style = null,

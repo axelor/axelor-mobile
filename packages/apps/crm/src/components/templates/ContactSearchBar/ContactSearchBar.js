@@ -18,7 +18,12 @@
 
 import React, {useCallback, useMemo} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemFullname,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   AutoCompleteSearch,
   useThemeColor,
@@ -26,7 +31,6 @@ import {
   FormInput,
 } from '@axelor/aos-mobile-ui';
 import {fetchContact} from '../../../features/contactSlice';
-import {displayItemFullname} from '../../../utils/displayers';
 
 const ContactSearchBar = ({
   style = null,
