@@ -229,13 +229,6 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
   },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
 });
 
 export default LeadFormScreen;

@@ -242,13 +242,6 @@ const styles = StyleSheet.create({
   marginTitle: {
     marginLeft: 28,
   },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
   input: {
     width: '90%',
   },

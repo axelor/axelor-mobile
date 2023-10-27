@@ -242,20 +242,6 @@ const styles = StyleSheet.create({
   scroll: {
     height: null,
   },
-  picker: {
-    width: '100%',
-    marginLeft: 5,
-  },
-  pickerTitle: {
-    marginLeft: 5,
-  },
-  marginTitle: {
-    marginLeft: 28,
-  },
-  search: {
-    width: '100%',
-    marginLeft: 0,
-  },
   input: {
     width: '90%',
   },

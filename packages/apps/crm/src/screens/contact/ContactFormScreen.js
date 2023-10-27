@@ -191,9 +191,6 @@ const styles = StyleSheet.create({
   containerZIndex: {
     zIndex: 40,
   },
-  picker: {
-    width: '100%',
-  },
   marginTitle: {
     marginLeft: 28,
   },
