@@ -23,7 +23,12 @@ import {
   NotesCard,
   ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  useIsFocused,
+} from '@axelor/aos-mobile-core';
 import {LeadHeader, LeadDropdownCards, LeadBottom} from '../../components';
 import {fetchLeadById} from '../../features/leadSlice';
 
@@ -31,6 +36,7 @@ const LeadDetailsScreen = ({route}) => {
   const {idLead, versionLead, colorIndex} = route.params;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const {loadingLead, lead} = useSelector(state => state.lead);
 
@@ -39,10 +45,12 @@ const LeadDetailsScreen = ({route}) => {
   }, [dispatch, idLead]);
 
   useEffect(() => {
-    getLead();
-  }, [getLead]);
+    if (isFocused) {
+      getLead();
+    }
+  }, [getLead, isFocused]);
 
-  if (lead?.id !== idLead) {
+  if (lead?.id !== idLead || !isFocused) {
     return null;
   }
 

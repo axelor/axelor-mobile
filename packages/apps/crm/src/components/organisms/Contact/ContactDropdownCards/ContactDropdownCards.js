@@ -37,7 +37,7 @@ const ContactDropdownCards = ({}) => {
 
   useEffect(() => {
     dispatch(fetchContactEventById(contact?.id));
-  }, [dispatch, contact?.id]);
+  }, [dispatch, contact]);
 
   return (
     <View style={styles.container}>
