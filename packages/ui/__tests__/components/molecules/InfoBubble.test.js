@@ -20,6 +20,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {Card, Icon, InfoBubble, Text, lightTheme} from '@axelor/aos-mobile-ui';
 import {TouchableOpacity} from 'react-native';
+import {getGlobalStyles} from '../../tools';
 
 describe('InfoBubble Component', () => {
   const Colors = lightTheme.colors;
@@ -41,6 +42,19 @@ describe('InfoBubble Component', () => {
     expect(wrapper.find(Icon).prop('color')).toBe(
       Colors.primaryColor.foreground,
     );
+    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background_light,
+      borderColor: Colors.primaryColor.background,
+    });
+  });
+
+  it('should render with the correct icon color when no bubble', () => {
+    const wrapper = shallow(<InfoBubble {...props} coloredBubble={false} />);
+
+    expect(wrapper.find(Icon).prop('color')).toBe(
+      Colors.primaryColor.background,
+    );
+    expect(getGlobalStyles(wrapper.find(Icon))).toBe(null);
   });
 
   it('should display the indication when clicked', () => {

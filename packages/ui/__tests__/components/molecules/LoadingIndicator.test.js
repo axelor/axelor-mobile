@@ -49,15 +49,6 @@ describe('LoadingIndicator Component', () => {
     const wrapper = shallow(<LoadingIndicator />);
 
     expect(wrapper.find(ActivityIndicator).exists()).toBe(true);
-  });
-
-  it('should pass the correct color prop to ActivityIndicator', () => {
-    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
-      showActivityIndicator: true,
-    }));
-
-    const wrapper = shallow(<LoadingIndicator />);
-
     expect(wrapper.find(ActivityIndicator).prop('color')).toBe(
       Colors.primaryColor.background,
     );

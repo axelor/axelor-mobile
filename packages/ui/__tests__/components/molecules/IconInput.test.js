@@ -103,6 +103,7 @@ describe('IconInput Component', () => {
     const wrapper = shallow(
       <IconInput {...props} required={true} value={null} />,
     );
+
     wrapper.find(Input).simulate('selection');
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
