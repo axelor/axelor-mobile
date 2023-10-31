@@ -87,7 +87,898 @@ const SettingsScreen = ({children}) => {
 
   return (
     <Screen>
-      <Dashboard />
+      <Dashboard
+        ligne={[
+          {
+            graph: [
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {value: 25, label: 'Draft', color: '#ff0000'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 1, label: 'Validate'},
+                    {value: 1, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'e'},
+                  ],
+                  [
+                    {value: 15, label: 'Draft'},
+                    {value: 3, label: 'Waiting'},
+                    {value: 2, label: 'Validate'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Refused'},
+                    {value: 4, color: '#ff0000', label: 'Baw'},
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+        ]}
+      />
     </Screen>
   );
 };

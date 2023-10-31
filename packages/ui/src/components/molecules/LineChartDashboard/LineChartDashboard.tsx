@@ -28,12 +28,8 @@ interface Data {
   label: string;
 }
 
-interface Dataset {
-  data: Data[];
-}
-
 interface LineChartDashboardProps {
-  datasets: Dataset[];
+  datasets: Data[][];
   spacing?: number;
   widthGraph?: number;
   backgroundColor?: string;
@@ -50,63 +46,69 @@ const LineChartDashboard = ({
     <Card style={styles.container}>
       <View>
         <LineChart
-          data={datasets[0]?.data}
-          data2={datasets[1]?.data}
+          data={datasets[0]}
+          data2={datasets[1]}
           spacing={spacing}
-          width={Dimensions.get('window').width * 0.6}
+          width={
+            Dimensions.get('window').width > 500
+              ? Dimensions.get('window').width / 6
+              : Dimensions.get('window').width / 3
+          }
           isAnimated={true}
           backgroundColor={backgroundColor}
           dataPointsColor1={
-            datasets[0]?.data[0]?.color != null
-              ? datasets[0]?.data[0]?.color
+            datasets[0][0]?.color != null
+              ? datasets[0][0]?.color
               : Color.primaryColor.background
           }
           color1={
-            datasets[0]?.data[0]?.color != null
-              ? datasets[0]?.data[0]?.color
+            datasets[0][0]?.color != null
+              ? datasets[0][0]?.color
               : Color.primaryColor.background
           }
           dataPointsColor2={
-            datasets[1]?.data[0]?.color != null
-              ? datasets[1]?.data[0]?.color
+            datasets[1][0]?.color != null
+              ? datasets[1][0]?.color
               : Color.infoColor.background
           }
           color2={
-            datasets[1]?.data[0]?.color != null
-              ? datasets[1]?.data[0]?.color
+            datasets[1]?.[0]?.color != null
+              ? datasets[1]?.[0]?.color
               : Color.infoColor.background
           }
           dataPointsColor3={
-            datasets[2]?.data[0]?.color != null
-              ? datasets[2]?.data[0]?.color
+            datasets[2]?.[0]?.color != null
+              ? datasets[2]?.[0]?.color
               : Color.errorColor.background
           }
           color3={
-            datasets[2]?.data[0]?.color != null
-              ? datasets[2]?.data[0]?.color
+            datasets[2]?.[0]?.color != null
+              ? datasets[2]?.[0]?.color
               : Color.errorColor.background
           }
           dataPointsColor4={
-            datasets[3]?.data[0]?.color != null
-              ? datasets[3]?.data[0]?.color
+            datasets[3]?.[0]?.color != null
+              ? datasets[3]?.[0]?.color
               : Color.progressColor.background
           }
           color4={
-            datasets[3]?.data[0]?.color != null
-              ? datasets[3]?.data[0]?.color
+            datasets[3]?.[0]?.color != null
+              ? datasets[3]?.[0]?.color
               : Color.progressColor.background
           }
           dataPointsColor5={
-            datasets[4]?.data[0]?.color != null
-              ? datasets[4]?.data[0]?.color
+            datasets[4]?.[0]?.color != null
+              ? datasets[4]?.[0]?.color
               : Color.secondaryColor.background
           }
           color5={
-            datasets[4]?.data[0]?.color != null
-              ? datasets[4]?.data[0]?.color
+            datasets[4]?.[0]?.color != null
+              ? datasets[4]?.[0]?.color
               : Color.secondaryColor.background
           }
           endSpacing={5}
+          //endSpacing={Dimensions.get('window').width / 2}
+          //adjustToWidth={true}
         />
       </View>
     </Card>
@@ -114,7 +116,13 @@ const LineChartDashboard = ({
 };
 
 const styles = StyleSheet.create({
-  container: {marginHorizontal: 30, marginVertical: 5},
+  container: {
+    width:
+      Dimensions.get('window').width > 500
+        ? Dimensions.get('window').width / 4
+        : Dimensions.get('window').width / 2,
+    marginVertical: 5,
+  },
 });
 
 export default LineChartDashboard;

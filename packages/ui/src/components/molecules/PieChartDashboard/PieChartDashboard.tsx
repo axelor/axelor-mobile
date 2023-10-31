@@ -29,13 +29,9 @@ interface Data {
   label: string;
 }
 
-interface Dataset {
-  data: Data[];
-}
-
 interface PieChartProps {
   styleContainer?: any;
-  datasets: Dataset[];
+  datasets: Data[][];
   legend?: boolean;
 }
 
@@ -46,10 +42,10 @@ const PieChartDashboard = ({
 }: PieChartProps) => {
   const Color = useThemeColor();
 
-  const [dataSet, setDataSet] = useState(datasets[0]?.data);
+  const [dataSet, setDataSet] = useState(datasets[0]);
 
   useEffect(() => {
-    const newDatasets = datasets[0]?.data?.map((item, index) => {
+    const newDatasets = datasets[0]?.map((item, index) => {
       if (item?.color == null) {
         return {...item, color: Chart.getChartColor(index, Color).background};
       }
@@ -57,8 +53,6 @@ const PieChartDashboard = ({
     });
     setDataSet(newDatasets);
   }, [Color, datasets]);
-
-  console.log(Dimensions.get('window').width);
 
   const renderLegendBorderColor = color => {
     return {
@@ -100,7 +94,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: 'red',
     width:
       Dimensions.get('window').width > 500
         ? Dimensions.get('window').width / 4

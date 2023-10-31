@@ -17,259 +17,93 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {BarCharDashboard, PieChartDashboard} from '../../molecules';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {
+  BarCharDashboard,
+  LineChartDashboard,
+  PieChartDashboard,
+} from '../../molecules';
 import {ScrollView} from '../../atoms';
 
-/*interface Data {
+interface Data {
   value: number;
   color?: string;
   label: string;
 }
 
-interface Dataset {
-  data: Data[];
-}
-
 interface Graph {
-  type: 'pie' | 'bar' | 'ligne';
-  dataList: Dataset;
+  type: 'pie' | 'bar' | 'line';
+  dataList: Data[][];
 }
 
 interface Ligne {
   graph: Graph[];
-}*/
+}
 
 interface DashboardProps {
   style?: any;
-  //ligne: Ligne[];
+  ligne: Ligne[];
 }
 
-const Dashboard = ({style}: DashboardProps) => {
+const PieChartRender = (datasets, key) => {
+  return <PieChartDashboard datasets={datasets} key={key} />;
+};
+
+const BarCharDashboardRender = (datasets, key) => {
   return (
-    <ScrollView style={styles.container}>
-      <PieChartDashboard
-        datasets={[
-          {
-            data: [
-              {
-                value: 25,
-                color: '#FFDF00',
-                label: 'Draft',
-              },
-              {
-                value: 3,
-                color: '#ffa500',
-                label: 'Waiting',
-              },
-              {
-                value: 1,
-                color: '#008000',
-                label: 'Validate',
-              },
-              {
-                value: 1,
-                color: '#ff0000',
-                label: 'Refused',
-              },
-            ],
-          },
-        ]}
-      />
-      <PieChartDashboard
-        datasets={[
-          {
-            data: [
-              {
-                value: 25,
-                color: '#FFDF00',
-                label: 'Draft',
-              },
-              {
-                value: 3,
-                color: '#ffa500',
-                label: 'Waiting',
-              },
-              {
-                value: 1,
-                color: '#008000',
-                label: 'Validate',
-              },
-              {
-                value: 1,
-                color: '#ff0000',
-                label: 'Refused',
-              },
-            ],
-          },
-        ]}
-      />
-      <PieChartDashboard
-        datasets={[
-          {
-            data: [
-              {
-                value: 25,
-                color: '#FFDF00',
-                label: 'Draft',
-              },
-              {
-                value: 3,
-                color: '#ffa500',
-                label: 'Waiting',
-              },
-              {
-                value: 1,
-                color: '#008000',
-                label: 'Validate',
-              },
-              {
-                value: 1,
-                color: '#ff0000',
-                label: 'Refused',
-              },
-            ],
-          },
-        ]}
-      />
-      <PieChartDashboard
-        datasets={[
-          {
-            data: [
-              {
-                value: 25,
-                color: '#FFDF00',
-                label: 'Draft',
-              },
-              {
-                value: 3,
-                color: '#ffa500',
-                label: 'Waiting',
-              },
-              {
-                value: 1,
-                color: '#008000',
-                label: 'Validate',
-              },
-              {
-                value: 1,
-                color: '#ff0000',
-                label: 'Refused',
-              },
-            ],
-          },
-        ]}
-      />
-      <PieChartDashboard
-        datasets={[
-          {
-            data: [
-              {
-                value: 25,
-                color: '#FFDF00',
-                label: 'Draft',
-              },
-              {
-                value: 3,
-                color: '#ffa500',
-                label: 'Waiting',
-              },
-              {
-                value: 1,
-                color: '#008000',
-                label: 'Validate',
-              },
-              {
-                value: 1,
-                color: '#ff0000',
-                label: 'Refused',
-              },
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
-      <BarCharDashboard
-        datasets={[
-          {
-            data: [
-              {value: 25, label: 'Draft', color: '#ff0000'},
-              {value: 3, label: 'Waiting'},
-              {value: 1, label: 'Validate'},
-              {value: 1, color: '#ff0000', label: 'Refused'},
-            ],
-          },
-        ]}
-      />
+    <BarCharDashboard
+      datasets={datasets}
+      key={key}
+      style={{
+        width:
+          Dimensions.get('window').width > 500
+            ? Dimensions.get('window').width / 4
+            : Dimensions.get('window').width / 2,
+      }}
+    />
+  );
+};
+
+const LineChartDashboardRender = (datasets, key) => {
+  return <LineChartDashboard datasets={datasets} key={key} />;
+};
+
+const Dashboard = ({style, ligne}: DashboardProps) => {
+  return (
+    <ScrollView style={[styles.container, style]}>
+      {ligne?.map((l, nbline) => {
+        return (
+          <View style={styles.lineContainer} key={nbline}>
+            {l?.graph.map((g, nbGraph) => {
+              if (nbGraph > 4) {
+                return null;
+              }
+              if (g?.type === 'bar') {
+                return BarCharDashboardRender(g.dataList, nbGraph);
+              }
+              if (g?.type === 'pie') {
+                return PieChartRender(g.dataList, nbGraph);
+              }
+              if (g?.type === 'line') {
+                return LineChartDashboardRender(g.dataList, nbGraph);
+              }
+            })}
+          </View>
+        );
+      })}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'column',
+    height: null,
+  },
+  lineContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: null,
+    justifyContent: 'space-evenly',
   },
 });
 

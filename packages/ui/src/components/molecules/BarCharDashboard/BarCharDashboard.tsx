@@ -28,29 +28,30 @@ interface Data {
   label: string;
 }
 
-interface Dataset {
-  data: Data[];
-}
-
 interface BarCharDashboardProps {
-  datasets: Dataset[];
+  style?: any;
+  datasets: Data[][];
   spacing?: number;
 }
 
-const BarCharDashboard = ({datasets, spacing = 20}: BarCharDashboardProps) => {
+const BarCharDashboard = ({
+  style,
+  datasets,
+  spacing = 20,
+}: BarCharDashboardProps) => {
   const Color = useThemeColor();
 
   return (
-    <Card style={styles.container}>
+    <Card style={[styles.container, style]}>
       <View>
         <BarChart
           key={'xyz'}
           frontColor={
-            datasets[0]?.data[0].color != null
-              ? datasets[0]?.data[0].color
+            datasets[0]?.[0].color != null
+              ? datasets[0]?.[0].color
               : Color?.primaryColor?.background
           }
-          data={datasets[0]?.data}
+          data={datasets[0]}
           //width={Dimensions.get('window').width * 0.6}
           spacing={spacing}
           isAnimated={true}
