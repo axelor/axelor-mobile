@@ -62,6 +62,7 @@ const PieChartDashboard = ({
       backgroundColor: color,
     };
   };
+
   return (
     <View style={[style.container, styleContainer]}>
       <PieChart
@@ -71,6 +72,7 @@ const PieChartDashboard = ({
         sectionAutoFocus
         radius={90}
         innerRadius={60}
+        focusOnPress={true}
       />
       {legend && (
         <View style={style.legenContainer}>

@@ -33,6 +33,7 @@ interface BarCharDashboardProps {
   widthGraph?: any;
   datasets: Data[][];
   spacing?: number;
+  horizontal?: boolean;
 }
 
 const BarCharDashboard = ({
@@ -40,6 +41,7 @@ const BarCharDashboard = ({
   widthGraph = Dimensions.get('window').width * 0.6,
   datasets,
   spacing = 20,
+  horizontal = false,
 }: BarCharDashboardProps) => {
   const Color = useThemeColor();
 
@@ -58,6 +60,7 @@ const BarCharDashboard = ({
           spacing={spacing}
           isAnimated={true}
           initialSpacing={20}
+          horizontal={horizontal}
         />
       </View>
     </Card>
