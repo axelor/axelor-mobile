@@ -36,7 +36,7 @@ interface BarCharDashboardProps {
   horizontal?: boolean;
 }
 
-const BarCharDashboard = ({
+const BarChartDashboard = ({
   style,
   widthGraph = Dimensions.get('window').width * 0.6,
   datasets,
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BarCharDashboard;
+export default BarChartDashboard;

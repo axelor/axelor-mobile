@@ -19,7 +19,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
-  BarCharDashboard,
+  BarChartDashboard,
   LineChartDashboard,
   PieChartDashboard,
 } from '../../molecules';
@@ -108,9 +108,9 @@ const PieChartRender = (datasets, key) => {
   return <PieChartDashboard datasets={datasets} key={key} />;
 };
 
-const BarCharDashboardRender = (datasets, key, nbGraphInLine) => {
+const BarChartDashboardRender = (datasets, key, nbGraphInLine) => {
   return (
-    <BarCharDashboard
+    <BarChartDashboard
       datasets={datasets}
       key={key}
       style={styleGraph(nbGraphInLine)}
@@ -131,7 +131,7 @@ const Dashboard = ({style, line}: DashboardProps) => {
                 return null;
               }
               if (g?.type === 'bar') {
-                return BarCharDashboardRender(
+                return BarChartDashboardRender(
                   g.dataList,
                   nbGraph,
                   nbGraphInLine,
