@@ -58,7 +58,6 @@ const BarCharDashboard = ({
           spacing={spacing}
           isAnimated={true}
           initialSpacing={20}
-          //endSpacing={-60}
         />
       </View>
     </Card>
@@ -67,9 +66,7 @@ const BarCharDashboard = ({
 
 const styles = StyleSheet.create({
   container: {
-    //marginHorizontal: 30,
     marginVertical: 5,
-    //backgroundColor: 'red',
   },
 });
 

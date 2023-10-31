@@ -29,6 +29,7 @@ interface Data {
 }
 
 interface LineChartDashboardProps {
+  style?: any;
   datasets: Data[][];
   spacing?: number;
   widthGraph?: number;
@@ -36,6 +37,8 @@ interface LineChartDashboardProps {
 }
 
 const LineChartDashboard = ({
+  style,
+  widthGraph,
   datasets,
   spacing = 50,
   backgroundColor,
@@ -43,32 +46,28 @@ const LineChartDashboard = ({
   const Color = useThemeColor();
 
   return (
-    <Card style={styles.container}>
+    <Card style={[styles.container, style]}>
       <View>
         <LineChart
+          width={widthGraph}
           data={datasets[0]}
           data2={datasets[1]}
           spacing={spacing}
-          width={
-            Dimensions.get('window').width > 500
-              ? Dimensions.get('window').width / 6
-              : Dimensions.get('window').width / 3
-          }
           isAnimated={true}
           backgroundColor={backgroundColor}
           dataPointsColor1={
-            datasets[0][0]?.color != null
-              ? datasets[0][0]?.color
+            datasets[0]?.[0]?.color != null
+              ? datasets[0]?.[0]?.color
               : Color.primaryColor.background
           }
           color1={
-            datasets[0][0]?.color != null
-              ? datasets[0][0]?.color
+            datasets[0]?.[0]?.color != null
+              ? datasets[0]?.[0]?.color
               : Color.primaryColor.background
           }
           dataPointsColor2={
-            datasets[1][0]?.color != null
-              ? datasets[1][0]?.color
+            datasets[1]?.[0]?.color != null
+              ? datasets[1]?.[0]?.color
               : Color.infoColor.background
           }
           color2={
@@ -107,8 +106,6 @@ const LineChartDashboard = ({
               : Color.secondaryColor.background
           }
           endSpacing={5}
-          //endSpacing={Dimensions.get('window').width / 2}
-          //adjustToWidth={true}
         />
       </View>
     </Card>

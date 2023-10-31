@@ -36,43 +36,19 @@ interface Graph {
   dataList: Data[][];
 }
 
-interface Ligne {
+interface Line {
   graph: Graph[];
 }
 
 interface DashboardProps {
   style?: any;
-  ligne: Ligne[];
+  line: Line[];
 }
 
-const PieChartRender = (datasets, key) => {
-  return <PieChartDashboard datasets={datasets} key={key} />;
-};
-
-const BarCharDashboardRender = (datasets, key, nbGraphInLine) => {
-  return (
-    <BarCharDashboard
-      datasets={datasets}
-      key={key}
-      /*style={{
-        width:
-          Dimensions.get('window').width > 500
-            ? Dimensions.get('window').width / nbGraphInLine
-            : nbGraphInLine === 1
-            ? Dimensions.get('window').width
-            : Dimensions.get('window').width / 2,
-      }}*/
-      style={styleGraphBar(nbGraphInLine)}
-      widthGraph={widthGraphBar(nbGraphInLine)}
-    />
-  );
-};
-
-const styleGraphBar = nbGraphInLine => {
+const styleGraph = nbGraphInLine => {
   if (nbGraphInLine === 1) {
     return {
       width: Dimensions.get('window').width - 60,
-      //marginHorizontal: 30,
     };
   }
   if (Dimensions.get('window').width < 500 && nbGraphInLine !== 1) {
@@ -98,7 +74,7 @@ const styleGraphBar = nbGraphInLine => {
   return null;
 };
 
-const widthGraphBar = nbGraphInLine => {
+const widthGraph = nbGraphInLine => {
   if (nbGraphInLine === 1) {
     return Dimensions.get('window').width - 160;
   }
@@ -117,14 +93,36 @@ const widthGraphBar = nbGraphInLine => {
   return null;
 };
 
-const LineChartDashboardRender = (datasets, key) => {
-  return <LineChartDashboard datasets={datasets} key={key} />;
+const LineChartDashboardRender = (datasets, key, nbGraphInLine) => {
+  return (
+    <LineChartDashboard
+      datasets={datasets}
+      key={key}
+      style={styleGraph(nbGraphInLine)}
+      widthGraph={widthGraph(nbGraphInLine)}
+    />
+  );
 };
 
-const Dashboard = ({style, ligne}: DashboardProps) => {
+const PieChartRender = (datasets, key) => {
+  return <PieChartDashboard datasets={datasets} key={key} />;
+};
+
+const BarCharDashboardRender = (datasets, key, nbGraphInLine) => {
+  return (
+    <BarCharDashboard
+      datasets={datasets}
+      key={key}
+      style={styleGraph(nbGraphInLine)}
+      widthGraph={widthGraph(nbGraphInLine)}
+    />
+  );
+};
+
+const Dashboard = ({style, line}: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
-      {ligne?.map((l, nbline) => {
+      {line?.map((l, nbline) => {
         const nbGraphInLine = l.graph?.length > 4 ? 4 : l.graph?.length;
         return (
           <View style={styles.lineContainer} key={nbline}>
@@ -143,7 +141,11 @@ const Dashboard = ({style, ligne}: DashboardProps) => {
                 return PieChartRender(g.dataList, nbGraph);
               }
               if (g?.type === 'line') {
-                return LineChartDashboardRender(g.dataList, nbGraph);
+                return LineChartDashboardRender(
+                  g.dataList,
+                  nbGraph,
+                  nbGraphInLine,
+                );
               }
             })}
           </View>

@@ -88,7 +88,7 @@ const SettingsScreen = ({children}) => {
   return (
     <Screen>
       <Dashboard
-        ligne={[
+        line={[
           {
             graph: [
               {
@@ -1100,6 +1100,118 @@ const SettingsScreen = ({children}) => {
               },
               {
                 type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'pie',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'line',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
                 dataList: [
                   [
                     {
