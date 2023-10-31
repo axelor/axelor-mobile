@@ -431,6 +431,274 @@ const SettingsScreen = ({children}) => {
                       color: '#ff0000',
                       label: 'Refused',
                     },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'test',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'aaa',
+                    },
+                  ],
+                ],
+              },
+            ],
+          },
+          {
+            graph: [
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'aaa',
+                    },
+                  ],
+                ],
+              },
+              {
+                type: 'bar',
+                dataList: [
+                  [
+                    {
+                      value: 25,
+                      color: '#FFDF00',
+                      label: 'Draft',
+                    },
+                    {
+                      value: 3,
+                      color: '#ffa500',
+                      label: 'Waiting',
+                    },
+                    {
+                      value: 1,
+                      color: '#008000',
+                      label: 'Validate',
+                    },
+                    {
+                      value: 1,
+                      color: '#ff0000',
+                      label: 'Refused',
+                    },
                   ],
                 ],
               },
@@ -492,10 +760,6 @@ const SettingsScreen = ({children}) => {
                   ],
                 ],
               },
-            ],
-          },
-          {
-            graph: [
               {
                 type: 'bar',
                 dataList: [
@@ -547,144 +811,30 @@ const SettingsScreen = ({children}) => {
                       color: '#ff0000',
                       label: 'Refused',
                     },
-                  ],
-                ],
-              },
-              {
-                type: 'bar',
-                dataList: [
-                  [
-                    {
-                      value: 25,
-                      color: '#FFDF00',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 3,
-                      color: '#ffa500',
-                      label: 'Waiting',
-                    },
                     {
                       value: 1,
-                      color: '#008000',
-                      label: 'Validate',
+                      color: '#ff0000',
+                      label: 'Refused',
                     },
                     {
                       value: 1,
                       color: '#ff0000',
                       label: 'Refused',
                     },
-                  ],
-                ],
-              },
-            ],
-          },
-          {
-            graph: [
-              {
-                type: 'bar',
-                dataList: [
-                  [
-                    {
-                      value: 25,
-                      color: '#FFDF00',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 3,
-                      color: '#ffa500',
-                      label: 'Waiting',
-                    },
                     {
                       value: 1,
-                      color: '#008000',
-                      label: 'Validate',
+                      color: '#ff0000',
+                      label: 'Refused',
                     },
                     {
                       value: 1,
                       color: '#ff0000',
                       label: 'Refused',
                     },
-                  ],
-                ],
-              },
-              {
-                type: 'bar',
-                dataList: [
-                  [
-                    {
-                      value: 25,
-                      color: '#FFDF00',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 3,
-                      color: '#ffa500',
-                      label: 'Waiting',
-                    },
-                    {
-                      value: 1,
-                      color: '#008000',
-                      label: 'Validate',
-                    },
                     {
                       value: 1,
                       color: '#ff0000',
-                      label: 'Refused',
-                    },
-                  ],
-                ],
-              },
-              {
-                type: 'bar',
-                dataList: [
-                  [
-                    {
-                      value: 25,
-                      color: '#FFDF00',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 3,
-                      color: '#ffa500',
-                      label: 'Waiting',
-                    },
-                    {
-                      value: 1,
-                      color: '#008000',
-                      label: 'Validate',
-                    },
-                    {
-                      value: 1,
-                      color: '#ff0000',
-                      label: 'Refused',
-                    },
-                  ],
-                ],
-              },
-              {
-                type: 'bar',
-                dataList: [
-                  [
-                    {
-                      value: 25,
-                      color: '#FFDF00',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 3,
-                      color: '#ffa500',
-                      label: 'Waiting',
-                    },
-                    {
-                      value: 1,
-                      color: '#008000',
-                      label: 'Validate',
-                    },
-                    {
-                      value: 1,
-                      color: '#ff0000',
-                      label: 'Refused',
+                      label: 'ddd',
                     },
                   ],
                 ],

@@ -30,12 +30,14 @@ interface Data {
 
 interface BarCharDashboardProps {
   style?: any;
+  widthGraph?: any;
   datasets: Data[][];
   spacing?: number;
 }
 
 const BarCharDashboard = ({
   style,
+  widthGraph = Dimensions.get('window').width * 0.6,
   datasets,
   spacing = 20,
 }: BarCharDashboardProps) => {
@@ -52,11 +54,11 @@ const BarCharDashboard = ({
               : Color?.primaryColor?.background
           }
           data={datasets[0]}
-          //width={Dimensions.get('window').width * 0.6}
+          width={widthGraph}
           spacing={spacing}
           isAnimated={true}
           initialSpacing={20}
-          endSpacing={-60}
+          //endSpacing={-60}
         />
       </View>
     </Card>
@@ -67,10 +69,6 @@ const styles = StyleSheet.create({
   container: {
     //marginHorizontal: 30,
     marginVertical: 5,
-    width:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4
-        : Dimensions.get('window').width / 2,
     //backgroundColor: 'red',
   },
 });
