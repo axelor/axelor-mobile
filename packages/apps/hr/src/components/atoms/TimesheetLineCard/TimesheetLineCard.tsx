@@ -28,7 +28,7 @@ interface TimesheetLineCardProps {
   task?: string;
   manufOrder?: string;
   operation?: string;
-  timesheetDate: string;
+  date: string;
   duration: string;
   unitDuration: string;
   isBorderColor?: boolean;
@@ -41,7 +41,7 @@ const TimesheetLineCard = ({
   task,
   manufOrder,
   operation,
-  timesheetDate,
+  date,
   duration,
   unitDuration,
   isBorderColor = true,
@@ -55,17 +55,14 @@ const TimesheetLineCard = ({
     [Colors, statusSelect],
   );
 
-  const _timesheetDate = useMemo(
-    () => getFullDateItems(timesheetDate, I18n),
-    [I18n, timesheetDate],
-  );
+  const _date = useMemo(() => getFullDateItems(date, I18n), [I18n, date]);
 
   return (
     <Card
       style={[styles.container, isBorderColor && styles.borderCOlor, style]}>
       <View style={styles.leftContainer}>
-        <Text writingType="title">{project || manufOrder}</Text>
-        <Text style={styles.subTitle}>{task || operation}</Text>
+        <Text writingType="title">{(project || manufOrder) ?? '-'}</Text>
+        <Text style={styles.subTitle}>{(task || operation) ?? '-'}</Text>
       </View>
       <View style={styles.rightContainer}>
         <View style={styles.dateContainer}>
@@ -75,9 +72,9 @@ const TimesheetLineCard = ({
             size={18}
             style={styles.icon}
           />
-          <Text fontSize={18}>{_timesheetDate.day}</Text>
+          <Text fontSize={18}>{_date.day}</Text>
           <Text writingType="important" fontSize={18}>
-            {` ${_timesheetDate.date} ${_timesheetDate.month}`}
+            {` ${_date.date} ${_date.month}`}
           </Text>
         </View>
         <Text

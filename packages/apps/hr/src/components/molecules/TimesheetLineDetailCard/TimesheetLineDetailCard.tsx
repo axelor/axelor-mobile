@@ -27,7 +27,7 @@ interface TimesheetLineDetailCardProps {
   task?: string;
   manufOrder?: string;
   operation?: string;
-  timesheetDate: string;
+  date: string;
   duration: string;
   unitDuration: string;
   isActions?: boolean;
@@ -40,7 +40,7 @@ const TimesheetLineDetailCard = ({
   task,
   manufOrder,
   operation,
-  timesheetDate,
+  date,
   duration,
   unitDuration,
   isActions = false,
@@ -64,7 +64,7 @@ const TimesheetLineDetailCard = ({
         task={task}
         manufOrder={manufOrder}
         operation={operation}
-        timesheetDate={timesheetDate}
+        date={date}
         duration={duration}
         unitDuration={unitDuration}
         style={styles.cardContainer}
