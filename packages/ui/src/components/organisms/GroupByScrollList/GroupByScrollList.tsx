@@ -90,10 +90,9 @@ const GroupByScrollList = ({
     if (index !== 0) {
       prevItem = data[index - 1];
     }
-    let currentItem = item;
 
-    if (index === 0 || separatorCondition(prevItem, currentItem)) {
-      const indicator = fetchIndicator(currentItem);
+    if (index === 0 || separatorCondition(prevItem, item)) {
+      const indicator = fetchIndicator(item);
       return (
         <>
           <Separator indicator={indicator} />
