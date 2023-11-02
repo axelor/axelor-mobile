@@ -18,3 +18,4 @@
 
 export {default as ExpenseCard} from './ExpenseCard/ExpenseCard';
 export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';
+export {default as TimeSheetLineCard} from './TimesheetLineCard/TimesheetLineCard';
