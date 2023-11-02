@@ -26,10 +26,14 @@ export async function getDistance({fromCity, toCity}) {
         data: {fromCity, toCity},
       })
       .catch(e => {
-        console.log('e', e);
+        let message = '';
+        if (e.response) {
+          message = e?.response?.data?.messageStatus || e?.response?.statusText;
+        }
         return {
-          error: true,
-          message: e,
+          data: {
+            object: {error: true, message: message},
+          },
         };
       });
   }

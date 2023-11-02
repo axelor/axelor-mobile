@@ -89,6 +89,7 @@ const CityFormInputAux = ({
           coloredBubble={false}
           badgeColor={Colors.errorColor}
           indication={distance?.message}
+          position={'left'}
         />
       )}
     </>
