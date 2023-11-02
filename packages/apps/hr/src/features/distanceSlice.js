@@ -30,9 +30,6 @@ export const getDistance = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
       errorOptions: {errorTracing: false, showErrorToast: false},
-    }).then(res => {
-      console.log('res________________', res);
-      return res;
     });
   },
 );
@@ -68,7 +65,6 @@ const distanceSlice = createSlice({
     });
     builder.addCase(getDistance.fulfilled, (state, action) => {
       state.loadingDistance = false;
-      console.log(action);
       if (action.payload?.error) {
         state.distance = action.payload;
       } else if (!isEmpty(action.payload?.distance)) {
