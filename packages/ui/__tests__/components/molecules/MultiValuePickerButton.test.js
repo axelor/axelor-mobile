@@ -83,4 +83,13 @@ describe('MultiValuePickerButton Component', () => {
     wrapper.find(TouchableOpacity).at(1).simulate('press');
     expect(props.onPressItem).toHaveBeenCalledWith(listItem[0]);
   });
+
+  it('should render a disabled component and disabled items when readonly is true', () => {
+    const wrapper = shallow(<MultiValuePickerButton {...props} readonly />);
+    const touchableComponent = wrapper.find(TouchableOpacity).at(0);
+    const touchableItem1 = wrapper.find(TouchableOpacity).at(1);
+
+    expect(touchableComponent.prop('disabled')).toBe(true);
+    expect(touchableItem1.prop('disabled')).toBe(true);
+  });
 });

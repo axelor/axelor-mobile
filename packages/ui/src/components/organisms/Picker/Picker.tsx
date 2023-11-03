@@ -33,7 +33,7 @@ interface PickerProps {
   style?: any;
   pickerStyle?: any;
   styleTxt?: any;
-  title: string;
+  title?: string;
   onValueChange: (any) => void;
   defaultValue?: string;
   listItems: any[];

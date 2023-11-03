@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Color, ThemeColors, useThemeColor} from '../../../theme';
 import {Card, Icon, Text} from '../../atoms';
 
@@ -26,11 +26,13 @@ interface Item {
   title: string;
   key: string | number;
 }
+
 interface MultiValuePickerButtonProps {
   style?: any;
   onPress: (any) => void;
   listItem: Item[];
   onPressItem?: (any) => void;
+  readonly?: boolean;
 }
 
 const MultiValuePickerButton = ({
@@ -38,22 +40,24 @@ const MultiValuePickerButton = ({
   onPress = () => {},
   listItem,
   onPressItem = () => {},
+  readonly = false,
 }: MultiValuePickerButtonProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(Colors, readonly), [Colors, readonly]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity onPress={onPress} disabled={readonly} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.listItemContainer}>
           {listItem &&
             listItem.map((item, index) => (
               <TouchableOpacity
-                key={index}
                 onPress={() => onPressItem(item)}
-                activeOpacity={0.9}
-                style={[styles.cardItem, getItemColor(item.color)]}>
+                disabled={readonly}
+                key={index}
+                style={[styles.cardItem, getItemColor(item.color)]}
+                activeOpacity={0.9}>
                 <Text
                   style={styles.text}
                   fontSize={14}
@@ -63,14 +67,22 @@ const MultiValuePickerButton = ({
                   }>
                   {item.title}
                 </Text>
-                <Icon name={'times'} color={item.color.foreground} size={14} />
+                {!readonly && (
+                  <Icon
+                    name={'times'}
+                    color={item.color.foreground}
+                    size={14}
+                  />
+                )}
               </TouchableOpacity>
             ))}
         </View>
-        <Icon
-          name="chevron-down"
-          color={Colors.secondaryColor_dark.background}
-        />
+        {!readonly && (
+          <Icon
+            name="chevron-down"
+            color={Colors.secondaryColor_dark.background}
+          />
+        )}
       </Card>
     </TouchableOpacity>
   );
@@ -81,19 +93,11 @@ const getItemColor = (color: Color) => ({
   borderColor: color.background,
 });
 
-const getStyles = (Colors: ThemeColors) =>
+const getStyles = (Colors: ThemeColors, readonly: boolean) =>
   StyleSheet.create({
     container: {
-      width: Dimensions.get('window').width * 0.35,
-      height: 50,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       paddingLeft: 10,
       paddingRight: 15,
-      paddingVertical: 5,
-      marginVertical: 4,
-      marginRight: 18,
     },
     text: {
       textAlign: 'center',
@@ -103,13 +107,11 @@ const getStyles = (Colors: ThemeColors) =>
       flexDirection: 'row',
       marginLeft: -5,
       overflow: 'hidden',
-      width: '90%',
+      width: readonly ? '100%' : '90%',
     },
     cardItem: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
-      alignContent: 'center',
       borderWidth: 2,
       borderRadius: 14,
       elevation: 3,
@@ -120,7 +122,6 @@ const getStyles = (Colors: ThemeColors) =>
       paddingHorizontal: 7,
       height: 22,
       maxWidth: 110,
-      width: null,
     },
   });
 
