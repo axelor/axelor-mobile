@@ -34,7 +34,15 @@ export {
   updateContact as updateContactApi,
 } from './contact-api';
 export * from './crm-config-api';
-export * from './event-api';
+export {
+  contactEventById,
+  createEvent as createEventApi,
+  getEvent,
+  getPlannedEvent,
+  partnerEventById,
+  searchEventsByIds,
+  updateEvent as updateEventApi,
+} from './event-api';
 export * from './function-api';
 export {
   createLead as createLeadApi,
@@ -48,12 +56,18 @@ export {
   createOpportunity as createOpportunityApi,
   getOpportunity as getOpportunityApi,
   getOpportunityStatus,
+  getPartnerOpportunities as getPartnerOpportunitiesApi,
   searchOpportunities,
   updateOpportunity as updateOpportunityApi,
   updateOpportunityScoring,
   updateOpportunityStatus as updateOpportunityStatusApi,
 } from './opportunities-api';
-export * from './partner-api';
+export {
+  getPartner,
+  searchClientAndProspect,
+  searchLinkedPartnersOfContact as searchLinkedPartnersOfContactApi,
+  searchPartner as searchPartnerApi,
+} from './partner-api';
 export {
   getProspect,
   getProspectStatus,

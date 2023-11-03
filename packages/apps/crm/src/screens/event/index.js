@@ -44,3 +44,4 @@ export default {
 
 export {EventPlanningScreen};
 export {EventDetailsScreen};
+export {EventFormScreen};
