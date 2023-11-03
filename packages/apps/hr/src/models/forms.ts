@@ -20,6 +20,8 @@ import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
   BillableSwitchCard,
   CurrencySearchBar,
+  DistanceIncrement,
+  CityFormInput,
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
@@ -28,6 +30,11 @@ import {
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
+import {
+  needUpdateDistance,
+  updateFromCity,
+  updateToCity,
+} from '../features/distanceSlice';
 
 export const hr_formsRegister: FormConfigs = {
   hr_Expenseline: {
@@ -120,25 +127,45 @@ export const hr_formsRegister: FormConfigs = {
       fromCity: {
         titleKey: 'Hr_FromCity',
         type: 'string',
-        widget: 'default',
+        widget: 'custom',
+        customComponent: CityFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        dependsOn: {
+          toCity: ({newValue, dispatch, objectState}) => {
+            dispatch(updateToCity(newValue));
+            dispatch(needUpdateDistance(true));
+            return objectState?.fromCity;
+          },
+        },
+        options: {
+          isFromCity: true,
+        },
       },
       toCity: {
         titleKey: 'Hr_ToCity',
         type: 'string',
-        widget: 'default',
+        widget: 'custom',
+        customComponent: CityFormInput,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
         requiredIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.kilometric,
+        dependsOn: {
+          fromCity: ({newValue, dispatch, objectState}) => {
+            dispatch(updateFromCity(newValue));
+            dispatch(needUpdateDistance(true));
+            return objectState?.toCity;
+          },
+        },
       },
       distance: {
         titleKey: 'Hr_Distance',
         type: 'number',
-        widget: 'increment',
+        widget: 'custom',
+        customComponent: DistanceIncrement,
         hideIf: ({objectState}) =>
           objectState.manageMode === ExpenseLine.modes.general,
       },
