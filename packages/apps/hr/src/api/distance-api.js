@@ -16,11 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {currencyReducer as currency} from './currencySlice';
-export {distanceReducer as distance} from './distanceSlice';
-export {expenseConfigReducer as expenseConfig} from './expenseConfigSlice';
-export {expenseLineReducer as expenseLine} from './expenseLineSlice';
-export {expenseReducer as expense} from './expenseSlice';
-export {expenseTypeReducer as expenseType} from './expenseTypeSlice';
-export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricAllowParamSlice';
-export {projectReducer as project} from './projectSlice';
+import {axiosApiProvider} from '@axelor/aos-mobile-core';
+
+export async function getDistance({fromCity, toCity}) {
+  if (fromCity != null && toCity != null) {
+    return axiosApiProvider
+      .post({
+        url: 'ws/aos/kilometric/distance',
+        data: {fromCity, toCity},
+      })
+      .catch(e => {
+        if (e?.response?.data?.codeStatus === 500) {
+          return {
+            data: {
+              object: {error: true, message: e.response.data.messageStatus},
+            },
+          };
+        } else {
+          throw e;
+        }
+      });
+  }
+}
