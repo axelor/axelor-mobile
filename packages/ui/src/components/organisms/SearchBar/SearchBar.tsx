@@ -17,17 +17,20 @@
  */
 
 import React, {LegacyRef, useMemo} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Icon} from '../../atoms';
-import {IconInput} from '../../molecules';
+import {StyleSheet, TextInput, View} from 'react-native';
+import {checkNullString, getCommonStyles} from '../../../utils';
+import {ThemeColors, useThemeColor} from '../../../theme';
+import {Icon, Text} from '../../atoms';
+import {FormInput, IconInput} from '../../molecules';
 
 interface SearchBarProps {
+  title?: string;
   style?: any;
   inputRef?: LegacyRef<TextInput>;
   valueTxt: string;
   placeholder: string;
+  required?: boolean;
+  readonly?: boolean;
   onClearPress: () => void;
   onChangeTxt: (any) => void;
   onSelection?: () => void;
@@ -39,10 +42,13 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({
+  title,
   style,
   inputRef,
   valueTxt,
   placeholder,
+  required = false,
+  readonly,
   onClearPress,
   onChangeTxt,
   onSelection = () => {},
@@ -53,63 +59,107 @@ const SearchBar = ({
   disableSearchPress = false,
 }: SearchBarProps) => {
   const Colors = useThemeColor();
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
+  const _required = useMemo(
+    () => required && checkNullString(valueTxt),
+    [required, valueTxt],
+  );
+
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
+
+  if (readonly) {
+    return (
+      <FormInput
+        style={[styles.container, style]}
+        title={title}
+        defaultValue={valueTxt}
+        readOnly
+      />
+    );
+  }
 
   return (
-    <IconInput
-      inputRef={inputRef}
-      style={[
-        commonStyles.filter,
-        commonStyles.filterAlign,
-        commonStyles.filterSize,
-        style,
-      ]}
-      value={valueTxt}
-      placeholder={placeholder}
-      onChange={onChangeTxt}
-      onSelection={onSelection}
-      onEndFocus={onEndFocus}
-      rightIconsList={[
-        <Icon
-          style={styles.action}
-          name="times"
-          color={Colors.secondaryColor_dark.background}
-          size={20}
-          touchable={true}
-          visible={valueTxt != null && valueTxt !== ''}
-          onPress={onClearPress}
-        />,
-        <Icon
-          style={styles.action}
-          name="search"
-          color={
-            disableSearchPress
-              ? Colors.secondaryColor.background
-              : Colors.secondaryColor_dark.background
-          }
-          onPress={onSearchPress}
-          touchable={!disableSearchPress}
-          size={20}
-        />,
-        <Icon
-          style={styles.action}
-          name="qrcode"
-          FontAwesome5={false}
-          color={scanIconColor}
-          size={20}
-          touchable={true}
-          visible={scanIconColor != null}
-          onPress={onScanPress}
-        />,
-      ]}
-    />
+    <View style={[styles.container, style]}>
+      {title && <Text style={styles.title}>{title}</Text>}
+      <IconInput
+        inputRef={inputRef}
+        style={[
+          commonStyles.filter,
+          commonStyles.filterAlign,
+          commonStyles.filterSize,
+          styles.content,
+        ]}
+        value={valueTxt}
+        placeholder={placeholder}
+        onChange={onChangeTxt}
+        onSelection={onSelection}
+        onEndFocus={onEndFocus}
+        rightIconsList={[
+          <Icon
+            style={styles.action}
+            name="times"
+            color={Colors.secondaryColor_dark.background}
+            size={20}
+            touchable={true}
+            visible={!checkNullString(valueTxt)}
+            onPress={onClearPress}
+          />,
+          <Icon
+            style={styles.action}
+            name="search"
+            color={
+              disableSearchPress
+                ? Colors.secondaryColor.background
+                : Colors.secondaryColor_dark.background
+            }
+            onPress={onSearchPress}
+            touchable={!disableSearchPress}
+            size={20}
+          />,
+          <Icon
+            style={styles.action}
+            name="qrcode"
+            FontAwesome5={false}
+            color={scanIconColor}
+            size={20}
+            touchable={true}
+            visible={!checkNullString(scanIconColor)}
+            onPress={onScanPress}
+          />,
+        ]}
+      />
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  action: {
-    marginLeft: 12,
-  },
-});
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
+  StyleSheet.create({
+    action: {
+      marginLeft: 12,
+    },
+    container: {
+      width: '100%',
+    },
+    content: {
+      width: '100%',
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
+      borderWidth: 1,
+      marginHorizontal: 0,
+      minHeight: 40,
+    },
+    title: {
+      marginLeft: 10,
+    },
+  });
 
 export default SearchBar;

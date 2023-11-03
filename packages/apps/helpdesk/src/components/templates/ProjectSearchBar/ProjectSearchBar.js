@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 import {displayItemFullname} from '../../../utils/displayers';
 
@@ -33,19 +32,15 @@ const ProjectSearchBar = ({
   oneFilter = false,
   isFocus = false,
   style,
-  styleTxt,
-  showTitle = true,
   required = false,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
     state => state.project,
   );
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -55,43 +50,26 @@ const ProjectSearchBar = ({
   );
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
-      <AutoCompleteSearch
-        style={[
-          defaultValue == null && required ? styles.requiredBorder : null,
-        ]}
-        objectList={projectList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchProjectAPI}
-        displayValue={displayItemFullname}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={loadingProject}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        navigate={navigate}
-        oneFilter={oneFilter}
-        isFocus={isFocus}
-      />
-    </View>
+    <AutoCompleteSearch
+      title={I18n.t(titleKey)}
+      objectList={projectList}
+      value={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchProjectAPI}
+      displayValue={displayItemFullname}
+      placeholder={I18n.t(placeholderKey)}
+      showDetailsPopup={showDetailsPopup}
+      loadingList={loadingProject}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      navigate={navigate}
+      oneFilter={oneFilter}
+      isFocus={isFocus}
+      style={style}
+    />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 24,
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-  });
 
 export default ProjectSearchBar;

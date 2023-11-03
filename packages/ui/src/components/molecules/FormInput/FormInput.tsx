@@ -132,7 +132,7 @@ const FormInput = ({
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     container: {
-      width: '100%',
+      width: '90%',
       minHeight: 62,
     },
     content: {

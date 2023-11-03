@@ -124,33 +124,29 @@ const TicketFormScreen = ({navigation, route}) => {
             required={true}
           />
           <ProgressFormInput
+            style={styles.input}
             title={I18n.t('Helpdesk_Progress')}
             defaultValue={_ticket?.progressSelect}
             onChange={value => handleTicketFieldChange(value, 'progressSelect')}
           />
           <ProjectSearchBar
+            style={styles.input}
             titleKey="Helpdesk_Project"
             placeholderKey="Helpdesk_Project"
             defaultValue={_ticket?.[PROJECT_KEY]}
             onChange={value => handleTicketFieldChange(value, PROJECT_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <CustomerSearchBar
             titleKey="Helpdesk_CustomPartner"
             placeholderKey="Helpdesk_CustomPartner"
             defaultValue={_ticket?.[CUSTOMER_KEY]}
             onChange={value => handleTicketFieldChange(value, CUSTOMER_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <ContactPartnerSearchBar
             titleKey={I18n.t('Helpdesk_ContactPartner')}
             placeholderKey={I18n.t('Helpdesk_ContactPartner')}
             defaultValue={_ticket?.[CONTACT_KEY]}
             onChange={value => handleTicketFieldChange(value, CONTACT_KEY)}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
             client={_ticket?.[CUSTOMER_KEY]}
           />
           <TicketTypeSearchBar
@@ -158,12 +154,9 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_Type"
             defaultValue={_ticket?.ticketType}
             onChange={value => handleTicketFieldChange(value, 'ticketType')}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <Picker
-            style={styles.picker}
-            styleTxt={styles.pickerTitle}
+            style={styles.input}
             title={I18n.t('Helpdesk_Priority')}
             onValueChange={value =>
               handleTicketFieldChange(value, 'prioritySelect')
@@ -213,8 +206,6 @@ const TicketFormScreen = ({navigation, route}) => {
             placeholderKey="Helpdesk_AssignedToUser"
             defaultValue={_ticket?.assignedToUser}
             onChange={value => handleTicketFieldChange(value, 'assignedToUser')}
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <UserSearchBar
             titleKey="Helpdesk_ResponsibleUser"
@@ -223,8 +214,6 @@ const TicketFormScreen = ({navigation, route}) => {
             onChange={value =>
               handleTicketFieldChange(value, 'responsibleUser')
             }
-            style={styles.picker}
-            styleTxt={styles.marginTitle}
           />
           <FormHtmlInput
             title={I18n.t('Base_Description')}
@@ -252,20 +241,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     height: null,
-  },
-  picker: {
-    width: '100%',
-    marginLeft: 5,
-  },
-  pickerTitle: {
-    marginLeft: 5,
-  },
-  marginTitle: {
-    marginLeft: 28,
-  },
-  search: {
-    width: '100%',
-    marginLeft: 0,
   },
   input: {
     width: '90%',

@@ -17,6 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   Picker,
@@ -152,7 +153,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <ProductCardInfo
           onPress={handleShowProduct}
           picture={product?.picture}
@@ -187,12 +188,17 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           listItems={StockMove.getConformitySelection(I18n)}
           labelField="name"
           valueField="id"
-          disabled={supplierArrival?.statusSelect === StockMove.status.Realized}
-          disabledValue={conformity?.name}
+          readonly={supplierArrival?.statusSelect === StockMove.status.Realized}
         />
       </ScrollView>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default SupplierArrivalLineDetailScreen;

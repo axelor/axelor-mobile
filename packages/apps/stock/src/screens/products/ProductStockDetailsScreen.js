@@ -89,7 +89,7 @@ const ProductStockDetailsScreen = ({route}) => {
 
   return (
     <Screen>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <ProductStockHeader
           product={product}
           companyId={companyId}
@@ -98,7 +98,6 @@ const ProductStockDetailsScreen = ({route}) => {
         <View style={styles.lineStyle} />
         {baseConfig?.enableMultiCompany && canModifyCompany && (
           <Picker
-            styles={styles.picker}
             title={I18n.t('User_Company')}
             defaultValue={companyId}
             listItems={companyList}
@@ -132,7 +131,7 @@ const ProductStockDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  picker: {
+  container: {
     alignItems: 'center',
   },
   lineStyle: {

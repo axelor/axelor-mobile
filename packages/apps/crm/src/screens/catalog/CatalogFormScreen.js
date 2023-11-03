@@ -72,8 +72,7 @@ const CatalogFormScreen = ({navigation}) => {
           required={true}
         />
         <Picker
-          style={styles.picker}
-          styleTxt={styles.pickerTitle}
+          style={styles.input}
           title={I18n.t('Crm_Catalog_Type')}
           defaultValue={type}
           listItems={catalogTypeList}
@@ -120,13 +119,6 @@ const CatalogFormScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-  },
-  picker: {
-    width: '100%',
-    marginLeft: 5,
-  },
-  pickerTitle: {
-    marginLeft: 5,
   },
   button_container: {
     marginVertical: '1%',

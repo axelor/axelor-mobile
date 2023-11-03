@@ -141,12 +141,12 @@ const UserScreen = ({children}) => {
             <Picker
               title={I18n.t('User_ActiveCompany')}
               listItems={companyList}
+              defaultValue={user?.activeCompany}
               labelField="name"
               valueField="id"
               onValueChange={updateActiveCompany}
               isValueItem={true}
-              disabled={!canModifyCompany}
-              disabledValue={user?.activeCompany?.name}
+              readonly={!canModifyCompany}
             />
           )}
           {children}
@@ -180,11 +180,11 @@ const UserScreen = ({children}) => {
 
 const getStyles = Colors =>
   StyleSheet.create({
-    container: {
-      justifyContent: 'center',
-    },
     alignContainer: {
       alignItems: 'center',
+    },
+    container: {
+      justifyContent: 'center',
     },
     imageIcon: {
       backgroundColor: Colors.backgroundColor,

@@ -17,17 +17,15 @@
  */
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {Icon, Text} from '../../atoms';
-import {LabelText, SelectionContainer, RightIconButton} from '../../molecules';
-import {getFromList} from '../../../utils/list';
+import {Platform, StyleSheet, View} from 'react-native';
+import {ThemeColors, useThemeColor} from '../../../theme';
+import {getCommonStyles, getFromList} from '../../../utils';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {ThemeColors} from '../../../theme';
+import {Icon, Text} from '../../atoms';
+import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
 
 const ITEM_HEIGHT = 40;
 
@@ -39,13 +37,12 @@ interface PickerProps {
   onValueChange: (any) => void;
   defaultValue?: string;
   listItems: any[];
+  displayValue?: (item: any) => string;
   labelField: string;
   valueField: string;
   emptyValue?: boolean;
   isValueItem?: boolean;
-  disabled?: boolean;
-  disabledValue?: string;
-  iconName?: string;
+  readonly?: boolean;
   required?: boolean;
   isScrollViewContainer?: boolean;
 }
@@ -58,30 +55,30 @@ const Picker = ({
   onValueChange,
   defaultValue = '',
   listItems,
+  displayValue,
   labelField,
   valueField,
   emptyValue = true,
   isValueItem = false,
-  disabled = false,
-  disabledValue = null,
-  iconName = null,
+  readonly = false,
   required = false,
   isScrollViewContainer = false,
 }: PickerProps) => {
-  const [pickerIsOpen, setPickerIsOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-
-  const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({
-    wrapperRef,
-    visible: pickerIsOpen,
-  });
   const Colors = useThemeColor();
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(
     !isValueItem
       ? getFromList(listItems, valueField, defaultValue)
       : defaultValue,
   );
+
+  const wrapperRef = useRef(null);
+  const clickOutside = useClickOutside({
+    wrapperRef,
+    visible: isOpen,
+  });
 
   useEffect(() => {
     setSelectedItem(
@@ -92,21 +89,19 @@ const Picker = ({
   }, [defaultValue, isValueItem, listItems, valueField]);
 
   useEffect(() => {
-    if (clickOutside === OUTSIDE_INDICATOR && pickerIsOpen) {
-      setPickerIsOpen(false);
+    if (clickOutside === OUTSIDE_INDICATOR && isOpen) {
+      setIsOpen(false);
       setIsFocused(false);
     }
-  }, [clickOutside, pickerIsOpen]);
-
-  const toggleValue = current => !current;
+  }, [clickOutside, isOpen]);
 
   const togglePicker = () => {
-    setPickerIsOpen(toggleValue);
-    setIsFocused(toggleValue);
+    setIsOpen(!isOpen);
+    setIsFocused(!isFocused);
   };
 
   const handleValueChange = itemValue => {
-    setPickerIsOpen(false);
+    setIsOpen(false);
     setIsFocused(false);
     setSelectedItem(itemValue);
     itemValue
@@ -118,22 +113,22 @@ const Picker = ({
       : onValueChange(itemValue);
   };
 
-  const _required = useMemo(
-    () => required && selectedItem == null,
-    [required, selectedItem],
-  );
-
   const marginBottom = useMemo(() => {
     const listLength = listItems?.length ?? 0;
 
-    if (isScrollViewContainer && pickerIsOpen) {
+    if (isScrollViewContainer && isOpen) {
       return emptyValue
         ? listLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
         : listLength * ITEM_HEIGHT + 5;
     }
 
     return null;
-  }, [emptyValue, isScrollViewContainer, listItems, pickerIsOpen]);
+  }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
+
+  const _required = useMemo(
+    () => required && selectedItem == null,
+    [required, selectedItem],
+  );
 
   const commonStyles = useMemo(
     () => getCommonStyles(Colors, _required),
@@ -141,76 +136,72 @@ const Picker = ({
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, _required, marginBottom, pickerIsOpen),
-    [Colors, _required, marginBottom, pickerIsOpen],
+    () => getStyles(Colors, _required, marginBottom, isOpen),
+    [Colors, _required, marginBottom, isOpen],
   );
+
+  const _displayValue = useMemo(() => {
+    if (selectedItem == null) {
+      return '';
+    }
+
+    return displayValue
+      ? displayValue(selectedItem)
+      : selectedItem?.[labelField];
+  }, [displayValue, labelField, selectedItem]);
+
+  if (readonly) {
+    return (
+      <FormInput
+        style={[styles.container, style]}
+        title={title}
+        defaultValue={_displayValue}
+        readOnly
+      />
+    );
+  }
 
   return (
     <View
       ref={wrapperRef}
-      style={[Platform.OS === 'ios' ? styles.containerZIndex : null, style]}>
-      {!disabled && (
-        <View style={styles.titleContainer}>
-          <Text style={styleTxt}>{title}</Text>
-        </View>
-      )}
-      {disabled ? (
-        <View
-          style={[
-            commonStyles.filter,
-            commonStyles.filterSize,
-            commonStyles.filterAlign,
-            styles.infosCard,
-            pickerStyle,
-          ]}>
-          <LabelText
-            value={
-              disabledValue == null || disabledValue === ''
-                ? '-'
-                : disabledValue
-            }
-            title={`${title} :`}
-            iconName={iconName}
+      style={[
+        styles.container,
+        Platform.OS === 'ios' ? styles.containerZIndex : null,
+        style,
+      ]}>
+      {title && <Text style={[styles.title, styleTxt]}>{title}</Text>}
+      <RightIconButton
+        onPress={togglePicker}
+        icon={
+          <Icon
+            name="chevron-down"
+            color={Colors.secondaryColor_dark.background}
           />
-        </View>
-      ) : (
-        <View
-          style={[
-            styles.pickerContainerStyle,
-            Platform.OS === 'ios' ? styles.pickerContainerZIndex : null,
-          ]}>
-          <RightIconButton
-            onPress={togglePicker}
-            icon={
-              <Icon
-                name="chevron-down"
-                color={Colors.secondaryColor_dark.background}
-              />
-            }
-            title={selectedItem ? selectedItem[labelField] : ''}
-            styleText={styles.styleTextButton}
-            style={[
-              commonStyles.filter,
-              commonStyles.filterSize,
-              commonStyles.filterAlign,
-              styles.rightIconButton,
-              isFocused && commonStyles.inputFocused,
-              pickerStyle,
-            ]}
-          />
-          {pickerIsOpen ? (
-            <SelectionContainer
-              style={pickerStyle}
-              emptyValue={emptyValue}
-              objectList={listItems}
-              keyField={valueField}
-              displayValue={item => item[labelField]}
-              handleSelect={handleValueChange}
-              isPicker={true}
-              selectedItem={[selectedItem]}
-            />
-          ) : null}
-        </View>
+        }
+        title={_displayValue}
+        styleText={styles.textPicker}
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          commonStyles.filterAlign,
+          isFocused && commonStyles.inputFocused,
+          styles.content,
+          pickerStyle,
+        ]}
+      />
+      {isOpen && (
+        <SelectionContainer
+          style={pickerStyle}
+          emptyValue={emptyValue}
+          objectList={listItems}
+          keyField={valueField}
+          displayValue={item =>
+            displayValue ? displayValue(item) : item[labelField]
+          }
+          handleSelect={handleValueChange}
+          isPicker={true}
+          selectedItem={[selectedItem]}
+        />
       )}
     </View>
   );
@@ -219,35 +210,31 @@ const Picker = ({
 const getStyles = (
   Colors: ThemeColors,
   _required: boolean,
-  marginBottom,
-  pickerIsOpen: boolean,
+  marginBottom: number,
+  isOpen: boolean,
 ) =>
   StyleSheet.create({
+    container: {
+      width: '90%',
+      marginBottom: marginBottom,
+    },
     containerZIndex: {
-      zIndex: pickerIsOpen ? 45 : 0,
+      zIndex: isOpen ? 45 : 0,
     },
-    titleContainer: {
-      marginHorizontal: 24,
-    },
-    rightIconButton: {
-      width: Dimensions.get('window').width * 0.9,
+    content: {
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
+      marginHorizontal: 0,
+      minHeight: 40,
     },
-    styleTextButton: {
+    textPicker: {
       left: '-20%',
     },
-    infosCard: {
-      justifyContent: 'flex-start',
-      width: Dimensions.get('window').width * 0.9,
-    },
-    pickerContainerStyle: {
-      marginBottom: marginBottom,
-    },
-    pickerContainerZIndex: {
-      zIndex: pickerIsOpen ? 50 : 0,
+    title: {
+      marginLeft: 10,
     },
   });
 

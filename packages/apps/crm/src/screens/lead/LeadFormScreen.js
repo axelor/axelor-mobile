@@ -81,8 +81,7 @@ const LeadFormScreen = ({route}) => {
           <View style={[styles.headerContainer, getZIndexStyles(35)]}>
             <View style={[styles.halfHeader, getZIndexStyles(40)]}>
               <Picker
-                pickerStyle={styles.civilityPicker}
-                styleTxt={styles.civilityTitle}
+                style={styles.civilityPicker}
                 title={I18n.t('Crm_Civility')}
                 onValueChange={value =>
                   handleLeadFieldChange(value, 'titleSelect')
@@ -136,6 +135,7 @@ const LeadFormScreen = ({route}) => {
             defaultValue={_lead.enterpriseName}
           />
           <Picker
+            style={styles.input}
             title={I18n.t('Crm_JobTitle')}
             onValueChange={value =>
               handleLeadFieldChange(
@@ -149,7 +149,6 @@ const LeadFormScreen = ({route}) => {
             labelField="name"
             valueField="id"
             defaultValue={_lead.jobTitleFunction?.id}
-            styleTxt={styles.pickerTitle}
           />
           <FormInput
             style={styles.input}
@@ -227,21 +226,8 @@ const styles = StyleSheet.create({
     width: '100%',
     marginLeft: 5,
   },
-  civilityTitle: {
-    marginLeft: -10,
-  },
-  pickerTitle: {
-    marginLeft: 5,
-  },
   input: {
     width: '90%',
-  },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
   },
 });
 

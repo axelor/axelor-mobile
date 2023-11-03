@@ -129,7 +129,7 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {(product || !loadingProductFromId) && (
           <ProductCardInfo
             name={product.name}
@@ -149,17 +149,15 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           isBigButton={true}
         />
         <Picker
-          style={styles.picker}
           title={I18n.t('Stock_Unit')}
           onValueChange={setUnit}
           defaultValue={unit?.id}
           listItems={unitList}
           labelField="name"
           valueField="id"
-          disabled={
+          readonly={
             manufOrder.statusSelect >= ManufacturingOrder.status.Finished
           }
-          disabledValue={unit?.name}
           required={true}
           isScrollViewContainer={true}
         />
@@ -169,8 +167,8 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  picker: {
-    marginBottom: '2%',
+  container: {
+    alignItems: 'center',
   },
 });
 

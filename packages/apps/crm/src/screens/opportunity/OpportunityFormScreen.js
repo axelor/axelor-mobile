@@ -180,6 +180,7 @@ const OpportunityFormScreen = ({route}) => {
             onChange={value => handleOpportunityFieldChange(value, 'amount')}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
+            style={styles.input}
           />
           {crmConfig?.isManageRecurrent && (
             <FormIncrementInput
@@ -201,7 +202,6 @@ const OpportunityFormScreen = ({route}) => {
             style={styles.input}
           />
           <Picker
-            styleTxt={styles.marginPicker}
             title={I18n.t('Crm_Opportunity_Status')}
             defaultValue={_opportunity.opportunityStatus?.id}
             listItems={opportunityStatusList}
@@ -213,6 +213,7 @@ const OpportunityFormScreen = ({route}) => {
             }
             isScrollViewContainer={true}
             required={true}
+            style={styles.input}
           />
         </View>
       </KeyboardAvoidingScrollView>
@@ -240,16 +241,6 @@ const styles = StyleSheet.create({
   },
   marginTitle: {
     marginLeft: 28,
-  },
-  marginPicker: {
-    marginLeft: 5,
-  },
-  button_container: {
-    marginVertical: '1%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
   },
   input: {
     width: '90%',

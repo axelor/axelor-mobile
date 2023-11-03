@@ -54,11 +54,10 @@ const InternalMoveLinePicker = ({
       listItems={unitList}
       labelField="name"
       valueField="id"
-      disabled={
+      readonly={
         status === StockMove.status.Realized ||
         status === StockMove.status.Canceled
       }
-      disabledValue={unit?.name}
       required={true}
     />
   );

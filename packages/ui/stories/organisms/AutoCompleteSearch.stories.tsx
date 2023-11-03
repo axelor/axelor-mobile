@@ -28,21 +28,77 @@ const objectList = [
   {id: 4, name: 'Lucy'},
   {id: 5, name: 'Mike'},
 ];
+
 const displayValue = item => item.name;
 
-storiesOf('ui/organisms/AutoCompleteSearch', module).add('default', () => (
-  <View style={styles.container}>
-    <AutoCompleteSearch
-      objectList={objectList}
-      displayValue={displayValue}
-      placeholder="Search"
-    />
-  </View>
-));
+storiesOf('ui/organisms/AutoCompleteSearch', module).add(
+  'Default',
+  args => {
+    return (
+      <View style={styles.container}>
+        <AutoCompleteSearch
+          objectList={objectList}
+          displayValue={displayValue}
+          style={styles.autoCompleteSearch}
+          {...args}
+        />
+      </View>
+    );
+  },
+  {
+    argTypes: {
+      title: {
+        type: 'string',
+        defaultValue: 'Select an item',
+        control: {type: 'text'},
+      },
+      value: {
+        type: 'string',
+        defaultValue: '',
+        control: {type: 'text'},
+      },
+      placeholder: {
+        type: 'string',
+        defaultValue: 'Search',
+        control: {type: 'text'},
+      },
+      required: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      readonly: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      oneFilter: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      selectLastItem: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      showDetailsPopup: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: '25%',
+  },
+  autoCompleteSearch: {
+    width: '50%',
   },
 });

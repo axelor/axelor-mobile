@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
 import {
   displayItemName,
   ScannerAutocompleteSearch,
@@ -25,7 +24,6 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {FormInput, Text} from '@axelor/aos-mobile-ui';
 import {
   filterSecondStockLocations,
   searchStockLocations,
@@ -33,7 +31,6 @@ import {
 
 const StockLocationSearchBar = ({
   style,
-  styleTxt,
   placeholderKey = 'Stock_StockLocation',
   defaultValue = null,
   onChange = () => {},
@@ -100,58 +97,32 @@ const StockLocationSearchBar = ({
       : fetchStockLocationsAPI(defaultArgs);
   }, [fetchStockLocationsAPI, fetchStockLocationsMultiFilterAPI, secondFilter]);
 
-  if (readOnly) {
-    return (
-      <FormInput
-        style={styles.readonlyCard}
-        title={I18n.t(placeholderKey)}
-        defaultValue={defaultValue ? displayItemName(defaultValue) : null}
-        readOnly={true}
-      />
-    );
-  }
-
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      {showTitle && (
-        <Text style={[styles.title, styleTxt]}>{I18n.t(titleKey)}</Text>
-      )}
-      <ScannerAutocompleteSearch
-        objectList={
-          secondFilter ? stockLocationListMultiFilter : stockLocationList
-        }
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={
-          secondFilter
-            ? fetchStockLocationsMultiFilterAPI
-            : fetchStockLocationsAPI
-        }
-        displayValue={displayItemName}
-        scanKeySearch={scanKey}
-        placeholder={I18n.t(placeholderKey)}
-        showDetailsPopup={showDetailsPopup}
-        loadingList={secondFilter ? loadingMultiFilter : loading}
-        moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
-        isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
-        isFocus={isFocus}
-        isScrollViewContainer={isScrollViewContainer}
-      />
-    </View>
+    <ScannerAutocompleteSearch
+      title={showTitle && I18n.t(titleKey)}
+      objectList={
+        secondFilter ? stockLocationListMultiFilter : stockLocationList
+      }
+      value={defaultValue}
+      readonly={readOnly}
+      onChangeValue={onChange}
+      fetchData={
+        secondFilter
+          ? fetchStockLocationsMultiFilterAPI
+          : fetchStockLocationsAPI
+      }
+      displayValue={displayItemName}
+      scanKeySearch={scanKey}
+      placeholder={I18n.t(placeholderKey)}
+      showDetailsPopup={showDetailsPopup}
+      loadingList={secondFilter ? loadingMultiFilter : loading}
+      moreLoading={secondFilter ? moreLoadingMultiFilter : moreLoading}
+      isListEnd={secondFilter ? isListEndMultiFilter : isListEnd}
+      isFocus={isFocus}
+      isScrollViewContainer={isScrollViewContainer}
+      style={style}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 41,
-  },
-  title: {
-    marginHorizontal: 24,
-  },
-  readonlyCard: {
-    width: '90%',
-    marginLeft: 18,
-  },
-});
 
 export default StockLocationSearchBar;

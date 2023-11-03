@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
@@ -164,7 +165,7 @@ const StockCorrectionCreationScreen = ({route}) => {
           />
         )
       }>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <StockLocationSearchBar
           defaultValue={location}
           scanKey={stockLocationScanKey}
@@ -203,5 +204,11 @@ const StockCorrectionCreationScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+});
 
 export default StockCorrectionCreationScreen;

@@ -21,7 +21,6 @@ import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {getFromList, Picker} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
 import {fetchStockCorrectionReasons} from '../../../../features/stockCorrectionReasonSlice';
-import {StyleSheet} from 'react-native';
 
 const StockCorrectionReasonPicker = ({
   status,
@@ -58,18 +57,10 @@ const StockCorrectionReasonPicker = ({
       labelField="name"
       valueField="id"
       required={true}
-      disabled={status === StockCorrection.status.Validated}
-      disabledValue={reason?.name}
+      readonly={status === StockCorrection.status.Validated}
       isScrollViewContainer={true}
-      style={styles.picker}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  picker: {
-    alignSelf: 'center',
-  },
-});
 
 export default StockCorrectionReasonPicker;

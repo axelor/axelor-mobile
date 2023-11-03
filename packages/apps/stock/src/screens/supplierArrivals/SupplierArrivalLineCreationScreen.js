@@ -221,10 +221,9 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                 listItems={StockMove.getConformitySelection(I18n)}
                 labelField="name"
                 valueField="id"
-                disabled={
+                readonly={
                   supplierArrival?.statusSelect === StockMove.status.Realized
                 }
-                disabledValue={conformity?.name}
               />
             </>
           ) : null}
@@ -235,11 +234,12 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  stockView: {
-    marginTop: '2%',
-  },
   scroll: {
     height: '100%',
+  },
+  stockView: {
+    alignItems: 'center',
+    marginTop: '2%',
   },
 });
 

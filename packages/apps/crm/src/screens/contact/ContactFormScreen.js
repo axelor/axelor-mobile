@@ -112,7 +112,7 @@ const ContactFormScreen = ({navigation, route}) => {
             Platform.OS === 'ios' ? styles.containerZIndex : null,
           ]}>
           <Picker
-            styleTxt={styles.marginPicker}
+            style={styles.input}
             title={I18n.t('Crm_Civility')}
             onValueChange={setCivility}
             listItems={civilityList}
@@ -190,12 +190,6 @@ const styles = StyleSheet.create({
   },
   containerZIndex: {
     zIndex: 40,
-  },
-  marginPicker: {
-    marginLeft: 5,
-  },
-  picker: {
-    width: '100%',
   },
   marginTitle: {
     marginLeft: 28,

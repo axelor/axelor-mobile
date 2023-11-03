@@ -19,68 +19,69 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
+import {action} from '@storybook/addon-actions';
 import {SearchBar} from '../../src/components/organisms';
 
-const defaultArgs = {
-  valueTxt: '',
-  placeholder: 'Search',
-  onClearPress: () => {},
-  onChangeTxt: () => {},
-  onSelection: () => {},
-  onEndFocus: () => {},
-  isFocus: false,
-  onScanPress: () => {},
-  scanIconColor: null,
-};
-
-storiesOf('ui/organisms/SearchBar', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'Default',
-    args => {
-      const props = {...defaultArgs, ...args};
-      return <SearchBar {...props} />;
-    },
-    {
-      argTypes: {
-        valueTxt: {control: {type: 'text'}, defaultValue: defaultArgs.valueTxt},
-        placeholder: {
-          control: {type: 'text'},
-          defaultValue: defaultArgs.placeholder,
-        },
-        onClearPress: {action: 'onClearPress'},
-        onChangeTxt: {action: 'onPress'},
-        onSelection: {
-          action: 'onSelection',
-        },
-        onEndFocus: {
-          action: 'onEndFocus',
-        },
-        isFocus: {
-          control: {
-            type: 'boolean',
-          },
-          defaultValue: false,
-        },
-        onScanPress: {
-          action: 'onScanPress',
-        },
-        scanIconColor: {
-          control: {
-            type: 'color',
-          },
-        },
+storiesOf('ui/organisms/SearchBar', module).add(
+  'Default',
+  args => {
+    return (
+      <View style={styles.container}>
+        <SearchBar
+          valueTxt={''}
+          placeholder={'Search'}
+          onClearPress={action('onClearPress')}
+          onChangeTxt={action('onChangeTxt')}
+          style={styles.searchBar}
+          {...args}
+        />
+      </View>
+    );
+  },
+  {
+    argTypes: {
+      title: {
+        type: 'string',
+        defaultValue: 'Select an item',
+        control: {type: 'text'},
+      },
+      valueTxt: {
+        type: 'string',
+        defaultValue: '',
+        control: {type: 'text'},
+      },
+      placeholder: {
+        type: 'string',
+        defaultValue: 'Search',
+        control: {type: 'text'},
+      },
+      required: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      readonly: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      disableSearchPress: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
       },
     },
-  );
+  },
+);
 
 const styles = StyleSheet.create({
-  decorator: {
+  container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
+    marginLeft: '25%',
+  },
+  searchBar: {
     width: '50%',
-    marginLeft: '20%',
   },
 });

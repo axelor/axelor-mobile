@@ -105,6 +105,7 @@ const SearchDetailsPopUp = ({
         placeholder={placeholder}
         oneFilter={true}
         showDetailsPopup={false}
+        style={styles.input}
       />
       <ScrollList
         style={styles.scroll}
@@ -146,6 +147,9 @@ const styles = StyleSheet.create({
   closeIcon: {
     alignSelf: 'flex-end',
     marginRight: 5,
+  },
+  input: {
+    width: '90%',
   },
   scroll: {
     flexGrow: 0,
