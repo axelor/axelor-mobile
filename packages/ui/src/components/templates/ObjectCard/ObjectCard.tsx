@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useCallback} from 'react';
+import React, {ReactElement, useCallback, useMemo} from 'react';
 import {
   ImageResizeMode,
   ImageSourcePropType,
@@ -82,6 +82,7 @@ interface ImageElement {
 
 interface ObjectCardProps {
   style?: any;
+  descriptionFlex?: number;
   touchable?: boolean;
   onPress?: () => void;
   showArrow?: boolean;
@@ -112,6 +113,7 @@ interface ObjectCardProps {
 
 const ObjectCard = ({
   style,
+  descriptionFlex = 3,
   touchable = true,
   onPress,
   showArrow = true,
@@ -123,6 +125,10 @@ const ObjectCard = ({
   image,
 }: ObjectCardProps) => {
   const Colors = useThemeColor();
+
+  const styles = useMemo(() => {
+    return getStyles(descriptionFlex);
+  }, [descriptionFlex]);
 
   const initBadgeItems = useCallback(
     (list: BadgeElement[]): BadgeElement[] => filterList(list),
@@ -297,61 +303,62 @@ const ObjectCard = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginHorizontal: 12,
-    marginVertical: 4,
-    paddingHorizontal: 15,
-    paddingRight: 15,
-    paddingVertical: 10,
-  },
-  horizontalBadgesContainer: {
-    flexDirection: 'row',
-    width: '100%',
-  },
-  badgesFixedOnRightSide: {
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexDirection: 'row',
-    width: '100%',
-  },
-  descriptionContainer: {
-    flexDirection: 'column',
-    width: '75%',
-    flex: 3,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  imageSize: {
-    height: 60,
-    width: 60,
-  },
-  imageStyle: {
-    marginRight: 10,
-    flex: 1,
-  },
-  textContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flex: 3,
-  },
-  verticalBadgesContainer: {
-    marginLeft: 5,
-    flexDirection: 'column',
-    height: '100%',
-    flex: 1,
-  },
-  arrowIcon: {marginLeft: 25},
-  text: {
-    width: '100%',
-  },
-});
+const getStyles = (descriptionFlex: number) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      marginHorizontal: 12,
+      marginVertical: 4,
+      paddingHorizontal: 15,
+      paddingRight: 15,
+      paddingVertical: 10,
+    },
+    horizontalBadgesContainer: {
+      flexDirection: 'row',
+      width: '100%',
+    },
+    badgesFixedOnRightSide: {
+      justifyContent: 'flex-end',
+    },
+    content: {
+      flexDirection: 'row',
+      width: '100%',
+    },
+    descriptionContainer: {
+      flexDirection: 'column',
+      width: '75%',
+      flex: descriptionFlex,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    imageSize: {
+      height: 60,
+      width: 60,
+    },
+    imageStyle: {
+      marginRight: 10,
+      flex: 1,
+    },
+    textContainer: {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      flex: 3,
+    },
+    verticalBadgesContainer: {
+      marginLeft: 5,
+      flexDirection: 'column',
+      height: '100%',
+      flex: 1,
+    },
+    arrowIcon: {marginLeft: 25},
+    text: {
+      width: '100%',
+    },
+  });
 
 export default ObjectCard;
