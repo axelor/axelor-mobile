@@ -19,7 +19,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
-import {Button, lightTheme, Text} from '@axelor/aos-mobile-ui';
+import {Button, Icon, lightTheme, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('Button Component', () => {
@@ -27,6 +27,7 @@ describe('Button Component', () => {
   const props = {
     title: 'Cick here',
     onPress: jest.fn(),
+    width: 45,
   };
 
   it('renders without crashing', () => {
@@ -49,14 +50,76 @@ describe('Button Component', () => {
     const wrapper = shallow(<Button {...props} style={style} />);
 
     expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
-      backgroundColor: Colors.primaryColor.background,
+      borderColor: Colors.primaryColor.background,
+      backgroundColor: Colors.primaryColor.background_light,
+      width: props.width,
       ...style,
     });
+
+    expect(wrapper.find(Text).prop('textColor')).toBe(
+      Colors.primaryColor.foreground,
+    );
   });
 
-  it('renders with disabled state', () => {
+  it('renders with correct color', () => {
+    const wrapper = shallow(
+      <Button {...props} color={Colors.secondaryColor_dark} />,
+    );
+
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      borderColor: Colors.secondaryColor_dark.background,
+      backgroundColor: Colors.secondaryColor_dark.background_light,
+    });
+
+    expect(wrapper.find(Text).prop('textColor')).toBe(
+      Colors.secondaryColor_dark.foreground,
+    );
+  });
+
+  it('renders neutral background when asked', () => {
+    const wrapper = shallow(<Button {...props} isNeutralBackground />);
+
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
+      borderColor: Colors.primaryColor.background,
+      backgroundColor: Colors.backgroundColor,
+    });
+
+    expect(wrapper.find(Text).prop('textColor')).toBe(Colors.text);
+  });
+
+  it('renders Icon when provided', () => {
+    const iconProps = {
+      iconName: 'check',
+      iconSize: 24,
+      styleIcon: {marginTop: 60},
+    };
+    const wrapper = shallow(<Button {...props} {...iconProps} />);
+
+    expect(wrapper.find(Icon).prop('name')).toBe(iconProps.iconName);
+    expect(wrapper.find(Icon).prop('size')).toBe(iconProps.iconSize);
+    expect(wrapper.find(Icon).prop('color')).toBe(
+      Colors.primaryColor.foreground,
+    );
+    expect(getGlobalStyles(wrapper.find(Icon))).toMatchObject(
+      iconProps.styleIcon,
+    );
+  });
+
+  it('renders with disabled state when no disabledPress', () => {
     const wrapper = shallow(<Button {...props} disabled={true} />);
 
     expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
+  });
+
+  it('renders with no disabled state when it has disabledPress', () => {
+    const onDisabledPress = jest.fn();
+    const wrapper = shallow(
+      <Button {...props} disabled={true} onDisabledPress={onDisabledPress} />,
+    );
+
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
+    expect(wrapper.find(TouchableOpacity).prop('onPress')).toBe(
+      onDisabledPress,
+    );
   });
 });

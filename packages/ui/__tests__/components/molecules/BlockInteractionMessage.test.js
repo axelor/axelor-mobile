@@ -22,7 +22,6 @@ import {
   BlockInteractionMessage,
   Button,
   Card,
-  IconButton,
   WarningCard,
 } from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
@@ -70,15 +69,15 @@ describe('BlockInteractionMessage Component', () => {
       backgroundColor: 'blue',
     });
 
-    const buttons = wrapper.find(IconButton);
-    expect(buttons).toHaveLength(1);
-    expect(buttons.at(0).prop('iconName')).toBe('check');
+    const buttons = wrapper.find(Button);
+    expect(buttons).toHaveLength(2);
+
     expect(buttons.at(0).prop('title')).toBe('Action 1');
     expect(buttons.at(0).prop('color')).toBe('green');
+    expect(buttons.at(0).prop('iconName')).toBe('check');
 
-    const buttonsWithoutIcon = wrapper.find(Button);
-    expect(buttonsWithoutIcon).toHaveLength(1);
-    expect(buttonsWithoutIcon.at(0).prop('title')).toBe('Action 2');
-    expect(buttonsWithoutIcon.at(0).prop('color')).toBe('red');
+    expect(buttons.at(1).prop('title')).toBe('Action 2');
+    expect(buttons.at(1).prop('color')).toBe('red');
+    expect(buttons.at(1).prop('iconName')).toBe(undefined);
   });
 });
