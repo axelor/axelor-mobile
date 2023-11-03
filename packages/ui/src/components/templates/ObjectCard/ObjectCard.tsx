@@ -82,6 +82,7 @@ interface ImageElement {
 
 interface ObjectCardProps {
   style?: any;
+  leftContainerFlex?: number;
   touchable?: boolean;
   onPress?: () => void;
   showArrow?: boolean;
@@ -112,6 +113,7 @@ interface ObjectCardProps {
 
 const ObjectCard = ({
   style,
+  leftContainerFlex = 3,
   touchable = true,
   onPress,
   showArrow = true,
@@ -241,7 +243,8 @@ const ObjectCard = ({
           </View>
         )}
         <View style={styles.content}>
-          <View style={styles.descriptionContainer}>
+          <View
+            style={[styles.descriptionContainer, {flex: leftContainerFlex}]}>
             <View style={styles.row}>
               {image != null ? (
                 <Image
@@ -322,7 +325,6 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     flexDirection: 'column',
     width: '75%',
-    flex: 3,
   },
   row: {
     flexDirection: 'row',
