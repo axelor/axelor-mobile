@@ -18,8 +18,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {TouchableOpacity} from 'react-native';
-import {CircleButton, Icon, lightTheme} from '@axelor/aos-mobile-ui';
+import {Button, CircleButton, lightTheme} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('CircleButton Component', () => {
@@ -38,18 +37,15 @@ describe('CircleButton Component', () => {
   });
 
   it('renders correctly when not disabled', () => {
-    const wrapper = shallow(<CircleButton {...props} />);
-
-    expect(wrapper.find(Icon)).toHaveLength(1);
-    expect(wrapper.find(Icon).prop('name')).toBe(props.iconName);
-    expect(wrapper.find(Icon).prop('color')).toBe(
-      Colors.primaryColor.foreground,
+    const wrapper = shallow(
+      <CircleButton {...props} square={false} disabled={false} />,
     );
 
-    expect(wrapper.find(TouchableOpacity)).toHaveLength(1);
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
-      backgroundColor: Colors.primaryColor.background,
+    const button = wrapper.find(Button);
+    expect(button).toHaveLength(1);
+    expect(button.prop('iconName')).toBe(props.iconName);
+    expect(button.prop('disabled')).toBe(false);
+    expect(getGlobalStyles(button)).toMatchObject({
       borderRadius: props.size,
       width: props.size,
       height: props.size,
@@ -59,13 +55,31 @@ describe('CircleButton Component', () => {
   it('renders correctly when disabled', () => {
     const wrapper = shallow(<CircleButton {...props} disabled={true} />);
 
-    expect(wrapper.find(Icon).prop('color')).toEqual(
-      Colors.secondaryColor.foreground,
-    );
+    const button = wrapper.find(Button);
+    expect(button).toHaveLength(1);
+    expect(button.prop('iconName')).toBe(props.iconName);
+    expect(button.prop('disabled')).toBe(true);
+  });
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeTruthy();
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject({
-      backgroundColor: Colors.secondaryColor.background,
+  it('renders correctly when square configuration is active', () => {
+    const wrapper = shallow(<CircleButton {...props} />);
+
+    const button = wrapper.find(Button);
+    expect(button).toHaveLength(1);
+    expect(button.prop('iconName')).toBe(props.iconName);
+    expect(getGlobalStyles(button)).toMatchObject({
+      borderRadius: 13,
+      width: props.size,
+      height: props.size,
     });
+  });
+
+  it('renders correctly with the correct color when provided', () => {
+    const _color = Colors.infoColor;
+    const wrapper = shallow(<CircleButton {...props} color={_color} />);
+
+    const button = wrapper.find(Button);
+    expect(button).toHaveLength(1);
+    expect(button.prop('color')).toBe(_color);
   });
 });
