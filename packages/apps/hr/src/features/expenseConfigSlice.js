@@ -21,7 +21,7 @@ import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {fetchExpenseConfig as _fetchExpenseConfig} from '../api/expense-config-api';
 
 export const fetchExpenseConfig = createAsyncThunk(
-  'expenseAppConfig/fetchExpenseConfig',
+  'expenseConfig/fetchExpenseConfig',
   async function (data = {}, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchExpenseConfig,
@@ -38,8 +38,8 @@ const initialState = {
   expenseConfig: {},
 };
 
-const expenseAppConfigSlice = createSlice({
-  name: 'expenseAppConfig',
+const expenseConfigSlice = createSlice({
+  name: 'expenseConfig',
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchExpenseConfig.pending, state => {
@@ -52,4 +52,4 @@ const expenseAppConfigSlice = createSlice({
   },
 });
 
-export const expenseAppConfigReducer = expenseAppConfigSlice.reducer;
+export const expenseConfigReducer = expenseConfigSlice.reducer;

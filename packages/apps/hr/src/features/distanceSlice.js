@@ -29,7 +29,7 @@ export const getDistance = createAsyncThunk(
       action: 'Hr_SliceAction_GetDistance',
       getState,
       responseOptions: {isArrayResponse: false},
-      errorOptions: {errorTracing: false, showErrorToast: false},
+      errorOptions: {errorTracing: false, showErrorToast: true},
     });
   },
 );
@@ -39,6 +39,7 @@ const initialState = {
   distance: null,
   fromCity: null,
   toCity: null,
+  showCityError: false,
   needUpdateDistance: false,
 };
 
@@ -66,7 +67,7 @@ const distanceSlice = createSlice({
     builder.addCase(getDistance.fulfilled, (state, action) => {
       state.loadingDistance = false;
       if (action.payload?.error) {
-        state.distance = action.payload;
+        state.showCityError = true;
       } else if (!isEmpty(action.payload?.distance)) {
         state.distance = action.payload?.distance;
       } else {

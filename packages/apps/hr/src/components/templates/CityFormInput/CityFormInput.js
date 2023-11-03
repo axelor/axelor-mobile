@@ -17,9 +17,9 @@
  */
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {FormInput, InfoBubble, useThemeColor} from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {getDistance} from '../../../features/distanceSlice';
 
 const CityFormInputAux = ({
@@ -33,14 +33,15 @@ const CityFormInputAux = ({
 }) => {
   const dispatch = useDispatch();
   const Colors = useThemeColor();
+  const I18n = useTranslator();
   const timerRef = useRef(null);
 
   const [value, setValue] = useState(defaultValue);
 
-  const {toCity, fromCity, needUpdateDistance, distance} = useSelector(
+  const {toCity, fromCity, needUpdateDistance, showCityError} = useSelector(
     state => state.distance,
   );
-  const {expenseConfig} = useSelector(state => state.expenseAppConfig);
+  const {expenseConfig} = useSelector(state => state.expenseConfig);
 
   useEffect(() => {
     if (expenseConfig?.computeDistanceWithWebService && needUpdateDistance) {
@@ -82,14 +83,15 @@ const CityFormInputAux = ({
         required={required}
         onChange={handleChange}
       />
-      {distance?.error && (
+      {showCityError && (
         <InfoBubble
           style={styles.infoBubble}
-          iconName="exclamation-triangle"
+          textIndicationStyle={styles.infoIndicator}
+          iconName="exclamation"
           coloredBubble={false}
           badgeColor={Colors.errorColor}
-          indication={distance?.message}
-          position={'left'}
+          indication={I18n.t('Hr_CityNotFound')}
+          position="left"
         />
       )}
     </>
@@ -125,6 +127,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 6,
     right: 30,
+  },
+  infoIndicator: {
+    width: Dimensions.get('window').width * 0.8,
   },
 });
 

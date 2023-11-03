@@ -25,7 +25,7 @@ import {
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
-import {fetchExpenseConfig} from '../features/expenseAppConfigSlice';
+import {fetchExpenseConfig} from '../features/expenseConfigSlice';
 import {
   needUpdateDistance,
   resetDistance,

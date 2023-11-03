@@ -26,15 +26,15 @@ export async function getDistance({fromCity, toCity}) {
         data: {fromCity, toCity},
       })
       .catch(e => {
-        let message = '';
-        if (e.response) {
-          message = e?.response?.data?.messageStatus || e?.response?.statusText;
+        if (e?.response?.data?.codeStatus === 500) {
+          return {
+            data: {
+              object: {error: true, message: e.response.data.messageStatus},
+            },
+          };
+        } else {
+          throw e;
         }
-        return {
-          data: {
-            object: {error: true, message: message},
-          },
-        };
       });
   }
 }
