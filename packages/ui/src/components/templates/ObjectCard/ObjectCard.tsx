@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {ReactElement, useCallback, useMemo} from 'react';
+import React, {ReactElement, useCallback} from 'react';
 import {
   ImageResizeMode,
   ImageSourcePropType,
@@ -82,7 +82,7 @@ interface ImageElement {
 
 interface ObjectCardProps {
   style?: any;
-  descriptionFlex?: number;
+  leftContainerFlex?: number;
   touchable?: boolean;
   onPress?: () => void;
   showArrow?: boolean;
@@ -113,7 +113,7 @@ interface ObjectCardProps {
 
 const ObjectCard = ({
   style,
-  descriptionFlex = 3,
+  leftContainerFlex = 3,
   touchable = true,
   onPress,
   showArrow = true,
@@ -125,10 +125,6 @@ const ObjectCard = ({
   image,
 }: ObjectCardProps) => {
   const Colors = useThemeColor();
-
-  const styles = useMemo(() => {
-    return getStyles(descriptionFlex);
-  }, [descriptionFlex]);
 
   const initBadgeItems = useCallback(
     (list: BadgeElement[]): BadgeElement[] => filterList(list),
@@ -151,67 +147,61 @@ const ObjectCard = ({
     [],
   );
 
-  const renderTextElement = useCallback(
-    (item: TextElement) => {
-      if (item.customComponent != null) {
-        return React.cloneElement(item.customComponent, {
-          key: `${item.displayText} - ${item.order}`,
-        });
-      }
+  const renderTextElement = useCallback((item: TextElement) => {
+    if (item.customComponent != null) {
+      return React.cloneElement(item.customComponent, {
+        key: `${item.displayText} - ${item.order}`,
+      });
+    }
 
-      if (
-        (item.hideIfNull &&
-          checkNullString(item.displayText) &&
-          checkNullString(item.indicatorText)) ||
-        item.hideIf
-      ) {
-        return null;
-      }
+    if (
+      (item.hideIfNull &&
+        checkNullString(item.displayText) &&
+        checkNullString(item.indicatorText)) ||
+      item.hideIf
+    ) {
+      return null;
+    }
 
-      if (item.isTitle) {
-        return (
-          <Text
-            key={`${item.displayText} - ${item.order}`}
-            writingType="title"
-            style={[styles.text, item.style]}
-            numberOfLines={item.numberOfLines}>
-            {item.displayText}
-          </Text>
-        );
-      }
-
-      if (
-        checkNullString(item.iconName) &&
-        checkNullString(item.indicatorText)
-      ) {
-        return (
-          <Text
-            key={`${item.displayText} - ${item.order}`}
-            writingType="subtitle"
-            style={[styles.text, item.style]}
-            numberOfLines={item.numberOfLines}>
-            {item.displayText}
-          </Text>
-        );
-      }
-
+    if (item.isTitle) {
       return (
-        <LabelText
+        <Text
           key={`${item.displayText} - ${item.order}`}
+          writingType="title"
           style={[styles.text, item.style]}
-          textStyle={item.style}
-          iconName={item.iconName}
-          FontAwesome5={item.fontAwesome5}
-          size={item.size}
-          color={item.color}
-          title={item.indicatorText}
-          value={item.displayText}
-          onlyOneLine={item.numberOfLines === 1}
-        />
+          numberOfLines={item.numberOfLines}>
+          {item.displayText}
+        </Text>
       );
-    },
-    [styles.text],
-  );
+    }
+
+    if (checkNullString(item.iconName) && checkNullString(item.indicatorText)) {
+      return (
+        <Text
+          key={`${item.displayText} - ${item.order}`}
+          writingType="subtitle"
+          style={[styles.text, item.style]}
+          numberOfLines={item.numberOfLines}>
+          {item.displayText}
+        </Text>
+      );
+    }
+
+    return (
+      <LabelText
+        key={`${item.displayText} - ${item.order}`}
+        style={[styles.text, item.style]}
+        textStyle={item.style}
+        iconName={item.iconName}
+        FontAwesome5={item.fontAwesome5}
+        size={item.size}
+        color={item.color}
+        title={item.indicatorText}
+        value={item.displayText}
+        onlyOneLine={item.numberOfLines === 1}
+      />
+    );
+  }, []);
 
   const renderBadgeElement = useCallback((item: BadgeElement) => {
     if (item.customComponent != null) {
@@ -253,7 +243,8 @@ const ObjectCard = ({
           </View>
         )}
         <View style={styles.content}>
-          <View style={styles.descriptionContainer}>
+          <View
+            style={[styles.descriptionContainer, {flex: leftContainerFlex}]}>
             <View style={styles.row}>
               {image != null ? (
                 <Image
@@ -309,62 +300,60 @@ const ObjectCard = ({
   );
 };
 
-const getStyles = (descriptionFlex: number) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      marginHorizontal: 12,
-      marginVertical: 4,
-      paddingHorizontal: 15,
-      paddingRight: 15,
-      paddingVertical: 10,
-    },
-    horizontalBadgesContainer: {
-      flexDirection: 'row',
-      width: '100%',
-    },
-    badgesFixedOnRightSide: {
-      justifyContent: 'flex-end',
-    },
-    content: {
-      flexDirection: 'row',
-      width: '100%',
-    },
-    descriptionContainer: {
-      flexDirection: 'column',
-      width: '75%',
-      flex: descriptionFlex,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    imageSize: {
-      height: 60,
-      width: 60,
-    },
-    imageStyle: {
-      marginRight: 10,
-      flex: 1,
-    },
-    textContainer: {
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      flex: 3,
-    },
-    verticalBadgesContainer: {
-      marginLeft: 5,
-      flexDirection: 'column',
-      height: '100%',
-      flex: 1,
-    },
-    arrowIcon: {marginLeft: 25},
-    text: {
-      width: '100%',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginHorizontal: 12,
+    marginVertical: 4,
+    paddingHorizontal: 15,
+    paddingRight: 15,
+    paddingVertical: 10,
+  },
+  horizontalBadgesContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  badgesFixedOnRightSide: {
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  descriptionContainer: {
+    flexDirection: 'column',
+    width: '75%',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  imageSize: {
+    height: 60,
+    width: 60,
+  },
+  imageStyle: {
+    marginRight: 10,
+    flex: 1,
+  },
+  textContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flex: 3,
+  },
+  verticalBadgesContainer: {
+    marginLeft: 5,
+    flexDirection: 'column',
+    height: '100%',
+    flex: 1,
+  },
+  arrowIcon: {marginLeft: 25},
+  text: {
+    width: '100%',
+  },
+});
 
 export default ObjectCard;
