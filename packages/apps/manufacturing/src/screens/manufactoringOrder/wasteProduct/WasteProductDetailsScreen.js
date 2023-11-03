@@ -155,10 +155,9 @@ const WasteProductDetailsScreen = ({route, navigation}) => {
           listItems={unitList}
           labelField="name"
           valueField="id"
-          disabled={
+          readonly={
             manufOrder.statusSelect >= ManufacturingOrder.status.Finished
           }
-          disabledValue={unit?.name}
           required={true}
           isScrollViewContainer={true}
         />

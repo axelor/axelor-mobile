@@ -18,16 +18,14 @@
 
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {Icon, Text} from '../../atoms';
-import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
-import {getFromList} from '../../../utils/list';
+import {ThemeColors, useThemeColor} from '../../../theme';
+import {getCommonStyles, getFromList} from '../../../utils';
 import {
   OUTSIDE_INDICATOR,
   useClickOutside,
 } from '../../../hooks/use-click-outside';
-import {ThemeColors} from '../../../theme';
+import {Icon, Text} from '../../atoms';
+import {FormInput, SelectionContainer, RightIconButton} from '../../molecules';
 
 const ITEM_HEIGHT = 40;
 
@@ -39,13 +37,12 @@ interface PickerProps {
   onValueChange: (any) => void;
   defaultValue?: string;
   listItems: any[];
+  displayValue?: (item: any) => string;
   labelField: string;
   valueField: string;
   emptyValue?: boolean;
   isValueItem?: boolean;
-  disabled?: boolean;
   readonly?: boolean;
-  disabledValue?: string;
   required?: boolean;
   isScrollViewContainer?: boolean;
 }
@@ -58,13 +55,12 @@ const Picker = ({
   onValueChange,
   defaultValue = '',
   listItems,
+  displayValue,
   labelField,
   valueField,
   emptyValue = true,
   isValueItem = false,
-  disabled = false,
   readonly = false,
-  disabledValue = null,
   required = false,
   isScrollViewContainer = false,
 }: PickerProps) => {
@@ -129,8 +125,6 @@ const Picker = ({
     return null;
   }, [emptyValue, isScrollViewContainer, listItems, isOpen]);
 
-  const _readonly = useMemo(() => disabled || readonly, [disabled, readonly]);
-
   const _required = useMemo(
     () => required && selectedItem == null,
     [required, selectedItem],
@@ -146,12 +140,22 @@ const Picker = ({
     [Colors, _required, marginBottom, isOpen],
   );
 
-  if (_readonly) {
+  const _displayValue = useMemo(() => {
+    if (selectedItem == null) {
+      return '';
+    }
+
+    return displayValue
+      ? displayValue(selectedItem)
+      : selectedItem?.[labelField];
+  }, [displayValue, labelField, selectedItem]);
+
+  if (readonly) {
     return (
       <FormInput
         style={[styles.container, style]}
         title={title}
-        defaultValue={disabledValue || ''}
+        defaultValue={_displayValue}
         readOnly
       />
     );
@@ -174,7 +178,7 @@ const Picker = ({
             color={Colors.secondaryColor_dark.background}
           />
         }
-        title={selectedItem ? selectedItem[labelField] : ''}
+        title={_displayValue}
         styleText={styles.textPicker}
         style={[
           commonStyles.filter,
@@ -191,7 +195,9 @@ const Picker = ({
           emptyValue={emptyValue}
           objectList={listItems}
           keyField={valueField}
-          displayValue={item => item[labelField]}
+          displayValue={item =>
+            displayValue ? displayValue(item) : item[labelField]
+          }
           handleSelect={handleValueChange}
           isPicker={true}
           selectedItem={[selectedItem]}

@@ -221,10 +221,9 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                 listItems={StockMove.getConformitySelection(I18n)}
                 labelField="name"
                 valueField="id"
-                disabled={
+                readonly={
                   supplierArrival?.statusSelect === StockMove.status.Realized
                 }
-                disabledValue={conformity?.name}
               />
             </>
           ) : null}

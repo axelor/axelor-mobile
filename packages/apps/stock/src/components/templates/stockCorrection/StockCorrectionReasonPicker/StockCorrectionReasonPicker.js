@@ -57,8 +57,7 @@ const StockCorrectionReasonPicker = ({
       labelField="name"
       valueField="id"
       required={true}
-      disabled={status === StockCorrection.status.Validated}
-      disabledValue={reason?.name}
+      readonly={status === StockCorrection.status.Validated}
       isScrollViewContainer={true}
     />
   );

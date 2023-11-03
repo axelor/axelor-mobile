@@ -141,12 +141,12 @@ const UserScreen = ({children}) => {
             <Picker
               title={I18n.t('User_ActiveCompany')}
               listItems={companyList}
+              defaultValue={user?.activeCompany}
               labelField="name"
               valueField="id"
               onValueChange={updateActiveCompany}
               isValueItem={true}
               readonly={!canModifyCompany}
-              disabledValue={user?.activeCompany?.name}
             />
           )}
           {children}

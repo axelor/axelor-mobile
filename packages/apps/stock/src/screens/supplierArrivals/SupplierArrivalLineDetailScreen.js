@@ -188,8 +188,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           listItems={StockMove.getConformitySelection(I18n)}
           labelField="name"
           valueField="id"
-          disabled={supplierArrival?.statusSelect === StockMove.status.Realized}
-          disabledValue={conformity?.name}
+          readonly={supplierArrival?.statusSelect === StockMove.status.Realized}
         />
       </ScrollView>
     </Screen>

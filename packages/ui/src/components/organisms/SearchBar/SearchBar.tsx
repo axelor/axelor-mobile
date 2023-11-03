@@ -19,8 +19,7 @@
 import React, {LegacyRef, useMemo} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import {checkNullString, getCommonStyles} from '../../../utils';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 import {FormInput, IconInput} from '../../molecules';
 
