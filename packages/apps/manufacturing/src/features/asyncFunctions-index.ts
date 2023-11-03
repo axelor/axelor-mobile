@@ -34,7 +34,10 @@ export {
   addProdProductToManufOrder,
   addTrackingNumberToConsumedProduct,
   fetchConsumedProducts,
+  fetchConsumedProductWithId,
+  fetchProdProductWithId,
   fetchProducedProducts,
+  fetchProducedProductWithId,
   updateProdProductOfManufOrder,
 } from './prodProductSlice';
 export {fetchProductionFile} from './productionFileSlice';
