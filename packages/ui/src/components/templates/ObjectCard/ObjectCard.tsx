@@ -151,61 +151,67 @@ const ObjectCard = ({
     [],
   );
 
-  const renderTextElement = useCallback((item: TextElement) => {
-    if (item.customComponent != null) {
-      return React.cloneElement(item.customComponent, {
-        key: `${item.displayText} - ${item.order}`,
-      });
-    }
+  const renderTextElement = useCallback(
+    (item: TextElement) => {
+      if (item.customComponent != null) {
+        return React.cloneElement(item.customComponent, {
+          key: `${item.displayText} - ${item.order}`,
+        });
+      }
 
-    if (
-      (item.hideIfNull &&
-        checkNullString(item.displayText) &&
-        checkNullString(item.indicatorText)) ||
-      item.hideIf
-    ) {
-      return null;
-    }
+      if (
+        (item.hideIfNull &&
+          checkNullString(item.displayText) &&
+          checkNullString(item.indicatorText)) ||
+        item.hideIf
+      ) {
+        return null;
+      }
 
-    if (item.isTitle) {
+      if (item.isTitle) {
+        return (
+          <Text
+            key={`${item.displayText} - ${item.order}`}
+            writingType="title"
+            style={[styles.text, item.style]}
+            numberOfLines={item.numberOfLines}>
+            {item.displayText}
+          </Text>
+        );
+      }
+
+      if (
+        checkNullString(item.iconName) &&
+        checkNullString(item.indicatorText)
+      ) {
+        return (
+          <Text
+            key={`${item.displayText} - ${item.order}`}
+            writingType="subtitle"
+            style={[styles.text, item.style]}
+            numberOfLines={item.numberOfLines}>
+            {item.displayText}
+          </Text>
+        );
+      }
+
       return (
-        <Text
+        <LabelText
           key={`${item.displayText} - ${item.order}`}
-          writingType="title"
           style={[styles.text, item.style]}
-          numberOfLines={item.numberOfLines}>
-          {item.displayText}
-        </Text>
+          textStyle={item.style}
+          iconName={item.iconName}
+          FontAwesome5={item.fontAwesome5}
+          size={item.size}
+          color={item.color}
+          title={item.indicatorText}
+          value={item.displayText}
+          onlyOneLine={item.numberOfLines === 1}
+        />
       );
-    }
-
-    if (checkNullString(item.iconName) && checkNullString(item.indicatorText)) {
-      return (
-        <Text
-          key={`${item.displayText} - ${item.order}`}
-          writingType="subtitle"
-          style={[styles.text, item.style]}
-          numberOfLines={item.numberOfLines}>
-          {item.displayText}
-        </Text>
-      );
-    }
-
-    return (
-      <LabelText
-        key={`${item.displayText} - ${item.order}`}
-        style={[styles.text, item.style]}
-        textStyle={item.style}
-        iconName={item.iconName}
-        FontAwesome5={item.fontAwesome5}
-        size={item.size}
-        color={item.color}
-        title={item.indicatorText}
-        value={item.displayText}
-        onlyOneLine={item.numberOfLines === 1}
-      />
-    );
-  }, []);
+    },
+    [styles.text],
+  );
 
   const renderBadgeElement = useCallback((item: BadgeElement) => {
     if (item.customComponent != null) {
