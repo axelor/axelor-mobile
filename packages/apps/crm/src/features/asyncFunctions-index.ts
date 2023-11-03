@@ -27,11 +27,13 @@ export {
 } from './contactSlice';
 export {fetchCrmConfigApi} from './crmConfigSlice';
 export {
+  createEvent,
   fetchContactEventById,
   fetchEventById,
   fetchPartnerEventById,
   fetchPlannedEvent,
   searchEventById,
+  updateEvent,
 } from './eventSlice';
 export {fetchFunction} from './functionSlice';
 export {
@@ -47,11 +49,17 @@ export {
   fetchOpportunities,
   fetchOpportunityStatus,
   getOpportunity,
+  getPartnerOpportunities,
   updateOpportunity,
   updateOpportunityScore,
   updateOpportunityStatus,
 } from './opportunitySlice';
-export {fetchClientAndProspect, fetchPartner} from './partnerSlice';
+export {
+  fetchClientAndProspect,
+  fetchPartner,
+  searchLinkedPartnersOfContact,
+  searchPartner,
+} from './partnerSlice';
 export {
   fetchProspectById,
   fetchProspects,
