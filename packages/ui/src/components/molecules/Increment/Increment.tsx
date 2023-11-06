@@ -67,7 +67,7 @@ const Increment = ({
   const Colors = useThemeColor();
   const cutDecimalExcess = useDigitFormat();
 
-  const [valueQty, setValueQty] = useState<string>();
+  const [valueQty, setValueQty] = useState<string>(value);
 
   const handleDecimal = useCallback(
     (numberToFormat: string | number) => {
