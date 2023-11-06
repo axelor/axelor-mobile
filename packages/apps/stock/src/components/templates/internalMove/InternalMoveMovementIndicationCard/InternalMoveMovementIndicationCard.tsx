@@ -21,10 +21,15 @@ import {
   Icon,
   MovementIndicationCard,
   useThemeColor,
+  checkNullString,
 } from '@axelor/aos-mobile-ui';
 
 const InternalMoveMovementIndicationCard = ({from, to}) => {
   const Colors = useThemeColor();
+
+  if (checkNullString(from) && checkNullString(to)) {
+    return null;
+  }
 
   return (
     <MovementIndicationCard

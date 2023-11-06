@@ -121,7 +121,9 @@ const UserScreen = ({children}) => {
 
   return (
     <Screen style={styles.container}>
-      <ScrollView refresh={{loading: loadingUser, fetcher: fetchUser}}>
+      <ScrollView
+        refresh={{loading: loadingUser, fetcher: fetchUser}}
+        style={styles.scroll}>
         <View style={styles.alignContainer}>
           <ImageBubble
             style={styles.imageIcon}
@@ -153,6 +155,7 @@ const UserScreen = ({children}) => {
               onValueChange={updateActiveCompany}
               isValueItem={true}
               readonly={!canModifyCompany}
+              isScrollViewContainer={true}
             />
           )}
           {children}
@@ -165,6 +168,7 @@ const UserScreen = ({children}) => {
               valueField="code"
               onValueChange={updateLanguage}
               emptyValue={false}
+              isScrollViewContainer={true}
             />
           )}
           {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
@@ -176,6 +180,7 @@ const UserScreen = ({children}) => {
               valueField="key"
               onValueChange={handleChangeTheme}
               emptyValue={false}
+              isScrollViewContainer={true}
             />
           )}
         </View>
@@ -188,6 +193,9 @@ const getStyles = Colors =>
   StyleSheet.create({
     alignContainer: {
       alignItems: 'center',
+    },
+    scroll: {
+      height: null,
     },
     container: {
       justifyContent: 'center',

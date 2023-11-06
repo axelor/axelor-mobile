@@ -40,6 +40,7 @@ const ProductTrackingNumberSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -70,6 +71,7 @@ const ProductTrackingNumberSearchBar = ({
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };
