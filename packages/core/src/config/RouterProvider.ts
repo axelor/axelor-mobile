@@ -39,8 +39,12 @@ class RouterProvider {
       })
       .then(res => {
         if (
-          typeof res?.data?.data?.cause === 'string' &&
-          res.data.data.cause.includes('java.lang.ClassNotFoundException')
+          (typeof res?.data?.data?.cause === 'string' &&
+            res.data.data.cause.includes('java.lang.ClassNotFoundException')) ||
+          (typeof res?.data?.data?.causeStack === 'string' &&
+            res.data.data.causeStack.includes(
+              'java.lang.ClassNotFoundException',
+            ))
         ) {
           return routes.AOS7[resource];
         }
