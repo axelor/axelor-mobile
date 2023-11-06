@@ -19,12 +19,8 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
-import {
-  AnomalyBubble,
-  getFullDateItems,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {AnomalyBubble, useSelector} from '@axelor/aos-mobile-core';
+import IconDate from '../IconDate/IconDate';
 
 interface ExpenseLineCardProps {
   expenseId: number;
@@ -47,17 +43,11 @@ const ExpenseLineCard = ({
   onLongPress,
   setCardHeight,
 }: ExpenseLineCardProps) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const {user} = useSelector((state: any) => state.user);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  const _date = useMemo(
-    () => getFullDateItems(expenseDate, I18n),
-    [I18n, expenseDate],
-  );
 
   return (
     <TouchableOpacity
@@ -83,11 +73,7 @@ const ExpenseLineCard = ({
               style: styles.title,
             },
             {
-              indicatorText: _date.day,
-              displayText: `${_date.date} ${_date.month}`,
-              iconName: 'calendar-alt',
-              hideIfNull: true,
-              style: styles.details,
+              customComponent: <IconDate date={expenseDate} size={16} />,
             },
             {
               indicatorText: projectName,

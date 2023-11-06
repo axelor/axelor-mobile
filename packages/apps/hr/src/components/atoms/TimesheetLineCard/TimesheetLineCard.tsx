@@ -18,8 +18,9 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
-import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
+import {ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import IconDate from '../IconDate/IconDate';
 import {TimesheetLine} from '../../../types';
 
 interface TimesheetLineCardProps {
@@ -55,58 +56,60 @@ const TimesheetLineCard = ({
     [Colors, statusSelect],
   );
 
-  const _date = useMemo(() => getFullDateItems(date, I18n), [I18n, date]);
-
   return (
-    <Card
-      style={[styles.container, isBorderColor && styles.borderCOlor, style]}>
-      <View style={styles.leftContainer}>
-        <Text writingType="title">{(project || manufOrder) ?? '-'}</Text>
-        <Text style={styles.subTitle}>{(task || operation) ?? '-'}</Text>
-      </View>
-      <View style={styles.rightContainer}>
-        <View style={styles.dateContainer}>
-          <Icon
-            name="calendar-alt"
-            color={Colors.secondaryColor.foreground}
-            size={18}
-            style={styles.icon}
-          />
-          <Text fontSize={18}>{_date.day}</Text>
-          <Text writingType="important" fontSize={18}>
-            {` ${_date.date} ${_date.month}`}
-          </Text>
-        </View>
-        <Text
-          textColor={Colors.primaryColor.background}
-          fontSize={18}
-          style={styles.durationText}>
-          {duration} {TimesheetLine.getUnitDuration(unitDuration, I18n)}
-        </Text>
-      </View>
-    </Card>
+    <View style={style}>
+      <ObjectCard
+        touchable={false}
+        showArrow={false}
+        leftContainerFlex={2}
+        style={[styles.container, isBorderColor && styles.borderColor]}
+        upperTexts={{
+          items: [
+            {
+              displayText: (project || manufOrder) ?? '-',
+              isTitle: true,
+              numberOfLines: 2,
+            },
+            {
+              displayText: (task || operation) ?? '-',
+              numberOfLines: 2,
+              style: styles.subTitle,
+            },
+          ],
+        }}
+        sideBadges={{
+          items: [
+            {
+              customComponent: <IconDate date={date} />,
+            },
+            {
+              customComponent: (
+                <Text
+                  textColor={Colors.primaryColor.background}
+                  fontSize={18}
+                  style={styles.durationText}>
+                  {duration} {TimesheetLine.getUnitDuration(unitDuration, I18n)}
+                </Text>
+              ),
+            },
+          ],
+        }}
+      />
+    </View>
   );
 };
 
 const getStyles = color =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: 15,
-      paddingHorizontal: 15,
-      paddingRight: 15,
+      minHeight: 100,
+      justifyContent: 'center',
+      marginHorizontal: 1,
+      marginVertical: 1,
     },
-    borderCOlor: {
+    borderColor: {
       borderLeftWidth: 7,
       borderLeftColor: color.background,
-    },
-    leftContainer: {
-      maxWidth: '60%',
-    },
-    rightContainer: {
-      maxWidth: '40%',
     },
     subTitle: {
       fontStyle: 'italic',
@@ -114,9 +117,6 @@ const getStyles = color =>
     },
     dateContainer: {
       flexDirection: 'row',
-    },
-    icon: {
-      marginRight: 5,
     },
     durationText: {
       fontWeight: '900',
