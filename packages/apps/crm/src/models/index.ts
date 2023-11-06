@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {crm_formsRegister} from './forms';
 export {crm_searchFields} from './searchFields';
 export {crm_sortFields} from './sortFields';
 export {crm_modelAPI} from './objectFields';

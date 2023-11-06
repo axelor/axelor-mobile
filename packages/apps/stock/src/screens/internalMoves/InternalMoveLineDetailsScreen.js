@@ -94,15 +94,17 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     productIndicators?.availableStock,
   ]);
 
-  useEffect(() => {
-    if (internalMoveLineId) {
-      dispatch(
-        fetchInternalMoveLine({
-          internalMoveLineId: internalMoveLineId,
-        }),
-      );
-    }
+  const getInternalMoveLine = useCallback(() => {
+    dispatch(
+      fetchInternalMoveLine({
+        internalMoveLineId: internalMoveLineId,
+      }),
+    );
   }, [dispatch, internalMoveLineId]);
+
+  useEffect(() => {
+    getInternalMoveLine();
+  }, [getInternalMoveLine]);
 
   useEffect(() => {
     if (!isEmpty(internalMoveLine)) {
@@ -161,8 +163,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           toStockLocation={toStockLocation}
           visible={!isTrackingNumberSelectVisible}
         />
-      }
-      loading={loadingInternalMoveLine}>
+      }>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -177,7 +178,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView>
+      <KeyboardAvoidingScrollView
+        refresh={{
+          loading: loadingInternalMoveLine,
+          fetcher: getInternalMoveLine,
+        }}>
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_OriginalStockLocation"

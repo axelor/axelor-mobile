@@ -21,12 +21,14 @@ import {StyleSheet, View} from 'react-native';
 import {Text, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDuration} from '../../../utils/formatters';
 
+const ONE_SECOND = 1000;
+
 interface TimerProps {
   time: number;
   timerFormat: string;
   style?: any;
   isPaused?: boolean;
-  onCount: (value: any) => void;
+  addCount: (value: any) => void;
 }
 
 function Timer({
@@ -34,7 +36,7 @@ function Timer({
   timerFormat,
   time = 0,
   isPaused = true,
-  onCount,
+  addCount,
 }: TimerProps) {
   const interval = React.useRef(null);
   const Colors = useThemeColor();
@@ -47,15 +49,15 @@ function Timer({
       console.warn('Timer: something went wrong');
       return;
     }
-    onCount(time + 1000);
-  }, [onCount, time]);
+    addCount(ONE_SECOND);
+  }, [addCount, time]);
 
   useEffect(() => {
     if (isPaused) {
       return;
     }
 
-    interval.current = setInterval(counterHandle, 1000);
+    interval.current = setInterval(counterHandle, ONE_SECOND);
     return () => clearInterval(interval.current);
   }, [counterHandle, isPaused, time]);
 

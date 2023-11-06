@@ -49,6 +49,10 @@ export const manufacturing_modelAPI: ObjectFields = {
       .array()
       .of(schemaContructor.subObject('productionOrderSeq')),
     company: schemaContructor.subObject('name'),
+    plannedStartDateT: schemaContructor.string(),
+    plannedEndDateT: schemaContructor.string(),
+    realStartDateT: schemaContructor.string(),
+    realEndDateT: schemaContructor.string(),
   }),
   manufacturing_manufacturingOrderShort: schemaContructor.object({
     manufOrderSeq: schemaContructor.string(),

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Screen,
@@ -89,15 +89,21 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
     });
   };
 
+  const getCustomerDeliveryLine = useCallback(() => {
+    dispatch(
+      fetchCustomerDeliveryLine({
+        customerDeliveryLineId: customerDeliveryLineId,
+      }),
+    );
+  }, [customerDeliveryLineId, dispatch]);
+
   useEffect(() => {
-    if (customerDeliveryLineId) {
-      dispatch(
-        fetchCustomerDeliveryLine({
-          customerDeliveryLineId: customerDeliveryLineId,
-        }),
-      );
-    }
-  }, [dispatch, customerDeliveryLineId]);
+    getCustomerDeliveryLine();
+  }, [getCustomerDeliveryLine]);
+
+  if (customerDeliveryLine?.id !== customerDeliveryLineId) {
+    return null;
+  }
 
   return (
     <Screen
@@ -131,7 +137,11 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView
+        refresh={{
+          loading: loadingCustomerDeliveryLine,
+          fetcher: getCustomerDeliveryLine,
+        }}>
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_FromStockLocation"
@@ -170,7 +180,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
         />
         <NotesCard
           title={I18n.t('Stock_LineComment')}
-          data={customerDeliveryLine?.['saleOrderLine.pickingOrderInfo']}
+          data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
       </ScrollView>
     </Screen>

@@ -28,8 +28,8 @@ import DeviceInfo from 'react-native-device-info';
 
 const PopupCreateSession = ({
   sessionList,
-  popupIsOpen,
-  handleClose,
+  visible,
+  handleVisibility,
   showUrlInput,
   modeDebug,
   testInstanceConfig,
@@ -66,6 +66,7 @@ const PopupCreateSession = ({
 
   const [isBackground, setIsBackground] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [_session, setSession] = useState(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -88,31 +89,40 @@ const PopupCreateSession = ({
   );
 
   useEffect(() => {
-    if (popupIsOpen != null) {
+    if (visible != null) {
       setIsBackground(false);
     }
-  }, [popupIsOpen]);
+  }, [visible]);
 
   const inputProps = useMemo(
     () => ({
       sessionList,
-      session: modeDebug
-        ? {
-            name: DeviceInfo.getApplicationName(),
-            url: defaultUrl,
-            username: testInstanceConfig?.defaultUsername,
-            password: testInstanceConfig?.defaultPassword,
-            isDefault: false,
-          }
-        : {url: defaultUrl, isDefault: false},
+      session:
+        _session != null
+          ? _session
+          : modeDebug
+          ? {
+              name: DeviceInfo.getApplicationName(),
+              url: defaultUrl,
+              username: testInstanceConfig?.defaultUsername,
+              password: testInstanceConfig?.defaultPassword,
+              isDefault: false,
+            }
+          : {url: defaultUrl, isDefault: false},
       showUrlInput,
       loading,
       mode: 'creation',
-      showPopup: value => setIsBackground(!value),
+      showPopup: value => {
+        setIsBackground(!value);
+        handleVisibility(value ? true : null);
+      },
       onValidation: onPressLogin,
+      saveBeforeScan: setSession,
     }),
     [
+      _session,
       defaultUrl,
+      handleVisibility,
       loading,
       modeDebug,
       onPressLogin,
@@ -129,7 +139,7 @@ const PopupCreateSession = ({
 
   return (
     <PopUp
-      visible={popupIsOpen}
+      visible={visible}
       title={I18n.t('Base_Connection_CreateSession')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
@@ -138,7 +148,7 @@ const PopupCreateSession = ({
             name="times"
             size={20}
             touchable={true}
-            onPress={handleClose}
+            onPress={handleVisibility}
             style={styles.closeIcon}
           />
         )}

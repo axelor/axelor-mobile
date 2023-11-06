@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -180,7 +180,6 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <InternalMoveLineCard
-            style={styles.item}
             productName={item.product?.fullName}
             internalMoveStatus={internalMove.statusSelect}
             fromStockLocation={item.fromStockLocation?.name}
@@ -208,12 +207,5 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default InternalMoveLineListScreen;

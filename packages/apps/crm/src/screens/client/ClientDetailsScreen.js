@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ClientBottom,
@@ -32,11 +36,15 @@ const ClientDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {client} = useSelector(state => state.client);
+  const {loading, client} = useSelector(state => state.client);
 
-  useEffect(() => {
+  const getClient = useCallback(() => {
     dispatch(getClientbyId({clientId: idClient}));
   }, [dispatch, idClient]);
+
+  useEffect(() => {
+    getClient();
+  }, [getClient]);
 
   if (client?.id !== idClient) {
     return null;
@@ -45,7 +53,7 @@ const ClientDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<ClientHeader />} />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getClient}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <ClientDropdownCards />
       </ScrollView>

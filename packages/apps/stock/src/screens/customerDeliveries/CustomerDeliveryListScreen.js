@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
@@ -182,7 +181,6 @@ const CustomerDeliveryListScreen = ({navigation}) => {
                 : item.realDate
             }
             origin={item.origin}
-            style={styles.item}
             availability={item.availableStatusSelect}
             onPress={() => navigateToCustomerDelivery(item)}
           />
@@ -195,12 +193,5 @@ const CustomerDeliveryListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default CustomerDeliveryListScreen;

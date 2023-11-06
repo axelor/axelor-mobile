@@ -47,6 +47,7 @@ export async function createStockCorrection({
   trackingNumberId,
   status,
   realQty,
+  comments,
 }) {
   return axiosApiProvider.post({
     url: 'ws/aos/stock-correction/',
@@ -57,6 +58,7 @@ export async function createStockCorrection({
       trackingNumberId: trackingNumberId,
       status: status,
       realQty: realQty,
+      comments: comments,
     },
   });
 }
@@ -67,6 +69,7 @@ export async function updateStockCorrection({
   realQty,
   status,
   reasonId,
+  comments,
 }) {
   return axiosApiProvider.put({
     url: `/ws/aos/stock-correction/${stockCorrectionId}`,
@@ -75,6 +78,7 @@ export async function updateStockCorrection({
       realQty: realQty,
       status: status,
       reasonId: reasonId,
+      comments: comments,
     },
   });
 }

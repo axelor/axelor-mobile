@@ -90,17 +90,17 @@ export async function getContact({contactId}) {
 }
 
 export async function updateContact({
-  contactId,
-  contactVersion,
-  contactCivility,
-  contactFirstname,
-  contactName,
-  contactFixedPhone,
-  contactMobilePhone,
-  contactWebsite,
-  contactDescription,
-  mainPartnerId,
-  contactEmail,
+  id,
+  version,
+  titleSelect,
+  firstName,
+  name,
+  fixedPhone,
+  mobilePhone,
+  webSite,
+  description,
+  mainPartner,
+  email,
   emailId,
   emailVersion,
 }) {
@@ -113,25 +113,25 @@ export async function updateContact({
         data: {
           id: emailId,
           version: emailVersion,
-          address: contactEmail,
+          address: email,
         },
       },
     })
-    .then(res =>
+    .then(() =>
       axiosApiProvider.post({
         url: '/ws/rest/com.axelor.apps.base.db.Partner',
         data: {
           data: {
-            id: contactId,
-            version: contactVersion,
-            titleSelect: contactCivility,
-            firstName: contactFirstname,
-            name: contactName,
-            fixedPhone: contactFixedPhone,
-            mobilePhone: contactMobilePhone,
-            webSite: contactWebsite,
-            description: contactDescription,
-            mainPartner: {id: mainPartnerId},
+            id,
+            version,
+            titleSelect,
+            firstName,
+            name,
+            fixedPhone,
+            mobilePhone,
+            webSite,
+            description,
+            mainPartner,
           },
         },
       }),

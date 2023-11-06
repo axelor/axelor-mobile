@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProspectBottom,
@@ -32,11 +36,15 @@ const ProspectDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {prospect} = useSelector(state => state.prospect);
+  const {loading, prospect} = useSelector(state => state.prospect);
 
-  useEffect(() => {
+  const getProspect = useCallback(() => {
     dispatch(fetchProspectById({partnerId: idProspect}));
   }, [dispatch, idProspect]);
+
+  useEffect(() => {
+    getProspect();
+  }, [getProspect]);
 
   if (prospect?.id !== idProspect) {
     return null;
@@ -48,7 +56,7 @@ const ProspectDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<ProspectHeader colorIndex={colorIndex} />}
       />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getProspect}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={prospect.description} />
         <ProspectDropdownCards />
       </ScrollView>

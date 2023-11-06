@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
@@ -177,7 +177,6 @@ const InventoryListScreen = ({navigation}) => {
             date={Inventory.getDate(item)}
             stockLocation={item.stockLocation?.name}
             origin={item.origin}
-            style={styles.cardInventory}
             onPress={() => navigateToInventoryDetail(item)}
           />
         )}
@@ -189,12 +188,5 @@ const InventoryListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  cardInventory: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default InventoryListScreen;

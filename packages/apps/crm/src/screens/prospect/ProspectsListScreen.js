@@ -69,15 +69,11 @@ const ProspectsListScreen = ({navigation}) => {
     },
     [dispatch],
   );
-  useEffect(() => {
-    dispatch(fetchProspectStatus());
-    dispatch(fetchCrmConfigApi());
-  }, [dispatch]);
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list)) {
+        return [];
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
@@ -95,8 +91,8 @@ const ProspectsListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list)) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -112,6 +108,11 @@ const ProspectsListScreen = ({navigation}) => {
     () => filterOnUserAssigned(filterOnStatus(prospectList)),
     [filterOnUserAssigned, prospectList, filterOnStatus],
   );
+
+  useEffect(() => {
+    dispatch(fetchProspectStatus());
+    dispatch(fetchCrmConfigApi());
+  }, [dispatch]);
 
   return (
     <Screen removeSpaceOnTop={true}>

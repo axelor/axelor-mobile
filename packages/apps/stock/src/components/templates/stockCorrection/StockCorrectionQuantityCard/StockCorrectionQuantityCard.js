@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {Text} from '@axelor/aos-mobile-ui';
+import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
 import {QuantityCard} from '../../../organisms';
 
@@ -32,25 +32,24 @@ const StockCorrectionQuantityCard = ({
   setSaveStatus = () => {},
 }) => {
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const handleQtyChange = value => {
     setRealQty(value);
     setSaveStatus(false);
   };
 
-  const qty = useMemo(() => parseFloat(realQty).toFixed(2), [realQty]);
-
   return (
     <QuantityCard
       labelQty={I18n.t('Stock_RealQty')}
-      defaultValue={qty}
+      defaultValue={realQty}
       onValueChange={handleQtyChange}
       editable={status === StockCorrection.status.Draft}
       isBigButton={true}>
       <Text style={styles.text}>
-        {`${I18n.t('Stock_DatabaseQty')}: ${parseFloat(databaseQty).toFixed(
-          2,
-        )} ${stockProduct?.unit?.name}`}
+        {`${I18n.t('Stock_DatabaseQty')}: ${formatNumber(databaseQty)} ${
+          stockProduct?.unit?.name
+        }`}
       </Text>
     </QuantityCard>
   );

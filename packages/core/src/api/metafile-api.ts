@@ -74,8 +74,29 @@ export async function uploadFile(
 
       if (returnBase64String) {
         resolve(`data:${file.type};base64,${base64Data}`);
+        return;
       }
 
+      return uploadBase64(
+        {...file, base64: base64Data},
+        {baseUrl, jsessionId, token},
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export async function uploadBase64(
+  file: {base64: string; name: string; size: number; type: string},
+  {baseUrl, jsessionId, token},
+) {
+  if (file == null) {
+    return;
+  }
+
+  return new Promise<any>(async (resolve, reject) => {
+    try {
       const headers = {
         'Content-Type': 'application/octet-stream',
         'Content-Length': String(file.size),
@@ -91,7 +112,7 @@ export async function uploadFile(
         'POST',
         `${baseUrl}ws/files/upload`,
         headers,
-        base64Data,
+        file.base64,
       );
 
       const metaFile = JSON.parse(response.data);
@@ -99,7 +120,7 @@ export async function uploadFile(
       if (Object.keys(metaFile).includes('id')) {
         resolve(metaFile);
       } else {
-        throw Error('no metafile created');
+        throw Error('No metafile created');
       }
     } catch (error) {
       reject(error);

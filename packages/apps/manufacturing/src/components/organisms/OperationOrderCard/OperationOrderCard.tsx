@@ -17,15 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Badge,
-  Card,
-  Icon,
-  LabelText,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDuration} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 
@@ -57,34 +50,30 @@ const OperationOrderCard = ({
   }, [Colors, status]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{operationName}</Text>
-          <Text style={styles.txtDetails}>{workcenter}</Text>
-          {plannedDuration != null && (
-            <LabelText
-              iconName="stopwatch"
-              title={formatDuration(plannedDuration)}
-            />
-          )}
-        </View>
-        <View style={styles.rightContainer}>
-          {priority == null ? null : (
-            <Badge
-              color={Colors.priorityColor}
-              title={priority.toString()}
-              style={styles.badge}
-            />
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      sideBadges={{
+        items: [
+          {
+            displayText: priority.toString(),
+            color: Colors.priorityColor,
+            style: styles.badge,
+          },
+        ],
+      }}
+      upperTexts={{
+        items: [
+          {isTitle: true, displayText: operationName},
+          {displayText: workcenter},
+          {
+            hideIf: plannedDuration == null,
+            indicatorText: formatDuration(plannedDuration),
+            iconName: 'stopwatch',
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -94,33 +83,12 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
-  rightContainer: {
-    width: '10%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  container: {
-    flexDirection: 'row',
-  },
-  textContainer: {
-    width: '90%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginRight: 5,
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
-  },
   badge: {
     borderRadius: 50,
     width: 35,
     height: 35,
     marginBottom: 10,
+    alignSelf: 'flex-end',
   },
 });
 

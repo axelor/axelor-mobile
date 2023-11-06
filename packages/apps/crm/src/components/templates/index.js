@@ -17,10 +17,14 @@
  */
 
 export {default as CatalogsSearchBar} from './CatalogsSearchBar/CatalogsSearchBar';
+export {default as CatalogTypePicker} from './CatalogTypePicker/CatalogTypePicker';
+export {default as CivilityPicker} from './CivilityPicker/CivilityPicker';
 export {default as ClientProspectSearchBar} from './ClientProspectSearchBar/ClientProspectSearchBar';
 export {default as ClientSearchBar} from './ClientSearchBar/ClientSearchBar';
 export {default as ContactSearchBar} from './ContactSearchBar/ContactSearchBar';
-export {default as LeadSearchBar} from './LeadSearchBar/LeadSearchBar';
 export {default as EventSearchBar} from './EventSearchBar/EventSearchBar';
+export {default as FunctionSearchBar} from './FunctionSearchBar/FunctionSearchBar';
+export {default as LeadSearchBar} from './LeadSearchBar/LeadSearchBar';
 export {default as OpportunitySearchBar} from './OpportunitySearchBar/OpportunitySearchBar';
+export {default as OpportunityStatusPicker} from './OpportunityStatusPicker/OpportunityStatusPicker';
 export {default as ProspectSearchBar} from './ProspectSearchBar/ProspectSearchBar';

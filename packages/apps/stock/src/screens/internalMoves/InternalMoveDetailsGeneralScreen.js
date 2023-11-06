@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   HeaderContainer,
   Screen,
@@ -38,11 +38,17 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {internalMove} = useSelector(state => state.internalMove);
+  const {loadingInternalMove, internalMove} = useSelector(
+    state => state.internalMove,
+  );
 
-  useEffect(() => {
+  const getInternalMove = useCallback(() => {
     dispatch(fetchInternalMove({internalMoveId: internalMoveId}));
   }, [internalMoveId, dispatch]);
+
+  useEffect(() => {
+    getInternalMove();
+  }, [getInternalMove]);
 
   if (internalMove?.id !== internalMoveId) {
     return null;
@@ -70,7 +76,8 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           />
         }
       />
-      <ScrollView>
+      <ScrollView
+        refresh={{loading: loadingInternalMove, fetcher: getInternalMove}}>
         <InternalMoveMovementIndicationCard
           from={internalMove.fromStockLocation?.name}
           to={internalMove.toStockLocation?.name}

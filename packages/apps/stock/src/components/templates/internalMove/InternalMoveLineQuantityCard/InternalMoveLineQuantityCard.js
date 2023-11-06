@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text} from '@axelor/aos-mobile-ui';
+import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import {useNavigation, useTranslator} from '@axelor/aos-mobile-core';
 import {QuantityCard} from '../../../organisms';
 import StockMove from '../../../../types/stock-move';
@@ -35,6 +35,7 @@ const InternalMoveLineQuantityCard = ({
 }) => {
   const I18n = useTranslator();
   const navigation = useNavigation();
+  const formatNumber = useDigitFormat();
 
   const handleQtyChange = value => {
     setMovedQty(value);
@@ -63,9 +64,9 @@ const InternalMoveLineQuantityCard = ({
       onPressActionQty={handleCreateCorrection}
       isBigButton={true}>
       <Text style={styles.text}>
-        {`${I18n.t('Stock_AvailableQty')}: ${parseFloat(plannedQty).toFixed(
-          2,
-        )} ${stockProduct.unit?.name}`}
+        {`${I18n.t('Stock_AvailableQty')}: ${formatNumber(plannedQty)} ${
+          stockProduct.unit?.name
+        }`}
       </Text>
     </QuantityCard>
   );

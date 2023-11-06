@@ -16,9 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
-import {Screen, HeaderContainer, NotesCard} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Screen,
+  HeaderContainer,
+  NotesCard,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {
   OpportunityBottom,
@@ -34,15 +38,21 @@ const OpportunityDetailsScreen = ({route}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {opportunity} = useSelector(state => state.opportunity);
+  const {loadingOpportunity, opportunity} = useSelector(
+    state => state.opportunity,
+  );
 
-  useEffect(() => {
+  const getOpportunityAPI = useCallback(() => {
     dispatch(
       getOpportunity({
         opportunityId: opportunityId,
       }),
     );
   }, [dispatch, opportunityId]);
+
+  useEffect(() => {
+    getOpportunityAPI();
+  }, [getOpportunityAPI]);
 
   if (opportunity?.id !== opportunityId) {
     return null;
@@ -54,7 +64,8 @@ const OpportunityDetailsScreen = ({route}) => {
         expandableFilter={false}
         fixedItems={<OpportunityHeader />}
       />
-      <ScrollView nestedScrollEnabled={true}>
+      <ScrollView
+        refresh={{loading: loadingOpportunity, fetcher: getOpportunityAPI}}>
         <OpportunityPartnerCard />
         <OpportunityDropdownInfo />
         <NotesCard

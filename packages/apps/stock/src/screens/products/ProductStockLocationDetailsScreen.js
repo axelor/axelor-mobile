@@ -137,11 +137,10 @@ const ProductStockLocationDetailsScreen = ({route}) => {
         renderItem={({item, index}) => (
           <ProductStockLocationCard
             stockLocationName={item.stockLocation?.name}
-            realQty={parseFloat(item.currentQty).toFixed(2)}
-            futureQty={parseFloat(item.futureQty).toFixed(2)}
+            realQty={item.currentQty}
+            futureQty={item.futureQty}
             reservedQty={
-              supplychainConfig?.manageStockReservation &&
-              parseFloat(item.reservedQty).toFixed(2)
+              supplychainConfig?.manageStockReservation && item.reservedQty
             }
             availability={
               listAvailabiltyDistribution

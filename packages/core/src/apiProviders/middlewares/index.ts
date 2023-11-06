@@ -17,3 +17,4 @@
  */
 
 export * from './translation';
+export * from './fieldParser';

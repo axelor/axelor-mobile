@@ -50,7 +50,7 @@ const EventContactCard = ({}) => {
       style={styles.item}
       contactFullname={contact.simpleFullName}
       fixedPhoneNumber={contact.fixedPhone}
-      email={contact['emailAddress.address']}
+      email={contact.emailAddress?.address}
       onPress={handleCardPress}
     />
   );

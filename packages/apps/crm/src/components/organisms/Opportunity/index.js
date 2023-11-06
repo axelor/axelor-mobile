@@ -21,4 +21,3 @@ export {default as OpportunityDropdownInfo} from './OpportunityDropdownInfo/Oppo
 export {default as OpportunityHeader} from './OpportunityHeader/OpportunityHeader';
 export {default as OpportunityPartnerCard} from './OpportunityPartnerCard/OpportunityPartnerCard';
 export {default as OpportunityUpdateStatusPicker} from './OpportunityUpdateStatusPicker/OpportunityUpdateStatusPicker';
-export {default as OpportunityValidateButton} from './OpportunityValidateButton/OpportunityValidateButton';

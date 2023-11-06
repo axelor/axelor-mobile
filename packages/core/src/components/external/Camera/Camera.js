@@ -36,6 +36,7 @@ import {
 import CaptureButton from './CaptureButton';
 
 const CONTENT_SPACING = 40;
+const PHOTO_TYPE = 'jpeg';
 
 const SAFE_BOTTOM =
   Platform.select({
@@ -44,8 +45,8 @@ const SAFE_BOTTOM =
 
 const SAFE_AREA_PADDING = {
   paddingLeft: StaticSafeAreaInsets.safeAreaInsetsLeft + CONTENT_SPACING,
-  paddingTop: StaticSafeAreaInsets.safeAreaInsetsTop + CONTENT_SPACING,
-  paddingRight: StaticSafeAreaInsets.safeAreaInsetsRight + CONTENT_SPACING,
+  paddingTop: StaticSafeAreaInsets.safeAreaInsetsTop + CONTENT_SPACING * 1.5,
+  paddingRight: StaticSafeAreaInsets.safeAreaInsetsRight + CONTENT_SPACING / 2,
   paddingBottom: SAFE_BOTTOM + CONTENT_SPACING,
 };
 
@@ -122,7 +123,19 @@ const Camera = () => {
   const onMediaCapture = useCallback(
     async photo => {
       const photoData = await RNFS.readFile(photo.path, 'base64');
-      dispatch(takePhoto(photoData));
+      const {size} = await RNFS.stat(photo.path);
+
+      dispatch(
+        takePhoto({
+          name: `camera.${PHOTO_TYPE}`,
+          pictureExtention: PHOTO_TYPE,
+          dateTime: new Date().toISOString(),
+          type: `image/${PHOTO_TYPE}`,
+          size: size,
+          base64: photoData,
+          fullBase64: `data:image/${PHOTO_TYPE};base64,${photoData}`,
+        }),
+      );
       dispatch(disableCamera());
     },
     [dispatch],
@@ -206,6 +219,7 @@ const Camera = () => {
           onMediaCaptured={onMediaCapture}
           flash={flash}
           enabled={isEnabled}
+          type={PHOTO_TYPE}
         />
       </View>
     </View>
@@ -223,7 +237,7 @@ const styles = StyleSheet.create({
     zIndex: 850,
   },
   camera: {
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('screen').height,
     width: Dimensions.get('window').width,
     position: 'absolute',
     top: 0,

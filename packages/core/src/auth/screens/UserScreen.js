@@ -50,18 +50,20 @@ const UserScreen = ({children}) => {
   const {userId, baseUrl} = useSelector(state => state.auth);
   const {languageList} = useSelector(state => state.language);
   const {baseConfig} = useSelector(state => state.config);
-  const {user, canModifyCompany} = useSelector(state => state.user);
+  const {loadingUser, user, canModifyCompany} = useSelector(
+    state => state.user,
+  );
 
   const {setFilterConfig, setVirtualKeyboardConfig, setNbDecimalDigitForQty} =
     useConfig();
 
   useEffect(() => {
-    dispatch(fetchActiveUser(userId));
+    fetchUser();
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
     dispatch(fetchBaseConfig());
     dispatch(fetchMobileSettings());
-  }, [dispatch, userId]);
+  }, [dispatch, fetchUser, userId]);
 
   useEffect(() => {
     if (baseConfig?.nbDecimalDigitForQty != null) {
@@ -113,9 +115,13 @@ const UserScreen = ({children}) => {
     [dispatch, user],
   );
 
+  const fetchUser = useCallback(() => {
+    dispatch(fetchActiveUser(userId));
+  }, [dispatch, userId]);
+
   return (
     <Screen style={styles.container}>
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingUser, fetcher: fetchUser}}>
         <View style={styles.alignContainer}>
           <ImageBubble
             style={styles.imageIcon}

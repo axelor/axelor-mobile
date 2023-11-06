@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
@@ -182,7 +181,6 @@ const SupplierArrivalListScreen = ({navigation}) => {
             }
             onPress={() => navigateToSupplierDetail(item)}
             origin={item.origin}
-            style={styles.cardDelivery}
           />
         )}
         fetchData={fetchSupplierArrivalsAPI}
@@ -193,12 +191,5 @@ const SupplierArrivalListScreen = ({navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  cardDelivery: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-  },
-});
 
 export default SupplierArrivalListScreen;

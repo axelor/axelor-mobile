@@ -45,8 +45,7 @@ import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMenuConfig} from '../features/menuConfigSlice';
 import {fetchMobileConfig} from '../features/mobileConfigSlice';
-import AttachedFilesScreen from '../screens/AttachedFilesScreen';
-import MailMessageScreen from '../screens/MailMessageScreen';
+import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
 
@@ -117,22 +116,7 @@ const Navigator = ({
   const modulesScreens = useMemo(
     () =>
       modules.reduce((screens, module) => ({...screens, ...module.screens}), {
-        AttachedFilesScreen: {
-          title: 'Base_AttachedFiles',
-          component: AttachedFilesScreen,
-          actionID: 'core_attachedFiles_details',
-          options: {
-            shadedHeader: false,
-          },
-        },
-        MailMessageScreen: {
-          title: 'Base_MailMessages',
-          component: MailMessageScreen,
-          actionID: 'core_mailMessage_details',
-          options: {
-            shadedHeader: false,
-          },
-        },
+        ...BaseScreen,
       }),
     [modules],
   );

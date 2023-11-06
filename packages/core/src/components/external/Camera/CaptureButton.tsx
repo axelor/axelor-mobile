@@ -42,22 +42,24 @@ const CaptureButton = ({
   flash,
   enabled,
   style,
+  type,
 }: {
   camera: React.RefObject<Camera>;
   onMediaCaptured: (media: PhotoFile) => void;
   flash: 'off' | 'on';
   enabled: boolean;
   style?: any;
+  type: string;
 }) => {
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
-      photoCodec: 'jpeg',
+      photoCodec: type,
       qualityPrioritization: 'speed',
       flash: flash,
       quality: 90,
       skipMetadata: false,
     }),
-    [flash],
+    [flash, type],
   );
   const isPressingButton = useSharedValue(false);
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {object, Schema} from 'yup';
+import {Schema} from 'yup';
 import {Models, ObjectFields, SearchFields, SortFields} from '../../app/Module';
 import {CriteriaField, CriteriaGroup} from '../Model';
 import {checkNullString} from '../../utils/string';
@@ -45,17 +45,42 @@ class ObjectFieldsProvider {
       return this.objectFields[objectKey];
     }
 
-    return object({});
+    return null;
   }
 
   getObjectFields(objectKey: string): string[] {
     const objectSchema: any = this.getObjectSchema(objectKey);
 
-    if (Object.keys(objectSchema)?.length > 0) {
-      return objectSchema._nodes;
+    if (objectSchema != null) {
+      return this.handleSchemaField(objectSchema);
     }
 
     return [];
+  }
+
+  private handleSchemaField(schema: any): string[] {
+    const fields = schema.fields;
+    const result: string[] = [];
+
+    for (const fieldName of schema._nodes) {
+      result.push(fieldName);
+
+      if (fields[fieldName].type === 'object') {
+        this.handleSchemaField(fields[fieldName]).forEach(_field => {
+          if (
+            _field === 'id' ||
+            _field === '$version' ||
+            _field === 'version'
+          ) {
+            return;
+          }
+
+          result.push(`${fieldName}.${_field}`);
+        });
+      }
+    }
+
+    return result.filter((item, index, self) => self.indexOf(item) === index);
   }
 
   getSortFields(objectKey: string): string[] {

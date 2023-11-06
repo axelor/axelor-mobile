@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {
@@ -31,11 +31,17 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
   const supplierArrivalId = route.params.supplierArrivalId;
   const dispatch = useDispatch();
 
-  const {supplierArrival} = useSelector(state => state.supplierArrival);
+  const {loading, supplierArrival} = useSelector(
+    state => state.supplierArrival,
+  );
+
+  const getSupplierArrival = useCallback(() => {
+    dispatch(fetchSupplierArrival({supplierArrivalId: supplierArrivalId}));
+  }, [dispatch, supplierArrivalId]);
 
   useEffect(() => {
-    dispatch(fetchSupplierArrival({supplierArrivalId: supplierArrivalId}));
-  }, [supplierArrivalId, dispatch]);
+    getSupplierArrival();
+  }, [getSupplierArrival]);
 
   if (supplierArrival?.id !== supplierArrivalId) {
     return null;
@@ -49,7 +55,7 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         expandableFilter={false}
         fixedItems={<SupplierArrivalHeader supplierArrival={supplierArrival} />}
       />
-      <ScrollView>
+      <ScrollView refresh={{loading, fetcher: getSupplierArrival}}>
         <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />

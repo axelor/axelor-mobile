@@ -36,10 +36,6 @@ const SessionListCard = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  if (!Array.isArray(sessions) || sessions?.length === 0) {
-    return null;
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
@@ -50,21 +46,23 @@ const SessionListCard = ({
           onPress={openCreation}
         />
       </View>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        style={styles.scrollView}>
-        {sessions.map(_session => (
-          <SessionCard
-            key={_session.id}
-            session={_session}
-            changeActiveSession={changeActiveSession}
-            openConnection={openConnection}
-            openEdition={openEdition}
-            isUnactive={_session.id !== session?.id}
-            logoFile={logoFile}
-          />
-        ))}
-      </ScrollView>
+      {!Array.isArray(sessions) || sessions?.length === 0 ? null : (
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          style={styles.scrollView}>
+          {sessions.map(_session => (
+            <SessionCard
+              key={_session.id}
+              session={_session}
+              changeActiveSession={changeActiveSession}
+              openConnection={openConnection}
+              openEdition={openEdition}
+              isUnactive={_session.id !== session?.id}
+              logoFile={logoFile}
+            />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };

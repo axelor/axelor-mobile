@@ -31,7 +31,6 @@ import {
   updateOpportunityScoring as _updateOpportunityScoring,
   createOpportunity as _createOpportunity,
 } from '../api/opportunities-api';
-import {Opportunity} from '../types';
 
 export const fetchOpportunities = createAsyncThunk(
   'opportunity/fetchOpportunities',
@@ -171,20 +170,12 @@ const opportunitySlice = createSlice({
   name: 'opportunity',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(
-      builder,
-      fetchOpportunities,
-      {
-        loading: 'loading',
-        moreLoading: 'moreLoading',
-        isListEnd: 'isListEnd',
-        list: 'opportunityList',
-      },
-      {
-        parseFunction: data =>
-          data?.map(item => Opportunity.responseParser(item)),
-      },
-    );
+    generateInifiniteScrollCases(builder, fetchOpportunities, {
+      loading: 'loading',
+      moreLoading: 'moreLoading',
+      isListEnd: 'isListEnd',
+      list: 'opportunityList',
+    });
     builder.addCase(fetchOpportunityStatus.pending, state => {
       state.loadingOpportunityStatus = true;
     });

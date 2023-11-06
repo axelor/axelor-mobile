@@ -75,8 +75,8 @@ const OpportunityListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list)) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -90,8 +90,8 @@ const OpportunityListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list)) {
+        return [];
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
@@ -149,7 +149,7 @@ const OpportunityListScreen = ({navigation}) => {
             opportunityScoring={item.opportunityRating}
             reference={item.opportunitySeq}
             allOpportunityStatus={opportunityStatusList}
-            currencySymbol={item.currencySymbol}
+            currencySymbol={item.currency?.symbol || item.currency?.name}
             opportunityStatus={item.opportunityStatus}
             onPress={() =>
               navigation.navigate('OpportunityDetailsScreen', {

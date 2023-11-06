@@ -63,6 +63,7 @@
   "Stock_Application_SalePrice": "Prix de vente",
   "Stock_Application_CostPrice": "Prix de revient",
   "Stock_Application_PurchasePrice": "Prix d'achat",
+  "Stock_Comments": "Commentaires",
   "Stock_Status_Draft": "Brouillon",
   "Stock_Status_Validated": "Validé",
   "Stock_Status_Planned": "Planifié",

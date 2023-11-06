@@ -16,9 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Card, PopUpOneButton, Text} from '@axelor/aos-mobile-ui';
+import {
+  Card,
+  PopUpOneButton,
+  Text,
+  useDigitFormat,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface SmallPropertyCardProps {
@@ -38,16 +43,19 @@ const SmallPropertyCard = ({
 }: SmallPropertyCardProps) => {
   const [popUp, setPopUp] = useState(false);
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const handlePress = () => {
     setPopUp(true);
   };
 
+  const _value = useMemo(() => formatNumber(value), [formatNumber, value]);
+
   return (
     <Card style={[styles.card, style]}>
       <PopUpOneButton
         visible={popUp}
-        data={unit == null ? `${value}` : `${value} ${unit}`}
+        data={unit == null ? `${_value}` : `${_value} ${unit}`}
         title={title}
         btnTitle={I18n.t('Auth_Close')}
         onPress={() => setPopUp(!popUp)}
@@ -58,7 +66,7 @@ const SmallPropertyCard = ({
         disabled={interactive}>
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.value}>{value}</Text>
+          <Text style={styles.value}>{_value}</Text>
           {unit && <Text style={styles.unit}>{unit}</Text>}
         </View>
       </TouchableOpacity>

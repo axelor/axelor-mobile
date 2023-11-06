@@ -17,15 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Badge,
-  Card,
-  Icon,
-  LabelText,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
 
@@ -38,6 +31,10 @@ interface ManufacturingOrderCardProps {
   qty: number;
   unit?: any;
   link?: {ordersRef: any[]; client: any};
+  plannedStartDate?: string;
+  plannedEndDate?: string;
+  realStartDate?: string;
+  realEndDate?: string;
   onPress: () => void;
 }
 
@@ -50,10 +47,15 @@ const ManufacturingOrderCard = ({
   qty,
   unit,
   link = {ordersRef: [null], client: null},
+  plannedStartDate,
+  plannedEndDate,
+  realStartDate,
+  realEndDate,
   onPress,
 }: ManufacturingOrderCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyle = useMemo(() => {
     return getStyles(
@@ -61,42 +63,62 @@ const ManufacturingOrderCard = ({
     )?.border;
   }, [Colors, status]);
 
+  const [startDate, endDate] = ManufacturingOrder.getDates(
+    status,
+    plannedStartDate,
+    plannedEndDate,
+    realStartDate,
+    realEndDate,
+    I18n,
+  );
+
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, borderStyle, style]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.txtImportant}>{reference}</Text>
-          <Text style={styles.txtDetails}>{productName}</Text>
-          <LabelText
-            iconName="hammer"
-            title={`${parseFloat(qty.toString()).toFixed(2)} ${
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyle, style]}
+      sideBadges={{
+        items: [
+          {
+            showIf: priority != null,
+            color: ManufacturingOrder.getPriorityColor(priority, Colors),
+            displayText: ManufacturingOrder.getPriority(priority, I18n),
+          },
+        ],
+      }}
+      upperTexts={{
+        items: [
+          {
+            isTitle: true,
+            displayText: reference,
+          },
+          {
+            displayText: productName,
+          },
+          {
+            iconName: 'hammer',
+            indicatorText: `${formatNumber(qty)} ${
               unit != null ? unit.name : ''
-            }`}
-          />
-          {link.client != null && link.ordersRef?.length > 0 && (
-            <View style={styles.origin}>
-              <Icon name="tag" size={12} style={styles.icon} />
-              <Text style={styles.txtDetails}>
-                {link.ordersRef[0].fullName}
-              </Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.rightContainer}>
-          {priority == null ? null : (
-            <Badge
-              color={ManufacturingOrder.getPriorityColor(priority, Colors)}
-              title={ManufacturingOrder.getPriority(priority, I18n)}
-            />
-          )}
-          <Icon
-            name="chevron-right"
-            color={Colors.secondaryColor.background_light}
-            size={20}
-          />
-        </View>
-      </Card>
-    </TouchableOpacity>
+            }`,
+          },
+          {
+            hideIf: link.client == null || link.ordersRef?.length <= 0,
+            iconName: 'tag',
+            indicatorText: link.ordersRef[0]?.fullName,
+          },
+          {
+            displayText: `${startDate.title} ${startDate.value}`,
+            hideIf: startDate == null,
+          },
+          {
+            displayText: `${endDate.title} ${endDate.value}`,
+            hideIf:
+              status === ManufacturingOrder.status.InProgress ||
+              status === ManufacturingOrder.status.StandBy ||
+              endDate == null,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -104,36 +126,5 @@ const getStyles = color =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });
-
-const styles = StyleSheet.create({
-  rightContainer: {
-    width: '20%',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  container: {
-    flexDirection: 'row',
-  },
-  textContainer: {
-    width: '80%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginRight: 5,
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
-  },
-  origin: {
-    flexDirection: 'row',
-  },
-  icon: {
-    marginRight: 5,
-  },
-});
 
 export default ManufacturingOrderCard;

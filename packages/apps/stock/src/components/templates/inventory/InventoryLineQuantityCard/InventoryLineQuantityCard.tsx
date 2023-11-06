@@ -18,12 +18,13 @@
 
 import React from 'react';
 import {useTranslator, useSelector} from '@axelor/aos-mobile-core';
-import {Text} from '@axelor/aos-mobile-ui';
+import {Text, useDigitFormat} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
 import {QuantityCard} from '../../../organisms';
 
 const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const {inventory} = useSelector((state: any) => state.inventory);
 
@@ -40,9 +41,9 @@ const InventoryLineQuantityCard = ({realQty, setRealQty, inventoryLine}) => {
         </Text>
       ) : (
         <Text>
-          {`${I18n.t('Stock_DatabaseQty')} : ${parseFloat(
+          {`${I18n.t('Stock_DatabaseQty')} : ${formatNumber(
             inventoryLine?.currentQty,
-          ).toFixed(2)} ${inventoryLine?.unit?.name}`}
+          )} ${inventoryLine?.unit?.name}`}
         </Text>
       )}
     </QuantityCard>

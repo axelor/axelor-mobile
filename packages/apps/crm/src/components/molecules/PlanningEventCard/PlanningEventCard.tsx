@@ -17,8 +17,9 @@
  */
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Text, LabelText, checkNullString} from '@axelor/aos-mobile-ui';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
+import EventType from '../../../types/event-type';
+
 interface PlanningEventCardProps {
   style?: any;
   onPress: () => void;
@@ -26,6 +27,9 @@ interface PlanningEventCardProps {
   id: string | number;
   contactPartner?: string;
   location?: string;
+  partner?: string;
+  eventLead?: string;
+  partnerTypeSelect?: number;
 }
 
 const PlanningEventCard = ({
@@ -35,31 +39,41 @@ const PlanningEventCard = ({
   id,
   contactPartner,
   location,
+  partner,
+  eventLead,
+  partnerTypeSelect,
 }: PlanningEventCardProps) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card key={id} style={[styles.container, style]}>
-        <Text style={styles.bold}>{subject}</Text>
-        {!checkNullString(contactPartner) && (
-          <LabelText iconName="user" title={contactPartner} />
-        )}
-        {!checkNullString(location) && (
-          <LabelText iconName="map-pin" title={location} />
-        )}
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      key={id}
+      onPress={onPress}
+      style={style}
+      upperTexts={{
+        items: [
+          {displayText: subject, isTitle: true},
+          {
+            indicatorText: partner,
+            hideIfNull: true,
+            iconName:
+              partnerTypeSelect === EventType.partnerTypeSelect.Company
+                ? 'building'
+                : 'user',
+          },
+          {
+            indicatorText: eventLead,
+            hideIfNull: true,
+            iconName: 'address-card',
+          },
+          {
+            indicatorText: contactPartner,
+            hideIfNull: true,
+            iconName: 'handshake',
+          },
+          {indicatorText: location, hideIfNull: true, iconName: 'map-pin'},
+        ],
+      }}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  bold: {
-    fontWeight: 'bold',
-  },
-});
 
 export default PlanningEventCard;

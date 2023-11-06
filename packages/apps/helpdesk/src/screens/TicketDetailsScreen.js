@@ -16,106 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useCallback} from 'react';
-import {ScrollView} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
 import {
   Screen,
   HeaderContainer,
   NotesCard,
-  useThemeColor,
-  IconButton,
+  ScrollView,
 } from '@axelor/aos-mobile-ui';
-import {
-  Stopwatch,
-  useDispatch,
-  useSelector,
-  useTranslator,
-  getNowDateZonesISOString,
-  StopwatchType,
-} from '@axelor/aos-mobile-core';
-import {fetchTicketById, updateTicketStatus} from '../features/ticketSlice';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {fetchTicketById} from '../features/ticketSlice';
 import {
   TicketHeader,
   TicketDropdownCards,
   TicketEditButton,
-  TicketsStatusButton,
+  TicketStopwatch,
 } from '../components';
-import {
-  clearTimer,
-  fetchTimerById,
-  searchTimerHistoryById,
-} from '../features/timerSlice';
 import {Ticket} from '../types';
 import {fetchHelpdeskConfig} from '../features/helpdeskConfigSlice';
 
 const TicketDetailsScreen = ({route}) => {
   const {idTicket} = route.params;
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {ticket} = useSelector(state => state.ticket);
-  const {timer, timerHistory} = useSelector(state => state.timer);
-  const {helpdeskConfig} = useSelector(state => state.helpdeskConfig);
+  const {loadingTicket, ticket} = useSelector(state => state.ticket);
+
+  const fetchTicket = useCallback(() => {
+    dispatch(fetchTicketById({ticketId: idTicket}));
+  }, [dispatch, idTicket]);
 
   useEffect(() => {
     dispatch(fetchHelpdeskConfig());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchTicketById({ticketId: idTicket}));
-  }, [dispatch, idTicket]);
-
-  useEffect(() => {
-    if (ticket?.timerList?.length > 0) {
-      dispatch(fetchTimerById({timerId: ticket?.timerList[0]?.id}));
-    } else {
-      dispatch(clearTimer());
-    }
-  }, [dispatch, ticket?.timerList]);
-
-  useEffect(() => {
-    dispatch(searchTimerHistoryById({idTimer: timer?.id}));
-  }, [dispatch, timer]);
-
-  const statustimer = useMemo(() => {
-    return Ticket.getTimerState(ticket?.statusSelect, timer?.statusSelect);
-  }, [ticket, timer]);
-
-  const disbaled = useMemo(() => {
-    if (
-      ticket?.statusSelect === Ticket.status.Closed ||
-      ticket?.statusSelect === Ticket.status.Resolved
-    ) {
-      return true;
-    }
-    return false;
-  }, [ticket]);
-
-  const timerDuration = useMemo(() => {
-    if (
-      !Array.isArray(ticket?.timerList) ||
-      ticket.timerList.length === 0 ||
-      ticket.timerList[0]?.id !== timer?.id
-    ) {
-      return 0;
-    }
-    return Ticket.getTotalDuration(timerHistory);
-  }, [ticket?.timerList, timer?.id, timerHistory]);
-
-  const updateStatus = useCallback(
-    status => {
-      dispatch(
-        updateTicketStatus({
-          version: ticket?.version,
-          dateTime: getNowDateZonesISOString(),
-          targetStatus: status,
-          ticketId: ticket?.id,
-        }),
-      );
-    },
-    [dispatch, ticket],
-  );
+    fetchTicket();
+  }, [fetchTicket]);
 
   if (ticket?.id !== idTicket) {
     return null;
@@ -124,40 +60,13 @@ const TicketDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<TicketHeader />} />
-      <ScrollView>
+      <ScrollView refresh={{loading: loadingTicket, fetcher: fetchTicket}}>
         <NotesCard
           title={I18n.t('Base_Description')}
           data={ticket.description}
         />
         <TicketDropdownCards />
-        {helpdeskConfig?.manageTimer ? (
-          <Stopwatch
-            startTime={timerDuration}
-            timerFormat={I18n.t('Stopwatch_TimerFormat')}
-            status={statustimer}
-            disableStop={statustimer === StopwatchType.status.Paused}
-            onPlay={() => updateStatus(Ticket.stopWatchStatus.start)}
-            onPause={() => updateStatus(Ticket.stopWatchStatus.pause)}
-            onStop={() => updateStatus(Ticket.stopWatchStatus.stop)}
-            onCancel={() => updateStatus(Ticket.stopWatchStatus.reset)}
-            disable={disbaled}
-          />
-        ) : (
-          <TicketsStatusButton />
-        )}
-        {ticket?.statusSelect !== Ticket.status.Closed &&
-          ticket?.statusSelect !== Ticket.status.New && (
-            <IconButton
-              title={I18n.t('Helpdesk_Close')}
-              iconName="power-off"
-              onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
-              color={Colors.primaryColor}
-              disabled={
-                ticket?.statusSelect === Ticket.status.Closed ||
-                ticket?.statusSelect === Ticket.status.New
-              }
-            />
-          )}
+        <TicketStopwatch />
       </ScrollView>
       {ticket?.statusSelect !== Ticket.status.Closed && (
         <TicketEditButton idTicket={idTicket} />

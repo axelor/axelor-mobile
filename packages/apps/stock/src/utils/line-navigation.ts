@@ -43,17 +43,9 @@ export const showLine = ({
     return;
   }
 
-  const updatedItemLine = {
-    ...itemLine.data,
-    product: {
-      ...itemLine.data.product,
-      name: itemLine.data['product.name'],
-      trackingNumberConfiguration:
-        itemLine.data['product.trackingNumberConfiguration'],
-    },
-  };
+  const line = {...itemLine.data};
 
-  const {product, trackingNumber} = updatedItemLine;
+  const {product, trackingNumber} = line;
 
   const {trackingNumberConfiguration} = product;
 
@@ -65,14 +57,14 @@ export const showLine = ({
       trackingNumber == null)
   ) {
     navigation.navigate(lineDetailsScreen, {
-      [itemLine.name]: updatedItemLine,
+      [itemLine.name]: line,
       [item.name]: item.data,
-      [`${itemLine.name}Id`]: updatedItemLine.id,
+      [`${itemLine.name}Id`]: line.id,
       productId: product.id,
     });
   } else if (trackingNumberConfiguration && trackingNumber != null) {
     navigation.navigate(selectTrackingScreen, {
-      [itemLine.name]: updatedItemLine,
+      [itemLine.name]: line,
       [item.name]: item.data,
       product: product,
     });

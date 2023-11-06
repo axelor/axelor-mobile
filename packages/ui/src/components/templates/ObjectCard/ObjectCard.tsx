@@ -137,7 +137,7 @@ const ObjectCard = ({
          * but keep the possibility to give 'null' value to adapt to text length
          */
         if (_item.numberOfLines === undefined) {
-          return {..._item, numberOfLines: 1};
+          return {..._item, numberOfLines: _item.isTitle ? 2 : 1};
         }
 
         return _item;

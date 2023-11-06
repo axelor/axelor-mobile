@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as CameraButton} from './CameraButton/CameraButton';
 export {default as DatePicker} from './DatePicker/DatePicker';
 export {default as HeaderBand} from './HeaderBand/HeaderBand';
 export {default as HeaderOptionMenuItem} from './HeaderOptionsMenuItem/HeaderOptionMenuItem';

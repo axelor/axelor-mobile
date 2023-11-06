@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {ReactElement, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
@@ -25,7 +25,9 @@ interface ToggleSwitchProps {
   styleContainer?: any;
   styleToogle?: any;
   leftTitle: string;
+  leftElement?: ReactElement | JSX.Element;
   rightTitle: string;
+  rigthElement?: ReactElement | JSX.Element;
   onSwitch: () => void;
 }
 
@@ -33,10 +35,13 @@ const ToggleSwitch = ({
   styleContainer,
   styleToogle,
   leftTitle,
+  leftElement,
   rightTitle,
+  rigthElement,
   onSwitch = () => {},
 }: ToggleSwitchProps) => {
   const Colors = useThemeColor();
+
   const [active, setActive] = useState(true);
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -58,12 +63,14 @@ const ToggleSwitch = ({
         disabled={active}
         onPress={onLeftPress}>
         <Text>{leftTitle}</Text>
+        {leftElement != null && React.cloneElement(leftElement)}
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.toggle, !active && styles.active, styleToogle]}
         disabled={!active}
         onPress={onRightPress}>
         <Text>{rightTitle}</Text>
+        {rigthElement != null && React.cloneElement(rigthElement)}
       </TouchableOpacity>
     </View>
   );
@@ -87,6 +94,7 @@ const getStyles = Colors =>
       borderRadius: 50,
       justifyContent: 'center',
       alignItems: 'center',
+      flexDirection: 'row',
     },
     active: {
       backgroundColor: Colors.primaryColor.background_light,

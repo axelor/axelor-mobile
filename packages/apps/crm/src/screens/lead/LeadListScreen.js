@@ -67,8 +67,8 @@ const LeadListScreen = ({navigation}) => {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -82,8 +82,8 @@ const LeadListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
@@ -139,9 +139,7 @@ const LeadListScreen = ({navigation}) => {
             leadsAddress={item.primaryAddress}
             leadsFixedPhone={item.fixedPhone}
             leadsPhoneNumber={item.mobilePhone}
-            leadsEmail={
-              item['emailAddress.address'] || item.emailAddress?.address
-            }
+            leadsEmail={item.emailAddress?.address}
             leadScoring={item.leadScoringSelect}
             leadVersion={item.version}
             leadsId={item.id}

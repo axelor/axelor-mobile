@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductVariantCard} from '../../components';
@@ -84,7 +83,6 @@ const ProductListVariantScreen = ({route, navigation}) => {
         data={productListVariables}
         renderItem={({item, index}) => (
           <ProductVariantCard
-            style={styles.item}
             name={item.name}
             code={item.code}
             attributesList={
@@ -106,13 +104,5 @@ const ProductListVariantScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-    marginVertical: 4,
-    paddingHorizontal: 25,
-  },
-});
 
 export default ProductListVariantScreen;

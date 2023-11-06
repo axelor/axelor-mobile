@@ -17,7 +17,13 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Screen, Text, ScrollView, HeaderContainer} from '@axelor/aos-mobile-ui';
+import {
+  Screen,
+  Text,
+  ScrollView,
+  HeaderContainer,
+  useDigitFormat,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   fetchProductWithId,
@@ -35,18 +41,19 @@ import {
 import {ManufacturingOrder} from '../../../types';
 
 const ProducedProductDetailsScreen = ({route, navigation}) => {
+  const {manufOrder, producedProduct, trackingNumber} = route.params;
   const I18n = useTranslator();
-  const manufOrder = route.params.manufOrder;
-  const producedProduct = route.params.producedProduct;
+  const formatNumber = useDigitFormat();
+  const dispatch = useDispatch();
+
   const {loadingProductFromId, productFromId} = useSelector(
     state => state.product,
   );
   const product = producedProduct ? productFromId : route.params.product;
-  const trackingNumber = route.params.trackingNumber;
+
   const [producedQty, setProducedQty] = useState(
     producedProduct ? producedProduct.realQty : 0,
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (producedProduct != null) {
@@ -155,9 +162,9 @@ const ProducedProductDetailsScreen = ({route, navigation}) => {
           }
           isBigButton={true}>
           <Text>
-            {`${I18n.t('Manufacturing_PlannedQty')}: ${parseFloat(
-              producedProduct ? producedProduct.plannedQty : 0,
-            ).toFixed(2)} ${
+            {`${I18n.t('Manufacturing_PlannedQty')}: ${formatNumber(
+              producedProduct?.plannedQty,
+            )} ${
               producedProduct
                 ? producedProduct.unit?.unitName
                 : product.unit?.name

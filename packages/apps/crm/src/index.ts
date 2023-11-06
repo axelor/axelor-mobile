@@ -27,7 +27,12 @@ import EventScreen from './screens/event';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
 import * as crmReducers from './features';
-import {crm_modelAPI, crm_searchFields, crm_sortFields} from './models';
+import {
+  crm_formsRegister,
+  crm_modelAPI,
+  crm_searchFields,
+  crm_sortFields,
+} from './models';
 import {useCRMHeaders} from './hooks/use-crm-header-actions';
 
 export const CrmModule: Module = {
@@ -94,6 +99,7 @@ export const CrmModule: Module = {
     objectFields: {...crm_modelAPI},
     sortFields: {...crm_sortFields},
     searchFields: {...crm_searchFields},
+    formsRegister: {...crm_formsRegister},
     headerRegisters: useCRMHeaders,
   },
 };

@@ -17,8 +17,8 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, LabelText, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {StyleSheet} from 'react-native';
+import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 interface ProducedProductCardProps {
@@ -42,6 +42,7 @@ const ProducedProductCard = ({
 }: ProducedProductCardProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatNumber = useDigitFormat();
 
   const borderStyles = useMemo(() => {
     if (plannedQty > producedQty) {
@@ -51,32 +52,33 @@ const ProducedProductCard = ({
   }, [Colors, plannedQty, producedQty]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.cardContainer, borderStyles, style]}>
-        <Text style={styles.txtImportant}>{productName}</Text>
-        <LabelText
-          title={`${I18n.t('Manufacturing_PlannedQty')}:`}
-          value={`${parseFloat(plannedQty.toString()).toFixed(2)} ${
-            unitName != null ? unitName : ''
-          }`}
-        />
-        <LabelText
-          title={`${I18n.t('Manufacturing_ProducedQty')}:`}
-          value={`${
-            producedQty == null
-              ? parseFloat('0').toFixed(2)
-              : parseFloat(producedQty.toString()).toFixed(2)
-          } ${unitName != null ? unitName : ''}`}
-        />
-        {trackingNumberSeq != null && (
-          <LabelText
-            iconName="qrcode"
-            title={`${I18n.t('Manufacturing_TrackingNumber')}:`}
-            value={trackingNumberSeq}
-          />
-        )}
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      style={[borderStyles, style]}
+      upperTexts={{
+        items: [
+          {isTitle: true, displayText: productName},
+          {
+            indicatorText: `${I18n.t('Manufacturing_PlannedQty')}:`,
+            displayText: `${formatNumber(plannedQty)} ${
+              unitName != null ? unitName : ''
+            }`,
+          },
+          {
+            indicatorText: `${I18n.t('Manufacturing_ProducedQty')}:`,
+            displayText: `${formatNumber(producedQty)} ${
+              unitName != null ? unitName : ''
+            }`,
+          },
+          {
+            indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
+            displayText: trackingNumberSeq,
+            iconName: 'qrcode',
+            hideIf: trackingNumberSeq == null,
+          },
+        ],
+      }}
+    />
   );
 };
 
@@ -84,21 +86,5 @@ const getStyles = color =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });
-
-const styles = StyleSheet.create({
-  cardContainer: {
-    marginHorizontal: 12,
-    flexDirection: 'column',
-    paddingLeft: 10,
-    paddingRight: 15,
-  },
-  txtImportant: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  txtDetails: {
-    fontSize: 14,
-  },
-});
 
 export default ProducedProductCard;

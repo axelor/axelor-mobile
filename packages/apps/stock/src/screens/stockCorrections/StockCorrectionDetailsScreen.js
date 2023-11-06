@@ -16,8 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  HeaderContainer,
+  Screen,
+  KeyboardAvoidingScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   StockCorrectionHeader,
@@ -25,6 +29,7 @@ import {
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
   StockCorrectionReasonPicker,
+  StockCorrectionHtmlInput,
 } from '../../components';
 import {fetchProductWithId} from '../../features/productSlice';
 import {fetchProductIndicators} from '../../features/productIndicatorsSlice';
@@ -35,12 +40,15 @@ const StockCorrectionDetailsScreen = ({route}) => {
   const stockCorrectionId = route.params.stockCorrectionId;
   const dispatch = useDispatch();
 
-  const {stockCorrection} = useSelector(state => state.stockCorrection);
+  const {loading, stockCorrection} = useSelector(
+    state => state.stockCorrection,
+  );
   const {activeCompany} = useSelector(state => state.user.user);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
 
   const [saveStatus, setSaveStatus] = useState(true);
+  const [comments, setComments] = useState();
   const [realQty, setRealQty] = useState();
   const [reason, setReason] = useState();
 
@@ -52,9 +60,13 @@ const StockCorrectionDetailsScreen = ({route}) => {
     return productIndicators?.realQty;
   }, [productIndicators?.realQty, stockCorrection]);
 
-  useEffect(() => {
+  const getStockCorrection = useCallback(() => {
     dispatch(fetchStockCorrection({id: stockCorrectionId}));
   }, [dispatch, stockCorrectionId]);
+
+  useEffect(() => {
+    getStockCorrection();
+  }, [getStockCorrection]);
 
   useEffect(() => {
     if (stockCorrection != null) {
@@ -76,6 +88,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
   useEffect(() => {
     setRealQty(stockCorrection?.realQty);
     setReason(stockCorrection?.stockCorrectionReason || {name: '', id: null});
+    setComments(stockCorrection?.comments);
   }, [stockCorrection]);
 
   if (
@@ -84,7 +97,6 @@ const StockCorrectionDetailsScreen = ({route}) => {
   ) {
     return null;
   }
-
   return (
     <Screen
       removeSpaceOnTop={true}
@@ -95,6 +107,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
           stockCorrection={stockCorrection}
           saveStatus={saveStatus}
           status={stockCorrection.statusSelect}
+          comments={comments}
         />
       }>
       <HeaderContainer
@@ -106,7 +119,8 @@ const StockCorrectionDetailsScreen = ({route}) => {
           />
         }
       />
-      <ScrollView>
+      <KeyboardAvoidingScrollView
+        refresh={{fetcher: getStockCorrection, loading}}>
         <StockCorrectionProductCardInfo
           stockProduct={product}
           trackingNumber={stockCorrection.trackingNumber}
@@ -125,7 +139,12 @@ const StockCorrectionDetailsScreen = ({route}) => {
           setSaveStatus={setSaveStatus}
           status={stockCorrection.statusSelect}
         />
-      </ScrollView>
+        <StockCorrectionHtmlInput
+          setComments={setComments}
+          stockCorrection={stockCorrection}
+          setSaveStatus={setSaveStatus}
+        />
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

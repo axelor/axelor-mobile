@@ -17,6 +17,7 @@
  */
 
 import {
+  contactProvider,
   headerActionsProvider,
   useSelector,
   useNavigation,
@@ -53,6 +54,7 @@ const useCatalogListActions = () => {
 const useClientDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {client} = useSelector((state: any) => state.client);
+  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_client_details', {
@@ -60,13 +62,38 @@ const useClientDetailsActions = () => {
       modelId: client?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: client?.simpleFullName,
+      actions: [
+        {
+          key: 'client-saveContact',
+          order: 10,
+          iconName: 'user-plus',
+          title: I18n.t('Crm_SaveContact'),
+          onPress: () =>
+            contactProvider.saveContact({
+              firstName: client.simpleFullName,
+              mobilePhone: client.mobilePhone,
+              fixedPhone: client.fixedPhone,
+              email: client.emailAddress?.address,
+              address: {
+                street:
+                  client.mainAddress?.addressL4 ?? client.mainAddress?.fullName,
+                country: client.mainAddress?.addressL7Country?.name,
+                city: client.mainAddress?.city?.name,
+                postCode: client.mainAddress?.zip,
+              },
+              notes: client.description,
+            }),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [mobileSettings, client]);
+  }, [mobileSettings, client, I18n]);
 };
 
 const useContactDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {contact} = useSelector((state: any) => state.contact);
+  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_contact_details', {
@@ -74,8 +101,35 @@ const useContactDetailsActions = () => {
       modelId: contact?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: contact?.simpleFullName,
+      actions: [
+        {
+          key: 'contact-saveContact',
+          order: 10,
+          iconName: 'user-plus',
+          title: I18n.t('Crm_SaveContact'),
+          onPress: () =>
+            contactProvider.saveContact({
+              firstName: contact.firstName,
+              lastName: contact.name,
+              company: contact.mainPartner?.fullName,
+              mobilePhone: contact.mobilePhone,
+              fixedPhone: contact.fixedPhone,
+              email: contact.emailAddress?.address,
+              address: {
+                street:
+                  contact.mainAddress?.addressL4 ??
+                  contact.mainAddress?.fullName,
+                country: contact.mainAddress?.addressL7Country?.name,
+                city: contact.mainAddress?.city?.name,
+                postCode: contact.mainAddress?.zip,
+              },
+              notes: contact.description,
+            }),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [mobileSettings, contact]);
+  }, [mobileSettings, contact, I18n]);
 };
 
 const useLeadListActions = () => {
@@ -101,6 +155,7 @@ const useLeadListActions = () => {
 };
 
 const useLeadDetailsActions = () => {
+  const I18n = useTranslator();
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {lead} = useSelector((state: any) => state.lead);
 
@@ -110,8 +165,30 @@ const useLeadDetailsActions = () => {
       modelId: lead?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: lead?.simpleFullName,
+      actions: [
+        {
+          key: 'lead-saveContact',
+          order: 10,
+          iconName: 'user-plus',
+          title: I18n.t('Crm_SaveContact'),
+          onPress: () =>
+            contactProvider.saveContact({
+              firstName: lead.firstName,
+              lastName: lead.name,
+              company: lead.enterpriseName,
+              mobilePhone: lead.mobilePhone,
+              fixedPhone: lead.fixedPhone,
+              email: lead.emailAddress?.address,
+              address: {
+                street: lead.primaryAddress,
+              },
+              notes: lead.description,
+            }),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [mobileSettings, lead]);
+  }, [mobileSettings, lead, I18n]);
 };
 
 const useOpportunityListActions = () => {
@@ -153,6 +230,7 @@ const useOpportunityDetailsActions = () => {
 const useProspectDetailsActions = () => {
   const {mobileSettings} = useSelector((state: any) => state.config);
   const {prospect} = useSelector((state: any) => state.prospect);
+  const I18n = useTranslator();
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_prospect_details', {
@@ -160,8 +238,33 @@ const useProspectDetailsActions = () => {
       modelId: prospect?.id,
       disableMailMessages: !mobileSettings?.isTrackerMessageEnabled,
       attachedFileScreenTitle: prospect?.simpleFullName,
+      actions: [
+        {
+          key: 'prospect-saveContact',
+          order: 10,
+          iconName: 'user-plus',
+          title: I18n.t('Crm_SaveContact'),
+          onPress: () =>
+            contactProvider.saveContact({
+              firstName: prospect.simpleFullName,
+              mobilePhone: prospect.mobilePhone,
+              fixedPhone: prospect.fixedPhone,
+              email: prospect.emailAddress?.address,
+              address: {
+                street:
+                  prospect.mainAddress?.addressL4 ??
+                  prospect.mainAddress?.fullName,
+                country: prospect.mainAddress?.addressL7Country?.name,
+                city: prospect.mainAddress?.city?.name,
+                postCode: prospect.mainAddress?.zip,
+              },
+              notes: prospect.description,
+            }),
+          showInHeader: true,
+        },
+      ],
     });
-  }, [mobileSettings, prospect]);
+  }, [mobileSettings, prospect, I18n]);
 };
 
 const useEventDetailsActions = () => {

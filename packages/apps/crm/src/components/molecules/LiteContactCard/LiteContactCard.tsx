@@ -17,18 +17,9 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Card,
-  Icon,
-  Text,
-  useThemeColor,
-  LabelText,
-  checkNullString,
-} from '@axelor/aos-mobile-ui';
+import {ObjectCard} from '@axelor/aos-mobile-ui';
 
 interface LiteContactCardProps {
-  style?: any;
   contactFullname: string;
   mobilePhoneNumber?: string;
   fixedPhoneNumber: string;
@@ -36,51 +27,37 @@ interface LiteContactCardProps {
   onPress: () => void;
 }
 const LiteContactCard = ({
-  style,
   contactFullname,
   mobilePhoneNumber,
   fixedPhoneNumber,
   email,
   onPress,
 }: LiteContactCardProps) => {
-  const Colors = useThemeColor();
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-      <Card style={[styles.container, style]}>
-        <View style={styles.containerChildren}>
-          {!checkNullString(contactFullname) && (
-            <Text style={styles.bold}>{contactFullname}</Text>
-          )}
-          {!checkNullString(mobilePhoneNumber) && (
-            <LabelText iconName="phone-alt" title={mobilePhoneNumber} />
-          )}
-          {!checkNullString(fixedPhoneNumber) && (
-            <LabelText iconName="phone-alt" title={fixedPhoneNumber} />
-          )}
-          {!checkNullString(email) && (
-            <LabelText iconName="envelope" title={email} />
-          )}
-        </View>
-        <Icon
-          name="chevron-right"
-          color={Colors.secondaryColor.background_light}
-          size={20}
-        />
-      </Card>
-    </TouchableOpacity>
+    <ObjectCard
+      onPress={onPress}
+      upperTexts={{
+        items: [
+          {displayText: contactFullname, hideIfNull: true, isTitle: true},
+          {
+            displayText: mobilePhoneNumber,
+            hideIfNull: true,
+            iconName: 'phone-alt',
+          },
+          {
+            indicatorText: fixedPhoneNumber,
+            hideIfNull: true,
+            iconName: 'phone-alt',
+          },
+          {
+            indicatorText: email,
+            hideIfNull: true,
+            iconName: 'envelope',
+          },
+        ],
+      }}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  containerChildren: {
-    flexDirection: 'column',
-  },
-  bold: {fontWeight: 'bold'},
-});
 
 export default LiteContactCard;

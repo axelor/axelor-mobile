@@ -60,12 +60,7 @@ const ProductCardInfo = ({
           />
         )}
         {!checkNullString(locker) && (
-          <LabelText
-            iconName="map-marker-alt"
-            size={15}
-            FontAwesome5={false}
-            title={locker}
-          />
+          <LabelText iconName="map-marker-alt" size={15} title={locker} />
         )}
       </ProductCardDetails>
     </View>

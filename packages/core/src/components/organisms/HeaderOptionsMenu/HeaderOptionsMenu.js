@@ -29,12 +29,21 @@ const HeaderOptionsMenu = ({
   modelId,
   actions = [],
   disableMailMessages,
+  disableJsonFields,
   attachedFileScreenTitle,
+  barcodeFieldname,
 }) => {
-  const {mailMessagesAction, attachedFilesAction} = useBasicActions({
+  const {
+    mailMessagesAction,
+    attachedFilesAction,
+    barcodeAction,
+    jsonFieldsAction,
+  } = useBasicActions({
     model,
     modelId,
     disableMailMessages,
+    barcodeFieldname,
+    disableJsonFields,
     attachedFileScreenTitle,
   });
 
@@ -50,10 +59,22 @@ const HeaderOptionsMenu = ({
 
   const allActions = useMemo(
     () =>
-      [attachedFilesAction, mailMessagesAction, ...actions]
+      [
+        attachedFilesAction,
+        mailMessagesAction,
+        barcodeAction,
+        jsonFieldsAction,
+        ...actions,
+      ]
         .filter(_action => !_action.hideIf)
         .sort((a, b) => a.order - b.order),
-    [actions, attachedFilesAction, mailMessagesAction],
+    [
+      actions,
+      attachedFilesAction,
+      barcodeAction,
+      jsonFieldsAction,
+      mailMessagesAction,
+    ],
   );
 
   const headerActions = useMemo(

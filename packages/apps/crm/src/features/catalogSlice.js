@@ -93,11 +93,7 @@ const catalogSlice = createSlice({
       state.loadingCatalogType = false;
       state.catalogTypeList = action.payload;
     });
-    builder.addCase(createCatalog.pending, (state, action) => {
-      state.loadingCatalog = true;
-    });
     builder.addCase(createCatalog.fulfilled, (state, action) => {
-      state.loadingCatalog = false;
       state.catalogList = updateAgendaItems(state.catalogList, [
         action.payload,
       ]);

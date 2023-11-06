@@ -33,6 +33,7 @@ const StockCorrectionCreationButton = ({
   trackingNumber,
   stockLocation,
   realQty,
+  comments,
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -55,6 +56,7 @@ const StockCorrectionCreationButton = ({
               : trackingNumber.id,
           status: status,
           realQty: realQty,
+          comments: comments,
         }),
       );
 
@@ -68,6 +70,7 @@ const StockCorrectionCreationButton = ({
       reason,
       stockLocation,
       trackingNumber,
+      comments,
     ],
   );
 

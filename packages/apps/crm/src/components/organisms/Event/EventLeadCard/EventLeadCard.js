@@ -30,11 +30,11 @@ const EventLeadCard = ({}) => {
   const {lead, leadStatusList} = useSelector(state => state.lead);
 
   useEffect(() => {
-    if (event.lead) {
-      dispatch(fetchLeadById({leadId: event.lead.id}));
+    if (event.eventLead) {
+      dispatch(fetchLeadById({leadId: event.eventLead.id}));
       dispatch(fetchLeadStatus());
     }
-  }, [dispatch, event.lead]);
+  }, [dispatch, event.eventLead]);
 
   const handleCardPress = useCallback(() => {
     navigation.navigate('LeadDetailsScreen', {
@@ -46,7 +46,7 @@ const EventLeadCard = ({}) => {
     });
   }, [lead, leadStatusList, navigation]);
 
-  if (!event.lead) {
+  if (!event.eventLead) {
     return null;
   }
 
@@ -58,7 +58,7 @@ const EventLeadCard = ({}) => {
       leadsAddress={lead.primaryAddress}
       leadsFixedPhone={lead.fixedPhone}
       leadsPhoneNumber={lead.mobilePhone}
-      leadsEmail={lead['emailAddress.address'] || lead.emailAddress?.address}
+      leadsEmail={lead.emailAddress?.address}
       leadScoring={lead.leadScoringSelect}
       leadVersion={lead.version}
       leadsId={lead.id}

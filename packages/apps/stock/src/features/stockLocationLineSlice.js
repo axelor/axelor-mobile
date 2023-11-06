@@ -73,32 +73,12 @@ const stockLocationLineSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'stockLocationLine',
     });
-    generateInifiniteScrollCases(
-      builder,
-      searchAvailableProducts,
-      {
-        loading: 'loadingAvailableProducts',
-        moreLoading: 'moreLoadingAvailableProducts',
-        isListEnd: 'isListEndAvailableProducts',
-        list: 'availableProducts',
-      },
-      {
-        parseFunction: data =>
-          data?.map(_item => ({
-            ..._item,
-            product: {
-              ..._item.product,
-              version: _item.product.$version,
-              code: _item['product.code'],
-              name: _item['product.name'],
-              unit: _item['product.unit'],
-              picture: _item['product.picture'],
-              trackingNumberConfiguration:
-                _item['product.trackingNumberConfiguration'],
-            },
-          })),
-      },
-    );
+    generateInifiniteScrollCases(builder, searchAvailableProducts, {
+      loading: 'loadingAvailableProducts',
+      moreLoading: 'moreLoadingAvailableProducts',
+      isListEnd: 'isListEndAvailableProducts',
+      list: 'availableProducts',
+    });
   },
 });
 

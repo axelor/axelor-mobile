@@ -16,20 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Screen, ScrollView, NotesCard} from '@axelor/aos-mobile-ui';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
   ProductCharacteristics,
   ProductVariantButton,
   ProductPackingInformations,
   ProductUnitInformations,
 } from '../../components';
+import {fetchProductWithId} from '../../features/productSlice';
 
 const ProductDetailsScreen = ({route, navigation}) => {
-  const product = route.params.product;
+  const productId = route.params.product?.id;
   const I18n = useTranslator();
+  const dispatch = useDispatch();
+
+  const {loadingProductFromId, productFromId: product} = useSelector(
+    state => state.product,
+  );
+
+  const fetchProductFromId = useCallback(() => {
+    dispatch(fetchProductWithId(productId));
+  }, [dispatch, productId]);
+
+  useEffect(() => {
+    fetchProductFromId();
+  }, [fetchProductFromId]);
 
   const navigateToImageProduct = () => {
     navigation.navigate('ProductImageScreen', {product: product});
@@ -37,7 +51,8 @@ const ProductDetailsScreen = ({route, navigation}) => {
 
   return (
     <Screen fixedItems={<ProductVariantButton product={product} />}>
-      <ScrollView>
+      <ScrollView
+        refresh={{loading: loadingProductFromId, fetcher: fetchProductFromId}}>
         <ProductCharacteristics
           onPressImage={() => navigateToImageProduct()}
           picture={product?.picture}

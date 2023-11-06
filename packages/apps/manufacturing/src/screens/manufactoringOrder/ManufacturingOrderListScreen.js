@@ -192,6 +192,10 @@ const ManufacturingOrderListScreen = ({navigation}) => {
             qty={item.qty}
             unit={item.unit}
             link={{ordersRef: item.saleOrderSet, client: item.clientPartner}}
+            plannedStartDate={item.plannedStartDateT}
+            plannedEndDate={item.plannedEndDateT}
+            realStartDate={item.realStartDateT}
+            realEndDate={item.realEndDateT}
             onPress={() => navigateToManufOrder(item)}
           />
         )}

@@ -19,12 +19,11 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {
-  Card,
-  LabelText,
   Screen,
   ScrollList,
   HeaderContainer,
   Text,
+  ObjectCard,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ManufacturingOrderHeader} from '../../components';
@@ -60,14 +59,16 @@ const ManufacturingOrderListSaleOrderScreen = ({route}) => {
         renderItem={({item}) => {
           const saleOrderRef = splitSaleOrderRef(item.fullName);
           return (
-            <Card style={styles.itemContainer}>
-              <LabelText
-                style={styles.itemTitle}
-                title={saleOrderRef.ref}
-                iconName="tag"
-              />
-              <LabelText title={saleOrderRef.client} iconName="user" />
-            </Card>
+            <ObjectCard
+              touchable={false}
+              showArrow={false}
+              upperTexts={{
+                items: [
+                  {indicatorText: saleOrderRef.ref, iconName: 'tag'},
+                  {indicatorText: saleOrderRef.client, iconName: 'user'},
+                ],
+              }}
+            />
           );
         }}
         isListEnd={!IS_INFINITE_SCROLL_ENABLED}

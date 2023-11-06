@@ -24,6 +24,7 @@ import {
   Icon,
   Increment,
   Text,
+  useDigitFormat,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
@@ -53,12 +54,13 @@ const QuantityCard = ({
 }: QuantityCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
+  const formatNumber = useDigitFormat();
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const _defaultValue = useMemo(
-    () => parseFloat(defaultValue.toString()).toFixed(2),
-    [defaultValue],
+    () => formatNumber(defaultValue),
+    [defaultValue, formatNumber],
   );
 
   if (children == null || children.length === 0) {
@@ -67,7 +69,7 @@ const QuantityCard = ({
         <Text style={styles.noChildrenTextField}>{labelQty}</Text>
         {editable ? (
           <Increment
-            value={_defaultValue.toString()}
+            value={_defaultValue}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}
@@ -101,7 +103,7 @@ const QuantityCard = ({
         <Text style={styles.textField}>{labelQty}</Text>
         {editable ? (
           <Increment
-            value={_defaultValue.toString()}
+            value={_defaultValue}
             decimalSpacer={I18n.t('Base_DecimalSpacer')}
             thousandSpacer={I18n.t('Base_ThousandSpacer')}
             onValueChange={onValueChange}

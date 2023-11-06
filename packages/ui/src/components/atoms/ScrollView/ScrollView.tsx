@@ -20,22 +20,37 @@ import React from 'react';
 import {
   Platform,
   ScrollView as ReactNativeScrollView,
+  RefreshControl,
   StyleSheet,
 } from 'react-native';
+
+interface Refresh {
+  loading: boolean;
+  fetcher: () => void;
+}
 
 interface ScrollViewProps {
   style?: any;
   children?: any;
+  refresh?: Refresh;
 }
 
-const ScrollView = ({style, children}: ScrollViewProps) => {
+const ScrollView = ({style, children, refresh}: ScrollViewProps) => {
   return (
     <ReactNativeScrollView
       contentContainerStyle={[
         styles.container,
         Platform.OS === 'ios' ? styles.containerZIndex : null,
         style,
-      ]}>
+      ]}
+      refreshControl={
+        refresh != null && (
+          <RefreshControl
+            refreshing={refresh.loading}
+            onRefresh={refresh.fetcher}
+          />
+        )
+      }>
       {children}
     </ReactNativeScrollView>
   );

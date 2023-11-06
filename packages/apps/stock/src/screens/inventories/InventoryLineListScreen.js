@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -190,7 +190,6 @@ const InventoryLineListScreen = ({route, navigation}) => {
         data={filteredList}
         renderItem={({item}) => (
           <InventoryLineCard
-            style={styles.item}
             productName={item.product?.fullName}
             currentQty={item.currentQty}
             realQty={item.realQty}
@@ -209,11 +208,5 @@ const InventoryLineListScreen = ({route, navigation}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    marginHorizontal: 12,
-  },
-});
 
 export default InventoryLineListScreen;

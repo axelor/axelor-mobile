@@ -39,6 +39,7 @@ import {objectFieldsProvider} from '../apiProviders';
 import {requestBuilder} from '../apiProviders/Standard/requests.helper';
 import {core_modelAPI} from '../models';
 import {HeaderBandProvider} from '../header';
+import {addModuleForms, formConfigsProvider} from '../forms';
 
 const ApplicationContext = createContext(null);
 
@@ -135,10 +136,18 @@ const ContextsProvider = ({
     [modules],
   );
 
+  const modulesFormsRegisters = useMemo(() => {
+    return modules
+      .filter(_module => _module.models?.formsRegister)
+      .map(_module => _module.models.formsRegister)
+      .reduce((forms, _moduleForms) => addModuleForms(forms, _moduleForms), {});
+  }, [modules]);
+
   useEffect(() => {
     objectFieldsProvider.init(modulesObjectFields);
     requestBuilder.init(defaultRequestLimit);
-  }, [defaultRequestLimit, modulesObjectFields]);
+    formConfigsProvider.init(modulesFormsRegisters);
+  }, [defaultRequestLimit, modulesObjectFields, modulesFormsRegisters]);
 
   if (loading) {
     return null;
