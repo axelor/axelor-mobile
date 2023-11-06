@@ -55,17 +55,6 @@ const CustomPicker = ({
     }).then(setSelection);
   }, [item]);
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={title}
-        readOnly={true}
-        defaultValue={defaultValue}
-      />
-    );
-  }
-
   return (
     <Picker
       style={style}
@@ -76,6 +65,7 @@ const CustomPicker = ({
       valueField="id"
       defaultValue={defaultValue}
       required={required}
+      readonly={readonly}
       isScrollViewContainer={true}
     />
   );
