@@ -6,11 +6,11 @@ sidebar_class_name: icon API providers
 
 # Gestion des API providers
 
-##  Standard
+## Standard
 
-Afin de communiquer avec l’instance web de l’ERP, les différents modules utilisent *axios* ****qui permet de réaliser des appels API. Lors de la connexion sur l’application, axios va récupérer et sauvegarder l’url de l’instance et les tokens de connexion envoyés par l’ERP afin de pouvoir réaliser les futures requêtes.
+Afin de communiquer avec l’instance web de l’ERP, les différents modules utilisent _axios_ \*\*\*\*qui permet de réaliser des appels API. Lors de la connexion sur l’application, axios va récupérer et sauvegarder l’url de l’instance et les tokens de connexion envoyés par l’ERP afin de pouvoir réaliser les futures requêtes.
 
-Le package core fournit un provider afin de réaliser n’importe quel appel API. Il s’agit de *axiosApiProvider* qui possède quatre types de requêtes :
+Le package core fournit un provider afin de réaliser n’importe quel appel API. Il s’agit de _axiosApiProvider_ qui possède quatre types de requêtes :
 
 ```tsx
 export interface ApiProvider {
@@ -31,7 +31,7 @@ Les providers spécialisés pour la récupération de données doivent suivre l�
 
 ```tsx
 export interface ModelApi {
-	init(data?: any): void;
+  init(data?: any): void;
   isAvailable(): Promise<boolean>;
   getAll({
     modelName,
@@ -76,26 +76,26 @@ export interface ModelApi {
 }
 ```
 
-La méthode *init* doit permettre d’initialiser le provider si ce dernier nécessite certaines actions : initialiser l’espace de stockage par exemple si les données seront récupérées en local.
+La méthode _init_ doit permettre d’initialiser le provider si ce dernier nécessite certaines actions : initialiser l’espace de stockage par exemple si les données seront récupérées en local.
 
-La fonction *isAvailable* permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre.
+La fonction _isAvailable_ permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre.
 
-Les fonctions *getAll*, *get*, *fetch* et *search* permettent de récupérer les données sous différentes manières.
+Les fonctions _getAll_, _get_, _fetch_ et _search_ permettent de récupérer les données sous différentes manières.
 
-La fonction *insert* permet de venir modifier les données enregistrées pour l’utilisation hors-ligne.
+La fonction _insert_ permet de venir modifier les données enregistrées pour l’utilisation hors-ligne.
 
-La fonction *reset* permet de venir réinitialiser les données enregistrées pour tous les modèles ou bien seulement pour le modèle renseigné en argument.
+La fonction _reset_ permet de venir réinitialiser les données enregistrées pour tous les modèles ou bien seulement pour le modèle renseigné en argument.
 
 Le package core propose par défaut une implémentation de cette interface qui utilise les web services AOP, il s’agit de la classe `AopModelApi`.
 
-Une deuxième implémentation a été construite avec un fonctionnement différent puisque cette dernière prend en argument une liste de ModelApi en argument de son constructeur. Il s’agit du `GatewayModelApi` qui permet de switcher entre plusieurs implémentations de l’interface en utilisant le premier provider disponible grâce à la méthode *isAvailable*. L’ordre de priorité des provider est celui de sa définition dans le constructeur.
+Une deuxième implémentation a été construite avec un fonctionnement différent puisque cette dernière prend en argument une liste de ModelApi en argument de son constructeur. Il s’agit du `GatewayModelApi` qui permet de switcher entre plusieurs implémentations de l’interface en utilisant le premier provider disponible grâce à la méthode _isAvailable_. L’ordre de priorité des provider est celui de sa définition dans le constructeur.
 
-Afin d’uniformiser l’utilisation de toutes les implémentations de l’interface *ModelApi*, il existe un provideur global qui possède en attribut le ModelApi courant avec deux méthodes : une pour récupérer le provider et une autre pour venir le modifier. Dans le but de faciliter son utilisation, trois fonctions ont été créées :
+Afin d’uniformiser l’utilisation de toutes les implémentations de l’interface _ModelApi_, il existe un provideur global qui possède en attribut le ModelApi courant avec deux méthodes : une pour récupérer le provider et une autre pour venir le modifier. Dans le but de faciliter son utilisation, trois fonctions ont été créées :
 
 - `useModelApi(): ModelApi` et `getModelApi(): ModelApi` permettent de récupérer le ModelApi
 - `registerModelApi(modelApi: ModelApi)` permet de venit modifier le ModelApi actuellement enregistré.
 
-Par défaut, ce provider est paramétré avec le *AopModelApi*.
+Par défaut, ce provider est paramétré avec le _AopModelApi_.
 
 Ainsi, lors de l’utilisation d’un Gateway, il faut venir enregistrer le nouveau ModelApi.
 
@@ -118,24 +118,24 @@ export type ActionRequest = {
 };
 
 export interface ActionApi {
-	isAvailable(): Promise<boolean>;
+  isAvailable(): Promise<boolean>;
   send(request: ActionRequest): Promise<void>;
   synchronize(): Promise<void>;
 }
 ```
 
-La fonction *isAvailable* permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre. La fonction *send* permet de réaliser la requête. La fonction *synchronize* permet de synchroniser les requêtes avec le web.
+La fonction _isAvailable_ permet de savoir si le provider est disponible pour utilisation ou non : aucune connexion internet ou autre. La fonction _send_ permet de réaliser la requête. La fonction _synchronize_ permet de synchroniser les requêtes avec le web.
 
 Le package core propose par défaut une implémentation de cette interface qui utilise les web services AOS, il s’agit de la classe `AosActionApi`.
 
-Une deuxième implémentation a été construite avec un fonctionnement différent puisque cette dernière prend en argument une liste de *ActionApi* en argument de son constructeur. Il s’agit du `GatewayActionApi` qui permet de switcher entre plusieurs implémentations de l’interface en utilisant le premier provider disponible grâce à la méthode *isAvailable*. L’ordre de priorité des provider est celui de sa définition dans le constructeur.
+Une deuxième implémentation a été construite avec un fonctionnement différent puisque cette dernière prend en argument une liste de _ActionApi_ en argument de son constructeur. Il s’agit du `GatewayActionApi` qui permet de switcher entre plusieurs implémentations de l’interface en utilisant le premier provider disponible grâce à la méthode _isAvailable_. L’ordre de priorité des provider est celui de sa définition dans le constructeur.
 
-Afin d’uniformiser l’utilisation de toutes les implémentations de l’interface *ActionApi*, il existe un provideur global qui possède en attribut le *ActionApi* courant avec deux méthodes : une pour récupérer le provider et une autre pour venir le modifier. Dans le but de faciliter son utilisation, trois fonctions ont été créées :
+Afin d’uniformiser l’utilisation de toutes les implémentations de l’interface _ActionApi_, il existe un provideur global qui possède en attribut le _ActionApi_ courant avec deux méthodes : une pour récupérer le provider et une autre pour venir le modifier. Dans le but de faciliter son utilisation, trois fonctions ont été créées :
 
-- `useActionApi(): ActionApi` et `getActionApi(): ActionApi` permettent de récupérer le *ActionApi*
-- `registerActionApi(actionApi: ActionApi)` permet de venit modifier le *ActionApi* actuellement enregistré.
+- `useActionApi(): ActionApi` et `getActionApi(): ActionApi` permettent de récupérer le _ActionApi_
+- `registerActionApi(actionApi: ActionApi)` permet de venit modifier le _ActionApi_ actuellement enregistré.
 
-Par défaut, ce provider est paramétré avec le *AosActionApi*.
+Par défaut, ce provider est paramétré avec le _AosActionApi_.
 
 Ainsi, lors de l’utilisation d’un Gateway, il faut venir enregistrer le nouveau ModelApi.
 
