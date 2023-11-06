@@ -31,7 +31,7 @@ const useCustomerDeliveryDetailsActions = () => {
 
 Il faut donc utiliser l’outil `headerActionsProvider` pour associer une clé à un objet contenant l’ensemble des informations nécessaires aux différentes actions du header.
 
-Un nomenclature a été mise en place pour aider à la compréhension de l’origine d’une clé :  `<Module>_<Object>_<Type d’écran>`.
+Un nomenclature a été mise en place pour aider à la compréhension de l’origine d’une clé : `<Module>_<Object>_<Type d’écran>`.
 
 Les actions sont donc définies à travers une structure nommée `HeaderOptions` :
 
@@ -41,7 +41,7 @@ export interface HeaderActions {
 }
 
 export interface HeaderOptions {
-	model?: string;
+  model?: string;
   modelId?: number;
   disableMailMessages?: boolean;
   disableJsonFields?: boolean;
@@ -54,13 +54,13 @@ export interface HeaderOptions {
 
 Le package core fournit par défaut deux actions pour le header qui sont les messages de suivi sur chaque objet ainsi que les fichiers joints. Elles sont paramétrables via les props suivantes :
 
-- *model* : nom complet du modèle sur l’ERP.
-- *modelId* : identifiant de l’objet.
-- *disableMailMessages* : condition pour l'affichage ou non des messages de suivi sur l'objet.
-- *disableJsonFields* : condition pour l’affichage ou non des champs studio.
-- *attachedFileScreenTitle* : nom de l'écran pour les fichiers joints.
-- *barcodeFieldname* : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
-- *headerTitle* : nom de l'écran pour permettre les titres dynamiques.
+- _model_ : nom complet du modèle sur l’ERP.
+- _modelId_ : identifiant de l’objet.
+- _disableMailMessages_ : condition pour l'affichage ou non des messages de suivi sur l'objet.
+- _disableJsonFields_ : condition pour l’affichage ou non des champs studio.
+- _attachedFileScreenTitle_ : nom de l'écran pour les fichiers joints.
+- _barcodeFieldname_ : nom de l’attribut contenant le fichier code-barre sur l’ERP (par défaut `barCode`).
+- _headerTitle_ : nom de l'écran pour permettre les titres dynamiques.
 
 Les fichiers joints s’affichent uniquement si l’objet actuel en possède avec un indicateur sur leur nombre. Les messages de suivi eux n’affichent lorsque `model` et `modelId` sont renseignés et qu’il ne sont pas désactivés par l’attribut `disableMailMessages`.
 
@@ -68,7 +68,7 @@ Il est ensuite possible d’ajouter des actions supplémentaires avec l’attrib
 
 ```tsx
 export interface ActionType {
-	key: string;
+  key: string;
   order: number;
   title: string;
   iconName: string;
@@ -84,16 +84,16 @@ export interface ActionType {
 
 Les différents attributs mis à disposition sont donc :
 
-- **key** : ***[Required]*** permet de donner un identifiant à l’action afin de permettre la modification à travers une surcharge.
-- **order** : ***[Required]*** permet d’ordonner l’affichage des actions
-- **title** : ***[Required]*** titre de l’action lorsque celle-ci est réduite dans le `DropdownMenu`
-- **iconName** : ***[Required]*** nom de l’icone associé à cette action
+- **key** : **_[Required]_** permet de donner un identifiant à l’action afin de permettre la modification à travers une surcharge.
+- **order** : **_[Required]_** permet d’ordonner l’affichage des actions
+- **title** : **_[Required]_** titre de l’action lorsque celle-ci est réduite dans le `DropdownMenu`
+- **iconName** : **_[Required]_** nom de l’icone associé à cette action
 - **iconColor** : couleur de l’icone, par défaut celle-ci est fixée à `secondaryColor_dark.background`
 - **FontAwesome5** : booléen pour savoir si l’icone appartient à la base de FontAwesome4 ou FontAwesome5. Par défaut cette valeur est fixée à `true` ce qui correspond donc à FontAwesome5.
 - **indicator** : chiffre à afficher en petit en haut de l’icone de l’action (ex: nombre de fichiers joints ou de messages en attente)
 - **hideIf** : condition d’affichage de l’action
 - **disableIf** : condition de désactivation de l’action
-- **onPress** : ***[Required]*** action à exécuter lorsque l’utilisateur clique sur l’icone
+- **onPress** : **_[Required]_** action à exécuter lorsque l’utilisateur clique sur l’icone
 - **showInHeader** : condition pour savoir si l’action peut s’afficher directement dans le header ou si elle doit toujours être présente dans les actions déroulantes. Par défaut, les actions sont paramétrées pour s’afficher dans la liste déroulante.
 
 D’un point de vue fonctionnel, l’ensemble des actions est transmis au composant `HeaderOptionsMenu` qui va ensuite réaliser les étapes suivantes:
@@ -114,7 +114,7 @@ Afin de faciliter l’ajout et/ou la modification d’un bandeau, cette fonction
 
 Ces enregistrements sont réalisés par des hook permettant ainsi d’accéder à différents outils mis à disposition dans les packages (traductions, thèmes, store,…) mais également d’avoir une mise à jour des headers lorsque c’est nécessaire.
 
-Les bandeaux sont gérés par un contexte afin de permettre une mise à jour au moindre changement. Pour récupérer la fonction d’enregistrement, il faut utiliser le hook *useHeaderBand*.
+Les bandeaux sont gérés par un contexte afin de permettre une mise à jour au moindre changement. Pour récupérer la fonction d’enregistrement, il faut utiliser le hook _useHeaderBand_.
 
 ```tsx
 const {registerHeaderBand} = useHeaderBand();
@@ -139,7 +139,7 @@ const checkInternetConnection = useCallback(async () => {
   }, [checkInternetConnection]);
 ```
 
-Pour enregistrer un bandeau, il suffit alors d’utiliser la fonction *registerHeaderBand* en fournissant toutes les informations nécessaire à l’affichage, à savoir :
+Pour enregistrer un bandeau, il suffit alors d’utiliser la fonction _registerHeaderBand_ en fournissant toutes les informations nécessaire à l’affichage, à savoir :
 
 ```tsx
 export interface HeaderBandItem {
