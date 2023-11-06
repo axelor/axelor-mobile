@@ -8,7 +8,7 @@ sidebar_class_name: icon gestion de store
 
 La création du store et son accès depuis l’extérieur est géré par la librairie core. Le store corresponds au stockage des informations récupérées depuis les appels API. Le lien entre l’état du store et les données récupérées depuis les appels API est réalisé grâce à des reducers. Ces reducers sont des fonctions asynchrones qui permettent d’effectuer des requêtes et de dispatcher les données dans les différents objets du store.
 
-La librairie core fournit une fonction *handlerApiCall* permettant de simplifier l’écriture des fonctions asynchrones des reducers en encapsulant la gestion des erreurs mais également la gestion du succès avec la récupération des données.
+La librairie core fournit une fonction _handlerApiCall_ permettant de simplifier l’écriture des fonctions asynchrones des reducers en encapsulant la gestion des erreurs mais également la gestion du succès avec la récupération des données.
 
 ```tsx
 interface ApiHandlerProps {
@@ -16,7 +16,7 @@ interface ApiHandlerProps {
   data: any; // Données pour la requête
   action: string; // Description de l'action en cours d'exécution (clé de traduction)
   getState: () => any; // Fonction permettant d'avoir l'état du state
-  responseOptions?: { 
+  responseOptions?: {
     showToast?: boolean; // Affichage d'un toast en cas de succès
     isArrayResponse?: boolean; // La réponse attendue est un tableau ou non
     returnTotal?: boolean; // Renvoie le nombre total d'éléments respectant la requête dans la base
@@ -116,11 +116,11 @@ Cette fonction permet donc de créer les trois états d’un reducer (pending, f
 - **moreLoading** : permet de savoir quand l’utilisateur charge la suite de la liste (chargement d’une page autre que la première). Les données obtenues seront ajoutées à la fin de la liste existante.
 - **isListEnd** : permet de savoir si toutes les données ont été chargées et ainsi éviter des requêtes inutiles.
 - **list** : contient les données récupérées du serveur.
-- **total** : contient le nombre total d’élément présent sur le serveur et répondant à la requête. Cet attribut n’est mis à jour que si l’option *manageTotal* est activée et que la fonction transmise à l’attribut *actionCreator* a activé l’option *resturnTotalWithData* ou *returnResponseMessage* est activée.
+- **total** : contient le nombre total d’élément présent sur le serveur et répondant à la requête. Cet attribut n’est mis à jour que si l’option _manageTotal_ est activée et que la fonction transmise à l’attribut _actionCreator_ a activé l’option _resturnTotalWithData_ ou _returnResponseMessage_ est activée.
 
 Dans le fichier index du dossier features contenant l’ensemble des slices du module, il faut ensuite exporter ce reducer sous un nom plus simple permettant par la suite d’accéder à son state :
 
-![Capture d’écran du 2023-03-21 09-21-01.png](/img/fr/Capture_dcran_du_2023-03-21_09-21-01.png)
+![architecture_slices.png](/img/fr/architecture_slices.png)
 
 ```tsx
 export {catalogReducer as catalog} from './catalogSlice';
@@ -131,15 +131,14 @@ export {functionReducer as function} from './functionSlice';
 export {leadReducer as lead} from './leadSlice';
 export {opportunityReducer as opportunity} from './opportunitySlice';
 export {partnerReducer as partner} from './partnerSlice';
-export {prospectReducer as prospect} from './prospectSlice'; 
+export {prospectReducer as prospect} from './prospectSlice';
 ```
 
 Une fois les reducers exportés sous un nouveau nom, il faut ensuite les exporter avec le module dans l’attribut dédiés pour que le module core puisse les ajouter au store.
 
-<aside>
-⚠️ **Attention**, si des reducers de modules différents ont le même nom alors ils seront écrasés par le dernier module pris en compte. Il est donc préférable d’identifier la provenance du reducer dans son nom afin d’éviter les erreurs.
-
-</aside>
+:::caution
+Si des reducers de modules différents ont le même nom alors ils seront écrasés par le dernier module pris en compte. Il est donc préférable d’identifier la provenance du reducer dans son nom afin d’éviter les erreurs.
+:::
 
 ```tsx
 import {Module} from '@axelor/aos-mobile-core';
@@ -159,7 +158,7 @@ const myModule : Module {
 }
 ```
 
-Une fois les exports finis, il est donc possible d’accéder au contenu du store depuis les écrans ou les composants grâce au hook du package *core* en indiquant le reducer à utiliser et les attributs du state correspondant à récupérer : `useSelector` . Le composant sera mis à jour à chaque changement de valeur du state.
+Une fois les exports finis, il est donc possible d’accéder au contenu du store depuis les écrans ou les composants grâce au hook du package _core_ en indiquant le reducer à utiliser et les attributs du state correspondant à récupérer : `useSelector` . Le composant sera mis à jour à chaque changement de valeur du state.
 
 ```tsx
 import {useSelector} from '@axelor/aos-mobile-core';
@@ -169,7 +168,7 @@ import {useSelector} from '@axelor/aos-mobile-core';
 const {stateProps} = useSelector((state: any) => state.reducerName);
 ```
 
-Le package *core* fournit également un second hook `useDispatch` qui permet de récupérer une fonction pour réaliser les actions définies dans les reducers.
+Le package _core_ fournit également un second hook `useDispatch` qui permet de récupérer une fonction pour réaliser les actions définies dans les reducers.
 
 ```tsx
 import {useDispatch} from '@axelor/aos-mobile-core';

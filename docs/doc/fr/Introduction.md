@@ -1,5 +1,5 @@
 ---
-id: Introduction 
+id: Introduction
 slug: /
 sidebar_position: 1
 sidebar_label: Introduction
@@ -7,7 +7,6 @@ sidebar_class_name: icon introduction
 ---
 
 # Introduction
-
 
 L’application mobile Axelor Open Mobile est basée sur l’ERP [Axelor Open Suite (AOS)](https://github.com/axelor/axelor-open-suite) et développée en React Native.
 

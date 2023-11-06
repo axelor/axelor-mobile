@@ -35,16 +35,16 @@ sudo apt install openjdk-11-jre-headless
 
 La première étape est de télécharger [Android Studio](https://developer.android.com/studio/index.html) pour gérer les SDK et les émulateurs.
 
-<aside>
+:::info
 💡 Dans le cas de problème de versions, il faut utiliser le SDK Manager d’Android Studio afin de configurer les différents outils installés.
 
 Dans l’onglet **SDK Platforms**, il faut vérifier qu’au moins Android 10 soit installé.
 
 Dans l’onglet **SDK Tools**, cochez la case “Show package details” et vérifiez que les versions 3.18.1 et 3.22.1 de CMake sont installées. La version d’Android SDK doit au moins être 30 et 31. Il faut également installer Android Emulator et Android SDK Platform-Tools.
 
-![image1.png](/img/fr/image1.png)
+![android_installation.png](/img/fr/android_installation.png)
 
-</aside>
+:::
 
 Il faut ensuite configurer des variables d’environnement.
 
@@ -56,7 +56,7 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 Pour appliquer ses changements, il faut ensuite exécuter la commande `source .bashrc`. Cela met à jour les chemins, il est possible de vérifier que le processus a fonctionné avec la commande `echo $ANDROID_SDK_ROOT`.
 
-La prochaine étape est de configurer un émulateur si nécessaire avec l’outil **Virtual Device Manager** d’*Android Studio*.
+La prochaine étape est de configurer un émulateur si nécessaire avec l’outil **Virtual Device Manager** d’_Android Studio_.
 
 ## Configuration de l’application
 
@@ -83,9 +83,9 @@ Un example de fichier de configuration est [disponible sur Github](https://githu
 
 ### Ajouter ou retirer un module métier pour la génération d’APK
 
-Les modules peuvent être activés ou desactivés directement depuis le fichier App.js du dossier *example* ou alors depuis le module de configuration **Axelor mobile settings** d’[AOS](https://github.com/axelor/axelor-open-suite) disponible à partir de la version 7.0.0.
+Les modules peuvent être activés ou desactivés directement depuis le fichier App.js du dossier _example_ ou alors depuis le module de configuration **Axelor mobile settings** d’[AOS](https://github.com/axelor/axelor-open-suite) disponible à partir de la version 7.0.0.
 
-Pour gérer les modules directement depuis le composant Application, il suffit d’ajouter ou de retirer un objet `Module` de l’attribut **modules.**
+Pour gérer les modules directement depuis le composant Application, il suffit d’ajouter ou de retirer un objet `Module` de l’attribut **modules**.
 
 ```jsx
 import React from 'react';
@@ -96,14 +96,14 @@ import application_properties from '../package.json';
 import {app_config} from './app.config';
 
 const App = () => {
-    return (
-        <Application
-            modules={[StockModule, ManufacturingModule]}
-            mainMenu="auth_menu_user"
-            version={application_properties.version}
-            configuration={app_config}
-        />
-    );
+  return (
+    <Application
+      modules={[StockModule, ManufacturingModule]}
+      mainMenu="auth_menu_user"
+      version={application_properties.version}
+      configuration={app_config}
+    />
+  );
 };
 
 export default App;
