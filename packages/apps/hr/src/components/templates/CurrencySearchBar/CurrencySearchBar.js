@@ -17,23 +17,17 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   displayItemName,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  AutoCompleteSearch,
-  useThemeColor,
-  Text,
-  FormInput,
-} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCurrencies} from '../../../features/currencySlice';
 
 const CurrencySearchBarAux = ({
-  style = null,
   title = 'Hr_Currency',
   defaultValue = null,
   onChange = () => {},
@@ -42,7 +36,6 @@ const CurrencySearchBarAux = ({
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {
     loadingCurrencies,
@@ -50,8 +43,6 @@ const CurrencySearchBarAux = ({
     isListEndCurrencies,
     currencyList,
   } = useSelector(state => state.currency);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchCurrenciesAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -65,44 +56,29 @@ const CurrencySearchBarAux = ({
     [dispatch],
   );
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={I18n.t(title)}
-        readOnly={true}
-        defaultValue={defaultValue?.name}
-      />
-    );
-  }
-
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{I18n.t(title)}</Text>
-      <AutoCompleteSearch
-        style={[
-          required && defaultValue == null ? styles.requiredBorder : null,
-        ]}
-        objectList={currencyList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchCurrenciesAPI}
-        displayValue={displayItemName}
-        placeholder={I18n.t(title)}
-        showDetailsPopup={true}
-        loadingList={loadingCurrencies}
-        moreLoading={moreLoadingCurrencies}
-        isListEnd={isListEndCurrencies}
-        navigate={false}
-        oneFilter={false}
-        isFocus={false}
-      />
-    </View>
+    <AutoCompleteSearch
+      title={I18n.t(title)}
+      objectList={currencyList}
+      value={defaultValue}
+      required={required && defaultValue == null}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchCurrenciesAPI}
+      displayValue={displayItemName}
+      placeholder={I18n.t(title)}
+      showDetailsPopup={true}
+      loadingList={loadingCurrencies}
+      moreLoading={moreLoadingCurrencies}
+      isListEnd={isListEndCurrencies}
+      navigate={false}
+      oneFilter={false}
+      isFocus={false}
+    />
   );
 };
 
 const CurrencySearchBar = ({
-  style,
   title,
   defaultValue,
   onChange,
@@ -111,7 +87,6 @@ const CurrencySearchBar = ({
 }) => {
   return (
     <CurrencySearchBarAux
-      style={style}
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
@@ -120,18 +95,5 @@ const CurrencySearchBar = ({
     />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 30,
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-  });
 
 export default CurrencySearchBar;

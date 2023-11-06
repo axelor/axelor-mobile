@@ -16,34 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
-import {
-  AutoCompleteSearch,
-  useThemeColor,
-  Text,
-  FormInput,
-} from '@axelor/aos-mobile-ui';
+import React, {useCallback} from 'react';
+import {StyleSheet} from 'react-native';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
 const ProjectSearchBar = ({
-  style = null,
   title = 'Hr_Project',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
 }) => {
-  const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
     state => state.project,
   );
   const {user} = useSelector(state => state.user);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -60,53 +52,26 @@ const ProjectSearchBar = ({
 
   const displayItemFullname = item => item.fullName;
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={title}
-        readOnly={true}
-        defaultValue={defaultValue}
-      />
-    );
-  }
-
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{title}</Text>
-      <AutoCompleteSearch
-        style={[
-          required && defaultValue == null ? styles.requiredBorder : null,
-        ]}
-        objectList={projectList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchProjectAPI}
-        displayValue={displayItemFullname}
-        placeholder={title}
-        showDetailsPopup={true}
-        loadingList={loadingProject}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-        navigate={false}
-        oneFilter={false}
-        isFocus={false}
-      />
-    </View>
+    <AutoCompleteSearch
+      title={I18n.t(title)}
+      objectList={projectList}
+      value={defaultValue}
+      required={required && defaultValue == null}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchProjectAPI}
+      displayValue={displayItemFullname}
+      placeholder={title}
+      showDetailsPopup={true}
+      loadingList={loadingProject}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+      navigate={false}
+      oneFilter={false}
+      isFocus={false}
+    />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 30,
-    },
-  });
 
 export default ProjectSearchBar;
