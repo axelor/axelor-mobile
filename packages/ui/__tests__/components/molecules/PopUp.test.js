@@ -51,8 +51,6 @@ describe('PopUp Component', () => {
 
     const titleTextComponent = wrapper.find('Text').at(0);
 
-    console.log(titleTextComponent);
-
     expect(titleTextComponent.contains(props.title)).toBe(true);
   });
 
@@ -60,8 +58,6 @@ describe('PopUp Component', () => {
     const wrapper = shallow(<PopUp {...props}>{children}</PopUp>);
 
     const dataTextComponent = wrapper.find('Text').at(1);
-
-    console.log(dataTextComponent);
 
     expect(dataTextComponent.contains(props.data)).toBe(true);
   });
