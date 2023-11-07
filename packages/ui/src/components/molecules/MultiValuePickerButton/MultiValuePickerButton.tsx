@@ -29,9 +29,9 @@ interface Item {
 
 interface MultiValuePickerButtonProps {
   style?: any;
-  onPress: (any) => void;
+  onPress: () => void;
   listItem: Item[];
-  onPressItem?: (any) => void;
+  onPressItem?: (item: Item) => void;
   readonly?: boolean;
 }
 
@@ -44,10 +44,10 @@ const MultiValuePickerButton = ({
 }: MultiValuePickerButtonProps) => {
   const Colors = useThemeColor();
 
-  const styles = useMemo(() => getStyles(Colors, readonly), [Colors, readonly]);
+  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   return (
-    <TouchableOpacity onPress={onPress} disabled={readonly} activeOpacity={0.9}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <Card style={[styles.container, style]}>
         <View style={styles.listItemContainer}>
           {listItem &&
@@ -77,12 +77,10 @@ const MultiValuePickerButton = ({
               </TouchableOpacity>
             ))}
         </View>
-        {!readonly && (
-          <Icon
-            name="chevron-down"
-            color={Colors.secondaryColor_dark.background}
-          />
-        )}
+        <Icon
+          name="chevron-down"
+          color={Colors.secondaryColor_dark.background}
+        />
       </Card>
     </TouchableOpacity>
   );
@@ -93,7 +91,7 @@ const getItemColor = (color: Color) => ({
   borderColor: color.background,
 });
 
-const getStyles = (Colors: ThemeColors, readonly: boolean) =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingLeft: 10,
@@ -107,7 +105,7 @@ const getStyles = (Colors: ThemeColors, readonly: boolean) =>
       flexDirection: 'row',
       marginLeft: -5,
       overflow: 'hidden',
-      width: readonly ? '100%' : '90%',
+      width: '90%',
     },
     cardItem: {
       flexDirection: 'row',

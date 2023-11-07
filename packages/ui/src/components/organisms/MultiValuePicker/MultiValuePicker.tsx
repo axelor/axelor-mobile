@@ -40,7 +40,7 @@ interface MultiValuePickerProps {
   pickerStyle?: any;
   styleTxt?: any;
   title?: string;
-  onValueChange?: (any) => void;
+  onValueChange?: (itemList: Item[]) => void;
   defaultItems?: Item[];
   listItems: Item[];
   readonly?: boolean;
@@ -152,6 +152,7 @@ const MultiValuePicker = ({
           handleSelect={handleValueChange}
           isPicker={true}
           selectedItem={selectedItemList}
+          readonly={readonly}
         />
       ) : null}
     </View>

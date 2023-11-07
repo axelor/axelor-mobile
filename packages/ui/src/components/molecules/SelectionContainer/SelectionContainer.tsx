@@ -24,10 +24,11 @@ import {Icon, Text} from '../../atoms';
 interface SelectionItemProps {
   style?: any;
   content: string;
-  onPress: (any) => void;
+  onPress: () => void;
   isPicker?: boolean;
   itemColor?: Color;
   isSelectedItem?: boolean;
+  readonly?: boolean;
 }
 
 const SelectionItem = ({
@@ -37,6 +38,7 @@ const SelectionItem = ({
   isPicker = false,
   itemColor,
   isSelectedItem = false,
+  readonly = false,
 }: SelectionItemProps) => {
   const Colors = useThemeColor();
 
@@ -53,16 +55,26 @@ const SelectionItem = ({
   const itemStyles = useMemo(() => getItemStyles(isPicker), [isPicker]);
 
   return content == null ? null : (
-    <TouchableOpacity style={[itemStyles.item, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[itemStyles.item, style]}
+      onPress={onPress}
+      disabled={readonly}>
       {isPicker && (
         <Icon
           style={itemStyles.icon}
           FontAwesome5={false}
           name={isSelectedItem ? 'check-square' : 'square-o'}
-          color={Colors.secondaryColor_dark.background}
+          color={
+            readonly
+              ? Colors.secondaryColor_dark.background_light
+              : Colors.secondaryColor_dark.background
+          }
         />
       )}
-      <Text style={itemStyles.text} numberOfLines={1}>
+      <Text
+        style={itemStyles.text}
+        textColor={readonly && Colors.secondaryColor_dark.background_light}
+        numberOfLines={1}>
         {content}
       </Text>
       {itemColor != null && <View style={indicatorStyles.selectedItem} />}
@@ -107,12 +119,13 @@ const getItemStyles = isPicker =>
 interface SelectionContainerProps {
   style?: any;
   objectList: any[];
-  displayValue?: (any) => string;
-  handleSelect?: (any) => void;
+  displayValue?: (item: any) => string;
+  handleSelect?: (item: any) => void;
   keyField?: string;
   emptyValue?: boolean;
   isPicker?: boolean;
   selectedItem?: any[];
+  readonly?: boolean;
 }
 
 const SelectionContainer = ({
@@ -124,6 +137,7 @@ const SelectionContainer = ({
   emptyValue = false,
   isPicker = false,
   selectedItem = [],
+  readonly = false,
 }: SelectionContainerProps) => {
   const Colors = useThemeColor();
 
@@ -161,6 +175,7 @@ const SelectionContainer = ({
           itemColor={item?.color}
           isPicker={isPicker}
           isSelectedItem={selectedKeys.includes(item[keyField])}
+          readonly={readonly}
         />
         <View
           key={'border' + index}
@@ -180,6 +195,7 @@ const SelectionContainer = ({
     keyField,
     listLength,
     objectList,
+    readonly,
     selectedKeys,
     styles.border,
   ]);
@@ -193,6 +209,7 @@ const SelectionContainer = ({
               key={'null'}
               content={''}
               onPress={() => handleSelect(null)}
+              readonly={readonly}
             />
             <View style={styles.border} />
           </View>
@@ -200,7 +217,13 @@ const SelectionContainer = ({
         {renderListItemContainer()}
       </View>
     );
-  }, [emptyValue, handleSelect, renderListItemContainer, styles.border]);
+  }, [
+    emptyValue,
+    handleSelect,
+    readonly,
+    renderListItemContainer,
+    styles.border,
+  ]);
 
   if (objectList == null || objectList.length === 0) {
     return null;
