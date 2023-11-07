@@ -24,7 +24,9 @@
     "graph": "nx graph",
     "license:add": "nx run-many --target=license:add",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "appium": "appium",
+    "appium:doctor": "appium-doctor"
   },
   "dependencies": {
     "@axelor/aos-mobile-core": "7.1.1",
