@@ -83,27 +83,22 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
       }}
       translator={I18n.t}>
       <View style={styles.container}>
-        <View style={styles.pickerContainer}>
-          <Picker
-            pickerStyle={styles.picker}
-            listItems={expenseDraftList}
-            onValueChange={setExpenseSelected}
-            labelField="expenseSeq"
-            valueField="id"
-            title={I18n.t('Hr_Expense')}
-            isValueItem={true}
+        <Picker
+          listItems={expenseDraftList}
+          onValueChange={setExpenseSelected}
+          labelField="expenseSeq"
+          valueField="id"
+          title={I18n.t('Hr_Expense')}
+          isValueItem={true}
+        />
+        <TouchableOpacity onPress={createExpenseAPI} style={styles.labelText}>
+          <LabelText
+            iconName="plus"
+            color={Colors.primaryColor.background}
+            title={I18n.t('Hr_NewExpense')}
+            size={16}
           />
-        </View>
-        <View style={styles.labelText}>
-          <TouchableOpacity onPress={createExpenseAPI}>
-            <LabelText
-              iconName="plus"
-              color={Colors.primaryColor.background}
-              title={I18n.t('Hr_NewExpense')}
-              size={16}
-            />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
     </Alert>
   );
@@ -114,14 +109,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
   },
-  pickerContainer: {
-    marginHorizontal: -18,
-  },
-  picker: {
-    width: '90%',
-  },
   labelText: {
-    alignSelf: 'flex-start',
     marginVertical: 5,
   },
 });

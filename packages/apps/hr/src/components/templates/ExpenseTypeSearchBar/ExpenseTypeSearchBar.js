@@ -16,24 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, {useCallback} from 'react';
 import {
   displayItemName,
   useDispatch,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {AutoCompleteSearch, useThemeColor, Text} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchExpenseType} from '../../../features/expenseTypeSlice';
 
 const ExpenseTypeSearchBarAux = ({
+  style = null,
+  title = 'Hr_ExpenseType',
   defaultValue = null,
   onChange = () => {},
+  required = true,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {
     expenseTypeList,
@@ -42,8 +44,6 @@ const ExpenseTypeSearchBarAux = ({
     isListEndExpenseType,
   } = useSelector(state => state.expenseType);
   const {user} = useSelector(state => state.user);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchExpenseTypeAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -59,25 +59,25 @@ const ExpenseTypeSearchBarAux = ({
   );
 
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{I18n.t('Hr_ExpenseType')}</Text>
-      <AutoCompleteSearch
-        style={[defaultValue == null ? styles.requiredBorder : null]}
-        objectList={expenseTypeList}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchExpenseTypeAPI}
-        displayValue={displayItemName}
-        placeholder={I18n.t('Hr_ExpenseType')}
-        showDetailsPopup={true}
-        loadingList={loadingExpenseType}
-        moreLoading={moreLoadingExpenseType}
-        isListEnd={isListEndExpenseType}
-        navigate={false}
-        oneFilter={false}
-        isFocus={false}
-      />
-    </View>
+    <AutoCompleteSearch
+      style={style}
+      title={I18n.t(title)}
+      objectList={expenseTypeList}
+      value={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchExpenseTypeAPI}
+      displayValue={displayItemName}
+      placeholder={I18n.t('Hr_ExpenseType')}
+      showDetailsPopup={true}
+      loadingList={loadingExpenseType}
+      moreLoading={moreLoadingExpenseType}
+      isListEnd={isListEndExpenseType}
+      navigate={false}
+      oneFilter={false}
+      isFocus={false}
+    />
   );
 };
 
@@ -86,22 +86,5 @@ const ExpenseTypeSearchBar = ({defaultValue, onChange}) => {
     <ExpenseTypeSearchBarAux defaultValue={defaultValue} onChange={onChange} />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    searchBar: {
-      width: '100%',
-      marginLeft: 5,
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 30,
-    },
-  });
 
 export default ExpenseTypeSearchBar;

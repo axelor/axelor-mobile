@@ -16,14 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {
-  AutoCompleteSearch,
-  FormInput,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
+import React, {useCallback, useEffect, useState} from 'react';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {
   fetchModelFields,
@@ -49,15 +43,11 @@ const CustomSearchBar = ({
   required,
   readonly,
 }: props) => {
-  const Colors = useThemeColor();
-
   const [searchFields, setSearchFields] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [moreLoading, setMoreLoading] = useState<boolean>(false);
   const [isListEnd, setIsListEnd] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   useEffect(() => {
     fetchModelFields({modelName: item.targetModel}).then(setSearchFields);
@@ -102,56 +92,26 @@ const CustomSearchBar = ({
     [item, searchFields],
   );
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={title}
-        readOnly={true}
-        defaultValue={defaultValue}
-      />
-    );
-  }
-
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null, style]}>
-      <Text style={styles.title}>{title}</Text>
-      <AutoCompleteSearch
-        style={[
-          styles.search,
-          defaultValue == null && required ? styles.requiredBorder : null,
-        ]}
-        objectList={data}
-        value={defaultValue}
-        onChangeValue={onChange}
-        fetchData={searchClientAndProspectAPI}
-        displayValue={_item =>
-          _item[searchFields?.length > 0 ? searchFields[0] : 'name']
-        }
-        placeholder={title}
-        showDetailsPopup={true}
-        loadingList={loading}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
-      />
-    </View>
+    <AutoCompleteSearch
+      style={style}
+      title={title}
+      objectList={data}
+      value={defaultValue}
+      required={required}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchClientAndProspectAPI}
+      displayValue={_item =>
+        _item[searchFields?.length > 0 ? searchFields[0] : 'name']
+      }
+      placeholder={title}
+      showDetailsPopup={true}
+      loadingList={loading}
+      moreLoading={moreLoading}
+      isListEnd={isListEnd}
+    />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 10,
-    },
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-    search: {
-      width: '100%',
-    },
-  });
 
 export default CustomSearchBar;
