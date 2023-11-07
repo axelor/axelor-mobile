@@ -43,12 +43,7 @@ describe('RadioSelect Component', () => {
   it('should display the question when provided', () => {
     const wrapper = shallow(<RadioSelect {...props} />);
 
-    const questionTextComponent = wrapper.find(Text);
-
-    const nativeTextComponent = questionTextComponent.dive().find('Text');
-    const questionText = nativeTextComponent.children().text();
-
-    expect(questionText).toBe(props.question);
+    expect(wrapper.find(Text).prop('children')).toBe(props.question);
   });
 
   it('should render the correct number of RadioButton components', () => {
