@@ -66,15 +66,12 @@ const SelectionItem = ({
           name={isSelectedItem ? 'check-square' : 'square-o'}
           color={
             readonly
-              ? Colors.secondaryColor_dark.background_light
+              ? Colors.secondaryColor.background_light
               : Colors.secondaryColor_dark.background
           }
         />
       )}
-      <Text
-        style={itemStyles.text}
-        textColor={readonly && Colors.secondaryColor_dark.background_light}
-        numberOfLines={1}>
+      <Text style={itemStyles.text} numberOfLines={1}>
         {content}
       </Text>
       {itemColor != null && <View style={indicatorStyles.selectedItem} />}
