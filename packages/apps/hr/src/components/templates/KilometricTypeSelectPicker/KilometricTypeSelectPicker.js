@@ -37,7 +37,6 @@ const KilometricTypeSelectPickerAux = ({
   return (
     <Picker
       style={styles.picker}
-      styleTxt={styles.pickerTitle}
       title={title}
       defaultValue={defaultValue}
       listItems={kilomectricTypeselectList}
@@ -46,8 +45,7 @@ const KilometricTypeSelectPickerAux = ({
       emptyValue={false}
       onValueChange={onChange}
       required={required}
-      disabled={readonly}
-      disabledValue={defaultValue?.name}
+      readonly={readonly}
       isValueItem={true}
     />
   );
@@ -73,11 +71,7 @@ const KilometricTypeSelectPicker = ({
 
 const styles = StyleSheet.create({
   picker: {
-    width: '100%',
-    marginLeft: 3,
-  },
-  pickerTitle: {
-    marginLeft: 5,
+    alignSelf: 'center',
   },
 });
 

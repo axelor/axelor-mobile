@@ -17,8 +17,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {FormInput, Picker} from '@axelor/aos-mobile-ui';
+import {Picker} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
 
@@ -56,22 +55,9 @@ const CustomPicker = ({
     }).then(setSelection);
   }, [item]);
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={title}
-        readOnly={true}
-        defaultValue={defaultValue}
-      />
-    );
-  }
-
   return (
     <Picker
-      style={[styles.picker, style]}
-      pickerStyle={styles.container}
-      styleTxt={styles.marginPicker}
+      style={style}
       title={title}
       onValueChange={onChange}
       listItems={selection}
@@ -79,23 +65,10 @@ const CustomPicker = ({
       valueField="id"
       defaultValue={defaultValue}
       required={required}
+      readonly={readonly}
+      isScrollViewContainer={true}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  picker: {
-    width: '100%',
-  },
-  container: {
-    width: '100%',
-    marginHorizontal: 0,
-    marginRight: 0,
-    marginLeft: 0,
-  },
-  marginPicker: {
-    marginLeft: -14,
-  },
-});
 
 export default CustomPicker;

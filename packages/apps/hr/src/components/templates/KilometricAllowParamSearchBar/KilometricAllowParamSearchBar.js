@@ -17,18 +17,13 @@
  */
 
 import React, {useCallback, useMemo} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
 import {
   displayItemName,
   useDispatch,
   useSelector,
+  useTranslator,
 } from '@axelor/aos-mobile-core';
-import {
-  AutoCompleteSearch,
-  useThemeColor,
-  Text,
-  FormInput,
-} from '@axelor/aos-mobile-ui';
+import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchKilometricAllowParam} from '../../../features/kilometricAllowParamSlice';
 
 const KilometricAllowParamSearchBarAux = ({
@@ -39,7 +34,7 @@ const KilometricAllowParamSearchBarAux = ({
   readonly = false,
   required = false,
 }) => {
-  const Colors = useThemeColor();
+  const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {
@@ -50,8 +45,6 @@ const KilometricAllowParamSearchBarAux = ({
     expenseDate,
   } = useSelector(state => state.kilometricAllowParam);
   const {user} = useSelector(state => state.user);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   const searchKilometricAllowParamAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -109,39 +102,26 @@ const KilometricAllowParamSearchBarAux = ({
     }
   }, [defaultValue, kilometricAllowParamList]);
 
-  if (readonly) {
-    return (
-      <FormInput
-        style={style}
-        title={title}
-        readOnly={true}
-        defaultValue={defaultValue}
-      />
-    );
-  }
-
   return (
-    <View style={[Platform.OS === 'ios' ? styles.container : null]}>
-      <Text style={styles.title}>{title}</Text>
-      <AutoCompleteSearch
-        style={[
-          required && defaultValue == null ? styles.requiredBorder : null,
-        ]}
-        objectList={kilometricAllowParamList}
-        value={defaultKap}
-        onChangeValue={onChange}
-        fetchData={searchKilometricAllowParamAPI}
-        displayValue={displayItemName}
-        placeholder={title}
-        showDetailsPopup={true}
-        loadingList={loadingKilometricAllowParam}
-        moreLoading={moreLoadingKilometricAllowParam}
-        isListEnd={isListEndKilometricAllowParam}
-        navigate={false}
-        oneFilter={false}
-        isFocus={false}
-      />
-    </View>
+    <AutoCompleteSearch
+      style={style}
+      title={I18n.t(title)}
+      objectList={kilometricAllowParamList}
+      value={defaultKap}
+      required={required}
+      readonly={readonly}
+      onChangeValue={onChange}
+      fetchData={searchKilometricAllowParamAPI}
+      displayValue={displayItemName}
+      placeholder={title}
+      showDetailsPopup={true}
+      loadingList={loadingKilometricAllowParam}
+      moreLoading={moreLoadingKilometricAllowParam}
+      isListEnd={isListEndKilometricAllowParam}
+      navigate={false}
+      oneFilter={false}
+      isFocus={false}
+    />
   );
 };
 
@@ -164,18 +144,5 @@ const KilometricAllowParamSearchBar = ({
     />
   );
 };
-
-const getStyles = Colors =>
-  StyleSheet.create({
-    requiredBorder: {
-      borderColor: Colors.errorColor.background,
-    },
-    container: {
-      zIndex: 41,
-    },
-    title: {
-      marginHorizontal: 30,
-    },
-  });
 
 export default KilometricAllowParamSearchBar;
