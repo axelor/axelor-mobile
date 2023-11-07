@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {useTranslator} from '../../../../i18n';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {
@@ -37,14 +36,13 @@ interface props extends customComponentOptions {
 
 const CustomSearchBar = ({
   item,
+  style,
   title,
   defaultValue,
   onChange,
   required,
   readonly,
 }: props) => {
-  const I18n = useTranslator();
-
   const [searchFields, setSearchFields] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [moreLoading, setMoreLoading] = useState<boolean>(false);
@@ -96,10 +94,11 @@ const CustomSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      title={I18n.t(title)}
+      style={style}
+      title={title}
       objectList={data}
       value={defaultValue}
-      required={required && defaultValue == null}
+      required={required}
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchClientAndProspectAPI}

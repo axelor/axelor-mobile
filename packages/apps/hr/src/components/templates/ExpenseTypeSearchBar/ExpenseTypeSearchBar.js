@@ -27,8 +27,12 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchExpenseType} from '../../../features/expenseTypeSlice';
 
 const ExpenseTypeSearchBarAux = ({
+  style = null,
+  title = 'Hr_ExpenseType',
   defaultValue = null,
   onChange = () => {},
+  required = true,
+  readonly = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -56,10 +60,12 @@ const ExpenseTypeSearchBarAux = ({
 
   return (
     <AutoCompleteSearch
-      title={I18n.t('Hr_ExpenseType')}
+      style={style}
+      title={I18n.t(title)}
       objectList={expenseTypeList}
       value={defaultValue}
-      required={defaultValue == null}
+      required={required}
+      readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchExpenseTypeAPI}
       displayValue={displayItemName}

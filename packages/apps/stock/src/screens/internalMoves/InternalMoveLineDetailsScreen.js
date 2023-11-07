@@ -252,7 +252,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingBottom: 130,
   },
 });
 

@@ -22,6 +22,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
 const ProjectSearchBar = ({
+  style = null,
   title = 'Hr_Project',
   defaultValue = null,
   onChange = () => {},
@@ -53,10 +54,11 @@ const ProjectSearchBar = ({
 
   return (
     <AutoCompleteSearch
+      style={style}
       title={I18n.t(title)}
       objectList={projectList}
       value={defaultValue}
-      required={required && defaultValue == null}
+      required={required}
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchProjectAPI}

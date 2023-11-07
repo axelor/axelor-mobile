@@ -27,6 +27,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchKilometricAllowParam} from '../../../features/kilometricAllowParamSlice';
 
 const KilometricAllowParamSearchBarAux = ({
+  style = null,
   title = 'Hr_KilometricAllowParam',
   defaultValue = null,
   onChange = () => {},
@@ -103,10 +104,11 @@ const KilometricAllowParamSearchBarAux = ({
 
   return (
     <AutoCompleteSearch
+      style={style}
       title={I18n.t(title)}
       objectList={kilometricAllowParamList}
       value={defaultKap}
-      required={required && defaultValue == null}
+      required={required}
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchKilometricAllowParamAPI}
@@ -124,6 +126,7 @@ const KilometricAllowParamSearchBarAux = ({
 };
 
 const KilometricAllowParamSearchBar = ({
+  style = null,
   title = 'Hr_KilometricAllowParam',
   defaultValue = null,
   onChange = () => {},
@@ -132,6 +135,7 @@ const KilometricAllowParamSearchBar = ({
 }) => {
   return (
     <KilometricAllowParamSearchBarAux
+      style={style}
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}

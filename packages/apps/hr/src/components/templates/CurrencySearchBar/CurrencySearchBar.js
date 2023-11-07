@@ -27,6 +27,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchCurrencies} from '../../../features/currencySlice';
 
 const CurrencySearchBarAux = ({
+  style = null,
   title = 'Hr_Currency',
   defaultValue = null,
   onChange = () => {},
@@ -57,10 +58,11 @@ const CurrencySearchBarAux = ({
 
   return (
     <AutoCompleteSearch
+      style={style}
       title={I18n.t(title)}
       objectList={currencyList}
       value={defaultValue}
-      required={required && defaultValue == null}
+      required={required}
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchCurrenciesAPI}
@@ -78,6 +80,7 @@ const CurrencySearchBarAux = ({
 };
 
 const CurrencySearchBar = ({
+  style,
   title,
   defaultValue,
   onChange,
@@ -86,6 +89,7 @@ const CurrencySearchBar = ({
 }) => {
   return (
     <CurrencySearchBarAux
+      style={style}
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
