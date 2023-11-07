@@ -36,12 +36,7 @@ describe('RightIconButton Component', () => {
   it('displays the title when provided', () => {
     const wrapper = shallow(<RightIconButton {...props} />);
 
-    const titleTextComponent = wrapper.find(Text);
-
-    const nativeTextComponent = titleTextComponent.dive().find('Text');
-    const titleText = nativeTextComponent.children().text();
-
-    expect(titleText).toBe(props.title);
+    expect(wrapper.find(Text).prop('children')).toBe(props.title);
   });
 
   it('displays the icon', () => {
