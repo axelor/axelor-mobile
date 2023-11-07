@@ -19,6 +19,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {NumberBubble, Text, lightTheme} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('NumberBubble Component', () => {
   const Colors = lightTheme.colors;
@@ -44,11 +45,10 @@ describe('NumberBubble Component', () => {
       isNeutralBackground: false,
     };
     const wrapper = shallow(<NumberBubble {...neutralProps} />);
-    const styleProps = wrapper.find('View').at(0).prop('style');
 
-    expect(styleProps[0].backgroundColor).toBe(
-      Colors.primaryColor.background_light,
-    );
+    expect(getGlobalStyles(wrapper.find('View').at(0))).toMatchObject({
+      backgroundColor: Colors.primaryColor.background_light,
+    });
   });
 
   it('should have correct styles when neutral background is true', () => {
@@ -57,7 +57,9 @@ describe('NumberBubble Component', () => {
       isNeutralBackground: true,
     };
     const wrapper = shallow(<NumberBubble {...neutralProps} />);
-    const styleProps = wrapper.find('View').at(0).prop('style');
-    expect(styleProps[0].backgroundColor).toBe(Colors.backgroundColor);
+
+    expect(getGlobalStyles(wrapper.find('View').at(0))).toMatchObject({
+      backgroundColor: Colors.backgroundColor,
+    });
   });
 });
