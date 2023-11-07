@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';

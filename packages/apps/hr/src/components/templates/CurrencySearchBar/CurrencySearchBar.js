@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
 import {
   displayItemName,
   useDispatch,
