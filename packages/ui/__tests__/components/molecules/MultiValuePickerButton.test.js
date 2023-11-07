@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import {MultiValuePickerButton, Text, lightTheme} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 
 describe('MultiValuePickerButton Component', () => {
   const Colors = lightTheme.colors;
@@ -82,5 +82,13 @@ describe('MultiValuePickerButton Component', () => {
 
     wrapper.find(TouchableOpacity).at(1).simulate('press');
     expect(props.onPressItem).toHaveBeenCalledWith(listItem[0]);
+  });
+
+  it('should render disabled items when readonly is true', () => {
+    const wrapper = shallow(<MultiValuePickerButton {...props} readonly />);
+
+    for (let i = 1; i <= listItem.length; i++) {
+      expect(wrapper.find(TouchableOpacity).at(i).prop('disabled')).toBe(true);
+    }
   });
 });

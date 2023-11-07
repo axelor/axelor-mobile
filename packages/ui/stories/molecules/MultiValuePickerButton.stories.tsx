@@ -19,10 +19,10 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import {MultiValuePicker} from '../../src/components/organisms';
+import {MultiValuePickerButton} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
 
-storiesOf('ui/organisms/MultiValuePicker', module).add(
+storiesOf('ui/molecules/MultiValuePickerButton', module).add(
   'Default',
   args => {
     const listItem = [
@@ -33,11 +33,9 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
 
     return (
       <View style={styles.container}>
-        <MultiValuePicker
-          title="Select options"
-          listItems={listItem}
-          defaultItems={[listItem[1], listItem[3]]}
-          style={styles.multiValuePicker}
+        <MultiValuePickerButton
+          onPress={console.log}
+          listItem={listItem}
           {...args}
         />
       </View>
@@ -45,19 +43,7 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
   },
   {
     argTypes: {
-      title: {
-        control: {
-          type: 'text',
-        },
-        defaultValue: 'Select options',
-      },
       readonly: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
-      required: {
         control: {
           type: 'boolean',
         },
@@ -72,9 +58,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '25%',
-  },
-  multiValuePicker: {
-    width: '50%',
   },
 });

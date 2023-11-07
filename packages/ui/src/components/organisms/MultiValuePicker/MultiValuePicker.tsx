@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {Text} from '../../atoms';
@@ -28,7 +28,6 @@ import {
   useClickOutside,
 } from '../../../hooks/use-click-outside';
 import {Color, ThemeColors} from '../../../theme';
-import MultiSelectValue from '../MultiSelectValue/MultiSelectValue';
 
 interface Item {
   color: Color;
@@ -40,12 +39,11 @@ interface MultiValuePickerProps {
   style?: any;
   pickerStyle?: any;
   styleTxt?: any;
-  title: string;
-  onValueChange?: (any) => void;
+  title?: string;
+  onValueChange?: (itemList: Item[]) => void;
   defaultItems?: Item[];
   listItems: Item[];
-  disabled?: boolean;
-  disabledValue?: string[];
+  readonly?: boolean;
   required?: boolean;
 }
 
@@ -57,8 +55,7 @@ const MultiValuePicker = ({
   onValueChange,
   defaultItems = [],
   listItems = [],
-  disabled = false,
-  disabledValue = [],
+  readonly = false,
   required = false,
 }: MultiValuePickerProps) => {
   const Colors = useThemeColor();
@@ -128,82 +125,59 @@ const MultiValuePicker = ({
     <View
       ref={wrapperRef}
       style={[
+        styles.container,
         Platform.OS === 'ios' && pickerIsOpen ? styles.containerZIndex : null,
         style,
       ]}>
-      {!disabled && (
-        <View style={styles.titleContainer}>
-          <Text style={styleTxt}>{title}</Text>
-        </View>
-      )}
-      {disabled ? (
-        <View
-          style={[
-            commonStyles.filter,
-            commonStyles.filterSize,
-            commonStyles.filterAlign,
-            styles.infosCard,
-            pickerStyle,
-          ]}>
-          <MultiSelectValue itemList={disabledValue} title={`${title} :`} />
-        </View>
-      ) : (
-        <View
-          style={[
-            Platform.OS === 'ios' && pickerIsOpen
-              ? styles.pickerContainerZIndex
-              : null,
-          ]}>
-          <MultiValuePickerButton
-            onPress={togglePicker}
-            listItem={selectedItemList}
-            style={[
-              commonStyles.filter,
-              commonStyles.filterSize,
-              commonStyles.filterAlign,
-              styles.rightIconButton,
-              isFocused && commonStyles.inputFocused,
-              pickerStyle,
-            ]}
-            onPressItem={handleValueChange}
-          />
-          {pickerIsOpen ? (
-            <SelectionContainer
-              objectList={listItems}
-              keyField="key"
-              displayValue={(item: Item) => item.title}
-              handleSelect={handleValueChange}
-              isPicker={true}
-              selectedItem={selectedItemList}
-            />
-          ) : null}
-        </View>
-      )}
+      {title && <Text style={[styles.title, styleTxt]}>{title}</Text>}
+      <MultiValuePickerButton
+        onPress={togglePicker}
+        listItem={selectedItemList}
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          commonStyles.filterAlign,
+          isFocused && commonStyles.inputFocused,
+          styles.content,
+          pickerStyle,
+        ]}
+        onPressItem={handleValueChange}
+        readonly={readonly}
+      />
+      {pickerIsOpen ? (
+        <SelectionContainer
+          objectList={listItems}
+          keyField="key"
+          displayValue={(item: Item) => item.title}
+          handleSelect={handleValueChange}
+          isPicker={true}
+          selectedItem={selectedItemList}
+          readonly={readonly}
+        />
+      ) : null}
     </View>
   );
 };
 
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
+    container: {
+      width: '90%',
+    },
     containerZIndex: {
       zIndex: 45,
     },
-    titleContainer: {
-      marginHorizontal: 24,
+    title: {
+      marginLeft: 10,
     },
-    rightIconButton: {
-      width: Dimensions.get('window').width * 0.9,
+    content: {
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
       borderWidth: 1,
-    },
-    infosCard: {
-      justifyContent: 'flex-start',
-      width: Dimensions.get('window').width * 0.9,
-    },
-    pickerContainerZIndex: {
-      zIndex: 50,
+      marginHorizontal: 0,
+      minHeight: 40,
     },
   });
 
