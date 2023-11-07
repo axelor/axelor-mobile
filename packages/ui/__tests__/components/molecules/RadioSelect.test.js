@@ -59,7 +59,8 @@ describe('RadioSelect Component', () => {
   it('should handle RadioButton click', () => {
     const wrapper = shallow(<RadioSelect {...props} />);
     const secondRadioButton = wrapper.find(RadioButton).at(1);
-    secondRadioButton.props().onPress();
+
+    secondRadioButton.simulate('press');
 
     expect(props.onChange).toHaveBeenCalledWith(items[1].id);
   });
