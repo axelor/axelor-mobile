@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {FormInput, Picker} from '@axelor/aos-mobile-ui';
+import {Picker} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {fetchSelectionOptions} from '../../../../forms/studio/api.helpers';
 
