@@ -83,7 +83,7 @@ const RootNavigator = ({
   }, [Colors, I18n, registerHeaderBand]);
 
   useEffect(() => {
-    const interval = setInterval(checkInternetConnection, 2000);
+    const interval = setInterval(checkInternetConnection, 5000);
     return () => clearInterval(interval.current);
   }, [checkInternetConnection]);
 
