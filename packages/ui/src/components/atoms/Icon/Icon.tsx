@@ -47,7 +47,7 @@ const Icon = ({
 
   const styles = useMemo(() => {
     return getStyles(
-      color === null ? Colors.secondaryColor_dark.background : color,
+      color == null ? Colors.secondaryColor_dark.background : color,
       size,
     );
   }, [Colors, color, size]);
