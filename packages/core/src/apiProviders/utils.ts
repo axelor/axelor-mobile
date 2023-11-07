@@ -158,6 +158,6 @@ export const handlerApiCall = ({
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
-    .catch(handlerError(action, {getState}, errorOptions))
-    .then(handlerSuccess(action, responseOptions));
+    .then(handlerSuccess(action, responseOptions))
+    .catch(handlerError(action, {getState}, errorOptions));
 };
