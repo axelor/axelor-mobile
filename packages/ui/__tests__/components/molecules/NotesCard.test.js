@@ -44,6 +44,16 @@ describe('NotesCard Component', () => {
     const wrapper = shallow(<NotesCard {...props} />);
 
     expect(wrapper.find(HtmlInput).exists()).toBe(true);
+    expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
+    expect(wrapper.find(HtmlInput).prop('defaultInput')).toBe(props.data);
+  });
+
+  it('should not render if data is null', () => {
+    const wrapper = shallow(<NotesCard {...props} data={null} />);
+
+    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(wrapper.find(Text).exists()).toBe(false);
+    expect(wrapper.find(HtmlInput).exists()).toBe(false);
   });
 
   it('should apply custom style when provided', () => {
