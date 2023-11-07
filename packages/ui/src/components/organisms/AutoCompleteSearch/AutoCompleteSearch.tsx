@@ -260,12 +260,14 @@ const AutoCompleteSearch = ({
   }, [displayValue, handleClear, handleSearchValueChange, selected, value]);
 
   const marginBottom = useMemo(() => {
+    const visibleListLength = objectList.length < 5 ? objectList.length : 5;
+
     if (isScrollViewContainer && displayList) {
-      return 5 * ITEM_HEIGHT + 5;
+      return visibleListLength * ITEM_HEIGHT + 5;
     }
 
     return null;
-  }, [isScrollViewContainer, displayList]);
+  }, [displayList, isScrollViewContainer, objectList]);
 
   const styles = useMemo(
     () => getStyles(displayList, marginBottom),

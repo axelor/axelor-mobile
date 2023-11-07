@@ -27,6 +27,7 @@ const InternalMoveLinePicker = ({
   status,
   setUnit,
   setSaveStatus = () => {},
+  isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const InternalMoveLinePicker = ({
         status === StockMove.status.Canceled
       }
       required={true}
+      isScrollViewContainer={isScrollViewContainer}
     />
   );
 };

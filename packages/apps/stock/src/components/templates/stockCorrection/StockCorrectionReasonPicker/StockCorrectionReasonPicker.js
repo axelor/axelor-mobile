@@ -17,6 +17,7 @@
  */
 
 import React, {useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {getFromList, Picker} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
@@ -50,6 +51,7 @@ const StockCorrectionReasonPicker = ({
 
   return (
     <Picker
+      style={styles.picker}
       title={I18n.t('Stock_Reason')}
       onValueChange={handleReasonChange}
       defaultValue={reason?.id}
@@ -62,5 +64,11 @@ const StockCorrectionReasonPicker = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  picker: {
+    alignSelf: 'center',
+  },
+});
 
 export default StockCorrectionReasonPicker;

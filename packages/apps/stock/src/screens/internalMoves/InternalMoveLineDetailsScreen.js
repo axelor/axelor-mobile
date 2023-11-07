@@ -220,6 +220,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           setUnit={setUnit}
           status={internalMove.statusSelect}
           unit={unit}
+          isScrollViewContainer={true}
         />
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
