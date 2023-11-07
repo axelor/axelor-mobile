@@ -72,6 +72,7 @@ const ExpenseLineCard = ({
         touchable={false}
         showArrow={false}
         style={styles.border}
+        leftContainerFlex={2}
         upperTexts={{
           style: styles.text,
           items: [
