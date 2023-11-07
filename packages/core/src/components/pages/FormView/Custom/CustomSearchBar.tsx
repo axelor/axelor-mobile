@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '../../../../i18n';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {customComponentOptions} from '../../../../forms/types';
 import {
