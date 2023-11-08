@@ -90,7 +90,7 @@ const FormHtmlInput = ({
   }
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <View
         style={[
@@ -115,8 +115,12 @@ const FormHtmlInput = ({
 
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
-    content: {
+    container: {
       width: '90%',
+      alignSelf: 'center',
+    },
+    content: {
+      width: '100%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,
@@ -128,6 +132,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     },
     input: {
       width: '100%',
+      minHeight: 40,
     },
     title: {
       marginLeft: 10,
