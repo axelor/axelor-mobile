@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {SwitchCard, Text, Switch} from '@axelor/aos-mobile-ui';
+import {SwitchCard, Text} from '@axelor/aos-mobile-ui';
 
 describe('SwitchCard', () => {
   it('should render without crashing', () => {
