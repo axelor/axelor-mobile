@@ -17,8 +17,10 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {RadioSelect, RadioButton, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('RadioSelect Component', () => {
   const items = [
@@ -96,5 +98,14 @@ describe('RadioSelect Component', () => {
       .filterWhere(button => button.props().selected);
 
     expect(selectedRadioButtons.props().direction).toBe(items[0].direction);
+  });
+
+  it('applies custom style when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(<RadioSelect {...props} style={customStyle} />);
+
+    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
+      customStyle,
+    );
   });
 });
