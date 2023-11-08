@@ -95,6 +95,8 @@ const ExpenseCard = ({
         <ObjectCard
           onPress={onPress}
           style={borderStyle}
+          leftContainerFlex={2}
+          iconLeftMargin={10}
           upperTexts={{
             items: [
               {
@@ -126,7 +128,7 @@ const ExpenseCard = ({
             items: [
               {
                 customComponent: !checkNullString(inTaxTotal) && (
-                  <Text>{`${inTaxTotal} ${
+                  <Text style={styles.price}>{`${inTaxTotal} ${
                     user?.activeCompany?.currency?.symbol != null
                       ? user?.activeCompany?.currency?.symbol
                       : user?.activeCompany?.currency?.code
@@ -197,6 +199,9 @@ const styles = StyleSheet.create({
   titleText: {
     alignSelf: 'center',
     marginLeft: 5,
+  },
+  price: {
+    textAlign: 'right',
   },
 });
 

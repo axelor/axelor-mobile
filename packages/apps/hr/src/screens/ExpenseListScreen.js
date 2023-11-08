@@ -140,8 +140,8 @@ const ExpenseListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (selectedStatus != null) {
           return list?.filter(item => item?.statusSelect === selectedStatus);
