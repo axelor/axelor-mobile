@@ -69,4 +69,32 @@ describe('RadioSelect Component', () => {
     expect(selectedRadioButtons).toHaveLength(1);
     expect(selectedRadioButtons.props().title).toBe(items[0].title);
   });
+
+  it('should set correct size when provided', () => {
+    const propsSize = {
+      ...props,
+      radioSize: 40,
+    };
+    const wrapper = shallow(<RadioSelect {...propsSize} />);
+
+    const selectedRadioButtons = wrapper
+      .find(RadioButton)
+      .filterWhere(button => button.props().selected);
+
+    expect(selectedRadioButtons.props().radioSize).toBe(items[0].radioSize);
+  });
+
+  it('should set correct direction when provided', () => {
+    const propsDirection = {
+      ...props,
+      direction: 'column',
+    };
+    const wrapper = shallow(<RadioSelect {...propsDirection} />);
+
+    const selectedRadioButtons = wrapper
+      .find(RadioButton)
+      .filterWhere(button => button.props().selected);
+
+    expect(selectedRadioButtons.props().direction).toBe(items[0].direction);
+  });
 });
