@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {ToggleSwitch, lightTheme} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
@@ -89,5 +89,14 @@ describe('ToggleSwitch Component', () => {
     ).not.toMatchObject({
       backgroundColor: Colors.primaryColor.background_light,
     });
+  });
+
+  it('applies custom style when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(
+      <ToggleSwitch {...props} styleContainer={customStyle} />,
+    );
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 });
