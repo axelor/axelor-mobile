@@ -18,9 +18,8 @@
 
 import React from 'react';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
-import StockMove from '../../../../types/stock-move';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import {StyleSheet, View} from 'react-native';
+import StockMove from '../../../../types/stock-move';
 
 const InternalMoveLineNotes = ({
   status = null,
@@ -35,44 +34,15 @@ const InternalMoveLineNotes = ({
     setSaveStatus(false);
   };
 
-  if (status === StockMove.status.Draft) {
-    return (
-      <View style={styles.container}>
-        <FormHtmlInput
-          title={I18n.t('Stock_NotesOnStockMove')}
-          onChange={handleNotesChange}
-          defaultValue={notes}
-          style={styles.input}
-        />
-      </View>
-    );
-  }
-
-  if (notes != null) {
-    return (
-      <View style={styles.container}>
-        <FormHtmlInput
-          title={I18n.t('Stock_NotesOnStockMove')}
-          onChange={handleNotesChange}
-          defaultValue={notes}
-          readonly={true}
-          style={styles.input}
-        />
-      </View>
-    );
-  }
-
-  return null;
+  return (
+    <FormHtmlInput
+      title={I18n.t('Stock_NotesOnStockMove')}
+      onChange={handleNotesChange}
+      defaultValue={notes}
+      readonly={status !== StockMove.status.Draft}
+      hideIfNull={true}
+    />
+  );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '90%',
-    alignSelf: 'center',
-  },
-  input: {
-    width: '100%',
-  },
-});
 
 export default InternalMoveLineNotes;
