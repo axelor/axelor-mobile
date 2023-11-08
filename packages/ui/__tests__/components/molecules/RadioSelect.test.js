@@ -79,8 +79,8 @@ describe('RadioSelect Component', () => {
     };
     const wrapper = shallow(<RadioSelect {...propsSize} />);
 
-    expect(wrapper.find(RadioButton).at(0).props('size').radioSize).toBe(
-      items[0].radioSize,
+    expect(wrapper.find(RadioButton).at(0).prop('size')).toBe(
+      propsSize.radioSize,
     );
   });
 
