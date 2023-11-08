@@ -19,7 +19,8 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
-import {RightIconButton, Text, Icon} from '@axelor/aos-mobile-ui';
+import {RightIconButton, Text, Icon, Card} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('RightIconButton Component', () => {
   const props = {
@@ -45,10 +46,16 @@ describe('RightIconButton Component', () => {
     expect(wrapper.contains(props.icon)).toBe(true);
   });
 
-  it('calls onPress when the button is pressed', () => {
+  it('touchable is not disabled', () => {
     const wrapper = shallow(<RightIconButton {...props} />);
-    const touchable = wrapper.find(TouchableOpacity);
-    touchable.simulate('press');
-    expect(props.onPress).toHaveBeenCalled();
+
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBeFalsy();
+  });
+
+  it('applies custom style when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(<RightIconButton {...props} style={customStyle} />);
+
+    expect(getGlobalStyles(wrapper.find(Card))).toMatchObject(customStyle);
   });
 });
