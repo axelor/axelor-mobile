@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {PopUp} from '@axelor/aos-mobile-ui';
 import {View, Modal} from 'react-native';
+import {PopUp} from '@axelor/aos-mobile-ui';
 import {shallow} from 'enzyme';
 
 describe('PopUp Component', () => {
