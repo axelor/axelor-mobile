@@ -22,12 +22,14 @@ import {HtmlInput, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
 import {getCommonStyles} from '../../../utils/commons-styles';
+import {checkNullString} from '../../../utils/strings';
 
 interface FormHtmlInputProps {
   title: string;
   placeholder?: string;
   defaultValue?: string;
   readonly?: boolean;
+  hideIfNull?: boolean;
   style?: any;
   required?: boolean;
   onChange?: (any: any) => void;
@@ -38,6 +40,7 @@ const FormHtmlInput = ({
   placeholder = '',
   defaultValue = null,
   readonly = false,
+  hideIfNull = false,
   style,
   required = false,
   onChange = () => {},
@@ -82,6 +85,10 @@ const FormHtmlInput = ({
     setIsFocused(false);
   };
 
+  if (hideIfNull && readonly && checkNullString(defaultValue)) {
+    return null;
+  }
+
   return (
     <View style={style}>
       <Text style={styles.title}>{title}</Text>
@@ -109,7 +116,7 @@ const FormHtmlInput = ({
 const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     content: {
-      width: '100%',
+      width: '90%',
       borderColor: _required
         ? Colors.errorColor.background
         : Colors.secondaryColor.background,

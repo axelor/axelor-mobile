@@ -199,7 +199,6 @@ const OpportunityFormScreen = ({route}) => {
               handleOpportunityFieldChange(value, 'description')
             }
             defaultValue={_opportunity.description}
-            style={styles.input}
           />
           <Picker
             title={I18n.t('Crm_Opportunity_Status')}
