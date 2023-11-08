@@ -52,6 +52,10 @@ const parseField = (fieldName: string, value: any, object: any): any => {
     const dotIndex = fieldName.indexOf('.');
     const _name = fieldName.substring(0, dotIndex);
 
+    if (value == null) {
+      return object;
+    }
+
     return {
       ...object,
       [fieldName]: value,
