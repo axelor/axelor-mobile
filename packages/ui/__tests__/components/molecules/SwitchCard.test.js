@@ -17,8 +17,10 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {SwitchCard, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('SwitchCard', () => {
   const props = {
@@ -55,5 +57,12 @@ describe('SwitchCard', () => {
     expect(wrapper.find('Switch').prop('handleToggle')).toBe(
       propsOnPress.onToggle,
     );
+  });
+
+  it('applies custom style when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(<SwitchCard {...props} style={customStyle} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 });
