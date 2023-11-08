@@ -100,4 +100,20 @@ describe('FormHtmlInput Component', () => {
 
     expect(wrapper.find(HtmlInput).prop('readonly')).toBe(true);
   });
+
+  it('renders nothing when readonly input and empty value', () => {
+    const wrapper = shallow(
+      <FormHtmlInput {...props} defaultValue={null} readonly hideIfNull />,
+    );
+
+    expect(wrapper.isEmptyRender()).toBeTruthy();
+  });
+
+  it('renders input when readonly and not empty value', () => {
+    const wrapper = shallow(
+      <FormHtmlInput {...props} defaultValue={'Test'} readonly hideIfNull />,
+    );
+
+    expect(wrapper.isEmptyRender()).not.toBeTruthy();
+  });
 });
