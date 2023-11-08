@@ -21,42 +21,39 @@ import {shallow} from 'enzyme';
 import {SwitchCard, Text} from '@axelor/aos-mobile-ui';
 
 describe('SwitchCard', () => {
+  const props = {
+    title: 'Test Switch',
+    defaultValue: false,
+  };
   it('should render without crashing', () => {
-    const title = 'Test Switch';
-    const wrapper = shallow(
-      <SwitchCard title={title} defaultValue={false} onToggle={() => {}} />,
-    );
+    const wrapper = shallow(<SwitchCard {...props} />);
 
     expect(wrapper.exists()).toBe(true);
   });
   it('renders with the correct title', () => {
-    const title = 'Test Switch';
-    const wrapper = shallow(
-      <SwitchCard title={title} defaultValue={false} onToggle={() => {}} />,
-    );
+    const wrapper = shallow(<SwitchCard {...props} />);
 
-    expect(wrapper.find(Text).prop('children')).toBe(title);
+    expect(wrapper.find(Text).prop('children')).toBe(props.title);
   });
 
   it('passes the default value to the Switch component', () => {
-    const defaultValue = true;
-    const wrapper = shallow(
-      <SwitchCard
-        title="Test"
-        defaultValue={defaultValue}
-        onToggle={() => {}}
-      />,
-    );
+    const propsDefaultValue = {
+      ...props,
+      defaultValue: true,
+    };
+    const wrapper = shallow(<SwitchCard {...propsDefaultValue} />);
 
-    expect(wrapper.find('Switch').prop('isEnabled')).toBe(defaultValue);
+    expect(wrapper.find('Switch').prop('isEnabled')).toBe(
+      propsDefaultValue.defaultValue,
+    );
   });
 
-  it('calls onToggle when the switch is toggled', () => {
-    const onPress = jest.fn();
-    const wrapper = shallow(
-      <SwitchCard title="Test" defaultValue={true} onToggle={onPress} />,
-    );
+  it('passes the right to the Switch component', () => {
+    const propsOnPress = {...props, onToggle: jest.fn()};
+    const wrapper = shallow(<SwitchCard {...propsOnPress} />);
 
-    expect(wrapper.find('Switch').prop('handleToggle')).toBe(onPress);
+    expect(wrapper.find('Switch').prop('handleToggle')).toBe(
+      propsOnPress.onToggle,
+    );
   });
 });
