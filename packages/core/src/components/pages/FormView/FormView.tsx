@@ -37,6 +37,7 @@ import {
   isObjectMissingRequiredField,
   mapErrorWithTranslationKey,
   sortContent,
+  updateRequiredFieldsOfConfig,
   useFormConfig,
   validateSchema,
 } from '../../../forms';
@@ -192,7 +193,13 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     const buttonConfig = getButtonConfig(_action);
     const isDisabled =
       (_action.needRequiredFields
-        ? isObjectMissingRequiredField(object, config)
+        ? isObjectMissingRequiredField(
+            object,
+            updateRequiredFieldsOfConfig(config, {
+              objectState: object,
+              storeState,
+            }),
+          )
         : false) || _action.disabledIf?.({objectState: object, storeState});
 
     return (

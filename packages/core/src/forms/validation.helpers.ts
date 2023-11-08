@@ -20,6 +20,28 @@ import {Schema, array, boolean, number, object, setLocale, string} from 'yup';
 import {getFields} from './display.helpers';
 import {DisplayField, Form} from './types';
 
+export const updateRequiredFieldsOfConfig = (
+  config: Form,
+  {objectState, storeState}: {objectState: any; storeState: any},
+): Form => {
+  if (config == null) {
+    return null;
+  }
+
+  const fields = getFields(config);
+
+  const result = {...config.fields};
+
+  fields.forEach(_item => {
+    result[_item.key] = {
+      ..._item,
+      required: _item.required || _item.requiredIf({objectState, storeState}),
+    };
+  });
+
+  return {...config, fields: result};
+};
+
 export const isObjectMissingRequiredField = (
   content: any,
   config: Form,
