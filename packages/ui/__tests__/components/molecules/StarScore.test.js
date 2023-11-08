@@ -23,61 +23,80 @@ import {Icon, StarScore, lightTheme} from '@axelor/aos-mobile-ui';
 describe('StarScore', () => {
   const Colors = lightTheme.colors;
 
+  const props = {
+    score: 3.5,
+    onPress: jest.fn(),
+  };
+
   it('should render without crashing', () => {
-    const onPress = jest.fn();
-    const score = 3.5;
-    const wrapper = shallow(<StarScore score={score} onPress={onPress} />);
+    const wrapper = shallow(<StarScore {...props} />);
 
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders the correct number of active stars based on score', () => {
-    const onPress = jest.fn();
-    const score = 3.5;
-    const wrapper = shallow(<StarScore score={score} onPress={onPress} />);
+  it('renders the correct number of active stars based on score when showHalfStar is true', () => {
+    const wrapper = shallow(<StarScore {...props} showHalfStar={true} />);
     expect(
       wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
     ).toHaveLength(3);
-    if (wrapper.prop('showHalfStar')) {
-      expect(
-        wrapper
-          .find(Icon)
-          .filterWhere(item => item.prop('name') === 'star-half'),
-      ).toHaveLength(1);
-    }
-  });
-
-  it('renders half stars when showHalfStar is true', () => {
-    const onPress = jest.fn();
-    const score = 3.5;
-    const wrapper = shallow(
-      <StarScore score={score} showHalfStar={true} onPress={onPress} />,
-    );
     expect(
       wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-half'),
     ).toHaveLength(1);
   });
 
+  it('renders the correct number of active stars based on score with disabled showHalfStar props', () => {
+    const wrapper = shallow(<StarScore {...props} showHalfStar={false} />);
+    expect(
+      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
+    ).toHaveLength(3);
+    expect(
+      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-half'),
+    ).toHaveLength(0);
+  });
+
   it('renders missing stars when showMissingStar is true', () => {
-    const onPress = jest.fn();
-    const score = 2;
-    const wrapper = shallow(
-      <StarScore score={score} showMissingStar={true} onPress={onPress} />,
-    );
+    const showMissingStarProps = {
+      ...props,
+      score: 2,
+      showMissingStar: true,
+    };
+
+    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
+    expect(
+      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
+    ).toHaveLength(2);
     expect(
       wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-o'),
     ).toHaveLength(3);
   });
 
+  it('renders missing stars when showMissingStar is false', () => {
+    const showMissingStarProps = {
+      ...props,
+      score: 2,
+      showMissingStar: false,
+    };
+
+    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
+    expect(
+      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
+    ).toHaveLength(2);
+    expect(
+      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-o'),
+    ).toHaveLength(0);
+  });
+
   it('calls onPress with the correct argument when a star is pressed', () => {
-    const onPress = jest.fn();
-    const score = 2;
-    const wrapper = shallow(
-      <StarScore score={score} onPress={onPress} editMode={true} />,
-    );
+    const showMissingStarProps = {
+      ...props,
+      score: 2,
+      onPress: jest.fn(),
+    };
+
+    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
 
     wrapper.find(Icon).first().simulate('press');
-    expect(onPress).toHaveBeenCalledWith(1);
+    expect(showMissingStarProps.onPress).toHaveBeenCalledWith(1);
   });
 
   it('renders stars with the correct color and size', () => {
