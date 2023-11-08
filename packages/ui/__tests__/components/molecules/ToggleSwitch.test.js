@@ -24,51 +24,45 @@ import {getGlobalStyles} from '../../tools';
 
 describe('ToggleSwitch Component', () => {
   const Colors = lightTheme.colors;
-  const onSwitch = jest.fn();
+
+  const props = {
+    leftTitle: 'Left',
+    rightTitle: 'rightTitle',
+    onSwitch: jest.fn(),
+  };
   it('renders without crashing', () => {
-    const wrapper = shallow(
-      <ToggleSwitch leftTitle="Left" rightTitle="Right" onSwitch={onSwitch} />,
-    );
+    const wrapper = shallow(<ToggleSwitch {...props} />);
     expect(wrapper.exists()).toBe(true);
   });
 
   it('calls onSwitch when left side is pressed', () => {
-    const onSwitchMock = jest.fn();
-    const wrapper = shallow(
-      <ToggleSwitch
-        leftTitle="Left"
-        rightTitle="Right"
-        onSwitch={onSwitchMock}
-      />,
-    );
+    const onSwitchProps = {
+      ...props,
+      onSwitch: jest.fn(),
+    };
+    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
     const leftButton = wrapper.find(TouchableOpacity).at(0);
     leftButton.simulate('press');
-    expect(onSwitchMock).toHaveBeenCalledTimes(1);
+    expect(onSwitchProps.onSwitch).toHaveBeenCalledTimes(1);
   });
 
   it('calls onSwitch when right side is pressed', () => {
-    const onSwitchMock = jest.fn();
-    const wrapper = shallow(
-      <ToggleSwitch
-        leftTitle="Left"
-        rightTitle="Right"
-        onSwitch={onSwitchMock}
-      />,
-    );
+    const onSwitchProps = {
+      ...props,
+      onSwitch: jest.fn(),
+    };
+    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
     const rightButton = wrapper.find(TouchableOpacity).at(1);
     rightButton.simulate('press');
-    expect(onSwitchMock).toHaveBeenCalledTimes(1);
+    expect(onSwitchProps.onSwitch).toHaveBeenCalledTimes(1);
   });
 
   it('changes active style on press', () => {
-    const onSwitchMock = jest.fn();
-    const wrapper = shallow(
-      <ToggleSwitch
-        leftTitle="Left"
-        rightTitle="Right"
-        onSwitch={onSwitchMock}
-      />,
-    );
+    const onSwitchProps = {
+      ...props,
+      onSwitch: jest.fn(),
+    };
+    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
 
     expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(0))).toMatchObject(
       {
