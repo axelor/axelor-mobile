@@ -83,6 +83,7 @@ interface ImageElement {
 interface ObjectCardProps {
   style?: any;
   leftContainerFlex?: number;
+  iconLeftMargin?: number;
   touchable?: boolean;
   onPress?: () => void;
   showArrow?: boolean;
@@ -114,6 +115,7 @@ interface ObjectCardProps {
 const ObjectCard = ({
   style,
   leftContainerFlex = 3,
+  iconLeftMargin = 20,
   touchable = true,
   onPress,
   showArrow = true,
@@ -279,7 +281,7 @@ const ObjectCard = ({
               name="chevron-right"
               color={Colors.secondaryColor.background_light}
               size={20}
-              style={styles.arrowIcon}
+              style={{marginLeft: iconLeftMargin}}
             />
           )}
         </View>
@@ -350,7 +352,6 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
-  arrowIcon: {marginLeft: 25},
   text: {
     width: '100%',
   },
