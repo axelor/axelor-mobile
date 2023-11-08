@@ -95,7 +95,7 @@ const ExpenseCard = ({
         <ObjectCard
           onPress={onPress}
           style={borderStyle}
-          leftContainerFlex={2}
+          leftContainerFlex={2.5}
           upperTexts={{
             items: [
               {
