@@ -79,11 +79,9 @@ describe('RadioSelect Component', () => {
     };
     const wrapper = shallow(<RadioSelect {...propsSize} />);
 
-    const selectedRadioButtons = wrapper
-      .find(RadioButton)
-      .filterWhere(button => button.props().selected);
-
-    expect(selectedRadioButtons.props().radioSize).toBe(items[0].radioSize);
+    expect(wrapper.find(RadioButton).at(0).props('size').radioSize).toBe(
+      items[0].radioSize,
+    );
   });
 
   it('should set correct direction when provided', () => {
@@ -93,11 +91,9 @@ describe('RadioSelect Component', () => {
     };
     const wrapper = shallow(<RadioSelect {...propsDirection} />);
 
-    const selectedRadioButtons = wrapper
-      .find(RadioButton)
-      .filterWhere(button => button.props().selected);
-
-    expect(selectedRadioButtons.props().direction).toBe(items[0].direction);
+    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject({
+      flexDirection: propsDirection.direction,
+    });
   });
 
   it('applies custom style when provided', () => {
