@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {FormHtmlInput} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
@@ -35,26 +34,16 @@ const StockCorrectionHtmlInput = ({
   };
 
   return (
-    <View style={styles.content}>
-      <FormHtmlInput
-        title={I18n.t('Base_Comment')}
-        defaultValue={stockCorrection?.comments}
-        onChange={handleCommentsChange}
-        style={styles.input}
-        readonly={
-          stockCorrection?.statusSelect === StockCorrection.status.Validated
-        }
-      />
-    </View>
+    <FormHtmlInput
+      title={I18n.t('Base_Comment')}
+      defaultValue={stockCorrection?.comments}
+      onChange={handleCommentsChange}
+      readonly={
+        stockCorrection?.statusSelect === StockCorrection.status.Validated
+      }
+      hideIfNull={true}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  content: {
-    alignSelf: 'center',
-  },
-
-  input: {width: '100%'},
-});
 
 export default StockCorrectionHtmlInput;
