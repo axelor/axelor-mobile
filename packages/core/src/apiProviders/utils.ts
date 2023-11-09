@@ -57,10 +57,15 @@ const manageError = (
   userId,
   {showErrorToast = true, errorTracing = true},
 ) => {
-  if (error.response) {
+  if (error.response || error.data?.status === -1) {
     const message =
-      error?.response?.data?.messageStatus || error?.response?.statusText;
-    const code = error.response?.data?.codeStatus || error?.response?.status;
+      error?.response?.data?.messageStatus ||
+      error?.response?.statusText ||
+      error?.data?.data?.message;
+    const code =
+      error.response?.data?.codeStatus ||
+      error?.response?.status ||
+      error.data?.status;
 
     if (code === 401) {
       apiProviderConfig.setSessionExpired(true);
@@ -70,7 +75,7 @@ const manageError = (
     if (errorTracing) {
       traceError({
         message: 'API request',
-        cause: error.response.data ? error.response.data : error,
+        cause: error?.response?.data ? error.response.data : error,
         userId,
       });
     }
@@ -169,7 +174,13 @@ export const handlerApiCall = ({
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
-    .then(handlerSuccess(action, responseOptions))
+    .then(res => {
+      if (res?.data?.status === -1) {
+        return handlerError(action, {getState}, errorOptions)(res);
+      } else {
+        return handlerSuccess(action, responseOptions)(res);
+      }
+    })
     .catch(handlerError(action, {getState}, errorOptions));
 };
 
