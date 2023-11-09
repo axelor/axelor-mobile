@@ -30,73 +30,75 @@ describe('ToggleSwitch Component', () => {
     rightTitle: 'rightTitle',
     onSwitch: jest.fn(),
   };
+
   it('renders without crashing', () => {
     const wrapper = shallow(<ToggleSwitch {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
   it('calls onSwitch when left side is pressed', () => {
-    const onSwitchProps = {
-      ...props,
-      onSwitch: jest.fn(),
-    };
-    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
-    const leftButton = wrapper.find(TouchableOpacity).at(0);
-    leftButton.simulate('press');
-    expect(onSwitchProps.onSwitch).toHaveBeenCalledTimes(1);
+    const onSwitch = jest.fn();
+    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+
+    wrapper.find(TouchableOpacity).at(0).simulate('press');
+    expect(onSwitch).toHaveBeenCalledTimes(1);
   });
 
   it('calls onSwitch when right side is pressed', () => {
-    const onSwitchProps = {
-      ...props,
-      onSwitch: jest.fn(),
-    };
-    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
-    const rightButton = wrapper.find(TouchableOpacity).at(1);
-    rightButton.simulate('press');
-    expect(onSwitchProps.onSwitch).toHaveBeenCalledTimes(1);
+    const onSwitch = jest.fn();
+    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+
+    wrapper.find(TouchableOpacity).at(1).simulate('press');
+    expect(onSwitch).toHaveBeenCalledTimes(1);
   });
 
   it('changes active style on press', () => {
-    const onSwitchProps = {
-      ...props,
-      onSwitch: jest.fn(),
+    const selectedColor = Colors.primaryColor.background_light;
+    const onSwitch = jest.fn();
+    const wrapper = shallow(<ToggleSwitch {...props} onSwitch={onSwitch} />);
+
+    const getButton = side => {
+      return wrapper.find(TouchableOpacity).at(side === 'left' ? 0 : 1);
     };
-    const wrapper = shallow(<ToggleSwitch {...onSwitchProps} />);
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(0))).toMatchObject(
-      {
-        backgroundColor: Colors.primaryColor.background_light,
-      },
-    );
-
-    expect(
-      getGlobalStyles(wrapper.find(TouchableOpacity).at(1)),
-    ).not.toMatchObject({
-      backgroundColor: Colors.primaryColor.background_light,
+    expect(getGlobalStyles(getButton('left'))).toMatchObject({
+      backgroundColor: selectedColor,
     });
 
-    wrapper.find(TouchableOpacity).at(1).simulate('press');
+    expect(getGlobalStyles(getButton('right'))).not.toMatchObject({
+      backgroundColor: selectedColor,
+    });
 
-    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(1))).toMatchObject(
-      {
-        backgroundColor: Colors.primaryColor.background_light,
-      },
-    );
+    getButton('right').simulate('press');
 
-    expect(
-      getGlobalStyles(wrapper.find(TouchableOpacity).at(0)),
-    ).not.toMatchObject({
-      backgroundColor: Colors.primaryColor.background_light,
+    expect(getGlobalStyles(getButton('left'))).not.toMatchObject({
+      backgroundColor: selectedColor,
+    });
+
+    expect(getGlobalStyles(getButton('right'))).toMatchObject({
+      backgroundColor: selectedColor,
     });
   });
 
   it('applies custom style when provided', () => {
     const customStyle = {width: 200};
+    const toggleStyle = {height: 50};
+
     const wrapper = shallow(
-      <ToggleSwitch {...props} styleContainer={customStyle} />,
+      <ToggleSwitch
+        {...props}
+        styleContainer={customStyle}
+        styleToogle={toggleStyle}
+      />,
     );
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(0))).toMatchObject(
+      toggleStyle,
+    );
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity).at(1))).toMatchObject(
+      toggleStyle,
+    );
   });
 });
