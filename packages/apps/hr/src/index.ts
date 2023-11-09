@@ -19,7 +19,8 @@
 import {Module} from '@axelor/aos-mobile-core';
 import enTranslations from './i18n/en.json';
 import frTranslations from './i18n/fr.json';
-import HrScreens from './screens/';
+import ExpenseScreens from './screens/expense';
+import TimesheetScreens from './screens/timesheet';
 import {
   hr_modelAPI,
   hr_searchFields,
@@ -53,9 +54,15 @@ export const HrModule: Module = {
       icon: 'credit-card',
       screen: 'ExpenseListScreen',
     },
+    hr_menu_timers: {
+      title: 'Hr_Timers',
+      icon: 'hourglass-half',
+      screen: 'TimerListScreen',
+    },
   },
   screens: {
-    ...HrScreens,
+    ...ExpenseScreens,
+    ...TimesheetScreens,
   },
   reducers: {...hrReducers},
   models: {
@@ -70,5 +77,6 @@ export const HrModule: Module = {
 export * from './api';
 export * from './components';
 export * from './features/asyncFunctions-index';
-export * from './screens';
+export * from './screens/expense';
+export * from './screens/timesheet';
 export * from './types';

@@ -21,17 +21,17 @@ import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
   updateExpenseLine,
-} from '../features/expenseLineSlice';
+} from '../../features/expenseLineSlice';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseLine} from '../types';
-import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
-import {fetchExpenseConfig} from '../features/expenseConfigSlice';
+import {ExpenseLine} from '../../types';
+import {updateExpenseDate} from '../../features/kilometricAllowParamSlice';
+import {fetchExpenseConfig} from '../../features/expenseConfigSlice';
 import {
   needUpdateDistance,
   resetDistance,
   updateFromCity,
   updateToCity,
-} from '../features/distanceSlice';
+} from '../../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
   const {expenseLine, idExpense, justificationMetaFile} = route?.params;
