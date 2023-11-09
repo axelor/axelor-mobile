@@ -6,8 +6,8 @@ export const app_config = {
    */
   testInstanceConfig: {
     defaultUrl: '',
-    defaultUsername: 'client',
-    defaultPassword: '@axclient',
+    defaultUsername: '',
+    defaultPassword: '',
   },
 
   /*
