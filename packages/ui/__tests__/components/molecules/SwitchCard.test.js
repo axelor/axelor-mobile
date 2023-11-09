@@ -27,36 +27,36 @@ describe('SwitchCard', () => {
     title: 'Test Switch',
     defaultValue: false,
   };
+
   it('should render without crashing', () => {
     const wrapper = shallow(<SwitchCard {...props} />);
 
     expect(wrapper.exists()).toBe(true);
   });
+
   it('renders with the correct title', () => {
     const wrapper = shallow(<SwitchCard {...props} />);
 
     expect(wrapper.find(Text).prop('children')).toBe(props.title);
   });
 
-  it('passes the default value to the Switch component', () => {
-    const propsDefaultValue = {
-      ...props,
-      defaultValue: true,
-    };
-    const wrapper = shallow(<SwitchCard {...propsDefaultValue} />);
+  it('passes the default value to the Switch component when false', () => {
+    const wrapper = shallow(<SwitchCard {...props} />);
 
-    expect(wrapper.find('Switch').prop('isEnabled')).toBe(
-      propsDefaultValue.defaultValue,
-    );
+    expect(wrapper.find('Switch').prop('isEnabled')).toBe(false);
   });
 
-  it('passes the right to the Switch component', () => {
-    const propsOnPress = {...props, onToggle: jest.fn()};
-    const wrapper = shallow(<SwitchCard {...propsOnPress} />);
+  it('passes the default value to the Switch component when true', () => {
+    const wrapper = shallow(<SwitchCard {...props} defaultValue={true} />);
 
-    expect(wrapper.find('Switch').prop('handleToggle')).toBe(
-      propsOnPress.onToggle,
-    );
+    expect(wrapper.find('Switch').prop('isEnabled')).toBe(true);
+  });
+
+  it('passes the right handler to the Switch component', () => {
+    const onToggle = jest.fn();
+    const wrapper = shallow(<SwitchCard {...props} onToggle={onToggle} />);
+
+    expect(wrapper.find('Switch').prop('handleToggle')).toBe(onToggle);
   });
 
   it('applies custom style when provided', () => {
