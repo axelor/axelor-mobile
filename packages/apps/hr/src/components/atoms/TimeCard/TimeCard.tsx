@@ -18,41 +18,44 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ObjectCard, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
-import IconDate from '../IconDate/IconDate';
-import {TimesheetLine} from '../../../types';
+import DateDisplay from '../DateDisplay/DateDisplay';
+import TextUnit from '../TextUnit/TextUnit';
+import {Time} from '../../../types';
 
-interface TimesheetLineCardProps {
+interface TimeCardProps {
   statusSelect: number;
   project?: string;
   task?: string;
   manufOrder?: string;
   operation?: string;
+  comment?: string;
   date: string;
   duration: string;
-  unitDuration: string;
+  durationUnit: string;
   isBorderColor?: boolean;
   style?: any;
 }
 
-const TimesheetLineCard = ({
+const TimeCard = ({
   statusSelect,
   project,
   task,
   manufOrder,
   operation,
+  comment,
   date,
   duration,
-  unitDuration,
+  durationUnit,
   isBorderColor = true,
   style,
-}: TimesheetLineCardProps) => {
+}: TimeCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
   const styles = useMemo(
-    () => getStyles(TimesheetLine.getStatusColor(statusSelect, Colors)),
+    () => getStyles(Time.getStatusColor(statusSelect, Colors)),
     [Colors, statusSelect],
   );
 
@@ -61,7 +64,7 @@ const TimesheetLineCard = ({
       <ObjectCard
         touchable={false}
         showArrow={false}
-        leftContainerFlex={2}
+        leftContainerFlex={1.3}
         style={[styles.container, isBorderColor && styles.borderColor]}
         upperTexts={{
           items: [
@@ -75,21 +78,27 @@ const TimesheetLineCard = ({
               numberOfLines: 2,
               style: styles.subTitle,
             },
+            {
+              displayText: comment,
+              numberOfLines: 2,
+              hideIfNull: true,
+              style: styles.subTitle,
+            },
           ],
         }}
         sideBadges={{
+          style: styles.badges,
           items: [
             {
-              customComponent: <IconDate date={date} />,
+              customComponent: <DateDisplay date={date} />,
             },
             {
               customComponent: (
-                <Text
-                  textColor={Colors.primaryColor.background}
-                  fontSize={18}
-                  style={styles.durationText}>
-                  {duration} {TimesheetLine.getUnitDuration(unitDuration, I18n)}
-                </Text>
+                <TextUnit
+                  value={duration}
+                  unit={Time.getDurationUnit(durationUnit, I18n)}
+                  style={styles.textUnit}
+                />
               ),
             },
           ],
@@ -115,13 +124,12 @@ const getStyles = color =>
       fontStyle: 'italic',
       marginTop: 5,
     },
-    dateContainer: {
-      flexDirection: 'row',
+    badges: {
+      alignItems: 'flex-end',
     },
-    durationText: {
-      fontWeight: '900',
+    textUnit: {
       marginTop: 5,
     },
   });
 
-export default TimesheetLineCard;
+export default TimeCard;

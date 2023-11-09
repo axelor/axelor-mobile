@@ -18,7 +18,7 @@
 
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
 
-class TimesheetLineType {
+class TimeType {
   static statusSelect = {
     Draft: 1,
     InProgress: 2,
@@ -44,26 +44,15 @@ class TimesheetLineType {
     }
   };
 
-  static getUnitDuration = (
-    unitDuration: string,
+  static getDurationUnit = (
+    durationUnit: string,
     I18n: {t: (key: string) => string},
   ): string => {
-    if (I18n) {
-      switch (unitDuration) {
-        case 'days':
-          return I18n.t('Hr_Days');
-        case 'hours':
-          return I18n.t('Hr_Hours');
-        case 'minutes':
-          return I18n.t('Hr_Minutes');
-        default:
-          console.warn(
-            `Unit duration provided with value ${unitDuration} is not supported by TimesheetLine`,
-          );
-          return null;
-      }
-    }
+    const durationUnitCapitalized =
+      durationUnit.charAt(0).toUpperCase() + durationUnit.slice(1);
+
+    return I18n.t(`Hr_TimeUnit_${durationUnitCapitalized}`);
   };
 }
 
-export default TimesheetLineType;
+export default TimeType;

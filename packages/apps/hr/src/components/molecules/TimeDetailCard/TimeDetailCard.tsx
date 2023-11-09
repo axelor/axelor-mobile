@@ -19,33 +19,35 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
-import {TimeSheetLineCard} from '../../atoms';
+import {TimeCard} from '../../atoms';
 
-interface TimesheetLineDetailCardProps {
+interface TimeDetailCardProps {
   statusSelect: number;
   project?: string;
   task?: string;
   manufOrder?: string;
   operation?: string;
+  comment?: string;
   date: string;
   duration: string;
-  unitDuration: string;
+  durationUnit: string;
   isActions?: boolean;
   style?: any;
 }
 
-const TimesheetLineDetailCard = ({
+const TimeDetailCard = ({
   statusSelect,
   project,
   task,
   manufOrder,
   operation,
+  comment,
   date,
   duration,
-  unitDuration,
+  durationUnit,
   isActions = false,
   style,
-}: TimesheetLineDetailCardProps) => {
+}: TimeDetailCardProps) => {
   const Colors = useThemeColor();
 
   const handleEdit = () => {
@@ -58,15 +60,16 @@ const TimesheetLineDetailCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      <TimeSheetLineCard
+      <TimeCard
         statusSelect={statusSelect}
         project={project}
         task={task}
         manufOrder={manufOrder}
         operation={operation}
+        comment={comment}
         date={date}
         duration={duration}
-        unitDuration={unitDuration}
+        durationUnit={durationUnit}
         style={styles.cardContainer}
       />
       {!isActions && (
@@ -108,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TimesheetLineDetailCard;
+export default TimeDetailCard;
