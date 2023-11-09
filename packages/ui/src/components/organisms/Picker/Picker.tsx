@@ -216,6 +216,7 @@ const getStyles = (
   StyleSheet.create({
     container: {
       width: '90%',
+      alignSelf: 'center',
       marginBottom: marginBottom,
     },
     containerZIndex: {

@@ -26,7 +26,6 @@ import {Button} from '@axelor/aos-mobile-ui';
 import {updateInternalMoveLine} from '../../../../features/internalMoveLineSlice';
 
 const InternalMoveLineButtons = ({
-  saveStatus,
   internalMove,
   internalMoveLine,
   unit,
@@ -58,7 +57,7 @@ const InternalMoveLineButtons = ({
     });
   };
 
-  if (!visible || saveStatus) {
+  if (!visible) {
     return null;
   }
 

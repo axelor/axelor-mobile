@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Card, Text, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button, WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {TrackingNumberSearchBar} from '../../../templates';
 
@@ -30,11 +30,8 @@ const ProductTrackingNumberSelect = ({
   style,
 }) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
 
   const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
 
   if (!visible) {
     return null;
@@ -42,54 +39,32 @@ const ProductTrackingNumberSelect = ({
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.autoCompleteSearchContainer}>
-        <TrackingNumberSearchBar
-          onChange={setSelectedTrackingNumber}
-          isFocus={true}
-          style={styles.autoSearchComplete}
-          product={product}
-          scanKeySearch={trackingScanKey}
-          defaultValue={selectedTrackingNumber}
-        />
-        <Card style={styles.cardTrackingNumberInfo}>
-          <Text>{I18n.t('Stock_NoTrackingNumberConfigured')}</Text>
-        </Card>
-      </View>
-      {selectedTrackingNumber && (
+      <TrackingNumberSearchBar
+        onChange={setSelectedTrackingNumber}
+        isFocus={true}
+        product={product}
+        scanKeySearch={trackingScanKey}
+        defaultValue={selectedTrackingNumber}
+        required={true}
+      />
+      <WarningCard errorMessage={I18n.t('Stock_NoTrackingNumberConfigured')} />
+      {selectedTrackingNumber != null && (
         <Button
           title={I18n.t('Base_Add')}
           onPress={() => onAddTrackingNumber(selectedTrackingNumber)}
+          width="50%"
         />
       )}
     </View>
   );
 };
 
-const getStyles = Colors =>
-  StyleSheet.create({
-    container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 43,
-    },
-    autoCompleteSearchContainer: {
-      marginVertical: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      zIndex: 44,
-    },
-    cardTrackingNumberInfo: {
-      backgroundColor: Colors.errorColor.background_light,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 5,
-      borderRadius: 5,
-      width: '85%',
-    },
-    autoSearchComplete: {
-      borderColor: Colors.errorColor.background,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 40,
+  },
+});
 
 export default ProductTrackingNumberSelect;

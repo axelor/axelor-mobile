@@ -85,10 +85,10 @@ export const addTrackingNumber = createAsyncThunk(
       action: 'Stock_SliceAction_AddTrackingNumberToInternalMoveLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: _fetchInternalMoveLine,
-        data: {internalMoveLineId: res?.id},
+        data: {internalMoveLineId: data.stockMoveLineId},
         action: 'Stock_SliceAction_FetchInternalMoveLine',
         getState,
         responseOptions: {isArrayResponse: false},

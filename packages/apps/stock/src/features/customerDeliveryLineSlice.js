@@ -85,10 +85,10 @@ export const addTrackingNumber = createAsyncThunk(
       action: 'Stock_SliceAction_AddTrackingNumberToCustomerDeliveryLine',
       getState,
       responseOptions: {showToast: true},
-    }).then(res => {
+    }).then(() => {
       return handlerApiCall({
         fetchFunction: _fetchCustomerDeliveryLine,
-        data: {customerDeliveryLineId: res?.id},
+        data: {customerDeliveryLineId: data.stockMoveLineId},
         action: 'Stock_SliceAction_FetchCustomerDeliveryLine',
         getState,
         responseOptions: {isArrayResponse: false},

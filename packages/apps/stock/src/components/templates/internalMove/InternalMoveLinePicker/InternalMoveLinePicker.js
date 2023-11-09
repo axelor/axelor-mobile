@@ -26,7 +26,6 @@ const InternalMoveLinePicker = ({
   unit,
   status,
   setUnit,
-  setSaveStatus = () => {},
   isScrollViewContainer = false,
 }) => {
   const I18n = useTranslator();
@@ -40,7 +39,6 @@ const InternalMoveLinePicker = ({
     } else {
       setUnit(getFromList(unitList, 'id', unitId));
     }
-    setSaveStatus(false);
   };
 
   useEffect(() => {

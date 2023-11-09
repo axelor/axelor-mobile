@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   KeyboardAvoidingScrollView,
@@ -54,7 +53,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     state => state.internalMoveLine,
   );
 
-  const [saveStatus, setSaveStatus] = useState(true);
   const [fromStockLocation, setFromStockLocation] = useState(
     internalMoveLine?.fromStockLocation,
   );
@@ -64,7 +62,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const [movedQty, setMovedQty] = useState(
     StockMoveLine.hideLineQty(internalMoveLine, internalMove)
       ? 0
-      : internalMoveLine.realQty,
+      : internalMoveLine?.realQty,
   );
   const [unit, setUnit] = useState(internalMoveLine?.unit);
 
@@ -85,7 +83,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
 
   const plannedQty = useMemo(() => {
     if (internalMove.statusSelect === StockMove.status.Realized) {
-      return internalMoveLine.realQty;
+      return internalMoveLine?.realQty;
     } else {
       return productIndicators?.availableStock;
     }
@@ -134,7 +132,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
       setUnit(internalMoveLine.unit);
       setFromStockLocation(internalMoveLine.fromStockLocation);
       setToStockLocation(internalMoveLine.toStockLocation);
-      setSaveStatus(true);
     }
   }, [internalMoveLine, internalMove]);
 
@@ -155,7 +152,6 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
         <InternalMoveLineButtons
           internalMove={internalMove}
           internalMoveLine={internalMoveLine}
-          saveStatus={saveStatus}
           movedQty={movedQty}
           unit={unit}
           fromStockLocation={fromStockLocation}
@@ -178,7 +174,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView style={styles.container}>
+      <KeyboardAvoidingScrollView>
         {stockConfig.isManageStockLocationOnStockMoveLine ? (
           <StockLocationSearchBar
             placeholderKey="Stock_OriginalStockLocation"
@@ -210,13 +206,11 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
           originalStockLocation={internalMove.fromStockLocation}
           plannedQty={plannedQty}
           setMovedQty={setMovedQty}
-          setSaveStatus={setSaveStatus}
           status={internalMove.statusSelect}
           stockProduct={product}
           trackingNumber={internalMoveLine.trackingNumber}
         />
         <InternalMoveLinePicker
-          setSaveStatus={setSaveStatus}
           setUnit={setUnit}
           status={internalMove.statusSelect}
           unit={unit}
@@ -242,11 +236,5 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-});
 
 export default InternalMoveLineDetailsScreen;

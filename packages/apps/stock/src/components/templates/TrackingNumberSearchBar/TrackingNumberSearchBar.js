@@ -35,6 +35,7 @@ const TrackingNumberSearchBar = ({
   navigate = false,
   oneFilter = false,
   isFocus = false,
+  required = false,
   changeScreenAfter = false,
   product,
   style,
@@ -73,6 +74,7 @@ const TrackingNumberSearchBar = ({
       oneFilter={oneFilter}
       isFocus={isFocus}
       changeScreenAfter={changeScreenAfter}
+      required={required}
     />
   );
 };
