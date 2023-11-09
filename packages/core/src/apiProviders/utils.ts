@@ -81,7 +81,7 @@ const manageError = (
       });
     }
 
-    return error.response;
+    return null;
   }
 };
 
@@ -163,7 +163,18 @@ export const handlerApiCall = ({
   errorOptions = {showErrorToast: true, errorTracing: true},
 }: ApiHandlerProps) => {
   return fetchFunction(data)
-    .then(handlerSuccess(action, responseOptions))
+    .then(res => {
+      if (res?.data?.status === -1) {
+        throw {
+          response: {
+            status: 403,
+            statusText: `${res.data.data?.title}: ${res.data.data?.message}`,
+          },
+        };
+      } else {
+        return handlerSuccess(action, responseOptions)(res);
+      }
+    })
     .catch(handlerError(action, {getState}, errorOptions));
 };
 
