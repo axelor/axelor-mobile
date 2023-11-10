@@ -3,6 +3,58 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.5] (2023-11-10)
+
+The application's global test has been corrected to make sure that the application is correctly working.
+
+This version also correct the yarn dev command. It's now fully working and enable developpers to get immediat refresh when working on packages.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- DropdownContactView : wrong display condition on address
+- ProspectDropdownCards : wrong field name used for the category
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockCorrection : prevent update if there is no reason
+- SmallPropertyCard : wrong alert disabled condition
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Add generic tool to display object's barcode in header actions
+- UploadFileInput : add camera option on component and improve design
+- Add CameraButton component to take quick picture
+
+#### Fixes
+
+- Error management on requests : consider AOP status -1 as error & show the right toast with error message
+- Stopwatch : prevent refresh issue when app is inactive
+- Sessions : improve logic with camera display
+- LoginButton : modify disabled condition to manage case where sessions are disabled
+- Prevent refresh issue with translations on user screen when changing language
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ChipSelect : manage refresh on default value with prop `isRefresh`
+
+#### Fixes
+
+- Image : remove refresh issue
+- SearchDetailsPopUp : manage too long titles display
+
+#### Changes
+
+- Icon : remove `disabled` props to only keep `touchable` one
+- ChipSelect : simplify logic inside component
+
 ## [7.0.4] (2023-08-25)
 
 ### @axelor/aos-mobile-core
@@ -288,8 +340,9 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.5]: https://github.com/axelor/axelor-mobile/compare/7.0.4...7.0.5
 [7.0.4]: https://github.com/axelor/axelor-mobile/compare/7.0.3...7.0.4
 [7.0.3]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.0.3
 [7.0.2]: https://github.com/axelor/axelor-mobile/compare/7.0.1...7.0.2
 [7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1
-[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.1...7.0.0
+[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.5...7.0.0
