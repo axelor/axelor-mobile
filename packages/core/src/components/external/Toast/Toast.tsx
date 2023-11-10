@@ -41,15 +41,15 @@ const Toast = () => {
 
   const isError = useMemo(() => toastData.type === 'error', [toastData]);
 
-  const toastColor = useMemo(
+  const alertColor = useMemo(
     () =>
       isError ? Colors.errorColor.background : Colors.successColor.background,
     [Colors, isError],
   );
 
   const styles = useMemo(
-    () => getStyles(Colors, toastColor),
-    [Colors, toastColor],
+    () => getStyles(Colors, alertColor),
+    [Colors, alertColor],
   );
 
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -58,7 +58,7 @@ const Toast = () => {
     success: (props: any) => (
       <BaseToast
         {...props}
-        style={styles.toast}
+        style={[styles.toast, styles.success]}
         contentContainerStyle={styles.toastContent}
         text1Style={styles.title}
         text2Style={styles.detail}
@@ -68,7 +68,7 @@ const Toast = () => {
     error: (props: any) => (
       <ErrorToast
         {...props}
-        style={styles.toast}
+        style={[styles.toast, styles.error]}
         contentContainerStyle={styles.toastContent}
         text1Style={styles.title}
         text2Style={styles.detail}
@@ -97,7 +97,7 @@ const Toast = () => {
             <Icon
               name={isError ? 'times' : 'check'}
               size={25}
-              color={toastColor}
+              color={alertColor}
             />
           </View>
           <Text style={styles.alertText}>{toastData.message}</Text>
@@ -107,12 +107,17 @@ const Toast = () => {
   );
 };
 
-const getStyles = (Colors: ThemeColors, toastColor: string) =>
+const getStyles = (Colors: ThemeColors, alertColor: string) =>
   StyleSheet.create({
     toast: {
       width: '90%',
       height: 90,
-      borderLeftColor: toastColor,
+    },
+    error: {
+      borderLeftColor: Colors.errorColor.background,
+    },
+    success: {
+      borderLeftColor: Colors.successColor.background,
     },
     toastContent: {
       paddingVertical: 5,
@@ -138,10 +143,10 @@ const getStyles = (Colors: ThemeColors, toastColor: string) =>
       marginRight: 15,
       justifyContent: 'center',
       borderWidth: 3,
-      borderColor: toastColor,
+      borderColor: alertColor,
     },
     alertTitle: {
-      color: toastColor,
+      color: alertColor,
     },
     alertText: {
       flexShrink: 1,
