@@ -114,9 +114,11 @@ const Picker = ({
   };
 
   const marginBottom = useMemo(() => {
-    const visibleListLength = listItems.length < 5 ? listItems.length : 5;
-
     if (isScrollViewContainer && isOpen) {
+      const visibleListLength = !Array.isArray(listItems)
+        ? 0
+        : Math.min(listItems.length, 5);
+
       return emptyValue
         ? visibleListLength * ITEM_HEIGHT + ITEM_HEIGHT + 5
         : visibleListLength * ITEM_HEIGHT + 5;
