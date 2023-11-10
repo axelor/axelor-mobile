@@ -3,6 +3,38 @@ title: 6.5.0
 tags: Changelog
 ---
 
+## [6.5.6] (2023-11-08)
+
+This version correct the yarn dev command. It's now fully working and enable developpers to get immediat refresh when working on packages.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- DropdownContactView : wrong display condition on address
+- ProspectDropdownCards : wrong field name used for the category
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- StockCorrection : prevent update if there is no reason
+- SmallPropertyCard : wrong alert disabled condition
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Error management on requests : consider AOP status -1 as error & show the right toast with error message
+- Stopwatch : prevent refresh issue when app is inactive
+- Prevent refresh issue with translations on user screen when changing language
+
+### @axelor/aos-mobile-ui
+
+#### Changes
+
+- Icon : remove `disabled` props to only keep `touchable` one
+
 ## [6.5.5] (2023-08-25)
 
 ### @axelor/aos-mobile-core
@@ -344,6 +376,7 @@ It contains the following functionnalities
 
 - Replace RenderHTML by HtmlInput
 
+[6.5.6]: https://github.com/axelor/axelor-mobile/compare/6.5.5...6.5.6
 [6.5.5]: https://github.com/axelor/axelor-mobile/compare/6.5.4...6.5.5
 [6.5.4]: https://github.com/axelor/axelor-mobile/compare/6.5.3...6.5.4
 [6.5.3]: https://github.com/axelor/axelor-mobile/compare/6.5.2...6.5.3
