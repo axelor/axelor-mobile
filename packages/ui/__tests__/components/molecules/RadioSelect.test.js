@@ -91,7 +91,7 @@ describe('RadioSelect Component', () => {
     };
     const wrapper = shallow(<RadioSelect {...propsDirection} />);
 
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject({
+    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
       flexDirection: propsDirection.direction,
     });
   });
