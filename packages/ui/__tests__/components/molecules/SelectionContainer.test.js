@@ -17,8 +17,10 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {SelectionContainer} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('SelectionContainer', () => {
   const objectList = [
@@ -75,5 +77,34 @@ describe('SelectionContainer', () => {
 
     expect(wrapperEmpty.type()).toBeNull();
     expect(wrapperNull.type()).toBeNull();
+  });
+
+  it('renders a Picker list when isPicker is true', () => {
+    const wrapper = shallow(<SelectionContainer {...props} isPicker={true} />);
+    expect(wrapper.find('SelectionItem').length).toBeGreaterThan(0);
+    expect(wrapper.find('SelectionItem').first().prop('isPicker')).toBe(true);
+  });
+
+  it('renders the selectedItem correctly', () => {
+    const selectedItem = [{id: '2', name: 'Item 2', color: 'blue'}];
+
+    const wrapper = shallow(
+      <SelectionContainer {...props} selectedItem={selectedItem} />,
+    );
+    expect(
+      wrapper.find('SelectionItem').findWhere(n => n.prop('isSelectedItem'))
+        .length,
+    ).toBe(1);
+  });
+
+  it('applies custom style when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(
+      <SelectionContainer {...props} style={customStyle} />,
+    );
+
+    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
+      customStyle,
+    );
   });
 });
