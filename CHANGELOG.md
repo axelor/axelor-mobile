@@ -3,9 +3,108 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.2] (2023-11-10)
+
+This version adds unit test management. The application's global test has been corrected and the components of the ui package are currently being tested.
+
+This version also correct the yarn dev command. It's now fully working and enable developpers to get immediat refresh when working on packages.
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- Export all content of package
+
+#### Changes
+
+- Create TicketStopwatch component to remove logic from details screen.
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Export all content of package
+- DropdownContactView : wrong display condition on address
+- ProspectDropdownCards : wrong field name used for the category
+- Rename company reducer to avoid issue with stock module (company -> crm_company)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Export all content of package
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Export all content of package
+- StockCorrection : prevent update if there is no reason
+- SmallPropertyCard : wrong alert disabled condition
+
+#### Changes
+
+- Remove save status management on internal move to match behaviour of the other screens
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Add generic tool to display object's barcode in header actions
+- Add SocialNetworkLinks component to do quick research on Google/LinkedIn
+- UploadFileInput : add camera option on component and improve design
+- Add CameraButton component to take quick picture
+- Add generic tool to create Criteria query depending on selected chips
+- Add generic tool to format request body to reduce data
+
+#### Fixes
+
+- Error management on requests : consider AOP status -1 as error & show the right toast with error message
+- Stopwatch : prevent refresh issue when app is inactive
+- Sessions : improve logic with camera display
+- LoginButton : modify disabled condition to manage case where sessions are disabled
+- Prevent refresh issue with translations on user screen when changing language
+- Delay internet connection check from 2s to 5s to avoid having to many requests
+
+#### Changes
+
+- create TranslationsButton component to contain translations sending logic
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- ScrollView : add props to enable pull to refresh
+- Add RadioButton & RadioSelect components
+- Increase writing theme font sizes
+- SwitchCard : improve design to match form inputs
+- ObjectCard : display title on two lines and add `leftContainerFlex` prop to manage size of text container and `iconLeftMargin` to manage space between icon and badges
+- InfoBubble : add coloredBubble props to cirectly color icon instead of circle container
+- Switch : add refresh on component when default value change
+- ChipSelect : manage refresh on default value with prop `isRefresh`
+- Picker : add displayValue props to give custom function to display value of item
+- AutoCompleteSearch : add props `title`, `readonly` et `required`
+- FormHtmlInput : add prop `hideIfNull` to hide component when it's readonly with no value
+
+#### Fixes
+
+- Image : remove refresh issue
+- ObjectCard : reduce size of image replacement icon
+- SearchDetailsPopUp : manage too long titles display
+
+#### Changes
+
+- Icon : remove `disabled` props to only keep `touchable` one
+- ChipSelect : simplify logic inside component
+- Picker : simplify component design & transform `disabled` props to `readonly`
+- AutoCompleteSearch : simplify component design
+- MultiValuePicker : simplify component design & transform `disabled` props to `readonly`
+- Remove MultiSelectValue component, which should be replaced by MultiValuePicker in readonly mode
+- FormHtmlInput : simplify component design
+
 ## [7.1.1] (2023-08-25)
 
-### New package : @axelor/aos-mobile-helpdesk
+### @axelor/aos-mobile-helpdesk
 
 #### Fixes
 
@@ -123,5 +222,6 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.2]: https://github.com/axelor/axelor-mobile/compare/7.1.1...7.1.2
 [7.1.1]: https://github.com/axelor/axelor-mobile/compare/7.1.0...7.1.1
-[7.1.0]: https://github.com/axelor/axelor-mobile/compare/7.0.4...7.1.0
+[7.1.0]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.1.0
