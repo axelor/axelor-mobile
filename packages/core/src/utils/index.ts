@@ -59,3 +59,4 @@ export {
 export {showToastMessage} from './show-toast-message';
 export {checkNullString, isHtml, splitInTwo, stringNoAccent} from './string';
 export {filterChip} from './filter';
+export {testProps} from './test-props';

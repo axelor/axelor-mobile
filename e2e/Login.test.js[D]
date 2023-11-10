@@ -1,4 +1,7 @@
-const {remote} = require('webdriverio');
+import * as wdio from 'webdriverio';
+
+// jest.setTimeout(60000);
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 const capabilities = {
   platformName: 'Android',
@@ -8,14 +11,6 @@ const capabilities = {
   'appium:appActivity': 'com.aosmobile.MainActivity',
 };
 
-/*const capabilities = {
-  platformName: 'Android',
-  'appium:automationName': 'UiAutomator2',
-  'appium:deviceName': 'Android',
-  'appium:appPackage': 'com.android.chrome',
-  'appium:appActivity': 'com.google.android.apps.chrome.Main',
-};*/
-
 const wdOpts = {
   hostname: process.env.APPIUM_HOST || 'localhost',
   port: parseInt(process.env.APPIUM_PORT, 10) || 4723,
@@ -23,19 +18,30 @@ const wdOpts = {
   capabilities,
 };
 
-async function runTest() {
-  const driver = await remote(wdOpts);
-  try {
-    const sessionNameField = driver.$(
+describe('Login test', () => {
+  let client;
+
+  beforeAll(async () => {
+    client = await wdio.remote(wdOpts);
+    await client.pause(10000);
+  });
+
+  afterAll(async () => {
+    await client.pause(10000);
+    await client.deleteSession();
+  });
+
+  it('should allow us create new session', async () => {
+    const sessionNameField = client.$(
       '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.EditText',
     );
-    const urlField = driver.$(
+    const urlField = client.$(
       '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.EditText',
     );
-    const usernameField = driver.$(
+    const usernameField = client.$(
       '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]/android.widget.EditText',
     );
-    const passwordField = driver.$(
+    const passwordField = client.$(
       '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[4]/android.widget.EditText',
     );
 
@@ -44,15 +50,10 @@ async function runTest() {
     await usernameField.addValue('admin');
     await passwordField.addValue('@axadmin');
 
-    const loginButton = driver.$(
+    const loginButton = client.$(
       '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[6]',
     );
 
     loginButton.click();
-  } finally {
-    await driver.pause(10000);
-    await driver.deleteSession();
-  }
-}
-
-runTest().catch(console.error);
+  });
+});

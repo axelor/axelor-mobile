@@ -34,6 +34,7 @@ const SessionNameInput = ({
   readOnly,
   showRequiredFields = false,
   hidden = false,
+  ...testProps
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -55,6 +56,7 @@ const SessionNameInput = ({
       readOnly={readOnly}
       placeholder={I18n.t('Base_Connection_SessionName')}
       leftIconsList={[<Icon name="tag" size={17} style={styles.icon} />]}
+      {...testProps}
     />
   );
 };

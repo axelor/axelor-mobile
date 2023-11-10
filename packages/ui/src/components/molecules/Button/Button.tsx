@@ -39,6 +39,7 @@ const Button = ({
   title,
   onPress = () => {},
   disabled = false,
+  ...testProps
 }: ButtonProps) => {
   const Colors = useThemeColor();
   const buttonColor = useMemo(
@@ -58,7 +59,8 @@ const Button = ({
     <TouchableOpacity
       style={[styles.colorButton, commonStyles.button, style]}
       onPress={onPress}
-      disabled={disabled}>
+      disabled={disabled}
+      {...testProps}>
       <Text
         style={[styles.text, styleTxt]}
         fontSize={15}

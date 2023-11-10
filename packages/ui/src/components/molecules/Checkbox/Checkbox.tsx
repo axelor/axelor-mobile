@@ -40,6 +40,7 @@ const Checkbox = ({
   title,
   isDefaultChecked = false,
   onChange,
+  ...testProps
 }: CheckboxProps) => {
   const Colors = useThemeColor();
 
@@ -75,6 +76,7 @@ const Checkbox = ({
           size={iconSize}
           touchable={!disabled}
           onPress={handleToggle}
+          {...testProps}
         />
       </View>
       {!checkNullString(title) && (

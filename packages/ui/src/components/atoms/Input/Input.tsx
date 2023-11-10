@@ -64,6 +64,7 @@ const Input = ({
   isFocus = false,
   writingType,
   onContentSizeChange,
+  ...testProps
 }: InputProps) => {
   const Colors = useThemeColor();
   const {hideVirtualKeyboard} = useConfig();
@@ -97,6 +98,7 @@ const Input = ({
       showSoftInputOnFocus={hideVirtualKeyboard ? false : true}
       autoFocus={isFocus}
       onContentSizeChange={onContentSizeChange}
+      {...testProps}
     />
   );
 };

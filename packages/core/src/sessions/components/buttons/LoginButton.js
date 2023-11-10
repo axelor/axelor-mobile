@@ -19,13 +19,19 @@
 import React from 'react';
 import DisabledButton from './DisabledButton';
 
-const LoginButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
+const LoginButton = ({
+  onPress,
+  onDisabledPress = () => {},
+  disabled,
+  ...testProps
+}) => {
   return (
     <DisabledButton
       title="Base_Connection_Login"
       onPress={onPress}
       disabled={disabled}
       onDisabledPress={onDisabledPress}
+      {...testProps}
     />
   );
 };

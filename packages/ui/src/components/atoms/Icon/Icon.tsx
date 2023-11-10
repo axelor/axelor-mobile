@@ -44,6 +44,7 @@ const Icon = ({
   visible = true,
   onPress = () => {},
   disabled = false,
+  ...testProps
 }: IconProps) => {
   const Colors = useThemeColor();
 
@@ -64,7 +65,8 @@ const Icon = ({
     <TouchableOpacity
       style={[styles.container, style]}
       onPress={onPress}
-      disabled={!touchable || disabled}>
+      disabled={!touchable || disabled}
+      {...testProps}>
       {FontAwesome5 ? (
         <Icon5 name={name} style={styles.icon} />
       ) : (

@@ -34,6 +34,7 @@ const PasswordInput = ({
   readOnly,
   showRequiredFields = false,
   hidden = false,
+  ...testProps
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -68,6 +69,7 @@ const PasswordInput = ({
           style={styles.icon}
         />,
       ]}
+      {...testProps}
     />
   );
 };

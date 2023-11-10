@@ -60,6 +60,7 @@ const IconInput = ({
   isFocus = false,
   leftIconsList = [],
   rightIconsList = [],
+  ...testProps
 }: IconInputProps) => {
   const Colors = useThemeColor();
   const styles = useMemo(() => getStyles(Colors), [Colors]);
@@ -106,6 +107,7 @@ const IconInput = ({
         keyboardType={keyboardType}
         onEndFocus={handleEndFocus}
         isFocus={isFocus}
+        {...testProps}
       />
       {rightIconsList.map((iconComponent, index) =>
         React.cloneElement(iconComponent, {key: index}),

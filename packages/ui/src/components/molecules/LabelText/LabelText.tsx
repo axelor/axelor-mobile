@@ -45,9 +45,10 @@ const LabelText = ({
   iconName = null,
   FontAwesome5 = true,
   onlyOneLine = false,
+  ...testProps
 }: LabelTextProps) => {
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} {...testProps}>
       {iconName && (
         <Icon
           style={[styles.icon, iconStyle]}

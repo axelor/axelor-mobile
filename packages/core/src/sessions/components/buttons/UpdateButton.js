@@ -18,6 +18,7 @@
 
 import React from 'react';
 import DisabledButton from './DisabledButton';
+import {testProps} from '../../../utils';
 
 const UpdateButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
   return (
@@ -26,6 +27,7 @@ const UpdateButton = ({onPress, onDisabledPress = () => {}, disabled}) => {
       onPress={onPress}
       disabled={disabled}
       onDisabledPress={onDisabledPress}
+      {...testProps('updateButton')}
     />
   );
 };

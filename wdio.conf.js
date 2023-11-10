@@ -284,5 +284,6 @@ exports.config = {
    */
   // onReload: function(oldSessionId, newSessionId) {
   // }
-  appium: {command: 'appium', runner: 'local', port: 4723},
+  // appium: {command: 'appium', runner: 'local', port: 4723},
+  appium: {command: 'appium'},
 };

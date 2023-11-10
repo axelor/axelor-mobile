@@ -38,6 +38,7 @@ const UsernameInput = ({
   scanIconColor,
   style,
   showRequiredFields = false,
+  ...testProps
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -54,6 +55,7 @@ const UsernameInput = ({
         title={value}
         style={styles.labText}
         size={20}
+        {...testProps}
       />
     );
   }
@@ -87,6 +89,7 @@ const UsernameInput = ({
             ]
           : []
       }
+      {...testProps}
     />
   );
 };

@@ -39,6 +39,7 @@ const UrlInput = ({
   scanIconColor,
   showRequiredFields = false,
   hidden = false,
+  ...testProps
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -59,6 +60,7 @@ const UrlInput = ({
         title={value}
         style={styles.labText}
         size={20}
+        {...testProps}
       />
     );
   }
@@ -89,6 +91,7 @@ const UrlInput = ({
           FontAwesome5={false}
         />,
       ]}
+      {...testProps}
     />
   );
 };

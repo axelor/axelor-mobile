@@ -26,6 +26,7 @@ const DisabledButton = ({
   onPress,
   onDisabledPress = () => {},
   disabled,
+  ...testProps
 }) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -39,6 +40,7 @@ const DisabledButton = ({
         title={I18n.t(title)}
         onPress={disabled ? onDisabledPress : onPress}
         color={disabled ? Colors.secondaryColor : Colors.primaryColor}
+        {...testProps}
       />
     </View>
   );

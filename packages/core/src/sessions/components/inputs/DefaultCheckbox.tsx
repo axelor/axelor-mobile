@@ -28,7 +28,13 @@ interface props {
   hidden?: boolean;
 }
 
-const DefaultCheckbox = ({style, value, onChange, hidden = false}: props) => {
+const DefaultCheckbox = ({
+  style,
+  value,
+  onChange,
+  hidden = false,
+  ...testProps
+}: props) => {
   const I18n = useTranslator();
 
   if (hidden) {
@@ -42,6 +48,7 @@ const DefaultCheckbox = ({style, value, onChange, hidden = false}: props) => {
       onChange={onChange}
       iconSize={30}
       style={[styles.checkbox, style]}
+      {...testProps}
     />
   );
 };

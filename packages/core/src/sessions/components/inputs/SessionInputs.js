@@ -48,6 +48,7 @@ import {
 import {isUrlValid} from '../../../features/authSlice';
 import {LoginButton, UpdateButton} from '../buttons';
 import {useTranslator} from '../../../i18n';
+import {testProps} from '../../../utils';
 
 const getScanKey = mode => `urlUsername_${mode}_inputs`;
 
@@ -211,7 +212,7 @@ const SessionInputs = ({
   }
 
   return (
-    <View style={style}>
+    <View style={style} {...testProps('sessionInputView')}>
       <View>
         {!loading && nameSessionAlreadyExist && (
           <WarningCard
@@ -226,6 +227,7 @@ const SessionInputs = ({
         style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={mode === MODE.connection || mode === MODE.unique}
+        {...testProps('sessionNameInput')}
       />
       <UrlInput
         value={form?.url}
@@ -242,6 +244,7 @@ const SessionInputs = ({
         style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={!showUrlInput}
+        {...testProps('sessionUrlInput')}
       />
       <UsernameInput
         value={form?.username}
@@ -257,6 +260,7 @@ const SessionInputs = ({
         }
         style={styles.input}
         showRequiredFields={showRequiredFields}
+        {...testProps('sessionUsernameInput')}
       />
       <PasswordInput
         value={form?.password}
@@ -265,11 +269,13 @@ const SessionInputs = ({
         style={styles.input}
         showRequiredFields={showRequiredFields}
         hidden={mode === MODE.edition}
+        {...testProps('sessionPasswordInput')}
       />
       <DefaultCheckbox
         value={form?.isDefault}
         onChange={_value => handleFieldChange(_value, FIELDS.isDefault)}
         hidden={mode === MODE.connection || mode === MODE.unique}
+        {...testProps('sessionDefaultCheckbox')}
       />
       {loading ? (
         <ActivityIndicator size="large" />
@@ -278,6 +284,7 @@ const SessionInputs = ({
           onPress: () => onValidation(form),
           onDisabledPress: () => setShowRequiredFields(true),
           disabled,
+          ...testProps('loginButton'),
         })
       )}
     </View>
