@@ -17,8 +17,14 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Icon, StarScore, lightTheme} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
+
+const getIcons = (wrapper, iconName) => {
+  return wrapper.find(Icon).filterWhere(item => item.prop('name') === iconName);
+};
 
 describe('StarScore', () => {
   const Colors = lightTheme.colors;
@@ -36,78 +42,88 @@ describe('StarScore', () => {
 
   it('renders the correct number of active stars based on score when showHalfStar is true', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={true} />);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
-    ).toHaveLength(3);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-half'),
-    ).toHaveLength(1);
+
+    expect(getIcons(wrapper, 'star')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star-half')).toHaveLength(1);
   });
 
   it('renders the correct number of active stars based on score with disabled showHalfStar props', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={false} />);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
-    ).toHaveLength(3);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-half'),
-    ).toHaveLength(0);
+
+    expect(getIcons(wrapper, 'star')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
   });
 
   it('renders missing stars when showMissingStar is true', () => {
-    const showMissingStarProps = {
-      ...props,
-      score: 2,
-      showMissingStar: true,
-    };
+    const wrapper = shallow(<StarScore {...props} showMissingStar={true} />);
 
-    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
-    ).toHaveLength(2);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-o'),
-    ).toHaveLength(3);
+    expect(getIcons(wrapper, 'star')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star-o')).toHaveLength(2);
   });
 
   it('renders missing stars when showMissingStar is false', () => {
-    const showMissingStarProps = {
-      ...props,
-      score: 2,
-      showMissingStar: false,
-    };
+    const wrapper = shallow(<StarScore {...props} showMissingStar={false} />);
 
-    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star'),
-    ).toHaveLength(2);
-    expect(
-      wrapper.find(Icon).filterWhere(item => item.prop('name') === 'star-o'),
-    ).toHaveLength(0);
+    expect(getIcons(wrapper, 'star')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
   });
 
   it('calls onPress with the correct argument when a star is pressed', () => {
-    const showMissingStarProps = {
-      ...props,
-      score: 2,
-      onPress: jest.fn(),
-    };
+    const onPress = jest.fn();
+    const wrapper = shallow(
+      <StarScore
+        {...props}
+        onPress={onPress}
+        showMissingStar={true}
+        editMode={true}
+      />,
+    );
 
-    const wrapper = shallow(<StarScore {...showMissingStarProps} />);
+    wrapper.find(Icon).at(1).simulate('press');
+    wrapper.find(Icon).at(4).simulate('press');
 
-    wrapper.find(Icon).first().simulate('press');
-    expect(showMissingStarProps.onPress).toHaveBeenCalledWith(1);
+    expect(onPress).toHaveBeenNthCalledWith(1, 2);
+    expect(onPress).toHaveBeenNthCalledWith(2, 5);
   });
 
   it('renders stars with the correct color and size', () => {
-    const onPress = jest.fn();
-    const color = Colors.primaryColor;
+    const color = Colors.errorColor;
     const size = 30;
+    const wrapper = shallow(<StarScore {...props} color={color} size={size} />);
+
+    expect(wrapper.find(Icon).first().prop('color')).toEqual(color.background);
+    expect(wrapper.find(Icon).first().prop('size')).toEqual(size);
+  });
+
+  it('renders readonly stars when not in editmode', () => {
     const wrapper = shallow(
-      <StarScore color={color} size={size} score={3} onPress={onPress} />,
+      <StarScore {...props} showMissingStar={true} editMode={false} />,
     );
-    const firstStar = wrapper.find(Icon).first();
-    expect(firstStar.props().color).toEqual(color.background);
-    expect(firstStar.props().size).toEqual(size);
+
+    for (let i = 0; i < 5; i++) {
+      expect(wrapper.find(Icon).at(i).prop('touchable')).toBe(false);
+    }
+  });
+
+  it('updates stars when value change', () => {
+    const firstScore = 2;
+    const wrapper = shallow(<StarScore {...props} score={firstScore} />);
+
+    expect(getIcons(wrapper, 'star')).toHaveLength(2);
+    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
+
+    wrapper.setProps({score: 3.5});
+
+    expect(getIcons(wrapper, 'star')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
+  });
+
+  it('renders stars with custom style', () => {
+    const style = {marginTop: 50};
+    const wrapper = shallow(<StarScore {...props} style={style} />);
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(style);
   });
 });
