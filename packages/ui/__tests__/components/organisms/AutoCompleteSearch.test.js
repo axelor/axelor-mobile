@@ -17,12 +17,20 @@
  */
 
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {AutoCompleteSearch, SearchBar} from '@axelor/aos-mobile-ui';
+import {
+  AutoCompleteSearch,
+  lightTheme,
+  ScrollList,
+  SearchBar,
+  SelectionContainer,
+} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('AutoCompleteSearch Component', () => {
+  const Colors = lightTheme.colors;
+
   const props = {
     objectList: [{name: 'Name 1'}],
     displayValue: value => value.name,
@@ -62,6 +70,46 @@ describe('AutoCompleteSearch Component', () => {
     expect(wrapper.find(SearchBar).prop('readonly')).toBe(true);
   });
 
+  it('should call onChangeValue when value change', () => {
+    const onChangeValue = jest.fn();
+    const wrapper = shallow(
+      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
+    );
+
+    wrapper.find(SearchBar).simulate('clearPress');
+    wrapper.find(SearchBar).simulate('changeTxt', 'New value');
+    wrapper.find('SearchDetailsPopUp').simulate('select', {name: 'Name 2'});
+
+    expect(onChangeValue).toHaveBeenCalledTimes(3);
+  });
+
+  it('should render placeholder on SearchBar and SearchDetailsPopUp when provided', () => {
+    const placeholder = 'Placeholder';
+    const wrapper = shallow(
+      <AutoCompleteSearch {...props} placeholder={placeholder} />,
+    );
+
+    expect(wrapper.find(SearchBar).prop('placeholder')).toBe(placeholder);
+    expect(wrapper.find('SearchDetailsPopUp').prop('placeholder')).toBe(
+      placeholder,
+    );
+  });
+
+  it('should not render SelectionContainer when oneFilter is true', () => {
+    const wrapper = shallow(<AutoCompleteSearch {...props} oneFilter />);
+
+    expect(wrapper.find(SelectionContainer).length).toBe(0);
+  });
+
+  it('should render SearchBar with scanIconColor when provided', () => {
+    const scanIconColor = Colors.secondaryColor.background;
+    const wrapper = shallow(
+      <AutoCompleteSearch {...props} scanIconColor={scanIconColor} />,
+    );
+
+    expect(wrapper.find(SearchBar).prop('scanIconColor')).toBe(scanIconColor);
+  });
+
   it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(
@@ -81,16 +129,13 @@ describe('AutoCompleteSearch Component', () => {
     expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(true);
   });
 
-  it('should call onChangeValue when value change', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
-    );
+  it('should render a ScrollList in SearchDetailsPopUp with objectList as data', () => {
+    const wrapper = shallow(<AutoCompleteSearch {...props} showDetailsPopup />);
 
-    wrapper.find(SearchBar).simulate('clearPress');
-    wrapper.find(SearchBar).simulate('changeTxt', 'New value');
-    wrapper.find('SearchDetailsPopUp').simulate('select', {name: 'Name 2'});
+    wrapper.find(SearchBar).simulate('searchPress');
 
-    expect(onChangeValue).toHaveBeenCalledTimes(3);
+    expect(
+      wrapper.find('SearchDetailsPopUp').dive().find(ScrollList).prop('data'),
+    ).toBe(props.objectList);
   });
 });
