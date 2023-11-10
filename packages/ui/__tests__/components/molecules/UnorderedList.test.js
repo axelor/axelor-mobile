@@ -64,8 +64,6 @@ describe('UnorderedList', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<UnorderedList {...props} style={customStyle} />);
 
-    expect(getGlobalStyles(wrapper.find(FlatList).at(0))).toMatchObject(
-      customStyle,
-    );
+    expect(getGlobalStyles(wrapper.find(FlatList))).toMatchObject(customStyle);
   });
 });
