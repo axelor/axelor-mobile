@@ -77,10 +77,17 @@ describe('AutoCompleteSearch Component', () => {
     );
 
     wrapper.find(SearchBar).simulate('clearPress');
-    wrapper.find(SearchBar).simulate('changeTxt', 'New value');
-    wrapper.find('SearchDetailsPopUp').simulate('select', {name: 'Name 2'});
+    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe('');
 
-    expect(onChangeValue).toHaveBeenCalledTimes(3);
+    const txtValue = 'New value';
+    wrapper.find(SearchBar).simulate('changeTxt', txtValue);
+    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(txtValue);
+
+    const value = {name: 'Name 2'};
+    wrapper.find('SearchDetailsPopUp').simulate('select', value);
+    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
+      props.displayValue(value),
+    );
   });
 
   it('should render placeholder on SearchBar and SearchDetailsPopUp when provided', () => {
