@@ -175,7 +175,7 @@ const Increment = ({
         style={[styles.inputLine, isBigButton ? styles.fixedInputWidth : null]}>
         <Input
           style={[styles.input, inputStyle]}
-          value={valueQty}
+          value={`${valueQty}`}
           onChange={input => setValueQty(input)}
           keyboardType={keyboardType}
           onSelection={onFocus}
