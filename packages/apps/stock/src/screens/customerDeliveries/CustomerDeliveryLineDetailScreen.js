@@ -20,7 +20,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   HeaderContainer,
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -137,7 +137,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
         refresh={{
           loading: loadingCustomerDeliveryLine,
           fetcher: getCustomerDeliveryLine,
@@ -182,7 +182,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_LineComment')}
           data={customerDeliveryLine?.saleOrderLine?.pickingOrderInfo}
         />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

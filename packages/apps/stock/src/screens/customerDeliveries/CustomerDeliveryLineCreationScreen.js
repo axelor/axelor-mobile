@@ -147,7 +147,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView style={styles.scroll}>
+      <KeyboardAvoidingScrollView>
         <View style={styles.stockView}>
           {stockConfig.isManageStockLocationOnStockMoveLine ? (
             <StockLocationSearchBar
@@ -157,6 +157,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
               scanKey={stockLocationScanKey}
               isFocus={currentStep === CREATION_STEP.fromStockLocation}
               defaultStockLocation={customerDelivery.fromStockLocation}
+              isScrollViewContainer={true}
             />
           ) : null}
           {currentStep >= CREATION_STEP.product_trackingNumber ? (
@@ -167,6 +168,7 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
               onChange={handleStockLocationLineSelection}
               isFocus={true}
               changeScreenAfter={true}
+              isScrollViewContainer={true}
             />
           ) : null}
           {currentStep >= CREATION_STEP.validation ? (
@@ -195,10 +197,6 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   stockView: {
     marginTop: '2%',
-  },
-  scroll: {
-    height: null,
-    flex: 1,
   },
 });
 

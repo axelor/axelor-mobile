@@ -19,7 +19,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   HeaderContainer,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
@@ -65,7 +65,8 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           <CustomerDeliveryHeader customerDelivery={customerDelivery} />
         }
       />
-      <ScrollView refresh={{loading, fetcher: getCustomerDelivery}}>
+      <KeyboardAvoidingScrollView
+        refresh={{loading, fetcher: getCustomerDelivery}}>
         <CustomerDeliveryMovementIndicationCard
           customerDelivery={customerDelivery}
         />
@@ -78,7 +79,7 @@ const CustomerDeliveryDetailScreen = ({route, navigation}) => {
           title={I18n.t('Stock_DeliveryCondition')}
           data={customerDelivery?.deliveryCondition}
         />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

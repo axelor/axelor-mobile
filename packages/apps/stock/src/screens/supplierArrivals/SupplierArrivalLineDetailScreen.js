@@ -22,7 +22,7 @@ import {
   HeaderContainer,
   Picker,
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -147,7 +147,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
         style={styles.container}
         refresh={{
           loading: loadingSupplierArrivalLine,
@@ -178,6 +178,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             readOnly={
               supplierArrival?.statusSelect !== StockMove.status.Planned
             }
+            isScrollViewContainer={true}
           />
         ) : null}
         <Picker
@@ -188,8 +189,9 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
           labelField="name"
           valueField="id"
           readonly={supplierArrival?.statusSelect === StockMove.status.Realized}
+          isScrollViewContainer={true}
         />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

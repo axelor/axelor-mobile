@@ -20,7 +20,7 @@ import React, {useCallback, useEffect} from 'react';
 import {
   HeaderContainer,
   Screen,
-  ScrollView,
+  KeyboardAvoidingScrollView,
   NotesCard,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -76,7 +76,7 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           />
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
         refresh={{loading: loadingInternalMove, fetcher: getInternalMove}}>
         <InternalMoveMovementIndicationCard
           from={internalMove.fromStockLocation?.name}
@@ -91,7 +91,7 @@ const InternalMoveDetailsGeneralScreen = ({route}) => {
           title={I18n.t('Stock_NotesOnStockMove')}
           data={internalMove.note}
         />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
