@@ -27,7 +27,7 @@ interface FocusScreenProps {
   removeSpaceOnTop?: boolean;
   loading?: boolean;
   fetcher: () => void;
-  displayCondition?: () => boolean;
+  displayCondition?: boolean;
 }
 
 const FocusScreen = ({
@@ -37,7 +37,7 @@ const FocusScreen = ({
   removeSpaceOnTop = false,
   loading = false,
   fetcher,
-  displayCondition = () => true,
+  displayCondition = true,
 }: FocusScreenProps) => {
   const isFocused = useIsFocused();
 
@@ -47,7 +47,7 @@ const FocusScreen = ({
     }
   }, [fetcher, isFocused]);
 
-  if (!isFocused || !displayCondition()) {
+  if (!isFocused || !displayCondition) {
     return null;
   }
 
