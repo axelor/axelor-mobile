@@ -27,10 +27,11 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
-  getFullDateItems,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
+import DateDisplay from '../DateDisplay/DateDisplay';
+import TextUnit from '../TextUnit/TextUnit';
 
 interface ExpenseLineCardProps {
   expenseId: number;
@@ -66,11 +67,6 @@ const ExpenseLineCard = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
-  const _date = useMemo(
-    () => getFullDateItems(expenseDate, I18n),
-    [I18n, expenseDate],
-  );
-
   return (
     <TouchableOpacity
       onLongPress={onLongPress}
@@ -86,7 +82,7 @@ const ExpenseLineCard = ({
         style={styles.border}
         leftContainerFlex={2}
         upperTexts={{
-          style: styles.text,
+          style: styles.texts,
           items: [
             {
               displayText: displayText,
@@ -95,11 +91,7 @@ const ExpenseLineCard = ({
               style: styles.title,
             },
             {
-              indicatorText: _date.day,
-              displayText: `${_date.date} ${_date.month}`,
-              iconName: 'calendar-alt',
-              hideIfNull: true,
-              style: styles.details,
+              customComponent: <DateDisplay date={expenseDate} size={16} />,
             },
             {
               indicatorText: projectName,
@@ -126,18 +118,19 @@ const ExpenseLineCard = ({
           ],
         }}
         sideBadges={{
+          style: styles.badges,
           items: [
             {
               customComponent: (
-                <Text
-                  fontSize={22}
-                  style={styles.amountText}
-                  textColor={Colors.primaryColor.background}>{`${totalAmount} ${
-                  currency != null
-                    ? currency
-                    : user.activeCompany?.currency?.symbol ||
-                      user.activeCompany?.currency.name
-                }`}</Text>
+                <TextUnit
+                  value={totalAmount}
+                  unit={
+                    currency != null
+                      ? currency
+                      : user.activeCompany?.currency?.symbol ||
+                        user.activeCompany?.currency.name
+                  }
+                />
               ),
             },
             {
@@ -169,10 +162,6 @@ const getStyles = Colors =>
     arrowIcon: {
       marginHorizontal: 3,
     },
-    amountText: {
-      alignSelf: 'flex-end',
-      fontWeight: '900',
-    },
     italic: {
       fontStyle: 'italic',
       marginTop: 2,
@@ -180,9 +169,12 @@ const getStyles = Colors =>
     details: {
       fontSize: 16,
     },
-    text: {
+    texts: {
       justifyContent: 'center',
       minHeight: 100,
+    },
+    badges: {
+      alignItems: 'flex-end',
     },
     border: {
       borderLeftWidth: 7,
