@@ -71,10 +71,7 @@ describe('AutoCompleteSearch Component', () => {
   });
 
   it('should call onChangeValue when value change', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
-    );
+    const wrapper = shallow(<AutoCompleteSearch {...props} />);
 
     wrapper.find(SearchBar).simulate('clearPress');
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe('');
