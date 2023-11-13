@@ -42,8 +42,6 @@
   "Hr_Refuse": "Refuser",
   "Hr_ReasonRefusal": "Motif de refus",
   "Hr_CityNotFound": "Au moins une des deux villes n'a pas pu être localisée.",
-  "Hr_Ok": "Ok",
-  "Hr_Cancel": "Annuler",
   "Hr_TimeUnit_Days": "j",
   "Hr_TimeUnit_Hours": "h",
   "Hr_TimeUnit_Minutes": "min",
