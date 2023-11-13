@@ -22,6 +22,9 @@ import {shallow} from 'enzyme';
 import {Chip, ChipSelect, lightTheme} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
+// TODO: check modes management (switch/multi)
+// check value when calling onValueChange
+
 describe('ChipSelect Component', () => {
   const Colors = lightTheme.colors;
 
@@ -46,38 +49,75 @@ describe('ChipSelect Component', () => {
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  it('should refresh when selectionItems change if isRefresh is true', () => {
-    const wrapper = shallow(<ChipSelect {...props} isRefresh />);
+  it('should refresh when selectionItems change and isRefresh is true', () => {
+    const wrapper = shallow(<ChipSelect {...props} isRefresh={true} />);
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(true);
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
+        props.selectionItems[i].isActive,
+      );
+    }
+
+    const selectedItems = [...props.selectionItems].map((item, i) =>
+      i === 0 ? {...item, isActive: false} : item,
+    );
 
     wrapper.setProps({
-      selectionItems: props.selectionItems.map((item, i) =>
-        i === 0 ? {...item, isActive: false} : item,
-      ),
+      selectionItems: selectedItems,
     });
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
+    for (let i = 0; i < selectedItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
+        selectedItems[i].isActive,
+      );
+    }
+  });
+
+  it('should not refresh when selectionItems change and isRefresh is false', () => {
+    const wrapper = shallow(<ChipSelect {...props} isRefresh={false} />);
+
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(
+        props.selectionItems[i].isActive,
+      );
+    }
+
+    const selectedItems = [...props.selectionItems].map((item, i) =>
+      i === 0 ? {...item, isActive: false} : item,
+    );
+
+    wrapper.setProps({
+      selectionItems: selectedItems,
+    });
+
+    for (let i = 0; i < selectedItems.length; i++) {
+      const oldValue = props.selectionItems[i].isActive;
+      const newValue = selectedItems[i].isActive;
+
+      expect(wrapper.find(Chip).at(i).prop('selected')).toBe(oldValue);
+
+      if (oldValue !== newValue) {
+        expect(wrapper.find(Chip).at(i).prop('selected')).not.toBe(newValue);
+      }
+    }
   });
 
   it('should render the right number of Chip component', () => {
     const wrapper = shallow(<ChipSelect {...props} />);
 
-    expect(wrapper.find(Chip).length).toBe(3);
+    expect(wrapper.find(Chip)).toHaveLength(3);
   });
 
   it('should render Chip with the right props', () => {
     const wrapper = shallow(<ChipSelect {...props} />);
 
-    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(
-      props.selectionItems[0].isActive,
-    );
-    expect(wrapper.find(Chip).at(0).prop('selectedColor')).toBe(
-      props.selectionItems[0].color,
-    );
-    expect(wrapper.find(Chip).at(0).prop('title')).toBe(
-      props.selectionItems[0].title,
-    );
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
+        selected: props.selectionItems[i].isActive,
+        selectedColor: props.selectionItems[i].color,
+        title: props.selectionItems[i].title,
+      });
+    }
   });
 
   it('should call onChangeValue when Chip is pressed', () => {
@@ -99,20 +139,24 @@ describe('ChipSelect Component', () => {
   });
 
   it('should apply custom width when provided', () => {
-    const customWidth = {width: 200};
+    const customWidth = 200;
     const wrapper = shallow(<ChipSelect {...props} width={customWidth} />);
 
-    expect(wrapper.find(Chip).at(0).prop('width')).toBe(customWidth);
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).prop('width')).toBe(customWidth);
+    }
   });
 
   it('should apply custom marginHorizontal when provided', () => {
-    const customMarginHorizontal = {width: 200};
+    const customMarginHorizontal = 50;
     const wrapper = shallow(
       <ChipSelect {...props} marginHorizontal={customMarginHorizontal} />,
     );
 
-    expect(wrapper.find(Chip).at(0).prop('marginHorizontal')).toBe(
-      customMarginHorizontal,
-    );
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).prop('marginHorizontal')).toBe(
+        customMarginHorizontal,
+      );
+    }
   });
 });
