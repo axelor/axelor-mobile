@@ -237,7 +237,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
     setObject(defaultValue);
   };
 
-  const renderItem = (item: DisplayPanel | DisplayField) => {
+  const renderItem = (item: DisplayPanel | DisplayField, index: number) => {
     if (isField(item)) {
       return (
         <FieldComponent
@@ -246,6 +246,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           _field={item as DisplayField}
           object={object}
           globalReadonly={config.readonlyIf}
+          index={index}
         />
       );
     }

@@ -54,6 +54,7 @@ interface FieldProps {
   _field: DisplayField;
   object: any;
   globalReadonly?: (values?: States) => boolean;
+  index: number;
 }
 
 const Field = ({
@@ -61,6 +62,7 @@ const Field = ({
   _field,
   object,
   globalReadonly = () => false,
+  index,
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -258,7 +260,7 @@ const Field = ({
     <View
       style={[
         styles.container,
-        Platform.OS === 'ios' ? styles.zIndexContainer : null,
+        Platform.OS === 'ios' ? {zIndex: 30 - index} : null,
       ]}>
       {_field.helperKey != null && (
         <InfoBubble
@@ -291,9 +293,6 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     width: '100%',
-  },
-  zIndexContainer: {
-    zIndex: 30,
   },
   info: {
     position: 'absolute',
