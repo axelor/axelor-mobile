@@ -179,7 +179,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
           />
         }
       />
-      <KeyboardAvoidingScrollView style={styles.scroll}>
+      <KeyboardAvoidingScrollView>
         <View style={styles.stockView}>
           {currentStep >= CREATION_STEP.product_trackingNumber ? (
             <ProductTrackingNumberSearchBar
@@ -187,6 +187,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
               scanKey={itemScanKey}
               onChange={handleProductTrackingNumberChange}
               isFocus={true}
+              isScrollViewContainer={true}
             />
           ) : null}
           {currentStep >= CREATION_STEP.toStockLocation ? (
@@ -212,6 +213,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                   scanKey={stockLocationScanKey}
                   isFocus={currentStep === CREATION_STEP.toStockLocation}
                   defaultStockLocation={supplierArrival.toStockLocation}
+                  isScrollViewContainer={true}
                 />
               ) : null}
               <Picker
@@ -224,6 +226,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                 readonly={
                   supplierArrival?.statusSelect === StockMove.status.Realized
                 }
+                isScrollViewContainer={true}
               />
             </>
           ) : null}
@@ -234,9 +237,6 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  scroll: {
-    height: '100%',
-  },
   stockView: {
     alignItems: 'center',
     marginTop: '2%',
