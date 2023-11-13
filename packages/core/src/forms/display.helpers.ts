@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {KeyboardType} from 'react-native';
+import {KeyboardType, Platform} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   Action,
@@ -26,6 +26,68 @@ import {
   Form,
   Widget,
 } from './types';
+
+const DEFAULT_ZINDEX = 50;
+
+export const getZIndexStyle = (zIndex: number) => {
+  return Platform.OS === 'ios' ? {zIndex} : null;
+};
+
+const getItem = (key: string, formContent: (DisplayPanel | DisplayField)[]) => {
+  const _item = formContent.find(_i => _i.key === key);
+  const _index = formContent.indexOf(_item);
+
+  return {item: _item, index: _index};
+};
+
+const getNumberOfParent = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const {item: _item} = getItem(key, formContent);
+
+  if (checkNullString((_item as DisplayPanel).parent)) {
+    return 0;
+  }
+
+  return getNumberOfParent((_item as DisplayPanel).parent, formContent) + 1;
+};
+
+const getRootParentIndex = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const {item: _item, index: _index} = getItem(key, formContent);
+
+  if (checkNullString((_item as DisplayPanel).parent)) {
+    return _index;
+  }
+
+  return getRootParentIndex((_item as DisplayPanel).parent, formContent);
+};
+
+export const getZIndex = (
+  formContent: (DisplayPanel | DisplayField)[],
+  key: string,
+) => {
+  const {item: _item, index: _index} = getItem(key, formContent);
+
+  if (_item == null) {
+    return 0;
+  }
+
+  if (
+    checkNullString((_item as DisplayField).parentPanel) &&
+    checkNullString((_item as DisplayPanel).parent)
+  ) {
+    return DEFAULT_ZINDEX - _index;
+  } else {
+    const rootParentIndex = getRootParentIndex(key, formContent);
+    const nbParent = getNumberOfParent(key, formContent);
+
+    return DEFAULT_ZINDEX - rootParentIndex + nbParent * 2;
+  }
+};
 
 export const isField = (_object: DisplayPanel | DisplayField): boolean => {
   return (_object as any).type != null;

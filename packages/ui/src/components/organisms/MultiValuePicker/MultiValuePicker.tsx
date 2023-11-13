@@ -165,7 +165,7 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
       width: '90%',
     },
     containerZIndex: {
-      zIndex: 45,
+      zIndex: 100,
     },
     title: {
       marginLeft: 10,

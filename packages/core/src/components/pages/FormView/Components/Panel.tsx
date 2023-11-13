@@ -20,15 +20,26 @@ import React, {ReactNode, useMemo} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {DropdownCard, HorizontalRule, Text} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '../../../../i18n';
-import {DEFAULT_COLSPAN, DisplayField, DisplayPanel} from '../../../../forms';
+import {
+  DEFAULT_COLSPAN,
+  DisplayField,
+  DisplayPanel,
+  getZIndex,
+  getZIndexStyle,
+} from '../../../../forms';
 
 interface PanelProps {
-  renderItem: (item: DisplayPanel | DisplayField, index: number) => ReactNode;
+  renderItem: (item: DisplayPanel | DisplayField) => ReactNode;
+  formContent: (DisplayPanel | DisplayField)[];
   _panel: DisplayPanel;
 }
 
-const Panel = ({renderItem, _panel}: PanelProps) => {
+const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
   const I18n = useTranslator();
+
+  const zIndex: number = useMemo(() => {
+    return getZIndex(formContent, _panel.key);
+  }, [_panel.key, formContent]);
 
   const panelStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -54,7 +65,10 @@ const Panel = ({renderItem, _panel}: PanelProps) => {
 
   if (_panel.isCollaspible) {
     return (
-      <DropdownCard key={_panel.key} title={I18n.t(_panel.titleKey)}>
+      <DropdownCard
+        key={_panel.key}
+        title={I18n.t(_panel.titleKey)}
+        styleContainer={getZIndexStyle(zIndex)}>
         {_panel.content.map(renderItem)}
       </DropdownCard>
     );
@@ -62,15 +76,18 @@ const Panel = ({renderItem, _panel}: PanelProps) => {
 
   if (_panel.titleKey != null) {
     return (
-      <View key={_panel.key} style={[panelStyle, styles.container]}>
+      <View
+        key={_panel.key}
+        style={[panelStyle, styles.container, getZIndexStyle(zIndex - 1)]}>
         <Text style={styles.title}>{I18n.t(_panel.titleKey)}</Text>
         <HorizontalRule style={styles.line} />
         <View
           style={[
+            styles.content,
             {
               flexDirection: panelStyle.flexDirection,
             },
-            styles.content,
+            getZIndexStyle(zIndex),
           ]}>
           {_panel.content.map(renderItem)}
         </View>
@@ -79,7 +96,7 @@ const Panel = ({renderItem, _panel}: PanelProps) => {
   }
 
   return (
-    <View key={_panel.key} style={panelStyle}>
+    <View key={_panel.key} style={[panelStyle, getZIndexStyle(zIndex)]}>
       {_panel.content.map(renderItem)}
     </View>
   );

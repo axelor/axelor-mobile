@@ -26,6 +26,7 @@ import {getCommonStyles} from '../../../utils';
 interface DropdownCardProps {
   style?: any;
   styleText?: any;
+  styleContainer?: any;
   title: string;
   children: any;
   dropdownIsOpen?: boolean;
@@ -36,6 +37,7 @@ interface DropdownCardProps {
 const DropdownCard = ({
   style,
   styleText,
+  styleContainer,
   title,
   dropdownIsOpen = false,
   children,
@@ -58,7 +60,7 @@ const DropdownCard = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styleContainer]}>
       <TouchableOpacity
         style={styles.touchable}
         onPress={handleCardPress}
@@ -115,7 +117,7 @@ const getStyles = Colors =>
       marginTop: -20,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
-      zIndex: 30,
+      zIndex: 50,
     },
   });
 

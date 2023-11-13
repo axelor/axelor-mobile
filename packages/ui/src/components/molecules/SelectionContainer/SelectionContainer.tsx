@@ -100,7 +100,7 @@ const getItemStyles = isPicker =>
       alignItems: 'center',
       position: 'relative',
       width: '100%',
-      zIndex: 50,
+      zIndex: 105,
     },
     text: {
       width: isPicker ? '85%' : '100%',
@@ -246,7 +246,7 @@ const getStyles = (
       width: '100%',
       position: 'absolute',
       top: '95%',
-      zIndex: 51,
+      zIndex: 110,
       backgroundColor: Colors.backgroundColor,
       borderRadius: 10,
       borderColor: Colors.secondaryColor.background,
@@ -259,7 +259,7 @@ const getStyles = (
     border: {
       borderBottomColor: Colors.secondaryColor.background,
       borderBottomWidth: 1,
-      zIndex: 52,
+      zIndex: 115,
       width: '104%',
       left: -14,
     },
