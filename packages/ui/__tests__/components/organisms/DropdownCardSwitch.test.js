@@ -28,6 +28,14 @@ describe('DropdownCardSwitch', () => {
     {key: 2, title: 'Item 2', childrenComp: <Text>Content 2</Text>},
   ];
 
+  it('renders without crashing', () => {
+    const wrapper = shallow(
+      <DropdownCardSwitch dropdownItems={dropdownItems} />,
+    );
+
+    expect(wrapper.exists()).toBe(true);
+  });
+
   it('renders correctly with dropdown items', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
@@ -56,14 +64,21 @@ describe('DropdownCardSwitch', () => {
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
 
+    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
+      false,
+    );
+
     wrapper.find(DropdownCard).first().simulate('press');
 
-    expect(
-      wrapper
-        .find(DropdownCard)
-        .first()
-        .contains(dropdownItems[0].childrenComp),
-    ).toBe(true);
+    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
+      true,
+    );
+
+    wrapper.find(DropdownCard).first().simulate('press');
+
+    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
+      false,
+    );
   });
 
   it('applies custom style when provided', () => {
@@ -86,6 +101,17 @@ describe('DropdownCardSwitch', () => {
 
     wrapper.find(DropdownCard).forEach(dropdownCard => {
       expect(dropdownCard.prop('styleText')).toEqual(customStyleTitle);
+    });
+  });
+
+  it('passes the correct title DropdownCard', () => {
+    const titleProps = 'Test';
+    const wrapper = shallow(
+      <DropdownCardSwitch dropdownItems={dropdownItems} title={titleProps} />,
+    );
+    dropdownItems.forEach((item, index) => {
+      const dropdownCard = wrapper.find(DropdownCard).at(index);
+      expect(dropdownCard.prop('title')).toEqual(item.title);
     });
   });
 });
