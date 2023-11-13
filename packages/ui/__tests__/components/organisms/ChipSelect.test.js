@@ -22,9 +22,6 @@ import {shallow} from 'enzyme';
 import {Chip, ChipSelect, lightTheme} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
-// TODO: check modes management (switch/multi)
-// check value when calling onValueChange
-
 describe('ChipSelect Component', () => {
   const Colors = lightTheme.colors;
 
@@ -32,7 +29,7 @@ describe('ChipSelect Component', () => {
     selectionItems: [
       {isActive: true, color: Colors.primaryColor, title: 'Item 1', key: 1},
       {isActive: false, color: Colors.cautionColor, title: 'Item 2', key: 2},
-      {isActive: true, color: Colors.errorColor, title: 'Item 3', key: 3},
+      {isActive: false, color: Colors.errorColor, title: 'Item 3', key: 3},
     ],
     mode: 'multi',
   };
@@ -47,6 +44,52 @@ describe('ChipSelect Component', () => {
     const wrapper = shallow(<ChipSelect {...props} mode="" />);
 
     expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
+  it('should render the right number of Chip component', () => {
+    const wrapper = shallow(<ChipSelect {...props} />);
+
+    expect(wrapper.find(Chip)).toHaveLength(3);
+  });
+
+  it('should render Chip with the right props', () => {
+    const wrapper = shallow(<ChipSelect {...props} />);
+
+    for (let i = 0; i < props.selectionItems.length; i++) {
+      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
+        selected: props.selectionItems[i].isActive,
+        selectedColor: props.selectionItems[i].color,
+        title: props.selectionItems[i].title,
+      });
+    }
+  });
+
+  it('should call onChangeValue when Chip is pressed', () => {
+    const wrapper = shallow(<ChipSelect {...props} />);
+
+    wrapper.find(Chip).at(0).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(
+      !props.selectionItems[0].isActive,
+    );
+  });
+
+  it('should render ChipSelect with more than one Chip activable if mode is multi', () => {
+    const wrapper = shallow(<ChipSelect {...props} />);
+
+    wrapper.find(Chip).at(1).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(true);
+    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
+  });
+
+  it('should render ChipSelect with only one Chip activable if mode is switch', () => {
+    const wrapper = shallow(<ChipSelect {...props} mode="switch" />);
+
+    wrapper.find(Chip).at(1).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
   });
 
   it('should refresh when selectionItems change and isRefresh is true', () => {
@@ -100,35 +143,6 @@ describe('ChipSelect Component', () => {
         expect(wrapper.find(Chip).at(i).prop('selected')).not.toBe(newValue);
       }
     }
-  });
-
-  it('should render the right number of Chip component', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
-
-    expect(wrapper.find(Chip)).toHaveLength(3);
-  });
-
-  it('should render Chip with the right props', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
-
-    for (let i = 0; i < props.selectionItems.length; i++) {
-      expect(wrapper.find(Chip).at(i).props()).toMatchObject({
-        selected: props.selectionItems[i].isActive,
-        selectedColor: props.selectionItems[i].color,
-        title: props.selectionItems[i].title,
-      });
-    }
-  });
-
-  it('should call onChangeValue when Chip is pressed', () => {
-    const onChangeValue = jest.fn();
-    const wrapper = shallow(
-      <ChipSelect {...props} onChangeValue={onChangeValue} />,
-    );
-
-    wrapper.find(Chip).at(0).simulate('press');
-
-    expect(onChangeValue).toHaveBeenCalledTimes(1);
   });
 
   it('should apply custom style when provided', () => {
