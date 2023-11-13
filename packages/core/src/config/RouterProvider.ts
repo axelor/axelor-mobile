@@ -19,6 +19,13 @@
 import {axiosApiProvider} from '../apiProviders';
 import routes from './routes';
 
+const checkError = field => {
+  return (
+    typeof field === 'string' &&
+    field.includes('java.lang.ClassNotFoundException')
+  );
+};
+
 class RouterProvider {
   private retrocompatibilityAOS6: boolean = true;
 
@@ -39,8 +46,8 @@ class RouterProvider {
       })
       .then(res => {
         if (
-          typeof res?.data?.data?.cause === 'string' &&
-          res.data.data.cause.includes('java.lang.ClassNotFoundException')
+          checkError(res?.data?.data?.cause) ||
+          checkError(res?.data?.data?.causeClass)
         ) {
           return routes.AOS7[resource];
         }
