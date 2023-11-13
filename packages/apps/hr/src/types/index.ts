@@ -18,3 +18,4 @@
 
 export {default as Expense} from './expense';
 export {default as ExpenseLine} from './expenseLine';
+export {default as Time} from './time';
