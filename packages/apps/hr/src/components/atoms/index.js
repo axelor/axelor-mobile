@@ -16,5 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as DateDisplay} from './DateDisplay/DateDisplay';
 export {default as ExpenseCard} from './ExpenseCard/ExpenseCard';
 export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';
+export {default as TextUnit} from './TextUnit/TextUnit';
+export {default as TimeCard} from './TimeCard/TimeCard';
