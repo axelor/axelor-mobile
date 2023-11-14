@@ -7,15 +7,29 @@ import {
   writingDefaultTheme,
 } from '../packages/ui/src';
 
-export const parameters = {
-  actions: {argTypesRegex: '^on[A-Z].*'},
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
-  },
-};
+import React from 'react';
+import {Platform} from 'react-native';
+// ... (autres imports)
+
+// Importer uniquement si vous êtes dans un environnement web
+if (Platform.OS === 'web') {
+  const IconFont = require('react-native-vector-icons/Fonts/FontAwesome.ttf');
+  const iconFontStyles = `@font-face {
+    src: url(${IconFont});
+    font-family: FontAwesome;
+  }`;
+
+  // Créer une balise de style pour ajouter les polices d'icônes
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  if (style.styleSheet) {
+    style.styleSheet.cssText = iconFontStyles;
+  } else {
+    style.appendChild(document.createTextNode(iconFontStyles));
+  }
+
+  document.head.appendChild(style);
+}
 
 export const decorators = [
   Story => (
