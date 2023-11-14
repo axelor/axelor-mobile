@@ -33,12 +33,12 @@ describe('RadioSelect Component', () => {
     items,
     question: 'Test Question',
     onChange: jest.fn(),
-    defaultValue: '1',
     direction: 'column',
   };
 
   it('should render without crashing', () => {
     const wrapper = shallow(<RadioSelect {...props} />);
+
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -50,49 +50,50 @@ describe('RadioSelect Component', () => {
 
   it('should render the correct number of RadioButton components', () => {
     const wrapper = shallow(<RadioSelect {...props} />);
+
     expect(wrapper.find(RadioButton)).toHaveLength(items.length);
   });
 
   it('should handle RadioButton click', () => {
-    const wrapper = shallow(<RadioSelect {...props} />);
-    const secondRadioButton = wrapper.find(RadioButton).at(1);
+    const onPress = jest.fn();
+    const wrapper = shallow(<RadioSelect {...props} onChange={onPress} />);
 
-    secondRadioButton.simulate('press');
+    for (let i = 0; i < items.length; i++) {
+      wrapper.find(RadioButton).at(i).simulate('press');
 
-    expect(props.onChange).toHaveBeenCalledWith(items[1].id);
+      expect(onPress).toHaveBeenNthCalledWith(i + 1, items[i].id);
+    }
   });
 
   it('should set the default value as selected', () => {
-    const wrapper = shallow(<RadioSelect {...props} />);
+    const defaultSelectedItem = items[0];
+    const wrapper = shallow(
+      <RadioSelect {...props} defaultValue={defaultSelectedItem.id} />,
+    );
+
     const selectedRadioButtons = wrapper
       .find(RadioButton)
       .filterWhere(button => button.props().selected);
 
     expect(selectedRadioButtons).toHaveLength(1);
-    expect(selectedRadioButtons.props().title).toBe(items[0].title);
+    expect(selectedRadioButtons.prop('title')).toBe(defaultSelectedItem.title);
   });
 
   it('should set correct size when provided', () => {
-    const propsSize = {
-      ...props,
-      radioSize: 40,
-    };
-    const wrapper = shallow(<RadioSelect {...propsSize} />);
+    const radioSize = 40;
+    const wrapper = shallow(<RadioSelect {...props} radioSize={radioSize} />);
 
-    expect(wrapper.find(RadioButton).at(0).prop('size')).toBe(
-      propsSize.radioSize,
-    );
+    for (let i = 0; i < items.length; i++) {
+      expect(wrapper.find(RadioButton).at(i).prop('size')).toBe(radioSize);
+    }
   });
 
   it('should set correct direction when provided', () => {
-    const propsDirection = {
-      ...props,
-      direction: 'column',
-    };
-    const wrapper = shallow(<RadioSelect {...propsDirection} />);
+    const direction = 'column';
+    const wrapper = shallow(<RadioSelect {...props} direction={direction} />);
 
     expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject({
-      flexDirection: propsDirection.direction,
+      flexDirection: direction,
     });
   });
 
