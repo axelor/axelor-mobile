@@ -22,3 +22,4 @@ export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseL
 export {default as ExpenseLineValidationButton} from './ExpenseLineValidationButton/ExpenseLineValidationButton';
 export {default as ExpenseRefusalPopup} from './ExpenseRefusalPopup/ExpenseRefusalPopup';
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
+export {default as TimesheetDetailCard} from './TimesheetDetailCard/TimesheetDetailCard';
