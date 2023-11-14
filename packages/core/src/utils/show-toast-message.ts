@@ -17,7 +17,13 @@
  */
 
 import Toast, {ToastShowParams} from 'react-native-toast-message';
+import {toastProvider} from '../components';
 
 export const showToastMessage = (toastOptions: ToastShowParams) => {
-  return Toast.show(toastOptions);
+  toastProvider.setData({
+    title: toastOptions.text1,
+    message: toastOptions.text2,
+    type: toastOptions.type,
+  });
+  Toast.show(toastOptions);
 };
