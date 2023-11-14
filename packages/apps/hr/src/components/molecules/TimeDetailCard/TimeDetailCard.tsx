@@ -27,7 +27,7 @@ interface TimeDetailCardProps {
   task?: string;
   manufOrder?: string;
   operation?: string;
-  comment?: string;
+  comments?: string;
   date: string;
   duration: string;
   durationUnit: string;
@@ -41,7 +41,7 @@ const TimeDetailCard = ({
   task,
   manufOrder,
   operation,
-  comment,
+  comments,
   date,
   duration,
   durationUnit,
@@ -66,7 +66,7 @@ const TimeDetailCard = ({
         task={task}
         manufOrder={manufOrder}
         operation={operation}
-        comment={comment}
+        comments={comments}
         date={date}
         duration={duration}
         durationUnit={durationUnit}
