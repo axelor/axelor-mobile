@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Toast from 'react-native-toast-message';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {traceError} from '../api/traceback-api';
 import {i18nProvider} from '../i18n';
 import {ActionReducerMapBuilder} from '@reduxjs/toolkit';
 import {apiProviderConfig} from './config';
+import {showToastMessage} from '../utils';
 
 export const getApiResponseData = (response, {isArrayResponse = true}) => {
   if (response.data && response.data.object != null) {
@@ -76,7 +76,7 @@ const manageError = (
     }
 
     if (showErrorToast) {
-      Toast.show({
+      showToastMessage({
         type: 'error',
         position: 'bottom',
         bottomOffset: 20,
@@ -112,7 +112,7 @@ const manageSucess = (
   const total = getApiResponseTotal(response);
 
   if (showToast) {
-    Toast.show({
+    showToastMessage({
       type: 'success',
       position: 'bottom',
       bottomOffset: 20,
