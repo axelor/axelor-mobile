@@ -98,7 +98,7 @@ const getStyles = Colors =>
       width: '90%',
     },
     touchable: {
-      zIndex: 31,
+      zIndex: 35,
     },
     content: {
       width: Dimensions.get('window').width * 0.92,
@@ -117,7 +117,7 @@ const getStyles = Colors =>
       marginTop: -20,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
-      zIndex: 50,
+      zIndex: 30,
     },
   });
 

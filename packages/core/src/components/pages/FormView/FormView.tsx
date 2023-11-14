@@ -31,6 +31,7 @@ import {
   DisplayField,
   DisplayPanel,
   getButtonTitleKey,
+  getConfigItems,
   getFields,
   getValidationErrors,
   getZIndexStyle,
@@ -247,7 +248,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           _field={item as DisplayField}
           object={object}
           globalReadonly={config.readonlyIf}
-          formContent={formContent}
+          formContent={getConfigItems(config)}
         />
       );
     }
@@ -256,7 +257,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
       <PanelComponent
         key={`${item.key} - ${item.order}`}
         renderItem={renderItem}
-        formContent={formContent}
+        formContent={getConfigItems(config)}
         _panel={item as DisplayPanel}
       />
     );

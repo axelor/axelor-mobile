@@ -78,7 +78,7 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
     return (
       <View
         key={_panel.key}
-        style={[panelStyle, styles.container, getZIndexStyle(zIndex - 1)]}>
+        style={[panelStyle, styles.container, getZIndexStyle(zIndex)]}>
         <Text style={styles.title}>{I18n.t(_panel.titleKey)}</Text>
         <HorizontalRule style={styles.line} />
         <View
@@ -87,7 +87,7 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
             {
               flexDirection: panelStyle.flexDirection,
             },
-            getZIndexStyle(zIndex),
+            getZIndexStyle(zIndex + 1),
           ]}>
           {_panel.content.map(renderItem)}
         </View>

@@ -94,6 +94,10 @@ export const isField = (_object: DisplayPanel | DisplayField): boolean => {
 };
 
 export const getFields = (config: Form): DisplayField[] => {
+  if (config.fields == null) {
+    return [];
+  }
+
   return Object.entries(config.fields)
     .map(([fieldName, _field], index) => ({
       ..._field,
@@ -107,6 +111,10 @@ export const getFields = (config: Form): DisplayField[] => {
 };
 
 export const getPanels = (config: Form): DisplayPanel[] => {
+  if (config.panels == null) {
+    return [];
+  }
+
   return Object.entries(config.panels)
     .map(([panelKey, _panel], index) => ({
       ..._panel,
@@ -114,6 +122,17 @@ export const getPanels = (config: Form): DisplayPanel[] => {
       order: _panel.order != null ? _panel.order : index * 10,
     }))
     .sort((a, b) => a.order - b.order);
+};
+
+export const getConfigItems = (
+  config: Form,
+): (DisplayPanel | DisplayField)[] => {
+  const fields: DisplayField[] = getFields(config);
+  const panels: DisplayPanel[] = getPanels(config);
+
+  const result = [...fields, ...panels];
+
+  return result.sort((a, b) => a.order - b.order);
 };
 
 export const sortContent = (config: Form): (DisplayPanel | DisplayField)[] => {
