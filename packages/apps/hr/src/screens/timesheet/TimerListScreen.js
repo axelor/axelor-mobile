@@ -68,14 +68,12 @@ const TimerListScreen = ({}) => {
         renderItem={({item}) => (
           <TimeDetailCard
             statusSelect={item.statusSelect}
-            project={item.project.fullName}
-            task={item.task}
-            manufOrder={item.manufOrder}
-            operation={item.operation}
+            project={item.project?.name}
+            task={item.projectTask?.name}
             comments={item.comments}
-            date={item.date || Date.now()}
+            date={item.startDateTime}
             duration={item.duration}
-            durationUnit={item.durationUnit || 'days'}
+            durationUnit={'hours'}
           />
         )}
         fetchData={fetchTimerAPI}
