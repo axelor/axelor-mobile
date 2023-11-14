@@ -1,3 +1,5 @@
+import React from 'react';
+import {Platform} from 'react-native';
 import {
   OutsideAlerterProvider,
   ThemeProvider,
@@ -7,11 +9,6 @@ import {
   writingDefaultTheme,
 } from '../packages/ui/src';
 
-import React from 'react';
-import {Platform} from 'react-native';
-// ... (autres imports)
-
-// Importer uniquement si vous êtes dans un environnement web
 if (Platform.OS === 'web') {
   const IconFont = require('react-native-vector-icons/Fonts/FontAwesome.ttf');
   const iconFontStyles = `@font-face {
@@ -19,7 +16,6 @@ if (Platform.OS === 'web') {
     font-family: FontAwesome;
   }`;
 
-  // Créer une balise de style pour ajouter les polices d'icônes
   const style = document.createElement('style');
   style.type = 'text/css';
   if (style.styleSheet) {
