@@ -55,6 +55,7 @@ const ProductStockLocationCard = ({
   return (
     <ObjectCard
       touchable={false}
+      showArrow={false}
       style={borderStyle}
       lowerTexts={{
         items: [
