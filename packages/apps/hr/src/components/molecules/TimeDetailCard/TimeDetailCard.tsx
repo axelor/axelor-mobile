@@ -45,7 +45,7 @@ const TimeDetailCard = ({
   date,
   duration,
   durationUnit,
-  isActions = false,
+  isActions = true,
   style,
 }: TimeDetailCardProps) => {
   const Colors = useThemeColor();
@@ -72,7 +72,7 @@ const TimeDetailCard = ({
         durationUnit={durationUnit}
         style={styles.cardContainer}
       />
-      {!isActions && (
+      {isActions && (
         <View style={styles.iconContainer}>
           <CardIconButton
             iconName={'pencil-alt'}
