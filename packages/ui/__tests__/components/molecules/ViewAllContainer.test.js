@@ -65,11 +65,11 @@ describe('ViewAllContainer Component', () => {
 
   it('should render first and second data whith renderFirstTwoItems function when provided', () => {
     const data = ['Data 0', 'Data 1', 'Data 2'];
-    const renderFirstTwoItems = (item, index) => (
+    const renderFirstTwoItems = jest.fn((item, index) => (
       <Text>
         `${index} : ${item}`
       </Text>
-    );
+    ));
     const wrapper = shallow(
       <ViewAllContainer
         {...props}
@@ -79,29 +79,30 @@ describe('ViewAllContainer Component', () => {
     );
 
     expect(wrapper.find(View).at(0).find(Text).length).toBe(2);
+    expect(renderFirstTwoItems).toHaveBeenNthCalledWith(1, data[0], 0);
+    expect(renderFirstTwoItems).toHaveBeenNthCalledWith(2, data[1], 1);
   });
 
   it('should not render TouchableOpacity when disabled is true', () => {
     const wrapper = shallow(<ViewAllContainer {...props} disabled />);
 
-    expect(wrapper.find(TouchableOpacity).length).toBe(0);
+    expect(wrapper.find(TouchableOpacity).exists()).toBe(false);
   });
 
   it('should render a top View with Text and plus Icon when isHeaderExist is true', () => {
-    const wrapper = shallow(<ViewAllContainer {...props} isHeaderExist />);
-
-    expect(wrapper.find(View).at(0).find(Text).length).toBe(1);
-    expect(wrapper.find(View).at(0).find(Icon).length).toBe(1);
-    expect(wrapper.find(View).at(0).find(Icon).prop('name')).toBe('plus');
-  });
-
-  it('should call onNewIcon when plus Icon is pressed', () => {
     const onNewIcon = jest.fn();
     const wrapper = shallow(
       <ViewAllContainer {...props} isHeaderExist onNewIcon={onNewIcon} />,
     );
 
-    wrapper.find(View).at(0).find(Icon).simulate('press');
+    const topView = wrapper.find(View).at(0);
+
+    expect(topView.find(Text).length).toBe(1);
+    expect(topView.find(Icon).length).toBe(1);
+    expect(topView.find(Icon).prop('name')).toBe('plus');
+    expect(topView.find(Icon).prop('touchable')).toBe(true);
+
+    topView.find(Icon).simulate('press');
     expect(onNewIcon).toHaveBeenCalledTimes(1);
   });
 });
