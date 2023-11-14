@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,14 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Toast, {ToastShowParams} from 'react-native-toast-message';
-import {toastProvider} from '../components';
+interface ToastDataProps {
+  title: string;
+  message: string;
+  type: string;
+}
 
-export const showToastMessage = (toastOptions: ToastShowParams) => {
-  toastProvider.setData({
-    title: toastOptions.text1,
-    message: toastOptions.text2,
-    type: toastOptions.type,
-  });
-  Toast.show(toastOptions);
-};
+class ToastProvider {
+  private data: ToastDataProps;
+
+  constructor() {
+    this.data = {title: '', message: '', type: ''};
+  }
+
+  public getData() {
+    return this.data;
+  }
+
+  public setData(data: ToastDataProps) {
+    this.data = data;
+  }
+}
+
+const toastProvider = new ToastProvider();
+
+export default toastProvider;

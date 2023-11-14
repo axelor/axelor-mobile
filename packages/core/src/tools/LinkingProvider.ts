@@ -17,8 +17,8 @@
  */
 
 import {Linking} from 'react-native';
-import Toast from 'react-native-toast-message';
 import {createURLParams, mapURLBuilder, TransportType} from './linking.helper';
+import {showToastMessage} from '../utils';
 
 class LinkingProvider {
   constructor() {}
@@ -34,7 +34,7 @@ class LinkingProvider {
       try {
         await Linking.openURL(url);
       } catch (e) {
-        Toast.show({
+        showToastMessage({
           type: 'error',
           position: 'bottom',
           bottomOffset: 20,
@@ -43,7 +43,7 @@ class LinkingProvider {
         });
       }
     } else {
-      Toast.show({
+      showToastMessage({
         type: 'error',
         position: 'bottom',
         bottomOffset: 20,
