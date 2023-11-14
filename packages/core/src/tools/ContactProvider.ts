@@ -17,13 +17,13 @@
  */
 
 import {PermissionsAndroid, Platform} from 'react-native';
-import Toast from 'react-native-toast-message';
 import * as Contacts from 'react-native-contacts';
 import {
   ContactData,
   PermissionResult,
   parseContactData,
 } from './contact.helper';
+import {showToastMessage} from '../utils';
 
 class ContactProvider {
   constructor() {}
@@ -65,7 +65,7 @@ class ContactProvider {
   };
 
   private _showToast = (type: string, message: string): void => {
-    Toast.show({
+    showToastMessage({
       type,
       position: 'bottom',
       bottomOffset: 20,
