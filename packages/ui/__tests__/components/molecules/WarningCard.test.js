@@ -40,5 +40,6 @@ describe('WarningCard Component', () => {
     const wrapper = shallow(<WarningCard errorMessage={errorMessage} />);
 
     expect(wrapper.find(Label).prop('message')).toBe(errorMessage);
+    expect(wrapper.find(Label).prop('type')).toBe('error');
   });
 });
