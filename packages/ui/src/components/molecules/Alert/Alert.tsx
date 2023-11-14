@@ -38,6 +38,7 @@ interface AlertProps {
   buttonsContainerStyle?: any;
   visible: boolean;
   title?: string;
+  titleStyle?: any;
   noBoldTitle?: boolean;
   children: any;
   cancelButtonConfig?: CancelButtonConfig;
@@ -50,6 +51,7 @@ const Alert = ({
   buttonsContainerStyle,
   visible = false,
   title,
+  titleStyle,
   noBoldTitle = false,
   children,
   cancelButtonConfig,
@@ -114,6 +116,7 @@ const Alert = ({
                 style={[
                   styles.title,
                   {marginHorizontal: _cancelButtonConfig?.headerSize},
+                  titleStyle,
                 ]}>
                 {title}
               </Text>
