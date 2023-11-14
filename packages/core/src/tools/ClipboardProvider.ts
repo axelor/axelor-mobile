@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Toast from 'react-native-toast-message';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {showToastMessage} from '../utils';
 
 class ClipboardProvider {
   constructor() {}
@@ -25,7 +25,7 @@ class ClipboardProvider {
   copyToClipboard(data: string): void {
     try {
       Clipboard.setString(data);
-      Toast.show({
+      showToastMessage({
         type: 'success',
         position: 'bottom',
         bottomOffset: 20,
@@ -33,7 +33,7 @@ class ClipboardProvider {
         text2: `${data} successfully copied to clipboard.`,
       });
     } catch (error) {
-      Toast.show({
+      showToastMessage({
         type: 'error',
         position: 'bottom',
         bottomOffset: 20,
@@ -47,7 +47,7 @@ class ClipboardProvider {
     return Clipboard.getString()
       .then((value: string) => value)
       .catch(error => {
-        Toast.show({
+        showToastMessage({
           type: 'error',
           position: 'bottom',
           bottomOffset: 20,
