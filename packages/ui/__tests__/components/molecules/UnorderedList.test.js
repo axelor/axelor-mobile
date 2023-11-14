@@ -27,6 +27,7 @@ describe('UnorderedList', () => {
     data: ['Item 1', 'Item 2', 'Item 3'],
     renderItem: item => <Text>{item}</Text>,
   };
+
   it('renders without crashing', () => {
     const wrapper = shallow(<UnorderedList {...props} />);
     expect(wrapper.exists()).toBe(true);
@@ -35,7 +36,7 @@ describe('UnorderedList', () => {
   it('renders the correct number of items', () => {
     const wrapper = shallow(<UnorderedList {...props} />);
 
-    expect(wrapper.find('FlatList').props().data).toHaveLength(
+    expect(wrapper.find('FlatList').prop('data')).toHaveLength(
       props.data.length,
     );
   });
@@ -46,7 +47,7 @@ describe('UnorderedList', () => {
       <UnorderedList {...props} numberOfItems={numberOfItems} />,
     );
 
-    expect(wrapper.find('FlatList').props().data).toHaveLength(numberOfItems);
+    expect(wrapper.find('FlatList').prop('data')).toHaveLength(numberOfItems);
   });
 
   it('renders the dot correctly', () => {
