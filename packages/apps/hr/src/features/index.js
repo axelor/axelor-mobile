@@ -24,3 +24,4 @@ export {expenseReducer as expense} from './expenseSlice';
 export {expenseTypeReducer as expenseType} from './expenseTypeSlice';
 export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricAllowParamSlice';
 export {projectReducer as project} from './projectSlice';
+export {timerReducer as hr_timer} from './timerSlice';
