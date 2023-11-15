@@ -19,19 +19,19 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {SelectionContainer} from '@axelor/aos-mobile-ui';
+import {Icon, SelectionContainer} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('SelectionContainer', () => {
   const objectList = [
     {id: '1', name: 'Item 1'},
     {id: '2', name: 'Item 2'},
+    {id: '3', name: 'Item 3'},
   ];
 
   const props = {
-    displayValue: jest.fn(item => item.name),
-    handleSelect: jest.fn(),
     objectList: objectList,
+    displayValue: item => item.name,
   };
 
   it('should render without crashing', () => {
@@ -43,58 +43,81 @@ describe('SelectionContainer', () => {
   it('renders correctly with objectList', () => {
     const wrapper = shallow(<SelectionContainer {...props} />);
 
-    expect(wrapper.find('SelectionItem')).toHaveLength(props.objectList.length);
+    for (let i = 0; i < props.objectList.length; i++) {
+      expect(wrapper.find('SelectionItem').at(i).prop('content')).toBe(
+        props.displayValue(props.objectList[i]),
+      );
+    }
   });
 
   it('calls handleSelect with the right item on press', () => {
-    const onPress = jest.fn();
+    const handleSelect = jest.fn();
+    const wrapper = shallow(
+      <SelectionContainer {...props} handleSelect={handleSelect} />,
+    );
 
-    const newProps = {
-      ...props,
-      handleSelect: onPress,
-    };
-
-    const wrapper = shallow(<SelectionContainer {...newProps} />);
-
-    wrapper.find('SelectionItem').first().simulate('press');
-
-    expect(newProps.handleSelect).toHaveBeenCalledWith(props.objectList[0]);
+    for (let i = 0; i < props.objectList.length; i++) {
+      wrapper.find('SelectionItem').at(i).simulate('press');
+      expect(handleSelect).toHaveBeenCalledWith(props.objectList[i]);
+    }
   });
 
   it('does not render if objectList is empty or null', () => {
-    const newPropsVoidTab = {
+    const newPropsEmptyArr = {
       ...props,
       objectList: [],
     };
-    const newPropsNullTab = {
+    const newPropsNullArr = {
       ...props,
       objectList: null,
     };
 
-    const wrapperEmpty = shallow(<SelectionContainer {...newPropsVoidTab} />);
-
-    const wrapperNull = shallow(<SelectionContainer {...newPropsNullTab} />);
+    const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
+    const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
 
     expect(wrapperEmpty.type()).toBeNull();
     expect(wrapperNull.type()).toBeNull();
   });
 
-  it('renders a Picker list when isPicker is true', () => {
-    const wrapper = shallow(<SelectionContainer {...props} isPicker={true} />);
-    expect(wrapper.find('SelectionItem').length).toBeGreaterThan(0);
-    expect(wrapper.find('SelectionItem').first().prop('isPicker')).toBe(true);
+  it('renders a list of SelectionItem with Icon when isPicker is true', () => {
+    const wrapper = shallow(<SelectionContainer {...props} isPicker />);
+
+    for (let i = 0; i < props.objectList.length; i++) {
+      expect(wrapper.find('SelectionItem').at(i).prop('isPicker')).toBe(true);
+      expect(
+        wrapper.find('SelectionItem').at(i).dive().find(Icon).exists(),
+      ).toBe(true);
+    }
+  });
+
+  it('renders an empty SelectionItem when isPicker and emptyValue are true', () => {
+    const wrapper = shallow(
+      <SelectionContainer {...props} isPicker emptyValue />,
+    );
+
+    expect(wrapper.find('SelectionItem').first().prop('content')).toBe('');
   });
 
   it('renders the selectedItem correctly', () => {
-    const selectedItem = [{id: '2', name: 'Item 2', color: 'blue'}];
-
+    const selectedItem = props.objectList.slice(1);
     const wrapper = shallow(
       <SelectionContainer {...props} selectedItem={selectedItem} />,
     );
+
     expect(
-      wrapper.find('SelectionItem').findWhere(n => n.prop('isSelectedItem'))
-        .length,
-    ).toBe(1);
+      wrapper
+        .find('SelectionItem')
+        .findWhere(item => item.prop('isSelectedItem')).length,
+    ).toBe(selectedItem.length);
+    for (let i = 0; i < selectedItem.length; i++) {
+      expect(
+        wrapper
+          .find('SelectionItem')
+          .findWhere(item => item.prop('isSelectedItem'))
+          .at(i)
+          .prop('content'),
+      ).toBe(props.displayValue(selectedItem[i]));
+    }
   });
 
   it('applies custom style when provided', () => {
