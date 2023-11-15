@@ -26,9 +26,10 @@ describe('DropdownCardSwitch', () => {
   const dropdownItems = [
     {key: 1, title: 'Item 1', childrenComp: <Text>Content 1</Text>},
     {key: 2, title: 'Item 2', childrenComp: <Text>Content 2</Text>},
+    {key: 3, title: 'Item 3', childrenComp: <Text>Content 3</Text>},
   ];
 
-  it('renders without crashing', () => {
+  it('should render without crashing', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
@@ -36,52 +37,46 @@ describe('DropdownCardSwitch', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders correctly with dropdown items', () => {
+  it('should render the rights DropdownCard', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
+
     expect(wrapper.find(DropdownCard)).toHaveLength(dropdownItems.length);
+    dropdownItems.forEach((item, idx) => {
+      expect(wrapper.find(DropdownCard).at(idx).prop('title')).toBe(item.title);
+      expect(
+        wrapper
+          .find(DropdownCard)
+          .at(idx)
+          .children()
+          .containsMatchingElement(item.childrenComp),
+      ).toBe(true);
+    });
   });
 
-  it('toggles dropdown card open and close on press', () => {
+  it('should open the right card when pressed an close the others', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
 
-    wrapper.find(DropdownCard).first().simulate('press');
-    expect(wrapper.find(DropdownCard).first().props().dropdownIsOpen).toBe(
-      true,
-    );
+    for (let i = 0; i < dropdownItems.length; i++) {
+      wrapper.find(DropdownCard).at(i).simulate('press');
 
-    wrapper.find(DropdownCard).first().simulate('press');
-    expect(wrapper.find(DropdownCard).first().props().dropdownIsOpen).toBe(
-      false,
-    );
+      expect(wrapper.find(DropdownCard).at(i).prop('dropdownIsOpen')).toBe(
+        true,
+      );
+      dropdownItems.forEach(
+        (item, idx) =>
+          item !== dropdownItems[i] &&
+          expect(
+            wrapper.find(DropdownCard).at(idx).prop('dropdownIsOpen'),
+          ).toBe(false),
+      );
+    }
   });
 
-  it('shows children component for the opened card', () => {
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} />,
-    );
-
-    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
-      false,
-    );
-
-    wrapper.find(DropdownCard).first().simulate('press');
-
-    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
-      true,
-    );
-
-    wrapper.find(DropdownCard).first().simulate('press');
-
-    expect(wrapper.find(DropdownCard).first().prop('dropdownIsOpen')).toBe(
-      false,
-    );
-  });
-
-  it('applies custom style when provided', () => {
+  it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} style={customStyle} />,
@@ -90,7 +85,7 @@ describe('DropdownCardSwitch', () => {
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 
-  it('applies custom styleTitle when provided', () => {
+  it('should apply custom styleTitle when provided', () => {
     const customStyleTitle = {fontWeight: 'bold'};
     const wrapper = shallow(
       <DropdownCardSwitch
@@ -101,17 +96,6 @@ describe('DropdownCardSwitch', () => {
 
     wrapper.find(DropdownCard).forEach(dropdownCard => {
       expect(dropdownCard.prop('styleText')).toEqual(customStyleTitle);
-    });
-  });
-
-  it('passes the correct title DropdownCard', () => {
-    const titleProps = 'Test';
-    const wrapper = shallow(
-      <DropdownCardSwitch dropdownItems={dropdownItems} title={titleProps} />,
-    );
-    dropdownItems.forEach((item, index) => {
-      const dropdownCard = wrapper.find(DropdownCard).at(index);
-      expect(dropdownCard.prop('title')).toEqual(item.title);
     });
   });
 });
