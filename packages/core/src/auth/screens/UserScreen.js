@@ -72,7 +72,7 @@ const UserScreen = ({children}) => {
   }, [baseConfig, setNbDecimalDigitForQty]);
 
   useEffect(() => {
-    const SMALL_SCREEN_HEIGHT = 300;
+    const SMALL_SCREEN_HEIGHT = 500;
 
     DeviceInfo.getManufacturer().then(manufacturer =>
       setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
@@ -121,7 +121,9 @@ const UserScreen = ({children}) => {
 
   return (
     <Screen style={styles.container}>
-      <ScrollView refresh={{loading: loadingUser, fetcher: fetchUser}}>
+      <ScrollView
+        refresh={{loading: loadingUser, fetcher: fetchUser}}
+        style={styles.scroll}>
         <View style={styles.alignContainer}>
           <ImageBubble
             style={styles.imageIcon}
@@ -188,6 +190,10 @@ const getStyles = Colors =>
   StyleSheet.create({
     alignContainer: {
       alignItems: 'center',
+      paddingBottom: 150,
+    },
+    scroll: {
+      height: null,
     },
     container: {
       justifyContent: 'center',

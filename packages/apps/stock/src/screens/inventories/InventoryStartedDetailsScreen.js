@@ -27,7 +27,7 @@ import {
 } from '../../components';
 import {fetchInventoryById} from '../../features/inventorySlice';
 
-const InventoryStartedDetailsScreen = ({route, navigation}) => {
+const InventoryStartedDetailsScreen = ({route}) => {
   const inventoryId = route.params.inventoryId;
   const dispatch = useDispatch();
 

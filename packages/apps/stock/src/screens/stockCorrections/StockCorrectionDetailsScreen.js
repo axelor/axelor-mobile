@@ -17,6 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   Screen,
@@ -120,7 +121,8 @@ const StockCorrectionDetailsScreen = ({route}) => {
         }
       />
       <KeyboardAvoidingScrollView
-        refresh={{fetcher: getStockCorrection, loading}}>
+        refresh={{fetcher: getStockCorrection, loading}}
+        style={styles.scroll}>
         <StockCorrectionProductCardInfo
           stockProduct={product}
           trackingNumber={stockCorrection.trackingNumber}
@@ -148,5 +150,12 @@ const StockCorrectionDetailsScreen = ({route}) => {
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  scroll: {
+    height: null,
+    paddingBottom: 100,
+  },
+});
 
 export default StockCorrectionDetailsScreen;

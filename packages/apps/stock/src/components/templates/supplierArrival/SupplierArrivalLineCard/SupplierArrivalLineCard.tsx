@@ -25,6 +25,7 @@ import {
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {Dimensions} from 'react-native';
 
 interface SupplierArrivalLineCardProps {
   style?: any;
@@ -90,6 +91,8 @@ const SupplierArrivalLineCard = ({
             indicatorText: `${I18n.t('Stock_ToStockLocation')} :`,
             hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
             iconName: 'warehouse',
+            style:
+              Dimensions.get('window').width < 350 ? styles.textWidth : null,
           },
           {
             displayText: locker,
@@ -116,5 +119,11 @@ const getStyles = color =>
       borderColor: color,
     },
   });
+
+const styles = StyleSheet.create({
+  textWidth: {
+    width: '72%',
+  },
+});
 
 export default SupplierArrivalLineCard;

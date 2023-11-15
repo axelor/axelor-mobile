@@ -216,6 +216,7 @@ const StockCorrectionCreationScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingBottom: 100,
   },
   scroll: {
     height: null,

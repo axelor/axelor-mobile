@@ -17,7 +17,11 @@
  */
 
 import React, {useCallback, useEffect} from 'react';
-import {HeaderContainer, Screen, ScrollView} from '@axelor/aos-mobile-ui';
+import {
+  HeaderContainer,
+  Screen,
+  KeyboardAvoidingScrollView,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {
   SupplierArrivalHeader,
@@ -55,12 +59,13 @@ const SupplierArrivalDetailsScreen = ({route, navigation}) => {
         expandableFilter={false}
         fixedItems={<SupplierArrivalHeader supplierArrival={supplierArrival} />}
       />
-      <ScrollView refresh={{loading, fetcher: getSupplierArrival}}>
+      <KeyboardAvoidingScrollView
+        refresh={{loading, fetcher: getSupplierArrival}}>
         <SupplierArrivalMovementIndicationCard
           supplierArrival={supplierArrival}
         />
         <SupplierArrivalSearchLineContainer />
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };

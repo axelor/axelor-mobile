@@ -144,6 +144,7 @@ const ProductStockDetailsScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    height: null,
   },
   lineStyle: {
     borderWidth: 0.5,

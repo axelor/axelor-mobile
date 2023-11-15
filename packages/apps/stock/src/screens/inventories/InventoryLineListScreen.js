@@ -38,6 +38,12 @@ import Inventory from '../../types/inventory';
 import {showLine} from '../../utils/line-navigation';
 import {displayLine} from '../../utils/displayers';
 
+const STATUS = {
+  done: 'doneStatus',
+  diff: 'diffStatus',
+  undone: 'unDoneStatus',
+};
+
 const scanKey = 'trackingNumber-or-product_inventory-line-list';
 
 const InventoryLineListScreen = ({route, navigation}) => {
@@ -108,15 +114,15 @@ const InventoryLineListScreen = ({route, navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
-          if (selectedStatus[0].key === 'doneStatus') {
+          if (selectedStatus[0].key === STATUS.done) {
             return item.realQty === item.currentQty;
-          } else if (selectedStatus[0].key === 'diffStatus') {
+          } else if (selectedStatus[0].key === STATUS.diff) {
             return item.realQty != null && item.realQty !== item.currentQty;
-          } else if (selectedStatus[0].key === 'unDoneStatus') {
+          } else if (selectedStatus[0].key === STATUS.undone) {
             return item.realQty == null;
           } else {
             return item;
@@ -159,17 +165,17 @@ const InventoryLineListScreen = ({route, navigation}) => {
               {
                 title: I18n.t('Stock_Complete'),
                 color: Colors.primaryColor,
-                key: 'doneStatus',
+                key: STATUS.done,
               },
               {
                 title: I18n.t('Stock_Difference'),
                 color: Colors.cautionColor,
-                key: 'diffStatus',
+                key: STATUS.diff,
               },
               {
                 title: I18n.t('Stock_NotDone'),
                 color: Colors.secondaryColor,
-                key: 'unDoneStatus',
+                key: STATUS.undone,
               },
             ]}
           />

@@ -72,13 +72,13 @@ export const fetchProductDistribution = createAsyncThunk(
   'product/fetchProductDistribution',
   async function (data, {getState}) {
     let promises = [];
-    data.stockLocationList.forEach(line => {
+    data.stockLocationList.forEach(stockLocation => {
       promises.push(
         fetchData(
           {
             productId: data.product.id,
             companyId: data.companyId,
-            stockLocationId: line.stockLocation.id,
+            stockLocationId: stockLocation.id,
             version: data.product.version,
           },
           {getState},

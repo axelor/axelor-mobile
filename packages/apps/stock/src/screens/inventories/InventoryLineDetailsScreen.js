@@ -20,8 +20,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   EditableInput,
   HeaderContainer,
+  KeyboardAvoidingScrollView,
   Screen,
-  ScrollView,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -125,7 +125,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
           />
         }
       />
-      <ScrollView
+      <KeyboardAvoidingScrollView
         refresh={
           inventoryLineId != null
             ? {loading: loadingInventoryLine, fetcher: getInventoryLine}
@@ -164,7 +164,7 @@ const InventoryLineDetailsScreen = ({route, navigation}) => {
             defaultValue={rack}
           />
         )}
-      </ScrollView>
+      </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
