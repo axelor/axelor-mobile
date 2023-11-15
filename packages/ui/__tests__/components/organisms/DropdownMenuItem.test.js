@@ -27,7 +27,7 @@ import {
   Text,
 } from '@axelor/aos-mobile-ui';
 
-describe('NotesCard Component', () => {
+describe('DropdownMenuItem Component', () => {
   const Colors = lightTheme.colors;
 
   const props = {
