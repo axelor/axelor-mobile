@@ -19,7 +19,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {CircleButton, FloatingButton,Text} from '@axelor/aos-mobile-ui';
+import {CircleButton, FloatingButton, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('FloatingButton Component', () => {
