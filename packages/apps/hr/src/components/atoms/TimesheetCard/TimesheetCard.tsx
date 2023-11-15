@@ -19,7 +19,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {getFullDateItems, useTranslator} from '@axelor/aos-mobile-core';
+import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
 
 interface TimesheetCardProps {
   isCompleted: boolean;
@@ -28,6 +28,7 @@ interface TimesheetCardProps {
   company: string;
   totalDuration: string;
   style?: any;
+  onPress: () => void;
 }
 
 const TimesheetCard = ({
@@ -37,6 +38,7 @@ const TimesheetCard = ({
   company,
   totalDuration,
   style,
+  onPress,
 }: TimesheetCardProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -46,32 +48,32 @@ const TimesheetCard = ({
     [Colors, isCompleted],
   );
 
-  const _startDate = useMemo(
-    () => getFullDateItems(startDate, I18n),
-    [I18n, startDate],
-  );
-
-  const _endDate = useMemo(
-    () => getFullDateItems(endDate, I18n),
-    [I18n, endDate],
-  );
+  const _formatDate = (date: string) => {
+    return formatDate(date, I18n.t('Base_DateFormat'));
+  };
 
   return (
     <View style={style}>
       <ObjectCard
         style={[styles.container, styles.borderColor]}
+        onPress={onPress}
         upperTexts={{
           items: [
             {
-              displayText: `${_startDate.date} ${_startDate.month} ${_startDate.year} - ${_endDate.date} ${_endDate.month} ${_endDate.year}`,
+              displayText: `${_formatDate(startDate)} - ${_formatDate(
+                endDate,
+              )}`,
               isTitle: true,
             },
             {
-              displayText: `${company} : ${company}`,
+              displayText: `${I18n.t('Hr_Company')} : ${company}`,
+              numberOfLines: 2,
               style: styles.subTitle,
             },
             {
-              displayText: `${totalDuration} : ${totalDuration}`,
+              displayText: `${I18n.t(
+                'Hr_TotalDurationHours',
+              )} : ${totalDuration}`,
               style: styles.subTitle,
             },
           ],

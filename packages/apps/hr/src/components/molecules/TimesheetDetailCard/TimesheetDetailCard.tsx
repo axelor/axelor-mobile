@@ -29,6 +29,7 @@ interface TimesheetDetailCardProps {
   totalDuration: string;
   isActions?: boolean;
   style?: any;
+  onPress: () => void;
 }
 
 const TimesheetDetailCard = ({
@@ -39,15 +40,12 @@ const TimesheetDetailCard = ({
   totalDuration,
   isActions = true,
   style,
+  onPress,
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
 
-  const handleEdit = () => {
-    console.log('handleEdit');
-  };
-
-  const handleDelete = () => {
-    console.log('handleDelete');
+  const handleSend = () => {
+    console.log('handleSend');
   };
 
   return (
@@ -59,19 +57,14 @@ const TimesheetDetailCard = ({
         company={company}
         totalDuration={totalDuration}
         style={styles.cardContainer}
+        onPress={onPress}
       />
       {isActions && (
         <View style={styles.iconContainer}>
           <CardIconButton
-            iconName={'pencil-alt'}
+            iconName={'paper-plane'}
             iconColor={Colors.secondaryColor_dark.background}
-            onPress={handleEdit}
-            style={styles.cardIconButton}
-          />
-          <CardIconButton
-            iconName={'trash-alt'}
-            iconColor={Colors.errorColor.background}
-            onPress={handleDelete}
+            onPress={handleSend}
             style={styles.cardIconButton}
           />
         </View>
@@ -91,11 +84,11 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   iconContainer: {
-    flexDirection: 'column',
     flex: 1,
   },
   cardIconButton: {
     flex: 1,
+    marginLeft: 5,
   },
 });
 
