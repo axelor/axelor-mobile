@@ -178,7 +178,6 @@ const StockCorrectionCreationScreen = ({route}) => {
           scanKey={stockLocationScanKey}
           onChange={handleStockLocationChange}
           isFocus={currentStep === CREATION_STEP.stockLocation}
-          isScrollViewContainer={true}
         />
         {currentStep >= CREATION_STEP.product_trackingNumber ? (
           <ProductTrackingNumberSearchBar
@@ -186,7 +185,6 @@ const StockCorrectionCreationScreen = ({route}) => {
             onChange={handleProductTrackingNumberChange}
             defaultValue={trackingNumber || product}
             isFocus={currentStep === CREATION_STEP.product_trackingNumber}
-            isScrollViewContainer={true}
           />
         ) : null}
         {currentStep >= CREATION_STEP.validation ? (
@@ -218,6 +216,7 @@ const StockCorrectionCreationScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingBottom: 100,
   },
   scroll: {
     height: null,

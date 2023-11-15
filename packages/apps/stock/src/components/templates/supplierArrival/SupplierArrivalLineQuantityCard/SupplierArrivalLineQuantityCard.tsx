@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   headerQuantityCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
 });
 

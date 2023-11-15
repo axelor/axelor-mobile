@@ -79,7 +79,6 @@ const LabelText = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   title: {
     marginRight: 5,

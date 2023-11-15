@@ -178,7 +178,6 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
             readOnly={
               supplierArrival?.statusSelect !== StockMove.status.Planned
             }
-            isScrollViewContainer={true}
           />
         ) : null}
         <Picker
@@ -199,6 +198,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingBottom: 100,
   },
 });
 

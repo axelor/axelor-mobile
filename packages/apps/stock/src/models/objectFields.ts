@@ -214,6 +214,7 @@ export const stock_modelAPI: ObjectFields = {
     supplierShipmentRef: schemaContructor.string(),
     toStockLocation: schemaContructor.subObject('name'),
     fromAddress: schemaContructor.subObject('name'),
+    fromAddressStr: schemaContructor.string(),
     createdOn: schemaContructor.string(),
     estimatedDate: schemaContructor.string(),
     realDate: schemaContructor.string(),

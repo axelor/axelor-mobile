@@ -227,7 +227,7 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
             onChange={handleToProductTrackingNumberChange}
             defaultValue={locationLine}
             isFocus={currentStep === CREATION_STEP.line}
-            isScrollViewContainer={true}
+            isScrollViewContainer={locationLine == null}
           />
         ) : null}
         {locationLine ? (

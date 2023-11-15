@@ -29,42 +29,49 @@ import {
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductStockLocationCard} from '../../components';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
-import {fetchProductDistribution} from '../../features/productIndicatorsSlice';
 import {fetchSupplychainConfigForStockApp} from '../../features/stockAppConfigSlice';
+import {useStockLocationLinesWithAvailability} from '../../hooks';
+
+const AVAILABILITY = {
+  available: 'available',
+  unavailable: 'unavailable',
+};
 
 const ProductStockLocationDetailsScreen = ({route}) => {
   const product = route.params.product;
   const companyId = route.params.companyId;
+  const I18n = useTranslator();
+  const Colors = useThemeColor();
+  const dispatch = useDispatch();
+
   const {
     loading: loadingLines,
     moreLoading,
     isListEnd,
-    stockLocationLine,
   } = useSelector(state => state.stockLocationLine);
-  const {listAvailabiltyDistribution} = useSelector(
-    state => state.productIndicators,
+  const {stockLocationLinelist} = useStockLocationLinesWithAvailability(
+    companyId,
+    product,
   );
   const {supplychainConfig} = useSelector(state => state.stockAppConfig);
-  const [filteredList, setFilteredList] = useState(stockLocationLine);
+
+  const [filteredList, setFilteredList] = useState(stockLocationLinelist);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchSupplychainConfigForStockApp());
   }, [dispatch]);
 
   const filterOnStatus = useCallback(
-    (list, availabilityList) => {
-      if (list == null || list === []) {
-        return list;
-      } else if (selectedStatus !== null && selectedStatus.length > 0) {
-        return list.filter((item, index) => {
-          if (selectedStatus[0].key === 'available') {
-            return parseFloat(availabilityList[index]?.availableStock) > 0;
-          } else if (selectedStatus[0].key === 'unavailable') {
-            parseFloat(availabilityList[index]?.availableStock) === 0;
+    list => {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      } else if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+        return list.filter(item => {
+          if (selectedStatus[0].key === AVAILABILITY.available) {
+            return parseFloat(item?.availableStock) > 0;
+          } else if (selectedStatus[0].key === AVAILABILITY.unavailable) {
+            parseFloat(item?.availableStock) === 0;
           } else {
             return item;
           }
@@ -77,10 +84,8 @@ const ProductStockLocationDetailsScreen = ({route}) => {
   );
 
   useEffect(() => {
-    setFilteredList(
-      filterOnStatus(stockLocationLine, listAvailabiltyDistribution),
-    );
-  }, [stockLocationLine, filterOnStatus, listAvailabiltyDistribution]);
+    setFilteredList(filterOnStatus(stockLocationLinelist));
+  }, [stockLocationLinelist, filterOnStatus]);
 
   const fetchStockLines = useCallback(
     page => {
@@ -95,18 +100,6 @@ const ProductStockLocationDetailsScreen = ({route}) => {
     [companyId, dispatch, product.id],
   );
 
-  useEffect(() => {
-    if (stockLocationLine != null && stockLocationLine !== []) {
-      dispatch(
-        fetchProductDistribution({
-          stockLocationList: stockLocationLine,
-          product: product,
-          companyId: companyId || 1,
-        }),
-      );
-    }
-  }, [dispatch, product, stockLocationLine, companyId]);
-
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer
@@ -120,12 +113,12 @@ const ProductStockLocationDetailsScreen = ({route}) => {
               {
                 title: I18n.t('Stock_Available'),
                 color: Colors.primaryColor,
-                key: 'available',
+                key: AVAILABILITY.available,
               },
               {
                 title: I18n.t('Stock_Unavailable'),
                 color: Colors.cautionColor,
-                key: 'unavailable',
+                key: AVAILABILITY.unavailable,
               },
             ]}
           />
@@ -134,7 +127,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
       <ScrollList
         loadingList={loadingLines}
         data={filteredList}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <ProductStockLocationCard
             stockLocationName={item.stockLocation?.name}
             realQty={item.currentQty}
@@ -142,11 +135,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
             reservedQty={
               supplychainConfig?.manageStockReservation && item.reservedQty
             }
-            availability={
-              listAvailabiltyDistribution
-                ? listAvailabiltyDistribution[index]?.availableStock
-                : null
-            }
+            availability={item?.availableStock}
             unit={item.unit?.name}
           />
         )}

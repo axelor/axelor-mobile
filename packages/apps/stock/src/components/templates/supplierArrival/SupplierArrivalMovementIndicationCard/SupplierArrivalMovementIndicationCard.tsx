@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {
   Alert,
+  checkNullString,
   Icon,
   MovementIndicationCard,
   Text,
@@ -36,8 +37,17 @@ const SupplierArrivalMovementIndicationCard = ({
 
   const [isPopupVisible, setVisiblePopup] = useState(false);
 
-  if (supplierArrival == null) {
-    return;
+  const supplierAddress = useMemo(() => {
+    return (
+      supplierArrival.fromAddress?.fullName || supplierArrival.fromAddressStr
+    );
+  }, [supplierArrival]);
+
+  if (
+    checkNullString(supplierAddress) &&
+    checkNullString(supplierArrival.toStockLocation?.name)
+  ) {
+    return null;
   }
 
   return (
@@ -51,11 +61,11 @@ const SupplierArrivalMovementIndicationCard = ({
             title: null,
             onPress: () => setVisiblePopup(false),
           }}>
-          <Text>{supplierArrival.fromAddress?.fullName}</Text>
+          <Text>{supplierAddress}</Text>
         </Alert>
       )}
       <MovementIndicationCard
-        titleTop={supplierArrival.fromAddress?.fullName}
+        titleTop={supplierAddress}
         iconTop={<Icon name="map-marker-alt" />}
         titleDown={supplierArrival.toStockLocation?.name}
         iconDown={

@@ -187,7 +187,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
               scanKey={itemScanKey}
               onChange={handleProductTrackingNumberChange}
               isFocus={true}
-              isScrollViewContainer={true}
+              isScrollViewContainer={product != null}
             />
           ) : null}
           {currentStep >= CREATION_STEP.toStockLocation ? (
@@ -213,7 +213,6 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
                   scanKey={stockLocationScanKey}
                   isFocus={currentStep === CREATION_STEP.toStockLocation}
                   defaultStockLocation={supplierArrival.toStockLocation}
-                  isScrollViewContainer={true}
                 />
               ) : null}
               <Picker
@@ -240,6 +239,7 @@ const styles = StyleSheet.create({
   stockView: {
     alignItems: 'center',
     marginTop: '2%',
+    paddingBottom: 100,
   },
 });
 

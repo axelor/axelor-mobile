@@ -154,6 +154,7 @@ const StockCorrectionDetailsScreen = ({route}) => {
 const styles = StyleSheet.create({
   scroll: {
     height: null,
+    paddingBottom: 100,
   },
 });
 

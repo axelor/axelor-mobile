@@ -72,7 +72,7 @@ const UserScreen = ({children}) => {
   }, [baseConfig, setNbDecimalDigitForQty]);
 
   useEffect(() => {
-    const SMALL_SCREEN_HEIGHT = 300;
+    const SMALL_SCREEN_HEIGHT = 500;
 
     DeviceInfo.getManufacturer().then(manufacturer =>
       setVirtualKeyboardConfig(manufacturer === 'Zebra Technologies'),
@@ -155,7 +155,6 @@ const UserScreen = ({children}) => {
               onValueChange={updateActiveCompany}
               isValueItem={true}
               readonly={!canModifyCompany}
-              isScrollViewContainer={true}
             />
           )}
           {children}
@@ -168,7 +167,6 @@ const UserScreen = ({children}) => {
               valueField="code"
               onValueChange={updateLanguage}
               emptyValue={false}
-              isScrollViewContainer={true}
             />
           )}
           {!Theme.isColorBlind && Theme.themes?.length !== 1 && (
@@ -180,7 +178,6 @@ const UserScreen = ({children}) => {
               valueField="key"
               onValueChange={handleChangeTheme}
               emptyValue={false}
-              isScrollViewContainer={true}
             />
           )}
         </View>
@@ -193,6 +190,7 @@ const getStyles = Colors =>
   StyleSheet.create({
     alignContainer: {
       alignItems: 'center',
+      paddingBottom: 150,
     },
     scroll: {
       height: null,

@@ -59,7 +59,6 @@ const UserScreen = ({navigation}) => {
         placeholderKey="Stock_StockLocation"
         defaultValue={user?.workshopStockLocation}
         onChange={updateDefaultStockLocation}
-        isScrollViewContainer={true}
       />
     </AuthUserScreen>
   );

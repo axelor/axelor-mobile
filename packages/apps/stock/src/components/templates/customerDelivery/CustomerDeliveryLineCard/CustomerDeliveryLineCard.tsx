@@ -26,6 +26,7 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import StockMove from '../../../../types/stock-move';
+import {Dimensions} from 'react-native';
 
 interface CustomerDeliveryLineCardProps {
   style?: any;
@@ -93,6 +94,8 @@ const CustomerDeliveryLineCard = ({
             indicatorText: `${I18n.t('Stock_FromStockLocation')} :`,
             hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
             iconName: 'warehouse',
+            style:
+              Dimensions.get('window').width < 350 ? styles.textWidth : null,
           },
           {
             displayText: locker,
@@ -131,5 +134,11 @@ const getStyles = color =>
       borderColor: color,
     },
   });
+
+const styles = StyleSheet.create({
+  textWidth: {
+    width: '85%',
+  },
+});
 
 export default CustomerDeliveryLineCard;

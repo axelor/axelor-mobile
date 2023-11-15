@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {
   Alert,
+  checkNullString,
   Icon,
   MovementIndicationCard,
   Text,
@@ -36,6 +37,19 @@ const CustomerDeliveryMovementIndicationCard = ({
 
   const [isPopupVisible, setVisiblePopup] = useState(false);
 
+  const customerAddress = useMemo(() => {
+    return (
+      customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
+    );
+  }, [customerDelivery]);
+
+  if (
+    checkNullString(customerAddress) &&
+    checkNullString(customerDelivery.fromStockLocation?.name)
+  ) {
+    return null;
+  }
+
   return (
     <View>
       {showPopupOnCLick && (
@@ -47,10 +61,7 @@ const CustomerDeliveryMovementIndicationCard = ({
             title: null,
             onPress: () => setVisiblePopup(false),
           }}>
-          <Text>
-            {customerDelivery.toAddress?.fullName ||
-              customerDelivery.toAddressStr}
-          </Text>
+          <Text>{customerAddress}</Text>
         </Alert>
       )}
       <MovementIndicationCard
@@ -58,9 +69,7 @@ const CustomerDeliveryMovementIndicationCard = ({
         iconTop={
           <Icon name="warehouse" color={Colors.primaryColor.background} />
         }
-        titleDown={
-          customerDelivery.toAddress?.fullName || customerDelivery.toAddressStr
-        }
+        titleDown={customerAddress}
         iconDown={<Icon name="map-marker-alt" />}
         disabledDown={!showPopupOnCLick}
         onPressTitleDown={() => setVisiblePopup(true)}

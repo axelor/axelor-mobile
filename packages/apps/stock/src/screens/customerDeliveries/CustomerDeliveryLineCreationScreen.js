@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
 import {
   HeaderContainer,
   KeyboardAvoidingScrollView,
@@ -148,56 +147,48 @@ const CustomerDeliveryLineCreationScreen = ({route, navigation}) => {
         }
       />
       <KeyboardAvoidingScrollView>
-        <View style={styles.stockView}>
-          {stockConfig.isManageStockLocationOnStockMoveLine ? (
-            <StockLocationSearchBar
-              placeholderKey="Stock_FromStockLocation"
-              defaultValue={fromStockLocation}
-              onChange={handleFromStockLocationChange}
-              scanKey={stockLocationScanKey}
-              isFocus={currentStep === CREATION_STEP.fromStockLocation}
-              defaultStockLocation={customerDelivery.fromStockLocation}
-              isScrollViewContainer={true}
+        {stockConfig.isManageStockLocationOnStockMoveLine ? (
+          <StockLocationSearchBar
+            placeholderKey="Stock_FromStockLocation"
+            defaultValue={fromStockLocation}
+            onChange={handleFromStockLocationChange}
+            scanKey={stockLocationScanKey}
+            isFocus={currentStep === CREATION_STEP.fromStockLocation}
+            defaultStockLocation={customerDelivery.fromStockLocation}
+            isScrollViewContainer={locationLine == null}
+          />
+        ) : null}
+        {currentStep >= CREATION_STEP.product_trackingNumber ? (
+          <AvailableProductsSearchBar
+            defaultValue={locationLine}
+            stockLocationId={fromStockLocation?.id}
+            scanKey={itemScanKey}
+            onChange={handleStockLocationLineSelection}
+            isFocus={true}
+            changeScreenAfter={true}
+            isScrollViewContainer={locationLine == null}
+          />
+        ) : null}
+        {currentStep >= CREATION_STEP.validation ? (
+          <>
+            <ProductCardInfo
+              onPress={handleShowProduct}
+              picture={product?.picture}
+              code={product?.code}
+              name={product?.name}
+              trackingNumber={locationLine?.trackingNumber?.trackingNumberSeq}
             />
-          ) : null}
-          {currentStep >= CREATION_STEP.product_trackingNumber ? (
-            <AvailableProductsSearchBar
-              defaultValue={locationLine}
-              stockLocationId={fromStockLocation?.id}
-              scanKey={itemScanKey}
-              onChange={handleStockLocationLineSelection}
-              isFocus={true}
-              changeScreenAfter={true}
-              isScrollViewContainer={true}
+            <CustomerDeliveryLineQuantityCard
+              customerDelivery={customerDelivery}
+              customerDeliveryLine={null}
+              realQty={realQty}
+              setRealQty={setRealQty}
             />
-          ) : null}
-          {currentStep >= CREATION_STEP.validation ? (
-            <>
-              <ProductCardInfo
-                onPress={handleShowProduct}
-                picture={product?.picture}
-                code={product?.code}
-                name={product?.name}
-                trackingNumber={locationLine?.trackingNumber?.trackingNumberSeq}
-              />
-              <CustomerDeliveryLineQuantityCard
-                customerDelivery={customerDelivery}
-                customerDeliveryLine={null}
-                realQty={realQty}
-                setRealQty={setRealQty}
-              />
-            </>
-          ) : null}
-        </View>
+          </>
+        ) : null}
       </KeyboardAvoidingScrollView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  stockView: {
-    marginTop: '2%',
-  },
-});
 
 export default CustomerDeliveryLineCreationScreen;
