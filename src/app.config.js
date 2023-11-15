@@ -1,3 +1,5 @@
+import {testInstance_config} from './testInstance.config';
+
 export const app_config = {
   /*
    * This configuration is used to fill in the url,
@@ -5,9 +7,9 @@ export const app_config = {
    * when the application is running in debug mode
    */
   testInstanceConfig: {
-    defaultUrl: '',
-    defaultUsername: '',
-    defaultPassword: '',
+    defaultUrl: testInstance_config.url,
+    defaultUsername: testInstance_config.username,
+    defaultPassword: testInstance_config.password,
   },
 
   /*

@@ -27,6 +27,7 @@
     "setup.js",
     "metro.config.js",
     "app.config.js",
+    "testInstance.config.js",
     "App-test.js"
   ]
 }
