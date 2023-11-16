@@ -37,7 +37,7 @@ describe('DropdownCardSwitch', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should render the rights DropdownCard', () => {
+  it('should render correctly all the DropdownCards', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
@@ -55,7 +55,7 @@ describe('DropdownCardSwitch', () => {
     });
   });
 
-  it('should open the right card when pressed an close the others', () => {
+  it('should open the right card when pressed and close the others', () => {
     const wrapper = shallow(
       <DropdownCardSwitch dropdownItems={dropdownItems} />,
     );
