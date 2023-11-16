@@ -40,7 +40,7 @@ const getItem = (key: string, formContent: (DisplayPanel | DisplayField)[]) => {
   return {item: _item, index: _index};
 };
 
-const getNumberOfParent = (
+export const getNumberOfParent = (
   key: string,
   formContent: (DisplayPanel | DisplayField)[],
 ) => {
@@ -53,7 +53,7 @@ const getNumberOfParent = (
   return getNumberOfParent((_item as DisplayPanel).parent, formContent) + 1;
 };
 
-const getRootParentIndex = (
+export const getRootParentIndex = (
   key: string,
   formContent: (DisplayPanel | DisplayField)[],
 ) => {
@@ -66,6 +66,47 @@ const getRootParentIndex = (
   return getRootParentIndex((_item as DisplayPanel).parent, formContent);
 };
 
+export const getParentKey = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+): string => {
+  const {item: _item} = getItem(key, formContent);
+
+  if (
+    checkNullString((_item as DisplayPanel).parent) &&
+    checkNullString((_item as DisplayField).parentPanel)
+  ) {
+    return null;
+  }
+
+  if (isField(_item)) {
+    return (_item as DisplayField).parentPanel;
+  } else {
+    return (_item as DisplayPanel).parent;
+  }
+};
+
+export const getIndexOfItemInParent = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const parentKey = getParentKey(key, formContent);
+
+  if (checkNullString(parentKey)) {
+    return 0;
+  }
+
+  const childrenOfParent = formContent
+    .filter(
+      _i =>
+        (_i as DisplayPanel).parent === parentKey ||
+        (_i as DisplayField).parentPanel === parentKey,
+    )
+    .sort((a, b) => b.order - a.order);
+
+  return childrenOfParent.findIndex(_i => _i.key === key);
+};
+
 export const getZIndex = (
   formContent: (DisplayPanel | DisplayField)[],
   key: string,
@@ -76,16 +117,17 @@ export const getZIndex = (
     return 0;
   }
 
+  const parentKey = getParentKey(key, formContent);
+
   if (
     checkNullString((_item as DisplayField).parentPanel) &&
     checkNullString((_item as DisplayPanel).parent)
   ) {
     return DEFAULT_ZINDEX - _index;
   } else {
-    const rootParentIndex = getRootParentIndex(key, formContent);
-    const nbParent = getNumberOfParent(key, formContent);
+    const indexInParent = getIndexOfItemInParent(key, formContent);
 
-    return DEFAULT_ZINDEX - rootParentIndex + nbParent * 2;
+    return getZIndex(formContent, parentKey) + 2 + indexInParent;
   }
 };
 
