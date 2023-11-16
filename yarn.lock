@@ -13736,10 +13736,12 @@ react-native-datawedge-intents@^0.1.8:
   resolved "https://registry.npmjs.org/react-native-datawedge-intents/-/react-native-datawedge-intents-0.1.8.tgz#2021b8ad2b351bce84c84392dcfdf1731750ef0e"
   integrity sha512-HefmAOgsEhXsfZZOL2e2x7s46toI8oZ8ZlNJS/DrvZwbZB9VqaCC076IqOKxnalPyO6JlIIrZaw58xD1jFRvhg==
 
-react-native-date-picker@^4.2.6:
-  version "4.3.3"
-  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.3.3.tgz#5ca4ca10283538ab9307b7f2dc6b83233ded122b"
-  integrity sha512-Lq2hGZkwoyCMsxi/uw4KVGu4/xdPZ8AHEx2SU5KY2mipHFpX+r4n5/gXa+rpCRkARJaTFYPZ7S59bT9KMh7fGw==
+react-native-date-picker@4.2.14:
+  version "4.2.14"
+  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.2.14.tgz#ebeb3bf8d682268a4e405decde1e72ab95ecffb7"
+  integrity sha512-rP0ycj3I+8x4pIUGjeh7pL+cMPntKccLGX/OXx790bsIM0Hcyg0ZL86kGnnZu9fEUhXlgdr3OK/jhQue5L6kSQ==
+  dependencies:
+    prop-types "^15.8.1"
 
 react-native-device-info@^10.3.0:
   version "10.11.0"

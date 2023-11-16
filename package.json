@@ -44,7 +44,7 @@
     "react-native": "0.68.1",
     "react-native-contacts": "^7.0.6",
     "react-native-datawedge-intents": "^0.1.8",
-    "react-native-date-picker": "^4.2.6",
+    "react-native-date-picker": "4.2.14",
     "react-native-device-info": "^10.3.0",
     "react-native-document-picker": "8.1.3",
     "react-native-file-viewer": "^2.1.5",
