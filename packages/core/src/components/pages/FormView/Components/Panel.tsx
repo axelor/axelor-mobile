@@ -63,13 +63,22 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
     return <View key={_panel.key} style={panelStyle} />;
   }
 
-  if (_panel.isCollaspible) {
+  if (_panel.isCollapsible) {
     return (
       <DropdownCard
         key={_panel.key}
         title={I18n.t(_panel.titleKey)}
         styleContainer={getZIndexStyle(zIndex)}>
-        {_panel.content.map(renderItem)}
+        <View
+          style={[
+            styles.content,
+            {
+              flexDirection: panelStyle.flexDirection,
+            },
+            getZIndexStyle(zIndex + 1),
+          ]}>
+          {_panel.content.map(renderItem)}
+        </View>
       </DropdownCard>
     );
   }

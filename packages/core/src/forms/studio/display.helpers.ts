@@ -195,7 +195,7 @@ const manageContentOfModel = (
             order: item.sequence,
             colSpan: 12,
             direction: 'column',
-            isCollaspible: isPanelCollapsible(item),
+            isCollapsible: isPanelCollapsible(item),
           };
           break;
         case 'spacer':
