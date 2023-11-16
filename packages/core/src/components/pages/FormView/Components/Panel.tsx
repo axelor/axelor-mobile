@@ -69,7 +69,16 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
         key={_panel.key}
         title={I18n.t(_panel.titleKey)}
         styleContainer={getZIndexStyle(zIndex)}>
-        {_panel.content.map(renderItem)}
+        <View
+          style={[
+            styles.content,
+            {
+              flexDirection: panelStyle.flexDirection,
+            },
+            getZIndexStyle(zIndex + 1),
+          ]}>
+          {_panel.content.map(renderItem)}
+        </View>
       </DropdownCard>
     );
   }
