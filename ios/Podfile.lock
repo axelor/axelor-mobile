@@ -275,7 +275,7 @@ PODS:
   - React-jsinspector (0.68.1)
   - React-logger (0.68.1):
     - glog
-  - react-native-contacts (7.0.7):
+  - react-native-contacts (7.0.8):
     - React-Core
   - react-native-date-picker (4.2.14):
     - React-Core
@@ -617,7 +617,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 4a4bae5671b064a2248a690cf75957669489d08c
   React-jsinspector: 218a2503198ff28a085f8e16622a8d8f507c8019
   React-logger: f79dd3cc0f9b44f5611c6c7862badd891a862cf8
-  react-native-contacts: 61971364bf9f11a846587eeb736a4e65632815d4
+  react-native-contacts: cb4f3b823550adbce0802901b9e63bf1526ec0af
   react-native-date-picker: 8847cb359cf259ddae5ed165217e15573a654519
   react-native-document-picker: 958e2bc82e128be69055be261aeac8d872c8d34c
   react-native-mmkv: 1265a348a4711097ba29c8bcefd5971f48220f2b

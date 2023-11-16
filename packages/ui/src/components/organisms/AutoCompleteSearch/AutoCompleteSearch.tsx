@@ -334,7 +334,7 @@ const getStyles = (displayList: boolean, marginBottom: number) =>
       marginBottom: marginBottom,
     },
     containerZIndex: {
-      zIndex: displayList ? 45 : 0,
+      zIndex: displayList ? 100 : 0,
     },
     alignContainer: {
       alignSelf: 'center',

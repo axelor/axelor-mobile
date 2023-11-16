@@ -222,7 +222,7 @@ const getStyles = (
       marginBottom: marginBottom,
     },
     containerZIndex: {
-      zIndex: isOpen ? 45 : 0,
+      zIndex: isOpen ? 100 : 0,
     },
     content: {
       width: '100%',

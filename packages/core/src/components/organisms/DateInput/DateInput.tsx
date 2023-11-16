@@ -213,7 +213,7 @@ const getStyles = (
       width: '100%',
     },
     containerZIndex: {
-      zIndex: pickerIsOpen ? 45 : 0,
+      zIndex: pickerIsOpen ? 100 : 0,
     },
     datePickerContainer: {
       flex: 1,
@@ -227,7 +227,7 @@ const getStyles = (
       width: '100%',
     },
     dropdownContainer: {
-      zIndex: pickerIsOpen ? 50 : 0,
+      zIndex: pickerIsOpen ? 105 : 0,
     },
     selectionContainer: {
       paddingHorizontal: 5,
@@ -236,7 +236,7 @@ const getStyles = (
       position: 'absolute',
       height: 240,
       width: '100%',
-      zIndex: 60,
+      zIndex: 110,
     },
     styleTextButton: {
       left: '-20%',

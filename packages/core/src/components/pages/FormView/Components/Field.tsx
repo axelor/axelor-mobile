@@ -17,14 +17,7 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {
-  Dimensions,
-  Platform,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {Dimensions, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {
   Checkbox,
   FormHtmlInput,
@@ -38,9 +31,12 @@ import {
 } from '@axelor/aos-mobile-ui';
 import {
   DisplayField,
+  DisplayPanel,
   States,
   getKeyboardType,
   getWidget,
+  getZIndex,
+  getZIndexStyle,
   validateFieldSchema,
 } from '../../../../forms';
 import {useTranslator} from '../../../../i18n';
@@ -54,6 +50,7 @@ interface FieldProps {
   _field: DisplayField;
   object: any;
   globalReadonly?: (values?: States) => boolean;
+  formContent: (DisplayPanel | DisplayField)[];
 }
 
 const Field = ({
@@ -61,12 +58,17 @@ const Field = ({
   _field,
   object,
   globalReadonly = () => false,
+  formContent,
 }: FieldProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const value = object?.[_field.key];
 
   const storeState = useSelector((state: any) => state);
+
+  const zIndex: number = useMemo(() => {
+    return getZIndex(formContent, _field.key);
+  }, [_field.key, formContent]);
 
   const [error, setError] = useState<any>();
 
@@ -255,11 +257,7 @@ const Field = ({
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        Platform.OS === 'ios' ? styles.zIndexContainer : null,
-      ]}>
+    <View style={[styles.container, getZIndexStyle(zIndex)]}>
       {_field.helperKey != null && (
         <InfoBubble
           iconName="info"
@@ -291,9 +289,6 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     width: '100%',
-  },
-  zIndexContainer: {
-    zIndex: 30,
   },
   info: {
     position: 'absolute',

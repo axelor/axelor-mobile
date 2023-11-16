@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {KeyboardType} from 'react-native';
+import {KeyboardType, Platform} from 'react-native';
 import {checkNullString} from '@axelor/aos-mobile-ui';
 import {
   Action,
@@ -27,11 +27,119 @@ import {
   Widget,
 } from './types';
 
+const DEFAULT_ZINDEX = 50;
+
+export const getZIndexStyle = (zIndex: number) => {
+  return Platform.OS === 'ios' ? {zIndex} : null;
+};
+
+const getItem = (key: string, formContent: (DisplayPanel | DisplayField)[]) => {
+  const _item = formContent.find(_i => _i.key === key);
+  const _index = formContent.indexOf(_item);
+
+  return {item: _item, index: _index};
+};
+
+export const getNumberOfParent = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const {item: _item} = getItem(key, formContent);
+
+  if (checkNullString((_item as DisplayPanel).parent)) {
+    return 0;
+  }
+
+  return getNumberOfParent((_item as DisplayPanel).parent, formContent) + 1;
+};
+
+export const getRootParentIndex = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const {item: _item, index: _index} = getItem(key, formContent);
+
+  if (checkNullString((_item as DisplayPanel).parent)) {
+    return _index;
+  }
+
+  return getRootParentIndex((_item as DisplayPanel).parent, formContent);
+};
+
+export const getParentKey = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+): string => {
+  const {item: _item} = getItem(key, formContent);
+
+  if (
+    checkNullString((_item as DisplayPanel).parent) &&
+    checkNullString((_item as DisplayField).parentPanel)
+  ) {
+    return null;
+  }
+
+  if (isField(_item)) {
+    return (_item as DisplayField).parentPanel;
+  } else {
+    return (_item as DisplayPanel).parent;
+  }
+};
+
+export const getIndexOfItemInParent = (
+  key: string,
+  formContent: (DisplayPanel | DisplayField)[],
+) => {
+  const parentKey = getParentKey(key, formContent);
+
+  if (checkNullString(parentKey)) {
+    return 0;
+  }
+
+  const childrenOfParent = formContent
+    .filter(
+      _i =>
+        (_i as DisplayPanel).parent === parentKey ||
+        (_i as DisplayField).parentPanel === parentKey,
+    )
+    .sort((a, b) => b.order - a.order);
+
+  return childrenOfParent.findIndex(_i => _i.key === key);
+};
+
+export const getZIndex = (
+  formContent: (DisplayPanel | DisplayField)[],
+  key: string,
+) => {
+  const {item: _item, index: _index} = getItem(key, formContent);
+
+  if (_item == null) {
+    return 0;
+  }
+
+  const parentKey = getParentKey(key, formContent);
+
+  if (
+    checkNullString((_item as DisplayField).parentPanel) &&
+    checkNullString((_item as DisplayPanel).parent)
+  ) {
+    return DEFAULT_ZINDEX - _index;
+  } else {
+    const indexInParent = getIndexOfItemInParent(key, formContent);
+
+    return getZIndex(formContent, parentKey) + 2 + indexInParent;
+  }
+};
+
 export const isField = (_object: DisplayPanel | DisplayField): boolean => {
   return (_object as any).type != null;
 };
 
 export const getFields = (config: Form): DisplayField[] => {
+  if (config.fields == null) {
+    return [];
+  }
+
   return Object.entries(config.fields)
     .map(([fieldName, _field], index) => ({
       ..._field,
@@ -45,6 +153,10 @@ export const getFields = (config: Form): DisplayField[] => {
 };
 
 export const getPanels = (config: Form): DisplayPanel[] => {
+  if (config.panels == null) {
+    return [];
+  }
+
   return Object.entries(config.panels)
     .map(([panelKey, _panel], index) => ({
       ..._panel,
@@ -52,6 +164,17 @@ export const getPanels = (config: Form): DisplayPanel[] => {
       order: _panel.order != null ? _panel.order : index * 10,
     }))
     .sort((a, b) => a.order - b.order);
+};
+
+export const getConfigItems = (
+  config: Form,
+): (DisplayPanel | DisplayField)[] => {
+  const fields: DisplayField[] = getFields(config);
+  const panels: DisplayPanel[] = getPanels(config);
+
+  const result = [...fields, ...panels];
+
+  return result.sort((a, b) => a.order - b.order);
 };
 
 export const sortContent = (config: Form): (DisplayPanel | DisplayField)[] => {

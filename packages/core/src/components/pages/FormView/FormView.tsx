@@ -17,7 +17,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Button,
@@ -31,8 +31,10 @@ import {
   DisplayField,
   DisplayPanel,
   getButtonTitleKey,
+  getConfigItems,
   getFields,
   getValidationErrors,
+  getZIndexStyle,
   isField,
   isObjectMissingRequiredField,
   mapErrorWithTranslationKey,
@@ -246,6 +248,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
           _field={item as DisplayField}
           object={object}
           globalReadonly={config.readonlyIf}
+          formContent={getConfigItems(config)}
         />
       );
     }
@@ -254,6 +257,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
       <PanelComponent
         key={`${item.key} - ${item.order}`}
         renderItem={renderItem}
+        formContent={getConfigItems(config)}
         _panel={item as DisplayPanel}
       />
     );
@@ -283,11 +287,7 @@ const FormView = ({defaultValue = {}, formKey, actions}: FormProps) => {
             errors={errors}
           />
         )}
-        <View
-          style={[
-            styles.container,
-            Platform.OS === 'ios' ? styles.containerZIndex : null,
-          ]}>
+        <View style={[styles.container, getZIndexStyle(5)]}>
           {formContent.map(renderItem)}
         </View>
       </KeyboardAvoidingScrollView>
@@ -301,9 +301,6 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-  },
-  containerZIndex: {
-    zIndex: 30,
   },
 });
 
