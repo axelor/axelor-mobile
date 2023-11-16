@@ -16,19 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
-import {
-  headerActionsProvider,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
+import React, {useCallback} from 'react';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {Screen, ScrollList} from '@axelor/aos-mobile-ui';
 import {TimeDetailCard, TimerDeclareButton} from '../../components';
 import {fetchTimer} from '../../features/timerSlice';
 
 const TimerListScreen = ({}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -43,22 +37,6 @@ const TimerListScreen = ({}) => {
     },
     [dispatch, userId],
   );
-
-  useEffect(() => {
-    headerActionsProvider.registerModel('hr_timers_list', {
-      actions: [
-        {
-          key: 'newTimer',
-          order: 10,
-          iconName: 'plus',
-          title: I18n.t('Hr_NewTimer'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () => console.log('Header button pressed.'),
-          showInHeader: true,
-        },
-      ],
-    });
-  }, [Colors, I18n]);
 
   return (
     <Screen fixedItems={<TimerDeclareButton />}>

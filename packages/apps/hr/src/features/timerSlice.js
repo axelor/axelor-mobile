@@ -24,7 +24,7 @@ import {
 import {fetchTimer as _fetchTimer} from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
-  'timre/fetchTimer',
+  'timer/fetchTimer',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchTimer,
