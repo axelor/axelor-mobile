@@ -63,7 +63,7 @@ const Panel = ({renderItem, formContent, _panel}: PanelProps) => {
     return <View key={_panel.key} style={panelStyle} />;
   }
 
-  if (_panel.isCollaspible) {
+  if (_panel.isCollapsible) {
     return (
       <DropdownCard
         key={_panel.key}

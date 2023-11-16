@@ -97,7 +97,7 @@ export type InputType =
 
 export interface Panel {
   titleKey?: string;
-  isCollaspible?: boolean;
+  isCollapsible?: boolean;
   order?: number;
   colSpan?: number;
   direction?: 'row' | 'column';

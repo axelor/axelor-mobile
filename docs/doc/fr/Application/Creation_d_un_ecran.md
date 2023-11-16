@@ -208,7 +208,7 @@ export default Component;
 ```tsx
 interface Panel {
   titleKey?: string;
-  isCollaspible?: boolean;
+  isCollapsible?: boolean;
   order?: number;
   colSpan?: number;
   direction?: 'row' | 'column';
@@ -219,7 +219,7 @@ interface Panel {
 Un panel est défini à travers plusieurs attributs :
 
 - _titleKey_ : clé de traduction pour le titre du panel.
-- _isCollaspible_ : permet de définir si un panel doit pouvoir être collapsible.
+- _isCollapsible_ : permet de définir si un panel doit pouvoir être collapsible.
 - _order_ : order du panel dans la vue.
 - _colSpan_ : largeur du panel sur la vue. Par défaut, le panel prend toute la largeur de la vue.
 - _direction_ : direction d’affichage des éléments (`’row’` affiche les éléments en ligne, `‘column’` affiche les éléments en colonne)
