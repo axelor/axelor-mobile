@@ -49,7 +49,6 @@ const BarChartDashboard = ({
     <Card style={[styles.container, style]}>
       <View>
         <BarChart
-          key={'xyz'}
           frontColor={
             datasets[0]?.[0].color != null
               ? datasets[0]?.[0].color
@@ -59,8 +58,11 @@ const BarChartDashboard = ({
           width={widthGraph}
           spacing={spacing}
           isAnimated={true}
+          barBorderRadius={4}
           initialSpacing={20}
           horizontal={horizontal}
+          yAxisTextStyle={{color: Color.secondaryColor_dark.background}}
+          xAxisLabelTextStyle={{color: Color.secondaryColor_dark.background}}
         />
       </View>
     </Card>
