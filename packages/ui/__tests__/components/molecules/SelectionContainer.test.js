@@ -40,7 +40,7 @@ describe('SelectionContainer', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders correctly with objectList', () => {
+  it('should render correctly with objectList', () => {
     const wrapper = shallow(<SelectionContainer {...props} />);
 
     for (let i = 0; i < props.objectList.length; i++) {
@@ -50,7 +50,7 @@ describe('SelectionContainer', () => {
     }
   });
 
-  it('calls handleSelect with the right item on press', () => {
+  it('should call handleSelect with the right item on press', () => {
     const handleSelect = jest.fn();
     const wrapper = shallow(
       <SelectionContainer {...props} handleSelect={handleSelect} />,
@@ -62,7 +62,7 @@ describe('SelectionContainer', () => {
     }
   });
 
-  it('does not render if objectList is empty or null', () => {
+  it('should not render if objectList is empty or null', () => {
     const newPropsEmptyArr = {
       ...props,
       objectList: [],
@@ -75,11 +75,11 @@ describe('SelectionContainer', () => {
     const wrapperEmpty = shallow(<SelectionContainer {...newPropsEmptyArr} />);
     const wrapperNull = shallow(<SelectionContainer {...newPropsNullArr} />);
 
-    expect(wrapperEmpty.type()).toBeNull();
-    expect(wrapperNull.type()).toBeNull();
+    expect(wrapperEmpty.isEmptyRender()).toBe(true);
+    expect(wrapperNull.isEmptyRender()).toBe(true);
   });
 
-  it('renders a list of SelectionItem with Icon when isPicker is true', () => {
+  it('should render a list of SelectionItem with Icon when isPicker is true', () => {
     const wrapper = shallow(<SelectionContainer {...props} isPicker />);
 
     for (let i = 0; i < props.objectList.length; i++) {
@@ -90,7 +90,7 @@ describe('SelectionContainer', () => {
     }
   });
 
-  it('renders an empty SelectionItem when isPicker and emptyValue are true', () => {
+  it('should render an empty SelectionItem when isPicker and emptyValue are true', () => {
     const wrapper = shallow(
       <SelectionContainer {...props} isPicker emptyValue />,
     );
@@ -98,7 +98,7 @@ describe('SelectionContainer', () => {
     expect(wrapper.find('SelectionItem').first().prop('content')).toBe('');
   });
 
-  it('renders the selectedItem correctly', () => {
+  it('should render the selectedItem correctly', () => {
     const selectedItem = props.objectList.slice(1);
     const wrapper = shallow(
       <SelectionContainer {...props} selectedItem={selectedItem} />,
@@ -120,7 +120,7 @@ describe('SelectionContainer', () => {
     }
   });
 
-  it('applies custom style when provided', () => {
+  it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(
       <SelectionContainer {...props} style={customStyle} />,
