@@ -26,7 +26,7 @@ interface TimesheetDetailCardProps {
   startDate: string;
   endDate: string;
   company: string;
-  totalDuration: string;
+  totalDuration: number;
   isActions?: boolean;
   style?: any;
   onPress: () => void;
@@ -60,12 +60,12 @@ const TimesheetDetailCard = ({
         onPress={onPress}
       />
       {isActions && (
-        <View style={styles.iconContainer}>
+        <View style={styles.flexOneContainer}>
           <CardIconButton
             iconName={'paper-plane'}
             iconColor={Colors.secondaryColor_dark.background}
             onPress={handleSend}
-            style={styles.cardIconButton}
+            style={styles.flexOneContainer}
           />
         </View>
       )}
@@ -83,12 +83,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 6,
   },
-  iconContainer: {
+  flexOneContainer: {
     flex: 1,
-  },
-  cardIconButton: {
-    flex: 1,
-    marginLeft: 5,
   },
 });
 

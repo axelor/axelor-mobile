@@ -45,7 +45,6 @@
   "Hr_TimeUnit_Days": "d",
   "Hr_TimeUnit_Hours": "h",
   "Hr_TimeUnit_Minutes": "min",
-  "Hr_Company": "Company",
   "Hr_TotalDurationHours": "Total duration (hours)",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",

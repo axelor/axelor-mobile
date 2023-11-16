@@ -26,7 +26,7 @@ interface TimesheetCardProps {
   startDate: string;
   endDate: string;
   company: string;
-  totalDuration: string;
+  totalDuration: number;
   style?: any;
   onPress: () => void;
 }
@@ -66,7 +66,7 @@ const TimesheetCard = ({
               isTitle: true,
             },
             {
-              displayText: `${I18n.t('Hr_Company')} : ${company}`,
+              displayText: `${I18n.t('User_Company')} : ${company}`,
               numberOfLines: 2,
               style: styles.subTitle,
             },
