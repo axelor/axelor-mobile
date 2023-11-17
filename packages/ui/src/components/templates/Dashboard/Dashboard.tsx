@@ -38,12 +38,12 @@ interface Graph {
 }
 
 interface Line {
-  graph: Graph[];
+  graphList: Graph[];
 }
 
 interface DashboardProps {
   style?: any;
-  line: Line[];
+  lineList: Line[];
 }
 
 const styleGraph = (nbGraphInLine: number, type: 'style' | 'width') => {
@@ -98,33 +98,34 @@ const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   );
 };
 
-const Dashboard = ({style, line}: DashboardProps) => {
+const Dashboard = ({style, lineList}: DashboardProps) => {
   return (
     <ScrollView style={[styles.container, style]}>
-      {line?.map((l, nbline) => {
-        const nbGraphInLine = l.graph?.length > 4 ? 4 : l.graph?.length;
+      {lineList?.map((line, indexLine) => {
+        const nbGraphInLine =
+          line.graphList?.length > 4 ? 4 : line.graphList?.length;
         return (
-          <View style={styles.lineContainer} key={nbline}>
-            {l?.graph.map((g, nbGraph) => {
-              const title = g?.title;
-              if (nbGraph > 4) {
+          <View style={styles.lineContainer} key={indexLine}>
+            {line?.graphList.map((graph, indexGraph) => {
+              const title = graph?.title;
+              if (indexGraph > 4) {
                 return null;
               }
-              if (g?.type === 'bar') {
+              if (graph?.type === 'bar') {
                 return BarChartDashboardRender(
-                  g.dataList,
-                  nbGraph,
+                  graph.dataList,
+                  indexGraph,
                   nbGraphInLine,
                   title,
                 );
               }
-              if (g?.type === 'pie') {
-                return PieChartRender(g.dataList, nbGraph);
+              if (graph?.type === 'pie') {
+                return PieChartRender(graph.dataList, indexGraph);
               }
-              if (g?.type === 'line') {
+              if (graph?.type === 'line') {
                 return LineChartDashboardRender(
-                  g.dataList,
-                  nbGraph,
+                  graph.dataList,
+                  indexGraph,
                   nbGraphInLine,
                   title,
                 );

@@ -369,13 +369,13 @@ const SettingsScreen = ({children}) => {
           title: ch?.chartName,
         };
       });
-      return {graph: dataList};
+      return {graphList: dataList};
     });
 
     return lineList;
   }, []);
 
-  return <Dashboard line={demoRefactor} />;
+  return <Dashboard lineList={demoRefactor} />;
 };
 
 export default SettingsScreen;
