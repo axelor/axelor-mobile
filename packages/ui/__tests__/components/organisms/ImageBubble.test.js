@@ -20,6 +20,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Image, ImageBubble} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles} from '../../tools';
 
 describe('ImageBubble Component', () => {
   const props = {
@@ -43,8 +44,8 @@ describe('ImageBubble Component', () => {
     };
     const wrapper = shallow(<ImageBubble {...props} imageSize={imageSize} />);
 
-    expect(wrapper.find(Image).prop('generalStyle')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    expect(getGlobalStyles(wrapper.find(Image), 'generalStyle')).toMatchObject(
+      customStyle,
     );
   });
 
@@ -76,8 +77,8 @@ describe('ImageBubble Component', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(<ImageBubble {...props} style={customStyle} />);
 
-    expect(wrapper.find(Image).prop('generalStyle')).toEqual(
-      expect.arrayContaining([expect.objectContaining(customStyle)]),
+    expect(getGlobalStyles(wrapper.find(Image), 'generalStyle')).toMatchObject(
+      customStyle,
     );
   });
 });
