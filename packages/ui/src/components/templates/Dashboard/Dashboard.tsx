@@ -34,6 +34,7 @@ interface Data {
 interface Graph {
   type: 'pie' | 'bar' | 'line';
   dataList: Data[][];
+  title?: string;
 }
 
 interface Line {
@@ -45,76 +46,54 @@ interface DashboardProps {
   line: Line[];
 }
 
-const styleGraph = nbGraphInLine => {
+const styleGraph = (nbGraphInLine: number, type: 'style' | 'width') => {
+  let style = null;
+  let width = null;
+
   if (nbGraphInLine === 1) {
-    return {
-      width: Dimensions.get('window').width - 60,
-    };
+    style = {width: Dimensions.get('window').width - 60};
+    width = Dimensions.get('window').width - 160;
+  } else if (Dimensions.get('window').width < 500 && nbGraphInLine !== 1) {
+    style = {width: Dimensions.get('window').width / 2 - 15};
+    width = Dimensions.get('window').width / 4;
+  } else if (nbGraphInLine === 2) {
+    style = {width: Dimensions.get('window').width / 2 - 60};
+    width = Dimensions.get('window').width / 3 - 60;
+  } else if (nbGraphInLine === 3) {
+    style = {width: Dimensions.get('window').width / 3 - 60};
+    width = Dimensions.get('window').width / 5 - 60;
+  } else if (nbGraphInLine === 4) {
+    style = {width: Dimensions.get('window').width / 4 - 20};
+    width = Dimensions.get('window').width / 6 - 60;
   }
-  if (Dimensions.get('window').width < 500 && nbGraphInLine !== 1) {
-    return {
-      width: Dimensions.get('window').width / 2 - 15,
-    };
-  }
-  if (nbGraphInLine === 2) {
-    return {
-      width: Dimensions.get('window').width / 2 - 60,
-    };
-  }
-  if (nbGraphInLine === 3) {
-    return {
-      width: Dimensions.get('window').width / 3 - 60,
-    };
-  }
-  if (nbGraphInLine === 4) {
-    return {
-      width: Dimensions.get('window').width / 4 - 20,
-    };
-  }
-  return null;
+
+  return type === 'style' ? style : width;
 };
 
-const widthGraph = nbGraphInLine => {
-  if (nbGraphInLine === 1) {
-    return Dimensions.get('window').width - 160;
-  }
-  if (Dimensions.get('window').width < 500 && nbGraphInLine !== 1) {
-    return Dimensions.get('window').width / 4;
-  }
-  if (nbGraphInLine === 2) {
-    return Dimensions.get('window').width / 3 - 60;
-  }
-  if (nbGraphInLine === 3) {
-    return Dimensions.get('window').width / 5 - 60;
-  }
-  if (nbGraphInLine === 4) {
-    return Dimensions.get('window').width / 6 - 60;
-  }
-  return null;
-};
-
-const LineChartDashboardRender = (datasets, key, nbGraphInLine) => {
+const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   return (
     <LineChartDashboard
       datasets={datasets}
       key={key}
-      style={styleGraph(nbGraphInLine)}
-      widthGraph={widthGraph(nbGraphInLine)}
+      style={styleGraph(nbGraphInLine, 'style')}
+      widthGraph={styleGraph(nbGraphInLine, 'width')}
+      title={title}
     />
   );
 };
 
 const PieChartRender = (datasets, key) => {
-  return <PieChartDashboard datasets={datasets} key={key} />;
+  return <PieChartDashboard datasets={datasets} key={key} legend={true} />;
 };
 
-const BarChartDashboardRender = (datasets, key, nbGraphInLine) => {
+const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   return (
     <BarChartDashboard
       datasets={datasets}
       key={key}
-      style={styleGraph(nbGraphInLine)}
-      widthGraph={widthGraph(nbGraphInLine)}
+      style={styleGraph(nbGraphInLine, 'style')}
+      widthGraph={styleGraph(nbGraphInLine, 'width')}
+      title={title}
     />
   );
 };
@@ -127,6 +106,7 @@ const Dashboard = ({style, line}: DashboardProps) => {
         return (
           <View style={styles.lineContainer} key={nbline}>
             {l?.graph.map((g, nbGraph) => {
+              const title = g?.title;
               if (nbGraph > 4) {
                 return null;
               }
@@ -135,6 +115,7 @@ const Dashboard = ({style, line}: DashboardProps) => {
                   g.dataList,
                   nbGraph,
                   nbGraphInLine,
+                  title,
                 );
               }
               if (g?.type === 'pie') {
@@ -145,6 +126,7 @@ const Dashboard = ({style, line}: DashboardProps) => {
                   g.dataList,
                   nbGraph,
                   nbGraphInLine,
+                  title,
                 );
               }
             })}

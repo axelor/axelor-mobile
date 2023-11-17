@@ -20,7 +20,8 @@ import React from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
 import {BarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
-import {Card} from '../../atoms';
+import {Card, Text} from '../../atoms';
+import {checkNullString} from '../../../utils/strings';
 
 interface Data {
   value: number;
@@ -34,6 +35,7 @@ interface BarCharDashboardProps {
   datasets: Data[][];
   spacing?: number;
   horizontal?: boolean;
+  title?: string;
 }
 
 const BarChartDashboard = ({
@@ -42,6 +44,7 @@ const BarChartDashboard = ({
   datasets,
   spacing = 20,
   horizontal = false,
+  title,
 }: BarCharDashboardProps) => {
   const Color = useThemeColor();
 
@@ -65,6 +68,7 @@ const BarChartDashboard = ({
           xAxisLabelTextStyle={{color: Color.secondaryColor_dark.background}}
         />
       </View>
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );
 };
@@ -73,6 +77,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 5,
   },
+  title: {alignSelf: 'center'},
 });
 
 export default BarChartDashboard;

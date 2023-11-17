@@ -363,7 +363,11 @@ const SettingsScreen = ({children}) => {
   const demoRefactor = useMemo(() => {
     const lineList = DemoResponse.dashboardLineList.map(elt => {
       const dataList = elt.chartList.map(ch => {
-        return {type: 'line', dataList: [ch.mobileChartValueResponseList]};
+        return {
+          type: 'line',
+          dataList: [ch.mobileChartValueResponseList],
+          title: ch?.chartName,
+        };
       });
       return {graph: dataList};
     });

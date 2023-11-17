@@ -20,7 +20,8 @@ import React from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
 import {LineChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
-import {Card} from '../../atoms';
+import {Card, Text} from '../../atoms';
+import {checkNullString} from '../../../utils/strings';
 
 interface Data {
   value: number;
@@ -34,6 +35,7 @@ interface LineChartDashboardProps {
   spacing?: number;
   widthGraph?: number;
   backgroundColor?: string;
+  title?: string;
 }
 
 const LineChartDashboard = ({
@@ -42,6 +44,7 @@ const LineChartDashboard = ({
   datasets,
   spacing = 50,
   backgroundColor,
+  title,
 }: LineChartDashboardProps) => {
   const Color = useThemeColor();
 
@@ -109,6 +112,7 @@ const LineChartDashboard = ({
           }
           endSpacing={5}
         />
+        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       </View>
     </Card>
   );
@@ -122,6 +126,7 @@ const styles = StyleSheet.create({
         : Dimensions.get('window').width / 2,
     marginVertical: 5,
   },
+  title: {alignSelf: 'center'},
 });
 
 export default LineChartDashboard;
