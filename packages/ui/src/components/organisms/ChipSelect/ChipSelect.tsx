@@ -89,6 +89,13 @@ const ChipSelect = ({
   };
 
   const chipIsSelected = (chip: Item) => {
+    if (
+      isRefresh &&
+      selectionItems.every(el => Object.keys(el).includes('isActive'))
+    ) {
+      return chip.isActive;
+    }
+
     return (
       selectedChip?.find(activeChip => activeChip.key === chip.key) != null
     );
