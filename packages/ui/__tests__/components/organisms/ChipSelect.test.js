@@ -75,21 +75,54 @@ describe('ChipSelect Component', () => {
   });
 
   it('should render ChipSelect with more than one Chip activable if mode is multi', () => {
-    const wrapper = shallow(<ChipSelect {...props} />);
+    const onChangeValue = jest.fn();
+    const wrapper = shallow(
+      <ChipSelect {...props} onChangeValue={onChangeValue} />,
+    );
 
     wrapper.find(Chip).at(1).simulate('press');
 
     expect(wrapper.find(Chip).at(0).prop('selected')).toBe(true);
     expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
+    expect(onChangeValue).toHaveBeenCalledWith([
+      props.selectionItems[0],
+      props.selectionItems[1],
+    ]);
+
+    wrapper.find(Chip).at(2).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
+    expect(onChangeValue).toHaveBeenCalledWith([]);
   });
 
   it('should render ChipSelect with only one Chip activable if mode is switch', () => {
-    const wrapper = shallow(<ChipSelect {...props} mode="switch" />);
+    const onChangeValue = jest.fn();
+    const wrapper = shallow(
+      <ChipSelect {...props} mode="switch" onChangeValue={onChangeValue} />,
+    );
 
     wrapper.find(Chip).at(1).simulate('press');
 
     expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
     expect(wrapper.find(Chip).at(1).prop('selected')).toBe(true);
+    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
+    expect(onChangeValue).toHaveBeenCalledWith([props.selectionItems[1]]);
+
+    wrapper.find(Chip).at(2).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(true);
+    expect(onChangeValue).toHaveBeenCalledWith([props.selectionItems[2]]);
+
+    wrapper.find(Chip).at(2).simulate('press');
+
+    expect(wrapper.find(Chip).at(0).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(1).prop('selected')).toBe(false);
+    expect(wrapper.find(Chip).at(2).prop('selected')).toBe(false);
+    expect(onChangeValue).toHaveBeenCalledWith([]);
   });
 
   it('should refresh when selectionItems change and isRefresh is true', () => {
