@@ -3,6 +3,37 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.1] (2023-11-17)
+
+### @axelor/aos-mobile-stock
+
+#### Changes
+
+- Adapt screens to low resolution to match Zebra devices
+
+#### Fixes
+
+- ProductStockLocationCard : remove arrow as card is not clickable
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Set version of react-native-date-picker to 4.2.14 to fix iOS build
+- FormView : manage zIndex issue on iOS and manage flexDirection in collapsible panel
+
+#### Changes
+
+- FormView : rename isCollaspible prop in Panel to isCollapsible
+
+### @axelor/aos-mobile-ui
+
+This version adds new unit test for ui components.
+
+#### Fixes
+
+- Increment : fix type error
+
 ## [7.2.0] (2023-11-10)
 
 This version adds the management of the technical documentation. All the documentation is available in the docs folcer at the project root and will be updated with each technical change. The documentation can be found [here](https://docs.axelor.com/) for more details.
@@ -91,4 +122,5 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.0...7.2.1
 [7.2.0]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.2.0
