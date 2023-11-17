@@ -17,12 +17,17 @@
  */
 
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  fetchCompanies,
+  FormView,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
   updateExpenseLine,
 } from '../../features/expenseLineSlice';
-import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../types';
 import {updateExpenseDate} from '../../features/kilometricAllowParamSlice';
 import {fetchExpenseConfig} from '../../features/expenseConfigSlice';

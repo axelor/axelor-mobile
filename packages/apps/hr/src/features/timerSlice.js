@@ -24,7 +24,7 @@ import {
 import {fetchTimer as _fetchTimer} from '../api/timer-api';
 
 export const fetchTimer = createAsyncThunk(
-  'timer/fetchTimer',
+  'hr_timer/fetchTimer',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchTimer,
@@ -44,7 +44,7 @@ const initialState = {
 };
 
 const timerSlice = createSlice({
-  name: 'timer',
+  name: 'hr_timer',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchTimer, {
