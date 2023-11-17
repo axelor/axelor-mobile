@@ -32,7 +32,7 @@ describe('AutoCompleteSearch Component', () => {
   const Colors = lightTheme.colors;
 
   const props = {
-    objectList: [{name: 'Name 1'}],
+    objectList: [{name: 'Name 1'}, {name: 'Name 2'}, {name: 'Name 3'}],
     displayValue: value => value.name,
   };
 
@@ -42,51 +42,45 @@ describe('AutoCompleteSearch Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should render a SearchBar with title when provided', () => {
+  it('should render a SearchBar with good props transmitted', () => {
     const title = 'Title';
-    const wrapper = shallow(<AutoCompleteSearch {...props} title={title} />);
+    const value = props.objectList[0];
+    const scanIconColor = Colors.secondaryColor.background;
+    const wrapper = shallow(
+      <AutoCompleteSearch
+        {...props}
+        title={title}
+        value={value}
+        required
+        readonly
+        scanIconColor={scanIconColor}
+      />,
+    );
 
     expect(wrapper.find(SearchBar).prop('title')).toBe(title);
-  });
-
-  it('should render a SearchBar with value displayed by displayValue function when provided', () => {
-    const value = props.objectList[0];
-    const wrapper = shallow(<AutoCompleteSearch {...props} value={value} />);
-
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
       props.displayValue(value),
     );
-  });
-
-  it('should render a required SearchBar when required is true', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} required />);
-
     expect(wrapper.find(SearchBar).prop('required')).toBe(true);
-  });
-
-  it('should render a readonly SearchBar when readonly is true', () => {
-    const wrapper = shallow(<AutoCompleteSearch {...props} readonly />);
-
     expect(wrapper.find(SearchBar).prop('readonly')).toBe(true);
+    expect(wrapper.find(SearchBar).prop('scanIconColor')).toBe(scanIconColor);
   });
 
-  it('should call onChangeValue when value change', () => {
+  it('should call onChangeValue whith the right args when value change', () => {
     const onChangeValue = jest.fn();
     const wrapper = shallow(
       <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
     );
 
     wrapper.find(SearchBar).simulate('clearPress');
+    expect(onChangeValue).toHaveBeenCalledWith(null);
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe('');
 
-    const txtValue = 'New value';
-    wrapper.find(SearchBar).simulate('changeTxt', txtValue);
-    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(txtValue);
-
-    const value = {name: 'Name 2'};
-    wrapper.find('SearchDetailsPopUp').simulate('select', value);
+    wrapper.setProps({objectList: [props.objectList[0]]});
+    wrapper.find(SearchBar).simulate('changeTxt', props.objectList[0].name);
+    expect(onChangeValue).toHaveBeenCalledWith(props.objectList[0]);
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
-      props.displayValue(value),
+      props.objectList[0].name,
     );
   });
 
@@ -106,15 +100,6 @@ describe('AutoCompleteSearch Component', () => {
     const wrapper = shallow(<AutoCompleteSearch {...props} oneFilter />);
 
     expect(wrapper.find(SelectionContainer).length).toBe(0);
-  });
-
-  it('should render SearchBar with scanIconColor when provided', () => {
-    const scanIconColor = Colors.secondaryColor.background;
-    const wrapper = shallow(
-      <AutoCompleteSearch {...props} scanIconColor={scanIconColor} />,
-    );
-
-    expect(wrapper.find(SearchBar).prop('scanIconColor')).toBe(scanIconColor);
   });
 
   it('should apply custom style when provided', () => {
