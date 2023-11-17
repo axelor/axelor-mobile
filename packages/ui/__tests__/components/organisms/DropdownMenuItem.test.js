@@ -50,6 +50,8 @@ describe('DropdownMenuItem Component', () => {
   it('should call onPress when TouchableOpacity is pressed', () => {
     const wrapper = shallow(<DropdownMenuItem {...props} />);
 
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
+
     wrapper.find(TouchableOpacity).simulate('press');
     expect(props.onPress).toHaveBeenCalledTimes(1);
   });
