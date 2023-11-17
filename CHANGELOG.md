@@ -3,6 +3,22 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.3] (2023-11-17)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Set version of react-native-date-picker to 4.2.14 to fix iOS build
+
+### @axelor/aos-mobile-ui
+
+This version adds new unit test for ui components.
+
+#### Fixes
+
+- Increment : fix type error
+
 ## [7.1.2] (2023-11-10)
 
 This version adds unit test management. The application's global test has been corrected and the components of the ui package are currently being tested.
@@ -222,6 +238,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.3]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.1.3
 [7.1.2]: https://github.com/axelor/axelor-mobile/compare/7.1.1...7.1.2
 [7.1.1]: https://github.com/axelor/axelor-mobile/compare/7.1.0...7.1.1
 [7.1.0]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.1.0
