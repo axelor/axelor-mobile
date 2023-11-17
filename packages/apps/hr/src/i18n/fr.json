@@ -47,6 +47,7 @@
   "Hr_TimeUnit_Days": "j",
   "Hr_TimeUnit_Hours": "h",
   "Hr_TimeUnit_Minutes": "min",
+  "Hr_TotalDurationHours": "Durée totale (heures)",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
