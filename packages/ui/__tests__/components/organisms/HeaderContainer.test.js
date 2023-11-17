@@ -20,6 +20,7 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {HeaderContainer, Icon} from '@axelor/aos-mobile-ui';
+import * as configContext from '../../../lib/config/ConfigContext';
 import {getGlobalStyles} from '../../tools';
 
 describe('HeaderContainer Component', () => {
@@ -55,6 +56,26 @@ describe('HeaderContainer Component', () => {
     const wrapper = shallow(<HeaderContainer {...props} forceHideByDefault />);
 
     expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+  });
+
+  it('should not render children if showFilter is false', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showFilter: false,
+    }));
+
+    const wrapper = shallow(<HeaderContainer {...props} />);
+
+    expect(wrapper.find('[testID="children"]').exists()).toBe(false);
+  });
+
+  it('should render children if showFilter is true', () => {
+    jest.spyOn(configContext, 'useConfig').mockImplementation(() => ({
+      showFilter: true,
+    }));
+
+    const wrapper = shallow(<HeaderContainer {...props} />);
+
+    expect(wrapper.find('[testID="children"]').exists()).toBe(true);
   });
 
   it('should render an Icon which toggle children when click on it', () => {
