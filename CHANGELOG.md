@@ -3,7 +3,15 @@ title: 7.0.0
 tags: Changelog
 ---
 
-## [7.0.5] (2023-11-10)
+## [7.0.6] (2023-11-17)
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Set version of react-native-date-picker to 4.2.14 to fix iOS build
+
+## [7.0.5] (2023-11-08)
 
 The application's global test has been corrected to make sure that the application is correctly working.
 
@@ -340,6 +348,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.6]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.0.6
 [7.0.5]: https://github.com/axelor/axelor-mobile/compare/7.0.4...7.0.5
 [7.0.4]: https://github.com/axelor/axelor-mobile/compare/7.0.3...7.0.4
 [7.0.3]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.0.3
