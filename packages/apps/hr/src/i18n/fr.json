@@ -48,6 +48,8 @@
   "Hr_TimeUnit_Hours": "h",
   "Hr_TimeUnit_Minutes": "min",
   "Hr_TotalDurationHours": "Durée totale (heures)",
+  "Hr_Timers": "Chronomètres",
+  "Hr_NewTimer": "Créer un chronomètre",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -70,5 +72,6 @@
   "Hr_SliceAction_DeleteExpenseLine": "suppression d'un ligne de frais orpheline",
   "Hr_SliceAction_FetchCurrencies": "récupération des devises",
   "Hr_SliceAction_GetDistance": "récupération de la distance",
-  "Hr_SliceAction_SearchManagedEmployee": "récupération des employés gérés"
+  "Hr_SliceAction_SearchManagedEmployee": "récupération des employés gérés",
+  "Hr_SliceAction_FetchTimer": "récupération des chronomètres"
 }

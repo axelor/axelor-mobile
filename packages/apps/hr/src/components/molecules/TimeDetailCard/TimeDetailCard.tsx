@@ -27,9 +27,9 @@ interface TimeDetailCardProps {
   task?: string;
   manufOrder?: string;
   operation?: string;
-  comment?: string;
+  comments?: string;
   date: string;
-  duration: string;
+  duration: number;
   durationUnit: string;
   isActions?: boolean;
   style?: any;
@@ -41,11 +41,11 @@ const TimeDetailCard = ({
   task,
   manufOrder,
   operation,
-  comment,
+  comments,
   date,
   duration,
   durationUnit,
-  isActions = false,
+  isActions = true,
   style,
 }: TimeDetailCardProps) => {
   const Colors = useThemeColor();
@@ -66,13 +66,13 @@ const TimeDetailCard = ({
         task={task}
         manufOrder={manufOrder}
         operation={operation}
-        comment={comment}
+        comments={comments}
         date={date}
         duration={duration}
         durationUnit={durationUnit}
         style={styles.cardContainer}
       />
-      {!isActions && (
+      {isActions && (
         <View style={styles.iconContainer}>
           <CardIconButton
             iconName={'pencil-alt'}

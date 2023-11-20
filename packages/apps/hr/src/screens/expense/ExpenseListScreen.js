@@ -29,15 +29,15 @@ import {
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../components';
+import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
   sendExpense,
   validateExpense,
-} from '../features/expenseSlice';
-import {searchManagedEmployee} from '../features/employeeSlice';
-import {Expense} from '../types';
+} from '../../features/expenseSlice';
+import {searchManagedEmployee} from '../../features/employeeSlice';
+import {Expense} from '../../types';
 
 const ExpenseListScreen = ({navigation}) => {
   const I18n = useTranslator();

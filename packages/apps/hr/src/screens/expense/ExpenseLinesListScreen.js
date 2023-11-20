@@ -25,12 +25,12 @@ import {
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {fetchExpenseLine} from '../features/expenseLineSlice';
+import {fetchExpenseLine} from '../../features/expenseLineSlice';
 import {
   ExpenseAddPopup,
   ExpenseLineDetailCard,
   ExpenseLineValidationButton,
-} from '../components';
+} from '../../components';
 
 const ExpenseLinesListScreen = ({navigation}) => {
   const Colors = useThemeColor();
