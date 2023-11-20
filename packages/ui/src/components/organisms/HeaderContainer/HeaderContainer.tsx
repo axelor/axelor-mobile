@@ -41,7 +41,9 @@ const HeaderContainer = ({
   forceHideByDefault = false,
 }: HeaderContainerProps) => {
   const {showFilter} = useConfig();
-  const [isVisible, setVisible] = useState(!forceHideByDefault);
+  const [isVisible, setVisible] = useState(
+    forceHideByDefault ? false : showFilter,
+  );
   const Colors = useThemeColor();
 
   useEffect(() => {
