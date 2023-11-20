@@ -20,9 +20,22 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon} from '../../atoms';
 
+const predefinedPositions = {
+  left: {left: '-2%'},
+  top: {top: '-50%'},
+  center: {top: '50%', left: '50%'},
+  right: {right: '-2%'},
+  bottom: {bottom: '-50%'},
+  'bottom-right': {bottom: '-10%', right: '-2%'},
+  'bottom-left': {bottom: '-10%', left: '-2%'},
+  'top-left': {top: '-10%', left: '-2%'},
+  'top-right': {top: '-10%', right: '-2%'},
+};
+
 interface DoubleIconProps {
   bottomIconName: string;
   topIconName: string;
+  predefinedPosition?: keyof typeof predefinedPositions;
   topIconPosition?: {
     top?: number;
     right?: number;
@@ -42,8 +55,10 @@ const DoubleIcon = ({
   color,
   size = 18,
   touchable = false,
+  predefinedPosition,
   onPress = () => {},
 }: DoubleIconProps) => {
+  const topIconStyle = predefinedPositions[predefinedPosition];
   return (
     <View style={styles.container}>
       <Icon
@@ -53,7 +68,7 @@ const DoubleIcon = ({
         touchable={touchable}
         onPress={onPress}
       />
-      <View style={[styles.topIcon, topIconPosition]}>
+      <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
           name={topIconName}
           color={color}
