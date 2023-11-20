@@ -23,7 +23,6 @@ import {Icon} from '../../atoms';
 const predefinedPositions = {
   left: {left: '-2%'},
   top: {top: '-50%'},
-  center: {top: '50%', left: '50%'},
   right: {right: '-2%'},
   bottom: {bottom: '-50%'},
   'bottom-right': {bottom: '-10%', right: '-2%'},
@@ -32,9 +31,28 @@ const predefinedPositions = {
   'top-right': {top: '-10%', right: '-2%'},
 };
 
+interface BottomIconConfig {
+  name: string;
+  color?: string;
+  size?: number;
+  touchable?: boolean;
+  onPress?: () => void;
+}
+
+interface TopIconConfig {
+  name: string;
+  color?: string;
+  size?: number;
+  touchable?: boolean;
+  onPress?: () => void;
+}
+
 interface DoubleIconProps {
-  bottomIconName: string;
-  topIconName: string;
+  topIconConfig: TopIconConfig;
+  bottomIconConfig: BottomIconConfig;
+  color?: string;
+  size?: number;
+  touchable?: boolean;
   predefinedPosition?: keyof typeof predefinedPositions;
   topIconPosition?: {
     top?: number;
@@ -42,39 +60,26 @@ interface DoubleIconProps {
     bottom?: number;
     left?: number;
   };
-  color?: string;
-  size?: number;
-  touchable?: boolean;
-  onPress?: () => void;
 }
 
 const DoubleIcon = ({
-  bottomIconName,
-  topIconName,
+  topIconConfig,
+  bottomIconConfig,
   topIconPosition = {},
-  color,
   size = 18,
-  touchable = false,
   predefinedPosition,
-  onPress = () => {},
 }: DoubleIconProps) => {
   const topIconStyle = predefinedPositions[predefinedPosition];
   return (
     <View style={styles.container}>
       <Icon
-        name={bottomIconName}
-        color={color}
-        size={size}
-        touchable={touchable}
-        onPress={onPress}
+        {...bottomIconConfig}
+        size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
       />
       <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
-          name={topIconName}
-          color={color}
-          size={size * 0.6}
-          touchable={touchable}
-          onPress={onPress}
+          {...topIconConfig}
+          size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
         />
       </View>
     </View>
