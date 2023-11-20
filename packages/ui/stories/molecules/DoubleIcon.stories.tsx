@@ -20,6 +20,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {DoubleIcon} from '../../src/components/molecules';
+import {lightTheme} from '../../src/theme';
 
 const Colors = {
   background: '#ffffff',
@@ -33,26 +34,20 @@ storiesOf('ui/molecules/DoubleIcon', module).add(
     return (
       <View style={styles.container}>
         <DoubleIcon
-          topIconPosition={{top: -10, right: -10}}
-          predefinedPosition={'top'}
           size={30}
           topIconConfig={{
-            name: 'send',
-            size: 40,
-            onPress: () => {
-              console.log('baw');
-            },
-            touchable: true,
+            name: args.configTopIcon_name,
+            size: args.configTopIcon_size,
             FontAwesome5: false,
+            color: lightTheme.colors[args.configTopIcon_color].background,
+            touchable: args.configTopIcon_touchable,
           }}
           bottomIconConfig={{
-            name: 'resistance',
-            size: 40,
-            onPress: () => {
-              console.log('aaa');
-            },
-            touchable: true,
+            name: args.configBottomIcon_name,
+            size: args.configBottomIcon_size,
             FontAwesome5: false,
+            color: lightTheme.colors[args.configBottomIcon_color].background,
+            touchable: args.configBottomIcon_touchable,
           }}
           {...args}
         />
@@ -61,26 +56,68 @@ storiesOf('ui/molecules/DoubleIcon', module).add(
   },
   {
     argTypes: {
-      valueTxt: {
+      predefinedPosition: {
+        options: [
+          'bottom-left',
+          'top-right',
+          'top-left',
+          'bottom-right',
+          'bottom',
+          'right',
+          'top',
+          'left',
+        ],
+        defaultValue: 'top-left',
         control: {
-          type: 'text',
+          type: 'select',
         },
-        defaultValue: 'Some text',
       },
-      clearable: {
+      configTopIcon_name: {
+        type: 'string',
+        defaultValue: 'heart',
+        control: {type: 'text'},
+      },
+      configTopIcon_color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'importantColor',
         control: {
-          type: 'boolean',
+          type: 'select',
         },
-        defaultValue: true,
       },
-      onClearPress: {
-        action: 'onClearPress',
+      configTopIcon_size: {
+        control: {type: 'number', min: 10, max: 50},
+        description: 'sizeTop',
+        defaultValue: 15,
       },
-      style: {
+      configTopIcon_touchable: {
+        control: {type: 'boolean'},
+        defaultValue: false,
+      },
+
+      configBottomIcon_name: {
+        type: 'string',
+        defaultValue: 'user',
+        control: {type: 'text'},
+      },
+      configBottomIcon_color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
         control: {
-          type: 'object',
+          type: 'select',
         },
-        defaultValue: {},
+      },
+      configBottomIcon_size: {
+        control: {type: 'number', min: 10, max: 50},
+        description: 'sizeBottom',
+        defaultValue: 22,
+      },
+      configBottomIcon_touchable: {
+        control: {type: 'boolean'},
+        defaultValue: false,
       },
     },
   },
