@@ -25,4 +25,5 @@ export const hr_sortFields: SortFields = {
   hr_expenseType: ['name', 'fullName'],
   hr_kilomectricAllowParam: ['name', 'code'],
   hr_project: ['name', 'fullName'],
+  hr_timer: ['-startDateTime'],
 };

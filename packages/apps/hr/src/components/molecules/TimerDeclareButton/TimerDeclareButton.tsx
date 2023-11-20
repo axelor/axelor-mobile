@@ -16,14 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SearchFields} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button} from '@axelor/aos-mobile-ui';
 
-export const hr_searchFields: SearchFields = {
-  hr_currency: ['code', 'symbol', 'name', 'codeISO'],
-  hr_expense: ['employee.name', 'expenseSeq'],
-  hr_expenseLines: ['expenseDate', 'project.fullName'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_project: ['name', 'fullName'],
-  hr_timer: ['project.fullName', 'projectTask.fullName', 'comments'],
+const TimerDeclareButton = () => {
+  const I18n = useTranslator();
+
+  return (
+    <Button
+      iconName="calendar-check"
+      title={I18n.t('Base_Declare')}
+      onPress={() => console.log('Declare button pressed.')}
+    />
+  );
 };
+
+export default TimerDeclareButton;
