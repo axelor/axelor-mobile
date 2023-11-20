@@ -17,18 +17,13 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {TitledValue} from '../../src/components/molecules';
 
 storiesOf('ui/molecules/TitledValue', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <TitledValue title="" value="" {...args} />
-      </View>
-    );
+    return <TitledValue title="" value="" {...args} />;
   },
   {
     argTypes: {
@@ -53,11 +48,3 @@ storiesOf('ui/molecules/TitledValue', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

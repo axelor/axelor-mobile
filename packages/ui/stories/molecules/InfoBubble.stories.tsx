@@ -17,66 +17,58 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {InfoBubble} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme/themes';
 
-storiesOf('ui/molecules/InfoBubble', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'default',
-    args => {
-      return (
-        <InfoBubble {...args} badgeColor={lightTheme.colors[args.color]} />
-      );
-    },
-    {
-      argTypes: {
-        iconName: {
-          control: {
-            type: 'text',
-          },
-          defaultValue: 'info',
+storiesOf('ui/molecules/InfoBubble', module).add(
+  'default',
+  args => {
+    return (
+      <InfoBubble
+        iconName="info"
+        badgeColor={lightTheme.colors[args.color]}
+        indication="This is an indication"
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      iconName: {
+        control: {
+          type: 'text',
         },
-        color: {
-          control: {
-            type: 'select',
-          },
-          options: Object.entries(lightTheme.colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-          defaultValue: 'primaryColor',
+        defaultValue: 'info',
+      },
+      color: {
+        control: {
+          type: 'select',
         },
-        indication: {
-          control: {
-            type: 'text',
-          },
-          defaultValue: 'This is an indication',
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+      },
+      indication: {
+        control: {
+          type: 'text',
         },
-        size: {
-          control: {
-            type: 'number',
-          },
-          defaultValue: 15,
+        defaultValue: 'This is an indication',
+      },
+      size: {
+        control: {
+          type: 'number',
         },
-        position: {
-          control: {
-            type: 'select',
-          },
-          options: ['right', 'left'],
-          defaultValue: 'right',
+        defaultValue: 50,
+      },
+      position: {
+        control: {
+          type: 'select',
         },
+        options: ['right', 'left'],
+        defaultValue: 'right',
       },
     },
-  );
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
   },
-});
+);

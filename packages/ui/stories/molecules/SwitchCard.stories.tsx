@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {SwitchCard} from '../../src/components/molecules';
 
@@ -25,14 +24,12 @@ storiesOf('ui/molecules/SwitchCard', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <SwitchCard
-          title={'Press me'}
-          defaultValue={true}
-          onToggle={console.log}
-          {...args}
-        />
-      </View>
+      <SwitchCard
+        title={'Press me'}
+        defaultValue={true}
+        onToggle={console.log}
+        {...args}
+      />
     );
   },
   {
@@ -56,11 +53,3 @@ storiesOf('ui/molecules/SwitchCard', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

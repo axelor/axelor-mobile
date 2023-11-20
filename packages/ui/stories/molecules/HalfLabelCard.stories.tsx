@@ -17,31 +17,35 @@
  */
 
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {HalfLabelCard} from '../../src/components/molecules';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f0f0f0',
+storiesOf('ui/molecules/HalfLabelCard', module).add(
+  'Default',
+  args => {
+    return (
+      <HalfLabelCard
+        iconName="car"
+        title="Profile"
+        onPress={action('Card pressed')}
+        {...args}
+      />
+    );
   },
-});
+  {
+    argTypes: {
+      iconName: {
+        type: 'string',
+        defaultValue: 'car',
+        control: {type: 'text'},
+      },
 
-storiesOf('ui/molecules/HalfLabelCard', module)
-  .addDecorator(story => <>{story()}</>)
-  .add('Default', () => (
-    <HalfLabelCard
-      iconName="user"
-      title="Profile"
-      onPress={action('Card pressed')}
-    />
-  ))
-  .add('With custom style', () => (
-    <HalfLabelCard
-      iconName="settings"
-      title="Settings"
-      onPress={action('Card pressed')}
-      style={styles.container}
-    />
-  ));
+      title: {
+        type: 'string',
+        defaultValue: 'Title',
+        control: {type: 'text'},
+      },
+    },
+  },
+);

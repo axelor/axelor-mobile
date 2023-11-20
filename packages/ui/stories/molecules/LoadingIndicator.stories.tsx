@@ -17,25 +17,12 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {LoadingIndicator} from '../../src/components/molecules';
 import {useConfig} from '../../src/config/ConfigContext';
 
-storiesOf('ui/molecules/LoadingIndicator', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('custom', () => {
-    const {setActivityIndicator} = useConfig();
-    setActivityIndicator(true);
-    return <LoadingIndicator />;
-  });
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
-  },
+storiesOf('ui/molecules/LoadingIndicator', module).add('custom', () => {
+  const {setActivityIndicator} = useConfig();
+  setActivityIndicator(true);
+  return <LoadingIndicator />;
 });

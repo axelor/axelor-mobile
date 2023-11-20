@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {CircleButton} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -26,9 +25,11 @@ storiesOf('ui/molecules/CircleButton', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <CircleButton {...args} color={lightTheme.colors[args.color]} />
-      </View>
+      <CircleButton
+        color={lightTheme.colors[args.color]}
+        iconName="car"
+        {...args}
+      />
     );
   },
   {
@@ -59,13 +60,8 @@ storiesOf('ui/molecules/CircleButton', module).add(
       },
       iconName: {
         type: 'string',
-        defaultValue: '?',
+        defaultValue: 'car',
         control: {type: 'text'},
-      },
-      FontAwesome5: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
       },
       disabled: {
         type: 'boolean',
@@ -75,11 +71,3 @@ storiesOf('ui/molecules/CircleButton', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

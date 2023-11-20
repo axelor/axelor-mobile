@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {CardIconButton} from '../../src/components/molecules';
 
@@ -27,17 +26,12 @@ storiesOf('ui/molecules/CardIconButton', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        {iconNames.map((iconName, index) => (
-          <CardIconButton
-            key={index}
-            iconName={iconName}
-            iconColor="#000000"
-            onPress={() => console.log(`Button ${index + 1} pressed`)}
-            {...args}
-          />
-        ))}
-      </View>
+      <CardIconButton
+        iconName={iconNames[0]}
+        iconColor="#000000"
+        onPress={() => console.log('Button pressed')}
+        {...args}
+      />
     );
   },
   {
@@ -47,7 +41,7 @@ storiesOf('ui/molecules/CardIconButton', module).add(
           type: 'select',
           options: iconNames,
         },
-        defaultValue: 'heart',
+        defaultValue: iconNames[0],
       },
       iconColor: {
         control: {
@@ -61,12 +55,3 @@ storiesOf('ui/molecules/CardIconButton', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-});

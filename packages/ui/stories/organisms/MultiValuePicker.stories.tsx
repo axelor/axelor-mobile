@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {MultiValuePicker} from '../../src/components/organisms';
 import {lightTheme} from '../../src/theme';
@@ -32,15 +31,12 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
     ];
 
     return (
-      <View style={styles.container}>
-        <MultiValuePicker
-          title="Select options"
-          listItems={listItem}
-          defaultItems={[listItem[1], listItem[3]]}
-          style={styles.multiValuePicker}
-          {...args}
-        />
-      </View>
+      <MultiValuePicker
+        title="Select options"
+        listItems={listItem}
+        defaultItems={[listItem[1], listItem[3]]}
+        {...args}
+      />
     );
   },
   {
@@ -66,15 +62,3 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '25%',
-  },
-  multiValuePicker: {
-    width: '50%',
-  },
-});

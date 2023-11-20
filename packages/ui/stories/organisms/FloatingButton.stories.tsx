@@ -48,16 +48,33 @@ const actions = [
 
 storiesOf('ui/organisms/FloatingButton', module)
   .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('default', () => (
-    <FloatingButton
-      actions={actions}
-      iconName="plus"
-      size={60}
-      style={styles.component}
-      translator={text => text}
-    />
-  ));
+  .add(
+    'Default',
+    args => {
+      return (
+        <FloatingButton actions={actions} translator={key => key} {...args} />
+      );
+    },
+    {
+      argTypes: {
+        iconName: {
+          type: 'string',
+          defaultValue: 'car',
+          control: {type: 'text'},
+        },
+        size: {
+          control: {
+            type: 'range',
+            min: 15,
+            max: 75,
+            step: 5,
+          },
+          defaultValue: 50,
+        },
+      },
+    },
+  );
+
 const styles = StyleSheet.create({
   decorator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  component: {marginBottom: 20},
 });

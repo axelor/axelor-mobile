@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {StarScore} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -28,9 +27,7 @@ stories.add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <StarScore {...args} color={lightTheme.colors[args.color]} />
-      </View>
+      <StarScore color={lightTheme.colors[args.color]} score={3} {...args} />
     );
   },
   {
@@ -67,11 +64,3 @@ stories.add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

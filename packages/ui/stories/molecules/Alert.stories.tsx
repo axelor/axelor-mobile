@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Alert, Text} from '../../src/components';
 import {lightTheme} from '../../src/theme';
@@ -26,27 +25,28 @@ storiesOf('ui/molecules/Alert', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Alert
-          {...args}
-          cancelButtonConfig={{
-            title: args.cancelButtonConfig_title,
-            color: lightTheme.colors[args.cancelButtonConfig_color],
-            iconName: args.cancelButtonConfig_iconName,
-            hide: args.cancelButtonConfig_hide,
-            showInHeader: args.cancelButtonConfig_showInHeader,
-            width: args.cancelButtonConfig_width,
-          }}
-          confirmButtonConfig={{
-            title: args.confirmButtonConfig_title,
-            color: lightTheme.colors[args.confirmButtonConfig_color],
-            iconName: args.confirmButtonConfig_iconName,
-            hide: args.confirmButtonConfig_hide,
-            width: args.confirmButtonConfig_width,
-          }}>
-          <Text>TEST</Text>
-        </Alert>
-      </View>
+      <Alert
+        visible
+        cancelButtonConfig={{
+          title: args.cancelButtonConfig_title,
+          color: lightTheme.colors[args.cancelButtonConfig_color],
+          iconName: args.cancelButtonConfig_iconName,
+          FontAwesome5: false,
+          hide: args.cancelButtonConfig_hide,
+          showInHeader: args.cancelButtonConfig_showInHeader,
+          width: args.cancelButtonConfig_width,
+        }}
+        confirmButtonConfig={{
+          title: args.confirmButtonConfig_title,
+          color: lightTheme.colors[args.confirmButtonConfig_color],
+          iconName: args.confirmButtonConfig_iconName,
+          FontAwesome5: false,
+          hide: args.confirmButtonConfig_hide,
+          width: args.confirmButtonConfig_width,
+        }}
+        {...args}>
+        <Text>TEST</Text>
+      </Alert>
     );
   },
   {
@@ -77,7 +77,7 @@ storiesOf('ui/molecules/Alert', module).add(
       },
       cancelButtonConfig_iconName: {
         type: 'string',
-        defaultValue: '?',
+        defaultValue: 'times',
         control: {type: 'text'},
       },
       cancelButtonConfig_hide: {
@@ -111,7 +111,7 @@ storiesOf('ui/molecules/Alert', module).add(
       },
       confirmButtonConfig_iconName: {
         type: 'string',
-        defaultValue: '?',
+        defaultValue: 'check',
         control: {type: 'text'},
       },
       confirmButtonConfig_hide: {
@@ -127,11 +127,3 @@ storiesOf('ui/molecules/Alert', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

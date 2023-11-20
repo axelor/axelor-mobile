@@ -17,67 +17,55 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Label} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme/themes';
 
-storiesOf('ui/molecules/Label', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'default',
-    args => {
-      return (
-        <Label
-          {...args}
-          color={
-            args.labelColor != null ? lightTheme.colors[args.labelColor] : null
-          }
-        />
-      );
-    },
-    {
-      argTypes: {
-        type: {
-          control: {
-            type: 'radio',
-          },
-          defaultValue: 'info',
-          options: ['info', 'success', 'danger', 'error'],
+storiesOf('ui/molecules/Label', module).add(
+  'default',
+  args => {
+    return (
+      <Label
+        message="This is an indication"
+        color={
+          args.labelColor != null ? lightTheme.colors[args.labelColor] : null
+        }
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      type: {
+        control: {
+          type: 'radio',
         },
-        iconName: {
-          control: {
-            type: 'text',
-          },
-        },
-        labelColor: {
-          control: {
-            type: 'select',
-          },
-          options: [
-            null,
-            ...Object.entries(lightTheme.colors)
-              .filter(([, _color]) => typeof _color !== 'string')
-              .map(([key]) => key),
-          ],
-          defaultValue: 'primaryColor',
-        },
-        message: {
-          control: {
-            type: 'text',
-          },
-          defaultValue: 'This is an indication',
+        defaultValue: 'info',
+        options: ['info', 'success', 'danger', 'error'],
+      },
+      iconName: {
+        control: {
+          type: 'text',
         },
       },
+      labelColor: {
+        control: {
+          type: 'select',
+        },
+        options: [
+          null,
+          ...Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+        ],
+        defaultValue: 'primaryColor',
+      },
+      message: {
+        control: {
+          type: 'text',
+        },
+        defaultValue: 'This is an indication',
+      },
     },
-  );
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
   },
-});
+);

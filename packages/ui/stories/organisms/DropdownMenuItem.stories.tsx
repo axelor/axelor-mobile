@@ -17,42 +17,58 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {DropdownMenuItem} from '../../src/components/organisms';
 
-storiesOf('ui/organisms/DropdownMenuItem', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('default', () => (
-    <DropdownMenuItem
-      icon="paperclip"
-      placeholder="Placeholder"
-      onPress={action('onPress')}
-    />
-  ))
-  .add('with indicator', () => (
-    <DropdownMenuItem
-      icon="paperclip"
-      placeholder="Placeholder"
-      indicator={5}
-      onPress={action('onPress')}
-    />
-  ))
-  .add('with FontAwesome5 icon', () => (
-    <DropdownMenuItem
-      icon="file-alt"
-      placeholder="Placeholder"
-      FontAwesome5
-      onPress={action('onPress')}
-    />
-  ));
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+storiesOf('ui/organisms/DropdownMenuItem', module).add(
+  'default',
+  args => {
+    return (
+      <DropdownMenuItem
+        placeholder="Placeholder"
+        onPress={action('onPress')}
+        {...args}
+      />
+    );
   },
-});
+  {
+    argTypes: {
+      icon: {
+        type: 'string',
+        defaultValue: 'truck',
+        control: {type: 'text'},
+      },
+      color: {
+        control: {
+          type: 'color',
+        },
+        defaultValue: '#000000',
+      },
+      placeholder: {
+        type: 'string',
+        defaultValue: 'Placeholder',
+        control: {type: 'text'},
+      },
+      indicator: {
+        control: {
+          type: 'range',
+          min: 0,
+          max: 10,
+          step: 1,
+        },
+        defaultValue: 0,
+      },
+      hideIf: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      disableIf: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);

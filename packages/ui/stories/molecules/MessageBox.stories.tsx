@@ -17,13 +17,13 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {MessageBox} from '../../src/components/molecules';
 
-storiesOf('ui/molecules/MessageBox', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('Default', args => <MessageBox placeholder="placeholder" {...args} />, {
+storiesOf('ui/molecules/MessageBox', module).add(
+  'Default',
+  args => <MessageBox placeholder="placeholder" {...args} />,
+  {
     argTypes: {
       disabled: {
         control: {
@@ -32,14 +32,5 @@ storiesOf('ui/molecules/MessageBox', module)
         defaultValue: false,
       },
     },
-  });
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
   },
-});
+);

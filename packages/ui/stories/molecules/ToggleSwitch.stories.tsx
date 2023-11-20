@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {ToggleSwitch} from '../../src/components/molecules';
 
@@ -25,14 +24,12 @@ storiesOf('ui/molecules/ToggleSwitch', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <ToggleSwitch
-          leftTitle=""
-          rightTitle=""
-          onSwitch={console.log}
-          {...args}
-        />
-      </View>
+      <ToggleSwitch
+        leftTitle=""
+        rightTitle=""
+        onSwitch={console.log}
+        {...args}
+      />
     );
   },
   {
@@ -66,11 +63,3 @@ storiesOf('ui/molecules/ToggleSwitch', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

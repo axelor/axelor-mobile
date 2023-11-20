@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {Picker} from '../../src/components/organisms';
@@ -31,17 +30,14 @@ storiesOf('ui/organisms/Picker', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Picker
-          title={'Select an item'}
-          onValueChange={action('onValueChange')}
-          listItems={listItems}
-          labelField="label"
-          valueField="id"
-          style={styles.picker}
-          {...args}
-        />
-      </View>
+      <Picker
+        title={'Select an item'}
+        onValueChange={action('onValueChange')}
+        listItems={listItems}
+        labelField="label"
+        valueField="id"
+        {...args}
+      />
     );
   },
   {
@@ -79,14 +75,3 @@ storiesOf('ui/organisms/Picker', module).add(
     },
   },
 );
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '25%',
-  },
-  picker: {
-    width: '50%',
-  },
-});

@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {DropdownCardSwitch} from '../../src/components/organisms';
@@ -35,37 +34,27 @@ const dropdownItems = [
   },
 ];
 
-storiesOf('ui/organisms/DropdownCardSwitch', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add(
-    'default',
-    args => <DropdownCardSwitch dropdownItems={dropdownItems} {...args} />,
-    {
-      argTypes: {
-        style: {
-          control: {
-            type: 'object',
-          },
-          defaultValue: {
-            marginHorizontal: 20,
-          },
+storiesOf('ui/organisms/DropdownCardSwitch', module).add(
+  'default',
+  args => <DropdownCardSwitch dropdownItems={dropdownItems} {...args} />,
+  {
+    argTypes: {
+      style: {
+        control: {
+          type: 'object',
         },
-        styleTitle: {
-          control: {
-            type: 'object',
-          },
-          defaultValue: {
-            marginHorizontal: 20,
-          },
+        defaultValue: {
+          marginHorizontal: 20,
+        },
+      },
+      styleTitle: {
+        control: {
+          type: 'object',
+        },
+        defaultValue: {
+          marginHorizontal: 20,
         },
       },
     },
-  );
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '15%',
   },
-});
+);

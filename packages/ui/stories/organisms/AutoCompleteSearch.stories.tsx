@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {AutoCompleteSearch} from '../../src/components/organisms';
 
@@ -35,14 +34,11 @@ storiesOf('ui/organisms/AutoCompleteSearch', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <AutoCompleteSearch
-          objectList={objectList}
-          displayValue={displayValue}
-          style={styles.autoCompleteSearch}
-          {...args}
-        />
-      </View>
+      <AutoCompleteSearch
+        objectList={objectList}
+        displayValue={displayValue}
+        {...args}
+      />
     );
   },
   {
@@ -90,15 +86,3 @@ storiesOf('ui/organisms/AutoCompleteSearch', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '25%',
-  },
-  autoCompleteSearch: {
-    width: '50%',
-  },
-});

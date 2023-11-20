@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import {
   OutsideAlerterProvider,
   ThemeProvider,
@@ -8,6 +8,7 @@ import {
   lightTheme,
   writingDefaultTheme,
 } from '../packages/ui/src';
+import './storybook.css';
 
 if (Platform.OS === 'web') {
   const IconFont = require('react-native-vector-icons/Fonts/FontAwesome.ttf');

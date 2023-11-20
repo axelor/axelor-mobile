@@ -17,47 +17,51 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {lightTheme} from '../../src/theme';
 import {NumberBubble} from '../../src/components';
 
-storiesOf('ui/molecules/NumberBubble', module)
-  .addDecorator(story => <View>{story()}</View>)
-  .add(
-    'default',
-    args => {
-      return <NumberBubble {...args} color={lightTheme.colors[args._color]} />;
-    },
-    {
-      argTypes: {
-        number: {
-          control: {
-            type: 'number',
-          },
-          defaultValue: 0,
+storiesOf('ui/molecules/NumberBubble', module).add(
+  'default',
+  args => {
+    return (
+      <NumberBubble
+        number={0}
+        color={lightTheme.colors[args._color]}
+        isNeutralBackground
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      number: {
+        control: {
+          type: 'number',
         },
-        _color: {
-          control: {
-            type: 'select',
-          },
-          options: Object.entries(lightTheme.colors)
-            .filter(([, _color]) => typeof _color !== 'string')
-            .map(([key]) => key),
-          defaultValue: 'primaryColor',
+        defaultValue: 0,
+      },
+      _color: {
+        control: {
+          type: 'select',
         },
-        isNeutralBackground: {
-          control: {
-            type: 'boolean',
-          },
-          defaultValue: true,
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+      },
+      isNeutralBackground: {
+        control: {
+          type: 'boolean',
         },
-        size: {
-          control: {
-            type: 'number',
-          },
-          defaultValue: 50,
+        defaultValue: true,
+      },
+      size: {
+        control: {
+          type: 'number',
         },
+        defaultValue: 50,
       },
     },
-  );
+  },
+);

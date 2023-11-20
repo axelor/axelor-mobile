@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Checkbox} from '../../src/components/molecules';
 
@@ -34,14 +33,12 @@ storiesOf('ui/molecules/Checkbox', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Checkbox
-          title="Check me"
-          isDefaultChecked={false}
-          onChange={console.log}
-          {...args}
-        />
-      </View>
+      <Checkbox
+        title="Check me"
+        isDefaultChecked={false}
+        onChange={console.log}
+        {...args}
+      />
     );
   },
   {
@@ -99,11 +96,3 @@ storiesOf('ui/molecules/Checkbox', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
