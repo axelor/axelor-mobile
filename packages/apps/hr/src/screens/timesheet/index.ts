@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import TimerListScreen from './TimerListScreen';
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['-createdOn'],
-  hr_expenseLines: ['-expenseDate', '-createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_project: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
+export default {
+  TimerListScreen: {
+    title: 'Hr_Timers',
+    component: TimerListScreen,
+    actionID: 'hr_timers_list',
+  },
 };
+
+export {TimerListScreen};
