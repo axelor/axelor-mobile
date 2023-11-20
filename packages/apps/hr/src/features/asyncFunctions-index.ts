@@ -39,3 +39,4 @@ export {
 export {searchExpenseType} from './expenseTypeSlice';
 export {searchKilometricAllowParam} from './kilometricAllowParamSlice';
 export {searchProject} from './projectSlice';
+export {fetchTimer} from './timerSlice';
