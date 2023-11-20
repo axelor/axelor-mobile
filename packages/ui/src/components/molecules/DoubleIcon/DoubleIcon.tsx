@@ -37,6 +37,7 @@ interface BottomIconConfig {
   size?: number;
   touchable?: boolean;
   onPress?: () => void;
+  FontAwesome5?: boolean;
 }
 
 interface TopIconConfig {
@@ -45,6 +46,7 @@ interface TopIconConfig {
   size?: number;
   touchable?: boolean;
   onPress?: () => void;
+  FontAwesome5?: boolean;
 }
 
 interface DoubleIconProps {
@@ -52,7 +54,6 @@ interface DoubleIconProps {
   bottomIconConfig: BottomIconConfig;
   color?: string;
   size?: number;
-  touchable?: boolean;
   predefinedPosition?: keyof typeof predefinedPositions;
   topIconPosition?: {
     top?: number;
