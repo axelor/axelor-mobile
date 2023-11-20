@@ -63,21 +63,17 @@ describe('GroupByScrollList', () => {
     const wrapper = shallow(<GroupByScrollList {...props} />);
 
     expect(wrapper.find(ScrollList)).toHaveLength(1);
-    expect(wrapper.find(ScrollList).prop('loadingList')).toBe(
-      props.loadingList,
-    );
-    expect(wrapper.find(ScrollList).prop('data')).toEqual(props.data);
-    expect(wrapper.find(ScrollList).prop('fetchData')).toEqual(fetchData);
-    expect(wrapper.find(ScrollList).prop('moreLoading')).toBe(
-      props.moreLoading,
-    );
-    expect(wrapper.find(ScrollList).prop('isListEnd')).toBe(props.isListEnd);
-    expect(wrapper.find(ScrollList).prop('filter')).toBe(props.filter);
-    expect(wrapper.find(ScrollList).prop('translator')).toBe(props.translator);
-    expect(wrapper.find(ScrollList).prop('horizontal')).toBe(props.horizontal);
-    expect(wrapper.find(ScrollList).prop('disabledRefresh')).toBe(
-      props.disabledRefresh,
-    );
+    expect(wrapper.find(ScrollList).props()).toMatchObject({
+      loadingList: props.loadingList,
+      data: props.data,
+      fetchData: props.fetchData,
+      moreLoading: props.moreLoading,
+      isListEnd: props.isListEnd,
+      filter: props.filter,
+      translator: props.translator,
+      horizontal: props.horizontal,
+      disabledRefresh: props.disabledRefresh,
+    });
   });
 
   it('should render Separator at the beginning and when separatorCondition return true', () => {
@@ -96,6 +92,7 @@ describe('GroupByScrollList', () => {
       }
       if (i === 0 || separatorCondition(prevItem, data[i])) {
         expect(renderItemElement.find('Separator').length).toBe(1);
+        expect(props.fetchIndicator).toHaveBeenCalledWith(data[i]);
       } else {
         expect(renderItemElement.find('Separator').length).toBe(0);
       }
