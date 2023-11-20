@@ -148,7 +148,7 @@
   "Base_FormValidation_Array_Length": "must have {{length}} items",
   "Base_FormAction_Save": "Save",
   "Base_FormAction_Create": "Create",
-  "Base_FormAction_Update": "update",
+  "Base_FormAction_Update": "Update",
   "Base_FormAction_Refresh": "Refresh",
   "Base_FormAction_Reset": "Reset",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
