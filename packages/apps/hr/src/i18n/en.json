@@ -50,6 +50,8 @@
   "Hr_TimeUnit_Hours": "h",
   "Hr_TimeUnit_Minutes": "min",
   "Hr_TotalDurationHours": "Total duration (hours)",
+  "Hr_Timers": "Timers",
+  "Hr_NewTimer": "Create timer",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -73,5 +75,6 @@
   "Hr_SliceAction_DeleteExpenseLine": "delete expense line",
   "Hr_SliceAction_FetchCurrencies": "fetch currencies",
   "Hr_SliceAction_GetDistance": "get distance",
-  "Hr_SliceAction_SearchManagedEmployee": "search managed employee"
+  "Hr_SliceAction_SearchManagedEmployee": "search managed employee",
+  "Hr_SliceAction_FetchTimer": "fetch timer"
 }

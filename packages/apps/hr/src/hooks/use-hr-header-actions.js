@@ -26,6 +26,11 @@ import {
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {fetchExpenseById} from '../features/expenseSlice';
 
+export const useHrHeaders = () => {
+  useExpenseDetailsAction();
+  useTimerListAction();
+};
+
 const useExpenseDetailsAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
@@ -56,6 +61,23 @@ const useExpenseDetailsAction = () => {
   }, [Colors, I18n, dispatch, expense, mobileSettings]);
 };
 
-export const useHrHeaders = () => {
-  useExpenseDetailsAction();
+const useTimerListAction = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_timers_list', {
+      actions: [
+        {
+          key: 'newTimer',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Hr_NewTimer'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => console.log('Header button pressed.'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n]);
 };

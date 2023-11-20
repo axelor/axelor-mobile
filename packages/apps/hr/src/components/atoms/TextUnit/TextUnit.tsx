@@ -21,7 +21,7 @@ import {StyleSheet} from 'react-native';
 import {Color, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
 interface TextUnitProps {
-  value: string;
+  value: string | number;
   unit: string;
   color?: Color;
   fontSize?: number;

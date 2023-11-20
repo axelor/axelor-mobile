@@ -30,13 +30,13 @@ import {
   ExpenseHeader,
   ExpenseLineDetailCard,
   ExpenseLineSwitchAdd,
-} from '../components';
-import {fetchExpenseById} from '../features/expenseSlice';
+} from '../../components';
+import {fetchExpenseById} from '../../features/expenseSlice';
 import {
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
-} from '../features/expenseLineSlice';
-import {ExpenseLine} from '../types';
+} from '../../features/expenseLineSlice';
+import {ExpenseLine} from '../../types';
 
 const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense, expenseMode} = route.params;

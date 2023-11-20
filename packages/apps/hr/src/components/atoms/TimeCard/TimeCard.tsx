@@ -30,9 +30,9 @@ interface TimeCardProps {
   task?: string;
   manufOrder?: string;
   operation?: string;
-  comment?: string;
+  comments?: string;
   date: string;
-  duration: string;
+  duration: number;
   durationUnit: string;
   isBorderColor?: boolean;
   style?: any;
@@ -44,7 +44,7 @@ const TimeCard = ({
   task,
   manufOrder,
   operation,
-  comment,
+  comments,
   date,
   duration,
   durationUnit,
@@ -79,7 +79,7 @@ const TimeCard = ({
               style: styles.subTitle,
             },
             {
-              displayText: comment,
+              displayText: comments,
               numberOfLines: 2,
               hideIfNull: true,
               style: styles.subTitle,

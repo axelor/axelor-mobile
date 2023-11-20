@@ -41,3 +41,4 @@ export {
 export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
 export {searchProject as searchProjectApi} from './project-api';
+export {fetchTimer as fetchTimerApi} from './timer-api';
