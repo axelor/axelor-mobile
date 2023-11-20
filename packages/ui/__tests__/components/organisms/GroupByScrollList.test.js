@@ -22,28 +22,31 @@ import {GroupByScrollList, ScrollList, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 describe('GroupByScrollList', () => {
-  const mockData = [
-    {id: 1, simpleFullName: 'A'},
-    {id: 2, simpleFullName: 'B'},
+  const data = [
+    {id: 1, name: 'Aa'},
+    {id: 2, name: 'Ab'},
+    {id: 3, name: 'Bb'},
   ];
-  const renderItem = jest.fn(({item}) => <Text>{item.simpleFullName}</Text>);
+  const renderItem = ({item}) => <Text>{item.name}</Text>;
   const fetchData = jest.fn();
-  const fetchIndicator = jest.fn(item => ({
-    title: 'Group ' + item.group,
-    numberItems: 1,
+  const fetchIndicator = jest.fn(currentItem => ({
+    title: currentItem.name[0].toUpperCase(),
+    numberItems: data.filter(item => item.name[0] === currentItem.name[0])
+      .length,
     loading: false,
   }));
   const separatorCondition = (prevItem, currentItem) =>
-    prevItem.simpleFullName[0] !== currentItem.simpleFullName[0];
+    prevItem.name[0] !== currentItem.name[0];
 
   const props = {
     loadingList: false,
-    data: mockData,
+    data,
     renderItem,
     fetchData,
     moreLoading: false,
     isListEnd: false,
     filter: false,
+    translator: key => key,
     horizontal: false,
     disabledRefresh: false,
     separatorCondition,
@@ -54,43 +57,58 @@ describe('GroupByScrollList', () => {
     const wrapper = shallow(<GroupByScrollList {...props} />);
 
     expect(wrapper.exists()).toBe(true);
-    expect(wrapper.find(ScrollList).prop('data')).toEqual(mockData);
   });
 
-  it('renders ScrollList with the correct props', () => {
+  it('should render ScrollList with the correct props', () => {
     const wrapper = shallow(<GroupByScrollList {...props} />);
 
+    expect(wrapper.find(ScrollList)).toHaveLength(1);
     expect(wrapper.find(ScrollList).prop('loadingList')).toBe(
       props.loadingList,
     );
     expect(wrapper.find(ScrollList).prop('data')).toEqual(props.data);
-    expect(wrapper.find(ScrollList)).toHaveLength(1);
-
+    expect(wrapper.find(ScrollList).prop('fetchData')).toEqual(fetchData);
     expect(wrapper.find(ScrollList).prop('moreLoading')).toBe(
       props.moreLoading,
     );
     expect(wrapper.find(ScrollList).prop('isListEnd')).toBe(props.isListEnd);
     expect(wrapper.find(ScrollList).prop('filter')).toBe(props.filter);
+    expect(wrapper.find(ScrollList).prop('translator')).toBe(props.translator);
     expect(wrapper.find(ScrollList).prop('horizontal')).toBe(props.horizontal);
     expect(wrapper.find(ScrollList).prop('disabledRefresh')).toBe(
       props.disabledRefresh,
     );
-
-    expect(wrapper.find(ScrollList).prop('fetchData')).toEqual(fetchData);
-    expect(wrapper.find(ScrollList).prop('renderItem')).toEqual(
-      expect.any(Function),
-    );
-    wrapper.find(ScrollList).prop('renderItem')({item: mockData[0], index: 0});
-    expect(renderItem).toHaveBeenCalledWith({item: mockData[0], index: 0});
   });
 
-  it('applies custom style when provided', () => {
+  it('should render Separator at the beginning and when separatorCondition return true', () => {
+    const wrapper = shallow(<GroupByScrollList {...props} />);
+
+    for (let i = 0; i < data.length; i++) {
+      const renderItemElement = wrapper
+        .find(ScrollList)
+        .renderProp('renderItem')({
+        item: data[i],
+        index: i,
+      });
+      let prevItem = null;
+      if (i !== 0) {
+        prevItem = data[i - 1];
+      }
+      if (i === 0 || separatorCondition(prevItem, data[i])) {
+        expect(renderItemElement.find('Separator').length).toBe(1);
+      } else {
+        expect(renderItemElement.find('Separator').length).toBe(0);
+      }
+    }
+  });
+
+  it('should apply custom style when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(
       <GroupByScrollList {...props} style={customStyle} />,
     );
 
-    expect(getGlobalStyles(wrapper.find(ScrollList).at(0))).toMatchObject(
+    expect(getGlobalStyles(wrapper.find(ScrollList))).toMatchObject(
       customStyle,
     );
   });
