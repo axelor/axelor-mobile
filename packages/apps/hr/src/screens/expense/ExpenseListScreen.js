@@ -19,7 +19,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  Screen,
   ScrollList,
   HeaderContainer,
   ToggleSwitch,
@@ -28,7 +27,12 @@ import {
   Picker,
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  FocusScreen,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
   searchExpenseToValidate,
@@ -69,6 +73,9 @@ const ExpenseListScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(searchManagedEmployee({userId: user.id}));
+  }, [dispatch, user]);
+
+  const refresh = useCallback(() => {
     dispatch(searchExpenseToValidate({page: 0, user: user}));
   }, [dispatch, user]);
 
@@ -162,7 +169,7 @@ const ExpenseListScreen = ({navigation}) => {
   );
 
   return (
-    <Screen removeSpaceOnTop={true}>
+    <FocusScreen removeSpaceOnTop={true} fetcher={refresh}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -239,7 +246,7 @@ const ExpenseListScreen = ({navigation}) => {
         isListEnd={ObjectToDisplay.isListEnd}
         translator={I18n.t}
       />
-    </Screen>
+    </FocusScreen>
   );
 };
 
