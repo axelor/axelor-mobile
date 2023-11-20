@@ -17,18 +17,61 @@
  */
 
 import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
 import {StarScore} from '../../src/components/molecules';
+import {lightTheme} from '../../src/theme';
 
 const stories = storiesOf('ui/molecules/StarScore', module);
 
-stories.add('Default', () => (
-  <StarScore
-    score={3.5}
-    onPress={action('onPress')}
-    size={20}
-    showHalfStar
-    showMissingStar
-  />
-));
+stories.add(
+  'Default',
+  args => {
+    return (
+      <View style={styles.container}>
+        <StarScore {...args} color={lightTheme.colors[args.color]} />
+      </View>
+    );
+  },
+  {
+    argTypes: {
+      score: {
+        control: {type: 'number', min: 0, max: 5, step: 0.5},
+        description: 'The score to display',
+        defaultValue: 3,
+      },
+      showHalfStar: {
+        control: 'boolean',
+        description: 'Whether to show half stars',
+        defaultValue: true,
+      },
+      showMissingStar: {
+        control: 'boolean',
+        description: 'Whether to show missing stars',
+        defaultValue: true,
+      },
+      size: {
+        control: {type: 'number', min: 10, max: 50},
+        description: 'The size of the stars',
+        defaultValue: 20,
+      },
+      color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+        control: {
+          type: 'select',
+        },
+      },
+    },
+  },
+);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
