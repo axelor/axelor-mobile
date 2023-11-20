@@ -1,3 +1,5 @@
+import React from 'react';
+import {Platform} from 'react-native';
 import {
   OutsideAlerterProvider,
   ThemeProvider,
@@ -6,6 +8,24 @@ import {
   lightTheme,
   writingDefaultTheme,
 } from '../packages/ui/src';
+
+if (Platform.OS === 'web') {
+  const IconFont = require('react-native-vector-icons/Fonts/FontAwesome.ttf');
+  const iconFontStyles = `@font-face {
+    src: url(${IconFont});
+    font-family: FontAwesome;
+  }`;
+
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  if (style.styleSheet) {
+    style.styleSheet.cssText = iconFontStyles;
+  } else {
+    style.appendChild(document.createTextNode(iconFontStyles));
+  }
+
+  document.head.appendChild(style);
+}
 
 export const parameters = {
   actions: {argTypesRegex: '^on[A-Z].*'},
