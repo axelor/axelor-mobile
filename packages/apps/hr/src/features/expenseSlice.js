@@ -32,6 +32,7 @@ import {
   sendExpense as _sendExpense,
   validateExpense as _validateExpense,
   refuseExpense as _refuseExpense,
+  deleteExpense as _deleteExpense,
 } from '../api/expense-api';
 import {Expense} from '../types';
 import {fetchExpenseLine} from './expenseLineSlice';
@@ -235,6 +236,19 @@ export const fetchExpenseById = createAsyncThunk(
       action: 'Hr_SliceAction_FetchExpenseById',
       getState,
       responseOptions: {isArrayResponse: false},
+    });
+  },
+);
+
+export const deleteExpenseLine = createAsyncThunk(
+  'expense/deleteExpense',
+  async function (data = {}, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _deleteExpense,
+      data,
+      action: 'Hr_SliceAction_DeleteExpense',
+      getState,
+      responseOptions: {isArrayResponse: false, showToast: true},
     });
   },
 );

@@ -40,6 +40,7 @@
   "Hr_KilometricAllowParam": "Puissance fiscale",
   "Hr_Send": "Envoyer",
   "Hr_Validate": "Valider",
+  "Hr_Delete": "Supprimer",
   "Hr_CreateExpenseLine": "Créer une ligne de note de frais",
   "Hr_Refuse": "Refuser",
   "Hr_ReasonRefusal": "Motif de refus",
@@ -79,5 +80,6 @@
   "Hr_SliceAction_SearchManagedEmployee": "récupération des employés gérés",
   "Hr_SliceAction_FetchTimer": "récupération des chronomètres",
   "Hr_SliceAction_FetchTimesheet": "récupération des feuilles de temps",
-  "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider"
+  "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider",
+  "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais"
 }
