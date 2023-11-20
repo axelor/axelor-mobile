@@ -28,100 +28,166 @@ const Colors = {
   primary: '#3ECF8E',
 };
 
-storiesOf('ui/molecules/DoubleIcon', module).add(
-  'Default',
-  args => {
-    return (
+storiesOf('ui/molecules/DoubleIcon', module)
+  .add(
+    'without custom position',
+    args => {
+      return (
+        <View style={styles.container}>
+          <DoubleIcon
+            size={30}
+            topIconConfig={{
+              name: args.configTopIcon_name,
+              size: args.configTopIcon_size,
+              FontAwesome5: false,
+              color: lightTheme.colors[args.configTopIcon_color].background,
+              touchable: args.configTopIcon_touchable,
+            }}
+            bottomIconConfig={{
+              name: args.configBottomIcon_name,
+              size: args.configBottomIcon_size,
+              FontAwesome5: false,
+              color: lightTheme.colors[args.configBottomIcon_color].background,
+              touchable: args.configBottomIcon_touchable,
+            }}
+            {...args}
+          />
+        </View>
+      );
+    },
+    {
+      argTypes: {
+        predefinedPosition: {
+          options: [
+            'bottom-left',
+            'top-right',
+            'top-left',
+            'bottom-right',
+            'bottom',
+            'right',
+            'top',
+            'left',
+          ],
+          defaultValue: 'top-left',
+          control: {
+            type: 'select',
+          },
+        },
+        configTopIcon_name: {
+          type: 'string',
+          defaultValue: 'heart',
+          control: {type: 'text'},
+        },
+        configTopIcon_color: {
+          options: Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+          defaultValue: 'importantColor',
+          control: {
+            type: 'select',
+          },
+        },
+        configTopIcon_size: {
+          control: {type: 'number', min: 10, max: 50},
+          description: 'sizeTop',
+          defaultValue: 15,
+        },
+        configTopIcon_touchable: {
+          control: {type: 'boolean'},
+          defaultValue: false,
+        },
+
+        configBottomIcon_name: {
+          type: 'string',
+          defaultValue: 'user',
+          control: {type: 'text'},
+        },
+        configBottomIcon_color: {
+          options: Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+          defaultValue: 'primaryColor',
+          control: {
+            type: 'select',
+          },
+        },
+        configBottomIcon_size: {
+          control: {type: 'number', min: 10, max: 50},
+          description: 'sizeBottom',
+          defaultValue: 22,
+        },
+        configBottomIcon_touchable: {
+          control: {type: 'boolean'},
+          defaultValue: false,
+        },
+      },
+    },
+  )
+  .add(
+    'with custom position',
+    args => (
       <View style={styles.container}>
         <DoubleIcon
           size={30}
+          topIconPosition={{
+            top: args.top,
+            right: args.right,
+            left: args.left,
+            bottom: args.bottom,
+          }}
           topIconConfig={{
-            name: args.configTopIcon_name,
-            size: args.configTopIcon_size,
+            name: 'heart',
             FontAwesome5: false,
-            color: lightTheme.colors[args.configTopIcon_color].background,
-            touchable: args.configTopIcon_touchable,
+            color: lightTheme.colors.plannedColor.background,
           }}
           bottomIconConfig={{
-            name: args.configBottomIcon_name,
-            size: args.configBottomIcon_size,
+            name: 'user',
             FontAwesome5: false,
-            color: lightTheme.colors[args.configBottomIcon_color].background,
-            touchable: args.configBottomIcon_touchable,
           }}
-          {...args}
         />
       </View>
-    );
-  },
-  {
-    argTypes: {
-      predefinedPosition: {
-        options: [
-          'bottom-left',
-          'top-right',
-          'top-left',
-          'bottom-right',
-          'bottom',
-          'right',
-          'top',
-          'left',
-        ],
-        defaultValue: 'top-left',
-        control: {
-          type: 'select',
+    ),
+    {
+      argTypes: {
+        top: {
+          control: {
+            type: 'range',
+            min: -100,
+            max: 100,
+            step: 1,
+          },
+          defaultValue: 0,
         },
-      },
-      configTopIcon_name: {
-        type: 'string',
-        defaultValue: 'heart',
-        control: {type: 'text'},
-      },
-      configTopIcon_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'importantColor',
-        control: {
-          type: 'select',
+        right: {
+          control: {
+            type: 'range',
+            min: -100,
+            max: 100,
+            step: 1,
+          },
+          defaultValue: 0,
         },
-      },
-      configTopIcon_size: {
-        control: {type: 'number', min: 10, max: 50},
-        description: 'sizeTop',
-        defaultValue: 15,
-      },
-      configTopIcon_touchable: {
-        control: {type: 'boolean'},
-        defaultValue: false,
-      },
-
-      configBottomIcon_name: {
-        type: 'string',
-        defaultValue: 'user',
-        control: {type: 'text'},
-      },
-      configBottomIcon_color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'primaryColor',
-        control: {
-          type: 'select',
+        left: {
+          control: {
+            type: 'range',
+            min: -100,
+            max: 100,
+            step: 1,
+          },
+          defaultValue: 0,
         },
-      },
-      configBottomIcon_size: {
-        control: {type: 'number', min: 10, max: 50},
-        description: 'sizeBottom',
-        defaultValue: 22,
-      },
-      configBottomIcon_touchable: {
-        control: {type: 'boolean'},
-        defaultValue: false,
+        bottom: {
+          control: {
+            type: 'range',
+            min: -100,
+            max: 100,
+            step: 1,
+          },
+          defaultValue: 0,
+        },
       },
     },
-  },
-);
+  );
 
 const styles = StyleSheet.create({
   container: {

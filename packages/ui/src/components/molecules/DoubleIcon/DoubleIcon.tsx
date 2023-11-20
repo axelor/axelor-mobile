@@ -21,14 +21,14 @@ import {StyleSheet, View} from 'react-native';
 import {Icon} from '../../atoms';
 
 const predefinedPositions = {
-  left: {left: '-2%'},
-  top: {top: '-50%'},
-  right: {right: '-2%'},
-  bottom: {bottom: '-50%'},
-  'bottom-right': {bottom: '-10%', right: '-2%'},
-  'bottom-left': {bottom: '-10%', left: '-2%'},
-  'top-left': {top: '-10%', left: '-2%'},
-  'top-right': {top: '-10%', right: '-2%'},
+  left: {left: -10},
+  top: {top: -10},
+  right: {right: -10},
+  bottom: {bottom: -10},
+  'bottom-right': {bottom: -10, right: -10},
+  'bottom-left': {bottom: -7, left: -10},
+  'top-left': {top: -10, left: -10},
+  'top-right': {top: -10, right: -10},
 };
 
 interface BottomIconConfig {
