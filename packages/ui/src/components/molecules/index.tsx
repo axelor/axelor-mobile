@@ -26,6 +26,7 @@ export {default as Checkbox} from './Checkbox/Checkbox';
 export {default as Chip} from './Chip/Chip';
 export {default as CircleButton} from './CircleButton/CircleButton';
 export {default as ClearableCard} from './ClearableCard/ClearableCard';
+export {default as DoubleIcon} from './DoubleIcon/DoubleIcon';
 export {default as DropdownCard} from './DropdownCard/DropdownCard';
 export {default as DropdownMenu} from './DropdownMenu/DropdownMenu';
 export {default as EditableInput} from './EditableInput/EditableInput';
