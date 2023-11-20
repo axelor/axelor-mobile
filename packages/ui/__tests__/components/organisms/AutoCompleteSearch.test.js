@@ -57,31 +57,56 @@ describe('AutoCompleteSearch Component', () => {
       />,
     );
 
-    expect(wrapper.find(SearchBar).prop('title')).toBe(title);
-    expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
-      props.displayValue(value),
-    );
-    expect(wrapper.find(SearchBar).prop('required')).toBe(true);
-    expect(wrapper.find(SearchBar).prop('readonly')).toBe(true);
-    expect(wrapper.find(SearchBar).prop('scanIconColor')).toBe(scanIconColor);
+    expect(wrapper.find(SearchBar).props()).toMatchObject({
+      title,
+      valueTxt: props.displayValue(value),
+      required: true,
+      readonly: true,
+      scanIconColor,
+    });
   });
 
-  it('should call onChangeValue whith the right args when value change', () => {
+  it('should call onChangeValue with the right args when value change', () => {
     const onChangeValue = jest.fn();
     const wrapper = shallow(
       <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
     );
 
     wrapper.find(SearchBar).simulate('clearPress');
+
     expect(onChangeValue).toHaveBeenCalledWith(null);
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe('');
 
     wrapper.setProps({objectList: [props.objectList[0]]});
+
     wrapper.find(SearchBar).simulate('changeTxt', props.objectList[0].name);
+
     expect(onChangeValue).toHaveBeenCalledWith(props.objectList[0]);
     expect(wrapper.find(SearchBar).prop('valueTxt')).toBe(
       props.objectList[0].name,
     );
+  });
+
+  it('should call onChangeValue with the right args on selection', () => {
+    const onChangeValue = jest.fn();
+    const wrapper = shallow(
+      <AutoCompleteSearch {...props} onChangeValue={onChangeValue} />,
+    );
+
+    expect(wrapper.find(SelectionContainer).length).toBe(0);
+
+    wrapper.find(SearchBar).simulate('selection');
+
+    expect(wrapper.find(SelectionContainer).length).toBe(1);
+
+    wrapper
+      .find(SelectionContainer)
+      .dive()
+      .find('SelectionItem')
+      .at(1)
+      .simulate('press');
+
+    expect(onChangeValue).toHaveBeenCalledWith(props.objectList[1]);
   });
 
   it('should render placeholder on SearchBar and SearchDetailsPopUp when provided', () => {
@@ -98,6 +123,10 @@ describe('AutoCompleteSearch Component', () => {
 
   it('should not render SelectionContainer when oneFilter is true', () => {
     const wrapper = shallow(<AutoCompleteSearch {...props} oneFilter />);
+
+    expect(wrapper.find(SelectionContainer).length).toBe(0);
+
+    wrapper.find(SearchBar).simulate('selection');
 
     expect(wrapper.find(SelectionContainer).length).toBe(0);
   });
@@ -119,6 +148,15 @@ describe('AutoCompleteSearch Component', () => {
     wrapper.find(SearchBar).simulate('searchPress');
 
     expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(true);
+  });
+
+  it('should not display SearchDetailsPopUp when disabled', () => {
+    const wrapper = shallow(
+      <AutoCompleteSearch {...props} showDetailsPopup={false} />,
+    );
+
+    expect(wrapper.find('SearchDetailsPopUp').prop('isVisible')).toBe(false);
+    expect(wrapper.find(SearchBar).prop('disableSearchPress')).toBe(true);
   });
 
   it('should render a ScrollList in SearchDetailsPopUp with objectList as data', () => {
