@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,14 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import {Button} from '@axelor/aos-mobile-ui';
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['-createdOn'],
-  hr_expenseLines: ['-expenseDate', '-createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_project: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
+const TimerDeclareButton = () => {
+  const I18n = useTranslator();
+
+  return (
+    <Button
+      iconName="calendar-check"
+      title={I18n.t('Base_Declare')}
+      onPress={() => console.log('Declare button pressed.')}
+    />
+  );
 };
+
+export default TimerDeclareButton;
