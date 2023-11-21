@@ -143,6 +143,7 @@ const AutoCompleteSearch = ({
         setSearchText(changeScreenAfter ? '' : displayValue(item));
         setPopupIsVisible(false);
         onChangeValue(item);
+        inputRef.current.blur();
       }
     },
     [changeScreenAfter, displayValue, onChangeValue],
@@ -155,7 +156,6 @@ const AutoCompleteSearch = ({
   }, [navigate, oneFilter]);
 
   const handleClear = useCallback(() => {
-    setDisplayList(false);
     setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
