@@ -16,12 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {currencyReducer as currency} from './currencySlice';
-export {distanceReducer as distance} from './distanceSlice';
-export {employeeReducer as employee} from './employeeSlice';
-export {expenseConfigReducer as expenseConfig} from './expenseConfigSlice';
-export {expenseLineReducer as expenseLine} from './expenseLineSlice';
-export {expenseReducer as expense} from './expenseSlice';
-export {expenseTypeReducer as expenseType} from './expenseTypeSlice';
-export {kilometricAllowParamReducer as kilometricAllowParam} from './kilometricAllowParamSlice';
-export {projectReducer as project} from './projectSlice';
+import {createStandardSearch} from '@axelor/aos-mobile-core';
+
+const createManagedEmployeeCriteria = userId => {
+  const criteria = [
+    {
+      fieldName: 'managerUser.id',
+      operator: '=',
+      value: userId,
+    },
+  ];
+
+  return criteria;
+};
+
+export async function searchManagedEmployee({userId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Employee',
+    criteria: createManagedEmployeeCriteria(userId),
+    fieldKey: 'hr_employee',
+    numberElementsByPage: null,
+    page: 0,
+  });
+}

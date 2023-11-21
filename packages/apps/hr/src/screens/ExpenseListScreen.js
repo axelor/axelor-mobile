@@ -36,6 +36,7 @@ import {
   sendExpense,
   validateExpense,
 } from '../features/expenseSlice';
+import {searchManagedEmployee} from '../features/employeeSlice';
 import {Expense} from '../types';
 
 const ExpenseListScreen = ({navigation}) => {
@@ -55,6 +56,7 @@ const ExpenseListScreen = ({navigation}) => {
     expenseToValidateList,
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
+  const {managedEmployeeList} = useSelector(state => state.employee);
 
   const [mode, setMode] = useState(Expense.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -66,6 +68,7 @@ const ExpenseListScreen = ({navigation}) => {
   }, [Colors, I18n]);
 
   useEffect(() => {
+    dispatch(searchManagedEmployee({userId: user.id}));
     dispatch(searchExpenseToValidate({page: 0, user: user}));
   }, [dispatch, user]);
 
@@ -164,28 +167,30 @@ const ExpenseListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-              styleToogle={styles.toggle}
-              leftTitle={I18n.t('Hr_MyExpenses')}
-              rightTitle={I18n.t('Hr_ToValidate')}
-              rigthElement={
-                <NumberBubble
-                  style={styles.indicator}
-                  number={totalNumberExpenseToValidate}
-                  color={Colors.cautionColor}
-                  isNeutralBackground={true}
-                />
-              }
-              onSwitch={() =>
-                setMode(_mode => {
-                  setSelectedStatus(null);
-                  return _mode === Expense.mode.personnal
-                    ? Expense.mode.validation
-                    : Expense.mode.personnal;
-                })
-              }
-            />
+            {(user?.employee?.hrManager || managedEmployeeList?.length) > 0 && (
+              <ToggleSwitch
+                styleContainer={[commonStyles.filter, commonStyles.filterSize]}
+                styleToogle={styles.toggle}
+                leftTitle={I18n.t('Hr_MyExpenses')}
+                rightTitle={I18n.t('Hr_ToValidate')}
+                rigthElement={
+                  <NumberBubble
+                    style={styles.indicator}
+                    number={totalNumberExpenseToValidate}
+                    color={Colors.cautionColor}
+                    isNeutralBackground={true}
+                  />
+                }
+                onSwitch={() =>
+                  setMode(_mode => {
+                    setSelectedStatus(null);
+                    return _mode === Expense.mode.personnal
+                      ? Expense.mode.validation
+                      : Expense.mode.personnal;
+                  })
+                }
+              />
+            )}
             {mode === Expense.mode.personnal ? (
               <Picker
                 listItems={expenseStatusListItems}
