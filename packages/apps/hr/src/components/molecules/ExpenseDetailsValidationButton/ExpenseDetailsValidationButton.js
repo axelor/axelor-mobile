@@ -58,7 +58,13 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
   }, [dispatch, mode, expense]);
 
   if (expense.statusSelect === Expense.statusSelect.Draft) {
-    return <Button title={I18n.t('Hr_Send')} onPress={sendExpenseAPI} />;
+    return (
+      <Button
+        title={I18n.t('Hr_Send')}
+        onPress={sendExpenseAPI}
+        iconName="paper-plane"
+      />
+    );
   }
 
   if (
