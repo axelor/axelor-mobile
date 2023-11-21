@@ -167,7 +167,7 @@ const ExpenseListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            {(user?.employee?.hrManager || managedEmployeeList?.length) > 0 && (
+            {(user?.employee?.hrManager || managedEmployeeList?.length > 0) && (
               <ToggleSwitch
                 styleContainer={[commonStyles.filter, commonStyles.filterSize]}
                 styleToogle={styles.toggle}
