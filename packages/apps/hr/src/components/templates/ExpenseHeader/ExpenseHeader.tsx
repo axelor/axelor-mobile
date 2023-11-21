@@ -18,7 +18,13 @@
 
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useThemeColor, Text, Badge} from '@axelor/aos-mobile-ui';
+import {
+  useThemeColor,
+  Text,
+  Badge,
+  Label,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {Expense} from '../../../types';
 
@@ -47,6 +53,9 @@ const ExpenseHeader = ({}) => {
           ? user?.activeCompany?.currency?.symbol
           : user?.activeCompany?.currency?.code
       }`}</Text>
+      {!checkNullString(expense?.groundForRefusal) && (
+        <Label message={expense?.groundForRefusal} type="error" />
+      )}
     </View>
   );
 };
