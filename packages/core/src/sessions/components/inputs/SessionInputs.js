@@ -172,6 +172,10 @@ const SessionInputs = ({
     dispatch(isUrlValid({url: form?.url}));
   }, [dispatch, form?.url]);
 
+  useEffect(() => {
+    handleTestUrl();
+  }, [handleTestUrl]);
+
   const nameSessionAlreadyExist = useMemo(() => {
     if (!Array.isArray(sessionList) || sessionList?.length === 0) {
       return false;
