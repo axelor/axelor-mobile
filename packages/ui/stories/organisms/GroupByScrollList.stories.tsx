@@ -20,14 +20,14 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
-import {ScrollList} from '../../src/components/organisms';
+import {GroupByScrollList} from '../../src/components/organisms';
 
 const DATA = [
-  {id: '1', title: 'Item 1'},
-  {id: '2', title: 'Item 2'},
-  {id: '3', title: 'Item 3'},
-  {id: '4', title: 'Item 4'},
-  {id: '5', title: 'Item 5'},
+  {id: '1', title: 'A. Item 1'},
+  {id: '2', title: 'A. Item 2'},
+  {id: '3', title: 'B. Item 3'},
+  {id: '4', title: 'C. Item 4'},
+  {id: '5', title: 'C. Item 5'},
 ];
 
 const Item = ({title}: {title: string}) => (
@@ -40,10 +40,23 @@ const renderItem = ({item}: {item: any}) => {
   return <Item title={item.title} />;
 };
 
-storiesOf('ui/organisms/ScrollList', module)
+const separatorCondition = (prevItem: any, currentItem: any) => {
+  return prevItem.title[0] !== currentItem.title[0];
+};
+
+const fetchIndicator = (currentItem: any, isLoading: boolean) => {
+  return {
+    title: currentItem.title[0].toUpperCase(),
+    numberItems: DATA.filter(item => item.title[0] === currentItem.title[0])
+      .length,
+    loading: isLoading,
+  };
+};
+
+storiesOf('ui/organisms/GroupByScrollList', module)
   .addDecorator(story => <View style={styles.container}>{story()}</View>)
   .add('default', () => (
-    <ScrollList
+    <GroupByScrollList
       data={DATA}
       loadingList={false}
       moreLoading={false}
@@ -51,10 +64,12 @@ storiesOf('ui/organisms/ScrollList', module)
       renderItem={renderItem}
       fetchData={() => {}}
       filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
     />
   ))
   .add('loading', () => (
-    <ScrollList
+    <GroupByScrollList
       data={DATA}
       loadingList={true}
       moreLoading={false}
@@ -62,10 +77,12 @@ storiesOf('ui/organisms/ScrollList', module)
       renderItem={renderItem}
       fetchData={() => {}}
       filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
     />
   ))
   .add('empty list', () => (
-    <ScrollList
+    <GroupByScrollList
       data={[]}
       loadingList={false}
       moreLoading={false}
@@ -73,10 +90,12 @@ storiesOf('ui/organisms/ScrollList', module)
       renderItem={renderItem}
       fetchData={() => {}}
       filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
     />
   ))
   .add('list end', () => (
-    <ScrollList
+    <GroupByScrollList
       data={DATA}
       loadingList={false}
       moreLoading={false}
@@ -84,10 +103,12 @@ storiesOf('ui/organisms/ScrollList', module)
       renderItem={renderItem}
       fetchData={() => {}}
       filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
     />
   ))
   .add('more loading', () => (
-    <ScrollList
+    <GroupByScrollList
       data={DATA}
       loadingList={false}
       moreLoading={true}
@@ -95,10 +116,12 @@ storiesOf('ui/organisms/ScrollList', module)
       renderItem={renderItem}
       fetchData={() => {}}
       filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
     />
   ))
   .add('with translator', () => (
-    <ScrollList
+    <GroupByScrollList
       data={DATA}
       loadingList={false}
       moreLoading={false}
@@ -114,6 +137,21 @@ storiesOf('ui/organisms/ScrollList', module)
             return key;
         }
       }}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
+    />
+  ))
+  .add('with loading indicator', () => (
+    <GroupByScrollList
+      data={DATA}
+      loadingList={false}
+      moreLoading={false}
+      isListEnd={true}
+      renderItem={renderItem}
+      fetchData={() => {}}
+      filter={false}
+      separatorCondition={separatorCondition}
+      fetchIndicator={currentItem => fetchIndicator(currentItem, true)}
     />
   ));
 
