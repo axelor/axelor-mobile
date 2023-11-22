@@ -324,7 +324,7 @@ const SettingsScreen = ({children}) => {
           };
         } else {
           return {
-            type: 'pie',
+            type: 'bar',
             dataList: [ch.mobileChartValueResponseList],
             title: ch?.chartName,
           };
