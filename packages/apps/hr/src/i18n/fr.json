@@ -55,6 +55,7 @@
   "Hr_SliceAction_SearchKilometricExpenseLines:": "récupération des lignes de note de frais kilometriques",
   "Hr_SliceAction_SearchGeneralExpenseLines": "récupération des lignes de note de frais générales",
   "Hr_SliceAction_CreateExpenseLine": "création d'une ligne de frais",
+  "Hr_SliceAction_CreateAndLinkExpenseLine": "création et association d'une ligne de frais",
   "Hr_SliceAction_SearchKilometricAllowParam": "recherche sur les puissances fiscales",
   "Hr_SliceAction_FetchExpenseType": "récuperation des types de frais",
   "Hr_SliceAction_FetchProjects": "récupération des projets",

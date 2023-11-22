@@ -29,7 +29,7 @@ import {
   ExpenseDetailsValidationButton,
   ExpenseHeader,
   ExpenseLineDetailCard,
-  ExpenseLineTypeSwitch,
+  ExpenseLineSwitchAdd,
 } from '../components';
 import {fetchExpenseById} from '../features/expenseSlice';
 import {
@@ -115,7 +115,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
         fixedItems={
           <View>
             <ExpenseHeader />
-            <ExpenseLineTypeSwitch onChange={setMode} />
+            <ExpenseLineSwitchAdd onChangeSwicth={setMode} mode />
           </View>
         }
       />

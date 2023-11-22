@@ -31,7 +31,15 @@ import {
 } from '../../../features/expenseLineSlice';
 import {ExpenseLine} from '../../../types';
 
-const ExpenseLineTypeSwitch = ({onChange}) => {
+interface ExpenseLineTypeSwitchProps {
+  isAddButton?: boolean;
+  onChange: (mode: any) => void;
+}
+
+const ExpenseLineTypeSwitch = ({
+  isAddButton = false,
+  onChange,
+}: ExpenseLineTypeSwitchProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
@@ -41,6 +49,7 @@ const ExpenseLineTypeSwitch = ({onChange}) => {
     useSelector((state: any) => state.expenseLine);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+  const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
 
   useEffect(() => {
     dispatch(
@@ -57,7 +66,7 @@ const ExpenseLineTypeSwitch = ({onChange}) => {
       styleContainer={[
         commonStyles.filter,
         commonStyles.filterSize,
-        styles.toogleContainer,
+        styles.toggleContainer,
       ]}
       styleToogle={styles.toggle}
       leftTitle={I18n.t('Hr_General')}
@@ -89,21 +98,22 @@ const ExpenseLineTypeSwitch = ({onChange}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  toogleContainer: {
-    alignSelf: 'center',
-    marginTop: 0,
-    width: '89%',
-  },
-  toggle: {
-    width: '54%',
-    height: 40,
-    borderRadius: 13,
-  },
-  indicator: {
-    position: 'absolute',
-    right: '5%',
-  },
-});
+const getStyles = isAddButton =>
+  StyleSheet.create({
+    toggleContainer: {
+      width: isAddButton ? '79%' : '89%',
+    },
+    toggle: {
+      width: '54%',
+      height: 40,
+      borderRadius: 13,
+      justifyContent: 'flex-start',
+      paddingLeft: '5%',
+    },
+    indicator: {
+      position: 'absolute',
+      right: '5%',
+    },
+  });
 
 export default ExpenseLineTypeSwitch;

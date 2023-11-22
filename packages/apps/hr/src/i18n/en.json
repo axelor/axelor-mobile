@@ -55,6 +55,7 @@
   "Hr_SliceAction_SearchKilometricExpenseLines:": "fetch kilometric expense lines",
   "Hr_SliceAction_SearchGeneralExpenseLines": "search general expense lines",
   "Hr_SliceAction_CreateExpenseLine": "create expense line",
+  "Hr_SliceAction_CreateAndLinkExpenseLine": "create and link expense line",
   "Hr_SliceAction_SearchKilometricAllowParam": "seach kilometric allow param",
   "Hr_SliceAction_FetchExpenseType": "fetch expense types",
   "Hr_SliceAction_FetchProjects": "fetch projects",

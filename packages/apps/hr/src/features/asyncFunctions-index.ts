@@ -22,6 +22,7 @@ export {searchManagedEmployee} from './employeeSlice';
 export {fetchExpenseConfig} from './expenseConfigSlice';
 export {
   createExpenseLine,
+  createAndLinkExpenseLine,
   deleteExpenseLine,
   fetchExpenseLine,
   searchGeneralExpenseLines,

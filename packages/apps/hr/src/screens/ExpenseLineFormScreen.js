@@ -20,6 +20,7 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
+  createAndLinkExpenseLine,
   updateExpenseLine,
 } from '../features/expenseLineSlice';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -34,7 +35,13 @@ import {
 } from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
-  const {expenseLine, idExpense, justificationMetaFile} = route?.params;
+  const {
+    expenseLine,
+    idExpense,
+    versionExpense,
+    modeExpense,
+    justificationMetaFile,
+  } = route?.params;
   const I18n = useTranslator();
   const _dispatch = useDispatch();
 
@@ -74,6 +81,52 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
       navigation.navigate('ExpenseLinesListScreen');
     },
     [navigation, user?.activeCompany?.id, user?.employee?.id, user?.id],
+  );
+
+  const createAndLinkExpenseLineAPI = useCallback(
+    (_expenseLine, dispatch) => {
+      dispatch(needUpdateDistance(false));
+
+      const dataToSend = {
+        projectId: _expenseLine.project?.id,
+        toInvoice: _expenseLine.toInvoice,
+        expenseProductId: _expenseLine.expenseProduct?.id,
+        expenseDate: _expenseLine.expenseDate,
+        employeeId: user?.employee?.id,
+        totalAmount: _expenseLine.totalAmount,
+        totalTax: _expenseLine.totalTax,
+        currencyId: _expenseLine.currency?.id,
+        comments: _expenseLine.comments,
+        justificationFileId: _expenseLine.justificationMetaFile?.id,
+        kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
+        kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
+        distance: _expenseLine.distance,
+        fromCity: _expenseLine.fromCity,
+        toCity: _expenseLine.toCity,
+        expenseLineType: _expenseLine.manageMode,
+        companyId: user?.activeCompany?.id,
+      };
+      dispatch(
+        createAndLinkExpenseLine({
+          expenseLine: dataToSend,
+          idExpense: idExpense,
+          versionExpense: versionExpense,
+          modeExpense: modeExpense,
+          userId: user?.id,
+        }),
+      );
+
+      navigation.goBack();
+    },
+    [
+      idExpense,
+      modeExpense,
+      navigation,
+      user?.activeCompany?.id,
+      user?.employee?.id,
+      user?.id,
+      versionExpense,
+    ],
   );
 
   const updateExpenseLineAPI = useCallback(
@@ -218,9 +271,20 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           type: 'create',
           needValidation: true,
           needRequiredFields: true,
-          hideIf: () => expenseLine != null,
+          hideIf: () => expenseLine != null || idExpense != null,
           customAction: ({dispatch, objectState}) => {
             return createExpenseLineAPI(objectState, dispatch);
+          },
+        },
+        {
+          key: 'create-and-link-expenseLine',
+          type: 'custom',
+          titleKey: 'Base_Add',
+          needValidation: true,
+          needRequiredFields: true,
+          hideIf: () => expenseLine != null || idExpense == null,
+          customAction: ({dispatch, objectState}) => {
+            return createAndLinkExpenseLineAPI(objectState, dispatch);
           },
         },
         {
