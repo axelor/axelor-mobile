@@ -22,7 +22,7 @@ import {ScrollView} from '../../atoms';
 import BarChartDashboard from '../BarChartDashboard/BarChartDashboard';
 import LineChartDashboard from '../LineChartDashboard/LineChartDashboard';
 import PieChartDashboard from '../PieChartDashboard/PieChartDashboard';
-import {Data, Max_Number_Graph_Line} from '../types/chart';
+import Chart, {Data, Max_Number_Graph_Line} from '../types/chart';
 
 interface Graph {
   type: 'pie' | 'bar' | 'line';
@@ -111,16 +111,16 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
               const title = graph?.title;
 
               switch (graph?.type) {
-                case 'bar':
+                case Chart.chartType.bar:
                   return BarChartDashboardRender(
                     graph.dataList,
                     indexGraph,
                     nbGraphInLine,
                     title,
                   );
-                case 'pie':
+                case Chart.chartType.pie:
                   return PieChartRender(graph.dataList, indexGraph, title);
-                case 'line':
+                case Chart.chartType.line:
                   return LineChartDashboardRender(
                     graph.dataList,
                     indexGraph,

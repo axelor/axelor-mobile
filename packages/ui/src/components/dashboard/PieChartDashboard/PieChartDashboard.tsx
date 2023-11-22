@@ -11,6 +11,12 @@ interface PieChartProps {
   datasets: Data[];
   legend?: boolean;
   title?: string;
+  donut?: boolean;
+  showGradient?: boolean;
+  sectionAutoFocus?: boolean;
+  radius?: number;
+  innerRadius?: number;
+  focusOnPress?: boolean;
 }
 
 const PieChartDashboard = ({
@@ -18,6 +24,12 @@ const PieChartDashboard = ({
   datasets,
   legend = false,
   title,
+  donut = true,
+  showGradient = true,
+  sectionAutoFocus = true,
+  radius = 90,
+  innerRadius = 60,
+  focusOnPress = true,
 }: PieChartProps) => {
   const Color = useThemeColor();
 
@@ -43,12 +55,12 @@ const PieChartDashboard = ({
     <View style={[style.container, styleContainer]}>
       <PieChart
         data={dataSet}
-        donut={true}
-        showGradient
-        sectionAutoFocus
-        radius={90}
-        innerRadius={60}
-        focusOnPress={true}
+        donut={donut}
+        showGradient={showGradient}
+        sectionAutoFocus={sectionAutoFocus}
+        radius={radius}
+        innerRadius={innerRadius}
+        focusOnPress={focusOnPress}
       />
       {!checkNullString(title) && <Text style={style.title}>{title}</Text>}
       {legend && (
