@@ -60,23 +60,23 @@ const DemoResponse = {
             },
             {
               label: 'T0002 - MICHEL Loic',
-              value: 0,
+              value: 2,
             },
             {
               label: 'T0003 - GARCIA Daniel',
-              value: 0,
+              value: 3,
             },
             {
               label: 'T0004 - DAVID Laurent',
-              value: 0,
+              value: 4,
             },
             {
               label: 'T0005 - BLUEBERRY TELECOM',
-              value: 1,
+              value: 5,
             },
             {
               label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 0,
+              value: 6,
             },
           ],
         },
@@ -273,7 +273,7 @@ const SettingsScreen = ({children}) => {
       const dataList = elt.chartList.map((ch, index) => {
         if (index === 0) {
           return {
-            type: 'line',
+            type: 'bar',
             dataList: [
               [
                 {
@@ -319,12 +319,34 @@ const SettingsScreen = ({children}) => {
                   value: 9,
                 },
               ],
+              [
+                {
+                  label: 'Canceled',
+                  value: 5,
+                },
+                {
+                  label: 'Draft quotation',
+                  value: 2,
+                },
+                {
+                  label: 'Finalized quotatifefefon',
+                  value: 1,
+                },
+                {
+                  label: 'Order completefefefed',
+                  value: 1,
+                },
+                {
+                  label: 'Order confirmefefefd',
+                  value: 2,
+                },
+              ],
             ],
             title: ch?.chartName,
           };
         } else {
           return {
-            type: 'pie',
+            type: 'bar',
             dataList: [ch.mobileChartValueResponseList],
             title: ch?.chartName,
           };

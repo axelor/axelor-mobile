@@ -23,6 +23,10 @@ import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Text} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
 import {Data} from '../types/chart';
+import {
+  mergeDataForGroupedBars,
+  transformToBarChartData,
+} from './BarChartDashboardHelper';
 
 interface BarCharDashboardProps {
   style?: any;
@@ -42,6 +46,8 @@ const BarChartDashboard = ({
   title,
 }: BarCharDashboardProps) => {
   const Color = useThemeColor();
+  const groupedData = mergeDataForGroupedBars(datasets);
+  const barChartData = transformToBarChartData(groupedData);
 
   return (
     <Card style={[styles.container, style]}>
@@ -52,7 +58,7 @@ const BarChartDashboard = ({
               ? datasets[0]?.[0].color
               : Color?.primaryColor?.background
           }
-          data={datasets[0]}
+          data={barChartData}
           width={widthGraph}
           spacing={spacing}
           isAnimated={true}
