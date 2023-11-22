@@ -47,7 +47,7 @@ const BarChartDashboard = ({
 }: BarCharDashboardProps) => {
   const Color = useThemeColor();
   const groupedData = mergeDataForGroupedBars(datasets);
-  const barChartData = transformToBarChartData(groupedData);
+  const barChartData = transformToBarChartData(groupedData, Color);
 
   return (
     <Card style={[styles.container, style]}>

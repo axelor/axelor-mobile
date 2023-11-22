@@ -39,8 +39,16 @@ export const mergeDataForGroupedBars = datasets => {
   return mergedData;
 };
 
-export const transformToBarChartData = groupedData => {
-  const colors = ['#177AD5', '#ED6665'];
+export const transformToBarChartData = (groupedData, Colors) => {
+  const colors = [
+    Colors.primaryColor.background,
+    Colors.progressColor.background,
+    Colors.priorityColor.background,
+    Colors.errorColor.background,
+    Colors.cautionColor.background,
+    Colors.plannedColor.background,
+    Colors.secondaryColor.background,
+  ];
   let finalData = [];
 
   groupedData.forEach(group => {

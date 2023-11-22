@@ -278,7 +278,7 @@ const SettingsScreen = ({children}) => {
               [
                 {
                   label: 'Canceled',
-                  value: 0,
+                  value: 2,
                 },
                 {
                   label: 'Draft quotation',
