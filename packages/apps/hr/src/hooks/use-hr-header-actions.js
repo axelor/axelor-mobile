@@ -32,7 +32,7 @@ const useExpenseDetailsAction = () => {
   const dispatch = useDispatch();
 
   const {expense} = useSelector(state => state.expense);
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_expense_details', {
