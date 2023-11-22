@@ -17,7 +17,7 @@
  */
 
 import {axiosApiProvider} from '../apiProviders';
-import routes from './routes';
+import defaultRoutes from './routes';
 
 const checkError = field => {
   return (
@@ -26,8 +26,18 @@ const checkError = field => {
   );
 };
 
+export interface RouteSwitcher {
+  AOS6: {
+    [key: string]: string;
+  };
+  AOS7: {
+    [key: string]: string;
+  };
+}
+
 class RouterProvider {
   private retrocompatibilityAOS6: boolean = true;
+  private routes: RouteSwitcher = defaultRoutes;
 
   constructor() {}
 
@@ -35,27 +45,37 @@ class RouterProvider {
     this.retrocompatibilityAOS6 = value;
   }
 
+  public addRoutes(value: RouteSwitcher) {
+    if (value.AOS6 != null) {
+      this.routes.AOS6 = {...this.routes.AOS6, ...value.AOS6};
+    }
+
+    if (value.AOS7 != null) {
+      this.routes.AOS7 = {...this.routes.AOS7, ...value.AOS7};
+    }
+  }
+
   public async get(resource: string): Promise<string> {
     if (!this.retrocompatibilityAOS6) {
-      return routes.AOS7[resource];
+      return this.routes.AOS7[resource];
     }
 
     const objectRoute = await axiosApiProvider
       .get({
-        url: routes.AOS6[resource],
+        url: this.routes.AOS6[resource],
       })
       .then(res => {
         if (
           checkError(res?.data?.data?.cause) ||
           checkError(res?.data?.data?.causeClass)
         ) {
-          return routes.AOS7[resource];
+          return this.routes.AOS7[resource];
         }
 
-        return routes.AOS6[resource];
+        return this.routes.AOS6[resource];
       })
       .catch(() => {
-        return routes.AOS7[resource];
+        return this.routes.AOS7[resource];
       });
 
     return objectRoute;

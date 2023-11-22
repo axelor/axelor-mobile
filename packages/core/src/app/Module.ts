@@ -112,4 +112,6 @@ export interface Module {
   };
   backgroundFunctions?: Function[];
   models?: Models;
+  /** List of configuration name to fetch from the web */
+  requiredConfig?: string[];
 }

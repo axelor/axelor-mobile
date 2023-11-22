@@ -47,6 +47,7 @@ export interface Module {
     formsRegister?: FormConfigs;
     headerRegisters?: Function;
   };
+  requiredConfig?: string[];
 }
 ```
 
@@ -63,3 +64,4 @@ Un module possède donc :
 - un ensemble de reducers pour le module (_reducers_). Un reducer est un simple fonction qui permet de mettre à jour l’état d’un objet en fonction de l’action qui lui est transmise. Dans notre contexte, les reducers sont les fonctions redux qui permettent de mettre à jour le store lors des appels API par exemple. Il faut obligatoirement exporter tous les reducers créés dans le module pour accéder à la partie du store correspondante dans les différents écrans.
 - une liste de fonctions à exécuter en arrière plan si nécessaire (_backgroundFunctions_). Ces fonctions sont exécutées toutes les 5 minutes.
 - une configuration de modèles pour les appels API (_models_).
+- une liste de nom d'application web pour récupérer la configuration associée (_requiredConfig_), comme par exemple 'AppBase" ou 'AppMobileSettings'.
