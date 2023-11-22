@@ -75,8 +75,8 @@ const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   );
 };
 
-const PieChartRender = (datasets, key) => {
-  return <PieChartDashboard datasets={datasets[0]} key={key} legend={true} />;
+const PieChartRender = (datasets, key, title) => {
+  return <PieChartDashboard datasets={datasets[0]} key={key} title={title} />;
 };
 
 const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
@@ -113,7 +113,7 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
                 );
               }
               if (graph?.type === 'pie') {
-                return PieChartRender(graph.dataList, indexGraph);
+                return PieChartRender(graph.dataList, indexGraph, title);
               }
               if (graph?.type === 'line') {
                 return LineChartDashboardRender(

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {checkNullString} from '../../../utils/strings';
 import {Text} from '../../atoms';
 import Chart, {Data} from '../types/chart';
 
@@ -9,12 +10,14 @@ interface PieChartProps {
   styleContainer?: any;
   datasets: Data[];
   legend?: boolean;
+  title?: string;
 }
 
 const PieChartDashboard = ({
   styleContainer,
   datasets,
   legend = false,
+  title,
 }: PieChartProps) => {
   const Color = useThemeColor();
 
@@ -47,6 +50,7 @@ const PieChartDashboard = ({
         innerRadius={60}
         focusOnPress={true}
       />
+      {!checkNullString(title) && <Text style={style.title}>{title}</Text>}
       {legend && (
         <View style={style.legenContainer}>
           {dataSet.map((_data, index) => (
@@ -64,7 +68,7 @@ const PieChartDashboard = ({
 
 const style = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
     width:
@@ -82,6 +86,7 @@ const style = StyleSheet.create({
   text: {
     marginHorizontal: 5,
   },
+  title: {alignSelf: 'center'},
 });
 
 export default PieChartDashboard;
