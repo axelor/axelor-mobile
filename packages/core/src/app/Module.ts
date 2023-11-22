@@ -24,6 +24,7 @@ interface MenuBase {
   title: string;
   icon: string;
   disabled?: boolean;
+  hideIf?: (storeState: any) => boolean;
   parent?: string;
   order?: number;
 }

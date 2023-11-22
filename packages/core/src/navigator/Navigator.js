@@ -33,6 +33,7 @@ import {
   getDefaultModule,
   manageOverridingMenus,
   manageWebCompatibility,
+  manageWebConfig,
   moduleHasMenus,
   updateAccessibleMenus,
 } from './module.helper';
@@ -66,6 +67,7 @@ const Navigator = ({
   version,
   versionCheckConfig,
 }) => {
+  const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
@@ -78,14 +80,17 @@ const Navigator = ({
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
-        manageOverridingMenus(
-          manageSubMenusOverriding(
-            filterAuthorizedModules(modules, mobileConfigs, user),
+        manageWebConfig(
+          manageOverridingMenus(
+            manageSubMenusOverriding(
+              filterAuthorizedModules(modules, mobileConfigs, user),
+            ),
           ),
+          storeState,
         ),
         metaModules,
       ),
-    [metaModules, mobileConfigs, modules, user],
+    [metaModules, mobileConfigs, modules, storeState, user],
   );
 
   const [activeModule, setActiveModule] = useState(
