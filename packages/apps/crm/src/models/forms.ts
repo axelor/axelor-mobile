@@ -327,8 +327,7 @@ export const crm_formsRegister: FormConfigs = {
         titleKey: 'Crm_Opportunity_RecurrentAmount',
         type: 'number',
         widget: 'increment',
-        hideIf: ({storeState}) =>
-          !storeState.crmConfig.crmConfig?.isManageRecurrent,
+        hideIf: ({storeState}) => !storeState.appConfig.crm?.isManageRecurrent,
       },
       description: {
         titleKey: 'Base_Description',
