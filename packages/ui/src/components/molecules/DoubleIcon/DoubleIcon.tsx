@@ -31,16 +31,7 @@ const predefinedPositions = {
   'top-right': {top: -10, right: -10},
 };
 
-interface BottomIconConfig {
-  name: string;
-  color?: string;
-  size?: number;
-  touchable?: boolean;
-  onPress?: () => void;
-  FontAwesome5?: boolean;
-}
-
-interface TopIconConfig {
+interface IconConfig {
   name: string;
   color?: string;
   size?: number;
@@ -50,9 +41,8 @@ interface TopIconConfig {
 }
 
 interface DoubleIconProps {
-  topIconConfig: TopIconConfig;
-  bottomIconConfig: BottomIconConfig;
-  color?: string;
+  topIconConfig: IconConfig;
+  bottomIconConfig: IconConfig;
   size?: number;
   predefinedPosition?: keyof typeof predefinedPositions;
   topIconPosition?: {
@@ -66,9 +56,9 @@ interface DoubleIconProps {
 const DoubleIcon = ({
   topIconConfig,
   bottomIconConfig,
-  topIconPosition = {},
   size = 18,
   predefinedPosition,
+  topIconPosition = {},
 }: DoubleIconProps) => {
   const topIconStyle = predefinedPositions[predefinedPosition];
   return (
