@@ -124,13 +124,13 @@ export const updateExpenseLine = createAsyncThunk(
     }).then(() => {
       return handlerApiCall({
         fetchFunction:
-          data?.idExpense == null
+          data?.expenseId == null
             ? _searchExpenseLines
             : data.mode === ExpenseLine.modes.general
             ? _searchGeneralExpenseLines
             : _searchKilometricExpenseLines,
         action:
-          data?.idExpense == null
+          data?.expenseId == null
             ? 'Hr_SliceAction_FetchExpenseLines'
             : data?.mode === ExpenseLine.modes.general
             ? 'Hr_SliceAction_SearchGeneralExpenseLines'
