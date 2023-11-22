@@ -76,7 +76,7 @@ const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
 };
 
 const PieChartRender = (datasets, key) => {
-  return <PieChartDashboard datasets={datasets} key={key} legend={true} />;
+  return <PieChartDashboard datasets={datasets[0]} key={key} legend={true} />;
 };
 
 const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {

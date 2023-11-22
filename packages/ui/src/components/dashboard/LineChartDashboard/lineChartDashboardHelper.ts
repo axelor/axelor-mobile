@@ -12,6 +12,7 @@ export const generateChartProps = (datasets, Color) => {
     const color = dataset[0]?.color || defaultColors[index];
     props[`dataPointsColor${index + 1}`] = color;
     props[`color${index + 1}`] = color;
+
     if (index === 0) {
       // eslint-disable-next-line dot-notation
       props['data'] = dataset;
@@ -19,6 +20,6 @@ export const generateChartProps = (datasets, Color) => {
       props[`data${index + 1}`] = dataset;
     }
   });
-  console.log(props);
+
   return props;
 };

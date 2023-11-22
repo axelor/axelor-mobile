@@ -13933,9 +13933,9 @@ react-native-gesture-handler@2.9.0:
     prop-types "^15.7.2"
 
 react-native-gifted-charts@^1.3.11:
-  version "1.3.18"
-  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.3.18.tgz#636aad476f42a7f78e031703fc9088046666c056"
-  integrity sha512-Q8UYP+pvmsX09I3IfyT3i6mTn/vr79HzD/dZq60/0T4i4yqjHm6Ay61lPw9PLHnDd8hnCN9WJwm3AwGiaTCOdQ==
+  version "1.3.19"
+  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.3.19.tgz#3cfb575c3440b6b40da213da20801f694976bde3"
+  integrity sha512-T7ydRfKMrsayrRFBMhCcR5Ogqj7V7d+ZeJAZFHkehvZz+/ER/0cjVXsMsyg9Sh+tK3dwib5lGbBjxK4T72tqDg==
 
 react-native-gradle-plugin@^0.0.6:
   version "0.0.6"
