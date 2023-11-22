@@ -19,7 +19,6 @@
 export {default as Alert} from './Alert/Alert';
 export {default as AttachmentCard} from './AttachmentCard/AttachmentCard';
 export {default as Badge} from './Badge/Badge';
-export {default as BarChartDashboard} from './BarChartDashboard/BarChartDashboard';
 export {default as BlockInteractionMessage} from './BlockInteractionMessage/BlockInteractionMessage';
 export {default as BootstrapIcon} from './BootstrapIcon/BootstrapIcon';
 export {default as Button} from './Button/Button';
@@ -43,7 +42,6 @@ export {default as Increment} from './Increment/Increment';
 export {default as InfoBubble} from './InfoBubble/InfoBubble';
 export {default as Label} from './Label/Label';
 export {default as LabelText} from './LabelText/LabelText';
-export {default as LineChartDashboard} from './LineChartDashboard/LineChartDashboard';
 export {default as LoadingIndicator} from './LoadingIndicator/LoadingIndicator';
 export {default as MessageBox} from './MessageBox/MessageBox';
 export {default as MovementIndicationCard} from './MovementIndicationCard/MovementIndicationCard';
@@ -51,7 +49,6 @@ export {default as MultiValuePickerButton} from './MultiValuePickerButton/MultiV
 export {default as NotesCard} from './NotesCard/NotesCard';
 export {default as NumberBubble} from './NumberBubble/NumberBubble';
 export {default as PanelTabs} from './PanelTabs/PanelTabs';
-export {default as PieChartDashboard} from './PieChartDashboard/PieChartDashboard';
 export {default as RadioSelect} from './RadioSelect/RadioSelect';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
 export {default as SelectionContainer} from './SelectionContainer/SelectionContainer';

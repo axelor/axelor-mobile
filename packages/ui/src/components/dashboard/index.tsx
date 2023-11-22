@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as ObjectCard} from './ObjectCard/ObjectCard';
-export {default as TabsScreen} from './TabsScreen/TabsScreen';
+export {default as BarChartDashboard} from './BarChartDashboard/BarChartDashboard';
+export {default as Dashboard} from './Dashboard/Dashboard';
+export {default as LineChartDashboard} from './LineChartDashboard/LineChartDashboard';

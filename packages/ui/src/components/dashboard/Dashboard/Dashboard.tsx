@@ -18,12 +18,10 @@
 
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {
-  BarChartDashboard,
-  LineChartDashboard,
-  PieChartDashboard,
-} from '../../molecules';
 import {ScrollView} from '../../atoms';
+import BarChartDashboard from '../BarChartDashboard/BarChartDashboard';
+import LineChartDashboard from '../LineChartDashboard/LineChartDashboard';
+import PieChartDashboard from '../PieChartDashboard/PieChartDashboard';
 
 interface Data {
   value: number;

@@ -17,6 +17,7 @@
  */
 
 export * from './atoms';
+export * from './dashboard';
 export * from './molecules';
 export * from './organisms';
 export * from './templates';
