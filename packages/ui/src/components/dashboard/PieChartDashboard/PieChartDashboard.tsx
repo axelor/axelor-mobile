@@ -21,13 +21,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Text} from '../../atoms';
-import Chart from '../../../types/chart';
-
-interface Data {
-  value: number;
-  color?: string;
-  label: string;
-}
+import Chart, {Data} from '../types/chart';
 
 interface PieChartProps {
   styleContainer?: any;

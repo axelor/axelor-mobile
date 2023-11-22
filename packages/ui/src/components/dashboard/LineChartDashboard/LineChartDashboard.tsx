@@ -22,12 +22,8 @@ import {LineChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Text} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
-
-interface Data {
-  value: number;
-  color?: string;
-  label: string;
-}
+import {Data} from '../types/chart';
+import {generateChartProps} from './lineChartDashboardHelper';
 
 interface LineChartDashboardProps {
   style?: any;
@@ -48,71 +44,19 @@ const LineChartDashboard = ({
 }: LineChartDashboardProps) => {
   const Color = useThemeColor();
 
+  const chartProps = generateChartProps(datasets, Color);
+
   return (
     <Card style={[styles.container, style]}>
       <View>
         <LineChart
           width={widthGraph}
-          data={datasets[0]}
-          data2={datasets[1]}
-          data3={datasets[3]}
-          data4={datasets[3]}
-          data5={datasets[4]}
           yAxisTextStyle={{color: Color.secondaryColor_dark.background}}
           xAxisLabelTextStyle={{color: Color.secondaryColor_dark.background}}
           spacing={spacing}
           isAnimated={true}
           backgroundColor={backgroundColor}
-          dataPointsColor1={
-            datasets[0]?.[0]?.color != null
-              ? datasets[0]?.[0]?.color
-              : Color.primaryColor.background
-          }
-          color1={
-            datasets[0]?.[0]?.color != null
-              ? datasets[0]?.[0]?.color
-              : Color.primaryColor.background
-          }
-          dataPointsColor2={
-            datasets[1]?.[0]?.color != null
-              ? datasets[1]?.[0]?.color
-              : Color.infoColor.background
-          }
-          color2={
-            datasets[1]?.[0]?.color != null
-              ? datasets[1]?.[0]?.color
-              : Color.infoColor.background
-          }
-          dataPointsColor3={
-            datasets[2]?.[0]?.color != null
-              ? datasets[2]?.[0]?.color
-              : Color.errorColor.background
-          }
-          color3={
-            datasets[2]?.[0]?.color != null
-              ? datasets[2]?.[0]?.color
-              : Color.errorColor.background
-          }
-          dataPointsColor4={
-            datasets[3]?.[0]?.color != null
-              ? datasets[3]?.[0]?.color
-              : Color.progressColor.background
-          }
-          color4={
-            datasets[3]?.[0]?.color != null
-              ? datasets[3]?.[0]?.color
-              : Color.progressColor.background
-          }
-          dataPointsColor5={
-            datasets[4]?.[0]?.color != null
-              ? datasets[4]?.[0]?.color
-              : Color.secondaryColor.background
-          }
-          color5={
-            datasets[4]?.[0]?.color != null
-              ? datasets[4]?.[0]?.color
-              : Color.secondaryColor.background
-          }
+          {...chartProps}
           endSpacing={5}
         />
         {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}

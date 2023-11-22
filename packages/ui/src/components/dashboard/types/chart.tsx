@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {Color, ThemeColors} from '../theme';
+import {Color, ThemeColors} from '../../../theme';
 
 class Chart {
   static getChartColor = (index: number, Colors: ThemeColors): Color => {
@@ -39,4 +39,11 @@ class Chart {
     }
   };
 }
+
 export default Chart;
+
+export interface Data {
+  value: number;
+  color?: string;
+  label: string;
+}

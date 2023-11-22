@@ -22,12 +22,7 @@ import {ScrollView} from '../../atoms';
 import BarChartDashboard from '../BarChartDashboard/BarChartDashboard';
 import LineChartDashboard from '../LineChartDashboard/LineChartDashboard';
 import PieChartDashboard from '../PieChartDashboard/PieChartDashboard';
-
-interface Data {
-  value: number;
-  color?: string;
-  label: string;
-}
+import {Data} from '../types/chart';
 
 interface Graph {
   type: 'pie' | 'bar' | 'line';

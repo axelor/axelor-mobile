@@ -22,12 +22,7 @@ import {BarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Text} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
-
-interface Data {
-  value: number;
-  color?: string;
-  label: string;
-}
+import {Data} from '../types/chart';
 
 interface BarCharDashboardProps {
   style?: any;

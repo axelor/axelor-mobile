@@ -24,6 +24,65 @@ const DemoResponse = {
   name: 'Partner',
   dashboardLineList: [
     {
+      name: 'Line 0',
+      chartList: [
+        {
+          chartName: 'Number of SO by status',
+          mobileChartValueResponseList: [
+            {
+              label: 'Canceled',
+              value: 0,
+            },
+            {
+              label: 'Draft quotation',
+              value: 1,
+            },
+            {
+              label: 'Finalized quotation',
+              value: 3,
+            },
+            {
+              label: 'Order completed',
+              value: 0,
+            },
+            {
+              label: 'Order confirmed',
+              value: 9,
+            },
+          ],
+        },
+        {
+          chartName: 'Sale order count by partner',
+          mobileChartValueResponseList: [
+            {
+              label: 'T0001 - APOLLO',
+              value: 1,
+            },
+            {
+              label: 'T0002 - MICHEL Loic',
+              value: 0,
+            },
+            {
+              label: 'T0003 - GARCIA Daniel',
+              value: 0,
+            },
+            {
+              label: 'T0004 - DAVID Laurent',
+              value: 0,
+            },
+            {
+              label: 'T0005 - BLUEBERRY TELECOM',
+              value: 1,
+            },
+            {
+              label: 'T0006 - ROUSSEAU Élisabeth',
+              value: 0,
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: 'Line 1',
       chartList: [
         {
@@ -51,7 +110,6 @@ const DemoResponse = {
             },
           ],
         },
-
         {
           chartName: 'Sale order count by partner',
           mobileChartValueResponseList: [
@@ -212,12 +270,65 @@ const DemoResponse = {
 const SettingsScreen = ({children}) => {
   const demoRefactor = useMemo(() => {
     const lineList = DemoResponse.dashboardLineList.map(elt => {
-      const dataList = elt.chartList.map(ch => {
-        return {
-          type: 'line',
-          dataList: [ch.mobileChartValueResponseList],
-          title: ch?.chartName,
-        };
+      const dataList = elt.chartList.map((ch, index) => {
+        if (index === 0) {
+          return {
+            type: 'line',
+            dataList: [
+              [
+                {
+                  label: 'Canceled',
+                  value: 0,
+                },
+                {
+                  label: 'Draft quotation',
+                  value: 1,
+                },
+                {
+                  label: 'Finalized quotation',
+                  value: 3,
+                },
+                {
+                  label: 'Order completed',
+                  value: 0,
+                },
+                {
+                  label: 'Order confirmed',
+                  value: 9,
+                },
+              ],
+              [
+                {
+                  label: 'Canceled',
+                  value: 1,
+                },
+                {
+                  label: 'Draft quotation',
+                  value: 2,
+                },
+                {
+                  label: 'Finalized quotation',
+                  value: 3,
+                },
+                {
+                  label: 'Order completed',
+                  value: 4,
+                },
+                {
+                  label: 'Order confirmed',
+                  value: 9,
+                },
+              ],
+            ],
+            title: ch?.chartName,
+          };
+        } else {
+          return {
+            type: 'line',
+            dataList: [ch.mobileChartValueResponseList],
+            title: ch?.chartName,
+          };
+        }
       });
       return {graphList: dataList};
     });
