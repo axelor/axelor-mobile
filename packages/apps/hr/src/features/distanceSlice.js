@@ -70,8 +70,10 @@ const distanceSlice = createSlice({
         state.showCityError = true;
       } else if (!isEmpty(action.payload?.distance)) {
         state.distance = action.payload?.distance;
+        state.showCityError = false;
       } else {
         state.distance = null;
+        state.showCityError = false;
       }
     });
   },
