@@ -79,6 +79,34 @@ const PieChartRender = (datasets, key, title) => {
   return <PieChartDashboard datasets={datasets[0]} key={key} title={title} />;
 };
 
+const renderChart = (graph, indexGraph, nbGraphInLine) => {
+  const {dataList, title, type} = graph;
+
+  switch (type) {
+    case Chart.chartType.bar:
+      return BarChartDashboardRender(
+        dataList,
+        indexGraph,
+        nbGraphInLine,
+        title,
+      );
+
+    case Chart.chartType.pie:
+      return PieChartRender(dataList, indexGraph, title);
+
+    case Chart.chartType.line:
+      return LineChartDashboardRender(
+        dataList,
+        indexGraph,
+        nbGraphInLine,
+        title,
+      );
+
+    default:
+      return null;
+  }
+};
+
 const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   const {style, width} = styleGraph(nbGraphInLine);
   return (
@@ -108,28 +136,7 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
         return (
           <View style={styles.lineContainer} key={indexLine}>
             {limitedGraphList?.map((graph, indexGraph) => {
-              const title = graph?.title;
-
-              switch (graph?.type) {
-                case Chart.chartType.bar:
-                  return BarChartDashboardRender(
-                    graph.dataList,
-                    indexGraph,
-                    nbGraphInLine,
-                    title,
-                  );
-                case Chart.chartType.pie:
-                  return PieChartRender(graph.dataList, indexGraph, title);
-                case Chart.chartType.line:
-                  return LineChartDashboardRender(
-                    graph.dataList,
-                    indexGraph,
-                    nbGraphInLine,
-                    title,
-                  );
-                default:
-                  return null;
-              }
+              return renderChart(graph, indexGraph, nbGraphInLine);
             })}
           </View>
         );
