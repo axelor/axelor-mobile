@@ -18,7 +18,13 @@
 
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text, useThemeColor, ObjectCard, Icon} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  useThemeColor,
+  ObjectCard,
+  Icon,
+  capitalizeFirstLetter,
+} from '@axelor/aos-mobile-ui';
 import {
   AnomalyBubble,
   getFullDateItems,
@@ -103,9 +109,9 @@ const ExpenseLineCard = ({
             {
               customComponent: (
                 <View style={styles.cityContainer}>
-                  <Text>{fromCity}</Text>
+                  <Text>{capitalizeFirstLetter(fromCity)}</Text>
                   <Icon style={styles.arrowIcon} name="long-arrow-alt-right" />
-                  <Text>{toCity}</Text>
+                  <Text>{capitalizeFirstLetter(toCity)}</Text>
                 </View>
               ),
               hideIf: fromCity == null && toCity == null,
