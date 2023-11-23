@@ -29,7 +29,11 @@ stories.add(
   args => {
     return (
       <View style={styles.container}>
-        <Icon {...args} color={lightTheme.colors[args.color].background} />
+        <Icon
+          {...args}
+          color={lightTheme.colors[args.color].background}
+          FontAwesome5={false}
+        />
       </View>
     );
   },
@@ -50,12 +54,6 @@ stories.add(
       visible: {
         type: 'boolean',
       },
-      FontAwesome5: {
-        control: {
-          type: 'boolean',
-        },
-        defaultValue: false,
-      },
       color: {
         options: Object.entries(lightTheme.colors)
           .filter(([, _color]) => typeof _color !== 'string')
@@ -64,14 +62,6 @@ stories.add(
         control: {
           type: 'select',
         },
-      },
-      style: {
-        control: {
-          type: 'object',
-        },
-      },
-      onPress: {
-        action: 'onPress',
       },
     },
   },
