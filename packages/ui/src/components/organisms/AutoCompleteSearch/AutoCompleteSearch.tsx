@@ -105,7 +105,7 @@ const AutoCompleteSearch = ({
 
   useEffect(() => {
     if (clickOutside === OUTSIDE_INDICATOR && displayList) {
-      inputRef.current.blur();
+      inputRef?.current?.blur();
       setDisplayList(false);
     }
   }, [clickOutside, displayList]);
@@ -132,6 +132,7 @@ const AutoCompleteSearch = ({
   const handleSelect = useCallback(
     item => {
       if (item !== null) {
+        inputRef?.current?.blur();
         setDisplayList(false);
         setSelected(true);
         setSearchText(changeScreenAfter ? '' : displayValue(item));
@@ -149,7 +150,6 @@ const AutoCompleteSearch = ({
   }, [navigate, oneFilter]);
 
   const handleClear = useCallback(() => {
-    setDisplayList(false);
     setSelected(false);
     setPreviousState(searchText);
     setSearchText('');
