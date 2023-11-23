@@ -27,6 +27,7 @@ storiesOf('ui/molecules/Alert', module).add(
     return (
       <Alert
         visible
+        {...args}
         cancelButtonConfig={{
           title: args.cancelButtonConfig_title,
           color: lightTheme.colors[args.cancelButtonConfig_color],
@@ -43,8 +44,7 @@ storiesOf('ui/molecules/Alert', module).add(
           FontAwesome5: false,
           hide: args.confirmButtonConfig_hide,
           width: args.confirmButtonConfig_width,
-        }}
-        {...args}>
+        }}>
         <Text>TEST</Text>
       </Alert>
     );

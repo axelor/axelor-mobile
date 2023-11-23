@@ -27,7 +27,7 @@ stories.add(
   'Default',
   args => {
     return (
-      <StarScore color={lightTheme.colors[args.color]} score={3} {...args} />
+      <StarScore score={3} {...args} color={lightTheme.colors[args.color]} />
     );
   },
   {

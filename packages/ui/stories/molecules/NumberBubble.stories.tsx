@@ -27,9 +27,9 @@ storiesOf('ui/molecules/NumberBubble', module).add(
     return (
       <NumberBubble
         number={0}
-        color={lightTheme.colors[args._color]}
         isNeutralBackground
         {...args}
+        color={lightTheme.colors[args._color]}
       />
     );
   },

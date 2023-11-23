@@ -65,9 +65,3 @@ storiesOf('ui/molecules/LabelText', module).add(
     },
   },
 );
-
-// value,
-// size = 12,
-// color,
-// iconName = null,
-// onlyOneLine = false,

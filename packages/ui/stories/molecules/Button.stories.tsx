@@ -24,7 +24,7 @@ import {lightTheme} from '../../src/theme';
 storiesOf('ui/molecules/Button', module).add(
   'Default',
   args => {
-    return <Button color={lightTheme.colors[args.color]} {...args} />;
+    return <Button {...args} color={lightTheme.colors[args.color]} />;
   },
   {
     argTypes: {

@@ -26,9 +26,9 @@ storiesOf('ui/molecules/CircleButton', module).add(
   args => {
     return (
       <CircleButton
-        color={lightTheme.colors[args.color]}
         iconName="car"
         {...args}
+        color={lightTheme.colors[args.color]}
       />
     );
   },

@@ -27,9 +27,9 @@ storiesOf('ui/molecules/InfoBubble', module).add(
     return (
       <InfoBubble
         iconName="info"
-        badgeColor={lightTheme.colors[args.color]}
         indication="This is an indication"
         {...args}
+        badgeColor={lightTheme.colors[args.color]}
       />
     );
   },

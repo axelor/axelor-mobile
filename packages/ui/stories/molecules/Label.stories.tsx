@@ -27,10 +27,10 @@ storiesOf('ui/molecules/Label', module).add(
     return (
       <Label
         message="This is an indication"
+        {...args}
         color={
           args.labelColor != null ? lightTheme.colors[args.labelColor] : null
         }
-        {...args}
       />
     );
   },

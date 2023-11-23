@@ -20,6 +20,7 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {DropdownMenuItem} from '../../src/components/organisms';
+import {lightTheme} from '../../src/theme';
 
 storiesOf('ui/organisms/DropdownMenuItem', module).add(
   'default',
@@ -29,6 +30,7 @@ storiesOf('ui/organisms/DropdownMenuItem', module).add(
         placeholder="Placeholder"
         onPress={action('onPress')}
         {...args}
+        color={lightTheme.colors[args.color].background}
       />
     );
   },
@@ -40,10 +42,13 @@ storiesOf('ui/organisms/DropdownMenuItem', module).add(
         control: {type: 'text'},
       },
       color: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
         control: {
-          type: 'color',
+          type: 'select',
         },
-        defaultValue: '#000000',
       },
       placeholder: {
         type: 'string',
