@@ -44,17 +44,16 @@ export const mergeDataForGroupedBars = datasets => {
 export const transformToBarChartData = (groupedData, Colors) => {
   let finalData = [];
 
-  groupedData.forEach((group, groupIndex) => {
+  groupedData.forEach(group => {
+    const labelWidth = 20 * group.values.length;
+
     group.values.forEach((value, index) => {
       finalData.push({
         value: value,
         label: index === 0 ? group.label : '',
         frontColor: Chart.getChartColor(index, Colors).background,
-        spacing:
-          index === group.values.length - 1 &&
-          groupIndex < groupedData.length - 1
-            ? 24
-            : 2,
+        labelWidth: labelWidth,
+        spacing: index === group.values.length - 1 ? 24 : 2,
       });
     });
   });
