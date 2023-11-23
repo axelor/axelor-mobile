@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Chart from '../types/chart';
+
 export const mergeDataForGroupedBars = datasets => {
   const mergedData = [];
 
@@ -40,15 +42,6 @@ export const mergeDataForGroupedBars = datasets => {
 };
 
 export const transformToBarChartData = (groupedData, Colors) => {
-  const colors = [
-    Colors.primaryColor.background,
-    Colors.progressColor.background,
-    Colors.priorityColor.background,
-    Colors.errorColor.background,
-    Colors.cautionColor.background,
-    Colors.plannedColor.background,
-    Colors.secondaryColor.background,
-  ];
   let finalData = [];
 
   groupedData.forEach(group => {
@@ -56,7 +49,7 @@ export const transformToBarChartData = (groupedData, Colors) => {
       finalData.push({
         value: value,
         label: index === 0 ? group.label : '',
-        frontColor: colors[index % colors.length],
+        frontColor: Chart.getChartColor(index, Colors).background,
       });
     });
   });

@@ -26,15 +26,9 @@ class Chart {
   };
 
   static getChartColor = (index: number, Colors: ThemeColors): Color => {
-    const colorArray = [
-      Colors.primaryColor,
-      Colors.progressColor,
-      Colors.priorityColor,
-      Colors.errorColor,
-      Colors.cautionColor,
-      Colors.plannedColor,
-      Colors.secondaryColor,
-    ];
+    const colorArray = Object.values(Colors)
+      .filter(_color => typeof _color !== 'string')
+      .map(value => value);
 
     return colorArray[index % colorArray.length];
   };
