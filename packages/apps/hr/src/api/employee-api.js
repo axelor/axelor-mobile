@@ -35,7 +35,7 @@ export async function searchManagedEmployee({userId}) {
     model: 'com.axelor.apps.hr.db.Employee',
     criteria: createManagedEmployeeCriteria(userId),
     fieldKey: 'hr_employee',
-    numberElementsByPage: null,
+    numberElementsByPage: 1,
     page: 0,
   });
 }
