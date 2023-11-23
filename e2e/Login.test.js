@@ -1,4 +1,6 @@
-const {remote} = require('webdriverio');
+import * as wdio from 'webdriverio';
+
+jest.setTimeout(60000);
 
 const capabilities = {
   platformName: 'Android',
@@ -15,9 +17,20 @@ const wdOpts = {
   capabilities,
 };
 
-async function runTest() {
-  const driver = await remote(wdOpts);
-  try {
+describe('Login test', () => {
+  let driver;
+
+  beforeAll(async () => {
+    driver = await wdio.remote(wdOpts);
+    await driver.pause(10000);
+  });
+
+  afterAll(async () => {
+    await driver.pause(12000);
+    await driver.deleteSession();
+  });
+
+  it('should allow us create new session', async () => {
     const sessionNameField = driver.$('~sessionNameInput');
     const urlField = driver.$('~sessionUrlInput');
     const usernameField = driver.$('~sessionUsernameInput');
@@ -31,10 +44,5 @@ async function runTest() {
     const loginButton = driver.$('~loginButton');
 
     loginButton.click();
-  } finally {
-    await driver.pause(12000);
-    await driver.deleteSession();
-  }
-}
-
-runTest().catch(console.error);
+  });
+});

@@ -51,12 +51,11 @@ exports.config = {
   //
   capabilities: [
     {
-      // capabilities for local Appium web tests on an Android Emulator
       platformName: 'Android',
-      browserName: 'Chrome',
-      'appium:deviceName': 'Android GoogleAPI Emulator',
-      'appium:platformVersion': '12.0',
       'appium:automationName': 'UiAutomator2',
+      'appium:deviceName': 'Android',
+      'appium:appPackage': 'com.aosmobile',
+      'appium:appActivity': 'com.aosmobile.MainActivity',
     },
   ],
 
