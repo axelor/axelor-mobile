@@ -17,6 +17,7 @@
  */
 
 export {searchCurrencies as searchCurrenciesApi} from './currency-api';
+export {getDistance as getDistanceApi} from './distance-api';
 export {
   createExpense as createExpenseApi,
   getExpense,
@@ -28,6 +29,7 @@ export {
   updateExpense as updateExpenseApi,
   validateExpense as validateExpenseApi,
 } from './expense-api';
+export {fetchExpenseConfig as fetchExpenseConfigApi} from './expense-config-api';
 export {
   createExpenseLine as createExpenseLineApi,
   deleteExpenseLine as deleteExpenseLineApi,
