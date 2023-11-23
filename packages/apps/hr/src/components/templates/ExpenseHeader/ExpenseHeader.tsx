@@ -55,7 +55,7 @@ const ExpenseHeader = ({}) => {
       }`}</Text>
       {!checkNullString(expense?.groundForRefusal) && (
         <Label
-          message={`${I18n.t('Hr_GroundForRefusal')}: ${
+          message={`${I18n.t('Hr_GroundForRefusal')} : ${
             expense?.groundForRefusal
           }`}
           type="error"

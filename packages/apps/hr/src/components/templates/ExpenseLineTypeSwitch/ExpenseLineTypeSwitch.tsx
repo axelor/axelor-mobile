@@ -92,7 +92,7 @@ const ExpenseLineTypeSwitch = ({onChange}) => {
 const styles = StyleSheet.create({
   toogleContainer: {
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 0,
     width: '89%',
   },
   toggle: {
