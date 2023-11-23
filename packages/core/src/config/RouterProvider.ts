@@ -46,11 +46,11 @@ class RouterProvider {
   }
 
   public addRoutes(value: RouteSwitcher) {
-    if (value.AOS6 != null) {
+    if (value?.AOS6 != null) {
       this.routes.AOS6 = {...this.routes.AOS6, ...value.AOS6};
     }
 
-    if (value.AOS7 != null) {
+    if (value?.AOS7 != null) {
       this.routes.AOS7 = {...this.routes.AOS7, ...value.AOS7};
     }
   }
