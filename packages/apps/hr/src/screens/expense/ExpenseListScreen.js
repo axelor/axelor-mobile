@@ -76,6 +76,7 @@ const ExpenseListScreen = ({navigation}) => {
   }, [dispatch, user]);
 
   const refresh = useCallback(() => {
+    dispatch(searchMyExpense({page: 0, userId: user.id}));
     dispatch(searchExpenseToValidate({page: 0, user: user}));
   }, [dispatch, user]);
 
