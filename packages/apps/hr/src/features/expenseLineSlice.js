@@ -31,7 +31,7 @@ import {
 } from '../api/expense-line-api';
 import {ExpenseLine} from '../types';
 import {fetchExpenseById} from './expenseSlice';
-import {updateExpense} from '../api/expense-api';
+import {updateExpense} from './expenseSlice';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -131,17 +131,15 @@ export const createAndLinkExpenseLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
-      return handlerApiCall({
-        fetchFunction: updateExpense,
-        data: {
+      dispatch(
+        updateExpense({
+          isLineCreation: true,
           expenseId: data?.idExpense,
           version: data?.versionExpense,
+          userId: data?.userId,
           expenseLineIdList: [res.expenseLineId],
-        },
-        action: 'Hr_SliceAction_UpdateExpense',
-        getState,
-        responseOptions: {isArrayResponse: false},
-      });
+        }),
+      );
     });
   },
 );

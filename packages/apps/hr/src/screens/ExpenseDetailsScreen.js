@@ -22,7 +22,6 @@ import {Screen, ScrollList, HeaderContainer} from '@axelor/aos-mobile-ui';
 import {
   AnomalyList,
   useDispatch,
-  useIsFocused,
   useSelector,
   useTranslator,
 } from '@axelor/aos-mobile-core';
@@ -42,7 +41,6 @@ import {ExpenseLine} from '../types';
 const ExpenseDetailsScreen = ({route, navigation}) => {
   const {idExpense, expenseMode} = route.params;
   const I18n = useTranslator();
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const {expense} = useSelector(state => state.expense);
@@ -60,10 +58,8 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
   const [mode, setMode] = useState(ExpenseLine.modes.general);
 
   useEffect(() => {
-    if (isFocused) {
-      dispatch(fetchExpenseById({ExpenseId: idExpense}));
-    }
-  }, [dispatch, idExpense, isFocused]);
+    dispatch(fetchExpenseById({ExpenseId: idExpense}));
+  }, [dispatch, idExpense]);
 
   const ObjectToDisplay = useMemo(() => {
     if (mode === ExpenseLine.modes.general) {
