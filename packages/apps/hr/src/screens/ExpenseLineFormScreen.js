@@ -35,13 +35,8 @@ import {
 } from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
-  const {
-    expenseLine,
-    idExpense,
-    versionExpense,
-    modeExpense,
-    justificationMetaFile,
-  } = route?.params;
+  const {expenseLine, idExpense, versionExpense, justificationMetaFile} =
+    route?.params;
   const I18n = useTranslator();
   const _dispatch = useDispatch();
 
@@ -111,7 +106,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           expenseLine: dataToSend,
           idExpense: idExpense,
           versionExpense: versionExpense,
-          modeExpense: modeExpense,
           userId: user?.id,
         }),
       );
@@ -120,7 +114,6 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     },
     [
       idExpense,
-      modeExpense,
       navigation,
       user?.activeCompany?.id,
       user?.employee?.id,

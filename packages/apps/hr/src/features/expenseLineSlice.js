@@ -130,35 +130,19 @@ export const createAndLinkExpenseLine = createAsyncThunk(
       action: 'Hr_SliceAction_CreateAndLinkExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    })
-      .then(res => {
-        return handlerApiCall({
-          fetchFunction: updateExpense,
-          data: {
-            expenseId: data?.idExpense,
-            version: data?.versionExpense,
-            expenseLineIdList: [res.expenseLineId],
-          },
-          action: 'Hr_SliceAction_UpdateExpense',
-          getState,
-          responseOptions: {isArrayResponse: false},
-        });
-      })
-      .then(() => {
-        return handlerApiCall({
-          fetchFunction:
-            data?.modeExpense === ExpenseLine.modes.general
-              ? _searchGeneralExpenseLines
-              : _searchKilometricExpenseLines,
-          action:
-            data?.modeExpense === ExpenseLine.modes.general
-              ? 'Hr_SliceAction_SearchGeneralExpenseLines'
-              : 'Hr_SliceAction_SearchKilometricExpenseLines',
-          getState,
-          data: {expenseId: data?.idExpense, userId: data?.userId},
-          responseOptions: {isArrayResponse: true},
-        });
+    }).then(res => {
+      return handlerApiCall({
+        fetchFunction: updateExpense,
+        data: {
+          expenseId: data?.idExpense,
+          version: data?.versionExpense,
+          expenseLineIdList: [res.expenseLineId],
+        },
+        action: 'Hr_SliceAction_UpdateExpense',
+        getState,
+        responseOptions: {isArrayResponse: false},
       });
+    });
   },
 );
 
@@ -256,24 +240,6 @@ const expenseLineSlice = createSlice({
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
       state.loadingExpenseLine = false;
       state.expenseLineList = action.payload;
-    });
-    builder.addCase(createAndLinkExpenseLine.pending, (state, action) => {
-      if (action?.meta?.arg?.modeExpense === ExpenseLine.modes.general) {
-        state.loadingGeneralExpenseLine = true;
-      }
-      if (action?.meta?.arg?.modeExpense === ExpenseLine.modes.kilometric) {
-        state.loadingKilometricExpenseLine = true;
-      }
-    });
-    builder.addCase(createAndLinkExpenseLine.fulfilled, (state, action) => {
-      if (action?.meta?.arg?.modeExpense === ExpenseLine.modes.general) {
-        state.loadingGeneralExpenseLine = false;
-        state.generalExpenseLineList = action.payload;
-      }
-      if (action?.meta?.arg?.modeExpense === ExpenseLine.modes.kilometric) {
-        state.loadingKilometricExpenseLine = false;
-        state.kilometricExpenseLineList = action.payload;
-      }
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
