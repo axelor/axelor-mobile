@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
   toogleContainer: {
     alignSelf: 'center',
     marginTop: 10,
+    width: '89%',
   },
   toggle: {
     width: '54%',
-    height: 38,
+    height: 40,
     borderRadius: 13,
   },
   indicator: {

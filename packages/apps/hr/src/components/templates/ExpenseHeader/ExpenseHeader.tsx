@@ -54,7 +54,12 @@ const ExpenseHeader = ({}) => {
           : user?.activeCompany?.currency?.code
       }`}</Text>
       {!checkNullString(expense?.groundForRefusal) && (
-        <Label message={expense?.groundForRefusal} type="error" />
+        <Label
+          message={`${I18n.t('Hr_GroundForRefusal')}: ${
+            expense?.groundForRefusal
+          }`}
+          type="error"
+        />
       )}
     </View>
   );
