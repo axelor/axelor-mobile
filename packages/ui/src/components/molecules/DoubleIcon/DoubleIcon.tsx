@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Icon} from '../../atoms';
 
@@ -35,8 +35,6 @@ interface IconConfig {
   name: string;
   color?: string;
   size?: number;
-  touchable?: boolean;
-  onPress?: () => void;
   FontAwesome5?: boolean;
 }
 
@@ -44,6 +42,8 @@ interface DoubleIconProps {
   topIconConfig: IconConfig;
   bottomIconConfig: IconConfig;
   size?: number;
+  touchable?: boolean;
+  onPress?: () => void;
   predefinedPosition?: keyof typeof predefinedPositions;
   topIconPosition?: {
     top?: number;
@@ -59,18 +59,28 @@ const DoubleIcon = ({
   size = 18,
   predefinedPosition,
   topIconPosition = {},
+  touchable,
+  onPress,
 }: DoubleIconProps) => {
-  const topIconStyle = predefinedPositions[predefinedPosition];
+  const topIconStyle = useMemo(
+    () => predefinedPositions[predefinedPosition],
+    [predefinedPosition],
+  );
+
   return (
     <View style={styles.container}>
       <Icon
         {...bottomIconConfig}
         size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
+        touchable={touchable}
+        onPress={onPress}
       />
       <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
           {...topIconConfig}
           size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
+          touchable={touchable}
+          onPress={onPress}
         />
       </View>
     </View>

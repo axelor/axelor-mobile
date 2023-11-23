@@ -22,15 +22,9 @@ import {storiesOf} from '@storybook/react-native';
 import {DoubleIcon} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
 
-const Colors = {
-  background: '#ffffff',
-  text: '#000000',
-  primary: '#3ECF8E',
-};
-
 storiesOf('ui/molecules/DoubleIcon', module)
   .add(
-    'without custom position',
+    'with pre-defined position',
     args => {
       return (
         <View style={styles.container}>
@@ -41,14 +35,12 @@ storiesOf('ui/molecules/DoubleIcon', module)
               size: args.configTopIcon_size,
               FontAwesome5: false,
               color: lightTheme.colors[args.configTopIcon_color].background,
-              touchable: args.configTopIcon_touchable,
             }}
             bottomIconConfig={{
               name: args.configBottomIcon_name,
               size: args.configBottomIcon_size,
               FontAwesome5: false,
               color: lightTheme.colors[args.configBottomIcon_color].background,
-              touchable: args.configBottomIcon_touchable,
             }}
             {...args}
           />
@@ -92,10 +84,6 @@ storiesOf('ui/molecules/DoubleIcon', module)
           description: 'sizeTop',
           defaultValue: 15,
         },
-        configTopIcon_touchable: {
-          control: {type: 'boolean'},
-          defaultValue: false,
-        },
 
         configBottomIcon_name: {
           type: 'string',
@@ -116,7 +104,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
           description: 'sizeBottom',
           defaultValue: 22,
         },
-        configBottomIcon_touchable: {
+        touchable: {
           control: {type: 'boolean'},
           defaultValue: false,
         },
@@ -194,7 +182,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background,
     padding: 20,
   },
 });
