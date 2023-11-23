@@ -16,18 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Chart from '../types/chart';
+
 export const generateChartProps = (datasets, Color) => {
-  const defaultColors = [
-    Color.primaryColor.background,
-    Color.infoColor.background,
-    Color.errorColor.background,
-    Color.progressColor.background,
-    Color.secondaryColor.background,
-  ];
   const props = {};
 
   datasets.forEach((dataset, index) => {
-    const color = dataset[0]?.color || defaultColors[index];
+    const color =
+      dataset[0]?.color || Chart.getChartColor(index, Color).background;
     props[`dataPointsColor${index + 1}`] = color;
     props[`color${index + 1}`] = color;
 
