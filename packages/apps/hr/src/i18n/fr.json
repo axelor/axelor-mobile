@@ -65,5 +65,6 @@
   "Hr_SliceAction_DeleteExpenseLine": "suppression d'un ligne de frais orpheline",
   "Hr_SliceAction_FetchCurrencies": "récupération des devises",
   "Hr_SliceAction_FetchExpenseConfig": "récupération de la configuration des notes de frais",
-  "Hr_SliceAction_GetDistance": "récupération de la distance"
+  "Hr_SliceAction_GetDistance": "récupération de la distance",
+  "Hr_SliceAction_SearchManagedEmployee": "recherche d'employé géré"
 }

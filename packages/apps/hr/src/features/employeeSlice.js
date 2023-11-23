@@ -17,10 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {
-  generateInifiniteScrollCases,
-  handlerApiCall,
-} from '@axelor/aos-mobile-core';
+import {handlerApiCall} from '@axelor/aos-mobile-core';
 import {searchManagedEmployee as _searchManagedEmployee} from '../api/employee-api';
 
 export const searchManagedEmployee = createAsyncThunk(
@@ -31,7 +28,7 @@ export const searchManagedEmployee = createAsyncThunk(
       data,
       action: 'Hr_SliceAction_SearchManagedEmployee',
       getState,
-      responseOptions: {isArrayResponse: true},
+      responseOptions: {isArrayResponse: true, returnTotal: true},
     });
   },
 );
@@ -41,17 +38,19 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   managedEmployeeList: [],
+  managedEmployeeTotal: 0,
 };
 
 const employeeSlice = createSlice({
   name: 'employee',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchManagedEmployee, {
-      loading: 'loading',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'managedEmployeeList',
+    builder.addCase(searchManagedEmployee.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(searchManagedEmployee.fulfilled, (state, action) => {
+      state.loading = false;
+      state.managedEmployeeTotal = action.payload;
     });
   },
 });

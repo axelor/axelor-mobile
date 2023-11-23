@@ -56,7 +56,7 @@ const ExpenseListScreen = ({navigation}) => {
     expenseToValidateList,
     totalNumberExpenseToValidate,
   } = useSelector(state => state.expense);
-  const {managedEmployeeList} = useSelector(state => state.employee);
+  const {managedEmployeeTotal} = useSelector(state => state.employee);
 
   const [mode, setMode] = useState(Expense.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -167,7 +167,7 @@ const ExpenseListScreen = ({navigation}) => {
         expandableFilter={false}
         fixedItems={
           <View style={styles.headerContainer}>
-            {(user?.employee?.hrManager || managedEmployeeList?.length > 0) && (
+            {(user?.employee?.hrManager || managedEmployeeTotal > 0) && (
               <ToggleSwitch
                 styleContainer={[commonStyles.filter, commonStyles.filterSize]}
                 styleToogle={styles.toggle}
