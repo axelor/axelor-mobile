@@ -45,22 +45,20 @@ describe('DoubleIcon Component', () => {
       name: 'plus',
       color: Colors.primaryColor.background,
       size: 20,
-      touchable: false,
-      onPress: jest.fn(),
       FontAwesome5: true,
     };
     const bottomIconConfig = {
       name: 'user',
       color: Colors.secondaryColor.background,
       size: 15,
-      touchable: true,
-      onPress: jest.fn(),
       FontAwesome5: false,
     };
     const wrapper = shallow(
       <DoubleIcon
         topIconConfig={topIconConfig}
         bottomIconConfig={bottomIconConfig}
+        touchable={true}
+        onPress={jest.fn()}
       />,
     );
 
@@ -68,7 +66,7 @@ describe('DoubleIcon Component', () => {
     expect(wrapper.find(Icon).at(1).props()).toMatchObject(topIconConfig);
   });
 
-  it('should use size props if size is not defined in bottomIconConfig props', () => {
+  it('should use size props if size is not defined in icon configs', () => {
     const size = 50;
     const wrapper = shallow(<DoubleIcon {...props} size={size} />);
 
@@ -89,15 +87,12 @@ describe('DoubleIcon Component', () => {
     };
     const predefinedPositionsKeys = Object.keys(predefinedPositions);
 
-    for (let i = 0; i < predefinedPositionsKeys.length; i++) {
+    for (const positionKey of predefinedPositionsKeys) {
       const wrapper = shallow(
-        <DoubleIcon
-          {...props}
-          predefinedPosition={predefinedPositionsKeys[i]}
-        />,
+        <DoubleIcon {...props} predefinedPosition={positionKey} />,
       );
       expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject(
-        predefinedPositions[predefinedPositionsKeys[i]],
+        predefinedPositions[positionKey],
       );
     }
   });
