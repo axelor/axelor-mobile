@@ -34,10 +34,6 @@ export const searchManagedEmployee = createAsyncThunk(
 );
 
 const initialState = {
-  loading: true,
-  moreLoading: false,
-  isListEnd: false,
-  managedEmployeeList: [],
   managedEmployeeTotal: 0,
 };
 
