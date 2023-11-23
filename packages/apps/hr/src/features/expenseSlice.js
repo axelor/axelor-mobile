@@ -240,7 +240,7 @@ export const fetchExpenseById = createAsyncThunk(
   },
 );
 
-export const deleteExpenseLine = createAsyncThunk(
+export const deleteExpense = createAsyncThunk(
   'expense/deleteExpense',
   async function (data = {}, {getState}) {
     return handlerApiCall({

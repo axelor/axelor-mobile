@@ -28,7 +28,7 @@ import {
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
 import {
-  deleteExpenseLine,
+  deleteExpense,
   sendExpense,
   validateExpense,
 } from '../../../features/expenseSlice';
@@ -67,8 +67,8 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     );
   }, [dispatch, mode, expense]);
 
-  const deleteExpenseLineAPI = useCallback(() => {
-    dispatch(deleteExpenseLine({ExpenseId: expense.id}));
+  const deleteExpenseAPI = useCallback(() => {
+    dispatch(deleteExpense({ExpenseId: expense.id}));
     navigation.navigate('ExpenseListScreen');
   }, [dispatch, expense.id, navigation]);
 
@@ -76,16 +76,17 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     return (
       <View style={styles.buttonContainer}>
         <Button
+          title={I18n.t('Hr_Delete')}
+          onPress={deleteExpenseAPI}
+          width="45%"
+          color={Colors.errorColor}
+          iconName="trash-alt"
+        />
+        <Button
           title={I18n.t('Hr_Send')}
           onPress={sendExpenseAPI}
           width="45%"
           iconName="paper-plane"
-        />
-        <Button
-          title={I18n.t('Hr_Delete')}
-          onPress={deleteExpenseLineAPI}
-          width="45%"
-          color={Colors.errorColor}
         />
       </View>
     );
