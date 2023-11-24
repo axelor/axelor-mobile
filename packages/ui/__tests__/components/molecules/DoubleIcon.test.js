@@ -57,8 +57,6 @@ describe('DoubleIcon Component', () => {
       <DoubleIcon
         topIconConfig={topIconConfig}
         bottomIconConfig={bottomIconConfig}
-        touchable={true}
-        onPress={jest.fn()}
       />,
     );
 
@@ -72,6 +70,24 @@ describe('DoubleIcon Component', () => {
 
     expect(wrapper.find(Icon).at(0).prop('size')).toBe(size);
     expect(wrapper.find(Icon).at(1).prop('size')).toBe(size * 0.6);
+  });
+
+  it('should give touchable props to icons when provided', () => {
+    const touchable = true;
+    const wrapper = shallow(<DoubleIcon {...props} touchable={touchable} />);
+
+    expect(wrapper.find(Icon).at(0).prop('touchable')).toBe(touchable);
+    expect(wrapper.find(Icon).at(1).prop('touchable')).toBe(touchable);
+  });
+
+  it('should call onPress when icons are pressed', () => {
+    const onPress = jest.fn();
+    const wrapper = shallow(<DoubleIcon {...props} onPress={onPress} />);
+
+    wrapper.find(Icon).at(0).simulate('press');
+    wrapper.find(Icon).at(1).simulate('press');
+
+    expect(onPress).toHaveBeenCalledTimes(2);
   });
 
   it('should use predefinedPositions props if provided', () => {
