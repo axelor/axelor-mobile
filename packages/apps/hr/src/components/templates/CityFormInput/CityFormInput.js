@@ -41,7 +41,7 @@ const CityFormInputAux = ({
   const {toCity, fromCity, needUpdateDistance, showCityError} = useSelector(
     state => state.distance,
   );
-  const {expenseConfig} = useSelector(state => state.expenseConfig);
+  const {expense: expenseConfig} = useSelector(state => state.appConfig);
 
   useEffect(() => {
     if (expenseConfig?.computeDistanceWithWebService && needUpdateDistance) {

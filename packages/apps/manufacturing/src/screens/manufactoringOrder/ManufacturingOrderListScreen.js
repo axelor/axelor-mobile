@@ -38,7 +38,6 @@ import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '../../components';
 import {displayManufOrderSeq} from '../../utils/displayers';
-import {fetchProductionConfig} from '../../features/productionConfigSlice';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
@@ -52,7 +51,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {productionConfig} = useSelector(state => state.productionConfig);
+  const {production: productionConfig} = useSelector(state => state.appConfig);
 
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
@@ -66,10 +65,6 @@ const ManufacturingOrderListScreen = ({navigation}) => {
     },
     [selectedStatus],
   );
-
-  useEffect(() => {
-    dispatch(fetchProductionConfig());
-  }, [dispatch]);
 
   useEffect(() => {
     setFilteredList(

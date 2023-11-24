@@ -25,7 +25,6 @@ export {
   searchContactById,
   updateContact,
 } from './contactSlice';
-export {fetchCrmConfigApi} from './crmConfigSlice';
 export {
   createEvent,
   fetchContactEventById,

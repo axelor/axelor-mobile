@@ -46,7 +46,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'default',
         readonly: true,
         hideIf: ({storeState}) =>
-          !storeState.config.baseConfig.enableMultiCompany ||
+          !storeState.appConfig.base.enableMultiCompany ||
           storeState.company.companyList?.length === 1,
       },
       manageMode: {
@@ -55,7 +55,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: ToggleSwitchMode,
         hideIf: ({objectState, storeState}) =>
           objectState.hideToggle ||
-          !storeState.config.mobileSettings.isKilometricExpenseLineAllowed,
+          !storeState.appConfig.mobileSettings.isKilometricExpenseLineAllowed,
       },
       justificationMetaFile: {
         titleKey: 'Hr_Justification',
@@ -79,7 +79,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: ProjectSearchBar,
         hideIf: ({storeState}) =>
-          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings.isProjectInvoicingEnabled,
       },
       toInvoice: {
         titleKey: 'Hr_ToInvoice',
@@ -87,7 +87,7 @@ export const hr_formsRegister: FormConfigs = {
         widget: 'custom',
         customComponent: BillableSwitchCard,
         hideIf: ({storeState}) =>
-          !storeState.config.mobileSettings.isProjectInvoicingEnabled,
+          !storeState.appConfig.mobileSettings.isProjectInvoicingEnabled,
       },
       expenseProduct: {
         titleKey: 'Hr_ExpenseType',
@@ -176,7 +176,7 @@ export const hr_formsRegister: FormConfigs = {
         customComponent: CurrencySearchBar,
         hideIf: ({objectState, storeState}) =>
           objectState.manageMode !== ExpenseLine.modes.general ||
-          !storeState.config.mobileSettings.isMultiCurrencyEnabled,
+          !storeState.appConfig.mobileSettings.isMultiCurrencyEnabled,
       },
       totalAmount: {
         titleKey: 'Hr_TotalATI',

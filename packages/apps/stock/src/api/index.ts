@@ -73,9 +73,5 @@ export {
   updateLine as updateSupplierArrivalLineApi,
 } from './supplier-arrival-line-api';
 export * from './supplier-catalog-api';
-export {
-  fetchStockConfig as fetchStockConfigApi,
-  fetchSupplychainConfig,
-} from './supplychain-config-api';
 export * from './tracking-number-api';
 export * from './unit-api';

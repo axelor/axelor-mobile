@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {
   changeDefaultStockLocation,
   UserScreen as AuthUserScreen,
@@ -25,7 +25,6 @@ import {
   useTranslator,
 } from '@axelor/aos-mobile-core';
 import {StockLocationSearchBar} from '../../components';
-import {fetchStockConfig} from '../../features/stockAppConfigSlice';
 
 const stockLocationScanKey = 'stock-location_user-default';
 
@@ -34,10 +33,6 @@ const UserScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
-
-  useEffect(() => {
-    dispatch(fetchStockConfig());
-  }, [dispatch]);
 
   const updateDefaultStockLocation = useCallback(
     stockLocation => {

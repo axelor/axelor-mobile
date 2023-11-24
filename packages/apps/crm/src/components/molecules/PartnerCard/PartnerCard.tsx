@@ -55,7 +55,7 @@ const PartnerCard = ({
   const Colors = useThemeColor();
   const formatMetaFile = useMetafileUri();
 
-  const {crmConfig} = useSelector((state: any) => state.crmConfig);
+  const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
   const borderStyle = useMemo(() => {
     const colorIndex = allProspectStatus?.findIndex(

@@ -29,15 +29,14 @@ import {
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {CatalogCard, CatalogsSearchBar} from '../../components';
 import {fetchCatalog, fetchCatalogType} from '../../features/catalogSlice';
-import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 import Catalog from '../../types/catalog';
 
-const CatalogListScreen = ({navigation}) => {
+const CatalogListScreen = ({}) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {crmConfig} = useSelector(state => state.crmConfig);
+  const {crm: crmConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {loadingCatalog, moreLoading, isListEnd, catalogList, catalogTypeList} =
     useSelector(state => state.catalog);
@@ -81,7 +80,6 @@ const CatalogListScreen = ({navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(fetchCrmConfigApi());
     dispatch(fetchCatalogType());
   }, [dispatch]);
 

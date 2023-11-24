@@ -29,7 +29,7 @@ const OpportunityDropdownInfo = ({}) => {
   const I18n = useTranslator();
 
   const {opportunity} = useSelector(state => state.opportunity);
-  const {crmConfig} = useSelector(state => state.crmConfig);
+  const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   const _formatNumber = useCallback(
     number =>

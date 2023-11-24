@@ -39,7 +39,7 @@ const ProspectHeader = ({colorIndex}) => {
   const dispatch = useDispatch();
 
   const {prospect} = useSelector(state => state.prospect);
-  const {crmConfig} = useSelector(state => state.crmConfig);
+  const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   const updateScoreProspectAPI = useCallback(
     newScore => {

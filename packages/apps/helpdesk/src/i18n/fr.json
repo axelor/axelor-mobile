@@ -45,7 +45,6 @@
   "Helpdesk_SliceAction_FetchTimerById": "récupération du timer par id",
   "Helpdesk_SliceAction_FetchTimerHistory": "récupération de l'historique du timer",
   "Helpdesk_SliceAction_UpdateTicketStatus": "mise à jour du statut du ticket",
-  "Helpdesk_SliceAction_FetchHelpdeskConfig": "récupération de la configuration support client",
   "Helpdesk_SliceAction_FetchCustomer": "récupération des clients",
   "Helpdesk_SliceAction_FetchCustomerById": "récupération du client par id",
   "Helpdesk_SliceAction_FetchProject": "récupération des projets",
