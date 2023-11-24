@@ -47,7 +47,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
   const {loadingIMLines, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,

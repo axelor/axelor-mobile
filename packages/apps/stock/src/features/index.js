@@ -28,7 +28,6 @@ export {productReducer as product} from './productSlice';
 export {productTrackingNumberReducer as productTrackingNumber} from './productTrackingNumberSlice';
 export {productVariantReducer as productVariant} from './productVariantSlice';
 export {rackReducer as rack} from './racksListSlice';
-export {stockAppConfigReducer as stockAppConfig} from './stockAppConfigSlice';
 export {stockCorrectionReasonReducer as stockCorrectionReason} from './stockCorrectionReasonSlice';
 export {stockCorrectionReducer as stockCorrection} from './stockCorrectionSlice';
 export {stockLocationLineReducer as stockLocationLine} from './stockLocationLineSlice';

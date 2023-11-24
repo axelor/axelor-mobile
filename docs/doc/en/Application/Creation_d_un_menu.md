@@ -17,6 +17,7 @@ export interface MenuBase {
   title: string;
   icon: string;
   disabled?: boolean;
+  hideIf?: (configStore: any) => boolean;
   parent?: string;
   order?: number;
 }
@@ -27,6 +28,8 @@ export interface MenuBase {
 **icon** : [required] the name of the icon to be displayed in the drawer
 
 **disabled**: to disable the menu entry
+
+**hideIf** : is used to define a display condition based on the web configurations retrieved. These configurations must be specified in the module export (_requiredConfig_) to appear in the object given as an argument to this function.
 
 **parent**: the name of the parent module in the case of overloading. Note that the menu is added to the parent module only if the current module is added after the parent module in the list of modules in the _Application_ component.
 

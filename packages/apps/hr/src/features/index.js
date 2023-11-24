@@ -18,7 +18,6 @@
 
 export {currencyReducer as currency} from './currencySlice';
 export {distanceReducer as distance} from './distanceSlice';
-export {expenseConfigReducer as expenseConfig} from './expenseConfigSlice';
 export {expenseLineReducer as expenseLine} from './expenseLineSlice';
 export {expenseReducer as expense} from './expenseSlice';
 export {expenseTypeReducer as expenseType} from './expenseTypeSlice';

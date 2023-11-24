@@ -29,7 +29,6 @@ import {
 import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {ProductStockLocationCard} from '../../components';
 import {fetchStockLocationLine} from '../../features/stockLocationLineSlice';
-import {fetchSupplychainConfigForStockApp} from '../../features/stockAppConfigSlice';
 import {useStockLocationLinesWithAvailability} from '../../hooks';
 
 const AVAILABILITY = {
@@ -53,14 +52,12 @@ const ProductStockLocationDetailsScreen = ({route}) => {
     companyId,
     product,
   );
-  const {supplychainConfig} = useSelector(state => state.stockAppConfig);
+  const {supplychain: supplychainConfig} = useSelector(
+    state => state.appConfig,
+  );
 
   const [filteredList, setFilteredList] = useState(stockLocationLinelist);
   const [selectedStatus, setSelectedStatus] = useState([]);
-
-  useEffect(() => {
-    dispatch(fetchSupplychainConfigForStockApp());
-  }, [dispatch]);
 
   const filterOnStatus = useCallback(
     list => {

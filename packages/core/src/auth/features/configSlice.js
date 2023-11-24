@@ -17,22 +17,7 @@
  */
 
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {handlerApiCall} from '../../apiProviders';
 import {postTranslations} from '../../i18n';
-import {getBaseConfig, getMobileSettings} from '../api/config-api';
-
-export const fetchBaseConfig = createAsyncThunk(
-  'base/fetchBaseConfig',
-  async function (data = {}, {getState}) {
-    return handlerApiCall({
-      fetchFunction: getBaseConfig,
-      data,
-      action: 'Auth_SliceAction_FetchBaseConfig',
-      getState,
-      responseOptions: {isArrayResponse: false},
-    });
-  },
-);
 
 export const uploadTranslations = createAsyncThunk(
   'base/uploadTranslations',
@@ -41,23 +26,8 @@ export const uploadTranslations = createAsyncThunk(
   },
 );
 
-export const fetchMobileSettings = createAsyncThunk(
-  'mobile-settings/fetchMobileSettings',
-  async function (data = {}, {getState}) {
-    return handlerApiCall({
-      fetchFunction: getMobileSettings,
-      data,
-      action: 'Auth_SliceAction_FetchAppMobileSettings',
-      getState,
-      responseOptions: {isArrayResponse: false},
-    });
-  },
-);
-
 const initialState = {
   loading: false,
-  baseConfig: {},
-  mobileSettings: {},
   message: null,
 };
 
@@ -70,26 +40,12 @@ const configSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchBaseConfig.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(fetchBaseConfig.fulfilled, (state, action) => {
-      state.loading = false;
-      state.baseConfig = action.payload;
-    });
     builder.addCase(uploadTranslations.pending, state => {
       state.loading = true;
     });
     builder.addCase(uploadTranslations.fulfilled, (state, action) => {
       state.loading = false;
       state.message = action.payload;
-    });
-    builder.addCase(fetchMobileSettings.pending, state => {
-      state.loading = true;
-    });
-    builder.addCase(fetchMobileSettings.fulfilled, (state, action) => {
-      state.loading = false;
-      state.mobileSettings = action.payload;
     });
   },
 });

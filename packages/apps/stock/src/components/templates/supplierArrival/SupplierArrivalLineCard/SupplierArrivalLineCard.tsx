@@ -52,7 +52,7 @@ const SupplierArrivalLineCard = ({
   const I18n = useTranslator();
   const formatNumber = useDigitFormat();
 
-  const {stockConfig} = useSelector((state: any) => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector((state: any) => state.appConfig);
 
   const borderColor = useMemo(() => {
     if (deliveredQty === 0 || deliveredQty == null) {

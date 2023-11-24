@@ -37,7 +37,7 @@ const InventorySearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
   const {inventoryLineList, totalNumberLines} = useSelector(
     state => state.inventoryLine,

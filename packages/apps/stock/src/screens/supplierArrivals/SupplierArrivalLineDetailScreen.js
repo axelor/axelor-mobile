@@ -45,7 +45,7 @@ const SupplierArrivalLineDetailScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {stockConfig} = useSelector(state => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {loadingSupplierArrivalLine, supplierArrivalLine} = useSelector(
     state => state.supplierArrivalLine,
