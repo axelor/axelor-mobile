@@ -33,7 +33,7 @@ const InventoryButtons = ({}) => {
   const navigation = useNavigation();
 
   const {inventory} = useSelector(state => state.inventory);
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const handleStartInventory = useCallback(() => {
     dispatch(

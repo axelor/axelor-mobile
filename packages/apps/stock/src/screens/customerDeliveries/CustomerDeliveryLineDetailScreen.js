@@ -44,7 +44,7 @@ const CustomerDeliveryLineDetailScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {stockConfig} = useSelector(state => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
   const {customerDeliveryLine, loadingCustomerDeliveryLine} = useSelector(
     state => state.customerDeliveryLine,
