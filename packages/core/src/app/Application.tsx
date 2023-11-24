@@ -30,6 +30,7 @@ import {authModule} from '../auth';
 import {RouterProvider} from '../config';
 import {ApiProviderConfig} from '../apiProviders/config';
 import {proxy, releaseConfig, versionCheckConfig} from './types';
+import {RouteSwitcher} from '../config/RouterProvider';
 
 interface appConfig {
   testInstanceConfig: proxy;
@@ -39,6 +40,7 @@ interface appConfig {
   enableConnectionSessions: boolean;
   allowInternetConnectionBlock: boolean;
   retrocompatibilityAOS6: boolean;
+  additionalRoutes: RouteSwitcher;
   showModulesSubtitle: boolean;
   themeColorsConfig: ThemeColors;
   writingStylesConfig: WritingStyles;
@@ -76,6 +78,8 @@ const Application = ({
   RouterProvider.enableRetrocompatibilityWithAOSv6(
     configuration?.retrocompatibilityAOS6,
   );
+
+  RouterProvider.addRoutes(configuration?.additionalRoutes);
 
   ApiProviderConfig.allowConnectionBlock =
     configuration.allowInternetConnectionBlock;

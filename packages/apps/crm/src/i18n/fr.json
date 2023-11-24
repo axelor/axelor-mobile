@@ -104,7 +104,6 @@
   "Crm_SliceAction_FetchContact": "récupération des contacts",
   "Crm_SliceAction_GetContactById": "récupération du contact par id",
   "Crm_SliceAction_UpdateContact": "mise à jour du contact",
-  "Crm_SliceAction_FetchCrmConfig": "récupération des configs CRM",
   "Crm_SliceAction_FilterEventById": "filtre des événements par id",
   "Crm_SliceAction_FetchPartnerEvent": "récupération des événements du partenaire",
   "Crm_SliceAction_FetchContactEvent": "récupération des événements du contact",

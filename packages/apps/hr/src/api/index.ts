@@ -30,7 +30,6 @@ export {
   updateExpense as updateExpenseApi,
   validateExpense as validateExpenseApi,
 } from './expense-api';
-export {fetchExpenseConfig as fetchExpenseConfigApi} from './expense-config-api';
 export {
   createExpenseLine as createExpenseLineApi,
   deleteExpenseLine as deleteExpenseLineApi,

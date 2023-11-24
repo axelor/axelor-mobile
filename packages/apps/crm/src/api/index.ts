@@ -33,7 +33,6 @@ export {
   searchContactWithIds,
   updateContact as updateContactApi,
 } from './contact-api';
-export * from './crm-config-api';
 export {
   contactEventById,
   createEvent as createEventApi,
