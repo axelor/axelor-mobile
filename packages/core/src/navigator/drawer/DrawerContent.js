@@ -90,7 +90,7 @@ const DrawerContent = ({
   const styles = useMemo(() => getStyles(Colors), [Colors]);
   const secondaryMenusLeft = useRef(new Animated.Value(0)).current;
   const {activeModule} = useContext(ModuleNavigatorContext);
-  const {mobileSettings} = useSelector(_state => _state.config);
+  const {mobileSettings} = useSelector(_state => _state.appConfig);
   const mobileVersion = formatVersionString(version);
 
   const minimalRequiredVersion = useMemo(

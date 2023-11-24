@@ -72,6 +72,7 @@ export const ManufacturingModule: Module = {
     searchFields: {...manufacturing_searchFields},
     headerRegisters: useManufacturingHeaders,
   },
+  requiredConfig: ['AppProduction'],
 };
 
 export * from './api';

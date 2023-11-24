@@ -17,6 +17,7 @@ export interface MenuBase {
   title: string;
   icon: string;
   disabled?: boolean;
+  hideIf?: (configStore: any) => boolean;
   parent?: string;
   order?: number;
 }
@@ -27,6 +28,8 @@ export interface MenuBase {
 **icon** : [required] le nom de l’icon à afficher dans le drawer
 
 **disabled** : permet de désactiver l’entrée de menu
+
+**hideIf** : permet de définir une condition d'affichage en fonction des configurations web récupérées. Ces configurations doivent être renseignées dans l'export du module (_requiredConfig_) pour apparaître dans l'objet donné en argument de cette fonction.
 
 **parent** : le nom du module parent dans le cadre d’une surcharge. Attention, le menu est ajouté sur le module parent seulement si le module courant est ajouté après le module parent dans la liste des modules du composant _Application_.
 

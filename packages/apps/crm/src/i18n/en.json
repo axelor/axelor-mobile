@@ -104,7 +104,6 @@
   "Crm_SliceAction_FetchContact": "fetch contact",
   "Crm_SliceAction_GetContactById": "get contact by id",
   "Crm_SliceAction_UpdateContact": "update contact",
-  "Crm_SliceAction_FetchCrmConfig": "fetch CRM config",
   "Crm_SliceAction_FilterEventById": "filter event by id",
   "Crm_SliceAction_FetchPartnerEvent": "fetch partner events",
   "Crm_SliceAction_FetchContactEvent": "fetch contact events",

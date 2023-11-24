@@ -46,7 +46,7 @@ const InternalMoveLineDetailsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const {activeCompany} = useSelector(state => state.user.user);
-  const {stockConfig} = useSelector(state => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {productIndicators} = useSelector(state => state.productIndicators);
   const {productFromId: product} = useSelector(state => state.product);
   const {internalMoveLine, loadingInternalMoveLine} = useSelector(
