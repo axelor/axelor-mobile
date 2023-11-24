@@ -54,6 +54,15 @@ export const app_config = {
   retrocompatibilityAOS6: true,
 
   /*
+   * This settins allows you to add new routes to the application configurations fetcher. You can also update existing routes with new values.
+   * If the setting retrocompatibilityAOS6 is active, you need to define routes for Axelor Open Suite version 6 and version 7. Otherwise, Axelor Open Suite version 7 is sufficient.
+   */
+  // additionalRoutes: {
+  //   AOS6: {},
+  //   AOS7: {},
+  // },
+
+  /*
    * This configuration enables verification of the minimum version required for the mobile application.
    * If this option is enabled and the application version is below the required version (minimalRequiredMobileAppVersion),
    * the user will be prompted to update the application using the Android and ios links provided to access it.

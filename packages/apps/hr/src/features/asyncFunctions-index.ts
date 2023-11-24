@@ -19,7 +19,6 @@
 export {searchCurrencies} from './currencySlice';
 export {getDistance} from './distanceSlice';
 export {searchManagedEmployee} from './employeeSlice';
-export {fetchExpenseConfig} from './expenseConfigSlice';
 export {
   createExpenseLine,
   deleteExpenseLine,

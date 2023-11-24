@@ -53,7 +53,7 @@ const SupplierArrivalLineCreationScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const {productFromId: product} = useSelector(state => state.product);
-  const {stockConfig} = useSelector(state => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
 
   const [_product, setProduct] = useState(null);
   const [trackingNumber, setTrackingNumber] = useState(null);

@@ -38,7 +38,6 @@ import {
   updateActiveUser,
   fetchActiveUser,
 } from '../features/userSlice';
-import {fetchBaseConfig, fetchMobileSettings} from '../features/configSlice';
 
 const UserScreen = ({children}) => {
   const Theme = useTheme();
@@ -49,7 +48,7 @@ const UserScreen = ({children}) => {
   const {companyList} = useSelector(state => state.company);
   const {userId, baseUrl} = useSelector(state => state.auth);
   const {languageList} = useSelector(state => state.language);
-  const {baseConfig} = useSelector(state => state.config);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {loadingUser, user, canModifyCompany} = useSelector(
     state => state.user,
   );
@@ -61,8 +60,6 @@ const UserScreen = ({children}) => {
     fetchUser();
     dispatch(fetchCompanies());
     dispatch(fetchLanguages());
-    dispatch(fetchBaseConfig());
-    dispatch(fetchMobileSettings());
   }, [dispatch, fetchUser, userId]);
 
   useEffect(() => {

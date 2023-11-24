@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {appConfigReducer as appConfig} from './appConfigSlice';
 export {attachedFilesReducer as attachedFiles} from './attachedFilesSlice';
 export {authReducer as auth} from './authSlice';
 export {default as cameraScanner} from './cameraScannerSlice';

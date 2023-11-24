@@ -34,7 +34,6 @@ import {
   fetchProspectStatus,
 } from '../../features/prospectSlice';
 import {Prospect} from '../../types';
-import {fetchCrmConfigApi} from '../../features/crmConfigSlice';
 
 const ProspectsListScreen = ({navigation}) => {
   const I18n = useTranslator();
@@ -44,7 +43,7 @@ const ProspectsListScreen = ({navigation}) => {
   const {userId} = useSelector(state => state.auth);
   const {loading, moreLoading, isListEnd, prospectList, prospectStatusList} =
     useSelector(state => state.prospect);
-  const {crmConfig} = useSelector(state => state.crmConfig);
+  const {crm: crmConfig} = useSelector(state => state.appConfig);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [assigned, setAssigned] = useState(false);
@@ -111,7 +110,6 @@ const ProspectsListScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(fetchProspectStatus());
-    dispatch(fetchCrmConfigApi());
   }, [dispatch]);
 
   return (

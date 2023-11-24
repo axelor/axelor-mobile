@@ -21,7 +21,6 @@ export {
   searchCustomer as searchCustomerApi,
   searchCustomerContact as searchCustomerContactApi,
 } from './customer-api';
-export {fetchHelpdeskConfig as fetchHelpdeskConfigApi} from './helpdesk-config-api';
 export {searchProject as searchProjectApi} from './project-api';
 export {
   createTicket as createTicketApi,

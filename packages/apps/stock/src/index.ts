@@ -97,6 +97,7 @@ export const StockModule: Module = {
     searchFields: {...stock_searchFields},
     headerRegisters: useStockHeaders,
   },
+  requiredConfig: ['AppStock', 'AppSupplychain'],
 };
 
 export * from './api';

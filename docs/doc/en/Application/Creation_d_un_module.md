@@ -47,6 +47,7 @@ export interface Module {
     formsRegister?: FormConfigs;
     headerRegisters?: Function;
   };
+  requiredConfig?: string[];
 }
 ```
 
@@ -63,3 +64,4 @@ A module therefore has :
 - a set of reducers for the module (_reducers_). A reducer is a simple function that updates the state of an object according to the action passed to it. In our context, reducers are the redux functions that update the store during API calls, for example. All reducers created in the module must be exported to access the corresponding part of the store in the various screens.
 - a list of functions to be executed in the background if necessary (_backgroundFunctions_). These functions are executed every 5 minutes.
 - a configuration of templates for API calls (_models_).
+- a list of web application names to retrieve the associated configuration (_requiredConfig_), such as 'AppBase' or 'AppMobileSettings'. Each configuration will then be retrieved using the application's router. The associated routes must therefore be specified to the router. New routes can be set in the application configuration file via the _additionalRoutes_ attribute.

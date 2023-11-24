@@ -47,7 +47,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
   const {loadingSALines, moreLoading, isListEnd} = useSelector(
     state => state.supplierArrivalLine,

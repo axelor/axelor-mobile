@@ -42,7 +42,7 @@ export const useStockHeaders = () => {
 };
 
 const useCustomerDeliveryDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const useCustomerDeliveryLineListActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const useCustomerDeliveryLineListActions = () => {
 };
 
 const useInternalMoveDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const useInternalMoveListActions = () => {
 };
 
 const useInventoryPlannedDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const useInventoryPlannedDetailsActions = () => {
 };
 
 const useInventoryStartedDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {inventory} = useSelector(state => state.inventory);
 
   useEffect(() => {
@@ -153,7 +153,7 @@ const useInventoryStartedDetailsActions = () => {
 };
 
 const useProductDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
 
   useEffect(() => {
@@ -167,7 +167,7 @@ const useProductDetailsActions = () => {
 };
 
 const useProductStockDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {productFromId: product} = useSelector(state => state.product);
 
   useEffect(() => {
@@ -204,7 +204,7 @@ const useStockCorrectionListActions = () => {
 };
 
 const useStockCorrectionDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {stockCorrection} = useSelector(state => state.stockCorrection);
 
   useEffect(() => {
@@ -217,7 +217,7 @@ const useStockCorrectionDetailsActions = () => {
 };
 
 const useSupplierArrivalDetailsActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
 
   useEffect(() => {
@@ -234,7 +234,7 @@ const useSupplierArrivalLineListActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
 
   useEffect(() => {
