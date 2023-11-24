@@ -48,7 +48,7 @@ const InternalMoveLineCreationScreen = ({navigation, route}) => {
     notes: _notes,
   } = route.params;
 
-  const {stockConfig} = useSelector(state => state.stockAppConfig);
+  const {stock: stockConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
 
   const [currentStep, setStep] = useState(CREATION_STEP.line);

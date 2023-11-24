@@ -151,8 +151,6 @@
   "Stock_SliceAction_FetchProductVariants": "fetch product variants",
   "Stock_SliceAction_FetchProductVariantAttributes": "fetch product variants attributes",
   "Stock_SliceAction_FetchRacks": "fetch racks",
-  "Stock_SliceAction_FetchSupplychainConfig": "fetch supplychain config",
-  "Stock_SliceAction_FetchStockConfig": "fetch stock config",
   "Stock_SliceAction_FetchStockCorrectionReasons": "fetch stock correction reasons",
   "Stock_SliceAction_SearchStockCorrections": "search stock corrections",
   "Stock_SliceAction_FetchStockCorrection": "fetch stock correction",

@@ -65,7 +65,6 @@
   "Hr_SliceAction_RefuseExpense": "refuse expense",
   "Hr_SliceAction_DeleteExpenseLine": "delete orphan expense line",
   "Hr_SliceAction_FetchCurrencies": "fetch currencies",
-  "Hr_SliceAction_FetchExpenseConfig": "fetch expense config",
   "Hr_SliceAction_GetDistance": "get distance",
   "Hr_SliceAction_SearchManagedEmployee": "search managed employee"
 }

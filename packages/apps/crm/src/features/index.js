@@ -20,7 +20,6 @@ export {catalogReducer as catalog} from './catalogSlice';
 export {clientReducer as client} from './clientSlice';
 export {companyReducer as crm_company} from './companySlice';
 export {contactReducer as contact} from './contactSlice';
-export {crmConfigReducer as crmConfig} from './crmConfigSlice';
 export {eventReducer as event} from './eventSlice';
 export {functionReducer as function} from './functionSlice';
 export {leadReducer as lead} from './leadSlice';

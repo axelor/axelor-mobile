@@ -70,10 +70,6 @@ export {
   fetchProductVariants,
 } from './productVariantSlice';
 export {getRacks} from './racksListSlice';
-export {
-  fetchStockConfig,
-  fetchSupplychainConfigForStockApp,
-} from './stockAppConfigSlice';
 export {fetchStockCorrectionReasons} from './stockCorrectionReasonSlice';
 export {
   createCorrection,

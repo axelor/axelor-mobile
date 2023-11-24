@@ -71,6 +71,7 @@ The configurations taken into consideration are :
 - **enableConnectionSessions**: Enables or disables connection session management. If enabled, the user will be able to manage the sessions he wishes to store on his phone. If disabled, the application will only remember the last connection session.
 - **allowInternetConnectionBlock**: Allows users to go offline by blocking the internet connection for requests.
 - **retrocompatibilityAOS6**: Enables backward compatibility with AOS versions 6.4 & 6.5. If enabled, a router will test AOS v6 routes. If the resource is not found, the router will return the AOS v7 route for the request, otherwise the AOS v6 route will be used.
+- **additionalRoutes**: Allows you to add new routes to the application configurations fetcher. You can also update existing routes with new values. If the setting _retrocompatibilityAOS6_ is active, you need to define routes for Axelor Open Suite version 6 and version 7. Otherwise, Axelor Open Suite version 7 is sufficient.
 - **versionCheckConfig**: Enables version checking between the minimum required version defined on the web and the application version. If enabled, the user will be forced to update using the links provided, or by contacting the administrator if the versions do not match.
 - **showModulesSubtitle**: Displays module subtitles in the menu.
 - **themeColorsConfig**: Allows you to modify the application's classic theme by overriding the standard colors.

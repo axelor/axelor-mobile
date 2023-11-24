@@ -61,7 +61,7 @@ const useAuthHeaderBands = () => {
 
   const {registerHeaderBand} = useHeaderBand();
 
-  const {baseConfig} = useSelector(state => state.config);
+  const {base: baseConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {applicationMode} = useSelector(state => state.auth);
 
