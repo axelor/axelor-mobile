@@ -65,6 +65,7 @@ export const HrModule: Module = {
     formsRegister: {...hr_formsRegister},
     headerRegisters: useHrHeaders,
   },
+  requiredConfig: ['AppExpense'],
 };
 
 export * from './api';

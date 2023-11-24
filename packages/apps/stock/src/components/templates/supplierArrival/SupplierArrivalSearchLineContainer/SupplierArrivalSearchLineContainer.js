@@ -38,7 +38,7 @@ const SupplierArrivalSearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {supplierArrival} = useSelector(state => state.supplierArrival);
   const {supplierArrivalLineList, totalNumberLines} =
     useSupplierLinesWithRacks(supplierArrival);

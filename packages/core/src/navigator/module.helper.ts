@@ -220,6 +220,41 @@ export function manageWebCompatibility(
   });
 }
 
+export function manageWebConfig(modules: Module[], storeState: any): Module[] {
+  if (modules == null) {
+    return modules;
+  }
+
+  let result: Module[] = [];
+
+  modules.forEach(_module => {
+    if (moduleHasMenus(_module)) {
+      const menusToRemove = [];
+
+      const menusNames = Object.keys(_module.menus);
+
+      menusNames.forEach(_menuKey => {
+        const menu: Menu = _module.menus[_menuKey];
+
+        if (menu.hideIf && menu.hideIf(storeState)) {
+          menusToRemove.push(_menuKey);
+        }
+      });
+
+      const clearedModule = {
+        ..._module,
+        menus: removeMenusFromOverridingModule(_module.menus, menusToRemove),
+      };
+
+      result.push(clearedModule);
+    } else {
+      result.push(_module);
+    }
+  });
+
+  return result;
+}
+
 export function formatCompatibilityToDisplay(
   compatibility: Compatibility,
 ): Compatibility {

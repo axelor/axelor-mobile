@@ -21,7 +21,6 @@ export {
   searchCustomer,
   searchCustomerContact,
 } from './customerSlice';
-export {fetchHelpdeskConfig} from './helpdeskConfigSlice';
 export {searchProject} from './projectSlice';
 export {
   createTicket,

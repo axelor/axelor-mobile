@@ -31,7 +31,7 @@ const useCatalogListActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {crmConfig} = useSelector((state: any) => state.crmConfig);
+  const {crm: crmConfig} = useSelector((state: any) => state.appConfig);
 
   useEffect(() => {
     headerActionsProvider.registerModel('crm_catalog_list', {
@@ -55,7 +55,7 @@ const useClientDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {client} = useSelector((state: any) => state.client);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const useContactDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {contact} = useSelector((state: any) => state.contact);
 
   useEffect(() => {
@@ -180,7 +180,7 @@ const useLeadDetailsActions = () => {
   const I18n = useTranslator();
   const navigation = useNavigation();
 
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {lead} = useSelector((state: any) => state.lead);
 
   useEffect(() => {
@@ -246,7 +246,7 @@ const useOpportunityListActions = () => {
 };
 
 const useOpportunityDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {opportunity} = useSelector((state: any) => state.opportunity);
 
   useEffect(() => {
@@ -263,7 +263,7 @@ const useProspectDetailsActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {prospect} = useSelector((state: any) => state.prospect);
 
   useEffect(() => {
@@ -311,7 +311,7 @@ const useProspectDetailsActions = () => {
 };
 
 const useEventDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {event} = useSelector((state: any) => state.event);
 
   useEffect(() => {

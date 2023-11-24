@@ -52,7 +52,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {loadingInventoryLines, moreLoading, isListEnd, inventoryLineList} =
     useSelector(state => state.inventoryLine);
 
