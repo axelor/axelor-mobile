@@ -19,8 +19,6 @@
   "User_DefaultStockLocation": "Default stock location",
   "User_Language": "Language",
   "User_Theme": "Theme",
-  "Auth_SliceAction_FetchBaseConfig": "fetch base config",
-  "Auth_SliceAction_FetchAppMobileSettings": "fetch app mobile settings",
   "Auth_SliceAction_FetchLanguages": "fetch languages",
   "Auth_SliceAction_FetchCompanies": "fetch companies",
   "Auth_SliceAction_FetchActiveUser": "fetch active user",

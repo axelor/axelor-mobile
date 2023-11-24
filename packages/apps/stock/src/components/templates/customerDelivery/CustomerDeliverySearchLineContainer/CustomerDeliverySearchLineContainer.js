@@ -38,7 +38,7 @@ const CustomerDeliverySearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDelivery} = useSelector(state => state.customerDelivery);
   const {customerDeliveryLineList, totalNumberLines} =
     useCustomerLinesWithRacks(customerDelivery);

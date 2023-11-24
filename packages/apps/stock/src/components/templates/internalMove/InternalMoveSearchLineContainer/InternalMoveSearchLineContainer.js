@@ -38,7 +38,7 @@ const InternalMoveSearchLineContainer = ({}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {internalMove} = useSelector(state => state.internalMove);
   const {internalMoveLineList, totalNumberLines} =
     useInternalLinesWithRacks(internalMove);

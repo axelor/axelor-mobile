@@ -151,8 +151,6 @@
   "Stock_SliceAction_FetchProductVariants": "récupération des variantes du produit",
   "Stock_SliceAction_FetchProductVariantAttributes": "récupération des attributs du variant",
   "Stock_SliceAction_FetchRacks": "récupération des casiers",
-  "Stock_SliceAction_FetchSupplychainConfig": "récupération de la config supplychain",
-  "Stock_SliceAction_FetchStockConfig": "récupération de la config stock",
   "Stock_SliceAction_FetchStockCorrectionReasons": "récupération des motifs de correction de stock",
   "Stock_SliceAction_SearchStockCorrections": "recherche sur les corrections de stock",
   "Stock_SliceAction_FetchStockCorrection": "récupération d'une correction de stock",
