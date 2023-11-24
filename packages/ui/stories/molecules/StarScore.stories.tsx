@@ -26,9 +26,7 @@ const stories = storiesOf('ui/molecules/StarScore', module);
 stories.add(
   'Default',
   args => {
-    return (
-      <StarScore score={3} {...args} color={lightTheme.colors[args.color]} />
-    );
+    return <StarScore {...args} color={lightTheme.colors[args.color]} />;
   },
   {
     argTypes: {

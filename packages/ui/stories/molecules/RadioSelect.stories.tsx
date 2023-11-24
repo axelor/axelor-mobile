@@ -29,8 +29,6 @@ storiesOf('ui/molecules/RadioSelect', module).add(
           {id: '0', title: 'Option 1'},
           {id: '1', title: 'Option 2'},
         ]}
-        direction="row"
-        onChange={() => console.log('Item has changed.')}
         {...args}
       />
     );
