@@ -32,7 +32,7 @@ export const useManufacturingHeaders = () => {
 };
 
 const useManufacturingOrderActions = () => {
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {manufOrder} = useSelector(state => state.manufacturingOrder);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const useOperationOrderDetailsActions = () => {
   const navigation = useNavigation();
   const I18n = useTranslator();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {operationOrder} = useSelector(state => state.operationOrder);
 
   useEffect(() => {

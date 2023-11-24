@@ -24,6 +24,7 @@ interface MenuBase {
   title: string;
   icon: string;
   disabled?: boolean;
+  hideIf?: (storeState: any) => boolean;
   parent?: string;
   order?: number;
 }
@@ -112,4 +113,6 @@ export interface Module {
   };
   backgroundFunctions?: Function[];
   models?: Models;
+  /** List of configuration name to fetch from the web */
+  requiredConfig?: string[];
 }

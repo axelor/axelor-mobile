@@ -74,6 +74,7 @@ export const CrmModule: Module = {
       title: 'Crm_Catalogs',
       icon: 'swatchbook',
       screen: 'CatalogListScreen',
+      hideIf: store => !store.crm?.isManageCatalogs,
     },
     crm_menu_event: {
       title: 'Crm_Events',
@@ -102,6 +103,7 @@ export const CrmModule: Module = {
     formsRegister: {...crm_formsRegister},
     headerRegisters: useCRMHeaders,
   },
+  requiredConfig: ['AppCrm'],
 };
 
 export * from './api';

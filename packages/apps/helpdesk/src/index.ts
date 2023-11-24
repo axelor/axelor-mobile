@@ -70,6 +70,7 @@ export const HelpDeskModule: Module = {
     headerRegisters: useHelpdeskHeaders,
     formsRegister: {...helpdesk_formsRegister},
   },
+  requiredConfig: ['AppHelpdesk'],
 };
 
 export * from './api';

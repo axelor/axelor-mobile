@@ -16,10 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
+import {axiosApiProvider} from '../apiProviders';
+import {RouterProvider} from '../config';
 
-export async function fetchCrmConfig() {
-  const route = await RouterProvider.get('AppCrm');
+export async function getAppConfig({configName}) {
+  const route = await RouterProvider.get(configName);
 
-  return axiosApiProvider.get({url: route});
+  if (route == null) {
+    return null;
+  }
+
+  return axiosApiProvider.get({
+    url: `${route}`,
+  });
 }

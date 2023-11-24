@@ -32,7 +32,6 @@ import {
   TicketStopwatch,
 } from '../components';
 import {Ticket} from '../types';
-import {fetchHelpdeskConfig} from '../features/helpdeskConfigSlice';
 
 const TicketDetailsScreen = ({route}) => {
   const {idTicket} = route.params;
@@ -44,10 +43,6 @@ const TicketDetailsScreen = ({route}) => {
   const fetchTicket = useCallback(() => {
     dispatch(fetchTicketById({ticketId: idTicket}));
   }, [dispatch, idTicket]);
-
-  useEffect(() => {
-    dispatch(fetchHelpdeskConfig());
-  }, [dispatch]);
 
   useEffect(() => {
     fetchTicket();
