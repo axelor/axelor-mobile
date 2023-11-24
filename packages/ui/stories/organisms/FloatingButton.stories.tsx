@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {FloatingButton} from '../../src/components/organisms';
@@ -46,35 +45,29 @@ const actions = [
   },
 ];
 
-storiesOf('ui/organisms/FloatingButton', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'Default',
-    args => {
-      return (
-        <FloatingButton actions={actions} translator={key => key} {...args} />
-      );
-    },
-    {
-      argTypes: {
-        iconName: {
-          type: 'string',
-          defaultValue: 'car',
-          control: {type: 'text'},
+storiesOf('ui/organisms/FloatingButton', module).add(
+  'Default',
+  args => {
+    return (
+      <FloatingButton actions={actions} translator={key => key} {...args} />
+    );
+  },
+  {
+    argTypes: {
+      iconName: {
+        type: 'string',
+        defaultValue: 'car',
+        control: {type: 'text'},
+      },
+      size: {
+        control: {
+          type: 'range',
+          min: 15,
+          max: 75,
+          step: 5,
         },
-        size: {
-          control: {
-            type: 'range',
-            min: 15,
-            max: 75,
-            step: 5,
-          },
-          defaultValue: 50,
-        },
+        defaultValue: 50,
       },
     },
-  );
-
-const styles = StyleSheet.create({
-  decorator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-});
+  },
+);

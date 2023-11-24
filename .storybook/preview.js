@@ -36,6 +36,9 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  viewport: {
+    defaultViewport: 'mobile1',
+  },
 };
 
 export const decorators = [
