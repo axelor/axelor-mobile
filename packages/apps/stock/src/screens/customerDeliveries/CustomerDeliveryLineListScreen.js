@@ -47,7 +47,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {mobileSettings} = useSelector(state => state.config);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
   const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(

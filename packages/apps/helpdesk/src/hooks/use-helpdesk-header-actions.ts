@@ -20,7 +20,7 @@ import {headerActionsProvider, useSelector} from '@axelor/aos-mobile-core';
 import {useEffect} from 'react';
 
 const useHeldpeskTicketDetailsActions = () => {
-  const {mobileSettings} = useSelector((state: any) => state.config);
+  const {mobileSettings} = useSelector((state: any) => state.appConfig);
   const {ticket} = useSelector((state: any) => state.ticket);
 
   useEffect(() => {

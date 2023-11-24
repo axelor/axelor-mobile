@@ -33,6 +33,7 @@ import {
   getDefaultModule,
   manageOverridingMenus,
   manageWebCompatibility,
+  manageWebConfig,
   moduleHasMenus,
 } from './module.helper';
 import {
@@ -47,6 +48,7 @@ import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
+import {fetchRequiredConfig} from '../features/appConfigSlice';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -64,6 +66,7 @@ const Navigator = ({
   version,
   versionCheckConfig,
 }) => {
+  const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
@@ -76,24 +79,42 @@ const Navigator = ({
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
-        manageOverridingMenus(
-          manageSubMenusOverriding(
-            filterAuthorizedModules(
-              modules,
-              mobileConfigs,
-              restrictedMenus,
-              user,
+        manageWebConfig(
+          manageOverridingMenus(
+            manageSubMenusOverriding(
+              filterAuthorizedModules(
+                modules,
+                mobileConfigs,
+                restrictedMenus,
+                user,
+              ),
             ),
           ),
+          storeState,
         ),
         metaModules,
       ),
-    [metaModules, mobileConfigs, modules, restrictedMenus, user],
+    [metaModules, mobileConfigs, modules, restrictedMenus, storeState, user],
   );
 
   const [activeModule, setActiveModule] = useState(
     getDefaultModule(enabledModule, mainMenu),
   );
+
+  const requiredConfig = useMemo(() => {
+    return enabledModule
+      .filter(_module => Array.isArray(_module.requiredConfig))
+      .flatMap(_module => _module.requiredConfig)
+      .filter(
+        (_configName, _index, _self) => _self.indexOf(_configName) === _index,
+      );
+  }, [enabledModule]);
+
+  useEffect(() => {
+    dispatch(fetchRequiredConfig(requiredConfig));
+    // Note: the configs only need to be fetched once at user connection
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     dispatch(fetchMobileConfig());

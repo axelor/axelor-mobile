@@ -59,6 +59,7 @@ export const authModule: Module = {
     objectFields: {...auth_modelAPI},
     headerRegisters: useAuthHeaders,
   },
+  requiredConfig: ['AppBase', 'AppMobileSettings'],
 };
 
 export * from './screens';
