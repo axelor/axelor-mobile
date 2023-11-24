@@ -22,6 +22,10 @@ import {RouterProvider} from '../config';
 export async function getAppConfig({configName}) {
   const route = await RouterProvider.get(configName);
 
+  if (route == null) {
+    return null;
+  }
+
   return axiosApiProvider.get({
     url: `${route}`,
   });
