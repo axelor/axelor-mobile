@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BarChartDashboard} from './BarChartDashboard/BarChartDashboard';
-export {default as Dashboard} from './Dashboard/Dashboard';
-export {default as LineChartDashboard} from './LineChartDashboard/LineChartDashboard';
-export {default as PieChartDashboard} from './PieChartDashboard/PieChartDashboard';
+export interface Data {
+  value: number;
+  color?: string;
+  label: string;
+}
+
+export const Max_Number_Graph_Line = 4;

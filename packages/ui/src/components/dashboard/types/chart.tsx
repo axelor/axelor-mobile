@@ -35,11 +35,3 @@ class Chart {
 }
 
 export default Chart;
-
-export interface Data {
-  value: number;
-  color?: string;
-  label: string;
-}
-
-export const Max_Number_Graph_Line = 4;

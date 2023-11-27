@@ -22,7 +22,8 @@ import {PieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {checkNullString} from '../../../utils/strings';
 import {Text} from '../../atoms';
-import Chart, {Data} from '../types/chart';
+import Chart from '../types/chart';
+import {Data} from '../dashboard.helper';
 
 interface PieChartProps {
   styleContainer?: any;

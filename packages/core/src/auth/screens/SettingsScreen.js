@@ -16,349 +16,130 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {Dashboard} from '@axelor/aos-mobile-ui';
-
-const DemoResponse = {
-  version: 2,
-  name: 'Partner',
-  dashboardLineList: [
-    {
-      name: 'Line 0',
-      chartList: [
-        {
-          chartName: 'Number of SO by status',
-          mobileChartValueResponseList: [
-            {
-              label: 'Canceled',
-              value: 0,
-            },
-            {
-              label: 'Draft quotation',
-              value: 1,
-            },
-            {
-              label: 'Finalized quotation',
-              value: 3,
-            },
-            {
-              label: 'Order completed',
-              value: 0,
-            },
-            {
-              label: 'Order confirmed',
-              value: 9,
-            },
-          ],
-        },
-        {
-          chartName: 'Sale order count by partner',
-          mobileChartValueResponseList: [
-            {
-              label: 'T0001 - APOLLO',
-              value: 1,
-            },
-            {
-              label: 'T0002 - MICHEL Loic',
-              value: 2,
-            },
-            {
-              label: 'T0003 - GARCIA Daniel',
-              value: 3,
-            },
-            {
-              label: 'T0004 - DAVID Laurent',
-              value: 4,
-            },
-            {
-              label: 'T0005 - BLUEBERRY TELECOM',
-              value: 5,
-            },
-            {
-              label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 6,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Line 1',
-      chartList: [
-        {
-          chartName: 'Number of SO by status',
-          mobileChartValueResponseList: [
-            {
-              label: 'Canceled',
-              value: 0,
-            },
-            {
-              label: 'Draft quotation',
-              value: 1,
-            },
-            {
-              label: 'Finalized quotation',
-              value: 3,
-            },
-            {
-              label: 'Order completed',
-              value: 0,
-            },
-            {
-              label: 'Order confirmed',
-              value: 9,
-            },
-          ],
-        },
-        {
-          chartName: 'Sale order count by partner',
-          mobileChartValueResponseList: [
-            {
-              label: 'T0001 - APOLLO',
-              value: 1,
-            },
-            {
-              label: 'T0002 - MICHEL Loic',
-              value: 0,
-            },
-            {
-              label: 'T0003 - GARCIA Daniel',
-              value: 0,
-            },
-            {
-              label: 'T0004 - DAVID Laurent',
-              value: 0,
-            },
-            {
-              label: 'T0005 - BLUEBERRY TELECOM',
-              value: 1,
-            },
-            {
-              label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 0,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Line 2',
-      chartList: [
-        {
-          chartName: 'Number of SO by status',
-          mobileChartValueResponseList: [
-            {
-              label: 'Canceled',
-              value: 0,
-            },
-            {
-              label: 'Draft quotation',
-              value: 1,
-            },
-            {
-              label: 'Finalized quotation',
-              value: 3,
-            },
-            {
-              label: 'Order completed',
-              value: 0,
-            },
-            {
-              label: 'Order confirmed',
-              value: 9,
-            },
-          ],
-        },
-
-        {
-          chartName: 'Sale order count by partner',
-          mobileChartValueResponseList: [
-            {
-              label: 'T0001 - APOLLO',
-              value: 1,
-            },
-            {
-              label: 'T0002 - MICHEL Loic',
-              value: 0,
-            },
-            {
-              label: 'T0003 - GARCIA Daniel',
-              value: 0,
-            },
-            {
-              label: 'T0004 - DAVID Laurent',
-              value: 0,
-            },
-            {
-              label: 'T0005 - BLUEBERRY TELECOM',
-              value: 1,
-            },
-            {
-              label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 0,
-            },
-          ],
-        },
-        {
-          chartName: 'Sale order count by partner',
-          mobileChartValueResponseList: [
-            {
-              label: 'T0001 - APOLLO',
-              value: 1,
-            },
-            {
-              label: 'T0002 - MICHEL Loic',
-              value: 0,
-            },
-            {
-              label: 'T0003 - GARCIA Daniel',
-              value: 0,
-            },
-            {
-              label: 'T0004 - DAVID Laurent',
-              value: 0,
-            },
-            {
-              label: 'T0005 - BLUEBERRY TELECOM',
-              value: 1,
-            },
-            {
-              label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 0,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Line 2',
-      chartList: [
-        {
-          chartName: 'Sale order count by partner',
-          mobileChartValueResponseList: [
-            {
-              label: 'T0001 - APOLLO',
-              value: 1,
-            },
-            {
-              label: 'T0002 - MICHEL Loic',
-              value: 0,
-            },
-            {
-              label: 'T0003 - GARCIA Daniel',
-              value: 0,
-            },
-            {
-              label: 'T0004 - DAVID Laurent',
-              value: 0,
-            },
-            {
-              label: 'T0005 - BLUEBERRY TELECOM',
-              value: 1,
-            },
-            {
-              label: 'T0006 - ROUSSEAU Élisabeth',
-              value: 0,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+import React, {useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {
+  Screen,
+  SwitchCard,
+  useConfig,
+  useTheme,
+  Text,
+} from '@axelor/aos-mobile-ui';
+import {useDispatch, useSelector} from 'react-redux';
+import {useTranslator} from '../../i18n';
+import {
+  disable,
+  enable,
+  useEffectOnline,
+  useOnline,
+} from '../../features/onlineSlice';
+import {ApiProviderConfig} from '../../apiProviders/config';
+import {TranslationsButton} from '../components';
 
 const SettingsScreen = ({children}) => {
-  const demoRefactor = useMemo(() => {
-    const lineList = DemoResponse.dashboardLineList.map(elt => {
-      const dataList = elt.chartList.map((ch, index) => {
-        if (index === 0) {
-          return {
-            type: 'bar',
-            dataList: [
-              [
-                {
-                  label: 'Canceled',
-                  value: 2,
-                },
-                {
-                  label: 'Draft quotation',
-                  value: 1,
-                },
-                {
-                  label: 'Finalized quotation',
-                  value: 3,
-                },
-                {
-                  label: 'Order completed',
-                  value: 0,
-                },
-                {
-                  label: 'Order confirmed',
-                  value: 9,
-                },
-              ],
-              [
-                {
-                  label: 'Canceled',
-                  value: 1,
-                },
-                {
-                  label: 'Draft quotation',
-                  value: 2,
-                },
-                {
-                  label: 'Finalized quotation',
-                  value: 3,
-                },
-                {
-                  label: 'Order completed',
-                  value: 4,
-                },
-                {
-                  label: 'Order confirmed',
-                  value: 9,
-                },
-              ],
-              [
-                {
-                  label: 'Canceled',
-                  value: 5,
-                },
-                {
-                  label: 'Draft quotation',
-                  value: 2,
-                },
-                {
-                  label: 'Finalized quotatifefefon',
-                  value: 1,
-                },
-                {
-                  label: 'Order completefefefed',
-                  value: 1,
-                },
-                {
-                  label: 'Order confirmefefefd',
-                  value: 2,
-                },
-              ],
-            ],
-            title: ch?.chartName,
-          };
-        } else {
-          return {
-            type: 'bar',
-            dataList: [ch.mobileChartValueResponseList],
-            title: ch?.chartName,
-          };
-        }
-      });
-      return {graphList: dataList};
-    });
+  const I18n = useTranslator();
+  const Theme = useTheme();
+  const online = useOnline();
+  const dispatch = useDispatch();
 
-    return lineList;
-  }, []);
+  const {
+    showFilter,
+    hideVirtualKeyboard,
+    toggleFilterConfig,
+    toggleVirtualKeyboardConfig,
+    setShowSubtitles,
+    showSubtitles,
+  } = useConfig();
 
-  return <Dashboard lineList={demoRefactor} />;
+  const {baseUrl} = useSelector(state => state.auth);
+
+  const handleToggleConnection = useCallback(
+    state => {
+      if (!state) {
+        dispatch(enable());
+      } else {
+        dispatch(disable());
+      }
+    },
+    [dispatch],
+  );
+
+  useEffectOnline();
+
+  const handleToggleColorBlind = useCallback(
+    state => {
+      if (state) {
+        Theme.activateColorBlind();
+      } else {
+        Theme.desactivateColorBlind();
+      }
+    },
+    [Theme],
+  );
+
+  const handleToggleSubtitles = useCallback(
+    state => {
+      setShowSubtitles(state);
+    },
+    [setShowSubtitles],
+  );
+
+  return (
+    <Screen style={styles.screen}>
+      <View style={styles.container}>
+        <SwitchCard
+          title={I18n.t('User_ShowFilter')}
+          defaultValue={showFilter}
+          onToggle={toggleFilterConfig}
+        />
+        <SwitchCard
+          title={I18n.t('User_VirtualKeyboardConfig')}
+          defaultValue={hideVirtualKeyboard}
+          onToggle={toggleVirtualKeyboardConfig}
+        />
+        <SwitchCard
+          title={I18n.t('User_ColorForColorBlind')}
+          defaultValue={Theme.isColorBlind}
+          onToggle={handleToggleColorBlind}
+        />
+        {ApiProviderConfig.allowConnectionBlock && (
+          <SwitchCard
+            title={I18n.t('User_BlockConnection')}
+            defaultValue={!online.isEnabled}
+            onToggle={handleToggleConnection}
+          />
+        )}
+        <SwitchCard
+          title={I18n.t('User_Show_Drawer_Subtitles')}
+          defaultValue={showSubtitles}
+          onToggle={handleToggleSubtitles}
+        />
+        {children}
+        <TranslationsButton />
+      </View>
+      <View style={styles.footerContainer}>
+        <Text>{`${I18n.t('Base_ConnectedOn')}:`}</Text>
+        <Text numberOfLines={1}>{baseUrl}</Text>
+      </View>
+    </Screen>
+  );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    justifyContent: 'space-between',
+  },
+  container: {
+    marginTop: 15,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
+  },
+  footerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+});
 
 export default SettingsScreen;

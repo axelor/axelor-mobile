@@ -22,7 +22,7 @@ import {BarChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Card, Text} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
-import {Data} from '../types/chart';
+import {Data} from '../dashboard.helper';
 import {
   mergeDataForGroupedBars,
   transformToBarChartData,

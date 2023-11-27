@@ -22,7 +22,8 @@ import {ScrollView} from '../../atoms';
 import BarChartDashboard from '../BarChartDashboard/BarChartDashboard';
 import LineChartDashboard from '../LineChartDashboard/LineChartDashboard';
 import PieChartDashboard from '../PieChartDashboard/PieChartDashboard';
-import Chart, {Data, Max_Number_Graph_Line} from '../types/chart';
+import Chart from '../types/chart';
+import {Data, Max_Number_Graph_Line} from '../dashboard.helper';
 
 interface Graph {
   type: 'pie' | 'bar' | 'line';
