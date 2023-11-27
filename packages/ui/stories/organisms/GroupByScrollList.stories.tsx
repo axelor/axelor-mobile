@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {GroupByScrollList} from '../../src/components/organisms';
+import {lightTheme} from '../../src/theme';
 
 const DATA = [
   {id: '1', title: 'A. Item 1'},
@@ -44,30 +45,122 @@ const separatorCondition = (prevItem: any, currentItem: any) => {
   return prevItem.title[0] !== currentItem.title[0];
 };
 
-const fetchIndicator = (currentItem: any, isLoading: boolean) => {
+const fetchTopIndicator = (
+  currentItem: any,
+  position?: 'left' | 'center' | 'right' | 'separate',
+  iconName?: string,
+  iconSize?: number,
+  iconColorIndex?: number,
+  titleSize?: number,
+  numberSize?: number,
+  loadingNumber?: boolean,
+) => {
   return {
+    position: position,
+    iconName: iconName,
+    iconSize: iconSize,
+    iconColor: lightTheme.colors[iconColorIndex],
     title: currentItem.title[0].toUpperCase(),
+    titleSize: titleSize,
     numberItems: DATA.filter(item => item.title[0] === currentItem.title[0])
       .length,
-    loading: isLoading,
+    numberSize: numberSize || 30,
+    loadingNumber: loadingNumber,
+  };
+};
+
+const fetchBottomIndicator = (prevItem: any) => {
+  return {
+    text: 'End of: ' + prevItem.title[0],
   };
 };
 
 storiesOf('ui/organisms/GroupByScrollList', module)
   .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add('default', () => (
-    <GroupByScrollList
-      data={DATA}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-      separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
-    />
-  ))
+  .add(
+    'default',
+    args => (
+      <GroupByScrollList
+        data={DATA}
+        loadingList={false}
+        moreLoading={false}
+        isListEnd={false}
+        renderItem={renderItem}
+        fetchData={() => {}}
+        filter={false}
+        separatorCondition={separatorCondition}
+        fetchTopIndicator={currentItem =>
+          fetchTopIndicator(
+            currentItem,
+            args.topIndicator_position,
+            args.topIndicator_iconName,
+            args.topIndicator_iconSize,
+            args.topIndicator_iconColor,
+            args.topIndicator_titleSize,
+            args.topIndicator_numberSize,
+            args.topIndicator_loadingNumber,
+          )
+        }
+        fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
+      />
+    ),
+    {
+      argTypes: {
+        topIndicator_position: {
+          control: {
+            type: 'select',
+            options: ['left', 'center', 'right', 'separate'],
+          },
+        },
+        topIndicator_iconName: {
+          type: 'string',
+          defaultValue: 'car',
+          control: {type: 'text'},
+        },
+        topIndicator_iconSize: {
+          control: {
+            type: 'range',
+            min: 10,
+            max: 50,
+            step: 2,
+          },
+          defaultValue: 30,
+        },
+        topIndicator_iconColor: {
+          options: Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+          defaultValue: 'primaryColor',
+          control: {
+            type: 'select',
+          },
+        },
+        topIndicator_titleSize: {
+          control: {
+            type: 'range',
+            min: 10,
+            max: 50,
+            step: 2,
+          },
+          defaultValue: 18,
+        },
+        topIndicator_numberSize: {
+          control: {
+            type: 'range',
+            min: 10,
+            max: 50,
+            step: 2,
+          },
+          defaultValue: 30,
+        },
+        topIndicator_loadingNumber: {
+          type: 'boolean',
+          defaultValue: false,
+          control: {type: 'boolean'},
+        },
+      },
+    },
+  )
   .add('loading', () => (
     <GroupByScrollList
       data={DATA}
@@ -78,7 +171,8 @@ storiesOf('ui/organisms/GroupByScrollList', module)
       fetchData={() => {}}
       filter={false}
       separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
+      fetchTopIndicator={currentItem => fetchTopIndicator(currentItem)}
+      fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
     />
   ))
   .add('empty list', () => (
@@ -91,7 +185,8 @@ storiesOf('ui/organisms/GroupByScrollList', module)
       fetchData={() => {}}
       filter={false}
       separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
+      fetchTopIndicator={currentItem => fetchTopIndicator(currentItem)}
+      fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
     />
   ))
   .add('list end', () => (
@@ -104,7 +199,8 @@ storiesOf('ui/organisms/GroupByScrollList', module)
       fetchData={() => {}}
       filter={false}
       separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
+      fetchTopIndicator={currentItem => fetchTopIndicator(currentItem)}
+      fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
     />
   ))
   .add('more loading', () => (
@@ -117,7 +213,8 @@ storiesOf('ui/organisms/GroupByScrollList', module)
       fetchData={() => {}}
       filter={false}
       separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
+      fetchTopIndicator={currentItem => fetchTopIndicator(currentItem)}
+      fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
     />
   ))
   .add('with translator', () => (
@@ -138,20 +235,8 @@ storiesOf('ui/organisms/GroupByScrollList', module)
         }
       }}
       separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, false)}
-    />
-  ))
-  .add('with loading indicator', () => (
-    <GroupByScrollList
-      data={DATA}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={true}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-      separatorCondition={separatorCondition}
-      fetchIndicator={currentItem => fetchIndicator(currentItem, true)}
+      fetchTopIndicator={currentItem => fetchTopIndicator(currentItem)}
+      fetchBottomIndicator={prevItem => fetchBottomIndicator(prevItem)}
     />
   ));
 
