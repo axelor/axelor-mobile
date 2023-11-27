@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as BarChartDashboard} from './BarChartDashboard/BarChartDashboard';
-export {default as Dashboard} from './Dashboard/Dashboard';
-export {default as LineChartDashboard} from './LineChartDashboard/LineChartDashboard';
-export {default as PieChartDashboard} from './PieChartDashboard/PieChartDashboard';
+export {default as BarChart} from './BarChart';
+export {default as LineChart} from './LineChart';
+export {default as PieChart} from './PieChart';

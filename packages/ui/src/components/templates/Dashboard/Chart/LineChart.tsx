@@ -18,14 +18,14 @@
 
 import React from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
-import {LineChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Card, Text} from '../../atoms';
-import {checkNullString} from '../../../utils/strings';
+import {LineChart as RNLineChart} from 'react-native-gifted-charts';
+import {useThemeColor} from '../../../../theme/ThemeContext';
+import {Card, Text} from '../../../atoms';
+import {checkNullString} from '../../../../utils/strings';
 import {Data} from '../dashboard.helper';
-import {generateChartProps} from './lineChartDashboardHelper';
+import {generateChartProps} from './chart-helper';
 
-interface LineChartDashboardProps {
+interface LineChartProps {
   style?: any;
   datasets: Data[][];
   spacing?: number;
@@ -34,14 +34,14 @@ interface LineChartDashboardProps {
   title?: string;
 }
 
-const LineChartDashboard = ({
+const LineChart = ({
   style,
   widthGraph,
   datasets,
   spacing = 50,
   backgroundColor,
   title,
-}: LineChartDashboardProps) => {
+}: LineChartProps) => {
   const Color = useThemeColor();
 
   const chartProps = generateChartProps(datasets, Color);
@@ -49,7 +49,7 @@ const LineChartDashboard = ({
   return (
     <Card style={[styles.container, style]}>
       <View>
-        <LineChart
+        <RNLineChart
           width={widthGraph}
           yAxisTextStyle={{color: Color.secondaryColor_dark.background}}
           xAxisLabelTextStyle={{color: Color.secondaryColor_dark.background}}
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   title: {alignSelf: 'center'},
 });
 
-export default LineChartDashboard;
+export default LineChart;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Chart from '../types/chart';
+import Chart from '../chart';
 
 export const mergeDataForGroupedBars = datasets => {
   const mergedData = [];
@@ -59,4 +59,23 @@ export const transformToBarChartData = (groupedData, Colors) => {
   });
 
   return finalData;
+};
+
+export const generateChartProps = (datasets, Color) => {
+  const props: any = {};
+
+  datasets.forEach((dataset, index) => {
+    const color =
+      dataset[0]?.color || Chart.getChartColor(index, Color).background;
+    props[`dataPointsColor${index + 1}`] = color;
+    props[`color${index + 1}`] = color;
+
+    if (index === 0) {
+      props.data = dataset;
+    } else {
+      props[`data${index + 1}`] = dataset;
+    }
+  });
+
+  return props;
 };

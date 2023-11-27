@@ -18,11 +18,11 @@
 
 import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {PieChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {checkNullString} from '../../../utils/strings';
-import {Text} from '../../atoms';
-import Chart from '../types/chart';
+import {PieChart as RNPieChart} from 'react-native-gifted-charts';
+import {useThemeColor} from '../../../../theme/ThemeContext';
+import {checkNullString} from '../../../../utils/strings';
+import {Text} from '../../../atoms';
+import Chart from '../chart';
 import {Data} from '../dashboard.helper';
 
 interface PieChartProps {
@@ -38,7 +38,7 @@ interface PieChartProps {
   focusOnPress?: boolean;
 }
 
-const PieChartDashboard = ({
+const PieChart = ({
   styleContainer,
   datasets,
   legend = false,
@@ -72,7 +72,7 @@ const PieChartDashboard = ({
 
   return (
     <View style={[style.container, styleContainer]}>
-      <PieChart
+      <RNPieChart
         data={dataSet}
         donut={donut}
         showGradient={showGradient}
@@ -80,6 +80,7 @@ const PieChartDashboard = ({
         radius={radius}
         innerRadius={innerRadius}
         focusOnPress={focusOnPress}
+        innerCircleColor={Color.backgroundColor}
       />
       {!checkNullString(title) && <Text style={style.title}>{title}</Text>}
       {legend && (
@@ -120,4 +121,4 @@ const style = StyleSheet.create({
   title: {alignSelf: 'center'},
 });
 
-export default PieChartDashboard;
+export default PieChart;

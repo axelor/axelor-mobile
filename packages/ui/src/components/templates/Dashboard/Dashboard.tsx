@@ -19,11 +19,9 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
-import BarChartDashboard from '../BarChartDashboard/BarChartDashboard';
-import LineChartDashboard from '../LineChartDashboard/LineChartDashboard';
-import PieChartDashboard from '../PieChartDashboard/PieChartDashboard';
-import Chart from '../types/chart';
-import {Data, Max_Number_Graph_Line} from '../dashboard.helper';
+import Chart from './chart';
+import {Data, Max_Number_Graph_Line} from './dashboard.helper';
+import {BarChart, LineChart, PieChart} from './Chart';
 
 interface Graph {
   type: 'pie' | 'bar' | 'line';
@@ -66,7 +64,7 @@ const styleGraph = (nbGraphInLine: number) => {
 const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   const {style, width} = styleGraph(nbGraphInLine);
   return (
-    <LineChartDashboard
+    <LineChart
       datasets={datasets}
       key={key}
       style={style}
@@ -77,7 +75,7 @@ const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
 };
 
 const PieChartRender = (datasets, key, title) => {
-  return <PieChartDashboard datasets={datasets[0]} key={key} title={title} />;
+  return <PieChart datasets={datasets[0]} key={key} title={title} />;
 };
 
 const renderChart = (graph, indexGraph, nbGraphInLine) => {
@@ -111,7 +109,7 @@ const renderChart = (graph, indexGraph, nbGraphInLine) => {
 const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   const {style, width} = styleGraph(nbGraphInLine);
   return (
-    <BarChartDashboard
+    <BarChart
       datasets={datasets}
       key={key}
       style={style}

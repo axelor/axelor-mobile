@@ -18,17 +18,14 @@
 
 import React from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
-import {BarChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Card, Text} from '../../atoms';
-import {checkNullString} from '../../../utils/strings';
+import {BarChart as RNBarChart} from 'react-native-gifted-charts';
+import {useThemeColor} from '../../../../theme/ThemeContext';
+import {Card, Text} from '../../../atoms';
+import {checkNullString} from '../../../../utils/strings';
 import {Data} from '../dashboard.helper';
-import {
-  mergeDataForGroupedBars,
-  transformToBarChartData,
-} from './BarChartDashboardHelper';
+import {mergeDataForGroupedBars, transformToBarChartData} from './chart-helper';
 
-interface BarCharDashboardProps {
+interface BarCharProps {
   style?: any;
   widthGraph?: any;
   datasets: Data[][];
@@ -37,14 +34,14 @@ interface BarCharDashboardProps {
   title?: string;
 }
 
-const BarChartDashboard = ({
+const BarChart = ({
   style,
   widthGraph = Dimensions.get('window').width * 0.6,
   datasets,
   spacing = 20,
   horizontal = false,
   title,
-}: BarCharDashboardProps) => {
+}: BarCharProps) => {
   const Color = useThemeColor();
   const groupedData = mergeDataForGroupedBars(datasets);
   const barChartData = transformToBarChartData(groupedData, Color);
@@ -52,7 +49,7 @@ const BarChartDashboard = ({
   return (
     <Card style={[styles.container, style]}>
       <View>
-        <BarChart
+        <RNBarChart
           frontColor={
             datasets[0]?.[0].color != null
               ? datasets[0]?.[0].color
@@ -85,4 +82,4 @@ const styles = StyleSheet.create({
   title: {alignSelf: 'center'},
 });
 
-export default BarChartDashboard;
+export default BarChart;
