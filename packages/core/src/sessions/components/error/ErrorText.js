@@ -33,7 +33,7 @@ const ErrorText = ({error, style}) => {
       return null;
     }
 
-    const regexResult = error.message.match(ERROR_CODE_REGEX)[0];
+    const regexResult = error.message.match(ERROR_CODE_REGEX)?.[0];
 
     return regexResult == null ? null : parseFloat(regexResult);
   }, [error]);
