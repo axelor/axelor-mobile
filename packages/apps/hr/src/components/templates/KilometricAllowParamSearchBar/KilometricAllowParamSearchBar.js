@@ -95,12 +95,15 @@ const KilometricAllowParamSearchBarAux = ({
   );
 
   const defaultKap = useMemo(() => {
+    let kap = defaultValue;
+
     if (kilometricAllowParamList?.length === 1) {
-      return kilometricAllowParamList[0];
-    } else {
-      return defaultValue;
+      kap = kilometricAllowParamList[0];
     }
-  }, [defaultValue, kilometricAllowParamList]);
+
+    onChange(kap);
+    return kap;
+  }, [defaultValue, kilometricAllowParamList, onChange]);
 
   return (
     <AutoCompleteSearch
