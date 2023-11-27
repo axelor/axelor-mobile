@@ -16,43 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import React from 'react';
+import TopSeparator, {TopIndicator} from './TopSeparator';
+import BottomSeparator, {BottomIndicator} from './BottomSeparator';
 import ScrollList from '../ScrollList/ScrollList';
-import {Text} from '../../atoms';
-import {ThemeColors, useThemeColor} from '../../../theme';
-
-interface Indicator {
-  title: string;
-  numberItems: number;
-  loading: boolean;
-}
-
-const Separator = ({indicator}: {indicator: Indicator}) => {
-  const Colors = useThemeColor();
-
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
-
-  return (
-    <View style={styles.itemSeparatorContainer}>
-      <View style={styles.halfBar} />
-      <View style={styles.barContainer}>
-        <Text
-          writingType="important"
-          textColor={Colors.secondaryColor.background}>
-          {indicator?.title} : {!indicator?.loading && indicator?.numberItems}
-        </Text>
-        {indicator?.loading && (
-          <ActivityIndicator
-            size="small"
-            color={Colors.secondaryColor.background}
-          />
-        )}
-      </View>
-      <View style={styles.halfBar} />
-    </View>
-  );
-};
 
 interface GroupByScrollListProps {
   style?: any;
@@ -67,7 +34,8 @@ interface GroupByScrollListProps {
   horizontal?: boolean;
   disabledRefresh?: boolean;
   separatorCondition: (prevItem: any, currentItem: any) => boolean;
-  fetchIndicator: (currentItem: any) => Indicator;
+  fetchTopIndicator: (currentItem: any) => TopIndicator;
+  fetchBottomIndicator: (prevItem: any) => BottomIndicator;
 }
 
 const GroupByScrollList = ({
@@ -83,7 +51,8 @@ const GroupByScrollList = ({
   horizontal = false,
   disabledRefresh = false,
   separatorCondition,
-  fetchIndicator,
+  fetchTopIndicator,
+  fetchBottomIndicator,
 }: GroupByScrollListProps) => {
   const _renderItem = ({item, index}) => {
     let prevItem = null;
@@ -92,10 +61,13 @@ const GroupByScrollList = ({
     }
 
     if (index === 0 || separatorCondition(prevItem, item)) {
-      const indicator = fetchIndicator(item);
+      const topIndicator = fetchTopIndicator(item);
+      const bottomIndicator = prevItem ? fetchBottomIndicator(prevItem) : null;
+      const isFirstItem = prevItem ? false : true;
       return (
         <>
-          <Separator indicator={indicator} />
+          {bottomIndicator && <BottomSeparator {...bottomIndicator} />}
+          <TopSeparator {...topIndicator} isFirstItem={isFirstItem} />
           {renderItem({item, index})}
         </>
       );
@@ -120,24 +92,5 @@ const GroupByScrollList = ({
     />
   );
 };
-
-const getStyles = (Colors: ThemeColors) =>
-  StyleSheet.create({
-    itemSeparatorContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    halfBar: {
-      width: '30%',
-      height: 2,
-      backgroundColor: Colors.secondaryColor.background,
-    },
-    barContainer: {
-      width: '30%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
-  });
 
 export default GroupByScrollList;
