@@ -32,6 +32,14 @@ export function checkNullString(message) {
   }
 }
 
+export function capitalizeFirstLetter(string: string) {
+  if (typeof string !== 'string') {
+    return '';
+  }
+
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export function sliceString(string: string, maxStringLength: number) {
   if (string.length > maxStringLength) {
     return string.slice(0, maxStringLength - 3) + '...';
