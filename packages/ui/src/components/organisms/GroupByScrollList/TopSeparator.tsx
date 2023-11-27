@@ -31,11 +31,11 @@ export interface TopIndicator {
   title: string;
   titleSize?: number;
   numberItems?: number;
+  numberSize?: number;
   loadingNumber?: boolean;
-  isFirstItem?: boolean;
 }
 
-interface TopSeparatorProps extends TopIndicator {
+export interface TopSeparatorProps extends TopIndicator {
   isFirstItem?: boolean;
 }
 
@@ -48,6 +48,7 @@ const TopSeparator = ({
   title,
   titleSize,
   numberItems,
+  numberSize,
   loadingNumber = false,
   isFirstItem = false,
 }: TopSeparatorProps) => {
@@ -108,6 +109,7 @@ const TopSeparator = ({
             number={numberItems}
             color={Colors.inverseColor}
             isNeutralBackground={true}
+            size={numberSize}
           />
         ))}
     </View>

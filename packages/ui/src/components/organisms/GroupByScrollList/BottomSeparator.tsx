@@ -24,8 +24,9 @@ import {Color, useThemeColor} from '../../../theme';
 export interface BottomIndicator {
   text: string;
 }
+export interface BottomSeparatorProps extends BottomIndicator {}
 
-const BottomSeparator = ({text}: BottomIndicator) => {
+const BottomSeparator = ({text}: BottomSeparatorProps) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => getStyles(Colors.secondaryColor), [Colors]);
