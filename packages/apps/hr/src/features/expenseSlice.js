@@ -214,8 +214,34 @@ export const searchMyExpense = createAsyncThunk(
   },
 );
 
+export const searchMyExpenseWithoutLoading = createAsyncThunk(
+  'expense/searchMyExpenseWithoutLoading',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchMyExpense,
+      data,
+      action: 'Hr_SliceAction_FetchMyExpense',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 export const searchExpenseToValidate = createAsyncThunk(
   'expense/searchExpenseToValidate',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchExpenseToValidate,
+      data,
+      action: 'Hr_SliceAction_FetchExpenseToValidate',
+      getState,
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
+export const searchExpenseToValidateWithoutLoading = createAsyncThunk(
+  'expense/searchExpenseToValidateWithoutLoading',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchExpenseToValidate,
@@ -294,6 +320,26 @@ const expenseSlice = createSlice({
       },
       {
         manageTotal: true,
+      },
+    );
+    builder.addCase(searchMyExpenseWithoutLoading.pending, state => {
+      state.loadingMyExpense = false;
+    });
+    builder.addCase(
+      searchMyExpenseWithoutLoading.fulfilled,
+      (state, action) => {
+        state.loadingMyExpense = false;
+        state.myExpenseList = action.payload;
+      },
+    );
+    builder.addCase(searchExpenseToValidateWithoutLoading.pending, state => {
+      state.loadingExpenseToValidate = false;
+    });
+    builder.addCase(
+      searchExpenseToValidateWithoutLoading.fulfilled,
+      (state, action) => {
+        state.loadingExpenseToValidate = false;
+        state.expenseToValidateList = action.payload;
       },
     );
     builder.addCase(searchExpenseDraft.pending, state => {

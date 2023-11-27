@@ -36,7 +36,9 @@ import {
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
   searchExpenseToValidate,
+  searchExpenseToValidateWithoutLoading,
   searchMyExpense,
+  searchMyExpenseWithoutLoading,
   sendExpense,
   validateExpense,
 } from '../../features/expenseSlice';
@@ -76,8 +78,8 @@ const ExpenseListScreen = ({navigation}) => {
   }, [dispatch, user]);
 
   const refresh = useCallback(() => {
-    dispatch(searchMyExpense({page: 0, userId: user.id}));
-    dispatch(searchExpenseToValidate({page: 0, user: user}));
+    dispatch(searchMyExpenseWithoutLoading({page: 0, userId: user.id}));
+    dispatch(searchExpenseToValidateWithoutLoading({page: 0, user: user}));
   }, [dispatch, user]);
 
   const fetchMyExpenseAPI = useCallback(
