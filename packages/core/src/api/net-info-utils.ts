@@ -38,18 +38,41 @@ interface TokenInfoState {
 }
 
 export async function getTokenInfo(): Promise<TokenInfoState> {
+  const manageOlderVersion = async (): Promise<TokenInfoState> => {
+    return axiosApiProvider
+      .get({url: '/'})
+      .then(res => {
+        if (
+          typeof res?.data === 'string' &&
+          res.data.includes('<form id="login-form"')
+        ) {
+          return {isTokenValid: false};
+        }
+        return {isTokenValid: res?.status !== 401};
+      })
+      .catch(error => {
+        return {isTokenValid: error?.response?.status !== 401};
+      });
+  };
+
   return axiosApiProvider
-    .get({url: '/'})
+    .get({url: '/ws/public/app/info'})
     .then(res => {
-      if (
-        typeof res?.data === 'string' &&
-        res.data.includes('<form id="login-form"')
-      ) {
+      if (res?.status === 404) {
+        return manageOlderVersion();
+      }
+
+      if (res?.data?.user == null) {
         return {isTokenValid: false};
       }
+
       return {isTokenValid: res?.status !== 401};
     })
     .catch(error => {
+      if (error?.response?.status === 404) {
+        return manageOlderVersion();
+      }
+
       return {isTokenValid: error?.response?.status !== 401};
     });
 }
