@@ -150,6 +150,10 @@ const ObjectCard = ({
   );
 
   const renderTextElement = useCallback((item: TextElement) => {
+    if (item.hideIf) {
+      return null;
+    }
+
     if (item.customComponent != null) {
       return React.cloneElement(item.customComponent, {
         key: `${item.displayText} - ${item.order}`,
@@ -157,10 +161,9 @@ const ObjectCard = ({
     }
 
     if (
-      (item.hideIfNull &&
-        checkNullString(item.displayText) &&
-        checkNullString(item.indicatorText)) ||
-      item.hideIf
+      item.hideIfNull &&
+      checkNullString(item.displayText) &&
+      checkNullString(item.indicatorText)
     ) {
       return null;
     }

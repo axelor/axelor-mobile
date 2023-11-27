@@ -22,4 +22,9 @@ export {formatNumber, unformatNumber} from './formatters';
 export {getFromList, getItemsFromList} from './list';
 export {isHalf, getIntegerPart, roundHalf, roundInteger} from './number';
 export {deepCopy} from './objects';
-export {splitInTwo, checkNullString, sliceString} from './strings';
+export {
+  splitInTwo,
+  checkNullString,
+  capitalizeFirstLetter,
+  sliceString,
+} from './strings';
