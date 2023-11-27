@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon} from '../../atoms';
 
 const predefinedPositions = {
@@ -69,20 +69,20 @@ const DoubleIcon = ({
 
   return (
     <View style={styles.container}>
-      <Icon
-        {...bottomIconConfig}
-        size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
-        touchable={touchable}
-        onPress={onPress}
-      />
-      <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
+      <TouchableOpacity onPress={onPress} disabled={!touchable}>
         <Icon
-          {...topIconConfig}
-          size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
-          touchable={touchable}
-          onPress={onPress}
+          {...bottomIconConfig}
+          size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
         />
-      </View>
+        <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
+          <Icon
+            {...topIconConfig}
+            size={
+              topIconConfig?.size != null ? topIconConfig?.size : size * 0.6
+            }
+          />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

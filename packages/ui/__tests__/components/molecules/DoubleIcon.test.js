@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {DoubleIcon, Icon, lightTheme} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
@@ -76,18 +76,16 @@ describe('DoubleIcon Component', () => {
     const touchable = true;
     const wrapper = shallow(<DoubleIcon {...props} touchable={touchable} />);
 
-    expect(wrapper.find(Icon).at(0).prop('touchable')).toBe(touchable);
-    expect(wrapper.find(Icon).at(1).prop('touchable')).toBe(touchable);
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(!touchable);
   });
 
   it('should call onPress when icons are pressed', () => {
     const onPress = jest.fn();
     const wrapper = shallow(<DoubleIcon {...props} onPress={onPress} />);
 
-    wrapper.find(Icon).at(0).simulate('press');
-    wrapper.find(Icon).at(1).simulate('press');
+    wrapper.find(TouchableOpacity).simulate('press');
 
-    expect(onPress).toHaveBeenCalledTimes(2);
+    expect(onPress).toHaveBeenCalled();
   });
 
   it('should use predefinedPositions props if provided', () => {
