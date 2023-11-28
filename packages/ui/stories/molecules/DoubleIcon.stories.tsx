@@ -22,6 +22,8 @@ import {storiesOf} from '@storybook/react-native';
 import {DoubleIcon} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
 
+const Colors = lightTheme.colors;
+
 storiesOf('ui/molecules/DoubleIcon', module)
   .add(
     'with pre-defined position',
@@ -34,13 +36,13 @@ storiesOf('ui/molecules/DoubleIcon', module)
               name: args.configTopIcon_name,
               size: args.configTopIcon_size,
               FontAwesome5: false,
-              color: lightTheme.colors[args.configTopIcon_color].background,
+              color: Colors[args.configTopIcon_color].background,
             }}
             bottomIconConfig={{
               name: args.configBottomIcon_name,
               size: args.configBottomIcon_size,
               FontAwesome5: false,
-              color: lightTheme.colors[args.configBottomIcon_color].background,
+              color: Colors[args.configBottomIcon_color].background,
             }}
             {...args}
           />
@@ -71,7 +73,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
           control: {type: 'text'},
         },
         configTopIcon_color: {
-          options: Object.entries(lightTheme.colors)
+          options: Object.entries(Colors)
             .filter(([, _color]) => typeof _color !== 'string')
             .map(([key]) => key),
           defaultValue: 'importantColor',
@@ -91,7 +93,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
           control: {type: 'text'},
         },
         configBottomIcon_color: {
-          options: Object.entries(lightTheme.colors)
+          options: Object.entries(Colors)
             .filter(([, _color]) => typeof _color !== 'string')
             .map(([key]) => key),
           defaultValue: 'primaryColor',
@@ -126,7 +128,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
           topIconConfig={{
             name: 'heart',
             FontAwesome5: false,
-            color: lightTheme.colors.plannedColor.background,
+            color: Colors.plannedColor.background,
           }}
           bottomIconConfig={{
             name: 'user',

@@ -39,6 +39,7 @@ interface IconConfig {
 }
 
 interface DoubleIconProps {
+  style?: any;
   topIconConfig: IconConfig;
   bottomIconConfig: IconConfig;
   size?: number;
@@ -54,6 +55,7 @@ interface DoubleIconProps {
 }
 
 const DoubleIcon = ({
+  style,
   topIconConfig,
   bottomIconConfig,
   size = 18,
@@ -68,22 +70,21 @@ const DoubleIcon = ({
   );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onPress} disabled={!touchable}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      disabled={!touchable}>
+      <Icon
+        {...bottomIconConfig}
+        size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
+      />
+      <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
         <Icon
-          {...bottomIconConfig}
-          size={bottomIconConfig?.size != null ? bottomIconConfig?.size : size}
+          {...topIconConfig}
+          size={topIconConfig?.size != null ? topIconConfig?.size : size * 0.6}
         />
-        <View style={[styles.topIcon, topIconStyle, topIconPosition]}>
-          <Icon
-            {...topIconConfig}
-            size={
-              topIconConfig?.size != null ? topIconConfig?.size : size * 0.6
-            }
-          />
-        </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

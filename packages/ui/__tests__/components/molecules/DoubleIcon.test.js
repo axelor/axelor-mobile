@@ -72,11 +72,14 @@ describe('DoubleIcon Component', () => {
     expect(wrapper.find(Icon).at(1).prop('size')).toBe(size * 0.6);
   });
 
-  it('should give touchable props to icons when provided', () => {
-    const touchable = true;
-    const wrapper = shallow(<DoubleIcon {...props} touchable={touchable} />);
+  it('should give touchable props when provided', () => {
+    const wrapper = shallow(<DoubleIcon {...props} touchable={true} />);
 
-    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(!touchable);
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(false);
+
+    wrapper.setProps({touchable: false});
+
+    expect(wrapper.find(TouchableOpacity).prop('disabled')).toBe(true);
   });
 
   it('should call onPress when icons are pressed', () => {
@@ -99,13 +102,13 @@ describe('DoubleIcon Component', () => {
       'top-left': {top: -10, left: -10},
       'top-right': {top: -10, right: -10},
     };
-    const predefinedPositionsKeys = Object.keys(predefinedPositions);
 
-    for (const positionKey of predefinedPositionsKeys) {
+    for (const positionKey of Object.keys(predefinedPositions)) {
       const wrapper = shallow(
         <DoubleIcon {...props} predefinedPosition={positionKey} />,
       );
-      expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject(
+
+      expect(getGlobalStyles(wrapper.find(View))).toMatchObject(
         predefinedPositions[positionKey],
       );
     }
@@ -120,8 +123,17 @@ describe('DoubleIcon Component', () => {
       <DoubleIcon {...props} topIconPosition={topIconPosition} />,
     );
 
-    expect(getGlobalStyles(wrapper.find(View).at(1))).toMatchObject(
-      topIconPosition,
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(topIconPosition);
+  });
+
+  it('should render with custom style', () => {
+    const customStyle = {
+      margin: 20,
+    };
+    const wrapper = shallow(<DoubleIcon {...props} style={customStyle} />);
+
+    expect(getGlobalStyles(wrapper.find(TouchableOpacity))).toMatchObject(
+      customStyle,
     );
   });
 });
