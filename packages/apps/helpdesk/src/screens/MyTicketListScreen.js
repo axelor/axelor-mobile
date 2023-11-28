@@ -49,16 +49,10 @@ const MyTicketListScreen = ({navigation}) => {
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [priorityStatus, setPriorityStatus] = useState([
     {
-      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
-      isActive: true,
-      key: 1,
-      title: I18n.t('Helpdesk_Priority_Low'),
+      key: 3,
     },
     {
-      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
-      isActive: true,
-      key: 2,
-      title: I18n.t('Helpdesk_Priority_Normal'),
+      key: 4,
     },
   ]);
 
