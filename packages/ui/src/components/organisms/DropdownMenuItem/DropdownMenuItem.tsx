@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
@@ -30,6 +30,7 @@ interface DropdownMenuItemProps {
   indicator?: number;
   hideIf?: boolean;
   disableIf?: boolean;
+  customComponent?: ReactElement<any>;
   onPress: (any) => void;
 }
 
@@ -43,6 +44,7 @@ const DropdownMenuItem = ({
   FontAwesome5 = true,
   hideIf = false,
   disableIf = false,
+  customComponent,
   onPress,
 }: DropdownMenuItemProps) => {
   const Colors = useThemeColor();
@@ -69,12 +71,16 @@ const DropdownMenuItem = ({
       style={styles.menuItem}
       disabled={disableIf}>
       <View style={styles.iconContainer}>
-        <Icon
-          name={icon}
-          color={_color}
-          FontAwesome5={FontAwesome5}
-          size={15}
-        />
+        {customComponent != null ? (
+          React.cloneElement(customComponent)
+        ) : (
+          <Icon
+            name={icon}
+            color={_color}
+            FontAwesome5={FontAwesome5}
+            size={15}
+          />
+        )}
         {indicator > 0 && (
           <Badge
             style={styles.badge}

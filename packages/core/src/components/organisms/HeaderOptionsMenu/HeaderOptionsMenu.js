@@ -103,6 +103,7 @@ const HeaderOptionsMenu = ({
           hideIf={_action.hideIf}
           disableIf={_action.disableIf}
           onPress={_action.onPress}
+          customComponent={_action.customComponent}
         />
       )),
     [headerActions],
@@ -120,6 +121,7 @@ const HeaderOptionsMenu = ({
           hideIf={_action.hideIf}
           disableIf={_action.disableIf}
           onPress={_action.onPress}
+          customComponent={_action.customComponent}
         />
       )),
     [menuActions],

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {ReactElement} from 'react';
 import {Color} from '@axelor/aos-mobile-ui';
 
 export interface HeaderActions {
@@ -45,6 +46,7 @@ export interface ActionType {
   disableIf?: boolean;
   onPress: () => void;
   showInHeader?: boolean;
+  customComponent?: ReactElement<any>;
 }
 
 export interface HeaderBandItem {
