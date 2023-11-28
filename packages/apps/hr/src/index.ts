@@ -59,6 +59,11 @@ export const HrModule: Module = {
       icon: 'hourglass-half',
       screen: 'TimerListScreen',
     },
+    hr_menu_timesheets: {
+      title: 'Hr_Timesheets',
+      icon: 'business-time',
+      screen: 'TimesheetListScreen',
+    },
   },
   screens: {
     ...ExpenseScreens,

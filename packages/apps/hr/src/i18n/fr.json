@@ -50,6 +50,7 @@
   "Hr_TotalDurationHours": "Durée totale (heures)",
   "Hr_Timers": "Chronomètres",
   "Hr_NewTimer": "Créer un chronomètre",
+  "Hr_Timesheets": "Timesheets",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
