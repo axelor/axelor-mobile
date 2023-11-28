@@ -59,7 +59,7 @@ const ExpenseLineTypeSwitch = ({
     dispatch(
       (searchGeneralExpenseLines as any)({expenseId: expense?.id, page: 0}),
     );
-  }, [dispatch, expense?.id]);
+  }, [dispatch, expense]);
 
   return (
     <ToggleSwitch
