@@ -30,6 +30,7 @@ import {
   deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
 import {ExpenseLine} from '../types';
+import {fetchExpenseById} from './expenseSlice';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -72,7 +73,7 @@ export const searchGeneralExpenseLines = createAsyncThunk(
 
 export const deleteExpenseLine = createAsyncThunk(
   'expenseLine/deleteExpenseLine',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteExpenseLine,
       data,
@@ -80,13 +81,17 @@ export const deleteExpenseLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchExpenseLines,
-        data: {userId: data?.userId},
-        action: 'Hr_SliceAction_FetchExpenseLines',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      if (data?.expenseId != null) {
+        dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseLines,
+          data: {userId: data?.userId},
+          action: 'Hr_SliceAction_FetchExpenseLines',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      }
     });
   },
 );
@@ -208,7 +213,9 @@ const expenseLineSlice = createSlice({
       state.expenseLineList = action.payload;
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
-      state.expenseLineList = action.payload;
+      if (action?.meta?.arg?.expenseId == null) {
+        state.expenseLineList = action.payload;
+      }
     });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
