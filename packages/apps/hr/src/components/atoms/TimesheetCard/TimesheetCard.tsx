@@ -20,8 +20,10 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
+import {Timesheet} from '../../../types';
 
 interface TimesheetCardProps {
+  statusSelect: number;
   isCompleted: boolean;
   startDate: string;
   endDate: string;
@@ -32,6 +34,7 @@ interface TimesheetCardProps {
 }
 
 const TimesheetCard = ({
+  statusSelect,
   isCompleted,
   startDate,
   endDate,
@@ -44,8 +47,8 @@ const TimesheetCard = ({
   const Colors = useThemeColor();
 
   const styles = useMemo(
-    () => getStyles(isCompleted ? Colors.primaryColor : Colors.secondaryColor),
-    [Colors, isCompleted],
+    () => getStyles(Timesheet.getStatusColor(statusSelect, Colors)),
+    [Colors, statusSelect],
   );
 
   const _formatDate = (date: string) => {

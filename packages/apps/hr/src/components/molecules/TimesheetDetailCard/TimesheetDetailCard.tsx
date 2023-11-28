@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
+import {Timesheet} from '../../../types';
 
 interface TimesheetDetailCardProps {
+  statusSelect: number;
   isCompleted: boolean;
   startDate: string;
   endDate: string;
@@ -33,6 +35,7 @@ interface TimesheetDetailCardProps {
 }
 
 const TimesheetDetailCard = ({
+  statusSelect,
   isCompleted,
   startDate,
   endDate,
@@ -48,9 +51,25 @@ const TimesheetDetailCard = ({
     console.log('handleSend');
   };
 
+  const handleValidate = () => {
+    console.log('handleValidate');
+  };
+
+  const displayActions = useMemo(() => {
+    if (
+      isActions &&
+      (statusSelect === Timesheet.statusSelect.Draft ||
+        statusSelect === Timesheet.statusSelect.WaitingValidation)
+    ) {
+      return true;
+    }
+    return false;
+  }, [isActions, statusSelect]);
+
   return (
     <View style={[styles.container, style]}>
       <TimesheetCard
+        statusSelect={statusSelect}
         isCompleted={isCompleted}
         startDate={startDate}
         endDate={endDate}
@@ -59,12 +78,20 @@ const TimesheetDetailCard = ({
         style={styles.cardContainer}
         onPress={onPress}
       />
-      {isActions && (
+      {displayActions && (
         <View style={styles.flexOneContainer}>
           <CardIconButton
-            iconName={'paper-plane'}
+            iconName={
+              statusSelect === Timesheet.statusSelect.Draft
+                ? 'paper-plane'
+                : 'check'
+            }
             iconColor={Colors.secondaryColor_dark.background}
-            onPress={handleSend}
+            onPress={() => {
+              statusSelect === Timesheet.statusSelect.Draft
+                ? handleSend()
+                : handleValidate();
+            }}
             style={styles.flexOneContainer}
           />
         </View>
