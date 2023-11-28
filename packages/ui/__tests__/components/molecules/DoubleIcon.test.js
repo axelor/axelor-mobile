@@ -85,7 +85,7 @@ describe('DoubleIcon Component', () => {
 
     wrapper.find(TouchableOpacity).simulate('press');
 
-    expect(onPress).toHaveBeenCalled();
+    expect(onPress).toHaveBeenCalledTimes(1);
   });
 
   it('should use predefinedPositions props if provided', () => {
