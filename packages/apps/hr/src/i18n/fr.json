@@ -6,6 +6,7 @@
   "Hr_Expenses": "Notes de frais",
   "Hr_NewExpenseLine": "Nouvelle ligne de frais",
   "Hr_NewExpense": "Créer une nouvelle note de frais",
+  "Hr_OpenSelectionMode": "Ouvre le mode de selection",
   "Hr_KilomectricTypeSelect_OneWay": "Aller-simple",
   "Hr_KilomectricTypeSelect_RoundTrip": "Aller-retour",
   "Hr_ExpenseStatus_Draft": "Brouillon",
