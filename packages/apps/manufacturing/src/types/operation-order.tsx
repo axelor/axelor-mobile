@@ -228,6 +228,7 @@ class OperationOrder {
     return list.map(_e => {
       return {
         id: _e.id,
+        itemId: _e.id,
         startDate: _e.plannedStartDateT,
         endDate: _e.plannedEndDateT,
         data: {

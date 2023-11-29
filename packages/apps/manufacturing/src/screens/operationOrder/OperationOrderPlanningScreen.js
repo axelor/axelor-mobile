@@ -58,14 +58,14 @@ function OperationOrderPlanningScreen({navigation}) {
     };
   };
 
-  const renderDayEventDetails = ({id, data: operationOrder}) => {
+  const renderDayEventDetails = ({itemId, id, data: operationOrder}) => {
     if (operationOrder == null) {
       return null;
     }
 
     return (
       <ObjectCard
-        onPress={() => navigateToOperationOrder(id)}
+        onPress={() => navigateToOperationOrder(itemId)}
         key={id}
         style={rendBorderColor(operationOrder.border)}
         upperTexts={{
@@ -79,14 +79,14 @@ function OperationOrderPlanningScreen({navigation}) {
     );
   };
 
-  const renderDayEvent = ({id, data: operationOrder}) => {
+  const renderDayEvent = ({itemId, id, data: operationOrder}) => {
     if (operationOrder == null) {
       return null;
     }
 
     return (
       <ObjectCard
-        onPress={() => navigateToOperationOrder(id)}
+        onPress={() => navigateToOperationOrder(itemId)}
         key={id}
         style={rendBorderColor(operationOrder.border)}
         upperTexts={{
