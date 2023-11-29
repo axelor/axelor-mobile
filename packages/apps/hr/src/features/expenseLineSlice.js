@@ -222,11 +222,15 @@ const expenseLineSlice = createSlice({
       },
     );
     builder.addCase(createExpenseLine.pending, (state, action) => {
-      state.loadingExpenseLine = true;
+      if (action?.meta?.arg?.idExpense == null) {
+        state.loadingExpenseLine = true;
+      }
     });
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
-      state.loadingExpenseLine = false;
-      state.expenseLineList = action.payload;
+      if (action?.meta?.arg?.idExpense == null) {
+        state.loadingExpenseLine = false;
+        state.expenseLineList = action.payload;
+      }
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
