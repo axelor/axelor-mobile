@@ -28,3 +28,4 @@ export {default as Picker} from './Picker/Picker';
 export {default as ProgressBar} from './ProgressBar/ProgressBar';
 export {default as ScrollList} from './ScrollList/ScrollList';
 export {default as SearchBar} from './SearchBar/SearchBar';
+export {default as ToggleButton} from './ToggleButton/ToggleButton';
