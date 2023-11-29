@@ -102,44 +102,33 @@ export const deleteExpenseLine = createAsyncThunk(
 
 export const createExpenseLine = createAsyncThunk(
   'expenseLine/createExpenseLine',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createExpenseLine,
       data,
       action: 'Hr_SliceAction_CreateExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchExpenseLines,
-        data: {userId: data?.userId},
-        action: 'Hr_SliceAction_FetchExpenseLines',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
-    });
-  },
-);
-
-export const createAndLinkExpenseLine = createAsyncThunk(
-  'expenseLine/createAndLinkExpenseLine',
-  async function (data = {}, {getState, dispatch}) {
-    return handlerApiCall({
-      fetchFunction: _createExpenseLine,
-      data,
-      action: 'Hr_SliceAction_CreateAndLinkExpenseLine',
-      getState,
-      responseOptions: {isArrayResponse: false, showToast: true},
     }).then(res => {
-      dispatch(
-        updateExpense({
-          isLineCreation: true,
-          expenseId: data?.idExpense,
-          version: data?.versionExpense,
-          userId: data?.userId,
-          expenseLineIdList: [res.expenseLineId],
-        }),
-      );
+      if (data?.idExpense == null) {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseLines,
+          data: {userId: data?.userId},
+          action: 'Hr_SliceAction_FetchExpenseLines',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      } else {
+        dispatch(
+          updateExpense({
+            isLineCreation: true,
+            expenseId: data?.idExpense,
+            version: data?.versionExpense,
+            userId: data?.userId,
+            expenseLineIdList: [res.expenseLineId],
+          }),
+        );
+      }
     });
   },
 );

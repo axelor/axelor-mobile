@@ -20,7 +20,6 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {FormView, fetchCompanies, useDispatch} from '@axelor/aos-mobile-core';
 import {
   createExpenseLine,
-  createAndLinkExpenseLine,
   updateExpenseLine,
 } from '../features/expenseLineSlice';
 import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -71,38 +70,9 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         expenseLineType: _expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
-      dispatch(createExpenseLine({expenseLine: dataToSend, userId: user?.id}));
 
-      navigation.navigate('ExpenseLinesListScreen');
-    },
-    [navigation, user?.activeCompany?.id, user?.employee?.id, user?.id],
-  );
-
-  const createAndLinkExpenseLineAPI = useCallback(
-    (_expenseLine, dispatch) => {
-      dispatch(needUpdateDistance(false));
-
-      const dataToSend = {
-        projectId: _expenseLine.project?.id,
-        toInvoice: _expenseLine.toInvoice,
-        expenseProductId: _expenseLine.expenseProduct?.id,
-        expenseDate: _expenseLine.expenseDate,
-        employeeId: user?.employee?.id,
-        totalAmount: _expenseLine.totalAmount,
-        totalTax: _expenseLine.totalTax,
-        currencyId: _expenseLine.currency?.id,
-        comments: _expenseLine.comments,
-        justificationFileId: _expenseLine.justificationMetaFile?.id,
-        kilometricAllowParamId: _expenseLine.kilometricAllowParam?.id,
-        kilometricTypeSelect: _expenseLine.kilometricTypeSelect?.key,
-        distance: _expenseLine.distance,
-        fromCity: _expenseLine.fromCity,
-        toCity: _expenseLine.toCity,
-        expenseLineType: _expenseLine.manageMode,
-        companyId: user?.activeCompany?.id,
-      };
       dispatch(
-        createAndLinkExpenseLine({
+        createExpenseLine({
           expenseLine: dataToSend,
           idExpense: idExpense,
           versionExpense: versionExpense,
@@ -110,7 +80,11 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         }),
       );
 
-      navigation.goBack();
+      if (idExpense == null) {
+        navigation.navigate('ExpenseLinesListScreen');
+      } else {
+        navigation.goBack();
+      }
     },
     [
       idExpense,
@@ -277,7 +251,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           needRequiredFields: true,
           hideIf: () => expenseLine != null || idExpense == null,
           customAction: ({dispatch, objectState}) => {
-            return createAndLinkExpenseLineAPI(objectState, dispatch);
+            return createExpenseLineAPI(objectState, dispatch);
           },
         },
         {
