@@ -204,14 +204,45 @@ export function manageWebCompatibility(
         _item => _item.name === _module.compatibilityAOS.moduleName,
       );
 
+      const menus: {[key: string]: Menu} = _module.menus ? {} : null;
+
+      if (moduleHasMenus(_module)) {
+        for (const key in _module.menus) {
+          const _menu = _module.menus[key];
+
+          if (_menu.compatibilityAOS != null) {
+            const menuWebModule =
+              _menu.compatibilityAOS.moduleName != null
+                ? metaModules?.find(
+                    _item => _item.name === _menu.compatibilityAOS.moduleName,
+                  )
+                : webModule;
+
+            menus[key] = {
+              ..._menu,
+              compatibilityAOS: {
+                ..._menu.compatibilityAOS,
+                moduleName:
+                  _menu.compatibilityAOS.moduleName ?? menuWebModule?.name,
+                moduleVersion: menuWebModule?.moduleVersion,
+              },
+            };
+          } else {
+            menus[key] = _menu;
+          }
+        }
+      }
+
       return {
         ..._module,
         compatibilityAOS: {
           ..._module.compatibilityAOS,
           moduleVersion: webModule?.moduleVersion,
         },
+        menus,
       };
     }
+
     return _module;
   });
 }

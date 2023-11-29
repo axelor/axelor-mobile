@@ -37,6 +37,7 @@ const SubMenuItem = ({
       icon={subMenu.icon}
       title={getMenuTitle(subMenu, {I18n})}
       disabled={subMenu.disabled}
+      compatibility={subMenu.compatibilityAOS}
       iconSize={SUB_MENU_ICON_SIZE}
       onPress={() => onPress(route)}
       isActive={isActive}
