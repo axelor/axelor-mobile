@@ -40,17 +40,17 @@ class ExpenseType {
     if (I18n) {
       switch (select) {
         case this.statusSelect.Draft:
-          return I18n.t('Hr_ExpenseStatus_Draft');
+          return I18n.t('Hr_Status_Draft');
         case this.statusSelect.WaitingValidation:
-          return I18n.t('Hr_ExpenseStatus_WaitingValidation');
+          return I18n.t('Hr_Status_WaitingValidation');
         case this.statusSelect.Validate:
-          return I18n.t('Hr_ExpenseStatus_Validate');
+          return I18n.t('Hr_Status_Validate');
         case this.statusSelect.Reimbursed:
-          return I18n.t('Hr_ExpenseStatus_Reimbursed');
+          return I18n.t('Hr_Status_Reimbursed');
         case this.statusSelect.Refused:
-          return I18n.t('Hr_ExpenseStatus_Refused');
+          return I18n.t('Hr_Status_Refused');
         case this.statusSelect.Canceled:
-          return I18n.t('Hr_ExpenseStatus_Canceled');
+          return I18n.t('Hr_Status_Canceled');
         default:
           console.warn(
             `Status provided with value ${select} is not supported by Expense`,
@@ -86,7 +86,7 @@ class ExpenseType {
     I18n: {t: (key: string) => string},
   ) => {
     return Object.entries(this.statusSelect).map(([key, value]) => ({
-      title: I18n.t(`Hr_ExpenseStatus_${key}`),
+      title: I18n.t(`Hr_Status_${key}`),
       color: this.getStatusColor(value, Colors),
       key: value,
     }));

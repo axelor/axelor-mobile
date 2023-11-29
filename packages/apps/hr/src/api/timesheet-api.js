@@ -20,8 +20,9 @@ import {
   createStandardSearch,
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
+import {Timesheet} from '../types';
 
-const createTimerCriteria = (searchValue, userId) => {
+const createTimesheetCriteria = (searchValue, userId) => {
   return [
     {
       fieldName: 'employee.user.id',
@@ -32,10 +33,45 @@ const createTimerCriteria = (searchValue, userId) => {
   ];
 };
 
+const createTimesheetToValidateCriteria = (searchValue, user) => {
+  const criteria = [
+    getSearchCriterias('hr_timesheet', searchValue),
+    {
+      fieldName: 'statusSelect',
+      operator: '=',
+      value: Timesheet.statusSelect.WaitingValidation,
+    },
+  ];
+
+  if (!user?.employee?.hrManager) {
+    criteria.push({
+      fieldName: 'employee.managerUser.id',
+      operator: '=',
+      value: user?.id,
+    });
+  }
+
+  return criteria;
+};
+
 export async function fetchTimesheet({searchValue = null, userId, page = 0}) {
   return createStandardSearch({
     model: 'com.axelor.apps.hr.db.Timesheet',
-    criteria: createTimerCriteria(searchValue, userId),
+    criteria: createTimesheetCriteria(searchValue, userId),
+    fieldKey: 'hr_timesheet',
+    sortKey: 'hr_timesheet',
+    page,
+  });
+}
+
+export async function fetchTimesheetToValidate({
+  searchValue = null,
+  page = 0,
+  user,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.hr.db.Timesheet',
+    criteria: createTimesheetToValidateCriteria(searchValue, user),
     fieldKey: 'hr_timesheet',
     sortKey: 'hr_timesheet',
     page,

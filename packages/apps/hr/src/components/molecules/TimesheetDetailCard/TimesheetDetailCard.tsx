@@ -18,17 +18,18 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailCardProps {
   statusSelect: number;
-  isCompleted: boolean;
   startDate: string;
   endDate: string;
   company: string;
   totalDuration: number;
+  employeeName?: string;
   isActions?: boolean;
   style?: any;
   onPress: () => void;
@@ -36,16 +37,43 @@ interface TimesheetDetailCardProps {
 
 const TimesheetDetailCard = ({
   statusSelect,
-  isCompleted,
   startDate,
   endDate,
   company,
   totalDuration,
+  employeeName,
   isActions = true,
   style,
   onPress,
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
+
+  const {timesheet: timesheetConfig} = useSelector(
+    (state: any) => state.appConfig,
+  );
+
+  const _statusSelect = useMemo(() => {
+    if (
+      !timesheetConfig.needValidation &&
+      statusSelect !== Timesheet.statusSelect.Validate
+    ) {
+      return Timesheet.statusSelect.Draft;
+    }
+
+    return statusSelect;
+  }, [statusSelect, timesheetConfig]);
+
+  const _isActions = useMemo(() => {
+    if (
+      isActions &&
+      (_statusSelect === Timesheet.statusSelect.Draft ||
+        _statusSelect === Timesheet.statusSelect.WaitingValidation)
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [isActions, _statusSelect]);
 
   const handleSend = () => {
     console.log('handleSend');
@@ -55,40 +83,29 @@ const TimesheetDetailCard = ({
     console.log('handleValidate');
   };
 
-  const displayActions = useMemo(() => {
-    if (
-      isActions &&
-      (statusSelect === Timesheet.statusSelect.Draft ||
-        statusSelect === Timesheet.statusSelect.WaitingValidation)
-    ) {
-      return true;
-    }
-    return false;
-  }, [isActions, statusSelect]);
-
   return (
     <View style={[styles.container, style]}>
       <TimesheetCard
-        statusSelect={statusSelect}
-        isCompleted={isCompleted}
+        statusSelect={_statusSelect}
         startDate={startDate}
         endDate={endDate}
         company={company}
         totalDuration={totalDuration}
+        employeeName={employeeName}
         style={styles.cardContainer}
         onPress={onPress}
       />
-      {displayActions && (
+      {_isActions && (
         <View style={styles.flexOneContainer}>
           <CardIconButton
             iconName={
-              statusSelect === Timesheet.statusSelect.Draft
+              _statusSelect === Timesheet.statusSelect.Draft
                 ? 'paper-plane'
                 : 'check'
             }
             iconColor={Colors.secondaryColor_dark.background}
             onPress={() => {
-              statusSelect === Timesheet.statusSelect.Draft
+              _statusSelect === Timesheet.statusSelect.Draft
                 ? handleSend()
                 : handleValidate();
             }}

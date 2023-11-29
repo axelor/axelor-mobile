@@ -21,10 +21,13 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {fetchTimesheet as _fetchTimesheet} from '../api/timesheet-api';
+import {
+  fetchTimesheet as _fetchTimesheet,
+  fetchTimesheetToValidate as _fetchTimesheetToValidate,
+} from '../api/timesheet-api';
 
 export const fetchTimesheet = createAsyncThunk(
-  'hr_timesheet/fetchTimesheet',
+  'timesheet/fetchTimesheet',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _fetchTimesheet,
@@ -36,23 +39,56 @@ export const fetchTimesheet = createAsyncThunk(
   },
 );
 
+export const fetchTimesheetToValidate = createAsyncThunk(
+  'timesheet/fetchTimesheetToValidate',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _fetchTimesheetToValidate,
+      data,
+      action: 'Hr_SliceAction_FetchTimesheetToValidate',
+      getState,
+      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
+    });
+  },
+);
+
 const initialState = {
-  loadingTimesheet: true,
-  moreLoading: false,
-  isListEnd: false,
-  timesheetList: [],
+  loadingMyTimesheet: true,
+  moreLoadingMyTimesheet: false,
+  isListEndMyTimesheet: false,
+  myTimesheetList: [],
+
+  loadingTimesheetToValidate: true,
+  moreLoadingTimesheetToValidate: false,
+  isListEndTimesheetToValidate: false,
+  timesheetToValidateList: [],
+  totalNumberTimesheetToValidate: 0,
 };
 
 const timesheetSlice = createSlice({
-  name: 'hr_timesheet',
+  name: 'timesheet',
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchTimesheet, {
-      loading: 'loadingTimesheet',
-      moreLoading: 'moreLoading',
-      isListEnd: 'isListEnd',
-      list: 'timesheetList',
+      loading: 'loadingMyTimesheet',
+      moreLoading: 'moreLoadingMyTimesheet',
+      isListEnd: 'isListEndMyTimesheet',
+      list: 'myTimesheetList',
     });
+    generateInifiniteScrollCases(
+      builder,
+      fetchTimesheetToValidate,
+      {
+        loading: 'loadingTimesheetToValidate',
+        moreLoading: 'moreLoadingTimesheetToValidate',
+        isListEnd: 'isListEndTimesheetToValidate',
+        list: 'timesheetToValidateList',
+        total: 'totalNumberTimesheetToValidate',
+      },
+      {
+        manageTotal: true,
+      },
+    );
   },
 });
 

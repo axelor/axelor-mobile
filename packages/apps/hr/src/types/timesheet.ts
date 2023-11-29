@@ -27,6 +27,11 @@ class TimesheetType {
     Canceled: 5,
   };
 
+  static mode = {
+    personnal: 'myTimesheetMode',
+    validation: 'toValidateMode',
+  };
+
   static getStatusColor = (status: number, Colors: ThemeColors): Color => {
     switch (status) {
       case this.statusSelect.Draft:
@@ -44,6 +49,33 @@ class TimesheetType {
           `Status provided with value ${status} is not supported by Timesheet`,
         );
         return null;
+    }
+  };
+
+  static getStatusList = (
+    needValidation: boolean,
+    Colors: ThemeColors,
+    I18n: {t: (key: string) => string},
+  ) => {
+    if (needValidation) {
+      return Object.entries(this.statusSelect).map(([key, value]) => ({
+        title: I18n.t(`Hr_Status_${key}`),
+        color: this.getStatusColor(value, Colors),
+        key: value,
+      }));
+    } else {
+      return [
+        {
+          title: I18n.t('Hr_Status_Draft'),
+          color: this.getStatusColor(this.statusSelect.Draft, Colors),
+          key: this.statusSelect.Draft,
+        },
+        {
+          title: I18n.t('Hr_Status_Validate'),
+          color: this.getStatusColor(this.statusSelect.Validate, Colors),
+          key: this.statusSelect.Validate,
+        },
+      ];
     }
   };
 }

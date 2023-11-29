@@ -24,22 +24,22 @@ import {Timesheet} from '../../../types';
 
 interface TimesheetCardProps {
   statusSelect: number;
-  isCompleted: boolean;
   startDate: string;
   endDate: string;
   company: string;
   totalDuration: number;
+  employeeName?: string;
   style?: any;
   onPress: () => void;
 }
 
 const TimesheetCard = ({
   statusSelect,
-  isCompleted,
   startDate,
   endDate,
   company,
   totalDuration,
+  employeeName,
   style,
   onPress,
 }: TimesheetCardProps) => {
@@ -78,6 +78,11 @@ const TimesheetCard = ({
                 'Hr_TotalDurationHours',
               )} : ${totalDuration}`,
               style: styles.subTitle,
+            },
+            {
+              iconName: 'user',
+              indicatorText: employeeName,
+              hideIfNull: true,
             },
           ],
         }}

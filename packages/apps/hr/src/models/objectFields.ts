@@ -96,6 +96,7 @@ export const hr_modelAPI: ObjectFields = {
     toDate: schemaContructor.string(),
     company: schemaContructor.subObject('name'),
     periodTotal: schemaContructor.number(),
+    employee: schemaContructor.subObject('name'),
   }),
   auth_user: schemaContructor.object({
     employee: schemaContructor.subObject().concat(

@@ -26,5 +26,5 @@ export const hr_searchFields: SearchFields = {
   hr_kilomectricAllowParam: ['name', 'code'],
   hr_project: ['name', 'fullName'],
   hr_timer: ['project.fullName', 'projectTask.fullName', 'comments'],
-  hr_timesheet: [],
+  hr_timesheet: ['employee.name'],
 };
