@@ -30,7 +30,6 @@ export interface AgendaEvent {
 }
 
 export interface AgendaItem {
-  itemId: number | string;
   id: string;
   date: string | Date;
   startHour?: string | Date;
@@ -150,7 +149,6 @@ const createAgendaItem = (
   if (sameDate(_startDate, _endDate)) {
     return [
       {
-        itemId: event.id,
         id: event.id.toString(),
         date: event.endDate,
         startHour: formatTime(event.startDate, I18n.t('Base_TimeFormat')),
@@ -172,7 +170,6 @@ const createMultiDayAgendaItems = (
   const agendaItems = [];
 
   agendaItems.push({
-    itemId: event.id,
     id: `${event.id}_${1}`,
     date: event.startDate,
     data: event.data,
@@ -184,7 +181,6 @@ const createMultiDayAgendaItems = (
 
   for (let d = 1; d < diffDays - 1; d++) {
     agendaItems.push({
-      itemId: event.id,
       id: `${event.id}_${d + 1}`,
       date: incrementDate(startDate, d).toISOString(),
       isFullDayEvent: true,
@@ -193,7 +189,6 @@ const createMultiDayAgendaItems = (
   }
 
   agendaItems.push({
-    itemId: event.id,
     id: `${event.id}_${diffDays + 1}`,
     date: event.endDate,
     data: event.data,
