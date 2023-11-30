@@ -25,6 +25,7 @@ interface MenuBase {
   icon: string;
   disabled?: boolean;
   hideIf?: (storeState: any) => boolean;
+  compatibilityAOS?: Compatibility;
   parent?: string;
   order?: number;
 }
@@ -82,7 +83,7 @@ type version = `${number}.${number}.${number}` | '-';
 
 export interface Compatibility {
   /** Name of the web  module */
-  moduleName: string;
+  moduleName?: string;
   /** Version of the web module, this value will be filled in automatically with the information obtained from the web instance. */
   moduleVersion?: version;
   /** Minimum web module version (included) */
