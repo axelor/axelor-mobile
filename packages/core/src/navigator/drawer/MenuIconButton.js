@@ -88,8 +88,8 @@ const MenuIconButton = ({
             textIndicationStyle={styles.textIndicationStyle}
             indication={I18n.t(
               moduleNotFound
-                ? 'Base_Compatibily_NotFoundDetails'
-                : 'Base_Compatibily_ErrorDetails',
+                ? 'Base_Compatibility_NotFoundDetails'
+                : 'Base_Compatibility_ErrorDetails',
               {
                 compatibility: formatCompatibilityToDisplay(compatibility),
               },
