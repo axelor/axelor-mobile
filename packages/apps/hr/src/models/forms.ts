@@ -27,6 +27,7 @@ import {
   KilometricTypeSelectPicker,
   ProjectSearchBar,
   ToggleSwitchMode,
+  ExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
@@ -48,6 +49,14 @@ export const hr_formsRegister: FormConfigs = {
         hideIf: ({storeState}) =>
           !storeState.appConfig.base.enableMultiCompany ||
           storeState.company.companyList?.length === 1,
+      },
+      expense: {
+        titleKey: 'Hr_Expense',
+        type: 'object',
+        widget: 'custom',
+        required: true,
+        customComponent: ExpensePicker,
+        hideIf: ({objectState}) => !objectState.isFromExpense,
       },
       manageMode: {
         type: 'string',

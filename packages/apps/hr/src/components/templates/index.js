@@ -23,6 +23,7 @@ export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncremen
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
+export {default as ExpensePicker} from './ExpensePicker/ExpensePicker';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';
 export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
