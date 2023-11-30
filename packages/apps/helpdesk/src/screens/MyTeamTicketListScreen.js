@@ -47,14 +47,9 @@ const MyTeamTicketListScreen = ({navigation}) => {
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [priorityStatus, setPriorityStatus] = useState([
-    {
-      key: 3,
-    },
-    {
-      key: 4,
-    },
-  ]);
+  const [priorityStatus, setPriorityStatus] = useState(
+    Ticket.getPriorityList(Colors, I18n).filter(e => e.isActive === true),
+  );
 
   useEffect(() => {
     dispatch(fetchTicketType());
