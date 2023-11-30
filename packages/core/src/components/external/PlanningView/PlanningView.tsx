@@ -268,7 +268,7 @@ const getStyles = Colors =>
       marginTop: 32,
     },
     today: {
-      color: Colors.primaryColor,
+      color: Colors.primaryColor.background,
     },
     containerTime: {
       flexDirection: 'column',
