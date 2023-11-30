@@ -47,20 +47,9 @@ const MyTicketListScreen = ({navigation}) => {
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
-  const [priorityStatus, setPriorityStatus] = useState([
-    {
-      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
-      isActive: true,
-      key: 1,
-      title: I18n.t('Helpdesk_Priority_Low'),
-    },
-    {
-      color: Ticket.getPriorityColor(Ticket.priority.Low, Colors),
-      isActive: true,
-      key: 2,
-      title: I18n.t('Helpdesk_Priority_Normal'),
-    },
-  ]);
+  const [priorityStatus, setPriorityStatus] = useState(
+    Ticket.getPriorityList(Colors, I18n).filter(e => e.isActive === true),
+  );
 
   useEffect(() => {
     dispatch(fetchTicketType());

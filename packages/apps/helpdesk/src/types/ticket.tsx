@@ -197,25 +197,25 @@ class TicketType {
         title: I18n.t('Helpdesk_Priority_Low'),
         color: this.getPriorityColor(this.priority.Low, Colors),
         key: this.priority.Low,
-        isActive: true,
+        isActive: false,
       },
       {
         title: I18n.t('Helpdesk_Priority_Normal'),
         color: this.getPriorityColor(this.priority.Normal, Colors),
         key: this.priority.Normal,
-        isActive: true,
+        isActive: false,
       },
       {
         title: I18n.t('Helpdesk_Priority_High'),
         color: this.getPriorityColor(this.priority.High, Colors),
         key: this.priority.High,
-        isActive: false,
+        isActive: true,
       },
       {
         title: I18n.t('Helpdesk_Priority_Urgent'),
         color: this.getPriorityColor(this.priority.Urgent, Colors),
         key: this.priority.Urgent,
-        isActive: false,
+        isActive: true,
       },
     ];
   };
