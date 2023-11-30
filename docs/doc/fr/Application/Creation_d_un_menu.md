@@ -20,6 +20,16 @@ export interface MenuBase {
   hideIf?: (configStore: any) => boolean;
   parent?: string;
   order?: number;
+  compatibilityAOS?: {
+    /** Name of the web  module */
+    moduleName?: string;
+    /** Version of the web module, this value will be filled in automatically with the information obtained from the web instance. */
+    moduleVersion?: version;
+    /** Minimum web module version (included) */
+    downToVersion?: version;
+    /** Maximum web module version (excluded) */
+    upToVersion?: version;
+  };
 }
 ```
 
@@ -34,6 +44,8 @@ export interface MenuBase {
 **parent** : le nom du module parent dans le cadre d’une surcharge. Attention, le menu est ajouté sur le module parent seulement si le module courant est ajouté après le module parent dans la liste des modules du composant _Application_.
 
 **order** : l’ordre de l’entrée de menu dans le drawer. Afin de permettre aux menus venant d’autres modules de s’insérer entre deux entrées de menu existantes, la convention exige que les ordres soient séparés de 10 (ex: 0, 10, 20, 30…). SI aucun ordre n’est défini, la valeur par défaut est l’index du menu lors de sa définition dans le module.
+
+**compatibilityAOS** : les information de compatibilité avec l’instance web. Il est possible d'indiquer seulement les informations de versions pour surcharger les informations données au module globalement. Il est également d'indiquer un nom d'application web différent de celui donné au module. Une version doit être un string composé de trois numéros. La version du module web est récupérée et renseignée automatiquement depuis les informations du serveur.
 
 Il existe ensuite deux types d’entrée de menu : les menus avec sous-menu et les menus avec écran.
 
