@@ -65,7 +65,7 @@ function OperationOrderPlanningScreen({navigation}) {
 
     return (
       <ObjectCard
-        onPress={() => navigateToOperationOrder(id)}
+        onPress={() => navigateToOperationOrder(operationOrder?.id)}
         key={id}
         style={rendBorderColor(operationOrder.border)}
         upperTexts={{
@@ -86,7 +86,7 @@ function OperationOrderPlanningScreen({navigation}) {
 
     return (
       <ObjectCard
-        onPress={() => navigateToOperationOrder(id)}
+        onPress={() => navigateToOperationOrder(operationOrder?.id)}
         key={id}
         style={rendBorderColor(operationOrder.border)}
         upperTexts={{

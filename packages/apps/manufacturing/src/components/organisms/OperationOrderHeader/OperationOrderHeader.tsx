@@ -18,7 +18,12 @@
 
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text, Badge, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  Text,
+  Badge,
+  useThemeColor,
+  checkNullString,
+} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
 
@@ -41,19 +46,21 @@ function OperationOrderHeader({
   return (
     <View style={styles.infoContainer}>
       <View style={styles.refContainer}>
-        {manufOrderRef && (
+        {!checkNullString(manufOrderRef) && (
           <Text style={styles.textImportant}>{manufOrderRef}</Text>
         )}
-        {name && <Text style={styles.textSecondary}>{name}</Text>}
+        {!checkNullString(name) && (
+          <Text style={styles.textSecondary}>{name}</Text>
+        )}
       </View>
       <View style={styles.badgeContainer}>
-        {status && (
+        {status != null && (
           <Badge
             color={OperationOrder.getStatusColor(status, Colors)}
             title={OperationOrder.getStatus(status, I18n)}
           />
         )}
-        {priority && (
+        {priority != null && (
           <Badge
             color={Colors.priorityColor}
             title={priority.toString()}
