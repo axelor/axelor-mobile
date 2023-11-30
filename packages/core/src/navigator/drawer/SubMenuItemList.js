@@ -53,6 +53,7 @@ const SubMenuItemList = ({
         icon={menuItem.icon}
         title={getMenuTitle(menuItem, {I18n})}
         disabled={menuItem.disabled || disabled}
+        compatibility={menuItem.compatibilityAOS}
         onPress={handleDropdownPress}
         isDropdown={true}
         dropdown={dropdown}
