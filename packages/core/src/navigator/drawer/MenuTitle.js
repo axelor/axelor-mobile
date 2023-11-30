@@ -54,8 +54,8 @@ const MenuTitle = ({module, onPress}) => {
         <Text style={styles.text} textColor={Colors.errorColor.background}>
           {I18n.t(
             moduleNotFound
-              ? 'Base_Compatibily_NotFound'
-              : 'Base_Compatibily_Error',
+              ? 'Base_Compatibility_NotFound'
+              : 'Base_Compatibility_Error',
             {
               compatibility: module.compatibilityAOS,
             },

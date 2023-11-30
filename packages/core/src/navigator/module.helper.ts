@@ -192,6 +192,57 @@ export function authModuleFilter(_module) {
   return _module.name !== 'Auth';
 }
 
+export function manageMenuCompatibility(
+  menus: any,
+  metaModules: any[],
+  parentWebModule: any,
+): any {
+  if (menus != null) {
+    const _menus: any = menus ? {} : null;
+
+    for (const key in menus) {
+      const _menu = menus[key];
+      let compatibilityAOS = _menu.compatibilityAOS;
+
+      const menuWebModule =
+        _menu.compatibilityAOS?.moduleName != null
+          ? metaModules?.find(
+              _item => _item.name === _menu.compatibilityAOS?.moduleName,
+            )
+          : parentWebModule;
+
+      if (_menu.compatibilityAOS != null) {
+        compatibilityAOS = {
+          ..._menu.compatibilityAOS,
+          moduleName: _menu.compatibilityAOS.moduleName ?? menuWebModule?.name,
+          moduleVersion: menuWebModule?.moduleVersion,
+        };
+      }
+
+      if (_menu.subMenus != null) {
+        _menus[key] = {
+          ..._menu,
+          compatibilityAOS,
+          subMenus: manageMenuCompatibility(
+            _menu.subMenus,
+            metaModules,
+            menuWebModule,
+          ),
+        };
+      } else {
+        _menus[key] = {
+          ..._menu,
+          compatibilityAOS,
+        };
+      }
+    }
+
+    return _menus;
+  }
+
+  return null;
+}
+
 export function manageWebCompatibility(
   modules: Module[],
   metaModules: any[],
@@ -208,14 +259,26 @@ export function manageWebCompatibility(
         _item => _item.name === _module.compatibilityAOS.moduleName,
       );
 
-      return {
-        ..._module,
-        compatibilityAOS: {
-          ..._module.compatibilityAOS,
-          moduleVersion: webModule?.moduleVersion,
-        },
-      };
+      if (_module.menus != null) {
+        return {
+          ..._module,
+          compatibilityAOS: {
+            ..._module.compatibilityAOS,
+            moduleVersion: webModule?.moduleVersion,
+          },
+          menus: manageMenuCompatibility(_module.menus, metaModules, webModule),
+        };
+      } else {
+        return {
+          ..._module,
+          compatibilityAOS: {
+            ..._module.compatibilityAOS,
+            moduleVersion: webModule?.moduleVersion,
+          },
+        };
+      }
     }
+
     return _module;
   });
 }
