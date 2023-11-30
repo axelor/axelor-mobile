@@ -26,6 +26,7 @@ describe('GroupByScrollList', () => {
     {id: 2, name: 'Ab'},
     {id: 3, name: 'Bb'},
   ];
+
   const renderItem = ({item}) => <Text>{item.name}</Text>;
   const fetchData = jest.fn();
   const separatorCondition = (prevItem, currentItem) =>
@@ -94,8 +95,9 @@ describe('GroupByScrollList', () => {
         expect(renderItemElement.find('TopSeparator').length).toBe(1);
         expect(fetchTopIndicator).toHaveBeenCalledWith(item);
 
-        if (fetchBottomIndicator && prevItem) {
+        if (prevItem) {
           expect(renderItemElement.find('BottomSeparator').length).toBe(1);
+          expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
         }
       } else {
         expect(renderItemElement.find('TopSeparator').length).toBe(0);
