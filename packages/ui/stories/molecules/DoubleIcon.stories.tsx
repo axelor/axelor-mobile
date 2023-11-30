@@ -29,7 +29,11 @@ storiesOf('ui/molecules/DoubleIcon', module)
     args => {
       return (
         <DoubleIcon
-          size={30}
+          style={{
+            width: args.configBottomIcon_size,
+            height: args.configBottomIcon_size,
+            margin: args.configTopIcon_size,
+          }}
           topIconConfig={{
             name: args.configTopIcon_name,
             size: args.configTopIcon_size,

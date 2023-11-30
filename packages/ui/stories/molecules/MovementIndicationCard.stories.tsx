@@ -29,13 +29,10 @@ storiesOf('ui/molecules/MovementIndicationCard', module).add(
     <MovementIndicationCard
       titleTop={'titleTop'}
       iconTop={
-        <Icon
-          name="warehouse"
-          color={lightTheme.colors.primaryColor.background}
-        />
+        <Icon name="truck" color={lightTheme.colors.primaryColor.background} />
       }
       titleDown={'titleDown'}
-      iconDown={<Icon name="map-marker-alt" />}
+      iconDown={<Icon name="map-marker" />}
       disabledDown={false}
       onPressTitleTop={() => action('onPressTitleTop')}
       onPressTitleDown={() => action('onPressTitleDown')}
@@ -44,21 +41,13 @@ storiesOf('ui/molecules/MovementIndicationCard', module).add(
   ),
   {
     argTypes: {
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
-      },
       titleTop: {
         control: 'text',
-        defaultValue: 'titleTop',
+        defaultValue: 'Title top',
       },
       titleDown: {
         control: 'text',
-        defaultValue: 'titleDown',
+        defaultValue: 'Title down',
       },
       disabledTop: {control: 'boolean', defaultValue: false},
       disabledDown: {control: 'boolean', defaultValue: false},
