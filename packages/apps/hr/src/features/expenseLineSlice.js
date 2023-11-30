@@ -135,32 +135,39 @@ export const createExpenseLine = createAsyncThunk(
 
 export const updateExpenseLine = createAsyncThunk(
   'expenseLine/updateExpenseLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateExpenseLine,
       data,
       action: 'Hr_SliceAction_SearchKilometricAllowParam',
       getState,
       responseOptions: {isArrayResponse: false},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction:
-          data?.expenseId == null
-            ? _searchExpenseLines
-            : data.mode === ExpenseLine.modes.general
-            ? _searchGeneralExpenseLines
-            : _searchKilometricExpenseLines,
-        action:
-          data?.expenseId == null
-            ? 'Hr_SliceAction_FetchExpenseLines'
-            : data?.mode === ExpenseLine.modes.general
-            ? 'Hr_SliceAction_SearchGeneralExpenseLines'
-            : 'Hr_SliceAction_SearchKilometricExpenseLines',
-        getState,
-        data: {expenseId: data.expenseId, userId: data?.userId},
-        responseOptions: {isArrayResponse: true},
+    })
+      .then(res => {
+        if (data?.expenseId != null) {
+          dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
+        }
+        return res;
+      })
+      .then(() => {
+        return handlerApiCall({
+          fetchFunction:
+            data?.expenseId == null
+              ? _searchExpenseLines
+              : data.mode === ExpenseLine.modes.general
+              ? _searchGeneralExpenseLines
+              : _searchKilometricExpenseLines,
+          action:
+            data?.expenseId == null
+              ? 'Hr_SliceAction_FetchExpenseLines'
+              : data?.mode === ExpenseLine.modes.general
+              ? 'Hr_SliceAction_SearchGeneralExpenseLines'
+              : 'Hr_SliceAction_SearchKilometricExpenseLines',
+          getState,
+          data: {expenseId: data.expenseId, userId: data?.userId},
+          responseOptions: {isArrayResponse: true},
+        });
       });
-    });
   },
 );
 
