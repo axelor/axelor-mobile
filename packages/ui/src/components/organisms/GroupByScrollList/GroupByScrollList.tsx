@@ -61,6 +61,14 @@ const GroupByScrollList = ({
   fetchBottomIndicator,
   customBottomSeparator,
 }: GroupByScrollListProps) => {
+  const renderSeparator = (customSeparator, Separator, props) => {
+    return customSeparator ? (
+      React.cloneElement(customSeparator, {...props})
+    ) : (
+      <Separator {...props} />
+    );
+  };
+
   const _renderItem = ({item, index}) => {
     let prevItem = null;
     if (index !== 0) {
@@ -68,29 +76,25 @@ const GroupByScrollList = ({
     }
 
     if (index === 0 || separatorCondition(prevItem, item)) {
-      const topIndicator = fetchTopIndicator && fetchTopIndicator(item);
-      const bottomIndicator =
-        fetchBottomIndicator && prevItem
-          ? fetchBottomIndicator(prevItem)
-          : null;
-      const isFirstItem = prevItem ? false : true;
+      const isFirstItem = prevItem == null;
+      const topIndicator = fetchTopIndicator?.(item);
+      const bottomIndicator = !isFirstItem
+        ? fetchBottomIndicator?.(prevItem)
+        : null;
+
       return (
         <>
           {bottomIndicator &&
-            (customBottomSeparator ? (
-              React.cloneElement(customBottomSeparator, {...bottomIndicator})
-            ) : (
-              <BottomSeparator {...bottomIndicator} />
-            ))}
+            renderSeparator(
+              customBottomSeparator,
+              BottomSeparator,
+              bottomIndicator,
+            )}
           {topIndicator &&
-            (customTopSeparator ? (
-              React.cloneElement(customTopSeparator, {
-                ...topIndicator,
-                isFirstItem: isFirstItem,
-              })
-            ) : (
-              <TopSeparator {...topIndicator} isFirstItem={isFirstItem} />
-            ))}
+            renderSeparator(customTopSeparator, TopSeparator, {
+              ...topIndicator,
+              isFirstItem: isFirstItem,
+            })}
           {renderItem({item, index})}
         </>
       );
