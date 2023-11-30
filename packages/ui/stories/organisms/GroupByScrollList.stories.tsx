@@ -51,6 +51,7 @@ const fetchTopIndicator = (
   iconName?: string,
   iconSize?: number,
   iconColorIndex?: number,
+  iconText?: string,
   titleSize?: number,
   numberSize?: number,
   loadingNumber?: boolean,
@@ -60,6 +61,7 @@ const fetchTopIndicator = (
     iconName: iconName,
     iconSize: iconSize,
     iconColor: lightTheme.colors[iconColorIndex],
+    iconText: iconText,
     title: currentItem.title[0].toUpperCase(),
     titleSize: titleSize,
     numberItems: DATA.filter(item => item.title[0] === currentItem.title[0])
@@ -81,6 +83,7 @@ storiesOf('ui/organisms/GroupByScrollList', module)
     'default',
     args => (
       <GroupByScrollList
+        style={styles.component}
         data={DATA}
         loadingList={false}
         moreLoading={false}
@@ -96,6 +99,7 @@ storiesOf('ui/organisms/GroupByScrollList', module)
             args.topIndicator_iconName,
             args.topIndicator_iconSize,
             args.topIndicator_iconColor,
+            args.topIndicator_iconText,
             args.topIndicator_titleSize,
             args.topIndicator_numberSize,
             args.topIndicator_loadingNumber,
@@ -134,6 +138,11 @@ storiesOf('ui/organisms/GroupByScrollList', module)
           control: {
             type: 'select',
           },
+        },
+        topIndicator_iconText: {
+          type: 'string',
+          defaultValue: 'Text',
+          control: {type: 'text'},
         },
         topIndicator_titleSize: {
           control: {
@@ -246,6 +255,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  component: {
+    width: 300,
   },
   item: {
     backgroundColor: '#f9c2ff',
