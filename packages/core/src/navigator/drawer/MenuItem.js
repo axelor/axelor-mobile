@@ -54,6 +54,7 @@ const MenuItem = ({
       title={getMenuTitle(menuItem, {I18n})}
       icon={menuItem.icon}
       disabled={menuItem.disabled || disabled}
+      compatibility={menuItem.compatibilityAOS}
       isActive={isActive}
     />
   );
