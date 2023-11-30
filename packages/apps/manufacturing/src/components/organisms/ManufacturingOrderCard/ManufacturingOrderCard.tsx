@@ -106,15 +106,21 @@ const ManufacturingOrderCard = ({
             indicatorText: link.ordersRef[0]?.fullName,
           },
           {
-            displayText: `${startDate.title} ${startDate.value}`,
+            iconName: 'calendar',
+            indicatorText: startDate.title,
+            displayText: startDate.value,
             hideIf: startDate == null,
+            style: startDate.type === 'planned' && styles.italic,
           },
           {
-            displayText: `${endDate.title} ${endDate.value}`,
+            iconName: 'calendar-check',
+            indicatorText: endDate.title,
+            displayText: endDate.value,
             hideIf:
               status === ManufacturingOrder.status.InProgress ||
               status === ManufacturingOrder.status.StandBy ||
               endDate == null,
+            style: endDate.type === 'planned' && styles.italic,
           },
         ],
       }}
@@ -126,5 +132,11 @@ const getStyles = color =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });
+
+const styles = StyleSheet.create({
+  italic: {
+    fontStyle: 'italic',
+  },
+});
 
 export default ManufacturingOrderCard;

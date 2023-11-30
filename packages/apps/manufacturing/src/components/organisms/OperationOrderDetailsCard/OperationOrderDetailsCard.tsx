@@ -77,21 +77,27 @@ const OperationOrderDetailsCard = ({
       upperTexts={{
         items: [
           {isTitle: true, displayText: manufOrder},
-          {displayText: operationName},
+          {displayText: operationName, numberOfLines: 2},
           {
             iconName: 'pallet',
             indicatorText: workcenter + ' ' + (machine ? `- ${machine}` : ''),
           },
           {
-            displayText: `${startDate.title} ${startDate.value}`,
-            hideIf: startDate == null,
+            iconName: 'calendar',
+            indicatorText: startDate.title,
+            displayText: startDate.value,
+            hideIfNull: startDate == null,
+            style: startDate.type === 'planned' && styles.italic,
           },
           {
-            displayText: `${endDate.title} ${endDate.value}`,
+            iconName: 'calendar-check',
+            indicatorText: endDate.title,
+            displayText: endDate.value,
             hideIf:
               status === OperationOrder.status.InProgress ||
               status === OperationOrder.status.StandBy ||
               endDate == null,
+            style: endDate.type === 'planned' && styles.italic,
           },
           {
             iconName: 'stopwatch',
@@ -123,6 +129,9 @@ const getStyles = color =>
   });
 
 const styles = StyleSheet.create({
+  italic: {
+    fontStyle: 'italic',
+  },
   badge: {
     borderRadius: 50,
     width: 35,

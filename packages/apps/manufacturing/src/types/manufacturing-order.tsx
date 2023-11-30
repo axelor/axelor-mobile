@@ -138,7 +138,7 @@ class ManufacturingOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title?: string; value?: string}[] => {
+  ): {title: string; value: string; type: 'planned' | 'real'}[] => {
     const formatDate = date => {
       if (date == null) {
         return '';
@@ -152,35 +152,41 @@ class ManufacturingOrder {
       case ManufacturingOrder.status.Planned:
         return [
           {
-            title: I18n.t('Manufacturing_PlannedStartDate') + ':',
+            title: I18n.t('Manufacturing_PlannedStartDate') + ' :',
             value: formatDate(plannedStartDate),
+            type: 'planned',
           },
           {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
             value: formatDate(plannedEndDate),
+            type: 'planned',
           },
         ];
       case ManufacturingOrder.status.InProgress:
       case ManufacturingOrder.status.StandBy:
         return [
           {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            title: I18n.t('Manufacturing_RealStartDate') + ' :',
             value: formatDate(realStartDate),
+            type: 'real',
           },
           {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
             value: formatDate(plannedEndDate),
+            type: 'planned',
           },
         ];
       case ManufacturingOrder.status.Finished:
         return [
           {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            title: I18n.t('Manufacturing_RealStartDate') + ' :',
             value: formatDate(realStartDate),
+            type: 'real',
           },
           {
-            title: I18n.t('Manufacturing_RealEndDate') + ':',
+            title: I18n.t('Manufacturing_RealEndDate') + ' :',
             value: formatDate(realEndDate),
+            type: 'real',
           },
         ];
       default:

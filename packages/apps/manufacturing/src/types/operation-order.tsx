@@ -92,7 +92,7 @@ class OperationOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title?: string; value?: string}[] => {
+  ): {title: string; value: string; type: 'planned' | 'real'}[] => {
     const formatDate = date => {
       if (date == null) {
         return '';
@@ -106,35 +106,41 @@ class OperationOrder {
       case OperationOrder.status.Planned:
         return [
           {
-            title: I18n.t('Manufacturing_PlannedStartDate') + ':',
+            title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(plannedStartDate),
+            type: 'planned',
           },
           {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(plannedEndDate),
+            type: 'planned',
           },
         ];
       case OperationOrder.status.InProgress:
       case OperationOrder.status.StandBy:
         return [
           {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(realStartDate),
+            type: 'real',
           },
           {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
+            title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(plannedEndDate),
+            type: 'planned',
           },
         ];
       case OperationOrder.status.Finished:
         return [
           {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
+            title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(realStartDate),
+            type: 'real',
           },
           {
-            title: I18n.t('Manufacturing_RealEndDate') + ':',
+            title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(realEndDate),
+            type: 'real',
           },
         ];
       default:
