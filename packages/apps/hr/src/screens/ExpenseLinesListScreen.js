@@ -91,10 +91,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           iconName: 'user',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_OpenSelectionMode'),
-          iconColor: Colors.primaryColor.background,
-          onPress: () => {
-            handleModeChange(null);
-          },
+          onPress: handleModeChange,
           showInHeader: true,
           customComponent: (
             <DoubleIcon
@@ -116,7 +113,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
     });
   }, [Colors, I18n, navigation, isSelectionMode]);
 
-  const handleModeChange = itemId => {
+  const handleModeChange = (itemId = null) => {
     setIsSelectionMode(current => {
       const mode = !current;
 
