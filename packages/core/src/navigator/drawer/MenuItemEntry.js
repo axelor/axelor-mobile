@@ -26,6 +26,7 @@ import {formatCompatibilityToDisplay} from '../module.helper';
 const MenuItemEntry = ({
   icon,
   title,
+  compatibility,
   onPress = _route => {},
   isActive = false,
   disabled = false,
@@ -33,7 +34,6 @@ const MenuItemEntry = ({
   dropdown = false,
   iconSize = 24,
   style,
-  compatibility,
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();

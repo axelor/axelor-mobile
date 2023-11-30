@@ -49,6 +49,7 @@ const SubMenuItem = ({
 const styles = StyleSheet.create({
   subMenuItem: {
     marginLeft: 20,
+    width: '93%',
   },
 });
 
