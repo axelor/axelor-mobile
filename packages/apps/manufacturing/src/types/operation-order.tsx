@@ -231,6 +231,7 @@ class OperationOrder {
         startDate: _e.plannedStartDateT,
         endDate: _e.plannedEndDateT,
         data: {
+          id: _e.id,
           name: _e.operationName,
           ref: _e.manufOrder?.manufOrderSeq,
           workCenter: _e.workCenter?.name,

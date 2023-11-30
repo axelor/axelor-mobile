@@ -73,7 +73,7 @@ function OperationOrderPlanningScreen({navigation}) {
     return (
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={() => navigateToOperationOrder(id)}>
+        onPress={() => navigateToOperationOrder(operationOrder?.id)}>
         <Card
           key={id}
           style={[
@@ -96,7 +96,7 @@ function OperationOrderPlanningScreen({navigation}) {
     return (
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={() => navigateToOperationOrder(id)}>
+        onPress={() => navigateToOperationOrder(operationOrder?.id)}>
         <Card
           key={id}
           style={[styles.container, rendBorderColor(operationOrder.border)]}>
