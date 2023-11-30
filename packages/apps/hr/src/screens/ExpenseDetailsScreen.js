@@ -115,7 +115,7 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
         fixedItems={
           <View>
             <ExpenseHeader />
-            <ExpenseLineSwitchAdd onChangeSwicth={setMode} mode />
+            <ExpenseLineSwitchAdd onChangeSwicth={setMode} />
           </View>
         }
       />

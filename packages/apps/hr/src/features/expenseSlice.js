@@ -163,20 +163,29 @@ export const updateExpense = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: data?.isLineCreation ? getExpense : _searchMyExpense,
-        data: data?.isLineCreation
-          ? {ExpenseId: data?.expenseId}
-          : {userId: data?.userId},
-        action: data?.isLineCreation
-          ? 'Hr_SliceAction_FetchExpenseById'
-          : 'Hr_SliceAction_FetchMyExpense',
-        getState,
-        responseOptions: {isArrayResponse: !data?.isLineCreation},
-      }).then(res => {
-        dispatch(fetchExpenseLine({userId: data?.userId}));
-        return res;
-      });
+      if (data?.isLineCreation) {
+        return handlerApiCall({
+          fetchFunction: getExpense,
+          data: {ExpenseId: data.expenseId},
+          action: 'Hr_SliceAction_FetchExpenseById',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        }).then(res => {
+          dispatch(fetchExpenseLine({userId: data.userId}));
+          return res;
+        });
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        }).then(res => {
+          dispatch(fetchExpenseLine({userId: data.userId}));
+          return res;
+        });
+      }
     });
   },
 );
