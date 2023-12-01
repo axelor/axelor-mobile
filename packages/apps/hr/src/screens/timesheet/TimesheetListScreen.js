@@ -17,23 +17,9 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  ChipSelect,
-  getCommonStyles,
-  HeaderContainer,
-  NumberBubble,
-  Picker,
-  Screen,
-  ScrollList,
-  ToggleSwitch,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import {
-  TimesheetDetailCard,
-  TimesheetWaitingValidationSearchBar,
-} from '../../components';
+import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
+import {TimesheetDetailCard, TimesheetHeader} from '../../components';
 import {
   fetchTimesheet,
   fetchTimesheetToValidate,
@@ -41,14 +27,11 @@ import {
 import {Timesheet} from '../../types';
 
 const TimesheetListScreen = ({}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const [mode, setMode] = useState(Timesheet.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const {
     myTimesheetList,
@@ -59,18 +42,9 @@ const TimesheetListScreen = ({}) => {
     loadingTimesheetToValidate,
     moreLoadingTimesheetToValidate,
     isListEndTimesheetToValidate,
-    totalNumberTimesheetToValidate,
   } = useSelector(state => state.timesheet);
   const {timesheet: timesheetConfig} = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-
-  const timesheetStatusListItems = useMemo(() => {
-    return Timesheet.getStatusList(
-      timesheetConfig.needValidation,
-      Colors,
-      I18n,
-    );
-  }, [Colors, I18n, timesheetConfig.needValidation]);
 
   useEffect(() => {
     dispatch(fetchTimesheetToValidate({page: 0, user: user}));
@@ -156,51 +130,10 @@ const TimesheetListScreen = ({}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <View style={styles.headerContainer}>
-            <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-              styleToogle={styles.toggle}
-              leftTitle={I18n.t('Hr_MyTimesheets')}
-              rightTitle={I18n.t('Hr_ToValidate')}
-              rigthElement={
-                <NumberBubble
-                  style={styles.indicator}
-                  number={totalNumberTimesheetToValidate}
-                  color={Colors.cautionColor}
-                  isNeutralBackground={true}
-                />
-              }
-              onSwitch={() =>
-                setMode(_mode => {
-                  setSelectedStatus(null);
-                  return _mode === Timesheet.mode.personnal
-                    ? Timesheet.mode.validation
-                    : Timesheet.mode.personnal;
-                })
-              }
-            />
-            {mode === Timesheet.mode.personnal &&
-              (timesheetConfig.needValidation ? (
-                <Picker
-                  listItems={timesheetStatusListItems}
-                  title={I18n.t('Hr_Status')}
-                  onValueChange={setSelectedStatus}
-                  labelField="title"
-                  valueField="key"
-                />
-              ) : (
-                <ChipSelect
-                  mode="switch"
-                  onChangeValue={chiplist =>
-                    setSelectedStatus(chiplist[0]?.key)
-                  }
-                  selectionItems={timesheetStatusListItems}
-                />
-              ))}
-            {mode !== Timesheet.mode.personnal && (
-              <TimesheetWaitingValidationSearchBar />
-            )}
-          </View>
+          <TimesheetHeader
+            onChangeStatus={setSelectedStatus}
+            onChangeMode={setMode}
+          />
         }
       />
       <ScrollList
@@ -216,6 +149,7 @@ const TimesheetListScreen = ({}) => {
             employeeName={
               mode === Timesheet.mode.validation ? item.employee?.name : null
             }
+            employeeManagerId={item.employee?.managerUser?.id}
             onPress={() => console.log('Card pressed.')}
           />
         )}
@@ -227,20 +161,5 @@ const TimesheetListScreen = ({}) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    alignItems: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
-  },
-  indicator: {
-    position: 'absolute',
-    right: '5%',
-  },
-});
 
 export default TimesheetListScreen;

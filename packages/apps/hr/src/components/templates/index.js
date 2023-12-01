@@ -27,5 +27,6 @@ export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingVali
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
 export {default as KilometricTypeSelectPicker} from './KilometricTypeSelectPicker/KilometricTypeSelectPicker';
 export {default as ProjectSearchBar} from './ProjectSearchBar/ProjectSearchBar';
+export {default as TimesheetHeader} from './TimesheetHeader/TimesheetHeader';
 export {default as TimesheetWaitingValidationSearchBar} from './TimesheetWaitingValidationSearchBar/TimesheetWaitingValidationSearchBar';
 export {default as ToggleSwitchMode} from './ToggleSwitchMode/ToggleSwitchMode';

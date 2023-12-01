@@ -30,6 +30,7 @@ interface TimesheetDetailCardProps {
   company: string;
   totalDuration: number;
   employeeName?: string;
+  employeeManagerId?: number;
   isActions?: boolean;
   style?: any;
   onPress: () => void;
@@ -42,6 +43,7 @@ const TimesheetDetailCard = ({
   company,
   totalDuration,
   employeeName,
+  employeeManagerId,
   isActions = true,
   style,
   onPress,
@@ -51,6 +53,7 @@ const TimesheetDetailCard = ({
   const {timesheet: timesheetConfig} = useSelector(
     (state: any) => state.appConfig,
   );
+  const {user} = useSelector((state: any) => state.user);
 
   const _statusSelect = useMemo(() => {
     if (
@@ -63,17 +66,28 @@ const TimesheetDetailCard = ({
     return statusSelect;
   }, [statusSelect, timesheetConfig]);
 
+  const userCanValidate = useMemo(() => {
+    if (
+      (user?.employee?.hrManager || employeeManagerId === user.id) &&
+      _statusSelect === Timesheet.statusSelect.WaitingValidation
+    ) {
+      return true;
+    }
+    return false;
+  }, [employeeManagerId, _statusSelect, user?.employee?.hrManager, user.id]);
+
   const _isActions = useMemo(() => {
     if (
       isActions &&
       (_statusSelect === Timesheet.statusSelect.Draft ||
-        _statusSelect === Timesheet.statusSelect.WaitingValidation)
+        (_statusSelect === Timesheet.statusSelect.WaitingValidation &&
+          userCanValidate))
     ) {
       return true;
     }
 
     return false;
-  }, [isActions, _statusSelect]);
+  }, [isActions, _statusSelect, userCanValidate]);
 
   const handleSend = () => {
     console.log('handleSend');
