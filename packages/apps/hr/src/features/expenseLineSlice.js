@@ -77,7 +77,10 @@ export const deleteExpenseLine = createAsyncThunk(
     return handlerApiCall({
       fetchFunction: _deleteExpenseLine,
       data,
-      action: 'Hr_SliceAction_DeleteExpenseLine',
+      action:
+        data?.expenseId != null
+          ? 'Hr_SliceAction_DeleteExpenseLine'
+          : 'Hr_SliceAction_DeleteOrphanExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {

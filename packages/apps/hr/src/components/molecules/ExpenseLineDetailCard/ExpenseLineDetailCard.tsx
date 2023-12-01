@@ -85,7 +85,7 @@ const ExpenseLineDetailCard = ({
         expenseId: expense?.id,
       }),
     );
-  }, [dispatch, expense, item.id, userId]);
+  }, [dispatch, expense?.id, item.id, userId]);
 
   const handleShowFile = async () => {
     await openFileInExternalApp(
