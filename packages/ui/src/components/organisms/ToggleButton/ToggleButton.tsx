@@ -24,7 +24,6 @@ import {ButtonProps} from '../../molecules/Button/Button';
 
 export interface ToggleButtonProps {
   isActive?: boolean;
-  color?: Color;
   activeColor?: Color;
   inactiveColor?: Color;
   buttonConfig?: ButtonProps;
