@@ -23,14 +23,7 @@ import {ToggleSwitch} from '../../src/components/molecules';
 storiesOf('ui/molecules/ToggleSwitch', module).add(
   'Default',
   args => {
-    return (
-      <ToggleSwitch
-        leftTitle=""
-        rightTitle=""
-        onSwitch={console.log}
-        {...args}
-      />
-    );
+    return <ToggleSwitch onSwitch={console.log} {...args} />;
   },
   {
     argTypes: {
@@ -43,22 +36,6 @@ storiesOf('ui/molecules/ToggleSwitch', module).add(
         type: 'string',
         defaultValue: 'rightTitle',
         control: {type: 'text'},
-      },
-      styleContainer: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 0,
-        },
-      },
-      styleToogle: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 0,
-        },
       },
     },
   },

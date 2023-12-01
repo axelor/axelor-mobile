@@ -42,18 +42,6 @@ storiesOf('ui/molecules/Increment', module).add(
           type: 'text',
         },
       },
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {},
-      },
-      inputStyle: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {},
-      },
       readonly: {
         control: {
           type: 'boolean',

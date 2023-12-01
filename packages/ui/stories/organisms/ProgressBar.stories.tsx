@@ -72,16 +72,6 @@ storiesOf('ui/organisms/ProgressBar', module).add(
         defaultValue: 30,
         control: {type: 'number'},
       },
-      style: {
-        type: 'object',
-        defaultValue: {},
-        control: {type: 'object'},
-      },
-      styleTxt: {
-        type: 'object',
-        defaultValue: {},
-        control: {type: 'object'},
-      },
     },
   },
 );

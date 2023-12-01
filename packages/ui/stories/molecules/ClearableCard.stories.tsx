@@ -46,9 +46,6 @@ storiesOf('ui/molecules/ClearableCard', module).add(
         },
         defaultValue: true,
       },
-      onClearPress: {
-        action: 'onClearPress',
-      },
     },
   },
 );

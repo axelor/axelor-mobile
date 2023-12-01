@@ -23,14 +23,7 @@ import {SwitchCard} from '../../src/components/molecules';
 storiesOf('ui/molecules/SwitchCard', module).add(
   'Default',
   args => {
-    return (
-      <SwitchCard
-        title={'Press me'}
-        defaultValue={true}
-        onToggle={console.log}
-        {...args}
-      />
-    );
+    return <SwitchCard onToggle={console.log} {...args} />;
   },
   {
     argTypes: {
@@ -39,16 +32,11 @@ storiesOf('ui/molecules/SwitchCard', module).add(
         defaultValue: 'Press me',
         control: {type: 'text'},
       },
-      onToggle: {
-        action: 'clicked',
-      },
-      style: {
+      defaultValue: {
         control: {
-          type: 'object',
+          type: 'boolean',
         },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
+        defaultValue: true,
       },
     },
   },

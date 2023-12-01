@@ -23,7 +23,7 @@ import {TitledValue} from '../../src/components/molecules';
 storiesOf('ui/molecules/TitledValue', module).add(
   'Default',
   args => {
-    return <TitledValue title="" value="" {...args} />;
+    return <TitledValue {...args} />;
   },
   {
     argTypes: {
@@ -36,14 +36,6 @@ storiesOf('ui/molecules/TitledValue', module).add(
         type: 'string',
         defaultValue: 'value',
         control: {type: 'text'},
-      },
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
       },
     },
   },

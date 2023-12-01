@@ -34,27 +34,6 @@ const dropdownItems = [
   },
 ];
 
-storiesOf('ui/organisms/DropdownCardSwitch', module).add(
-  'default',
-  args => <DropdownCardSwitch dropdownItems={dropdownItems} {...args} />,
-  {
-    argTypes: {
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
-      },
-      styleTitle: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
-      },
-    },
-  },
-);
+storiesOf('ui/organisms/DropdownCardSwitch', module).add('default', () => (
+  <DropdownCardSwitch dropdownItems={dropdownItems} />
+));

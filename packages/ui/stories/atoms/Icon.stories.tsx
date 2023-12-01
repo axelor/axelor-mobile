@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Icon} from '../../src/components/atoms';
 import {lightTheme} from '../../src/theme';
@@ -28,13 +27,11 @@ stories.add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Icon
-          {...args}
-          color={lightTheme.colors[args.color].background}
-          FontAwesome5={false}
-        />
-      </View>
+      <Icon
+        {...args}
+        color={lightTheme.colors[args.color].background}
+        FontAwesome5={false}
+      />
     );
   },
   {
@@ -66,11 +63,3 @@ stories.add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

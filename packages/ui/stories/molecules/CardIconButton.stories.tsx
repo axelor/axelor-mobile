@@ -49,9 +49,6 @@ storiesOf('ui/molecules/CardIconButton', module).add(
         },
         defaultValue: '#000000',
       },
-      onPress: {
-        action: 'onPress',
-      },
     },
   },
 );

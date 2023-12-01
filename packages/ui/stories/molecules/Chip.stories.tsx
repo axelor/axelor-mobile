@@ -59,9 +59,6 @@ storiesOf('ui/molecules/Chip', module).add(
           },
         },
       },
-      onPress: {
-        action: 'onPress',
-      },
       width: {
         control: {
           type: 'range',

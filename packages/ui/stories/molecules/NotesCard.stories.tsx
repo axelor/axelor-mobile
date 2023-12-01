@@ -22,17 +22,9 @@ import {NotesCard} from '../../src/components/molecules';
 
 storiesOf('ui/molecules/NotesCard', module).add(
   'custom',
-  args => <NotesCard title={'title'} data={'data'} {...args} />,
+  args => <NotesCard {...args} />,
   {
     argTypes: {
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
-      },
       title: {
         control: 'text',
         defaultValue: 'title',

@@ -26,7 +26,7 @@ storiesOf('ui/molecules/RightIconButton', module).add(
   args => {
     return (
       <RightIconButton
-        icon={<Icon name="heart" />}
+        icon={<Icon name={args.iconName} />}
         onPress={console.log}
         title={'Press me'}
         {...args}
@@ -40,9 +40,10 @@ storiesOf('ui/molecules/RightIconButton', module).add(
         defaultValue: 'Press me',
         control: {type: 'text'},
       },
-      onPress: {
-        action: 'clicked',
-        table: {disable: true},
+      iconName: {
+        type: 'string',
+        defaultValue: 'heart',
+        control: {type: 'text'},
       },
     },
   },

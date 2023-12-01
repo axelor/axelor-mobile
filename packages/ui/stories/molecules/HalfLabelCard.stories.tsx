@@ -40,7 +40,6 @@ storiesOf('ui/molecules/HalfLabelCard', module).add(
         defaultValue: 'car',
         control: {type: 'text'},
       },
-
       title: {
         type: 'string',
         defaultValue: 'Title',

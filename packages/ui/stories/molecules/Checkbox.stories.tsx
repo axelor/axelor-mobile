@@ -61,9 +61,6 @@ storiesOf('ui/molecules/Checkbox', module).add(
         },
         defaultValue: false,
       },
-      onChange: {
-        action: 'onChange',
-      },
       iconSize: {
         control: {
           type: 'range',
@@ -72,16 +69,6 @@ storiesOf('ui/molecules/Checkbox', module).add(
           step: 2,
         },
         defaultValue: 30,
-      },
-      style: {
-        control: {
-          type: 'object',
-        },
-      },
-      styleTxt: {
-        control: {
-          type: 'object',
-        },
       },
     },
     parameters: {
