@@ -21,6 +21,7 @@ import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {GroupByScrollList} from '../../src/components/organisms';
+import {lightTheme} from '../../src/theme';
 
 const DATA = [
   {id: '1', title: 'A. Item 1'},
@@ -44,14 +45,42 @@ const separatorCondition = (prevItem: any, currentItem: any) => {
   return prevItem.title[0] !== currentItem.title[0];
 };
 
-const fetchIndicator = (currentItem: any, isLoading: boolean) => {
+const fetchTopIndicator = (
+  currentItem: any,
+  position?: 'left' | 'center' | 'right' | 'separate',
+  iconName?: string,
+  iconSize?: number,
+  iconColorIndex?: number,
+  iconText?: string,
+  titleSize?: number,
+  numberSize?: number,
+  loadingNumber?: boolean,
+) => {
   return {
+    position: position,
+    iconName: iconName,
+    iconSize: iconSize,
+    iconColor: lightTheme.colors[iconColorIndex],
+    iconText: iconText,
     title: currentItem.title[0].toUpperCase(),
+    titleSize: titleSize,
     numberItems: DATA.filter(item => item.title[0] === currentItem.title[0])
       .length,
-    loading: isLoading,
+    numberSize: numberSize || 30,
+    loadingNumber: loadingNumber,
   };
 };
+
+const fetchBottomIndicator = (prevItem: any, showBottomIndicator: boolean) => {
+  if (!showBottomIndicator) {
+    return null;
+  }
+
+  return {
+    text: 'End of: ' + prevItem.title[0],
+  };
+};
+
 storiesOf('ui/organisms/GroupByScrollList', module).add(
   'default',
   args => {
@@ -65,8 +94,21 @@ storiesOf('ui/organisms/GroupByScrollList', module).add(
         fetchData={() => {}}
         filter={false}
         separatorCondition={separatorCondition}
-        fetchIndicator={currentItem =>
-          fetchIndicator(currentItem, args.loadingIndicator)
+        fetchTopIndicator={currentItem =>
+          fetchTopIndicator(
+            currentItem,
+            args.indicatorPosition,
+            args.indicatorIcon,
+            args.indicatorIconSize,
+            args.indicatorIconColor,
+            args.indicatorIconText,
+            args.indicatorTitleSize,
+            args.indicatorSize,
+            args.loadingIndicator,
+          )
+        }
+        fetchBottomIndicator={prevItem =>
+          fetchBottomIndicator(prevItem, args.showBottomIndicator)
         }
         {...args}
       />
@@ -94,7 +136,64 @@ storiesOf('ui/organisms/GroupByScrollList', module).add(
         defaultValue: false,
         control: {type: 'boolean'},
       },
+      indicatorPosition: {
+        control: {
+          type: 'select',
+          options: ['left', 'center', 'right', 'separate'],
+        },
+      },
+      indicatorIcon: {
+        type: 'string',
+        defaultValue: 'car',
+        control: {type: 'text'},
+      },
+      indicatorIconSize: {
+        control: {
+          type: 'range',
+          min: 10,
+          max: 50,
+          step: 2,
+        },
+        defaultValue: 30,
+      },
+      indicatorIconColor: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+        control: {
+          type: 'select',
+        },
+      },
+      indicatorIconText: {
+        type: 'string',
+        defaultValue: 'Text',
+        control: {type: 'text'},
+      },
+      indicatorTitleSize: {
+        control: {
+          type: 'range',
+          min: 10,
+          max: 50,
+          step: 2,
+        },
+        defaultValue: 18,
+      },
+      indicatorSize: {
+        control: {
+          type: 'range',
+          min: 10,
+          max: 50,
+          step: 2,
+        },
+        defaultValue: 30,
+      },
       loadingIndicator: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      showBottomIndicator: {
         type: 'boolean',
         defaultValue: false,
         control: {type: 'boolean'},
