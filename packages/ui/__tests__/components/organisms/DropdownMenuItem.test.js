@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {
   Badge,
@@ -97,5 +97,15 @@ describe('DropdownMenuItem Component', () => {
     expect(wrapper.find(Icon).prop('color')).toBe(
       Colors.secondaryColor.background,
     );
+  });
+
+  it('should render a custom component instead of Icon if provided', () => {
+    const customComponent = <View testID="customComponent" />;
+    const wrapper = shallow(
+      <DropdownMenuItem {...props} customComponent={customComponent} />,
+    );
+
+    expect(wrapper.find(Icon)).toHaveLength(0);
+    expect(wrapper.find('[testID="customComponent"]')).toHaveLength(1);
   });
 });
