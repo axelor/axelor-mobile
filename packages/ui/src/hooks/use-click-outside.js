@@ -117,10 +117,12 @@ export const OutsideAlerterProvider = ({children}) => {
 
   const addRef = useCallback(ref => dispatch(actions.addRef(ref)), []);
 
-  const handleClickOutside = useCallback(
-    target => dispatch(actions.handleClickOutside(target)),
-    [],
-  );
+  const handleClickOutside = useCallback(target => {
+    dispatch(actions.handleClickOutside(target));
+    setTimeout(() => {
+      dispatch(actions.handleClickOutside(target));
+    }, 10);
+  }, []);
 
   const outsideAlerterContextState = useMemo(
     () => ({
@@ -134,7 +136,10 @@ export const OutsideAlerterProvider = ({children}) => {
   return (
     <OutsideAlerterContext.Provider value={outsideAlerterContextState}>
       <View
-        onTouchStart={e => handleClickOutside(e.target)}
+        onTouchStart={e => {
+          e.stopPropagation();
+          handleClickOutside(e.target);
+        }}
         style={styles.container}>
         {children}
       </View>
