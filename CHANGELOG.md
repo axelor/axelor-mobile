@@ -3,6 +3,33 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.7] (2023-12-01)
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- PlanningView : NPE when clicking on OperationOrderCard
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Storybook : manage FontAwesome icons
+- AutoCompleteSearch : SelectionContainer display issue
+
+#### Fixes
+
+- Session : invalid url error stay on all pop-up even on saved sessions
+- Calendar : today date color display
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Session : invalid url error stay on all pop-up even on saved sessions
+- Calendar : today date color display
+
 ## [7.0.6] (2023-11-17)
 
 ### @axelor/aos-mobile-core
@@ -348,6 +375,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.7]: https://github.com/axelor/axelor-mobile/compare/7.0.6...7.0.7
 [7.0.6]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.0.6
 [7.0.5]: https://github.com/axelor/axelor-mobile/compare/7.0.4...7.0.5
 [7.0.4]: https://github.com/axelor/axelor-mobile/compare/7.0.3...7.0.4
