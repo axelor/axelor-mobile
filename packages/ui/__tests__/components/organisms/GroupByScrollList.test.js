@@ -19,7 +19,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {GroupByScrollList, ScrollList, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
 
 describe('GroupByScrollList', () => {
   const data = [
@@ -27,16 +26,21 @@ describe('GroupByScrollList', () => {
     {id: 2, name: 'Ab'},
     {id: 3, name: 'Bb'},
   ];
+
   const renderItem = ({item}) => <Text>{item.name}</Text>;
   const fetchData = jest.fn();
-  const fetchIndicator = jest.fn(currentItem => ({
+  const separatorCondition = (prevItem, currentItem) =>
+    prevItem.name[0] !== currentItem.name[0];
+
+  const fetchTopIndicator = jest.fn(currentItem => ({
     title: currentItem.name[0].toUpperCase(),
     numberItems: data.filter(item => item.name[0] === currentItem.name[0])
       .length,
-    loading: false,
   }));
-  const separatorCondition = (prevItem, currentItem) =>
-    prevItem.name[0] !== currentItem.name[0];
+
+  const fetchBottomIndicator = jest.fn(prevItem => ({
+    text: `Ended of: ${prevItem.name}`,
+  }));
 
   const props = {
     loadingList: false,
@@ -50,7 +54,8 @@ describe('GroupByScrollList', () => {
     horizontal: false,
     disabledRefresh: false,
     separatorCondition,
-    fetchIndicator,
+    fetchTopIndicator,
+    fetchBottomIndicator,
   };
 
   it('should render without crashing', () => {
@@ -76,37 +81,28 @@ describe('GroupByScrollList', () => {
     });
   });
 
-  it('should render Separator at the beginning and when separatorCondition return true', () => {
+  it('should render Top and Bottom Separators correctly', () => {
     const wrapper = shallow(<GroupByScrollList {...props} />);
 
-    for (let i = 0; i < data.length; i++) {
+    data.forEach((item, index) => {
       const renderItemElement = wrapper
         .find(ScrollList)
-        .renderProp('renderItem')({
-        item: data[i],
-        index: i,
-      });
-      let prevItem = null;
-      if (i !== 0) {
-        prevItem = data[i - 1];
-      }
-      if (i === 0 || separatorCondition(prevItem, data[i])) {
-        expect(renderItemElement.find('Separator').length).toBe(1);
-        expect(props.fetchIndicator).toHaveBeenCalledWith(data[i]);
+        .renderProp('renderItem')({item, index});
+
+      let prevItem = index !== 0 ? data[index - 1] : null;
+
+      if (index === 0 || separatorCondition(prevItem, item)) {
+        expect(renderItemElement.find('TopSeparator').length).toBe(1);
+        expect(fetchTopIndicator).toHaveBeenCalledWith(item);
+
+        if (prevItem) {
+          expect(renderItemElement.find('BottomSeparator').length).toBe(1);
+          expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
+        }
       } else {
-        expect(renderItemElement.find('Separator').length).toBe(0);
+        expect(renderItemElement.find('TopSeparator').length).toBe(0);
+        expect(renderItemElement.find('BottomSeparator').length).toBe(0);
       }
-    }
-  });
-
-  it('should apply custom style when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <GroupByScrollList {...props} style={customStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(ScrollList))).toMatchObject(
-      customStyle,
-    );
+    });
   });
 });
