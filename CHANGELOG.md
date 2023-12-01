@@ -3,6 +3,62 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.2] (2023-12-01)
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- ExpenseLine :
+  - improve sorting on list view (by descending dates)
+  - add cities and distance on kilometric cards
+  -
+- Expense :
+  - hide mode toggle when user is not a manager
+  - add label for groundForRefusal on details view
+  - add icon on send button on details view
+
+#### Fixes
+
+- KilometricAllowParamSearchBar : refresh issue
+- Add missing exports
+- Refresh issue on expense line list after update
+- DistanceInput : refresh issue
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- Select by default hight priorities tickets
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- PlanningView : NPE when clicking on OperationOrderCard
+
+### @axelor/aos-mobile-ui
+
+This version adds new unit test for ui components.
+
+#### Features
+
+- Add new component DoubleIcon
+- Utils : add string helper to capitalize first letter
+
+#### Fixes
+
+- Storybook : manage FontAwesome icons
+- AutoCompleteSearch : SelectionContainer display issue
+- ObjectCard : manage hideIf props even with customComponent
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Session : invalid url error stay on all pop-up even on saved sessions
+- Calendar : today date color display
+
 ## [7.2.1] (2023-11-17)
 
 ### @axelor/aos-mobile-stock
@@ -122,5 +178,6 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.1...7.2.2
 [7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.0...7.2.1
 [7.2.0]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.2.0
