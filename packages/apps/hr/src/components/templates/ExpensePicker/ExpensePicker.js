@@ -17,7 +17,6 @@
  */
 
 import React, {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {Picker} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {searchExpenseDraft} from '../../../features/expenseSlice';
@@ -40,7 +39,6 @@ const ExpensePickerAux = ({
 
   return (
     <Picker
-      style={styles.picker}
       title={title}
       defaultValue={defaultValue}
       listItems={expenseDraftList}
@@ -66,11 +64,5 @@ const ExpensePicker = ({title, defaultValue, onChange, readonly, required}) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  picker: {
-    alignSelf: 'center',
-  },
-});
 
 export default ExpensePicker;
