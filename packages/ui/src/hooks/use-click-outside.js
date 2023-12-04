@@ -136,10 +136,7 @@ export const OutsideAlerterProvider = ({children}) => {
   return (
     <OutsideAlerterContext.Provider value={outsideAlerterContextState}>
       <View
-        onTouchStart={e => {
-          e.stopPropagation();
-          handleClickOutside(e.target);
-        }}
+        onTouchStart={e => handleClickOutside(e.target)}
         style={styles.container}>
         {children}
       </View>
