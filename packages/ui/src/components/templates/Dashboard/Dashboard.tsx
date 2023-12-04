@@ -24,7 +24,7 @@ import {Data, Max_Number_Graph_Line} from './dashboard.helper';
 import {BarChart, LineChart, PieChart} from './Chart';
 
 interface Graph {
-  type: 'pie' | 'bar' | 'line';
+  type: 'pie' | 'bar' | 'line' | 'donut';
   dataList: Data[][];
   title?: string;
 }
@@ -74,8 +74,15 @@ const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
   );
 };
 
-const PieChartRender = (datasets, key, title) => {
-  return <PieChart datasets={datasets[0]} key={key} title={title} />;
+const PieChartRender = (datasets, key, title, type) => {
+  return (
+    <PieChart
+      datasets={datasets[0]}
+      key={key}
+      title={title}
+      donut={type === Chart.chartType.donut}
+    />
+  );
 };
 
 const renderChart = (graph, indexGraph, nbGraphInLine) => {
@@ -91,7 +98,8 @@ const renderChart = (graph, indexGraph, nbGraphInLine) => {
       );
 
     case Chart.chartType.pie:
-      return PieChartRender(dataList, indexGraph, title);
+    case Chart.chartType.donut:
+      return PieChartRender(dataList, indexGraph, title, type);
 
     case Chart.chartType.line:
       return LineChartDashboardRender(

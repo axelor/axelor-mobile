@@ -23,6 +23,7 @@ class Chart {
     bar: 'bar',
     pie: 'pie',
     line: 'line',
+    donut: 'donut',
   };
 
   static getChartColor = (index: number, Colors: ThemeColors): Color => {

@@ -43,7 +43,7 @@ const PieChart = ({
   datasets,
   legend = false,
   title,
-  donut = true,
+  donut = false,
   showGradient = false,
   sectionAutoFocus = true,
   radius = 90,
