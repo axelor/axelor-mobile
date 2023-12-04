@@ -17,10 +17,12 @@
  */
 
 import React, {useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {getCommonStyles} from '../../../utils/commons-styles';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {Icon, Input} from '../../atoms';
+
+const PENCIL_ICON = Platform.OS === 'web' ? 'pencil' : 'pencil-alt';
 
 interface EditableInputProps {
   placeholder: string;
@@ -68,7 +70,7 @@ const EditableInput = ({
       />
       <View style={styles.actions}>
         <TouchableOpacity onPress={handleIcon}>
-          <Icon name={isEditable ? 'pencil-alt' : 'check'} size={15} />
+          <Icon name={isEditable ? PENCIL_ICON : 'check'} size={15} />
         </TouchableOpacity>
       </View>
     </View>

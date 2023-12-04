@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Switch} from '../../src/components/atoms';
 
@@ -28,11 +27,7 @@ const handleToggle = (isEnabled: boolean) => {
 storiesOf('ui/atoms/Switch', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <Switch isEnabled={false} handleToggle={handleToggle} {...args} />
-      </View>
-    );
+    return <Switch isEnabled={false} handleToggle={handleToggle} {...args} />;
   },
   {
     argTypes: {
@@ -48,11 +43,3 @@ storiesOf('ui/atoms/Switch', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

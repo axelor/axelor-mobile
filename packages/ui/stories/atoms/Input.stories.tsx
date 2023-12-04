@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Input} from '../../src/components/atoms';
 
@@ -27,14 +26,12 @@ storiesOf('ui/atoms/Input', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Input
-          value=""
-          onChange={console.log}
-          placeholder="Enter text here"
-          {...args}
-        />
-      </View>
+      <Input
+        value=""
+        onChange={console.log}
+        placeholder="Enter text here"
+        {...args}
+      />
     );
   },
   {
@@ -111,11 +108,3 @@ storiesOf('ui/atoms/Input', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

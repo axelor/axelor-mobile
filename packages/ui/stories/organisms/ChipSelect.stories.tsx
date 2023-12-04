@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {ChipSelect} from '../../src/components/organisms';
@@ -43,7 +42,6 @@ const items = [
 ];
 
 storiesOf('ui/organisms/ChipSelect', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('multi-select', () => (
     <ChipSelect
       selectionItems={items}
@@ -97,12 +95,3 @@ storiesOf('ui/organisms/ChipSelect', module)
       },
     },
   );
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-});

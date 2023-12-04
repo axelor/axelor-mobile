@@ -17,7 +17,7 @@
  */
 
 import React, {useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {useThemeColor} from '../../../theme/ThemeContext';
@@ -61,7 +61,7 @@ const Icon = ({
       style={[styles.container, style]}
       onPress={onPress}
       disabled={!touchable}>
-      {FontAwesome5 ? (
+      {FontAwesome5 && Platform.OS !== 'web' ? (
         <Icon5 name={name} style={styles.icon} />
       ) : (
         <Icon4 name={name} style={styles.icon} />

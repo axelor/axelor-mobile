@@ -17,32 +17,31 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {CircleButton} from '../../src/components/molecules';
 
-const icons = ['heart', 'star', 'camera'];
-
-storiesOf('ui/molecules/CircleButton', module).add('Default', () => {
-  return (
-    <View style={styles.container}>
-      {icons.map(icon => (
-        <CircleButton
-          key={icon}
-          iconName={icon}
-          onPress={() => console.log(`Pressed ${icon} button`)}
-        />
-      ))}
-    </View>
-  );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    paddingVertical: 50,
+storiesOf('ui/molecules/CircleButton', module).add(
+  'Default',
+  args => {
+    return <CircleButton iconName="car" {...args} />;
   },
-});
+  {
+    argTypes: {
+      size: {
+        type: 'number',
+        defaultValue: 50,
+        control: {type: 'number'},
+      },
+      iconName: {
+        type: 'string',
+        defaultValue: 'car',
+        control: {type: 'text'},
+      },
+      disabled: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);

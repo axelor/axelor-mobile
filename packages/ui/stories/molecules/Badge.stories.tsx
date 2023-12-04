@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Badge} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -25,11 +24,7 @@ import {lightTheme} from '../../src/theme';
 storiesOf('ui/molecules/Badge', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <Badge title={''} {...args} />
-      </View>
-    );
+    return <Badge title={''} {...args} />;
   },
   {
     argTypes: {
@@ -62,10 +57,3 @@ storiesOf('ui/molecules/Badge', module).add(
     },
   },
 );
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
