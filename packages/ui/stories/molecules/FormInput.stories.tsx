@@ -17,18 +17,13 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {FormInput} from '../../src/components/molecules';
 
 storiesOf('ui/molecules/FormInput', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <FormInput {...args} />
-      </View>
-    );
+    return <FormInput title="Input Title" {...args} />;
   },
   {
     argTypes: {
@@ -71,11 +66,3 @@ storiesOf('ui/molecules/FormInput', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

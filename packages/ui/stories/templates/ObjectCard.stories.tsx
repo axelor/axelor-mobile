@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {ObjectCard} from '../../src/components';
 import {lightTheme} from '../../src/theme';
@@ -120,7 +119,6 @@ const defaultArgs = {
 };
 
 storiesOf('ui/templates/ObjectCard', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
   .add('Default', () => <ObjectCard {...defaultArgs} />)
   .add('Simple card', () => <ObjectCard {...simpleArgs} />)
   .add('Simple card with arrow', () => <ObjectCard {...simpleArrowArgs} />)
@@ -132,11 +130,3 @@ storiesOf('ui/templates/ObjectCard', module)
   .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />)
   .add('Lower badges reverse', () => <ObjectCard {...lowerBadgesReverseArgs} />)
   .add('Lower badges basic', () => <ObjectCard {...lowerBadgesArgs} />);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

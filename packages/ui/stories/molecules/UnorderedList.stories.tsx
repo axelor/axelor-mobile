@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {UnorderedList} from '../../src/components/molecules';
@@ -30,10 +29,15 @@ const items = [
 ];
 
 storiesOf('ui/molecules/UnorderedList', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('default', () => (
     <UnorderedList
       data={items}
+      renderItem={({item}) => <Text>{item.text}</Text>}
+    />
+  ))
+  .add('with 0 items', () => (
+    <UnorderedList
+      data={[]}
       renderItem={({item}) => <Text>{item.text}</Text>}
     />
   ))
@@ -43,19 +47,4 @@ storiesOf('ui/molecules/UnorderedList', module)
       numberOfItems={2}
       renderItem={({item}) => <Text>{item.text}</Text>}
     />
-  ))
-  .add('with 0 items', () => (
-    <UnorderedList
-      data={[]}
-      renderItem={({item}) => <Text>{item.text}</Text>}
-    />
   ));
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-});

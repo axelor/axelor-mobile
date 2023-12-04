@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {action} from '@storybook/addon-actions';
 import {SearchBar} from '../../src/components/organisms';
@@ -26,16 +25,13 @@ storiesOf('ui/organisms/SearchBar', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <SearchBar
-          valueTxt={''}
-          placeholder={'Search'}
-          onClearPress={action('onClearPress')}
-          onChangeTxt={action('onChangeTxt')}
-          style={styles.searchBar}
-          {...args}
-        />
-      </View>
+      <SearchBar
+        valueTxt={''}
+        placeholder={'Search'}
+        onClearPress={action('onClearPress')}
+        onChangeTxt={action('onChangeTxt')}
+        {...args}
+      />
     );
   },
   {
@@ -73,15 +69,3 @@ storiesOf('ui/organisms/SearchBar', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '25%',
-  },
-  searchBar: {
-    width: '50%',
-  },
-});

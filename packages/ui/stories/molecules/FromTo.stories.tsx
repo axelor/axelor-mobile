@@ -17,15 +17,12 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {FromTo} from '../../src/components/molecules';
 import {Text} from '../../src/components/atoms';
 
 storiesOf('ui/molecules/FromTo', module).add('Default', () => {
   return (
-    <View>
-      <FromTo fromComponent={<Text>From</Text>} toComponent={<Text>To</Text>} />
-    </View>
+    <FromTo fromComponent={<Text>From</Text>} toComponent={<Text>To</Text>} />
   );
 });

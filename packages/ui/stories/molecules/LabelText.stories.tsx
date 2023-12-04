@@ -17,35 +17,51 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {LabelText} from '../../src/components/molecules';
 
-const primary = {
-  background_light: '#84DCB7',
-  foreground: '#000000',
-  background: '#3ECF8E',
-};
-
-storiesOf('ui/molecules/LabelText', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add('Default', () => (
-    <LabelText
-      title="Label"
-      value="Text"
-      iconName="heart"
-      color={primary.background_light}
-      style={styles.labelText}
-    />
-  ));
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+storiesOf('ui/molecules/LabelText', module).add(
+  'Default',
+  args => {
+    return <LabelText title="Title" {...args} />;
   },
-  labelText: {
-    marginBottom: 10,
+  {
+    argTypes: {
+      title: {
+        type: 'string',
+        defaultValue: 'Title',
+        control: {type: 'text'},
+      },
+      value: {
+        type: 'string',
+        defaultValue: 'Value',
+        control: {type: 'text'},
+      },
+      size: {
+        control: {
+          type: 'range',
+          min: 10,
+          max: 50,
+          step: 5,
+        },
+        defaultValue: 15,
+      },
+      color: {
+        control: {
+          type: 'color',
+        },
+        defaultValue: '#000000',
+      },
+      iconName: {
+        type: 'string',
+        defaultValue: 'car',
+        control: {type: 'text'},
+      },
+      onlyOneLine: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
   },
-});
+);

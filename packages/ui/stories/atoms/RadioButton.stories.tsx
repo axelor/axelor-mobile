@@ -23,7 +23,14 @@ import {RadioButton} from '../../src/components';
 storiesOf('ui/atoms/RadioButton', module).add(
   'Default',
   args => {
-    return <RadioButton onPress={() => {}} title={'Option title'} {...args} />;
+    return (
+      <RadioButton
+        selected={false}
+        onPress={() => {}}
+        title={'Option title'}
+        {...args}
+      />
+    );
   },
   {
     argTypes: {

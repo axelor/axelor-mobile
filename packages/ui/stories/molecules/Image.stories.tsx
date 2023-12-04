@@ -17,51 +17,49 @@
  */
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Image} from '../../src/components/molecules';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    borderWidth: 1,
-    borderColor: 'gray',
-  },
-});
 
 const IMAGE_URI =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=brooke-cagle-395b55a9fa4c.jpg';
 
-storiesOf('ui/molecules/Image', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add('default', () => (
-    <Image
-      source={{uri: IMAGE_URI}}
-      resizeMode="contain"
-      generalStyle={styles.image}
-      imageSize={{width: 200, height: 200}}
-      defaultIconSize={30}
-    />
-  ))
-  .add('invalid source', () => (
-    <Image
-      source={{uri: 'invalid'}}
-      resizeMode="contain"
-      generalStyle={styles.image}
-      imageSize={{width: 200, height: 200}}
-      defaultIconSize={30}
-    />
-  ))
-  .add('with default icon size', () => (
-    <Image
-      source={{uri: IMAGE_URI}}
-      resizeMode="contain"
-      generalStyle={styles.image}
-      imageSize={{width: 200, height: 200}}
-      defaultIconSize={100}
-    />
-  ));
+storiesOf('ui/molecules/Image', module).add(
+  'Default',
+  args => {
+    return (
+      <Image
+        source={{uri: IMAGE_URI}}
+        resizeMode="contain"
+        imageSize={{width: 200, height: 200}}
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      source: {
+        control: {
+          type: 'select',
+          options: [{uri: IMAGE_URI}, 'Invalid source'],
+        },
+        defaultValue: {uri: IMAGE_URI},
+      },
+      resizeMode: {
+        control: {
+          type: 'select',
+          options: ['cover', 'contain', 'stretch', 'repeat', 'center'],
+        },
+        defaultValue: 'contain',
+      },
+      defaultIconSize: {
+        control: {
+          type: 'range',
+          min: 15,
+          max: 150,
+          step: 10,
+        },
+        defaultValue: 30,
+      },
+    },
+  },
+);

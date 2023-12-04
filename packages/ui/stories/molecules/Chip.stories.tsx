@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Chip} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -26,15 +25,13 @@ storiesOf('ui/molecules/Chip', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <Chip
-          title="Press me"
-          selected={false}
-          onPress={console.log}
-          selectedColor={lightTheme.colors.primaryColor}
-          {...args}
-        />
-      </View>
+      <Chip
+        title="Press me"
+        selected={false}
+        onPress={console.log}
+        selectedColor={lightTheme.colors.primaryColor}
+        {...args}
+      />
     );
   },
   {
@@ -62,9 +59,6 @@ storiesOf('ui/molecules/Chip', module).add(
           },
         },
       },
-      onPress: {
-        action: 'onPress',
-      },
       width: {
         control: {
           type: 'range',
@@ -86,11 +80,3 @@ storiesOf('ui/molecules/Chip', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {MultiValuePickerButton} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -32,13 +31,11 @@ storiesOf('ui/molecules/MultiValuePickerButton', module).add(
     ];
 
     return (
-      <View style={styles.container}>
-        <MultiValuePickerButton
-          onPress={console.log}
-          listItem={listItem}
-          {...args}
-        />
-      </View>
+      <MultiValuePickerButton
+        onPress={console.log}
+        listItem={listItem}
+        {...args}
+      />
     );
   },
   {
@@ -52,11 +49,3 @@ storiesOf('ui/molecules/MultiValuePickerButton', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

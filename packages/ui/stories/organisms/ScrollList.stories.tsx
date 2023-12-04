@@ -38,96 +38,53 @@ const Item = ({title}: {title: string}) => (
 
 const renderItem = ({item}: {item: any}) => <Item title={item.title} />;
 
-storiesOf('ui/organisms/ScrollList', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add('default', () => (
-    <ScrollList
-      data={DATA}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-    />
-  ))
-  .add('loading', () => (
-    <ScrollList
-      data={[]}
-      loadingList={true}
-      moreLoading={false}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-    />
-  ))
-  .add('empty list', () => (
-    <ScrollList
-      data={[]}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-    />
-  ))
-  .add('list end', () => (
-    <ScrollList
-      data={DATA}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={true}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-    />
-  ))
-  .add('more loading', () => (
-    <ScrollList
-      data={DATA}
-      loadingList={false}
-      moreLoading={true}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-    />
-  ))
-  .add('with translator', () => (
-    <ScrollList
-      data={[]}
-      loadingList={false}
-      moreLoading={false}
-      isListEnd={false}
-      renderItem={renderItem}
-      fetchData={() => {}}
-      filter={false}
-      translator={key => {
-        switch (key) {
-          case 'Base_NoData':
-            return 'There are no items to display.';
-          case 'Base_NoMoreItems':
-            return 'You have reached the end of the list.';
-          default:
-            return key;
-        }
-      }}
-    />
-  ));
+storiesOf('ui/organisms/ScrollList', module).add(
+  'default',
+  args => {
+    return (
+      <ScrollList
+        loadingList={false}
+        data={DATA}
+        renderItem={renderItem}
+        fetchData={() => {}}
+        moreLoading={false}
+        isListEnd={false}
+        filter={false}
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      loadingList: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      moreLoading: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      isListEnd: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      horizontal: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
   item: {
     backgroundColor: '#f9c2ff',
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
   },
 });

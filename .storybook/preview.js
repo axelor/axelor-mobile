@@ -8,6 +8,7 @@ import {
   lightTheme,
   writingDefaultTheme,
 } from '../packages/ui/src';
+import './storybook.css';
 
 if (Platform.OS === 'web') {
   const IconFont = require('react-native-vector-icons/Fonts/FontAwesome.ttf');
@@ -34,6 +35,9 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  viewport: {
+    defaultViewport: 'mobile1',
   },
 };
 

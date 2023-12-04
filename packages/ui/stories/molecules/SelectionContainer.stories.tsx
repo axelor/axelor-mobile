@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {SelectionContainer} from '../../src/components/molecules';
 
@@ -34,46 +34,43 @@ const displayValue = item => item.name;
 const handleSelect = item =>
   console.log(`Selected item: ${JSON.stringify(item)}`);
 
-storiesOf('ui/molecules/SelectionContainer', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('Default', () => (
-    <SelectionContainer
-      objectList={objectList}
-      displayValue={displayValue}
-      handleSelect={handleSelect}
-    />
-  ))
-  .add('With Selected Item', () => (
-    <SelectionContainer
-      objectList={objectList}
-      displayValue={displayValue}
-      handleSelect={handleSelect}
-      selectedItem={[objectList[2]]}
-    />
-  ))
-  .add('With Empty Value', () => (
-    <SelectionContainer
-      objectList={objectList}
-      displayValue={displayValue}
-      handleSelect={handleSelect}
-      emptyValue
-    />
-  ))
-  .add('As Picker', () => (
-    <SelectionContainer
-      objectList={objectList}
-      displayValue={displayValue}
-      handleSelect={handleSelect}
-      isPicker
-    />
-  ));
+storiesOf('ui/molecules/SelectionContainer', module).add(
+  'Default',
+  args => {
+    return (
+      <SelectionContainer
+        style={styles.container}
+        objectList={objectList}
+        displayValue={displayValue}
+        handleSelect={handleSelect}
+        selectedItem={[objectList[0]]}
+        {...args}
+      />
+    );
+  },
+  {
+    argTypes: {
+      emptyValue: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      isPicker: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      readonly: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
 
 const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
+  container: {
+    top: 0,
   },
 });

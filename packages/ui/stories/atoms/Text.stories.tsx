@@ -17,18 +17,13 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 
 storiesOf('ui/atoms/Text', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <Text {...args}>Lorem ipsum dolor sit amet</Text>
-      </View>
-    );
+    return <Text {...args}>Lorem ipsum dolor sit amet</Text>;
   },
   {
     argTypes: {
@@ -78,11 +73,3 @@ storiesOf('ui/atoms/Text', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

@@ -17,84 +17,61 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {ProgressBar} from '../../src/components/organisms';
 
-storiesOf('ui/organisms/ProgressBar', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'Default',
-    args => {
-      return <ProgressBar value={50} total={100} {...args} />;
-    },
-    {
-      argTypes: {
-        value: {
-          type: 'number',
-          defaultValue: 50,
-          control: {type: 'range', min: 0, max: 100, step: 1},
-        },
-        total: {
-          type: 'number',
-          defaultValue: 100,
-          control: {type: 'number'},
-        },
-        showPercent: {
-          type: 'boolean',
-          defaultValue: true,
-          control: {type: 'boolean'},
-        },
-        centredPercent: {
-          type: 'boolean',
-          defaultValue: false,
-          control: {type: 'boolean'},
-        },
-        stripe: {
-          type: 'boolean',
-          defaultValue: true,
-          control: {type: 'boolean'},
-        },
-        stripeDuration: {
-          type: 'number',
-          defaultValue: 60000,
-          control: {type: 'number'},
-        },
-        stripeWidth: {
-          type: 'number',
-          defaultValue: 40,
-          control: {type: 'number'},
-        },
-        colorRepartition: {
-          type: 'object',
-          defaultValue: {},
-          control: {type: 'object'},
-        },
-        height: {
-          type: 'number',
-          defaultValue: 30,
-          control: {type: 'number'},
-        },
-        style: {
-          type: 'object',
-          defaultValue: {},
-          control: {type: 'object'},
-        },
-        styleTxt: {
-          type: 'object',
-          defaultValue: {},
-          control: {type: 'object'},
-        },
+storiesOf('ui/organisms/ProgressBar', module).add(
+  'Default',
+  args => {
+    return <ProgressBar value={50} total={100} {...args} />;
+  },
+  {
+    argTypes: {
+      value: {
+        type: 'number',
+        defaultValue: 50,
+        control: {type: 'range', min: 0, max: 100, step: 1},
+      },
+      total: {
+        type: 'number',
+        defaultValue: 100,
+        control: {type: 'number'},
+      },
+      showPercent: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      centredPercent: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      stripe: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      stripeDuration: {
+        type: 'number',
+        defaultValue: 60000,
+        control: {type: 'number'},
+      },
+      stripeWidth: {
+        type: 'number',
+        defaultValue: 40,
+        control: {type: 'number'},
+      },
+      colorRepartition: {
+        type: 'object',
+        defaultValue: {},
+        control: {type: 'object'},
+      },
+      height: {
+        type: 'number',
+        defaultValue: 30,
+        control: {type: 'number'},
       },
     },
-  );
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '20%',
   },
-});
+);

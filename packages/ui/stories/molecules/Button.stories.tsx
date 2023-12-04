@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Button} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -25,11 +24,7 @@ import {lightTheme} from '../../src/theme';
 storiesOf('ui/molecules/Button', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <Button {...args} color={lightTheme.colors[args.color]} />
-      </View>
-    );
+    return <Button {...args} color={lightTheme.colors[args.color]} />;
   },
   {
     argTypes: {
@@ -47,14 +42,9 @@ storiesOf('ui/molecules/Button', module).add(
         defaultValue: false,
         control: {type: 'boolean'},
       },
-      FontAwesome5: {
-        type: 'boolean',
-        defaultValue: true,
-        control: {type: 'boolean'},
-      },
       iconName: {
         type: 'string',
-        defaultValue: '?',
+        defaultValue: 'car',
         control: {type: 'text'},
       },
       isNeutralBackground: {
@@ -75,11 +65,3 @@ storiesOf('ui/molecules/Button', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

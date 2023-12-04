@@ -22,7 +22,6 @@ import {storiesOf} from '@storybook/react-native';
 import {Card, Text} from '../../src/components/atoms';
 
 storiesOf('ui/atoms/Card', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
   .add('Default', () => (
     <Card>
       <View />
@@ -57,9 +56,6 @@ storiesOf('ui/atoms/Card', module)
   );
 
 const styles = StyleSheet.create({
-  decorator: {
-    padding: 20,
-  },
   defaultCustom: {
     height: 100,
     backgroundColor: '#B4503B',

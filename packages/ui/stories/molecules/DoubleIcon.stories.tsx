@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {DoubleIcon} from '../../src/components/molecules';
 import {lightTheme} from '../../src/theme';
@@ -29,24 +28,26 @@ storiesOf('ui/molecules/DoubleIcon', module)
     'with pre-defined position',
     args => {
       return (
-        <View style={styles.container}>
-          <DoubleIcon
-            size={30}
-            topIconConfig={{
-              name: args.configTopIcon_name,
-              size: args.configTopIcon_size,
-              FontAwesome5: false,
-              color: Colors[args.configTopIcon_color].background,
-            }}
-            bottomIconConfig={{
-              name: args.configBottomIcon_name,
-              size: args.configBottomIcon_size,
-              FontAwesome5: false,
-              color: Colors[args.configBottomIcon_color].background,
-            }}
-            {...args}
-          />
-        </View>
+        <DoubleIcon
+          style={{
+            width: args.configBottomIcon_size,
+            height: args.configBottomIcon_size,
+            margin: args.configTopIcon_size,
+          }}
+          topIconConfig={{
+            name: args.configTopIcon_name,
+            size: args.configTopIcon_size,
+            FontAwesome5: false,
+            color: Colors[args.configTopIcon_color].background,
+          }}
+          bottomIconConfig={{
+            name: args.configBottomIcon_name,
+            size: args.configBottomIcon_size,
+            FontAwesome5: false,
+            color: Colors[args.configBottomIcon_color].background,
+          }}
+          {...args}
+        />
       );
     },
     {
@@ -116,26 +117,24 @@ storiesOf('ui/molecules/DoubleIcon', module)
   .add(
     'with custom position',
     args => (
-      <View style={styles.container}>
-        <DoubleIcon
-          size={30}
-          topIconPosition={{
-            top: args.top,
-            right: args.right,
-            left: args.left,
-            bottom: args.bottom,
-          }}
-          topIconConfig={{
-            name: 'heart',
-            FontAwesome5: false,
-            color: Colors.plannedColor.background,
-          }}
-          bottomIconConfig={{
-            name: 'user',
-            FontAwesome5: false,
-          }}
-        />
-      </View>
+      <DoubleIcon
+        size={30}
+        topIconPosition={{
+          top: args.top,
+          right: args.right,
+          left: args.left,
+          bottom: args.bottom,
+        }}
+        topIconConfig={{
+          name: 'heart',
+          FontAwesome5: false,
+          color: Colors.plannedColor.background,
+        }}
+        bottomIconConfig={{
+          name: 'user',
+          FontAwesome5: false,
+        }}
+      />
     ),
     {
       argTypes: {
@@ -178,12 +177,3 @@ storiesOf('ui/molecules/DoubleIcon', module)
       },
     },
   );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-});

@@ -17,12 +17,10 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {FormHtmlInput} from '../../src/components/molecules';
 
 storiesOf('ui/molecules/FormHtmlInput', module)
-  .addDecorator(story => <View>{story()}</View>)
   .add('default', () => (
     <FormHtmlInput
       title="Description"

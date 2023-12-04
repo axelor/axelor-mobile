@@ -1,0 +1,4 @@
+#root > div:first-child {
+  width: 100%;
+  height: 100%;
+}

@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {ViewAllContainer} from '../../src/components/molecules';
@@ -30,23 +29,36 @@ const data = [
   {id: '5', name: 'Item 5'},
 ];
 
-storiesOf('ui/molecules/ViewAllContainer', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('default', () => (
-    <ViewAllContainer
-      children={''}
-      title="View All Container"
-      data={data}
-      onViewPress={() => console.log('View All Pressed')}
-      renderFirstTwoItems={item => <Text>{item.name}</Text>}
-    />
-  ));
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+storiesOf('ui/molecules/ViewAllContainer', module).add(
+  'default',
+  args => {
+    return (
+      <ViewAllContainer
+        data={data}
+        children={<Text>Children</Text>}
+        onViewPress={() => console.log('View all pressed.')}
+        renderFirstTwoItems={item => <Text>{item.name}</Text>}
+        {...args}
+      />
+    );
   },
-});
+  {
+    argTypes: {
+      title: {
+        type: 'string',
+        defaultValue: 'Title',
+        control: {type: 'text'},
+      },
+      disabled: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      isHeaderExist: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);

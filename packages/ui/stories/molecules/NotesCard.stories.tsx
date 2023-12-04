@@ -17,41 +17,22 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {NotesCard} from '../../src/components/molecules';
 
-storiesOf('ui/molecules/NotesCard', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add(
-    'custom',
-    args => <NotesCard title={'title'} data={'data'} {...args} />,
-    {
-      argTypes: {
-        style: {
-          control: {
-            type: 'object',
-          },
-          defaultValue: {
-            marginHorizontal: 20,
-          },
-        },
-        title: {
-          control: 'text',
-          defaultValue: 'title',
-        },
-        data: {
-          control: 'text',
-          defaultValue: 'data',
-        },
+storiesOf('ui/molecules/NotesCard', module).add(
+  'custom',
+  args => <NotesCard {...args} />,
+  {
+    argTypes: {
+      title: {
+        control: 'text',
+        defaultValue: 'title',
+      },
+      data: {
+        control: 'text',
+        defaultValue: 'data',
       },
     },
-  );
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
   },
-});
+);

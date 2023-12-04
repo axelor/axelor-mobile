@@ -17,22 +17,26 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {DropdownCard} from '../../src/components/molecules';
 
 const children = <Text>Some content in the dropdown</Text>;
 
-storiesOf('ui/molecules/DropdownCard', module)
-  .addDecorator(getStory => <View style={styles.container}>{getStory()}</View>)
-  .add('default', args => <DropdownCard {...args}>{children}</DropdownCard>, {
+storiesOf('ui/molecules/DropdownCard', module).add(
+  'default',
+  args => (
+    <DropdownCard title="DropdownCard title" {...args}>
+      {children}
+    </DropdownCard>
+  ),
+  {
     argTypes: {
       title: {
         control: {
           type: 'text',
         },
-        defaultValue: 'Dropdown Card title',
+        defaultValue: 'DropdownCard title',
       },
       dropdownIsOpen: {
         control: {
@@ -41,8 +45,5 @@ storiesOf('ui/molecules/DropdownCard', module)
         defaultValue: false,
       },
     },
-  });
-
-const styles = StyleSheet.create({
-  container: {padding: 20},
-});
+  },
+);

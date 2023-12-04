@@ -17,28 +17,21 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {EditableInput} from '../../src/components/molecules';
-
-const theme = {
-  background: '#ffffff',
-  text: '#000000',
-};
 
 storiesOf('ui/molecules/EditableInput', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <EditableInput
-          placeholder="Enter text here"
-          onValidate={console.log}
-          defaultValue={args.defaultValue}
-          multiline={args.multiline}
-          numberOfLines={args.numberOfLines}
-        />
-      </View>
+      <EditableInput
+        placeholder="Enter text here"
+        onValidate={console.log}
+        defaultValue={args.defaultValue}
+        multiline={args.multiline}
+        numberOfLines={args.numberOfLines}
+        {...args}
+      />
     );
   },
   {
@@ -67,13 +60,3 @@ storiesOf('ui/molecules/EditableInput', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.background,
-    padding: 20,
-  },
-});

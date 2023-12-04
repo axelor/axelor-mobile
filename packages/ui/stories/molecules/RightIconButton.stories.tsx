@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Icon} from '../../src/components/atoms';
 import {RightIconButton} from '../../src/components/molecules';
@@ -26,14 +25,12 @@ storiesOf('ui/molecules/RightIconButton', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <RightIconButton
-          icon={<Icon name="heart" />}
-          onPress={console.log}
-          title={'Press me'}
-          {...args}
-        />
-      </View>
+      <RightIconButton
+        icon={<Icon name={args.iconName} />}
+        onPress={console.log}
+        title={'Press me'}
+        {...args}
+      />
     );
   },
   {
@@ -43,18 +40,11 @@ storiesOf('ui/molecules/RightIconButton', module).add(
         defaultValue: 'Press me',
         control: {type: 'text'},
       },
-      onPress: {
-        action: 'clicked',
-        table: {disable: true},
+      iconName: {
+        type: 'string',
+        defaultValue: 'heart',
+        control: {type: 'text'},
       },
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
