@@ -29,7 +29,6 @@ import {
   updateExpenseLine as _updateExpenseLine,
   deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
-import {ExpenseLine} from '../types';
 import {fetchExpenseById} from './expenseSlice';
 import {updateExpense} from './expenseSlice';
 
@@ -142,40 +141,19 @@ export const updateExpenseLine = createAsyncThunk(
       action: 'Hr_SliceAction_SearchKilometricAllowParam',
       getState,
       responseOptions: {isArrayResponse: false},
-    })
-      .then(res => {
-        if (data?.expenseId != null) {
-          dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
-          return res;
-        } else {
-          return handlerApiCall({
-            fetchFunction: _searchExpenseLines,
-            action: 'Hr_SliceAction_FetchExpenseLines',
-            getState,
-            data: {userId: data?.userId},
-            responseOptions: {isArrayResponse: true},
-          });
-        }
-      })
-      .then(() => {
+    }).then(() => {
+      if (data?.expenseId != null) {
+        dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
+      } else {
         return handlerApiCall({
-          fetchFunction:
-            data?.expenseId == null
-              ? _searchExpenseLines
-              : data.mode === ExpenseLine.modes.general
-              ? _searchGeneralExpenseLines
-              : _searchKilometricExpenseLines,
-          action:
-            data?.expenseId == null
-              ? 'Hr_SliceAction_FetchExpenseLines'
-              : data?.mode === ExpenseLine.modes.general
-              ? 'Hr_SliceAction_SearchGeneralExpenseLines'
-              : 'Hr_SliceAction_SearchKilometricExpenseLines',
+          fetchFunction: _searchExpenseLines,
+          action: 'Hr_SliceAction_FetchExpenseLines',
           getState,
-          data: {expenseId: data.expenseId, userId: data?.userId},
+          data: {userId: data?.userId},
           responseOptions: {isArrayResponse: true},
         });
-      });
+      }
+    });
   },
 );
 
