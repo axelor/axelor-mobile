@@ -49,38 +49,36 @@ describe('ToggleButton Component', () => {
   });
 
   it('should render a Button whose color changes if pressed', () => {
-    const inactiveNeutralColor = {
-      background: props.inactiveColor.background,
-      background_light: Colors.backgroundColor,
-      foreground: Colors.text,
-    };
     const onPress = jest.fn();
     const wrapper = shallow(<ToggleButton {...props} onPress={onPress} />);
 
-    expect(wrapper.find(Button).prop('color')).toEqual(inactiveNeutralColor);
+    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(true);
+    expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
 
     wrapper.simulate('press');
     expect(onPress).toHaveBeenCalledWith(true);
 
-    expect(wrapper.find(Button).prop('color')).toEqual(props.activeColor);
+    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(false);
+    expect(wrapper.find(Button).prop('color')).toBe(props.activeColor);
 
     wrapper.simulate('press');
     expect(onPress).toHaveBeenCalledWith(false);
 
-    expect(wrapper.find(Button).prop('color')).toEqual(inactiveNeutralColor);
+    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(true);
+    expect(wrapper.find(Button).prop('color')).toBe(props.inactiveColor);
   });
 
-  it('should render a Button which use inactiveColor when not selected if isNeutralBackground is false', () => {
+  it('should render a Button with isNeutralBackground props set to false if provided', () => {
     const wrapper = shallow(
       <ToggleButton {...props} isNeutralBackground={false} />,
     );
 
-    expect(wrapper.find(Button).prop('color')).toEqual(props.inactiveColor);
+    expect(wrapper.find(Button).prop('isNeutralBackground')).toBe(false);
   });
 
   it('should render a Button with default color set to activeColor if isActive is true', () => {
     const wrapper = shallow(<ToggleButton {...props} isActive />);
 
-    expect(wrapper.find(Button).prop('color')).toEqual(props.activeColor);
+    expect(wrapper.find(Button).prop('color')).toBe(props.activeColor);
   });
 });
