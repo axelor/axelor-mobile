@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Screen, ScrollList, useThemeColor} from '@axelor/aos-mobile-ui';
+import {
+  DoubleIcon,
+  Screen,
+  ScrollList,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import {
   CameraButton,
   headerActionsProvider,
@@ -72,7 +77,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
       actions: [
         {
           key: 'newExpenseLines',
-          order: 10,
+          order: 20,
           iconName: 'plus',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_NewExpenseLine'),
@@ -80,15 +85,39 @@ const ExpenseLinesListScreen = ({navigation}) => {
           onPress: () => navigation.navigate('ExpenseLineFormScreen', {}),
           showInHeader: true,
         },
+        {
+          key: 'openSelectionMode',
+          order: 10,
+          iconName: 'user',
+          hideIf: isSelectionMode,
+          title: I18n.t('Hr_OpenSelectionMode'),
+          onPress: handleModeChange,
+          showInHeader: true,
+          customComponent: (
+            <DoubleIcon
+              topIconConfig={{
+                name: 'plus',
+                color: Colors.primaryColor.background,
+                size: 16,
+              }}
+              bottomIconConfig={{
+                name: 'credit-card',
+                color: Colors.secondaryColor_dark.background,
+              }}
+              predefinedPosition={'top-right'}
+              topIconPosition={{top: -9}}
+            />
+          ),
+        },
       ],
     });
   }, [Colors, I18n, navigation, isSelectionMode]);
 
-  const handleModeChange = itemId => {
+  const handleModeChange = (itemId = null) => {
     setIsSelectionMode(current => {
       const mode = !current;
 
-      if (mode) {
+      if (mode && itemId != null) {
         setSelectedItems([itemId]);
       } else {
         setSelectedItems([]);
