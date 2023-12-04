@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Badge, Icon, useThemeColor} from '@axelor/aos-mobile-ui';
 
@@ -28,6 +28,7 @@ interface HeaderOptionMenuItemProps {
   hideIf: boolean;
   disableIf?: boolean;
   onPress: () => void;
+  customComponent?: ReactElement<any>;
 }
 
 const BADGE_SIZE = 16;
@@ -40,6 +41,7 @@ const HeaderOptionMenuItem = ({
   hideIf = false,
   disableIf = false,
   onPress,
+  customComponent,
 }: HeaderOptionMenuItemProps) => {
   const Colors = useThemeColor();
 
@@ -65,7 +67,16 @@ const HeaderOptionMenuItem = ({
       onPress={onPress}
       disabled={disableIf}
       activeOpacity={0.7}>
-      <Icon name={icon} color={_color} FontAwesome5={FontAwesome5} size={22} />
+      {customComponent != null ? (
+        React.cloneElement(customComponent)
+      ) : (
+        <Icon
+          name={icon}
+          color={_color}
+          FontAwesome5={FontAwesome5}
+          size={22}
+        />
+      )}
       {indicator > 0 && (
         <Badge
           style={styles.badge}
