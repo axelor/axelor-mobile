@@ -17,49 +17,48 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
-import {action} from '@storybook/addon-actions';
 import {MultiValuePicker} from '../../src/components/organisms';
+import {lightTheme} from '../../src/theme';
 
-const items = [
-  {id: 1, label: 'Option 1', value: 'option1'},
-  {id: 2, label: 'Option 2', value: 'option2'},
-  {id: 3, label: 'Option 3', value: 'option3'},
-  {id: 4, label: 'Option 4', value: 'option4'},
+const listItems = [
+  {color: lightTheme.colors.secondaryColor, title: 'TEST 1', key: 1},
+  {color: lightTheme.colors.progressColor, title: 'TEST 2', key: 2},
+  {color: lightTheme.colors.primaryColor, title: 'TEST 3', key: 3},
 ];
 
-storiesOf('ui/organisms/MultiValuePicker', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('Default', () => (
-    <MultiValuePicker
-      title="Select options"
-      defaultValue={[items[1], items[3]]}
-      listItems={items}
-      labelField="label"
-      valueField="value"
-      onValueChange={action('value changed')}
-    />
-  ))
-  .add('Disabled', () => (
-    <MultiValuePicker
-      title="Select options"
-      defaultValue={[items[1], items[3]]}
-      listItems={items}
-      labelField="label"
-      valueField="value"
-      disabled
-      disabledValue={['Option 2', 'Option 4']}
-    />
-  ));
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    width: '15%',
-    marginLeft: '50%',
+storiesOf('ui/organisms/MultiValuePicker', module).add(
+  'Default',
+  args => {
+    return (
+      <MultiValuePicker
+        title="Select options"
+        listItems={listItems}
+        defaultItems={[listItems[1], listItems[3]]}
+        {...args}
+      />
+    );
   },
-});
+  {
+    argTypes: {
+      title: {
+        control: {
+          type: 'text',
+        },
+        defaultValue: 'Select options',
+      },
+      disabled: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
+      required: {
+        control: {
+          type: 'boolean',
+        },
+        defaultValue: false,
+      },
+    },
+  },
+);

@@ -18,22 +18,15 @@
 
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
-import {View, StyleSheet} from 'react-native';
-import {MultiSelectValue} from '../../src/components/organisms';
+import {MultiValuePickerButton} from '../../src/components/molecules';
+import {lightTheme} from '../../src/theme';
 
-storiesOf('ui/organisms/MultiSelectValue', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('default', () => (
-    <MultiSelectValue
-      title="Selected Items"
-      itemList={['Item 1', 'Item 2', 'Item 3']}
-    />
-  ));
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
+storiesOf('ui/molecules/MultiValuePickerButton', module).add('Default', () => {
+  const listItem = [
+    {color: lightTheme.colors.secondaryColor, title: 'TEST 1', key: 1},
+    {color: lightTheme.colors.progressColor, title: 'TEST 2', key: 2},
+    {color: lightTheme.colors.primaryColor, title: 'TEST 3', key: 3},
+  ];
+
+  return <MultiValuePickerButton onPress={console.log} listItem={listItem} />;
 });

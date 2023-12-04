@@ -17,28 +17,19 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {ClearableCard} from '../../src/components/molecules';
-
-const Colors = {
-  background: '#ffffff',
-  text: '#000000',
-  primary: '#3ECF8E',
-};
 
 storiesOf('ui/molecules/ClearableCard', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <ClearableCard
-          valueTxt="Some text"
-          onClearPress={console.log}
-          clearable={true}
-          {...args}
-        />
-      </View>
+      <ClearableCard
+        valueTxt="Some text"
+        onClearPress={console.log}
+        clearable={true}
+        {...args}
+      />
     );
   },
   {
@@ -55,25 +46,6 @@ storiesOf('ui/molecules/ClearableCard', module).add(
         },
         defaultValue: true,
       },
-      onClearPress: {
-        action: 'onClearPress',
-      },
-      style: {
-        control: {
-          type: 'object',
-        },
-        defaultValue: {},
-      },
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.background,
-    padding: 20,
-  },
-});

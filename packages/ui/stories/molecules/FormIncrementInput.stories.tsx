@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {FormIncrementInput} from '../../src/components/molecules';
 
@@ -25,16 +24,14 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <FormIncrementInput
-          title="Increment Input"
-          defaultValue="0"
-          decimalSpacer=","
-          thousandSpacer="."
-          onChange={console.log}
-          {...args}
-        />
-      </View>
+      <FormIncrementInput
+        title="Increment Input"
+        defaultValue="0"
+        decimalSpacer=","
+        thousandSpacer="."
+        onChange={console.log}
+        {...args}
+      />
     );
   },
   {
@@ -114,11 +111,3 @@ storiesOf('ui/molecules/FormIncrementInput', module).add(
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

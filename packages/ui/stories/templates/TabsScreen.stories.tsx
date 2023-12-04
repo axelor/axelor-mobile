@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {TabsScreen, Text} from '../../src/components';
 import {TabsPosition} from '../../src/components/templates/TabsScreen/tabs.helper';
@@ -57,42 +56,32 @@ const EXEMPLE = [
   },
 ];
 
-storiesOf('ui/templates/TabsScreen', module)
-  .addDecorator(story => <View style={styles.container}>{story()}</View>)
-  .add(
-    'Default',
-    args => {
-      return <TabsScreen {...args} items={EXEMPLE} />;
-    },
-    {
-      argTypes: {
-        position: {
-          control: {
-            type: 'select',
-          },
-          options: Object.values(TabsPosition),
-          defaultValue: TabsPosition.Top,
+storiesOf('ui/templates/TabsScreen', module).add(
+  'Default',
+  args => {
+    return <TabsScreen {...args} items={EXEMPLE} />;
+  },
+  {
+    argTypes: {
+      position: {
+        control: {
+          type: 'select',
         },
-        tabHeight: {
-          control: {
-            type: 'number',
-          },
-          defaultValue: 60,
+        options: Object.values(TabsPosition),
+        defaultValue: TabsPosition.Top,
+      },
+      tabHeight: {
+        control: {
+          type: 'number',
         },
-        tabWidth: {
-          control: {
-            type: 'number',
-          },
-          defaultValue: 100,
+        defaultValue: 60,
+      },
+      tabWidth: {
+        control: {
+          type: 'number',
         },
+        defaultValue: 100,
       },
     },
-  );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-});
+);

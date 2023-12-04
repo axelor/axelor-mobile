@@ -17,23 +17,13 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {SwitchCard} from '../../src/components/molecules';
 
 storiesOf('ui/molecules/SwitchCard', module).add(
   'Default',
   args => {
-    return (
-      <View style={styles.container}>
-        <SwitchCard
-          title={'Press me'}
-          defaultValue={true}
-          onToggle={console.log}
-          {...args}
-        />
-      </View>
-    );
+    return <SwitchCard onToggle={console.log} {...args} />;
   },
   {
     argTypes: {
@@ -42,25 +32,12 @@ storiesOf('ui/molecules/SwitchCard', module).add(
         defaultValue: 'Press me',
         control: {type: 'text'},
       },
-      onToggle: {
-        action: 'clicked',
-      },
-      style: {
+      defaultValue: {
         control: {
-          type: 'object',
+          type: 'boolean',
         },
-        defaultValue: {
-          marginHorizontal: 20,
-        },
+        defaultValue: true,
       },
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

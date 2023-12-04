@@ -22,18 +22,46 @@ import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {HeaderContainer} from '../../src/components/organisms';
 
-storiesOf('ui/organisms/HeaderContainer', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('default', () => (
-    <HeaderContainer>
-      <View style={styles.decorator}>
-        <Text>Content goes here</Text>
-      </View>
-    </HeaderContainer>
-  ));
+storiesOf('ui/organisms/HeaderContainer', module).add(
+  'default',
+  args => {
+    return (
+      <HeaderContainer
+        fixedItems={
+          <View style={styles.container}>
+            <Text>Fixed item</Text>
+          </View>
+        }
+        chipComponent={
+          <View style={styles.container}>
+            <Text>Chip component</Text>
+          </View>
+        }
+        {...args}>
+        <View style={styles.container}>
+          <Text>Chilren</Text>
+        </View>
+      </HeaderContainer>
+    );
+  },
+  {
+    argTypes: {
+      expandableFilter: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      forceHideByDefault: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);
+
 const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
+  container: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,

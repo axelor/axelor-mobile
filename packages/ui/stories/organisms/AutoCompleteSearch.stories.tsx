@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {AutoCompleteSearch} from '../../src/components/organisms';
 
@@ -30,19 +29,44 @@ const objectList = [
 ];
 const displayValue = item => item.name;
 
-storiesOf('ui/organisms/AutoCompleteSearch', module).add('default', () => (
-  <View style={styles.container}>
-    <AutoCompleteSearch
-      objectList={objectList}
-      displayValue={displayValue}
-      placeholder="Search"
-    />
-  </View>
-));
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+storiesOf('ui/organisms/AutoCompleteSearch', module).add(
+  'Default',
+  args => {
+    return (
+      <AutoCompleteSearch
+        objectList={objectList}
+        displayValue={displayValue}
+        {...args}
+      />
+    );
   },
-});
+  {
+    argTypes: {
+      value: {
+        type: 'string',
+        defaultValue: '',
+        control: {type: 'text'},
+      },
+      placeholder: {
+        type: 'string',
+        defaultValue: 'Search',
+        control: {type: 'text'},
+      },
+      oneFilter: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      selectLastItem: {
+        type: 'boolean',
+        defaultValue: true,
+        control: {type: 'boolean'},
+      },
+      showDetailsPopup: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+    },
+  },
+);

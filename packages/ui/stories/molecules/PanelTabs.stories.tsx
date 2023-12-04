@@ -17,42 +17,30 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {Text} from '../../src/components/atoms';
 import {PanelTabs} from '../../src/components/molecules';
 
-storiesOf('ui/molecules/PanelTabs', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('custom', () => {
-    const I18n = value => value;
-    return (
-      <PanelTabs
-        tabs={[
-          {
-            key: 1,
-            title: 'Page1',
-            isActive: true,
-            translator: I18n,
-            component: <Text>Page1</Text>,
-          },
-          {
-            key: 2,
-            title: 'Page2',
-            isActive: false,
-            translator: I18n,
-            component: <Text>Page2</Text>,
-          },
-        ]}
-      />
-    );
-  });
-
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
+storiesOf('ui/molecules/PanelTabs', module).add('custom', () => {
+  const I18n = value => value;
+  return (
+    <PanelTabs
+      tabs={[
+        {
+          key: 1,
+          title: 'Page1',
+          isActive: true,
+          translator: I18n,
+          component: <Text>Page1</Text>,
+        },
+        {
+          key: 2,
+          title: 'Page2',
+          isActive: false,
+          translator: I18n,
+          component: <Text>Page2</Text>,
+        },
+      ]}
+    />
+  );
 });

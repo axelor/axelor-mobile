@@ -17,41 +17,28 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {BlockInteractionMessage} from '../../src/components/molecules';
 import {useConfig} from '../../src/config/ConfigContext';
 
-storiesOf('ui/molecules/BlockInteractionMessage', module)
-  .addDecorator(story => <View style={styles.decorator}>{story()}</View>)
-  .add('custom', () => {
-    const {setBlockInteractionConfig} = useConfig();
+storiesOf('ui/molecules/BlockInteractionMessage', module).add('custom', () => {
+  const {setBlockInteractionConfig} = useConfig();
 
-    setBlockInteractionConfig({
-      visible: true,
-      message: 'Error message',
-      actionItems: [
-        {
-          iconName: 'undo',
-          title: 'Action 1',
-          onPress: () => {},
-        },
-        {
-          title: 'Action 2',
-          onPress: () => {},
-        },
-      ],
-    });
-
-    return <BlockInteractionMessage />;
+  setBlockInteractionConfig({
+    visible: true,
+    message: 'Error message',
+    actionItems: [
+      {
+        iconName: 'undo',
+        title: 'Action 1',
+        onPress: () => {},
+      },
+      {
+        title: 'Action 2',
+        onPress: () => {},
+      },
+    ],
   });
 
-const styles = StyleSheet.create({
-  decorator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    marginLeft: '15%',
-  },
+  return <BlockInteractionMessage />;
 });
