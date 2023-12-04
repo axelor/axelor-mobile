@@ -79,9 +79,13 @@ const ExpenseLineDetailCard = ({
 
   const handleDelete = useCallback(() => {
     dispatch(
-      (deleteExpenseLine as any)({ExpenseLineId: item.id, userId: userId}),
+      (deleteExpenseLine as any)({
+        ExpenseLineId: item.id,
+        userId: userId,
+        expenseId: expense?.id,
+      }),
     );
-  }, [dispatch, item, userId]);
+  }, [dispatch, expense?.id, item.id, userId]);
 
   const handleShowFile = async () => {
     await openFileInExternalApp(
@@ -150,14 +154,12 @@ const ExpenseLineDetailCard = ({
                 onPress={onEdit}
                 style={styles.cardIconButton}
               />
-              {expense == null && (
-                <CardIconButton
-                  iconName={'trash-alt'}
-                  iconColor={Colors.errorColor.background}
-                  onPress={handleDelete}
-                  style={styles.cardIconButton}
-                />
-              )}
+              <CardIconButton
+                iconName={'trash-alt'}
+                iconColor={Colors.errorColor.background}
+                onPress={handleDelete}
+                style={styles.cardIconButton}
+              />
             </View>
           ) : null}
         </View>
