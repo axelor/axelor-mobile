@@ -146,8 +146,16 @@ export const updateExpenseLine = createAsyncThunk(
       .then(res => {
         if (data?.expenseId != null) {
           dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
+          return res;
+        } else {
+          return handlerApiCall({
+            fetchFunction: _searchExpenseLines,
+            action: 'Hr_SliceAction_FetchExpenseLines',
+            getState,
+            data: {userId: data?.userId},
+            responseOptions: {isArrayResponse: true},
+          });
         }
-        return res;
       })
       .then(() => {
         return handlerApiCall({
@@ -247,15 +255,6 @@ const expenseLineSlice = createSlice({
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
         state.expenseLineList = action.payload;
-      } else {
-        if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
-          state.loadingGeneralExpenseLine = false;
-          state.generalExpenseLineList = action.payload;
-        }
-        if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
-          state.loadingKilometricExpenseLine = false;
-          state.kilometricExpenseLineList = action.payload;
-        }
       }
     });
   },

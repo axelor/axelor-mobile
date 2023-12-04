@@ -54,7 +54,6 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_Expense',
         type: 'object',
         widget: 'custom',
-        required: true,
         customComponent: ExpensePicker,
         hideIf: ({objectState}) => !objectState.isFromExpense,
       },
