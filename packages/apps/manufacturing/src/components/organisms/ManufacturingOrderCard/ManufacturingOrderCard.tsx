@@ -110,7 +110,9 @@ const ManufacturingOrderCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIf: startDate == null,
-            style: startDate.type === 'planned' && styles.italic,
+            style:
+              startDate.type === ManufacturingOrder.dateType.Planned &&
+              styles.italic,
           },
           {
             iconName: 'calendar-check',
@@ -120,7 +122,9 @@ const ManufacturingOrderCard = ({
               status === ManufacturingOrder.status.InProgress ||
               status === ManufacturingOrder.status.StandBy ||
               endDate == null,
-            style: endDate.type === 'planned' && styles.italic,
+            style:
+              endDate.type === ManufacturingOrder.dateType.Planned &&
+              styles.italic,
           },
         ],
       }}
@@ -128,7 +132,7 @@ const ManufacturingOrderCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });

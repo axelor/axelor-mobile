@@ -43,6 +43,11 @@ class ManufacturingOrder {
     Urgent: 4,
   };
 
+  static dateType = {
+    Planned: 'planned',
+    Real: 'real',
+  };
+
   static getStatus = (select: number, I18n: TranslatorProps): string => {
     if (I18n) {
       switch (select) {
@@ -138,7 +143,7 @@ class ManufacturingOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title: string; value: string; type: 'planned' | 'real'}[] => {
+  ): {title: string; value: string; type: string}[] => {
     const formatDate = date => {
       if (date == null) {
         return '';
@@ -154,12 +159,12 @@ class ManufacturingOrder {
           {
             title: I18n.t('Manufacturing_PlannedStartDate') + ' :',
             value: formatDate(plannedStartDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
           {
             title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
             value: formatDate(plannedEndDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
         ];
       case ManufacturingOrder.status.InProgress:
@@ -168,12 +173,12 @@ class ManufacturingOrder {
           {
             title: I18n.t('Manufacturing_RealStartDate') + ' :',
             value: formatDate(realStartDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
           {
             title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
             value: formatDate(plannedEndDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
         ];
       case ManufacturingOrder.status.Finished:
@@ -181,12 +186,12 @@ class ManufacturingOrder {
           {
             title: I18n.t('Manufacturing_RealStartDate') + ' :',
             value: formatDate(realStartDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
           {
             title: I18n.t('Manufacturing_RealEndDate') + ' :',
             value: formatDate(realEndDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
         ];
       default:

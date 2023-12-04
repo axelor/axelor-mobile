@@ -87,7 +87,9 @@ const OperationOrderDetailsCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIfNull: startDate == null,
-            style: startDate.type === 'planned' && styles.italic,
+            style:
+              startDate.type === OperationOrder.dateType.Planned &&
+              styles.italic,
           },
           {
             iconName: 'calendar-check',
@@ -97,7 +99,8 @@ const OperationOrderDetailsCard = ({
               status === OperationOrder.status.InProgress ||
               status === OperationOrder.status.StandBy ||
               endDate == null,
-            style: endDate.type === 'planned' && styles.italic,
+            style:
+              endDate.type === OperationOrder.dateType.Planned && styles.italic,
           },
           {
             iconName: 'stopwatch',
@@ -123,7 +126,7 @@ const OperationOrderDetailsCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });

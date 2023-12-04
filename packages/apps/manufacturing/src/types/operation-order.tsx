@@ -35,6 +35,11 @@ class OperationOrder {
     Merged: 7,
   };
 
+  static dateType = {
+    Planned: 'planned',
+    Real: 'real',
+  };
+
   static getStatus = (select: number, I18n: TranslatorProps): string => {
     if (I18n) {
       switch (select) {
@@ -92,7 +97,7 @@ class OperationOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title: string; value: string; type: 'planned' | 'real'}[] => {
+  ): {title: string; value: string; type: string}[] => {
     const formatDate = date => {
       if (date == null) {
         return '';
@@ -108,12 +113,12 @@ class OperationOrder {
           {
             title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(plannedStartDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
           {
             title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(plannedEndDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
         ];
       case OperationOrder.status.InProgress:
@@ -122,12 +127,12 @@ class OperationOrder {
           {
             title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(realStartDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
           {
             title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(plannedEndDate),
-            type: 'planned',
+            type: this.dateType.Planned,
           },
         ];
       case OperationOrder.status.Finished:
@@ -135,12 +140,12 @@ class OperationOrder {
           {
             title: I18n.t('Manufacturing_StartDate') + ' :',
             value: formatDate(realStartDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
           {
             title: I18n.t('Manufacturing_EndDate') + ' :',
             value: formatDate(realEndDate),
-            type: 'real',
+            type: this.dateType.Real,
           },
         ];
       default:
