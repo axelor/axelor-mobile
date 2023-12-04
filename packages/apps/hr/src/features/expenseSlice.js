@@ -214,19 +214,6 @@ export const searchMyExpense = createAsyncThunk(
   },
 );
 
-export const searchMyExpenseWithoutLoading = createAsyncThunk(
-  'expense/searchMyExpenseWithoutLoading',
-  async function (data, {getState}) {
-    return handlerApiCall({
-      fetchFunction: _searchMyExpense,
-      data,
-      action: 'Hr_SliceAction_FetchMyExpense',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-  },
-);
-
 export const searchExpenseToValidate = createAsyncThunk(
   'expense/searchExpenseToValidate',
   async function (data, {getState}) {
@@ -240,16 +227,26 @@ export const searchExpenseToValidate = createAsyncThunk(
   },
 );
 
-export const searchExpenseToValidateWithoutLoading = createAsyncThunk(
-  'expense/searchExpenseToValidateWithoutLoading',
+export const silenceSearchExpense = createAsyncThunk(
+  'expense/silenceSearchExpense',
   async function (data, {getState}) {
-    return handlerApiCall({
+    const expenseToValidate = await handlerApiCall({
       fetchFunction: _searchExpenseToValidate,
       data,
       action: 'Hr_SliceAction_FetchExpenseToValidate',
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
+
+    const myExpense = await handlerApiCall({
+      fetchFunction: _searchMyExpense,
+      data,
+      action: 'Hr_SliceAction_FetchMyExpense',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+
+    return {expenseToValidate, myExpense};
   },
 );
 
@@ -322,26 +319,13 @@ const expenseSlice = createSlice({
         manageTotal: true,
       },
     );
-    builder.addCase(searchMyExpenseWithoutLoading.pending, state => {
+    builder.addCase(silenceSearchExpense.pending, state => {
       state.loadingMyExpense = false;
     });
-    builder.addCase(
-      searchMyExpenseWithoutLoading.fulfilled,
-      (state, action) => {
-        state.loadingMyExpense = false;
-        state.myExpenseList = action.payload;
-      },
-    );
-    builder.addCase(searchExpenseToValidateWithoutLoading.pending, state => {
-      state.loadingExpenseToValidate = false;
+    builder.addCase(silenceSearchExpense.fulfilled, (state, action) => {
+      state.myExpenseList = action.payload.myExpense;
+      state.expenseToValidateList = action.payload.expenseToValidate;
     });
-    builder.addCase(
-      searchExpenseToValidateWithoutLoading.fulfilled,
-      (state, action) => {
-        state.loadingExpenseToValidate = false;
-        state.expenseToValidateList = action.payload;
-      },
-    );
     builder.addCase(searchExpenseDraft.pending, state => {
       state.loading = true;
     });
