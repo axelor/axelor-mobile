@@ -17,7 +17,6 @@
  */
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import {storiesOf} from '@storybook/react-native';
 import {ToggleButton} from '../../src/components/organisms';
 import {lightTheme} from '../../src/theme';
@@ -26,19 +25,29 @@ storiesOf('ui/organisms/ToggleButton', module).add(
   'Default',
   args => {
     return (
-      <View style={styles.container}>
-        <ToggleButton
-          {...args}
-          buttonConfig={{title: 'Button'}}
-          activeColor={lightTheme.colors[args.activeColor]}
-          inactiveColor={lightTheme.colors[args.inactiveColor]}
-        />
-      </View>
+      <ToggleButton
+        {...args}
+        buttonConfig={{
+          title: args.ButtonConfigtitle,
+          color: lightTheme.colors[args.ButtonConfigcolor],
+          disabled: args.ButtonConfigdisabled,
+          width: args.ButtonConfigwidth,
+          iconName: args.ButtonConfigiconName,
+        }}
+        activeColor={lightTheme.colors[args.activeColor]}
+        inactiveColor={lightTheme.colors[args.inactiveColor]}
+      />
     );
   },
   {
     argTypes: {
       isActive: {
+        defaultValue: false,
+        control: {
+          type: 'boolean',
+        },
+      },
+      isNeutralBackground: {
         defaultValue: false,
         control: {
           type: 'boolean',
@@ -62,14 +71,31 @@ storiesOf('ui/organisms/ToggleButton', module).add(
           type: 'select',
         },
       },
+      ButtonConfigdisabled: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      ButtonConfigiconName: {
+        type: 'string',
+        defaultValue: 'heart',
+        control: {type: 'text'},
+      },
+      ButtonConfigisNeutralBackground: {
+        type: 'boolean',
+        defaultValue: false,
+        control: {type: 'boolean'},
+      },
+      ButtonConfigtitle: {
+        type: 'string',
+        defaultValue: 'Press me',
+        control: {type: 'text'},
+      },
+      ButtonConfigwidth: {
+        type: 'number',
+        defaultValue: 300,
+        control: {type: 'number'},
+      },
     },
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

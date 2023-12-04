@@ -17,17 +17,16 @@
  */
 
 import React, {useState, useCallback, useMemo, useEffect} from 'react';
-import {Color} from '../../../theme/themes';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {Button} from '../../molecules';
-import {ButtonProps} from '../../molecules/Button/Button';
+import {useThemeColor, Color} from '../../../theme/';
+import Button, {ButtonProps} from '../../molecules/Button/Button';
 
 export interface ToggleButtonProps {
   isActive?: boolean;
   activeColor?: Color;
   inactiveColor?: Color;
   buttonConfig?: ButtonProps;
-  onPress?: () => void;
+  isNeutralBackground?: boolean;
+  onPress?: (isActive: boolean) => void;
 }
 
 const ToggleButton = ({
@@ -35,6 +34,7 @@ const ToggleButton = ({
   activeColor,
   inactiveColor,
   buttonConfig,
+  isNeutralBackground = false,
   onPress = () => {},
 }: ToggleButtonProps) => {
   const Colors = useThemeColor();
@@ -54,16 +54,46 @@ const ToggleButton = ({
   }, [Colors, inactiveColor]);
 
   const handlePress = useCallback(() => {
-    setIsSelected(current => !current);
-    onPress();
+    setIsSelected(current => {
+      const newValue = !current;
+      onPress(newValue);
+      return newValue;
+    });
   }, [onPress]);
+
+  const buttonConfigMemo = useMemo(() => {
+    let _buttonColor: Color = isSelected ? _activeColor : _inactiveColor;
+
+    if (isNeutralBackground && !isSelected) {
+      _buttonColor = {
+        background: _activeColor.background,
+        background_light: Colors.backgroundColor,
+        foreground: Colors.text,
+      };
+    }
+
+    return {
+      ...buttonConfig,
+      color: _buttonColor,
+    };
+  }, [
+    Colors.backgroundColor,
+    Colors.text,
+    _activeColor,
+    _inactiveColor,
+    buttonConfig,
+    isNeutralBackground,
+    isSelected,
+  ]);
 
   const buttonColor = useMemo(
     () => (isSelected ? _activeColor : _inactiveColor),
     [_activeColor, _inactiveColor, isSelected],
   );
 
-  return <Button color={buttonColor} {...buttonConfig} onPress={handlePress} />;
+  return (
+    <Button color={buttonColor} {...buttonConfigMemo} onPress={handlePress} />
+  );
 };
 
 export default ToggleButton;
