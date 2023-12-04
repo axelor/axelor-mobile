@@ -154,15 +154,12 @@ const ExpenseLineDetailCard = ({
                 onPress={onEdit}
                 style={styles.cardIconButton}
               />
-              {(expense == null ||
-                expense.statusSelect === Expense.statusSelect.Draft) && (
-                <CardIconButton
-                  iconName={'trash-alt'}
-                  iconColor={Colors.errorColor.background}
-                  onPress={handleDelete}
-                  style={styles.cardIconButton}
-                />
-              )}
+              <CardIconButton
+                iconName={'trash-alt'}
+                iconColor={Colors.errorColor.background}
+                onPress={handleDelete}
+                style={styles.cardIconButton}
+              />
             </View>
           ) : null}
         </View>
