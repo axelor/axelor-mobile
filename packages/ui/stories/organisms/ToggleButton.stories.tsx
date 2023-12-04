@@ -48,7 +48,7 @@ storiesOf('ui/organisms/ToggleButton', module).add(
         },
       },
       isNeutralBackground: {
-        defaultValue: false,
+        defaultValue: true,
         control: {
           type: 'boolean',
         },
@@ -80,11 +80,6 @@ storiesOf('ui/organisms/ToggleButton', module).add(
         type: 'string',
         defaultValue: 'heart',
         control: {type: 'text'},
-      },
-      ButtonConfigisNeutralBackground: {
-        type: 'boolean',
-        defaultValue: false,
-        control: {type: 'boolean'},
       },
       ButtonConfigtitle: {
         type: 'string',

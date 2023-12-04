@@ -34,7 +34,7 @@ const ToggleButton = ({
   activeColor,
   inactiveColor,
   buttonConfig,
-  isNeutralBackground = false,
+  isNeutralBackground = true,
   onPress = () => {},
 }: ToggleButtonProps) => {
   const Colors = useThemeColor();
@@ -64,21 +64,12 @@ const ToggleButton = ({
   const buttonConfigMemo = useMemo(() => {
     let _buttonColor: Color = isSelected ? _activeColor : _inactiveColor;
 
-    if (isNeutralBackground && !isSelected) {
-      _buttonColor = {
-        background: _activeColor.background,
-        background_light: Colors.backgroundColor,
-        foreground: Colors.text,
-      };
-    }
-
     return {
       ...buttonConfig,
       color: _buttonColor,
+      isNeutralBackground: isNeutralBackground && !isSelected,
     };
   }, [
-    Colors.backgroundColor,
-    Colors.text,
     _activeColor,
     _inactiveColor,
     buttonConfig,
@@ -86,14 +77,7 @@ const ToggleButton = ({
     isSelected,
   ]);
 
-  const buttonColor = useMemo(
-    () => (isSelected ? _activeColor : _inactiveColor),
-    [_activeColor, _inactiveColor, isSelected],
-  );
-
-  return (
-    <Button color={buttonColor} {...buttonConfigMemo} onPress={handlePress} />
-  );
+  return <Button {...buttonConfigMemo} onPress={handlePress} />;
 };
 
 export default ToggleButton;
