@@ -34,7 +34,13 @@ import {
 } from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
-  const {expenseLine, idExpense, justificationMetaFile} = route?.params;
+  const {
+    expenseLine,
+    idExpense,
+    versionExpense,
+    modeExpense,
+    justificationMetaFile,
+  } = route?.params;
   const I18n = useTranslator();
   const _dispatch = useDispatch();
 
@@ -69,11 +75,26 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         expenseLineType: _expenseLine.manageMode,
         companyId: user?.activeCompany?.id,
       };
-      dispatch(createExpenseLine({expenseLine: dataToSend, userId: user?.id}));
 
-      navigation.navigate('ExpenseLinesListScreen');
+      dispatch(
+        createExpenseLine({
+          expenseLine: dataToSend,
+          idExpense: idExpense,
+          versionExpense: versionExpense,
+          userId: user?.id,
+        }),
+      );
+
+      navigation.goBack();
     },
-    [navigation, user?.activeCompany?.id, user?.employee?.id, user?.id],
+    [
+      idExpense,
+      navigation,
+      user?.activeCompany?.id,
+      user?.employee?.id,
+      user?.id,
+      versionExpense,
+    ],
   );
 
   const updateExpenseLineAPI = useCallback(
@@ -135,7 +156,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     const _defaultDate = new Date().toISOString().split('T')[0];
 
     const _default = {
-      manageMode: ExpenseLine.modes.general,
+      manageMode: modeExpense || ExpenseLine.modes.general,
       hideToggle: false,
       expenseDate: _defaultDate,
       companyName: user.activeCompany?.name,
@@ -206,6 +227,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     _dispatch,
     expenseLine,
     justificationMetaFile,
+    modeExpense,
     user.activeCompany?.name,
   ]);
 
@@ -218,7 +240,18 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
           type: 'create',
           needValidation: true,
           needRequiredFields: true,
-          hideIf: () => expenseLine != null,
+          hideIf: () => expenseLine != null || idExpense != null,
+          customAction: ({dispatch, objectState}) => {
+            return createExpenseLineAPI(objectState, dispatch);
+          },
+        },
+        {
+          key: 'create-and-link-expenseLine',
+          type: 'custom',
+          titleKey: 'Base_Add',
+          needValidation: true,
+          needRequiredFields: true,
+          hideIf: () => expenseLine != null || idExpense == null,
           customAction: ({dispatch, objectState}) => {
             return createExpenseLineAPI(objectState, dispatch);
           },

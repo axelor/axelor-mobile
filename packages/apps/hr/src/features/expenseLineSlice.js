@@ -31,6 +31,7 @@ import {
 } from '../api/expense-line-api';
 import {ExpenseLine} from '../types';
 import {fetchExpenseById} from './expenseSlice';
+import {updateExpense} from './expenseSlice';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -101,21 +102,33 @@ export const deleteExpenseLine = createAsyncThunk(
 
 export const createExpenseLine = createAsyncThunk(
   'expenseLine/createExpenseLine',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _createExpenseLine,
       data,
       action: 'Hr_SliceAction_CreateExpenseLine',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
-    }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchExpenseLines,
-        data: {userId: data?.userId},
-        action: 'Hr_SliceAction_FetchExpenseLines',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+    }).then(res => {
+      if (data?.idExpense == null) {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseLines,
+          data: {userId: data?.userId},
+          action: 'Hr_SliceAction_FetchExpenseLines',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        });
+      } else {
+        dispatch(
+          updateExpense({
+            isLineCreation: true,
+            expenseId: data?.idExpense,
+            version: data?.versionExpense,
+            userId: data?.userId,
+            expenseLineIdList: [res.expenseLineId],
+          }),
+        );
+      }
     });
   },
 );
@@ -209,11 +222,15 @@ const expenseLineSlice = createSlice({
       },
     );
     builder.addCase(createExpenseLine.pending, (state, action) => {
-      state.loadingExpenseLine = true;
+      if (action?.meta?.arg?.idExpense == null) {
+        state.loadingExpenseLine = true;
+      }
     });
     builder.addCase(createExpenseLine.fulfilled, (state, action) => {
-      state.loadingExpenseLine = false;
-      state.expenseLineList = action.payload;
+      if (action?.meta?.arg?.idExpense == null) {
+        state.loadingExpenseLine = false;
+        state.expenseLineList = action.payload;
+      }
     });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {

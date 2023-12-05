@@ -163,16 +163,26 @@ export const updateExpense = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchMyExpense,
-        data: {userId: data.userId},
-        action: 'Hr_SliceAction_FetchMyExpense',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      }).then(res => {
-        dispatch(fetchExpenseLine({userId: data.userId}));
-        return res;
-      });
+      if (data?.isLineCreation) {
+        return handlerApiCall({
+          fetchFunction: getExpense,
+          data: {ExpenseId: data.expenseId},
+          action: 'Hr_SliceAction_FetchExpenseById',
+          getState,
+          responseOptions: {isArrayResponse: false},
+        });
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchMyExpense,
+          data: {userId: data.userId},
+          action: 'Hr_SliceAction_FetchMyExpense',
+          getState,
+          responseOptions: {isArrayResponse: true},
+        }).then(res => {
+          dispatch(fetchExpenseLine({userId: data.userId}));
+          return res;
+        });
+      }
     });
   },
 );
@@ -294,11 +304,20 @@ const expenseSlice = createSlice({
       state.myExpenseList = action.payload;
     });
     builder.addCase(updateExpense.pending, (state, action) => {
-      state.loadingMyExpense = true;
+      if (action?.meta?.arg?.isLineCreation) {
+        state.loadingExpense = true;
+      } else {
+        state.loadingMyExpense = true;
+      }
     });
     builder.addCase(updateExpense.fulfilled, (state, action) => {
-      state.loadingMyExpense = false;
-      state.myExpenseList = action.payload;
+      if (action?.meta?.arg?.isLineCreation) {
+        state.loadingExpense = false;
+        state.expense = action.payload;
+      } else {
+        state.loadingMyExpense = false;
+        state.myExpenseList = action.payload;
+      }
     });
     builder.addCase(sendExpense.pending, (state, action) => {
       if (action?.meta?.arg?.onExpense) {
