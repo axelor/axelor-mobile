@@ -42,3 +42,4 @@ export {searchExpenseType} from './expenseTypeSlice';
 export {searchKilometricAllowParam} from './kilometricAllowParamSlice';
 export {searchProject} from './projectSlice';
 export {fetchTimer} from './timerSlice';
+export {fetchTimesheet, fetchTimesheetToValidate} from './timesheetSlice';

@@ -90,6 +90,19 @@ export const hr_modelAPI: ObjectFields = {
     startDateTime: schemaContructor.string(),
     duration: schemaContructor.number(),
   }),
+  hr_timesheet: schemaContructor.object({
+    statusSelect: schemaContructor.number(),
+    isCompleted: schemaContructor.boolean(),
+    fromDate: schemaContructor.string(),
+    toDate: schemaContructor.string(),
+    company: schemaContructor.subObject('name'),
+    periodTotal: schemaContructor.number(),
+    employee: schemaContructor
+      .subObject('name')
+      .concat(
+        schemaContructor.object({managerUser: schemaContructor.subObject()}),
+      ),
+  }),
   auth_user: schemaContructor.object({
     employee: schemaContructor.subObject().concat(
       schemaContructor.object({
