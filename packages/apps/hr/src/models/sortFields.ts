@@ -26,4 +26,5 @@ export const hr_sortFields: SortFields = {
   hr_kilomectricAllowParam: ['name', 'code'],
   hr_project: ['name', 'fullName'],
   hr_timer: ['-startDateTime'],
+  hr_timesheet: ['-fromDate', '-toDate'],
 };
