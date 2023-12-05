@@ -102,16 +102,11 @@ const TimesheetListScreen = ({}) => {
         return [];
       } else {
         if (selectedStatus != null) {
-          if (
-            !timesheetConfig.needValidation &&
-            selectedStatus !== Timesheet.statusSelect.Validate
-          ) {
-            return list?.filter(
-              item => item?.statusSelect !== Timesheet.statusSelect.Validate,
-            );
-          } else {
-            return list?.filter(item => item?.statusSelect === selectedStatus);
-          }
+          return list?.filter(
+            item =>
+              Timesheet.getStatus(timesheetConfig.needValidation, item) ===
+              selectedStatus,
+          );
         } else {
           return list;
         }
@@ -133,6 +128,7 @@ const TimesheetListScreen = ({}) => {
           <TimesheetHeader
             onChangeStatus={setSelectedStatus}
             onChangeMode={setMode}
+            mode={mode}
           />
         }
       />
@@ -141,15 +137,8 @@ const TimesheetListScreen = ({}) => {
         data={filteredList}
         renderItem={({item}) => (
           <TimesheetDetailCard
-            statusSelect={item.statusSelect}
-            startDate={item.fromDate}
-            endDate={item.toDate}
-            company={item.company.name}
-            totalDuration={item.periodTotal}
-            employeeName={
-              mode === Timesheet.mode.validation ? item.employee?.name : null
-            }
-            employeeManagerId={item.employee?.managerUser?.id}
+            item={item}
+            isValidationMode={mode === Timesheet.mode.validation}
             onPress={() => console.log('Card pressed.')}
           />
         )}

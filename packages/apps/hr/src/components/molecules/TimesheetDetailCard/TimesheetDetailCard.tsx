@@ -24,26 +24,16 @@ import {TimesheetCard} from '../../atoms';
 import {Timesheet} from '../../../types';
 
 interface TimesheetDetailCardProps {
-  statusSelect: number;
-  startDate: string;
-  endDate: string;
-  company: string;
-  totalDuration: number;
-  employeeName?: string;
-  employeeManagerId?: number;
+  item: any;
+  isValidationMode?: boolean;
   isActions?: boolean;
   style?: any;
   onPress: () => void;
 }
 
 const TimesheetDetailCard = ({
-  statusSelect,
-  startDate,
-  endDate,
-  company,
-  totalDuration,
-  employeeName,
-  employeeManagerId,
+  item,
+  isValidationMode = false,
   isActions = true,
   style,
   onPress,
@@ -56,25 +46,24 @@ const TimesheetDetailCard = ({
   const {user} = useSelector((state: any) => state.user);
 
   const _statusSelect = useMemo(() => {
-    if (
-      !timesheetConfig.needValidation &&
-      statusSelect !== Timesheet.statusSelect.Validate
-    ) {
-      return Timesheet.statusSelect.Draft;
-    }
-
-    return statusSelect;
-  }, [statusSelect, timesheetConfig]);
+    return Timesheet.getStatus(timesheetConfig.needValidation, item);
+  }, [item, timesheetConfig]);
 
   const userCanValidate = useMemo(() => {
     if (
-      (user?.employee?.hrManager || employeeManagerId === user.id) &&
+      (user?.employee?.hrManager ||
+        item.employee?.managerUser?.id === user.id) &&
       _statusSelect === Timesheet.statusSelect.WaitingValidation
     ) {
       return true;
     }
     return false;
-  }, [employeeManagerId, _statusSelect, user?.employee?.hrManager, user.id]);
+  }, [
+    item.employee?.managerUser?.id,
+    _statusSelect,
+    user?.employee?.hrManager,
+    user.id,
+  ]);
 
   const _isActions = useMemo(() => {
     if (
@@ -101,11 +90,11 @@ const TimesheetDetailCard = ({
     <View style={[styles.container, style]}>
       <TimesheetCard
         statusSelect={_statusSelect}
-        startDate={startDate}
-        endDate={endDate}
-        company={company}
-        totalDuration={totalDuration}
-        employeeName={employeeName}
+        startDate={item.fromDate}
+        endDate={item.toDate}
+        company={item.company.name}
+        totalDuration={item.periodTotal}
+        employeeName={isValidationMode ? item.employee?.name : null}
         style={styles.cardContainer}
         onPress={onPress}
       />

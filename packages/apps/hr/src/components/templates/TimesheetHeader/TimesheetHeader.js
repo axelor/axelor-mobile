@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {
@@ -32,14 +32,13 @@ import {fetchTimesheetToValidate} from '../../../features/timesheetSlice';
 import {Timesheet} from '../../../types';
 
 const TimesheetHeader = ({
+  mode,
   onChangeStatus = () => {},
   onChangeMode = () => {},
 }) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
-  const [mode, setMode] = useState(Timesheet.mode.personnal);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
@@ -81,16 +80,11 @@ const TimesheetHeader = ({
             }
             onSwitch={() => {
               onChangeStatus(null);
-              setMode(_mode => {
-                return _mode === Timesheet.mode.personnal
+              onChangeMode(_mode =>
+                _mode === Timesheet.mode.personnal
                   ? Timesheet.mode.validation
-                  : Timesheet.mode.personnal;
-              });
-              onChangeMode(_mode => {
-                return _mode === Timesheet.mode.personnal
-                  ? Timesheet.mode.validation
-                  : Timesheet.mode.personnal;
-              });
+                  : Timesheet.mode.personnal,
+              );
             }}
           />
         )}

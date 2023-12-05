@@ -92,6 +92,7 @@ export const hr_modelAPI: ObjectFields = {
   }),
   hr_timesheet: schemaContructor.object({
     statusSelect: schemaContructor.number(),
+    isCompleted: schemaContructor.boolean(),
     fromDate: schemaContructor.string(),
     toDate: schemaContructor.string(),
     company: schemaContructor.subObject('name'),

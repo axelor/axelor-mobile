@@ -78,6 +78,16 @@ class TimesheetType {
       ];
     }
   };
+
+  static getStatus = (needValidation: boolean, item: any) => {
+    if (needValidation) {
+      return item.statusSelect;
+    } else {
+      return item.isCompleted
+        ? this.statusSelect.Validate
+        : this.statusSelect.Draft;
+    }
+  };
 }
 
 export default TimesheetType;
