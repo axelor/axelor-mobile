@@ -18,6 +18,7 @@
 
 import {ThemeColors, Color} from '@axelor/aos-mobile-ui';
 import {TranslatorProps} from '@axelor/aos-mobile-core';
+import {getDates} from '../utils';
 
 class ManufacturingOrder {
   static status = {
@@ -129,6 +130,25 @@ class ManufacturingOrder {
         );
         return null;
     }
+  };
+
+  static getDates = (
+    status: number,
+    plannedStartDate: string,
+    plannedEndDate: string,
+    realStartDate: string,
+    realEndDate: string,
+    I18n: TranslatorProps,
+  ): {title: string; value: string; specificStyle: any}[] => {
+    return getDates(
+      status,
+      this.status,
+      plannedStartDate,
+      plannedEndDate,
+      realStartDate,
+      realEndDate,
+      I18n,
+    );
   };
 }
 

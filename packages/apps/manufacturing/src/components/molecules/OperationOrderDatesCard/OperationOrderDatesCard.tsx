@@ -20,7 +20,6 @@ import React, {useMemo} from 'react';
 import {FromTo, TitledValue} from '@axelor/aos-mobile-ui';
 import {isEmpty, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
-import {getDates} from '../../../utils';
 
 function OperationOrderDatesCard({}) {
   const I18n = useTranslator();
@@ -29,9 +28,8 @@ function OperationOrderDatesCard({}) {
 
   const [startDate, endDate] = useMemo(() => {
     if (!isEmpty(operationOrder)) {
-      return getDates(
+      return OperationOrder.getDates(
         operationOrder?.statusSelect,
-        OperationOrder.status,
         operationOrder?.plannedStartDateT,
         operationOrder?.plannedEndDateT,
         operationOrder?.realStartDateT,

@@ -22,6 +22,7 @@ import {
   TranslatorProps,
 } from '@axelor/aos-mobile-core';
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {getDates} from '../utils';
 
 class OperationOrder {
   static status = {
@@ -82,6 +83,25 @@ class OperationOrder {
         );
         return null;
     }
+  };
+
+  static getDates = (
+    status: number,
+    plannedStartDate: string,
+    plannedEndDate: string,
+    realStartDate: string,
+    realEndDate: string,
+    I18n: TranslatorProps,
+  ): {title: string; value: string; specificStyle: any}[] => {
+    return getDates(
+      status,
+      this.status,
+      plannedStartDate,
+      plannedEndDate,
+      realStartDate,
+      realEndDate,
+      I18n,
+    );
   };
 
   static getTimerState = (
