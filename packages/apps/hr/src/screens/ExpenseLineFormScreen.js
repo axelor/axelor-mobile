@@ -34,8 +34,13 @@ import {
 } from '../features/distanceSlice';
 
 const ExpenseLineFormScreen = ({route, navigation}) => {
-  const {expenseLine, idExpense, versionExpense, justificationMetaFile} =
-    route?.params;
+  const {
+    expenseLine,
+    idExpense,
+    versionExpense,
+    modeExpense,
+    justificationMetaFile,
+  } = route?.params;
   const I18n = useTranslator();
   const _dispatch = useDispatch();
 
@@ -80,11 +85,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
         }),
       );
 
-      if (idExpense == null) {
-        navigation.navigate('ExpenseLinesListScreen');
-      } else {
-        navigation.goBack();
-      }
+      navigation.goBack();
     },
     [
       idExpense,
@@ -155,7 +156,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     const _defaultDate = new Date().toISOString().split('T')[0];
 
     const _default = {
-      manageMode: ExpenseLine.modes.general,
+      manageMode: modeExpense || ExpenseLine.modes.general,
       hideToggle: false,
       expenseDate: _defaultDate,
       companyName: user.activeCompany?.name,
@@ -226,6 +227,7 @@ const ExpenseLineFormScreen = ({route, navigation}) => {
     _dispatch,
     expenseLine,
     justificationMetaFile,
+    modeExpense,
     user.activeCompany?.name,
   ]);
 

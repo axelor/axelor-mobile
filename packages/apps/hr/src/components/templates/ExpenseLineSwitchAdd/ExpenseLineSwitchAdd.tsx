@@ -24,10 +24,14 @@ import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitc
 import {Expense} from '../../../types';
 
 interface ExpenseLineSwitchAddProps {
+  mode: string;
   onChangeSwicth: (mode: any) => void;
 }
 
-const ExpenseLineSwitchAdd = ({onChangeSwicth}: ExpenseLineSwitchAddProps) => {
+const ExpenseLineSwitchAdd = ({
+  mode,
+  onChangeSwicth,
+}: ExpenseLineSwitchAddProps) => {
   const navigation = useNavigation();
 
   const {expense} = useSelector((state: any) => state.expense);
@@ -51,6 +55,7 @@ const ExpenseLineSwitchAdd = ({onChangeSwicth}: ExpenseLineSwitchAddProps) => {
             navigation.navigate('ExpenseLineFormScreen', {
               idExpense: expense?.id,
               versionExpense: expense?.version,
+              modeExpense: mode,
             })
           }
         />

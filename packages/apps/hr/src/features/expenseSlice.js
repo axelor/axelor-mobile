@@ -170,9 +170,6 @@ export const updateExpense = createAsyncThunk(
           action: 'Hr_SliceAction_FetchExpenseById',
           getState,
           responseOptions: {isArrayResponse: false},
-        }).then(res => {
-          dispatch(fetchExpenseLine({userId: data.userId}));
-          return res;
         });
       } else {
         return handlerApiCall({
