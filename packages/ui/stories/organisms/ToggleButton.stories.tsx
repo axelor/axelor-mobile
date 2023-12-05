@@ -28,11 +28,10 @@ storiesOf('ui/organisms/ToggleButton', module).add(
       <ToggleButton
         {...args}
         buttonConfig={{
-          title: args.ButtonConfigtitle,
-          color: lightTheme.colors[args.ButtonConfigcolor],
-          disabled: args.ButtonConfigdisabled,
-          width: args.ButtonConfigwidth,
-          iconName: args.ButtonConfigiconName,
+          title: args.buttonTitle,
+          disabled: args.buttonDisabled,
+          width: args.buttonWidth,
+          iconName: args.buttonIconName,
         }}
         activeColor={lightTheme.colors[args.activeColor]}
         inactiveColor={lightTheme.colors[args.inactiveColor]}
@@ -71,22 +70,22 @@ storiesOf('ui/organisms/ToggleButton', module).add(
           type: 'select',
         },
       },
-      ButtonConfigdisabled: {
+      buttonDisabled: {
         type: 'boolean',
         defaultValue: false,
         control: {type: 'boolean'},
       },
-      ButtonConfigiconName: {
+      buttonIconName: {
         type: 'string',
         defaultValue: 'heart',
         control: {type: 'text'},
       },
-      ButtonConfigtitle: {
+      buttonTitle: {
         type: 'string',
         defaultValue: 'Press me',
         control: {type: 'text'},
       },
-      ButtonConfigwidth: {
+      buttonWidth: {
         type: 'number',
         defaultValue: 300,
         control: {type: 'number'},
