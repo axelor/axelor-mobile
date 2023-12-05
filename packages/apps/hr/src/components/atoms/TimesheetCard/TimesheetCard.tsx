@@ -20,6 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
 import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
+import TextUnit from '../TextUnit/TextUnit';
 import {Timesheet} from '../../../types';
 
 interface TimesheetCardProps {
@@ -59,30 +60,44 @@ const TimesheetCard = ({
     <View style={style}>
       <ObjectCard
         style={[styles.container, styles.borderColor]}
+        leftContainerFlex={2}
         onPress={onPress}
         upperTexts={{
+          style: styles.texts,
           items: [
             {
-              displayText: `${_formatDate(startDate)} - ${_formatDate(
-                endDate,
-              )}`,
+              displayText: _formatDate(startDate),
               isTitle: true,
             },
             {
-              displayText: `${I18n.t('User_Company')} : ${company}`,
-              numberOfLines: 2,
-              style: styles.subTitle,
+              displayText: _formatDate(endDate),
+              isTitle: true,
             },
             {
-              displayText: `${I18n.t(
-                'Hr_TotalDurationHours',
-              )} : ${totalDuration}`,
-              style: styles.subTitle,
+              iconName: 'building',
+              displayText: company,
+              numberOfLines: 2,
+              style: styles.iconText,
             },
+
             {
               iconName: 'user',
-              indicatorText: employeeName,
+              displayText: employeeName,
+              style: styles.iconText,
               hideIfNull: true,
+            },
+          ],
+        }}
+        sideBadges={{
+          style: styles.badges,
+          items: [
+            {
+              customComponent: (
+                <TextUnit
+                  value={totalDuration}
+                  unit={I18n.t('Hr_TimeUnit_Hours')}
+                />
+              ),
             },
           ],
         }}
@@ -94,8 +109,6 @@ const TimesheetCard = ({
 const getStyles = color =>
   StyleSheet.create({
     container: {
-      minHeight: 100,
-      justifyContent: 'center',
       marginHorizontal: 1,
       marginVertical: 1,
     },
@@ -103,8 +116,15 @@ const getStyles = color =>
       borderLeftWidth: 7,
       borderLeftColor: color.background,
     },
-    subTitle: {
-      marginTop: 5,
+    texts: {
+      marginTop: 20,
+    },
+    iconText: {
+      fontSize: 15,
+      fontWeight: null,
+    },
+    badges: {
+      alignItems: 'flex-end',
     },
   });
 
