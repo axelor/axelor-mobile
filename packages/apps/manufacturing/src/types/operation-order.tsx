@@ -18,7 +18,6 @@
 
 import {
   calculateDiff,
-  formatDateTime,
   StopwatchType,
   TranslatorProps,
 } from '@axelor/aos-mobile-core';
@@ -33,11 +32,6 @@ class OperationOrder {
     StandBy: 5,
     Finished: 6,
     Merged: 7,
-  };
-
-  static dateType = {
-    Planned: 'planned',
-    Real: 'real',
   };
 
   static getStatus = (select: number, I18n: TranslatorProps): string => {
@@ -87,72 +81,6 @@ class OperationOrder {
           `Status provided with value ${status} is not supported by operation order`,
         );
         return null;
-    }
-  };
-
-  static getDates = (
-    status: number,
-    plannedStartDate: string,
-    plannedEndDate: string,
-    realStartDate: string,
-    realEndDate: string,
-    I18n: TranslatorProps,
-  ): {title: string; value: string; type: string}[] => {
-    const formatDate = date => {
-      if (date == null) {
-        return '';
-      }
-
-      return formatDateTime(date, I18n.t('Base_DateTimeFormat'));
-    };
-
-    switch (status) {
-      case OperationOrder.status.Draft:
-      case OperationOrder.status.Planned:
-        return [
-          {
-            title: I18n.t('Manufacturing_StartDate') + ' :',
-            value: formatDate(plannedStartDate),
-            type: this.dateType.Planned,
-          },
-          {
-            title: I18n.t('Manufacturing_EndDate') + ' :',
-            value: formatDate(plannedEndDate),
-            type: this.dateType.Planned,
-          },
-        ];
-      case OperationOrder.status.InProgress:
-      case OperationOrder.status.StandBy:
-        return [
-          {
-            title: I18n.t('Manufacturing_StartDate') + ' :',
-            value: formatDate(realStartDate),
-            type: this.dateType.Real,
-          },
-          {
-            title: I18n.t('Manufacturing_EndDate') + ' :',
-            value: formatDate(plannedEndDate),
-            type: this.dateType.Planned,
-          },
-        ];
-      case OperationOrder.status.Finished:
-        return [
-          {
-            title: I18n.t('Manufacturing_StartDate') + ' :',
-            value: formatDate(realStartDate),
-            type: this.dateType.Real,
-          },
-          {
-            title: I18n.t('Manufacturing_EndDate') + ' :',
-            value: formatDate(realEndDate),
-            type: this.dateType.Real,
-          },
-        ];
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by operation order`,
-        );
-        return [];
     }
   };
 

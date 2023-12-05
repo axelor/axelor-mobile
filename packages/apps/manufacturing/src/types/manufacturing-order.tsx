@@ -17,7 +17,7 @@
  */
 
 import {ThemeColors, Color} from '@axelor/aos-mobile-ui';
-import {TranslatorProps, formatDateTime} from '@axelor/aos-mobile-core';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
 
 class ManufacturingOrder {
   static status = {
@@ -41,11 +41,6 @@ class ManufacturingOrder {
     Normal: 2,
     High: 3,
     Urgent: 4,
-  };
-
-  static dateType = {
-    Planned: 'planned',
-    Real: 'real',
   };
 
   static getStatus = (select: number, I18n: TranslatorProps): string => {
@@ -133,72 +128,6 @@ class ManufacturingOrder {
           `Priority provided with value ${status} is not supported by manufacturing order`,
         );
         return null;
-    }
-  };
-
-  static getDates = (
-    status: number,
-    plannedStartDate: string,
-    plannedEndDate: string,
-    realStartDate: string,
-    realEndDate: string,
-    I18n: TranslatorProps,
-  ): {title: string; value: string; type: string}[] => {
-    const formatDate = date => {
-      if (date == null) {
-        return '';
-      }
-
-      return formatDateTime(date, I18n.t('Base_DateTimeFormat'));
-    };
-
-    switch (status) {
-      case ManufacturingOrder.status.Draft:
-      case ManufacturingOrder.status.Planned:
-        return [
-          {
-            title: I18n.t('Manufacturing_PlannedStartDate') + ' :',
-            value: formatDate(plannedStartDate),
-            type: this.dateType.Planned,
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
-            value: formatDate(plannedEndDate),
-            type: this.dateType.Planned,
-          },
-        ];
-      case ManufacturingOrder.status.InProgress:
-      case ManufacturingOrder.status.StandBy:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ' :',
-            value: formatDate(realStartDate),
-            type: this.dateType.Real,
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ' :',
-            value: formatDate(plannedEndDate),
-            type: this.dateType.Planned,
-          },
-        ];
-      case ManufacturingOrder.status.Finished:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ' :',
-            value: formatDate(realStartDate),
-            type: this.dateType.Real,
-          },
-          {
-            title: I18n.t('Manufacturing_RealEndDate') + ' :',
-            value: formatDate(realEndDate),
-            type: this.dateType.Real,
-          },
-        ];
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by operation order`,
-        );
-        return [];
     }
   };
 }

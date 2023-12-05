@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {useThemeColor, ObjectCard} from '@axelor/aos-mobile-ui';
 import {formatDuration, useTranslator} from '@axelor/aos-mobile-core';
 import OperationOrder from '../../../types/operation-order';
+import {DATE_TYPE, getDates} from '../../../utils';
 
 interface OperationOrderCardProps {
   style?: any;
@@ -61,8 +62,9 @@ const OperationOrderDetailsCard = ({
       ?.border;
   }, [Colors, status]);
 
-  const [startDate, endDate] = OperationOrder.getDates(
+  const [startDate, endDate] = getDates(
     status,
+    OperationOrder.status,
     plannedStartDate,
     plannedEndDate,
     realStartDate,
@@ -87,9 +89,7 @@ const OperationOrderDetailsCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIfNull: startDate == null,
-            style:
-              startDate.type === OperationOrder.dateType.Planned &&
-              styles.italic,
+            style: startDate.type === DATE_TYPE.Planned && styles.italic,
           },
           {
             iconName: 'calendar-check',
@@ -99,8 +99,7 @@ const OperationOrderDetailsCard = ({
               status === OperationOrder.status.InProgress ||
               status === OperationOrder.status.StandBy ||
               endDate == null,
-            style:
-              endDate.type === OperationOrder.dateType.Planned && styles.italic,
+            style: endDate.type === DATE_TYPE.Planned && styles.italic,
           },
           {
             iconName: 'stopwatch',

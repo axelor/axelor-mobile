@@ -21,6 +21,7 @@ import {StyleSheet} from 'react-native';
 import {ObjectCard, useDigitFormat, useThemeColor} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../../../types/manufacturing-order';
+import {DATE_TYPE, getDates} from '../../../utils';
 
 interface ManufacturingOrderCardProps {
   style?: any;
@@ -63,8 +64,9 @@ const ManufacturingOrderCard = ({
     )?.border;
   }, [Colors, status]);
 
-  const [startDate, endDate] = ManufacturingOrder.getDates(
+  const [startDate, endDate] = getDates(
     status,
+    ManufacturingOrder.status,
     plannedStartDate,
     plannedEndDate,
     realStartDate,
@@ -110,9 +112,7 @@ const ManufacturingOrderCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIf: startDate == null,
-            style:
-              startDate.type === ManufacturingOrder.dateType.Planned &&
-              styles.italic,
+            style: startDate.type === DATE_TYPE.Planned && styles.italic,
           },
           {
             iconName: 'calendar-check',
@@ -122,9 +122,7 @@ const ManufacturingOrderCard = ({
               status === ManufacturingOrder.status.InProgress ||
               status === ManufacturingOrder.status.StandBy ||
               endDate == null,
-            style:
-              endDate.type === ManufacturingOrder.dateType.Planned &&
-              styles.italic,
+            style: endDate.type === DATE_TYPE.Planned && styles.italic,
           },
         ],
       }}
