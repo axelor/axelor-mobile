@@ -16,55 +16,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector} from '@axelor/aos-mobile-core';
 import {CardIconButton, useThemeColor} from '@axelor/aos-mobile-ui';
 import {TimesheetCard} from '../../atoms';
+import {Timesheet} from '../../../types';
 
 interface TimesheetDetailCardProps {
-  isCompleted: boolean;
-  startDate: string;
-  endDate: string;
-  company: string;
-  totalDuration: number;
+  item: any;
+  isValidationMode?: boolean;
   isActions?: boolean;
   style?: any;
   onPress: () => void;
 }
 
 const TimesheetDetailCard = ({
-  isCompleted,
-  startDate,
-  endDate,
-  company,
-  totalDuration,
+  item,
+  isValidationMode = false,
   isActions = true,
   style,
   onPress,
 }: TimesheetDetailCardProps) => {
   const Colors = useThemeColor();
 
+  const {timesheet: timesheetConfig} = useSelector(
+    (state: any) => state.appConfig,
+  );
+  const {user} = useSelector((state: any) => state.user);
+
+  const _statusSelect = useMemo(() => {
+    return Timesheet.getStatus(timesheetConfig.needValidation, item);
+  }, [item, timesheetConfig]);
+
+  const userCanValidate = useMemo(() => {
+    if (
+      (user?.employee?.hrManager ||
+        item.employee?.managerUser?.id === user.id) &&
+      _statusSelect === Timesheet.statusSelect.WaitingValidation
+    ) {
+      return true;
+    }
+    return false;
+  }, [
+    item.employee?.managerUser?.id,
+    _statusSelect,
+    user?.employee?.hrManager,
+    user.id,
+  ]);
+
+  const _isActions = useMemo(() => {
+    if (
+      isActions &&
+      (_statusSelect === Timesheet.statusSelect.Draft ||
+        (_statusSelect === Timesheet.statusSelect.WaitingValidation &&
+          userCanValidate))
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [isActions, _statusSelect, userCanValidate]);
+
   const handleSend = () => {
     console.log('handleSend');
+  };
+
+  const handleValidate = () => {
+    console.log('handleValidate');
   };
 
   return (
     <View style={[styles.container, style]}>
       <TimesheetCard
-        isCompleted={isCompleted}
-        startDate={startDate}
-        endDate={endDate}
-        company={company}
-        totalDuration={totalDuration}
+        statusSelect={_statusSelect}
+        startDate={item.fromDate}
+        endDate={item.toDate}
+        company={item.company.name}
+        totalDuration={item.periodTotal}
+        employeeName={isValidationMode ? item.employee?.name : null}
         style={styles.cardContainer}
         onPress={onPress}
       />
-      {isActions && (
+      {_isActions && (
         <View style={styles.flexOneContainer}>
           <CardIconButton
-            iconName={'paper-plane'}
+            iconName={
+              _statusSelect === Timesheet.statusSelect.Draft
+                ? 'paper-plane'
+                : 'check'
+            }
             iconColor={Colors.secondaryColor_dark.background}
-            onPress={handleSend}
+            onPress={() => {
+              _statusSelect === Timesheet.statusSelect.Draft
+                ? handleSend()
+                : handleValidate();
+            }}
             style={styles.flexOneContainer}
           />
         </View>
