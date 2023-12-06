@@ -168,13 +168,20 @@ const SessionInputs = ({
       .then(() => onScanPress());
   }, [form, onScanPress, saveBeforeScan, showPopup]);
 
+  const testUrl = useCallback(
+    url => {
+      dispatch(isUrlValid({url: url}));
+    },
+    [dispatch],
+  );
+
   const handleTestUrl = useCallback(() => {
-    dispatch(isUrlValid({url: form?.url}));
-  }, [dispatch, form?.url]);
+    testUrl(form?.url);
+  }, [form?.url, testUrl]);
 
   useEffect(() => {
-    handleTestUrl();
-  }, [handleTestUrl]);
+    testUrl(session?.url);
+  }, [session?.url, testUrl]);
 
   const nameSessionAlreadyExist = useMemo(() => {
     if (!Array.isArray(sessionList) || sessionList?.length === 0) {
