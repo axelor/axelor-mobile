@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,9 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Dashboard} from './Dashboard/Dashboard';
-export {default as BarChart} from './Dashboard/Chart/BarChart';
-export {default as LineChart} from './Dashboard/Chart/LineChart';
-export {default as PieChart} from './Dashboard/Chart/PieChart';
-export {default as ObjectCard} from './ObjectCard/ObjectCard';
-export {default as TabsScreen} from './TabsScreen/TabsScreen';
+export {default as BarChart} from './BarChart';
+export {default as LineChart} from './LineChart';
+export {default as PieChart} from './PieChart';
