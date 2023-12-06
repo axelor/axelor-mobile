@@ -45,15 +45,18 @@ export const transformToBarChartData = (groupedData, Colors) => {
   let finalData = [];
 
   groupedData.forEach(group => {
-    const labelWidth = 20 * group.values.length;
-
     group.values.forEach((value, index) => {
       finalData.push({
         value: value,
         label: index === 0 ? group.label : '',
         frontColor: Chart.getChartColor(index, Colors).background,
-        labelWidth: labelWidth,
         spacing: index === group.values.length - 1 ? 24 : 2,
+        labelTextStyle: {
+          color: Colors.secondaryColor_dark.background,
+          top: 10,
+          left: 5,
+          transform: [{rotate: '45deg'}],
+        },
       });
     });
   });
@@ -78,4 +81,13 @@ export const generateChartProps = (datasets, Color) => {
   });
 
   return props;
+};
+
+export const addLabelTextStyleToDataset = (datasets, labelTextStyle) => {
+  return datasets.map(dataArray =>
+    dataArray.map(data => ({
+      ...data,
+      labelTextStyle: labelTextStyle,
+    })),
+  );
 };

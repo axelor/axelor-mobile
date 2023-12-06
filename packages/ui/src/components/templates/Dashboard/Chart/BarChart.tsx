@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   title: {
-    marginTop: 5,
+    marginTop: 30,
     alignSelf: 'center',
     textAlign: 'center',
   },

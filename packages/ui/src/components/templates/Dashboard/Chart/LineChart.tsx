@@ -23,7 +23,7 @@ import {useThemeColor} from '../../../../theme/ThemeContext';
 import {Card, Text} from '../../../atoms';
 import {checkNullString} from '../../../../utils/strings';
 import {Data} from '../dashboard.helper';
-import {generateChartProps} from './chart.helper';
+import {addLabelTextStyleToDataset, generateChartProps} from './chart.helper';
 
 const MARGIN = 5;
 
@@ -45,8 +45,15 @@ const LineChart = ({
   title,
 }: LineChartProps) => {
   const Colors = useThemeColor();
-
-  const chartProps = generateChartProps(datasets, Colors);
+  const labelTextStyle = {
+    width: 60,
+    color: Colors.secondaryColor_dark.background,
+    top: 10,
+    left: 10,
+    transform: [{rotate: '45deg'}],
+  };
+  const customDatasets = addLabelTextStyleToDataset(datasets, labelTextStyle);
+  const chartProps = generateChartProps(customDatasets, Colors);
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;
@@ -96,7 +103,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   title: {
-    marginTop: 5,
+    marginTop: 30,
     alignSelf: 'center',
     textAlign: 'center',
   },
