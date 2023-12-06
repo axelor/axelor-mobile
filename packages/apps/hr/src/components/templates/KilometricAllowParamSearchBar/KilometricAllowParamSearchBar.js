@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   displayItemName,
   useDispatch,
@@ -94,23 +94,21 @@ const KilometricAllowParamSearchBarAux = ({
     [dispatch, user, expenseDate],
   );
 
-  const defaultKap = useMemo(() => {
-    let kap = defaultValue;
-
-    if (kilometricAllowParamList?.length === 1) {
-      kap = kilometricAllowParamList[0];
+  useEffect(() => {
+    if (
+      Array.isArray(kilometricAllowParamList) &&
+      kilometricAllowParamList.length === 1
+    ) {
+      onChange(kilometricAllowParamList[0]);
     }
-
-    onChange(kap);
-    return kap;
-  }, [defaultValue, kilometricAllowParamList, onChange]);
+  }, [kilometricAllowParamList, onChange]);
 
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
       objectList={kilometricAllowParamList}
-      value={defaultKap}
+      value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
