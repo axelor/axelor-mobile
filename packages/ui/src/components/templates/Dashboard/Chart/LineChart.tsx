@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import React, {useMemo} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme/ThemeContext';
 import {Card, Text} from '../../../atoms';
 import {checkNullString} from '../../../../utils/strings';
 import {Data} from '../dashboard.helper';
-import {generateChartProps} from './chart-helper';
+import {generateChartProps} from './chart.helper';
+
+const MARGIN = 5;
 
 interface LineChartProps {
   style?: any;
@@ -38,42 +40,66 @@ const LineChart = ({
   style,
   widthGraph,
   datasets,
-  spacing = 50,
+  spacing,
   backgroundColor,
   title,
 }: LineChartProps) => {
-  const Color = useThemeColor();
+  const Colors = useThemeColor();
 
-  const chartProps = generateChartProps(datasets, Color);
+  const chartProps = generateChartProps(datasets, Colors);
+
+  const _containerWidth = useMemo(() => {
+    return widthGraph - MARGIN * 2;
+  }, [widthGraph]);
+
+  const _graphWidth = useMemo(() => {
+    return _containerWidth - 50;
+  }, [_containerWidth]);
+
+  const _spacing = useMemo(() => {
+    if (spacing != null) {
+      return spacing;
+    }
+
+    return Math.max(_containerWidth / datasets?.[0]?.length, 20);
+  }, [_containerWidth, datasets, spacing]);
 
   return (
-    <Card style={[styles.container, style]}>
-      <View>
-        <RNLineChart
-          width={widthGraph}
-          yAxisTextStyle={{color: Color.secondaryColor_dark.background}}
-          xAxisLabelTextStyle={{color: Color.secondaryColor_dark.background}}
-          spacing={spacing}
-          isAnimated={true}
-          backgroundColor={backgroundColor}
-          {...chartProps}
-          endSpacing={5}
-        />
-        {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
-      </View>
+    <Card style={[styles.container, {width: _containerWidth}, style]}>
+      <RNLineChart
+        width={_graphWidth}
+        yAxisTextStyle={{
+          color: Colors.secondaryColor_dark.background,
+        }}
+        xAxisLabelTextStyle={{color: Colors.secondaryColor_dark.background}}
+        initialSpacing={_spacing / 2}
+        spacing={_spacing}
+        endSpacing={5}
+        isAnimated={true}
+        backgroundColor={backgroundColor}
+        {...chartProps}
+      />
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width:
+    minWidth:
       Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4
-        : Dimensions.get('window').width / 2,
-    marginVertical: 5,
+        ? Dimensions.get('window').width / 4 - MARGIN * 2
+        : Dimensions.get('window').width / 2 - MARGIN * 2,
+    margin: MARGIN,
+    paddingHorizontal: 0,
+    paddingRight: 5,
+    paddingVertical: 10,
   },
-  title: {alignSelf: 'center'},
+  title: {
+    marginTop: 5,
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
 });
 
 export default LineChart;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
 import {useThemeColor} from '../../../../theme/ThemeContext';
@@ -25,8 +25,11 @@ import {Text} from '../../../atoms';
 import Chart from '../chart';
 import {Data} from '../dashboard.helper';
 
+const MARGIN = 5;
+
 interface PieChartProps {
   styleContainer?: any;
+  widthGraph?: number;
   datasets: Data[];
   legend?: boolean;
   title?: string;
@@ -40,6 +43,7 @@ interface PieChartProps {
 
 const PieChart = ({
   styleContainer,
+  widthGraph,
   datasets,
   legend = false,
   title,
@@ -48,30 +52,28 @@ const PieChart = ({
   sectionAutoFocus = true,
   radius = 90,
   innerRadius = 60,
-  focusOnPress = true,
+  focusOnPress = false,
 }: PieChartProps) => {
-  const Color = useThemeColor();
+  const Colors = useThemeColor();
 
   const [dataSet, setDataSet] = useState(datasets);
 
   useEffect(() => {
-    const newDatasets = datasets.map((item, index) => {
-      return item.color != null
-        ? {...item}
-        : {...item, color: Chart.getChartColor(index, Color).background};
-    });
-    setDataSet(newDatasets);
-  }, [Color, datasets]);
+    setDataSet(
+      datasets.map((item, index) => {
+        return item.color != null
+          ? {...item}
+          : {...item, color: Chart.getChartColor(index, Colors).background};
+      }),
+    );
+  }, [Colors, datasets]);
 
-  const renderLegendBorderColor = color => ({
-    borderWidth: 5,
-    marginVertical: 2,
-    borderColor: color,
-    backgroundColor: color,
-  });
+  const _width = useMemo(() => {
+    return widthGraph - MARGIN * 2;
+  }, [widthGraph]);
 
   return (
-    <View style={[style.container, styleContainer]}>
+    <View style={[styles.container, {width: _width}, styleContainer]}>
       <RNPieChart
         data={dataSet}
         donut={donut}
@@ -80,16 +82,25 @@ const PieChart = ({
         radius={radius}
         innerRadius={innerRadius}
         focusOnPress={focusOnPress}
-        innerCircleColor={Color.backgroundColor}
+        innerCircleColor={Colors.backgroundColor}
       />
-      {!checkNullString(title) && <Text style={style.title}>{title}</Text>}
+      {!checkNullString(title) && <Text style={styles.title}>{title}</Text>}
       {legend && (
-        <View style={style.legenContainer}>
+        <View style={styles.legendContainer}>
           {dataSet.map((_data, index) => (
-            <View key={index} style={style.itemLegendContainer}>
-              <View style={renderLegendBorderColor(_data.color)} />
-              <Text style={style.text}>{_data.label}</Text>
-              <Text>{_data.value}</Text>
+            <View key={index} style={styles.itemLegendContainer}>
+              <View
+                style={[
+                  styles.legendColor,
+                  {
+                    borderColor: _data.color,
+                    backgroundColor: _data.color,
+                  },
+                ]}
+              />
+              <Text
+                style={styles.legend}
+                fontSize={15}>{`${_data.label} : ${_data.value}`}</Text>
             </View>
           ))}
         </View>
@@ -98,27 +109,38 @@ const PieChart = ({
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    width:
+    alignContent: 'center',
+    minWidth:
       Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4
-        : Dimensions.get('window').width / 2,
+        ? Dimensions.get('window').width / 4 - MARGIN * 2
+        : Dimensions.get('window').width / 2 - MARGIN * 2,
+    margin: MARGIN,
   },
-  legenContainer: {
+  title: {
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
+  legendContainer: {
     flexDirection: 'column',
   },
   itemLegendContainer: {
     flexDirection: 'row',
     marginVertical: 5,
   },
-  text: {
+  legend: {
     marginHorizontal: 5,
   },
-  title: {alignSelf: 'center'},
+  legendColor: {
+    borderWidth: 5,
+    marginVertical: 2,
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
+  },
 });
 
 export default PieChart;

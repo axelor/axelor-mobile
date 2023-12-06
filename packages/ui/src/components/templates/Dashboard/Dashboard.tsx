@@ -20,11 +20,14 @@ import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {ScrollView} from '../../atoms';
 import Chart from './chart';
-import {Data, Max_Number_Graph_Line} from './dashboard.helper';
+import {
+  Data,
+  Max_Number_Graph_Line as MAX_GRAPH_PER_LINE,
+} from './dashboard.helper';
 import {BarChart, LineChart, PieChart} from './Chart';
 
 interface Graph {
-  type: 'pie' | 'bar' | 'line' | 'donut';
+  type: keyof typeof Chart.chartType;
   dataList: Data[][];
   title?: string;
 }
@@ -38,48 +41,45 @@ interface DashboardProps {
   lineList: Line[];
 }
 
-const styleGraph = (nbGraphInLine: number) => {
-  let style = null;
-  let width = null;
-
+const getGraphWidth = (nbGraphInLine: number) => {
   if (nbGraphInLine === 1) {
-    style = {width: Dimensions.get('window').width - 60};
-    width = Dimensions.get('window').width - 160;
-  } else if (Dimensions.get('window').width < 500 && nbGraphInLine !== 1) {
-    style = {width: Dimensions.get('window').width / 2 - 15};
-    width = Dimensions.get('window').width / 4;
-  } else if (nbGraphInLine === 2) {
-    style = {width: Dimensions.get('window').width / 2 - 60};
-    width = Dimensions.get('window').width / 3 - 60;
-  } else if (nbGraphInLine === 3) {
-    style = {width: Dimensions.get('window').width / 3 - 60};
-    width = Dimensions.get('window').width / 5 - 60;
-  } else if (nbGraphInLine === 4) {
-    style = {width: Dimensions.get('window').width / 4 - 20};
-    width = Dimensions.get('window').width / 6 - 60;
+    return Dimensions.get('window').width;
+  } else if (Dimensions.get('window').width < 500) {
+    return Dimensions.get('window').width / 2;
+  } else {
+    return Dimensions.get('window').width / nbGraphInLine;
   }
-  return {style, width};
 };
 
-const LineChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
-  const {style, width} = styleGraph(nbGraphInLine);
+const BarChartDashboardRender = (datasets, key, title, widthGraph) => {
   return (
-    <LineChart
-      datasets={datasets}
+    <BarChart
       key={key}
-      style={style}
-      widthGraph={width}
       title={title}
+      datasets={datasets}
+      widthGraph={widthGraph}
     />
   );
 };
 
-const PieChartRender = (datasets, key, title, type) => {
+const LineChartDashboardRender = (datasets, key, title, widthGraph) => {
   return (
-    <PieChart
-      datasets={datasets[0]}
+    <LineChart
       key={key}
       title={title}
+      datasets={datasets}
+      widthGraph={widthGraph}
+    />
+  );
+};
+
+const PieChartRender = (datasets, key, title, widthGraph, type) => {
+  return (
+    <PieChart
+      key={key}
+      title={title}
+      datasets={datasets[0]}
+      widthGraph={widthGraph}
       donut={type === Chart.chartType.donut}
     />
   );
@@ -87,44 +87,22 @@ const PieChartRender = (datasets, key, title, type) => {
 
 const renderChart = (graph, indexGraph, nbGraphInLine) => {
   const {dataList, title, type} = graph;
+  const widthGraph = getGraphWidth(nbGraphInLine);
 
   switch (type) {
     case Chart.chartType.bar:
-      return BarChartDashboardRender(
-        dataList,
-        indexGraph,
-        nbGraphInLine,
-        title,
-      );
+      return BarChartDashboardRender(dataList, indexGraph, title, widthGraph);
 
     case Chart.chartType.pie:
     case Chart.chartType.donut:
-      return PieChartRender(dataList, indexGraph, title, type);
+      return PieChartRender(dataList, indexGraph, title, widthGraph, type);
 
     case Chart.chartType.line:
-      return LineChartDashboardRender(
-        dataList,
-        indexGraph,
-        nbGraphInLine,
-        title,
-      );
+      return LineChartDashboardRender(dataList, indexGraph, title, widthGraph);
 
     default:
       return null;
   }
-};
-
-const BarChartDashboardRender = (datasets, key, nbGraphInLine, title) => {
-  const {style, width} = styleGraph(nbGraphInLine);
-  return (
-    <BarChart
-      datasets={datasets}
-      key={key}
-      style={style}
-      widthGraph={width}
-      title={title}
-    />
-  );
 };
 
 const Dashboard = ({style, lineList}: DashboardProps) => {
@@ -133,12 +111,9 @@ const Dashboard = ({style, lineList}: DashboardProps) => {
       {lineList?.map((line, indexLine) => {
         const nbGraphInLine = Math.min(
           line.graphList?.length,
-          Max_Number_Graph_Line,
+          MAX_GRAPH_PER_LINE,
         );
-        const limitedGraphList = line.graphList?.slice(
-          0,
-          Max_Number_Graph_Line,
-        );
+        const limitedGraphList = line.graphList?.slice(0, MAX_GRAPH_PER_LINE);
 
         return (
           <View style={styles.lineContainer} key={indexLine}>
