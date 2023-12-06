@@ -16,9 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Dashboard} from './Dashboard/Dashboard';
-export {default as BarChart} from './Dashboard/Chart/BarChart';
-export {default as LineChart} from './Dashboard/Chart/LineChart';
-export {default as PieChart} from './Dashboard/Chart/PieChart';
-export {default as ObjectCard} from './ObjectCard/ObjectCard';
-export {default as TabsScreen} from './TabsScreen/TabsScreen';
+import {Color, ThemeColors} from '../../../theme';
+
+class Chart {
+  static chartType = {
+    bar: 'bar',
+    pie: 'pie',
+    line: 'line',
+    donut: 'donut',
+  };
+
+  static getChartColor = (index: number, Colors: ThemeColors): Color => {
+    const colorArray = Object.values(Colors)
+      .filter(_color => typeof _color !== 'string')
+      .map(value => value);
+
+    return colorArray[index % colorArray.length];
+  };
+}
+
+export default Chart;
