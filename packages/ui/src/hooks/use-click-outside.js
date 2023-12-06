@@ -20,25 +20,17 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useReducer,
 } from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {findVisibleRef, pushRef} from './use-click-outside.helper';
 
 export const OUTSIDE_INDICATOR = 'outside';
 export const INSIDE_INDICATOR = 'inside';
 
 const defaultOutsideAlerterContext = {
-  refList: [],
-  clickOutside: undefined,
-  addRef: () => {
-    throw new Error(
-      'OutsideAlerter should be mounted to add target component reference',
-    );
-  },
-  handleClickOutside: () => {
+  ref: undefined,
+  setRef: () => {
     throw new Error(
       'OutsideAlerter should be mounted to set handle click outside event',
     );
@@ -48,62 +40,24 @@ const defaultOutsideAlerterContext = {
 const OutsideAlerterContext = createContext(defaultOutsideAlerterContext);
 
 const actionTypes = {
-  addRef: 'addRef',
-  handleClickOutside: 'handleClickOutside',
-};
-
-const handleClickOutsideReducer = (ref, target) => {
-  if (!ref || !target) {
-    return undefined;
-  }
-
-  if (ref._nativeTag === target._nativeTag) {
-    return INSIDE_INDICATOR;
-  }
-
-  // check ref if one ref child has target._nativeTag
-  if (ref._children) {
-    const res = ref._children.map(child =>
-      handleClickOutsideReducer(child, target),
-    );
-    return res.find(r => r === INSIDE_INDICATOR)
-      ? INSIDE_INDICATOR
-      : OUTSIDE_INDICATOR;
-  }
-
-  return OUTSIDE_INDICATOR;
+  setRef: 'setRef',
 };
 
 const outsideAlerterReducer = (state, action) => {
   switch (action.type) {
-    case actionTypes.addRef: {
+    case actionTypes.setRef: {
       return {
         ...state,
-        refList: pushRef(state.refList, action.payload),
-      };
-    }
-    case actionTypes.handleClickOutside: {
-      return {
-        ...state,
-        clickOutside: handleClickOutsideReducer(
-          findVisibleRef(state.refList)?.wrapperRef?.current,
-          action.payload,
-        ),
+        ref: action.payload,
       };
     }
   }
 };
 
 const actions = {
-  addRef: ref => {
+  setRef: target => {
     return {
-      type: actionTypes.addRef,
-      payload: ref,
-    };
-  },
-  handleClickOutside: target => {
-    return {
-      type: actionTypes.handleClickOutside,
+      type: actionTypes.setRef,
       payload: target,
     };
   },
@@ -115,29 +69,21 @@ export const OutsideAlerterProvider = ({children}) => {
     defaultOutsideAlerterContext,
   );
 
-  const addRef = useCallback(ref => dispatch(actions.addRef(ref)), []);
-
-  const handleClickOutside = useCallback(target => {
-    dispatch(actions.handleClickOutside(target));
-    setTimeout(() => {
-      dispatch(actions.handleClickOutside(target));
-    }, 10);
+  const setRef = useCallback(target => {
+    dispatch(actions.setRef(target));
   }, []);
 
   const outsideAlerterContextState = useMemo(
     () => ({
       ...state,
-      addRef,
-      handleClickOutside,
+      setRef,
     }),
-    [state, addRef, handleClickOutside],
+    [state, setRef],
   );
 
   return (
     <OutsideAlerterContext.Provider value={outsideAlerterContextState}>
-      <View
-        onTouchStart={e => handleClickOutside(e.target)}
-        style={styles.container}>
+      <View onTouchStart={e => setRef(e.target)} style={styles.container}>
         {children}
       </View>
     </OutsideAlerterContext.Provider>
@@ -158,16 +104,34 @@ const styles = StyleSheet.create({
 /**
  * Hook that alerts clicks outside
  * @param {Object} wrapperRef - component reference to track if we click outside of it.
- * @param {Boolean} visible - boolean to track component if it is visible.
  */
-export const useClickOutside = ({wrapperRef, visible}) => {
-  const {clickOutside, addRef} = useContext(OutsideAlerterContext);
-
-  useEffect(() => {
-    addRef({nativeTag: wrapperRef?.current?._nativeTag, wrapperRef, visible});
-  }, [addRef, visible, wrapperRef]);
+export const useClickOutside = ({wrapperRef}) => {
+  const {ref: _ref} = useContext(OutsideAlerterContext);
 
   return useMemo(() => {
-    return clickOutside;
-  }, [clickOutside]);
+    const handleClickOutside = (componentRef, ref) => {
+      if (!componentRef || !ref) {
+        return undefined;
+      }
+
+      if (componentRef._nativeTag === ref._nativeTag) {
+        return INSIDE_INDICATOR;
+      }
+
+      // check ref if one ref child has target._nativeTag
+      if (componentRef._children) {
+        const res = componentRef._children.map(child =>
+          handleClickOutside(child, ref),
+        );
+
+        return res.find(r => r === INSIDE_INDICATOR)
+          ? INSIDE_INDICATOR
+          : OUTSIDE_INDICATOR;
+      }
+
+      return OUTSIDE_INDICATOR;
+    };
+
+    return handleClickOutside(wrapperRef?.current, _ref);
+  }, [_ref, wrapperRef]);
 };
