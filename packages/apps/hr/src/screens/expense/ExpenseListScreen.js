@@ -103,8 +103,6 @@ const ExpenseListScreen = ({navigation}) => {
     [dispatch, user],
   );
 
-  console.log('totalNumberExpenseToValidate', totalNumberExpenseToValidate);
-
   const validateExpenseAPI = useCallback(
     (expenseId, version) => {
       dispatch(
