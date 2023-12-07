@@ -27,7 +27,7 @@ import {
   KilometricTypeSelectPicker,
   ProjectSearchBar,
   ToggleSwitchMode,
-  ExpensePicker,
+  DraftExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
@@ -54,7 +54,7 @@ export const hr_formsRegister: FormConfigs = {
         titleKey: 'Hr_Expense',
         type: 'object',
         widget: 'custom',
-        customComponent: ExpensePicker,
+        customComponent: DraftExpensePicker,
         hideIf: ({objectState}) => !objectState.isFromExpense,
       },
       manageMode: {

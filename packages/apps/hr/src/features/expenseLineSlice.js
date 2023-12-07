@@ -29,8 +29,7 @@ import {
   updateExpenseLine as _updateExpenseLine,
   deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
-import {fetchExpenseById} from './expenseSlice';
-import {updateExpense} from './expenseSlice';
+import {fetchExpenseById, updateExpense} from './expenseSlice';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',

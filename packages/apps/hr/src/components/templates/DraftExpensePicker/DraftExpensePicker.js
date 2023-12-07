@@ -21,7 +21,7 @@ import {Picker} from '@axelor/aos-mobile-ui';
 import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
 import {searchExpenseDraft} from '../../../features/expenseSlice';
 
-const ExpensePickerAux = ({
+const DraftExpensePickerAux = ({
   title = 'Hr_Expense',
   defaultValue = null,
   onChange = () => {},
@@ -53,9 +53,15 @@ const ExpensePickerAux = ({
   );
 };
 
-const ExpensePicker = ({title, defaultValue, onChange, readonly, required}) => {
+const DraftExpensePicker = ({
+  title,
+  defaultValue,
+  onChange,
+  readonly,
+  required,
+}) => {
   return (
-    <ExpensePickerAux
+    <DraftExpensePickerAux
       title={title}
       defaultValue={defaultValue}
       onChange={onChange}
@@ -65,4 +71,4 @@ const ExpensePicker = ({title, defaultValue, onChange, readonly, required}) => {
   );
 };
 
-export default ExpensePicker;
+export default DraftExpensePicker;

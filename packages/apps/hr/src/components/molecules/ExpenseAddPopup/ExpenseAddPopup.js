@@ -26,7 +26,7 @@ import {
   useNavigation,
 } from '@axelor/aos-mobile-core';
 import {createExpense, updateExpense} from '../../../features/expenseSlice';
-import {ExpensePicker} from '../../templates';
+import {DraftExpensePicker} from '../../templates';
 
 const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   const I18n = useTranslator();
@@ -75,7 +75,7 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
       }}
       translator={I18n.t}>
       <View style={styles.container}>
-        <ExpensePicker onChange={setExpenseSelected} />
+        <DraftExpensePicker onChange={setExpenseSelected} />
         <TouchableOpacity onPress={createExpenseAPI} style={styles.labelText}>
           <LabelText
             iconName="plus"
