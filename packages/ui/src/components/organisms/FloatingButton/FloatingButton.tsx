@@ -103,7 +103,6 @@ const FloatingButton = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
-    visible: isOpen,
   });
 
   useEffect(() => {
