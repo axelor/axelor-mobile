@@ -34,7 +34,7 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
   const Colors = useThemeColor();
 
   const wrapperRef = useRef(null);
-  const clickOutside = useClickOutside({wrapperRef, visible});
+  const clickOutside = useClickOutside({wrapperRef});
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 

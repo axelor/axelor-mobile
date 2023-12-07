@@ -77,7 +77,6 @@ const Picker = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
-    visible: isOpen,
   });
 
   useEffect(() => {
