@@ -237,7 +237,6 @@ export const silenceSearchExpense = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
     });
-
     const myExpense = await handlerApiCall({
       fetchFunction: _searchMyExpense,
       data,
@@ -319,12 +318,11 @@ const expenseSlice = createSlice({
         manageTotal: true,
       },
     );
-    builder.addCase(silenceSearchExpense.pending, state => {
-      state.loadingMyExpense = false;
-    });
     builder.addCase(silenceSearchExpense.fulfilled, (state, action) => {
       state.myExpenseList = action.payload.myExpense;
-      state.expenseToValidateList = action.payload.expenseToValidate;
+      state.expenseToValidateList = action.payload.expenseToValidate?.data;
+      state.totalNumberExpenseToValidate =
+        action.payload.expenseToValidate?.total;
     });
     builder.addCase(searchExpenseDraft.pending, state => {
       state.loading = true;

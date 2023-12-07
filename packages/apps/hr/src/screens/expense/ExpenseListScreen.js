@@ -77,7 +77,7 @@ const ExpenseListScreen = ({navigation}) => {
   }, [dispatch, user]);
 
   const refresh = useCallback(() => {
-    dispatch(silenceSearchExpense({page: 0, userId: user.id}));
+    dispatch(silenceSearchExpense({page: 0, user: user, userId: user.id}));
   }, [dispatch, user]);
 
   const fetchMyExpenseAPI = useCallback(
@@ -86,6 +86,7 @@ const ExpenseListScreen = ({navigation}) => {
     },
     [dispatch, user.id],
   );
+
   const fetchExpenseToValidateAPI = useCallback(
     (page = 0) => {
       dispatch(searchExpenseToValidate({page: page, user: user}));
@@ -101,6 +102,8 @@ const ExpenseListScreen = ({navigation}) => {
     },
     [dispatch, user],
   );
+
+  console.log('totalNumberExpenseToValidate', totalNumberExpenseToValidate);
 
   const validateExpenseAPI = useCallback(
     (expenseId, version) => {
