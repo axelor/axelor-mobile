@@ -42,6 +42,10 @@ export function fetchJsonField(object: any, fieldName: string) {
     return undefined;
   }
 
+  if (fieldName == null) {
+    return object;
+  }
+
   if (object[fieldName] != null || !fieldName.includes('.')) {
     return object[fieldName];
   }

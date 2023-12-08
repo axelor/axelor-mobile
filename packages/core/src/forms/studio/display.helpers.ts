@@ -19,6 +19,7 @@
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
 import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
+import {createFormulaFunction} from './formula.helpers';
 
 export const mapStudioFields = (
   items: any[],
@@ -262,7 +263,9 @@ const manageContentOfModel = (
             helperKey: item.help,
             type: inputType || fieldType,
             required: item.required,
+            requiredIf: createFormulaFunction(item.requiredIf),
             readonly: item.readonly,
+            readonlyIf: createFormulaFunction(item.readonlyIf),
             order: item.sequence,
             parentPanel: lastPanel,
             widget: widget,

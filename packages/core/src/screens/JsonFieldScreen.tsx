@@ -26,6 +26,7 @@ import {
   updateJsonFieldsObject,
 } from '../features/metaJsonFieldSlice';
 import {
+  evaluateFormulaWithObject,
   formConfigsProvider,
   mapFormToStudioFields,
   mapStudioFields,
@@ -54,16 +55,22 @@ const JsonFieldScreen = ({route}) => {
   const {fields, panels, defaults} = useMemo(
     () =>
       mapStudioFields(
-        _fields.filter(item => {
-          if (item.contextField == null) {
-            return true;
-          }
+        _fields
+          .filter(item => {
+            if (item.contextField == null) {
+              return true;
+            }
 
-          return (
-            object[item.contextField]?.id ===
-            parseInt(item.contextFieldValue, 10)
-          );
-        }),
+            return (
+              object[item.contextField]?.id ===
+              parseInt(item.contextFieldValue, 10)
+            );
+          })
+          .map(item => ({
+            ...item,
+            requiredIf: evaluateFormulaWithObject(item.requiredIf, object),
+            readonlyIf: evaluateFormulaWithObject(item.readonlyIf, object),
+          })),
         Colors,
       ),
     [Colors, _fields, object],
