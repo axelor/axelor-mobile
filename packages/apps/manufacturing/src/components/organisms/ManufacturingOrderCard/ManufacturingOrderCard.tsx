@@ -110,7 +110,6 @@ const ManufacturingOrderCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIf: startDate == null,
-            style: startDate.specificStyle,
           },
           {
             iconName: 'calendar-check',
@@ -120,7 +119,6 @@ const ManufacturingOrderCard = ({
               status === ManufacturingOrder.status.InProgress ||
               status === ManufacturingOrder.status.StandBy ||
               endDate == null,
-            style: endDate.specificStyle,
           },
         ],
       }}

@@ -33,7 +33,7 @@ export const getDates = (
   realStartDate: string,
   realEndDate: string,
   I18n: TranslatorProps,
-): {title: string; value: string; specificStyle: any}[] => {
+): {title: string; value: string}[] => {
   const formatDate = date => {
     if (date == null) {
       return '';
@@ -49,12 +49,10 @@ export const getDates = (
         {
           title: I18n.t('Manufacturing_StartDate') + ' :',
           value: formatDate(plannedStartDate),
-          specificStyle: {fontStyle: 'italic'},
         },
         {
           title: I18n.t('Manufacturing_EndDate') + ' :',
           value: formatDate(plannedEndDate),
-          specificStyle: {fontStyle: 'italic'},
         },
       ];
     case statusType.InProgress:
@@ -63,12 +61,10 @@ export const getDates = (
         {
           title: I18n.t('Manufacturing_StartDate') + ' :',
           value: formatDate(realStartDate),
-          specificStyle: null,
         },
         {
           title: I18n.t('Manufacturing_EndDate') + ' :',
           value: formatDate(plannedEndDate),
-          specificStyle: {fontStyle: 'italic'},
         },
       ];
     case statusType.Finished:
@@ -76,12 +72,10 @@ export const getDates = (
         {
           title: I18n.t('Manufacturing_StartDate') + ' :',
           value: formatDate(realStartDate),
-          specificStyle: null,
         },
         {
           title: I18n.t('Manufacturing_EndDate') + ' :',
           value: formatDate(realEndDate),
-          specificStyle: null,
         },
       ];
     default:

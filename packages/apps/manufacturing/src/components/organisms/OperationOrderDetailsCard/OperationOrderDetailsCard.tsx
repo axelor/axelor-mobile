@@ -87,7 +87,6 @@ const OperationOrderDetailsCard = ({
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIfNull: startDate == null,
-            style: startDate.specificStyle,
           },
           {
             iconName: 'calendar-check',
@@ -97,7 +96,6 @@ const OperationOrderDetailsCard = ({
               status === OperationOrder.status.InProgress ||
               status === OperationOrder.status.StandBy ||
               endDate == null,
-            style: endDate.specificStyle,
           },
           {
             iconName: 'stopwatch',

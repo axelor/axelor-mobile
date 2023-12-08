@@ -92,7 +92,7 @@ class OperationOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title: string; value: string; specificStyle: any}[] => {
+  ): {title: string; value: string}[] => {
     return getDates(
       status,
       this.status,
