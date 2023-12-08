@@ -19,7 +19,8 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import DatesInterval from '../DatesInterval/DatesInterval';
 import TextUnit from '../TextUnit/TextUnit';
 import {Timesheet} from '../../../types';
 
@@ -52,10 +53,6 @@ const TimesheetCard = ({
     [Colors, statusSelect],
   );
 
-  const _formatDate = (date: string) => {
-    return formatDate(date, I18n.t('Base_DateFormat'));
-  };
-
   return (
     <View style={style}>
       <ObjectCard
@@ -63,15 +60,15 @@ const TimesheetCard = ({
         leftContainerFlex={2}
         onPress={onPress}
         upperTexts={{
-          style: styles.texts,
           items: [
             {
-              displayText: _formatDate(startDate),
-              isTitle: true,
-            },
-            {
-              displayText: _formatDate(endDate),
-              isTitle: true,
+              customComponent: (
+                <DatesInterval
+                  startDate={startDate}
+                  endDate={endDate}
+                  style={styles.datesInterval}
+                />
+              ),
             },
             {
               iconName: 'building',
@@ -89,11 +86,11 @@ const TimesheetCard = ({
           ],
         }}
         sideBadges={{
-          style: styles.badges,
           items: [
             {
               customComponent: (
                 <TextUnit
+                  style={styles.textUnit}
                   value={totalDuration}
                   unit={I18n.t('Hr_TimeUnit_Hours')}
                 />
@@ -116,16 +113,14 @@ const getStyles = color =>
       borderLeftWidth: 7,
       borderLeftColor: color.background,
     },
-    texts: {
-      marginTop: 20,
+    datesInterval: {
+      marginBottom: 15,
     },
     iconText: {
       fontSize: 15,
       fontWeight: null,
     },
-    badges: {
-      alignItems: 'flex-end',
-    },
+    textUnit: {alignSelf: 'flex-end', lineHeight: 25},
   });
 
 export default TimesheetCard;
