@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,10 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Inventory} from './inventory';
-export {default as InternalMoveCreation} from './internal-move-creation';
-export {default as Product} from './product';
-export {default as StockCorrection} from './stock-corrrection';
-export {default as StockLocation} from './stock-location';
-export {default as StockMoveLine} from './stock-move-line';
-export {default as StockMove} from './stock-move';
+class InternalMoveCreation {
+  static step = {
+    fromStockLocation: 0,
+    addLine: 1,
+    validateLine: 2,
+    toStockLocation: 3,
+  };
+}
+
+export default InternalMoveCreation;
