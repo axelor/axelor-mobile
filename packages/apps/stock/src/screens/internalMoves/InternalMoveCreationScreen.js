@@ -117,6 +117,7 @@ const InternalMoveCreationScreen = ({navigation}) => {
           fromStockLocation={fromStockLocation}
           lines={lines}
           toStockLocation={toStockLocation}
+          movedQty={movedQty}
           addLine={() => {
             setLines(prevLines => {
               prevLines.push({

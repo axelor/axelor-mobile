@@ -34,6 +34,7 @@ interface InternalMoveCreationButtonsProps {
   fromStockLocation: any;
   lines: any[];
   toStockLocation: any;
+  movedQty: number;
   addLine: () => void;
 }
 
@@ -43,6 +44,7 @@ const InternalMoveCreationButtons = ({
   fromStockLocation,
   lines,
   toStockLocation,
+  movedQty,
   addLine,
 }: InternalMoveCreationButtonsProps) => {
   const Colors = useThemeColor();
@@ -91,6 +93,7 @@ const InternalMoveCreationButtons = ({
             iconName="plus"
             color={Colors.progressColor}
             width="45%"
+            disabled={movedQty === 0}
             onPress={handleAddPress}
           />
         )}
