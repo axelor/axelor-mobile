@@ -52,8 +52,21 @@ const JsonFieldScreen = ({route}) => {
   }, [dispatch, model, modelId]);
 
   const {fields, panels, defaults} = useMemo(
-    () => mapStudioFields(_fields, Colors),
-    [Colors, _fields],
+    () =>
+      mapStudioFields(
+        _fields.filter(item => {
+          if (item.contextField == null) {
+            return true;
+          }
+
+          return (
+            object[item.contextField]?.id ===
+            parseInt(item.contextFieldValue, 10)
+          );
+        }),
+        Colors,
+      ),
+    [Colors, _fields, object],
   );
 
   useEffect(() => {
