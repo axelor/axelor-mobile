@@ -42,6 +42,8 @@ const SelectionItem = ({
 }: SelectionItemProps) => {
   const Colors = useThemeColor();
 
+  const displayContent = content != null ? content : ' ';
+
   const _itemColor = useMemo(
     () => itemColor ?? Colors.primaryColor,
     [Colors.primaryColor, itemColor],
@@ -54,7 +56,7 @@ const SelectionItem = ({
 
   const itemStyles = useMemo(() => getItemStyles(isPicker), [isPicker]);
 
-  return content == null ? null : (
+  return (
     <TouchableOpacity
       style={[itemStyles.item, style]}
       onPress={onPress}
@@ -72,7 +74,7 @@ const SelectionItem = ({
         />
       )}
       <Text style={itemStyles.text} numberOfLines={1}>
-        {content}
+        {displayContent}
       </Text>
       {itemColor != null && <View style={indicatorStyles.selectedItem} />}
     </TouchableOpacity>
