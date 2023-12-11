@@ -55,15 +55,17 @@ export const createFormulaFunction = (formula: string) => {
       return false;
     }
 
+    let expr = `${formula}`;
+
     Object.entries(objectState).forEach(([_key, _value]) => {
-      if (formula.includes(_key)) {
-        formula = manageDottedFields(formula, _key, _value);
+      if (expr.includes(_key)) {
+        expr = manageDottedFields(expr, _key, _value);
       }
     });
 
     try {
       // eslint-disable-next-line no-eval
-      return eval(formula);
+      return eval(expr);
     } catch (error) {
       return false;
     }
@@ -87,11 +89,7 @@ export const evaluateFormulaWithObject = (formula: string, object: Object) => {
 };
 
 const manageDottedFields = (formula: string, startKey: string, object: any) => {
-  if (typeof object !== 'object') {
-    return formula.replaceAll(startKey, manageFieldValue(object));
-  }
-
-  if (!isEmpty(object)) {
+  if (typeof object === 'object' && !isEmpty(object)) {
     const startIndex = formula.indexOf(startKey);
 
     let fieldToReplace = '';
@@ -117,7 +115,7 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
     );
   }
 
-  return formula;
+  return formula.replaceAll(startKey, manageFieldValue(object));
 };
 
 const manageFieldValue = (value: any) => {
