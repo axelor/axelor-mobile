@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {LegacyRef, useMemo} from 'react';
+import React, {LegacyRef, useCallback, useMemo} from 'react';
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
@@ -24,9 +24,9 @@ import {
   TextInputContentSizeChangeEventData,
   TextStyle,
 } from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {useWritingType} from '../../../theme/writingTheme';
+import {useThemeColor, useWritingType} from '../../../theme';
 import {useConfig} from '../../../config/ConfigContext';
+import {checkNullString} from '../../../utils';
 
 interface InputProps {
   style?: any;
@@ -78,12 +78,23 @@ const Input = ({
     };
   }, [Colors.text, multiline, writingStyle]);
 
+  const onValueChange = useCallback(
+    _value => {
+      if (checkNullString(_value)) {
+        onChange(null);
+      } else {
+        onChange(_value);
+      }
+    },
+    [onChange],
+  );
+
   return (
     <TextInput
       ref={inputRef}
       style={[defaultStyle, style]}
       value={value}
-      onChangeText={onChange}
+      onChangeText={onValueChange}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
       autoCapitalize="none"
