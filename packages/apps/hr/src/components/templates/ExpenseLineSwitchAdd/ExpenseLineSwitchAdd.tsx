@@ -16,14 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
+import {
+  useDispatch,
+  useNavigation,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {
   CircleButton,
   NumberBubble,
   Text,
-  capitalizeFirstLetter,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
 import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
@@ -42,6 +46,7 @@ const ExpenseLineSwitchAdd = ({
   mode,
   onChangeSwicth,
 }: ExpenseLineSwitchAddProps) => {
+  const I18n = useTranslator();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
@@ -88,39 +93,58 @@ const ExpenseLineSwitchAdd = ({
       kilometricExpenseLineList?.length > 0
     );
   }, [generalExpenseLineList, kilometricExpenseLineList]);
+
   const isAddButton = useMemo(
     () => expense?.statusSelect === Expense.statusSelect.Draft,
     [expense],
   );
 
-  const renderToggle = () => {
+  const renderCircleButton = useCallback(() => {
+    return (
+      isAddButton && (
+        <CircleButton
+          size={38}
+          iconName="plus"
+          style={!displayToggle && styles.indicatorCircleButton}
+          onPress={() =>
+            navigation.navigate('ExpenseLineFormScreen', {
+              idExpense: expense?.id,
+              versionExpense: expense?.version,
+              modeExpense: mode,
+            })
+          }
+        />
+      )
+    );
+  }, [
+    displayToggle,
+    expense?.id,
+    expense?.version,
+    isAddButton,
+    mode,
+    navigation,
+  ]);
+
+  const renderToggle = useCallback(() => {
     return (
       <View style={styles.containerToggle}>
         <ExpenseLineTypeSwitch
           onChange={onChangeSwicth}
           isAddButton={isAddButton}
         />
-        {isAddButton && (
-          <CircleButton
-            size={38}
-            iconName="plus"
-            onPress={() =>
-              navigation.navigate('ExpenseLineFormScreen', {
-                idExpense: expense?.id,
-                versionExpense: expense?.version,
-                modeExpense: mode,
-              })
-            }
-          />
-        )}
+        {renderCircleButton()}
       </View>
     );
-  };
+  }, [isAddButton, onChangeSwicth, renderCircleButton]);
 
-  const renderTitle = () => {
+  const renderTitle = useCallback(() => {
     return (
       <View style={styles.containerTitle}>
-        <Text style={styles.title}>{capitalizeFirstLetter(mode)}</Text>
+        <Text style={styles.title}>
+          {mode === ExpenseLine.modes.general
+            ? I18n.t('Hr_General')
+            : I18n.t('Hr_Kilometric')}
+        </Text>
         <View style={styles.row}>
           <NumberBubble
             number={
@@ -131,24 +155,18 @@ const ExpenseLineSwitchAdd = ({
             color={Colors.inverseColor}
             isNeutralBackground={true}
           />
-          {isAddButton && (
-            <CircleButton
-              style={styles.indicatorCircleButton}
-              size={38}
-              iconName="plus"
-              onPress={() =>
-                navigation.navigate('ExpenseLineFormScreen', {
-                  idExpense: expense?.id,
-                  versionExpense: expense?.version,
-                  modeExpense: mode,
-                })
-              }
-            />
-          )}
+          {renderCircleButton()}
         </View>
       </View>
     );
-  };
+  }, [
+    Colors.inverseColor,
+    I18n,
+    mode,
+    renderCircleButton,
+    totalNumberExpenseGeneral,
+    totalNumberExpenseKilomectric,
+  ]);
 
   return displayToggle ? renderToggle() : renderTitle();
 };
