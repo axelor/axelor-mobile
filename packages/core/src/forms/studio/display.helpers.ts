@@ -22,6 +22,7 @@ import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
 import {
   combinedFormula,
   createFormulaFunction,
+  manageDependsOnFormula,
   reverseFormula,
 } from './formula.helpers';
 
@@ -190,7 +191,7 @@ const manageContentOfModel = (
 
   items
     .sort((a, b) => a.sequence - b.sequence)
-    .forEach(item => {
+    .forEach((item, _, self) => {
       switch (item.type) {
         case 'panel':
           lastPanel = item.name;
@@ -303,6 +304,10 @@ const manageContentOfModel = (
             config.widget = 'custom';
             config.customComponent = CustomSearchBar;
             config.options = {item};
+          }
+
+          if (item.valueExpr != null) {
+            config.dependsOn = manageDependsOnFormula(item.valueExpr, self);
           }
 
           formFields[item.name] = config;

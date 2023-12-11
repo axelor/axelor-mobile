@@ -46,6 +46,7 @@ export const mapStudioFieldsWithFormula = (
     readonlyIf: evaluateFormulaWithObject(item.readonlyIf, object),
     showIf: evaluateFormulaWithObject(item.showIf, object),
     hideIf: evaluateFormulaWithObject(item.hideIf, object),
+    valueExpr: evaluateFormulaWithObject(item.valueExpr, object),
   }));
 };
 
@@ -157,4 +158,24 @@ export const reverseFormula = (formula: string): string => {
   }
 
   return `!(${formula})`;
+};
+
+export const manageDependsOnFormula = (formula: string, fields: any[]) => {
+  if (
+    checkNullString(formula) ||
+    !Array.isArray(fields) ||
+    fields.length === 0
+  ) {
+    return undefined;
+  }
+
+  let dependsOn = {};
+
+  fields.forEach(({name}) => {
+    if (formula.includes(name)) {
+      dependsOn[name] = createFormulaFunction(formula);
+    }
+  });
+
+  return dependsOn;
 };
