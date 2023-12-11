@@ -77,17 +77,21 @@ const OperationOrderDetailsCard = ({
       upperTexts={{
         items: [
           {isTitle: true, displayText: manufOrder},
-          {displayText: operationName},
+          {displayText: operationName, numberOfLines: 2},
           {
             iconName: 'pallet',
             indicatorText: workcenter + ' ' + (machine ? `- ${machine}` : ''),
           },
           {
-            displayText: `${startDate.title} ${startDate.value}`,
-            hideIf: startDate == null,
+            iconName: 'calendar',
+            indicatorText: startDate.title,
+            displayText: startDate.value,
+            hideIfNull: startDate == null,
           },
           {
-            displayText: `${endDate.title} ${endDate.value}`,
+            iconName: 'calendar-check',
+            indicatorText: endDate.title,
+            displayText: endDate.value,
             hideIf:
               status === OperationOrder.status.InProgress ||
               status === OperationOrder.status.StandBy ||
@@ -117,7 +121,7 @@ const OperationOrderDetailsCard = ({
   );
 };
 
-const getStyles = color =>
+const getStyles = (color: string) =>
   StyleSheet.create({
     border: {borderLeftWidth: 7, borderLeftColor: color},
   });

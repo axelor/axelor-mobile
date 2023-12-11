@@ -17,7 +17,8 @@
  */
 
 import {ThemeColors, Color} from '@axelor/aos-mobile-ui';
-import {TranslatorProps, formatDateTime} from '@axelor/aos-mobile-core';
+import {TranslatorProps} from '@axelor/aos-mobile-core';
+import {getDates} from '../utils';
 
 class ManufacturingOrder {
   static status = {
@@ -138,57 +139,16 @@ class ManufacturingOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title?: string; value?: string}[] => {
-    const formatDate = date => {
-      if (date == null) {
-        return '';
-      }
-
-      return formatDateTime(date, I18n.t('Base_DateTimeFormat'));
-    };
-
-    switch (status) {
-      case ManufacturingOrder.status.Draft:
-      case ManufacturingOrder.status.Planned:
-        return [
-          {
-            title: I18n.t('Manufacturing_PlannedStartDate') + ':',
-            value: formatDate(plannedStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: formatDate(plannedEndDate),
-          },
-        ];
-      case ManufacturingOrder.status.InProgress:
-      case ManufacturingOrder.status.StandBy:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: formatDate(realStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: formatDate(plannedEndDate),
-          },
-        ];
-      case ManufacturingOrder.status.Finished:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: formatDate(realStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_RealEndDate') + ':',
-            value: formatDate(realEndDate),
-          },
-        ];
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by operation order`,
-        );
-        return [];
-    }
+  ): {title: string; value: string}[] => {
+    return getDates(
+      status,
+      this.status,
+      plannedStartDate,
+      plannedEndDate,
+      realStartDate,
+      realEndDate,
+      I18n,
+    );
   };
 }
 

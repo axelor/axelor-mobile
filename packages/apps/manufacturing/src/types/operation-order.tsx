@@ -18,11 +18,11 @@
 
 import {
   calculateDiff,
-  formatDateTime,
   StopwatchType,
   TranslatorProps,
 } from '@axelor/aos-mobile-core';
 import {Color, ThemeColors} from '@axelor/aos-mobile-ui';
+import {getDates} from '../utils';
 
 class OperationOrder {
   static status = {
@@ -92,57 +92,16 @@ class OperationOrder {
     realStartDate: string,
     realEndDate: string,
     I18n: TranslatorProps,
-  ): {title?: string; value?: string}[] => {
-    const formatDate = date => {
-      if (date == null) {
-        return '';
-      }
-
-      return formatDateTime(date, I18n.t('Base_DateTimeFormat'));
-    };
-
-    switch (status) {
-      case OperationOrder.status.Draft:
-      case OperationOrder.status.Planned:
-        return [
-          {
-            title: I18n.t('Manufacturing_PlannedStartDate') + ':',
-            value: formatDate(plannedStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: formatDate(plannedEndDate),
-          },
-        ];
-      case OperationOrder.status.InProgress:
-      case OperationOrder.status.StandBy:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: formatDate(realStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_PlannedEndDate') + ':',
-            value: formatDate(plannedEndDate),
-          },
-        ];
-      case OperationOrder.status.Finished:
-        return [
-          {
-            title: I18n.t('Manufacturing_RealStartDate') + ':',
-            value: formatDate(realStartDate),
-          },
-          {
-            title: I18n.t('Manufacturing_RealEndDate') + ':',
-            value: formatDate(realEndDate),
-          },
-        ];
-      default:
-        console.warn(
-          `Status provided with value ${status} is not supported by operation order`,
-        );
-        return [];
-    }
+  ): {title: string; value: string}[] => {
+    return getDates(
+      status,
+      this.status,
+      plannedStartDate,
+      plannedEndDate,
+      realStartDate,
+      realEndDate,
+      I18n,
+    );
   };
 
   static getTimerState = (
