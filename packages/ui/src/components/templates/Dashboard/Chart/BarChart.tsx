@@ -34,6 +34,7 @@ interface BarCharProps {
   spacing?: number;
   horizontal?: boolean;
   title?: string;
+  rotateLabel?: boolean;
 }
 
 const BarChart = ({
@@ -43,10 +44,15 @@ const BarChart = ({
   spacing,
   horizontal = false,
   title,
+  rotateLabel = true,
 }: BarCharProps) => {
   const Colors = useThemeColor();
   const groupedData = mergeDataForGroupedBars(datasets);
-  const barChartData = transformToBarChartData(groupedData, Colors);
+  const barChartData = transformToBarChartData(
+    groupedData,
+    Colors,
+    rotateLabel,
+  );
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;

@@ -41,7 +41,7 @@ export const mergeDataForGroupedBars = datasets => {
   return mergedData;
 };
 
-export const transformToBarChartData = (groupedData, Colors) => {
+export const transformToBarChartData = (groupedData, Colors, rotateLabel) => {
   let finalData = [];
 
   groupedData.forEach(group => {
@@ -55,7 +55,7 @@ export const transformToBarChartData = (groupedData, Colors) => {
           color: Colors.secondaryColor_dark.background,
           top: 10,
           left: 5,
-          transform: [{rotate: '45deg'}],
+          transform: rotateLabel ? [{rotate: '45deg'}] : [],
         },
       });
     });
