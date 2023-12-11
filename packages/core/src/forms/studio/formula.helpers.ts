@@ -44,6 +44,8 @@ export const mapStudioFieldsWithFormula = (
     ...item,
     requiredIf: evaluateFormulaWithObject(item.requiredIf, object),
     readonlyIf: evaluateFormulaWithObject(item.readonlyIf, object),
+    showIf: evaluateFormulaWithObject(item.showIf, object),
+    hideIf: evaluateFormulaWithObject(item.hideIf, object),
   }));
 };
 
@@ -134,4 +136,27 @@ const findField = (string: string, object: Object) => {
       }
     }
   }
+};
+
+export const combinedFormula = (
+  separator: string,
+  ...allFormula: string[]
+): string => {
+  let expr = '';
+
+  for (const formula of allFormula) {
+    if (!checkNullString(formula)) {
+      expr += checkNullString(expr) ? formula : ` ${separator} ` + formula;
+    }
+  }
+
+  return expr;
+};
+
+export const reverseFormula = (formula: string): string => {
+  if (checkNullString(formula)) {
+    return undefined;
+  }
+
+  return `!(${formula})`;
 };
