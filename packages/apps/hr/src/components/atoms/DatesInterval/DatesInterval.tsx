@@ -39,72 +39,51 @@ const DatesInterval = ({startDate, endDate, style}: DateIntervalProps) => {
     [endDate, I18n],
   );
 
+  const BoldText = props => (
+    <Text style={styles.boldText}>{props.children}</Text>
+  );
+
   const renderDates = () => {
     if (_startDate === _endDate || _endDate == null) {
+      // prettier-ignore
       return (
-        <>
-          <Text style={styles.space}>{_startDate.date}</Text>
-          <Text writingType="important" style={styles.space}>
-            {_startDate.month}
-          </Text>
-          <Text>{_startDate.year}</Text>
-          {_endDate == null && <Text> - ...</Text>}
-        </>
+        <Text>
+          {_startDate.date} <BoldText>{_startDate.month}</BoldText> {_startDate.year}
+        </Text>
       );
     } else if (
       _startDate.month === _endDate.month &&
       _startDate.year === _endDate.year
     ) {
+      // prettier-ignore
       return (
-        <>
-          <Text style={styles.space}>
-            {_startDate.date} - {_endDate.date}
-          </Text>
-          <Text writingType="important" style={styles.space}>
-            {_startDate.month}
-          </Text>
-          <Text>{_startDate.year}</Text>
-        </>
+        <Text>
+          <BoldText>{_startDate.date} - {_endDate.date}</BoldText>{` ${_startDate.month} ${_startDate.year}`}
+        </Text>
       );
     } else if (_startDate.year === _endDate.year) {
+      // prettier-ignore
       return (
-        <>
-          <Text style={styles.space}>{_startDate.date}</Text>
-          <Text writingType="important" style={styles.space}>
-            {_startDate.month}
-          </Text>
-          <Text style={styles.space}>{`- ${_endDate.date}`}</Text>
-          <Text writingType="important" style={styles.space}>
-            {_endDate.month}
-          </Text>
-          <Text>{_startDate.year}</Text>
-        </>
+        <Text>
+          {_startDate.date} <BoldText>{_startDate.month}</BoldText>{` - ${_endDate.date} `}<BoldText>{_endDate.month}</BoldText> {_startDate.year}
+        </Text>
       );
     } else {
+      // prettier-ignore
       return (
-        <>
-          <Text writingType="important" style={styles.space}>
-            {_startDate.month}
-          </Text>
-          <Text style={styles.space}>{`${_startDate.year} -`}</Text>
-          <Text writingType="important" style={styles.space}>
-            {_endDate.month}
-          </Text>
-          <Text>{_endDate.year}</Text>
-        </>
+        <Text>
+          <BoldText>{_startDate.month}</BoldText>{` ${_startDate.year} - `}<BoldText>{_endDate.month}</BoldText> {_endDate.year}
+        </Text>
       );
     }
   };
 
-  return <View style={[styles.container, style]}>{renderDates()}</View>;
+  return <View style={style}>{renderDates()}</View>;
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  space: {
-    marginRight: 5,
+  boldText: {
+    fontWeight: '900',
   },
 });
 

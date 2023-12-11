@@ -120,7 +120,10 @@ const getStyles = color =>
       fontSize: 15,
       fontWeight: null,
     },
-    textUnit: {alignSelf: 'flex-end', lineHeight: 25},
+    textUnit: {
+      alignSelf: 'flex-end',
+      lineHeight: 25,
+    },
   });
 
 export default TimesheetCard;
