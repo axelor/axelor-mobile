@@ -20,6 +20,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   generateInifiniteScrollCases,
   handlerApiCall,
+  updateAgendaItems,
 } from '@axelor/aos-mobile-core';
 import {
   fetchInventory,
@@ -134,6 +135,9 @@ const inventorySlice = createSlice({
     builder.addCase(updateInventory.fulfilled, (state, action) => {
       state.loading = false;
       state.inventory = action.payload;
+      state.inventoryList = updateAgendaItems(state.inventoryList, [
+        action.payload,
+      ]);
     });
   },
 });
