@@ -44,6 +44,7 @@ const InternalMoveCreationViewAll = ({
   return (
     <ViewAllContainer
       style={styles.container}
+      disabled={lines?.length === 0}
       onViewPress={() => setIsAlertVisible(true)}
       translator={I18n.t}>
       <View style={styles.title}>

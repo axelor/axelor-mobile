@@ -125,6 +125,7 @@ const InternalMoveCreationScreen = ({navigation}) => {
                 trackingNumber: newLine?.trackingNumber,
                 realQty: movedQty,
                 unit: newLine?.product?.unit,
+                id: newLine?.id,
               });
               return prevLines;
             });
@@ -184,6 +185,8 @@ const InternalMoveCreationScreen = ({navigation}) => {
         <InternalMoveCreationAlert
           isAlertVisible={isAlertVisible}
           setIsAlertVisible={setIsAlertVisible}
+          lines={lines}
+          setLines={setLines}
         />
       </KeyboardAvoidingScrollView>
     </Screen>
