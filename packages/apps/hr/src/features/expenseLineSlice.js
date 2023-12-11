@@ -166,19 +166,19 @@ export const updateExpenseLine = createAsyncThunk(
 
 const initialState = {
   loadingExpenseLine: true,
-  moreLoading: false,
-  isListEnd: false,
+  moreLoading: true,
+  isListEnd: true,
   expenseLineList: [],
 
   loadingGeneralExpenseLine: true,
-  moreLoadingGeneralExpenseLine: false,
-  isListEndGeneralExpenseLine: false,
+  moreLoadingGeneralExpenseLine: true,
+  isListEndGeneralExpenseLine: true,
   generalExpenseLineList: [],
   totalNumberExpenseGeneral: 0,
 
   loadingKilometricExpenseLine: true,
-  moreLoadingKilometricExpenseLine: false,
-  isListEndKilometricExpenseLine: false,
+  moreLoadingKilometricExpenseLine: true,
+  isListEndKilometricExpenseLine: true,
   kilometricExpenseLineList: [],
   totalNumberExpenseKilomectric: 0,
 };

@@ -244,13 +244,13 @@ const initialState = {
   expenseDraftList: [],
 
   loadingMyExpense: true,
-  moreLoadingMyExpense: false,
-  isListEndMyExpense: false,
+  moreLoadingMyExpense: true,
+  isListEndMyExpense: true,
   myExpenseList: [],
 
   loadingExpenseToValidate: true,
-  moreLoadingExpenseToValidate: false,
-  isListEndExpenseToValidate: false,
+  moreLoadingExpenseToValidate: true,
+  isListEndExpenseToValidate: true,
   expenseToValidateList: [],
   totalNumberExpenseToValidate: 0,
 
