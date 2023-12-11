@@ -83,20 +83,13 @@ const ExpenseLineSwitchAdd = ({
   }, [generalExpenseLineList, kilometricExpenseLineList, onChangeSwicth]);
 
   const displayToggle = useMemo(() => {
-    if (
-      generalExpenseLineList != null &&
+    return (
       generalExpenseLineList?.length > 0 &&
-      kilometricExpenseLineList != null &&
       kilometricExpenseLineList?.length > 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }, [generalExpenseLineList, kilometricExpenseLineList]);
-
   const isAddButton = useMemo(
-    () => expense.statusSelect === Expense.statusSelect.Draft,
+    () => expense?.statusSelect === Expense.statusSelect.Draft,
     [expense],
   );
 
