@@ -271,16 +271,6 @@ const manageContentOfModel = (
             widget: widget,
           };
 
-          if (item.contextField != null) {
-            config.hideIf = ({storeState}) => {
-              const obejctValue =
-                storeState?.metaJsonField?.object?.[item.contextField];
-
-              const targetValue = parseInt(item.contextFieldValue, 10);
-              return obejctValue?.id !== targetValue;
-            };
-          }
-
           if (item.type === 'integer') {
             config.validationOptions = {
               integer: {},
