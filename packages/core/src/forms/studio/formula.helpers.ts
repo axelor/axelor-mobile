@@ -20,6 +20,33 @@ import {checkNullString, fetchJsonField, isEmpty} from '../../utils';
 
 const RECORD = '$record';
 
+const removeContextedFields = (fields: any[], object: any): any[] => {
+  if (!Array.isArray(fields) || fields.length === 0) {
+    return [];
+  }
+
+  return fields.filter(item => {
+    if (item.contextField == null) {
+      return true;
+    }
+
+    return (
+      object[item.contextField]?.id === parseInt(item.contextFieldValue, 10)
+    );
+  });
+};
+
+export const mapStudioFieldsWithFormula = (
+  fields: any[],
+  object: any,
+): any[] => {
+  return removeContextedFields(fields, object).map(item => ({
+    ...item,
+    requiredIf: evaluateFormulaWithObject(item.requiredIf, object),
+    readonlyIf: evaluateFormulaWithObject(item.readonlyIf, object),
+  }));
+};
+
 export const createFormulaFunction = (formula: string) => {
   return ({objectState}) => {
     if (checkNullString(formula)) {
