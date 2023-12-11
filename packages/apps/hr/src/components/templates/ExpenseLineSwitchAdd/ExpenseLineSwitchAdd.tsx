@@ -16,12 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
-import {CircleButton} from '@axelor/aos-mobile-ui';
+import {useDispatch, useNavigation, useSelector} from '@axelor/aos-mobile-core';
+import {
+  CircleButton,
+  NumberBubble,
+  Text,
+  capitalizeFirstLetter,
+  useThemeColor,
+} from '@axelor/aos-mobile-ui';
 import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
-import {Expense} from '../../../types';
+import {
+  searchGeneralExpenseLines,
+  searchKilometricExpenseLines,
+} from '../../../features/expenseLineSlice';
+import {Expense, ExpenseLine} from '../../../types';
 
 interface ExpenseLineSwitchAddProps {
   mode: string;
@@ -33,43 +43,146 @@ const ExpenseLineSwitchAdd = ({
   onChangeSwicth,
 }: ExpenseLineSwitchAddProps) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const Colors = useThemeColor();
 
   const {expense} = useSelector((state: any) => state.expense);
+  const {
+    generalExpenseLineList,
+    totalNumberExpenseGeneral,
+    kilometricExpenseLineList,
+    totalNumberExpenseKilomectric,
+  } = useSelector((state: any) => state.expenseLine);
+
+  useEffect(() => {
+    dispatch(
+      (searchKilometricExpenseLines as any)({expenseId: expense?.id, page: 0}),
+    );
+
+    dispatch(
+      (searchGeneralExpenseLines as any)({expenseId: expense?.id, page: 0}),
+    );
+  }, [dispatch, expense]);
+
+  useEffect(() => {
+    if (
+      kilometricExpenseLineList == null ||
+      kilometricExpenseLineList?.length === 0
+    ) {
+      onChangeSwicth(_mode => {
+        return ExpenseLine.modes.general;
+      });
+    } else if (
+      generalExpenseLineList == null ||
+      generalExpenseLineList?.length === 0
+    ) {
+      onChangeSwicth(_mode => {
+        return ExpenseLine.modes.kilometric;
+      });
+    }
+  }, [generalExpenseLineList, kilometricExpenseLineList, onChangeSwicth]);
+
+  const displayToggle = useMemo(() => {
+    if (
+      generalExpenseLineList != null &&
+      generalExpenseLineList?.length > 0 &&
+      kilometricExpenseLineList != null &&
+      kilometricExpenseLineList?.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [generalExpenseLineList, kilometricExpenseLineList]);
 
   const isAddButton = useMemo(
     () => expense.statusSelect === Expense.statusSelect.Draft,
     [expense],
   );
 
-  return (
-    <View style={styles.container}>
-      <ExpenseLineTypeSwitch
-        onChange={onChangeSwicth}
-        isAddButton={isAddButton}
-      />
-      {isAddButton && (
-        <CircleButton
-          size={38}
-          iconName="plus"
-          onPress={() =>
-            navigation.navigate('ExpenseLineFormScreen', {
-              idExpense: expense?.id,
-              versionExpense: expense?.version,
-              modeExpense: mode,
-            })
-          }
+  const renderToggle = () => {
+    return (
+      <View style={styles.containerToggle}>
+        <ExpenseLineTypeSwitch
+          onChange={onChangeSwicth}
+          isAddButton={isAddButton}
         />
-      )}
-    </View>
-  );
+        {isAddButton && (
+          <CircleButton
+            size={38}
+            iconName="plus"
+            onPress={() =>
+              navigation.navigate('ExpenseLineFormScreen', {
+                idExpense: expense?.id,
+                versionExpense: expense?.version,
+                modeExpense: mode,
+              })
+            }
+          />
+        )}
+      </View>
+    );
+  };
+
+  const renderTitle = () => {
+    return (
+      <View style={styles.containerTitle}>
+        <Text style={styles.title}>{capitalizeFirstLetter(mode)}</Text>
+        <View style={styles.row}>
+          <NumberBubble
+            number={
+              mode === ExpenseLine.modes.general
+                ? totalNumberExpenseGeneral
+                : totalNumberExpenseKilomectric
+            }
+            color={Colors.inverseColor}
+            isNeutralBackground={true}
+          />
+          {isAddButton && (
+            <CircleButton
+              style={styles.indicatorCircleButton}
+              size={38}
+              iconName="plus"
+              onPress={() =>
+                navigation.navigate('ExpenseLineFormScreen', {
+                  idExpense: expense?.id,
+                  versionExpense: expense?.version,
+                  modeExpense: mode,
+                })
+              }
+            />
+          )}
+        </View>
+      </View>
+    );
+  };
+
+  return displayToggle ? renderToggle() : renderTitle();
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerToggle: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
+  },
+  containerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 24,
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  indicatorCircleButton: {
+    marginLeft: 10,
   },
 });
 
