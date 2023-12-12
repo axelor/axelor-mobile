@@ -29,9 +29,7 @@ import {
   updateExpenseLine as _updateExpenseLine,
   deleteExpenseLine as _deleteExpenseLine,
 } from '../api/expense-line-api';
-import {ExpenseLine} from '../types';
-import {fetchExpenseById} from './expenseSlice';
-import {updateExpense} from './expenseSlice';
+import {fetchExpenseById, updateExpense} from './expenseSlice';
 
 export const fetchExpenseLine = createAsyncThunk(
   'expenseLine/fetchExpenseLine',
@@ -135,7 +133,7 @@ export const createExpenseLine = createAsyncThunk(
 
 export const updateExpenseLine = createAsyncThunk(
   'expenseLine/updateExpenseLine',
-  async function (data, {getState}) {
+  async function (data, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _updateExpenseLine,
       data,
@@ -143,23 +141,17 @@ export const updateExpenseLine = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction:
-          data?.expenseId == null
-            ? _searchExpenseLines
-            : data.mode === ExpenseLine.modes.general
-            ? _searchGeneralExpenseLines
-            : _searchKilometricExpenseLines,
-        action:
-          data?.expenseId == null
-            ? 'Hr_SliceAction_FetchExpenseLines'
-            : data?.mode === ExpenseLine.modes.general
-            ? 'Hr_SliceAction_SearchGeneralExpenseLines'
-            : 'Hr_SliceAction_SearchKilometricExpenseLines',
-        getState,
-        data: {expenseId: data.expenseId, userId: data?.userId},
-        responseOptions: {isArrayResponse: true},
-      });
+      if (data?.expenseId != null) {
+        dispatch(fetchExpenseById({ExpenseId: data?.expenseId}));
+      } else {
+        return handlerApiCall({
+          fetchFunction: _searchExpenseLines,
+          action: 'Hr_SliceAction_FetchExpenseLines',
+          getState,
+          data: {userId: data?.userId},
+          responseOptions: {isArrayResponse: true},
+        });
+      }
     });
   },
 );
@@ -240,15 +232,6 @@ const expenseLineSlice = createSlice({
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
         state.expenseLineList = action.payload;
-      } else {
-        if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
-          state.loadingGeneralExpenseLine = false;
-          state.generalExpenseLineList = action.payload;
-        }
-        if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
-          state.loadingKilometricExpenseLine = false;
-          state.kilometricExpenseLineList = action.payload;
-        }
       }
     });
   },
