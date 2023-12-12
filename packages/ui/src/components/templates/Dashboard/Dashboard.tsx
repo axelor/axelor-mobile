@@ -51,7 +51,7 @@ const getGraphWidth = (nbGraphInLine: number) => {
   }
 };
 
-const BarChartDashboardRender = (datasets, key, title, widthGraph) => {
+const BarChartRender = (datasets, key, title, widthGraph) => {
   return (
     <BarChart
       key={key}
@@ -62,7 +62,7 @@ const BarChartDashboardRender = (datasets, key, title, widthGraph) => {
   );
 };
 
-const LineChartDashboardRender = (datasets, key, title, widthGraph) => {
+const LineChartRender = (datasets, key, title, widthGraph) => {
   return (
     <LineChart
       key={key}
@@ -91,14 +91,14 @@ const renderChart = (graph, indexGraph, nbGraphInLine) => {
 
   switch (type) {
     case Chart.chartType.bar:
-      return BarChartDashboardRender(dataList, indexGraph, title, widthGraph);
+      return BarChartRender(dataList, indexGraph, title, widthGraph);
 
     case Chart.chartType.pie:
     case Chart.chartType.donut:
       return PieChartRender(dataList, indexGraph, title, widthGraph, type);
 
     case Chart.chartType.line:
-      return LineChartDashboardRender(dataList, indexGraph, title, widthGraph);
+      return LineChartRender(dataList, indexGraph, title, widthGraph);
 
     default:
       return null;
