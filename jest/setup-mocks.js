@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {lightTheme} from '@axelor/aos-mobile-ui';
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native/jest/setup';
 
@@ -124,4 +123,8 @@ jest.mock('react-native-pell-rich-editor', () => ({
   actions: jest.fn(),
   RichEditor: jest.fn(),
   RichToolbar: jest.fn(),
+}));
+
+jest.mock('@react-native-clipboard/clipboard', () => ({
+  default: jest.fn(),
 }));
