@@ -99,6 +99,8 @@ const ExpenseLineSwitchAdd = ({
     [expense],
   );
 
+  const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
+
   const renderCircleButton = useCallback(() => {
     return (
       isAddButton && (
@@ -123,6 +125,7 @@ const ExpenseLineSwitchAdd = ({
     isAddButton,
     mode,
     navigation,
+    styles,
   ]);
 
   const renderToggle = useCallback(() => {
@@ -135,17 +138,17 @@ const ExpenseLineSwitchAdd = ({
         {renderCircleButton()}
       </View>
     );
-  }, [isAddButton, onChangeSwicth, renderCircleButton]);
+  }, [isAddButton, onChangeSwicth, renderCircleButton, styles.containerToggle]);
 
   const renderTitle = useCallback(() => {
     return (
       <View style={styles.containerTitle}>
-        <Text style={styles.title}>
-          {mode === ExpenseLine.modes.general
-            ? I18n.t('Hr_General')
-            : I18n.t('Hr_Kilometric')}
-        </Text>
-        <View style={styles.row}>
+        <View style={styles.containerChildrenTitle}>
+          <Text style={styles.title}>
+            {mode === ExpenseLine.modes.general
+              ? I18n.t('Hr_General')
+              : I18n.t('Hr_Kilometric')}
+          </Text>
           <NumberBubble
             number={
               mode === ExpenseLine.modes.general
@@ -154,9 +157,10 @@ const ExpenseLineSwitchAdd = ({
             }
             color={Colors.inverseColor}
             isNeutralBackground={true}
+            style={styles.bubbleStyle}
           />
-          {renderCircleButton()}
         </View>
+        {renderCircleButton()}
       </View>
     );
   }, [
@@ -164,6 +168,7 @@ const ExpenseLineSwitchAdd = ({
     I18n,
     mode,
     renderCircleButton,
+    styles,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
   ]);
@@ -171,30 +176,36 @@ const ExpenseLineSwitchAdd = ({
   return displayToggle ? renderToggle() : renderTitle();
 };
 
-const styles = StyleSheet.create({
-  containerToggle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  containerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-    marginHorizontal: 24,
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  indicatorCircleButton: {
-    marginLeft: 10,
-  },
-});
+const getStyles = isAddButton =>
+  StyleSheet.create({
+    containerToggle: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    containerTitle: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 10,
+      marginHorizontal: 24,
+      justifyContent: 'space-between',
+      marginBottom: !isAddButton ? 10 : 0,
+    },
+    containerChildrenTitle: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    bubbleStyle: {
+      marginLeft: 10,
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    indicatorCircleButton: {
+      marginLeft: 10,
+    },
+  });
 
 export default ExpenseLineSwitchAdd;
