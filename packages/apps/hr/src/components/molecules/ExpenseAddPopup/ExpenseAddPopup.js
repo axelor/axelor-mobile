@@ -16,20 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Alert, useThemeColor, LabelText, Picker} from '@axelor/aos-mobile-ui';
+import {Alert, useThemeColor, LabelText} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
   useDispatch,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {
-  createExpense,
-  searchExpenseDraft,
-  updateExpense,
-} from '../../../features/expenseSlice';
+import {createExpense, updateExpense} from '../../../features/expenseSlice';
+import {DraftExpensePicker} from '../../templates';
 
 const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   const I18n = useTranslator();
@@ -37,14 +34,9 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {expenseDraftList} = useSelector(state => state.expense);
   const {user} = useSelector(state => state.user);
 
   const [expenseSelected, setExpenseSelected] = useState(null);
-
-  useEffect(() => {
-    dispatch(searchExpenseDraft({userId: user?.id}));
-  }, [dispatch, user?.id]);
 
   const createExpenseAPI = useCallback(() => {
     const _expense = {
@@ -83,14 +75,7 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
       }}
       translator={I18n.t}>
       <View style={styles.container}>
-        <Picker
-          listItems={expenseDraftList}
-          onValueChange={setExpenseSelected}
-          labelField="expenseSeq"
-          valueField="id"
-          title={I18n.t('Hr_Expense')}
-          isValueItem={true}
-        />
+        <DraftExpensePicker onChange={setExpenseSelected} />
         <TouchableOpacity onPress={createExpenseAPI} style={styles.labelText}>
           <LabelText
             iconName="plus"

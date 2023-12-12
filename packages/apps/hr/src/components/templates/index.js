@@ -20,6 +20,7 @@ export {default as BillableSwitchCard} from './BillableSwitchCard/BillableSwitch
 export {default as CityFormInput} from './CityFormInput/CityFormInput';
 export {default as CurrencySearchBar} from './CurrencySearchBar/CurrencySearchBar';
 export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncrement';
+export {default as DraftExpensePicker} from './DraftExpensePicker/DraftExpensePicker';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
 export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
