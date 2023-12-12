@@ -48,7 +48,11 @@ export const hr_modelAPI: ObjectFields = {
     expenseSeq: schemaContructor.string(),
   }),
   hr_expenseLines: schemaContructor.object({
-    expense: schemaContructor.subObject(),
+    expense: schemaContructor.subObject().concat(
+      schemaContructor.object({
+        expenseSeq: schemaContructor.string(),
+      }),
+    ),
     expenseDate: schemaContructor.string(),
     fromCity: schemaContructor.string(),
     toCity: schemaContructor.string(),
