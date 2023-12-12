@@ -20,6 +20,7 @@ module.exports = {
       ...config.resolve.alias,
       'react-native$': 'react-native-web',
       '@storybook/react-native': '@storybook/react',
+      'react-native-linear-gradient': 'react-native-web-linear-gradient',
     };
     return config;
   },
