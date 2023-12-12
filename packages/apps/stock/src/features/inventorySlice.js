@@ -71,10 +71,10 @@ export const updateInventory = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateInventoryStatus',
       getState,
       responseOptions: {showToast: true, isArrayResponse: false},
-    }).then(object =>
+    }).then(() =>
       handlerApiCall({
         fetchFunction: fetchInventory,
-        data: {inventoryId: object.inventoryId},
+        data: {inventoryId: data.inventoryId},
         action: 'Stock_SliceAction_FetchInventoryById',
         getState,
         responseOptions: {isArrayResponse: false},
