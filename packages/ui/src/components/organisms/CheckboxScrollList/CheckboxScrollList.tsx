@@ -61,7 +61,7 @@ const CheckboxScrollList = ({
 
   const _renderItem = ({item, index}) => {
     return (
-      <View style={[styles.renderContainer, styleRender]}>
+      <View style={[styles.renderContainer, styleRender]} key={index}>
         <Checkbox
           style={styles.renderCheckbox}
           iconColor={Colors.secondaryColor_dark}
