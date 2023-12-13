@@ -19,6 +19,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
+  Screen,
   ScrollList,
   HeaderContainer,
   ToggleSwitch,
@@ -26,7 +27,6 @@ import {
   useThemeColor,
   Picker,
   NumberBubble,
-  Screen,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
@@ -69,6 +69,7 @@ const ExpenseListScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(searchManagedEmployee({userId: user.id}));
+    dispatch(searchExpenseToValidate({page: 0, user: user}));
   }, [dispatch, user]);
 
   const fetchMyExpenseAPI = useCallback(
