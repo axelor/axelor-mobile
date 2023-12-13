@@ -43,7 +43,8 @@ export const mapStudioFields = (
 
     for (const modelField of modelFields) {
       const {_fields, _panels, _defaults} = manageContentOfModel(
-        metaJsonFields.filter(_item => _item.modelField === modelField),
+        metaJsonFields,
+        modelField,
         Colors,
       );
 
@@ -181,7 +182,8 @@ const hasPanelTitle = (item: any): boolean => {
 };
 
 const manageContentOfModel = (
-  items: any,
+  metaJsonFields: any[],
+  modelField: string,
   Colors: ThemeColors,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
@@ -189,9 +191,10 @@ const manageContentOfModel = (
   const defaults: any = {};
   let lastPanel = null;
 
-  items
+  metaJsonFields
     .sort((a, b) => a.sequence - b.sequence)
-    .forEach((item, _, self) => {
+    .filter(_item => _item.modelField === modelField)
+    .forEach(item => {
       switch (item.type) {
         case 'panel':
           lastPanel = item.name;
@@ -307,7 +310,10 @@ const manageContentOfModel = (
           }
 
           if (item.valueExpr != null) {
-            config.dependsOn = manageDependsOnFormula(item.valueExpr, self);
+            config.dependsOn = manageDependsOnFormula(
+              item.valueExpr,
+              metaJsonFields,
+            );
           }
 
           formFields[item.name] = config;
