@@ -26,18 +26,13 @@ import {
   useThemeColor,
   Picker,
   NumberBubble,
+  Screen,
 } from '@axelor/aos-mobile-ui';
-import {
-  FocusScreen,
-  useDispatch,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
+import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseCard, ExpenseWaitingValidationSearchBar} from '../../components';
 import {
   searchExpenseToValidate,
   searchMyExpense,
-  silenceSearchExpense,
   sendExpense,
   validateExpense,
 } from '../../features/expenseSlice';
@@ -74,10 +69,6 @@ const ExpenseListScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(searchManagedEmployee({userId: user.id}));
-  }, [dispatch, user]);
-
-  const refresh = useCallback(() => {
-    dispatch(silenceSearchExpense({page: 0, user: user, userId: user.id}));
   }, [dispatch, user]);
 
   const fetchMyExpenseAPI = useCallback(
@@ -171,7 +162,7 @@ const ExpenseListScreen = ({navigation}) => {
   );
 
   return (
-    <FocusScreen removeSpaceOnTop={true} fetcher={refresh}>
+    <Screen removeSpaceOnTop={true}>
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
@@ -248,7 +239,7 @@ const ExpenseListScreen = ({navigation}) => {
         isListEnd={ObjectToDisplay.isListEnd}
         translator={I18n.t}
       />
-    </FocusScreen>
+    </Screen>
   );
 };
 

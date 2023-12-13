@@ -227,28 +227,6 @@ export const searchExpenseToValidate = createAsyncThunk(
   },
 );
 
-export const silenceSearchExpense = createAsyncThunk(
-  'expense/silenceSearchExpense',
-  async function (data, {getState}) {
-    const expenseToValidate = await handlerApiCall({
-      fetchFunction: _searchExpenseToValidate,
-      data,
-      action: 'Hr_SliceAction_FetchExpenseToValidate',
-      getState,
-      responseOptions: {isArrayResponse: true, resturnTotalWithData: true},
-    });
-    const myExpense = await handlerApiCall({
-      fetchFunction: _searchMyExpense,
-      data,
-      action: 'Hr_SliceAction_FetchMyExpense',
-      getState,
-      responseOptions: {isArrayResponse: true},
-    });
-
-    return {expenseToValidate, myExpense};
-  },
-);
-
 export const fetchExpenseById = createAsyncThunk(
   'expense/fetchExpenseById',
   async function (data = {}, {getState}) {
@@ -271,6 +249,14 @@ export const deleteExpense = createAsyncThunk(
       action: 'Hr_SliceAction_DeleteExpense',
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: _searchMyExpense,
+        data: {userId: data?.userId},
+        action: 'Hr_SliceAction_FetchMyExpense',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -318,18 +304,18 @@ const expenseSlice = createSlice({
         manageTotal: true,
       },
     );
-    builder.addCase(silenceSearchExpense.fulfilled, (state, action) => {
-      state.myExpenseList = action.payload.myExpense;
-      state.expenseToValidateList = action.payload.expenseToValidate?.data;
-      state.totalNumberExpenseToValidate =
-        action.payload.expenseToValidate?.total;
-    });
     builder.addCase(searchExpenseDraft.pending, state => {
       state.loading = true;
     });
     builder.addCase(searchExpenseDraft.fulfilled, (state, action) => {
       state.loading = false;
       state.expenseDraftList = action.payload;
+    });
+    generateInifiniteScrollCases(builder, deleteExpense, {
+      loading: 'loadingMyExpense',
+      moreLoading: 'moreLoadingMyExpense',
+      isListEnd: 'isListEndMyExpense',
+      list: 'myExpenseList',
     });
     builder.addCase(fetchExpenseById.pending, (state, action) => {
       state.loadingExpense = true;
