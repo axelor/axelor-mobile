@@ -111,16 +111,24 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
     let objectValue = {...object};
     let currentIndex = startIndex + startKey.length;
 
-    while (SEPARATOR_REGEX.test(getSubString(formula, currentIndex))) {
+    while (
+      SEPARATOR_REGEX.test(getSubString(formula, currentIndex)) &&
+      !isEmpty(objectValue)
+    ) {
       const separator = getSubString(formula, currentIndex).match(
         SEPARATOR_REGEX,
       )[0];
       const subString = getSubString(formula, currentIndex + separator.length);
       const fieldKey = findField(subString, objectValue);
 
+      if (checkNullString(fieldKey)) {
+        objectValue = null;
+        continue;
+      }
+
       fieldToReplace += separator + fieldKey;
       objectValue = objectValue[fieldKey];
-      currentIndex += fieldKey?.length + 1;
+      currentIndex += fieldKey.length + 1;
     }
 
     return formula.replaceAll(
@@ -145,6 +153,10 @@ const manageFieldValue = (value: any) => {
 };
 
 const findField = (string: string, object: Object) => {
+  if (object == null) {
+    return null;
+  }
+
   for (const _key of sortFieldsByLength(Object.keys(object))) {
     if (string.length >= _key.length) {
       if (string.slice(0, _key.length) === _key) {
