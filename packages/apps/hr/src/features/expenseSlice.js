@@ -242,7 +242,7 @@ export const fetchExpenseById = createAsyncThunk(
 
 export const deleteExpense = createAsyncThunk(
   'expense/deleteExpense',
-  async function (data = {}, {getState}) {
+  async function (data = {}, {getState, dispatch}) {
     return handlerApiCall({
       fetchFunction: _deleteExpense,
       data,
@@ -250,13 +250,7 @@ export const deleteExpense = createAsyncThunk(
       getState,
       responseOptions: {isArrayResponse: false, showToast: true},
     }).then(() => {
-      return handlerApiCall({
-        fetchFunction: _searchMyExpense,
-        data: {userId: data?.userId},
-        action: 'Hr_SliceAction_FetchMyExpense',
-        getState,
-        responseOptions: {isArrayResponse: true},
-      });
+      dispatch(searchMyExpense({userId: data.userId, page: 0}));
     });
   },
 );
@@ -310,12 +304,6 @@ const expenseSlice = createSlice({
     builder.addCase(searchExpenseDraft.fulfilled, (state, action) => {
       state.loading = false;
       state.expenseDraftList = action.payload;
-    });
-    generateInifiniteScrollCases(builder, deleteExpense, {
-      loading: 'loadingMyExpense',
-      moreLoading: 'moreLoadingMyExpense',
-      isListEnd: 'isListEndMyExpense',
-      list: 'myExpenseList',
     });
     builder.addCase(fetchExpenseById.pending, (state, action) => {
       state.loadingExpense = true;
