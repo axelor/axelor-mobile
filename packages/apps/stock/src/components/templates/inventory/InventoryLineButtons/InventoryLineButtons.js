@@ -81,11 +81,20 @@ const InventoryLineButtons = ({
         version: inventoryLine.version,
         realQty: realQty,
         description: description,
+        inventoryId: inventory?.id,
       }),
     );
 
     navigateBackToList();
-  }, [description, dispatch, inventoryLine, navigateBackToList, realQty]);
+  }, [
+    description,
+    dispatch,
+    inventory?.id,
+    inventoryLine.id,
+    inventoryLine.version,
+    navigateBackToList,
+    realQty,
+  ]);
 
   if (!visible) {
     return null;

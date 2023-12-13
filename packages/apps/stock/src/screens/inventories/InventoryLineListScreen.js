@@ -99,7 +99,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
         );
       }
     },
-    [dispatch, inventory?.id],
+    [dispatch, inventory],
   );
 
   const filterLinesAPI = useCallback(
