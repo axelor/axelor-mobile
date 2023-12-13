@@ -44,7 +44,7 @@ const BarChart = ({
   spacing,
   horizontal = false,
   title,
-  rotateLabel = true,
+  rotateLabel = false,
 }: BarCharProps) => {
   const Colors = useThemeColor();
   const groupedData = mergeDataForGroupedBars(datasets);
@@ -53,6 +53,10 @@ const BarChart = ({
     Colors,
     rotateLabel,
   );
+
+  const styles = useMemo(() => {
+    return getStyles(rotateLabel);
+  }, [rotateLabel]);
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;
@@ -99,22 +103,23 @@ const BarChart = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-    paddingHorizontal: 0,
-    paddingRight: 5,
-    paddingVertical: 10,
-  },
-  title: {
-    marginTop: 30,
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-});
+const getStyles = rotateLabel =>
+  StyleSheet.create({
+    container: {
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+      paddingHorizontal: 0,
+      paddingRight: 5,
+      paddingVertical: 10,
+    },
+    title: {
+      marginTop: rotateLabel ? 30 : 10,
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+  });
 
 export default BarChart;

@@ -45,8 +45,8 @@ const LineChart = ({
   spacing,
   backgroundColor,
   title,
-  rotateLabel = true,
-  labelWidth = 40,
+  rotateLabel = false,
+  labelWidth = 30,
 }: LineChartProps) => {
   const Colors = useThemeColor();
   const labelTextStyle = {
@@ -58,6 +58,10 @@ const LineChart = ({
   };
   const customDatasets = addLabelTextStyleToDataset(datasets, labelTextStyle);
   const chartProps = generateChartProps(customDatasets, Colors);
+
+  const styles = useMemo(() => {
+    return getStyles(rotateLabel);
+  }, [rotateLabel]);
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;
@@ -95,22 +99,23 @@ const LineChart = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-    paddingHorizontal: 0,
-    paddingRight: 5,
-    paddingVertical: 10,
-  },
-  title: {
-    marginTop: 30,
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-});
+const getStyles = rotateLabel =>
+  StyleSheet.create({
+    container: {
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+      paddingHorizontal: 0,
+      paddingRight: 5,
+      paddingVertical: 10,
+    },
+    title: {
+      marginTop: rotateLabel ? 30 : 10,
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+  });
 
 export default LineChart;
