@@ -47,7 +47,7 @@ const ScrollList = ({
   horizontal = false,
   disabledRefresh = false,
 }: ScrollListProps) => {
-  const [page, setPage] = useState(0);
+  const [, setPage] = useState(0);
 
   const updateData = useCallback(() => {
     setPage(0);
@@ -58,19 +58,19 @@ const ScrollList = ({
     updateData();
   }, [updateData]);
 
-  const handleMoreData = useCallback(
-    currentPage => {
-      if (!isListEnd && !moreLoading && !filter) {
-        setPage(currentPage + 1);
-        fetchData(currentPage + 1);
-      }
-    },
-    [fetchData, filter, isListEnd, moreLoading],
-  );
+  const handleMoreData = useCallback(() => {
+    if (!isListEnd && !moreLoading && !filter) {
+      setPage(_currentPage => {
+        fetchData(_currentPage + 1);
+
+        return _currentPage + 1;
+      });
+    }
+  }, [fetchData, filter, isListEnd, moreLoading]);
 
   const onEndReached = useCallback(() => {
-    handleMoreData(page);
-  }, [handleMoreData, page]);
+    handleMoreData();
+  }, [handleMoreData]);
 
   useEffect(() => {
     initialize();
@@ -78,9 +78,15 @@ const ScrollList = ({
 
   useEffect(() => {
     if (Array.isArray(data) && data?.length === 0) {
-      handleMoreData(page);
+      handleMoreData();
     }
-  }, [data, handleMoreData, page]);
+  }, [data, handleMoreData]);
+
+  useEffect(() => {
+    if (loadingList) {
+      setPage(0);
+    }
+  }, [loadingList]);
 
   if (loadingList) {
     return (
