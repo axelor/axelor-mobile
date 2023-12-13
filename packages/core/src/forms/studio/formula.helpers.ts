@@ -58,9 +58,9 @@ export const createFormulaFunction = (formula: string) => {
 
     let expr = `${formula}`;
 
-    Object.entries(objectState).forEach(([_key, _value]) => {
+    sortFieldsByLength(Object.keys(objectState)).forEach(_key => {
       if (expr.includes(_key)) {
-        expr = manageDottedFields(expr, _key, _value);
+        expr = manageDottedFields(expr, _key, objectState[_key]);
       }
     });
 
@@ -128,7 +128,7 @@ const manageFieldValue = (value: any) => {
 };
 
 const findField = (string: string, object: Object) => {
-  for (const _key of Object.keys(object)) {
+  for (const _key of sortFieldsByLength(Object.keys(object))) {
     if (string.length >= _key.length) {
       if (string.slice(0, _key.length) === _key) {
         return _key;
@@ -171,11 +171,15 @@ export const manageDependsOnFormula = (formula: string, fields: any[]) => {
 
   let dependsOn = {};
 
-  fields.forEach(({name}) => {
+  sortFieldsByLength(fields.map(item => item.name)).forEach(name => {
     if (formula.includes(name)) {
       dependsOn[name] = createFormulaFunction(formula);
     }
   });
 
   return dependsOn;
+};
+
+const sortFieldsByLength = (fields: string[]): string[] => {
+  return fields.sort((a, b) => b.length - a.length);
 };
