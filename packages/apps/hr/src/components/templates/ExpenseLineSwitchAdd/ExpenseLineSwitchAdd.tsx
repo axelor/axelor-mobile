@@ -99,6 +99,28 @@ const ExpenseLineSwitchAdd = ({
     [expense],
   );
 
+  const noExpenseLine = useMemo(() => {
+    if (
+      (kilometricExpenseLineList == null ||
+        kilometricExpenseLineList?.length === 0) &&
+      (generalExpenseLineList == null || generalExpenseLineList?.length === 0)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [generalExpenseLineList, kilometricExpenseLineList]);
+
+  const modeTitle = useMemo(() => {
+    if (noExpenseLine) {
+      return I18n.t('Hr_NoExpenseLine');
+    } else if (mode === ExpenseLine.modes.general) {
+      return I18n.t('Hr_General');
+    } else {
+      return I18n.t('Hr_Kilometric');
+    }
+  }, [noExpenseLine, mode, I18n]);
+
   const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
 
   const renderCircleButton = useCallback(() => {
@@ -144,33 +166,32 @@ const ExpenseLineSwitchAdd = ({
     return (
       <View style={styles.containerTitle}>
         <View style={styles.containerChildrenTitle}>
-          <Text style={styles.title}>
-            {mode === ExpenseLine.modes.general
-              ? I18n.t('Hr_General')
-              : I18n.t('Hr_Kilometric')}
-          </Text>
-          <NumberBubble
-            number={
-              mode === ExpenseLine.modes.general
-                ? totalNumberExpenseGeneral
-                : totalNumberExpenseKilomectric
-            }
-            color={Colors.inverseColor}
-            isNeutralBackground={true}
-            style={styles.bubbleStyle}
-          />
+          <Text style={styles.title}>{modeTitle}</Text>
+          {!noExpenseLine && (
+            <NumberBubble
+              number={
+                mode === ExpenseLine.modes.general
+                  ? totalNumberExpenseGeneral
+                  : totalNumberExpenseKilomectric
+              }
+              color={Colors.inverseColor}
+              isNeutralBackground={true}
+              style={styles.bubbleStyle}
+            />
+          )}
         </View>
         {renderCircleButton()}
       </View>
     );
   }, [
     Colors.inverseColor,
-    I18n,
     mode,
+    modeTitle,
     renderCircleButton,
     styles,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
+    noExpenseLine,
   ]);
 
   return displayToggle ? renderToggle() : renderTitle();
