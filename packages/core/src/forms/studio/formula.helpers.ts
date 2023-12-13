@@ -145,8 +145,39 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
 };
 
 const manageFieldValue = (value: any) => {
+  if (value == null) {
+    return null;
+  }
+
   if (typeof value === 'string') {
     return `"${value}"`;
+  }
+
+  if (Array.isArray(value)) {
+    let _value = '[';
+
+    value.forEach((_i, index, self) => {
+      _value += manageFieldValue(_i) + (index === self.length - 1 ? '' : ', ');
+    });
+
+    _value += ']';
+
+    return _value;
+  }
+
+  if (typeof value === 'object') {
+    let _value = '{';
+
+    Object.entries(value).forEach(([_key, _v], index, self) => {
+      _value +=
+        `"${_key}": ` +
+        manageFieldValue(_v) +
+        (index === self.length - 1 ? '' : ', ');
+    });
+
+    _value += '}';
+
+    return _value;
   }
 
   return value;
