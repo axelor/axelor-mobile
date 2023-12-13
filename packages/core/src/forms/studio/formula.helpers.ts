@@ -20,6 +20,8 @@ import {checkNullString, fetchJsonField, isEmpty} from '../../utils';
 
 const RECORD = '$record';
 
+const SEPARATOR_REGEX = /^(\.|\?\.)/g;
+
 const removeContextedFields = (fields: any[], object: any): any[] => {
   if (!Array.isArray(fields) || fields.length === 0) {
     return [];
@@ -89,6 +91,18 @@ export const evaluateFormulaWithObject = (formula: string, object: Object) => {
   return undefined;
 };
 
+const getSubString = (formula: string, startIndex: number) => {
+  return formula.slice(startIndex, formula.length);
+};
+
+const getStringWithoutFirstSeparator = (string: string) => {
+  if (checkNullString(string)) {
+    return null;
+  }
+
+  return string.replace(SEPARATOR_REGEX, '');
+};
+
 const manageDottedFields = (formula: string, startKey: string, object: any) => {
   if (typeof object === 'object' && !isEmpty(object)) {
     const startIndex = formula.indexOf(startKey);
@@ -97,22 +111,25 @@ const manageDottedFields = (formula: string, startKey: string, object: any) => {
     let objectValue = {...object};
     let currentIndex = startIndex + startKey.length;
 
-    while (formula.charAt(currentIndex) === '.') {
-      const subString = formula.slice(currentIndex + 1, formula.length);
+    while (SEPARATOR_REGEX.test(getSubString(formula, currentIndex))) {
+      const separator = getSubString(formula, currentIndex).match(
+        SEPARATOR_REGEX,
+      )[0];
+      const subString = getSubString(formula, currentIndex + separator.length);
       const fieldKey = findField(subString, objectValue);
 
-      fieldToReplace += checkNullString(fieldToReplace)
-        ? fieldKey
-        : '.' + fieldKey;
+      fieldToReplace += separator + fieldKey;
       objectValue = objectValue[fieldKey];
-      currentIndex += fieldKey.length + 1;
+      currentIndex += fieldKey?.length + 1;
     }
 
     return formula.replaceAll(
-      checkNullString(fieldToReplace)
+      checkNullString(getStringWithoutFirstSeparator(fieldToReplace))
         ? startKey
-        : startKey + '.' + fieldToReplace,
-      manageFieldValue(fetchJsonField(object, fieldToReplace)),
+        : startKey + fieldToReplace,
+      manageFieldValue(
+        fetchJsonField(object, getStringWithoutFirstSeparator(fieldToReplace)),
+      ),
     );
   }
 

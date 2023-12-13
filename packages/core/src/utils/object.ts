@@ -46,11 +46,13 @@ export function fetchJsonField(object: any, fieldName: string) {
     return object;
   }
 
-  if (object[fieldName] != null || !fieldName.includes('.')) {
-    return object[fieldName];
+  const _fieldName = fieldName.replaceAll('?', '');
+
+  if (object[_fieldName] != null || !_fieldName.includes('.')) {
+    return object[_fieldName];
   }
 
-  const fieldParts: string[] = fieldName.split('.');
+  const fieldParts: string[] = _fieldName.split('.');
   return fetchJsonField(object[fieldParts.shift()], fieldParts.join('.'));
 }
 
