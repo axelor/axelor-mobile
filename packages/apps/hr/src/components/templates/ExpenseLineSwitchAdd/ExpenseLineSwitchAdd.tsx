@@ -41,8 +41,6 @@ const ExpenseLineSwitchAdd = ({
     [expense],
   );
 
-  const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
-
   return (
     <View style={styles.container}>
       <ExpenseLineDisplayType
@@ -54,7 +52,6 @@ const ExpenseLineSwitchAdd = ({
         <CircleButton
           size={38}
           iconName="plus"
-          style={styles.circleButton}
           onPress={() =>
             navigation.navigate('ExpenseLineFormScreen', {
               idExpense: expense?.id,
@@ -68,19 +65,21 @@ const ExpenseLineSwitchAdd = ({
   );
 };
 
-const getStyles = isAddButton =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 10,
-      marginBottom: isAddButton ? 10 : 0,
-    },
-    circleButton: {
-      position: 'absolute',
-      right: '5%',
-      bottom: '0%',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    justifyContent: 'space-between',
+    width: '90%',
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+  circleButton: {
+    position: 'absolute',
+    right: '0%',
+    top: -15,
+  },
+});
 
 export default ExpenseLineSwitchAdd;

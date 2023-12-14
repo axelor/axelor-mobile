@@ -91,8 +91,8 @@ const ExpenseLineTypeSwitch = ({
 const getStyles = isAddButton =>
   StyleSheet.create({
     toggleContainer: {
-      width: isAddButton ? '85%' : '89%',
-      left: !isAddButton ? '5%' : '0%',
+      width: isAddButton ? '88%' : '100%',
+      margin: 0,
     },
     toggle: {
       width: isAddButton ? '55%' : '54%',
@@ -147,27 +147,27 @@ const ExpenseLineDisplayType = ({
     );
   }, [generalExpenseLineList, kilometricExpenseLineList]);
 
-  const noExpenseLine = useMemo(() => {
+  const isExpenseLine = useMemo(() => {
     if (
       (kilometricExpenseLineList == null ||
         kilometricExpenseLineList?.length === 0) &&
       (generalExpenseLineList == null || generalExpenseLineList?.length === 0)
     ) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }, [generalExpenseLineList, kilometricExpenseLineList]);
 
   const modeTitle = useMemo(() => {
-    if (noExpenseLine) {
+    if (!isExpenseLine) {
       return I18n.t('Hr_NoExpenseLine');
     } else if (mode === ExpenseLine.modes.general) {
       return I18n.t('Hr_General');
     } else {
       return I18n.t('Hr_Kilometric');
     }
-  }, [noExpenseLine, mode, I18n]);
+  }, [isExpenseLine, mode, I18n]);
 
   const styles = useMemo(() => getStylesDisplay(isAddButton), [isAddButton]);
 
@@ -191,19 +191,16 @@ const ExpenseLineDisplayType = ({
 
   const renderToggle = useCallback(() => {
     return (
-      <View style={styles.containerToggle}>
-        <ExpenseLineTypeSwitch
-          onChange={onChange}
-          isAddButton={isAddButton}
-          totalNumberExpenseGeneral={totalNumberExpenseGeneral}
-          totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
-        />
-      </View>
+      <ExpenseLineTypeSwitch
+        onChange={onChange}
+        isAddButton={isAddButton}
+        totalNumberExpenseGeneral={totalNumberExpenseGeneral}
+        totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
+      />
     );
   }, [
     isAddButton,
     onChange,
-    styles.containerToggle,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
   ]);
@@ -211,21 +208,19 @@ const ExpenseLineDisplayType = ({
   const renderTitle = useCallback(() => {
     return (
       <View style={styles.containerTitle}>
-        <View style={styles.containerChildrenTitle}>
-          <Text style={styles.title}>{modeTitle}</Text>
-          {!noExpenseLine && (
-            <NumberBubble
-              number={
-                mode === ExpenseLine.modes.general
-                  ? totalNumberExpenseGeneral
-                  : totalNumberExpenseKilomectric
-              }
-              color={Colors.inverseColor}
-              isNeutralBackground={true}
-              style={styles.bubbleStyle}
-            />
-          )}
-        </View>
+        <Text style={styles.title}>{modeTitle}</Text>
+        {isExpenseLine && (
+          <NumberBubble
+            number={
+              mode === ExpenseLine.modes.general
+                ? totalNumberExpenseGeneral
+                : totalNumberExpenseKilomectric
+            }
+            color={Colors.inverseColor}
+            isNeutralBackground={true}
+            style={styles.bubbleStyle}
+          />
+        )}
       </View>
     );
   }, [
@@ -235,7 +230,7 @@ const ExpenseLineDisplayType = ({
     styles,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
-    noExpenseLine,
+    isExpenseLine,
   ]);
 
   return displayToggle ? renderToggle() : renderTitle();
@@ -243,21 +238,7 @@ const ExpenseLineDisplayType = ({
 
 const getStylesDisplay = isAddButton =>
   StyleSheet.create({
-    containerToggle: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 10,
-    },
     containerTitle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 10,
-      marginHorizontal: 24,
-      justifyContent: 'space-between',
-      marginBottom: !isAddButton ? 10 : 7,
-    },
-    containerChildrenTitle: {
       flexDirection: 'row',
       alignItems: 'center',
     },
