@@ -16,26 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  useDispatch,
-  useNavigation,
-  useSelector,
-  useTranslator,
-} from '@axelor/aos-mobile-core';
-import {
-  CircleButton,
-  NumberBubble,
-  Text,
-  useThemeColor,
-} from '@axelor/aos-mobile-ui';
-import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
-import {
-  searchGeneralExpenseLines,
-  searchKilometricExpenseLines,
-} from '../../../features/expenseLineSlice';
-import {Expense, ExpenseLine} from '../../../types';
+import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
+import {CircleButton} from '@axelor/aos-mobile-ui';
+import ExpenseLineDisplay from '../ExpenseLineDisplay/ExpenseLineDisplay';
+import {Expense} from '../../../types';
 
 interface ExpenseLineSwitchAddProps {
   mode: string;
@@ -46,90 +32,29 @@ const ExpenseLineSwitchAdd = ({
   mode,
   onChangeSwicth,
 }: ExpenseLineSwitchAddProps) => {
-  const I18n = useTranslator();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const Colors = useThemeColor();
 
   const {expense} = useSelector((state: any) => state.expense);
-  const {
-    generalExpenseLineList,
-    totalNumberExpenseGeneral,
-    kilometricExpenseLineList,
-    totalNumberExpenseKilomectric,
-  } = useSelector((state: any) => state.expenseLine);
-
-  useEffect(() => {
-    dispatch(
-      (searchKilometricExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-
-    dispatch(
-      (searchGeneralExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-  }, [dispatch, expense]);
-
-  useEffect(() => {
-    if (
-      kilometricExpenseLineList == null ||
-      kilometricExpenseLineList?.length === 0
-    ) {
-      onChangeSwicth(_mode => {
-        return ExpenseLine.modes.general;
-      });
-    } else if (
-      generalExpenseLineList == null ||
-      generalExpenseLineList?.length === 0
-    ) {
-      onChangeSwicth(_mode => {
-        return ExpenseLine.modes.kilometric;
-      });
-    }
-  }, [generalExpenseLineList, kilometricExpenseLineList, onChangeSwicth]);
-
-  const displayToggle = useMemo(() => {
-    return (
-      generalExpenseLineList?.length > 0 &&
-      kilometricExpenseLineList?.length > 0
-    );
-  }, [generalExpenseLineList, kilometricExpenseLineList]);
 
   const isAddButton = useMemo(
-    () => expense?.statusSelect === Expense.statusSelect.Draft,
+    () => expense.statusSelect === Expense.statusSelect.Draft,
     [expense],
   );
 
-  const noExpenseLine = useMemo(() => {
-    if (
-      (kilometricExpenseLineList == null ||
-        kilometricExpenseLineList?.length === 0) &&
-      (generalExpenseLineList == null || generalExpenseLineList?.length === 0)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }, [generalExpenseLineList, kilometricExpenseLineList]);
-
-  const modeTitle = useMemo(() => {
-    if (noExpenseLine) {
-      return I18n.t('Hr_NoExpenseLine');
-    } else if (mode === ExpenseLine.modes.general) {
-      return I18n.t('Hr_General');
-    } else {
-      return I18n.t('Hr_Kilometric');
-    }
-  }, [noExpenseLine, mode, I18n]);
-
   const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
 
-  const renderCircleButton = useCallback(() => {
-    return (
-      isAddButton && (
+  return (
+    <View style={styles.container}>
+      <ExpenseLineDisplay
+        onChange={onChangeSwicth}
+        isAddButton={isAddButton}
+        mode={mode}
+      />
+      {isAddButton && (
         <CircleButton
           size={38}
           iconName="plus"
-          style={!displayToggle && styles.indicatorCircleButton}
+          style={styles.circleButton}
           onPress={() =>
             navigation.navigate('ExpenseLineFormScreen', {
               idExpense: expense?.id,
@@ -138,94 +63,23 @@ const ExpenseLineSwitchAdd = ({
             })
           }
         />
-      )
-    );
-  }, [
-    displayToggle,
-    expense?.id,
-    expense?.version,
-    isAddButton,
-    mode,
-    navigation,
-    styles,
-  ]);
-
-  const renderToggle = useCallback(() => {
-    return (
-      <View style={styles.containerToggle}>
-        <ExpenseLineTypeSwitch
-          onChange={onChangeSwicth}
-          isAddButton={isAddButton}
-        />
-        {renderCircleButton()}
-      </View>
-    );
-  }, [isAddButton, onChangeSwicth, renderCircleButton, styles.containerToggle]);
-
-  const renderTitle = useCallback(() => {
-    return (
-      <View style={styles.containerTitle}>
-        <View style={styles.containerChildrenTitle}>
-          <Text style={styles.title}>{modeTitle}</Text>
-          {!noExpenseLine && (
-            <NumberBubble
-              number={
-                mode === ExpenseLine.modes.general
-                  ? totalNumberExpenseGeneral
-                  : totalNumberExpenseKilomectric
-              }
-              color={Colors.inverseColor}
-              isNeutralBackground={true}
-              style={styles.bubbleStyle}
-            />
-          )}
-        </View>
-        {renderCircleButton()}
-      </View>
-    );
-  }, [
-    Colors.inverseColor,
-    mode,
-    modeTitle,
-    renderCircleButton,
-    styles,
-    totalNumberExpenseGeneral,
-    totalNumberExpenseKilomectric,
-    noExpenseLine,
-  ]);
-
-  return displayToggle ? renderToggle() : renderTitle();
+      )}
+    </View>
+  );
 };
 
 const getStyles = isAddButton =>
   StyleSheet.create({
-    containerToggle: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 10,
-    },
-    containerTitle: {
+    container: {
       flexDirection: 'row',
       alignItems: 'center',
       marginTop: 10,
-      marginHorizontal: 24,
-      justifyContent: 'space-between',
-      marginBottom: !isAddButton ? 10 : 0,
+      marginBottom: isAddButton ? 10 : 0,
     },
-    containerChildrenTitle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    bubbleStyle: {
-      marginLeft: 10,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    indicatorCircleButton: {
-      marginLeft: 10,
+    circleButton: {
+      position: 'absolute',
+      right: '5%',
+      bottom: '0%',
     },
   });
 

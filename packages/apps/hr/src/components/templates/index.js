@@ -22,7 +22,7 @@ export {default as CurrencySearchBar} from './CurrencySearchBar/CurrencySearchBa
 export {default as DistanceIncrement} from './DistanceIncrement/DistanceIncrement';
 export {default as ExpenseHeader} from './ExpenseHeader/ExpenseHeader';
 export {default as ExpenseLineSwitchAdd} from './ExpenseLineSwitchAdd/ExpenseLineSwitchAdd';
-export {default as ExpenseLineTypeSwitch} from './ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
+export {default as ExpenseLineDisplay} from './ExpenseLineDisplay/ExpenseLineDisplay';
 export {default as ExpenseTypeSearchBar} from './ExpenseTypeSearchBar/ExpenseTypeSearchBar';
 export {default as ExpenseWaitingValidationSearchBar} from './ExpenseWaitingValidationSearchBar/ExpenseWaitingValidationSearchBar';
 export {default as KilometricAllowParamSearchBar} from './KilometricAllowParamSearchBar/KilometricAllowParamSearchBar';
