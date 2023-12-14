@@ -70,13 +70,15 @@ const PopupSession = ({
   return (
     <PopUp visible={isOpen} title={sessionActive?.name} style={styles.popup}>
       <View style={styles.popupContainer}>
-        <Icon
-          name="times"
-          size={20}
-          touchable={true}
-          onPress={handleClose}
-          style={styles.closeIcon}
-        />
+        {!loading && (
+          <Icon
+            name="times"
+            size={20}
+            touchable={true}
+            onPress={handleClose}
+            style={styles.closeIcon}
+          />
+        )}
         <ErrorText error={error} />
         <SessionInputs
           sessionList={sessionList}

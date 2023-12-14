@@ -143,7 +143,7 @@ const PopupCreateSession = ({
       title={I18n.t('Base_Connection_CreateSession')}
       style={styles.popup}>
       <View style={styles.popupContainer}>
-        {sessionList?.length > 0 && (
+        {!loading && sessionList?.length > 0 && (
           <Icon
             name="times"
             size={20}
