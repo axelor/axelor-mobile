@@ -72,6 +72,7 @@ const PopupSession = ({
       visible={isOpen}
       title={sessionActive?.name}
       cancelButtonConfig={{
+        hide: loading,
         showInHeader: true,
         onPress: handleClose,
       }}>

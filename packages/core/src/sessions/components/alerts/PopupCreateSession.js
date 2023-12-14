@@ -142,7 +142,7 @@ const PopupCreateSession = ({
       visible={visible}
       title={I18n.t('Base_Connection_CreateSession')}
       cancelButtonConfig={{
-        hide: sessionList?.length <= 0,
+        hide: loading || sessionList?.length <= 0,
         showInHeader: true,
         onPress: handleVisibility,
       }}>
