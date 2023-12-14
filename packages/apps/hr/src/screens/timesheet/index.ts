@@ -31,7 +31,7 @@ export default {
     component: TimesheetListScreen,
   },
   TimesheetLineFormScreen: {
-    title: 'Hr_CreateTimeSheetLine',
+    title: 'Hr_TimesheetLine',
     component: TimesheetLineFormScreen,
   },
 };

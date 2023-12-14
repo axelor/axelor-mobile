@@ -35,6 +35,20 @@ const createManufOrderCriteria = (searchValue, activeCompanyId) => {
   return criteria;
 };
 
+const createOperationOrderCriteria = (searchValue, manufOrderId) => {
+  const criteria = [getSearchCriterias('hr_operationOrder', searchValue)];
+
+  if (manufOrderId != null) {
+    criteria.push({
+      fieldName: 'manufOrder.id',
+      operator: '=',
+      value: manufOrderId,
+    });
+  }
+
+  return criteria;
+};
+
 export async function searchManufOrder({
   searchValue,
   page = 0,
@@ -45,6 +59,20 @@ export async function searchManufOrder({
     criteria: createManufOrderCriteria(searchValue, activeCompanyId),
     fieldKey: 'hr_manufOrder',
     sortKey: 'hr_manufOrder',
+    page,
+  });
+}
+
+export async function searchOperationOrder({
+  searchValue,
+  page = 0,
+  manufOrderId,
+}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.production.db.OperationOrder',
+    criteria: createOperationOrderCriteria(searchValue, manufOrderId),
+    fieldKey: 'hr_operationOrder',
+    sortKey: 'hr_operationOrder',
     page,
   });
 }

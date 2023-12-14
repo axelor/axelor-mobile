@@ -41,7 +41,14 @@ export {
 } from './expense-line-api';
 export {searchExpenseType as searchExpenseTypeApi} from './expense-type-api';
 export {searchKilometricAllowParam as searchKilometricAllowParamApi} from './kilometric-allow-param-api';
-export {searchProject as searchProjectApi} from './project-api';
+export {
+  searchManufOrder as searchManufOrderApi,
+  searchOperationOrder as searchOperationOrderApi,
+} from './manuf-order-api';
+export {
+  searchProject as searchProjectApi,
+  searchProjectTask as searchProjectTaskApi,
+} from './project-api';
 export {fetchTimer as fetchTimerApi} from './timer-api';
 export {
   fetchTimesheet as fetchTimesheetApi,

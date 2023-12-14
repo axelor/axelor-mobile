@@ -26,16 +26,16 @@ import {
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
   ManufOrderSearchBar,
-  OperationOrderPicker,
+  OperationOrderSearchBar,
   ProjectSearchBar,
-  ProjectTaskPicker,
+  ProjectTaskSearchBar,
   ToggleSwitchMode,
   DraftExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
-import {updateOperationOrderList} from '../features/manufOrderSlice';
-import {updateProjectTaskList} from '../features/projectSlice';
+import {updateManufOrder} from '../features/manufOrderSlice';
+import {updateProject} from '../features/projectSlice';
 import {
   needUpdateDistance,
   updateFromCity,
@@ -240,13 +240,13 @@ export const hr_formsRegister: FormConfigs = {
       },
       projectTask: {
         titleKey: 'Hr_ProjectTask',
-        type: 'string',
+        type: 'object',
         widget: 'custom',
-        customComponent: ProjectTaskPicker,
+        customComponent: ProjectTaskSearchBar,
         hideIf: ({objectState}) => objectState.project == null,
         dependsOn: {
           project: ({newValue, dispatch}) => {
-            dispatch(updateProjectTaskList(newValue?.projectTaskList));
+            dispatch(updateProject(newValue));
           },
         },
       },
@@ -259,13 +259,13 @@ export const hr_formsRegister: FormConfigs = {
       },
       operationOrder: {
         titleKey: 'Hr_OperationOrder',
-        type: 'string',
+        type: 'object',
         widget: 'custom',
-        customComponent: OperationOrderPicker,
+        customComponent: OperationOrderSearchBar,
         hideIf: ({objectState}) => objectState.manufOrder == null,
         dependsOn: {
           manufOrder: ({newValue, dispatch}) => {
-            dispatch(updateOperationOrderList(newValue?.operationOrderList));
+            dispatch(updateManufOrder(newValue));
           },
         },
       },
@@ -276,12 +276,17 @@ export const hr_formsRegister: FormConfigs = {
         options: {
           style: {width: '90%', alignSelf: 'center'},
         },
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings
+            .isTimesheetProjectInvoicingEnabled,
       },
       timesheetDate: {
         titleKey: 'Hr_TimesheetDate',
         type: 'date',
         widget: 'date',
         required: true,
+        readonlyIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
       },
       duration: {
         titleKey: 'Hr_Duration',

@@ -21,15 +21,31 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {searchProject as _searchProject} from '../api/project-api';
+import {
+  searchProject as _searchProject,
+  searchProjectTask as _searchProjectTask,
+} from '../api/project-api';
 
 export const searchProject = createAsyncThunk(
-  'Project/searchProject',
+  'project/searchProject',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: _searchProject,
       data,
-      action: 'Hr_SliceAction_FetchProjects',
+      action: 'Hr_SliceAction_FetchProject',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const searchProjectTask = createAsyncThunk(
+  'project/searchProjectTask',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchProjectTask,
+      data,
+      action: 'Hr_SliceAction_FetchProjectTask',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,10 +53,16 @@ export const searchProject = createAsyncThunk(
 );
 
 const initialState = {
+  project: {},
+
   loadingProject: true,
   moreLoading: false,
   isListEnd: false,
   projectList: [],
+
+  loadingProjectTask: true,
+  moreLoadingProjectTask: false,
+  isListEndProjectTask: false,
   projectTaskList: [],
 };
 
@@ -48,8 +70,8 @@ const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    updateProjectTaskList: (state, action) => {
-      state.projectTaskList = action.payload;
+    updateProject: (state, action) => {
+      state.project = action.payload;
     },
   },
   extraReducers: builder => {
@@ -59,9 +81,15 @@ const projectSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'projectList',
     });
+    generateInifiniteScrollCases(builder, searchProjectTask, {
+      loading: 'loadingProjectTask',
+      moreLoading: 'moreLoadingProjectTask',
+      isListEnd: 'isListEndProjectTask',
+      list: 'projectTaskList',
+    });
   },
 });
 
-export const {updateProjectTaskList} = projectSlice.actions;
+export const {updateProject} = projectSlice.actions;
 
 export const projectReducer = projectSlice.reducer;

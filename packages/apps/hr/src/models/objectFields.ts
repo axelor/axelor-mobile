@@ -84,12 +84,17 @@ export const hr_modelAPI: ObjectFields = {
   }),
   hr_manufOrder: schemaContructor.object({
     manufOrderSeq: schemaContructor.string(),
-    operationOrderList: schemaContructor.subObject(),
+  }),
+  hr_operationOrder: schemaContructor.object({
+    name: schemaContructor.string(),
   }),
   hr_project: schemaContructor.object({
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
-    projectTaskList: schemaContructor.subObject(),
+  }),
+  hr_projectTask: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
   }),
   hr_timer: schemaContructor.object({
     statusSelect: schemaContructor.number(),

@@ -35,12 +35,36 @@ const createProjectCriteria = (searchValue, activeCompanyId) => {
   return criteria;
 };
 
+const createProjectTaskCriteria = (searchValue, projectId) => {
+  const criteria = [getSearchCriterias('hr_projectTask', searchValue)];
+
+  if (projectId != null) {
+    criteria.push({
+      fieldName: 'project.id',
+      operator: '=',
+      value: projectId,
+    });
+  }
+
+  return criteria;
+};
+
 export async function searchProject({searchValue, page = 0, activeCompanyId}) {
   return createStandardSearch({
     model: 'com.axelor.apps.project.db.Project',
     criteria: createProjectCriteria(searchValue, activeCompanyId),
     fieldKey: 'hr_project',
     sortKey: 'hr_project',
+    page,
+  });
+}
+
+export async function searchProjectTask({searchValue, page = 0, projectId}) {
+  return createStandardSearch({
+    model: 'com.axelor.apps.project.db.ProjectTask',
+    criteria: createProjectTaskCriteria(searchValue, projectId),
+    fieldKey: 'hr_projectTask',
+    sortKey: 'hr_projectTask',
     page,
   });
 }

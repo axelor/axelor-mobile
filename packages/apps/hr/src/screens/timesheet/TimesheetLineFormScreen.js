@@ -20,8 +20,13 @@ import React from 'react';
 import {FormView} from '@axelor/aos-mobile-core';
 
 const TimesheetLineFormScreen = ({}) => {
+  const defaultValue = {
+    timesheetDate: new Date().toISOString().split('T')[0],
+  };
+
   return (
     <FormView
+      defaultValue={defaultValue}
       actions={[
         {
           key: 'create-timesheetLine',

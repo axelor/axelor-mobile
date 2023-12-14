@@ -21,7 +21,10 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {searchManufOrder as _searchManufOrder} from '../api/manuf-order-api';
+import {
+  searchManufOrder as _searchManufOrder,
+  searchOperationOrder as _searchOperationOrder,
+} from '../api/manuf-order-api';
 
 export const searchManufOrder = createAsyncThunk(
   'hr_manufOrder/searchManufOrder',
@@ -36,11 +39,30 @@ export const searchManufOrder = createAsyncThunk(
   },
 );
 
+export const searchOperationOrder = createAsyncThunk(
+  'hr_manufOrder/searchOperationOrder',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: _searchOperationOrder,
+      data,
+      action: 'Hr_SliceAction_FetchOperationOrder',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 const initialState = {
+  manufOrder: {},
+
   loadingManufOrder: true,
   moreLoading: false,
   isListEnd: false,
   manufOrderList: [],
+
+  loadingOperationOrder: true,
+  moreLoadingOperationOrder: false,
+  isListEndOperationOrder: false,
   operationOrderList: [],
 };
 
@@ -48,8 +70,8 @@ const manufOrderSlice = createSlice({
   name: 'hr_manufOrder',
   initialState,
   reducers: {
-    updateOperationOrderList: (state, action) => {
-      state.operationOrderList = action.payload;
+    updateManufOrder: (state, action) => {
+      state.manufOrder = action.payload;
     },
   },
   extraReducers: builder => {
@@ -59,9 +81,15 @@ const manufOrderSlice = createSlice({
       isListEnd: 'isListEnd',
       list: 'manufOrderList',
     });
+    generateInifiniteScrollCases(builder, searchOperationOrder, {
+      loading: 'loadingOperationOrder',
+      moreLoading: 'moreLoadingOperationOrder',
+      isListEnd: 'isListEndOperationOrder',
+      list: 'operationOrderList',
+    });
   },
 });
 
-export const {updateOperationOrderList} = manufOrderSlice.actions;
+export const {updateManufOrder} = manufOrderSlice.actions;
 
 export const manufOrderReducer = manufOrderSlice.reducer;
