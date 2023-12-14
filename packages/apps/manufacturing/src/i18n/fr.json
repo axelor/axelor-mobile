@@ -67,5 +67,6 @@
   "Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine": "ajouter un numéro de suivi à la ligne de déplacement du stock de produits consommés",
   "Manufacturing_SliceAction_FetchConsumedProductWithId": "récupération du produit consommé avec id",
   "Manufacturing_SliceAction_FetchProducedProductWithId": "récupération du produit fini avec id",
-  "Manufacturing_SliceAction_FetchProdProductWithId": "récuperation du produit de production avec id"
+  "Manufacturing_SliceAction_FetchProdProductWithId": "récuperation du produit de production avec id",
+  "Manufacturing_SliceAction_FetchProductionConfig": "récuperation des configurations de production"
 }
