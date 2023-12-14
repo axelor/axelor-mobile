@@ -45,12 +45,6 @@ const InventoryLineButtons = ({
 
   const {productFromId} = useSelector(state => state.product);
 
-  const navigateBackToList = useCallback(() => {
-    navigation.navigate('InventoryLineListScreen', {
-      inventory: inventory,
-    });
-  }, [inventory, navigation]);
-
   const handleNewLine = useCallback(() => {
     dispatch(
       createNewInventoryLine({
@@ -63,15 +57,16 @@ const InventoryLineButtons = ({
       }),
     );
 
-    navigateBackToList();
+    navigation.pop();
   }, [
     dispatch,
-    inventory,
-    navigateBackToList,
-    productFromId,
+    inventory.id,
+    inventory.version,
+    navigation,
+    productFromId?.id,
     rack,
     realQty,
-    trackingNumber,
+    trackingNumber?.id,
   ]);
 
   const handleUpdateLine = useCallback(() => {
@@ -81,11 +76,20 @@ const InventoryLineButtons = ({
         version: inventoryLine.version,
         realQty: realQty,
         description: description,
+        inventoryId: inventory?.id,
       }),
     );
 
-    navigateBackToList();
-  }, [description, dispatch, inventoryLine, navigateBackToList, realQty]);
+    navigation.pop();
+  }, [
+    description,
+    dispatch,
+    inventory?.id,
+    inventoryLine.id,
+    inventoryLine.version,
+    navigation,
+    realQty,
+  ]);
 
   if (!visible) {
     return null;

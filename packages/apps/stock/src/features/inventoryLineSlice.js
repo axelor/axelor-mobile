@@ -51,6 +51,14 @@ export const updateInventoryLine = createAsyncThunk(
       action: 'Stock_SliceAction_UpdateInventoryLine',
       getState,
       responseOptions: {showToast: true},
+    }).then(() => {
+      return handlerApiCall({
+        fetchFunction: searchInventoryLines,
+        data: {inventoryId: data?.inventoryId},
+        action: 'Stock_SliceAction_FetchInventoryLines',
+        getState,
+        responseOptions: {isArrayResponse: true},
+      });
     });
   },
 );
@@ -136,6 +144,13 @@ const inventoryLineSlice = createSlice({
     builder.addCase(addTrackingNumber.fulfilled, (state, action) => {
       state.loadingInventoryLine = false;
       state.inventoryLine = action.payload;
+    });
+    builder.addCase(updateInventoryLine.pending, state => {
+      state.loadingInventoryLine = true;
+    });
+    builder.addCase(updateInventoryLine.fulfilled, (state, action) => {
+      state.loadingInventoryLine = false;
+      state.inventoryLineList = action.payload;
     });
     builder.addCase(addTrackingNumber.rejected, (state, action) => {
       state.loadingInventoryLine = false;
