@@ -43,7 +43,7 @@ const StockCorrectionCard = ({
   const I18n = useTranslator();
 
   const borderStyle = useMemo(() => {
-    return getStyles(StockCorrection.getStatusColor(status, Colors).background)
+    return getStyles(StockCorrection.getStatusColor(status, Colors)?.background)
       ?.border;
   }, [Colors, status]);
 
