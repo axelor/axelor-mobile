@@ -71,8 +71,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
     justifyContent: 'space-between',
-    width: '90%',
-    alignSelf: 'center',
+    marginHorizontal: 24,
     marginBottom: 10,
   },
   circleButton: {

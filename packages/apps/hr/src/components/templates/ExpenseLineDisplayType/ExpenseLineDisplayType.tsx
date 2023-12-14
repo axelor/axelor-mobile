@@ -80,14 +80,14 @@ const ExpenseLineDisplayType = ({
   }, [generalExpenseLineList, kilometricExpenseLineList]);
 
   const modeTitle = useMemo(() => {
-    if (!isExpenseLine) {
-      return I18n.t('Hr_NoExpenseLine');
-    } else if (mode === ExpenseLine.modes.general) {
+    if (mode === ExpenseLine.modes.general) {
       return I18n.t('Hr_General');
-    } else {
+    } else if (mode === ExpenseLine.modes.kilometric) {
       return I18n.t('Hr_Kilometric');
+    } else {
+      return I18n.t('Hr_NoExpenseLine');
     }
-  }, [isExpenseLine, mode, I18n]);
+  }, [mode, I18n]);
 
   useEffect(() => {
     if (
