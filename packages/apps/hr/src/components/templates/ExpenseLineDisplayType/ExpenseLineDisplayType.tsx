@@ -18,94 +18,14 @@
 
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  ToggleSwitch,
-  getCommonStyles,
-  useThemeColor,
-  NumberBubble,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {useThemeColor, NumberBubble, Text} from '@axelor/aos-mobile-ui';
 import {useSelector, useTranslator, useDispatch} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 import {
   searchGeneralExpenseLines,
   searchKilometricExpenseLines,
 } from '../../../features/expenseLineSlice';
-
-interface ExpenseLineTypeSwitchProps {
-  isAddButton?: boolean;
-  onChange: (mode: any) => void;
-  totalNumberExpenseGeneral: number;
-  totalNumberExpenseKilomectric: number;
-}
-
-const ExpenseLineTypeSwitch = ({
-  isAddButton = false,
-  onChange,
-  totalNumberExpenseGeneral,
-  totalNumberExpenseKilomectric,
-}: ExpenseLineTypeSwitchProps) => {
-  const I18n = useTranslator();
-  const Colors = useThemeColor();
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
-  const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
-
-  return (
-    <ToggleSwitch
-      styleContainer={[
-        commonStyles.filter,
-        commonStyles.filterSize,
-        styles.toggleContainer,
-      ]}
-      styleToogle={styles.toggle}
-      leftTitle={I18n.t('Hr_General')}
-      rightTitle={I18n.t('Hr_Kilometric')}
-      leftElement={
-        <NumberBubble
-          style={styles.indicator}
-          number={totalNumberExpenseGeneral}
-          color={Colors.inverseColor}
-          isNeutralBackground={true}
-        />
-      }
-      rigthElement={
-        <NumberBubble
-          style={styles.indicator}
-          number={totalNumberExpenseKilomectric}
-          color={Colors.inverseColor}
-          isNeutralBackground={true}
-        />
-      }
-      onSwitch={() => {
-        onChange(_mode => {
-          return _mode === ExpenseLine.modes.general
-            ? ExpenseLine.modes.kilometric
-            : ExpenseLine.modes.general;
-        });
-      }}
-    />
-  );
-};
-
-const getStyles = isAddButton =>
-  StyleSheet.create({
-    toggleContainer: {
-      width: isAddButton ? '88%' : '100%',
-      margin: 0,
-    },
-    toggle: {
-      width: isAddButton ? '55%' : '54%',
-      height: 40,
-      borderRadius: 13,
-      justifyContent: 'flex-start',
-      paddingLeft: '5%',
-    },
-    indicator: {
-      position: 'absolute',
-      right: '5%',
-    },
-  });
+import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
 
 interface ExpenseLineDisplayTypeProps {
   isAddButton?: boolean;
@@ -169,8 +89,6 @@ const ExpenseLineDisplayType = ({
     }
   }, [isExpenseLine, mode, I18n]);
 
-  const styles = useMemo(() => getStylesDisplay(isAddButton), [isAddButton]);
-
   useEffect(() => {
     if (
       kilometricExpenseLineList == null ||
@@ -227,7 +145,6 @@ const ExpenseLineDisplayType = ({
     Colors.inverseColor,
     mode,
     modeTitle,
-    styles,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
     isExpenseLine,
@@ -236,19 +153,18 @@ const ExpenseLineDisplayType = ({
   return displayToggle ? renderToggle() : renderTitle();
 };
 
-const getStylesDisplay = isAddButton =>
-  StyleSheet.create({
-    containerTitle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    bubbleStyle: {
-      marginLeft: 10,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-  });
+const styles = StyleSheet.create({
+  containerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bubbleStyle: {
+    marginLeft: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
 
 export default ExpenseLineDisplayType;
