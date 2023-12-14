@@ -54,7 +54,7 @@ const SelectionItem = ({
 
   const itemStyles = useMemo(() => getItemStyles(isPicker), [isPicker]);
 
-  return content == null ? null : (
+  return (
     <TouchableOpacity
       style={[itemStyles.item, style]}
       onPress={onPress}
