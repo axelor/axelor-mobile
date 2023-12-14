@@ -24,6 +24,7 @@ export const hr_searchFields: SearchFields = {
   hr_expenseLines: ['expenseDate', 'project.fullName'],
   hr_expenseType: ['name', 'fullName'],
   hr_kilomectricAllowParam: ['name', 'code'],
+  hr_manufOrder: ['manufOrderSeq'],
   hr_project: ['name', 'fullName'],
   hr_timer: ['project.fullName', 'projectTask.fullName', 'comments'],
   hr_timesheet: ['employee.name'],

@@ -53,6 +53,12 @@
   "Hr_NewTimer": "Create timer",
   "Hr_Timesheets": "Timesheets",
   "Hr_MyTimesheets": "My timesheets",
+  "Hr_CreateTimeSheetLine": "Create timesheet line",
+  "Hr_ProjectTask": "Task",
+  "Hr_ManufOrder": "Manufacturing order",
+  "Hr_OperationOrder": "Operation order",
+  "Hr_TimesheetDate": "Date",
+  "Hr_Duration": "Duration (hours)",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -80,5 +86,6 @@
   "Hr_SliceAction_FetchTimer": "fetch timer",
   "Hr_SliceAction_FetchTimesheet": "fetch timesheet",
   "Hr_SliceAction_FetchTimesheetToValidate": "fetch timesheet to validate",
-  "Hr_SliceAction_DeleteExpense": "delete expense"
+  "Hr_SliceAction_DeleteExpense": "delete expense",
+  "Hr_SliceAction_FetchManufOrder": "fetch manufacturing order"
 }

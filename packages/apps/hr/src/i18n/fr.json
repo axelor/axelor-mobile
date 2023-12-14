@@ -53,6 +53,12 @@
   "Hr_NewTimer": "Créer un chronomètre",
   "Hr_Timesheets": "Feuilles de temps",
   "Hr_MyTimesheets": "Mes feuilles de temps",
+  "Hr_CreateTimeSheetLine": "Créer une ligne de feuille de temps",
+  "Hr_ProjectTask": "Tâche",
+  "Hr_ManufOrder": "Ordre de fabrication",
+  "Hr_OperationOrder": "Opération de fabrication",
+  "Hr_TimesheetDate": "Date",
+  "Hr_Duration": "Duration (heures)",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -80,5 +86,6 @@
   "Hr_SliceAction_FetchTimer": "récupération des chronomètres",
   "Hr_SliceAction_FetchTimesheet": "récupération des feuilles de temps",
   "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider",
-  "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais"
+  "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais",
+  "Hr_SliceAction_FetchManufOrder": "récupération des ordres de fabrication"
 }

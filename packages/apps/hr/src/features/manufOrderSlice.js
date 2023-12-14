@@ -21,15 +21,15 @@ import {
   handlerApiCall,
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
-import {searchProject as _searchProject} from '../api/project-api';
+import {searchManufOrder as _searchManufOrder} from '../api/manuf-order-api';
 
-export const searchProject = createAsyncThunk(
-  'Project/searchProject',
+export const searchManufOrder = createAsyncThunk(
+  'hr_manufOrder/searchManufOrder',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchProject,
+      fetchFunction: _searchManufOrder,
       data,
-      action: 'Hr_SliceAction_FetchProjects',
+      action: 'Hr_SliceAction_FetchManufOrder',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -37,31 +37,31 @@ export const searchProject = createAsyncThunk(
 );
 
 const initialState = {
-  loadingProject: true,
+  loadingManufOrder: true,
   moreLoading: false,
   isListEnd: false,
-  projectList: [],
-  projectTaskList: [],
+  manufOrderList: [],
+  operationOrderList: [],
 };
 
-const projectSlice = createSlice({
-  name: 'project',
+const manufOrderSlice = createSlice({
+  name: 'hr_manufOrder',
   initialState,
   reducers: {
-    updateProjectTaskList: (state, action) => {
-      state.projectTaskList = action.payload;
+    updateOperationOrderList: (state, action) => {
+      state.operationOrderList = action.payload;
     },
   },
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchProject, {
-      loading: 'loadingProject',
+    generateInifiniteScrollCases(builder, searchManufOrder, {
+      loading: 'loadingManufOrder',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
-      list: 'projectList',
+      list: 'manufOrderList',
     });
   },
 });
 
-export const {updateProjectTaskList} = projectSlice.actions;
+export const {updateOperationOrderList} = manufOrderSlice.actions;
 
-export const projectReducer = projectSlice.reducer;
+export const manufOrderReducer = manufOrderSlice.reducer;
