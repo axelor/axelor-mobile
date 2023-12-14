@@ -69,7 +69,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
 
   const deleteExpenseAPI = useCallback(() => {
     dispatch(deleteExpense({ExpenseId: expense.id, userId: user.id}));
-    navigation.navigate('ExpenseListScreen');
+    navigation.pop();
   }, [dispatch, expense.id, navigation, user.id]);
 
   if (expense.statusSelect === Expense.statusSelect.Draft) {
