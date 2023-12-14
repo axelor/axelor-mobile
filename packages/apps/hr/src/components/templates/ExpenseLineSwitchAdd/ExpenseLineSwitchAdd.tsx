@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useNavigation, useSelector} from '@axelor/aos-mobile-core';
 import {CircleButton} from '@axelor/aos-mobile-ui';
-import ExpenseLineDisplay from '../ExpenseLineDisplay/ExpenseLineDisplay';
+import ExpenseLineDisplayType from '../ExpenseLineDisplayType/ExpenseLineDisplayType';
 import {Expense} from '../../../types';
 
 interface ExpenseLineSwitchAddProps {
@@ -45,7 +45,7 @@ const ExpenseLineSwitchAdd = ({
 
   return (
     <View style={styles.container}>
-      <ExpenseLineDisplay
+      <ExpenseLineDisplayType
         onChange={onChangeSwicth}
         isAddButton={isAddButton}
         mode={mode}

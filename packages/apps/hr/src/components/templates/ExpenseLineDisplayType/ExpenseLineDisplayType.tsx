@@ -35,17 +35,18 @@ import {
 interface ExpenseLineTypeSwitchProps {
   isAddButton?: boolean;
   onChange: (mode: any) => void;
+  totalNumberExpenseGeneral: number;
+  totalNumberExpenseKilomectric: number;
 }
 
 const ExpenseLineTypeSwitch = ({
   isAddButton = false,
   onChange,
+  totalNumberExpenseGeneral,
+  totalNumberExpenseKilomectric,
 }: ExpenseLineTypeSwitchProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-
-  const {totalNumberExpenseGeneral, totalNumberExpenseKilomectric} =
-    useSelector((state: any) => state.expenseLine);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
@@ -106,17 +107,17 @@ const getStyles = isAddButton =>
     },
   });
 
-interface ExpenseLineDisplayProps {
+interface ExpenseLineDisplayTypeProps {
   isAddButton?: boolean;
   onChange: (mode: any) => void;
   mode?: string;
 }
 
-const ExpenseLineDisplay = ({
+const ExpenseLineDisplayType = ({
   isAddButton,
   onChange,
   mode,
-}: ExpenseLineDisplayProps) => {
+}: ExpenseLineDisplayTypeProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
   const Colors = useThemeColor();
@@ -191,10 +192,21 @@ const ExpenseLineDisplay = ({
   const renderToggle = useCallback(() => {
     return (
       <View style={styles.containerToggle}>
-        <ExpenseLineTypeSwitch onChange={onChange} isAddButton={isAddButton} />
+        <ExpenseLineTypeSwitch
+          onChange={onChange}
+          isAddButton={isAddButton}
+          totalNumberExpenseGeneral={totalNumberExpenseGeneral}
+          totalNumberExpenseKilomectric={totalNumberExpenseKilomectric}
+        />
       </View>
     );
-  }, [isAddButton, onChange, styles.containerToggle]);
+  }, [
+    isAddButton,
+    onChange,
+    styles.containerToggle,
+    totalNumberExpenseGeneral,
+    totalNumberExpenseKilomectric,
+  ]);
 
   const renderTitle = useCallback(() => {
     return (
@@ -258,4 +270,4 @@ const getStylesDisplay = isAddButton =>
     },
   });
 
-export default ExpenseLineDisplay;
+export default ExpenseLineDisplayType;
