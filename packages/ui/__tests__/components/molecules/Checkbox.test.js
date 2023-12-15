@@ -28,6 +28,7 @@ describe('Checkbox Component', () => {
     onChange: jest.fn(),
     isDefaultChecked: false,
     disabled: false,
+    iconColor: Colors.infoColor,
     iconSize: 20,
   };
 
@@ -41,8 +42,9 @@ describe('Checkbox Component', () => {
     const iconComponent = wrapper.find(Icon);
 
     expect(iconComponent.exists()).toBeTruthy();
+    expect(iconComponent.prop('color')).toBe(props.iconColor.background);
     expect(iconComponent.prop('size')).toBe(props.iconSize);
-    expect(iconComponent.prop('touchable')).toBe(true);
+    expect(iconComponent.prop('touchable')).toBe(!props.disabled);
   });
 
   it('renders disabled icon when specified', () => {
@@ -73,7 +75,7 @@ describe('Checkbox Component', () => {
     const wrapper = shallow(<Checkbox {...props} />);
 
     expect(wrapper.find(Icon).prop('color')).toEqual(
-      Colors.primaryColor.background,
+      props.iconColor.background,
     );
 
     wrapper.setProps({disabled: true});
