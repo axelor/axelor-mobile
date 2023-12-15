@@ -19,7 +19,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import ScrollList from '../ScrollList/ScrollList';
-import Checkbox from '../../molecules/Checkbox/Checkbox';
+import {Checkbox} from '../../molecules';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface CheckboxScrollListProps {
@@ -28,6 +28,7 @@ interface CheckboxScrollListProps {
   styleScrollList?: any;
   loadingList?: boolean;
   data: any[];
+  defaultCheckedItems?: any[];
   onCheckedChange: (items: any[]) => void;
   renderItem: (item: any) => any;
   fetchData?: (fetchOptions?: any) => any[] | void;
@@ -45,6 +46,7 @@ const CheckboxScrollList = ({
   styleScrollList,
   loadingList = false,
   data,
+  defaultCheckedItems = [],
   onCheckedChange,
   renderItem,
   fetchData = () => [],
@@ -57,7 +59,7 @@ const CheckboxScrollList = ({
 }: CheckboxScrollListProps) => {
   const Colors = useThemeColor();
 
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState(defaultCheckedItems);
 
   const _renderItem = ({item, index}) => {
     return (
@@ -74,7 +76,9 @@ const CheckboxScrollList = ({
               return currentItems;
             })
           }
-          isDefaultChecked={checkedItems.find(_item => _item === item)}
+          isDefaultChecked={checkedItems.find(
+            _item => JSON.stringify(_item) === JSON.stringify(item),
+          )}
         />
         <View style={styles.renderItem}>{renderItem({item, index})}</View>
       </View>
