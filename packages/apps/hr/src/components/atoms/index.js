@@ -17,6 +17,7 @@
  */
 
 export {default as DateDisplay} from './DateDisplay/DateDisplay';
+export {default as DatesInterval} from './DatesInterval/DatesInterval';
 export {default as ExpenseCard} from './ExpenseCard/ExpenseCard';
 export {default as ExpenseLineCard} from './ExpenseLineCard/ExpenseLineCard';
 export {default as TextUnit} from './TextUnit/TextUnit';
