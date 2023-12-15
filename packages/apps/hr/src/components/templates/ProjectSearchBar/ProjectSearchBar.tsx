@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemFullname,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
@@ -59,8 +64,6 @@ const ProjectSearchBarAux = ({
     [dispatch, user?.activeCompany?.id],
   );
 
-  const displayItemFullname = item => item.fullName;
-
   return (
     <AutoCompleteSearch
       style={style}
@@ -85,7 +88,7 @@ const ProjectSearchBarAux = ({
 
 const ProjectSearchBar = ({
   style = null,
-  title = 'Hr_ProjectTask',
+  title = 'Hr_Project',
   defaultValue = null,
   onChange = () => {},
   readonly = false,

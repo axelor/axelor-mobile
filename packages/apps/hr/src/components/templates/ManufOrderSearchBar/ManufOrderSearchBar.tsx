@@ -58,7 +58,7 @@ const ManufOrderSearchBarAux = ({
     [dispatch, user?.activeCompany?.id],
   );
 
-  const displayItemFullname = item => item.manufOrderSeq;
+  const displayItemSeq = item => item.manufOrderSeq;
 
   return (
     <AutoCompleteSearch
@@ -70,7 +70,7 @@ const ManufOrderSearchBarAux = ({
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchManufOrderAPI}
-      displayValue={displayItemFullname}
+      displayValue={displayItemSeq}
       placeholder={title}
       showDetailsPopup={true}
       loadingList={loadingManufOrder}
@@ -84,7 +84,7 @@ const ManufOrderSearchBarAux = ({
 
 const ManufOrderSearchBar = ({
   style = null,
-  title = 'Hr_ProjectTask',
+  title = 'Hr_ManufOrder',
   defaultValue = null,
   onChange = () => {},
   readonly = false,

@@ -17,7 +17,12 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemName,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchOperationOrder} from '../../../features/manufOrderSlice';
 
@@ -62,8 +67,6 @@ const OperationOrderSearchBarAux = ({
     [dispatch, manufOrder?.id],
   );
 
-  const displayItemFullname = item => item.name;
-
   return (
     <AutoCompleteSearch
       style={style}
@@ -74,7 +77,7 @@ const OperationOrderSearchBarAux = ({
       readonly={readonly}
       onChangeValue={onChange}
       fetchData={searchOperationOrderAPI}
-      displayValue={displayItemFullname}
+      displayValue={displayItemName}
       placeholder={title}
       showDetailsPopup={true}
       loadingList={loadingOperationOrder}
