@@ -29,6 +29,7 @@ export {
   sendExpense as sendExpenseApi,
   updateExpense as updateExpenseApi,
   validateExpense as validateExpenseApi,
+  deleteExpense as deleteExpenseApi,
 } from './expense-api';
 export {
   createExpenseLine as createExpenseLineApi,
