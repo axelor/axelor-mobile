@@ -75,6 +75,7 @@ const ExpenseListScreen = ({navigation}) => {
     },
     [dispatch, user.id],
   );
+
   const fetchExpenseToValidateAPI = useCallback(
     (page = 0) => {
       dispatch(searchExpenseToValidate({page: page, user: user}));

@@ -69,6 +69,7 @@ const AnomalyBubble = ({
 
     return () => {
       isMounted = false;
+      setAnomalyList([]);
     };
   }, [objectName, objectId]);
 
