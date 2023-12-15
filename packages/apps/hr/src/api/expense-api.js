@@ -160,3 +160,9 @@ export async function refuseExpense({expenseId, version, groundForRefusal}) {
     },
   });
 }
+
+export async function deleteExpense({ExpenseId}) {
+  return axiosApiProvider.delete({
+    url: `ws/rest/com.axelor.apps.hr.db.Expense/${ExpenseId}`,
+  });
+}
