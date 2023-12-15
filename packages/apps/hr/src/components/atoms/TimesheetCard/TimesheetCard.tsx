@@ -19,7 +19,9 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ObjectCard, useThemeColor} from '@axelor/aos-mobile-ui';
-import {formatDate, useTranslator} from '@axelor/aos-mobile-core';
+import {useTranslator} from '@axelor/aos-mobile-core';
+import DatesInterval from '../DatesInterval/DatesInterval';
+import TextUnit from '../TextUnit/TextUnit';
 import {Timesheet} from '../../../types';
 
 interface TimesheetCardProps {
@@ -51,38 +53,48 @@ const TimesheetCard = ({
     [Colors, statusSelect],
   );
 
-  const _formatDate = (date: string) => {
-    return formatDate(date, I18n.t('Base_DateFormat'));
-  };
-
   return (
     <View style={style}>
       <ObjectCard
         style={[styles.container, styles.borderColor]}
+        leftContainerFlex={2}
         onPress={onPress}
         upperTexts={{
           items: [
             {
-              displayText: `${_formatDate(startDate)} - ${_formatDate(
-                endDate,
-              )}`,
-              isTitle: true,
+              customComponent: (
+                <DatesInterval
+                  startDate={startDate}
+                  endDate={endDate}
+                  style={styles.datesInterval}
+                />
+              ),
             },
             {
-              displayText: `${I18n.t('User_Company')} : ${company}`,
+              iconName: 'building',
+              displayText: company,
               numberOfLines: 2,
-              style: styles.subTitle,
+              style: styles.iconText,
             },
-            {
-              displayText: `${I18n.t(
-                'Hr_TotalDurationHours',
-              )} : ${totalDuration}`,
-              style: styles.subTitle,
-            },
+
             {
               iconName: 'user',
-              indicatorText: employeeName,
+              displayText: employeeName,
+              style: styles.iconText,
               hideIfNull: true,
+            },
+          ],
+        }}
+        sideBadges={{
+          items: [
+            {
+              customComponent: (
+                <TextUnit
+                  style={styles.textUnit}
+                  value={totalDuration}
+                  unit={I18n.t('Hr_TimeUnit_Hours')}
+                />
+              ),
             },
           ],
         }}
@@ -94,8 +106,6 @@ const TimesheetCard = ({
 const getStyles = color =>
   StyleSheet.create({
     container: {
-      minHeight: 100,
-      justifyContent: 'center',
       marginHorizontal: 1,
       marginVertical: 1,
     },
@@ -103,8 +113,16 @@ const getStyles = color =>
       borderLeftWidth: 7,
       borderLeftColor: color.background,
     },
-    subTitle: {
-      marginTop: 5,
+    datesInterval: {
+      marginBottom: 15,
+    },
+    iconText: {
+      fontSize: 15,
+      fontWeight: null,
+    },
+    textUnit: {
+      alignSelf: 'flex-end',
+      lineHeight: 25,
     },
   });
 
