@@ -100,7 +100,6 @@ const AutoCompleteSearch = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
-    visible: displayList,
   });
 
   useEffect(() => {

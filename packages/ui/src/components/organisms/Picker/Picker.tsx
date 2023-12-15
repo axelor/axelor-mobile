@@ -74,8 +74,8 @@ const Picker = ({
   const wrapperRef = useRef(null);
   const clickOutside = useClickOutside({
     wrapperRef,
-    visible: pickerIsOpen,
   });
+
   const Colors = useThemeColor();
   const [selectedItem, setSelectedItem] = useState(
     !isValueItem
