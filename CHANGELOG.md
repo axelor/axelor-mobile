@@ -3,6 +3,33 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.5] (2023-12-15)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory : refresh issue on api error
+- Inventory : update list after inventory update
+- Inventory : update line list after line update
+- StockCorrection : error message when going on menu entry with incorrect status value.
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Storybook : improve components stories with icon display
+- Outside click : concurrency issue
+- ScrollList : reset page number when list is loading
+- SelectionContainer : display issue when label is null
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Session : invalid url error appears when typing
+- Session : hide close pop-up icon when user is logining
+
 ## [7.1.4] (2023-12-01)
 
 ### @axelor/aos-mobile-helpdesk
@@ -30,11 +57,6 @@ This version adds new unit test for ui components.
 - Storybook : manage FontAwesome icons
 - AutoCompleteSearch : SelectionContainer display issue
 - ObjectCard : manage hideIf props even with customComponent
-
-#### Fixes
-
-- Session : invalid url error stay on all pop-up even on saved sessions
-- Calendar : today date color display
 
 ### @axelor/aos-mobile-core
 
@@ -278,6 +300,7 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.5]: https://github.com/axelor/axelor-mobile/compare/7.1.4...7.1.5
 [7.1.4]: https://github.com/axelor/axelor-mobile/compare/7.1.3...7.1.4
 [7.1.3]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.1.3
 [7.1.2]: https://github.com/axelor/axelor-mobile/compare/7.1.1...7.1.2
