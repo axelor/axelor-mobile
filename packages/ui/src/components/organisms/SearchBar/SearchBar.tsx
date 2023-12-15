@@ -148,13 +148,6 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
     action: {
       marginLeft: 12,
     },
-    iconContainerReadOnly: {
-      flexDirection: 'row',
-      position: 'absolute',
-      alignSelf: 'flex-end',
-      right: 15,
-      top: '50%',
-    },
     container: {
       width: '100%',
     },
