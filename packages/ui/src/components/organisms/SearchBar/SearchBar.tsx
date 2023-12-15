@@ -39,6 +39,7 @@ interface SearchBarProps {
   scanIconColor?: string;
   onSearchPress?: () => void;
   disableSearchPress?: boolean;
+  selected?: boolean;
 }
 
 const SearchBar = ({
@@ -57,6 +58,7 @@ const SearchBar = ({
   scanIconColor = null,
   onSearchPress = () => {},
   disableSearchPress = false,
+  selected = false,
 }: SearchBarProps) => {
   const Colors = useThemeColor();
 
@@ -102,6 +104,7 @@ const SearchBar = ({
         onChange={onChangeTxt}
         onSelection={onSelection}
         onEndFocus={onEndFocus}
+        readOnly={selected}
         rightIconsList={[
           <Icon
             style={styles.action}
@@ -144,6 +147,13 @@ const getStyles = (Colors: ThemeColors, _required: boolean) =>
   StyleSheet.create({
     action: {
       marginLeft: 12,
+    },
+    iconContainerReadOnly: {
+      flexDirection: 'row',
+      position: 'absolute',
+      alignSelf: 'flex-end',
+      right: 15,
+      top: '50%',
     },
     container: {
       width: '100%',
