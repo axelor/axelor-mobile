@@ -19,6 +19,12 @@
 import {HorizontalRule, Label, ThemeColors} from '@axelor/aos-mobile-ui';
 import {Field, InputType, JSONObject, Panel, Widget} from '../types';
 import {CustomButton, CustomPicker, CustomSearchBar} from '../../components';
+import {
+  combinedFormula,
+  createFormulaFunction,
+  manageDependsOnFormula,
+  reverseFormula,
+} from './formula.helpers';
 
 export const mapStudioFields = (
   items: any[],
@@ -37,7 +43,8 @@ export const mapStudioFields = (
 
     for (const modelField of modelFields) {
       const {_fields, _panels, _defaults} = manageContentOfModel(
-        metaJsonFields.filter(_item => _item.modelField === modelField),
+        metaJsonFields,
+        modelField,
         Colors,
       );
 
@@ -175,7 +182,8 @@ const hasPanelTitle = (item: any): boolean => {
 };
 
 const manageContentOfModel = (
-  items: any,
+  metaJsonFields: any[],
+  modelField: string,
   Colors: ThemeColors,
 ): {_panels: JSONObject<Panel>; _fields: JSONObject<Field>; _defaults: any} => {
   const formFields: JSONObject<Field> = {};
@@ -183,8 +191,9 @@ const manageContentOfModel = (
   const defaults: any = {};
   let lastPanel = null;
 
-  items
+  metaJsonFields
     .sort((a, b) => a.sequence - b.sequence)
+    .filter(_item => _item.modelField === modelField)
     .forEach(item => {
       switch (item.type) {
         case 'panel':
@@ -262,21 +271,16 @@ const manageContentOfModel = (
             helperKey: item.help,
             type: inputType || fieldType,
             required: item.required,
+            requiredIf: createFormulaFunction(item.requiredIf),
             readonly: item.readonly,
+            readonlyIf: createFormulaFunction(item.readonlyIf),
+            hideIf: createFormulaFunction(
+              combinedFormula('||', item.hideIf, reverseFormula(item.showIf)),
+            ),
             order: item.sequence,
             parentPanel: lastPanel,
             widget: widget,
           };
-
-          if (item.contextField != null) {
-            config.hideIf = ({storeState}) => {
-              const obejctValue =
-                storeState?.metaJsonField?.object?.[item.contextField];
-
-              const targetValue = parseInt(item.contextFieldValue, 10);
-              return obejctValue?.id !== targetValue;
-            };
-          }
 
           if (item.type === 'integer') {
             config.validationOptions = {
@@ -303,6 +307,13 @@ const manageContentOfModel = (
             config.widget = 'custom';
             config.customComponent = CustomSearchBar;
             config.options = {item};
+          }
+
+          if (item.valueExpr != null) {
+            config.dependsOn = manageDependsOnFormula(
+              item.valueExpr,
+              metaJsonFields,
+            );
           }
 
           formFields[item.name] = config;

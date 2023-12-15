@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../components';
@@ -29,6 +29,7 @@ import {
   formConfigsProvider,
   mapFormToStudioFields,
   mapStudioFields,
+  mapStudioFieldsWithFormula,
 } from '../forms';
 import {isEmpty} from '../utils';
 import {headerActionsProvider} from '../header';
@@ -46,14 +47,18 @@ const JsonFieldScreen = ({route}) => {
     (state: any) => state.metaJsonField,
   );
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
     dispatch((fetchObject as any)({modelName: model, id: modelId}));
   }, [dispatch, model, modelId]);
 
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
   const {fields, panels, defaults} = useMemo(
-    () => mapStudioFields(_fields, Colors),
-    [Colors, _fields],
+    () => mapStudioFields(mapStudioFieldsWithFormula(_fields, object), Colors),
+    [Colors, _fields, object],
   );
 
   useEffect(() => {
@@ -93,13 +98,11 @@ const JsonFieldScreen = ({route}) => {
           showInHeader: false,
           iconName: 'redo',
           title: I18n.t('Base_Studio_RefreshConfig'),
-          onPress: () => {
-            dispatch((fetchJsonFieldsOfModel as any)({modelName: model}));
-          },
+          onPress: refresh,
         },
       ],
     });
-  }, [I18n, dispatch, model]);
+  }, [I18n, refresh]);
 
   return (
     <FormView

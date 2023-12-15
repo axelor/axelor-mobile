@@ -42,11 +42,17 @@ export function fetchJsonField(object: any, fieldName: string) {
     return undefined;
   }
 
-  if (object[fieldName] != null || !fieldName.includes('.')) {
-    return object[fieldName];
+  if (fieldName == null) {
+    return object;
   }
 
-  const fieldParts: string[] = fieldName.split('.');
+  const _fieldName = fieldName.replaceAll('?', '');
+
+  if (object[_fieldName] != null || !_fieldName.includes('.')) {
+    return object[_fieldName];
+  }
+
+  const fieldParts: string[] = _fieldName.split('.');
   return fetchJsonField(object[fieldParts.shift()], fieldParts.join('.'));
 }
 
