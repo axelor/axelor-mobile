@@ -3,6 +3,61 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.3] (2023-12-15)
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- ExpenseLine : add new header action to toggle selection mode
+- Expense: add possibility to delete a line from a draft expense
+- Expense: add possibility to create a new line from a draft expense
+
+#### Fixes
+
+- KilometricAllowParamSearchBar : refresh issue
+- Expense : reverse order of list view
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- improve display of ManufacturingOrderCard and OperationOrderCard
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory : refresh issue on api error
+- Inventory : update list after inventory update
+- Inventory : update line list after line update
+- StockCorrection : error message when going on menu entry with incorrect status value.
+
+### @axelor/aos-mobile-ui
+
+#### Features
+
+- add new component ToggleButton
+
+#### Fixes
+
+- Storybook : improve components stories with icon display
+- Outside click : concurrency issue
+- ScrollList : reset page number when list is loading
+- SelectionContainer : display issue when label is null
+
+### @axelor/aos-mobile-core
+
+#### Features
+
+- Header actions: add customComponent prop
+- Form : manage js formula of studio fields
+
+#### Fixes
+
+- Session : invalid url error appears when typing
+- Session : hide close pop-up icon when user is logining
+
 ## [7.2.2] (2023-12-01)
 
 ### @axelor/aos-mobile-hr
@@ -178,6 +233,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
-[7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.1...7.2.2
+[7.2.3]: https://github.com/axelor/axelor-mobile/compare/7.2.2...7.2.3
+[7.2.2]: https://github.com/axelor/axelor-mobile/compare/7.2.1...7.2.2
 [7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.0...7.2.1
 [7.2.0]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.2.0
