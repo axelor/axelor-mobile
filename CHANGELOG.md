@@ -3,6 +3,33 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.8] (2023-12-15)
+
+### @axelor/aos-mobile-stock
+
+#### Fixes
+
+- Inventory : refresh issue on api error
+- Inventory : update list after inventory update
+- Inventory : update line list after line update
+- StockCorrection : error message when going on menu entry with incorrect status value.
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- Storybook : improve components stories with icon display
+- Outside click : concurrency issue
+- ScrollList : reset page number when list is loading
+- SelectionContainer : display issue when label is null
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Session : invalid url error appears when typing
+- Session : hide close pop-up icon when user is logining
+
 ## [7.0.7] (2023-12-01)
 
 ### @axelor/aos-mobile-manufacturing
@@ -17,11 +44,6 @@ tags: Changelog
 
 - Storybook : manage FontAwesome icons
 - AutoCompleteSearch : SelectionContainer display issue
-
-#### Fixes
-
-- Session : invalid url error stay on all pop-up even on saved sessions
-- Calendar : today date color display
 
 ### @axelor/aos-mobile-core
 
@@ -375,6 +397,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.8]: https://github.com/axelor/axelor-mobile/compare/7.0.7...7.0.8
 [7.0.7]: https://github.com/axelor/axelor-mobile/compare/7.0.6...7.0.7
 [7.0.6]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.0.6
 [7.0.5]: https://github.com/axelor/axelor-mobile/compare/7.0.4...7.0.5
