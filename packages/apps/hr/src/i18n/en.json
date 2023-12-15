@@ -41,6 +41,7 @@
   "Hr_ToCity": "Arriving city",
   "Hr_Send": "Send",
   "Hr_Validate": "Validate",
+  "Hr_Delete": "Delete",
   "Hr_CreateExpenseLine": "Create expense line",
   "Hr_Refuse": "Refuse",
   "Hr_ReasonRefusal": "Reason for refusal",
@@ -79,5 +80,6 @@
   "Hr_SliceAction_SearchManagedEmployee": "search managed employee",
   "Hr_SliceAction_FetchTimer": "fetch timer",
   "Hr_SliceAction_FetchTimesheet": "fetch timesheet",
-  "Hr_SliceAction_FetchTimesheetToValidate": "fetch timesheet to validate"
+  "Hr_SliceAction_FetchTimesheetToValidate": "fetch timesheet to validate",
+  "Hr_SliceAction_DeleteExpense": "delete expense"
 }
