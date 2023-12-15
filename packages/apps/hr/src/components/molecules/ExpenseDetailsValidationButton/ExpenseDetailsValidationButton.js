@@ -19,14 +19,24 @@
 import React, {useCallback, useState} from 'react';
 import {View} from 'react-native';
 
-import {useTranslator, useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {
+  useTranslator,
+  useSelector,
+  useDispatch,
+  useNavigation,
+} from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {Expense} from '../../../types';
-import {sendExpense, validateExpense} from '../../../features/expenseSlice';
+import {
+  deleteExpense,
+  sendExpense,
+  validateExpense,
+} from '../../../features/expenseSlice';
 import ExpenseRefusalPopup from '../ExpenseRefusalPopup/ExpenseRefusalPopup';
 import {StyleSheet} from 'react-native';
 
 const ExpenseDetailsValidationButton = ({expense, mode}) => {
+  const navigation = useNavigation();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const Colors = useThemeColor();
@@ -57,13 +67,28 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
     );
   }, [dispatch, mode, expense]);
 
+  const deleteExpenseAPI = useCallback(() => {
+    dispatch(deleteExpense({ExpenseId: expense.id, userId: user.id}));
+    navigation.pop();
+  }, [dispatch, expense.id, navigation, user.id]);
+
   if (expense.statusSelect === Expense.statusSelect.Draft) {
     return (
-      <Button
-        title={I18n.t('Hr_Send')}
-        onPress={sendExpenseAPI}
-        iconName="paper-plane"
-      />
+      <View style={styles.buttonContainer}>
+        <Button
+          title={I18n.t('Hr_Delete')}
+          onPress={deleteExpenseAPI}
+          width="45%"
+          color={Colors.errorColor}
+          iconName="trash-alt"
+        />
+        <Button
+          title={I18n.t('Hr_Send')}
+          onPress={sendExpenseAPI}
+          width="45%"
+          iconName="paper-plane"
+        />
+      </View>
     );
   }
 
