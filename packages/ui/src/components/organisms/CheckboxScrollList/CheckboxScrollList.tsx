@@ -66,19 +66,17 @@ const CheckboxScrollList = ({
       <View style={[styles.renderContainer, styleRender]} key={index}>
         <Checkbox
           style={styles.renderCheckbox}
-          iconColor={Colors.secondaryColor_dark}
+          iconColor={Colors.secondaryColor_dark.background}
           onChange={checked =>
             setCheckedItems(prevItems => {
               const currentItems = checked
                 ? [...prevItems, item]
-                : prevItems.filter(_item => _item !== item);
+                : prevItems.filter(_item => _item.id !== item.id);
               onCheckedChange(currentItems);
               return currentItems;
             })
           }
-          isDefaultChecked={checkedItems.find(
-            _item => JSON.stringify(_item) === JSON.stringify(item),
-          )}
+          isDefaultChecked={checkedItems.find(_item => _item.id === item.id)}
         />
         <View style={styles.renderItem}>{renderItem({item, index})}</View>
       </View>
@@ -90,7 +88,7 @@ const CheckboxScrollList = ({
       <Checkbox
         style={[styles.checkbox, styleCheckbox]}
         styleTxt={styles.checkboxTxt}
-        iconColor={Colors.secondaryColor_dark}
+        iconColor={Colors.secondaryColor_dark.background}
         title={translator != null ? translator('Base_SelectAll') : 'Select all'}
         onChange={checked =>
           setCheckedItems(() => {
