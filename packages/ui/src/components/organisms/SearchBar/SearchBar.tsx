@@ -18,8 +18,8 @@
 
 import React, {LegacyRef, useMemo} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
-import {getCommonStyles} from '../../../utils/commons-styles';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {checkNullString, getCommonStyles} from '../../../utils';
+import {useThemeColor} from '../../../theme';
 import {Icon} from '../../atoms';
 import {IconInput} from '../../molecules';
 
@@ -36,6 +36,7 @@ interface SearchBarProps {
   scanIconColor?: string;
   onSearchPress?: () => void;
   disableSearchPress?: boolean;
+  selected?: boolean;
 }
 
 const SearchBar = ({
@@ -51,6 +52,7 @@ const SearchBar = ({
   scanIconColor = null,
   onSearchPress = () => {},
   disableSearchPress = false,
+  selected = false,
 }: SearchBarProps) => {
   const Colors = useThemeColor();
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
@@ -69,6 +71,7 @@ const SearchBar = ({
       onChange={onChangeTxt}
       onSelection={onSelection}
       onEndFocus={onEndFocus}
+      readOnly={selected}
       rightIconsList={[
         <Icon
           style={styles.action}
@@ -76,7 +79,7 @@ const SearchBar = ({
           color={Colors.secondaryColor_dark.background}
           size={20}
           touchable={true}
-          visible={valueTxt != null && valueTxt !== ''}
+          visible={!checkNullString(valueTxt)}
           onPress={onClearPress}
         />,
         <Icon
@@ -98,7 +101,7 @@ const SearchBar = ({
           color={scanIconColor}
           size={20}
           touchable={true}
-          visible={scanIconColor != null}
+          visible={!checkNullString(scanIconColor)}
           onPress={onScanPress}
         />,
       ]}
