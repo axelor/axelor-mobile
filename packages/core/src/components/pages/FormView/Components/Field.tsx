@@ -131,6 +131,7 @@ const Field = ({
           onChange: handleChange,
           required: isRequired,
           readonly: isReadonly,
+          objectState: object,
           ..._field.options,
         });
       case 'checkbox':
