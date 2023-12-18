@@ -298,6 +298,7 @@ const AutoCompleteSearch = ({
         disableSearchPress={!showDetailsPopup}
         onScanPress={onScanPress}
         scanIconColor={scanIconColor}
+        selected={selected}
       />
       {displayList && !oneFilter && (
         <SelectionContainer
