@@ -22,30 +22,30 @@ import {
   generateInifiniteScrollCases,
 } from '@axelor/aos-mobile-core';
 import {
-  searchProject as _searchProject,
-  searchProjectTask as _searchProjectTask,
-} from '../api/project-api';
+  searchManufOrder as _searchManufOrder,
+  searchOperationOrder as _searchOperationOrder,
+} from '../api/manuf-order-api';
 
-export const searchProject = createAsyncThunk(
-  'project/searchProject',
+export const searchManufOrder = createAsyncThunk(
+  'hr_manufOrder/searchManufOrder',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchProject,
+      fetchFunction: _searchManufOrder,
       data,
-      action: 'Hr_SliceAction_FetchProject',
+      action: 'Hr_SliceAction_FetchManufOrder',
       getState,
       responseOptions: {isArrayResponse: true},
     });
   },
 );
 
-export const searchProjectTask = createAsyncThunk(
-  'project/searchProjectTask',
+export const searchOperationOrder = createAsyncThunk(
+  'hr_manufOrder/searchOperationOrder',
   async function (data, {getState}) {
     return handlerApiCall({
-      fetchFunction: _searchProjectTask,
+      fetchFunction: _searchOperationOrder,
       data,
-      action: 'Hr_SliceAction_FetchProjectTask',
+      action: 'Hr_SliceAction_FetchOperationOrder',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -53,43 +53,43 @@ export const searchProjectTask = createAsyncThunk(
 );
 
 const initialState = {
-  project: {},
+  manufOrder: {},
 
-  loadingProject: true,
+  loadingManufOrder: true,
   moreLoading: false,
   isListEnd: false,
-  projectList: [],
+  manufOrderList: [],
 
-  loadingProjectTask: true,
-  moreLoadingProjectTask: false,
-  isListEndProjectTask: false,
-  projectTaskList: [],
+  loadingOperationOrder: true,
+  moreLoadingOperationOrder: false,
+  isListEndOperationOrder: false,
+  operationOrderList: [],
 };
 
-const projectSlice = createSlice({
-  name: 'project',
+const manufOrderSlice = createSlice({
+  name: 'hr_manufOrder',
   initialState,
   reducers: {
-    updateProject: (state, action) => {
-      state.project = action.payload;
+    updateManufOrder: (state, action) => {
+      state.manufOrder = action.payload;
     },
   },
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, searchProject, {
-      loading: 'loadingProject',
+    generateInifiniteScrollCases(builder, searchManufOrder, {
+      loading: 'loadingManufOrder',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
-      list: 'projectList',
+      list: 'manufOrderList',
     });
-    generateInifiniteScrollCases(builder, searchProjectTask, {
-      loading: 'loadingProjectTask',
-      moreLoading: 'moreLoadingProjectTask',
-      isListEnd: 'isListEndProjectTask',
-      list: 'projectTaskList',
+    generateInifiniteScrollCases(builder, searchOperationOrder, {
+      loading: 'loadingOperationOrder',
+      moreLoading: 'moreLoadingOperationOrder',
+      isListEnd: 'isListEndOperationOrder',
+      list: 'operationOrderList',
     });
   },
 });
 
-export const {updateProject} = projectSlice.actions;
+export const {updateManufOrder} = manufOrderSlice.actions;
 
-export const projectReducer = projectSlice.reducer;
+export const manufOrderReducer = manufOrderSlice.reducer;

@@ -53,6 +53,12 @@
   "Hr_NewTimer": "Create timer",
   "Hr_Timesheets": "Timesheets",
   "Hr_MyTimesheets": "My timesheets",
+  "Hr_TimesheetLine": "Timesheet line",
+  "Hr_ProjectTask": "Task",
+  "Hr_ManufOrder": "Manufacturing order",
+  "Hr_OperationOrder": "Operation order",
+  "Hr_TimesheetDate": "Date",
+  "Hr_Duration": "Duration (hours)",
   "Hr_SliceAction_FetchExpenseLines": "fetch expense lines",
   "Hr_SliceAction_SearchDraftExpense": "fetch draft expenses",
   "Hr_SliceAction_FetchExpense": "fetch expenses",
@@ -65,7 +71,8 @@
   "Hr_SliceAction_CreateExpenseLine": "create expense line",
   "Hr_SliceAction_SearchKilometricAllowParam": "seach kilometric allow param",
   "Hr_SliceAction_FetchExpenseType": "fetch expense types",
-  "Hr_SliceAction_FetchProjects": "fetch projects",
+  "Hr_SliceAction_FetchProject": "fetch projects",
+  "Hr_SliceAction_FetchProjectTask": "fetch project tasks",
   "Hr_SliceAction_FetchExpenseLineById": "fetch expense line by id",
   "Hr_SliceAction_CreateExpense": "create expense",
   "Hr_SliceAction_UpdateExpense": "update expense",
@@ -80,5 +87,7 @@
   "Hr_SliceAction_FetchTimer": "fetch timer",
   "Hr_SliceAction_FetchTimesheet": "fetch timesheet",
   "Hr_SliceAction_FetchTimesheetToValidate": "fetch timesheet to validate",
-  "Hr_SliceAction_DeleteExpense": "delete expense"
+  "Hr_SliceAction_DeleteExpense": "delete expense",
+  "Hr_SliceAction_FetchManufOrder": "fetch manufacturing order",
+  "Hr_SliceAction_FetchOperationOrder": "fetch operation order"
 }

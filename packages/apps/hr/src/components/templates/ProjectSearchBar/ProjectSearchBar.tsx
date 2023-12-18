@@ -17,30 +17,44 @@
  */
 
 import React, {useCallback} from 'react';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  displayItemFullname,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {searchProject} from '../../../features/projectSlice';
 
-const ProjectSearchBar = ({
+interface ProjectSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (any: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+}
+
+const ProjectSearchBarAux = ({
   style = null,
   title = 'Hr_Project',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
-}) => {
+}: ProjectSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
   const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
-    state => state.project,
+    (state: any) => state.project,
   );
-  const {user} = useSelector(state => state.user);
+  const {user} = useSelector((state: any) => state.user);
 
   const searchProjectAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchProject({
+        (searchProject as any)({
           page,
           searchValue,
           activeCompanyId: user?.activeCompany?.id,
@@ -49,8 +63,6 @@ const ProjectSearchBar = ({
     },
     [dispatch, user?.activeCompany?.id],
   );
-
-  const displayItemFullname = item => item.fullName;
 
   return (
     <AutoCompleteSearch
@@ -70,7 +82,26 @@ const ProjectSearchBar = ({
       isListEnd={isListEnd}
       navigate={false}
       oneFilter={false}
-      isFocus={false}
+    />
+  );
+};
+
+const ProjectSearchBar = ({
+  style = null,
+  title = 'Hr_Project',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}: ProjectSearchBarProps) => {
+  return (
+    <ProjectSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
     />
   );
 };

@@ -53,6 +53,12 @@
   "Hr_NewTimer": "Créer un chronomètre",
   "Hr_Timesheets": "Feuilles de temps",
   "Hr_MyTimesheets": "Mes feuilles de temps",
+  "Hr_TimesheetLine": "Ligne de feuille de temps",
+  "Hr_ProjectTask": "Tâche",
+  "Hr_ManufOrder": "Ordre de fabrication",
+  "Hr_OperationOrder": "Opération de fabrication",
+  "Hr_TimesheetDate": "Date",
+  "Hr_Duration": "Duration (heures)",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -65,7 +71,8 @@
   "Hr_SliceAction_CreateExpenseLine": "création d'une ligne de frais",
   "Hr_SliceAction_SearchKilometricAllowParam": "recherche sur les puissances fiscales",
   "Hr_SliceAction_FetchExpenseType": "récuperation des types de frais",
-  "Hr_SliceAction_FetchProjects": "récupération des projets",
+  "Hr_SliceAction_FetchProject": "récupération des projets",
+  "Hr_SliceAction_FetchProjectTask": "récupération des tâches d'un projet",
   "Hr_SliceAction_FetchExpenseLineById": "récuperation de la ligne de frais par id",
   "Hr_SliceAction_CreateExpense": "création d'une note de frais",
   "Hr_SliceAction_UpdateExpense": "mise à jour de la note de frais",
@@ -80,5 +87,7 @@
   "Hr_SliceAction_FetchTimer": "récupération des chronomètres",
   "Hr_SliceAction_FetchTimesheet": "récupération des feuilles de temps",
   "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider",
-  "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais"
+  "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais",
+  "Hr_SliceAction_FetchManufOrder": "récupération des ordres de fabrication",
+  "Hr_SliceAction_FetchOperationOrder": "récupération des opérations de fabrication"
 }

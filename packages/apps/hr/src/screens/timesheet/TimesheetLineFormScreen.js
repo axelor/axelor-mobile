@@ -16,18 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {SortFields} from '@axelor/aos-mobile-core';
+import React from 'react';
+import {FormView} from '@axelor/aos-mobile-core';
 
-export const hr_sortFields: SortFields = {
-  hr_currency: ['name'],
-  hr_expense: ['-createdOn'],
-  hr_expenseLines: ['-expenseDate', '-createdOn'],
-  hr_expenseType: ['name', 'fullName'],
-  hr_kilomectricAllowParam: ['name', 'code'],
-  hr_manufOrder: ['manufOrderSeq'],
-  hr_operationOrder: ['name'],
-  hr_project: ['name', 'fullName'],
-  hr_projectTask: ['name', 'fullName'],
-  hr_timer: ['-startDateTime'],
-  hr_timesheet: ['-fromDate', '-toDate'],
+const TimesheetLineFormScreen = ({}) => {
+  const defaultValue = {
+    timesheetDate: new Date().toISOString().split('T')[0],
+  };
+
+  return (
+    <FormView
+      defaultValue={defaultValue}
+      actions={[
+        {
+          key: 'create-timesheetLine',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: ({objectState}) => {
+            console.log('Form data:', objectState);
+          },
+        },
+      ]}
+      formKey="hr_TimesheetLine"
+    />
+  );
 };
+
+export default TimesheetLineFormScreen;
