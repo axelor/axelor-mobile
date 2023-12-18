@@ -16,26 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import TimerListScreen from './TimerListScreen';
-import TimesheetListScreen from './TimesheetListScreen';
-import TimesheetLineFormScreen from './TimesheetLineFormScreen';
+import React from 'react';
+import {FormView} from '@axelor/aos-mobile-core';
 
-export default {
-  TimerListScreen: {
-    title: 'Hr_Timers',
-    component: TimerListScreen,
-    actionID: 'hr_timers_list',
-  },
-  TimesheetListScreen: {
-    title: 'Hr_Timesheets',
-    component: TimesheetListScreen,
-  },
-  TimesheetLineFormScreen: {
-    title: 'Hr_TimesheetLine',
-    component: TimesheetLineFormScreen,
-  },
+const TimesheetLineFormScreen = ({}) => {
+  const defaultValue = {
+    timesheetDate: new Date().toISOString().split('T')[0],
+  };
+
+  return (
+    <FormView
+      defaultValue={defaultValue}
+      actions={[
+        {
+          key: 'create-timesheetLine',
+          type: 'create',
+          needValidation: true,
+          needRequiredFields: true,
+          customAction: ({objectState}) => {
+            console.log('Form data:', objectState);
+          },
+        },
+      ]}
+      formKey="hr_TimesheetLine"
+    />
+  );
 };
 
-export {TimerListScreen};
-export {TimesheetListScreen};
-export {TimesheetLineFormScreen};
+export default TimesheetLineFormScreen;

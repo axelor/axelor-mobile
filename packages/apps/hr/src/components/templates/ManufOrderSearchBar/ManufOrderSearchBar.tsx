@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -19,28 +19,36 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {searchProject} from '../../../features/projectSlice';
+import {searchManufOrder} from '../../../features/manufOrderSlice';
 
-const ProjectSearchBar = ({
+interface ManufOrderSearchBarProps {
+  style?: any;
+  title?: string;
+  defaultValue?: string;
+  onChange?: (any: any) => void;
+  readonly?: boolean;
+  required?: boolean;
+}
+
+const ManufOrderSearchBarAux = ({
   style = null,
-  title = 'Hr_Project',
+  title = 'Hr_ManufOrder',
   defaultValue = null,
   onChange = () => {},
   readonly = false,
   required = false,
-}) => {
+}: ManufOrderSearchBarProps) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {projectList, loadingProject, moreLoading, isListEnd} = useSelector(
-    state => state.project,
-  );
-  const {user} = useSelector(state => state.user);
+  const {manufOrderList, loadingManufOrder, moreLoading, isListEnd} =
+    useSelector((state: any) => state.hr_manufOrder);
+  const {user} = useSelector((state: any) => state.user);
 
-  const searchProjectAPI = useCallback(
+  const searchManufOrderAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        searchProject({
+        (searchManufOrder as any)({
           page,
           searchValue,
           activeCompanyId: user?.activeCompany?.id,
@@ -50,29 +58,48 @@ const ProjectSearchBar = ({
     [dispatch, user?.activeCompany?.id],
   );
 
-  const displayItemFullname = item => item.fullName;
+  const displayItemSeq = item => item.manufOrderSeq;
 
   return (
     <AutoCompleteSearch
       style={style}
       title={I18n.t(title)}
-      objectList={projectList}
+      objectList={manufOrderList}
       value={defaultValue}
       required={required}
       readonly={readonly}
       onChangeValue={onChange}
-      fetchData={searchProjectAPI}
-      displayValue={displayItemFullname}
+      fetchData={searchManufOrderAPI}
+      displayValue={displayItemSeq}
       placeholder={title}
       showDetailsPopup={true}
-      loadingList={loadingProject}
+      loadingList={loadingManufOrder}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={false}
       oneFilter={false}
-      isFocus={false}
     />
   );
 };
 
-export default ProjectSearchBar;
+const ManufOrderSearchBar = ({
+  style = null,
+  title = 'Hr_ManufOrder',
+  defaultValue = null,
+  onChange = () => {},
+  readonly = false,
+  required = false,
+}: ManufOrderSearchBarProps) => {
+  return (
+    <ManufOrderSearchBarAux
+      style={style}
+      title={title}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      readonly={readonly}
+      required={required}
+    />
+  );
+};
+
+export default ManufOrderSearchBar;

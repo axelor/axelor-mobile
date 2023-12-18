@@ -25,12 +25,17 @@ import {
   ExpenseTypeSearchBar,
   KilometricAllowParamSearchBar,
   KilometricTypeSelectPicker,
+  ManufOrderSearchBar,
+  OperationOrderSearchBar,
   ProjectSearchBar,
+  ProjectTaskSearchBar,
   ToggleSwitchMode,
   DraftExpensePicker,
 } from '../components';
 import {ExpenseLine} from '../types';
 import {updateExpenseDate} from '../features/kilometricAllowParamSlice';
+import {updateManufOrder} from '../features/manufOrderSlice';
+import {updateProject} from '../features/projectSlice';
 import {
   needUpdateDistance,
   updateFromCity,
@@ -219,6 +224,84 @@ export const hr_formsRegister: FormConfigs = {
           multiline: true,
           adjustHeightWithLines: true,
           style: {marginBottom: 40, width: '90%', alignSelf: 'center'},
+        },
+      },
+    },
+  },
+  hr_TimesheetLine: {
+    modelName: 'com.axelor.apps.hr.db.TimesheetLine',
+    fields: {
+      project: {
+        titleKey: 'Hr_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+        hideIf: ({objectState}) => objectState.manufOrder != null,
+      },
+      projectTask: {
+        titleKey: 'Hr_ProjectTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectTaskSearchBar,
+        hideIf: ({objectState}) => objectState.project == null,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
+      },
+      manufOrder: {
+        titleKey: 'Hr_ManufOrder',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ManufOrderSearchBar,
+        hideIf: ({objectState}) => objectState.project != null,
+      },
+      operationOrder: {
+        titleKey: 'Hr_OperationOrder',
+        type: 'object',
+        widget: 'custom',
+        customComponent: OperationOrderSearchBar,
+        hideIf: ({objectState}) => objectState.manufOrder == null,
+        dependsOn: {
+          manufOrder: ({newValue, dispatch}) => {
+            dispatch(updateManufOrder(newValue));
+          },
+        },
+      },
+      toInvoice: {
+        titleKey: 'Hr_ToInvoice',
+        type: 'boolean',
+        widget: 'checkbox',
+        options: {
+          style: {width: '90%', alignSelf: 'center'},
+        },
+        hideIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings
+            .isTimesheetProjectInvoicingEnabled,
+      },
+      timesheetDate: {
+        titleKey: 'Hr_TimesheetDate',
+        type: 'date',
+        widget: 'date',
+        required: true,
+        readonlyIf: ({storeState}) =>
+          !storeState.appConfig.mobileSettings.isEditionOfDateAllowed,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'number',
+        widget: 'increment',
+        required: true,
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+          style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
       },
     },
