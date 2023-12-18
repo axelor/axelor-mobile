@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     marginRight: 5,
-    borderRadius: 13,
+    borderRadius: 7,
   },
   htlmInput: {
-    borderRadius: 13,
+    borderRadius: 7,
     paddingHorizontal: 0,
     marginHorizontal: 5,
     marginVertical: 5,

@@ -248,7 +248,7 @@ const getStyles = (
       top: '94%',
       zIndex: 110,
       backgroundColor: Colors.backgroundColor,
-      borderRadius: 10,
+      borderRadius: 7,
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
       elevation: 2,

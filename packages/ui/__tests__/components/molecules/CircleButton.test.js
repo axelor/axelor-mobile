@@ -68,7 +68,7 @@ describe('CircleButton Component', () => {
     expect(button).toHaveLength(1);
     expect(button.prop('iconName')).toBe(props.iconName);
     expect(getGlobalStyles(button)).toMatchObject({
-      borderRadius: 13,
+      borderRadius: 7,
       width: props.size,
       height: props.size,
     });
