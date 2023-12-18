@@ -46,7 +46,6 @@ const ExpenseLineSwitchAdd = ({
       <ExpenseLineDisplayType
         onChange={onChangeSwicth}
         isAddButton={isAddButton}
-        mode={mode}
       />
       {isAddButton && (
         <CircleButton
@@ -73,11 +72,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
     marginBottom: 10,
-  },
-  circleButton: {
-    position: 'absolute',
-    right: '0%',
-    top: -15,
   },
 });
 

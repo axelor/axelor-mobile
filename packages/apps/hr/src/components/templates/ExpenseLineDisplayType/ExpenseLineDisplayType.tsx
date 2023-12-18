@@ -30,13 +30,11 @@ import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitc
 interface ExpenseLineDisplayTypeProps {
   isAddButton?: boolean;
   onChange: (mode: any) => void;
-  mode?: string;
 }
 
 const ExpenseLineDisplayType = ({
   isAddButton,
   onChange,
-  mode,
 }: ExpenseLineDisplayTypeProps) => {
   const dispatch = useDispatch();
   const I18n = useTranslator();
@@ -61,51 +59,64 @@ const ExpenseLineDisplayType = ({
   }, [dispatch, expense]);
 
   const displayToggle = useMemo(() => {
-    return (
-      generalExpenseLineList?.length > 0 &&
-      kilometricExpenseLineList?.length > 0
-    );
-  }, [generalExpenseLineList, kilometricExpenseLineList]);
+    return totalNumberExpenseGeneral > 0 && totalNumberExpenseKilomectric > 0;
+  }, [totalNumberExpenseGeneral, totalNumberExpenseKilomectric]);
 
-  const isExpenseLine = useMemo(() => {
-    if (
-      (kilometricExpenseLineList == null ||
-        kilometricExpenseLineList?.length === 0) &&
-      (generalExpenseLineList == null || generalExpenseLineList?.length === 0)
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  }, [generalExpenseLineList, kilometricExpenseLineList]);
+  const isGeneral = useMemo(
+    () =>
+      generalExpenseLineList != null &&
+      totalNumberExpenseGeneral > 0 &&
+      totalNumberExpenseKilomectric === 0,
+    [
+      generalExpenseLineList,
+      totalNumberExpenseGeneral,
+      totalNumberExpenseKilomectric,
+    ],
+  );
+
+  const isKilometric = useMemo(
+    () =>
+      kilometricExpenseLineList != null &&
+      totalNumberExpenseKilomectric > 0 &&
+      totalNumberExpenseGeneral === 0,
+    [
+      kilometricExpenseLineList,
+      totalNumberExpenseGeneral,
+      totalNumberExpenseKilomectric,
+    ],
+  );
+
+  const hasExpenseLines = useMemo(() => {
+    return !(!isGeneral && !isKilometric);
+  }, [isGeneral, isKilometric]);
 
   const modeTitle = useMemo(() => {
-    if (mode === ExpenseLine.modes.general) {
+    if (isGeneral) {
       return I18n.t('Hr_General');
-    } else if (mode === ExpenseLine.modes.kilometric) {
+    } else if (isKilometric) {
       return I18n.t('Hr_Kilometric');
     } else {
       return I18n.t('Hr_NoExpenseLine');
     }
-  }, [mode, I18n]);
+  }, [isGeneral, isKilometric, I18n]);
 
   useEffect(() => {
-    if (
-      kilometricExpenseLineList == null ||
-      kilometricExpenseLineList?.length === 0
-    ) {
+    if (hasExpenseLines) {
       onChange(_mode => {
-        return ExpenseLine.modes.general;
-      });
-    } else if (
-      generalExpenseLineList == null ||
-      generalExpenseLineList?.length === 0
-    ) {
-      onChange(_mode => {
-        return ExpenseLine.modes.kilometric;
+        return isGeneral
+          ? ExpenseLine.modes.general
+          : ExpenseLine.modes.kilometric;
       });
     }
-  }, [generalExpenseLineList, kilometricExpenseLineList, onChange]);
+  }, [
+    generalExpenseLineList,
+    hasExpenseLines,
+    isGeneral,
+    kilometricExpenseLineList,
+    onChange,
+    totalNumberExpenseGeneral,
+    totalNumberExpenseKilomectric,
+  ]);
 
   const renderToggle = useCallback(() => {
     return (
@@ -126,11 +137,11 @@ const ExpenseLineDisplayType = ({
   const renderTitle = useCallback(() => {
     return (
       <View style={styles.containerTitle}>
-        <Text style={styles.title}>{modeTitle}</Text>
-        {isExpenseLine && (
+        <Text writingType="title">{modeTitle}</Text>
+        {hasExpenseLines && (
           <NumberBubble
             number={
-              mode === ExpenseLine.modes.general
+              isGeneral
                 ? totalNumberExpenseGeneral
                 : totalNumberExpenseKilomectric
             }
@@ -142,12 +153,12 @@ const ExpenseLineDisplayType = ({
       </View>
     );
   }, [
-    Colors.inverseColor,
-    mode,
     modeTitle,
+    hasExpenseLines,
+    isGeneral,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
-    isExpenseLine,
+    Colors.inverseColor,
   ]);
 
   return displayToggle ? renderToggle() : renderTitle();
@@ -160,10 +171,6 @@ const styles = StyleSheet.create({
   },
   bubbleStyle: {
     marginLeft: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });
 
