@@ -17,6 +17,8 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
+
 import {shallow} from 'enzyme';
 import {CheckboxScrollList, ScrollList, Checkbox} from '@axelor/aos-mobile-ui';
 
@@ -26,7 +28,7 @@ describe('CheckboxScrollList Component', () => {
     {id: 2, name: 'Item 2'},
   ];
   const onCheckedChange = jest.fn();
-  const renderItem = jest.fn(item => <div>{item.name}</div>);
+  const renderItem = jest.fn(item => <View>{item.name}</View>);
 
   const props = {
     data: mockData,
@@ -59,14 +61,17 @@ describe('CheckboxScrollList Component', () => {
 
   it('renders each item with a checkbox', () => {
     const wrapper = shallow(<CheckboxScrollList {...props} />);
-    const firstItem = wrapper.find(ScrollList).renderProp('renderItem')({
-      item: mockData[0],
-      index: 0,
+
+    mockData.forEach((item, index) => {
+      const itemRender = wrapper.find(ScrollList).renderProp('renderItem')({
+        item,
+        index,
+      });
+
+      expect(itemRender.find(Checkbox).exists()).toBe(true);
+
+      expect(itemRender.contains(renderItem({item, index}))).toBe(true);
     });
-    expect(firstItem.find(Checkbox).exists()).toBe(true);
-    expect(firstItem.contains(renderItem({item: mockData[0], index: 0}))).toBe(
-      true,
-    );
   });
 
   it('passes loadingList, moreLoading, isListEnd, filter, horizontal, disabledRefresh props to ScrollList', () => {
