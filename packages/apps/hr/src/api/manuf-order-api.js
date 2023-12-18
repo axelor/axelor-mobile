@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -21,8 +21,8 @@ import {
   getSearchCriterias,
 } from '@axelor/aos-mobile-core';
 
-const createProjectCriteria = (searchValue, activeCompanyId) => {
-  const criteria = [getSearchCriterias('hr_project', searchValue)];
+const createManufOrderCriteria = (searchValue, activeCompanyId) => {
+  const criteria = [getSearchCriterias('hr_manufOrder', searchValue)];
 
   if (activeCompanyId != null) {
     criteria.push({
@@ -35,36 +35,44 @@ const createProjectCriteria = (searchValue, activeCompanyId) => {
   return criteria;
 };
 
-const createProjectTaskCriteria = (searchValue, projectId) => {
-  const criteria = [getSearchCriterias('hr_projectTask', searchValue)];
+const createOperationOrderCriteria = (searchValue, manufOrderId) => {
+  const criteria = [getSearchCriterias('hr_operationOrder', searchValue)];
 
-  if (projectId != null) {
+  if (manufOrderId != null) {
     criteria.push({
-      fieldName: 'project.id',
+      fieldName: 'manufOrder.id',
       operator: '=',
-      value: projectId,
+      value: manufOrderId,
     });
   }
 
   return criteria;
 };
 
-export async function searchProject({searchValue, page = 0, activeCompanyId}) {
+export async function searchManufOrder({
+  searchValue,
+  page = 0,
+  activeCompanyId,
+}) {
   return createStandardSearch({
-    model: 'com.axelor.apps.project.db.Project',
-    criteria: createProjectCriteria(searchValue, activeCompanyId),
-    fieldKey: 'hr_project',
-    sortKey: 'hr_project',
+    model: 'com.axelor.apps.production.db.ManufOrder',
+    criteria: createManufOrderCriteria(searchValue, activeCompanyId),
+    fieldKey: 'hr_manufOrder',
+    sortKey: 'hr_manufOrder',
     page,
   });
 }
 
-export async function searchProjectTask({searchValue, page = 0, projectId}) {
+export async function searchOperationOrder({
+  searchValue,
+  page = 0,
+  manufOrderId,
+}) {
   return createStandardSearch({
-    model: 'com.axelor.apps.project.db.ProjectTask',
-    criteria: createProjectTaskCriteria(searchValue, projectId),
-    fieldKey: 'hr_projectTask',
-    sortKey: 'hr_projectTask',
+    model: 'com.axelor.apps.production.db.OperationOrder',
+    criteria: createOperationOrderCriteria(searchValue, manufOrderId),
+    fieldKey: 'hr_operationOrder',
+    sortKey: 'hr_operationOrder',
     page,
   });
 }
