@@ -32,7 +32,7 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
+import {fetchMyTeamTickets, fetchTicketType} from '../features/ticketSlice';
 import {TicketCard, TicketSearchBar} from '../components';
 import {Ticket} from '../types';
 
@@ -42,8 +42,13 @@ const MyTeamTicketListScreen = ({navigation}) => {
   const Colors = useThemeColor();
 
   const {user} = useSelector(state => state.user);
-  const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
-    useSelector(state => state.ticket);
+  const {
+    myTeamTicketTypeList,
+    loadingMyTeamTicket,
+    moreMoadingMyTeamTicket,
+    isListEndMyTeamTicket,
+    ticketTypeList,
+  } = useSelector(state => state.ticket);
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -57,7 +62,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
 
   const fetchTicketsAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTickets({userTeam: user.activeTeam, page: page}));
+      dispatch(fetchMyTeamTickets({userTeam: user.activeTeam, page: page}));
     },
     [dispatch, user],
   );
@@ -120,8 +125,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
   );
 
   const filteredList = useMemo(
-    () => filterOnStatus(filterOnType(filterOnPriority(ticketList))),
-    [ticketList, filterOnType, filterOnStatus, filterOnPriority],
+    () => filterOnStatus(filterOnType(filterOnPriority(myTeamTicketTypeList))),
+    [myTeamTicketTypeList, filterOnType, filterOnStatus, filterOnPriority],
   );
 
   return (
@@ -161,7 +166,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
         </View>
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingTicket}
+        loadingList={loadingMyTeamTicket}
         data={filteredList}
         renderItem={({item}) => (
           <TicketCard
@@ -185,8 +190,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
           />
         )}
         fetchData={fetchTicketsAPI}
-        moreLoading={moreLoading}
-        isListEnd={isListEnd}
+        moreLoading={moreMoadingMyTeamTicket}
+        isListEnd={isListEndMyTeamTicket}
         translator={I18n.t}
       />
     </Screen>

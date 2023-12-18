@@ -45,6 +45,19 @@ export const fetchTickets = createAsyncThunk(
   },
 );
 
+export const fetchMyTeamTickets = createAsyncThunk(
+  'ticket/fetchMyTeamTickets',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchTickets,
+      data,
+      action: 'Helpdesk_SliceAction_FetchMyTeamTicket',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
 export const fetchTicketType = createAsyncThunk(
   'ticket/fetchTicketType',
   async function (data = {}, {getState}) {
@@ -157,6 +170,11 @@ const initialState = {
   moreLoadingTicketType: false,
   isListEndTicketType: false,
   ticketTypeList: [],
+
+  loadingMyTeamTicket: true,
+  moreMoadingMyTeamTicket: false,
+  isListEndMyTeamTicket: false,
+  myTeamTicketTypeList: [],
 };
 
 const ticketSlice = createSlice({
@@ -168,6 +186,12 @@ const ticketSlice = createSlice({
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
+    });
+    generateInifiniteScrollCases(builder, fetchMyTeamTickets, {
+      loading: 'loadingMyTeamTicket',
+      moreLoading: 'moreMoadingMyTeamTicket',
+      isListEnd: 'isListEndMyTeamTicket',
+      list: 'myTeamTicketTypeList',
     });
     generateInifiniteScrollCases(builder, searchTicketType, {
       loading: 'loadingTicketType',

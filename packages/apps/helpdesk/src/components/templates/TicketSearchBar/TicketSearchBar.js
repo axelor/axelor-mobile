@@ -19,7 +19,7 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchTickets} from '../../../features/ticketSlice';
+import {fetchMyTeamTickets, fetchTickets} from '../../../features/ticketSlice';
 
 const TicketSearchBar = ({
   placeholderKey = 'Helpdesk_ticket',
@@ -43,14 +43,15 @@ const TicketSearchBar = ({
 
   const fetchTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
-      dispatch(
-        fetchTickets({
-          page: page,
-          searchValue: searchValue,
-          userId: team ? null : user.id,
-          userTeam: team ? user.activeTeam : null,
-        }),
-      );
+      team
+        ? dispatch(fetchMyTeamTickets({userTeam: user.activeTeam, page: page}))
+        : dispatch(
+            fetchTickets({
+              page: page,
+              searchValue: searchValue,
+              userId: user.id,
+            }),
+          );
     },
     [dispatch, user, team],
   );
