@@ -174,7 +174,7 @@ const initialState = {
   loadingMyTeamTicket: true,
   moreMoadingMyTeamTicket: false,
   isListEndMyTeamTicket: false,
-  myTeamTicketTypeList: [],
+  myTeamTicketList: [],
 };
 
 const ticketSlice = createSlice({
@@ -191,7 +191,7 @@ const ticketSlice = createSlice({
       loading: 'loadingMyTeamTicket',
       moreLoading: 'moreMoadingMyTeamTicket',
       isListEnd: 'isListEndMyTeamTicket',
-      list: 'myTeamTicketTypeList',
+      list: 'myTeamTicketList',
     });
     generateInifiniteScrollCases(builder, searchTicketType, {
       loading: 'loadingTicketType',

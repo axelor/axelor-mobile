@@ -43,7 +43,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
 
   const {user} = useSelector(state => state.user);
   const {
-    myTeamTicketTypeList,
+    myTeamTicketList,
     loadingMyTeamTicket,
     moreMoadingMyTeamTicket,
     isListEndMyTeamTicket,
@@ -125,8 +125,8 @@ const MyTeamTicketListScreen = ({navigation}) => {
   );
 
   const filteredList = useMemo(
-    () => filterOnStatus(filterOnType(filterOnPriority(myTeamTicketTypeList))),
-    [myTeamTicketTypeList, filterOnType, filterOnStatus, filterOnPriority],
+    () => filterOnStatus(filterOnType(filterOnPriority(myTeamTicketList))),
+    [myTeamTicketList, filterOnType, filterOnStatus, filterOnPriority],
   );
 
   return (
