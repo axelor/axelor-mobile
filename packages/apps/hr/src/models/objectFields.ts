@@ -82,7 +82,17 @@ export const hr_modelAPI: ObjectFields = {
     name: schemaContructor.string(),
     code: schemaContructor.string(),
   }),
+  hr_manufOrder: schemaContructor.object({
+    manufOrderSeq: schemaContructor.string(),
+  }),
+  hr_operationOrder: schemaContructor.object({
+    name: schemaContructor.string(),
+  }),
   hr_project: schemaContructor.object({
+    fullName: schemaContructor.string(),
+    name: schemaContructor.string(),
+  }),
+  hr_projectTask: schemaContructor.object({
     fullName: schemaContructor.string(),
     name: schemaContructor.string(),
   }),
