@@ -17,6 +17,7 @@
  */
 
 export {default as BlockInteractionScreen} from './BlockInteractionScreen/BlockInteractionScreen';
+export {default as BootstrapIcon} from './BootstrapIcon/BootstrapIcon';
 export {default as Card} from './Card/Card';
 export {default as HorizontalRule} from './HorizontalRule/HorizontalRule';
 export {default as HtmlInput} from './HtmlInput/HtmlInput';
