@@ -103,15 +103,16 @@ const ExpenseLineDisplayType = ({
   useEffect(() => {
     if (hasExpenseLines) {
       onChange(_mode => {
-        return isGeneral
-          ? ExpenseLine.modes.general
-          : ExpenseLine.modes.kilometric;
+        return isKilometric
+          ? ExpenseLine.modes.kilometric
+          : ExpenseLine.modes.general;
       });
     }
   }, [
     generalExpenseLineList,
     hasExpenseLines,
     isGeneral,
+    isKilometric,
     kilometricExpenseLineList,
     onChange,
     totalNumberExpenseGeneral,
