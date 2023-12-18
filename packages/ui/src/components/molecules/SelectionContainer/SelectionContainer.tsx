@@ -245,7 +245,7 @@ const getStyles = (
       height: emptyValue ? listLength * 40 + 45 : listLength * 40 + 5,
       width: '100%',
       position: 'absolute',
-      top: '95%',
+      top: '94%',
       zIndex: 110,
       backgroundColor: Colors.backgroundColor,
       borderRadius: 10,
