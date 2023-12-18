@@ -18,15 +18,14 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {useThemeColor} from '../../../theme';
 import {Icon, Text} from '../../atoms';
 import {checkNullString} from '../../../utils/strings';
-import {Color} from '../../../theme/themes';
 
 interface CheckboxProps {
   style?: any;
   styleTxt?: any;
-  iconColor?: Color;
+  iconColor?: string;
   iconSize?: number;
   disabled?: boolean;
   title?: string;
@@ -53,10 +52,11 @@ const Checkbox = ({
     [isChecked],
   );
 
-  const _iconColor = useMemo(
-    () => (iconColor != null ? iconColor : Colors.primaryColor),
-    [Colors.primaryColor, iconColor],
-  );
+  const _iconColor = useMemo(() => {
+    const color =
+      iconColor != null ? iconColor : Colors.primaryColor.background;
+    return disabled ? Colors.secondaryColor.background : color;
+  }, [Colors, disabled, iconColor]);
 
   const handleToggle = () => {
     onChange(!isChecked);
@@ -75,9 +75,7 @@ const Checkbox = ({
         <Icon
           name={iconName}
           FontAwesome5={false}
-          color={
-            disabled ? Colors.secondaryColor.background : _iconColor.background
-          }
+          color={_iconColor}
           size={iconSize}
           touchable={!disabled}
           onPress={handleToggle}
