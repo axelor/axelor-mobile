@@ -27,7 +27,7 @@ describe('BootstrapIcon Component', () => {
   const props = {
     name: '123',
     size: 25,
-    color: Colors.primaryColor,
+    color: Colors.primaryColor.background,
   };
 
   it('should render without crashing', () => {
