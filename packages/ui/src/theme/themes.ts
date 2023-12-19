@@ -130,6 +130,87 @@ export const lightTheme: Theme = {
   },
 };
 
+export const purpleTheme: Theme = {
+  key: 'purple',
+  name: 'Purple',
+  colors: {
+    screenBackgroundColor: '#F8F8FF',
+    backgroundColor: '#FFFFFF',
+    primaryColor: {
+      background_light: '#A7A4FC',
+      foreground: '#000000',
+      background: '#6C67FA',
+    },
+    secondaryColor: {
+      background_light: '#C9C9D0',
+      foreground: '#000000',
+      background: '#B5B5C2',
+    },
+    secondaryColor_dark: {
+      background_light: '#606060',
+      foreground: '#FFFFFF',
+      background: '#5A5A7C',
+    },
+    errorColor: {
+      background_light: '#E18D8A',
+      foreground: '#000000',
+      background: '#DD514C',
+    },
+    cautionColor: {
+      background_light: '#F4A868',
+      foreground: '#000000',
+      background: '#FD7E14',
+    },
+    plannedColor: {
+      background_light: '#D18EED',
+      foreground: '#000000',
+      background: '#C354F2',
+    },
+    progressColor: {
+      background_light: '#F5CE8B',
+      foreground: '#000000',
+      background: '#FFBE4E',
+    },
+    priorityColor: {
+      background_light: '#73D3F1',
+      foreground: '#000000',
+      background: '#26C6F9',
+    },
+    defaultColor: {
+      background_light: '#DDDDDD',
+      foreground: '#000000',
+      background: '#CECECE',
+    },
+    importantColor: {
+      background_light: '#E18D8A',
+      foreground: '#000000',
+      background: '#DD514C',
+    },
+    successColor: {
+      background_light: '#84DCB7',
+      foreground: '#000000',
+      background: '#3ECF8E',
+    },
+    warningColor: {
+      background_light: '#F4A868',
+      foreground: '#000000',
+      background: '#FD7E14',
+    },
+    inverseColor: {
+      background_light: '#9E9E9F',
+      foreground: '#FFFFFF',
+      background: '#606060',
+    },
+    infoColor: {
+      background_light: '#73D3F1',
+      foreground: '#000000',
+      background: '#26C6F9',
+    },
+    text: '#333333',
+    placeholderTextColor: '#C0C0C0',
+  },
+};
+
 export const colorBlindTheme: Theme = {
   key: 'colorBlind',
   name: 'Color blind',
