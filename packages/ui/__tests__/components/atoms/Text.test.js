@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {Text as ReactNativeText} from 'react-native';
+import {shallow} from 'enzyme';
 import {Text} from '@axelor/aos-mobile-ui';
 
 describe('Text Component', () => {

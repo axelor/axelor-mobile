@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {
   FormIncrementInput,
@@ -24,7 +25,6 @@ import {
   Text,
   lightTheme,
 } from '@axelor/aos-mobile-ui';
-import {View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('FormIncrementInput Component', () => {

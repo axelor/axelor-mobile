@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {TouchableOpacity, View} from 'react-native';
+import {shallow} from 'enzyme';
 import {RadioButton, lightTheme} from '@axelor/aos-mobile-ui';
 
 describe('RadioButton Component', () => {

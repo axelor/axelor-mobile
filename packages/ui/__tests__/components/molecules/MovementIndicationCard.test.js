@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import {Icon, MovementIndicationCard, Text} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 
 describe('MovementIndicationCard Component', () => {
   const props = {
