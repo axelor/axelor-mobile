@@ -36,7 +36,7 @@ import {authModule} from '../../auth';
 import AuthMenuIconButton from './AuthMenuIconButton';
 import {useSelector} from '../../redux/hooks';
 import {
-  PopupApplicationNotConfigured,
+  PopupApplicationInformation,
   PopupMinimalRequiredVersion,
 } from '../../components';
 import MenuTitle from './MenuTitle';
@@ -191,7 +191,12 @@ const DrawerContent = ({
   };
 
   if (numberOfModules(drawerModules) === 0) {
-    return <PopupApplicationNotConfigured onRefresh={onRefresh} />;
+    return (
+      <PopupApplicationInformation
+        textKey={'Base_NoAppConfigured'}
+        onRefresh={onRefresh}
+      />
+    );
   }
 
   if (

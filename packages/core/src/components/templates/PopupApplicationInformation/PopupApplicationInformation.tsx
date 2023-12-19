@@ -25,18 +25,28 @@ import {useDispatch} from '../../../redux/hooks';
 
 const BUTTON_WIDTH = 225;
 
-const PopupApplicationNotConfigured = ({onRefresh}) => {
+interface PopupApplicationInformationProps {
+  visible?: boolean;
+  textKey: string;
+  onRefresh: () => void;
+}
+
+const PopupApplicationInformation = ({
+  visible = true,
+  textKey,
+  onRefresh,
+}: PopupApplicationInformationProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   return (
-    <Alert visible={true} title={I18n.t('Base_Information')}>
-      <Text>{I18n.t('Base_NoAppConfigured')}</Text>
+    <Alert visible={visible} title={I18n.t('Base_Information')}>
+      <Text>{I18n.t(textKey)}</Text>
       <View style={styles.buttonsContainer}>
         <Button
           width={BUTTON_WIDTH}
-          color={Colors.secondaryColor}
+          color={Colors.warningColor}
           title={I18n.t('Base_Refresh')}
           iconName="refresh"
           FontAwesome5={false}
@@ -47,7 +57,7 @@ const PopupApplicationNotConfigured = ({onRefresh}) => {
           color={Colors.errorColor}
           title={I18n.t('Base_Logout')}
           iconName="power-off"
-          onPress={() => dispatch(logout())}
+          onPress={() => dispatch(logout() as any)}
         />
       </View>
     </Alert>
@@ -60,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopupApplicationNotConfigured;
+export default PopupApplicationInformation;

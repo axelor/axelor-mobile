@@ -30,7 +30,13 @@ import {
   useTheme,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
-import {logout, useDispatch, useSelector, useTranslator} from '../../index';
+import {
+  logout,
+  useBinaryImageUri,
+  useDispatch,
+  useSelector,
+  useTranslator,
+} from '../../index';
 import {fetchCompanies} from '../features/companySlice';
 import {fetchLanguages} from '../features/languageSlice';
 import {
@@ -39,18 +45,20 @@ import {
   fetchActiveUser,
 } from '../features/userSlice';
 import {fetchBaseConfig, fetchMobileSettings} from '../features/configSlice';
+import {PopupApplicationInformation} from '../../components';
 
 const UserScreen = ({children}) => {
   const Theme = useTheme();
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const formatImage = useBinaryImageUri();
   const dispatch = useDispatch();
 
   const {companyList} = useSelector(state => state.company);
-  const {userId, baseUrl} = useSelector(state => state.auth);
+  const {userId} = useSelector(state => state.auth);
   const {languageList} = useSelector(state => state.language);
   const {baseConfig} = useSelector(state => state.config);
-  const {loadingUser, user, canModifyCompany} = useSelector(
+  const {loadingUser, user, isUser, canModifyCompany} = useSelector(
     state => state.user,
   );
 
@@ -129,9 +137,11 @@ const UserScreen = ({children}) => {
             style={styles.imageIcon}
             imageSize={Dimensions.get('window').width * 0.3}
             defaultIconSize={60}
-            source={{
-              uri: `${baseUrl}ws/rest/com.axelor.auth.db.User/${user.id}/image/download?v=${user.version}&parentId=${user.id}&parentModel=com.axelor.auth.db.User&image=true`,
-            }}
+            source={formatImage(
+              user?.id,
+              user?.version,
+              'com.axelor.auth.db.User',
+            )}
             listComponent={[
               null,
               <Icon
@@ -180,6 +190,11 @@ const UserScreen = ({children}) => {
               emptyValue={false}
             />
           )}
+          <PopupApplicationInformation
+            visible={!isUser && !loadingUser}
+            textKey={'User_NoAppUser'}
+            onRefresh={fetchUser}
+          />
         </View>
       </ScrollView>
     </Screen>

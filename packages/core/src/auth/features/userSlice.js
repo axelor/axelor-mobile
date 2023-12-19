@@ -57,6 +57,7 @@ export const updateActiveUser = createAsyncThunk(
 const initialState = {
   loadingUser: true,
   user: {},
+  isUser: false,
   canModifyCompany: false,
 };
 
@@ -80,10 +81,15 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchActiveUser.fulfilled, (state, action) => {
       state.loadingUser = false;
-      state.user = action.payload;
-      if (state.user.activeCompany == null) {
+      state.user = action.payload ?? {};
+      state.isUser = action.payload != null;
+      if (state.user?.activeCompany == null) {
         state.canModifyCompany = true;
       }
+    });
+    builder.addCase(fetchActiveUser.rejected, (state, action) => {
+      state.loadingUser = false;
+      state.isUser = false;
     });
     builder.addCase(updateActiveUser.fulfilled, (state, action) => {
       state.user = action.payload;
