@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {ActivityIndicator} from 'react-native';
 import {shallow} from 'enzyme';
 import {LoadingIndicator, lightTheme} from '@axelor/aos-mobile-ui';
-import {ActivityIndicator} from 'react-native';
 import * as configContext from '../../../lib/config/ConfigContext';
 
 describe('LoadingIndicator Component', () => {

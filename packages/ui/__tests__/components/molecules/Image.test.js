@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {Image as ReactNativeImage} from 'react-native';
+import {shallow} from 'enzyme';
 import {Icon, Image} from '@axelor/aos-mobile-ui';
 
 describe('Image Component', () => {

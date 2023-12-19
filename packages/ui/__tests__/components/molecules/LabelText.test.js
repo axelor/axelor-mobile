@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {View} from 'react-native';
+import {shallow} from 'enzyme';
 import {Icon, LabelText, lightTheme, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 

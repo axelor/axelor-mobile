@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {IconInput, Icon, lightTheme, Input} from '@axelor/aos-mobile-ui';
-import {View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('IconInput Component', () => {

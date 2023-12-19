@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import {Card, Icon, InfoBubble, Text, lightTheme} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('InfoBubble Component', () => {

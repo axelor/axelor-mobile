@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import {
   Card,
@@ -25,7 +26,6 @@ import {
   lightTheme,
   Text,
 } from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('HalfLabelCard Component', () => {

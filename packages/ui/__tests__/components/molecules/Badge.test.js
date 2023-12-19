@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Badge, Text, lightTheme} from '@axelor/aos-mobile-ui';
-import {View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('Badge Component', () => {

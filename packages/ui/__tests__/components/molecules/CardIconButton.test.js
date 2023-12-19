@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import {CardIconButton, Icon} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 
 describe('CardIconButton Component', () => {
   const props = {iconName: 'heart', iconColor: 'red', onPress: jest.fn()};
