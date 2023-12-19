@@ -53,19 +53,19 @@ const ConsumedProductDetailsScreen = ({route, navigation}) => {
     consumedProduct ? consumedProduct.realQty : 0,
   );
 
-  const trackingNumber = useMemo(
-    () =>
-      route.params.trackingNumber ||
-      consumedProduct.trackingNumber ||
-      (consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id
-        ? consumedProductStockMoveLine.trackingNumber
-        : null),
-    [
-      route.params.trackingNumber,
-      consumedProduct,
-      consumedProductStockMoveLine,
-    ],
-  );
+  const trackingNumber = useMemo(() => {
+    if (consumedProduct?.stockMoveLineId === consumedProductStockMoveLine?.id) {
+      return consumedProductStockMoveLine.trackingNumber;
+    } else if (route.params.trackingNumber || consumedProduct?.trackingNumber) {
+      return route.params.trackingNumber ?? consumedProduct?.trackingNumber;
+    } else {
+      return null;
+    }
+  }, [
+    route.params.trackingNumber,
+    consumedProduct,
+    consumedProductStockMoveLine,
+  ]);
 
   const isTrackingNumberSelectVisible = useMemo(
     () =>

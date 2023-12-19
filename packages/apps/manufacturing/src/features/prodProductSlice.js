@@ -109,7 +109,7 @@ export const addTrackingNumberToConsumedProduct = createAsyncThunk(
       action:
         'Manufacturing_SliceAction_AddTrackingNumberToConsumedProductStockMoveLine',
       getState,
-      responseOptions: {showToast: true},
+      responseOptions: {showToast: true, isArrayResponse: false},
     }).then(async res => {
       const {productList} = await handlerApiCall({
         fetchFunction: fetchManufacturingOrderConsumedProducts,
