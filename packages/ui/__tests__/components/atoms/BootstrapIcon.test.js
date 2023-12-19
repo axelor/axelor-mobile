@@ -19,11 +19,11 @@
 import React from 'react';
 import Svg from 'react-native-svg';
 import {shallow} from 'enzyme';
-import {BootstrapIcon, lightTheme, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {BootstrapIcon, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('BootstrapIcon Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     name: '123',
     size: 25,
