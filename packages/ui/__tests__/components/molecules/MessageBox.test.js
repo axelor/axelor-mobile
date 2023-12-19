@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
+import {shallow} from 'enzyme';
 import {HtmlInput, MessageBox} from '@axelor/aos-mobile-ui';
 
 describe('MessageBox Component', () => {

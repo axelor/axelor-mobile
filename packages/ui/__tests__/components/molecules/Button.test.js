@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
+import {shallow} from 'enzyme';
 import {Button, lightTheme, Text} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 

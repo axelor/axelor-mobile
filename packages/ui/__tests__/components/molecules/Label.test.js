@@ -17,10 +17,10 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {Label, Text, lightTheme} from '@axelor/aos-mobile-ui';
 import {hexToRgb} from '../../../lib/utils/commons-utlis';
-import {View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('Label Component', () => {

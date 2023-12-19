@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {ActivityIndicator, Button, View} from 'react-native';
+import {shallow} from 'enzyme';
 import {Screen} from '@axelor/aos-mobile-ui';
 
 describe('Screen Component', () => {

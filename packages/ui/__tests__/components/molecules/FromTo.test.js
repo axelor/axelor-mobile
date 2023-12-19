@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
+import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {FromTo, Icon, lightTheme, Text} from '@axelor/aos-mobile-ui';
-import {View} from 'react-native';
 import {getGlobalStyles} from '../../tools';
 
 describe('FromTo Component', () => {
