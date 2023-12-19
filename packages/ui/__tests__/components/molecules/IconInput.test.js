@@ -17,13 +17,13 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {IconInput, Icon, lightTheme, Input} from '@axelor/aos-mobile-ui';
 import {View} from 'react-native';
-import {getGlobalStyles} from '../../tools';
+import {shallow} from 'enzyme';
+import {IconInput, Icon, Input} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('IconInput Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     placeholder: 'Enter text',
     value: 'Initial value',

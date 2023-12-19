@@ -17,12 +17,13 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {TouchableOpacity, View} from 'react-native';
-import {RadioButton, lightTheme} from '@axelor/aos-mobile-ui';
+import {shallow} from 'enzyme';
+import {RadioButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('RadioButton Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const onPressMock = jest.fn();
 
   it('should render without crashing', () => {

@@ -17,11 +17,11 @@
  */
 
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {Icon} from '@axelor/aos-mobile-ui';
-import {TouchableOpacity} from 'react-native';
 
 describe('Icon Component', () => {
   const props = {

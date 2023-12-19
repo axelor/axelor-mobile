@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {Switch as RNSwitch} from 'react-native';
+import {shallow} from 'enzyme';
 import {Switch} from '@axelor/aos-mobile-ui';
 
 describe('Switch Component', () => {

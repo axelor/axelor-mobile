@@ -18,11 +18,11 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Button, CircleButton, lightTheme} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {Button, CircleButton} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('CircleButton Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     onPress: jest.fn(),
     iconName: 'test-icon',

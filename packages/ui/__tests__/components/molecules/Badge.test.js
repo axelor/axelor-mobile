@@ -17,13 +17,13 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {Badge, Text, lightTheme} from '@axelor/aos-mobile-ui';
 import {View} from 'react-native';
-import {getGlobalStyles} from '../../tools';
+import {shallow} from 'enzyme';
+import {Badge, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('Badge Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {title: 'Badge Title'};
 
   it('renders without crashing', () => {

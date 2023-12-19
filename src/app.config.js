@@ -84,23 +84,7 @@ export const app_config = {
    * This configuration allows you to customize the colors used in the application.
    * You can use the `ThemeColors` object to specify primary, secondary, error, and other color values.
    */
-  themeColorsConfig: {
-    primaryColor: {
-      background_light: '#84DCB7',
-      foreground: '#000000',
-      background: '#3ECF8E',
-    },
-    secondaryColor: {
-      background_light: '#DDDDDD',
-      foreground: '#000000',
-      background: '#CECECE',
-    },
-    secondaryColor_dark: {
-      background_light: '#606060',
-      foreground: '#FFFFFF',
-      background: '#424242',
-    },
-  },
+  //themeColorsConfig: {},
 
   /*
    * This configuration allows you to customize the writing styles used in the application.

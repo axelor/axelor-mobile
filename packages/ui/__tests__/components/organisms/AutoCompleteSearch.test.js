@@ -21,15 +21,14 @@ import {View} from 'react-native';
 import {shallow} from 'enzyme';
 import {
   AutoCompleteSearch,
-  lightTheme,
   ScrollList,
   SearchBar,
   SelectionContainer,
 } from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('AutoCompleteSearch Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     objectList: [{name: 'Name 1'}, {name: 'Name 2'}, {name: 'Name 3'}],

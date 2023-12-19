@@ -17,13 +17,13 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {FormInput, Input, Text, lightTheme} from '@axelor/aos-mobile-ui';
 import {View} from 'react-native';
-import {getGlobalStyles} from '../../tools';
+import {shallow} from 'enzyme';
+import {FormInput, Input, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('FormInput Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     title: 'Input Title',
     defaultValue: 'Initial Value',

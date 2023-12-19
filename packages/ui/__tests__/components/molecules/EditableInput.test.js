@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {TouchableOpacity} from 'react-native';
+import {shallow} from 'enzyme';
 import {EditableInput, Input} from '@axelor/aos-mobile-ui';
 
 describe('EditableInput Component', () => {

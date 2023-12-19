@@ -18,10 +18,11 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Button, lightTheme, ToggleButton} from '@axelor/aos-mobile-ui';
+import {Button, ToggleButton} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('ToggleButton Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     activeColor: Colors.errorColor,

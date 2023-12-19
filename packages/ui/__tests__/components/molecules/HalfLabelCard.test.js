@@ -17,19 +17,13 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
-import {
-  Card,
-  HalfLabelCard,
-  Icon,
-  lightTheme,
-  Text,
-} from '@axelor/aos-mobile-ui';
 import {TouchableOpacity} from 'react-native';
-import {getGlobalStyles} from '../../tools';
+import {shallow} from 'enzyme';
+import {Card, HalfLabelCard, Icon, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('HalfLabelCard Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     title: 'Card Title',
     iconName: 'star',

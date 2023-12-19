@@ -17,8 +17,8 @@
  */
 
 import React from 'react';
-import {shallow} from 'enzyme';
 import {ScrollView} from 'react-native';
+import {shallow} from 'enzyme';
 import {RichEditor, RichToolbar} from 'react-native-pell-rich-editor';
 import {HtmlInput, Text} from '@axelor/aos-mobile-ui';
 
