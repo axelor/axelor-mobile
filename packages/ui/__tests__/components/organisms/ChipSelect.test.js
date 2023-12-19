@@ -19,11 +19,11 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Chip, ChipSelect, lightTheme} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {Chip, ChipSelect} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('ChipSelect Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     selectionItems: [
