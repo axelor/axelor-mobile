@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Dimensions,
   Keyboard,
@@ -28,6 +28,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {
   Alert,
+  ChipSelect,
   MessageBox,
   Screen,
   ScrollList,
@@ -45,6 +46,7 @@ import {
 import useTranslator from '../../../i18n/hooks/use-translator';
 import {headerActionsProvider} from '../../../header';
 import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
+import {MailMessageType} from '../../../types';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
@@ -58,6 +60,7 @@ const MailMessageView = ({model, modelId}) => {
   const [comment, setComment] = useState();
   const [subscribe, setSubscribe] = useState(false);
   const [popUp, setPopUp] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const {userId} = useSelector(state => state.auth);
   const {
@@ -117,6 +120,34 @@ const MailMessageView = ({model, modelId}) => {
     Keyboard.dismiss();
     setComment('');
   }, [dispatch, model, modelId, comment]);
+
+  const filterOnStatus = useCallback(
+    list => {
+      if (list.length === 0) {
+        return [];
+      } else if (selectedStatus) {
+        return list.filter(item => {
+          if (selectedStatus.key === MailMessageType.status.comment) {
+            return item.type === MailMessageType.status.comment;
+          } else if (
+            selectedStatus.key === MailMessageType.status.notification
+          ) {
+            return item.type === MailMessageType.status.notification;
+          } else {
+            return true;
+          }
+        });
+      } else {
+        return list;
+      }
+    },
+    [selectedStatus],
+  );
+
+  const filteredList = useMemo(
+    () => filterOnStatus(mailMessagesList),
+    [filterOnStatus, mailMessagesList],
+  );
 
   useEffect(() => {
     headerActionsProvider.registerModel('core_mailMessage_details', {
@@ -189,10 +220,17 @@ const MailMessageView = ({model, modelId}) => {
           translator={I18n.t}>
           <Text>{I18n.t('Base_Unfollow_Confirmation')}</Text>
         </Alert>
+        <ChipSelect
+          mode="switch"
+          width={Dimensions.get('window').width * 0.28}
+          marginHorizontal={5}
+          onChangeValue={chiplist => setSelectedStatus(chiplist[0])}
+          selectionItems={MailMessageType.getSelectionItems(I18n, Colors)}
+        />
         <View style={styles.scrollListContainer}>
           <ScrollList
             loadingList={loading}
-            data={mailMessagesList}
+            data={filteredList}
             renderItem={({item}) => (
               <MailMessageCard
                 key={item.id}
@@ -217,15 +255,17 @@ const MailMessageView = ({model, modelId}) => {
             translator={I18n.t}
           />
         </View>
-        <View style={styles.commentContainer}>
-          <MessageBox
-            placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
-            disabled={!comment}
-            value={comment}
-            onChange={setComment}
-            onSend={handleSendMailMessageComment}
-          />
-        </View>
+        {selectedStatus.key !== MailMessageType.status.notification && (
+          <View style={styles.commentContainer}>
+            <MessageBox
+              placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
+              disabled={!comment}
+              value={comment}
+              onChange={setComment}
+              onSend={handleSendMailMessageComment}
+            />
+          </View>
+        )}
       </Screen>
     </KeyboardAvoidingView>
   );
