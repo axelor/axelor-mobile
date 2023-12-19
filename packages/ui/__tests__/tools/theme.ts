@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,20 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {ThemeProvider, useTheme, useThemeColor} from './ThemeContext';
-export {WritingThemeProvider, useWritingStyle} from './WritingThemeContext';
-export {
-  lightTheme,
-  purpleTheme,
-  colorBlindTheme,
-  Theme,
-  ThemeColors,
-  Color,
-} from './themes';
-export {
-  writingDefaultTheme,
-  Writing,
-  WritingStyles,
-  TextStyle,
-  useWritingType,
-} from './writingTheme';
+import {purpleTheme} from '@axelor/aos-mobile-ui';
+
+export const getDefaultThemeColors = () => {
+  return purpleTheme.colors;
+};

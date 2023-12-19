@@ -19,11 +19,12 @@
 import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {shallow} from 'enzyme';
-import {LoadingIndicator, lightTheme} from '@axelor/aos-mobile-ui';
+import {LoadingIndicator} from '@axelor/aos-mobile-ui';
 import * as configContext from '../../../lib/config/ConfigContext';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('LoadingIndicator Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   it('should render without crashing', () => {
     const wrapper = shallow(<LoadingIndicator />);
