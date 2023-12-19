@@ -18,7 +18,7 @@
 
 import React, {useEffect} from 'react';
 import {Picker} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch} from '@axelor/aos-mobile-core';
+import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
 import {searchExpenseDraft} from '../../../features/expenseSlice';
 
 const DraftExpensePickerAux = ({
@@ -29,6 +29,7 @@ const DraftExpensePickerAux = ({
   required = false,
 }) => {
   const dispatch = useDispatch();
+  const I18n = useTranslator();
 
   const {user} = useSelector(state => state.user);
   const {expenseDraftList} = useSelector(state => state.expense);
@@ -39,7 +40,7 @@ const DraftExpensePickerAux = ({
 
   return (
     <Picker
-      title={title}
+      title={I18n.t(title)}
       defaultValue={defaultValue}
       listItems={expenseDraftList}
       labelField="expenseSeq"
