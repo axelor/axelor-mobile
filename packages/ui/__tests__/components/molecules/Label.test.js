@@ -19,12 +19,12 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Label, Text, lightTheme} from '@axelor/aos-mobile-ui';
+import {Label, Text} from '@axelor/aos-mobile-ui';
 import {hexToRgb} from '../../../lib/utils/commons-utlis';
-import {getGlobalStyles} from '../../tools';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('Label Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     message: 'This is label message.',
     onClose: jest.fn(),

@@ -19,11 +19,11 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {ToggleSwitch, lightTheme} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {ToggleSwitch} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('ToggleSwitch Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     leftTitle: 'Left',

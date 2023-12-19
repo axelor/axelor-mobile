@@ -19,16 +19,11 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {
-  Badge,
-  DropdownMenuItem,
-  Icon,
-  lightTheme,
-  Text,
-} from '@axelor/aos-mobile-ui';
+import {Badge, DropdownMenuItem, Icon, Text} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('DropdownMenuItem Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     placeholder: 'Text',

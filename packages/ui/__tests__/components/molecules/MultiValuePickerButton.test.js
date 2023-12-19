@@ -19,10 +19,11 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {shallow} from 'enzyme';
-import {MultiValuePickerButton, Text, lightTheme} from '@axelor/aos-mobile-ui';
+import {MultiValuePickerButton, Text} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('MultiValuePickerButton Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const listItem = [
     {
       color: Colors.primaryColor,
