@@ -24,10 +24,16 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
-import {Theme, lightTheme, colorBlindTheme, ThemeColors} from './themes';
+import {
+  Theme,
+  lightTheme,
+  purpleTheme,
+  colorBlindTheme,
+  ThemeColors,
+} from './themes';
 import {getActiveTheme} from './theme-context.helper';
 
-const DEFAULT_THEME = lightTheme;
+const DEFAULT_THEME = purpleTheme;
 const COLORBLIND_THEME = colorBlindTheme;
 
 interface ThemeContextState {
@@ -47,7 +53,7 @@ interface ThemeAction {
 const defaultThemeContext = {
   activeTheme: DEFAULT_THEME,
   isColorBlind: DEFAULT_THEME === COLORBLIND_THEME,
-  themes: [lightTheme],
+  themes: [lightTheme, purpleTheme],
   changeTheme: () => {
     throw new Error('ThemeProvider should be mounted to change theme');
   },
@@ -102,14 +108,14 @@ const themeReducer = (
     case actionTypes.activateColorBlind: {
       return {
         ...state,
-        activeTheme: colorBlindTheme,
+        activeTheme: COLORBLIND_THEME,
         isColorBlind: true,
       };
     }
     case actionTypes.desactivateColorBlind: {
       return {
         ...state,
-        activeTheme: lightTheme,
+        activeTheme: DEFAULT_THEME,
         isColorBlind: false,
       };
     }
