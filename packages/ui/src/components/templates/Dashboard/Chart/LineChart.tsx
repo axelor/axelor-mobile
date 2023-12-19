@@ -34,7 +34,6 @@ interface LineChartProps {
   widthGraph?: number;
   backgroundColor?: string;
   rotateLabel?: boolean;
-  labelWidth?: number;
   title?: string;
 }
 
@@ -45,12 +44,11 @@ const LineChart = ({
   spacing,
   backgroundColor,
   title,
-  rotateLabel = false,
-  labelWidth = 30,
+  rotateLabel = true,
 }: LineChartProps) => {
   const Colors = useThemeColor();
   const labelTextStyle = {
-    width: rotateLabel ? 60 : labelWidth,
+    width: rotateLabel ? 60 : spacing,
     color: Colors.secondaryColor_dark.background,
     top: 10,
     left: 10,

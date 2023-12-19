@@ -53,8 +53,8 @@ export const transformToBarChartData = (groupedData, Colors, rotateLabel) => {
         spacing: index === group.values.length - 1 ? 24 : 2,
         labelTextStyle: {
           color: Colors.secondaryColor_dark.background,
-          top: 10,
-          left: 5,
+          top: rotateLabel ? 10 : 0,
+          left: rotateLabel ? 15 : 5,
           transform: rotateLabel ? [{rotate: '45deg'}] : [],
         },
       });

@@ -44,7 +44,7 @@ const BarChart = ({
   spacing,
   horizontal = false,
   title,
-  rotateLabel = false,
+  rotateLabel = true,
 }: BarCharProps) => {
   const Colors = useThemeColor();
   const groupedData = mergeDataForGroupedBars(datasets);
@@ -116,7 +116,7 @@ const getStyles = rotateLabel =>
       paddingVertical: 10,
     },
     title: {
-      marginTop: rotateLabel ? 30 : 10,
+      marginTop: rotateLabel ? 30 : 5,
       alignSelf: 'center',
       textAlign: 'center',
     },
