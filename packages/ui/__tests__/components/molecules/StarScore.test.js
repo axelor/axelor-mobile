@@ -19,15 +19,15 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {Icon, StarScore, lightTheme} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {Icon, StarScore} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 const getIcons = (wrapper, iconName) => {
   return wrapper.find(Icon).filterWhere(item => item.prop('name') === iconName);
 };
 
 describe('StarScore', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     score: 3.5,

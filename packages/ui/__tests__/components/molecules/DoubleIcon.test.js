@@ -19,11 +19,11 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {DoubleIcon, Icon, lightTheme} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {DoubleIcon, Icon} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('DoubleIcon Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     topIconConfig: {
