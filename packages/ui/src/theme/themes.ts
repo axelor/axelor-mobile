@@ -134,7 +134,7 @@ export const purpleTheme: Theme = {
   key: 'purple',
   name: 'Purple',
   colors: {
-    screenBackgroundColor: '#F8F8FF',
+    screenBackgroundColor: '#F8F9FA',
     backgroundColor: '#FFFFFF',
     primaryColor: {
       background_light: '#A7A4FC',
