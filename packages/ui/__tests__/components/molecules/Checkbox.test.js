@@ -18,10 +18,11 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Checkbox, lightTheme, Icon} from '@axelor/aos-mobile-ui';
+import {Checkbox, Icon} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors} from '../../tools';
 
 describe('Checkbox Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     title: 'Checkbox Label',
     onChange: jest.fn(),

@@ -19,16 +19,11 @@
 import React from 'react';
 import {View} from 'react-native';
 import {shallow} from 'enzyme';
-import {
-  FormIncrementInput,
-  Increment,
-  Text,
-  lightTheme,
-} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {FormIncrementInput, Increment, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('FormIncrementInput Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     title: 'Input Title',
     defaultValue: 10,
