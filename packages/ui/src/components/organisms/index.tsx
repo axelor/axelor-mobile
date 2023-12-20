@@ -17,6 +17,7 @@
  */
 
 export {default as AutoCompleteSearch} from './AutoCompleteSearch/AutoCompleteSearch';
+export {default as CheckboxScrollList} from './CheckboxScrollList/CheckboxScrollList';
 export {default as ChipSelect} from './ChipSelect/ChipSelect';
 export {default as DropdownCardSwitch} from './DropdownCardSwitch/DropdownCardSwitch';
 export {default as DropdownMenuItem} from './DropdownMenuItem/DropdownMenuItem';
