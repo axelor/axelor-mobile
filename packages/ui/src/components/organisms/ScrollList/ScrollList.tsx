@@ -22,6 +22,7 @@ import {Text} from '../../atoms';
 
 interface ScrollListProps {
   style?: any;
+  styleFooter?: any;
   loadingList: boolean;
   data: any[];
   renderItem: (item: any) => any;
@@ -36,6 +37,7 @@ interface ScrollListProps {
 
 const ScrollList = ({
   style,
+  styleFooter,
   loadingList = false,
   data = [],
   renderItem,
@@ -113,7 +115,7 @@ const ScrollList = ({
       onEndReached={onEndReached}
       ListFooterComponent={() => {
         return (
-          <View style={styles.footerText}>
+          <View style={[styles.footerText, styleFooter]}>
             {moreLoading && <ActivityIndicator size="large" color="black" />}
             {isListEnd && (
               <Text>
