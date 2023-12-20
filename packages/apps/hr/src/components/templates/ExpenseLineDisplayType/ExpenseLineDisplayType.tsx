@@ -41,12 +41,8 @@ const ExpenseLineDisplayType = ({
   const Colors = useThemeColor();
 
   const {expense} = useSelector((state: any) => state.expense);
-  const {
-    generalExpenseLineList,
-    totalNumberExpenseGeneral,
-    kilometricExpenseLineList,
-    totalNumberExpenseKilomectric,
-  } = useSelector((state: any) => state.expenseLine);
+  const {totalNumberExpenseGeneral, totalNumberExpenseKilomectric} =
+    useSelector((state: any) => state.expenseLine);
 
   useEffect(() => {
     dispatch(
@@ -63,30 +59,16 @@ const ExpenseLineDisplayType = ({
   }, [totalNumberExpenseGeneral, totalNumberExpenseKilomectric]);
 
   const isGeneral = useMemo(
-    () =>
-      generalExpenseLineList != null &&
-      totalNumberExpenseGeneral > 0 &&
-      totalNumberExpenseKilomectric === 0,
-    [
-      generalExpenseLineList,
-      totalNumberExpenseGeneral,
-      totalNumberExpenseKilomectric,
-    ],
+    () => totalNumberExpenseGeneral > 0 && totalNumberExpenseKilomectric === 0,
+    [totalNumberExpenseGeneral, totalNumberExpenseKilomectric],
   );
 
   const isKilometric = useMemo(
-    () =>
-      kilometricExpenseLineList != null &&
-      totalNumberExpenseKilomectric > 0 &&
-      totalNumberExpenseGeneral === 0,
-    [
-      kilometricExpenseLineList,
-      totalNumberExpenseGeneral,
-      totalNumberExpenseKilomectric,
-    ],
+    () => totalNumberExpenseKilomectric > 0 && totalNumberExpenseGeneral === 0,
+    [totalNumberExpenseGeneral, totalNumberExpenseKilomectric],
   );
 
-  const hasExpenseLines = useMemo(() => {
+  const hasOneTypeExpenseLines = useMemo(() => {
     return !(!isGeneral && !isKilometric);
   }, [isGeneral, isKilometric]);
 
@@ -101,23 +83,14 @@ const ExpenseLineDisplayType = ({
   }, [isGeneral, isKilometric, I18n]);
 
   useEffect(() => {
-    if (hasExpenseLines) {
+    if (hasOneTypeExpenseLines) {
       onChange(_mode => {
         return isKilometric
           ? ExpenseLine.modes.kilometric
           : ExpenseLine.modes.general;
       });
     }
-  }, [
-    generalExpenseLineList,
-    hasExpenseLines,
-    isGeneral,
-    isKilometric,
-    kilometricExpenseLineList,
-    onChange,
-    totalNumberExpenseGeneral,
-    totalNumberExpenseKilomectric,
-  ]);
+  }, [hasOneTypeExpenseLines, isKilometric, onChange]);
 
   const renderToggle = useCallback(() => {
     return (
@@ -139,7 +112,7 @@ const ExpenseLineDisplayType = ({
     return (
       <View style={styles.containerTitle}>
         <Text writingType="title">{modeTitle}</Text>
-        {hasExpenseLines && (
+        {hasOneTypeExpenseLines && (
           <NumberBubble
             number={
               isGeneral
@@ -155,7 +128,7 @@ const ExpenseLineDisplayType = ({
     );
   }, [
     modeTitle,
-    hasExpenseLines,
+    hasOneTypeExpenseLines,
     isGeneral,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
