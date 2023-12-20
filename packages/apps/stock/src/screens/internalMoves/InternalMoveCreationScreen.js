@@ -120,13 +120,20 @@ const InternalMoveCreationScreen = ({navigation}) => {
           movedQty={movedQty}
           addLine={() => {
             setLines(prevLines => {
-              prevLines.push({
-                product: newLine?.product,
-                trackingNumber: newLine?.trackingNumber,
-                realQty: movedQty,
-                unit: newLine?.product?.unit,
-                id: newLine?.id,
-              });
+              const indexLine = prevLines.findIndex(
+                line => line.id === newLine?.id,
+              );
+              if (indexLine >= 0) {
+                prevLines[indexLine].realQty += movedQty;
+              } else {
+                prevLines.push({
+                  product: newLine?.product,
+                  trackingNumber: newLine?.trackingNumber,
+                  realQty: movedQty,
+                  unit: newLine?.product?.unit,
+                  id: newLine?.id,
+                });
+              }
               return prevLines;
             });
             setMovedQty(0);
