@@ -70,20 +70,7 @@ describe('PieChart Component', () => {
     const wrapper = shallow(<PieChart {...props} {...extendedProps} />);
 
     expect(wrapper.find(RNPieChart).prop('data')).toBe(props.datasets);
-    expect(wrapper.find(RNPieChart).prop('donut')).toBe(extendedProps.donut);
-    expect(wrapper.find(RNPieChart).prop('showGradient')).toBe(
-      extendedProps.showGradient,
-    );
-    expect(wrapper.find(RNPieChart).prop('sectionAutoFocus')).toBe(
-      extendedProps.sectionAutoFocus,
-    );
-    expect(wrapper.find(RNPieChart).prop('radius')).toBe(extendedProps.radius);
-    expect(wrapper.find(RNPieChart).prop('innerRadius')).toBe(
-      extendedProps.innerRadius,
-    );
-    expect(wrapper.find(RNPieChart).prop('focusOnPress')).toBe(
-      extendedProps.focusOnPress,
-    );
+    expect(wrapper.find(RNPieChart).props()).toMatchObject(extendedProps);
   });
 
   it('should display a legend if props is true', () => {
