@@ -269,7 +269,7 @@ const MailMessageView = ({model, modelId}) => {
       </Screen>
     </KeyboardAvoidingView>
   );
-}; 
+};
 
 const styles = StyleSheet.create({
   commentContainer: {
