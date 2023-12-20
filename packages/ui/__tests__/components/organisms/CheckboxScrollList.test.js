@@ -18,7 +18,6 @@
 
 import React from 'react';
 import {View} from 'react-native';
-
 import {shallow} from 'enzyme';
 import {CheckboxScrollList, ScrollList, Checkbox} from '@axelor/aos-mobile-ui';
 
@@ -27,12 +26,11 @@ describe('CheckboxScrollList Component', () => {
     {id: 1, name: 'Item 1'},
     {id: 2, name: 'Item 2'},
   ];
-  const onCheckedChange = jest.fn();
   const renderItem = jest.fn(item => <View>{item.name}</View>);
 
   const props = {
     data: mockData,
-    onCheckedChange,
+    onCheckedChange: jest.fn(),
     renderItem,
   };
 
@@ -42,21 +40,47 @@ describe('CheckboxScrollList Component', () => {
   });
 
   it('toggles all items when main checkbox is clicked', () => {
-    const wrapper = shallow(<CheckboxScrollList {...props} />);
+    const onCheckedChange = jest.fn();
+    const wrapper = shallow(
+      <CheckboxScrollList {...props} onCheckedChange={onCheckedChange} />,
+    );
+
     wrapper.find(Checkbox).at(0).simulate('change', true);
-    expect(onCheckedChange).toHaveBeenCalledWith(mockData);
+    expect(onCheckedChange).toHaveBeenNthCalledWith(1, mockData);
+
     wrapper.find(Checkbox).at(0).simulate('change', false);
-    expect(onCheckedChange).toHaveBeenCalledWith([]);
+    expect(onCheckedChange).toHaveBeenNthCalledWith(2, []);
   });
 
   it('toggles individual items', () => {
-    const wrapper = shallow(<CheckboxScrollList {...props} />);
+    const onCheckedChange = jest.fn();
+    const wrapper = shallow(
+      <CheckboxScrollList {...props} onCheckedChange={onCheckedChange} />,
+    );
+
     wrapper
       .find(ScrollList)
       .renderProp('renderItem')({item: mockData[0], index: 0})
       .find(Checkbox)
       .simulate('change', true);
-    expect(onCheckedChange).toHaveBeenCalledWith([mockData[0]]);
+    expect(onCheckedChange).toHaveBeenNthCalledWith(1, [mockData[0]]);
+
+    wrapper
+      .find(ScrollList)
+      .renderProp('renderItem')({item: mockData[1], index: 1})
+      .find(Checkbox)
+      .simulate('change', true);
+    expect(onCheckedChange).toHaveBeenNthCalledWith(2, [
+      mockData[0],
+      mockData[1],
+    ]);
+
+    wrapper
+      .find(ScrollList)
+      .renderProp('renderItem')({item: mockData[0], index: 0})
+      .find(Checkbox)
+      .simulate('change', false);
+    expect(onCheckedChange).toHaveBeenNthCalledWith(3, [mockData[1]]);
   });
 
   it('renders each item with a checkbox', () => {
@@ -69,7 +93,6 @@ describe('CheckboxScrollList Component', () => {
       });
 
       expect(itemRender.find(Checkbox).exists()).toBe(true);
-
       expect(itemRender.contains(renderItem({item, index}))).toBe(true);
     });
   });
@@ -86,13 +109,14 @@ describe('CheckboxScrollList Component', () => {
     const wrapper = shallow(
       <CheckboxScrollList {...props} {...additionalProps} />,
     );
+
     expect(wrapper.find(ScrollList).props()).toMatchObject(additionalProps);
   });
 
   it('should apply custom style checkbox width when provided', () => {
     const customStyle = {width: 200};
     const wrapper = shallow(
-      <CheckboxScrollList {...props} styleCheckbox={customStyle} />,
+      <CheckboxScrollList {...props} styleTopCheckbox={customStyle} />,
     );
 
     expect(wrapper.find(Checkbox).prop('style')).toContain(customStyle);

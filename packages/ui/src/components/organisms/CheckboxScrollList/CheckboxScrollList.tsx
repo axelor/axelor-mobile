@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import ScrollList from '../ScrollList/ScrollList';
+import {useThemeColor} from '../../../theme';
 import {Checkbox} from '../../molecules';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {ScrollList} from '../../organisms';
 
 interface CheckboxScrollListProps {
   styleRender?: any;
+  styleTopCheckbox?: any;
   styleCheckbox?: any;
   styleScrollList?: any;
   loadingList?: boolean;
@@ -42,6 +43,7 @@ interface CheckboxScrollListProps {
 
 const CheckboxScrollList = ({
   styleRender,
+  styleTopCheckbox,
   styleCheckbox,
   styleScrollList,
   loadingList = false,
@@ -61,11 +63,15 @@ const CheckboxScrollList = ({
 
   const [checkedItems, setCheckedItems] = useState(defaultCheckedItems);
 
+  useEffect(() => {
+    setCheckedItems(defaultCheckedItems);
+  }, [defaultCheckedItems]);
+
   const _renderItem = ({item, index}) => {
     return (
       <View style={[styles.renderContainer, styleRender]} key={index}>
         <Checkbox
-          style={styles.renderCheckbox}
+          style={[styles.renderCheckbox, styleCheckbox]}
           iconColor={Colors.secondaryColor_dark.background}
           onChange={checked =>
             setCheckedItems(prevItems => {
@@ -86,7 +92,7 @@ const CheckboxScrollList = ({
   return (
     <>
       <Checkbox
-        style={[styles.checkbox, styleCheckbox]}
+        style={[styles.checkbox, styleTopCheckbox]}
         styleTxt={styles.checkboxTxt}
         iconColor={Colors.secondaryColor_dark.background}
         title={translator != null ? translator('Base_SelectAll') : 'Select all'}
