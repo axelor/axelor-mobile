@@ -19,15 +19,7 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {Checkbox} from '../../src/components/molecules';
-
-const colors = {
-  primary: {
-    background: '#3ECF8E',
-  },
-  secondary: {
-    background: '#84DCB7',
-  },
-};
+import {lightTheme} from '../../src/theme';
 
 storiesOf('ui/molecules/Checkbox', module).add(
   'Default',
@@ -38,6 +30,7 @@ storiesOf('ui/molecules/Checkbox', module).add(
         isDefaultChecked={false}
         onChange={console.log}
         {...args}
+        iconColor={lightTheme.colors[args._iconColor]?.background}
       />
     );
   },
@@ -70,15 +63,14 @@ storiesOf('ui/molecules/Checkbox', module).add(
         },
         defaultValue: 30,
       },
-    },
-    parameters: {
-      backgrounds: {
-        default: 'white',
-        values: [
-          {name: 'white', value: '#ffffff'},
-          {name: 'primary', value: colors.primary.background},
-          {name: 'secondary', value: colors.secondary.background},
-        ],
+      _iconColor: {
+        options: Object.entries(lightTheme.colors)
+          .filter(([, _color]) => typeof _color !== 'string')
+          .map(([key]) => key),
+        defaultValue: 'primaryColor',
+        control: {
+          type: 'select',
+        },
       },
     },
   },
