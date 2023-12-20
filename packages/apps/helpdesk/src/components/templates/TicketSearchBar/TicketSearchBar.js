@@ -44,7 +44,13 @@ const TicketSearchBar = ({
   const fetchTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       team
-        ? dispatch(fetchMyTeamTickets({userTeam: user.activeTeam, page: page}))
+        ? dispatch(
+            fetchMyTeamTickets({
+              searchValue: searchValue,
+              userTeam: user.activeTeam,
+              page: page,
+            }),
+          )
         : dispatch(
             fetchTickets({
               page: page,

@@ -97,8 +97,13 @@ const MyTicketListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
+<<<<<<< HEAD
       if (!Array.isArray(list) || list.length === 0) {
         return [];
+=======
+      if (list == null || list?.length === 0) {
+        return list;
+>>>>>>> fix: add missing searchValue on searchBar
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
