@@ -51,7 +51,7 @@ export const app_config = {
    * This means that the app can still function and deliver its full features to users who have not upgraded to the latest versions of Axelor Open Suite.
    * However, it's important to note that enabling this feature may limit access to certain advanced features that are only available on higher versions of Axelor Open Suite.
    */
-  retrocompatibilityAOS6: true,
+  retrocompatibilityAOS6: false,
 
   /*
    * This settins allows you to add new routes to the application configurations fetcher. You can also update existing routes with new values.
