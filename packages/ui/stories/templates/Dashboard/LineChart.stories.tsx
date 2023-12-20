@@ -68,7 +68,7 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/LineChart', module).add(
+storiesOf('ui/templates/Dashboard/Chart/LineChart', module).add(
   'Default',
   args => {
     return (

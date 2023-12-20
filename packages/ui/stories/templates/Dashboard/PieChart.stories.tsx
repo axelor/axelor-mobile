@@ -43,7 +43,7 @@ const datasets = [
   },
 ];
 
-storiesOf('ui/templates/Dashboard/PieChart', module).add(
+storiesOf('ui/templates/Dashboard/Chart/PieChart', module).add(
   'Default',
   args => {
     return <PieChart datasets={datasets} {...args} />;

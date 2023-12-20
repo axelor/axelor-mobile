@@ -43,7 +43,7 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/BarChart', module).add(
+storiesOf('ui/templates/Dashboard/Chart/BarChart', module).add(
   'Default',
   args => {
     return <BarChart datasets={datasets} {...args} />;
