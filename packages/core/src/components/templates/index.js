@@ -18,6 +18,6 @@
 
 export {default as AttachedFilesView} from './AttachedFilesView/AttachedFilesView';
 export {default as MailMessageView} from './MailMessageView/MailMessageView';
-export {default as PopupApplicationNotConfigured} from './PopupApplicationNotConfigured/PopupApplicationNotConfigured';
+export {default as PopupApplicationInformation} from './PopupApplicationInformation/PopupApplicationInformation';
 export {default as PopupMinimalRequiredVersion} from './PopupMinimalRequiredVersion/PopupMinimalRequiredVersion';
 export {default as SocialNetworkLinks} from './SocialNetworkLinks/SocialNetworkLinks';

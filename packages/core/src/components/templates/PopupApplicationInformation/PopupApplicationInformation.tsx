@@ -23,22 +23,32 @@ import {useTranslator} from '../../../i18n';
 import {logout} from '../../../features/authSlice';
 import {useDispatch} from '../../../redux/hooks';
 
-const PopupApplicationNotConfigured = ({onRefresh}) => {
+interface PopupApplicationInformationProps {
+  visible?: boolean;
+  textKey: string;
+  onRefresh: () => void;
+}
+
+const PopupApplicationInformation = ({
+  visible = true,
+  textKey,
+  onRefresh,
+}: PopupApplicationInformationProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   return (
     <PopUp
-      visible={true}
+      visible={visible}
       title={I18n.t('Base_Information')}
-      data={I18n.t('Base_NoAppConfigured')}>
+      data={I18n.t(textKey)}>
       <View style={styles.btnContainer}>
         <IconButton
           title={I18n.t('Base_Refresh')}
           iconName="refresh"
           FontAwesome5={false}
-          color={Colors.secondaryColor}
+          color={Colors.warningColor}
           onPress={onRefresh}
           style={styles.btn}
         />
@@ -46,7 +56,7 @@ const PopupApplicationNotConfigured = ({onRefresh}) => {
           title={I18n.t('Base_Logout')}
           iconName="power-off"
           color={Colors.errorColor}
-          onPress={() => dispatch(logout())}
+          onPress={() => dispatch(logout() as any)}
           style={styles.btn}
         />
       </View>
@@ -65,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopupApplicationNotConfigured;
+export default PopupApplicationInformation;
