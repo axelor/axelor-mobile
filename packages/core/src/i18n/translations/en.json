@@ -151,6 +151,7 @@
   "Base_FormAction_Update": "Update",
   "Base_FormAction_Refresh": "Refresh",
   "Base_FormAction_Reset": "Reset",
+  "Base_SelectAll": "Select all",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",
