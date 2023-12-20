@@ -20,11 +20,11 @@ import React from 'react';
 import {View} from 'react-native';
 import {PieChart as RNPieChart} from 'react-native-gifted-charts';
 import {shallow} from 'enzyme';
-import {PieChart, lightTheme, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {PieChart, Text} from '@axelor/aos-mobile-ui';
+import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
 
 describe('PieChart Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     datasets: [

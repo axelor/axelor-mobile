@@ -19,11 +19,11 @@
 import React from 'react';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
 import {shallow} from 'enzyme';
-import {LineChart, Card, lightTheme, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {LineChart, Card, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('LineChart Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     datasets: [

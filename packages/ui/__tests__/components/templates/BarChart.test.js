@@ -19,11 +19,11 @@
 import React from 'react';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
 import {shallow} from 'enzyme';
-import {BarChart, Card, lightTheme, Text} from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {BarChart, Card, Text} from '@axelor/aos-mobile-ui';
+import {getGlobalStyles, getDefaultThemeColors} from '../../tools';
 
 describe('BarChart Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
 
   const props = {
     datasets: [
