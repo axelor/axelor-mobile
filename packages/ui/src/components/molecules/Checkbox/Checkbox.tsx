@@ -53,9 +53,11 @@ const Checkbox = ({
   );
 
   const _iconColor = useMemo(() => {
-    const color =
-      iconColor != null ? iconColor : Colors.primaryColor.background;
-    return disabled ? Colors.secondaryColor.background : color;
+    if (disabled) {
+      return Colors.secondaryColor.background;
+    }
+
+    return iconColor != null ? iconColor : Colors.primaryColor.background;
   }, [Colors, disabled, iconColor]);
 
   const handleToggle = () => {
