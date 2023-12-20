@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {purpleTheme} from '@axelor/aos-mobile-ui';
+import {ThemeColors, purpleTheme} from '@axelor/aos-mobile-ui';
 
-export const getDefaultThemeColors = () => {
+export const getDefaultThemeColors = (): ThemeColors => {
   return purpleTheme.colors;
 };
