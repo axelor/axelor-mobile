@@ -16,16 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo} from 'react';
+import React, {useMemo, useCallback} from 'react';
 import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import BootstrapIcon from '../BootstrapIcon/BootstrapIcon';
 
 interface IconProps {
   style?: any;
   name: string;
   FontAwesome5?: boolean;
+  /**
+   * @deprecated The prop should not be used anymore. FontAwesome icons will be removed in next version.
+   */
+  isFontAwesome4?: boolean;
+  /**
+   * @deprecated The prop should not be used anymore. FontAwesome icons will be removed in next version.
+   */
+  isFontAwesome5?: boolean;
   color?: string;
   size?: number;
   touchable?: boolean;
@@ -37,6 +46,8 @@ const Icon = ({
   style,
   name,
   FontAwesome5 = true,
+  isFontAwesome4 = false,
+  isFontAwesome5 = false,
   color,
   size = 18,
   touchable = false,
@@ -52,6 +63,16 @@ const Icon = ({
     );
   }, [Colors, color, size]);
 
+  const renderIcon = useCallback(() => {
+    if ((FontAwesome5 || isFontAwesome5) && Platform.OS !== 'web') {
+      return <Icon5 name={name} style={styles.icon} />;
+    } else if (isFontAwesome4) {
+      return <Icon4 name={name} style={styles.icon} />;
+    } else {
+      return <BootstrapIcon name={name} size={size} color={color} />;
+    }
+  }, [FontAwesome5, color, isFontAwesome4, isFontAwesome5, name, size, styles]);
+
   if (!visible) {
     return null;
   }
@@ -61,11 +82,7 @@ const Icon = ({
       style={[styles.container, style]}
       onPress={onPress}
       disabled={!touchable}>
-      {FontAwesome5 && Platform.OS !== 'web' ? (
-        <Icon5 name={name} style={styles.icon} />
-      ) : (
-        <Icon4 name={name} style={styles.icon} />
-      )}
+      {renderIcon()}
     </TouchableOpacity>
   );
 };
