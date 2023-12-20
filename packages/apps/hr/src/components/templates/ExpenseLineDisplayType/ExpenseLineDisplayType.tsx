@@ -69,7 +69,7 @@ const ExpenseLineDisplayType = ({
   );
 
   const hasOneTypeExpenseLines = useMemo(() => {
-    return !(!isGeneral && !isKilometric);
+    return isGeneral || isKilometric;
   }, [isGeneral, isKilometric]);
 
   const modeTitle = useMemo(() => {
