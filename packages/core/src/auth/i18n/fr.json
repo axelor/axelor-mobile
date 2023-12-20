@@ -17,6 +17,7 @@
   "User_DefaultStockLocation": "Emplacement de stock par défaut",
   "User_Language": "Langage",
   "User_Theme": "Thème",
+  "User_NoAppUser": "L'utilisateur n'a pas pu être récupéré. Veuillez vérifier que vous avez les permissions nécessaires ou contactez votre administrateur.",
   "Auth_SliceAction_FetchBaseConfig": "récupération de la config base",
   "Auth_SliceAction_FetchAppMobileSettings": "récupération des paramètres de l'application mobile",
   "Auth_SliceAction_FetchLanguages": "récupération des langages",

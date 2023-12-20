@@ -17,6 +17,7 @@
   "User_DefaultStockLocation": "Default stock location",
   "User_Language": "Language",
   "User_Theme": "Theme",
+  "User_NoAppUser": "The user could not be fetched. Please verify that you have the necessary permissions or contact your administrator.",
   "Auth_SliceAction_FetchBaseConfig": "fetch base config",
   "Auth_SliceAction_FetchAppMobileSettings": "fetch app mobile settings",
   "Auth_SliceAction_FetchLanguages": "fetch languages",
