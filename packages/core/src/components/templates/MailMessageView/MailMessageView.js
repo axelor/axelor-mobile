@@ -255,7 +255,7 @@ const MailMessageView = ({model, modelId}) => {
             translator={I18n.t}
           />
         </View>
-        {selectedStatus.key !== MailMessageType.status.notification && (
+        {selectedStatus?.key !== MailMessageType.status.notification && (
           <View style={styles.commentContainer}>
             <MessageBox
               placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
@@ -269,7 +269,7 @@ const MailMessageView = ({model, modelId}) => {
       </Screen>
     </KeyboardAvoidingView>
   );
-};
+}; 
 
 const styles = StyleSheet.create({
   commentContainer: {
