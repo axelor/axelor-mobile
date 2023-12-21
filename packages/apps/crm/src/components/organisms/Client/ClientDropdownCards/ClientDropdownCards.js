@@ -38,8 +38,10 @@ const ClientDropdownCards = ({}) => {
   const {listEventPartner} = useSelector(state => state.event);
 
   useEffect(() => {
-    const idList = client.contactPartnerSet?.map(item => item.id);
-    dispatch(searchContactById(idList));
+    if (client.contactPartnerSet?.length > 0) {
+      const idList = client.contactPartnerSet?.map(item => item.id);
+      dispatch(searchContactById(idList));
+    }
   }, [dispatch, client.contactPartnerSet]);
 
   useEffect(() => {

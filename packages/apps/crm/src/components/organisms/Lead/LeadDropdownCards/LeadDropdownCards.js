@@ -35,8 +35,10 @@ const LeadDropdownCards = ({}) => {
   const {listEventById} = useSelector(state => state.event);
 
   useEffect(() => {
-    const idList = lead.eventList?.map(item => item.id);
-    dispatch(searchEventById(idList));
+    if (lead.eventList?.length > 0) {
+      const idList = lead.eventList?.map(item => item.id);
+      dispatch(searchEventById(idList));
+    }
   }, [dispatch, lead.eventList]);
 
   return (
