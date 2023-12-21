@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   ToggleSwitch,
@@ -24,42 +24,27 @@ import {
   useThemeColor,
   NumberBubble,
 } from '@axelor/aos-mobile-ui';
-import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
-import {
-  searchGeneralExpenseLines,
-  searchKilometricExpenseLines,
-} from '../../../features/expenseLineSlice';
+import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
 interface ExpenseLineTypeSwitchProps {
   isAddButton?: boolean;
   onChange: (mode: any) => void;
+  totalNumberExpenseGeneral: number;
+  totalNumberExpenseKilomectric: number;
 }
 
 const ExpenseLineTypeSwitch = ({
   isAddButton = false,
   onChange,
+  totalNumberExpenseGeneral,
+  totalNumberExpenseKilomectric,
 }: ExpenseLineTypeSwitchProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
-  const dispatch = useDispatch();
-
-  const {expense} = useSelector((state: any) => state.expense);
-  const {totalNumberExpenseGeneral, totalNumberExpenseKilomectric} =
-    useSelector((state: any) => state.expenseLine);
 
   const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
-
-  useEffect(() => {
-    dispatch(
-      (searchKilometricExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-
-    dispatch(
-      (searchGeneralExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-  }, [dispatch, expense]);
 
   return (
     <ToggleSwitch
@@ -101,7 +86,8 @@ const ExpenseLineTypeSwitch = ({
 const getStyles = isAddButton =>
   StyleSheet.create({
     toggleContainer: {
-      width: isAddButton ? '79%' : '89%',
+      width: isAddButton ? '88%' : '100%',
+      margin: 0,
     },
     toggle: {
       width: isAddButton ? '55%' : '54%',
