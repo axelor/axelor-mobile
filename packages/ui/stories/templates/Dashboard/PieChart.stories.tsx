@@ -52,7 +52,7 @@ storiesOf('ui/templates/Dashboard/Chart/PieChart', module).add(
     argTypes: {
       widthGraph: {
         control: {type: 'number'},
-        defaultValue: 0,
+        defaultValue: 425,
       },
       radius: {
         control: {type: 'number'},
