@@ -41,6 +41,10 @@ export const formatDurationFromSeconds = (seconds: number) => {
 };
 
 export const parseDuration = (value: string) => {
+  if (value == null) {
+    return 0;
+  }
+
   const [hours, minutes] = value.split(':');
   const parsedHours = parseInt(hours, 10);
   const parsedMinutes = parseInt(minutes, 10);
