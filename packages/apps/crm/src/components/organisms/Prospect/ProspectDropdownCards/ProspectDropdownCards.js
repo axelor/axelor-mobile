@@ -39,8 +39,10 @@ const ProspectDropdownCards = ({}) => {
   const {listEventPartner} = useSelector(state => state.event);
 
   useEffect(() => {
-    const idList = prospect.contactPartnerSet?.map(item => item.id);
-    dispatch(searchContactById(idList));
+    if (prospect.contactPartnerSet?.length > 0) {
+      const idList = prospect.contactPartnerSet?.map(item => item.id);
+      dispatch(searchContactById(idList));
+    }
   }, [dispatch, prospect.contactPartnerSet]);
 
   useEffect(() => {
