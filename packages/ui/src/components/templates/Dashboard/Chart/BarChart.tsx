@@ -77,11 +77,6 @@ const BarChart = ({
   return (
     <Card style={[styles.container, {width: _containerWidth}, style]}>
       <RNBarChart
-        frontColor={
-          datasets[0]?.[0].color != null
-            ? datasets[0]?.[0].color
-            : Colors?.primaryColor?.background
-        }
         data={barChartData}
         width={_graphWidth}
         isAnimated={true}
