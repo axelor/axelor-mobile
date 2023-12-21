@@ -59,6 +59,8 @@ const ExpenseDetailsScreen = ({route, navigation}) => {
 
   useEffect(() => {
     dispatch(fetchExpenseById({ExpenseId: idExpense}));
+    dispatch(searchKilometricExpenseLines({expenseId: idExpense, page: 0}));
+    dispatch(searchGeneralExpenseLines({expenseId: idExpense, page: 0}));
   }, [dispatch, idExpense]);
 
   const ObjectToDisplay = useMemo(() => {

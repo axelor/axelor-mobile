@@ -19,56 +19,40 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useThemeColor, NumberBubble, Text} from '@axelor/aos-mobile-ui';
-import {useSelector, useTranslator, useDispatch} from '@axelor/aos-mobile-core';
+import {useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
-import {
-  searchGeneralExpenseLines,
-  searchKilometricExpenseLines,
-} from '../../../features/expenseLineSlice';
-import ExpenseLineTypeSwitch from '../ExpenseLineTypeSwitch/ExpenseLineTypeSwitch';
+import {ExpenseLineTypeSwitch} from '../../templates';
 
-interface ExpenseLineDisplayTypeProps {
+interface ExpenseLineTypeDisplayProps {
   isAddButton?: boolean;
   onChange: (mode: any) => void;
 }
 
-const ExpenseLineDisplayType = ({
+const ExpenseLineTypeDisplay = ({
   isAddButton,
   onChange,
-}: ExpenseLineDisplayTypeProps) => {
-  const dispatch = useDispatch();
+}: ExpenseLineTypeDisplayProps) => {
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const {expense} = useSelector((state: any) => state.expense);
   const {totalNumberExpenseGeneral, totalNumberExpenseKilomectric} =
     useSelector((state: any) => state.expenseLine);
 
-  useEffect(() => {
-    dispatch(
-      (searchKilometricExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-
-    dispatch(
-      (searchGeneralExpenseLines as any)({expenseId: expense?.id, page: 0}),
-    );
-  }, [dispatch, expense]);
-
-  const displayToggle = useMemo(() => {
-    return totalNumberExpenseGeneral > 0 && totalNumberExpenseKilomectric > 0;
-  }, [totalNumberExpenseGeneral, totalNumberExpenseKilomectric]);
-
   const isGeneral = useMemo(
-    () => totalNumberExpenseGeneral > 0 && totalNumberExpenseKilomectric === 0,
-    [totalNumberExpenseGeneral, totalNumberExpenseKilomectric],
+    () => totalNumberExpenseGeneral > 0,
+    [totalNumberExpenseGeneral],
   );
 
   const isKilometric = useMemo(
-    () => totalNumberExpenseKilomectric > 0 && totalNumberExpenseGeneral === 0,
-    [totalNumberExpenseGeneral, totalNumberExpenseKilomectric],
+    () => totalNumberExpenseKilomectric > 0,
+    [totalNumberExpenseKilomectric],
   );
 
-  const hasOneTypeExpenseLines = useMemo(() => {
+  const displayToggle = useMemo(() => {
+    return isGeneral && isKilometric;
+  }, [isGeneral, isKilometric]);
+
+  const hasExpenseLines = useMemo(() => {
     return isGeneral || isKilometric;
   }, [isGeneral, isKilometric]);
 
@@ -83,14 +67,14 @@ const ExpenseLineDisplayType = ({
   }, [isGeneral, isKilometric, I18n]);
 
   useEffect(() => {
-    if (hasOneTypeExpenseLines) {
+    if (hasExpenseLines) {
       onChange(_mode => {
         return isKilometric
           ? ExpenseLine.modes.kilometric
           : ExpenseLine.modes.general;
       });
     }
-  }, [hasOneTypeExpenseLines, isKilometric, onChange]);
+  }, [hasExpenseLines, isKilometric, onChange]);
 
   const renderToggle = useCallback(() => {
     return (
@@ -112,7 +96,7 @@ const ExpenseLineDisplayType = ({
     return (
       <View style={styles.containerTitle}>
         <Text writingType="title">{modeTitle}</Text>
-        {hasOneTypeExpenseLines && (
+        {hasExpenseLines && (
           <NumberBubble
             number={
               isGeneral
@@ -128,7 +112,7 @@ const ExpenseLineDisplayType = ({
     );
   }, [
     modeTitle,
-    hasOneTypeExpenseLines,
+    hasExpenseLines,
     isGeneral,
     totalNumberExpenseGeneral,
     totalNumberExpenseKilomectric,
@@ -148,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExpenseLineDisplayType;
+export default ExpenseLineTypeDisplay;
