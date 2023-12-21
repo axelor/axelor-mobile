@@ -281,7 +281,7 @@ export const hr_formsRegister: FormConfigs = {
             .isTimesheetProjectInvoicingEnabled,
       },
       timesheetDate: {
-        titleKey: 'Hr_TimesheetDate',
+        titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
         required: true,
@@ -303,6 +303,17 @@ export const hr_formsRegister: FormConfigs = {
           adjustHeightWithLines: true,
           style: {marginBottom: 100, width: '90%', alignSelf: 'center'},
         },
+      },
+    },
+  },
+  hr_ActiveTimer: {
+    modelName: 'com.axelor.apps.hr.db.TSTimer',
+    fields: {
+      timerDate: {
+        titleKey: 'Hr_Date',
+        type: 'date',
+        widget: 'date',
+        required: true,
       },
     },
   },

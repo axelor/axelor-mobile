@@ -19,6 +19,7 @@
 import {useEffect} from 'react';
 import {
   headerActionsProvider,
+  useNavigation,
   useSelector,
   useTranslator,
   useDispatch,
@@ -64,6 +65,7 @@ const useExpenseDetailsAction = () => {
 const useTimerListAction = () => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
+  const navigation = useNavigation();
 
   useEffect(() => {
     headerActionsProvider.registerModel('hr_timers_list', {
@@ -74,10 +76,10 @@ const useTimerListAction = () => {
           iconName: 'plus-lg',
           title: I18n.t('Hr_NewTimer'),
           iconColor: Colors.primaryColor.background,
-          onPress: () => console.log('Header button pressed.'),
+          onPress: () => navigation.navigate('ActiveTimerFormScreen'),
           showInHeader: true,
         },
       ],
     });
-  }, [Colors, I18n]);
+  }, [Colors, I18n, navigation]);
 };
