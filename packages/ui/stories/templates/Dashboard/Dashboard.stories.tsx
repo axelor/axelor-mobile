@@ -22,6 +22,29 @@ import {Dashboard} from '../../../src/components/templates';
 import {Dimensions} from 'react-native';
 import {Screen} from '../../../src/components/atoms';
 
+storiesOf('ui/templates/Dashboard/Dashboard', module).add(
+  'Default',
+  args => {
+    const selectedDataset = datasets[args.selectedDataset];
+    return (
+      <Screen style={{width: Dimensions.get('window').width}}>
+        <Dashboard lineList={selectedDataset} />
+      </Screen>
+    );
+  },
+  {
+    argTypes: {
+      selectedDataset: {
+        options: ['Example 1', 'Example 2', 'Example 3'],
+        defaultValue: 'Example 1',
+        control: {
+          type: 'select',
+        },
+      },
+    },
+  },
+);
+
 const datasets = {
   'Example 1': [
     {
@@ -378,26 +401,3 @@ const datasets = {
     },
   ],
 };
-
-storiesOf('ui/templates/Dashboard/Dashboard', module).add(
-  'Default',
-  args => {
-    const selectedDataset = datasets[args.selectedDataset];
-    return (
-      <Screen style={{width: Dimensions.get('window').width}}>
-        <Dashboard lineList={selectedDataset} />
-      </Screen>
-    );
-  },
-  {
-    argTypes: {
-      selectedDataset: {
-        options: ['Example 1', 'Example 2', 'Example 3'],
-        defaultValue: 'test',
-        control: {
-          type: 'select',
-        },
-      },
-    },
-  },
-);

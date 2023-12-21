@@ -55,33 +55,27 @@ storiesOf('ui/templates/Dashboard/Chart/PieChart', module).add(
       },
       radius: {
         control: {type: 'number'},
+        defaultValue: 90,
       },
       innerRadius: {
         control: {type: 'number'},
-      },
-      spacing: {
-        control: {type: 'number'},
-        defaultValue: 50,
+        defaultValue: 60,
       },
       legend: {
         control: {type: 'boolean'},
-        defaultValue: true,
+        defaultValue: false,
       },
       donut: {
         control: {type: 'boolean'},
+        defaultValue: false,
       },
       showGradient: {
-        control: {type: 'boolean'},
-      },
-      sectionAutoFocus: {
-        control: {type: 'boolean'},
-      },
-      focusOnPress: {
         control: {type: 'boolean'},
         defaultValue: false,
       },
       title: {
         control: 'text',
+        defaultValue: 'Title',
       },
     },
   },

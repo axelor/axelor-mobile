@@ -91,6 +91,7 @@ storiesOf('ui/templates/Dashboard/Chart/LineChart', module).add(
       },
       title: {
         control: 'text',
+        defaultValue: 'title',
       },
       color: {
         options: Object.entries(lightTheme.colors)

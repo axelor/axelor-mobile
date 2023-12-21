@@ -60,9 +60,11 @@ storiesOf('ui/templates/Dashboard/Chart/BarChart', module).add(
       },
       horizontal: {
         control: 'boolean',
+        defaultValue: false,
       },
       title: {
         control: 'text',
+        defaultValue: 'title',
       },
     },
   },
