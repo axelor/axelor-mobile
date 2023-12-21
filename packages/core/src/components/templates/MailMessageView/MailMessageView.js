@@ -47,6 +47,7 @@ import useTranslator from '../../../i18n/hooks/use-translator';
 import {headerActionsProvider} from '../../../header';
 import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 import {MailMessageType} from '../../../types';
+import {filterChip} from '../../../utils';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
@@ -122,25 +123,7 @@ const MailMessageView = ({model, modelId}) => {
   }, [dispatch, model, modelId, comment]);
 
   const filterOnStatus = useCallback(
-    list => {
-      if (list.length === 0) {
-        return [];
-      } else if (selectedStatus) {
-        return list.filter(item => {
-          if (selectedStatus.key === MailMessageType.status.comment) {
-            return item.type === MailMessageType.status.comment;
-          } else if (
-            selectedStatus.key === MailMessageType.status.notification
-          ) {
-            return item.type === MailMessageType.status.notification;
-          } else {
-            return true;
-          }
-        });
-      } else {
-        return list;
-      }
-    },
+    list => filterChip(list, selectedStatus, 'type'),
     [selectedStatus],
   );
 
@@ -222,9 +205,7 @@ const MailMessageView = ({model, modelId}) => {
         </Alert>
         <ChipSelect
           mode="switch"
-          width={Dimensions.get('window').width * 0.28}
-          marginHorizontal={5}
-          onChangeValue={chiplist => setSelectedStatus(chiplist[0])}
+          onChangeValue={chiplist => setSelectedStatus(chiplist)}
           selectionItems={MailMessageType.getSelectionItems(I18n, Colors)}
         />
         <View style={styles.scrollListContainer}>
