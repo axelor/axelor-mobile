@@ -48,7 +48,7 @@ const CheckboxScrollList = ({
   styleScrollList,
   loadingList = false,
   data,
-  defaultCheckedItems = [],
+  defaultCheckedItems,
   onCheckedChange,
   renderItem,
   fetchData = () => [],
@@ -61,10 +61,10 @@ const CheckboxScrollList = ({
 }: CheckboxScrollListProps) => {
   const Colors = useThemeColor();
 
-  const [checkedItems, setCheckedItems] = useState(defaultCheckedItems);
+  const [checkedItems, setCheckedItems] = useState(defaultCheckedItems ?? []);
 
   useEffect(() => {
-    setCheckedItems(defaultCheckedItems);
+    setCheckedItems(defaultCheckedItems ?? []);
   }, [defaultCheckedItems]);
 
   const _renderItem = ({item, index}) => {
