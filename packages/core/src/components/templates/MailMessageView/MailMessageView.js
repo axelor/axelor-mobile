@@ -61,7 +61,7 @@ const MailMessageView = ({model, modelId}) => {
   const [comment, setComment] = useState();
   const [subscribe, setSubscribe] = useState(false);
   const [popUp, setPopUp] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const {userId} = useSelector(state => state.auth);
   const {
@@ -131,6 +131,14 @@ const MailMessageView = ({model, modelId}) => {
     () => filterOnStatus(mailMessagesList),
     [filterOnStatus, mailMessagesList],
   );
+
+  const displayMessageBox = useMemo(() => {
+    if (selectedStatus.length !== 0) {
+      return selectedStatus[0].key !== MailMessageType.status.notification;
+    }
+
+    return true;
+  }, [selectedStatus]);
 
   useEffect(() => {
     headerActionsProvider.registerModel('core_mailMessage_details', {
@@ -236,7 +244,7 @@ const MailMessageView = ({model, modelId}) => {
             translator={I18n.t}
           />
         </View>
-        {selectedStatus?.key !== MailMessageType.status.notification && (
+        {displayMessageBox && (
           <View style={styles.commentContainer}>
             <MessageBox
               placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
