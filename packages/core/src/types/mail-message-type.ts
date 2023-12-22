@@ -1,7 +1,7 @@
 /*
  * Axelor Business Solutions
  *
- * Copyright (C) 2024 Axelor (<http://axelor.com>).
+ * Copyright (C) 2023 Axelor (<http://axelor.com>).
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,7 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export {default as Anomaly} from './anomaly-type';
-export {default as MailMessageNotificationType} from './mail-message-notification-type';
-export {default as MailMessageType} from './mail-message-type';
-export {default as StopwatchType} from './stopwatch-type';
+import {ThemeColors} from '@axelor/aos-mobile-ui';
+
+class MailMessageType {
+  static status = {
+    comment: 'comment',
+    notification: 'notification',
+  };
+
+  static getSelectionItems = (
+    I18n: {t: (key: string) => string},
+    Colors: ThemeColors,
+  ) => {
+    return [
+      {
+        title: I18n.t('Base_Comments'),
+        color: Colors.primaryColor,
+        key: this.status.comment,
+      },
+      {
+        title: I18n.t('Base_Notifications'),
+        color: Colors.primaryColor,
+        key: this.status.notification,
+      },
+    ];
+  };
+}
+
+export default MailMessageType;
