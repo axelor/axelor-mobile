@@ -17,8 +17,9 @@
  */
 
 import React from 'react';
-import {ColorValue, Text} from 'react-native';
+import {ColorValue} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
+import Text from '../Text/Text';
 import iconsMap from '../../../icons/bootstrap-icon-map.json';
 
 interface BootstrapIconProps {
