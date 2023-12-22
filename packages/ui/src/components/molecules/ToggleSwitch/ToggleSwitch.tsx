@@ -60,15 +60,15 @@ const ToggleSwitch = ({
   };
 
   return (
-    <View style={[styles.container, styleContainer]}>
+    <View
+      style={[
+        commonStyles.filter,
+        commonStyles.filterSize,
+        styles.container,
+        styleContainer,
+      ]}>
       <TouchableOpacity
-        style={[
-          commonStyles.filter,
-          commonStyles.filterSize,
-          styles.toggle,
-          active && styles.active,
-          styleToogle,
-        ]}
+        style={[styles.toggle, active && styles.active, styleToogle]}
         disabled={active}
         onPress={onLeftPress}>
         <Text>{leftTitle}</Text>
@@ -98,6 +98,7 @@ const getStyles = (Colors: ThemeColors) =>
     },
     toggle: {
       width: '54%',
+      height: 40,
       borderRadius: 13,
       padding: 5,
       justifyContent: 'center',
