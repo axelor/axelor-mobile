@@ -19,9 +19,9 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchTickets} from '../../../features/ticketSlice';
+import {fetchMyTeamTickets} from '../../../features/ticketSlice';
 
-const TicketSearchBar = ({
+const MyTeamTicketSearchBar = ({
   placeholderKey = 'Helpdesk_ticket',
   defaultValue = '',
   onChange = () => {},
@@ -35,18 +35,21 @@ const TicketSearchBar = ({
 
   const displayItemTicketSeq = item => item.ticketSeq;
 
-  const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
-    state => state.ticket,
-  );
+  const {
+    myTeamTicketList,
+    loadingMyTeamTicket,
+    moreMoadingMyTeamTicket,
+    isListEndMyTeamTicket,
+  } = useSelector(state => state.ticket);
   const {user} = useSelector(state => state.user);
 
   const fetchTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        fetchTickets({
-          page: page,
+        fetchMyTeamTickets({
           searchValue: searchValue,
-          userId: user.id,
+          userTeam: user.activeTeam,
+          page: page,
         }),
       );
     },
@@ -55,16 +58,16 @@ const TicketSearchBar = ({
 
   return (
     <AutoCompleteSearch
-      objectList={ticketList}
+      objectList={myTeamTicketList}
       value={defaultValue}
       onChangeValue={onChange}
       fetchData={fetchTicketSearchBarAPI}
       displayValue={displayItemTicketSeq}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingTicket}
-      moreLoading={moreLoading}
-      isListEnd={isListEnd}
+      loadingList={loadingMyTeamTicket}
+      moreLoading={moreMoadingMyTeamTicket}
+      isListEnd={isListEndMyTeamTicket}
       navigate={navigate}
       oneFilter={oneFilter}
       isFocus={isFocus}
@@ -72,4 +75,4 @@ const TicketSearchBar = ({
   );
 };
 
-export default TicketSearchBar;
+export default MyTeamTicketSearchBar;

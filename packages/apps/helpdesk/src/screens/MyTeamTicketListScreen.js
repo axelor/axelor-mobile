@@ -33,7 +33,7 @@ import {
   filterChip,
 } from '@axelor/aos-mobile-core';
 import {fetchMyTeamTickets, fetchTicketType} from '../features/ticketSlice';
-import {TicketCard, TicketSearchBar} from '../components';
+import {TicketCard, MyTeamTicketSearchBar} from '../components';
 import {Ticket} from '../types';
 
 const MyTeamTicketListScreen = ({navigation}) => {
@@ -135,7 +135,7 @@ const MyTeamTicketListScreen = ({navigation}) => {
         expandableFilter={true}
         fixedItems={
           <View style={styles.headerContainer}>
-            <TicketSearchBar
+            <MyTeamTicketSearchBar
               showDetailsPopup={false}
               oneFilter={true}
               placeholderKey={I18n.t('Helpdesk_Ticket')}
