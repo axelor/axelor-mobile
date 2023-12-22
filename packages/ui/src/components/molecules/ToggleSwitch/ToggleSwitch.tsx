@@ -17,9 +17,10 @@
  */
 
 import React, {ReactElement, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
+import {getCommonStyles} from '../../../utils';
 
 interface ToggleSwitchProps {
   styleContainer?: any;
@@ -46,6 +47,8 @@ const ToggleSwitch = ({
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
+  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
+
   const onLeftPress = () => {
     setActive(true);
     onSwitch();
@@ -57,7 +60,13 @@ const ToggleSwitch = ({
   };
 
   return (
-    <View style={[styles.container, styleContainer]}>
+    <View
+      style={[
+        commonStyles.filter,
+        commonStyles.filterSize,
+        styles.container,
+        styleContainer,
+      ]}>
       <TouchableOpacity
         style={[styles.toggle, active && styles.active, styleToogle]}
         disabled={active}
@@ -76,22 +85,23 @@ const ToggleSwitch = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       borderColor: Colors.secondaryColor.background_light,
       borderWidth: 2,
-      borderRadius: 20,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+      alignSelf: 'center',
       margin: 5,
       padding: 2,
     },
     toggle: {
-      width: Dimensions.get('window').width * 0.47,
+      width: '54%',
+      height: 40,
+      borderRadius: 13,
       padding: 5,
-      borderRadius: 50,
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
@@ -100,4 +110,5 @@ const getStyles = Colors =>
       backgroundColor: Colors.primaryColor.background_light,
     },
   });
+
 export default ToggleSwitch;

@@ -23,7 +23,6 @@ import {
   useThemeColor,
   HeaderContainer,
   ToggleSwitch,
-  getCommonStyles,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -50,8 +49,6 @@ function EventPlanningScreen({navigation}) {
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [dateSave, setDateSave] = useState(null);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const listItem = useMemo(() => {
     return EventType.getCalendarListItems(filteredList, Colors);
@@ -110,8 +107,8 @@ function EventPlanningScreen({navigation}) {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -194,12 +191,6 @@ function EventPlanningScreen({navigation}) {
               oneFilter={true}
             />
             <ToggleSwitch
-              styleContainer={[
-                commonStyles.filter,
-                commonStyles.filterSize,
-                styles.toggleSwitchContainer,
-              ]}
-              styleToogle={styles.toggle}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
@@ -221,15 +212,6 @@ function EventPlanningScreen({navigation}) {
 const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
-  },
-  toggleSwitchContainer: {
-    width: '90%',
-    marginLeft: '4%',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
 });
 

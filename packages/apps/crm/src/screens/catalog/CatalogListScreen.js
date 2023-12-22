@@ -158,15 +158,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
   },
-  toggleSwitchContainer: {
-    width: '90%',
-    height: 40,
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
-  },
 });
 
 export default CatalogListScreen;

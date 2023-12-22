@@ -23,7 +23,6 @@ import {
   Screen,
   ScrollList,
   useThemeColor,
-  getCommonStyles,
   ToggleSwitch,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
@@ -51,8 +50,6 @@ const OpportunityListScreen = ({navigation}) => {
 
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const opportunityStatusListItems = useMemo(() => {
     return opportunityStatusList
@@ -123,8 +120,6 @@ const OpportunityListScreen = ({navigation}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-              styleToogle={styles.toggle}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
@@ -175,11 +170,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
 });
 

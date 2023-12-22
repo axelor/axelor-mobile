@@ -18,12 +18,7 @@
 
 import React, {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  ToggleSwitch,
-  getCommonStyles,
-  useThemeColor,
-  NumberBubble,
-} from '@axelor/aos-mobile-ui';
+import {ToggleSwitch, useThemeColor, NumberBubble} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {ExpenseLine} from '../../../types';
 
@@ -43,16 +38,11 @@ const ExpenseLineTypeSwitch = ({
   const I18n = useTranslator();
   const Colors = useThemeColor();
 
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
   const styles = useMemo(() => getStyles(isAddButton), [isAddButton]);
 
   return (
     <ToggleSwitch
-      styleContainer={[
-        commonStyles.filter,
-        commonStyles.filterSize,
-        styles.toggleContainer,
-      ]}
+      styleContainer={styles.toggleContainer}
       styleToogle={styles.toggle}
       leftTitle={I18n.t('Hr_General')}
       rightTitle={I18n.t('Hr_Kilometric')}
@@ -91,8 +81,6 @@ const getStyles = isAddButton =>
     },
     toggle: {
       width: isAddButton ? '55%' : '54%',
-      height: 40,
-      borderRadius: 13,
       justifyContent: 'flex-start',
       paddingLeft: '5%',
     },
