@@ -34,6 +34,7 @@ export {
   fetchConsumedProducts,
   fetchProducedProducts,
 } from './prodProductSlice';
+export {fetchProductionConfig} from './productionConfigSlice';
 export {fetchProductionFile} from './productionFileSlice';
 export {
   fetchWasteProducts,
