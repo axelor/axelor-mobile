@@ -26,11 +26,7 @@ import {
   MailMessageCommentCard,
   MailMessageNotificationCard,
 } from '../../organisms';
-
-const mailMessageTypes = {
-  comment: 'comment',
-  notificaiton: 'notification',
-};
+import {MailMessageType} from '../../../types';
 
 const MailMessageCard = ({
   author,
@@ -73,7 +69,7 @@ const MailMessageCard = ({
             I18n.t('Base_DateTimeFormat'),
           )}`}
         </Text>
-        {type === mailMessageTypes.comment && (
+        {type === MailMessageType.status.comment && (
           <MailMessageCommentCard
             subject={subject}
             files={files}
@@ -83,7 +79,7 @@ const MailMessageCard = ({
             relatedModel={relatedModel}
           />
         )}
-        {type === mailMessageTypes.notificaiton && (
+        {type === MailMessageType.status.notification && (
           <MailMessageNotificationCard
             title={title}
             tracks={JSON.parse(body ?? '{}').tracks}
