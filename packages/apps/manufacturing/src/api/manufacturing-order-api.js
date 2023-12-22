@@ -24,7 +24,12 @@ import {
 } from '@axelor/aos-mobile-core';
 import ManufacturingOrder from '../types/manufacturing-order';
 
-const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
+const createManufOrderCriteria = (
+  companyId,
+  workshopId,
+  manageWorkshop,
+  searchValue,
+) => {
   let criterias = [
     {
       fieldName: 'typeSelect',
@@ -67,7 +72,7 @@ const createManufOrderCriteria = (companyId, workshopId, searchValue) => {
     });
   }
 
-  if (workshopId != null) {
+  if (workshopId != null && manageWorkshop) {
     criterias.push({
       operator: 'or',
       criteria: [
@@ -92,11 +97,17 @@ export async function searchManufacturingOrderFilter({
   companyId = null,
   workshopId = null,
   searchValue = null,
+  manageWorkshop,
   page = 0,
 }) {
   return createStandardSearch({
     model: 'com.axelor.apps.production.db.ManufOrder',
-    criteria: createManufOrderCriteria(companyId, workshopId, searchValue),
+    criteria: createManufOrderCriteria(
+      companyId,
+      workshopId,
+      manageWorkshop,
+      searchValue,
+    ),
     fieldKey: 'manufacturing_manufacturingOrder',
     sortKey: 'manufacturing_manufacturingOrder',
     page,
