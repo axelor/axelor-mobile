@@ -83,11 +83,22 @@ export const generateChartProps = (datasets, Color) => {
   return props;
 };
 
-export const addLabelTextStyleToDataset = (datasets, labelTextStyle) => {
+export const addLabelTextStyleToDataset = (
+  datasets,
+  rotateLabel,
+  spacing,
+  Colors,
+) => {
   return datasets.map(dataArray =>
     dataArray.map(data => ({
       ...data,
-      labelTextStyle: labelTextStyle,
+      labelTextStyle: {
+        width: rotateLabel ? 60 : spacing,
+        color: Colors.secondaryColor_dark.background,
+        top: rotateLabel ? 10 : 0,
+        left: 10,
+        transform: rotateLabel ? [{rotate: '45deg'}] : [],
+      },
     })),
   );
 };

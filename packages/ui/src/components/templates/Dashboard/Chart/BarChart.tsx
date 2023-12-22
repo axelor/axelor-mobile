@@ -111,7 +111,7 @@ const getStyles = rotateLabel =>
       paddingVertical: 10,
     },
     title: {
-      marginTop: rotateLabel ? 30 : 5,
+      marginTop: rotateLabel ? 30 : 0,
       alignSelf: 'center',
       textAlign: 'center',
     },
