@@ -93,6 +93,7 @@ const getStyles = (Colors: ThemeColors) =>
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+      alignSelf: 'center',
       margin: 5,
       padding: 2,
     },
