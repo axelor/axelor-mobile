@@ -17,8 +17,8 @@
  */
 
 import React, {ReactElement, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useThemeColor} from '../../../theme/ThemeContext';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ThemeColors, useThemeColor} from '../../../theme';
 import {Text} from '../../atoms';
 
 interface ToggleSwitchProps {
@@ -76,7 +76,7 @@ const ToggleSwitch = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       borderColor: Colors.secondaryColor.background_light,
@@ -89,9 +89,10 @@ const getStyles = Colors =>
       padding: 2,
     },
     toggle: {
-      width: Dimensions.get('window').width * 0.47,
+      width: '54%',
+      height: 40,
+      borderRadius: 13,
       padding: 5,
-      borderRadius: 50,
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
@@ -100,4 +101,5 @@ const getStyles = Colors =>
       backgroundColor: Colors.primaryColor.background_light,
     },
   });
+
 export default ToggleSwitch;
