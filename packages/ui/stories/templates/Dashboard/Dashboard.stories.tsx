@@ -17,387 +17,233 @@
  */
 
 import React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Dashboard} from '../../../src/components/templates';
 import {Dimensions} from 'react-native';
+import {storiesOf} from '@storybook/react-native';
 import {Screen} from '../../../src/components/atoms';
+import {Dashboard} from '../../../src/components/templates';
+import Chart from '../../../src/components/templates/Dashboard/chart';
 
-storiesOf('ui/templates/Dashboard/Dashboard', module).add(
-  'Default',
-  args => {
-    const selectedDataset = datasets[args.selectedDataset];
-    return (
-      <Screen style={{width: Dimensions.get('window').width}}>
-        <Dashboard lineList={selectedDataset} />
-      </Screen>
-    );
-  },
-  {
-    argTypes: {
-      selectedDataset: {
-        options: ['Example 1', 'Example 2', 'Example 3'],
-        defaultValue: 'Example 1',
-        control: {
-          type: 'select',
+storiesOf('ui/templates/Dashboard/Dashboard', module)
+  .addParameters({
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  })
+  .add(
+    'Default',
+    args => {
+      return (
+        <Screen style={{width: Dimensions.get('window').width}}>
+          <Dashboard lineList={createDashboardConfig(args)} />
+        </Screen>
+      );
+    },
+    {
+      argTypes: {
+        line1_graph1_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'bar',
+          control: {
+            type: 'select',
+          },
+        },
+        line1_graph1_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line1_graph1_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line1_graph2_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'pie',
+          control: {
+            type: 'select',
+          },
+        },
+        line1_graph2_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line1_graph2_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line1_graph3_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'bar',
+          control: {
+            type: 'select',
+          },
+        },
+        line1_graph3_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line1_graph3_isDisplay: {
+          control: 'boolean',
+          defaultValue: false,
+        },
+        line1_graph4_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'line',
+          control: {
+            type: 'select',
+          },
+        },
+        line1_graph4_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line1_graph4_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line2_graph1_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'bar',
+          control: {
+            type: 'select',
+          },
+        },
+        line2_graph1_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line2_graph1_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line2_graph2_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'line',
+          control: {
+            type: 'select',
+          },
+        },
+        line2_graph2_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line2_graph2_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line2_graph3_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'pie',
+          control: {
+            type: 'select',
+          },
+        },
+        line2_graph3_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line2_graph3_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
+        },
+        line2_graph4_type: {
+          options: Object.keys(Chart.chartType),
+          defaultValue: 'donut',
+          control: {
+            type: 'select',
+          },
+        },
+        line2_graph4_title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
+        line2_graph4_isDisplay: {
+          control: 'boolean',
+          defaultValue: true,
         },
       },
     },
-  },
-);
+  );
 
-const datasets = {
-  'Example 1': [
+const DEFAULT_DATASET = [
+  [
     {
-      graphList: [
-        {
-          type: 'line',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 1,
-              },
-              {
-                label: 'Draft quotation',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'Canceled',
-                value: 3,
-              },
-              {
-                label: 'Draft quotation',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'bar',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 3,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 5,
-              },
-            ],
-          ],
-        },
-      ],
+      label: 'T0001 - APOLLO',
+      value: 14,
     },
     {
-      graphList: [
-        {
-          type: 'pie',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 0,
-              },
-              {
-                label: 'Draft quotation',
-                value: 1,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'donut',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-          ],
-        },
-      ],
+      label: 'T0002 - MICHEL Loic',
+      value: 18,
+    },
+    {
+      label: 'Loic',
+      value: 15,
+    },
+    {
+      label: 'Michel',
+      value: 18,
+    },
+    {
+      label: 'Jean',
+      value: 14,
     },
   ],
-  'Example 2': [
+  [
     {
-      graphList: [
-        {
-          type: 'line',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 1,
-              },
-              {
-                label: 'Draft quotation',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'Canceled',
-                value: 3,
-              },
-              {
-                label: 'Draft quotation',
-                value: 5,
-              },
-            ],
-          ],
-        },
-      ],
+      label: 'T0001 - APOLLO',
+      value: 14,
+    },
+    {
+      label: 'T0002 - MICHEL Loic',
+      value: 10,
+    },
+    {
+      label: 'Loic',
+      value: 6,
+    },
+    {
+      label: 'Michel',
+      value: 10,
+    },
+    {
+      label: 'Jean',
+      value: 14,
     },
   ],
-  'Example 3': [
-    {
-      graphList: [
-        {
-          type: 'line',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 1,
-              },
-              {
-                label: 'Draft quotation',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'Canceled',
-                value: 3,
-              },
-              {
-                label: 'Draft quotation',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'line',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 1,
-              },
-              {
-                label: 'Draft quotation',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'Canceled',
-                value: 3,
-              },
-              {
-                label: 'Draft quotation',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'bar',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 3,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'bar',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 3,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 5,
-              },
-            ],
-          ],
-        },
-      ],
-    },
-    {
-      graphList: [
-        {
-          type: 'line',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 1,
-              },
-              {
-                label: 'Draft quotation',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'Canceled',
-                value: 3,
-              },
-              {
-                label: 'Draft quotation',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'bar',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 3,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 5,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'bar',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 3,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 5,
-              },
-            ],
-          ],
-        },
-      ],
-    },
-    {
-      graphList: [
-        {
-          type: 'pie',
-          title: 'Number of SO by status',
-          dataList: [
-            [
-              {
-                label: 'Canceled',
-                value: 0,
-              },
-              {
-                label: 'Draft quotation',
-                value: 1,
-              },
-            ],
-          ],
-        },
-        {
-          type: 'donut',
-          title: 'Sale order count by partner',
-          dataList: [
-            [
-              {
-                label: 'T0001 - APOLLO',
-                value: 1,
-              },
-              {
-                label: 'T0002 - MICHEL Loic',
-                value: 2,
-              },
-            ],
-          ],
-        },
-      ],
-    },
-  ],
+];
+
+const createDashboardConfig = args => {
+  const NUMBER_PROPS_PER_GRAPH = 3;
+  const NUMBER_GRAPH_PER_LINE = 4;
+  const lines = [];
+
+  for (
+    let lineIndex = 1;
+    lineIndex <=
+    Object.keys(args).length / (NUMBER_PROPS_PER_GRAPH * NUMBER_GRAPH_PER_LINE);
+    lineIndex++
+  ) {
+    const graphs = [];
+
+    for (
+      let graphIndex = 1;
+      graphIndex <= NUMBER_GRAPH_PER_LINE;
+      graphIndex++
+    ) {
+      const keyStart = `line${lineIndex}_graph${graphIndex}_`;
+
+      if (args[`${keyStart}isDisplay`]) {
+        graphs.push({
+          title: args[`${keyStart}title`],
+          type: args[`${keyStart}type`],
+          dataList: DEFAULT_DATASET,
+        });
+      }
+    }
+
+    if (graphs.length > 0) {
+      lines.push({graphList: graphs});
+    }
+  }
+
+  return lines;
 };

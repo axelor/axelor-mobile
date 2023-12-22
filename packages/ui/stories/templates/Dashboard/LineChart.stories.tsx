@@ -68,40 +68,46 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/Chart/LineChart', module).add(
-  'Default',
-  args => {
-    return (
-      <LineChart
-        datasets={datasets}
-        backgroundColor={lightTheme.colors[args.color]?.background}
-        {...args}
-      />
-    );
-  },
-  {
-    argTypes: {
-      widthGraph: {
-        control: {type: 'number'},
-        defaultValue: 400,
-      },
-      spacing: {
-        control: {type: 'number'},
-        defaultValue: 50,
-      },
-      title: {
-        control: 'text',
-        defaultValue: 'title',
-      },
-      color: {
-        options: Object.entries(lightTheme.colors)
-          .filter(([, _color]) => typeof _color !== 'string')
-          .map(([key]) => key),
-        defaultValue: 'plannedColor',
-        control: {
-          type: 'select',
+storiesOf('ui/templates/Dashboard/LineChart', module)
+  .addParameters({
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  })
+  .add(
+    'Default',
+    args => {
+      return (
+        <LineChart
+          datasets={datasets}
+          backgroundColor={lightTheme.colors[args.color]?.background}
+          {...args}
+        />
+      );
+    },
+    {
+      argTypes: {
+        widthGraph: {
+          control: {type: 'number'},
+          defaultValue: 400,
+        },
+        spacing: {
+          control: {type: 'number'},
+          defaultValue: 50,
+        },
+        title: {
+          control: 'text',
+          defaultValue: 'title',
+        },
+        color: {
+          options: Object.entries(lightTheme.colors)
+            .filter(([, _color]) => typeof _color !== 'string')
+            .map(([key]) => key),
+          defaultValue: 'plannedColor',
+          control: {
+            type: 'select',
+          },
         },
       },
     },
-  },
-);
+  );

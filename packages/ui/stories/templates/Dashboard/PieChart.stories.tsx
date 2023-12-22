@@ -43,41 +43,47 @@ const datasets = [
   },
 ];
 
-storiesOf('ui/templates/Dashboard/Chart/PieChart', module).add(
-  'Default',
-  args => {
-    return <PieChart datasets={datasets} {...args} />;
-  },
-  {
-    argTypes: {
-      widthGraph: {
-        control: {type: 'number'},
-        defaultValue: 425,
-      },
-      radius: {
-        control: {type: 'number'},
-        defaultValue: 90,
-      },
-      innerRadius: {
-        control: {type: 'number'},
-        defaultValue: 60,
-      },
-      legend: {
-        control: {type: 'boolean'},
-        defaultValue: false,
-      },
-      donut: {
-        control: {type: 'boolean'},
-        defaultValue: false,
-      },
-      showGradient: {
-        control: {type: 'boolean'},
-        defaultValue: false,
-      },
-      title: {
-        control: 'text',
-        defaultValue: 'Title',
+storiesOf('ui/templates/Dashboard/PieChart', module)
+  .addParameters({
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  })
+  .add(
+    'Default',
+    args => {
+      return <PieChart datasets={datasets} {...args} />;
+    },
+    {
+      argTypes: {
+        widthGraph: {
+          control: {type: 'number'},
+          defaultValue: 425,
+        },
+        radius: {
+          control: {type: 'number'},
+          defaultValue: 90,
+        },
+        innerRadius: {
+          control: {type: 'number'},
+          defaultValue: 60,
+        },
+        legend: {
+          control: {type: 'boolean'},
+          defaultValue: false,
+        },
+        donut: {
+          control: {type: 'boolean'},
+          defaultValue: false,
+        },
+        showGradient: {
+          control: {type: 'boolean'},
+          defaultValue: false,
+        },
+        title: {
+          control: 'text',
+          defaultValue: 'Title',
+        },
       },
     },
-  },
-);
+  );

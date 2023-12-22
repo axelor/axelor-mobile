@@ -43,29 +43,35 @@ const datasets = [
   ],
 ];
 
-storiesOf('ui/templates/Dashboard/Chart/BarChart', module).add(
-  'Default',
-  args => {
-    return <BarChart datasets={datasets} {...args} />;
-  },
-  {
-    argTypes: {
-      widthGraph: {
-        control: {type: 'number'},
-        defaultValue: 300,
-      },
-      spacing: {
-        control: {type: 'number'},
-        defaultValue: 50,
-      },
-      horizontal: {
-        control: 'boolean',
-        defaultValue: false,
-      },
-      title: {
-        control: 'text',
-        defaultValue: 'title',
+storiesOf('ui/templates/Dashboard/BarChart', module)
+  .addParameters({
+    viewport: {
+      defaultViewport: 'responsive',
+    },
+  })
+  .add(
+    'Default',
+    args => {
+      return <BarChart datasets={datasets} {...args} />;
+    },
+    {
+      argTypes: {
+        widthGraph: {
+          control: {type: 'number'},
+          defaultValue: 300,
+        },
+        spacing: {
+          control: {type: 'number'},
+          defaultValue: 50,
+        },
+        horizontal: {
+          control: 'boolean',
+          defaultValue: false,
+        },
+        title: {
+          control: 'text',
+          defaultValue: 'title',
+        },
       },
     },
-  },
-);
+  );
