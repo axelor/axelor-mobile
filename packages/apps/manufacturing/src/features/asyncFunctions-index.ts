@@ -37,6 +37,7 @@ export {
   fetchProducedProducts,
   updateProdProductOfManufOrder,
 } from './prodProductSlice';
+export {fetchProductionConfig} from './productionConfigSlice';
 export {fetchProductionFile} from './productionFileSlice';
 export {
   addWasteProductToManufOrder,

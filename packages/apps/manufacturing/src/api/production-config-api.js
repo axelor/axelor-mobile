@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './machine-api';
-export * from './manufacturing-order-api';
-export * from './operation-order-api';
-export * from './prod-product-api';
-export {fetchProductionConfig as fetchProductionConfigApi} from './production-config-api';
-export * from './production-file-api';
-export * from './waste-product-api';
-export * from './work-center-api';
+import {axiosApiProvider, RouterProvider} from '@axelor/aos-mobile-core';
+
+export async function fetchProductionConfig() {
+  const route = await RouterProvider.get('AppProduction');
+
+  return axiosApiProvider.get({url: route});
+}

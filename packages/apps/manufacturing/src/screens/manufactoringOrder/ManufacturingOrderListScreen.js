@@ -38,6 +38,7 @@ import ManufacturingOrder from '../../types/manufacturing-order';
 import {fetchManufacturingOrders} from '../../features/manufacturingOrderSlice';
 import {ManufacturingOrderCard} from '../../components';
 import {displayManufOrderSeq} from '../../utils/displayers';
+import {fetchProductionConfig} from '../../features/productionConfigSlice';
 
 const productScanKey = 'product_manufacturing-order-list';
 const refScanKey = 'manufOrderSeq_manufacturing-order-list';
@@ -51,6 +52,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
     state => state.manufacturingOrder,
   );
+  const {productionConfig} = useSelector(state => state.productionConfig);
 
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
@@ -64,6 +66,10 @@ const ManufacturingOrderListScreen = ({navigation}) => {
     },
     [selectedStatus],
   );
+
+  useEffect(() => {
+    dispatch(fetchProductionConfig());
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredList(
@@ -87,6 +93,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
       dispatch(
         fetchManufacturingOrders({
           companyId: user?.activeCompany?.id,
+          manageWorkshop: productionConfig?.manageWorkshop,
           workshopId: user?.workshopStockLocation?.id,
           searchValue: filter,
           page: page,
@@ -96,6 +103,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
     [
       dispatch,
       filter,
+      productionConfig?.manageWorkshop,
       user?.activeCompany?.id,
       user?.workshopStockLocation?.id,
     ],
@@ -107,13 +115,19 @@ const ManufacturingOrderListScreen = ({navigation}) => {
       dispatch(
         fetchManufacturingOrders({
           companyId: user?.activeCompany?.id,
+          manageWorkshop: productionConfig?.manageWorkshop,
           workshopId: user?.workshopStockLocation?.id,
           searchValue: searchValue,
           page: page,
         }),
       );
     },
-    [dispatch, user?.activeCompany?.id, user?.workshopStockLocation?.id],
+    [
+      dispatch,
+      productionConfig?.manageWorkshop,
+      user?.activeCompany?.id,
+      user?.workshopStockLocation?.id,
+    ],
   );
 
   return (
@@ -187,7 +201,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
             reference={item.manufOrderSeq}
             status={item.statusSelect}
             style={styles.item}
-            priority={item.prioritySelect == null ? null : item.prioritySelect}
+            priority={item.prioritySelect}
             productName={item.product.fullName}
             qty={item.qty}
             unit={item.unit}
