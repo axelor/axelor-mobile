@@ -91,8 +91,6 @@ const getStyles = isAddButton =>
     },
     toggle: {
       width: isAddButton ? '55%' : '54%',
-      height: 40,
-      borderRadius: 13,
       justifyContent: 'flex-start',
       paddingLeft: '5%',
     },

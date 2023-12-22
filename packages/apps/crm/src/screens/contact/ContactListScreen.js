@@ -79,7 +79,6 @@ const ContactListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             <ToggleSwitch
               styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-              styleToogle={styles.toggle}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
@@ -124,15 +123,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-  },
-  toggleSwitchContainer: {
-    width: '90%',
-    height: 40,
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
 });
 

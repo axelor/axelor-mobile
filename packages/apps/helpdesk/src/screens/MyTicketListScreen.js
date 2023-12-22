@@ -80,8 +80,8 @@ const MyTicketListScreen = ({navigation}) => {
 
   const filterOnType = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (selectedType.length > 0) {
           return list?.filter(item =>
@@ -97,8 +97,8 @@ const MyTicketListScreen = ({navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (selectedStatus.length > 0) {
           return list?.filter(item =>
@@ -200,8 +200,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 30,
   },
-  toggleSwitchContainer: {width: '90%', height: 40},
-  toggle: {width: '54%', height: 38, borderRadius: 13},
 });
 
 export default MyTicketListScreen;

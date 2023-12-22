@@ -170,7 +170,6 @@ const ExpenseListScreen = ({navigation}) => {
             {(user?.employee?.hrManager || managedEmployeeTotal > 0) && (
               <ToggleSwitch
                 styleContainer={[commonStyles.filter, commonStyles.filterSize]}
-                styleToogle={styles.toggle}
                 leftTitle={I18n.t('Hr_MyExpenses')}
                 rightTitle={I18n.t('Hr_ToValidate')}
                 rigthElement={
@@ -249,11 +248,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
   indicator: {
     position: 'absolute',

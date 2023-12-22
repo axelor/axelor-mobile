@@ -110,8 +110,8 @@ function EventPlanningScreen({navigation}) {
 
   const filterOnUserAssigned = useCallback(
     list => {
-      if (list == null || list === []) {
-        return list;
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
       } else {
         if (assigned) {
           return list?.filter(item => item?.user?.id === userId);
@@ -194,12 +194,7 @@ function EventPlanningScreen({navigation}) {
               oneFilter={true}
             />
             <ToggleSwitch
-              styleContainer={[
-                commonStyles.filter,
-                commonStyles.filterSize,
-                styles.toggleSwitchContainer,
-              ]}
-              styleToogle={styles.toggle}
+              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
@@ -221,15 +216,6 @@ function EventPlanningScreen({navigation}) {
 const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
-  },
-  toggleSwitchContainer: {
-    width: '90%',
-    marginLeft: '4%',
-  },
-  toggle: {
-    width: '54%',
-    height: 38,
-    borderRadius: 13,
   },
 });
 
