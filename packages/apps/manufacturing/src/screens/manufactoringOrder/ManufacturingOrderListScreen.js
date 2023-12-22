@@ -52,9 +52,7 @@ const ManufacturingOrderListScreen = ({navigation}) => {
   const {loading, moreLoading, isListEnd, manufOrderList} = useSelector(
     state => state.manufacturingOrder,
   );
-  const {productionConfig, loadingConfig} = useSelector(
-    state => state.productionConfig,
-  );
+  const {productionConfig} = useSelector(state => state.productionConfig);
 
   const [product, setProduct] = useState(null);
   const [filteredList, setFilteredList] = useState(manufOrderList);
@@ -195,35 +193,31 @@ const ManufacturingOrderListScreen = ({navigation}) => {
           defaultValue={product}
         />
       </HeaderContainer>
-      {!loadingConfig && (
-        <ScrollList
-          loadingList={loading}
-          data={filteredList}
-          renderItem={({item}) => (
-            <ManufacturingOrderCard
-              reference={item.manufOrderSeq}
-              status={item.statusSelect}
-              style={styles.item}
-              priority={
-                item.prioritySelect == null ? null : item.prioritySelect
-              }
-              productName={item.product.fullName}
-              qty={item.qty}
-              unit={item.unit}
-              link={{ordersRef: item.saleOrderSet, client: item.clientPartner}}
-              plannedStartDate={item.plannedStartDateT}
-              plannedEndDate={item.plannedEndDateT}
-              realStartDate={item.realStartDateT}
-              realEndDate={item.realEndDateT}
-              onPress={() => navigateToManufOrder(item)}
-            />
-          )}
-          fetchData={fetchManufOrderAPI}
-          moreLoading={moreLoading}
-          isListEnd={isListEnd}
-          translator={I18n.t}
-        />
-      )}
+      <ScrollList
+        loadingList={loading}
+        data={filteredList}
+        renderItem={({item}) => (
+          <ManufacturingOrderCard
+            reference={item.manufOrderSeq}
+            status={item.statusSelect}
+            style={styles.item}
+            priority={item.prioritySelect}
+            productName={item.product.fullName}
+            qty={item.qty}
+            unit={item.unit}
+            link={{ordersRef: item.saleOrderSet, client: item.clientPartner}}
+            plannedStartDate={item.plannedStartDateT}
+            plannedEndDate={item.plannedEndDateT}
+            realStartDate={item.realStartDateT}
+            realEndDate={item.realEndDateT}
+            onPress={() => navigateToManufOrder(item)}
+          />
+        )}
+        fetchData={fetchManufOrderAPI}
+        moreLoading={moreLoading}
+        isListEnd={isListEnd}
+        translator={I18n.t}
+      />
     </Screen>
   );
 };

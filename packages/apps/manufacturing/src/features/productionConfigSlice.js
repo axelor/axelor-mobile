@@ -34,7 +34,6 @@ export const fetchProductionConfig = createAsyncThunk(
 );
 
 const initialState = {
-  loadingConfig: false,
   productionConfig: {},
 };
 
@@ -42,11 +41,7 @@ const productionAppConfigSlice = createSlice({
   name: 'productionAppConfig',
   initialState,
   extraReducers: builder => {
-    builder.addCase(fetchProductionConfig.pending, state => {
-      state.loadingConfig = true;
-    });
     builder.addCase(fetchProductionConfig.fulfilled, (state, action) => {
-      state.loadingConfig = false;
       state.productionConfig = action.payload;
     });
   },
