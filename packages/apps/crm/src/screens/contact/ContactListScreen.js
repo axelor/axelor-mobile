@@ -22,8 +22,6 @@ import {
   HeaderContainer,
   Screen,
   ScrollList,
-  useThemeColor,
-  getCommonStyles,
   ToggleSwitch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -32,7 +30,6 @@ import {ContactSearchBar, PartnerCard} from '../../components';
 
 const ContactListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
@@ -41,8 +38,6 @@ const ContactListScreen = ({navigation}) => {
   );
 
   const [assigned, setAssigned] = useState(false);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchContactAPI = useCallback(
     page => {
@@ -78,7 +73,6 @@ const ContactListScreen = ({navigation}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}

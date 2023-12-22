@@ -23,7 +23,6 @@ import {
   ScrollList,
   HeaderContainer,
   ToggleSwitch,
-  getCommonStyles,
   useThemeColor,
   Picker,
   NumberBubble,
@@ -60,8 +59,6 @@ const ExpenseListScreen = ({navigation}) => {
 
   const [mode, setMode] = useState(Expense.mode.personnal);
   const [selectedStatus, setSelectedStatus] = useState(null);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const expenseStatusListItems = useMemo(() => {
     return Expense.getStatusList(Colors, I18n);
@@ -169,7 +166,6 @@ const ExpenseListScreen = ({navigation}) => {
           <View style={styles.headerContainer}>
             {(user?.employee?.hrManager || managedEmployeeTotal > 0) && (
               <ToggleSwitch
-                styleContainer={[commonStyles.filter, commonStyles.filterSize]}
                 leftTitle={I18n.t('Hr_MyExpenses')}
                 rightTitle={I18n.t('Hr_ToValidate')}
                 rigthElement={

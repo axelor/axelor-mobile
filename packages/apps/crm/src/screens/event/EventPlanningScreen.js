@@ -23,7 +23,6 @@ import {
   useThemeColor,
   HeaderContainer,
   ToggleSwitch,
-  getCommonStyles,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {
@@ -50,8 +49,6 @@ function EventPlanningScreen({navigation}) {
   const [assigned, setAssigned] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [dateSave, setDateSave] = useState(null);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const listItem = useMemo(() => {
     return EventType.getCalendarListItems(filteredList, Colors);
@@ -194,7 +191,6 @@ function EventPlanningScreen({navigation}) {
               oneFilter={true}
             />
             <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}

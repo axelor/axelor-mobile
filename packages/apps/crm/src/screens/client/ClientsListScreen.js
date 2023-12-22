@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useMemo, useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   HeaderContainer,
   Screen,
   ScrollList,
-  useThemeColor,
-  getCommonStyles,
   ToggleSwitch,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -32,7 +30,6 @@ import {fetchClients} from '../../features/clientSlice';
 
 const CLientsListScreen = ({navigation}) => {
   const I18n = useTranslator();
-  const Colors = useThemeColor();
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
@@ -42,8 +39,6 @@ const CLientsListScreen = ({navigation}) => {
 
   const [filteredList, setFilteredList] = useState(clientList);
   const [assigned, setAssigned] = useState(false);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchClientAPI = useCallback(
     page => {
@@ -78,7 +73,6 @@ const CLientsListScreen = ({navigation}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}

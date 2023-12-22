@@ -24,7 +24,6 @@ import {
   ToggleSwitch,
   ScrollList,
   useThemeColor,
-  getCommonStyles,
   MultiValuePicker,
 } from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
@@ -55,8 +54,6 @@ const LeadListScreen = ({navigation}) => {
         })
       : [];
   }, [leadStatusList, Colors]);
-
-  const commonStyles = useMemo(() => getCommonStyles(Colors), [Colors]);
 
   const fetchLeadsAPI = useCallback(
     (page = 0) => {
@@ -113,7 +110,6 @@ const LeadListScreen = ({navigation}) => {
         fixedItems={
           <View style={styles.headerContainer}>
             <ToggleSwitch
-              styleContainer={[commonStyles.filter, commonStyles.filterSize]}
               leftTitle={I18n.t('Crm_All')}
               rightTitle={I18n.t('Crm_AssignedToMe')}
               onSwitch={() => setAssigned(!assigned)}
