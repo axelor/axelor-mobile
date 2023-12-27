@@ -1403,7 +1403,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.18.6", "@babel/runtime@^7.19.0", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.5", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.18.6", "@babel/runtime@^7.19.0", "@babel/runtime@^7.22.5", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.23.2"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.2.tgz#062b0ac103261d68a966c4c7baf2ae3e62ec3885"
   integrity sha512-mM8eg4yl5D6i3lu2QKPuPH4FArvJ8KhTofbE7jwMUv9KX5mBvwPAqnV3MlyBNqdp9RyRKP6Yck8TrfYrPvX3bg==
@@ -4451,18 +4451,31 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@wdio/appium-service@^8.22.1":
-  version "8.22.1"
-  resolved "https://registry.npmjs.org/@wdio/appium-service/-/appium-service-8.22.1.tgz#de39ab1ebf81f51ea8e961a7723d2af511772f0a"
-  integrity sha512-qqCWmW19dVCBy5ET/ujrzwX08ZwgPRXXU9cnVSkH35FFLNiiwttSztDjy0++zTxgL2PD5vio+PebTiGpFzqXxg==
+"@wdio/allure-reporter@^8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/allure-reporter/-/allure-reporter-8.24.12.tgz#ecf265e41ad36b0b51ca59ad6fbc9ac960836723"
+  integrity sha512-ZZ1tfUbAC9w7pyZgov//Wtms/oXDTpjMh8R9zhFG0BF9NVKrXKPVWxbkmrzeeYpr0hmDRihgtLkzDPH1q2g11Q==
   dependencies:
-    "@wdio/config" "8.22.1"
-    "@wdio/logger" "8.16.17"
-    "@wdio/types" "8.21.0"
-    "@wdio/utils" "8.22.0"
-    import-meta-resolve "^3.0.0"
+    "@types/node" "^20.1.0"
+    "@wdio/reporter" "8.24.12"
+    "@wdio/types" "8.24.12"
+    allure-js-commons "^2.5.0"
+    csv-stringify "^6.0.4"
+    strip-ansi "^7.1.0"
+
+"@wdio/appium-service@^8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/appium-service/-/appium-service-8.24.12.tgz#6c1c4a303f88ef17f97c7eb45d4039cb67c128dd"
+  integrity sha512-I99rOq0La80VwyOaACmr3lpvdF47aGG6k1nWfkDsl2Qm38ELecl8z6jNuoRjmHKb79/lzOqyBb0c8tguv7SY/A==
+  dependencies:
+    "@wdio/config" "8.24.12"
+    "@wdio/logger" "8.24.12"
+    "@wdio/types" "8.24.12"
+    "@wdio/utils" "8.24.12"
+    get-port "^7.0.0"
+    import-meta-resolve "^4.0.0"
     param-case "^3.0.4"
-    webdriverio "8.22.1"
+    webdriverio "8.24.12"
 
 "@wdio/cli@^8.22.1":
   version "8.22.1"
@@ -4521,6 +4534,32 @@
     glob "^10.2.2"
     import-meta-resolve "^3.0.0"
 
+"@wdio/config@8.24.0":
+  version "8.24.0"
+  resolved "https://registry.npmjs.org/@wdio/config/-/config-8.24.0.tgz#f0a1a6bf4f317c7556f40b84ba744d0992c32d9b"
+  integrity sha512-n92MPtRCLH763ssS6f/r7uWhnFkIg072nqZK+YnXTlTVIED9SdlMXlyjp9e/1sRmXUc7LbVPwvEVa35lsO0S8w==
+  dependencies:
+    "@wdio/logger" "8.16.17"
+    "@wdio/types" "8.24.0"
+    "@wdio/utils" "8.24.0"
+    decamelize "^6.0.0"
+    deepmerge-ts "^5.0.0"
+    glob "^10.2.2"
+    import-meta-resolve "^3.0.0"
+
+"@wdio/config@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/config/-/config-8.24.12.tgz#07d30aafcf0ef476e9930623b9c8e0f986943d00"
+  integrity sha512-3HW7qG1rIHzOIybV6oHR1CqLghsN0G3Xzs90ZciGL8dYhtcLtYCHwuWmBw4mkaB5xViU4AmZDuj7ChiG8Cr6Qw==
+  dependencies:
+    "@wdio/logger" "8.24.12"
+    "@wdio/types" "8.24.12"
+    "@wdio/utils" "8.24.12"
+    decamelize "^6.0.0"
+    deepmerge-ts "^5.0.0"
+    glob "^10.2.2"
+    import-meta-resolve "^4.0.0"
+
 "@wdio/globals@8.21.0", "@wdio/globals@^8.16.7":
   version "8.21.0"
   resolved "https://registry.npmjs.org/@wdio/globals/-/globals-8.21.0.tgz#726ab41865ec7bc8debed48b9484bd86f5bf0092"
@@ -4536,6 +4575,14 @@
   optionalDependencies:
     expect-webdriverio "^4.2.5"
     webdriverio "8.22.1"
+
+"@wdio/globals@^8.23.1":
+  version "8.24.1"
+  resolved "https://registry.npmjs.org/@wdio/globals/-/globals-8.24.1.tgz#70f792e620e5f1de185c116fc0e754994334c6f0"
+  integrity sha512-r5JmeAZd9BiVwUesj8vTRPHybyEMAN/gkscVaawCXEWAm/+7pzLARv6e8PMrAayO4MkeviGBDYCm6d4+nYFOUQ==
+  optionalDependencies:
+    expect-webdriverio "^4.6.1"
+    webdriverio "8.24.1"
 
 "@wdio/local-runner@^8.16.12":
   version "8.21.0"
@@ -4555,6 +4602,16 @@
   version "8.16.17"
   resolved "https://registry.npmjs.org/@wdio/logger/-/logger-8.16.17.tgz#c2055857ed3e3cf12cfad843140fa79264c6a632"
   integrity sha512-zeQ41z3T+b4IsrriZZipayXxLNDuGsm7TdExaviNGojPVrIsQUCSd/FvlLHM32b7ZrMyInHenu/zx1cjAZO71g==
+  dependencies:
+    chalk "^5.1.2"
+    loglevel "^1.6.0"
+    loglevel-plugin-prefix "^0.8.4"
+    strip-ansi "^7.1.0"
+
+"@wdio/logger@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/logger/-/logger-8.24.12.tgz#03cb8bb7ce7ee443e1dcd200a3b44270ae16a1f9"
+  integrity sha512-QisOiVIWKTUCf1H7S+DOtC+gruhlpimQrUXfWMTeeh672PvAJYnTpOJDWA+BtXfsikkUYFAzAaq8SeMJk8rqKg==
   dependencies:
     chalk "^5.1.2"
     loglevel "^1.6.0"
@@ -4583,10 +4640,34 @@
   resolved "https://registry.npmjs.org/@wdio/protocols/-/protocols-8.22.0.tgz#41b50c6bd4b7554a4843ac16d957fec611a68c92"
   integrity sha512-2y5lTYAAzQWvExL1FGCe6gujVpOpTxk+czT0Qx0j0iUlfdOwp9gWVLYl8ochTJHzfeM45GHvuZ/ndT52grsTtg==
 
+"@wdio/protocols@8.23.0":
+  version "8.23.0"
+  resolved "https://registry.npmjs.org/@wdio/protocols/-/protocols-8.23.0.tgz#d519273236af4b12bed3315cf75c5c71abd0f0ce"
+  integrity sha512-2XTzD+lqQP3g8BWn+Bn5BTFzjHqzZNwq7DjlYrb27Bq8nOA+1DEcj3WzQ6V6CktTnKI/LAYKA1IFAF//Azrp/Q==
+
+"@wdio/protocols@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/protocols/-/protocols-8.24.12.tgz#16c2e3dff4cfc0ed694f3f8142fb68b74609fbf5"
+  integrity sha512-QnVj3FkapmVD3h2zoZk+ZQ8gevSj9D9MiIQIy8eOnY4FAneYZ9R9GvoW+mgNcCZO8S8++S/jZHetR8n+8Q808g==
+
 "@wdio/repl@8.10.1":
   version "8.10.1"
   resolved "https://registry.npmjs.org/@wdio/repl/-/repl-8.10.1.tgz#4f1858335d510b3a73432be163ef303aa79db362"
   integrity sha512-VZ1WFHTNKjR8Ga97TtV2SZM6fvRjWbYI2i/f4pJB4PtusorKvONAMJf2LQcUBIyzbVobqr7KSrcjmSwRolI+yw==
+  dependencies:
+    "@types/node" "^20.1.0"
+
+"@wdio/repl@8.23.1":
+  version "8.23.1"
+  resolved "https://registry.npmjs.org/@wdio/repl/-/repl-8.23.1.tgz#eb00fc839ad47e7ed1a862e558cc545f0767a0d0"
+  integrity sha512-u6zG2cgBm67V5/WlQzadWqLGXs3moH8MOsgoljULQncelSBBZGZ5DyLB4p7jKcUAsKtMjgmFQmIvpQoqmyvdfg==
+  dependencies:
+    "@types/node" "^20.1.0"
+
+"@wdio/repl@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/repl/-/repl-8.24.12.tgz#b09746ae4f51f7da684312db617e598f2d064d9a"
+  integrity sha512-321F3sWafnlw93uRTSjEBVuvWCxTkWNDs7ektQS15drrroL3TMeFOynu4rDrIz0jXD9Vas0HCD2Tq/P0uxFLdw==
   dependencies:
     "@types/node" "^20.1.0"
 
@@ -4598,6 +4679,17 @@
     "@types/node" "^20.1.0"
     "@wdio/logger" "8.16.17"
     "@wdio/types" "8.21.0"
+    diff "^5.0.0"
+    object-inspect "^1.12.0"
+
+"@wdio/reporter@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/reporter/-/reporter-8.24.12.tgz#363189ba738f5a82d60517caa3b8e5e9629f5217"
+  integrity sha512-FtLzDTBXdgxXf4T9HJQ2bNpYYSKEw//jojFm9XzB4fPwzPeFY3HC+dbePucVW1SSLrVzVxqIOyHiwCLqQ/4cQw==
+  dependencies:
+    "@types/node" "^20.1.0"
+    "@wdio/logger" "8.24.12"
+    "@wdio/types" "8.24.12"
     diff "^5.0.0"
     object-inspect "^1.12.0"
 
@@ -4636,6 +4728,20 @@
   dependencies:
     "@types/node" "^20.1.0"
 
+"@wdio/types@8.24.0":
+  version "8.24.0"
+  resolved "https://registry.npmjs.org/@wdio/types/-/types-8.24.0.tgz#c3440f9bd7daf7fcca68ee2592bc4bfa5b0ea8f1"
+  integrity sha512-FXbJnQCS1b39RKqBlW9HTNEP4vukxjFc+GiwvPS+XPtY+3Vn7eOyBv3X3CiH1K7C+tzelqlio/HgP68pV5cXsQ==
+  dependencies:
+    "@types/node" "^20.1.0"
+
+"@wdio/types@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/types/-/types-8.24.12.tgz#c7a182ecc7effdd8ed7ea1967567a84da2c89100"
+  integrity sha512-SaD3OacDiW06DvSgAQ7sDBbpiI9qZRg7eoVYeBg3uSGVtUq84vTETRhhV7D6xTC00IqZu+mmN2TY5/q+7Gqy7w==
+  dependencies:
+    "@types/node" "^20.1.0"
+
 "@wdio/utils@8.21.0":
   version "8.21.0"
   resolved "https://registry.npmjs.org/@wdio/utils/-/utils-8.21.0.tgz#f79ee469927459121835024fe7f8d64f2857c66d"
@@ -4671,6 +4777,45 @@
     get-port "^7.0.0"
     got "^13.0.0"
     import-meta-resolve "^3.0.0"
+    locate-app "^2.1.0"
+    safaridriver "^0.1.0"
+    split2 "^4.2.0"
+    wait-port "^1.0.4"
+
+"@wdio/utils@8.24.0":
+  version "8.24.0"
+  resolved "https://registry.npmjs.org/@wdio/utils/-/utils-8.24.0.tgz#24b3f14ef0801f4a8303937130fbfa8379bb8757"
+  integrity sha512-m0qsWx2U5ZBTS0vzg1gTBp9mTrcLQlDrOBVR28LJ93a/e0bj+4aQ4c5U2y9gUzV+lKH0wUJSZTLnhebQwapURQ==
+  dependencies:
+    "@puppeteer/browsers" "^1.6.0"
+    "@wdio/logger" "8.16.17"
+    "@wdio/types" "8.24.0"
+    decamelize "^6.0.0"
+    deepmerge-ts "^5.1.0"
+    edgedriver "^5.3.5"
+    geckodriver "^4.2.0"
+    get-port "^7.0.0"
+    got "^13.0.0"
+    import-meta-resolve "^3.0.0"
+    locate-app "^2.1.0"
+    safaridriver "^0.1.0"
+    split2 "^4.2.0"
+    wait-port "^1.0.4"
+
+"@wdio/utils@8.24.12":
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/@wdio/utils/-/utils-8.24.12.tgz#4d4e03d62728b181f44c05584f3988659c6c7a38"
+  integrity sha512-uzwZyBVgqz0Wz1KL3aOUaQsxT8TNkzxti4NNTSMrU256qAPqc/n75rB7V73QASapCMpy70mZZTsuPgQYYj4ytQ==
+  dependencies:
+    "@puppeteer/browsers" "^1.6.0"
+    "@wdio/logger" "8.24.12"
+    "@wdio/types" "8.24.12"
+    decamelize "^6.0.0"
+    deepmerge-ts "^5.1.0"
+    edgedriver "^5.3.5"
+    geckodriver "^4.2.0"
+    get-port "^7.0.0"
+    import-meta-resolve "^4.0.0"
     locate-app "^2.1.0"
     safaridriver "^0.1.0"
     split2 "^4.2.0"
@@ -5155,6 +5300,13 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.2, ajv@^6.12.4, ajv@^6.12.5:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+allure-js-commons@^2.5.0:
+  version "2.9.2"
+  resolved "https://registry.npmjs.org/allure-js-commons/-/allure-js-commons-2.9.2.tgz#47a2e31d1e476aa565fd4c467e6e1f3540774f6a"
+  integrity sha512-Qvi+zMZQruklqcnqG/zHCnE209v1YiWGhO3H2aPW2aXC8Ockqd01a+w2lP4Qqp3SfC+WQDeAK2+pp+v+eNl8xQ==
+  dependencies:
+    properties "^1.2.1"
 
 anser@^1.4.9:
   version "1.4.10"
@@ -8080,21 +8232,6 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-concurrently@^8.2.2:
-  version "8.2.2"
-  resolved "https://registry.npmjs.org/concurrently/-/concurrently-8.2.2.tgz#353141985c198cfa5e4a3ef90082c336b5851784"
-  integrity sha512-1dP4gpXFhei8IOtlXRE/T/4H88ElHgTiUzh71YUmtjTEHMSRS2Z/fgOxHSxxusGHogsRfxNq1vyAwxSC+EVyDg==
-  dependencies:
-    chalk "^4.1.2"
-    date-fns "^2.30.0"
-    lodash "^4.17.21"
-    rxjs "^7.8.1"
-    shell-quote "^1.8.1"
-    spawn-command "0.0.2"
-    supports-color "^8.1.1"
-    tree-kill "^1.2.2"
-    yargs "^17.7.2"
-
 connect@^3.6.5:
   version "3.7.0"
   resolved "https://registry.npmjs.org/connect/-/connect-3.7.0.tgz#5d49348910caa5e07a01800b030d0c35f20484f8"
@@ -8526,6 +8663,11 @@ csstype@^3.0.2:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
+csv-stringify@^6.0.4:
+  version "6.4.4"
+  resolved "https://registry.npmjs.org/csv-stringify/-/csv-stringify-6.4.4.tgz#92ef52e21b5cc39d20e7db9b6b913367460e2659"
+  integrity sha512-NDshLupGa7gp4UG4sSNIqwYJqgSwvds0SvENntxoVoVvTzXcrHvd5gG2MWpbRpSNvk59dlmIe1IwNvSxN4IVmg==
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmjs.org/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -8556,13 +8698,6 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
-
-date-fns@^2.30.0:
-  version "2.30.0"
-  resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
 
 dayjs@^1.8.15:
   version "1.11.10"
@@ -8887,6 +9022,11 @@ devtools-protocol@^0.0.1213968:
   version "0.0.1213968"
   resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1213968.tgz#b2b4ab2ea412bdc30d7a843aedf97b5646e12e6f"
   integrity sha512-o4n/beY+3CcZwFctYapjGelKptR4AuQT5gXS1Kvgbig+ArwkxK7f8wDVuD1wsoswiJWCwV6OK+Qb7vhNzNmABQ==
+
+devtools-protocol@^0.0.1233178:
+  version "0.0.1233178"
+  resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1233178.tgz#dfc83cdc487c0cae8f059047293be9d6267a19f9"
+  integrity sha512-jmMfyaqlzddwmDaSR1AQ+5ek+f7rupZdxKuPdkRcoxrZoF70Idg/4dTgXA08TLPmwAwB54gh49Wm2l/gRM0eUg==
 
 diff-sequences@^26.6.2:
   version "26.6.2"
@@ -9888,6 +10028,19 @@ expect-webdriverio@^4.2.5:
   optionalDependencies:
     "@wdio/globals" "^8.16.7"
     webdriverio "^8.16.7"
+
+expect-webdriverio@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.npmjs.org/expect-webdriverio/-/expect-webdriverio-4.6.1.tgz#edace801d8fb573d076f491218748b06050161de"
+  integrity sha512-w6ee91kN3BoxNGVKQheAqFpRGMehdDg7kDiErEk/oM7tbd/WUT4R4v9KYOUtjiaUFHWWCRW2FtcOOjcd0+1pvQ==
+  dependencies:
+    expect "^29.7.0"
+    jest-matcher-utils "^29.7.0"
+    lodash.isequal "^4.5.0"
+  optionalDependencies:
+    "@wdio/globals" "^8.23.1"
+    "@wdio/logger" "^8.16.17"
+    webdriverio "^8.23.1"
 
 expect@^26.6.2:
   version "26.6.2"
@@ -11097,7 +11250,7 @@ gopd@^1.0.1:
   dependencies:
     get-intrinsic "^1.1.3"
 
-"got@^ 12.6.1":
+"got@^ 12.6.1", got@^12.6.1:
   version "12.6.1"
   resolved "https://registry.npmjs.org/got/-/got-12.6.1.tgz#8869560d1383353204b5a9435f782df9c091f549"
   integrity sha512-mThBblvlAF1d4O5oqyvN+ZxLAYwIJK7bpMxgYqPD9okW0C3qm5FFn7k811QrcuEBwaogR3ngOFoCfs6mRv7teQ==
@@ -11737,6 +11890,11 @@ import-meta-resolve@^3.0.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/import-meta-resolve/-/import-meta-resolve-3.1.1.tgz#75d194ae465d17c15736f414734310c87d4c45d7"
   integrity sha512-qeywsE/KC3w9Fd2ORrRDUw6nS/nLwZpXgfrOc2IILvZYnCaEMd+D56Vfg9k4G29gIeVi3XKql1RQatME8iYsiw==
+
+import-meta-resolve@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/import-meta-resolve/-/import-meta-resolve-4.0.0.tgz#0b1195915689f60ab00f830af0f15cc841e8919e"
+  integrity sha512-okYUR7ZQPH+efeuMJGlq4f8ubUgO50kByRPyt/Cy1Io4PSRsPjxME+YlVaCOx+NIToW7hCsZNFJyTPFFKepRSA==
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -16010,6 +16168,11 @@ prop-types@15.5.8:
   dependencies:
     fbjs "^0.8.9"
 
+properties@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/properties/-/properties-1.2.1.tgz#0ee97a7fc020b1a2a55b8659eda4aa8d869094bd"
+  integrity sha512-qYNxyMj1JeW54i/EWEFsM1cVwxJbtgPp8+0Wg9XjNaK6VE/c4oRi6PNu5p7w1mNXEIQIjV5Wwn8v8Gz82/QzdQ==
+
 property-expr@^2.0.5:
   version "2.0.6"
   resolved "https://registry.npmjs.org/property-expr/-/property-expr-2.0.6.tgz#f77bc00d5928a6c748414ad12882e83f24aec1e8"
@@ -17713,7 +17876,7 @@ shebang-regex@^3.0.0:
   resolved "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-shell-quote@1.8.1, shell-quote@^1.6.1, shell-quote@^1.7.3, shell-quote@^1.8.0, shell-quote@^1.8.1:
+shell-quote@1.8.1, shell-quote@^1.6.1, shell-quote@^1.7.3, shell-quote@^1.8.0:
   version "1.8.1"
   resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.8.1.tgz#6dbf4db75515ad5bac63b4f1894c3a154c766680"
   integrity sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==
@@ -17927,11 +18090,6 @@ space-separated-tokens@^1.0.0:
   version "1.1.5"
   resolved "https://registry.npmjs.org/space-separated-tokens/-/space-separated-tokens-1.1.5.tgz#85f32c3d10d9682007e917414ddc5c26d1aa6899"
   integrity sha512-q/JSVd1Lptzhf5bkYm4ob4iWPjx0KiRe3sRFBNrVqbJkFaBm5vbbowy1mymoPNLRa52+oadOhJ+K49wsSeSjTA==
-
-spawn-command@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/spawn-command/-/spawn-command-0.0.2.tgz#9544e1a43ca045f8531aac1a48cb29bdae62338e"
-  integrity sha512-zC8zGoGkmc8J9ndvml8Xksr1Amk9qBujgbF0JAIWO7kXr43w0h/0GJNM/Vustixu+YE8N/MTrQ7N31FvHUACxQ==
 
 spdx-correct@^3.0.0:
   version "3.2.0"
@@ -18380,7 +18538,7 @@ sudo-prompt@^9.0.0:
   resolved "https://registry.npmjs.org/sudo-prompt/-/sudo-prompt-9.2.1.tgz#77efb84309c9ca489527a4e749f287e6bdd52afd"
   integrity sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==
 
-supports-color@8.1.1, supports-color@^8.0.0, supports-color@^8.1.1:
+supports-color@8.1.1, supports-color@^8.0.0:
   version "8.1.1"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
   integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
@@ -18816,11 +18974,6 @@ tr46@~0.0.3:
   version "0.3.9"
   resolved "https://registry.npmjs.org/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
   integrity sha512-iawgk0hLP3SxGKDfnDJf8wTz4p2qImnyihM5Hh/sGvQ3K37dPi/w8sRhdNIxYA1TwFwc5mDhIJq+O0RsvXBKdQ==
-
-tree-kill@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
-  integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
 trim-newlines@^1.0.0:
   version "1.0.0"
@@ -19745,6 +19898,40 @@ webdriver@8.22.1:
     ky "^0.33.0"
     ws "^8.8.0"
 
+webdriver@8.24.0:
+  version "8.24.0"
+  resolved "https://registry.npmjs.org/webdriver/-/webdriver-8.24.0.tgz#ff10148f9848104434387caf3ad6834d4cad56f9"
+  integrity sha512-zI1zw4lbP2cg1NPikIaUBHQU3+xdvEEBi0Jrydhtp3VVeIEqJWwUFxG/P9LwJpiQ0PYMb/5cxoQrSRhrEXyXHQ==
+  dependencies:
+    "@types/node" "^20.1.0"
+    "@types/ws" "^8.5.3"
+    "@wdio/config" "8.24.0"
+    "@wdio/logger" "8.16.17"
+    "@wdio/protocols" "8.23.0"
+    "@wdio/types" "8.24.0"
+    "@wdio/utils" "8.24.0"
+    deepmerge-ts "^5.1.0"
+    got "^ 12.6.1"
+    ky "^0.33.0"
+    ws "^8.8.0"
+
+webdriver@8.24.12:
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/webdriver/-/webdriver-8.24.12.tgz#fd443550f2fa25498af8d6a7a1261dc3d6c4f462"
+  integrity sha512-03DQIClHoaAqTsmDkxGwo4HwHfkn9LzJ1wfNyUerzKg8DnyXeiT6ILqj6EXLfsvh5zddU2vhYGLFXSerPgkuOQ==
+  dependencies:
+    "@types/node" "^20.1.0"
+    "@types/ws" "^8.5.3"
+    "@wdio/config" "8.24.12"
+    "@wdio/logger" "8.24.12"
+    "@wdio/protocols" "8.24.12"
+    "@wdio/types" "8.24.12"
+    "@wdio/utils" "8.24.12"
+    deepmerge-ts "^5.1.0"
+    got "^12.6.1"
+    ky "^0.33.0"
+    ws "^8.8.0"
+
 webdriverio@8.21.0, webdriverio@^8.16.7:
   version "8.21.0"
   resolved "https://registry.npmjs.org/webdriverio/-/webdriverio-8.21.0.tgz#0985d812b8da4766a994874c3bd9ff6e6f7c9237"
@@ -19804,6 +19991,66 @@ webdriverio@8.22.1, webdriverio@^8.22.1:
     rgb2hex "0.2.5"
     serialize-error "^11.0.1"
     webdriver "8.22.1"
+
+webdriverio@8.24.1, webdriverio@^8.23.1:
+  version "8.24.1"
+  resolved "https://registry.npmjs.org/webdriverio/-/webdriverio-8.24.1.tgz#6febce391edf521d954b5000b84bce7280457387"
+  integrity sha512-NMu5Y0EFjx7GK4K8uDDi14q8IdHdSQiqzJoyGjuzGy8mj5c04Ta1hoLG5KPag5LzIQNOtJmqwbTFL5PLqragOg==
+  dependencies:
+    "@types/node" "^20.1.0"
+    "@wdio/config" "8.24.0"
+    "@wdio/logger" "8.16.17"
+    "@wdio/protocols" "8.23.0"
+    "@wdio/repl" "8.23.1"
+    "@wdio/types" "8.24.0"
+    "@wdio/utils" "8.24.0"
+    archiver "^6.0.0"
+    aria-query "^5.0.0"
+    css-shorthand-properties "^1.1.1"
+    css-value "^0.0.1"
+    devtools-protocol "^0.0.1213968"
+    grapheme-splitter "^1.0.2"
+    import-meta-resolve "^3.0.0"
+    is-plain-obj "^4.1.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.zip "^4.2.0"
+    minimatch "^9.0.0"
+    puppeteer-core "^20.9.0"
+    query-selector-shadow-dom "^1.0.0"
+    resq "^1.9.1"
+    rgb2hex "0.2.5"
+    serialize-error "^11.0.1"
+    webdriver "8.24.0"
+
+webdriverio@8.24.12:
+  version "8.24.12"
+  resolved "https://registry.npmjs.org/webdriverio/-/webdriverio-8.24.12.tgz#05a2107ae8a3927e1a01503a05fc2050fa4e06bd"
+  integrity sha512-Ddu0NNRMVkTzRzqvm3m0wt2eLUn+Plz2Cj+1QXDnVpddYJvk9J3elZC2hqNyscEtecQ+h2y3r36OcJqkl9jPag==
+  dependencies:
+    "@types/node" "^20.1.0"
+    "@wdio/config" "8.24.12"
+    "@wdio/logger" "8.24.12"
+    "@wdio/protocols" "8.24.12"
+    "@wdio/repl" "8.24.12"
+    "@wdio/types" "8.24.12"
+    "@wdio/utils" "8.24.12"
+    archiver "^6.0.0"
+    aria-query "^5.0.0"
+    css-shorthand-properties "^1.1.1"
+    css-value "^0.0.1"
+    devtools-protocol "^0.0.1233178"
+    grapheme-splitter "^1.0.2"
+    import-meta-resolve "^4.0.0"
+    is-plain-obj "^4.1.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.zip "^4.2.0"
+    minimatch "^9.0.0"
+    puppeteer-core "^20.9.0"
+    query-selector-shadow-dom "^1.0.0"
+    resq "^1.9.1"
+    rgb2hex "0.2.5"
+    serialize-error "^11.0.1"
+    webdriver "8.24.12"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

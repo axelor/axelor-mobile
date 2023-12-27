@@ -28,6 +28,7 @@ import {
   headerActionsProvider,
   useHeaderActions,
 } from '../../header';
+import {testProps} from '../../utils';
 
 const TIME_BEFORE_RETRY = 500;
 
@@ -67,15 +68,28 @@ const Header = ({mainScreen, title, actionID = null, shadedHeader = true}) => {
   const styles = useMemo(() => getHeaderStyles(Colors), [Colors]);
 
   return (
-    <View style={[styles.header, shadedHeader ? styles.shadedHeader : null]}>
-      <View style={styles.options}>
+    <View
+      style={[styles.header, shadedHeader ? styles.shadedHeader : null]}
+      accessible={false}>
+      <View style={styles.options} accessible={false}>
         {mainScreen ? (
-          <DrawerToggleButton tintColor={Colors.primaryColor.background} />
+          <DrawerToggleButton
+            tintColor={Colors.primaryColor.background}
+            accessible={true}
+          />
         ) : (
-          <BackIcon tintColor={Colors.primaryColor.background} />
+          <BackIcon
+            tintColor={Colors.primaryColor.background}
+            accessible={true}
+          />
         )}
-        <View>
-          <Text fontSize={20} adjustsFontSizeToFit={true} numberOfLines={1}>
+        <View accessible={false}>
+          <Text
+            fontSize={20}
+            adjustsFontSizeToFit={true}
+            numberOfLines={1}
+            accessible={true}
+            {...testProps('screenHeaderTitle')}>
             {options?.headerTitle || I18n.t(title)}
           </Text>
         </View>
