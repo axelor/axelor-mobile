@@ -144,7 +144,7 @@ const ExpenseCard = ({
           <CardIconButton
             iconName={
               statusSelect === Expense.statusSelect.Draft
-                ? 'paper-plane'
+                ? 'send-fill'
                 : 'check'
             }
             iconColor={Colors.primaryColor.foreground}

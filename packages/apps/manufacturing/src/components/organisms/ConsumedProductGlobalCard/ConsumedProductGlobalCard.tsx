@@ -100,14 +100,14 @@ const ConsumedProductGlobalCard = ({
       <View style={styles.middleContainer}>
         <CardIconButton
           style={styles.cardIconButton}
-          iconName="map-marker-alt"
+          iconName="geo-alt-fill"
           iconColor={Colors.secondaryColor.background}
           onPress={onLocationPress}
         />
         {isSubOF ? (
           <CardIconButton
             style={styles.cardIconButton}
-            iconName="sitemap"
+            iconName="diagram-3-fill"
             iconColor={Colors.secondaryColor.background}
             onPress={onSubOfPress}
           />
