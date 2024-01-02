@@ -58,7 +58,7 @@ describe('Checkbox Component', () => {
   it('renders correct icon name based on isChecked prop', () => {
     const wrapper = shallow(<Checkbox {...props} />);
 
-    expect(wrapper.find(Icon).prop('name')).toBe('square-o');
+    expect(wrapper.find(Icon).prop('name')).toBe('square');
 
     wrapper.find(Icon).simulate('press');
 
