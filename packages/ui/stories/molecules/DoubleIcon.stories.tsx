@@ -37,13 +37,11 @@ storiesOf('ui/molecules/DoubleIcon', module)
           topIconConfig={{
             name: args.configTopIcon_name,
             size: args.configTopIcon_size,
-            FontAwesome5: false,
             color: Colors[args.configTopIcon_color].background,
           }}
           bottomIconConfig={{
             name: args.configBottomIcon_name,
             size: args.configBottomIcon_size,
-            FontAwesome5: false,
             color: Colors[args.configBottomIcon_color].background,
           }}
           {...args}
@@ -70,7 +68,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
         },
         configTopIcon_name: {
           type: 'string',
-          defaultValue: 'heart',
+          defaultValue: 'heart-fill',
           control: {type: 'text'},
         },
         configTopIcon_color: {
@@ -90,7 +88,7 @@ storiesOf('ui/molecules/DoubleIcon', module)
 
         configBottomIcon_name: {
           type: 'string',
-          defaultValue: 'user',
+          defaultValue: 'person-fill',
           control: {type: 'text'},
         },
         configBottomIcon_color: {
@@ -126,13 +124,11 @@ storiesOf('ui/molecules/DoubleIcon', module)
           bottom: args.bottom,
         }}
         topIconConfig={{
-          name: 'heart',
-          FontAwesome5: false,
+          name: 'heart-fill',
           color: Colors.plannedColor.background,
         }}
         bottomIconConfig={{
-          name: 'user',
-          FontAwesome5: false,
+          name: 'person-fill',
         }}
       />
     ),

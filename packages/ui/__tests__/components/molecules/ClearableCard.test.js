@@ -40,7 +40,7 @@ describe('ClearableCard Component', () => {
     const iconComponent = wrapper.find(Icon);
 
     expect(iconComponent.exists()).toBeTruthy();
-    expect(iconComponent.prop('name')).toBe('times');
+    expect(iconComponent.prop('name')).toBe('x');
     expect(iconComponent.prop('touchable')).toBe(true);
     expect(iconComponent.prop('size')).toBeGreaterThan(0);
   });
