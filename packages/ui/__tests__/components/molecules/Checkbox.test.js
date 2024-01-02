@@ -55,7 +55,7 @@ describe('Checkbox Component', () => {
     expect(iconComponent.prop('touchable')).toBe(false);
   });
 
-  it('renders correct icon name based on isChecked prop', () => {
+  it('renders correct icon when checkbox is pressed', () => {
     const wrapper = shallow(<Checkbox {...props} />);
 
     expect(wrapper.find(Icon).prop('name')).toBe('square');
@@ -63,6 +63,18 @@ describe('Checkbox Component', () => {
     wrapper.find(Icon).simulate('press');
 
     expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
+  });
+
+  it('renders correct icon if isDefaultChecked si true', () => {
+    const wrapper = shallow(<Checkbox {...props} isDefaultChecked />);
+
+    expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
+  });
+
+  it('renders correct icon if isDefaultPartialChecked si true', () => {
+    const wrapper = shallow(<Checkbox {...props} isDefaultPartialChecked />);
+
+    expect(wrapper.find(Icon).prop('name')).toBe('dash-square-fill');
   });
 
   it('renders with correct title', () => {
