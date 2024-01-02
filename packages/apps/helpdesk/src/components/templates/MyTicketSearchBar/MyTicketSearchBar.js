@@ -19,10 +19,10 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
-import {fetchTickets} from '../../../features/ticketSlice';
+import {fetchMyTickets} from '../../../features/ticketSlice';
 
-const TicketSearchBar = ({
-  placeholderKey = 'Helpdesk_ticket',
+const MyTicketSearchBar = ({
+  placeholderKey = 'Helpdesk_Ticket',
   defaultValue = '',
   onChange = () => {},
   showDetailsPopup = true,
@@ -40,10 +40,10 @@ const TicketSearchBar = ({
   );
   const {user} = useSelector(state => state.user);
 
-  const fetchTicketSearchBarAPI = useCallback(
+  const fetchMyTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
-        fetchTickets({
+        fetchMyTickets({
           page: page,
           searchValue: searchValue,
           userId: user.id,
@@ -58,7 +58,7 @@ const TicketSearchBar = ({
       objectList={ticketList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchTicketSearchBarAPI}
+      fetchData={fetchMyTicketSearchBarAPI}
       displayValue={displayItemTicketSeq}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
@@ -72,4 +72,4 @@ const TicketSearchBar = ({
   );
 };
 
-export default TicketSearchBar;
+export default MyTicketSearchBar;

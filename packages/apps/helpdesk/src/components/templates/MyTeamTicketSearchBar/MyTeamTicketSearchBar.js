@@ -22,7 +22,7 @@ import {AutoCompleteSearch} from '@axelor/aos-mobile-ui';
 import {fetchMyTeamTickets} from '../../../features/ticketSlice';
 
 const MyTeamTicketSearchBar = ({
-  placeholderKey = 'Helpdesk_ticket',
+  placeholderKey = 'Helpdesk_Ticket',
   defaultValue = '',
   onChange = () => {},
   showDetailsPopup = true,
@@ -43,7 +43,7 @@ const MyTeamTicketSearchBar = ({
   } = useSelector(state => state.ticket);
   const {user} = useSelector(state => state.user);
 
-  const fetchTicketSearchBarAPI = useCallback(
+  const fetchMyTeamTicketSearchBarAPI = useCallback(
     ({page = 0, searchValue}) => {
       dispatch(
         fetchMyTeamTickets({
@@ -61,7 +61,7 @@ const MyTeamTicketSearchBar = ({
       objectList={myTeamTicketList}
       value={defaultValue}
       onChangeValue={onChange}
-      fetchData={fetchTicketSearchBarAPI}
+      fetchData={fetchMyTeamTicketSearchBarAPI}
       displayValue={displayItemTicketSeq}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}

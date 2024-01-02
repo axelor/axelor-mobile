@@ -26,7 +26,8 @@ export {searchProject} from './projectSlice';
 export {
   createTicket,
   fetchTicketById,
-  fetchTickets,
+  fetchMyTickets,
+  fetchMyTeamTickets,
   fetchTicketType,
   searchTicketType,
   updateTicket,

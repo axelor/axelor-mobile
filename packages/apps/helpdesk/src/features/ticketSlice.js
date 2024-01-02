@@ -32,8 +32,8 @@ import {
   createTicket as _createTicket,
 } from '../api/ticket-api';
 
-export const fetchTickets = createAsyncThunk(
-  'ticket/fetchTickets',
+export const fetchMyTickets = createAsyncThunk(
+  'ticket/fetchMyTickets',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchTickets,
@@ -181,7 +181,7 @@ const ticketSlice = createSlice({
   name: 'ticket',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, fetchTickets, {
+    generateInifiniteScrollCases(builder, fetchMyTickets, {
       loading: 'loadingTicket',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
