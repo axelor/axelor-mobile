@@ -33,7 +33,7 @@ import {
   filterChip,
 } from '@axelor/aos-mobile-core';
 import {fetchMyTickets, fetchTicketType} from '../features/ticketSlice';
-import {TicketCard, MyTicketSearchBar} from '../components';
+import {MyTicketSearchBar, TicketCard} from '../components';
 import {Ticket} from '../types';
 
 const MyTicketListScreen = ({navigation}) => {
