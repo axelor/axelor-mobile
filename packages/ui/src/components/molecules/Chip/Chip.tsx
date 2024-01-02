@@ -42,10 +42,21 @@ const Chip = ({
   style,
 }: ChipProps) => {
   const Colors = useThemeColor();
-  const chipColor = useMemo(
-    () => (selectedColor == null ? Colors.primaryColor : selectedColor),
-    [Colors.primaryColor, selectedColor],
-  );
+
+  const chipColor = useMemo(() => {
+    let _chipColor: Color =
+      selectedColor == null ? Colors.primaryColor : selectedColor;
+
+    if (!selected) {
+      _chipColor = {
+        background: _chipColor.background,
+        background_light: Colors.backgroundColor,
+        foreground: Colors.text,
+      };
+    }
+
+    return _chipColor;
+  }, [Colors, selected, selectedColor]);
 
   const styles = useMemo(
     () => getStyles(chipColor, Colors),
@@ -54,14 +65,10 @@ const Chip = ({
 
   return (
     <TouchableOpacity
-      style={[getWidth(width, marginHorizontal), style]}
+      style={[{width: width, marginHorizontal: marginHorizontal}, style]}
       onPress={onPress}
       activeOpacity={0.8}>
-      <View
-        style={[
-          styles.container,
-          selected ? styles.selected : styles.notSelected,
-        ]}>
+      <View style={styles.container}>
         <Text
           textColor={selected ? chipColor.foreground : Colors.text}
           fontSize={14}>
@@ -72,40 +79,22 @@ const Chip = ({
   );
 };
 
-const getStyles = (selectedColor: Color, Colors: ThemeColors) =>
+const getStyles = (chipColor: Color, Colors: ThemeColors) =>
   StyleSheet.create({
-    selected: {
-      backgroundColor: selectedColor.background_light,
-      borderLeftWidth: 3,
-      borderLeftColor: selectedColor.background,
-      borderRightWidth: 3,
-      borderRightColor: selectedColor.background,
-    },
-    notSelected: {
-      backgroundColor: Colors.backgroundColor,
-      borderLeftWidth: 3,
-      borderLeftColor: selectedColor.background,
-      borderRightWidth: 3,
-      borderRightColor: selectedColor.background,
-    },
     container: {
-      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      alignContent: 'center',
       paddingVertical: 5,
       marginVertical: 2,
       borderRadius: 20,
+      borderWidth: 2.5,
+      borderColor: chipColor.background,
+      backgroundColor: chipColor.background_light,
       elevation: 3,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
       shadowOffset: {width: 0, height: 0},
     },
   });
-
-const getWidth = (width, margin) => ({
-  width: width,
-  marginHorizontal: margin,
-});
 
 export default Chip;

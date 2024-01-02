@@ -16,10 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Dimensions, StyleSheet, View, ScrollView} from 'react-native';
 import {Color} from '../../../theme/themes';
 import {Chip} from '../../molecules';
+
+const CHIP_CONTAINER_MARGIN = 16;
+const CHIP_MARGIN = 3;
 
 const MODES = {
   switch: 'switch',
@@ -49,7 +52,7 @@ const ChipSelect = ({
   mode,
   isRefresh = false,
   width,
-  marginHorizontal,
+  marginHorizontal = CHIP_MARGIN,
   onChangeValue = () => {},
 }: ChipSelectProps) => {
   const [selectedChip, setSelectedChip] = useState<Item[]>(
@@ -64,6 +67,25 @@ const ChipSelect = ({
       setSelectedChip(selectionItems.filter(item => item.isActive === true));
     }
   }, [isRefresh, selectionItems]);
+
+  const _width = useMemo(() => {
+    if (width != null) {
+      return width;
+    }
+
+    const numberItems = selectionItems.length;
+
+    if (numberItems > 1 && numberItems < 5) {
+      return (
+        (Dimensions.get('window').width -
+          CHIP_CONTAINER_MARGIN * 2 -
+          CHIP_MARGIN * 2 * numberItems) *
+        (1 / numberItems)
+      );
+    }
+
+    return Dimensions.get('window').width * 0.3;
+  }, [selectionItems, width]);
 
   const updateChip = (chip: Item) => {
     let updatedChip = [];
@@ -106,7 +128,7 @@ const ChipSelect = ({
   }
 
   return (
-    <View style={[styles.chipContainer, styles.marginLeft, style]}>
+    <View style={[styles.chipContainer, style]}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {selectionItems?.map((item, index) => (
           <Chip
@@ -116,7 +138,7 @@ const ChipSelect = ({
             selectedColor={item.color}
             onPress={() => updateChip(item)}
             marginHorizontal={marginHorizontal}
-            width={width}
+            width={_width}
           />
         ))}
       </ScrollView>
@@ -129,10 +151,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: CHIP_CONTAINER_MARGIN,
     marginVertical: 2,
-  },
-  marginLeft: {
-    marginHorizontal: 16,
   },
 });
 
