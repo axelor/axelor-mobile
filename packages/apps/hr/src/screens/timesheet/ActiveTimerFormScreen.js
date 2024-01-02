@@ -21,23 +21,13 @@ import {FormView} from '@axelor/aos-mobile-core';
 
 const ActiveTimerFormScreen = ({}) => {
   const defaultValue = {
-    timerDate: new Date().toISOString().split('T')[0],
+    activeTimerDate: new Date().toISOString().split('T')[0],
   };
 
   return (
     <FormView
       defaultValue={defaultValue}
-      actions={[
-        {
-          key: 'create-timer',
-          type: 'create',
-          needValidation: true,
-          needRequiredFields: true,
-          customAction: ({objectState}) => {
-            console.log('Form data:', objectState);
-          },
-        },
-      ]}
+      actions={[]}
       formKey="hr_ActiveTimer"
     />
   );

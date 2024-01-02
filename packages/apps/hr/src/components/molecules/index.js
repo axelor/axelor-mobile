@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export {default as ActiveTimerStopwatch} from './ActiveTimerStopwatch/ActiveTimerStopwatch';
 export {default as ExpenseAddPopup} from './ExpenseAddPopup/ExpenseAddPopup';
 export {default as ExpenseDetailsValidationButton} from './ExpenseDetailsValidationButton/ExpenseDetailsValidationButton';
 export {default as ExpenseLineDetailCard} from './ExpenseLineDetailCard/ExpenseLineDetailCard';

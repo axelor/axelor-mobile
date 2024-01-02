@@ -18,6 +18,7 @@
 
 import {FormConfigs} from '@axelor/aos-mobile-core';
 import {
+  ActiveTimerStopwatch,
   BillableSwitchCard,
   CurrencySearchBar,
   DistanceIncrement,
@@ -309,11 +310,51 @@ export const hr_formsRegister: FormConfigs = {
   hr_ActiveTimer: {
     modelName: 'com.axelor.apps.hr.db.TSTimer',
     fields: {
-      timerDate: {
+      activeTimerDate: {
         titleKey: 'Hr_Date',
         type: 'date',
         widget: 'date',
         required: true,
+      },
+      project: {
+        titleKey: 'Hr_Project',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectSearchBar,
+        hideIf: ({objectState}) => objectState.manufOrder != null,
+        required: true,
+      },
+      projectTask: {
+        titleKey: 'Hr_ProjectTask',
+        type: 'object',
+        widget: 'custom',
+        customComponent: ProjectTaskSearchBar,
+        dependsOn: {
+          project: ({newValue, dispatch}) => {
+            dispatch(updateProject(newValue));
+          },
+        },
+        required: true,
+      },
+      duration: {
+        titleKey: 'Hr_Duration',
+        type: 'number',
+        widget: 'increment',
+        required: true,
+      },
+      comments: {
+        titleKey: 'Hr_Comments',
+        type: 'string',
+        widget: 'default',
+        options: {
+          multiline: true,
+          adjustHeightWithLines: true,
+        },
+      },
+      stopwatch: {
+        type: 'object',
+        widget: 'custom',
+        customComponent: ActiveTimerStopwatch,
       },
     },
   },
