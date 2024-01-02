@@ -69,7 +69,7 @@ const Alert = ({
       iconName: 'x',
       hide: false,
       showInHeader: false,
-      headerSize: 25,
+      headerSize: 20,
       width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };

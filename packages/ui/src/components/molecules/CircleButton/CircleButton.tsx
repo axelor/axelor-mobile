@@ -29,7 +29,6 @@ interface CircleButtonProps {
   color?: Color;
   isNeutralBackground?: boolean;
   iconName: string;
-  FontAwesome5?: boolean;
   style?: any;
   onPress?: () => void;
   disabled?: boolean;
@@ -42,7 +41,6 @@ const CircleButton = ({
   color,
   isNeutralBackground = false,
   iconName,
-  FontAwesome5 = true,
   style,
   onPress = () => {},
   disabled = false,
@@ -60,7 +58,6 @@ const CircleButton = ({
       isNeutralBackground={isNeutralBackground}
       iconName={iconName}
       iconSize={iconSize}
-      FontAwesome5={FontAwesome5}
       style={[styles.button, style]}
       styleIcon={styles.icon}
       onPress={onPress}

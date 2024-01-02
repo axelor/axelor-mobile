@@ -49,7 +49,6 @@ const PopupApplicationInformation = ({
           color={Colors.warningColor}
           title={I18n.t('Base_Refresh')}
           iconName="refresh"
-          FontAwesome5={false}
           onPress={onRefresh}
         />
         <Button
