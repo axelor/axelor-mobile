@@ -77,7 +77,7 @@ storiesOf('ui/molecules/Alert', module).add(
       },
       cancelButtonConfig_iconName: {
         type: 'string',
-        defaultValue: 'times',
+        defaultValue: 'x',
         control: {type: 'text'},
       },
       cancelButtonConfig_hide: {

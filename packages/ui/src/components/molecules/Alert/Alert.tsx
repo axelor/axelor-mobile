@@ -66,10 +66,10 @@ const Alert = ({
     return {
       title: translator('Base_Cancel'),
       color: Colors.errorColor,
-      iconName: 'times',
+      iconName: 'x',
       hide: false,
       showInHeader: false,
-      headerSize: 20,
+      headerSize: 25,
       width: DEFAULT_BUTTON_WIDTH,
       ...cancelButtonConfig,
     };
@@ -122,7 +122,7 @@ const Alert = ({
             {!_cancelButtonConfig?.hide &&
               _cancelButtonConfig?.showInHeader && (
                 <Icon
-                  name="times"
+                  name="x"
                   size={_cancelButtonConfig?.headerSize}
                   style={styles.headerCancelButton}
                   touchable
