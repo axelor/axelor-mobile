@@ -59,7 +59,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
           <Button
             width={BUTTON_WIDTH}
             title={I18n.t('Base_Update')}
-            iconName="angle-double-up"
+            iconName="chevron-double-up"
             onPress={handleUpdate}
           />
         )}
@@ -67,7 +67,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
           width={BUTTON_WIDTH}
           color={Colors.secondaryColor}
           title={I18n.t('Base_Refresh')}
-          iconName="refresh"
+          iconName="arrow-clockwise"
           FontAwesome5={false}
           onPress={onRefresh}
         />
@@ -75,7 +75,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
           width={BUTTON_WIDTH}
           color={Colors.errorColor}
           title={I18n.t('Base_Logout')}
-          iconName="power-off"
+          iconName="power"
           onPress={() => dispatch(logout())}
         />
       </View>

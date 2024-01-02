@@ -62,7 +62,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
       <Button
         title={I18n.t('Hr_Send')}
         onPress={sendExpenseAPI}
-        iconName="paper-plane"
+        iconName="send-fill"
       />
     );
   }
@@ -82,7 +82,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
             }}
             color={Colors.errorColor}
             width="45%"
-            iconName="times"
+            iconName="x"
           />
           <Button
             title={I18n.t('Hr_Validate')}

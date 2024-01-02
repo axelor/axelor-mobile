@@ -48,14 +48,14 @@ const PopupApplicationInformation = ({
           width={BUTTON_WIDTH}
           color={Colors.warningColor}
           title={I18n.t('Base_Refresh')}
-          iconName="refresh"
+          iconName="arrow-clockwise"
           onPress={onRefresh}
         />
         <Button
           width={BUTTON_WIDTH}
           color={Colors.errorColor}
           title={I18n.t('Base_Logout')}
-          iconName="power-off"
+          iconName="power"
           onPress={() => dispatch(logout() as any)}
         />
       </View>

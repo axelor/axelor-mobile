@@ -78,7 +78,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Start')}
-        iconName="play"
+        iconName="play-fill"
         onPress={handleStartInventory}
       />
     );
