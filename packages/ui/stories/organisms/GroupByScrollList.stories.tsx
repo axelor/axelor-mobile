@@ -144,7 +144,7 @@ storiesOf('ui/organisms/GroupByScrollList', module).add(
       },
       indicatorIcon: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'info',
         control: {type: 'text'},
       },
       indicatorIconSize: {

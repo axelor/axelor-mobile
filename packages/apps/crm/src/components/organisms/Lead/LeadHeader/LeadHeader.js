@@ -68,14 +68,14 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
           listComponent={[
             lead.isDoNotSendEmail ? (
               <InfoBubble
-                iconName="user-alt-slash"
+                iconName="envelope-slash-fill"
                 badgeColor={Colors.cautionColor}
                 indication={I18n.t('Crm_ThisLeadDoesNotAcceptEmails')}
               />
             ) : null,
             lead.isDoNotCall ? (
               <InfoBubble
-                iconName="phone-slash"
+                iconName="telephone-x-fill"
                 badgeColor={Colors.cautionColor}
                 indication={I18n.t('Crm_ThisLeadDoesNotAcceptCall')}
               />
