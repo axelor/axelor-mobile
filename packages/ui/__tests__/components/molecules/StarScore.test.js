@@ -43,29 +43,29 @@ describe('StarScore', () => {
   it('renders the correct number of active stars based on score when showHalfStar is true', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={true} />);
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star-half')).toHaveLength(1);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
+    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(1);
   });
 
   it('renders the correct number of active stars based on score with disabled showHalfStar props', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={false} />);
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
+    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
   });
 
   it('renders missing stars when showMissingStar is true', () => {
     const wrapper = shallow(<StarScore {...props} showMissingStar={true} />);
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star-o')).toHaveLength(2);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star')).toHaveLength(2);
   });
 
   it('renders missing stars when showMissingStar is false', () => {
     const wrapper = shallow(<StarScore {...props} showMissingStar={false} />);
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
+    expect(getIcons(wrapper, 'star')).toHaveLength(0);
   });
 
   it('calls onPress with the correct argument when a star is pressed', () => {
@@ -109,15 +109,15 @@ describe('StarScore', () => {
     const firstScore = 2;
     const wrapper = shallow(<StarScore {...props} score={firstScore} />);
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(2);
-    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
-    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(2);
+    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star')).toHaveLength(0);
 
     wrapper.setProps({score: 3.5});
 
-    expect(getIcons(wrapper, 'star')).toHaveLength(3);
-    expect(getIcons(wrapper, 'star-half')).toHaveLength(0);
-    expect(getIcons(wrapper, 'star-o')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
+    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
+    expect(getIcons(wrapper, 'star')).toHaveLength(0);
   });
 
   it('renders stars with custom style', () => {
