@@ -89,13 +89,13 @@ describe('Label Component', () => {
   it('should render a close icon when showClose is true', () => {
     const wrapper = shallow(<Label {...props} showClose />);
 
-    expect(wrapper.find('Icon[name="times"]').exists()).toBe(true);
+    expect(wrapper.find('Icon[name="x"]').exists()).toBe(true);
   });
 
   it('should call onClose when close icon is pressed', () => {
     const wrapper = shallow(<Label {...props} showClose />);
 
-    wrapper.find('Icon[name="times"]').simulate('press');
+    wrapper.find('Icon[name="x"]').simulate('press');
     expect(props.onClose).toHaveBeenCalled();
   });
 });
