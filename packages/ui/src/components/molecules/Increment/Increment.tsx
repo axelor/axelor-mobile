@@ -165,7 +165,7 @@ const Increment = ({
   return (
     <View style={[styles.container_increment, style]}>
       <IncrementButton
-        iconName="minus"
+        iconName="dash"
         onPress={handleMinus}
         readonly={readonly}
         disabled={minValue != null && parseFloat(valueQty) <= minValue}

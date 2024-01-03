@@ -59,7 +59,7 @@ describe('Increment Component', () => {
     const wrapper = shallow(
       <Increment {...props} onValueChange={onValueChange} />,
     );
-    wrapper.find('IncrementButton[iconName="minus"]').simulate('press');
+    wrapper.find('IncrementButton[iconName="dash"]').simulate('press');
 
     expect(onValueChange).toHaveBeenCalledWith(
       parseFloat(props.value) - props.stepSize,
@@ -144,7 +144,7 @@ describe('Increment Component', () => {
       wrapper.find('IncrementButton[iconName="plus"]').prop('readonly'),
     ).toBe(true);
     expect(
-      wrapper.find('IncrementButton[iconName="minus"]').prop('readonly'),
+      wrapper.find('IncrementButton[iconName="dash"]').prop('readonly'),
     ).toBe(true);
   });
 
@@ -174,7 +174,7 @@ describe('Increment Component', () => {
       <Increment {...props} value="1" minValue={minValue} />,
     );
 
-    wrapper.find('IncrementButton[iconName="minus"]').simulate('press');
+    wrapper.find('IncrementButton[iconName="dash"]').simulate('press');
     expect(wrapper.find('Input').prop('value')).toBe(
       minValue.toFixed(2).toString(),
     );
@@ -184,7 +184,7 @@ describe('Increment Component', () => {
     const wrapper = shallow(<Increment {...props} value="0" minValue={0} />);
 
     expect(
-      wrapper.find('IncrementButton[iconName="minus"]').prop('disabled'),
+      wrapper.find('IncrementButton[iconName="dash"]').prop('disabled'),
     ).toBe(true);
   });
 });

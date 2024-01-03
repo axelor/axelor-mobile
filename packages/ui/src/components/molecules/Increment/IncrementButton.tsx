@@ -27,7 +27,7 @@ const BIG_BUTTON_SIZE = 75;
 
 interface IncrementButtonProps {
   style?: any;
-  iconName: 'plus' | 'minus';
+  iconName: 'plus' | 'dash';
   onPress?: () => void;
   readonly?: boolean;
   disabled?: boolean;
