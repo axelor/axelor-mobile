@@ -89,15 +89,25 @@ describe('GroupByScrollList', () => {
         .find(ScrollList)
         .renderProp('renderItem')({item, index});
 
-      let prevItem = index !== 0 ? data[index - 1] : null;
+      const prevItem = index !== 0 ? data[index - 1] : null;
 
-      if (index === 0 || separatorCondition(prevItem, item)) {
-        expect(renderItemElement.find('TopSeparator').length).toBe(1);
-        expect(fetchTopIndicator).toHaveBeenCalledWith(item);
+      const isFirstItem = index === 0;
+      const isLastItem = index === data.length - 1;
 
-        if (prevItem) {
+      if (isFirstItem || isLastItem || separatorCondition(prevItem, item)) {
+        if (!isLastItem) {
+          expect(renderItemElement.find('TopSeparator').length).toBe(1);
+          expect(fetchTopIndicator).toHaveBeenCalledWith(item);
+        }
+
+        if (!isFirstItem && !isLastItem) {
           expect(renderItemElement.find('BottomSeparator').length).toBe(1);
           expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
+        }
+
+        if (isLastItem) {
+          expect(renderItemElement.find('BottomSeparator').length).toBe(1);
+          expect(fetchBottomIndicator).toHaveBeenCalledWith(item);
         }
       } else {
         expect(renderItemElement.find('TopSeparator').length).toBe(0);
