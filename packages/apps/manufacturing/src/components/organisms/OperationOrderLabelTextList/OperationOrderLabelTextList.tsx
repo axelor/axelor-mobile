@@ -50,7 +50,7 @@ const OperationOrderLabelTextList = ({
     <View style={styles.detailsContainer}>
       {showDuration && (
         <LabelText
-          iconName="stopwatch"
+          iconName="stopwatch-fill"
           size={20}
           title={I18n.t('Manufacturing_PlannedDuration') + ':'}
           value={formatDuration(operationOrder?.plannedDuration)}
@@ -66,7 +66,7 @@ const OperationOrderLabelTextList = ({
       )}
       {showMachineDuration && !!operationOrder?.plannedMachineDuration && (
         <LabelText
-          iconName="cog"
+          iconName="gear-fill"
           size={20}
           title={I18n.t('Manufacturing_PlannedMachineDuration') + ':'}
           value={formatDuration(operationOrder?.plannedMachineDuration)}

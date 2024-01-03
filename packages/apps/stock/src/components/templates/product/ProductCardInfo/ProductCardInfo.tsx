@@ -52,12 +52,7 @@ const ProductCardInfo = ({
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.code}>{code}</Text>
         {!checkNullString(trackingNumber) && (
-          <LabelText
-            iconName="qrcode"
-            size={15}
-            FontAwesome5={false}
-            title={trackingNumber}
-          />
+          <LabelText iconName="qr-code" size={15} title={trackingNumber} />
         )}
         {!checkNullString(locker) && (
           <LabelText iconName="map-marker-alt" size={15} title={locker} />

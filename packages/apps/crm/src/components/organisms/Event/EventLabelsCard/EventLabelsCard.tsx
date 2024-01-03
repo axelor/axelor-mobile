@@ -31,7 +31,7 @@ const EventLabelsCard = ({}) => {
       {!checkNullString(event.location) && (
         <LabelText
           style={styles.margin}
-          iconName="map-pin"
+          iconName="geo-fill"
           title={event.location}
         />
       )}

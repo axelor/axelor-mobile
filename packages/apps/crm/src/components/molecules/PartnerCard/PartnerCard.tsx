@@ -109,7 +109,6 @@ const PartnerCard = ({
           },
           {
             indicatorText: partnerMobilePhone,
-            fontAwesome5: false,
             size: 18,
             hideIfNull: true,
             iconName: 'mobile-phone',

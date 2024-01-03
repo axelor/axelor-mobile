@@ -34,8 +34,6 @@ interface ContactInfoCardProps {
   data: string;
   rightIconName: string;
   rightIconAction?: () => any;
-  FontAwesome5HeaderIcon?: boolean;
-  FontAwesome5RightIcon?: boolean;
   border?: boolean;
   styleBorder?: any;
 }
@@ -46,8 +44,6 @@ const ContactInfoCard = ({
   title,
   data,
   rightIconName,
-  FontAwesome5HeaderIcon = true,
-  FontAwesome5RightIcon = true,
   border = false,
   styleBorder,
   rightIconAction,
@@ -66,7 +62,6 @@ const ContactInfoCard = ({
             iconName={headerIconName}
             size={15}
             textStyle={styles.textTitle}
-            FontAwesome5={FontAwesome5HeaderIcon}
           />
           <View style={styles.containerBody}>
             <Text style={styles.textData}>{data}</Text>
@@ -75,7 +70,6 @@ const ContactInfoCard = ({
               name={rightIconName}
               touchable={true}
               onPress={rightIconAction}
-              FontAwesome5={FontAwesome5RightIcon}
             />
             <Icon
               name={'copy'}

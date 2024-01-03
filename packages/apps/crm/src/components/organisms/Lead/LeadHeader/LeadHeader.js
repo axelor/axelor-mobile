@@ -92,10 +92,13 @@ const LeadHeader = ({idLead, versionLead, colorIndex}) => {
       <View style={styles.headerInfo}>
         <Text style={styles.textTitle}>{lead.simpleFullName}</Text>
         {!checkNullString(lead.enterpriseName) && (
-          <LabelText iconName="building" title={lead.enterpriseName} />
+          <LabelText iconName="building-fill" title={lead.enterpriseName} />
         )}
         {!checkNullString(lead.jobTitleFunction?.name) && (
-          <LabelText iconName="suitcase" title={lead.jobTitleFunction?.name} />
+          <LabelText
+            iconName="suitcase-lg-fill"
+            title={lead.jobTitleFunction?.name}
+          />
         )}
       </View>
       <View style={styles.headerInfo}>

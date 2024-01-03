@@ -50,7 +50,7 @@ const UsernameInput = ({
   if (readOnly) {
     return (
       <LabelText
-        iconName="user"
+        iconName="person-fill"
         title={value}
         style={styles.labText}
         size={20}

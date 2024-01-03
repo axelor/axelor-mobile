@@ -55,7 +55,7 @@ const UrlInput = ({
   if (readOnly) {
     return (
       <LabelText
-        iconName="link"
+        iconName="link-45deg"
         title={value}
         style={styles.labText}
         size={20}

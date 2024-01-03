@@ -45,7 +45,7 @@ const ManufacturingOrderHeader = ({
           <Text style={styles.text_important}>{reference}</Text>
         )}
         {parentMO != null && (
-          <LabelText iconName="sitemap" title={parentMO.manufOrderSeq} />
+          <LabelText iconName="diagram-3-fill" title={parentMO.manufOrderSeq} />
         )}
       </View>
       <View style={styles.badgeContainer}>

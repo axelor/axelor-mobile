@@ -51,7 +51,6 @@ interface TextElement {
   style?: any;
   displayText?: string;
   indicatorText?: string;
-  fontAwesome5?: boolean;
   size?: number;
   iconName?: string;
   color?: string;
@@ -198,7 +197,6 @@ const ObjectCard = ({
         style={[styles.text, item.style]}
         textStyle={item.style}
         iconName={item.iconName}
-        FontAwesome5={item.fontAwesome5}
         size={item.size}
         color={item.color}
         title={item.indicatorText}

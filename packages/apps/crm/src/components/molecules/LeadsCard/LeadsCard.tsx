@@ -97,7 +97,6 @@ const LeadsCard = ({
             iconName: isDoNotCall ? 'phone-slash' : 'mobile-phone',
             color: isDoNotCall ? 'red' : null,
             hideIfNull: true,
-            fontAwesome5: isDoNotCall,
             style: isDoNotCall ? styles.txtRed : null,
             size: isDoNotCall ? null : 18,
           },
