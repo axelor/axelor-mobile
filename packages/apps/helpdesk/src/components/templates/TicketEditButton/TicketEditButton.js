@@ -26,7 +26,7 @@ const TicketEditButton = ({idTicket}) => {
   return (
     <CircleButton
       style={styles.floatingButton}
-      iconName="pen"
+      iconName="pen-fill"
       onPress={() =>
         navigation.navigate('TicketFormScreen', {
           idTicket: idTicket,

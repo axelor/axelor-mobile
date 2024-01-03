@@ -30,7 +30,7 @@ describe('DoubleIcon Component', () => {
       name: 'plus',
     },
     bottomIconConfig: {
-      name: 'user',
+      name: 'person-fill',
     },
   };
 
@@ -48,7 +48,7 @@ describe('DoubleIcon Component', () => {
       FontAwesome5: true,
     };
     const bottomIconConfig = {
-      name: 'user',
+      name: 'person-fill',
       color: Colors.secondaryColor.background,
       size: 15,
       FontAwesome5: false,

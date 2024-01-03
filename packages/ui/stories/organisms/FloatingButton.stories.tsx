@@ -56,7 +56,7 @@ storiesOf('ui/organisms/FloatingButton', module).add(
     argTypes: {
       iconName: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'pen-fill',
         control: {type: 'text'},
       },
       size: {

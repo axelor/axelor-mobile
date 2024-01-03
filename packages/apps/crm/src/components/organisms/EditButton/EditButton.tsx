@@ -24,7 +24,7 @@ const EditButton = ({onPress}) => {
   return (
     <CircleButton
       style={styles.floatingButton}
-      iconName="pen"
+      iconName="pen-fill"
       onPress={onPress}
     />
   );

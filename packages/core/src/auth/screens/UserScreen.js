@@ -143,7 +143,7 @@ const UserScreen = ({children}) => {
               null,
               <Icon
                 style={styles.logOutIcon}
-                name="power-off"
+                name="power"
                 color={Colors.primaryColor.background}
                 size={Dimensions.get('window').width * 0.07}
                 touchable={true}

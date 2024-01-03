@@ -164,7 +164,7 @@ const FloatingButton = ({
         <View style={styles.actionsContainer}>{actionComponents}</View>
       )}
       <CircleButton
-        iconName={isOpen ? 'times' : iconName}
+        iconName={isOpen ? 'x' : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
         style={styles.floatingButton}
