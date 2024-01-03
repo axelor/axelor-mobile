@@ -72,7 +72,7 @@ const InputBarCodeCard = ({
         onSelection={enableScanner}
         rightIconsList={[
           <Icon
-            name="qrcode"
+            name="qr-code"
             size={20}
             color={
               scannerEnabled && scanKey === scanKeySearch

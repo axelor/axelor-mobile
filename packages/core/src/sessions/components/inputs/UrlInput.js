@@ -76,7 +76,7 @@ const UrlInput = ({
       leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
-          name="qrcode"
+          name="qr-code"
           size={20}
           color={
             scanIconColor == null

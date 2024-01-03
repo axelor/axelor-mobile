@@ -72,7 +72,7 @@ const UsernameInput = ({
         showScanIcon
           ? [
               <Icon
-                name="qrcode"
+                name="qr-code"
                 size={20}
                 color={
                   scanIconColor == null

@@ -108,7 +108,7 @@ const SearchBar = ({
         rightIconsList={[
           <Icon
             style={styles.action}
-            name="times"
+            name="x"
             color={Colors.secondaryColor_dark.background}
             size={20}
             touchable={true}
@@ -129,7 +129,7 @@ const SearchBar = ({
           />,
           <Icon
             style={styles.action}
-            name="qrcode"
+            name="qr-code-scan"
             FontAwesome5={false}
             color={scanIconColor}
             size={20}
