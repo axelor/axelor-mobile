@@ -49,8 +49,7 @@ describe('Chip Component', () => {
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
       backgroundColor: Colors.primaryColor.background_light,
-      borderLeftColor: Colors.primaryColor.background,
-      borderRightColor: Colors.primaryColor.background,
+      borderColor: Colors.primaryColor.background,
     });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(
@@ -63,8 +62,7 @@ describe('Chip Component', () => {
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
       backgroundColor: props.selectedColor.background_light,
-      borderLeftColor: props.selectedColor.background,
-      borderRightColor: props.selectedColor.background,
+      borderColor: props.selectedColor.background,
     });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(
@@ -79,8 +77,7 @@ describe('Chip Component', () => {
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
       backgroundColor: Colors.backgroundColor,
-      borderLeftColor: Colors.primaryColor.background,
-      borderRightColor: Colors.primaryColor.background,
+      borderColor: Colors.primaryColor.background,
     });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(Colors.text);
@@ -91,8 +88,7 @@ describe('Chip Component', () => {
 
     expect(getGlobalStyles(wrapper.find(View))).toMatchObject({
       backgroundColor: Colors.backgroundColor,
-      borderLeftColor: props.selectedColor.background,
-      borderRightColor: props.selectedColor.background,
+      borderColor: props.selectedColor.background,
     });
 
     expect(wrapper.find(Text).prop('textColor')).toEqual(Colors.text);
