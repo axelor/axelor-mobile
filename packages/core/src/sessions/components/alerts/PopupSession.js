@@ -91,7 +91,7 @@ const PopupSession = ({
           onValidation={onPressLogin}
         />
         <Icon
-          name="trash-alt"
+          name="trash-fill"
           size={20}
           color={Colors.errorColor.background}
           touchable={true}

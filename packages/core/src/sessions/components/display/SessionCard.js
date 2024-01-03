@@ -26,8 +26,7 @@ import {
 } from 'react-native';
 import {GestureHandlerRootView, RectButton} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useThemeColor, Card, Text} from '@axelor/aos-mobile-ui';
+import {useThemeColor, Card, Text, Icon} from '@axelor/aos-mobile-ui';
 import LogoImage from './LogoImage';
 import {sessionStorage} from '../..';
 
@@ -100,10 +99,8 @@ const SessionCard = ({
             ]}>
             <Icon
               name={iconName}
-              style={[
-                styles.icon,
-                {color: Colors.secondaryColor_dark.background},
-              ]}
+              color={Colors.secondaryColor_dark.background}
+              size={18}
             />
           </View>
         </RectButton>
@@ -230,9 +227,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 2,
     marginHorizontal: 4,
-  },
-  icon: {
-    fontSize: 18,
   },
 });
 
