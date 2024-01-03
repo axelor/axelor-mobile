@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   useTranslator,
   useDispatch,
@@ -41,6 +42,11 @@ const StockCorrectionCreationButton = ({
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
+
+  const isStockCorrectionValidationEnabled = useMemo(
+    () => mobileSettings?.isStockCorrectionValidationEnabled,
+    [mobileSettings?.isStockCorrectionValidationEnabled],
+  );
 
   const handleAPI = useCallback(
     status => {
@@ -89,17 +95,31 @@ const StockCorrectionCreationButton = ({
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <Button
         title={I18n.t('Base_Save')}
-        color={Colors.secondaryColor}
+        iconName="save"
+        color={Colors.infoColor}
+        width={isStockCorrectionValidationEnabled ? '45%' : '90%'}
         onPress={handleSave}
       />
-      {mobileSettings?.isStockCorrectionValidationEnabled !== false && (
-        <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
+      {isStockCorrectionValidationEnabled && (
+        <Button
+          title={I18n.t('Base_Validate')}
+          iconName="check"
+          width="45%"
+          onPress={handleValidate}
+        />
       )}
-    </>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+});
 
 export default StockCorrectionCreationButton;

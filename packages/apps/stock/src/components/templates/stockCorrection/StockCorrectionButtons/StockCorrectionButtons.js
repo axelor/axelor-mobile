@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   useTranslator,
   useDispatch,
@@ -41,6 +42,13 @@ const StockCorrectionButtons = ({
   const dispatch = useDispatch();
 
   const {mobileSettings} = useSelector(state => state.config);
+
+  const isValidateButtonVisible = useMemo(
+    () =>
+      mobileSettings?.isStockCorrectionValidationEnabled &&
+      status !== StockCorrection.status.Validated,
+    [status, mobileSettings?.isStockCorrectionValidationEnabled],
+  );
 
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
@@ -83,20 +91,33 @@ const StockCorrectionButtons = ({
   }
 
   return (
-    <>
-      {saveStatus ? null : (
+    <View style={styles.container}>
+      {saveStatus && (
         <Button
           title={I18n.t('Base_Save')}
-          color={Colors.secondaryColor}
+          iconName="save"
+          color={Colors.infoColor}
+          width={isValidateButtonVisible ? '45%' : '90%'}
           onPress={handleSave}
         />
       )}
-      {status === StockCorrection.status.Validated ||
-      mobileSettings?.isStockCorrectionValidationEnabled === false ? null : (
-        <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
+      {isValidateButtonVisible && (
+        <Button
+          title={I18n.t('Base_Validate')}
+          iconName="check"
+          width={saveStatus ? '45%' : '90%'}
+          onPress={handleValidate}
+        />
       )}
-    </>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+});
 
 export default StockCorrectionButtons;
