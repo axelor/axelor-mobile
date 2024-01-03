@@ -41,7 +41,7 @@ export function getItemsFromList(
 
     for (let i = 0; i < list.length; i++) {
       query.forEach(item => {
-        if (list[i][objectParam] === item) {
+        if (list[i][objectParam] === item[objectParam]) {
           newItemsList.push(list[i]);
         }
       });
