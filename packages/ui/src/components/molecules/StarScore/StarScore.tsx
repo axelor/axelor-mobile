@@ -57,6 +57,8 @@ const StarScore = ({
     [Colors, color],
   );
 
+  const styles = useMemo(() => getStyles(showMissingStar), [showMissingStar]);
+
   const roundNbStar = useCallback(
     value => {
       return showHalfStar ? roundHalf(value) : roundInteger(value);
@@ -83,7 +85,7 @@ const StarScore = ({
           <Icon
             key={index}
             FontAwesome5={false}
-            name="star"
+            name="star-fill"
             color={starColor}
             size={size}
             touchable={editMode}
@@ -97,9 +99,10 @@ const StarScore = ({
           <Icon
             key={fullStarsNb + 1}
             FontAwesome5={false}
-            name={showMissingStar ? 'star-half-empty' : 'star-half'}
+            name={showMissingStar ? 'star-half' : 'start-half-fontAwesome'}
             color={starColor}
-            size={size}
+            size={!showMissingStar ? size + 1 : size}
+            style={styles.half}
             touchable={editMode}
             onPress={() => onPress && onPressStar(fullStarsNb + 1)}
           />,
@@ -113,7 +116,7 @@ const StarScore = ({
               key={index + 1}
               onPress={() => onPress && onPressStar(index + 1)}
               FontAwesome5={false}
-              name="star-o"
+              name="star"
               color={starColor}
               size={size}
               touchable={editMode}
@@ -127,11 +130,12 @@ const StarScore = ({
     [
       roundNbStar,
       showMissingStar,
-      size,
       starColor,
-      onPress,
-      onPressStar,
+      size,
       editMode,
+      onPressStar,
+      styles,
+      onPress,
     ],
   );
 
@@ -147,10 +151,14 @@ const StarScore = ({
   );
 };
 
-const styles = StyleSheet.create({
-  leadScoring: {
-    flexDirection: 'row',
-  },
-});
+const getStyles = showMissingStar =>
+  StyleSheet.create({
+    leadScoring: {
+      flexDirection: 'row',
+    },
+    half: {
+      top: !showMissingStar ? 2 : 0,
+    },
+  });
 
 export default StarScore;
