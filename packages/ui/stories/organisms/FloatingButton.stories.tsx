@@ -39,7 +39,7 @@ const actions = [
   {
     key: 3,
     title: 'Delete',
-    iconName: 'trash',
+    iconName: 'trash-fill',
     disabled: true,
     onPress: action('Delete button pressed'),
   },

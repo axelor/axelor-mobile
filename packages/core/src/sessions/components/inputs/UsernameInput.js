@@ -67,7 +67,9 @@ const UsernameInput = ({
       required={true}
       onSelection={showScanIcon ? onSelection : () => {}}
       placeholder={I18n.t('Base_Connection_Username')}
-      leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
+      leftIconsList={[
+        <Icon name="person-fill" size={17} style={styles.icon} />,
+      ]}
       rightIconsList={
         showScanIcon
           ? [

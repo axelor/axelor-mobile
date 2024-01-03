@@ -121,13 +121,13 @@ const SessionCard = ({
       <View style={styles.actionsContainer}>
         {renderActionButton(
           trans,
-          'pencil-alt',
+          'pencil-fill',
           Colors.infoColor.background,
           handleEdition,
         )}
         {renderActionButton(
           trans,
-          'trash-alt',
+          'trash-fill',
           Colors.errorColor.background,
           animateRemoval,
         )}
