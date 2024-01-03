@@ -58,7 +58,7 @@ const MessageBox = ({
         disabled={disabled}
         onPress={onSend}
         activeOpacity={0.9}>
-        <Icon name="paper-plane" size={24} />
+        <Icon name="send-fill" size={24} />
       </TouchableOpacity>
     </View>
   );
