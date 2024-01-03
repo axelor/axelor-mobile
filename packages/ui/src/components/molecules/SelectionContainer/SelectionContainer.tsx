@@ -63,7 +63,7 @@ const SelectionItem = ({
         <Icon
           style={itemStyles.icon}
           FontAwesome5={false}
-          name={isSelectedItem ? 'check-square' : 'square-o'}
+          name={isSelectedItem ? 'check-square-fill' : 'square'}
           color={
             readonly
               ? Colors.secondaryColor.background_light
