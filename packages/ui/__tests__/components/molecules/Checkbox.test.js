@@ -62,7 +62,7 @@ describe('Checkbox Component', () => {
 
     wrapper.find(Icon).simulate('press');
 
-    expect(wrapper.find(Icon).prop('name')).toBe('check-square');
+    expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
   });
 
   it('renders with correct title', () => {
