@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   checkbox: {
-    marginRight: 10,
+    marginRight: 5,
   },
   animatedCard: {
     position: 'absolute',
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     flex: 6,
-    margin: 2,
   },
   iconContainer: {
     flexDirection: 'column',
