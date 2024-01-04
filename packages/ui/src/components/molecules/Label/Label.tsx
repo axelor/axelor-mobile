@@ -136,7 +136,7 @@ const getStyles = color =>
       width: '100%',
       borderColor: color?.background_light,
       borderWidth: 1,
-      borderRadius: 13,
+      borderRadius: 7,
       backgroundColor: `rgba(${hexToRgb(color?.background_light)}, 0.4)`,
       flexDirection: 'row',
       justifyContent: 'flex-start',
