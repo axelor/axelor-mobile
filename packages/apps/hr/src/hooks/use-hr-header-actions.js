@@ -30,6 +30,7 @@ import {fetchExpenseById} from '../features/expenseSlice';
 export const useHrHeaders = () => {
   useExpenseDetailsAction();
   useTimerListAction();
+  useActiveTimerAction();
 };
 
 const useExpenseDetailsAction = () => {
@@ -77,6 +78,28 @@ const useTimerListAction = () => {
           title: I18n.t('Hr_NewTimer'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('ActiveTimerFormScreen'),
+          showInHeader: true,
+        },
+      ],
+    });
+  }, [Colors, I18n, navigation]);
+};
+
+const useActiveTimerAction = () => {
+  const Colors = useThemeColor();
+  const I18n = useTranslator();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    headerActionsProvider.registerModel('hr_active_timer', {
+      actions: [
+        {
+          key: 'newTimer',
+          order: 10,
+          iconName: 'plus',
+          title: I18n.t('Hr_NewTimer'),
+          iconColor: Colors.primaryColor.background,
+          onPress: () => navigation.navigate('NewTimerFormScreen'),
           showInHeader: true,
         },
       ],

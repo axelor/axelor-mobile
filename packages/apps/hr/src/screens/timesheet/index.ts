@@ -43,6 +43,11 @@ export default {
   ActiveTimerFormScreen: {
     title: 'Hr_ActiveTimer',
     component: ActiveTimerFormScreen,
+    actionID: 'hr_active_timer',
+  },
+  NewTimerFormScreen: {
+    title: 'Hr_NewTimer',
+    component: ActiveTimerFormScreen,
   },
 };
 
