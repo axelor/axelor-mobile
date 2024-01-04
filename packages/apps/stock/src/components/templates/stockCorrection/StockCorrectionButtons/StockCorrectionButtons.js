@@ -26,12 +26,18 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
-import {updateCorrection} from '../../../../features/stockCorrectionSlice';
+import {
+  createCorrection,
+  updateCorrection,
+} from '../../../../features/stockCorrectionSlice';
 
 const StockCorrectionButtons = ({
-  saveStatus,
+  saveStatus = false,
   reason,
   stockCorrection,
+  product,
+  stockLocation,
+  trackingNumber,
   realQty,
   status,
   comments,
@@ -53,26 +59,43 @@ const StockCorrectionButtons = ({
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
       dispatch(
-        updateCorrection({
-          version: stockCorrection.version,
-          stockCorrectionId: stockCorrection.id,
-          realQty: saveStatus ? null : realQty,
-          reasonId: saveStatus ? null : reason?.id,
-          status: _status,
-          comments: comments,
-        }),
+        stockCorrection
+          ? updateCorrection({
+              version: stockCorrection.version,
+              stockCorrectionId: stockCorrection.id,
+              realQty: saveStatus ? null : realQty,
+              reasonId: saveStatus ? null : reason?.id,
+              status: _status,
+              comments: comments,
+            })
+          : createCorrection({
+              productId: product.id,
+              stockLocationId: stockLocation.id,
+              reasonId: reason.id,
+              trackingNumberId:
+                product?.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.id,
+              status: _status,
+              realQty: realQty,
+              comments: comments,
+            }),
       );
 
       navigation.pop();
     },
     [
+      comments,
       dispatch,
       navigation,
+      product,
       realQty,
       reason,
       saveStatus,
       stockCorrection,
-      comments,
+      stockLocation,
+      trackingNumber,
     ],
   );
 
@@ -92,7 +115,7 @@ const StockCorrectionButtons = ({
 
   return (
     <View style={styles.container}>
-      {saveStatus && (
+      {!saveStatus && (
         <Button
           title={I18n.t('Base_Save')}
           iconName="save"
@@ -105,7 +128,7 @@ const StockCorrectionButtons = ({
         <Button
           title={I18n.t('Base_Validate')}
           iconName="check"
-          width={saveStatus ? '45%' : '90%'}
+          width={saveStatus ? '90%' : '45%'}
           onPress={handleValidate}
         />
       )}

@@ -22,7 +22,7 @@ import {Screen, KeyboardAvoidingScrollView} from '@axelor/aos-mobile-ui';
 import {useDispatch, useSelector} from '@axelor/aos-mobile-core';
 import {
   ProductTrackingNumberSearchBar,
-  StockCorrectionCreationButton,
+  StockCorrectionButtons,
   StockCorrectionHtmlInput,
   StockCorrectionProductCardInfo,
   StockCorrectionQuantityCard,
@@ -158,7 +158,7 @@ const StockCorrectionCreationScreen = ({route}) => {
       removeSpaceOnTop={true}
       fixedItems={
         currentStep === CREATION_STEP.validation && (
-          <StockCorrectionCreationButton
+          <StockCorrectionButtons
             reason={reason}
             product={product}
             trackingNumber={trackingNumber}
