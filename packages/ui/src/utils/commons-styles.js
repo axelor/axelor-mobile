@@ -23,7 +23,7 @@ export const getCommonStyles = (Colors, _required = false) =>
   StyleSheet.create({
     filter: {
       backgroundColor: Colors.backgroundColor,
-      borderRadius: 13,
+      borderRadius: 7,
       elevation: 2,
       shadowOpacity: 0.5,
       shadowColor: Colors.secondaryColor.background,
@@ -51,7 +51,7 @@ export const getCommonStyles = (Colors, _required = false) =>
       paddingHorizontal: 5,
       paddingVertical: 5,
       marginVertical: 5,
-      borderRadius: 13,
+      borderRadius: 7,
       borderWidth: 2,
       height: 50,
       minHeight: 40,

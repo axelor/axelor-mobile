@@ -119,7 +119,7 @@ const getStyles = (Colors: ThemeColors) =>
     container: {
       borderColor: Colors.secondaryColor.background,
       borderWidth: 1,
-      borderRadius: 13,
+      borderRadius: 7,
       backgroundColor: Colors.backgroundColor,
       flexDirection: 'row',
       justifyContent: 'space-between',
