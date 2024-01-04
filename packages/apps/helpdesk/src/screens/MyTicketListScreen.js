@@ -32,8 +32,8 @@ import {
   useTranslator,
   filterChip,
 } from '@axelor/aos-mobile-core';
-import {fetchTickets, fetchTicketType} from '../features/ticketSlice';
-import {TicketCard, TicketSearchBar} from '../components';
+import {fetchMyTickets, fetchTicketType} from '../features/ticketSlice';
+import {MyTicketSearchBar, TicketCard} from '../components';
 import {Ticket} from '../types';
 
 const MyTicketListScreen = ({navigation}) => {
@@ -55,9 +55,9 @@ const MyTicketListScreen = ({navigation}) => {
     dispatch(fetchTicketType());
   }, [dispatch]);
 
-  const fetchTicketsAPI = useCallback(
+  const fetchMyTicketsAPI = useCallback(
     (page = 0) => {
-      dispatch(fetchTickets({userId: userId, page: page}));
+      dispatch(fetchMyTickets({userId: userId, page: page}));
     },
     [dispatch, userId],
   );
@@ -129,13 +129,11 @@ const MyTicketListScreen = ({navigation}) => {
       <HeaderContainer
         expandableFilter={true}
         fixedItems={
-          <View style={styles.headerContainer}>
-            <TicketSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              placeholderKey={I18n.t('Helpdesk_Ticket')}
-            />
-          </View>
+          <MyTicketSearchBar
+            showDetailsPopup={false}
+            oneFilter={true}
+            placeholderKey={I18n.t('Helpdesk_Ticket')}
+          />
         }
         chipComponent={
           <ChipSelect
@@ -182,7 +180,7 @@ const MyTicketListScreen = ({navigation}) => {
             }
           />
         )}
-        fetchData={fetchTicketsAPI}
+        fetchData={fetchMyTicketsAPI}
         moreLoading={moreLoading}
         isListEnd={isListEnd}
         translator={I18n.t}
