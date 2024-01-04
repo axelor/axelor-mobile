@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useTranslator, Stopwatch, StopwatchType} from '@axelor/aos-mobile-core';
 import {StyleSheet} from 'react-native';
 
@@ -34,8 +34,8 @@ const ActiveTimerStopwatch = ({
 }: ActiveTimerStopwatchProps) => {
   const I18n = useTranslator();
 
-  const [time, setTime] = useState(DEFAULT_TIME);
-  const [timerStatus, setTimerStatus] = useState(DEFAULT_STATUS);
+  // const [time, setTime] = useState(DEFAULT_TIME);
+  // const [timerStatus, setTimerStatus] = useState(DEFAULT_STATUS);
 
   useEffect(() => {
     console.log(objectState);
@@ -44,8 +44,8 @@ const ActiveTimerStopwatch = ({
   return (
     <Stopwatch
       style={[styles.container, style]}
-      startTime={time}
-      status={timerStatus}
+      startTime={DEFAULT_TIME}
+      status={DEFAULT_STATUS}
       timerFormat={I18n.t('Stopwatch_TimerFormat')}
       onPlay={() => console.log('Play button pressed.')}
       onPause={() => console.log('Pause button pressed.')}
