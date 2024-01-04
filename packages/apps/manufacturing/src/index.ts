@@ -33,7 +33,7 @@ export const ManufacturingModule: Module = {
   name: 'app-manufacturing',
   title: 'Manufacturing_Manufacturing',
   subtitle: 'Manufacturing_Manufacturing',
-  icon: 'cogs',
+  icon: 'gear-fill',
   compatibilityAOS: {
     moduleName: 'axelor-production',
     downToVersion: '6.4.0',
@@ -51,7 +51,7 @@ export const ManufacturingModule: Module = {
     },
     manufacturing_menu_operation_order_planning: {
       title: 'Manufacturing_PlannedOperationOrder',
-      icon: 'calendar-alt',
+      icon: 'calendar-fill',
       screen: 'OperationOrderPlanningScreen',
     },
   },
