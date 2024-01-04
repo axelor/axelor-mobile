@@ -32,13 +32,26 @@ import {
   createTicket as _createTicket,
 } from '../api/ticket-api';
 
-export const fetchTickets = createAsyncThunk(
-  'ticket/fetchTickets',
+export const fetchMyTickets = createAsyncThunk(
+  'ticket/fetchMyTickets',
   async function (data, {getState}) {
     return handlerApiCall({
       fetchFunction: searchTickets,
       data,
       action: 'Helpdesk_SliceAction_FetchMyTicket',
+      getState,
+      responseOptions: {isArrayResponse: true},
+    });
+  },
+);
+
+export const fetchMyTeamTickets = createAsyncThunk(
+  'ticket/fetchMyTeamTickets',
+  async function (data, {getState}) {
+    return handlerApiCall({
+      fetchFunction: searchTickets,
+      data,
+      action: 'Helpdesk_SliceAction_FetchMyTeamTicket',
       getState,
       responseOptions: {isArrayResponse: true},
     });
@@ -157,17 +170,28 @@ const initialState = {
   moreLoadingTicketType: false,
   isListEndTicketType: false,
   ticketTypeList: [],
+
+  loadingMyTeamTicket: true,
+  moreMoadingMyTeamTicket: false,
+  isListEndMyTeamTicket: false,
+  myTeamTicketList: [],
 };
 
 const ticketSlice = createSlice({
   name: 'ticket',
   initialState,
   extraReducers: builder => {
-    generateInifiniteScrollCases(builder, fetchTickets, {
+    generateInifiniteScrollCases(builder, fetchMyTickets, {
       loading: 'loadingTicket',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
+    });
+    generateInifiniteScrollCases(builder, fetchMyTeamTickets, {
+      loading: 'loadingMyTeamTicket',
+      moreLoading: 'moreMoadingMyTeamTicket',
+      isListEnd: 'isListEndMyTeamTicket',
+      list: 'myTeamTicketList',
     });
     generateInifiniteScrollCases(builder, searchTicketType, {
       loading: 'loadingTicketType',
