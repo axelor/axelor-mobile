@@ -163,7 +163,6 @@ const MailMessageView = ({model, modelId}) => {
           iconColor: subscribe
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background,
-          FontAwesome5: false,
           title: I18n.t(
             subscribe
               ? 'Base_MailMessages_Unsubscribe'

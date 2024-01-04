@@ -62,7 +62,6 @@ const SelectionItem = ({
       {isPicker && (
         <Icon
           style={itemStyles.icon}
-          FontAwesome5={false}
           name={isSelectedItem ? 'check-square-fill' : 'square'}
           color={
             readonly

@@ -67,8 +67,7 @@ const PopupMinimalRequiredVersion = ({versionCheckConfig, onRefresh}) => {
           width={BUTTON_WIDTH}
           color={Colors.secondaryColor}
           title={I18n.t('Base_Refresh')}
-          iconName="arrow-clockwise"
-          FontAwesome5={false}
+          iconName="arrow-repeat"
           onPress={onRefresh}
         />
         <Button

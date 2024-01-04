@@ -48,7 +48,7 @@ const PopupApplicationInformation = ({
           width={BUTTON_WIDTH}
           color={Colors.warningColor}
           title={I18n.t('Base_Refresh')}
-          iconName="arrow-clockwise"
+          iconName="arrow-repeat"
           onPress={onRefresh}
         />
         <Button

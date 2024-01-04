@@ -288,7 +288,7 @@ const UploadFileInput = ({
         <View style={styles.buttons}>
           {canDeleteFile && selectedFile != null && !readonly && (
             <Icon
-              name="times"
+              name="x"
               size={BUTTON_SIZE}
               touchable={true}
               onPress={handleFileDelete}
@@ -297,7 +297,7 @@ const UploadFileInput = ({
           )}
           {isMetaFile(selectedFile) && (
             <Icon
-              name="expand-alt"
+              name="arrows-angle-expand"
               size={BUTTON_SIZE}
               touchable={true}
               onPress={handleFileView}
@@ -306,7 +306,7 @@ const UploadFileInput = ({
           )}
           {selectedFile == null && !readonly && _enablePicture && (
             <Icon
-              name="camera"
+              name="camera-fill"
               size={BUTTON_SIZE}
               touchable={true}
               onPress={handleCamera}
@@ -316,7 +316,6 @@ const UploadFileInput = ({
           {selectedFile == null && !readonly && (
             <Icon
               name="upload"
-              FontAwesome5={false}
               size={BUTTON_SIZE}
               touchable={true}
               onPress={handleDocumentPick}

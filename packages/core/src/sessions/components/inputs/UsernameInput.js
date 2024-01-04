@@ -84,7 +84,6 @@ const UsernameInput = ({
                 touchable={true}
                 style={styles.icon}
                 onPress={onScanPress}
-                FontAwesome5={false}
               />,
             ]
           : []

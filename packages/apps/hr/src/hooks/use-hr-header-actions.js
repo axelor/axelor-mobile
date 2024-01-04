@@ -43,9 +43,8 @@ const useExpenseDetailsAction = () => {
         {
           key: 'refreshExpenseDetails',
           order: 10,
-          iconName: 'arrow-clockwise',
+          iconName: 'arrow-repeat',
           title: I18n.t('Hr_RefreshExpenseDetails'),
-          FontAwesome5: false,
           iconColor: Colors.primaryColor.background,
           onPress: () => {
             dispatch(fetchExpenseById({ExpenseId: expense?.id}));

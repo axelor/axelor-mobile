@@ -84,7 +84,6 @@ const StarScore = ({
         starList.push(
           <Icon
             key={index}
-            FontAwesome5={false}
             name="star-fill"
             color={starColor}
             size={size}
@@ -98,7 +97,6 @@ const StarScore = ({
         starList.push(
           <Icon
             key={fullStarsNb + 1}
-            FontAwesome5={false}
             name={showMissingStar ? 'star-half' : 'start-half-fontAwesome'}
             color={starColor}
             size={!showMissingStar ? size + 1 : size}
@@ -115,7 +113,6 @@ const StarScore = ({
             <Icon
               key={index + 1}
               onPress={() => onPress && onPressStar(index + 1)}
-              FontAwesome5={false}
               name="star"
               color={starColor}
               size={size}

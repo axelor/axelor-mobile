@@ -86,7 +86,6 @@ const UrlInput = ({
           touchable={true}
           style={styles.icon}
           onPress={onScanPress}
-          FontAwesome5={false}
         />,
       ]}
     />

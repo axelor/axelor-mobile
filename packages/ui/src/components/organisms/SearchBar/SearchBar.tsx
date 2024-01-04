@@ -130,7 +130,6 @@ const SearchBar = ({
           <Icon
             style={styles.action}
             name="qr-code-scan"
-            FontAwesome5={false}
             color={scanIconColor}
             size={20}
             touchable={true}
