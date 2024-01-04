@@ -24,10 +24,11 @@ import {ThemeColors} from '../../../theme/themes';
 import {getCommonStyles} from '../../../utils/commons-styles';
 
 interface FormInputProps {
-  title: string;
+  title?: string;
   defaultValue?: string;
   readOnly?: boolean;
   style?: any;
+  inputStyle?: any;
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
@@ -42,6 +43,7 @@ const FormInput = ({
   defaultValue = null,
   readOnly,
   style,
+  inputStyle,
   required = false,
   onChange = () => {},
   onSelection = () => {},
@@ -95,7 +97,7 @@ const FormInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.title}>{title}</Text>
+      {title && <Text style={styles.title}>{title}</Text>}
       <View
         style={[
           commonStyles.filter,
@@ -108,7 +110,7 @@ const FormInput = ({
           },
         ]}>
         <Input
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           value={value}
           onChange={onValueChange}
           onSelection={handleSelection}

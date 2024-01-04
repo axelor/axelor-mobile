@@ -47,6 +47,7 @@ export {default as MovementIndicationCard} from './MovementIndicationCard/Moveme
 export {default as MultiValuePickerButton} from './MultiValuePickerButton/MultiValuePickerButton';
 export {default as NotesCard} from './NotesCard/NotesCard';
 export {default as NumberBubble} from './NumberBubble/NumberBubble';
+export {default as NumberChevronInput} from './NumberChevronInput/NumberChevronInput';
 export {default as PanelTabs} from './PanelTabs/PanelTabs';
 export {default as RadioSelect} from './RadioSelect/RadioSelect';
 export {default as RightIconButton} from './RightIconButton/RightIconButton';
