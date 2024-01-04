@@ -66,7 +66,7 @@ const SupplierArrivalMovementIndicationCard = ({
       )}
       <MovementIndicationCard
         titleTop={supplierAddress}
-        iconTop={<Icon name="map-marker-alt" />}
+        iconTop={<Icon name="geo-alt-fill" />}
         titleDown={supplierArrival.toStockLocation?.name}
         iconDown={
           <Icon name="warehouse" color={Colors.primaryColor.background} />

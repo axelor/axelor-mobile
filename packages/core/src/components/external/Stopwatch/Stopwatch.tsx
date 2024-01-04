@@ -163,13 +163,13 @@ const Stopwatch = ({
         <Text style={styles.status}>
           {StopwatchType.getStatus(stopwatchStatus, I18n)}
         </Text>
-        <Icon name="stopwatch" size={18} style={styles.icon} />
+        <Icon name="stopwatch-fill" size={18} style={styles.icon} />
       </View>
       <View style={styles.row}>
         <View style={styles.btnContainer}>
           {stopwatchStatus !== StopwatchType.status.InProgress && (
             <TimerButton
-              name="play"
+              name="play-fill"
               disabled={
                 disable ||
                 disablePlay ||
@@ -181,13 +181,13 @@ const Stopwatch = ({
           )}
           {stopwatchStatus === StopwatchType.status.InProgress && (
             <TimerButton
-              name="pause"
+              name="pause-fill"
               disabled={disable || disablePause}
               onPress={handlePauseBtn}
             />
           )}
           <TimerButton
-            name="power-off"
+            name="power"
             disabled={
               disable ||
               disableStop ||
@@ -198,7 +198,7 @@ const Stopwatch = ({
           />
           {!hideCancel && (
             <TimerButton
-              name="undo"
+              name="arrow-counterclockwise"
               disabled={
                 disable ||
                 disableCancel ||
