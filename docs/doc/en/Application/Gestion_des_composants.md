@@ -272,3 +272,22 @@ In order to enable support on the iOS platform, there are several points to note
   ```css
   borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted'
   ```
+
+## Icon Management
+
+For icons, we use Bootstrap icons (available at "https://icons.getbootstrap.com/"). We utilize the BootstrapIcon.tsx component, which searches for the requested icon in the SVG list available in the bootstrap-icon-map.json file.
+
+However, it is possible to manually add SVGs to this list.
+
+When adding, it is important to ensure that the added SVG is compatible with the viewBox used in the BootstrapIcon component.
+
+      ```<Svg
+        viewBox="0 0 16 16"
+      </Svg>```
+
+In the case of viewBox="0 0 16 16", this means that the drawing is positioned starting from the point (0,0) at the top left and extends over a width and height of 16 units each. This creates a square frame in which your SVG must fit. All elements of the SVG must be designed to fit within this area to display correctly.
+
+To adapt an SVG to this viewBox, there are several solutions:
+
+- When creating the SVG, it is important to create it directly in the appropriate format.
+- If you are retrieving an SVG from an existing icon, resize the SVG file so that it fits the required format.
