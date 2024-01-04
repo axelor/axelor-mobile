@@ -56,20 +56,20 @@ const PlanningEventCard = ({
             hideIfNull: true,
             iconName:
               partnerTypeSelect === EventType.partnerTypeSelect.Company
-                ? 'building'
-                : 'user',
+                ? 'building-fill'
+                : 'person-fill',
           },
           {
             indicatorText: eventLead,
             hideIfNull: true,
-            iconName: 'address-card',
+            iconName: 'person-vcard-fill',
           },
           {
             indicatorText: contactPartner,
             hideIfNull: true,
             iconName: 'handshake',
           },
-          {indicatorText: location, hideIfNull: true, iconName: 'map-pin'},
+          {indicatorText: location, hideIfNull: true, iconName: 'geo-fill'},
         ],
       }}
     />

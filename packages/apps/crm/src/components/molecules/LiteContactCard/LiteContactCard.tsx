@@ -42,17 +42,17 @@ const LiteContactCard = ({
           {
             displayText: mobilePhoneNumber,
             hideIfNull: true,
-            iconName: 'phone-alt',
+            iconName: 'telephone-fill',
           },
           {
             indicatorText: fixedPhoneNumber,
             hideIfNull: true,
-            iconName: 'phone-alt',
+            iconName: 'telephone-fill',
           },
           {
             indicatorText: email,
             hideIfNull: true,
-            iconName: 'envelope',
+            iconName: 'envelope-fill',
           },
         ],
       }}

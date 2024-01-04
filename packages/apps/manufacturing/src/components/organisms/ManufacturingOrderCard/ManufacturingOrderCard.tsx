@@ -102,17 +102,17 @@ const ManufacturingOrderCard = ({
           },
           {
             hideIf: link.client == null || link.ordersRef?.length <= 0,
-            iconName: 'tag',
+            iconName: 'tag-fill',
             indicatorText: link.ordersRef[0]?.fullName,
           },
           {
-            iconName: 'calendar',
+            iconName: 'calendar-fill',
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIf: startDate == null,
           },
           {
-            iconName: 'calendar-check',
+            iconName: 'calendar-check-fill',
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:

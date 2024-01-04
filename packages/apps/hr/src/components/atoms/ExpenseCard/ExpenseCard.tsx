@@ -118,7 +118,7 @@ const ExpenseCard = ({
                 hideIf: checkNullString(periodeCode),
               },
               {
-                iconName: 'user',
+                iconName: 'person-fill',
                 indicatorText: employeeName,
                 hideIfNull: true,
               },

@@ -86,7 +86,7 @@ const ConsumedProductCard = ({
               }`,
             },
             {
-              iconName: 'qrcode',
+              iconName: 'qr-code',
               displayText: trackingNumber,
               indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
               hideIf: trackingNumber == null,

@@ -83,13 +83,13 @@ const OperationOrderDetailsCard = ({
             indicatorText: workcenter + ' ' + (machine ? `- ${machine}` : ''),
           },
           {
-            iconName: 'calendar',
+            iconName: 'calendar-fill',
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIfNull: startDate == null,
           },
           {
-            iconName: 'calendar-check',
+            iconName: 'calendar-check-fill',
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:
@@ -98,7 +98,7 @@ const OperationOrderDetailsCard = ({
               endDate == null,
           },
           {
-            iconName: 'stopwatch',
+            iconName: 'stopwatch-fill',
             indicatorText: `${
               plannedDuration ? formatDuration(plannedDuration) : ''
             }`,
