@@ -43,7 +43,7 @@ const useExpenseDetailsAction = () => {
         {
           key: 'refreshExpenseDetails',
           order: 10,
-          iconName: 'refresh',
+          iconName: 'arrow-clockwise',
           title: I18n.t('Hr_RefreshExpenseDetails'),
           FontAwesome5: false,
           iconColor: Colors.primaryColor.background,

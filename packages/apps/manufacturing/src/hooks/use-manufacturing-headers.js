@@ -61,7 +61,7 @@ const useProducedProductActions = () => {
           key: 'wasteProduct',
           order: 10,
           title: I18n.t('Manufacturing_WasteDeclaration'),
-          iconName: 'trash',
+          iconName: 'trash-fill',
           iconColor: Colors.primaryColor.background,
           onPress: () =>
             navigation.navigate('WasteProductListScreen', {
@@ -92,7 +92,7 @@ const useOperationOrderDetailsActions = () => {
           {
             key: 'productionFile',
             order: 10,
-            iconName: 'folder-open',
+            iconName: 'folder2-open',
             title: I18n.t('Manufacturing_ProductionFile'),
             onPress: () =>
               navigation.navigate('ProductionFileScreen', {

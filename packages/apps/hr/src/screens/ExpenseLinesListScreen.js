@@ -88,7 +88,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         {
           key: 'openSelectionMode',
           order: 10,
-          iconName: 'user',
+          iconName: 'person-fill',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_OpenSelectionMode'),
           onPress: handleModeChange,
@@ -101,7 +101,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
                 size: 16,
               }}
               bottomIconConfig={{
-                name: 'credit-card',
+                name: 'credit-card-fill',
                 color: Colors.secondaryColor_dark.background,
               }}
               predefinedPosition={'top-right'}

@@ -96,7 +96,7 @@ const JsonFieldScreen = ({route}) => {
           key: 'refreshConfig',
           order: 10,
           showInHeader: false,
-          iconName: 'redo',
+          iconName: 'arrow-clockwise',
           title: I18n.t('Base_Studio_RefreshConfig'),
           onPress: refresh,
         },

@@ -147,7 +147,7 @@ const MailMessageView = ({model, modelId}) => {
           key: 'readMessages',
           order: 10,
           showInHeader: true,
-          iconName: 'check-double',
+          iconName: 'check-all',
           iconColor:
             unreadMessages === 0
               ? Colors.primaryColor.background
@@ -159,7 +159,7 @@ const MailMessageView = ({model, modelId}) => {
           key: 'subscribe',
           order: 20,
           showInHeader: true,
-          iconName: subscribe ? 'star' : 'star-o',
+          iconName: subscribe ? 'star-fill' : 'star',
           iconColor: subscribe
             ? Colors.primaryColor.background
             : Colors.secondaryColor_dark.background,
