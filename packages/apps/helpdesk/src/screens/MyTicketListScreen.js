@@ -129,13 +129,11 @@ const MyTicketListScreen = ({navigation}) => {
       <HeaderContainer
         expandableFilter={true}
         fixedItems={
-          <View style={styles.headerContainer}>
-            <MyTicketSearchBar
-              showDetailsPopup={false}
-              oneFilter={true}
-              placeholderKey={I18n.t('Helpdesk_Ticket')}
-            />
-          </View>
+          <MyTicketSearchBar
+            showDetailsPopup={false}
+            oneFilter={true}
+            placeholderKey={I18n.t('Helpdesk_Ticket')}
+          />
         }
         chipComponent={
           <ChipSelect
