@@ -171,7 +171,7 @@ const Camera = () => {
         {supportsCameraFlipping && (
           <Icon
             style={styles.button}
-            name="camera"
+            name="camera-fill"
             color={Colors.backgroundColor}
             size={24}
             touchable={true}
@@ -181,8 +181,7 @@ const Camera = () => {
         {supportsFlash && (
           <Icon
             style={styles.button}
-            name="flash"
-            FontAwesome5={false}
+            name="lightning-fill"
             color={
               flash === 'on'
                 ? Colors.primaryColor.background
@@ -196,8 +195,7 @@ const Camera = () => {
         {canToggleNightMode && (
           <Icon
             style={styles.button}
-            name={enableNightMode ? 'moon' : 'moon-o'}
-            FontAwesome5={enableNightMode ? true : false}
+            name={enableNightMode ? 'moon-fill' : 'moon'}
             color={Colors.backgroundColor}
             size={24}
             touchable={true}
@@ -206,7 +204,7 @@ const Camera = () => {
         )}
         <Icon
           style={styles.button}
-          name={'times'}
+          name={'x'}
           color={Colors.backgroundColor}
           size={24}
           touchable={true}
