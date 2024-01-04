@@ -39,7 +39,7 @@ export const CrmModule: Module = {
   name: 'app-crm',
   title: 'Crm_Crm',
   subtitle: 'Crm_Crm',
-  icon: 'users',
+  icon: 'people-fill',
   compatibilityAOS: {
     moduleName: 'axelor-crm',
     downToVersion: '7.1.0',
@@ -47,12 +47,12 @@ export const CrmModule: Module = {
   menus: {
     crm_menu_lead: {
       title: 'Crm_Leads',
-      icon: 'address-card',
+      icon: 'person-vcard-fill',
       screen: 'LeadListScreen',
     },
     crm_menu_prospect: {
       title: 'Crm_Prospects',
-      icon: 'user-tie',
+      icon: 'person-badge-fill',
       screen: 'ProspectsListScreen',
     },
     crm_menu_opportunity: {
@@ -62,7 +62,7 @@ export const CrmModule: Module = {
     },
     crm_menu_client: {
       title: 'Crm_Clients',
-      icon: 'users',
+      icon: 'people-fill',
       screen: 'ClientsListScreen',
     },
     crm_menu_contact: {
@@ -78,7 +78,7 @@ export const CrmModule: Module = {
     },
     crm_menu_event: {
       title: 'Crm_Events',
-      icon: 'calendar-alt',
+      icon: 'calendar-fill',
       screen: 'EventPlanningScreen',
     },
   },
