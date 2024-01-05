@@ -22,7 +22,7 @@ const glob = require('glob');
 const path = require('path');
 const fs = require('fs').promises;
 
-const OUT_DIR = '../src/icons';
+const OUT_DIR = './src/icons';
 
 const config = {
   plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx', '@svgr/plugin-prettier'],
@@ -32,7 +32,7 @@ const config = {
 
 function getFilepaths() {
   return new Promise((resolve, reject) => {
-    glob('../../../node_modules/bootstrap-icons/icons/*.svg', (err, files) => {
+    glob('../../node_modules/bootstrap-icons/icons/*.svg', (err, files) => {
       if (err) {
         reject(err);
       }
@@ -75,7 +75,7 @@ function getSvgPathList(code) {
 }
 
 async function generateFile(fileContentJSON) {
-  const existingIconsPath = './custom-icon-map.json';
+  const existingIconsPath = './scripts/custom-icon-map.json';
   let existingIcons = {};
 
   try {
