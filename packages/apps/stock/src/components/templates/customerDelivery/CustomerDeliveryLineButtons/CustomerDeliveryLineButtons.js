@@ -22,7 +22,7 @@ import {
   useDispatch,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {updateCustomerDeliveryLine} from '../../../../features/customerDeliveryLineSlice';
 
@@ -34,8 +34,9 @@ const CustomerDeliveryLineButtons = ({
   visible = true,
 }) => {
   const I18n = useTranslator();
-  const dispatch = useDispatch();
+  const Colors = useThemeColor();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const navigateBackToDetails = useCallback(() => {
     navigation.navigate('CustomerDeliveryDetailScreen', {
@@ -67,7 +68,13 @@ const CustomerDeliveryLineButtons = ({
   }
 
   if (customerDelivery.statusSelect !== StockMove.status.Realized) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
+    return (
+      <Button
+        title={I18n.t('Base_Validate')}
+        color={Colors.successColor}
+        onPress={handleValidate}
+      />
+    );
   }
 
   return null;

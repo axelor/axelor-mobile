@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
@@ -27,6 +27,7 @@ import StockMove from '../../../../types/stock-move';
 import {realizeSupplierArrival} from '../../../../features/supplierArrivalSlice';
 
 const SupplierArrivalButtons = ({supplierArrival}) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -42,7 +43,13 @@ const SupplierArrivalButtons = ({supplierArrival}) => {
   };
 
   if (supplierArrival.statusSelect !== StockMove.status.Realized) {
-    return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
+    return (
+      <Button
+        onPress={handleRealize}
+        color={Colors.successColor}
+        title={I18n.t('Base_Realize')}
+      />
+    );
   }
 
   return null;

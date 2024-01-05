@@ -66,7 +66,7 @@ const CustomerDeliveryLineCard = ({
       return Colors.cautionColor.background;
     }
 
-    return Colors.primaryColor.background;
+    return Colors.successColor.background;
   }, [Colors, askedQty, pickedQty]);
 
   const borderStyle = useMemo(() => {

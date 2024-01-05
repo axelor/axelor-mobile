@@ -22,8 +22,8 @@ import {StyleSheet, View} from 'react-native';
 import {useTranslator} from '@axelor/aos-mobile-core';
 
 const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
-  const I18n = useTranslator();
   const Colors = useThemeColor();
+  const I18n = useTranslator();
 
   return (
     <View style={styles.container}>
@@ -36,6 +36,7 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
       />
       <Button
         title={I18n.t('Base_Add')}
+        color={Colors.successColor}
         disabled={selectedItems.length <= 0}
         onPress={onOpen}
         width="45%"

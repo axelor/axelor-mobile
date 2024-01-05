@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useDispatch,
   useNavigation,
@@ -33,6 +33,7 @@ const SupplierArrivalLineButtons = ({
   conformity,
   toStockLocation,
 }) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -65,7 +66,13 @@ const SupplierArrivalLineButtons = ({
   ]);
 
   if (supplierArrival.statusSelect !== StockMove.status.Realized) {
-    return <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />;
+    return (
+      <Button
+        title={I18n.t('Base_Validate')}
+        color={Colors.successColor}
+        onPress={handleValidate}
+      />
+    );
   }
 
   return null;

@@ -22,11 +22,12 @@ import {
   useDispatch,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {realizeInternalMove} from '../../../../features/internalMoveSlice';
 import StockMove from '../../../../types/stock-move';
 
 const InternalMoveRealizeButton = ({internalMove}) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -44,7 +45,11 @@ const InternalMoveRealizeButton = ({internalMove}) => {
 
   if (internalMove.statusSelect === StockMove.status.Planned) {
     return (
-      <Button title={I18n.t('Base_Realize')} onPress={handleRealizeStockMove} />
+      <Button
+        title={I18n.t('Base_Realize')}
+        color={Colors.successColor}
+        onPress={handleRealizeStockMove}
+      />
     );
   }
 

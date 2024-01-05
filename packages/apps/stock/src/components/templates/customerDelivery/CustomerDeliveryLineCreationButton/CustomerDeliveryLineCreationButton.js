@@ -22,7 +22,7 @@ import {
   useDispatch,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {addNewLine} from '../../../../features/customerDeliverySlice';
 
 const CustomerDeliveryLineCreationButton = ({
@@ -33,6 +33,7 @@ const CustomerDeliveryLineCreationButton = ({
   fromStockLocation,
   visible = true,
 }) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -72,7 +73,13 @@ const CustomerDeliveryLineCreationButton = ({
     return null;
   }
 
-  return <Button title={I18n.t('Base_Add')} onPress={handleAddLine} />;
+  return (
+    <Button
+      title={I18n.t('Base_Add')}
+      color={Colors.successColor}
+      onPress={handleAddLine}
+    />
+  );
 };
 
 export default CustomerDeliveryLineCreationButton;

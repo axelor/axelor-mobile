@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {Button} from '@axelor/aos-mobile-ui';
+import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import {
   useTranslator,
   useSelector,
@@ -39,6 +39,7 @@ const InventoryLineButtons = ({
   description,
   visible = true,
 }) => {
+  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -96,7 +97,13 @@ const InventoryLineButtons = ({
   }
 
   if (inventoryLine == null) {
-    return <Button title={I18n.t('Base_Add')} onPress={handleNewLine} />;
+    return (
+      <Button
+        title={I18n.t('Base_Add')}
+        color={Colors.successColor}
+        onPress={handleNewLine}
+      />
+    );
   }
 
   if (inventory?.statusSelect !== Inventory.status.Validated) {
@@ -107,6 +114,7 @@ const InventoryLineButtons = ({
             ? I18n.t('Base_Save')
             : I18n.t('Base_Check')
         }
+        color={Colors.successColor}
         onPress={handleUpdateLine}
       />
     );

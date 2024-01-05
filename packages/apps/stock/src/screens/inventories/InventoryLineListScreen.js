@@ -164,7 +164,7 @@ const InventoryLineListScreen = ({route, navigation}) => {
             selectionItems={[
               {
                 title: I18n.t('Stock_Complete'),
-                color: Colors.primaryColor,
+                color: Colors.successColor,
                 key: STATUS.done,
               },
               {

@@ -71,7 +71,13 @@ const InternalMoveLineCreationButton = ({
   };
 
   const renderRealizeButton = () => {
-    return <Button title={I18n.t('Base_Realize')} onPress={handleRealize} />;
+    return (
+      <Button
+        title={I18n.t('Base_Realize')}
+        color={Colors.successColor}
+        onPress={handleRealize}
+      />
+    );
   };
 
   if (!hideAllIf) {
