@@ -102,7 +102,6 @@ const LeadsCard = ({
             color: isDoNotCall ? 'red' : null,
             hideIfNull: true,
             style: isDoNotCall ? styles.txtRed : null,
-            size: isDoNotCall ? null : 18,
           },
           {
             indicatorText: leadsFixedPhone,

@@ -90,7 +90,7 @@ const SupplierArrivalLineCard = ({
             displayText: stockLocationName,
             indicatorText: `${I18n.t('Stock_ToStockLocation')} :`,
             hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
-            iconName: 'warehouse',
+            iconName: 'house-up',
             style:
               Dimensions.get('window').width < 350 ? styles.textWidth : null,
           },

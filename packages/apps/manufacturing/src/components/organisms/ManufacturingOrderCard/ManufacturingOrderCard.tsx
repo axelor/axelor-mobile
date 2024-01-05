@@ -106,13 +106,13 @@ const ManufacturingOrderCard = ({
             indicatorText: link.ordersRef[0]?.fullName,
           },
           {
-            iconName: 'calendar-fill',
+            iconName: 'calendar-event',
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIf: startDate == null,
           },
           {
-            iconName: 'calendar-check-fill',
+            iconName: 'calendar-check',
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:

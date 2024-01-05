@@ -68,7 +68,7 @@ const MultiValuePickerButton = ({
                   {item.title}
                 </Text>
                 {!readonly && (
-                  <Icon name={'x'} color={item.color.foreground} size={14} />
+                  <Icon name="x-lg" color={item.color.foreground} size={14} />
                 )}
               </TouchableOpacity>
             ))}

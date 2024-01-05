@@ -49,7 +49,7 @@ const ClearableCard = ({
       <Text style={styles.text}>{valueTxt}</Text>
       {clearable && (
         <Icon
-          name="x"
+          name="x-lg"
           touchable={true}
           onPress={onClearPress}
           size={Dimensions.get('window').width * 0.05}

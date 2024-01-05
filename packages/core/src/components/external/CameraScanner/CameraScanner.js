@@ -92,7 +92,7 @@ const CameraScanner = () => {
   return (
     <View style={styles.container}>
       <Icon
-        name="x"
+        name="x-lg"
         size={24}
         color={Colors.primaryColor.background}
         touchable={true}

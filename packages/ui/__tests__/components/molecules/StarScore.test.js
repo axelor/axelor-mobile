@@ -44,14 +44,14 @@ describe('StarScore', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={true} />);
 
     expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(1);
+    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(1);
   });
 
   it('renders the correct number of active stars based on score with disabled showHalfStar props', () => {
     const wrapper = shallow(<StarScore {...props} showHalfStar={false} />);
 
     expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
+    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
   });
 
   it('renders missing stars when showMissingStar is true', () => {
@@ -110,13 +110,13 @@ describe('StarScore', () => {
     const wrapper = shallow(<StarScore {...props} score={firstScore} />);
 
     expect(getIcons(wrapper, 'star-fill')).toHaveLength(2);
-    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
+    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
     expect(getIcons(wrapper, 'star')).toHaveLength(0);
 
     wrapper.setProps({score: 3.5});
 
     expect(getIcons(wrapper, 'star-fill')).toHaveLength(3);
-    expect(getIcons(wrapper, 'start-half-fontAwesome')).toHaveLength(0);
+    expect(getIcons(wrapper, 'start-half-fill')).toHaveLength(0);
     expect(getIcons(wrapper, 'star')).toHaveLength(0);
   });
 

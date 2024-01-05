@@ -42,7 +42,7 @@ const LiteContactCard = ({
           {
             displayText: mobilePhoneNumber,
             hideIfNull: true,
-            iconName: 'telephone-fill',
+            iconName: 'phone-fill',
           },
           {
             indicatorText: fixedPhoneNumber,

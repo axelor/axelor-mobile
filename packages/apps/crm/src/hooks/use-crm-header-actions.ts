@@ -39,7 +39,7 @@ const useCatalogListActions = () => {
         {
           key: 'newCatalog',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewCatalog'),
           iconColor: Colors.primaryColor.background,
           hideIf: !crmConfig?.isManageCatalogs,
@@ -165,7 +165,7 @@ const useLeadListActions = () => {
         {
           key: 'newLead',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewLead'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('LeadFormScreen', {}),
@@ -234,7 +234,7 @@ const useOpportunityListActions = () => {
         {
           key: 'newOpportunity',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewOpportunity'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('OpportunityFormScreen', {}),

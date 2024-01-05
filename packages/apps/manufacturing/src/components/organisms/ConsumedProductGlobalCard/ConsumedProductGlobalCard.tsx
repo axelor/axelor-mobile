@@ -117,7 +117,7 @@ const ConsumedProductGlobalCard = ({
         <View style={styles.middleContainer}>
           <CardIconButton
             style={styles.cardIconButton}
-            iconName="plus"
+            iconName="plus-lg"
             iconColor={Colors.primaryColor.background}
             onPress={handleIncrement}
           />

@@ -28,7 +28,7 @@ const DrawerToggleButton = ({tintColor}) => {
     <TouchableOpacity
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
       style={styles.icon}>
-      <Icon name="bars-staggered" size={26} color={tintColor} />
+      <Icon name="list" size={26} color={tintColor} />
     </TouchableOpacity>
   );
 };

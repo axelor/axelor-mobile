@@ -55,7 +55,7 @@ export const HelpDeskModule: Module = {
     },
     helpdesk_menu_createTicket: {
       title: 'helpdesk_createTicket',
-      icon: 'plus',
+      icon: 'plus-lg',
       screen: 'TicketFormScreen',
     },
   },

@@ -55,7 +55,7 @@ const ProductCardInfo = ({
           <LabelText iconName="qr-code" size={15} title={trackingNumber} />
         )}
         {!checkNullString(locker) && (
-          <LabelText iconName="map-marker-alt" size={15} title={locker} />
+          <LabelText iconName="geo-alt-fill" size={15} title={locker} />
         )}
       </ProductCardDetails>
     </View>

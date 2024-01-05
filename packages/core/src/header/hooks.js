@@ -170,7 +170,7 @@ export const useBasicActions = ({
       key: 'metaJsonFields',
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
-      iconName: 'object-group',
+      iconName: 'layout-text-window-reverse',
       hideIf:
         disableCustomView ||
         disableJsonFields ||

@@ -67,7 +67,7 @@ export const StockModule: Module = {
     },
     stock_menu_inventory: {
       title: 'Stock_Inventory',
-      icon: 'warehouse',
+      icon: 'house-check',
       screen: 'InventoryListScreen',
     },
   },

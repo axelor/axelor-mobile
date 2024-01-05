@@ -72,7 +72,7 @@ const ContactInfoCard = ({
               onPress={rightIconAction}
             />
             <Icon
-              name={'copy'}
+              name="copy"
               touchable={true}
               onPress={() => clipboardProvider.copyToClipboard(data)}
             />

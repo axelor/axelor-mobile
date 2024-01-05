@@ -145,7 +145,7 @@ const ExpenseCard = ({
             iconName={
               statusSelect === Expense.statusSelect.Draft
                 ? 'send-fill'
-                : 'check'
+                : 'check-lg'
             }
             iconColor={Colors.primaryColor.foreground}
             onPress={() => {

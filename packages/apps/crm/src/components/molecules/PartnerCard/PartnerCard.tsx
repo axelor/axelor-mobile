@@ -109,14 +109,13 @@ const PartnerCard = ({
           },
           {
             indicatorText: partnerMobilePhone,
-            size: 18,
             hideIfNull: true,
-            iconName: 'mobile-phone',
+            iconName: 'phone-fill',
           },
           {
             indicatorText: partnerFixedPhone,
             hideIfNull: true,
-            iconName: 'phone-fill',
+            iconName: 'telephone-fill',
           },
           {
             indicatorText: partnerEmail,

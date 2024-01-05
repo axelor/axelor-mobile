@@ -69,7 +69,7 @@ const SupplierArrivalMovementIndicationCard = ({
         iconTop={<Icon name="geo-alt-fill" />}
         titleDown={supplierArrival.toStockLocation?.name}
         iconDown={
-          <Icon name="warehouse" color={Colors.primaryColor.background} />
+          <Icon name="house-up" color={Colors.primaryColor.background} />
         }
         disabledTop={!showPopupOnCLick}
         onPressTitleTop={() => setVisiblePopup(true)}

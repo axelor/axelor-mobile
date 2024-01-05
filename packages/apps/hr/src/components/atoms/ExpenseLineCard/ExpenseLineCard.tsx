@@ -97,7 +97,7 @@ const ExpenseLineCard = ({
             {
               indicatorText: _date.day,
               displayText: `${_date.date} ${_date.month}`,
-              iconName: 'calendar-fill',
+              iconName: 'calendar-event',
               hideIfNull: true,
               style: styles.details,
             },
@@ -121,7 +121,7 @@ const ExpenseLineCard = ({
                 'Hr_KilometerUnit',
               )}`,
               hideIf: distance == null || (fromCity == null && toCity == null),
-              iconName: 'road',
+              iconName: 'signpost-split',
             },
           ],
         }}

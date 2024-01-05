@@ -47,12 +47,12 @@ export const CrmModule: Module = {
   menus: {
     crm_menu_lead: {
       title: 'Crm_Leads',
-      icon: 'person-vcard-fill',
+      icon: 'person-badge-fill',
       screen: 'LeadListScreen',
     },
     crm_menu_prospect: {
       title: 'Crm_Prospects',
-      icon: 'person-badge-fill',
+      icon: 'person-vcard-fill',
       screen: 'ProspectsListScreen',
     },
     crm_menu_opportunity: {
@@ -72,13 +72,13 @@ export const CrmModule: Module = {
     },
     crm_menu_catalog: {
       title: 'Crm_Catalogs',
-      icon: 'swatchbook',
+      icon: 'palette2',
       screen: 'CatalogListScreen',
       hideIf: store => !store.crm?.isManageCatalogs,
     },
     crm_menu_event: {
       title: 'Crm_Events',
-      icon: 'calendar-fill',
+      icon: 'calendar2-week',
       screen: 'EventPlanningScreen',
     },
   },

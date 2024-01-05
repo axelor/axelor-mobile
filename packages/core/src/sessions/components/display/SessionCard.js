@@ -124,7 +124,7 @@ const SessionCard = ({
         )}
         {renderActionButton(
           trans,
-          'trash-fill',
+          'trash3-fill',
           Colors.errorColor.background,
           animateRemoval,
         )}

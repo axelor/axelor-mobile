@@ -108,7 +108,7 @@ const SearchBar = ({
         rightIconsList={[
           <Icon
             style={styles.action}
-            name="x"
+            name="x-lg"
             color={Colors.secondaryColor_dark.background}
             size={20}
             touchable={true}

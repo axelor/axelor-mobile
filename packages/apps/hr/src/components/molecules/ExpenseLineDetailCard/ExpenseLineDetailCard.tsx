@@ -149,13 +149,13 @@ const ExpenseLineDetailCard = ({
           expense.statusSelect === Expense.statusSelect.Draft ? (
             <View style={styles.iconContainer}>
               <CardIconButton
-                iconName={'pencil-fill'}
+                iconName="pencil-fill"
                 iconColor={Colors.secondaryColor_dark.background}
                 onPress={onEdit}
                 style={styles.cardIconButton}
               />
               <CardIconButton
-                iconName={'trash3-fill'}
+                iconName="trash3-fill"
                 iconColor={Colors.errorColor.background}
                 onPress={handleDelete}
                 style={styles.cardIconButton}

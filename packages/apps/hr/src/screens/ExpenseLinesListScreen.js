@@ -78,7 +78,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         {
           key: 'newExpenseLines',
           order: 20,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_NewExpenseLine'),
           iconColor: Colors.primaryColor.background,
@@ -96,7 +96,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
           customComponent: (
             <DoubleIcon
               topIconConfig={{
-                name: 'plus',
+                name: 'plus-lg',
                 color: Colors.primaryColor.background,
                 size: 16,
               }}

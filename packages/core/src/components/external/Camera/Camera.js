@@ -204,7 +204,7 @@ const Camera = () => {
         )}
         <Icon
           style={styles.button}
-          name={'x'}
+          name="x-lg"
           color={Colors.backgroundColor}
           size={24}
           touchable={true}

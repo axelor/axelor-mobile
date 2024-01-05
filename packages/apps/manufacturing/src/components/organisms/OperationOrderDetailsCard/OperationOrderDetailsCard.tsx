@@ -83,13 +83,13 @@ const OperationOrderDetailsCard = ({
             indicatorText: workcenter + ' ' + (machine ? `- ${machine}` : ''),
           },
           {
-            iconName: 'calendar-fill',
+            iconName: 'calendar-event',
             indicatorText: startDate.title,
             displayText: startDate.value,
             hideIfNull: startDate == null,
           },
           {
-            iconName: 'calendar-check-fill',
+            iconName: 'calendar-check',
             indicatorText: endDate.title,
             displayText: endDate.value,
             hideIf:

@@ -52,9 +52,7 @@ const InventoryHeader = ({
       <View style={styles.refContainer}>
         <Text style={styles.text_important}>{reference}</Text>
         {_formatDate}
-        {stockLocation && (
-          <LabelText iconName="warehouse" title={stockLocation} />
-        )}
+        {stockLocation && <LabelText iconName="house" title={stockLocation} />}
       </View>
       <View style={styles.badgeContainer}>
         <Badge

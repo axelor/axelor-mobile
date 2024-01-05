@@ -41,7 +41,7 @@ export const ManufacturingModule: Module = {
   menus: {
     manufacturing_menu_manufacturing_order: {
       title: 'Manufacturing_ManufacturingOrder',
-      icon: 'clipboard-list',
+      icon: 'journal-text',
       screen: 'ManufacturingOrderListScreen',
     },
     manufacturing_menu_operation_order: {
@@ -51,7 +51,7 @@ export const ManufacturingModule: Module = {
     },
     manufacturing_menu_operation_order_planning: {
       title: 'Manufacturing_PlannedOperationOrder',
-      icon: 'calendar-fill',
+      icon: 'calendar-range',
       screen: 'OperationOrderPlanningScreen',
     },
   },

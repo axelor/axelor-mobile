@@ -63,7 +63,7 @@ const TicketsStatusButton = ({}) => {
     return (
       <Button
         title={I18n.t('Helpdesk_Resolve')}
-        iconName="check"
+        iconName="check-lg"
         onPress={() => updateStatus(Ticket.stopWatchStatus.stop)}
       />
     );

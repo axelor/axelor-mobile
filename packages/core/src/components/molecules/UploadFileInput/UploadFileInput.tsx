@@ -288,7 +288,7 @@ const UploadFileInput = ({
         <View style={styles.buttons}>
           {canDeleteFile && selectedFile != null && !readonly && (
             <Icon
-              name="x"
+              name="x-lg"
               size={BUTTON_SIZE}
               touchable={true}
               onPress={handleFileDelete}

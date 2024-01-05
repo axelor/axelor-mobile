@@ -93,7 +93,7 @@ const CustomerDeliveryLineCard = ({
             displayText: stockLocationName,
             indicatorText: `${I18n.t('Stock_FromStockLocation')} :`,
             hideIf: !stockConfig?.isManageStockLocationOnStockMoveLine,
-            iconName: 'warehouse',
+            iconName: 'house-down',
             style:
               Dimensions.get('window').width < 350 ? styles.textWidth : null,
           },

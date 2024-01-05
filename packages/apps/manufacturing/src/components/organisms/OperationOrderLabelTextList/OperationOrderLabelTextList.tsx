@@ -51,33 +51,37 @@ const OperationOrderLabelTextList = ({
       {showDuration && (
         <LabelText
           iconName="stopwatch-fill"
-          size={20}
+          size={18}
           title={I18n.t('Manufacturing_PlannedDuration') + ':'}
           value={formatDuration(operationOrder?.plannedDuration)}
+          style={styles.label}
         />
       )}
       {showHumanDuration && !!operationOrder?.plannedHumanDuration && (
         <LabelText
           iconName="user-clock"
-          size={20}
+          size={18}
           title={I18n.t('Manufacturing_PlannedHumanDuration') + ':'}
           value={formatDuration(operationOrder?.plannedHumanDuration)}
+          style={styles.label}
         />
       )}
       {showMachineDuration && !!operationOrder?.plannedMachineDuration && (
         <LabelText
           iconName="gear-fill"
-          size={20}
+          size={18}
           title={I18n.t('Manufacturing_PlannedMachineDuration') + ':'}
           value={formatDuration(operationOrder?.plannedMachineDuration)}
+          style={styles.label}
         />
       )}
       {showWorkCenter && operationOrder?.workCenter && (
         <LabelText
-          iconName="warehouse"
-          size={15}
+          iconName="house-gear-fill"
+          size={18}
           title={I18n.t('Manufacturing_WorkCenter') + ':'}
           value={operationOrder?.workCenter?.name}
+          style={styles.label}
         />
       )}
       {showMachine && operationOrder?.machine && (
@@ -86,6 +90,7 @@ const OperationOrderLabelTextList = ({
           size={18}
           title={I18n.t('Manufacturing_Machine') + ':'}
           value={operationOrder?.machine?.name}
+          style={styles.label}
         />
       )}
       {children}
@@ -94,8 +99,11 @@ const OperationOrderLabelTextList = ({
 };
 const styles = StyleSheet.create({
   detailsContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 18,
     marginVertical: 15,
+  },
+  label: {
+    marginVertical: 2,
   },
 });
 

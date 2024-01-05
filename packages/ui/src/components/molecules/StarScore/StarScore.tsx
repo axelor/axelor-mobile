@@ -97,7 +97,7 @@ const StarScore = ({
         starList.push(
           <Icon
             key={fullStarsNb + 1}
-            name={showMissingStar ? 'star-half' : 'start-half-fontAwesome'}
+            name={showMissingStar ? 'star-half' : 'start-half-fill'}
             color={starColor}
             size={!showMissingStar ? size + 1 : size}
             style={styles.half}

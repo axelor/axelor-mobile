@@ -66,10 +66,10 @@ const DropdownContactView = ({
   return (
     <View>
       <ContactInfoCard
-        headerIconName={'geo-alt-fill'}
+        headerIconName="geo-alt-fill"
         title={I18n.t('Crm_Adress')}
         data={address}
-        rightIconName={'map-marked-alt'}
+        rightIconName="pin-map-fill"
         border={
           fixedPhone != null ||
           mobilePhone != null ||
@@ -81,10 +81,10 @@ const DropdownContactView = ({
         rightIconAction={() => linkingProvider.openMapApp(address)}
       />
       <ContactInfoCard
-        headerIconName={'telephone-fill'}
+        headerIconName="telephone-fill"
         title={I18n.t('Crm_Phone')}
         data={fixedPhone}
-        rightIconName={'telephone-fill'}
+        rightIconName="telephone-fill"
         border={
           mobilePhone != null ||
           emailAddress != null ||
@@ -95,10 +95,10 @@ const DropdownContactView = ({
         rightIconAction={() => linkingProvider.openCallApp(fixedPhone)}
       />
       <ContactInfoCard
-        headerIconName={'phone-fill'}
+        headerIconName="phone-fill"
         title={I18n.t('Crm_MobilePhone')}
         data={mobilePhone}
-        rightIconName={'telephone-fill'}
+        rightIconName="telephone-fill"
         border={
           emailAddress != null || webSite != null || !isEmpty(networkData)
         }
@@ -106,19 +106,19 @@ const DropdownContactView = ({
         rightIconAction={() => linkingProvider.openCallApp(mobilePhone)}
       />
       <ContactInfoCard
-        headerIconName={'envelope-fill'}
+        headerIconName="envelope-fill"
         title={I18n.t('Crm_Email')}
         data={emailAddress}
-        rightIconName={'send-fill'}
+        rightIconName="send-fill"
         border={webSite != null || !isEmpty(networkData)}
         styleBorder={styles.borderInfoCard}
         rightIconAction={() => linkingProvider.openMailApp(emailAddress)}
       />
       <ContactInfoCard
-        headerIconName={'link-45deg'}
+        headerIconName="link-45deg"
         title={I18n.t('Crm_WebSite')}
         data={webSite}
-        rightIconName={'box-arrow-up-right'}
+        rightIconName="box-arrow-up-right"
         styleBorder={styles.borderInfoCard}
         border={!isEmpty(networkData)}
         rightIconAction={() => linkingProvider.openBrowser(webSite)}

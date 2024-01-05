@@ -62,12 +62,12 @@ const PlanningEventCard = ({
           {
             indicatorText: eventLead,
             hideIfNull: true,
-            iconName: 'person-vcard-fill',
+            iconName: 'person-badge-fill',
           },
           {
             indicatorText: contactPartner,
             hideIfNull: true,
-            iconName: 'handshake',
+            iconName: 'person-fill',
           },
           {indicatorText: location, hideIfNull: true, iconName: 'geo-fill'},
         ],

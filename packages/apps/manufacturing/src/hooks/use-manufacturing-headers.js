@@ -61,7 +61,7 @@ const useProducedProductActions = () => {
           key: 'wasteProduct',
           order: 10,
           title: I18n.t('Manufacturing_WasteDeclaration'),
-          iconName: 'trash-fill',
+          iconName: 'trash3-fill',
           iconColor: Colors.primaryColor.background,
           onPress: () =>
             navigation.navigate('WasteProductListScreen', {

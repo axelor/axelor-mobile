@@ -121,7 +121,7 @@ const Label = ({
       <Text style={styles.text}>{message}</Text>
       {showClose && (
         <Icon
-          name="x"
+          name="x-lg"
           color={typeConfig?.color?.foreground}
           touchable={true}
           onPress={handleClose}
