@@ -256,6 +256,23 @@ Afin de faciliter l’intégration d’image sur les cards, le package core four
 - **useMetafileUri** : pour le formatteur d’une URI à partir d’un MetaFile
 - **useBinaryImageUri** et **useBinaryPictureUri** : pour le formatteur d’une URI à partir d’une image binaire.
 
+## Gestion des icônes SVG
+
+Pour les icônes, l'application supporte deux librairies : [FontAwesome](https://fontawesome.com/icons) et [Bootstrap](https://icons.getbootstrap.com/). Pour les icônes Bootstrap, nous utilisons la base de données svg dans le composant `BootstrapIcon`. Nous avons créé un script pour générer une map entre le nom de l'icône et les données svg qui peut être trouvée dans le dossier `icons/` des sources du package ui. Cette construction nous permet de créer des icônes personnalisées à partir d'un fichier SVG dans le dossier `scripts/` du package ui.
+
+Lors de l'ajout d'une nouvelle icône, il est important de s'assurer que le SVG ajouté est compatible avec la viewBox utilisée dans le composant `BootstrapIcon` :
+
+```tsx
+<Svg viewBox="0 0 16 16">...</Svg>
+```
+
+Dans le cas de viewBox="0 0 16 16", cela signifie que le dessin est positionné à partir du point (0,0) en haut à gauche et s'étend sur une largeur et une hauteur de 16 unités chacune. Cela crée un cadre carré dans lequel votre SVG doit s'insérer. Tous les éléments du SVG doivent être conçus pour tenir dans cette zone afin de s'afficher correctement.
+
+Pour adapter un SVG à cette viewBox, il existe plusieurs solutions :
+
+- Lors de la création du SVG, il est important de le créer directement dans le format approprié.
+- Si vous récupérez un SVG à partir d'une icône existante, redimensionnez le fichier SVG pour qu'il s'adapte au format requis.
+
 ## Points sensibles iOS
 
 Afin de permettre un support sur la plateforme iOS, il faut noter plusieurs points sur lesquels porter une attention particulière :
@@ -276,22 +293,3 @@ Afin de permettre un support sur la plateforme iOS, il faut noter plusieurs poin
   ```css
   borderStyle: Platform.OS === 'ios' ? 'solid' : 'dotted'
   ```
-
-## Gestion des Icônes
-
-Pour les icônes, nous utilisons les icônes de Bootstrap (disponibles sur "https://icons.getbootstrap.com/"). Nous utilisons le composant BootstrapIcon.tsx qui recherche l'icône demandée dans la liste de SVG disponible dans le fichier bootstrap-icon-map.json.
-
-Néanmoins, il est possible d'ajouter manuellement des SVG dans cette liste.
-
-Lors de l'ajout, il est important de vérifier que le SVG ajouté est compatible avec la viewBox utilisée dans le composant BootstrapIcon.
-
-      ```<Svg
-        viewBox="0 0 16 16"
-      </Svg>```
-
-Dans le cas de viewBox="0 0 16 16", cela signifie que le dessin est positionné à partir du point (0,0) en haut à gauche et s'étend sur une largeur et une hauteur de 16 unités chacune. Cela crée un cadre carré dans lequel votre SVG doit s'insérer. Tous les éléments du SVG doivent être conçus pour tenir à l'intérieur de cette zone pour s'afficher correctement.
-
-Pour adapter un SVG à cette viewBox, il existe plusieurs solutions :
-
-- Lors de la création du SVG, il est important de le créer directement au format approprié.
-- Si vous récupérez un SVG à partir d'une icône déjà existante, redimensionnez le fichier SVG pour qu'il s'adapte au format requis.
