@@ -16,8 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
+import React, {
+  LegacyRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
 import {Input, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
@@ -29,6 +35,7 @@ interface FormInputProps {
   readOnly?: boolean;
   style?: any;
   inputStyle?: any;
+  inputRef?: LegacyRef<TextInput>;
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
@@ -44,6 +51,7 @@ const FormInput = ({
   readOnly,
   style,
   inputStyle,
+  inputRef,
   required = false,
   onChange = () => {},
   onSelection = () => {},
@@ -111,6 +119,7 @@ const FormInput = ({
         ]}>
         <Input
           style={[styles.input, inputStyle]}
+          inputRef={inputRef}
           value={value}
           onChange={onValueChange}
           onSelection={handleSelection}
