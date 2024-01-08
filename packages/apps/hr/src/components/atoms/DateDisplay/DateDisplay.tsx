@@ -35,7 +35,7 @@ const IconDate = ({date, size = 18}: IconDateProps) => {
   return (
     <View style={styles.container}>
       <Icon
-        name="calendar-alt"
+        name="calendar2-week-fill"
         color={Colors.secondaryColor.foreground}
         size={size}
         style={styles.icon}
