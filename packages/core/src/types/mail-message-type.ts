@@ -20,6 +20,7 @@ import {ThemeColors} from '@axelor/aos-mobile-ui';
 
 class MailMessageType {
   static status = {
+    all: 'all',
     comment: 'comment',
     notification: 'notification',
   };
@@ -29,6 +30,12 @@ class MailMessageType {
     Colors: ThemeColors,
   ) => {
     return [
+      {
+        title: I18n.t('Base_All'),
+        color: Colors.primaryColor,
+        isActive: true,
+        key: this.status.all,
+      },
       {
         title: I18n.t('Base_Comments'),
         color: Colors.primaryColor,
