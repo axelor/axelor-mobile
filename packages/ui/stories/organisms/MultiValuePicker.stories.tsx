@@ -34,7 +34,7 @@ storiesOf('ui/organisms/MultiValuePicker', module).add(
       <MultiValuePicker
         title="Select options"
         listItems={listItem}
-        defaultItems={[listItem[1], listItem[3]]}
+        defaultItems={[listItem[0], listItem[2]]}
         {...args}
       />
     );
