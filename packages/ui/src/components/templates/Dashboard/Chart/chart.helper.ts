@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {ThemeColors} from '../../../../theme';
 import Chart from '../chart';
+import {Data} from '../dashboard.helper';
 
-export const mergeDataForGroupedBars = datasets => {
+const mergeDataForGroupedBars = (datasets: any[][]): any[] => {
   const mergedData = [];
 
   datasets.forEach(dataset => {
@@ -30,10 +32,10 @@ export const mergeDataForGroupedBars = datasets => {
       if (groupIndex === -1) {
         mergedData.push({
           label: label,
-          values: [value],
+          valueList: [value],
         });
       } else {
-        mergedData[groupIndex].values.push(value);
+        mergedData[groupIndex].valueList.push(value);
       }
     });
   });
@@ -41,22 +43,22 @@ export const mergeDataForGroupedBars = datasets => {
   return mergedData;
 };
 
-export const transformToBarChartData = (groupedData, Colors, rotateLabel) => {
+const transformToBarChartData = (
+  groupedData: any[][],
+  rotateLabel: boolean,
+  spacing: number,
+  Colors: ThemeColors,
+): any[] => {
   let finalData = [];
 
-  groupedData.forEach(group => {
-    group.values.forEach((value, index) => {
+  groupedData.forEach((group: any) => {
+    group.valueList.forEach((value, index) => {
       finalData.push({
         value: value,
         label: index === 0 ? group.label : '',
         frontColor: Chart.getChartColor(index, Colors).background,
-        spacing: index === group.values.length - 1 ? 24 : 2,
-        labelTextStyle: {
-          color: Colors.secondaryColor_dark.background,
-          top: rotateLabel ? 10 : 0,
-          left: rotateLabel ? 15 : 5,
-          transform: rotateLabel ? [{rotate: '45deg'}] : [],
-        },
+        spacing: index === group.valueList.length - 1 ? 24 : 2,
+        labelTextStyle: getLabelStyle(rotateLabel, spacing, Colors, true),
       });
     });
   });
@@ -64,12 +66,63 @@ export const transformToBarChartData = (groupedData, Colors, rotateLabel) => {
   return finalData;
 };
 
-export const generateChartProps = (datasets, Color) => {
+export const initBarData = (
+  datasets: Data[][],
+  rotateLabel: boolean,
+  spacing: number,
+  Colors: ThemeColors,
+): any => {
+  if (!Array.isArray(datasets)) {
+    return {};
+  }
+
+  return transformToBarChartData(
+    mergeDataForGroupedBars(datasets),
+    rotateLabel,
+    spacing,
+    Colors,
+  );
+};
+
+const getLabelStyle = (
+  rotateLabel: boolean,
+  spacing: number,
+  Colors: ThemeColors,
+  isBar: boolean = false,
+): any => {
+  return {
+    width: rotateLabel ? 60 : spacing,
+    color: Colors.secondaryColor_dark.background,
+    top: (rotateLabel ? 10 : 0) + (isBar ? 2 : 0),
+    left: 5,
+    transform: rotateLabel ? [{rotate: '45deg'}] : [],
+    fontSize: 13,
+  };
+};
+
+export const addLabelTextStyleToDataset = (
+  datasets: Data[][],
+  rotateLabel: boolean,
+  spacing: number,
+  Colors: ThemeColors,
+): Data[][] => {
+  return datasets.map(dataArray =>
+    dataArray.map(data => ({
+      ...data,
+      labelTextStyle: getLabelStyle(rotateLabel, spacing, Colors),
+    })),
+  );
+};
+
+const generateLineChartProps = (
+  datasets: Data[][],
+  Colors: ThemeColors,
+): any => {
   const props: any = {};
 
   datasets.forEach((dataset, index) => {
     const color =
-      dataset[0]?.color || Chart.getChartColor(index, Color).background;
+      dataset[0]?.color || Chart.getChartColor(index, Colors).background;
     props[`dataPointsColor${index + 1}`] = color;
     props[`color${index + 1}`] = color;
 
@@ -83,22 +136,18 @@ export const generateChartProps = (datasets, Color) => {
   return props;
 };
 
-export const addLabelTextStyleToDataset = (
-  datasets,
-  rotateLabel,
-  spacing,
-  Colors,
-) => {
-  return datasets.map(dataArray =>
-    dataArray.map(data => ({
-      ...data,
-      labelTextStyle: {
-        width: rotateLabel ? 60 : spacing,
-        color: Colors.secondaryColor_dark.background,
-        top: rotateLabel ? 10 : 0,
-        left: 10,
-        transform: rotateLabel ? [{rotate: '45deg'}] : [],
-      },
-    })),
+export const initLineData = (
+  datasets: Data[][],
+  rotateLabel: boolean,
+  spacing: number,
+  Colors: ThemeColors,
+): any => {
+  if (!Array.isArray(datasets)) {
+    return {};
+  }
+
+  return generateLineChartProps(
+    addLabelTextStyleToDataset(datasets, rotateLabel, spacing, Colors),
+    Colors,
   );
 };

@@ -19,11 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
+import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
-import {checkNullString} from '../../../../utils/strings';
+import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
-import {mergeDataForGroupedBars, transformToBarChartData} from './chart.helper';
+import {initBarData} from './chart.helper';
 
 const MARGIN = 5;
 
@@ -47,12 +47,10 @@ const BarChart = ({
   rotateLabel = true,
 }: BarCharProps) => {
   const Colors = useThemeColor();
-  const groupedData = mergeDataForGroupedBars(datasets);
-  const barChartData = transformToBarChartData(
-    groupedData,
-    Colors,
-    rotateLabel,
-  );
+
+  const barChartData = useMemo(() => {
+    return initBarData(datasets, rotateLabel, spacing, Colors);
+  }, [Colors, datasets, rotateLabel, spacing]);
 
   const styles = useMemo(() => {
     return getStyles(rotateLabel);

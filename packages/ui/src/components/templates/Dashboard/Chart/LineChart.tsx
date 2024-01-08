@@ -19,11 +19,11 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
+import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
-import {checkNullString} from '../../../../utils/strings';
+import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
-import {addLabelTextStyleToDataset, generateChartProps} from './chart.helper';
+import {initLineData} from './chart.helper';
 
 const MARGIN = 5;
 
@@ -48,13 +48,9 @@ const LineChart = ({
 }: LineChartProps) => {
   const Colors = useThemeColor();
 
-  const customDatasets = addLabelTextStyleToDataset(
-    datasets,
-    rotateLabel,
-    spacing,
-    Colors,
-  );
-  const chartProps = generateChartProps(customDatasets, Colors);
+  const chartProps = useMemo(() => {
+    return initLineData(datasets, rotateLabel, spacing, Colors);
+  }, [Colors, datasets, rotateLabel, spacing]);
 
   const styles = useMemo(() => {
     return getStyles(rotateLabel);
@@ -109,7 +105,7 @@ const getStyles = rotateLabel =>
       paddingVertical: 10,
     },
     title: {
-      marginTop: rotateLabel ? 30 : 5,
+      marginTop: rotateLabel ? 30 : 0,
       alignSelf: 'center',
       textAlign: 'center',
     },
