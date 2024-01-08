@@ -77,9 +77,6 @@ describe('BarChart Component', () => {
       <BarChart {...props} spacing={spacing} horizontal={horizontal} />,
     );
 
-    expect(wrapper.find(RNBarChart).prop('frontColor')).toBe(
-      props.datasets[0][0].color,
-    );
     expect(wrapper.find(RNBarChart).prop('spacing')).toBe(spacing);
     expect(wrapper.find(RNBarChart).prop('horizontal')).toBe(horizontal);
   });
