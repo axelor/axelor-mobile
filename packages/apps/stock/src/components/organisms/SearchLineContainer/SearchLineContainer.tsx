@@ -100,7 +100,7 @@ const SearchLineContainer = ({
           {showAction && (
             <Icon
               style={styles.icon}
-              name="plus"
+              name="plus-lg"
               color={Colors.primaryColor.background}
               size={20}
               touchable={true}

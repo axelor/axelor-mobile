@@ -67,10 +67,10 @@ const CustomerDeliveryMovementIndicationCard = ({
       <MovementIndicationCard
         titleTop={customerDelivery.fromStockLocation?.name}
         iconTop={
-          <Icon name="warehouse" color={Colors.primaryColor.background} />
+          <Icon name="house-down" color={Colors.primaryColor.background} />
         }
         titleDown={customerAddress}
-        iconDown={<Icon name="map-marker-alt" />}
+        iconDown={<Icon name="geo-alt-fill" />}
         disabledDown={!showPopupOnCLick}
         onPressTitleDown={() => setVisiblePopup(true)}
       />

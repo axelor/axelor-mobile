@@ -41,7 +41,7 @@ const ItemCard = ({onSelect = () => {}, title, isSelected = false}) => {
         {isSelected && (
           <Icon
             style={styles.icon}
-            name="check"
+            name="check-lg"
             color={Colors.primaryColor.background}
           />
         )}

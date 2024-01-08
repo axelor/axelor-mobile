@@ -33,7 +33,7 @@ export const HelpDeskModule: Module = {
   name: 'app-helpdesk',
   title: 'Helpdesk_Helpdesk',
   subtitle: 'Helpdesk_Helpdesk',
-  icon: 'life-ring',
+  icon: 'life-preserver',
   compatibilityAOS: {
     moduleName: 'axelor-helpdesk',
     downToVersion: '7.1.0',
@@ -50,12 +50,12 @@ export const HelpDeskModule: Module = {
     },
     helpdesk_menu_myTeamTickets: {
       title: 'Helpdesk_myTeamTickets',
-      icon: 'users',
+      icon: 'people-fill',
       screen: 'MyTeamTicketListScreen',
     },
     helpdesk_menu_createTicket: {
       title: 'helpdesk_createTicket',
-      icon: 'plus',
+      icon: 'plus-lg',
       screen: 'TicketFormScreen',
     },
   },

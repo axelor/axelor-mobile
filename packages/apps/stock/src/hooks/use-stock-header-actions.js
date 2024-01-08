@@ -68,7 +68,7 @@ const useCustomerDeliveryLineListActions = () => {
         {
           key: 'newCustomerDeliveryLine',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Stock_AddLine'),
           iconColor: Colors.primaryColor.background,
           hideIf:
@@ -115,7 +115,7 @@ const useInternalMoveListActions = () => {
         {
           key: 'newInternalMove',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Stock_NewInternalMove'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('InternalMoveCreationScreen'),
@@ -191,7 +191,7 @@ const useStockCorrectionListActions = () => {
         {
           key: 'newStockCorrection',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Stock_NewStockCorrection'),
           iconColor: Colors.primaryColor.background,
           onPress: () =>
@@ -243,7 +243,7 @@ const useSupplierArrivalLineListActions = () => {
         {
           key: 'newSupplierArrivalLine',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Stock_AddLine'),
           iconColor: Colors.primaryColor.background,
           hideIf:

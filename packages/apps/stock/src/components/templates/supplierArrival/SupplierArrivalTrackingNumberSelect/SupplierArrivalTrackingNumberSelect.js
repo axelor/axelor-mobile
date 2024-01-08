@@ -67,7 +67,7 @@ const SupplierArrivalTrackingNumberSelect = ({
           {I18n.t('Stock_AddTrackingNumber')}
         </Text>
         <Icon
-          name="plus"
+          name="plus-lg"
           color={Colors.primaryColor.background}
           size={24}
           style={styles.action}

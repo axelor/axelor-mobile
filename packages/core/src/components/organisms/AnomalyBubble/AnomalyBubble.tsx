@@ -88,7 +88,7 @@ const AnomalyBubble = ({
     <InfoBubble
       style={style}
       textIndicationStyle={textIndicationStyle}
-      iconName="exclamation-triangle"
+      iconName="exclamation-triangle-fill"
       badgeColor={Anomaly.getTypeColor(displayAnomaly.checkType, Colors)}
       indication={isIndicationDisabled ? null : displayAnomaly.message}
       size={size}

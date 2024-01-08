@@ -28,11 +28,11 @@ export const authModule: Module = {
   name: 'Auth',
   title: 'User_User',
   subtitle: 'User_User',
-  icon: 'user',
+  icon: 'person-fill',
   menus: {
     auth_menu_user: {
       title: 'User_UserProfile',
-      icon: 'user',
+      icon: 'person-fill',
       screen: 'UserScreen',
       isDefault: true,
     },

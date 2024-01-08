@@ -54,7 +54,7 @@ const ProductSeeStockLocationDistribution = ({
         <View style={styles.arrowContainer}>
           <Text>{I18n.t('Stock_SeeDistributionStockLocation')}</Text>
           <Icon
-            name="angle-right"
+            name="chevron-right"
             size={24}
             color={Colors.primaryColor.background}
             style={styles.arrowIcon}

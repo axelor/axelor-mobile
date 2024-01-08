@@ -59,16 +59,22 @@ const Label = ({
 
     switch (type) {
       case 'error':
-        config = {color: Colors.errorColor, iconName: 'warning'};
+        config = {
+          color: Colors.errorColor,
+          iconName: 'exclamation-triangle-fill',
+        };
         break;
       case 'danger':
-        config = {color: Colors.cautionColor, iconName: 'exclamation-circle'};
+        config = {
+          color: Colors.cautionColor,
+          iconName: 'exclamation-circle-fill',
+        };
         break;
       case 'info':
-        config = {color: Colors.infoColor, iconName: 'info-circle'};
+        config = {color: Colors.infoColor, iconName: 'info-circle-fill'};
         break;
       case 'success':
-        config = {color: Colors.successColor, iconName: 'check-circle'};
+        config = {color: Colors.successColor, iconName: 'check-circle-fill'};
         break;
       default:
         config = {color: null, iconName: null};
@@ -111,16 +117,11 @@ const Label = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Icon
-        name={typeConfig?.iconName}
-        FontAwesome5={false}
-        color={typeConfig?.color?.foreground}
-      />
+      <Icon name={typeConfig?.iconName} color={typeConfig?.color?.foreground} />
       <Text style={styles.text}>{message}</Text>
       {showClose && (
         <Icon
-          name="times"
-          FontAwesome5={false}
+          name="x-lg"
           color={typeConfig?.color?.foreground}
           touchable={true}
           onPress={handleClose}

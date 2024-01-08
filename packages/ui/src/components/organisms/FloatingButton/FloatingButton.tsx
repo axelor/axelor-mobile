@@ -93,7 +93,7 @@ const FloatingActionButton = ({
 
 const FloatingButton = ({
   actions,
-  iconName = 'plus',
+  iconName = 'plus-lg',
   size = FLOATING_BUTTON_SIZE,
   style,
   translator,
@@ -164,7 +164,7 @@ const FloatingButton = ({
         <View style={styles.actionsContainer}>{actionComponents}</View>
       )}
       <CircleButton
-        iconName={isOpen ? 'times' : iconName}
+        iconName={isOpen ? 'x-lg' : iconName}
         onPress={handleFLoatingButtonPress}
         size={size}
         style={styles.floatingButton}

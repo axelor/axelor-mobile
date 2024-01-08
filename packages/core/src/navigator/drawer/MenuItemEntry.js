@@ -102,9 +102,8 @@ const MenuItemEntry = ({
             visible={isDropdown && !compatibilityError}
           />
           <Icon
-            name="warning"
+            name="exclamation-triangle-fill"
             color={Colors.errorColor.background}
-            FontAwesome5={false}
             style={styles.dropdownIcon}
             visible={compatibilityError}
           />

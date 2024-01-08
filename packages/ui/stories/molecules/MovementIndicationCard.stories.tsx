@@ -32,7 +32,7 @@ storiesOf('ui/molecules/MovementIndicationCard', module).add(
         <Icon name="truck" color={lightTheme.colors.primaryColor.background} />
       }
       titleDown={'titleDown'}
-      iconDown={<Icon name="map-marker" />}
+      iconDown={<Icon name="geo-alt-fill" />}
       disabledDown={false}
       onPressTitleTop={() => action('onPressTitleTop')}
       onPressTitleDown={() => action('onPressTitleDown')}

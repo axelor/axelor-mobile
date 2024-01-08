@@ -181,7 +181,7 @@ const PlanningView = ({
         {returnToDayButton && (
           <CircleButton
             style={styles.circleButton}
-            iconName="calendar-day"
+            iconName="calendar-day-fill"
             onPress={todayBtnOnPress}
             size={30}
           />

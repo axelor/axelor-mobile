@@ -27,36 +27,36 @@ class File {
   static getFileIcon = filename => {
     switch (this.getFileExtension(filename)) {
       case 'pdf':
-        return 'file-pdf';
+        return 'file-earmark-pdf-fill';
       case 'jpeg':
       case 'jpg':
       case 'svg':
       case 'png':
-        return 'file-image';
+        return 'file-earmark-image-fill';
       case 'csv':
-        return 'file-csv';
+        return 'filetype-csv';
       case 'zip':
-        return 'file-archive';
+        return 'file-earmark-zip-fill';
       case 'docx':
       case 'doc':
       case 'odt':
       case 'txt':
-        return 'file-word';
+        return 'file-earmark-word-fill';
       case 'potx':
       case 'pptx':
       case 'ppt':
       case 'odp':
-        return 'file-powerpoint';
+        return 'file-earmark-ppt-fill';
       case 'ods':
       case 'xls':
       case 'xlsx':
       case 'xltm':
-        return 'file-excel';
+        return 'file-earmark-spreadsheet-fill';
       case 'mp4':
       case 'mp3':
-        return 'file-audio';
+        return 'file-earmark-music-fill';
       default:
-        return 'file';
+        return 'file-earmark-fill';
     }
   };
 }

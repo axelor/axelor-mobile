@@ -82,7 +82,7 @@ const InternalMoveCard = ({
           {displayText: toStockLocation, style: styles.noBold},
           {
             displayText: origin,
-            iconName: 'tag',
+            iconName: 'tag-fill',
             style: styles.noBold,
             hideIfNull: true,
           },

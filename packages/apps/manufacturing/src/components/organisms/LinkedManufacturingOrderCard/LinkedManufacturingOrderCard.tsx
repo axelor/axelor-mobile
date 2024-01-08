@@ -43,7 +43,9 @@ const LinkedManufacturingOrderCard = ({
           },
         ],
       }}
-      upperTexts={{items: [{iconName: 'tag', indicatorText: manufOrderSeq}]}}
+      upperTexts={{
+        items: [{iconName: 'tag-fill', indicatorText: manufOrderSeq}],
+      }}
     />
   );
 };

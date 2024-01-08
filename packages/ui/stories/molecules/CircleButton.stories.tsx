@@ -26,7 +26,7 @@ storiesOf('ui/molecules/CircleButton', module).add(
   args => {
     return (
       <CircleButton
-        iconName="car"
+        iconName="pen-fill"
         {...args}
         color={lightTheme.colors[args.color]}
       />
@@ -60,7 +60,7 @@ storiesOf('ui/molecules/CircleButton', module).add(
       },
       iconName: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'pen-fill',
         control: {type: 'text'},
       },
       disabled: {

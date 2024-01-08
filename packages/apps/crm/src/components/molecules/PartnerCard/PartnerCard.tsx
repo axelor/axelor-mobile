@@ -96,7 +96,7 @@ const PartnerCard = ({
           {
             indicatorText: partnerCompany,
             hideIfNull: true,
-            iconName: 'building',
+            iconName: 'building-fill',
           },
         ],
       }}
@@ -105,24 +105,22 @@ const PartnerCard = ({
           {
             indicatorText: partnerAdress,
             hideIfNull: true,
-            iconName: 'map-marker-alt',
+            iconName: 'geo-alt-fill',
           },
           {
             indicatorText: partnerMobilePhone,
-            fontAwesome5: false,
-            size: 18,
             hideIfNull: true,
-            iconName: 'mobile-phone',
+            iconName: 'phone-fill',
           },
           {
             indicatorText: partnerFixedPhone,
             hideIfNull: true,
-            iconName: 'phone-alt',
+            iconName: 'telephone-fill',
           },
           {
             indicatorText: partnerEmail,
             hideIfNull: true,
-            iconName: 'envelope',
+            iconName: 'envelope-fill',
           },
         ],
       }}

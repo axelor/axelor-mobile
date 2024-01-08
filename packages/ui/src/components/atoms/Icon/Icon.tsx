@@ -45,7 +45,7 @@ interface IconProps {
 const Icon = ({
   style,
   name,
-  FontAwesome5 = true,
+  FontAwesome5 = false,
   isFontAwesome4 = false,
   isFontAwesome5 = false,
   color,

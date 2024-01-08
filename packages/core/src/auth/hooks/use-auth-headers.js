@@ -43,7 +43,7 @@ const useUserProfileActions = () => {
         {
           key: 'settings',
           order: 10,
-          iconName: 'cog',
+          iconName: 'gear-fill',
           iconColor: Colors.primaryColor.background,
           title: I18n.t('User_Settings'),
           onPress: () => navigation.navigate('SettingsScreen', {user: user}),

@@ -99,7 +99,7 @@ const MailMessageCommentCard = ({
         <Card style={styles.card}>
           <View style={styles.cardHeader}>
             <LabelText
-              iconName="comment"
+              iconName="chat-fill"
               size={18}
               value={subject || I18n.t('Base_Comment')}
               style={styles.headerLabel}

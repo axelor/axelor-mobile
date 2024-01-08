@@ -62,7 +62,7 @@ describe('MultiValuePickerButton Component', () => {
   it('should render Icon component for each listItem', () => {
     const wrapper = shallow(<MultiValuePickerButton {...props} />);
 
-    expect(wrapper.find('Icon[name="times"]').length).toBe(listItem.length);
+    expect(wrapper.find('Icon[name="x-lg"]').length).toBe(listItem.length);
   });
 
   it('should render the correct listItem titles and colors', () => {
@@ -70,7 +70,7 @@ describe('MultiValuePickerButton Component', () => {
 
     listItem.forEach((item, index) => {
       const textElement = wrapper.find(Text).at(index);
-      const iconElement = wrapper.find('Icon[name="times"]').at(index);
+      const iconElement = wrapper.find('Icon[name="x-lg"]').at(index);
 
       expect(textElement.prop('children')).toBe(item.title);
       expect(textElement.prop('textColor')).toBe(item.color.foreground);
