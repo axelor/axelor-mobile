@@ -87,7 +87,6 @@
   "Stock_ErrorProduct": "This is not the right product.",
   "Stock_ErrorTrackingNumber": "This is not the right tracking number.",
   "Stock_Customer": "Customer",
-  "Stock_Carrier": "Carrier",
   "Stock_Supplier": "Supplier",
   "Stock_SupplierCatalog": "Supplier catalog",
   "Stock_OriginalAdress": "Original address",
