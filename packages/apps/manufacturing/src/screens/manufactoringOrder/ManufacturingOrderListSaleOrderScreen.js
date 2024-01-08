@@ -64,8 +64,8 @@ const ManufacturingOrderListSaleOrderScreen = ({route}) => {
               showArrow={false}
               upperTexts={{
                 items: [
-                  {indicatorText: saleOrderRef.ref, iconName: 'tag'},
-                  {indicatorText: saleOrderRef.client, iconName: 'user'},
+                  {indicatorText: saleOrderRef.ref, iconName: 'tag-fill'},
+                  {indicatorText: saleOrderRef.client, iconName: 'person-fill'},
                 ],
               }}
             />

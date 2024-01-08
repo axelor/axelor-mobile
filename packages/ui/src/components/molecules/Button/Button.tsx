@@ -29,7 +29,6 @@ export interface ButtonProps {
   isNeutralBackground?: boolean;
   iconName?: string;
   iconSize?: number;
-  FontAwesome5?: boolean;
   title?: string;
   style?: any;
   styleIcon?: any;
@@ -44,8 +43,7 @@ const Button = ({
   color,
   isNeutralBackground = false,
   iconName,
-  iconSize = 15,
-  FontAwesome5 = true,
+  iconSize = 25,
   title,
   style,
   styleIcon,
@@ -95,7 +93,6 @@ const Button = ({
       {!!iconName && (
         <Icon
           name={iconName}
-          FontAwesome5={FontAwesome5}
           size={iconSize}
           color={buttonColor.foreground}
           style={[styles.icon, styleIcon]}

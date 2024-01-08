@@ -83,7 +83,7 @@ const MenuIconButton = ({
         {compatibilityError && (
           <InfoBubble
             style={styles.infoBubble}
-            iconName="exclamation-triangle"
+            iconName="exclamation-triangle-fill"
             badgeColor={Colors.errorColor}
             textIndicationStyle={styles.textIndicationStyle}
             indication={I18n.t(

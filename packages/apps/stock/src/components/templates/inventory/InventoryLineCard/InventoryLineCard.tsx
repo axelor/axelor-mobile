@@ -81,13 +81,13 @@ const InventoryLineCard = ({
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
             hideIf: checkNullString(locker),
-            iconName: 'map-marker-alt',
+            iconName: 'geo-alt-fill',
           },
           {
             displayText: trackingNumber?.trackingNumberSeq,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
             hideIf: trackingNumber?.trackingNumberSeq == null,
-            iconName: 'qrcode',
+            iconName: 'qr-code',
           },
         ],
       }}

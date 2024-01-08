@@ -52,7 +52,7 @@ const TicketsStatusButton = ({}) => {
     return (
       <Button
         title={I18n.t('Helpdesk_Start')}
-        iconName="play"
+        iconName="play-fill"
         onPress={() => updateStatus(Ticket.stopWatchStatus.start)}
         color={Colors.primaryColor}
       />
@@ -63,7 +63,7 @@ const TicketsStatusButton = ({}) => {
     return (
       <Button
         title={I18n.t('Helpdesk_Resolve')}
-        iconName="check"
+        iconName="check-lg"
         onPress={() => updateStatus(Ticket.stopWatchStatus.stop)}
       />
     );

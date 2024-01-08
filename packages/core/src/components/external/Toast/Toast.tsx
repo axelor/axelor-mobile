@@ -95,7 +95,7 @@ const Toast = () => {
         <View style={styles.alertContainer}>
           <View style={styles.iconContainer}>
             <Icon
-              name={isError ? 'times' : 'check'}
+              name={isError ? 'x-lg' : 'check-lg'}
               size={25}
               color={alertColor}
             />

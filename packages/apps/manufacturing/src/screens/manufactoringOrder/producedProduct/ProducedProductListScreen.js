@@ -68,7 +68,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list == null || list === []) {
+      if (list == null || list?.length === 0) {
         return list;
       } else if (selectedStatus !== null && selectedStatus.length > 0) {
         return list.filter(item => {
@@ -135,7 +135,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
               {manufOrder?.statusSelect ===
                 ManufacturingOrder.status.InProgress && (
                 <Icon
-                  name="plus"
+                  name="plus-lg"
                   size={20}
                   color={Colors.primaryColor.background}
                   touchable={true}

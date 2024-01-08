@@ -66,7 +66,7 @@ const MailMessageNotificationCard = ({
       <Card style={[styles.card, style]}>
         <View style={styles.cardHeader}>
           <LabelText
-            iconName="info-circle"
+            iconName="info-circle-fill"
             size={18}
             value={title}
             style={styles.headerLabel}

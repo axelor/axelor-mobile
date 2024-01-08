@@ -66,7 +66,7 @@ const HeaderContainer = ({
         <TouchableOpacity onPress={handleExpandPress}>
           <View style={styles.arrowContainer}>
             <Icon
-              name={isVisible ? 'angle-up' : 'angle-down'}
+              name={isVisible ? 'chevron-up' : 'chevron-down'}
               size={22}
               color={Colors.primaryColor.background}
             />

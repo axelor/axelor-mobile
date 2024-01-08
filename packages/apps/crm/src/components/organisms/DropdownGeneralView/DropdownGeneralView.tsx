@@ -57,7 +57,7 @@ const DropdownGeneralView = ({
       {!checkNullString(assignedUser) && (
         <LabelText
           title={I18n.t('Crm_AssignedTo')}
-          iconName={'user-tie'}
+          iconName="person-fill"
           value={assignedUser}
         />
       )}

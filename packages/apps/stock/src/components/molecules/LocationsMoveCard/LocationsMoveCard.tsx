@@ -65,7 +65,7 @@ const LocationsMoveCard = ({
               {fromStockLocation}
             </Text>
           </View>
-          {editIconFrom && <Icon name="pencil-alt" size={14} />}
+          {editIconFrom && <Icon name="pencil-fill" size={14} />}
         </TouchableOpacity>
       </View>
       <Icon
@@ -88,7 +88,7 @@ const LocationsMoveCard = ({
               {toStockLocation}
             </Text>
           </View>
-          {editIconTo && <Icon name="pencil-alt" size={14} />}
+          {editIconTo && <Icon name="pencil-fill" size={14} />}
         </TouchableOpacity>
       </View>
     </View>

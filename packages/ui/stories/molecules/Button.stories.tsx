@@ -44,7 +44,7 @@ storiesOf('ui/molecules/Button', module).add(
       },
       iconName: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'car-front',
         control: {type: 'text'},
       },
       isNeutralBackground: {

@@ -35,7 +35,7 @@ const SupplierProductInfo = ({}) => {
 
   return (
     <View style={styles.supplierInfoContainer}>
-      <Icon name="info-circle" size={20} />
+      <Icon name="info-circle-fill" size={20} />
       <View style={styles.supplierInfo}>
         <Text style={styles.text_important}>
           {I18n.t('Stock_SupplierCatalog')}

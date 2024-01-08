@@ -26,7 +26,6 @@ interface DropdownMenuItemProps {
   icon?: string;
   color?: string;
   placeholder: string;
-  FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
   disableIf?: boolean;
@@ -41,7 +40,6 @@ const DropdownMenuItem = ({
   color,
   placeholder,
   indicator = 0,
-  FontAwesome5 = true,
   hideIf = false,
   disableIf = false,
   customComponent,
@@ -74,12 +72,7 @@ const DropdownMenuItem = ({
         {customComponent != null ? (
           React.cloneElement(customComponent)
         ) : (
-          <Icon
-            name={icon}
-            color={_color}
-            FontAwesome5={FontAwesome5}
-            size={15}
-          />
+          <Icon name={icon} color={_color} size={15} />
         )}
         {indicator > 0 && (
           <Badge
