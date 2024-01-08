@@ -31,10 +31,13 @@ const ContactHeader = ({}) => {
         <Text style={styles.textTitle} fontSize={16}>
           {contact.simpleFullName}
         </Text>
-        <LabelText iconName="building" title={contact.mainPartner?.fullName} />
+        <LabelText
+          iconName="building-fill"
+          title={contact.mainPartner?.fullName}
+        />
         {contact?.jobTitleFunction != null && (
           <LabelText
-            iconName="suitcase"
+            iconName="suitcase-lg-fill"
             title={contact?.jobTitleFunction?.name}
           />
         )}

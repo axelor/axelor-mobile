@@ -68,7 +68,7 @@ const Alert = ({
     return {
       title: translator('Base_Cancel'),
       color: Colors.errorColor,
-      iconName: 'times',
+      iconName: 'x-lg',
       hide: false,
       showInHeader: false,
       headerSize: 20,
@@ -85,7 +85,7 @@ const Alert = ({
     return {
       title: translator('Base_OK'),
       color: Colors.primaryColor,
-      iconName: 'check',
+      iconName: 'check-lg',
       hide: false,
       width: DEFAULT_BUTTON_WIDTH,
       ...confirmButtonConfig,
@@ -124,7 +124,7 @@ const Alert = ({
             {!_cancelButtonConfig?.hide &&
               _cancelButtonConfig?.showInHeader && (
                 <Icon
-                  name="times"
+                  name="x-lg"
                   size={_cancelButtonConfig?.headerSize}
                   style={styles.headerCancelButton}
                   touchable

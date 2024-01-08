@@ -54,7 +54,7 @@ const SessionNameInput = ({
       onChange={onChange}
       readOnly={readOnly}
       placeholder={I18n.t('Base_Connection_SessionName')}
-      leftIconsList={[<Icon name="tag" size={17} style={styles.icon} />]}
+      leftIconsList={[<Icon name="tag-fill" size={17} style={styles.icon} />]}
     />
   );
 };

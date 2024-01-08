@@ -89,7 +89,7 @@ const QuantityCard = ({
           <View style={styles.actionContainer}>
             <View style={styles.childrenContainer}>{children}</View>
             <Icon
-              name="pencil-alt"
+              name="pencil-fill"
               size={17}
               touchable={true}
               onPress={onPressActionQty}

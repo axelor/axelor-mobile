@@ -38,9 +38,12 @@ const SupplierArrivalHeader = ({supplierArrival}) => {
         }
       />
       <View style={styles.clientContainer}>
-        <LabelText iconName="user" title={supplierArrival.partner?.fullName} />
+        <LabelText
+          iconName="person-fill"
+          title={supplierArrival.partner?.fullName}
+        />
         {supplierArrival.origin == null ? null : (
-          <LabelText iconName="tag" title={supplierArrival.origin} />
+          <LabelText iconName="tag-fill" title={supplierArrival.origin} />
         )}
         {supplierArrival.supplierShipmentRef == null ? null : (
           <LabelText

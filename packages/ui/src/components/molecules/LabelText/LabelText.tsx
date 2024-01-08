@@ -30,7 +30,6 @@ interface LabelTextProps {
   size?: number;
   color?: string;
   iconName?: string;
-  FontAwesome5?: boolean;
   onlyOneLine?: boolean;
 }
 
@@ -43,7 +42,6 @@ const LabelText = ({
   size = 12,
   color,
   iconName = null,
-  FontAwesome5 = true,
   onlyOneLine = false,
 }: LabelTextProps) => {
   return (
@@ -54,7 +52,6 @@ const LabelText = ({
           name={iconName}
           size={size}
           color={color}
-          FontAwesome5={FontAwesome5}
         />
       )}
       {!checkNullString(title) && (

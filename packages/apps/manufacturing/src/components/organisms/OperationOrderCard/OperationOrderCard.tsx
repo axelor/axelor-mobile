@@ -69,7 +69,7 @@ const OperationOrderCard = ({
           {
             hideIf: plannedDuration == null,
             indicatorText: formatDuration(plannedDuration),
-            iconName: 'stopwatch',
+            iconName: 'stopwatch-fill',
           },
         ],
       }}

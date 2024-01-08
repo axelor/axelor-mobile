@@ -26,7 +26,7 @@ storiesOf('ui/molecules/HalfLabelCard', module).add(
   args => {
     return (
       <HalfLabelCard
-        iconName="car"
+        iconName="backpack"
         title="Profile"
         onPress={action('Card pressed')}
         {...args}
@@ -37,7 +37,7 @@ storiesOf('ui/molecules/HalfLabelCard', module).add(
     argTypes: {
       iconName: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'backpack',
         control: {type: 'text'},
       },
       title: {

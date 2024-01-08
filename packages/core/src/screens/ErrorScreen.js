@@ -27,8 +27,7 @@ const ErrorScreen = ({errorMessage, onReloadPress}) => {
         <Button
           title="RELOAD SCREEN"
           onPress={onReloadPress}
-          FontAwesome5={false}
-          iconName="refresh"
+          iconName="arrow-repeat"
         />
       }>
       <ScrollView contentContainerStyle={styles.container}>

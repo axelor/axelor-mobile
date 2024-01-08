@@ -156,7 +156,7 @@ const WasteProductListScreen = ({route, navigation}) => {
               <Text>{I18n.t('Manufacturing_WasteDeclaration')}</Text>
               {canDeclare && (
                 <Icon
-                  name="plus"
+                  name="plus-lg"
                   size={20}
                   color={Colors.primaryColor.background}
                   touchable={true}

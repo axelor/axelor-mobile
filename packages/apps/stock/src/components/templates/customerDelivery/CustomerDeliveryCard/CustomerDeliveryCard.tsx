@@ -79,7 +79,7 @@ const CustomerDeliveryCard = ({
           {displayText: client, hideIfNull: true},
           {
             displayText: origin,
-            iconName: 'tag',
+            iconName: 'tag-fill',
             style: styles.noBold,
             hideIfNull: true,
           },

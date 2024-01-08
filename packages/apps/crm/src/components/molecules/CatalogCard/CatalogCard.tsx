@@ -99,7 +99,7 @@ const CatalogCard = ({
       lowerBadges={{
         items: [
           {
-            customComponent: <Icon name="external-link-alt" size={10} />,
+            customComponent: <Icon name="box-arrow-up-right" size={10} />,
           },
         ],
         fixedOnRightSide: true,

@@ -71,7 +71,7 @@ const Image = ({
   if (source == null || isValid === false) {
     return (
       <Icon
-        name="camera"
+        name="camera-fill"
         size={defaultIconSize}
         color={Colors.secondaryColor.background_light}
         style={generalStyle}

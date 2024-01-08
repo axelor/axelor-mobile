@@ -99,7 +99,7 @@ describe('ViewAllContainer Component', () => {
 
     expect(topView.find(Text).length).toBe(1);
     expect(topView.find(Icon).length).toBe(1);
-    expect(topView.find(Icon).prop('name')).toBe('plus');
+    expect(topView.find(Icon).prop('name')).toBe('plus-lg');
     expect(topView.find(Icon).prop('touchable')).toBe(true);
 
     topView.find(Icon).simulate('press');

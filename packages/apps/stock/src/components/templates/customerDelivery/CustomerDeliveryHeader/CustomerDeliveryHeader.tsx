@@ -46,12 +46,12 @@ const CustomerDeliveryHeader = ({customerDelivery}) => {
         <View style={styles.clientInfos}>
           {customerDelivery.partner?.fullName && (
             <LabelText
-              iconName="user"
+              iconName="person-fill"
               title={customerDelivery.partner?.fullName}
             />
           )}
           {customerDelivery?.origin && (
-            <LabelText iconName="tag" title={customerDelivery?.origin} />
+            <LabelText iconName="tag-fill" title={customerDelivery?.origin} />
           )}
         </View>
         <View style={styles.ispmInfos}>

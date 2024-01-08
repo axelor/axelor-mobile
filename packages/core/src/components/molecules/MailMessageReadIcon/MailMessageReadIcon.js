@@ -64,7 +64,7 @@ const MailMessageReadIcon = ({
 
   return (
     <Icon
-      name={mailMessageFlag == null ? 'check-double' : 'check'}
+      name={mailMessageFlag == null ? 'check-all' : 'check-lg'}
       color={
         isRead
           ? Colors.primaryColor.background

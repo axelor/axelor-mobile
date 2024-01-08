@@ -118,7 +118,7 @@ const ExpenseCard = ({
                 hideIf: checkNullString(periodeCode),
               },
               {
-                iconName: 'user',
+                iconName: 'person-fill',
                 indicatorText: employeeName,
                 hideIfNull: true,
               },
@@ -144,8 +144,8 @@ const ExpenseCard = ({
           <CardIconButton
             iconName={
               statusSelect === Expense.statusSelect.Draft
-                ? 'paper-plane'
-                : 'check'
+                ? 'send-fill'
+                : 'check-lg'
             }
             iconColor={Colors.primaryColor.foreground}
             onPress={() => {
