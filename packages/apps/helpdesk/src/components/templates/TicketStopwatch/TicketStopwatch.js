@@ -129,7 +129,7 @@ const TicketStopwatch = ({}) => {
         ticket?.statusSelect !== Ticket.status.New && (
           <Button
             title={I18n.t('Helpdesk_Close')}
-            iconName="power-off"
+            iconName="power"
             onPress={() => updateStatus(Ticket.stopWatchStatus.validate)}
             color={Colors.primaryColor}
             disabled={

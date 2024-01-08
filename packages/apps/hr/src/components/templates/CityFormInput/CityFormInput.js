@@ -87,7 +87,7 @@ const CityFormInputAux = ({
         <InfoBubble
           style={styles.infoBubble}
           textIndicationStyle={styles.infoIndicator}
-          iconName="exclamation"
+          iconName="exclamation-lg"
           coloredBubble={false}
           badgeColor={Colors.errorColor}
           indication={I18n.t('Hr_CityNotFound')}

@@ -40,7 +40,7 @@ const DefaultCheckbox = ({style, value, onChange, hidden = false}: props) => {
       title={I18n.t('Base_Connection_DefaultSession')}
       isDefaultChecked={value}
       onChange={onChange}
-      iconSize={30}
+      iconSize={20}
       style={[styles.checkbox, style]}
     />
   );

@@ -115,7 +115,7 @@ const CameraButton = ({
     <CircleButton
       isNeutralBackground
       style={styles.floatingButton}
-      iconName="camera"
+      iconName="camera-fill"
       onPress={handleCameraPress}
       size={size}
     />

@@ -28,7 +28,7 @@ const BackIcon = ({tintColor}) => {
     <TouchableOpacity
       onPress={() => navigation.dispatch(StackActions.pop())}
       style={styles.icon}>
-      <Icon name="angle-left" size={26} color={tintColor} />
+      <Icon name="chevron-left" size={26} color={tintColor} />
     </TouchableOpacity>
   );
 };

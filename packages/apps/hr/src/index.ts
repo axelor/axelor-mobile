@@ -33,7 +33,7 @@ export const HrModule: Module = {
   name: 'app-hr',
   title: 'Hr_HumanRessources',
   subtitle: 'Hr_Hr',
-  icon: 'sitemap',
+  icon: 'diagram-3-fill',
   compatibilityAOS: {
     moduleName: 'axelor-human-resource',
     downToVersion: '7.2.0',
@@ -50,7 +50,7 @@ export const HrModule: Module = {
     },
     hr_menu_expenses: {
       title: 'Hr_Expenses',
-      icon: 'credit-card',
+      icon: 'credit-card-fill',
       screen: 'ExpenseListScreen',
     },
   },

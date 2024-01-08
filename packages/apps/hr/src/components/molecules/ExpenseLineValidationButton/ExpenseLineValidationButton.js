@@ -32,14 +32,14 @@ const ExpenseLineValidationButton = ({onOpen, selectedItems, onChangeMode}) => {
         color={Colors.errorColor}
         onPress={onChangeMode}
         width="45%"
-        iconName="times"
+        iconName="x-lg"
       />
       <Button
         title={I18n.t('Base_Add')}
         disabled={selectedItems.length <= 0}
         onPress={onOpen}
         width="45%"
-        iconName="plus"
+        iconName="plus-lg"
       />
     </View>
   );

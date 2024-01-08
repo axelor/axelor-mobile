@@ -50,7 +50,7 @@ const ExpenseLineSwitchAdd = ({
       {isAddButton && (
         <CircleButton
           size={38}
-          iconName="plus"
+          iconName="plus-lg"
           onPress={() =>
             navigation.navigate('ExpenseLineFormScreen', {
               idExpense: expense?.id,

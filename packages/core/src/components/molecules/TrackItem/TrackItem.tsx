@@ -52,12 +52,7 @@ const TrackItem = ({title, oldDisplayValue, oldValue, displayValue, value}) => {
       <Text style={styles.itemValue}>
         {parseDate(values.oldValue)}
         {values.oldValue && (
-          <Icon
-            name="long-arrow-right"
-            size={10}
-            FontAwesome5={false}
-            style={styles.arrowIcon}
-          />
+          <Icon name="arrow-right" size={10} style={styles.arrowIcon} />
         )}
         {parseDate(values.value)}
       </Text>

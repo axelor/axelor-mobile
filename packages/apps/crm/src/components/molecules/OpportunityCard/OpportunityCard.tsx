@@ -101,7 +101,7 @@ const OpportunityCard = ({
             indicatorText: I18n.t('Crm_Opportunity_ExpectedCloseDate'),
             displayText: _expectedCloseDate,
             hideIf: _expectedCloseDate == null,
-            iconName: 'clock',
+            iconName: 'clock-fill',
           },
         ],
       }}

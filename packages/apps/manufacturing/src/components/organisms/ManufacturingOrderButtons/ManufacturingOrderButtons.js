@@ -47,7 +47,7 @@ const ManufacturingOrderButtons = ({}) => {
       <Button
         title={I18n.t('Base_Start')}
         onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
-        iconName="play"
+        iconName="play-fill"
       />
     );
   }
@@ -58,13 +58,13 @@ const ManufacturingOrderButtons = ({}) => {
         <Button
           title={I18n.t('Base_Pause')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.StandBy)}
-          iconName="pause"
+          iconName="pause-fill"
           color={Colors.secondaryColor}
         />
         <Button
           title={I18n.t('Base_Finish')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.Finished)}
-          iconName="power-off"
+          iconName="power"
         />
       </>
     );
@@ -75,7 +75,7 @@ const ManufacturingOrderButtons = ({}) => {
       <Button
         title={I18n.t('Base_Continue')}
         onPress={() => handleUpdateStatus(ManufacturingOrder.status.InProgress)}
-        iconName="step-forward"
+        iconName="skip-end-fill"
       />
     );
   }

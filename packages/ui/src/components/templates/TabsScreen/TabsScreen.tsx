@@ -110,7 +110,7 @@ const TabsScreen = ({
           styles.scroll,
         ]}>
         {showLeftIcon && (
-          <Icon name="angle-left" style={getIconStyle('left')} />
+          <Icon name="chevron-left" style={getIconStyle('left')} />
         )}
         <ScrollView
           horizontal={true}
@@ -159,7 +159,7 @@ const TabsScreen = ({
           ))}
         </ScrollView>
         {showRightIcon && (
-          <Icon name="angle-right" style={getIconStyle('right')} />
+          <Icon name="chevron-right" style={getIconStyle('right')} />
         )}
       </View>
     );

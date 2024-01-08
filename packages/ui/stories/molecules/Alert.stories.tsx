@@ -32,7 +32,6 @@ storiesOf('ui/molecules/Alert', module).add(
           title: args.cancelButtonConfig_title,
           color: lightTheme.colors[args.cancelButtonConfig_color],
           iconName: args.cancelButtonConfig_iconName,
-          FontAwesome5: false,
           hide: args.cancelButtonConfig_hide,
           showInHeader: args.cancelButtonConfig_showInHeader,
           width: args.cancelButtonConfig_width,
@@ -41,7 +40,6 @@ storiesOf('ui/molecules/Alert', module).add(
           title: args.confirmButtonConfig_title,
           color: lightTheme.colors[args.confirmButtonConfig_color],
           iconName: args.confirmButtonConfig_iconName,
-          FontAwesome5: false,
           hide: args.confirmButtonConfig_hide,
           width: args.confirmButtonConfig_width,
         }}>
@@ -77,7 +75,7 @@ storiesOf('ui/molecules/Alert', module).add(
       },
       cancelButtonConfig_iconName: {
         type: 'string',
-        defaultValue: 'times',
+        defaultValue: 'x',
         control: {type: 'text'},
       },
       cancelButtonConfig_hide: {

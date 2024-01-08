@@ -40,7 +40,7 @@ const SessionListCard = ({
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         <Icon
-          name="plus"
+          name="plus-lg"
           style={styles.iconPlus}
           touchable={true}
           onPress={openCreation}

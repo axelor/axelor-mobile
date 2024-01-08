@@ -34,11 +34,11 @@ const InternalMoveMovementIndicationCard = ({from, to}) => {
   return (
     <MovementIndicationCard
       titleTop={from}
-      iconTop={<Icon name="warehouse" color={Colors.primaryColor.background} />}
-      titleDown={to}
-      iconDown={
-        <Icon name="warehouse" color={Colors.primaryColor.background} />
+      iconTop={
+        <Icon name="house-down" color={Colors.primaryColor.background} />
       }
+      titleDown={to}
+      iconDown={<Icon name="house-up" color={Colors.primaryColor.background} />}
     />
   );
 };

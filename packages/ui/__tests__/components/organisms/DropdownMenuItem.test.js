@@ -51,22 +51,15 @@ describe('DropdownMenuItem Component', () => {
     expect(props.onPress).toHaveBeenCalledTimes(1);
   });
 
-  it('should render an Icon with the right icon, color and FontAwesome5 values', () => {
+  it('should render an Icon with the right icon and color  values', () => {
     const icon = 'check';
     const color = Colors.primaryColor.background;
-    const FontAwesome5 = false;
     const wrapper = shallow(
-      <DropdownMenuItem
-        {...props}
-        icon={icon}
-        color={color}
-        FontAwesome5={FontAwesome5}
-      />,
+      <DropdownMenuItem {...props} icon={icon} color={color} />,
     );
 
     expect(wrapper.find(Icon).prop('name')).toBe(icon);
     expect(wrapper.find(Icon).prop('color')).toBe(color);
-    expect(wrapper.find(Icon).prop('FontAwesome5')).toBe(FontAwesome5);
   });
 
   it('should render Badge component with the right title if indicator > 0', () => {

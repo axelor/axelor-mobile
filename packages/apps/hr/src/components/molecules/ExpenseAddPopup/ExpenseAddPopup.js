@@ -93,7 +93,7 @@ const ExpenseAddPopup = ({style, visible, onClose, selectedItems}) => {
         />
         <TouchableOpacity onPress={createExpenseAPI} style={styles.labelText}>
           <LabelText
-            iconName="plus"
+            iconName="plus-lg"
             color={Colors.primaryColor.background}
             title={I18n.t('Hr_NewExpense')}
             size={16}

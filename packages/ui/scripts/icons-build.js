@@ -75,13 +75,27 @@ function getSvgPathList(code) {
 }
 
 async function generateFile(fileContentJSON) {
-  if (Object.keys(fileContentJSON).length === 0) {
+  const existingIconsPath = './scripts/custom-icon-map.json';
+  let existingIcons = {};
+
+  try {
+    const existingIconsContent = await fs.readFile(existingIconsPath, {
+      encoding: 'utf8',
+    });
+    existingIcons = JSON.parse(existingIconsContent);
+  } catch (err) {
+    console.error(err);
+  }
+
+  const combinedIcons = {...existingIcons, ...fileContentJSON};
+
+  if (Object.keys(combinedIcons).length === 0) {
     return null;
   }
 
   await fs.writeFile(
     path.join(OUT_DIR, 'bootstrap-icon-map.json'),
-    JSON.stringify(fileContentJSON, undefined, 2),
+    JSON.stringify(combinedIcons, undefined, 2),
   );
 }
 

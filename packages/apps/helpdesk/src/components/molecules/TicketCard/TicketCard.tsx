@@ -118,7 +118,7 @@ const TicketCard = ({
               deadlineDateT,
               I18n.t('Base_DateTimeFormat'),
             ),
-            iconName: 'calendar-times',
+            iconName: 'calendar-x',
           },
           {
             hideIf: checkNullString(responsibleUser),

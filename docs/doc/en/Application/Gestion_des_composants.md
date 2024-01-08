@@ -255,6 +255,23 @@ To facilitate image integration on cards, the core package provides three utilit
 - **useMetafileUri**: for formatting a URI from a MetaFile
 - **useBinaryImageUri** and **useBinaryPictureUri**: for formatting a URI from a binary image.
 
+## SVG icons management
+
+For icons, the application supports two librairies : [FontAwesome](https://fontawesome.com/icons) and [Bootstrap](https://icons.getbootstrap.com/). For the Bootstrap icons, we use the svg database in `BootstrapIcon` component. We created a script to generate a map between icon name and svg data which can be found in `icons/` folder of ui package sources. This construction allows us to create custom icons from a SVG file in the `scripts/` folder of ui package.
+
+When adding a new icon, it is important to ensure that the added SVG is compatible with the viewBox used in the `BootstrapIcon` component:
+
+```tsx
+<Svg viewBox="0 0 16 16">...</Svg>
+```
+
+In the case of viewBox="0 0 16 16", this means that the drawing is positioned starting from the point (0,0) at the top left and extends over a width and height of 16 units each. This creates a square frame in which your SVG must fit. All elements of the SVG must be designed to fit within this area to display correctly.
+
+To adapt an SVG to this viewBox, there are several solutions:
+
+- When creating the SVG, it is important to create it directly in the appropriate format.
+- If you are retrieving an SVG from an existing icon, resize the SVG file so that it fits the required format.
+
 ## iOS hot spots
 
 In order to enable support on the iOS platform, there are several points to note and pay particular attention to:
