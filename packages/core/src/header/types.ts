@@ -40,7 +40,6 @@ export interface ActionType {
   title: string;
   iconName: string;
   iconColor?: string;
-  FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
   disableIf?: boolean;

@@ -107,7 +107,6 @@ const SocialNetworkLinks = ({
         <Icon
           style={styles.icon}
           name="google"
-          FontAwesome5={false}
           color={googleColor || Colors.primaryColor.background}
           touchable={true}
           size={size}
@@ -124,7 +123,6 @@ const SocialNetworkLinks = ({
         <Icon
           style={styles.icon}
           name="linkedin"
-          FontAwesome5={false}
           color={linkedinColor || Colors.primaryColor.background}
           touchable={true}
           size={size}

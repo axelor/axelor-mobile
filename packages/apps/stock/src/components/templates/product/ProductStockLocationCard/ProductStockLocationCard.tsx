@@ -61,7 +61,7 @@ const ProductStockLocationCard = ({
         items: [
           {
             displayText: stockLocationName,
-            iconName: 'warehouse',
+            iconName: 'house',
             style: styles.title,
           },
           {

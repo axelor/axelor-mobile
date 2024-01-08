@@ -167,21 +167,19 @@ const DateInput = ({
             </View>
             <View style={styles.actionContainer}>
               <Icon
-                name="check-circle"
+                name="check-circle-fill"
                 color={Colors.primaryColor.background}
                 size={ACTION_ICON_SIZE}
                 touchable={true}
-                FontAwesome5={false}
                 onPress={onCheckDate}
                 style={styles.actionButton}
               />
               {nullable && (
                 <Icon
-                  name="times-circle"
+                  name="x-circle-fill"
                   color={Colors.primaryColor.background}
                   size={ACTION_ICON_SIZE}
                   touchable={true}
-                  FontAwesome5={false}
                   onPress={onClearDate}
                   style={styles.actionButton}
                 />

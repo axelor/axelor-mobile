@@ -35,7 +35,6 @@ interface IconConfig {
   name: string;
   color?: string;
   size?: number;
-  FontAwesome5?: boolean;
 }
 
 interface DoubleIconProps {

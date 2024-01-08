@@ -58,7 +58,7 @@ const ViewAllContainer = ({
             {translator == null ? 'Content' : translator('Base_Content')}
           </Text>
           <Icon
-            name="plus"
+            name="plus-lg"
             color={Colors.primaryColor.background}
             size={24}
             touchable={true}

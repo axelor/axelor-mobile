@@ -26,13 +26,7 @@ const stories = storiesOf('ui/atoms/Icon', module);
 stories.add(
   'Default',
   args => {
-    return (
-      <Icon
-        {...args}
-        color={lightTheme.colors[args.color].background}
-        FontAwesome5={false}
-      />
-    );
+    return <Icon {...args} color={lightTheme.colors[args.color].background} />;
   },
   {
     argTypes: {

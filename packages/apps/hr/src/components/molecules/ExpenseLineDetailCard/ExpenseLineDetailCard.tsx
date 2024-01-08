@@ -139,7 +139,7 @@ const ExpenseLineDetailCard = ({
           {ExpenseLine.getExpenseMode(item) === ExpenseLine.modes.general &&
             item.justificationMetaFile != null && (
               <CardIconButton
-                iconName={'expand-alt'}
+                iconName={'arrows-angle-expand'}
                 iconColor={Colors.secondaryColor_dark.background}
                 onPress={handleShowFile}
                 style={styles.cardIconButton}
@@ -149,13 +149,13 @@ const ExpenseLineDetailCard = ({
           expense.statusSelect === Expense.statusSelect.Draft ? (
             <View style={styles.iconContainer}>
               <CardIconButton
-                iconName={'pencil-alt'}
+                iconName="pencil-fill"
                 iconColor={Colors.secondaryColor_dark.background}
                 onPress={onEdit}
                 style={styles.cardIconButton}
               />
               <CardIconButton
-                iconName={'trash-alt'}
+                iconName="trash3-fill"
                 iconColor={Colors.errorColor.background}
                 onPress={handleDelete}
                 style={styles.cardIconButton}
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   checkbox: {
-    marginRight: 10,
+    marginRight: 5,
   },
   animatedCard: {
     position: 'absolute',
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
   },
   containerCard: {
     flex: 6,
-    margin: 2,
   },
   iconContainer: {
     flexDirection: 'column',

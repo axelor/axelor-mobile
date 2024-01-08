@@ -39,7 +39,7 @@ const actions = [
   {
     key: 3,
     title: 'Delete',
-    iconName: 'trash',
+    iconName: 'trash-fill',
     disabled: true,
     onPress: action('Delete button pressed'),
   },
@@ -56,7 +56,7 @@ storiesOf('ui/organisms/FloatingButton', module).add(
     argTypes: {
       iconName: {
         type: 'string',
-        defaultValue: 'car',
+        defaultValue: 'pen-fill',
         control: {type: 'text'},
       },
       size: {

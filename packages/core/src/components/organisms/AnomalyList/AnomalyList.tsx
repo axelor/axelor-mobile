@@ -65,7 +65,7 @@ const AnomalyList = ({objectName, objectId, style}: AnomalyListProps) => {
         <Label
           style={styles.label}
           message={item?.message}
-          iconName="exclamation-triangle"
+          iconName="exclamation-triangle-fill"
           color={Anomaly.getTypeColor(item?.checkType, Colors)}
           showClose
         />

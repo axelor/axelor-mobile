@@ -34,7 +34,7 @@ export const StockModule: Module = {
   name: 'app-stock',
   title: 'Stock',
   subtitle: 'Stock',
-  icon: 'cubes',
+  icon: 'boxes',
   compatibilityAOS: {
     moduleName: 'axelor-stock',
     downToVersion: '7.1.0',
@@ -42,12 +42,12 @@ export const StockModule: Module = {
   menus: {
     stock_menu_product: {
       title: 'Stock_Product',
-      icon: 'shopping-cart',
+      icon: 'cart-fill',
       screen: 'ProductListScreen',
     },
     stock_menu_stock_correction: {
       title: 'Stock_StockCorrection',
-      icon: 'box',
+      icon: 'box2-fill',
       screen: 'StockCorrectionListScreen',
     },
     stock_menu_internal_move: {
@@ -67,7 +67,7 @@ export const StockModule: Module = {
     },
     stock_menu_inventory: {
       title: 'Stock_Inventory',
-      icon: 'warehouse',
+      icon: 'house-check',
       screen: 'InventoryListScreen',
     },
   },

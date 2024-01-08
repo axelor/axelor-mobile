@@ -42,11 +42,11 @@ describe('MessageBox Component', () => {
     expect(wrapper.find(HtmlInput).exists()).toBe(true);
   });
 
-  it('should render a TouchableOpacity with paper-plane Icon for sending', () => {
+  it('should render a TouchableOpacity with send-fill Icon for sending', () => {
     const wrapper = shallow(<MessageBox {...props} />);
 
     expect(wrapper.find(TouchableOpacity).exists()).toBe(true);
-    expect(wrapper.find('Icon[name="paper-plane"]').exists()).toBe(true);
+    expect(wrapper.find('Icon[name="send-fill"]').exists()).toBe(true);
   });
 
   it('should call onChange when input value changes', () => {

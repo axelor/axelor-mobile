@@ -40,7 +40,7 @@ const ManufacturingOrderHalfLabelCardList = ({
         onPress={onPressConsumedProduct}
       />
       <HalfLabelCard
-        iconName="cogs"
+        iconName="gear-fill"
         title={I18n.t('Manufacturing_ProducedProduct')}
         onPress={onPressProducedProduct}
       />

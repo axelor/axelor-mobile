@@ -20,7 +20,11 @@ import React from 'react';
 import {storiesOf} from '@storybook/react-native';
 import {CardIconButton} from '../../src/components/molecules';
 
-const iconNames = ['heart', 'star', 'bell'];
+const iconNames = [
+  'suit-heart-fill',
+  'arrow-through-heart-fill',
+  'heartbreak-fill',
+];
 
 storiesOf('ui/molecules/CardIconButton', module).add(
   'Default',

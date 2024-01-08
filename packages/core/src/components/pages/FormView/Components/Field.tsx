@@ -261,7 +261,7 @@ const Field = ({
     <View style={[styles.container, getZIndexStyle(zIndex)]}>
       {_field.helperKey != null && (
         <InfoBubble
-          iconName="info"
+          iconName="info-lg"
           indication={I18n.t(_field.helperKey)}
           badgeColor={Colors.infoColor}
           size={15}

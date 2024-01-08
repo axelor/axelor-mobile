@@ -116,8 +116,7 @@ export const useBasicActions = ({
         }),
       hideIf: disableMailMessages,
       indicator: unreadMessages,
-      iconName: 'bell',
-      FontAwesome5: false,
+      iconName: 'bell-fill',
       title: I18n.t('Base_MailMessages'),
       showInHeader: true,
     };
@@ -154,7 +153,7 @@ export const useBasicActions = ({
       key: 'barcode',
       order: 30,
       title: I18n.t('Base_Barcode'),
-      iconName: 'qrcode',
+      iconName: 'qr-code',
       hideIf: disableBarcode,
       onPress: () =>
         navigation.navigate('BarcodeDisplayScreen', {
@@ -171,7 +170,7 @@ export const useBasicActions = ({
       key: 'metaJsonFields',
       order: 30,
       title: I18n.t('Base_MetaJsonFields'),
-      iconName: 'object-group',
+      iconName: 'layout-text-window-reverse',
       hideIf:
         disableCustomView ||
         disableJsonFields ||

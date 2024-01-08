@@ -86,31 +86,35 @@ const LeadsCard = ({
       upperTexts={{
         items: [
           {displayText: leadsFullname, isTitle: true},
-          {indicatorText: leadsCompany, iconName: 'building', hideIfNull: true},
+          {
+            indicatorText: leadsCompany,
+            iconName: 'building-fill',
+            hideIfNull: true,
+          },
           {
             indicatorText: leadsAddress,
-            iconName: 'map-marker-alt',
+            iconName: 'geo-alt-fill',
             hideIfNull: true,
           },
           {
             indicatorText: leadsPhoneNumber,
-            iconName: isDoNotCall ? 'phone-slash' : 'mobile-phone',
+            iconName: isDoNotCall ? 'telephone-x-fill' : 'phone-fill',
             color: isDoNotCall ? 'red' : null,
             hideIfNull: true,
-            fontAwesome5: isDoNotCall,
             style: isDoNotCall ? styles.txtRed : null,
-            size: isDoNotCall ? null : 18,
           },
           {
             indicatorText: leadsFixedPhone,
-            iconName: isDoNotCall ? 'phone-slash' : 'phone',
+            iconName: isDoNotCall ? 'telephone-x-fill' : 'telephone-fill',
             color: isDoNotCall ? 'red' : null,
             hideIfNull: true,
             style: isDoNotCall ? styles.txtRed : null,
           },
           {
             indicatorText: leadsEmail,
-            iconName: isDoNotSendEmail ? 'user-alt-slash' : 'envelope',
+            iconName: isDoNotSendEmail
+              ? 'envelope-slash-fill'
+              : 'envelope-fill',
             color: isDoNotSendEmail ? 'red' : null,
             hideIfNull: true,
             style: isDoNotSendEmail ? styles.txtRed : null,
