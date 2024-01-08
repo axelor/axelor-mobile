@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {
   useTranslator,
   useDispatch,
@@ -25,12 +26,18 @@ import {
 } from '@axelor/aos-mobile-core';
 import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
 import StockCorrection from '../../../../types/stock-corrrection';
-import {updateCorrection} from '../../../../features/stockCorrectionSlice';
+import {
+  createCorrection,
+  updateCorrection,
+} from '../../../../features/stockCorrectionSlice';
 
 const StockCorrectionButtons = ({
-  saveStatus,
+  saveStatus = false,
   reason,
   stockCorrection,
+  product,
+  stockLocation,
+  trackingNumber,
   realQty,
   status,
   comments,
@@ -42,29 +49,53 @@ const StockCorrectionButtons = ({
 
   const {mobileSettings} = useSelector(state => state.config);
 
+  const isValidateButtonVisible = useMemo(
+    () =>
+      mobileSettings?.isStockCorrectionValidationEnabled &&
+      status !== StockCorrection.status.Validated,
+    [status, mobileSettings?.isStockCorrectionValidationEnabled],
+  );
+
   const handleAPI = useCallback(
     (_status = StockCorrection.status.Draft) => {
       dispatch(
-        updateCorrection({
-          version: stockCorrection.version,
-          stockCorrectionId: stockCorrection.id,
-          realQty: saveStatus ? null : realQty,
-          reasonId: saveStatus ? null : reason?.id,
-          status: _status,
-          comments: comments,
-        }),
+        stockCorrection
+          ? updateCorrection({
+              version: stockCorrection.version,
+              stockCorrectionId: stockCorrection.id,
+              realQty: saveStatus ? null : realQty,
+              reasonId: saveStatus ? null : reason?.id,
+              status: _status,
+              comments: comments,
+            })
+          : createCorrection({
+              productId: product.id,
+              stockLocationId: stockLocation.id,
+              reasonId: reason.id,
+              trackingNumberId:
+                product?.trackingNumberConfiguration == null ||
+                trackingNumber == null
+                  ? null
+                  : trackingNumber.id,
+              status: _status,
+              realQty: realQty,
+              comments: comments,
+            }),
       );
 
       navigation.pop();
     },
     [
+      comments,
       dispatch,
       navigation,
+      product,
       realQty,
       reason,
       saveStatus,
       stockCorrection,
-      comments,
+      stockLocation,
+      trackingNumber,
     ],
   );
 
@@ -83,20 +114,33 @@ const StockCorrectionButtons = ({
   }
 
   return (
-    <>
-      {saveStatus ? null : (
+    <View style={styles.container}>
+      {!saveStatus && (
         <Button
           title={I18n.t('Base_Save')}
-          color={Colors.secondaryColor}
+          iconName="save"
+          color={Colors.infoColor}
+          width={isValidateButtonVisible ? '45%' : '90%'}
           onPress={handleSave}
         />
       )}
-      {status === StockCorrection.status.Validated ||
-      mobileSettings?.isStockCorrectionValidationEnabled === false ? null : (
-        <Button title={I18n.t('Base_Validate')} onPress={handleValidate} />
+      {isValidateButtonVisible && (
+        <Button
+          title={I18n.t('Base_Validate')}
+          iconName="check"
+          width={saveStatus ? '90%' : '45%'}
+          onPress={handleValidate}
+        />
       )}
-    </>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+});
 
 export default StockCorrectionButtons;
