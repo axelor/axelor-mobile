@@ -19,11 +19,11 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {BarChart as RNBarChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
+import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
-import {checkNullString} from '../../../../utils/strings';
+import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
-import {mergeDataForGroupedBars, transformToBarChartData} from './chart.helper';
+import {initBarData} from './chart.helper';
 
 const MARGIN = 5;
 
@@ -34,6 +34,7 @@ interface BarCharProps {
   spacing?: number;
   horizontal?: boolean;
   title?: string;
+  rotateLabel?: boolean;
 }
 
 const BarChart = ({
@@ -43,10 +44,17 @@ const BarChart = ({
   spacing,
   horizontal = false,
   title,
+  rotateLabel = true,
 }: BarCharProps) => {
   const Colors = useThemeColor();
-  const groupedData = mergeDataForGroupedBars(datasets);
-  const barChartData = transformToBarChartData(groupedData, Colors);
+
+  const barChartData = useMemo(() => {
+    return initBarData(datasets, rotateLabel, spacing, Colors);
+  }, [Colors, datasets, rotateLabel, spacing]);
+
+  const styles = useMemo(() => {
+    return getStyles(rotateLabel);
+  }, [rotateLabel]);
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;
@@ -67,11 +75,6 @@ const BarChart = ({
   return (
     <Card style={[styles.container, {width: _containerWidth}, style]}>
       <RNBarChart
-        frontColor={
-          datasets[0]?.[0].color != null
-            ? datasets[0]?.[0].color
-            : Colors?.primaryColor?.background
-        }
         data={barChartData}
         width={_graphWidth}
         isAnimated={true}
@@ -93,22 +96,23 @@ const BarChart = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-    paddingHorizontal: 0,
-    paddingRight: 5,
-    paddingVertical: 10,
-  },
-  title: {
-    marginTop: 5,
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-});
+const getStyles = rotateLabel =>
+  StyleSheet.create({
+    container: {
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+      paddingHorizontal: 0,
+      paddingRight: 5,
+      paddingVertical: 10,
+    },
+    title: {
+      marginTop: rotateLabel ? 30 : 0,
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+  });
 
 export default BarChart;

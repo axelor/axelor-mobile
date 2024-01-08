@@ -19,11 +19,11 @@
 import React, {useMemo} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {LineChart as RNLineChart} from 'react-native-gifted-charts';
-import {useThemeColor} from '../../../../theme/ThemeContext';
+import {useThemeColor} from '../../../../theme';
 import {Card, Text} from '../../../atoms';
-import {checkNullString} from '../../../../utils/strings';
+import {checkNullString} from '../../../../utils';
 import {Data} from '../dashboard.helper';
-import {generateChartProps} from './chart.helper';
+import {initLineData} from './chart.helper';
 
 const MARGIN = 5;
 
@@ -33,6 +33,7 @@ interface LineChartProps {
   spacing?: number;
   widthGraph?: number;
   backgroundColor?: string;
+  rotateLabel?: boolean;
   title?: string;
 }
 
@@ -43,10 +44,17 @@ const LineChart = ({
   spacing,
   backgroundColor,
   title,
+  rotateLabel = true,
 }: LineChartProps) => {
   const Colors = useThemeColor();
 
-  const chartProps = generateChartProps(datasets, Colors);
+  const chartProps = useMemo(() => {
+    return initLineData(datasets, rotateLabel, spacing, Colors);
+  }, [Colors, datasets, rotateLabel, spacing]);
+
+  const styles = useMemo(() => {
+    return getStyles(rotateLabel);
+  }, [rotateLabel]);
 
   const _containerWidth = useMemo(() => {
     return widthGraph - MARGIN * 2;
@@ -84,22 +92,23 @@ const LineChart = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    minWidth:
-      Dimensions.get('window').width > 500
-        ? Dimensions.get('window').width / 4 - MARGIN * 2
-        : Dimensions.get('window').width / 2 - MARGIN * 2,
-    margin: MARGIN,
-    paddingHorizontal: 0,
-    paddingRight: 5,
-    paddingVertical: 10,
-  },
-  title: {
-    marginTop: 5,
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-});
+const getStyles = rotateLabel =>
+  StyleSheet.create({
+    container: {
+      minWidth:
+        Dimensions.get('window').width > 500
+          ? Dimensions.get('window').width / 4 - MARGIN * 2
+          : Dimensions.get('window').width / 2 - MARGIN * 2,
+      margin: MARGIN,
+      paddingHorizontal: 0,
+      paddingRight: 5,
+      paddingVertical: 10,
+    },
+    title: {
+      marginTop: rotateLabel ? 30 : 0,
+      alignSelf: 'center',
+      textAlign: 'center',
+    },
+  });
 
 export default LineChart;
