@@ -41,10 +41,11 @@ export const formatDurationSecondsToArray = (seconds: number) => {
 
 export const formatDurationArrayToSeconds = (formattedDuration: number[]) => {
   const hours =
-    String(formattedDuration[0]) +
-    String(formattedDuration[1]) +
-    String(formattedDuration[2]);
-  const minutes = String(formattedDuration[3]) + String(formattedDuration[4]);
+    String(formattedDuration[0] ?? 0) +
+    String(formattedDuration[1] ?? 0) +
+    String(formattedDuration[2] ?? 0);
+  const minutes =
+    String(formattedDuration[3] ?? 0) + String(formattedDuration[4] ?? 0);
 
   return (
     Number(hours) * NB_SECONDS_IN_HOUR + Number(minutes) * NB_SECONDS_IN_MINUTE

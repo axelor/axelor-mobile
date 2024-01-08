@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NumberChevronInput} from '../../molecules';
 import {Text} from '../../atoms';
@@ -32,6 +32,7 @@ interface DurationInputProps {
   defaultValue: number;
   onChange: (value: number) => void;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const DurationInput = ({
@@ -41,7 +42,15 @@ const DurationInput = ({
   defaultValue,
   onChange,
   required = false,
+  readonly = false,
 }: DurationInputProps) => {
+  const inputRefs = {
+    input1: useRef(null),
+    input2: useRef(null),
+    input3: useRef(null),
+    input4: useRef(null),
+  };
+
   const [formattedDuration, setFormattedDuration] = useState(
     formatDurationSecondsToArray(defaultValue),
   );
@@ -69,36 +78,82 @@ const DurationInput = ({
         <NumberChevronInput
           style={inputStyle}
           defaultValue={formattedDuration[0]}
-          onValueChange={value => changeFormattedDuration(0, value)}
+          onValueChange={value => {
+            changeFormattedDuration(0, value);
+            if (value) {
+              inputRefs.input1.current.focus();
+            }
+          }}
+          onEndFocus={() =>
+            !formattedDuration[0] && changeFormattedDuration(0, 0)
+          }
           required={required}
+          readonly={readonly}
         />
         <NumberChevronInput
           style={inputStyle}
+          inputRef={inputRefs.input1}
           defaultValue={formattedDuration[1]}
-          onValueChange={value => changeFormattedDuration(1, value)}
+          onValueChange={value => {
+            changeFormattedDuration(1, value);
+            if (value) {
+              inputRefs.input2.current.focus();
+            }
+          }}
+          onEndFocus={() =>
+            !formattedDuration[1] && changeFormattedDuration(1, 0)
+          }
           required={required}
+          readonly={readonly}
         />
         <NumberChevronInput
           style={inputStyle}
+          inputRef={inputRefs.input2}
           defaultValue={formattedDuration[2]}
-          onValueChange={value => changeFormattedDuration(2, value)}
+          onValueChange={value => {
+            changeFormattedDuration(2, value);
+            if (value) {
+              inputRefs.input3.current.focus();
+            }
+          }}
+          onEndFocus={() =>
+            !formattedDuration[2] && changeFormattedDuration(2, 0)
+          }
           required={required}
+          readonly={readonly}
         />
         <Text writingType="important" fontSize={20}>
           :
         </Text>
         <NumberChevronInput
           style={inputStyle}
+          inputRef={inputRefs.input3}
           defaultValue={formattedDuration[3]}
           maxValue={5}
-          onValueChange={value => changeFormattedDuration(3, value)}
+          onValueChange={value => {
+            changeFormattedDuration(3, value);
+            if (value) {
+              inputRefs.input4.current.focus();
+            }
+          }}
+          onEndFocus={() =>
+            !formattedDuration[3] && changeFormattedDuration(3, 0)
+          }
           required={required}
+          readonly={readonly}
         />
         <NumberChevronInput
           style={inputStyle}
+          inputRef={inputRefs.input4}
           defaultValue={formattedDuration[4]}
-          onValueChange={value => changeFormattedDuration(4, value)}
+          onValueChange={value => {
+            changeFormattedDuration(4, value);
+          }}
+          onEndFocus={() =>
+            !formattedDuration[4] && changeFormattedDuration(4, 0)
+          }
           required={required}
+          readonly={readonly}
         />
       </View>
     </View>

@@ -16,28 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {LegacyRef, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {FormInput} from '../../molecules';
 import {Icon} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 
 interface NumberChevronInputProps {
   style?: any;
+  inputRef?: LegacyRef<TextInput>;
   defaultValue?: number;
   minValue?: number;
   maxValue?: number;
   onValueChange?: (value: number) => void;
+  onEndFocus?: () => void;
   required?: boolean;
+  readonly?: boolean;
 }
 
 const NumberChevronInput = ({
   style,
+  inputRef,
   defaultValue = 0,
   minValue = 0,
   maxValue = 9,
-  onValueChange,
+  onValueChange = () => {},
+  onEndFocus = () => {},
   required = false,
+  readonly = false,
 }: NumberChevronInputProps) => {
   const Colors = useThemeColor();
 
@@ -53,6 +59,25 @@ const NumberChevronInput = ({
     () => inputValue > minValue,
     [inputValue, minValue],
   );
+
+  const onInputChange = (value: string) => {
+    let writtenNumber = null;
+
+    if (value?.length > 0) {
+      writtenNumber = Number(value[value.length - 1]);
+    }
+
+    if (writtenNumber >= minValue && writtenNumber <= maxValue) {
+      setInputValue(writtenNumber);
+      onValueChange(writtenNumber);
+    } else {
+      const distanceToMinValue = Math.abs(writtenNumber - minValue);
+      const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
+      setInputValue(
+        distanceToMinValue < distanceToMaxValue ? minValue : maxValue,
+      );
+    }
+  };
 
   return (
     <View style={[styles.container, style]}>
@@ -77,9 +102,13 @@ const NumberChevronInput = ({
       <FormInput
         style={[styles.input]}
         inputStyle={styles.centerText}
-        defaultValue={inputValue.toString()}
-        readOnly={true}
+        inputRef={inputRef}
+        defaultValue={inputValue?.toString()}
+        onChange={onInputChange}
+        onEndFocus={onEndFocus}
+        readOnly={readonly}
         required={required}
+        keyboardType="numeric"
       />
       <TouchableOpacity
         onPress={() =>
