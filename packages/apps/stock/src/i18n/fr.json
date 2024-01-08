@@ -86,7 +86,6 @@
   "Stock_ErrorProduct": "Ce n'est pas le bon produit.",
   "Stock_ErrorTrackingNumber": "Ce n'est pas le bon numéro de suivi.",
   "Stock_Customer": "Client",
-  "Stock_Carrier": "Transporteur",
   "Stock_Supplier": "Fournisseur",
   "Stock_SupplierCatalog": "Catalogue fournisseur",
   "Stock_OriginalAdress": "Adresse d'origine",
