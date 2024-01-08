@@ -61,9 +61,10 @@ const ScrollList = ({
   const handleMoreData = useCallback(() => {
     if (!isListEnd && !moreLoading && !filter) {
       setPage(_currentPage => {
-        fetchData(_currentPage + 1);
+        const newPage = _currentPage + 1;
+        fetchData(newPage);
 
-        return _currentPage + 1;
+        return newPage;
       });
     }
   }, [fetchData, filter, isListEnd, moreLoading]);
@@ -83,10 +84,16 @@ const ScrollList = ({
   }, [data, handleMoreData]);
 
   useEffect(() => {
-    if (loadingList) {
-      setPage(0);
+    if (loadingList && !moreLoading) {
+      setPage(_currentPage => {
+        if (_currentPage > 0) {
+          return 0;
+        }
+
+        return _currentPage;
+      });
     }
-  }, [loadingList]);
+  }, [loadingList, moreLoading]);
 
   if (loadingList) {
     return (
