@@ -30,26 +30,24 @@ import {getGlobalStyles} from '../../tools';
 
 describe('MultiValuePicker Component', () => {
   const Colors = lightTheme.colors;
-
-  const listItems = [
-    {
-      color: Colors.primaryColor,
-      title: 'Item 1',
-      key: '1',
-    },
-    {
-      color: Colors.cautionColor,
-      title: 'Item 2',
-      key: '2',
-    },
-    {
-      color: Colors.errorColor,
-      title: 'Item 3',
-      key: '3',
-    },
-  ];
   const props = {
-    listItems: listItems,
+    listItems: [
+      {
+        color: Colors.primaryColor,
+        title: 'Item 1',
+        key: '1',
+      },
+      {
+        color: Colors.cautionColor,
+        title: 'Item 2',
+        key: '2',
+      },
+      {
+        color: Colors.errorColor,
+        title: 'Item 3',
+        key: '3',
+      },
+    ],
   };
 
   it('should render without crashing', () => {
@@ -100,6 +98,27 @@ describe('MultiValuePicker Component', () => {
     expect(onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
 
     wrapper
+      .find(SelectionContainer)
+      .dive()
+      .find('SelectionItem')
+      .at(2)
+      .simulate('press');
+
+    expect(onValueChange).toHaveBeenCalledWith([
+      props.listItems[0],
+      props.listItems[2],
+    ]);
+
+    wrapper
+      .find(MultiValuePickerButton)
+      .dive()
+      .find(TouchableOpacity)
+      .at(2)
+      .simulate('press');
+
+    expect(onValueChange).toHaveBeenCalledWith([props.listItems[0]]);
+
+    wrapper
       .find(MultiValuePickerButton)
       .dive()
       .find(TouchableOpacity)
@@ -114,15 +133,6 @@ describe('MultiValuePicker Component', () => {
     const wrapper = shallow(<MultiValuePicker {...props} title={title} />);
 
     expect(wrapper.find(Text).prop('children')).toBe(title);
-  });
-
-  it('should apply custom style to container when provided', () => {
-    const customStyle = {width: 200};
-    const wrapper = shallow(
-      <MultiValuePicker {...props} style={customStyle} />,
-    );
-
-    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 
   it('should render readonly MultiValuePickerButton and SelectionContainer when props is true', () => {
@@ -142,6 +152,15 @@ describe('MultiValuePicker Component', () => {
         borderColor: Colors.errorColor.background,
       },
     );
+  });
+
+  it('should apply custom style to container when provided', () => {
+    const customStyle = {width: 200};
+    const wrapper = shallow(
+      <MultiValuePicker {...props} style={customStyle} />,
+    );
+
+    expect(getGlobalStyles(wrapper.find(View))).toMatchObject(customStyle);
   });
 
   it('should apply custom style to picker when provided', () => {
