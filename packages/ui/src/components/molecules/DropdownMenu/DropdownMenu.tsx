@@ -52,7 +52,7 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
           setVisible(!visible);
         }}>
         <Icon
-          name="ellipsis-v"
+          name="three-dots-vertical"
           color={Colors.primaryColor.background}
           size={22}
         />

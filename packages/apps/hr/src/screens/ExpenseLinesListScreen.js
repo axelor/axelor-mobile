@@ -78,7 +78,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         {
           key: 'newExpenseLines',
           order: 20,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_NewExpenseLine'),
           iconColor: Colors.primaryColor.background,
@@ -88,7 +88,7 @@ const ExpenseLinesListScreen = ({navigation}) => {
         {
           key: 'openSelectionMode',
           order: 10,
-          iconName: 'user',
+          iconName: 'person-fill',
           hideIf: isSelectionMode,
           title: I18n.t('Hr_OpenSelectionMode'),
           onPress: handleModeChange,
@@ -96,12 +96,12 @@ const ExpenseLinesListScreen = ({navigation}) => {
           customComponent: (
             <DoubleIcon
               topIconConfig={{
-                name: 'plus',
+                name: 'plus-lg',
                 color: Colors.primaryColor.background,
                 size: 16,
               }}
               bottomIconConfig={{
-                name: 'credit-card',
+                name: 'credit-card-fill',
                 color: Colors.secondaryColor_dark.background,
               }}
               predefinedPosition={'top-right'}

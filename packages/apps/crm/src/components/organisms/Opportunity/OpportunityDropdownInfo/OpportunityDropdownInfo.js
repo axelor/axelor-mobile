@@ -64,7 +64,7 @@ const OpportunityDropdownInfo = ({}) => {
               <>
                 {_expectedCloseDate && (
                   <LabelText
-                    iconName="clock"
+                    iconName="clock-fill"
                     title={I18n.t('Crm_Opportunity_ExpectedCloseDate')}
                     value={_expectedCloseDate}
                   />

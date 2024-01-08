@@ -73,7 +73,7 @@ const ProducedProductCard = ({
           {
             indicatorText: `${I18n.t('Manufacturing_TrackingNumber')}:`,
             displayText: trackingNumberSeq,
-            iconName: 'qrcode',
+            iconName: 'qr-code',
             hideIf: trackingNumberSeq == null,
           },
         ],

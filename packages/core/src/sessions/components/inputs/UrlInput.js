@@ -55,7 +55,7 @@ const UrlInput = ({
   if (readOnly) {
     return (
       <LabelText
-        iconName="link"
+        iconName="link-45deg"
         title={value}
         style={styles.labText}
         size={20}
@@ -73,10 +73,10 @@ const UrlInput = ({
       onSelection={onSelection}
       onEndFocus={onEndFocus}
       placeholder={I18n.t('Base_Connection_Url')}
-      leftIconsList={[<Icon name="link" size={17} style={styles.icon} />]}
+      leftIconsList={[<Icon name="link-45deg" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
-          name="qrcode"
+          name="qr-code-scan"
           size={20}
           color={
             scanIconColor == null
@@ -86,7 +86,6 @@ const UrlInput = ({
           touchable={true}
           style={styles.icon}
           onPress={onScanPress}
-          FontAwesome5={false}
         />,
       ]}
     />

@@ -48,7 +48,7 @@ const Checkbox = ({
   const [isChecked, setIsChecked] = useState(isDefaultChecked);
 
   const iconName = useMemo(
-    () => (isChecked ? 'check-square' : 'square-o'),
+    () => (isChecked ? 'check-square-fill' : 'square'),
     [isChecked],
   );
 
@@ -76,7 +76,6 @@ const Checkbox = ({
       <View style={styles.iconContainer}>
         <Icon
           name={iconName}
-          FontAwesome5={false}
           color={_iconColor}
           size={iconSize}
           touchable={!disabled}

@@ -73,7 +73,7 @@ const SupplierArrivalCard = ({
           {displayText: client, style: styles.noBold},
           {
             displayText: origin,
-            iconName: 'tag',
+            iconName: 'tag-fill',
             hideIfNull: true,
             style: styles.noBold,
           },

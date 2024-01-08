@@ -108,13 +108,13 @@ const InternalMoveLineCard = ({
             displayText: locker,
             indicatorText: `${I18n.t('Stock_Locker')} :`,
             hideIf: checkNullString(locker),
-            iconName: 'map-marker-alt',
+            iconName: 'geo-alt-fill',
           },
           {
             displayText: trackingNumber,
             indicatorText: `${I18n.t('Stock_TrackingNumber')} :`,
             hideIf: trackingNumber == null,
-            iconName: 'qrcode',
+            iconName: 'qr-code',
           },
         ],
       }}

@@ -39,7 +39,7 @@ const useCatalogListActions = () => {
         {
           key: 'newCatalog',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewCatalog'),
           iconColor: Colors.primaryColor.background,
           hideIf: !crmConfig?.isManageCatalogs,
@@ -68,7 +68,7 @@ const useClientDetailsActions = () => {
         {
           key: 'client-saveContact',
           order: 10,
-          iconName: 'user-plus',
+          iconName: 'person-fill-add',
           title: I18n.t('Crm_SaveContact'),
           onPress: () =>
             contactProvider.saveContact({
@@ -90,7 +90,7 @@ const useClientDetailsActions = () => {
         {
           key: 'client-openEventForm',
           order: 20,
-          iconName: 'calendar-plus',
+          iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
           onPress: () =>
             navigation.navigate('EventFormScreen', {client: client}),
@@ -118,7 +118,7 @@ const useContactDetailsActions = () => {
         {
           key: 'contact-saveContact',
           order: 10,
-          iconName: 'user-plus',
+          iconName: 'person-fill-add',
           title: I18n.t('Crm_SaveContact'),
           onPress: () =>
             contactProvider.saveContact({
@@ -143,7 +143,7 @@ const useContactDetailsActions = () => {
         {
           key: 'contact-openEventForm',
           order: 20,
-          iconName: 'calendar-plus',
+          iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
           onPress: () =>
             navigation.navigate('EventFormScreen', {contact: contact}),
@@ -165,7 +165,7 @@ const useLeadListActions = () => {
         {
           key: 'newLead',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewLead'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('LeadFormScreen', {}),
@@ -193,7 +193,7 @@ const useLeadDetailsActions = () => {
         {
           key: 'lead-saveContact',
           order: 10,
-          iconName: 'user-plus',
+          iconName: 'person-fill-add',
           title: I18n.t('Crm_SaveContact'),
           onPress: () =>
             contactProvider.saveContact({
@@ -213,7 +213,7 @@ const useLeadDetailsActions = () => {
         {
           key: 'lead-openEventForm',
           order: 20,
-          iconName: 'calendar-plus',
+          iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
           onPress: () => navigation.navigate('EventFormScreen', {lead: lead}),
           showInHeader: true,
@@ -234,7 +234,7 @@ const useOpportunityListActions = () => {
         {
           key: 'newOpportunity',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Crm_NewOpportunity'),
           iconColor: Colors.primaryColor.background,
           onPress: () => navigation.navigate('OpportunityFormScreen', {}),
@@ -276,7 +276,7 @@ const useProspectDetailsActions = () => {
         {
           key: 'prospect-saveContact',
           order: 10,
-          iconName: 'user-plus',
+          iconName: 'person-fill-add',
           title: I18n.t('Crm_SaveContact'),
           onPress: () =>
             contactProvider.saveContact({
@@ -299,7 +299,7 @@ const useProspectDetailsActions = () => {
         {
           key: 'prospect-openEventForm',
           order: 20,
-          iconName: 'calendar-plus',
+          iconName: 'calendar-plus-fill',
           title: I18n.t('Crm_CreateEvent'),
           onPress: () =>
             navigation.navigate('EventFormScreen', {prospect: prospect}),

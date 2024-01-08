@@ -139,7 +139,7 @@ const InternalMoveCreationScreen = ({navigation}) => {
         {currentStep >= CREATION_STEP.lines && (
           <HalfLabelCard
             style={styles.button}
-            iconName="sitemap"
+            iconName="diagram-3-fill"
             title={I18n.t('Stock_DefineLines')}
             onPress={handleCompleteLines}
           />

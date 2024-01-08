@@ -78,7 +78,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Start')}
-        iconName="play"
+        iconName="play-fill"
         onPress={handleStartInventory}
       />
     );
@@ -88,7 +88,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Complete')}
-        iconName="check"
+        iconName="check-lg"
         onPress={handleCompleteInventory}
       />
     );
@@ -101,7 +101,7 @@ const InventoryButtons = ({}) => {
     return (
       <Button
         title={I18n.t('Base_Validate')}
-        iconName="check"
+        iconName="check-lg"
         onPress={handleValidateInventory}
       />
     );

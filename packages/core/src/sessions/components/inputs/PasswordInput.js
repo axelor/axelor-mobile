@@ -58,10 +58,10 @@ const PasswordInput = ({
       required={true}
       secureTextEntry={!visible}
       placeholder={I18n.t('Base_Connection_Password')}
-      leftIconsList={[<Icon name="key" size={17} style={styles.icon} />]}
+      leftIconsList={[<Icon name="key-fill" size={17} style={styles.icon} />]}
       rightIconsList={[
         <Icon
-          name={visible ? 'eye' : 'eye-slash'}
+          name={visible ? 'eye-fill' : 'eye-slash-fill'}
           size={17}
           touchable={true}
           onPress={() => setVisible(!visible)}

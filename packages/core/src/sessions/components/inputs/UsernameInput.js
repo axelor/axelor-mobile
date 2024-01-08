@@ -50,7 +50,7 @@ const UsernameInput = ({
   if (readOnly) {
     return (
       <LabelText
-        iconName="user"
+        iconName="person-fill"
         title={value}
         style={styles.labText}
         size={20}
@@ -67,12 +67,14 @@ const UsernameInput = ({
       required={true}
       onSelection={showScanIcon ? onSelection : () => {}}
       placeholder={I18n.t('Base_Connection_Username')}
-      leftIconsList={[<Icon name="user" size={17} style={styles.icon} />]}
+      leftIconsList={[
+        <Icon name="person-fill" size={17} style={styles.icon} />,
+      ]}
       rightIconsList={
         showScanIcon
           ? [
               <Icon
-                name="qrcode"
+                name="qr-code-scan"
                 size={20}
                 color={
                   scanIconColor == null
@@ -82,7 +84,6 @@ const UsernameInput = ({
                 touchable={true}
                 style={styles.icon}
                 onPress={onScanPress}
-                FontAwesome5={false}
               />,
             ]
           : []

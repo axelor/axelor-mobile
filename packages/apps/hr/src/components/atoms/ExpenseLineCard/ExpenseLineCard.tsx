@@ -97,7 +97,7 @@ const ExpenseLineCard = ({
             {
               indicatorText: _date.day,
               displayText: `${_date.date} ${_date.month}`,
-              iconName: 'calendar-alt',
+              iconName: 'calendar-event',
               hideIfNull: true,
               style: styles.details,
             },
@@ -110,7 +110,7 @@ const ExpenseLineCard = ({
               customComponent: (
                 <View style={styles.cityContainer}>
                   <Text>{capitalizeFirstLetter(fromCity)}</Text>
-                  <Icon style={styles.arrowIcon} name="long-arrow-alt-right" />
+                  <Icon style={styles.arrowIcon} name="arrow-right" />
                   <Text>{capitalizeFirstLetter(toCity)}</Text>
                 </View>
               ),
@@ -121,7 +121,7 @@ const ExpenseLineCard = ({
                 'Hr_KilometerUnit',
               )}`,
               hideIf: distance == null || (fromCity == null && toCity == null),
-              iconName: 'road',
+              iconName: 'signpost-split',
             },
           ],
         }}
