@@ -77,11 +77,14 @@ const GroupByScrollList = ({
 
     const isFirstItem = index === 0;
     const isLastItem = index === data.length - 1;
+    const isSeparator = !isFirstItem && separatorCondition(prevItem, item);
 
-    if (isFirstItem || isLastItem || separatorCondition(prevItem, item)) {
-      const topIndicator = !isLastItem ? fetchTopIndicator?.(item) : null;
-      const bottomIndicator =
-        !isFirstItem && !isLastItem ? fetchBottomIndicator?.(prevItem) : null;
+    if (isFirstItem || isLastItem || isSeparator) {
+      const topIndicator =
+        isFirstItem || isSeparator ? fetchTopIndicator?.(item) : null;
+      const bottomIndicator = isSeparator
+        ? fetchBottomIndicator?.(prevItem)
+        : null;
       const lastBottomIndicator = isLastItem
         ? fetchBottomIndicator?.(item)
         : null;
