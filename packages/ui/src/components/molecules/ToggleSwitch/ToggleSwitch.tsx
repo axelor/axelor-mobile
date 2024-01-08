@@ -100,7 +100,7 @@ const getStyles = (Colors: ThemeColors) =>
     toggle: {
       width: '54%',
       height: 40,
-      borderRadius: 13,
+      borderRadius: 7,
       padding: 5,
       justifyContent: 'center',
       alignItems: 'center',
