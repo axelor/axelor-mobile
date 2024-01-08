@@ -18,9 +18,15 @@
 
 import React, {LegacyRef, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import {FormInput} from '../../molecules';
-import {Icon} from '../../atoms';
+import {Icon, Input} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
+import {ThemeColors} from '../../../theme/themes';
+import {getCommonStyles} from '../../../utils/commons-styles';
+
+export const INPUT_CHANGE_TYPE = {
+  button: 0,
+  keyboard: 1,
+};
 
 interface NumberChevronInputProps {
   style?: any;
@@ -28,7 +34,7 @@ interface NumberChevronInputProps {
   defaultValue?: number;
   minValue?: number;
   maxValue?: number;
-  onValueChange?: (value: number) => void;
+  onValueChange?: (value: number, inputChangeType: number) => void;
   onEndFocus?: () => void;
   required?: boolean;
   readonly?: boolean;
@@ -48,19 +54,36 @@ const NumberChevronInput = ({
   const Colors = useThemeColor();
 
   const [inputValue, setInputValue] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => setInputValue(defaultValue), [defaultValue]);
 
-  const canIncreaseValue = useMemo(
-    () => inputValue < maxValue,
-    [inputValue, maxValue],
-  );
-  const canDecreaseValue = useMemo(
-    () => inputValue > minValue,
-    [inputValue, minValue],
+  const _required = useMemo(
+    () => required && inputValue == null,
+    [required, inputValue],
   );
 
-  const onInputChange = (value: string) => {
+  const commonStyles = useMemo(
+    () => getCommonStyles(Colors, _required),
+    [Colors, _required],
+  );
+
+  const styles = useMemo(
+    () => getStyles(Colors, _required),
+    [Colors, _required],
+  );
+
+  const canIncreaseValue = useMemo(
+    () => !readonly && inputValue < maxValue,
+    [inputValue, maxValue, readonly],
+  );
+
+  const canDecreaseValue = useMemo(
+    () => !readonly && inputValue > minValue,
+    [inputValue, minValue, readonly],
+  );
+
+  const handleChange = (value: string) => {
     let writtenNumber = null;
 
     if (value?.length > 0) {
@@ -69,7 +92,7 @@ const NumberChevronInput = ({
 
     if (writtenNumber >= minValue && writtenNumber <= maxValue) {
       setInputValue(writtenNumber);
-      onValueChange(writtenNumber);
+      onValueChange(writtenNumber, INPUT_CHANGE_TYPE.keyboard);
     } else {
       const distanceToMinValue = Math.abs(writtenNumber - minValue);
       const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
@@ -79,13 +102,22 @@ const NumberChevronInput = ({
     }
   };
 
+  const handleSelection = () => {
+    setIsFocused(true);
+  };
+
+  const handleEndFocus = () => {
+    setIsFocused(false);
+    onEndFocus();
+  };
+
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity
         onPress={() =>
           setInputValue(currentValue => {
             const newValue = currentValue + 1;
-            onValueChange(newValue);
+            onValueChange(newValue, INPUT_CHANGE_TYPE.button);
             return newValue;
           })
         }
@@ -99,22 +131,30 @@ const NumberChevronInput = ({
           }
         />
       </TouchableOpacity>
-      <FormInput
-        style={[styles.input]}
-        inputStyle={styles.centerText}
-        inputRef={inputRef}
-        defaultValue={inputValue?.toString()}
-        onChange={onInputChange}
-        onEndFocus={onEndFocus}
-        readOnly={readonly}
-        required={required}
-        keyboardType="numeric"
-      />
+      <View
+        style={[
+          commonStyles.filter,
+          commonStyles.filterSize,
+          commonStyles.filterAlign,
+          styles.inputContainer,
+          isFocused && commonStyles.inputFocused,
+        ]}>
+        <Input
+          style={styles.input}
+          inputRef={inputRef}
+          value={inputValue?.toString()}
+          onChange={handleChange}
+          onSelection={handleSelection}
+          onEndFocus={handleEndFocus}
+          readOnly={readonly}
+          keyboardType="numeric"
+        />
+      </View>
       <TouchableOpacity
         onPress={() =>
           setInputValue(currentValue => {
             const newValue = currentValue - 1;
-            onValueChange(newValue);
+            onValueChange(newValue, INPUT_CHANGE_TYPE.button);
             return newValue;
           })
         }
@@ -132,18 +172,24 @@ const NumberChevronInput = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '17%',
-    flexDirection: 'column',
-  },
-  input: {
-    width: '100%',
-    minHeight: null,
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-});
+const getStyles = (Colors: ThemeColors, _required: boolean) =>
+  StyleSheet.create({
+    container: {
+      width: '17%',
+      flexDirection: 'column',
+    },
+    inputContainer: {
+      width: '100%',
+      marginHorizontal: 0,
+      borderWidth: 1,
+      borderColor: _required
+        ? Colors.errorColor.background
+        : Colors.secondaryColor.background,
+    },
+    input: {
+      width: '100%',
+      textAlign: 'center',
+    },
+  });
 
 export default NumberChevronInput;

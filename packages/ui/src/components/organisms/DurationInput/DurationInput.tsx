@@ -18,7 +18,9 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {NumberChevronInput} from '../../molecules';
+import NumberChevronInput, {
+  INPUT_CHANGE_TYPE,
+} from '../../molecules/NumberChevronInput/NumberChevronInput';
 import {Text} from '../../atoms';
 import {
   formatDurationArrayToSeconds,
@@ -44,12 +46,7 @@ const DurationInput = ({
   required = false,
   readonly = false,
 }: DurationInputProps) => {
-  const inputRefs = {
-    input1: useRef(null),
-    input2: useRef(null),
-    input3: useRef(null),
-    input4: useRef(null),
-  };
+  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   const [formattedDuration, setFormattedDuration] = useState(
     formatDurationSecondsToArray(defaultValue),
@@ -71,6 +68,16 @@ const DurationInput = ({
     });
   };
 
+  const changeFocusedInput = (
+    inputIndex: number,
+    value: number,
+    inputChangeType: number,
+  ) => {
+    if (value && inputChangeType === INPUT_CHANGE_TYPE.keyboard) {
+      inputRefs[inputIndex].current.focus();
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       {title && <Text style={styles.title}>{title}</Text>}
@@ -78,11 +85,9 @@ const DurationInput = ({
         <NumberChevronInput
           style={inputStyle}
           defaultValue={formattedDuration[0]}
-          onValueChange={value => {
+          onValueChange={(value, inputChangeType) => {
             changeFormattedDuration(0, value);
-            if (value) {
-              inputRefs.input1.current.focus();
-            }
+            changeFocusedInput(0, value, inputChangeType);
           }}
           onEndFocus={() =>
             !formattedDuration[0] && changeFormattedDuration(0, 0)
@@ -92,13 +97,11 @@ const DurationInput = ({
         />
         <NumberChevronInput
           style={inputStyle}
-          inputRef={inputRefs.input1}
+          inputRef={inputRefs[0]}
           defaultValue={formattedDuration[1]}
-          onValueChange={value => {
+          onValueChange={(value, inputChangeType) => {
             changeFormattedDuration(1, value);
-            if (value) {
-              inputRefs.input2.current.focus();
-            }
+            changeFocusedInput(1, value, inputChangeType);
           }}
           onEndFocus={() =>
             !formattedDuration[1] && changeFormattedDuration(1, 0)
@@ -108,13 +111,11 @@ const DurationInput = ({
         />
         <NumberChevronInput
           style={inputStyle}
-          inputRef={inputRefs.input2}
+          inputRef={inputRefs[1]}
           defaultValue={formattedDuration[2]}
-          onValueChange={value => {
+          onValueChange={(value, inputChangeType) => {
             changeFormattedDuration(2, value);
-            if (value) {
-              inputRefs.input3.current.focus();
-            }
+            changeFocusedInput(2, value, inputChangeType);
           }}
           onEndFocus={() =>
             !formattedDuration[2] && changeFormattedDuration(2, 0)
@@ -127,14 +128,12 @@ const DurationInput = ({
         </Text>
         <NumberChevronInput
           style={inputStyle}
-          inputRef={inputRefs.input3}
+          inputRef={inputRefs[2]}
           defaultValue={formattedDuration[3]}
           maxValue={5}
-          onValueChange={value => {
+          onValueChange={(value, inputChangeType) => {
             changeFormattedDuration(3, value);
-            if (value) {
-              inputRefs.input4.current.focus();
-            }
+            changeFocusedInput(3, value, inputChangeType);
           }}
           onEndFocus={() =>
             !formattedDuration[3] && changeFormattedDuration(3, 0)
@@ -144,7 +143,7 @@ const DurationInput = ({
         />
         <NumberChevronInput
           style={inputStyle}
-          inputRef={inputRefs.input4}
+          inputRef={inputRefs[3]}
           defaultValue={formattedDuration[4]}
           onValueChange={value => {
             changeFormattedDuration(4, value);

@@ -16,26 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {
-  LegacyRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {KeyboardTypeOptions, StyleSheet, TextInput, View} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
 import {Input, Text} from '../../atoms';
 import {useThemeColor} from '../../../theme/ThemeContext';
 import {ThemeColors} from '../../../theme/themes';
 import {getCommonStyles} from '../../../utils/commons-styles';
 
 interface FormInputProps {
-  title?: string;
+  title: string;
   defaultValue?: string;
   readOnly?: boolean;
   style?: any;
-  inputStyle?: any;
-  inputRef?: LegacyRef<TextInput>;
   required?: boolean;
   onChange?: (any: any) => void;
   onSelection?: () => void;
@@ -50,8 +42,6 @@ const FormInput = ({
   defaultValue = null,
   readOnly,
   style,
-  inputStyle,
-  inputRef,
   required = false,
   onChange = () => {},
   onSelection = () => {},
@@ -105,7 +95,7 @@ const FormInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      {title && <Text style={styles.title}>{title}</Text>}
+      <Text style={styles.title}>{title}</Text>
       <View
         style={[
           commonStyles.filter,
@@ -118,8 +108,7 @@ const FormInput = ({
           },
         ]}>
         <Input
-          style={[styles.input, inputStyle]}
-          inputRef={inputRef}
+          style={styles.input}
           value={value}
           onChange={onValueChange}
           onSelection={handleSelection}
