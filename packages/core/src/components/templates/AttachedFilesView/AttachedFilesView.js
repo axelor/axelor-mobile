@@ -126,8 +126,6 @@ function AttachedFilesView({
           <ChipSelect
             mode="multi"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={5}
-            width={Dimensions.get('window').width * 0.25}
             selectionItems={extensionList.map(ext => {
               return {
                 title: `${ext}`.toUpperCase(),

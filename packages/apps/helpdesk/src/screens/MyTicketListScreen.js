@@ -138,8 +138,6 @@ const MyTicketListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            marginHorizontal={4}
-            width={Dimensions.get('window').width * 0.3}
             onChangeValue={chiplist => setPriorityStatus(chiplist)}
             selectionItems={Ticket.getPriorityList(Colors, I18n)}
           />

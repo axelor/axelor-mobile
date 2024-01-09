@@ -132,8 +132,6 @@ function OperationOrderListScreen({navigation}) {
         chipComponent={
           <ChipSelect
             mode="multi"
-            marginHorizontal={3}
-            width={Dimensions.get('window').width * 0.3}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {

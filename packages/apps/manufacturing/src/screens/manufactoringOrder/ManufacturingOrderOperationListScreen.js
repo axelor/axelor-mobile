@@ -95,8 +95,6 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            marginHorizontal={4}
-            width={Dimensions.get('window').width * 0.3}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {

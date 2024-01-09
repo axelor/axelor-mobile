@@ -192,8 +192,6 @@ const ConsumedProductListScreen = ({route, navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            width={Dimensions.get('window').width * 0.3}
-            marginHorizontal={2}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {

@@ -138,8 +138,6 @@ const InternalMoveListScreen = ({navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            width={Dimensions.get('window').width * 0.3}
-            marginHorizontal={3}
             selectionItems={[
               {
                 title: I18n.t('Stock_Status_Draft'),
