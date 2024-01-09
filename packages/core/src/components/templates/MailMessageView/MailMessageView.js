@@ -124,13 +124,13 @@ const MailMessageView = ({model, modelId}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (list?.length > 0 && selectedStatus?.length > 0) {
+      if (
+        list?.length > 0 &&
+        selectedStatus?.length > 0 &&
+        selectedStatus[0].key !== MailMessageType.status.all
+      ) {
         return list.filter(item => {
-          if (selectedStatus[0].key === MailMessageType.status.all) {
-            return true;
-          } else {
-            return item.type === selectedStatus[0].key;
-          }
+          return item.type === selectedStatus[0].key;
         });
       } else {
         return list;
@@ -256,7 +256,12 @@ const MailMessageView = ({model, modelId}) => {
           width={Dimensions.get('window').width * 0.28}
           marginHorizontal={5}
           onChangeValue={chiplist => setSelectedStatus(chiplist)}
-          selectionItems={MailMessageType.getSelectionItems(I18n, Colors)}
+          isRefresh
+          selectionItems={MailMessageType.getSelectionItems(
+            I18n,
+            Colors,
+            selectedStatus,
+          )}
         />
         {displayMessageBox && (
           <View style={styles.messageBox}>

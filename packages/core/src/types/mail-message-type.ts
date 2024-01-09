@@ -28,22 +28,27 @@ class MailMessageType {
   static getSelectionItems = (
     I18n: {t: (key: string) => string},
     Colors: ThemeColors,
+    selectedStatus: any[],
   ) => {
     return [
       {
         title: I18n.t('Base_All'),
         color: Colors.primaryColor,
-        isActive: true,
+        isActive:
+          selectedStatus.length === 0 ||
+          selectedStatus[0]?.key === this.status.all,
         key: this.status.all,
       },
       {
         title: I18n.t('Base_Comments'),
         color: Colors.primaryColor,
+        isActive: selectedStatus[0]?.key === this.status.comment,
         key: this.status.comment,
       },
       {
         title: I18n.t('Base_Notifications'),
         color: Colors.primaryColor,
+        isActive: selectedStatus[0]?.key === this.status.notification,
         key: this.status.notification,
       },
     ];
