@@ -39,6 +39,7 @@ const ProductStockDetailsScreen = ({route}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
   const dispatch = useDispatch();
+
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );

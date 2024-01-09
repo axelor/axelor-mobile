@@ -26,20 +26,20 @@ import {
 } from '../../../features/metaJsonFieldSlice';
 import {
   formConfigsProvider,
+  getAttrsValue,
   mapStudioFields,
   mapStudioFieldsWithFormula,
 } from '../../../forms';
-import {isEmpty} from '../../../utils';
 
 const FORM_KEY = 'customField-form';
 
 interface CustomFieldFormProps {
   model: string;
   modelId: string;
-  type: 'productAttrs' | 'attrs';
+  fieldType: 'productAttrs' | 'attrs';
 }
 
-const CustomFieldForm = ({model, modelId, type}: CustomFieldFormProps) => {
+const CustomFieldForm = ({model, modelId, fieldType}: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -48,9 +48,11 @@ const CustomFieldForm = ({model, modelId, type}: CustomFieldFormProps) => {
   );
 
   const refresh = useCallback(() => {
-    dispatch((fetchJsonFieldsOfModel as any)({modelName: model, type: type}));
+    dispatch(
+      (fetchJsonFieldsOfModel as any)({modelName: model, type: fieldType}),
+    );
     dispatch((fetchObject as any)({modelName: model, id: modelId}));
-  }, [dispatch, model, modelId, type]);
+  }, [dispatch, model, modelId, fieldType]);
 
   useEffect(() => {
     refresh();
@@ -74,19 +76,7 @@ const CustomFieldForm = ({model, modelId, type}: CustomFieldFormProps) => {
   }, [fields, panels]);
 
   const attrsValues = useMemo(() => {
-    if (isEmpty(object)) {
-      return {};
-    }
-
-    let result = {};
-
-    Object.entries(object)
-      .filter(([key]) => key.toLowerCase().includes('attrs'))
-      .forEach(([_, value]: [string, string]) => {
-        result = {...result, ...JSON.parse(value)};
-      });
-
-    return result;
+    getAttrsValue(object);
   }, [object]);
 
   return (

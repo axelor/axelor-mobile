@@ -27,11 +27,11 @@ import {
 } from '../features/metaJsonFieldSlice';
 import {
   formConfigsProvider,
+  getAttrsValue,
   mapFormToStudioFields,
   mapStudioFields,
   mapStudioFieldsWithFormula,
 } from '../forms';
-import {isEmpty} from '../utils';
 import {headerActionsProvider} from '../header';
 import {useTranslator} from '../i18n';
 
@@ -74,19 +74,7 @@ const JsonFieldScreen = ({route}) => {
   }, [fields, panels]);
 
   const attrsValues = useMemo(() => {
-    if (isEmpty(object)) {
-      return {};
-    }
-
-    let result = {};
-
-    Object.entries(object)
-      .filter(([key]) => key.toLowerCase().includes('attrs'))
-      .forEach(([_, value]: [string, string]) => {
-        result = {...result, ...JSON.parse(value)};
-      });
-
-    return result;
+    getAttrsValue(object);
   }, [object]);
 
   useEffect(() => {
