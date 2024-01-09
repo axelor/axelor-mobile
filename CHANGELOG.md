@@ -3,6 +3,40 @@ title: 7.0.0
 tags: Changelog
 ---
 
+## [7.0.9] (2024-01-09)
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Prevent dispatch on undefined values
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: refresh issue on tracking numebr update
+- Manufacturing orders : check manageWorkshop config before filtering on user default stock location
+
+### @axelor/aos-mobile-stock
+
+#### Removed
+
+- Remove unused component CarrierCard
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch : make input readonly when an item is selected
+- ScrollList : avoid page reset when more is loading
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Permissions : block access to the application if user cannot be fetched
+
 ## [7.0.8] (2023-12-15)
 
 ### @axelor/aos-mobile-stock
@@ -397,6 +431,7 @@ The project architecture has also been updated, the example folder has been expl
 - Replace ChipSelect by MultiValuePicker on list screens
 - Add search bar details pop up on screens: add empowered searchBar for objects
 
+[7.0.9]: https://github.com/axelor/axelor-mobile/compare/7.0.8...7.0.9
 [7.0.8]: https://github.com/axelor/axelor-mobile/compare/7.0.7...7.0.8
 [7.0.7]: https://github.com/axelor/axelor-mobile/compare/7.0.6...7.0.7
 [7.0.6]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.0.6
@@ -405,4 +440,4 @@ The project architecture has also been updated, the example folder has been expl
 [7.0.3]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.0.3
 [7.0.2]: https://github.com/axelor/axelor-mobile/compare/7.0.1...7.0.2
 [7.0.1]: https://github.com/axelor/axelor-mobile/compare/7.0.0...7.0.1
-[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.5...7.0.0
+[7.0.0]: https://github.com/axelor/axelor-mobile/compare/6.5.1...7.0.0
