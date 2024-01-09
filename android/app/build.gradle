@@ -259,6 +259,23 @@ android {
         }
     }
 
+    flavorDimensions "type"
+    productFlavors {
+        pipeline {
+            dimension "type"
+            applicationIdSuffix ".seven.two"
+            versionNameSuffix "-demo"
+        }
+        dev {
+            dimension "type"
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        store {
+            dimension "type"
+        }
+    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->

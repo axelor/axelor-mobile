@@ -54,14 +54,14 @@ jobs:
       - name: Check packages
         run: yarn build
       - name: Check Android build
-        run: cd android && ./gradlew app:assembleRelease
+        run: cd android && ./gradlew app:assemblePipelineRelease
       - name: Rename APK
-        run: mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/${{ github.head_ref || github.ref_name }}.apk
+        run: mv android/app/build/outputs/apk/pipeline/release/app-pipeline-release.apk android/app/build/outputs/apk/pipeline/release/${{ github.head_ref || github.ref_name }}.apk
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.head_ref || github.ref_name }}.apk
-          path: android/app/build/outputs/apk/release/${{ github.head_ref || github.ref_name }}.apk
+          path: android/app/build/outputs/apk/pipeline/release/${{ github.head_ref || github.ref_name }}.apk
 
   test:
     name: Test
