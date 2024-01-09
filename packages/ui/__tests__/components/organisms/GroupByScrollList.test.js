@@ -24,7 +24,9 @@ describe('GroupByScrollList', () => {
   const data = [
     {id: 1, name: 'Aa'},
     {id: 2, name: 'Ab'},
-    {id: 3, name: 'Bb'},
+    {id: 3, name: 'Ba'},
+    {id: 3, name: 'Ca'},
+    {id: 3, name: 'Cb'},
   ];
 
   const renderItem = ({item}) => <Text>{item.name}</Text>;
@@ -89,15 +91,26 @@ describe('GroupByScrollList', () => {
         .find(ScrollList)
         .renderProp('renderItem')({item, index});
 
-      let prevItem = index !== 0 ? data[index - 1] : null;
+      const prevItem = index !== 0 ? data[index - 1] : null;
 
-      if (index === 0 || separatorCondition(prevItem, item)) {
-        expect(renderItemElement.find('TopSeparator').length).toBe(1);
-        expect(fetchTopIndicator).toHaveBeenCalledWith(item);
+      const isFirstItem = index === 0;
+      const isLastItem = index === data.length - 1;
+      const isSeparator = !isFirstItem && separatorCondition(prevItem, item);
 
-        if (prevItem) {
+      if (isFirstItem || isLastItem || isSeparator) {
+        if (isFirstItem || isSeparator) {
+          expect(renderItemElement.find('TopSeparator').length).toBe(1);
+          expect(fetchTopIndicator).toHaveBeenCalledWith(item);
+        }
+
+        if (isSeparator) {
           expect(renderItemElement.find('BottomSeparator').length).toBe(1);
           expect(fetchBottomIndicator).toHaveBeenCalledWith(prevItem);
+        }
+
+        if (isLastItem) {
+          expect(renderItemElement.find('BottomSeparator').length).toBe(1);
+          expect(fetchBottomIndicator).toHaveBeenCalledWith(item);
         }
       } else {
         expect(renderItemElement.find('TopSeparator').length).toBe(0);
