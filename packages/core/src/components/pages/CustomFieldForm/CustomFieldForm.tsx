@@ -31,17 +31,25 @@ import {
 } from '../../../forms';
 import {isEmpty} from '../../../utils';
 
-const FORM_KEY = 'attrs-form-test';
+const FORM_KEY = 'customField-form';
 
-const CustomFieldForm = ({model, modelId, type}) => {
+interface CustomFieldFormProps {
+  model: string;
+  modelId: string;
+  type: 'productAttrs' | 'attrs';
+}
+
+const CustomFieldForm = ({model, modelId, type}: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {fields: _fields, object} = useSelector(state => state.metaJsonField);
+  const {fields: _fields, object} = useSelector(
+    (state: any) => state.metaJsonField,
+  );
 
   const refresh = useCallback(() => {
-    dispatch(fetchJsonFieldsOfModel({modelName: model, type: type}));
-    dispatch(fetchObject({modelName: model, id: modelId}));
+    dispatch((fetchJsonFieldsOfModel as any)({modelName: model, type: type}));
+    dispatch((fetchObject as any)({modelName: model, id: modelId}));
   }, [dispatch, model, modelId, type]);
 
   useEffect(() => {
@@ -74,7 +82,7 @@ const CustomFieldForm = ({model, modelId, type}) => {
 
     Object.entries(object)
       .filter(([key]) => key.toLowerCase().includes('attrs'))
-      .forEach(([_, value]) => {
+      .forEach(([_, value]: [string, string]) => {
         result = {...result, ...JSON.parse(value)};
       });
 
