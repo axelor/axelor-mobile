@@ -98,7 +98,8 @@ export const addTrackingNumber = createAsyncThunk(
 );
 
 const initialState = {
-  loadingIMLines: false,
+  loadingIMLinesList: false,
+  loadingIMLine: false,
   moreLoading: false,
   isListEnd: false,
   internalMoveLineList: [],
@@ -115,7 +116,7 @@ const internalMoveLineSlice = createSlice({
       builder,
       fetchInternalMoveLines,
       {
-        loading: 'loadingIMLines',
+        loading: 'loadingIMLinesList',
         moreLoading: 'moreLoading',
         isListEnd: 'isListEnd',
         list: 'internalMoveLineList',
@@ -126,10 +127,10 @@ const internalMoveLineSlice = createSlice({
       },
     );
     builder.addCase(updateInternalMoveLine.pending, state => {
-      state.loadingIMLines = true;
+      state.loadingIMLine = true;
     });
     builder.addCase(updateInternalMoveLine.fulfilled, (state, action) => {
-      state.loadingIMLines = false;
+      state.loadingIMLine = false;
       state.internalMoveLine = action.payload;
       state.internalMoveLineList = updateAgendaItems(
         state.internalMoveLineList,

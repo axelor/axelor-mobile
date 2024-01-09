@@ -38,7 +38,7 @@ const EventSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {eventList, loadingEvent, moreLoading, isListEnd} = useSelector(
+  const {eventList, loadingEventList, moreLoading, isListEnd} = useSelector(
     state => state.event,
   );
 
@@ -58,7 +58,7 @@ const EventSearchBar = ({
       displayValue={displayItemName}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingEvent}
+      loadingList={loadingEventList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}

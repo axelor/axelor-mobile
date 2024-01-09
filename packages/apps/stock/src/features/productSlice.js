@@ -68,6 +68,7 @@ export const updateProductLocker = createAsyncThunk(
 
 const initialState = {
   loadingProduct: false,
+  loadingProductLocker: false,
   moreLoadingProduct: false,
   isListEndProduct: false,
   productList: [],
@@ -87,19 +88,17 @@ const productSlice = createSlice({
       list: 'productList',
     });
     builder.addCase(fetchProductWithId.pending, state => {
-      state.loadingProduct = true;
       state.loadingProductFromId = true;
     });
     builder.addCase(fetchProductWithId.fulfilled, (state, action) => {
-      state.loadingProduct = false;
       state.loadingProductFromId = false;
       state.productFromId = action.payload;
     });
     builder.addCase(updateProductLocker.pending, state => {
-      state.loadingProduct = true;
+      state.loadingProductLocker = true;
     });
     builder.addCase(updateProductLocker.fulfilled, (state, action) => {
-      state.loadingProduct = false;
+      state.loadingProductLocker = false;
       state.updateResponde = action.payload;
     });
   },

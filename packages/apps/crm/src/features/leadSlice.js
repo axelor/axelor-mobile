@@ -134,6 +134,7 @@ export const createLead = createAsyncThunk(
 );
 
 const initialState = {
+  loadingLeadList: true,
   loadingLead: true,
   loadingLeadStatus: true,
   moreLoading: false,
@@ -148,7 +149,7 @@ const leadSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeads, {
-      loading: 'loadingLead',
+      loading: 'loadingLeadList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'leadList',

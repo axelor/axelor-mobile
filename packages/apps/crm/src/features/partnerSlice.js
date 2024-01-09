@@ -84,7 +84,8 @@ const initialState = {
   loadingPartner: true,
   partner: {},
   clientAndProspectList: [],
-  loading: false,
+  loadingList: false,
+  loadingPartnerList: false,
   moreLoading: false,
   isListEnd: false,
   linkedPartnersOfContact: [],
@@ -109,13 +110,13 @@ const partnerSlice = createSlice({
       },
     );
     generateInifiniteScrollCases(builder, fetchClientAndProspect, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'clientAndProspectList',
     });
     generateInifiniteScrollCases(builder, searchPartner, {
-      loading: 'loading',
+      loading: 'loadingPartnerList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'partnerList',

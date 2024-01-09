@@ -142,6 +142,7 @@ const initialState = {
   listEventPartner: [],
   listEventContact: [],
   loadingEvent: true,
+  loadingEventList: true,
   moreLoading: false,
   isListEnd: false,
   eventList: [],
@@ -174,7 +175,7 @@ const eventSlice = createSlice({
       state.listEventContact = action.payload;
     });
     generateInifiniteScrollCases(builder, fetchPlannedEvent, {
-      loading: 'loadingEvent',
+      loading: 'loadingEventList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'eventList',

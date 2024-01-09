@@ -35,7 +35,7 @@ const ProductListVariantScreen = ({route, navigation}) => {
     [product?.parentProduct?.id],
   );
   const {
-    loading,
+    loadingProductList,
     moreLoading,
     isListEnd,
     productListVariables,
@@ -79,7 +79,7 @@ const ProductListVariantScreen = ({route, navigation}) => {
   return (
     <Screen>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingProductList}
         data={productListVariables}
         renderItem={({item, index}) => (
           <ProductVariantCard

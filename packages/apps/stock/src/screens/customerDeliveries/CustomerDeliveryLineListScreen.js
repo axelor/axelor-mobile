@@ -50,7 +50,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
   const {mobileSettings} = useSelector(state => state.config);
   const {customerDeliveryLineList} =
     useCustomerLinesWithRacks(customerDelivery);
-  const {loadingCDLines, moreLoading, isListEnd} = useSelector(
+  const {loadingCDLinesList, moreLoading, isListEnd} = useSelector(
     state => state.customerDeliveryLine,
   );
 
@@ -177,7 +177,7 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingCDLines}
+        loadingList={loadingCDLinesList}
         data={filteredList}
         renderItem={({item}) => (
           <CustomerDeliveryLineCard

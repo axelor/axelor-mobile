@@ -45,7 +45,7 @@ const InventoryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, inventoryList} = useSelector(
+  const {loadingList, moreLoading, isListEnd, inventoryList} = useSelector(
     state => state.inventory,
   );
 
@@ -168,7 +168,7 @@ const InventoryListScreen = ({navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <InventoryCard

@@ -48,7 +48,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, deliveryList} = useSelector(
+  const {loadingList, moreLoading, isListEnd, deliveryList} = useSelector(
     state => state.customerDelivery,
   );
 
@@ -166,7 +166,7 @@ const CustomerDeliveryListScreen = ({navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <CustomerDeliveryCard

@@ -98,6 +98,7 @@ export const fetchInventoryById = createAsyncThunk(
 );
 
 const initialState = {
+  loadingList: false,
   loading: false,
   inventory: null,
   moreLoading: false,
@@ -117,7 +118,7 @@ const inventorySlice = createSlice({
       state.inventory = action.payload;
     });
     generateInifiniteScrollCases(builder, searchInventories, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'inventoryList',

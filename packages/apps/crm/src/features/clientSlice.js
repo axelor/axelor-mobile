@@ -76,7 +76,8 @@ export const updateClient = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingClientList: false,
+  loadingClient: false,
   moreLoading: false,
   isListEnd: false,
   clientList: [],
@@ -88,23 +89,23 @@ const clientSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchClients, {
-      loading: 'loading',
+      loading: 'loadingClientList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'clientList',
     });
     builder.addCase(getClientbyId.pending, state => {
-      state.loading = true;
+      state.loadingClient = true;
     });
     builder.addCase(getClientbyId.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingClient = false;
       state.client = action.payload;
     });
     builder.addCase(updateClient.pending, (state, action) => {
-      state.loading = true;
+      state.loadingClient = true;
     });
     builder.addCase(updateClient.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingClient = false;
       state.client = action.payload;
       state.clientList = updateAgendaItems(state.clientList, [action.payload]);
     });

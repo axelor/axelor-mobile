@@ -171,6 +171,7 @@ export const getPartnerOpportunities = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  loadingList: false,
   loadingOpportunity: false,
   loadingOpportunityStatus: false,
   moreLoading: false,
@@ -186,7 +187,7 @@ const opportunitySlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchOpportunities, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'opportunityList',
@@ -236,10 +237,10 @@ const opportunitySlice = createSlice({
       ]);
     });
     builder.addCase(createOpportunity.pending, (state, action) => {
-      state.loading = true;
+      state.loadingList = true;
     });
     builder.addCase(createOpportunity.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingList = false;
       state.opportunityList = action.payload;
     });
     builder.addCase(getPartnerOpportunities.fulfilled, (state, action) => {

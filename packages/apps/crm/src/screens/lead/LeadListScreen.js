@@ -36,7 +36,7 @@ const LeadListScreen = ({navigation}) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
-  const {loadingLead, moreLoading, isListEnd, leadList, leadStatusList} =
+  const {loadingLeadList, moreLoading, isListEnd, leadList, leadStatusList} =
     useSelector(state => state.lead);
   const {userId} = useSelector(state => state.auth);
 
@@ -124,7 +124,7 @@ const LeadListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loadingLead}
+        loadingList={loadingLeadList}
         data={filteredList}
         renderItem={({item}) => (
           <LeadsCard

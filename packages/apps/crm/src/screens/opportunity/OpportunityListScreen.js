@@ -41,7 +41,7 @@ const OpportunityListScreen = ({navigation}) => {
 
   const {userId} = useSelector(state => state.auth);
   const {
-    loading,
+    loadingList,
     moreLoading,
     isListEnd,
     opportunityList,
@@ -134,7 +134,7 @@ const OpportunityListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <OpportunityCard
