@@ -18,8 +18,19 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {EditableInput, Picker, Screen, ScrollView} from '@axelor/aos-mobile-ui';
-import {useSelector, useDispatch, useTranslator} from '@axelor/aos-mobile-core';
+import {
+  Button,
+  EditableInput,
+  Picker,
+  Screen,
+  ScrollView,
+} from '@axelor/aos-mobile-ui';
+import {
+  useSelector,
+  useDispatch,
+  useTranslator,
+  CustomFieldForm,
+} from '@axelor/aos-mobile-core';
 import {
   ProductCardStockIndicatorList,
   ProductSeeStockLocationDistribution,
@@ -39,7 +50,7 @@ const ProductStockDetailsScreen = ({route}) => {
   const productId = route.params.product?.id;
   const I18n = useTranslator();
   const dispatch = useDispatch();
-
+  const [type, setType] = useState(null);
   const {loadingProductFromId, productFromId: product} = useSelector(
     state => state.product,
   );
@@ -136,6 +147,23 @@ const ProductStockDetailsScreen = ({route}) => {
           />
         )}
         <ProductCardStockIndicatorList />
+        <Button
+          title="attrs"
+          onPress={() => {
+            setType('attrs');
+          }}
+        />
+        <Button
+          title="productAttrs"
+          onPress={() => {
+            setType('productAttrs');
+          }}
+        />
+        <CustomFieldForm
+          model={'com.axelor.apps.base.db.Product'}
+          modelId={productId}
+          type={type}
+        />
       </ScrollView>
     </Screen>
   );
