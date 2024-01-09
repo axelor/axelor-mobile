@@ -20,16 +20,15 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
 import {
-  lightTheme,
   MultiValuePicker,
   MultiValuePickerButton,
   SelectionContainer,
   Text,
 } from '@axelor/aos-mobile-ui';
-import {getGlobalStyles} from '../../tools';
+import {getDefaultThemeColors, getGlobalStyles} from '../../tools';
 
 describe('MultiValuePicker Component', () => {
-  const Colors = lightTheme.colors;
+  const Colors = getDefaultThemeColors();
   const props = {
     listItems: [
       {
