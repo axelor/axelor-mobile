@@ -104,6 +104,9 @@ const CheckboxScrollList = ({
           })
         }
         isDefaultChecked={checkedItems.length === data.length}
+        isDefaultPartialChecked={
+          checkedItems.length > 0 && checkedItems.length < data.length
+        }
       />
       <ScrollList
         style={[styles.scrollList, styleScrollList]}
