@@ -3,6 +3,63 @@ title: 7.2.0
 tags: Changelog
 ---
 
+## [7.2.4] (2024-01-09)
+
+This version features a new apk management system, with build types that differentiate between apks available on Github and applications published on the store.
+
+### @axelor/aos-mobile-hr
+
+#### Features
+
+- Expense : improve expense line types display on details view
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- DurationFormInput : fix NPE on null value
+- Separate store attributes on ticket list screen to avoid refresh issue
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Prevent dispatch on undefined values
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: refresh issue on tracking numebr update
+- Manufacturing orders : check manageWorkshop config before filtering on user default stock location
+
+### @axelor/aos-mobile-stock
+
+#### Features
+
+- StockCorrection : improve buttons display
+
+#### Removed
+
+- Remove unused component CarrierCard
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch : make input readonly when an item is selected
+- ScrollList : avoid page reset when more is loading
+
+#### Features
+
+- ToggleSwitch : improve style to match uses
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Permissions : block access to the application if user cannot be fetched
+
 ## [7.2.3] (2023-12-15)
 
 ### @axelor/aos-mobile-hr
@@ -233,6 +290,7 @@ It enables user to manage Expenses through the mobile application. You can creat
 - Remove IconButton component which should be replaced by Button component.
 - Remove Pop-up components which should be replaced by Alert component.
 
+[7.2.4]: https://github.com/axelor/axelor-mobile/compare/7.2.3...7.2.4
 [7.2.3]: https://github.com/axelor/axelor-mobile/compare/7.2.2...7.2.3
 [7.2.2]: https://github.com/axelor/axelor-mobile/compare/7.2.1...7.2.2
 [7.2.1]: https://github.com/axelor/axelor-mobile/compare/7.2.0...7.2.1
