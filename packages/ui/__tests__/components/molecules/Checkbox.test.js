@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {shallow} from 'enzyme';
-import {Checkbox, Icon} from '@axelor/aos-mobile-ui';
+import {Checkbox, Icon, Text} from '@axelor/aos-mobile-ui';
 import {getDefaultThemeColors} from '../../tools';
 
 describe('Checkbox Component', () => {
@@ -65,13 +65,13 @@ describe('Checkbox Component', () => {
     expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
   });
 
-  it('renders correct icon if isDefaultChecked si true', () => {
+  it('renders correct icon if isDefaultChecked is true', () => {
     const wrapper = shallow(<Checkbox {...props} isDefaultChecked />);
 
     expect(wrapper.find(Icon).prop('name')).toBe('check-square-fill');
   });
 
-  it('renders correct icon if isDefaultPartialChecked si true', () => {
+  it('renders correct icon if isDefaultPartialChecked is true', () => {
     const wrapper = shallow(<Checkbox {...props} isDefaultPartialChecked />);
 
     expect(wrapper.find(Icon).prop('name')).toBe('dash-square-fill');
@@ -80,7 +80,7 @@ describe('Checkbox Component', () => {
   it('renders with correct title', () => {
     const wrapper = shallow(<Checkbox {...props} />);
 
-    expect(wrapper.find('Text').prop('children')).toBe(props.title);
+    expect(wrapper.find(Text).prop('children')).toBe(props.title);
   });
 
   it('renders with correct icon color based on disabled prop', () => {
