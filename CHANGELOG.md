@@ -3,6 +3,47 @@ title: 7.1.0
 tags: Changelog
 ---
 
+## [7.1.6] (2024-01-09)
+
+### @axelor/aos-mobile-helpdesk
+
+#### Fixes
+
+- DurationFormInput : fix NPE on null value
+- Separate store attributes on ticket list screen to avoid refresh issue
+
+### @axelor/aos-mobile-crm
+
+#### Fixes
+
+- Prevent dispatch on undefined values
+
+### @axelor/aos-mobile-manufacturing
+
+#### Fixes
+
+- Consumed products: refresh issue on tracking numebr update
+- Manufacturing orders : check manageWorkshop config before filtering on user default stock location
+
+### @axelor/aos-mobile-stock
+
+#### Removed
+
+- Remove unused component CarrierCard
+
+### @axelor/aos-mobile-ui
+
+#### Fixes
+
+- AutoCompleteSearch : make input readonly when an item is selected
+- ScrollList : avoid page reset when more is loading
+
+### @axelor/aos-mobile-core
+
+#### Fixes
+
+- Permissions : block access to the application if user cannot be fetched
+
 ## [7.1.5] (2023-12-15)
 
 ### @axelor/aos-mobile-stock
@@ -300,9 +341,10 @@ This update breaks the compatability with AOS Stock module under version 7.1 due
 - Add number decimal digit config management system
 - Manage multilines input with auto height resize on FormInput
 
+[7.1.6]: https://github.com/axelor/axelor-mobile/compare/7.1.5...7.1.6
 [7.1.5]: https://github.com/axelor/axelor-mobile/compare/7.1.4...7.1.5
 [7.1.4]: https://github.com/axelor/axelor-mobile/compare/7.1.3...7.1.4
 [7.1.3]: https://github.com/axelor/axelor-mobile/compare/7.1.2...7.1.3
 [7.1.2]: https://github.com/axelor/axelor-mobile/compare/7.1.1...7.1.2
 [7.1.1]: https://github.com/axelor/axelor-mobile/compare/7.1.0...7.1.1
-[7.1.0]: https://github.com/axelor/axelor-mobile/compare/7.0.5...7.1.0
+[7.1.0]: https://github.com/axelor/axelor-mobile/compare/7.0.2...7.1.0
