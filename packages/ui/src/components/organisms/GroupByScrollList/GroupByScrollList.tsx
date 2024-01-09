@@ -75,11 +75,18 @@ const GroupByScrollList = ({
       prevItem = data[index - 1];
     }
 
-    if (index === 0 || separatorCondition(prevItem, item)) {
-      const isFirstItem = prevItem == null;
-      const topIndicator = fetchTopIndicator?.(item);
-      const bottomIndicator = !isFirstItem
+    const isFirstItem = index === 0;
+    const isLastItem = index === data.length - 1;
+    const isSeparator = !isFirstItem && separatorCondition(prevItem, item);
+
+    if (isFirstItem || isLastItem || isSeparator) {
+      const topIndicator =
+        isFirstItem || isSeparator ? fetchTopIndicator?.(item) : null;
+      const bottomIndicator = isSeparator
         ? fetchBottomIndicator?.(prevItem)
+        : null;
+      const lastBottomIndicator = isLastItem
+        ? fetchBottomIndicator?.(item)
         : null;
 
       return (
@@ -96,6 +103,12 @@ const GroupByScrollList = ({
               isFirstItem: isFirstItem,
             })}
           {renderItem({item, index})}
+          {lastBottomIndicator &&
+            renderSeparator(
+              customBottomSeparator,
+              BottomSeparator,
+              lastBottomIndicator,
+            )}
         </>
       );
     }
