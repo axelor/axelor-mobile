@@ -47,7 +47,6 @@ import useTranslator from '../../../i18n/hooks/use-translator';
 import {headerActionsProvider} from '../../../header';
 import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 import {MailMessageType} from '../../../types';
-import {filterChip} from '../../../utils';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
