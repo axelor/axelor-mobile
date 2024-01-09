@@ -79,13 +79,13 @@ const ChipSelect = ({
       return (
         (Dimensions.get('window').width -
           CHIP_CONTAINER_MARGIN * 2 -
-          CHIP_MARGIN * 2 * numberItems) *
+          marginHorizontal * 2 * numberItems) *
         (1 / numberItems)
       );
     }
 
     return null;
-  }, [selectionItems, width]);
+  }, [marginHorizontal, selectionItems, width]);
 
   const updateChip = (chip: Item) => {
     let updatedChip = [];
