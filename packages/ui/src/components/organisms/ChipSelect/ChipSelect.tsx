@@ -22,7 +22,7 @@ import {Color} from '../../../theme/themes';
 import {Chip} from '../../molecules';
 
 const CHIP_CONTAINER_MARGIN = 16;
-const CHIP_MARGIN = 3;
+const CHIP_MARGIN = 2;
 
 const MODES = {
   switch: 'switch',
@@ -75,7 +75,7 @@ const ChipSelect = ({
 
     const numberItems = selectionItems.length;
 
-    if (numberItems > 1 && numberItems < 5) {
+    if (numberItems < 5) {
       return (
         (Dimensions.get('window').width -
           CHIP_CONTAINER_MARGIN * 2 -
@@ -84,7 +84,7 @@ const ChipSelect = ({
       );
     }
 
-    return Dimensions.get('window').width * 0.3;
+    return null;
   }, [selectionItems, width]);
 
   const updateChip = (chip: Item) => {
@@ -123,7 +123,10 @@ const ChipSelect = ({
     );
   };
 
-  if (mode !== MODES.multi && mode !== MODES.switch) {
+  if (
+    selectionItems.length < 2 ||
+    (mode !== MODES.multi && mode !== MODES.switch)
+  ) {
     return null;
   }
 
