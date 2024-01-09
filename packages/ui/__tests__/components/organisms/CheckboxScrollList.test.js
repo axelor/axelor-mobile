@@ -83,6 +83,30 @@ describe('CheckboxScrollList Component', () => {
     expect(onCheckedChange).toHaveBeenNthCalledWith(3, [mockData[1]]);
   });
 
+  it('set isDefaultPartialChecked and isDefaultChecked props of main checkbox depends of checked items', () => {
+    const wrapper = shallow(<CheckboxScrollList {...props} />);
+
+    wrapper
+      .find(ScrollList)
+      .renderProp('renderItem')({item: mockData[0], index: 0})
+      .find(Checkbox)
+      .simulate('change', true);
+    expect(wrapper.find(Checkbox).at(0).prop('isDefaultPartialChecked')).toBe(
+      true,
+    );
+    expect(wrapper.find(Checkbox).at(0).prop('isDefaultChecked')).toBe(false);
+
+    wrapper
+      .find(ScrollList)
+      .renderProp('renderItem')({item: mockData[1], index: 1})
+      .find(Checkbox)
+      .simulate('change', true);
+    expect(wrapper.find(Checkbox).at(0).prop('isDefaultPartialChecked')).toBe(
+      false,
+    );
+    expect(wrapper.find(Checkbox).at(0).prop('isDefaultChecked')).toBe(true);
+  });
+
   it('renders each item with a checkbox', () => {
     const wrapper = shallow(<CheckboxScrollList {...props} />);
 

@@ -30,6 +30,7 @@ interface CheckboxProps {
   disabled?: boolean;
   title?: string;
   isDefaultChecked?: boolean;
+  isDefaultPartialChecked?: boolean;
   onChange: (any: any) => void;
 }
 
@@ -41,16 +42,25 @@ const Checkbox = ({
   disabled = false,
   title,
   isDefaultChecked = false,
+  isDefaultPartialChecked = false,
   onChange,
 }: CheckboxProps) => {
   const Colors = useThemeColor();
 
   const [isChecked, setIsChecked] = useState(isDefaultChecked);
-
-  const iconName = useMemo(
-    () => (isChecked ? 'check-square-fill' : 'square'),
-    [isChecked],
+  const [isPartialChecked, setIsPartialChecked] = useState(
+    isDefaultPartialChecked,
   );
+
+  const iconName = useMemo(() => {
+    if (isChecked) {
+      return 'check-square-fill';
+    } else if (isPartialChecked) {
+      return 'dash-square-fill';
+    } else {
+      return 'square';
+    }
+  }, [isChecked, isPartialChecked]);
 
   const _iconColor = useMemo(() => {
     if (disabled) {
@@ -70,6 +80,10 @@ const Checkbox = ({
   useEffect(() => {
     setIsChecked(isDefaultChecked);
   }, [isDefaultChecked]);
+
+  useEffect(() => {
+    setIsPartialChecked(isDefaultPartialChecked);
+  }, [isDefaultPartialChecked]);
 
   return (
     <View style={[styles.container, style]}>
