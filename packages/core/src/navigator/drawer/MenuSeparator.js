@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
-const MenuSeparator = ({title, iconSize = 15, style}) => {
+const MenuSeparator = ({title, iconSize = 15}) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => {
@@ -29,19 +29,14 @@ const MenuSeparator = ({title, iconSize = 15, style}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.childrenContainer}>
-        <View style={[styles.menuItemActive]} />
-        <View style={[styles.menuItemContainer, style]}>
-          <Icon
-            style={styles.menuItemIcon}
-            name={'chevron-right'}
-            size={iconSize}
-            color={Colors.secondaryColor.background}
-          />
-          <View style={styles.menuItemTextContainer}>
-            <Text style={styles.menuItemTitle}>{title}</Text>
-          </View>
-        </View>
+      <View style={styles.menuItemContainer}>
+        <Icon
+          style={styles.menuItemIcon}
+          name={'chevron-right'}
+          size={iconSize}
+          color={Colors.secondaryColor.background}
+        />
+        <Text style={styles.menuItemTitle}>{title}</Text>
       </View>
       <View style={styles.borderSeparator} />
     </View>
@@ -60,21 +55,11 @@ const getStyles = Colors =>
     menuItemContainer: {
       flexDirection: 'row',
       width: '100%',
-    },
-    menuItemActive: {
-      width: 7,
-      height: 32,
-      borderTopRightRadius: 8,
-      borderBottomRightRadius: 8,
-    },
-    menuItemIcon: {
-      marginLeft: 0,
-      marginRight: 5,
-    },
-    menuItemTextContainer: {
-      flex: 1,
       alignSelf: 'center',
       paddingRight: 16,
+    },
+    menuItemIcon: {
+      marginRight: 5,
     },
     menuItemTitle: {
       fontSize: 16,
@@ -84,7 +69,7 @@ const getStyles = Colors =>
       width: '60%',
       borderBottomWidth: 1.5,
       borderBottomColor: Colors.secondaryColor.background,
-      marginTop: 5,
+      marginTop: 10,
       left: '15%',
     },
   });

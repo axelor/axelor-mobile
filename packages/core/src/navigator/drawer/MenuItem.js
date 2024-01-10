@@ -61,7 +61,6 @@ const MenuItem = ({
       disabled={menuItem.disabled || disabled}
       compatibility={menuItem.compatibilityAOS}
       isActive={isActive}
-      separator={menuItem.separator}
     />
   );
 };
