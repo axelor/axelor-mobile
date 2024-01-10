@@ -18,7 +18,7 @@
 
 import {axiosApiProvider} from '../../apiProviders';
 
-const createJsonFieldsOfModelCriteria = (modelName, type) => {
+const createJsonFieldsOfModelCriteria = (modelName: string, type: string) => {
   const criteria = [
     {
       fieldName: 'model',

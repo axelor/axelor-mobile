@@ -36,7 +36,7 @@ const FORM_KEY = 'customField-form';
 interface CustomFieldFormProps {
   model: string;
   modelId: string;
-  fieldType: 'productAttrs' | 'attrs';
+  fieldType: string;
 }
 
 const CustomFieldForm = ({model, modelId, fieldType}: CustomFieldFormProps) => {
