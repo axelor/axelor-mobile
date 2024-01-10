@@ -113,12 +113,14 @@ export const updateProspect = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  prospect: {},
+
   loadingList: false,
-  loadingProspectStatus: true,
   moreLoading: false,
   isListEnd: false,
   prospectList: [],
-  prospect: {},
+
+  loadingProspectStatus: true,
   prospectStatusList: [],
 };
 

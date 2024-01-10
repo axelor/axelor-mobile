@@ -82,10 +82,11 @@ export const realizeCustomerDelivery = createAsyncThunk(
 
 const initialState = {
   loadingList: false,
-  loading: false,
   moreLoading: false,
   isListEnd: false,
   deliveryList: [],
+
+  loading: false,
   customerDelivery: null,
 };
 

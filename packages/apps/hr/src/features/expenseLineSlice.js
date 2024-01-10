@@ -232,9 +232,23 @@ const expenseLineSlice = createSlice({
         state.expenseLineList = action.payload;
       }
     });
+    builder.addCase(deleteExpenseLine.pending, (state, action) => {
+      if (action?.meta?.arg?.expenseId == null) {
+        state.loadingExpenseLine = true;
+      }
+    });
     builder.addCase(deleteExpenseLine.fulfilled, (state, action) => {
       if (action?.meta?.arg?.expenseId == null) {
         state.expenseLineList = action.payload;
+      }
+    });
+    builder.addCase(updateExpenseLine.pending, (state, action) => {
+      if (action?.meta?.arg?.expenseId == null) {
+        state.loadingExpenseLine = true;
+      } else if (action?.meta?.arg?.mode === ExpenseLine.modes.general) {
+        state.loadingGeneralExpenseLine = true;
+      } else if (action?.meta?.arg?.mode === ExpenseLine.modes.kilometric) {
+        state.loadingKilometricExpenseLine = true;
       }
     });
     builder.addCase(updateExpenseLine.fulfilled, (state, action) => {

@@ -141,11 +141,13 @@ const initialState = {
   listEventById: [],
   listEventPartner: [],
   listEventContact: [],
-  loadingEvent: true,
+
   loadingEventList: true,
   moreLoading: false,
   isListEnd: false,
   eventList: [],
+
+  loadingEvent: true,
   event: {},
 };
 

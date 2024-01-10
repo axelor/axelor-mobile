@@ -98,10 +98,11 @@ export const updateCorrection = createAsyncThunk(
 
 const initialState = {
   loadingList: false,
-  loading: false,
   moreLoading: false,
   isListEnd: false,
   stockCorrectionList: [],
+
+  loading: false,
   stockCorrection: null,
 };
 

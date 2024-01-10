@@ -83,13 +83,16 @@ export const searchLinkedPartnersOfContact = createAsyncThunk(
 const initialState = {
   loadingPartner: true,
   partner: {},
-  clientAndProspectList: [],
+
   loadingList: false,
+  clientAndProspectList: [],
+
   loadingPartnerList: false,
   moreLoading: false,
   isListEnd: false,
-  linkedPartnersOfContact: [],
   partnerList: [],
+
+  linkedPartnersOfContact: [],
 };
 
 const partnerSlice = createSlice({

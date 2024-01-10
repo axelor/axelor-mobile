@@ -82,12 +82,13 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
 );
 
 const initialState = {
-  loadingList: false,
   loading: false,
-  trackingNumberList: [],
   createdTrackingNumber: null,
-  isListEnd: false,
+
+  loadingList: false,
   moreLoading: false,
+  isListEnd: false,
+  trackingNumberList: [],
 };
 
 const trackingNumberSlice = createSlice({

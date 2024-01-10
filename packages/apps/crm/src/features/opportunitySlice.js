@@ -171,14 +171,17 @@ export const getPartnerOpportunities = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  loadingList: false,
   loadingOpportunity: false,
-  loadingOpportunityStatus: false,
+  opportunity: {},
+
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   opportunityList: [],
+
+  loadingOpportunityStatus: false,
   opportunityStatusList: [],
-  opportunity: {},
+
   partnerOpportunityList: {},
 };
 

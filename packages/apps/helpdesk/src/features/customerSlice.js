@@ -71,10 +71,12 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   customerList: [],
+
   loadingCustomerContact: false,
   moreLoadingCustomerContact: false,
   isListEndCustomerContact: false,
   customerContactList: [],
+
   formCustomer: {},
 };
 

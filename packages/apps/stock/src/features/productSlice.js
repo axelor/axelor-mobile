@@ -68,12 +68,14 @@ export const updateProductLocker = createAsyncThunk(
 
 const initialState = {
   loadingProduct: false,
-  loadingProductLocker: false,
   moreLoadingProduct: false,
   isListEndProduct: false,
   productList: [],
+
   loadingProductFromId: false,
   productFromId: {},
+
+  loadingProductLocker: false,
   updateResponde: {},
 };
 

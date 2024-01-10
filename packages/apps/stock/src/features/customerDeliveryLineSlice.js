@@ -99,11 +99,11 @@ export const addTrackingNumber = createAsyncThunk(
 
 const initialState = {
   loadingCDLinesList: false,
-  loadingCDLine: false,
   moreLoading: false,
   isListEnd: false,
   customerDeliveryLineList: [],
   totalNumberLines: 0,
+
   loadingCustomerDeliveryLine: false,
   customerDeliveryLine: {},
 };
@@ -127,10 +127,10 @@ const CustomerDeliveryLineSlice = createSlice({
       },
     );
     builder.addCase(updateCustomerDeliveryLine.pending, state => {
-      state.loadingCDLine = true;
+      state.loadingCustomerDeliveryLine = true;
     });
     builder.addCase(updateCustomerDeliveryLine.fulfilled, (state, action) => {
-      state.loadingCDLine = false;
+      state.loadingCustomerDeliveryLine = false;
       state.customerDeliveryLine = action.payload;
       state.customerDeliveryLineList = updateAgendaItems(
         state.customerDeliveryLineList,

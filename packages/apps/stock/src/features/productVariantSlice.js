@@ -68,10 +68,11 @@ export const fetchProductsAttributes = createAsyncThunk(
 
 const initialState = {
   loadingProductList: false,
-  loading: false,
   moreLoading: false,
   isListEnd: false,
   productListVariables: [],
+
+  loading: false,
   listProductsAttributes: [],
 };
 

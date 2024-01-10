@@ -77,10 +77,11 @@ export const updateClient = createAsyncThunk(
 
 const initialState = {
   loadingClientList: false,
-  loadingClient: false,
   moreLoading: false,
   isListEnd: false,
   clientList: [],
+
+  loadingClient: false,
   client: {},
 };
 

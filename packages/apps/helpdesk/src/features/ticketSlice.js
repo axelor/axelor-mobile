@@ -161,12 +161,14 @@ export const createTicket = createAsyncThunk(
 );
 
 const initialState = {
-  loadingTicketList: true,
   loadingTicket: true,
+  ticket: {},
+
+  loadingTicketList: true,
   moreLoading: false,
   isListEnd: false,
   ticketList: [],
-  ticket: {},
+
   loadingTicketType: true,
   moreLoadingTicketType: false,
   isListEndTicketType: false,

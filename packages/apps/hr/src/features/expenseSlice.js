@@ -341,6 +341,8 @@ const expenseSlice = createSlice({
     builder.addCase(validateExpense.pending, (state, action) => {
       if (action?.meta?.arg?.onExpense) {
         state.loadingExpense = true;
+      } else if (action?.meta?.arg?.mode === Expense.mode.validation) {
+        state.loadingExpenseToValidate = true;
       } else {
         state.loadingMyExpense = true;
       }
@@ -368,7 +370,7 @@ const expenseSlice = createSlice({
       }
     });
     builder.addCase(refuseExpense.pending, (state, action) => {
-      state.loadloadingExpenseingMyExpense = true;
+      state.loadingExpense = true;
     });
     builder.addCase(refuseExpense.fulfilled, (state, action) => {
       state.loadingExpense = false;

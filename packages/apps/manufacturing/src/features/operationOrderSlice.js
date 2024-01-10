@@ -104,13 +104,15 @@ export const updateOperationOrder = createAsyncThunk(
 
 const initialState = {
   loadingList: false,
-  loading: false,
   moreLoading: false,
   isListEnd: false,
   operationOrderList: [],
+
   loadingOrder: false,
   operationOrder: {},
   updateMessage: null,
+
+  loading: false,
   plannedOperationOrderList: [],
 };
 

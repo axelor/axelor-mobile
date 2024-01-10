@@ -92,11 +92,12 @@ export const updateContact = createAsyncThunk(
 const initialState = {
   loading: false,
   listContactById: [],
-  moreLoading: false,
+  contact: {},
+
   loadingContact: false,
+  moreLoading: false,
   isListEnd: false,
   contactList: [],
-  contact: {},
 };
 
 const contactSlice = createSlice({

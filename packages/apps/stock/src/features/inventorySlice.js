@@ -98,9 +98,10 @@ export const fetchInventoryById = createAsyncThunk(
 );
 
 const initialState = {
-  loadingList: false,
   loading: false,
   inventory: null,
+
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   inventoryList: [],

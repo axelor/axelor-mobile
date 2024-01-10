@@ -110,10 +110,11 @@ export const realizeInternalMove = createAsyncThunk(
 
 const initialState = {
   loadingInternalMoveList: false,
-  loadingInternalMove: false,
   moreLoading: false,
   isListEnd: false,
   internalMoveList: [],
+
+  loadingInternalMove: false,
   internalMove: null,
 };
 

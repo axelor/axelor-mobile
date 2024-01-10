@@ -82,10 +82,11 @@ export const realizeSupplierArrival = createAsyncThunk(
 
 const initialState = {
   loadingList: false,
-  loading: false,
   moreLoading: false,
   isListEnd: false,
   supplierArrivalsList: [],
+
+  loading: false,
   supplierArrival: null,
 };
 
