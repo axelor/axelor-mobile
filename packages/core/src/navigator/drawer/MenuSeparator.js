@@ -49,9 +49,6 @@ const getStyles = Colors =>
       flexDirection: 'column',
       paddingVertical: 8,
     },
-    childrenContainer: {
-      flexDirection: 'row',
-    },
     menuItemContainer: {
       flexDirection: 'row',
       width: '100%',
