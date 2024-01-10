@@ -49,7 +49,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
 
   const {mobileSettings} = useSelector(state => state.config);
   const {internalMoveLineList} = useInternalLinesWithRacks(internalMove);
-  const {loadingIMLines, moreLoading, isListEnd} = useSelector(
+  const {loadingIMLinesList, moreLoading, isListEnd} = useSelector(
     state => state.internalMoveLine,
   );
 
@@ -176,7 +176,7 @@ const InternalMoveLineListScreen = ({route, navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingIMLines}
+        loadingList={loadingIMLinesList}
         data={filteredList}
         renderItem={({item}) => (
           <InternalMoveLineCard

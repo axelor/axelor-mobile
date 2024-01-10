@@ -81,10 +81,12 @@ export const realizeCustomerDelivery = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   deliveryList: [],
+
+  loading: false,
   customerDelivery: null,
 };
 
@@ -93,7 +95,7 @@ const customerDeliverySlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchDeliveries, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'deliveryList',

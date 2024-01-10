@@ -83,12 +83,16 @@ export const searchLinkedPartnersOfContact = createAsyncThunk(
 const initialState = {
   loadingPartner: true,
   partner: {},
+
+  loadingList: false,
   clientAndProspectList: [],
-  loading: false,
+
+  loadingPartnerList: false,
   moreLoading: false,
   isListEnd: false,
-  linkedPartnersOfContact: [],
   partnerList: [],
+
+  linkedPartnersOfContact: [],
 };
 
 const partnerSlice = createSlice({
@@ -109,13 +113,13 @@ const partnerSlice = createSlice({
       },
     );
     generateInifiniteScrollCases(builder, fetchClientAndProspect, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'clientAndProspectList',
     });
     generateInifiniteScrollCases(builder, searchPartner, {
-      loading: 'loading',
+      loading: 'loadingPartnerList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'partnerList',

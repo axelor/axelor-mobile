@@ -49,7 +49,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
 
   const {mobileSettings} = useSelector(state => state.config);
   const {supplierArrivalLineList} = useSupplierLinesWithRacks(supplierArrival);
-  const {loadingSALines, moreLoading, isListEnd} = useSelector(
+  const {loadingSALinesList, moreLoading, isListEnd} = useSelector(
     state => state.supplierArrivalLine,
   );
 
@@ -175,7 +175,7 @@ const SupplierArrivalLineListScreen = ({route, navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingSALines}
+        loadingList={loadingSALinesList}
         data={filteredList}
         renderItem={({item}) => (
           <SupplierArrivalLineCard

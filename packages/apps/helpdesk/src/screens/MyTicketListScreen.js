@@ -42,8 +42,13 @@ const MyTicketListScreen = ({navigation}) => {
   const Colors = useThemeColor();
 
   const {userId} = useSelector(state => state.auth);
-  const {ticketList, loadingTicket, moreLoading, isListEnd, ticketTypeList} =
-    useSelector(state => state.ticket);
+  const {
+    ticketList,
+    loadingTicketList,
+    moreLoading,
+    isListEnd,
+    ticketTypeList,
+  } = useSelector(state => state.ticket);
 
   const [selectedType, setSelectedType] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -158,7 +163,7 @@ const MyTicketListScreen = ({navigation}) => {
         </View>
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingTicket}
+        loadingList={loadingTicketList}
         data={filteredList}
         renderItem={({item}) => (
           <TicketCard

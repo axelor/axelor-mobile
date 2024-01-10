@@ -83,10 +83,12 @@ export const updateSupplierTrackingNumber = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  trackingNumberList: [],
   createdTrackingNumber: null,
-  isListEnd: false,
+
+  loadingList: false,
   moreLoading: false,
+  isListEnd: false,
+  trackingNumberList: [],
 };
 
 const trackingNumberSlice = createSlice({
@@ -94,7 +96,7 @@ const trackingNumberSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, filterTrackingNumber, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'trackingNumberList',

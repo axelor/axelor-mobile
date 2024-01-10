@@ -116,6 +116,7 @@ const initialState = {
   isListEnd: false,
   inventoryLineList: [],
   totalNumberLines: 0,
+
   loadingInventoryLine: false,
   inventoryLine: {},
 };

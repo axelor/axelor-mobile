@@ -135,12 +135,15 @@ export const createLead = createAsyncThunk(
 
 const initialState = {
   loadingLead: true,
+  lead: {},
+
   loadingLeadStatus: true,
+  leadStatusList: [],
+
+  loadingLeadList: true,
   moreLoading: false,
   isListEnd: false,
   leadList: [],
-  leadStatusList: [],
-  lead: {},
 };
 
 const leadSlice = createSlice({
@@ -148,7 +151,7 @@ const leadSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchLeads, {
-      loading: 'loadingLead',
+      loading: 'loadingLeadList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'leadList',
@@ -184,10 +187,10 @@ const leadSlice = createSlice({
       state.leadList = updateAgendaItems(state.leadList, [action.payload]);
     });
     builder.addCase(createLead.pending, (state, action) => {
-      state.loadingLead = true;
+      state.loadingLeadList = true;
     });
     builder.addCase(createLead.fulfilled, (state, action) => {
-      state.loadingLead = false;
+      state.loadingLeadList = false;
       state.leadList = action.payload;
     });
   },

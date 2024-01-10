@@ -69,10 +69,11 @@ export const createCatalog = createAsyncThunk(
 
 const initialState = {
   loadingCatalog: true,
-  loadingCatalogType: true,
   moreLoading: false,
   isListEnd: false,
   catalogList: [],
+
+  loadingCatalogType: true,
   catalogTypeList: [],
 };
 

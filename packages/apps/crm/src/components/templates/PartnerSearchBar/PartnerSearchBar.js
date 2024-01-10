@@ -37,7 +37,7 @@ const PartnerSearchBarAux = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {partnerList, loading, moreLoading, isListEnd} = useSelector(
+  const {partnerList, loadingPartnerList, moreLoading, isListEnd} = useSelector(
     state => state.partner,
   );
 
@@ -59,7 +59,7 @@ const PartnerSearchBarAux = ({
       displayValue={displayItemFullname}
       placeholder={I18n.t(title)}
       showDetailsPopup={true}
-      loadingList={loading}
+      loadingList={loadingPartnerList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={false}

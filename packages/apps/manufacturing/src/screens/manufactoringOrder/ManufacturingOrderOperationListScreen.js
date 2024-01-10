@@ -42,7 +42,7 @@ const ManufacturingOrderOperationListScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const {
-    loading: loadingOperations,
+    loadingList: loadingOperations,
     moreLoading,
     isListEnd,
     operationOrderList,

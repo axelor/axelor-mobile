@@ -41,8 +41,13 @@ const ProspectsListScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
-  const {loading, moreLoading, isListEnd, prospectList, prospectStatusList} =
-    useSelector(state => state.prospect);
+  const {
+    loadingList,
+    moreLoading,
+    isListEnd,
+    prospectList,
+    prospectStatusList,
+  } = useSelector(state => state.prospect);
   const {crmConfig} = useSelector(state => state.crmConfig);
 
   const [selectedStatus, setSelectedStatus] = useState([]);
@@ -134,7 +139,7 @@ const ProspectsListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <PartnerCard

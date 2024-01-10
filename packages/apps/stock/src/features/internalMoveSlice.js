@@ -109,10 +109,12 @@ export const realizeInternalMove = createAsyncThunk(
 );
 
 const initialState = {
-  loadingInternalMove: false,
+  loadingInternalMoveList: false,
   moreLoading: false,
   isListEnd: false,
   internalMoveList: [],
+
+  loadingInternalMove: false,
   internalMove: null,
 };
 
@@ -121,7 +123,7 @@ const internalMoveSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchInternalMoves, {
-      loading: 'loadingInternalMove',
+      loading: 'loadingInternalMoveList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'internalMoveList',

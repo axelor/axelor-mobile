@@ -162,10 +162,13 @@ export const createTicket = createAsyncThunk(
 
 const initialState = {
   loadingTicket: true,
+  ticket: {},
+
+  loadingTicketList: true,
   moreLoading: false,
   isListEnd: false,
   ticketList: [],
-  ticket: {},
+
   loadingTicketType: true,
   moreLoadingTicketType: false,
   isListEndTicketType: false,
@@ -182,7 +185,7 @@ const ticketSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchMyTickets, {
-      loading: 'loadingTicket',
+      loading: 'loadingTicketList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'ticketList',
@@ -230,10 +233,10 @@ const ticketSlice = createSlice({
       state.ticketList = updateAgendaItems(state.ticketList, [action.payload]);
     });
     builder.addCase(createTicket.pending, (state, action) => {
-      state.loadingTicket = true;
+      state.loadingTicketList = true;
     });
     builder.addCase(createTicket.fulfilled, (state, action) => {
-      state.loadingTicket = false;
+      state.loadingTicketList = false;
       state.ticketList = action.payload;
     });
   },

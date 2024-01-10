@@ -97,10 +97,12 @@ export const updateCorrection = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   stockCorrectionList: [],
+
+  loading: false,
   stockCorrection: null,
 };
 
@@ -114,7 +116,7 @@ const stockCorrectionSlice = createSlice({
   },
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, searchStockCorrections, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'stockCorrectionList',
@@ -127,17 +129,17 @@ const stockCorrectionSlice = createSlice({
       state.stockCorrection = action.payload;
     });
     builder.addCase(createCorrection.pending, (state, action) => {
-      state.loading = true;
+      state.loadingList = true;
     });
     builder.addCase(createCorrection.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingList = false;
       state.stockCorrectionList = action.payload;
     });
     builder.addCase(updateCorrection.pending, (state, action) => {
-      state.loading = true;
+      state.loadingList = true;
     });
     builder.addCase(updateCorrection.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingList = false;
       state.stockCorrectionList = action.payload;
     });
   },

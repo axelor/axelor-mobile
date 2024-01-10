@@ -33,7 +33,7 @@ const CLientsListScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {userId} = useSelector(state => state.auth);
-  const {loading, moreLoading, isListEnd, clientList} = useSelector(
+  const {loadingClientList, moreLoading, isListEnd, clientList} = useSelector(
     state => state.client,
   );
 
@@ -82,7 +82,7 @@ const CLientsListScreen = ({navigation}) => {
         }
       />
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingClientList}
         data={filteredList}
         renderItem={({item}) => (
           <PartnerCard

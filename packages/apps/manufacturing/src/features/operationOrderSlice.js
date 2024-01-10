@@ -103,13 +103,16 @@ export const updateOperationOrder = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   operationOrderList: [],
+
   loadingOrder: false,
   operationOrder: {},
   updateMessage: null,
+
+  loading: false,
   plannedOperationOrderList: [],
 };
 
@@ -118,7 +121,7 @@ const operationOrderSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchOperationOrders, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'operationOrderList',

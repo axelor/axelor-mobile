@@ -49,7 +49,7 @@ function OperationOrderListScreen({navigation}) {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, operationOrderList} = useSelector(
+  const {loadingList, moreLoading, isListEnd, operationOrderList} = useSelector(
     state => state.operationOrder,
   );
 
@@ -175,7 +175,7 @@ function OperationOrderListScreen({navigation}) {
         <MachineSearchBar onChange={setMachine} />
       </HeaderContainer>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <OperationOrderDetailsCard

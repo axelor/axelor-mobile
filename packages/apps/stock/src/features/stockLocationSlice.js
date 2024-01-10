@@ -54,6 +54,7 @@ const initialState = {
   moreLoadingStockLocation: false,
   isListEndStockLocation: false,
   stockLocationList: [],
+
   loadingStockLocationMultiFilter: false,
   moreLoadingStockLocationMultiFilter: false,
   isListEndStockLocationMultiFilter: false,

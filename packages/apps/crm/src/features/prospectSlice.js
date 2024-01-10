@@ -113,11 +113,14 @@ export const updateProspect = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  loadingProspectStatus: true,
+  prospect: {},
+
+  loadingList: false,
   moreLoading: false,
   isListEnd: false,
   prospectList: [],
-  prospect: {},
+
+  loadingProspectStatus: true,
   prospectStatusList: [],
 };
 
@@ -126,7 +129,7 @@ const prospectSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchProspects, {
-      loading: 'loading',
+      loading: 'loadingList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'prospectList',

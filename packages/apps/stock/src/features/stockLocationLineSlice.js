@@ -57,6 +57,7 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   stockLocationLine: [],
+
   loadingAvailableProducts: false,
   moreLoadingAvailableProducts: false,
   isListEndAvailableProducts: false,

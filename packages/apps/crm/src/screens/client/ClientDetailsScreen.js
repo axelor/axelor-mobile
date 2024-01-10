@@ -42,7 +42,7 @@ const ClientDetailsScreen = ({route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const {loading, client} = useSelector(state => state.client);
+  const {loadingClient, client} = useSelector(state => state.client);
 
   const getClient = useCallback(() => {
     dispatch(getClientbyId({clientId: idClient}));
@@ -61,7 +61,7 @@ const ClientDetailsScreen = ({route}) => {
   return (
     <Screen removeSpaceOnTop={true}>
       <HeaderContainer expandableFilter={false} fixedItems={<ClientHeader />} />
-      <ScrollView refresh={{loading, fetcher: getClient}}>
+      <ScrollView refresh={{loadingClient, fetcher: getClient}}>
         <NotesCard title={I18n.t('Crm_Notes')} data={client.description} />
         <ClientDropdownCards />
       </ScrollView>

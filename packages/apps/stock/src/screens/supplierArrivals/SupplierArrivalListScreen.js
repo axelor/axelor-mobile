@@ -48,9 +48,8 @@ const SupplierArrivalListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, supplierArrivalsList} = useSelector(
-    state => state.supplierArrival,
-  );
+  const {loadingList, moreLoading, isListEnd, supplierArrivalsList} =
+    useSelector(state => state.supplierArrival);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -167,7 +166,7 @@ const SupplierArrivalListScreen = ({navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <SupplierArrivalCard

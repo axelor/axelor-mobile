@@ -43,7 +43,7 @@ const TrackingNumberSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {trackingNumberList, loading, moreLoading, isListEnd} = useSelector(
+  const {trackingNumberList, loadingList, moreLoading, isListEnd} = useSelector(
     state => state.trackingNumber,
   );
 
@@ -67,7 +67,7 @@ const TrackingNumberSearchBar = ({
       scanKeySearch={scanKey}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
+      loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}

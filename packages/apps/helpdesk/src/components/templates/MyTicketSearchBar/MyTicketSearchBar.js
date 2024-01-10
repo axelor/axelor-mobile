@@ -35,7 +35,7 @@ const MyTicketSearchBar = ({
 
   const displayItemTicketSeq = item => item.ticketSeq;
 
-  const {ticketList, loadingTicket, moreLoading, isListEnd} = useSelector(
+  const {ticketList, loadingTicketList, moreLoading, isListEnd} = useSelector(
     state => state.ticket,
   );
   const {user} = useSelector(state => state.user);
@@ -62,7 +62,7 @@ const MyTicketSearchBar = ({
       displayValue={displayItemTicketSeq}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loadingTicket}
+      loadingList={loadingTicketList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}

@@ -48,7 +48,7 @@ const InternalMoveListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loadingInternalMove, moreLoading, isListEnd, internalMoveList} =
+  const {loadingInternalMoveList, moreLoading, isListEnd, internalMoveList} =
     useSelector(state => state.internalMove);
 
   const [originalStockLocation, setOriginalStockLocation] = useState(null);
@@ -180,7 +180,7 @@ const InternalMoveListScreen = ({navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loadingInternalMove}
+        loadingList={loadingInternalMoveList}
         data={filteredList}
         renderItem={({item}) => (
           <InternalMoveCard

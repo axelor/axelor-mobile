@@ -42,9 +42,8 @@ const ClientProspectSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, clientAndProspectList} = useSelector(
-    state => state.partner,
-  );
+  const {loadingList, moreLoading, isListEnd, clientAndProspectList} =
+    useSelector(state => state.partner);
 
   const searchClientAndProspectAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -65,7 +64,7 @@ const ClientProspectSearchBar = ({
       displayValue={displayItemFullname}
       placeholder={I18n.t(title)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
+      loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}

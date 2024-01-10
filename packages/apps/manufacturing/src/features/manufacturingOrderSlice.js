@@ -107,12 +107,15 @@ const initialState = {
   moreLoading: false,
   isListEnd: false,
   manufOrderList: [],
+
   loadingOrder: false,
   manufOrder: {},
+
   loadingLinkMO: false,
   moreLoadingLinkMO: false,
   isListEndLinkMO: false,
   linkedManufOrders: [],
+
   loadingChildrenMO: false,
   moreLoadingChildrenMO: false,
   isListEndChildrenMO: false,

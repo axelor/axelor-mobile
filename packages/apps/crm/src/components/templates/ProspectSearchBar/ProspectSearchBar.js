@@ -38,7 +38,7 @@ const ProspectSearchBar = ({
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {prospectList, loading, moreLoading, isListEnd} = useSelector(
+  const {prospectList, loadingList, moreLoading, isListEnd} = useSelector(
     state => state.prospect,
   );
 
@@ -58,7 +58,7 @@ const ProspectSearchBar = ({
       displayValue={displayItemName}
       placeholder={I18n.t(placeholderKey)}
       showDetailsPopup={showDetailsPopup}
-      loadingList={loading}
+      loadingList={loadingList}
       moreLoading={moreLoading}
       isListEnd={isListEnd}
       navigate={navigate}

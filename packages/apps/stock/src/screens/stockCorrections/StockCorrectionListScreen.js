@@ -47,9 +47,8 @@ const StockCorrectionListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
-  const {loading, moreLoading, isListEnd, stockCorrectionList} = useSelector(
-    state => state.stockCorrection,
-  );
+  const {loadingList, moreLoading, isListEnd, stockCorrectionList} =
+    useSelector(state => state.stockCorrection);
 
   const [stockLocation, setStockLocation] = useState(null);
   const [product, setProduct] = useState(null);
@@ -132,7 +131,7 @@ const StockCorrectionListScreen = ({navigation}) => {
         />
       </HeaderContainer>
       <ScrollList
-        loadingList={loading}
+        loadingList={loadingList}
         data={filteredList}
         renderItem={({item}) => (
           <StockCorrectionCard

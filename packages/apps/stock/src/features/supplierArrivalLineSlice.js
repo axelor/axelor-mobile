@@ -76,11 +76,12 @@ export const fetchSupplierArrivalLine = createAsyncThunk(
 );
 
 const initialState = {
-  loadingSALines: false,
+  loadingSALinesList: false,
   moreLoading: false,
   isListEnd: false,
   supplierArrivalLineList: [],
   totalNumberLines: 0,
+
   loadingSupplierArrivalLine: false,
   supplierArrivalLine: {},
 };
@@ -93,7 +94,7 @@ const supplierArrivalLineSlice = createSlice({
       builder,
       fetchSupplierArrivalLines,
       {
-        loading: 'loadingSALines',
+        loading: 'loadingSALinesList',
         moreLoading: 'moreLoading',
         isListEnd: 'isListEnd',
         list: 'supplierArrivalLineList',
@@ -104,10 +105,10 @@ const supplierArrivalLineSlice = createSlice({
       },
     );
     builder.addCase(updateSupplierArrivalLine.pending, state => {
-      state.loadingSALines = true;
+      state.loadingSupplierArrivalLine = true;
     });
     builder.addCase(updateSupplierArrivalLine.fulfilled, (state, action) => {
-      state.loadingSALines = false;
+      state.loadingSupplierArrivalLine = false;
       state.supplierArrivalLine = action.payload;
       state.supplierArrivalLineList = updateAgendaItems(
         state.supplierArrivalLineList,

@@ -67,10 +67,12 @@ export const fetchProductsAttributes = createAsyncThunk(
 );
 
 const initialState = {
-  loading: false,
+  loadingProductList: false,
   moreLoading: false,
   isListEnd: false,
   productListVariables: [],
+
+  loading: false,
   listProductsAttributes: [],
 };
 
@@ -79,7 +81,7 @@ const productSlice = createSlice({
   initialState,
   extraReducers: builder => {
     generateInifiniteScrollCases(builder, fetchProductVariants, {
-      loading: 'loading',
+      loading: 'loadingProductList',
       moreLoading: 'moreLoading',
       isListEnd: 'isListEnd',
       list: 'productListVariables',
