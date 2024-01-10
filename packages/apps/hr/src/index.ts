@@ -61,7 +61,7 @@ export const HrModule: Module = {
     },
     hr_menu_timesheets: {
       title: 'Hr_Timesheets',
-      icon: 'calendar-week',
+      icon: 'clock-history',
       screen: 'TimesheetListScreen',
     },
   },
