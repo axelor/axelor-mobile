@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,

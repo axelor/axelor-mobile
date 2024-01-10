@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useState, useMemo, useEffect} from 'react';
-import {Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,

@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {Dimensions} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,

@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useState, useEffect} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
   Screen,
