@@ -19,8 +19,7 @@
 import React, {LegacyRef, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Icon, Input} from '../../atoms';
-import {useThemeColor} from '../../../theme/ThemeContext';
-import {ThemeColors} from '../../../theme/themes';
+import {useThemeColor, ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
 
 export const INPUT_CHANGE_TYPE = {
