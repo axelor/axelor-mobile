@@ -118,7 +118,7 @@ const StockCorrectionButtons = ({
       {!saveStatus && (
         <Button
           title={I18n.t('Base_Save')}
-          iconName="save"
+          iconName="floppy"
           color={Colors.infoColor}
           width={isValidateButtonVisible ? '45%' : '90%'}
           onPress={handleSave}
@@ -127,7 +127,7 @@ const StockCorrectionButtons = ({
       {isValidateButtonVisible && (
         <Button
           title={I18n.t('Base_Validate')}
-          iconName="check"
+          iconName="check-lg"
           width={saveStatus ? '90%' : '45%'}
           onPress={handleValidate}
         />
