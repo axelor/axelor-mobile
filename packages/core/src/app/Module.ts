@@ -28,6 +28,7 @@ interface MenuBase {
   compatibilityAOS?: Compatibility;
   parent?: string;
   order?: number;
+  separator?: boolean;
 }
 
 interface MenuWithSubMenus extends MenuBase {
@@ -37,7 +38,7 @@ interface MenuWithSubMenus extends MenuBase {
 }
 
 interface MenuWithScreen extends MenuBase {
-  screen: string;
+  screen?: string;
 }
 
 interface RootMenuWithScreen extends MenuWithScreen {
