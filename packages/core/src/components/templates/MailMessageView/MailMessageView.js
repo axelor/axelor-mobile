@@ -47,7 +47,6 @@ import useTranslator from '../../../i18n/hooks/use-translator';
 import {headerActionsProvider} from '../../../header';
 import {useMarkAllMailMessages} from '../../molecules/MailMessageReadIcon/MailMessageReadIcon';
 import {MailMessageType} from '../../../types';
-import {filterChip} from '../../../utils';
 
 const DEFAULT_BOTTOM_MARGIN = 10;
 
@@ -123,7 +122,25 @@ const MailMessageView = ({model, modelId}) => {
   }, [dispatch, model, modelId, comment]);
 
   const filterOnStatus = useCallback(
-    list => filterChip(list, selectedStatus, 'type'),
+    list => {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      } else if (
+        !Array.isArray(selectedStatus) ||
+        selectedStatus.length === 0
+      ) {
+        return list;
+      } else {
+        const selectedType = selectedStatus[0].key;
+        if (selectedType === MailMessageType.status.all) {
+          return list;
+        } else {
+          return list.filter(item => {
+            return item.type === selectedType;
+          });
+        }
+      }
+    },
     [selectedStatus],
   );
 
@@ -196,7 +213,7 @@ const MailMessageView = ({model, modelId}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 85}
-      style={styles.container}>
+      style={styles.flexOne}>
       <Screen removeSpaceOnTop={true}>
         <Alert
           visible={popUp}
@@ -210,12 +227,7 @@ const MailMessageView = ({model, modelId}) => {
           translator={I18n.t}>
           <Text>{I18n.t('Base_Unfollow_Confirmation')}</Text>
         </Alert>
-        <ChipSelect
-          mode="switch"
-          onChangeValue={chiplist => setSelectedStatus(chiplist)}
-          selectionItems={MailMessageType.getSelectionItems(I18n, Colors)}
-        />
-        <View style={styles.scrollListContainer}>
+        <View style={styles.flexOne}>
           <ScrollList
             loadingList={loading}
             data={filteredList}
@@ -243,8 +255,21 @@ const MailMessageView = ({model, modelId}) => {
             translator={I18n.t}
           />
         </View>
+        <ChipSelect
+          style={styles.chipSelect}
+          mode="switch"
+          width={Dimensions.get('window').width * 0.28}
+          marginHorizontal={5}
+          onChangeValue={chiplist => setSelectedStatus(chiplist)}
+          isRefresh
+          selectionItems={MailMessageType.getSelectionItems(
+            I18n,
+            Colors,
+            selectedStatus,
+          )}
+        />
         {displayMessageBox && (
-          <View style={styles.commentContainer}>
+          <View style={styles.messageBox}>
             <MessageBox
               placeholder={I18n.t('Base_MailMessages_CommentInput_Placeholder')}
               disabled={!comment}
@@ -260,26 +285,17 @@ const MailMessageView = ({model, modelId}) => {
 };
 
 const styles = StyleSheet.create({
-  commentContainer: {
+  flexOne: {
+    flex: 1,
+  },
+  chipSelect: {
+    marginBottom: 5,
+  },
+  messageBox: {
     width: Dimensions.get('screen').width,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: DEFAULT_BOTTOM_MARGIN,
-    paddingTop: 3,
-  },
-  container: {
-    flex: 1,
-  },
-  headerOptionsContainer: {
-    flexDirection: 'row',
-    margin: 15,
-  },
-  action: {
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  scrollListContainer: {
-    flex: 1,
   },
 });
 
