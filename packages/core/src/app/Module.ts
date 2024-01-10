@@ -22,7 +22,7 @@ import {FormConfigs} from '../forms/types';
 
 interface MenuBase {
   title: string;
-  icon: string;
+  icon?: string;
   disabled?: boolean;
   hideIf?: (storeState: any) => boolean;
   compatibilityAOS?: Compatibility;
