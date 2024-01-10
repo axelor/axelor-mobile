@@ -20,23 +20,46 @@ import {ThemeColors} from '@axelor/aos-mobile-ui';
 
 class MailMessageType {
   static status = {
+    all: 'all',
     comment: 'comment',
     notification: 'notification',
+  };
+
+  static isTypeSelected = (
+    selectedStatus: any[],
+    typeValue: string,
+  ): boolean => {
+    if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+      return selectedStatus.find(_i => _i.key === typeValue);
+    }
+
+    return false;
   };
 
   static getSelectionItems = (
     I18n: {t: (key: string) => string},
     Colors: ThemeColors,
+    selectedStatus: any[],
   ) => {
     return [
       {
+        title: I18n.t('Base_All'),
+        color: Colors.primaryColor,
+        isActive:
+          selectedStatus.length === 0 ||
+          this.isTypeSelected(selectedStatus, this.status.all),
+        key: this.status.all,
+      },
+      {
         title: I18n.t('Base_Comments'),
         color: Colors.primaryColor,
+        isActive: this.isTypeSelected(selectedStatus, this.status.comment),
         key: this.status.comment,
       },
       {
         title: I18n.t('Base_Notifications'),
         color: Colors.primaryColor,
+        isActive: this.isTypeSelected(selectedStatus, this.status.notification),
         key: this.status.notification,
       },
     ];
