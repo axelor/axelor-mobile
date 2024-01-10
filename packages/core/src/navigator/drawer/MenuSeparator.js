@@ -20,7 +20,7 @@ import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Text, useThemeColor} from '@axelor/aos-mobile-ui';
 
-const MenuSeparator = ({title, iconSize = 10, style}) => {
+const MenuSeparator = ({title, iconSize = 15, style}) => {
   const Colors = useThemeColor();
 
   const styles = useMemo(() => {
@@ -78,7 +78,6 @@ const getStyles = Colors =>
     },
     menuItemTitle: {
       fontSize: 16,
-      fontWeight: 'bold',
       color: Colors.secondaryColor.background,
     },
     borderSeparator: {
