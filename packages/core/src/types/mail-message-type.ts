@@ -25,6 +25,17 @@ class MailMessageType {
     notification: 'notification',
   };
 
+  static isTypeSelected = (
+    selectedStatus: any[],
+    typeValue: string,
+  ): boolean => {
+    if (Array.isArray(selectedStatus) && selectedStatus.length > 0) {
+      return selectedStatus.find(_i => _i.key === typeValue);
+    }
+
+    return false;
+  };
+
   static getSelectionItems = (
     I18n: {t: (key: string) => string},
     Colors: ThemeColors,
@@ -36,19 +47,19 @@ class MailMessageType {
         color: Colors.primaryColor,
         isActive:
           selectedStatus.length === 0 ||
-          selectedStatus[0]?.key === this.status.all,
+          this.isTypeSelected(selectedStatus, this.status.all),
         key: this.status.all,
       },
       {
         title: I18n.t('Base_Comments'),
         color: Colors.primaryColor,
-        isActive: selectedStatus[0]?.key === this.status.comment,
+        isActive: this.isTypeSelected(selectedStatus, this.status.comment),
         key: this.status.comment,
       },
       {
         title: I18n.t('Base_Notifications'),
         color: Colors.primaryColor,
-        isActive: selectedStatus[0]?.key === this.status.notification,
+        isActive: this.isTypeSelected(selectedStatus, this.status.notification),
         key: this.status.notification,
       },
     ];

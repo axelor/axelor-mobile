@@ -123,16 +123,22 @@ const MailMessageView = ({model, modelId}) => {
 
   const filterOnStatus = useCallback(
     list => {
-      if (
-        list?.length > 0 &&
-        selectedStatus?.length > 0 &&
-        selectedStatus[0].key !== MailMessageType.status.all
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      } else if (
+        !Array.isArray(selectedStatus) ||
+        selectedStatus.length === 0
       ) {
-        return list.filter(item => {
-          return item.type === selectedStatus[0].key;
-        });
-      } else {
         return list;
+      } else {
+        const selectedType = selectedStatus[0].key;
+        if (selectedType === MailMessageType.status.all) {
+          return list;
+        } else {
+          return list.filter(item => {
+            return item.type === selectedType;
+          });
+        }
       }
     },
     [selectedStatus],
