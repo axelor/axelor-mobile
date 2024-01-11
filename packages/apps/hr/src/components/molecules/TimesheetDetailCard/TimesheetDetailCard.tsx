@@ -103,8 +103,8 @@ const TimesheetDetailCard = ({
           <CardIconButton
             iconName={
               _statusSelect === Timesheet.statusSelect.Draft
-                ? 'paper-plane'
-                : 'check'
+                ? 'send-fill'
+                : 'check-lg'
             }
             iconColor={Colors.secondaryColor_dark.background}
             onPress={() => {
