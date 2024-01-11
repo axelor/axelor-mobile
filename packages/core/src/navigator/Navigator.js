@@ -43,8 +43,6 @@ import {
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchMenuConfig} from '../features/menuConfigSlice';
-import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
@@ -110,9 +108,7 @@ const Navigator = ({
   }, []);
 
   useEffect(() => {
-    dispatch(fetchMobileConfig());
     dispatch(fetchMetaModules());
-    dispatch(fetchMenuConfig());
   }, [dispatch]);
 
   const changeActiveModule = useCallback(
