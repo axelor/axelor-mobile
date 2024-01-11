@@ -80,7 +80,7 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
           onPress={deleteExpenseAPI}
           width="45%"
           color={Colors.errorColor}
-          iconName="trash-alt"
+          iconName="trash3-fill"
         />
         <Button
           title={I18n.t('Hr_Send')}
