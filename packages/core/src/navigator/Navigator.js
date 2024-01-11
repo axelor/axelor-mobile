@@ -34,7 +34,6 @@ import {
   manageOverridingMenus,
   manageWebCompatibility,
   moduleHasMenus,
-  updateAccessibleMenus,
 } from './module.helper';
 import {
   manageSubMenusOverriding,
@@ -79,12 +78,17 @@ const Navigator = ({
       manageWebCompatibility(
         manageOverridingMenus(
           manageSubMenusOverriding(
-            filterAuthorizedModules(modules, mobileConfigs, user),
+            filterAuthorizedModules(
+              modules,
+              mobileConfigs,
+              restrictedMenus,
+              user,
+            ),
           ),
         ),
         metaModules,
       ),
-    [metaModules, mobileConfigs, modules, user],
+    [metaModules, mobileConfigs, modules, restrictedMenus, user],
   );
 
   const [activeModule, setActiveModule] = useState(
@@ -108,10 +112,9 @@ const Navigator = ({
 
   const modulesMenus = useMemo(() => {
     return enabledModule
-      .map(_module => updateAccessibleMenus(_module, restrictedMenus, user))
       .filter(moduleHasMenus)
       .reduce((menus, _module) => ({...menus, ..._module.menus}), {});
-  }, [enabledModule, restrictedMenus, user]);
+  }, [enabledModule]);
 
   const modulesScreens = useMemo(
     () =>
