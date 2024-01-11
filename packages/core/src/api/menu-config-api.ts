@@ -60,7 +60,7 @@ export async function getModulesConfig() {
 
   for (let index = 0; index < modulesConfig.length; index++) {
     const element = modulesConfig[index];
-    if (element.customizeMenu) {
+    if (element.isCustomizeMenuEnabled) {
       const menuConfig = await searchMenu({listMenus: element.menus});
       results.push(menuConfig);
     }

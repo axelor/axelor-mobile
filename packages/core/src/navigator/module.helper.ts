@@ -21,34 +21,38 @@ import {Compatibility, Menu} from '../app/Module';
 import {isMenuEnabled} from './menu.helper';
 import {userHaveAccessToConfig} from './roles.helper';
 
-export function filterAuthorizedModules(modules, mobileConfigs, user) {
-  if (
-    modules == null ||
-    mobileConfigs == null ||
-    !Array.isArray(mobileConfigs) ||
-    mobileConfigs?.length === 0
-  ) {
+export function filterAuthorizedModules(
+  modules,
+  mobileConfigs,
+  restrictedMenus,
+  user,
+) {
+  if (!Array.isArray(modules) || modules.length === 0) {
+    return [];
+  } else if (!Array.isArray(mobileConfigs) || mobileConfigs.length === 0) {
     return modules;
   }
+
   const authorizedModules = [];
 
   modules.forEach(_module => {
-    const mobileConfigForModule = mobileConfigs?.filter(
-      config => config.sequence === _module.name,
+    const updatedModule = updateAccessibleMenus(_module, restrictedMenus, user);
+    const mobileConfigForModule = mobileConfigs?.find(
+      config => config.sequence === updatedModule.name,
     );
 
-    if (mobileConfigForModule == null || mobileConfigForModule.length === 0) {
-      authorizedModules.push(_module);
-    } else if (mobileConfigForModule[0].isAppEnabled) {
+    if (mobileConfigForModule == null) {
+      authorizedModules.push(updatedModule);
+    } else if (mobileConfigForModule.isAppEnabled) {
       if (
-        mobileConfigForModule[0].authorizedRoles == null ||
-        mobileConfigForModule[0].authorizedRoles.length === 0
+        !Array.isArray(mobileConfigForModule.authorizedRoles) ||
+        mobileConfigForModule.authorizedRoles.length === 0
       ) {
-        authorizedModules.push(_module);
+        authorizedModules.push(updatedModule);
       } else if (
-        userHaveAccessToConfig({config: mobileConfigForModule[0], user: user})
+        userHaveAccessToConfig({config: mobileConfigForModule, user: user})
       ) {
-        authorizedModules.push(_module);
+        authorizedModules.push(updatedModule);
       }
     }
   });
