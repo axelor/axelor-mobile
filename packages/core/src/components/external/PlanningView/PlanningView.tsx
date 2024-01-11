@@ -21,9 +21,11 @@ import {StyleSheet, View} from 'react-native';
 import {
   CircleButton,
   HorizontalRule,
+  SwitchCard,
   Text,
   useThemeColor,
 } from '@axelor/aos-mobile-ui';
+import {useSelector} from 'react-redux';
 import {Agenda, AgendaEntry, DateData} from 'react-native-calendars';
 import {
   AgendaEvent,
@@ -46,6 +48,7 @@ interface PlanningProps {
   itemList?: AgendaEvent[];
   changeWeekButton: boolean;
   returnToDayButton: boolean;
+  assignedToMeSwitch?: boolean;
 }
 
 const PlanningView = ({
@@ -57,23 +60,41 @@ const PlanningView = ({
   itemList = [],
   changeWeekButton = true,
   returnToDayButton = true,
+  assignedToMeSwitch = true,
 }: PlanningProps) => {
   const Colors = useThemeColor();
   const I18n = useTranslator();
 
+  const {userId} = useSelector((state: any) => state.auth);
+
+  const [fetchDate, setFetchDate] = useState<any>();
+  const [currentDate, setCurrentDate] = useState(new Date().toISOString());
+  const [assigned, setAssigned] = useState(false);
+
+  const filterOnUserAssigned = useCallback(
+    list => {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      } else {
+        if (assigned) {
+          return list?.filter(item => item?.data?.userId === userId);
+        } else {
+          return list;
+        }
+      }
+    },
+    [assigned, userId],
+  );
+
   const _agendaItems = useMemo(
-    () => createAgendaItems(itemList, I18n),
-    [itemList, I18n],
+    () => createAgendaItems(filterOnUserAssigned(itemList), I18n),
+    [filterOnUserAssigned, itemList, I18n],
   );
 
   const agendaItems = useMemo(
     () => createAgendaSchedule(_agendaItems, numberMonthsAroundToday),
     [_agendaItems, numberMonthsAroundToday],
   );
-
-  const [fetchDate, setFetchDate] = useState<any>();
-
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString());
 
   const styles = useMemo(() => getStyles(Colors), [Colors]);
 
@@ -170,30 +191,40 @@ const PlanningView = ({
   return (
     <View style={styles.agendaContainer}>
       <View style={styles.headerPlanning}>
-        {changeWeekButton && (
-          <CircleButton
-            style={styles.circleButton}
-            iconName="arrow-left"
-            onPress={lastWeekBtnOnPress}
-            size={30}
+        {assignedToMeSwitch && (
+          <SwitchCard
+            title={I18n.t('Base_AssignedToMe')}
+            defaultValue={assigned}
+            onToggle={() => setAssigned(!assigned)}
+            style={styles.switchCard}
           />
         )}
-        {returnToDayButton && (
-          <CircleButton
-            style={styles.circleButton}
-            iconName="calendar-event"
-            onPress={todayBtnOnPress}
-            size={30}
-          />
-        )}
-        {changeWeekButton && (
-          <CircleButton
-            style={styles.circleButton}
-            iconName="arrow-right"
-            onPress={nextWeekBtnOnPress}
-            size={30}
-          />
-        )}
+        <View style={styles.headerButton}>
+          {changeWeekButton && (
+            <CircleButton
+              style={styles.circleButton}
+              iconName="arrow-left"
+              onPress={lastWeekBtnOnPress}
+              size={30}
+            />
+          )}
+          {returnToDayButton && (
+            <CircleButton
+              style={styles.circleButton}
+              iconName="calendar-event"
+              onPress={todayBtnOnPress}
+              size={30}
+            />
+          )}
+          {changeWeekButton && (
+            <CircleButton
+              style={styles.circleButton}
+              iconName="arrow-right"
+              onPress={nextWeekBtnOnPress}
+              size={30}
+            />
+          )}
+        </View>
       </View>
       <Agenda
         onDayPress={date => setCurrentDate(date.dateString)}
@@ -299,13 +330,22 @@ const getStyles = Colors =>
     circleButton: {
       marginHorizontal: 5,
       marginTop: 5,
-      width: 50 + 50 * (1 / 3),
+      width: 40 + 50 * (1 / 3),
     },
     headerPlanning: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    headerButton: {
       flexDirection: 'row',
       alignItems: 'center',
       alignContent: 'flex-end',
       alignSelf: 'flex-end',
+    },
+    switchCard: {
+      width: '45%',
+      marginHorizontal: 5,
     },
   });
 
