@@ -196,7 +196,6 @@ interface TextElement {
   style?: any;
   displayText?: string;
   indicatorText?: string;
-  fontAwesome5?: boolean;
   size?: number;
   iconName?: string;
   color?: string;

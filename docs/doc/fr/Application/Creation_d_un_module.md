@@ -56,7 +56,7 @@ Un module possède donc :
 - un nom (_name_) permettant de donner une clé d’identité au module. Ce nom doit être unique entre les modules utilisés sur l’application pour éviter les confusions.
 - un titre (_title_) à afficher à l’utilisateur sur le drawer lorsqu’aucune app n’est sélectionnée.
 - un sous-titre (_subtitle_) à afficher à l’utilisateur sous le bouton du module dans le drawer pour aider à la compréhension. L’affichage de ses sous-titres est paramétrable depuis le composant _Application_ par l’attribut _showModulesSubtitle._
-- un nom d’icône (_icon_) à afficher sur le bouton du module dans le drawer. Attention, cet icône doit appartenir à la base FontAwesome 5 de la librairie [react-native-vector-icons](https://oblador.github.io/react-native-vector-icons/).
+- un nom d’icône (_icon_) à afficher sur le bouton du module dans le drawer. Attention, cet icône doit appartenir à la librairie Bootstrap(https://icons.getbootstrap.com/).
 - les information de compatibilité avec l’instance web (_compatibilityAOS_). Il est possible de surcharger ses informations depuis un autre module en indiquant pour un même nom de module web des versions différentes. Une version doit être un string composé de trois numéros. La version du module web est récupérée et renseignée automatiquement depuis les informations du serveur.
 - un ensemble de menus (_menus_) à afficher dans le drawer.
 - un ensemble d’écrans appartenant au module (_screens_).

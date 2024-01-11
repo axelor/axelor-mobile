@@ -73,12 +73,12 @@ export interface ActionType {
   title: string;
   iconName: string;
   iconColor?: string;
-  FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
   disableIf?: boolean;
   onPress: () => void;
   showInHeader?: boolean;
+  customComponent?: ReactElement<any>;
 }
 ```
 
@@ -89,12 +89,12 @@ Les différents attributs mis à disposition sont donc :
 - **title** : **_[Required]_** titre de l’action lorsque celle-ci est réduite dans le `DropdownMenu`
 - **iconName** : **_[Required]_** nom de l’icone associé à cette action
 - **iconColor** : couleur de l’icone, par défaut celle-ci est fixée à `secondaryColor_dark.background`
-- **FontAwesome5** : booléen pour savoir si l’icone appartient à la base de FontAwesome4 ou FontAwesome5. Par défaut cette valeur est fixée à `true` ce qui correspond donc à FontAwesome5.
 - **indicator** : chiffre à afficher en petit en haut de l’icone de l’action (ex: nombre de fichiers joints ou de messages en attente)
 - **hideIf** : condition d’affichage de l’action
 - **disableIf** : condition de désactivation de l’action
 - **onPress** : **_[Required]_** action à exécuter lorsque l’utilisateur clique sur l’icone
 - **showInHeader** : condition pour savoir si l’action peut s’afficher directement dans le header ou si elle doit toujours être présente dans les actions déroulantes. Par défaut, les actions sont paramétrées pour s’afficher dans la liste déroulante.
+- **customComponent**: possibilité d'ajouter un composant react personnalisé
 
 D’un point de vue fonctionnel, l’ensemble des actions est transmis au composant `HeaderOptionsMenu` qui va ensuite réaliser les étapes suivantes:
 
