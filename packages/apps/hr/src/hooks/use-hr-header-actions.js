@@ -71,7 +71,7 @@ const useTimerListAction = () => {
         {
           key: 'newTimer',
           order: 10,
-          iconName: 'plus',
+          iconName: 'plus-lg',
           title: I18n.t('Hr_NewTimer'),
           iconColor: Colors.primaryColor.background,
           onPress: () => console.log('Header button pressed.'),

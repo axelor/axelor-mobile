@@ -71,14 +71,14 @@ const TimesheetCard = ({
               ),
             },
             {
-              iconName: 'building',
+              iconName: 'building-fill',
               displayText: company,
               numberOfLines: 2,
               style: styles.iconText,
             },
 
             {
-              iconName: 'user',
+              iconName: 'person-fill',
               displayText: employeeName,
               style: styles.iconText,
               hideIfNull: true,
