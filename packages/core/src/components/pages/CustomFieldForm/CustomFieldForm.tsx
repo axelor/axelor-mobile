@@ -37,9 +37,15 @@ interface CustomFieldFormProps {
   model: string;
   modelId: string;
   fieldType: string;
+  additionalActions: any[];
 }
 
-const CustomFieldForm = ({model, modelId, fieldType}: CustomFieldFormProps) => {
+const CustomFieldForm = ({
+  model,
+  modelId,
+  fieldType,
+  additionalActions = [],
+}: CustomFieldFormProps) => {
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
@@ -81,7 +87,7 @@ const CustomFieldForm = ({model, modelId, fieldType}: CustomFieldFormProps) => {
 
   return (
     <FormView
-      actions={[]}
+      actions={[...additionalActions]}
       formKey={FORM_KEY}
       defaultValue={attrsValues == null ? {...defaults} : attrsValues}
     />
