@@ -26,7 +26,6 @@ import BootstrapIcon from '../BootstrapIcon/BootstrapIcon';
 interface IconProps {
   style?: any;
   name: string;
-  FontAwesome5?: boolean;
   /**
    * @deprecated The prop should not be used anymore. FontAwesome icons will be removed in next version.
    */
@@ -45,7 +44,6 @@ interface IconProps {
 const Icon = ({
   style,
   name,
-  FontAwesome5 = false,
   isFontAwesome4 = false,
   isFontAwesome5 = false,
   color,
@@ -64,14 +62,14 @@ const Icon = ({
   }, [Colors, color, size]);
 
   const renderIcon = useCallback(() => {
-    if ((FontAwesome5 || isFontAwesome5) && Platform.OS !== 'web') {
+    if (isFontAwesome5 && Platform.OS !== 'web') {
       return <Icon5 name={name} style={styles.icon} />;
     } else if (isFontAwesome4) {
       return <Icon4 name={name} style={styles.icon} />;
     } else {
       return <BootstrapIcon name={name} size={size} color={color} />;
     }
-  }, [FontAwesome5, color, isFontAwesome4, isFontAwesome5, name, size, styles]);
+  }, [color, isFontAwesome4, isFontAwesome5, name, size, styles]);
 
   if (!visible) {
     return null;
