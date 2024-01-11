@@ -75,13 +75,13 @@ const TimeDetailCard = ({
       {isActions && (
         <View style={styles.iconContainer}>
           <CardIconButton
-            iconName={'pencil-alt'}
+            iconName={'pencil-fill'}
             iconColor={Colors.secondaryColor_dark.background}
             onPress={handleEdit}
             style={styles.cardIconButton}
           />
           <CardIconButton
-            iconName={'trash-alt'}
+            iconName={'trash3-fill'}
             iconColor={Colors.errorColor.background}
             onPress={handleDelete}
             style={styles.cardIconButton}
