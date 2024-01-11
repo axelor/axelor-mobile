@@ -46,10 +46,14 @@ const ProductStockDetailsScreen = ({route}) => {
   const {user, canModifyCompany} = useSelector(state => state.user);
   const {companyList} = useSelector(state => state.company);
   const {stockLocationLine} = useSelector(state => state.stockLocationLine);
-  const {base: baseConfig} = useSelector(state => state.appConfig);
+  const {base: baseConfig, mobileSettings} = useSelector(
+    state => state.appConfig,
+  );
 
   const [stockLocation, setStockLocation] = useState(
-    user?.workshopStockLocation,
+    mobileSettings?.isStockLocationManagementEnabled
+      ? user?.workshopStockLocation
+      : null,
   );
   const [companyId, setCompany] = useState(user.activeCompany?.id);
 

@@ -58,6 +58,7 @@ const StockLocationSearchBar = ({
     stockLocationListMultiFilter,
   } = useSelector(state => state.stockLocation);
   const {user} = useSelector(state => state.user);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const fetchStockLocationsAPI = useCallback(
     ({page = 0, searchValue}) => {
@@ -67,11 +68,14 @@ const StockLocationSearchBar = ({
           searchValue,
           companyId: user.activeCompany?.id,
           defaultStockLocation:
-            defaultStockLocation ?? user.workshopStockLocation,
+            defaultStockLocation ??
+            mobileSettings?.isStockLocationManagementEnabled
+              ? user.workshopStockLocation
+              : null,
         }),
       );
     },
-    [defaultStockLocation, dispatch, user],
+    [defaultStockLocation, dispatch, mobileSettings, user],
   );
 
   const fetchStockLocationsMultiFilterAPI = useCallback(
@@ -82,11 +86,14 @@ const StockLocationSearchBar = ({
           searchValue,
           companyId: user.activeCompany?.id,
           defaultStockLocation:
-            defaultStockLocation ?? user.workshopStockLocation,
+            defaultStockLocation ??
+            mobileSettings?.isStockLocationManagementEnabled
+              ? user.workshopStockLocation
+              : null,
         }),
       );
     },
-    [defaultStockLocation, dispatch, user],
+    [defaultStockLocation, dispatch, mobileSettings, user],
   );
 
   useEffect(() => {

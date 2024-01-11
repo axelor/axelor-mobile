@@ -33,6 +33,7 @@ const UserScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.user);
+  const {mobileSettings} = useSelector(state => state.appConfig);
 
   const updateDefaultStockLocation = useCallback(
     stockLocation => {
@@ -47,14 +48,16 @@ const UserScreen = ({navigation}) => {
 
   return (
     <AuthUserScreen navigation={navigation}>
-      <StockLocationSearchBar
-        showTitle={true}
-        titleKey={I18n.t('User_DefaultStockLocation')}
-        scanKey={stockLocationScanKey}
-        placeholderKey="Stock_StockLocation"
-        defaultValue={user?.workshopStockLocation}
-        onChange={updateDefaultStockLocation}
-      />
+      {mobileSettings?.isStockLocationManagementEnabled && (
+        <StockLocationSearchBar
+          showTitle={true}
+          titleKey={I18n.t('User_DefaultStockLocation')}
+          scanKey={stockLocationScanKey}
+          placeholderKey="Stock_StockLocation"
+          defaultValue={user?.workshopStockLocation}
+          onChange={updateDefaultStockLocation}
+        />
+      )}
     </AuthUserScreen>
   );
 };
