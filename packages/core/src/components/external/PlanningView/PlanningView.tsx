@@ -334,7 +334,7 @@ const getStyles = Colors =>
     },
     headerPlanning: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-evenly',
       alignItems: 'center',
     },
     headerButton: {
