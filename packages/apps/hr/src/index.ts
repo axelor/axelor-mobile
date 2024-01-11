@@ -56,12 +56,12 @@ export const HrModule: Module = {
     },
     hr_menu_timers: {
       title: 'Hr_Timers',
-      icon: 'hourglass-half',
+      icon: 'hourglass-split',
       screen: 'TimerListScreen',
     },
     hr_menu_timesheets: {
       title: 'Hr_Timesheets',
-      icon: 'business-time',
+      icon: 'clock-history',
       screen: 'TimesheetListScreen',
     },
   },
