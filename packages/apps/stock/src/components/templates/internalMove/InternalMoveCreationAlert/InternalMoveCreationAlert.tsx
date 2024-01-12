@@ -72,7 +72,7 @@ const InternalMoveCreationAlert = ({
       }}
       confirmButtonConfig={{
         title: I18n.t('Stock_Remove'),
-        iconName: 'trash-alt',
+        iconName: 'trash3-fill',
         width: '45%',
         color: Colors.warningColor,
         onPress: () => {
