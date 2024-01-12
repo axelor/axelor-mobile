@@ -44,6 +44,29 @@ const InternalMoveCreationScreen = ({navigation}) => {
   const [movedQty, setMovedQty] = useState(0);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
 
+  const handleAddLine = () => {
+    setLines(prevLines => {
+      const newLines = [...prevLines];
+      const indexLine = newLines.findIndex(line => line.id === newLine?.id);
+
+      if (indexLine >= 0) {
+        newLines[indexLine].realQty += movedQty;
+      } else {
+        newLines.push({
+          product: newLine?.product,
+          trackingNumber: newLine?.trackingNumber,
+          realQty: movedQty,
+          unit: newLine?.product?.unit,
+          id: newLine?.id,
+        });
+      }
+
+      return newLines;
+    });
+    setMovedQty(0);
+    handleProductChange(null);
+  };
+
   const handleFromStockLocationChange = useCallback(
     _value => {
       if (_value == null) {
@@ -118,27 +141,7 @@ const InternalMoveCreationScreen = ({navigation}) => {
           lines={lines}
           toStockLocation={toStockLocation}
           movedQty={movedQty}
-          addLine={() => {
-            setLines(prevLines => {
-              const indexLine = prevLines.findIndex(
-                line => line.id === newLine?.id,
-              );
-              if (indexLine >= 0) {
-                prevLines[indexLine].realQty += movedQty;
-              } else {
-                prevLines.push({
-                  product: newLine?.product,
-                  trackingNumber: newLine?.trackingNumber,
-                  realQty: movedQty,
-                  unit: newLine?.product?.unit,
-                  id: newLine?.id,
-                });
-              }
-              return prevLines;
-            });
-            setMovedQty(0);
-            handleProductChange(null);
-          }}
+          addLine={handleAddLine}
         />
       }>
       <KeyboardAvoidingScrollView keyboardOffset={{android: 100}}>
