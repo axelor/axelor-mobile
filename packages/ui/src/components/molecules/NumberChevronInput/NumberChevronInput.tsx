@@ -60,7 +60,7 @@ const NumberChevronInput = ({
   useEffect(() => setInputValue(defaultValue), [defaultValue]);
 
   const _required = useMemo(
-    () => required && inputValue == null,
+    () => required && (inputValue == null || inputValue === 0),
     [required, inputValue],
   );
 

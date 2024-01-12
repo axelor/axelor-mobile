@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import NumberChevronInput, {
   INPUT_CHANGE_TYPE,
@@ -49,7 +49,7 @@ const DurationInput = ({
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   const [formattedDuration, setFormattedDuration] = useState(
-    formatDurationSecondsToArray(defaultValue),
+    formatDurationSecondsToArray(defaultValue ?? 0),
   );
 
   useEffect(() => {
@@ -59,6 +59,11 @@ const DurationInput = ({
   useEffect(() => {
     onChange(formatDurationArrayToSeconds(formattedDuration));
   }, [formattedDuration, onChange]);
+
+  const _required = useMemo(
+    () => required && formatDurationArrayToSeconds(formattedDuration) === 0,
+    [formattedDuration, required],
+  );
 
   const changeFormattedDuration = (index: number, value: number) => {
     setFormattedDuration(duration => {
@@ -92,7 +97,7 @@ const DurationInput = ({
           onEndFocus={() =>
             !formattedDuration[0] && changeFormattedDuration(0, 0)
           }
-          required={required}
+          required={_required}
           readonly={readonly}
         />
         <NumberChevronInput
@@ -106,7 +111,7 @@ const DurationInput = ({
           onEndFocus={() =>
             !formattedDuration[1] && changeFormattedDuration(1, 0)
           }
-          required={required}
+          required={_required}
           readonly={readonly}
         />
         <NumberChevronInput
@@ -120,7 +125,7 @@ const DurationInput = ({
           onEndFocus={() =>
             !formattedDuration[2] && changeFormattedDuration(2, 0)
           }
-          required={required}
+          required={_required}
           readonly={readonly}
         />
         <Text writingType="important" fontSize={20}>
@@ -138,7 +143,7 @@ const DurationInput = ({
           onEndFocus={() =>
             !formattedDuration[3] && changeFormattedDuration(3, 0)
           }
-          required={required}
+          required={_required}
           readonly={readonly}
         />
         <NumberChevronInput
@@ -151,7 +156,7 @@ const DurationInput = ({
           onEndFocus={() =>
             !formattedDuration[4] && changeFormattedDuration(4, 0)
           }
-          required={required}
+          required={_required}
           readonly={readonly}
         />
       </View>
