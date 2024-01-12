@@ -184,7 +184,7 @@ const Camera = () => {
             name="lightning-fill"
             color={
               flash === 'on'
-                ? Colors.successColor.background
+                ? Colors.primaryColor.background
                 : Colors.backgroundColor
             }
             size={24}

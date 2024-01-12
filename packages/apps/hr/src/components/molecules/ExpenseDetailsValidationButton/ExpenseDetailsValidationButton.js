@@ -87,7 +87,6 @@ const ExpenseDetailsValidationButton = ({expense, mode}) => {
           <Button
             title={I18n.t('Hr_Validate')}
             onPress={validateExpenseAPI}
-            color={Colors.successColor}
             width="45%"
             iconName="check-lg"
           />

@@ -82,7 +82,7 @@ const Alert = ({
 
     return {
       title: translator('Base_OK'),
-      color: Colors.successColor,
+      color: Colors.primaryColor,
       iconName: 'check-lg',
       hide: false,
       width: DEFAULT_BUTTON_WIDTH,

@@ -22,12 +22,11 @@ import {
   useNavigation,
   useTranslator,
 } from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button} from '@axelor/aos-mobile-ui';
 import StockMove from '../../../../types/stock-move';
 import {realizeCustomerDelivery} from '../../../../features/customerDeliverySlice';
 
 const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -43,13 +42,7 @@ const CustomerDeliveryRealizeButton = ({customerDelivery}) => {
   };
 
   if (customerDelivery.statusSelect !== StockMove.status.Realized) {
-    return (
-      <Button
-        onPress={handleRealize}
-        color={Colors.successColor}
-        title={I18n.t('Base_Realize')}
-      />
-    );
+    return <Button onPress={handleRealize} title={I18n.t('Base_Realize')} />;
   }
 
   return null;

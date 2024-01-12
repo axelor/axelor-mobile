@@ -18,7 +18,7 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, useThemeColor, WarningCard} from '@axelor/aos-mobile-ui';
+import {Button, WarningCard} from '@axelor/aos-mobile-ui';
 import {useTranslator} from '@axelor/aos-mobile-core';
 import {TrackingNumberSearchBar} from '../../../templates';
 
@@ -29,7 +29,6 @@ const ProductTrackingNumberSelect = ({
   onAddTrackingNumber,
   style,
 }) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
 
   const [selectedTrackingNumber, setSelectedTrackingNumber] = useState(null);
@@ -52,7 +51,6 @@ const ProductTrackingNumberSelect = ({
       {selectedTrackingNumber != null && (
         <Button
           title={I18n.t('Base_Add')}
-          color={Colors.successColor}
           onPress={() => onAddTrackingNumber(selectedTrackingNumber)}
           width="50%"
         />

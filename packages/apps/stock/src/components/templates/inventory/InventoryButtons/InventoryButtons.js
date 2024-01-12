@@ -23,12 +23,11 @@ import {
   useTranslator,
   useNavigation,
 } from '@axelor/aos-mobile-core';
-import {Button, useThemeColor} from '@axelor/aos-mobile-ui';
+import {Button} from '@axelor/aos-mobile-ui';
 import Inventory from '../../../../types/inventory';
 import {updateInventory} from '../../../../features/inventorySlice';
 
 const InventoryButtons = ({}) => {
-  const Colors = useThemeColor();
   const I18n = useTranslator();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -90,7 +89,6 @@ const InventoryButtons = ({}) => {
       <Button
         title={I18n.t('Base_Complete')}
         iconName="check-lg"
-        color={Colors.successColor}
         onPress={handleCompleteInventory}
       />
     );
@@ -104,7 +102,6 @@ const InventoryButtons = ({}) => {
       <Button
         title={I18n.t('Base_Validate')}
         iconName="check-lg"
-        color={Colors.successColor}
         onPress={handleValidateInventory}
       />
     );

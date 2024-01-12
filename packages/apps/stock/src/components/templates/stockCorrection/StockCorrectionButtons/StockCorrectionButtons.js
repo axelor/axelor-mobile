@@ -128,7 +128,6 @@ const StockCorrectionButtons = ({
         <Button
           title={I18n.t('Base_Validate')}
           iconName="check-lg"
-          color={Colors.successColor}
           width={saveStatus ? '90%' : '45%'}
           onPress={handleValidate}
         />

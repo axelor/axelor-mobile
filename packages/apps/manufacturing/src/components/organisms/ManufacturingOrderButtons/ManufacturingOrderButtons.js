@@ -65,7 +65,6 @@ const ManufacturingOrderButtons = ({}) => {
           title={I18n.t('Base_Finish')}
           onPress={() => handleUpdateStatus(ManufacturingOrder.status.Finished)}
           iconName="power"
-          color={Colors.successColor}
         />
       </>
     );
