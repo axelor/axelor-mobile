@@ -90,7 +90,7 @@ const InternalMoveCreationButtons = ({
         {step === InternalMoveCreation.step.validateLine && (
           <Button
             title={I18n.t('Base_Add')}
-            iconName="plus"
+            iconName="plus-lg"
             color={Colors.progressColor}
             width="45%"
             disabled={movedQty === 0}
@@ -99,7 +99,7 @@ const InternalMoveCreationButtons = ({
         )}
         <Button
           title={I18n.t('Base_Finish')}
-          iconName="check"
+          iconName="check-lg"
           width={
             step === InternalMoveCreation.step.validateLine ? '45%' : '90%'
           }

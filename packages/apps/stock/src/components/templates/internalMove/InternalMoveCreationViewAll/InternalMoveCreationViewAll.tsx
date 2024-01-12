@@ -64,7 +64,7 @@ const InternalMoveCreationViewAll = ({
               {line.realQty} {line.unit.name}
             </Text>
             <Icon
-              name="times"
+              name="x-lg"
               size={20}
               touchable
               onPress={() =>
