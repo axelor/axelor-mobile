@@ -31,6 +31,7 @@ interface NumberChevronInputProps {
   style?: any;
   inputRef?: LegacyRef<TextInput>;
   defaultValue?: number;
+  stepSize?: number;
   minValue?: number;
   maxValue?: number;
   onValueChange?: (value: number, inputChangeType: number) => void;
@@ -43,6 +44,7 @@ const NumberChevronInput = ({
   style,
   inputRef,
   defaultValue = 0,
+  stepSize = 1,
   minValue = 0,
   maxValue = 9,
   onValueChange = () => {},
@@ -115,7 +117,8 @@ const NumberChevronInput = ({
       <TouchableOpacity
         onPress={() =>
           setInputValue(currentValue => {
-            const newValue = currentValue + 1;
+            const tempNewValue = currentValue + stepSize;
+            const newValue = tempNewValue <= maxValue ? tempNewValue : maxValue;
             onValueChange(newValue, INPUT_CHANGE_TYPE.button);
             return newValue;
           })
@@ -152,7 +155,8 @@ const NumberChevronInput = ({
       <TouchableOpacity
         onPress={() =>
           setInputValue(currentValue => {
-            const newValue = currentValue - 1;
+            const tempNewValue = currentValue - stepSize;
+            const newValue = tempNewValue >= minValue ? tempNewValue : minValue;
             onValueChange(newValue, INPUT_CHANGE_TYPE.button);
             return newValue;
           })
