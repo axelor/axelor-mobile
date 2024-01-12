@@ -28,17 +28,12 @@ export const INPUT_CHANGE_TYPE = {
 };
 
 describe('NumberChevronInput Component', () => {
-  const defaultValue = 5;
-  const minValue = 0;
-  const maxValue = 9;
-  const onValueChangeMock = jest.fn();
-  const onEndFocusMock = jest.fn();
   const props = {
-    defaultValue,
-    minValue,
-    maxValue,
-    onValueChange: onValueChangeMock,
-    onEndFocus: onEndFocusMock,
+    defaultValue: 5,
+    minValue: 0,
+    maxValue: 9,
+    onValueChange: jest.fn(),
+    onEndFocus: jest.fn(),
   };
 
   it('renders without crashing', () => {
@@ -72,12 +67,9 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('does not allow value to exceed max limits', () => {
-    const _onValueChangeMock = jest.fn();
-
     const _props = {
       ...props,
       defaultValue: 9,
-      onValueChange: _onValueChangeMock,
     };
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
@@ -87,12 +79,9 @@ describe('NumberChevronInput Component', () => {
   });
 
   it('does not allow value to exceed min limits', () => {
-    const _onValueChangeMock = jest.fn();
-
     const _props = {
       ...props,
       defaultValue: 0,
-      onValueChange: _onValueChangeMock,
     };
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
@@ -101,17 +90,53 @@ describe('NumberChevronInput Component', () => {
     expect(decreaseButton.prop('disabled')).toBe(true);
   });
 
+  it('value is correctly re-set when value is out of bound', () => {
+    const _onValueChangeMock = jest.fn();
+
+    const _props = {
+      ...props,
+      maxValue: 5,
+      onValueChange: _onValueChangeMock,
+    };
+
+    const wrapper = shallow(<NumberChevronInput {..._props} />);
+
+    wrapper.find('Input').simulate('change', '10');
+    expect(_onValueChangeMock).toHaveBeenCalledWith(
+      0,
+      INPUT_CHANGE_TYPE.keyboard,
+    );
+
+    wrapper.find('Input').simulate('change', '45');
+    expect(_onValueChangeMock).toHaveBeenCalledWith(
+      5,
+      INPUT_CHANGE_TYPE.keyboard,
+    );
+
+    wrapper.find('Input').simulate('change', '8');
+    expect(_onValueChangeMock).toHaveBeenCalledWith(
+      5,
+      INPUT_CHANGE_TYPE.keyboard,
+    );
+  });
+
   it('handles text input changes correctly', () => {
-    const wrapper = shallow(<NumberChevronInput {...props} />);
+    const _onValueChangeMock = jest.fn();
+
+    const _props = {
+      ...props,
+      onValueChange: _onValueChangeMock,
+    };
+    const wrapper = shallow(<NumberChevronInput {..._props} />);
 
     wrapper.find('Input').simulate('change', '7');
-    expect(onValueChangeMock).toHaveBeenCalledWith(
+    expect(_onValueChangeMock).toHaveBeenCalledWith(
       7,
       INPUT_CHANGE_TYPE.keyboard,
     );
 
     wrapper.find('Input').simulate('change', 'invalid');
-    expect(onValueChangeMock).not.toHaveBeenCalledWith(
+    expect(_onValueChangeMock).not.toHaveBeenCalledWith(
       NaN,
       INPUT_CHANGE_TYPE.keyboard,
     );
