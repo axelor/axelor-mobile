@@ -54,6 +54,7 @@ const getStyles = Colors =>
       width: '100%',
       alignSelf: 'center',
       paddingRight: 16,
+      marginLeft: '5%',
     },
     menuItemIcon: {
       marginRight: 5,
@@ -67,7 +68,7 @@ const getStyles = Colors =>
       borderBottomWidth: 1.5,
       borderBottomColor: Colors.secondaryColor.background,
       marginTop: 10,
-      left: '15%',
+      alignSelf: 'center',
     },
   });
 
