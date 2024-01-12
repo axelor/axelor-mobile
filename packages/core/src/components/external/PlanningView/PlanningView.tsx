@@ -96,7 +96,10 @@ const PlanningView = ({
     [_agendaItems, numberMonthsAroundToday],
   );
 
-  const styles = useMemo(() => getStyles(Colors), [Colors]);
+  const styles = useMemo(
+    () => getStyles(Colors, assignedToMeSwitch),
+    [Colors, assignedToMeSwitch],
+  );
 
   const renderDate = date => {
     const today = date && isToday(date) ? styles.today : undefined;
@@ -263,7 +266,7 @@ const PlanningView = ({
   );
 };
 
-const getStyles = Colors =>
+const getStyles = (Colors, assignedToMeSwitch) =>
   StyleSheet.create({
     agendaContainer: {
       height: '100%',
@@ -333,19 +336,18 @@ const getStyles = Colors =>
       width: 40 + 50 * (1 / 3),
     },
     headerPlanning: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
+      flexDirection: assignedToMeSwitch ? 'row' : 'row-reverse',
+      justifyContent: 'space-between',
       alignItems: 'center',
     },
     headerButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      alignContent: 'flex-end',
-      alignSelf: 'flex-end',
+      marginRight: 10,
     },
     switchCard: {
       width: '45%',
-      marginHorizontal: 5,
+      marginHorizontal: 10,
     },
   });
 
