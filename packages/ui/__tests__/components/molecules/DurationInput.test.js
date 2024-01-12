@@ -47,7 +47,9 @@ describe('Duration Input Component', () => {
   });
 
   it('renders with required when required is true', () => {
-    const wrapper = shallow(<DurationInput {...props} required={true} />);
+    const wrapper = shallow(
+      <DurationInput {...props} defaultValue={0} required={true} />,
+    );
 
     wrapper.find(NumberChevronInput).forEach(input => {
       expect(input.prop('required')).toBe(true);
@@ -84,7 +86,12 @@ describe('Duration Input Component', () => {
       .at(inputIndexToChange)
       .simulate('valueChange', newValue);
 
-    expect(wrapper.find(NumberChevronInput).at(1).prop('defaultValue')).toBe(6);
+    expect(
+      wrapper
+        .find(NumberChevronInput)
+        .at(inputIndexToChange)
+        .prop('defaultValue'),
+    ).toBe(newValue);
   });
 
   it('applies custom style when provided', () => {
@@ -98,10 +105,12 @@ describe('Duration Input Component', () => {
 
   it('applies custom inputStyle when provided', () => {
     const customStyle = {height: 200};
-    const wrapper = shallow(<DurationInput {...props} style={customStyle} />);
-
-    expect(getGlobalStyles(wrapper.find(View).at(0))).toMatchObject(
-      customStyle,
+    const wrapper = shallow(
+      <DurationInput {...props} inputStyle={customStyle} />,
     );
+
+    wrapper.find(NumberChevronInput).forEach(input => {
+      expect(input.prop('style')).toMatchObject(customStyle);
+    });
   });
 });
