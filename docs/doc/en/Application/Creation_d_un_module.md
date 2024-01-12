@@ -56,7 +56,7 @@ A module therefore has :
 - a name (_name_) to give the module an identity key. This name must be unique among the modules used in the application, to avoid confusion.
 - a title (_title_) to be displayed to the user on the drawer when no app is selected.
 - a subtitle (_subtitle_) to be displayed to the user under the module button in the drawer to aid comprehension. The display of these subtitles can be configured in the _Application_ component using the _showModulesSubtitle._ attribute.
-- an icon name (_icon_) to be displayed on the module button in the drawer. Please note that this icon must belong to the Bootstrap database (https://icons.getbootstrap.com/) package.
+- an icon name (_icon_) to be displayed on the module button in the drawer. Please note that this icon must belong to the [Bootstrap database](https://icons.getbootstrap.com/) package.
 - web instance compatibility information (_compatibilityAOS_). It's possible to overload this information from another module by indicating different versions of the same web module name. A version must be a string composed of three numbers. The web module version is automatically retrieved from the server information.
 - a set of menus (_menus_) to be displayed in the drawer.
 - a set of screens belonging to the module (_screens_).
