@@ -1,0 +1,123 @@
+import {Menu, Module, Screen} from '../app';
+import {createDashboardActionID} from './display.helpers';
+import {DashboardScreen} from './view';
+
+type DashboardMenuConfig = {
+  [menuKey: string]: {menu: Menu; configRoles: any[]};
+};
+
+type Menus = {
+  [menuKey: string]: Menu;
+};
+
+type Screens = {
+  [screenKey: string]: Screen;
+};
+
+const createScreenComponent = id => {
+  return props => DashboardScreen({...props, dashboardId: id});
+};
+
+export const createDashboardScreens = (
+  dashboardConfigs: {
+    id: number;
+    appName: string;
+    isCustom: boolean;
+    menuTitle?: string;
+    iconName?: string;
+    menuOrder?: number;
+    authorizedRoleSet: any[];
+  }[],
+): {menus: DashboardMenuConfig; screens: Screens} => {
+  const screens: Screens = {};
+  const menus: DashboardMenuConfig = {};
+
+  if (Array.isArray(dashboardConfigs) && dashboardConfigs.length > 0) {
+    dashboardConfigs.forEach(
+      ({
+        id,
+        appName,
+        isCustom = false,
+        menuTitle,
+        iconName,
+        menuOrder,
+        authorizedRoleSet = [],
+      }) => {
+        const config = isCustom
+          ? {
+              title: menuTitle ?? 'Base_Dashboard',
+              icon: iconName ?? 'graph-up',
+              order: menuOrder,
+            }
+          : {title: 'Base_Dashboard', icon: 'graph-up', order: -10};
+        const screenKey = `Dashboard_${appName}_${id}`;
+
+        screens[screenKey] = {
+          title: config.title,
+          component: createScreenComponent(id),
+          actionID: createDashboardActionID(id),
+        } as Screen;
+
+        const _menu: Menu = {
+          title: config.title,
+          icon: config.icon,
+          parent: appName,
+          order: config.order,
+          compatibilityAOS: {
+            moduleName: 'axelor-mobile-settings',
+            downToVersion: '8.0.0',
+          },
+          screen: screenKey,
+          isDefault: true,
+        };
+
+        menus[`${appName}_menu_dashboard${id}`] = {
+          menu: _menu,
+          configRoles: authorizedRoleSet,
+        };
+      },
+    );
+  }
+
+  return {menus, screens};
+};
+
+export const filterAuthorizedDashboardMenus = (
+  dashboardConfigs: DashboardMenuConfig,
+  {roles: userRoles}: {roles: any[]},
+): Menus => {
+  const menus: Menus = {};
+
+  Object.entries(dashboardConfigs)
+    .filter(([_, {configRoles: authorizedRoleSet}]) => {
+      if (!Array.isArray(authorizedRoleSet) || authorizedRoleSet.length === 0) {
+        return true;
+      } else if (!Array.isArray(userRoles) || userRoles.length === 0) {
+        return false;
+      } else {
+        return authorizedRoleSet.some(_neededRole =>
+          userRoles.find(_userRole => _userRole.id === _neededRole.id),
+        );
+      }
+    })
+    .forEach(([key, {menu}]) => {
+      menus[key] = menu;
+    });
+
+  return menus;
+};
+
+export const addDashboardMenus = (modules: Module[], dashboardMenus: Menus) => {
+  return modules.map(_module => {
+    const associatedMenus = Object.fromEntries(
+      Object.entries(dashboardMenus).filter(
+        ([, {parent}]) => parent === _module.name,
+      ),
+    );
+
+    return {
+      ..._module,
+      menus: {...(_module.menus ?? {}), ...(associatedMenus ?? {})},
+    };
+  });
+};

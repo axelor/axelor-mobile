@@ -155,6 +155,8 @@
   "Base_FormAction_Refresh": "Refresh",
   "Base_FormAction_Reset": "Reset",
   "Base_SelectAll": "Select all",
+  "Base_Dashboard": "Dashboard",
+  "Base_Dashboard_Misconfigured": "This dashboard is misconfigured, please contact your administrator.",
   "Base_SliceAction_FetchAttachedFiles": "fetch attached files",
   "Base_SliceAction_FetchFilesDetails": "fetch file details",
   "Base_SliceAction_FetchMetaModule": "fetch meta modules",

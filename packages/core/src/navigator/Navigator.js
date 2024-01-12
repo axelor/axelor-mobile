@@ -50,6 +50,12 @@ import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
 import {fetchRequiredConfig} from '../features/appConfigSlice';
+import {
+  addDashboardMenus,
+  createDashboardScreens,
+  filterAuthorizedDashboardMenus,
+} from '../dashboards/menu.helpers';
+import {fetchDashboardConfigs} from '../features/mobileDashboardSlice';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -71,26 +77,42 @@ const Navigator = ({
   const {user} = useSelector(state => state.user);
   const {restrictedMenus} = useSelector(state => state.menuConfig);
   const {mobileConfigs} = useSelector(state => state.mobileConfig);
+  const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
   const {metaModules} = useSelector(state => state.metaModule);
 
   const I18n = useTranslator();
   const Colors = useThemeColor();
   const dispatch = useDispatch();
 
+  const {screens: dashboardScreeens, menus: dashboardMenusConfig} = useMemo(
+    () => createDashboardScreens(dashboardConfigs),
+    [dashboardConfigs],
+  );
+
   const enabledModule = useMemo(
     () =>
       manageWebCompatibility(
         manageWebConfig(
-          manageOverridingMenus(
-            manageSubMenusOverriding(
-              filterAuthorizedModules(modules, mobileConfigs, user),
+          addDashboardMenus(
+            manageOverridingMenus(
+              manageSubMenusOverriding(
+                filterAuthorizedModules(modules, mobileConfigs, user),
+              ),
             ),
+            filterAuthorizedDashboardMenus(dashboardMenusConfig, user),
           ),
           storeState,
         ),
         metaModules,
       ),
-    [metaModules, mobileConfigs, modules, storeState, user],
+    [
+      dashboardMenusConfig,
+      metaModules,
+      mobileConfigs,
+      modules,
+      storeState,
+      user,
+    ],
   );
 
   const [activeModule, setActiveModule] = useState(
@@ -116,6 +138,7 @@ const Navigator = ({
     dispatch(fetchMobileConfig());
     dispatch(fetchMetaModules());
     dispatch(fetchMenuConfig());
+    dispatch(fetchDashboardConfigs());
   }, [dispatch]);
 
   const changeActiveModule = useCallback(
@@ -138,8 +161,9 @@ const Navigator = ({
     () =>
       modules.reduce((screens, module) => ({...screens, ...module.screens}), {
         ...BaseScreen,
+        ...dashboardScreeens,
       }),
-    [modules],
+    [dashboardScreeens, modules],
   );
 
   const ModulesScreensStackNavigator = useCallback(
