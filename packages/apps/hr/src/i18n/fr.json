@@ -60,6 +60,7 @@
   "Hr_OperationOrder": "Opération de fabrication",
   "Hr_TimesheetDate": "Date",
   "Hr_Duration": "Duration (heures)",
+  "Hr_Total_Duration": "Durée totale",
   "Hr_SliceAction_FetchExpenseLines": "récupération des lignes de frais",
   "Hr_SliceAction_SearchDraftExpense": "récupération des notes de frais brouillon",
   "Hr_SliceAction_FetchExpense": "récupération des notes de frais",
@@ -90,5 +91,7 @@
   "Hr_SliceAction_FetchTimesheetToValidate": "récupération des feuilles de temps à valider",
   "Hr_SliceAction_DeleteExpense": "suppression d'une note de frais",
   "Hr_SliceAction_FetchManufOrder": "récupération des ordres de fabrication",
-  "Hr_SliceAction_FetchOperationOrder": "récupération des opérations de fabrication"
+  "Hr_SliceAction_FetchOperationOrder": "récupération des opérations de fabrication",
+  "Hr_SliceAction_FetchTimesheetById": "récuperation d'une feuille de temps par id",
+  "Hr_SliceAction_FetchTimesheetLine": "récupération des lignes d'une feuille de temps"
 }

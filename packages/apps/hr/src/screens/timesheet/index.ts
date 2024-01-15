@@ -19,6 +19,7 @@
 import TimerListScreen from './TimerListScreen';
 import TimesheetListScreen from './TimesheetListScreen';
 import TimesheetLineFormScreen from './TimesheetLineFormScreen';
+import TimesheetDetailsScreen from './TimesheetDetailsScreen';
 
 export default {
   TimerListScreen: {
@@ -34,8 +35,13 @@ export default {
     title: 'Hr_TimesheetLine',
     component: TimesheetLineFormScreen,
   },
+  TimesheetDetailsScreen: {
+    title: 'Hr_Timesheets',
+    component: TimesheetDetailsScreen,
+  },
 };
 
 export {TimerListScreen};
 export {TimesheetListScreen};
 export {TimesheetLineFormScreen};
+export {TimesheetDetailsScreen};

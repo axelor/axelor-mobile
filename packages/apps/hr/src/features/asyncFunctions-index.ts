@@ -48,4 +48,9 @@ export {
 } from './manufOrderSlice';
 export {searchProject, searchProjectTask, updateProject} from './projectSlice';
 export {fetchTimer} from './timerSlice';
-export {fetchTimesheet, fetchTimesheetToValidate} from './timesheetSlice';
+export {fetchTimesheetLineSlice} from './timesheetLineSlice';
+export {
+  fetchTimesheet,
+  fetchTimesheetById,
+  fetchTimesheetToValidate,
+} from './timesheetSlice';

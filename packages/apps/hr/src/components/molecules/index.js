@@ -24,3 +24,5 @@ export {default as ExpenseRefusalPopup} from './ExpenseRefusalPopup/ExpenseRefus
 export {default as TimeDetailCard} from './TimeDetailCard/TimeDetailCard';
 export {default as TimerDeclareButton} from './TimerDeclareButton/TimerDeclareButton';
 export {default as TimesheetDetailCard} from './TimesheetDetailCard/TimesheetDetailCard';
+export {default as TimesheetDetailsButtons} from './TimesheetDetailsButtons/TimesheetDetailsButtons';
+export {default as TimesheetHeader} from './TimesheetHeader/TimesheetHeader';

@@ -19,14 +19,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector, useTranslator} from '@axelor/aos-mobile-core';
 import {HeaderContainer, Screen, ScrollList} from '@axelor/aos-mobile-ui';
-import {TimesheetDetailCard, TimesheetHeader} from '../../components';
+import {TimesheetDetailCard, TimesheetFilters} from '../../components';
 import {
   fetchTimesheet,
   fetchTimesheetToValidate,
 } from '../../features/timesheetSlice';
 import {Timesheet} from '../../types';
 
-const TimesheetListScreen = ({}) => {
+const TimesheetListScreen = ({navigation}) => {
   const I18n = useTranslator();
   const dispatch = useDispatch();
 
@@ -125,7 +125,7 @@ const TimesheetListScreen = ({}) => {
       <HeaderContainer
         expandableFilter={false}
         fixedItems={
-          <TimesheetHeader
+          <TimesheetFilters
             onChangeStatus={setSelectedStatus}
             onChangeMode={setMode}
             mode={mode}
@@ -139,7 +139,11 @@ const TimesheetListScreen = ({}) => {
           <TimesheetDetailCard
             item={item}
             isValidationMode={mode === Timesheet.mode.validation}
-            onPress={() => console.log('Card pressed.')}
+            onPress={() =>
+              navigation.navigate('TimesheetDetailsScreen', {
+                timesheetId: item.id,
+              })
+            }
           />
         )}
         fetchData={listToDisplay.functionApi}
