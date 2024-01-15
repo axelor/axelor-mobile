@@ -333,11 +333,11 @@ const getStyles = (Colors, assignedToMeSwitch) =>
     circleButton: {
       marginHorizontal: 5,
       marginTop: 5,
-      width: 40 + 50 * (1 / 3),
+      width: 35 + 50 * (1 / 3),
     },
     headerPlanning: {
-      flexDirection: assignedToMeSwitch ? 'row' : 'row-reverse',
-      justifyContent: 'space-between',
+      flexDirection: 'row',
+      justifyContent: assignedToMeSwitch ? 'space-between' : 'flex-end',
       alignItems: 'center',
     },
     headerButton: {
