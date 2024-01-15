@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Dimensions} from 'react-native';
 import {
   AutoCompleteSearch,
   ChipSelect,
@@ -121,8 +120,6 @@ const InventoryListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            marginHorizontal={3}
-            width={Dimensions.get('window').width * 0.35}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {

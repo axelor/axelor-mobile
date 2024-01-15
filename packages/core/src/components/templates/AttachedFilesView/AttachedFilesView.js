@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useState, useMemo, useEffect} from 'react';
-import {Dimensions} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   AttachmentCard,
@@ -126,8 +125,6 @@ function AttachedFilesView({
           <ChipSelect
             mode="multi"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={5}
-            width={Dimensions.get('window').width * 0.25}
             selectionItems={extensionList.map(ext => {
               return {
                 title: `${ext}`.toUpperCase(),

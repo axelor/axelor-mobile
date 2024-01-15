@@ -17,7 +17,6 @@
  */
 
 import React, {useCallback, useState, useMemo} from 'react';
-import {Dimensions} from 'react-native';
 import {
   ChipSelect,
   HeaderContainer,
@@ -157,8 +156,6 @@ const CustomerDeliveryLineListScreen = ({route, navigation}) => {
           <ChipSelect
             mode="switch"
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
-            marginHorizontal={3}
-            width={Dimensions.get('window').width * 0.3}
             selectionItems={StockMoveLine.getStockMoveLineStatusItems(
               I18n,
               Colors,
