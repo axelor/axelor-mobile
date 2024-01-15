@@ -25,6 +25,7 @@ import {getGlobalStyles} from '../../tools';
 export const INPUT_CHANGE_TYPE = {
   button: 0,
   keyboard: 1,
+  limit: 2,
 };
 
 describe('NumberChevronInput Component', () => {
@@ -93,19 +94,16 @@ describe('NumberChevronInput Component', () => {
   it('value is correctly re-set when value is out of bound', () => {
     const _onValueChangeMock = jest.fn();
 
-    const _props = {
-      ...props,
-      maxValue: 5,
-      onValueChange: _onValueChangeMock,
-    };
-
-    const wrapper = shallow(<NumberChevronInput {..._props} />);
+    const wrapper = shallow(
+      <NumberChevronInput
+        {...props}
+        maxValue={5}
+        onValueChange={_onValueChangeMock}
+      />,
+    );
 
     wrapper.find(Input).simulate('change', '8');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
-      5,
-      INPUT_CHANGE_TYPE.keyboard,
-    );
+    expect(_onValueChangeMock).toHaveBeenCalledWith(5, INPUT_CHANGE_TYPE.limit);
   });
 
   it('handles text input changes correctly', () => {

@@ -25,6 +25,7 @@ import {getCommonStyles} from '../../../utils/commons-styles';
 export const INPUT_CHANGE_TYPE = {
   button: 0,
   keyboard: 1,
+  limit: 2,
 };
 
 interface NumberChevronInputProps {
@@ -86,21 +87,26 @@ const NumberChevronInput = ({
 
   const handleChange = (value: string) => {
     let writtenNumber = null;
+    let mode = INPUT_CHANGE_TYPE.keyboard;
 
     if (value?.length > 0) {
       writtenNumber = Number(value[value.length - 1]);
     }
 
-    if (writtenNumber >= minValue && writtenNumber <= maxValue) {
-      setInputValue(writtenNumber);
-      onValueChange(writtenNumber, INPUT_CHANGE_TYPE.keyboard);
-    } else {
+    if (Number.isNaN(writtenNumber)) {
+      return;
+    }
+
+    if (writtenNumber < minValue || writtenNumber > maxValue) {
       const distanceToMinValue = Math.abs(writtenNumber - minValue);
       const distanceToMaxValue = Math.abs(writtenNumber - maxValue);
-      setInputValue(
-        distanceToMinValue < distanceToMaxValue ? minValue : maxValue,
-      );
+      writtenNumber =
+        distanceToMinValue < distanceToMaxValue ? minValue : maxValue;
+      mode = INPUT_CHANGE_TYPE.limit;
     }
+
+    setInputValue(writtenNumber);
+    onValueChange(writtenNumber, mode);
   };
 
   const handleSelection = () => {
