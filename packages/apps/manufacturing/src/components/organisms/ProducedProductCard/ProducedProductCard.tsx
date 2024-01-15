@@ -48,7 +48,7 @@ const ProducedProductCard = ({
     if (plannedQty > producedQty) {
       return getStyles(Colors.plannedColor.background)?.border;
     }
-    return getStyles(Colors.primaryColor.background)?.border;
+    return getStyles(Colors.successColor.background)?.border;
   }, [Colors, plannedQty, producedQty]);
 
   return (

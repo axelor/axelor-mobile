@@ -64,7 +64,7 @@ class Inventory {
       case this.status.Completed:
         return Colors.priorityColor;
       case this.status.Validated:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.status.Canceled:
         return Colors.errorColor;
       default:

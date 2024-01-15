@@ -81,7 +81,7 @@ class ManufacturingOrder {
       case this.status.StandBy:
         return Colors.cautionColor;
       case this.status.Finished:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.status.Merged:
         return Colors.priorityColor;
       case this.status.Canceled:

@@ -139,7 +139,7 @@ class TicketType {
       case this.status.In_Progress:
         return Colors.progressColor;
       case this.status.Resolved:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.status.Closed:
         return Colors.cautionColor;
       default:
@@ -173,7 +173,7 @@ class TicketType {
   static getPriorityColor = (status: number, Colors: ThemeColors) => {
     switch (status) {
       case this.priority.Low:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.priority.Normal:
         return Colors.priorityColor;
       case this.priority.High:

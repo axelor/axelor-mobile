@@ -71,7 +71,7 @@ const InternalMoveLineCard = ({
       return Colors.cautionColor.background;
     }
 
-    return Colors.primaryColor.background;
+    return Colors.successColor.background;
   }, [Colors, expectedQty, movedQty]);
 
   const borderStyle = useMemo(() => {

@@ -76,7 +76,7 @@ const ProductCard = ({
               availableStock == null
                 ? Colors.secondaryColor
                 : availableStock > 0
-                ? Colors.primaryColor
+                ? Colors.successColor
                 : Colors.errorColor,
           },
         ],

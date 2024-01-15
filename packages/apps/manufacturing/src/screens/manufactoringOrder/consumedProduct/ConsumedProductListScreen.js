@@ -206,7 +206,7 @@ const ConsumedProductListScreen = ({route, navigation}) => {
               },
               {
                 title: I18n.t('Manufacturing_Status_Finished'),
-                color: Colors.primaryColor,
+                color: Colors.successColor,
                 key: 'finishedStatus',
               },
             ]}
