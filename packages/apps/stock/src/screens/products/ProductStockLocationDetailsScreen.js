@@ -109,7 +109,7 @@ const ProductStockLocationDetailsScreen = ({route}) => {
             selectionItems={[
               {
                 title: I18n.t('Stock_Available'),
-                color: Colors.primaryColor,
+                color: Colors.successColor,
                 key: AVAILABILITY.available,
               },
               {

@@ -66,7 +66,7 @@ class ExpenseType {
       case this.statusSelect.WaitingValidation:
         return Colors.cautionColor;
       case this.statusSelect.Validate:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.statusSelect.Reimbursed:
         return Colors.priorityColor;
       case this.statusSelect.Refused:

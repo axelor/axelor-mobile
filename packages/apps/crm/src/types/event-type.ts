@@ -65,7 +65,7 @@ class EventType {
       case this.status.Planned:
         return Colors.secondaryColor;
       case this.status.Realized:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.status.Canceled:
         return Colors.cautionColor;
       default:
