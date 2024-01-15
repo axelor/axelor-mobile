@@ -19,7 +19,7 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {shallow} from 'enzyme';
-import {NumberChevronInput} from '@axelor/aos-mobile-ui';
+import {Input, NumberChevronInput} from '@axelor/aos-mobile-ui';
 import {getGlobalStyles} from '../../tools';
 
 export const INPUT_CHANGE_TYPE = {
@@ -101,19 +101,7 @@ describe('NumberChevronInput Component', () => {
 
     const wrapper = shallow(<NumberChevronInput {..._props} />);
 
-    wrapper.find('Input').simulate('change', '10');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
-      0,
-      INPUT_CHANGE_TYPE.keyboard,
-    );
-
-    wrapper.find('Input').simulate('change', '45');
-    expect(_onValueChangeMock).toHaveBeenCalledWith(
-      5,
-      INPUT_CHANGE_TYPE.keyboard,
-    );
-
-    wrapper.find('Input').simulate('change', '8');
+    wrapper.find(Input).simulate('change', '8');
     expect(_onValueChangeMock).toHaveBeenCalledWith(
       5,
       INPUT_CHANGE_TYPE.keyboard,

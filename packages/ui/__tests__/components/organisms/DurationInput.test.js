@@ -46,13 +46,19 @@ describe('Duration Input Component', () => {
     expect(wrapper.find(NumberChevronInput).length).toBe(5);
   });
 
-  it('renders with required when required is true', () => {
+  it('renders with required when required is true and value is 0', () => {
     const wrapper = shallow(
       <DurationInput {...props} defaultValue={0} required={true} />,
     );
 
     wrapper.find(NumberChevronInput).forEach(input => {
       expect(input.prop('required')).toBe(true);
+    });
+
+    wrapper.find(NumberChevronInput).at(0).simulate('valueChange', 5);
+
+    wrapper.find(NumberChevronInput).forEach(input => {
+      expect(input.prop('required')).toBe(false);
     });
   });
 
