@@ -55,7 +55,7 @@ const InventoryLineCard = ({
     if (realQty == null) {
       return getStyles(Colors.secondaryColor.background)?.border;
     } else if (currentQty === realQty) {
-      return getStyles(Colors.primaryColor.background)?.border;
+      return getStyles(Colors.successColor.background)?.border;
     } else {
       return getStyles(Colors.cautionColor.background)?.border;
     }

@@ -56,7 +56,7 @@ class StopwatchType {
       case this.status.Paused:
         return Colors.cautionColor.background;
       case this.status.Finished:
-        return Colors.primaryColor.background;
+        return Colors.successColor.background;
       case this.status.Canceled:
         return Colors.errorColor.background;
       default:

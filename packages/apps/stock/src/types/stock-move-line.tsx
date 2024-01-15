@@ -70,7 +70,7 @@ class StockMoveLine {
       },
       {
         title: I18n.t('Stock_Done'),
-        color: Colors.primaryColor,
+        color: Colors.successColor,
         key: this.status.Done,
       },
     ];

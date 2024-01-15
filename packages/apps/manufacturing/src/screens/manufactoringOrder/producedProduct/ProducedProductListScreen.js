@@ -166,7 +166,7 @@ const ProducedProductListScreen = ({route, navigation}) => {
               },
               {
                 title: I18n.t('Manufacturing_Status_Realized'),
-                color: Colors.primaryColor,
+                color: Colors.successColor,
                 key: 'realizedStatus',
               },
             ]}

@@ -46,7 +46,7 @@ const ProductStockLocationCard = ({
     if (availability == null) {
       return getStyles(Colors.secondaryColor.background).container;
     } else if (availability > 0) {
-      return getStyles(Colors.primaryColor.background).container;
+      return getStyles(Colors.successColor.background).container;
     } else {
       return getStyles(Colors.errorColor.background).container;
     }
@@ -92,7 +92,7 @@ const ProductStockLocationCard = ({
                   color:
                     availability == null
                       ? Colors.secondaryColor
-                      : Colors.primaryColor,
+                      : Colors.successColor,
                 },
               ],
             }
