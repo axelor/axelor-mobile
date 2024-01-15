@@ -26,7 +26,6 @@ import {Icon, BootstrapIcon} from '@axelor/aos-mobile-ui';
 describe('Icon Component', () => {
   const props = {
     name: 'check',
-    FontAwesome5: true,
     color: 'red',
     size: 24,
     touchable: true,
@@ -40,16 +39,8 @@ describe('Icon Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders FontAwesome5 icon when FontAwesome5 prop is true', () => {
-    const wrapper = shallow(<Icon name="star" FontAwesome5 />);
-    const iconComponent = wrapper.find(Icon5);
-
-    expect(iconComponent.exists()).toBe(true);
-    expect(iconComponent.prop('name')).toBe('star');
-  });
-
-  it('renders BootstrapIcon icon when FontAwesome5 prop is false', () => {
-    const wrapper = shallow(<Icon name="star" FontAwesome5={false} />);
+  it('renders BootstrapIcon icon ', () => {
+    const wrapper = shallow(<Icon name="star" />);
     const iconComponent = wrapper.find(BootstrapIcon);
 
     expect(iconComponent.exists()).toBe(true);

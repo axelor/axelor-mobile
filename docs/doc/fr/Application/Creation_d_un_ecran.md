@@ -286,7 +286,7 @@ Ce composant prend en argument trois éléments :
   - _key_ : clé de l’action pour l’unicité des actions
   - _type_ : définition du type d’action pour les configurations par défaut. Cela permet de définir automatiquement le titre et l’action à effectuer lors du clique sur le bouton.
   - _titleKey_ : clé de traduction pour le titre du bouton.
-  - _iconName_ : nom de l’icône de la librairie FontAwesome5 à afficher à côté du titre sur le bouton.
+  - _iconName_ : nom de l’icône de la librairie Bootstrap à afficher à côté du titre sur le bouton.
   - _color_ : couleur du bouton.
   - _hideIf_ / _disabledIf_ : fonctions permettant d’ajouter une condition d’affichage / de disponibilité pour le bouton en fonction de l’état du formulaire et des valeurs du store.
   - _customAction_ : action personnalisée à effectuer au clique.
