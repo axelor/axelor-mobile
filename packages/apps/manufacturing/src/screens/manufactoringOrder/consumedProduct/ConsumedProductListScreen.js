@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   ChipSelect,
   Icon,
@@ -192,8 +192,6 @@ const ConsumedProductListScreen = ({route, navigation}) => {
         chipComponent={
           <ChipSelect
             mode="switch"
-            width={Dimensions.get('window').width * 0.3}
-            marginHorizontal={2}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {
