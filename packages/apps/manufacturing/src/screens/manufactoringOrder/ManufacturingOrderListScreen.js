@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useState} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   ChipSelect,
   Screen,
@@ -143,8 +143,6 @@ const ManufacturingOrderListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            marginHorizontal={3}
-            width={Dimensions.get('window').width * 0.35}
             onChangeValue={chiplist => setSelectedStatus(chiplist)}
             selectionItems={[
               {
