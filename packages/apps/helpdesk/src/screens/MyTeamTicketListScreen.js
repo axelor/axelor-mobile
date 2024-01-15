@@ -17,7 +17,7 @@
  */
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Screen,
   HeaderContainer,
@@ -144,8 +144,6 @@ const MyTeamTicketListScreen = ({navigation}) => {
         chipComponent={
           <ChipSelect
             mode="multi"
-            marginHorizontal={4}
-            width={Dimensions.get('window').width * 0.3}
             onChangeValue={chiplist => setPriorityStatus(chiplist)}
             selectionItems={Ticket.getPriorityList(Colors, I18n)}
           />
