@@ -87,7 +87,6 @@ const JsonFieldScreen = ({route}) => {
     <CustomFieldForm
       model={model}
       modelId={modelId}
-      fieldType="attrs"
       additionalActions={additionalActions}
     />
   );

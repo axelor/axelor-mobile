@@ -36,14 +36,14 @@ const FORM_KEY = 'customField-form';
 interface CustomFieldFormProps {
   model: string;
   modelId: string;
-  fieldType: string;
-  additionalActions: any[];
+  fieldType?: string;
+  additionalActions?: any[];
 }
 
 const CustomFieldForm = ({
   model,
   modelId,
-  fieldType,
+  fieldType = null,
   additionalActions = [],
 }: CustomFieldFormProps) => {
   const Colors = useThemeColor();
