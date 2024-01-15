@@ -44,7 +44,7 @@ class StockCorrection {
       case this.status.Draft:
         return Colors.secondaryColor;
       case this.status.Validated:
-        return Colors.primaryColor;
+        return Colors.successColor;
       default:
         console.warn(
           `Status provided with value ${status} is not supported by stock correction`,

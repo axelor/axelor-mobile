@@ -63,7 +63,7 @@ const SupplierArrivalLineCard = ({
       return Colors.cautionColor.background;
     }
 
-    return Colors.primaryColor.background;
+    return Colors.successColor.background;
   }, [Colors, askedQty, deliveredQty]);
 
   const borderStyle = useMemo(() => {

@@ -108,7 +108,7 @@ const ProductVariantCard = ({
                 ? I18n.t('Stock_Available')
                 : I18n.t('Stock_Unavailable'),
             color:
-              stockAvailability > 0 ? Colors.primaryColor : Colors.errorColor,
+              stockAvailability > 0 ? Colors.successColor : Colors.errorColor,
           },
         ],
       }}

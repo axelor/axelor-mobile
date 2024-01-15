@@ -60,7 +60,7 @@ const ConsumedProductCard = ({
     ) {
       return getBorderStyles(Colors.plannedColor.background)?.border;
     } else {
-      return getBorderStyles(Colors.primaryColor.background)?.border;
+      return getBorderStyles(Colors.successColor.background)?.border;
     }
   }, [Colors, consumedQty, missingQty, plannedQty]);
 
@@ -111,7 +111,7 @@ const ConsumedProductCard = ({
                 availableQty > 0
                   ? missingQty > 0
                     ? Colors.cautionColor
-                    : Colors.primaryColor
+                    : Colors.successColor
                   : Colors.errorColor,
             },
           ],
