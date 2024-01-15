@@ -282,7 +282,7 @@ This component takes three elements as arguments:
   - _key_: action key for action uniqueness
   - _type_: action type definition for default configurations. This automatically defines the title and action to be performed when the button is clicked.
   - _titleKey_: translation key for button title.
-  - _iconName_: name of the FontAwesome5 library icon to be displayed next to the button title.
+  - _iconName_: name of the Bootstrap library icon to be displayed next to the button title.
   - _color_: button color.
   - _hideIf_ / _disabledIf_: functions for adding a display/availability condition for the button, depending on the state of the form and store values.
   - _customAction_: custom action to be performed on click.
