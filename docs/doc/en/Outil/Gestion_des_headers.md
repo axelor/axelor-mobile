@@ -73,12 +73,12 @@ export interface ActionType {
   title: string;
   iconName: string;
   iconColor?: string;
-  FontAwesome5?: boolean;
   indicator?: number;
   hideIf?: boolean;
   disableIf?: boolean;
   onPress: () => void;
   showInHeader?: boolean;
+  customComponent?: ReactElement<any>;
 }
 ```
 
@@ -89,12 +89,12 @@ The various attributes available are :
 - **title** : _[Required]_ title of the action when reduced in the `DropdownMenu`.
 - **iconName** : _[Required]_ name of the icon associated with this action
 - **iconColor** : icon color, set to `secondaryColor_dark.background` by default.
-- **FontAwesome5** : boolean indicating whether the icon belongs to FontAwesome4 or FontAwesome5. By default, this value is set to `true`, which corresponds to FontAwesome5.
 - **indicator**: small number to be displayed at the top of the action icon (e.g. number of attached files or pending messages).
 - **hideIf**: condition for displaying the action.
 - **disableIf**: action deactivation condition
 - **onPress** : _[Required]_ action to be executed when user clicks on icon
 - **showInHeader**: condition for whether the action can be displayed directly in the header or whether it must always be present in the drop-down actions. By default, actions are set to be displayed in the drop-down list.
+- **customComponent**: possibility to add a custom react element
 
 From a functional point of view, the set of actions is passed to the `HeaderOptionsMenu` component, which then performs the following steps:
 
