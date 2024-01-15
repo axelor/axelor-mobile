@@ -48,6 +48,7 @@ export const useBasicActions = ({
   const [disableBarcode, setDisableBarcode] = useState(true);
   const [disableCustomView, setDisableCustomView] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   const modelConfigured = useMemo(
     () => !checkNullString(model) && modelId != null,
@@ -94,15 +95,24 @@ export const useBasicActions = ({
       });
   }, [model]);
 
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   const checkInternetConnection = useCallback(async () => {
     const {isConnected: _isConnected} = await getNetInfo();
-
-    setIsConnected(_isConnected);
-  }, []);
+    if (isMounted) {
+      setIsConnected(_isConnected);
+    }
+  }, [isMounted]);
 
   useEffect(() => {
     const interval = setInterval(checkInternetConnection, 2000);
-    return () => clearInterval(interval.current);
+    return () => {
+      clearInterval(interval);
+      setIsMounted(false);
+    };
   }, [checkInternetConnection]);
 
   const mailMessagesAction = useMemo(() => {

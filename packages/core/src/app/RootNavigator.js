@@ -84,7 +84,7 @@ const RootNavigator = ({
 
   useEffect(() => {
     const interval = setInterval(checkInternetConnection, 5000);
-    return () => clearInterval(interval.current);
+    return () => clearInterval(interval);
   }, [checkInternetConnection]);
 
   const handleSessionExpired = useCallback(() => {
@@ -109,7 +109,7 @@ const RootNavigator = ({
     };
 
     const interval = setInterval(checkERPToken, 120000);
-    return () => clearInterval(interval.current);
+    return () => clearInterval(interval);
   }, [handleSessionExpired, logged]);
 
   useEffect(() => {
