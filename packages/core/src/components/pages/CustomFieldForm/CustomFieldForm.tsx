@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import {FormView} from '../../pages/';
 import {useDispatch, useSelector} from 'react-redux';
