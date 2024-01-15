@@ -54,7 +54,6 @@ const TicketsStatusButton = ({}) => {
         title={I18n.t('Helpdesk_Start')}
         iconName="play-fill"
         onPress={() => updateStatus(Ticket.stopWatchStatus.start)}
-        color={Colors.primaryColor}
       />
     );
   }

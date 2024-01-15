@@ -60,7 +60,7 @@ class StockMove {
       case this.status.Planned:
         return Colors.plannedColor;
       case this.status.Realized:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.status.Canceled:
         return Colors.errorColor;
       default:
@@ -101,7 +101,7 @@ class StockMove {
   ): Color => {
     switch (availability) {
       case this.availability.Available:
-        return Colors.primaryColor;
+        return Colors.successColor;
       case this.availability.Partially_available:
         return Colors.cautionColor;
       case this.availability.Unavailable:
