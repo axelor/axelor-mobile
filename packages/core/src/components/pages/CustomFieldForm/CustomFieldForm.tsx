@@ -53,16 +53,12 @@ const CustomFieldForm = ({
     (state: any) => state.metaJsonField,
   );
 
-  const refresh = useCallback(() => {
+  useEffect(() => {
     dispatch(
       (fetchJsonFieldsOfModel as any)({modelName: model, type: fieldType}),
     );
     dispatch((fetchObject as any)({modelName: model, id: modelId}));
   }, [dispatch, model, modelId, fieldType]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
 
   const {fields, panels, defaults} = useMemo(
     () => mapStudioFields(mapStudioFieldsWithFormula(_fields, object), Colors),
