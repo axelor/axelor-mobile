@@ -29,13 +29,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerContent from './drawer/DrawerContent';
 import {
-  filterAuthorizedModules,
+  checkModulesMenusAccessibility,
   getDefaultModule,
   manageOverridingMenus,
   manageWebCompatibility,
   manageWebConfig,
   moduleHasMenus,
-  updateAccessibleMenus,
 } from './module.helper';
 import {
   manageSubMenusOverriding,
@@ -44,8 +43,6 @@ import {
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchMenuConfig} from '../features/menuConfigSlice';
-import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
@@ -68,9 +65,7 @@ const Navigator = ({
   versionCheckConfig,
 }) => {
   const storeState = useSelector(state => state.appConfig);
-  const {user} = useSelector(state => state.user);
-  const {restrictedMenus} = useSelector(state => state.menuConfig);
-  const {mobileConfigs} = useSelector(state => state.mobileConfig);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
 
   const I18n = useTranslator();
@@ -83,14 +78,14 @@ const Navigator = ({
         manageWebConfig(
           manageOverridingMenus(
             manageSubMenusOverriding(
-              filterAuthorizedModules(modules, mobileConfigs, user),
+              checkModulesMenusAccessibility(modules, mobileSettings?.apps),
             ),
           ),
           storeState,
         ),
         metaModules,
       ),
-    [metaModules, mobileConfigs, modules, storeState, user],
+    [metaModules, mobileSettings, modules, storeState],
   );
 
   const [activeModule, setActiveModule] = useState(
@@ -113,9 +108,7 @@ const Navigator = ({
   }, []);
 
   useEffect(() => {
-    dispatch(fetchMobileConfig());
     dispatch(fetchMetaModules());
-    dispatch(fetchMenuConfig());
   }, [dispatch]);
 
   const changeActiveModule = useCallback(
@@ -129,10 +122,9 @@ const Navigator = ({
 
   const modulesMenus = useMemo(() => {
     return enabledModule
-      .map(_module => updateAccessibleMenus(_module, restrictedMenus, user))
       .filter(moduleHasMenus)
       .reduce((menus, _module) => ({...menus, ..._module.menus}), {});
-  }, [enabledModule, restrictedMenus, user]);
+  }, [enabledModule]);
 
   const modulesScreens = useMemo(
     () =>
