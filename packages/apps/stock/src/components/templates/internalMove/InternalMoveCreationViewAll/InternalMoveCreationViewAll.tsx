@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   numberBubble: {
     marginLeft: 10,
