@@ -22,6 +22,54 @@ import {Icon, Input} from '../../atoms';
 import {useThemeColor, ThemeColors} from '../../../theme';
 import {getCommonStyles} from '../../../utils/commons-styles';
 
+const ChevronButton = ({
+  isIncreasing,
+  inputValue,
+  setInputValue,
+  stepSize,
+  readonly,
+  maxValue,
+  minValue,
+  onValueChange,
+}) => {
+  const Colors = useThemeColor();
+
+  const canIncreaseValue = useMemo(
+    () => !readonly && inputValue < maxValue,
+    [inputValue, maxValue, readonly],
+  );
+
+  const canDecreaseValue = useMemo(
+    () => !readonly && inputValue > minValue,
+    [inputValue, minValue, readonly],
+  );
+
+  const changeValue = () => {
+    setInputValue(currentValue => {
+      let newValue = currentValue + (isIncreasing ? stepSize : -stepSize);
+      newValue = Math.min(Math.max(newValue, minValue), maxValue);
+      onValueChange(newValue, INPUT_CHANGE_TYPE.button);
+      return newValue;
+    });
+  };
+
+  const iconName = isIncreasing ? 'chevron-up' : 'chevron-down';
+  const canChangeValue = isIncreasing ? canIncreaseValue : canDecreaseValue;
+
+  return (
+    <TouchableOpacity onPress={changeValue} disabled={!canChangeValue}>
+      <Icon
+        name={iconName}
+        color={
+          canChangeValue
+            ? Colors.secondaryColor_dark.background
+            : Colors.secondaryColor.background
+        }
+      />
+    </TouchableOpacity>
+  );
+};
+
 export const INPUT_CHANGE_TYPE = {
   button: 0,
   keyboard: 1,
@@ -75,16 +123,6 @@ const NumberChevronInput = ({
     [Colors, _required],
   );
 
-  const canIncreaseValue = useMemo(
-    () => !readonly && inputValue < maxValue,
-    [inputValue, maxValue, readonly],
-  );
-
-  const canDecreaseValue = useMemo(
-    () => !readonly && inputValue > minValue,
-    [inputValue, minValue, readonly],
-  );
-
   const handleChange = (value: string) => {
     let writtenNumber = null;
     let mode = INPUT_CHANGE_TYPE.keyboard;
@@ -120,25 +158,16 @@ const NumberChevronInput = ({
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity
-        onPress={() =>
-          setInputValue(currentValue => {
-            const tempNewValue = currentValue + stepSize;
-            const newValue = tempNewValue <= maxValue ? tempNewValue : maxValue;
-            onValueChange(newValue, INPUT_CHANGE_TYPE.button);
-            return newValue;
-          })
-        }
-        disabled={!canIncreaseValue}>
-        <Icon
-          name="chevron-up"
-          color={
-            canIncreaseValue
-              ? Colors.secondaryColor_dark.background
-              : Colors.secondaryColor.background
-          }
-        />
-      </TouchableOpacity>
+      <ChevronButton
+        isIncreasing={true}
+        inputValue={inputValue}
+        maxValue={maxValue}
+        minValue={minValue}
+        onValueChange={onValueChange}
+        readonly={readonly}
+        setInputValue={setInputValue}
+        stepSize={stepSize}
+      />
       <View
         style={[
           commonStyles.filter,
@@ -158,25 +187,16 @@ const NumberChevronInput = ({
           keyboardType="numeric"
         />
       </View>
-      <TouchableOpacity
-        onPress={() =>
-          setInputValue(currentValue => {
-            const tempNewValue = currentValue - stepSize;
-            const newValue = tempNewValue >= minValue ? tempNewValue : minValue;
-            onValueChange(newValue, INPUT_CHANGE_TYPE.button);
-            return newValue;
-          })
-        }
-        disabled={!canDecreaseValue}>
-        <Icon
-          name="chevron-down"
-          color={
-            canDecreaseValue
-              ? Colors.secondaryColor_dark.background
-              : Colors.secondaryColor.background
-          }
-        />
-      </TouchableOpacity>
+      <ChevronButton
+        isIncreasing={false}
+        inputValue={inputValue}
+        maxValue={maxValue}
+        minValue={minValue}
+        onValueChange={onValueChange}
+        readonly={readonly}
+        setInputValue={setInputValue}
+        stepSize={stepSize}
+      />
     </View>
   );
 };
