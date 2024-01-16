@@ -35,6 +35,7 @@ interface CancelButtonConfig extends ButtonConfig {
 
 interface AlertProps {
   style?: any;
+  buttonsContainerStyle?: any;
   visible: boolean;
   title?: string;
   noBoldTitle?: boolean;
@@ -46,6 +47,7 @@ interface AlertProps {
 
 const Alert = ({
   style,
+  buttonsContainerStyle,
   visible = false,
   title,
   noBoldTitle = false,
@@ -130,7 +132,7 @@ const Alert = ({
           {children}
           {(isCancelButtonDisplayedBottom ||
             isConfirmButtonDisplayedBottom) && (
-            <View style={styles.buttonsContainer}>
+            <View style={[styles.buttonsContainer, buttonsContainerStyle]}>
               {isCancelButtonDisplayedBottom && (
                 <Button {..._cancelButtonConfig} style={styles.cancelButton} />
               )}
