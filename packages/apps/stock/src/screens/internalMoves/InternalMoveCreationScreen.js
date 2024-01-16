@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {KeyboardAvoidingScrollView, Screen} from '@axelor/aos-mobile-ui';
 import {
   AvailableProductsSearchBar,
@@ -33,7 +33,7 @@ const fromStockLocationScanKey = 'from-stock-location_internal-move-creation';
 const itemScanKey = 'product-tracking-number_internal-move-creation';
 const toStockLocationScanKey = 'to-stock-location_internal-move-creation';
 
-const InternalMoveCreationScreen = ({navigation}) => {
+const InternalMoveCreationScreen = () => {
   const [currentStep, setCurrentStep] = useState(
     InternalMoveCreation.step.fromStockLocation,
   );
@@ -73,10 +73,10 @@ const InternalMoveCreationScreen = ({navigation}) => {
         handleReset(InternalMoveCreation.step.fromStockLocation);
       } else {
         setFromStockLocation(_value);
-        handleNextStep(InternalMoveCreation.step.fromStockLocation);
+        setCurrentStep(InternalMoveCreation.step.addLine);
       }
     },
-    [handleNextStep, handleReset],
+    [handleReset],
   );
 
   const handleProductChange = useCallback(
@@ -85,10 +85,10 @@ const InternalMoveCreationScreen = ({navigation}) => {
         handleReset(InternalMoveCreation.step.addLine);
       } else {
         setNewLine(_value);
-        handleNextStep(InternalMoveCreation.step.validateLine);
+        setCurrentStep(InternalMoveCreation.step.validateLine);
       }
     },
-    [handleNextStep, handleReset],
+    [handleReset],
   );
 
   const handleToStockLocationChange = useCallback(
@@ -97,10 +97,10 @@ const InternalMoveCreationScreen = ({navigation}) => {
         handleReset(InternalMoveCreation.step.toStockLocation);
       } else {
         setToStockLocation(_value);
-        handleNextStep(InternalMoveCreation.step.toStockLocation);
+        setCurrentStep(InternalMoveCreation.step.toStockLocation);
       }
     },
-    [handleNextStep, handleReset],
+    [handleReset],
   );
 
   const handleReset = useCallback(
@@ -122,14 +122,14 @@ const InternalMoveCreationScreen = ({navigation}) => {
     [],
   );
 
-  const handleNextStep = useCallback(_current => {
-    setCurrentStep(() => {
-      if (_current === InternalMoveCreation.step.fromStockLocation) {
-        return InternalMoveCreation.step.addLine;
-      }
-      return _current;
-    });
-  }, []);
+  useEffect(() => {
+    if (
+      lines.length === 0 &&
+      currentStep >= InternalMoveCreation.step.toStockLocation
+    ) {
+      setCurrentStep(InternalMoveCreation.step.addLine);
+    }
+  }, [currentStep, lines]);
 
   return (
     <Screen
