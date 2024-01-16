@@ -18,42 +18,29 @@
 
 import {Module} from '../app';
 import {Compatibility, Menu} from '../app/Module';
-import {isMenuEnabled} from './menu.helper';
-import {userHaveAccessToConfig} from './roles.helper';
 
-export function filterAuthorizedModules(
-  modules,
-  mobileConfigs,
-  restrictedMenus,
-  user,
-) {
+export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
   if (!Array.isArray(modules) || modules.length === 0) {
     return [];
-  } else if (!Array.isArray(mobileConfigs) || mobileConfigs.length === 0) {
+  } else if (
+    !Array.isArray(mobileSettingsApps) ||
+    mobileSettingsApps.length === 0
+  ) {
     return modules;
   }
 
   const authorizedModules = [];
+  const restrictedMenus = mobileSettingsApps.flatMap(
+    _app => _app.restrictedMenuList,
+  );
 
   modules.forEach(_module => {
-    const updatedModule = updateAccessibleMenus(_module, restrictedMenus, user);
-    const mobileConfigForModule = mobileConfigs?.find(
-      config => config.sequence === updatedModule.name,
+    const mobileConfigForModule = mobileSettingsApps.find(
+      app => app.sequence === _module.name,
     );
 
-    if (mobileConfigForModule == null) {
-      authorizedModules.push(updatedModule);
-    } else if (mobileConfigForModule.isAppEnabled) {
-      if (
-        !Array.isArray(mobileConfigForModule.authorizedRoles) ||
-        mobileConfigForModule.authorizedRoles.length === 0
-      ) {
-        authorizedModules.push(updatedModule);
-      } else if (
-        userHaveAccessToConfig({config: mobileConfigForModule, user: user})
-      ) {
-        authorizedModules.push(updatedModule);
-      }
+    if (mobileConfigForModule == null || mobileConfigForModule?.isAppEnabled) {
+      authorizedModules.push(updateAccessibleMenus(_module, restrictedMenus));
     }
   });
 
@@ -132,27 +119,27 @@ export function moduleHasMenus(_module) {
   return _module.menus != null && Object.keys(_module.menus).length > 0;
 }
 
-export function filterEnabledMenus(_module, restrictedMenus, user) {
+export function filterEnabledMenus(_module, restrictedMenus) {
   if (moduleHasMenus(_module)) {
     const enabledMenus = {};
     const {menus} = _module;
     const menuKeys = Object.keys(menus);
+
     menuKeys.forEach(_key => {
-      if (
-        isMenuEnabled({listMenu: restrictedMenus, menuKey: _key, user: user})
-      ) {
+      if (!restrictedMenus.find((menu: string) => menu === _key)) {
         enabledMenus[_key] = menus[_key];
       }
     });
+
     return enabledMenus;
   }
   return [];
 }
 
-export function updateAccessibleMenus(_module, restrictedMenus, user) {
+export function updateAccessibleMenus(_module, restrictedMenus) {
   return {
     ..._module,
-    menus: filterEnabledMenus(_module, restrictedMenus, user),
+    menus: filterEnabledMenus(_module, restrictedMenus),
   };
 }
 

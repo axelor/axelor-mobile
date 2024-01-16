@@ -29,7 +29,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useThemeColor} from '@axelor/aos-mobile-ui';
 import DrawerContent from './drawer/DrawerContent';
 import {
-  filterAuthorizedModules,
+  checkModulesMenusAccessibility,
   getDefaultModule,
   manageOverridingMenus,
   manageWebCompatibility,
@@ -43,8 +43,6 @@ import {
 } from './menu.helper';
 import useTranslator from '../i18n/hooks/use-translator';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchMenuConfig} from '../features/menuConfigSlice';
-import {fetchMobileConfig} from '../features/mobileConfigSlice';
 import BaseScreen from '../screens';
 import Header from './drawer/Header';
 import {fetchMetaModules} from '../features/metaModuleSlice';
@@ -74,9 +72,8 @@ const Navigator = ({
 }) => {
   const storeState = useSelector(state => state.appConfig);
   const {user} = useSelector(state => state.user);
-  const {restrictedMenus} = useSelector(state => state.menuConfig);
-  const {mobileConfigs} = useSelector(state => state.mobileConfig);
   const {dashboardConfigs} = useSelector(state => state.mobileDashboard);
+  const {mobileSettings} = useSelector(state => state.appConfig);
   const {metaModules} = useSelector(state => state.metaModule);
 
   const I18n = useTranslator();
@@ -95,12 +92,7 @@ const Navigator = ({
           addDashboardMenus(
             manageOverridingMenus(
               manageSubMenusOverriding(
-                filterAuthorizedModules(
-                  modules,
-                  mobileConfigs,
-                  restrictedMenus,
-                  user,
-                ),
+                checkModulesMenusAccessibility(modules, mobileSettings?.apps),
               ),
             ),
             filterAuthorizedDashboardMenus(dashboardMenusConfig, user),
@@ -112,9 +104,8 @@ const Navigator = ({
     [
       dashboardMenusConfig,
       metaModules,
-      mobileConfigs,
+      mobileSettings?.apps,
       modules,
-      restrictedMenus,
       storeState,
       user,
     ],
@@ -140,9 +131,7 @@ const Navigator = ({
   }, []);
 
   useEffect(() => {
-    dispatch(fetchMobileConfig());
     dispatch(fetchMetaModules());
-    dispatch(fetchMenuConfig());
     dispatch(fetchDashboardConfigs());
   }, [dispatch]);
 
