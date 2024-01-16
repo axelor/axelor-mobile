@@ -114,7 +114,7 @@ const Navigator = ({
   const changeActiveModule = useCallback(
     moduleName => {
       setActiveModule(
-        enabledModule.find(_module => _module?.name === moduleName),
+        enabledModule.find(_module => _module.name === moduleName),
       );
     },
     [enabledModule],

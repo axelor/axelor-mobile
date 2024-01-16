@@ -22,20 +22,19 @@ import {Compatibility, Menu} from '../app/Module';
 export function checkModulesMenusAccessibility(modules, mobileSettingsApps) {
   if (
     modules == null ||
-    mobileSettingsApps == null ||
     !Array.isArray(mobileSettingsApps) ||
     mobileSettingsApps?.length === 0
   ) {
     return modules;
   }
+
   const authorizedModules = [];
-  let restrictedMenus = [];
-  mobileSettingsApps?.forEach(
-    app => (restrictedMenus = restrictedMenus.concat(app.restrictedMenuList)),
+  const restrictedMenus = mobileSettingsApps.flatMap(
+    _app => _app.restrictedMenuList,
   );
 
   modules.forEach(_module => {
-    const mobileConfigForModule = mobileSettingsApps?.find(
+    const mobileConfigForModule = mobileSettingsApps.find(
       app => app.sequence === _module.name,
     );
 
